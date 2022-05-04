@@ -1,0 +1,21 @@
+﻿@{
+    ViewData["Title"] = "پرستاری در منزل";
+    var requestId = ViewBag.RequestId;
+}
+
+
+
+
+<div class="page-content text-center mt-5 mb-3">
+
+    <h2 class="p-3"> فرم درخواست پرستاری در منزل</h2>
+    <p class="p-3">
+        جهت اعزام پرستار
+        پس از رويت تعرفه ها ، فرم زير را تكميل و ارسال
+        فرماييد:
+    </p>
+     <a asp-action="PatientDetails" asp-route-id="@requestId" asp-controller="HomeNurse" class="btn  btn-Accept  mt-3 p-2 " > <span>تایید</span></a>
+  
+
+</div>
+

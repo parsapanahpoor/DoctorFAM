@@ -1,0 +1,94 @@
+﻿@model DoctorFAM.Domain.ViewModels.Account.LoginUserViewModel
+
+@{
+    ViewData["Title"] = " ورود";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Scripts
+{
+<partial name="_JqueryValidation" />
+}
+
+<section class="login">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="white-bg box-shadow rounded o-hidden">
+                    <div class="row align-items-center">
+                        <div class="col-lg-7 col-md-12 ">
+                            <img class="img-fluid" src="~/Content/images/login.png" alt="">
+                        </div>
+                        <div class="col-lg-5 col-md-12 ">
+                            <div class="login-form">
+                                <img class="img-fluid mb-5" src="images/logo-white.png" alt="">
+                                <h3 class="text-white"> ورود به سایت  </h3>
+                                @if (User.Identity.IsAuthenticated && Context.Request.Query["ReturnUrl"] != "")
+                                {
+                                    <div class="alert alert-danger ">
+                                        <p>کاربر گرامی @User.Identity.Name  شما مجوز ورود به بخش درخواست شده را ندارید.</p>
+                                    </div>
+
+                                }
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                                <div class="login-form">
+                                    <form asp-action="Login" asp-controller="Account" method="post">
+                                        <input type="hidden" asp-for="ReturnUrl" />
+
+                                        <h4 class="text-center ">ورود به سایت</h4>
+
+
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <input asp-for="Mobile" class="form-control" placeholder="موبایل" />
+                                                <span class="text-danger" asp-validation-for="Mobile"></span>
+                                            </div>
+                                        </div>
+
+
+
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <input asp-for="Password" type="password" class="form-control" placeholder="کلمه عبور" />
+                                                <span class="text-danger" asp-validation-for="Password"></span>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="row align-items-center">
+                                            <div class="col-lg-6 col-md-6 col-sm-6 remember-me-wrap">
+                                                <p>
+                                                    <input type="checkbox" id="test1" asp-for="RememberMe">
+                                                    <label for="test1">مرا بخاطر بسپار</label>
+                                                </p>
+
+                                            </div>
+
+                                            <div class="col-lg-6 col-md-6 col-sm-6 mt-2 lost-your-password-wrap">
+                                                <div class="form-group">
+                                                    <a asp-action="ForgotPassword" asp-controller="Account">فراموشی رمز عبور  </a>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row p-3 m-3 text-center  align-items-center justify-content-center ">
+                                            <button type="submit" class="btn-Accept">ورود</button>
+                                        </div>
+                                        <div class="account-text">
+                                            <p>حساب کاربری ندارید؟ <a asp-action="Register" asp-controller="Account">ثبت نام</a></p>
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+

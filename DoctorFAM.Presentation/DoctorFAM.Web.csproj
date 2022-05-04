@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+	</PropertyGroup>
+
+
+	<ItemGroup>
+		<PackageReference Include="AspNet.Security.OAuth.GitHub" Version="6.0.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.4" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.4" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.4">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.3" />
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
+		<PackageReference Include="ZNetCS.AspNetCore.ResumingFileResults" Version="2.2.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="Areas\Admin\Data\" />
+		<Folder Include="Areas\Admin\Models\" />
+		<Folder Include="Areas\Marketing\Data\" />
+		<Folder Include="Areas\Marketing\Models\" />
+		<Folder Include="Resources\Controllers\" />
+		<Folder Include="Resources\Views\" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="Views\Account\Register.cshtml" />
+		<None Include="Views\Home\Index.cshtml" />
+		<None Include="Views\Home\Privacy.cshtml" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\DoctorFAM.Application\DoctorFAM.Application.csproj" />
+	  <ProjectReference Include="..\DoctorFAM.Data\DoctorFAM.Data.csproj" />
+	  <ProjectReference Include="..\DoctorFAM.Domain\DoctorFAM.Domain.csproj" />
+	  <ProjectReference Include="..\DoctorFAM.IoC\DoctorFAM.IoC.csproj" />
+	</ItemGroup>
+
+</Project>

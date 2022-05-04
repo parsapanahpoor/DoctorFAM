@@ -1,0 +1,96 @@
+﻿@model DoctorFAM.Domain.ViewModels.Admin.Location.CreateLocationViewModel
+
+@using DoctorFAM.Domain.Entities.States
+@using DoctorFAM.Web.Culture
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = @Localizer["Create Location"];
+    var parentId = ViewBag.parentId != null ? (ulong) ViewBag.parentId : (ulong?) null;
+    var parentLocation = ViewBag.parentLocation != null ? ViewBag.parentLocation as Location : null;
+}
+
+@section Scripts
+{
+<partial name="_JqueryValidation" />
+}
+
+@section breadcrumb
+{
+<li>
+    <a asp-area="Admin" asp-controller="Location" asp-action="FilterLocation"> @Localizer["Manage Locations"] / </a>
+    <a href="javascript:void(0)"> @ViewData["Title"] </a>
+</li>
+}
+
+<form method="post" asp-action="CreateLocation" asp-controller="Location" asp-area="Admin">
+    <input type="hidden" asp-for="ParentId" />
+    <div class="row">
+        <div class="col-lg-12 col-sm-12">
+            <div class="widget">
+                <div class="widget-header bordered-bottom bordered-green">
+                    @if (parentLocation != null)
+                    {
+                        <span class="widget-caption"> @Localizer["Add Location"] @parentLocation.UniqueName </span>
+                    }
+                    else
+                    {
+                        <span class="widget-caption"> @Localizer["Create Location"]  </span>
+                    }
+                    
+                </div>
+                <div class="widget-body">
+                    <div>
+
+                        <div class="row">
+                            <div class="form-group col-md-12 col-sm-12">
+                                <label asp-for="UniqueName"></label>
+                                <input type="text" class="form-control" asp-for="UniqueName">
+                                <span class="text-danger" asp-validation-for="UniqueName"></span>
+                            </div>
+
+                        </div>
+
+                        <hr class="margin-bottom-10 margin-top-10" />
+
+                          @{
+                    int i = 0;
+                }
+                @foreach (var language in ApplicationCultures.CultureItems)
+                {
+                    <div class="card">
+                        <div class="card-body">
+                            <input type="hidden" asp-for="LocationInfo[i].Culture" value="@language.CultureKey" />
+                            <h5 class="mb-4">
+                                @Localizer["Location Info"] ( @language.Title )
+                            </h5>
+                            <div class="form-group">
+                                <label>@Localizer["Location Title"]</label>
+                                <input class="form-control" asp-for="LocationInfo[i].Title" />
+                                <span asp-validation-for="LocationInfo[i].Title" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                        <hr class="margin-bottom-10 margin-top-10" />
+
+                        <br />
+                    i++;
+                }
+
+                        <div class="row">
+                            <div class="col-md-12 flex-style">
+                                <button type="submit" class="btn btn-labeled btn-palegreen">
+                                    <i class="btn-label glyphicon glyphicon-ok"></i>@Localizer["Submit"]
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+

@@ -1,0 +1,163 @@
+﻿@model DoctorFAM.Domain.ViewModels.Admin.Location.FilterLocationViewModel
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
+
+@{
+    ViewData["Title"] = @Localizer["PageTitle"];
+}
+
+@section Scripts
+{
+<partial name="_AdminSweetAlertLocalizer" />
+}
+
+@section breadcrumb
+{
+<li>
+    <a href="javascript:void(0)"> @ViewData["Title"] </a>
+</li>
+}
+
+<div class="row">
+    <div class="col-lg-3 col-sm-12">
+        @if (Model != null && Model.ParentLocation != null)
+        {
+            <a class="btn btn-sky w-100 margin-bottom-10" asp-route-ParentId="@Model.ParentLocation.Id" asp-action="CreateLocation" asp-controller="Location" asp-area="Admin"> @Localizer["CreateLocation"] @Model.ParentLocation.UniqueName</a>
+        }
+        else
+        {
+            <a class="btn btn-sky w-100 margin-bottom-10" asp-action="Createlocation" asp-controller="location" asp-area="Admin">@Localizer["AddMainLocation"]</a>
+        }
+        <div class="widget">
+            <div class="widget-header bordered-bottom bordered-green">
+                @if (Model.ParentLocation != null)
+                {
+                    <span class="widget-caption"> @Localizer["Filter Locations"] @Model.ParentLocation.UniqueName </span>
+                }
+                else
+                {
+                    <span class="widget-caption"> @Localizer["Filter Main Locations"] </span>
+                }
+
+            </div>
+            <div class="widget-body">
+                <div>
+                    <form asp-action="Filterlocation" asp-controller="location" asp-area="Admin" id="filter-search" method="get">
+                        <input type="hidden" asp-for="ParentId" />
+                        <input type="hidden" asp-for="Page" />
+
+                        <div class="form-group">
+                            <label>@Localizer["Title"] </label>
+                            <input type="text" class="form-control" asp-for="Title">
+                        </div>
+
+                        <div class="form-group">
+                            <label>@Localizer["Unique Name"]</label>
+                            <input type="text" class="form-control" asp-for="UniqueName">
+                        </div>
+
+                        <hr />
+
+                        <div class="row">
+                            <div class="col-md-12 flex-style">
+                                <button type="submit" class="btn btn-labeled w-100 btn-palegreen">
+                                    <i class="btn-label glyphicon glyphicon-filter"></i>@Localizer["Apply Filter"]
+                                </button>
+
+                                @if (Context.Request.QueryString.HasValue)
+                                {
+                                    @if (Model.ParentLocation != null)
+                                    {
+                                        <a asp-area="Admin" asp-controller="location" asp-action="Filterlocation" asp-route-ParentId="@Model.ParentId" class="btn btn-labeled w-100 btn-darkorange mr-10px">
+                                            <i class="btn-label glyphicon glyphicon-remove"></i>@Localizer["Delete Filter"]
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a asp-area="Admin" asp-controller="location" asp-action="Filterlocation" class="btn btn-labeled w-100 btn-darkorange mr-10px ">
+                                            <i class="btn-label glyphicon glyphicon-remove"></i>@Localizer["Delete Filter"]
+                                        </a>
+                                    }
+
+                                }
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-9 col-sm-12">
+        <div class="well with-header with-footer table-responsive">
+            <div class="header bordered-azure">
+                <div class="flex-style">
+                    @if (Model.ParentLocation != null)
+                    {
+                        <span class="widget-caption"> @Localizer["List Of Locations "] @Model.ParentLocation.UniqueName </span>
+                    }
+                    else
+                    {
+                        <span> @Localizer["List Of Main Loactions"] </span>
+                    }
+
+                    <span>@Model.GetShownEntitiesPagesTitle()</span>
+                </div>
+            </div>
+
+            @if (Model.Entities != null && Model.Entities.Any())
+            {
+                <table class="table table-hover table-bordered tc vm margin-bottom-30">
+                    <thead class="tc vm">
+                        <tr class="tc vm">
+                            <th class="tc vm">
+                                @Localizer["Unique Name"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["Title"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["Options"]
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="tc vm">
+                        @foreach (var location in Model.Entities)
+                        {
+                            <tr class="tc vm" remove-ajax-item="@location.Id">
+                                <td class="tc vm" style="max-width: 200px">
+                                    <p> @location.Location.UniqueName </p>
+                                </td>
+                                <td class="tc vm">
+                                    <p> @location.Title </p>
+                                </td>
+                                <td class="tc vm">
+                                    @if (location.Location.Parent != null && location.Location.ParentId.HasValue && location.Location.Parent.ParentId.HasValue)
+                                    {
+
+                                    }
+                                    else
+                                    {
+                                        <a asp-action="Filterlocation" asp-controller="location" asp-area="Admin" asp-route-ParentId="@location.Location.Id" class="btn btn-primary btn-circle btn-xs"><i class="glyphicon glyphicon-list"></i></a>
+                                    }
+                                    <a asp-action="Editlocation" asp-controller="location" asp-area="Admin" asp-route-locationId="@location.Location.Id" class="btn btn-warning btn-circle btn-xs"><i class="glyphicon glyphicon-edit"></i></a>
+                                    <button onclick="DeleteAjax(@location.Id, '@Url.Action("DeleteLocation", "location", new {area = "Admin", locationId = location.Location.Id})')" class="btn btn-danger btn-circle btn-xs"><i class="glyphicon glyphicon-trash"></i></button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <div class="footer tc">
+
+                    <partial name="_AdminPaging" model="@Model.GetCurrentPaging()" />
+
+                </div>
+            }
+            else
+            {
+                <partial name="_AdminNotFoundPartial" />
+            }
+        </div>
+    </div>
+</div>

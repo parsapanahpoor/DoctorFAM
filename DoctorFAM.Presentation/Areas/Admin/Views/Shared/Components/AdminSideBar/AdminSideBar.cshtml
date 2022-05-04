@@ -1,0 +1,59 @@
+﻿
+<div class="page-sidebar" id="sidebar">
+    <div class="sidebar-header-wrapper">
+        <input type="text" class="searchinput" />
+        <i class="searchicon fa fa-search"></i>
+    </div>
+
+    <ul class="nav sidebar-menu">
+        <li>
+            <a asp-action="Index" asp-area="Admin" asp-controller="Home">
+                <i class="menu-icon glyphicon glyphicon-home"></i>
+                <span class="menu-text"> @SharedLocalizer["Dashboard"]  </span>
+            </a>
+        </li>
+
+        <li>
+            <a href="#" class="menu-dropdown">
+                <i class="menu-icon fa fa-user-secret"></i>
+                <span class="menu-text"> @SharedLocalizer["Manage Roles"] </span>
+                <i class="menu-expand"></i>
+            </a>
+
+            <ul class="submenu">
+                <li>
+                    <a asp-action="FilterRoles" asp-controller="Access" asp-area="Admin">
+                        <span class="menu-text"> @SharedLocalizer["List Of Roles"] </span>
+                    </a>
+                </li>
+                <li>
+                    <a asp-action="CreateRole" asp-controller="Access" asp-area="Admin">
+                        <span class="menu-text"> @SharedLocalizer["Create New Role"] </span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="#" class="menu-dropdown">
+                <i class="menu-icon glyphicon glyphicon-map-marker"></i>
+                <span class="menu-text">@SharedLocalizer["Manage Locations"]</span>
+                <i class="menu-expand"></i>
+            </a>
+
+            <ul class="submenu">
+                <li>
+                    <a asp-action="FilterLocation" asp-controller="Location" asp-area="Admin">
+                        <span class="menu-text"> @SharedLocalizer["Locations List"] </span>
+                    </a>
+                </li>
+                <li>
+                    <a asp-action="CreateLocation" asp-controller="Location" asp-area="Admin">
+                        <span class="menu-text"> @SharedLocalizer["Create Location"] </span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+    </ul>
+</div>

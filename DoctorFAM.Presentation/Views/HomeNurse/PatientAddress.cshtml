@@ -1,0 +1,89 @@
+﻿
+@{
+    ViewData["Title"] = "آدرس بیمار";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-content  ">
+
+    <section>
+        <div class="container">
+            <div class="row" style="border:2px solid #fd5b03;">
+                <div class="col-md-12">
+                    <h2 class="title-2 z-index-1 text-uppercase mt-3 mb-4 text-center"> درخواست <span> پرستاری در منزل </span></h2>
+                    <p>لطفا آدرس بیمار را ثبت کنید</p>
+                    <div>
+
+                        <form asp-action="PatientAddress">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="row">
+                           
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <p class="control-label">استان</p>
+
+                                      
+
+
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <p class="control-label">شهر</p>
+                                      
+                                   
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                      
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                     
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                      
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                      
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-9">
+                                    <div class="form-group">
+                                
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 mt-3 text-center mb-2">
+                                    <div class="form-group">
+                                        <input type="submit" value="ثبت  آدرس" class="btn-Accept" />
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+

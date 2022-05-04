@@ -1,0 +1,152 @@
+﻿@using DoctorFAM.Domain.Entities.Account
+@model DoctorFAM.Domain.ViewModels.Access.EditRoleViewModel
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
+
+@{
+    ViewData["Title"] = @Localizer["Page Title"];
+}
+
+@{
+    var permissions = ViewData["Permissions"] != null ? ViewData["Permissions"] as List<Permission> : null;
+}
+
+@section Scripts
+{
+<partial name="_JqueryValidation" />
+<script src="/admin/js/access.js"></script>
+}
+
+@section breadcrumb
+{
+<li>
+    <a href="javascript:void(0)"> @ViewData["Title"] </a>
+</li>
+}
+
+<form method="post" asp-action="EditRole" asp-controller="Access" asp-area="Admin">
+    <div class="row">
+        <div class="col-lg-9 col-sm-12">
+            <div class="widget">
+                <div class="widget-header bordered-bottom bordered-blue">
+                    <span class="widget-caption"> @ViewData["Title"] </span>
+                </div>
+                <div class="widget-body">
+                    <div>
+
+                        <input type="hidden" asp-for="Id" />
+
+                        <div class="row">
+                            <div class="form-group col-md-6 col-sm-12">
+                                <label asp-for="Title">@Localizer["Title"]</label>
+                                <input type="text" class="form-control" asp-for="Title">
+                                <span class="text-danger" asp-validation-for="Title"></span>
+                            </div>
+
+                            <div class="form-group col-md-6 col-sm-12">
+                                <label asp-for="RoleUniqueName">@Localizer["Role Unique Name"]</label>
+                                <input type="text" class="form-control" asp-for="RoleUniqueName">
+                                <span class="text-danger" asp-validation-for="RoleUniqueName"></span>
+                            </div>
+                        </div>
+
+                        <hr class="margin-bottom-10 margin-top-10" />
+
+                        <div class="row">
+                            <div class="col-md-12 flex-style">
+                                <button type="submit" class="btn btn-labeled btn-warning">
+                                    <i class="btn-label glyphicon glyphicon-edit"></i>@Localizer["Submit"]
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-sm-12">
+            <div class="row">
+
+                <div class="col-lg-12">
+                    <div class="widget">
+                        <div class="widget-header bordered-bottom bordered-blue flex-style">
+                            <span class="widget-caption"> @Localizer["Choose Permission"] </span>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" id="SelectAll">
+                                    <span class="text"> @Localizer["Select All"] </span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="widget-body @((permissions != null && permissions.Any()) ? "no-padding" : "")">
+
+                            @if (permissions != null && permissions.Any())
+                            {
+                                <div class="panel-group accordion">
+                                    @foreach (var permission in permissions.Where(s => s.ParentId == null))
+                                    {
+                                        var isPermissionSelected = Model != null && Model.Permissions != null && Model.Permissions.Any(s => s == permission.Id);
+
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a class="accordion-toggle @((isPermissionSelected) ? "" : "collapsed")" data-toggle="collapse" href="#permission-@permission.Id" aria-expanded="@((isPermissionSelected) ? "true" : "false")">
+                                                        @permission.Title
+                                                    </a>
+                                                </h4>
+                                            </div>
+                                            <div id="permission-@permission.Id" class="panel-collapse collapse @((isPermissionSelected) ? "in" : "")" aria-expanded="@((isPermissionSelected) ? "true" : "false")" style="height: @((isPermissionSelected) ? "auto" : "0")">
+                                                <div class="panel-body" style="padding: 5px 15px 0 15px !important">
+
+                                                    <span class="label-style">@Localizer["Main"]</span>
+
+                                                    <div class="form-group">
+                                                        <div class="checkbox">
+                                                            <label>
+                                                                <input type="checkbox" value="@permission.Id" name="Permissions" data-id="@permission.Id" @((isPermissionSelected) ? "checked" : "")>
+                                                                <span class="text"> @permission.Title </span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+
+                                                    @if (permissions.Any(s => s.ParentId.HasValue && s.ParentId.Value == permission.Id))
+                                                    {
+                                                        <hr style="margin-top: 10px !important; margin-bottom: 10px !important" />
+
+                                                        <span class="label-style">@Localizer["Sub"]</span>
+
+                                                        @foreach (var subPermission in permissions.Where(s => s.ParentId.HasValue && s.ParentId.Value == permission.Id))
+                                                        {
+                                                            var isSubPermissionSelected = Model != null && Model.Permissions != null && Model.Permissions.Any(s => s == subPermission.Id);
+
+                                                            <div class="form-group">
+                                                                <div class="checkbox">
+                                                                    <label>
+                                                                        <input type="checkbox" value="@subPermission.Id" name="Permissions" data-id="@subPermission.Id" data-parentId="@permission.Id" @((isSubPermissionSelected) ? "checked" : "")>
+                                                                        <span class="text"> @subPermission.Title </span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                    }
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                            else
+                            {
+                                <partial name="_AdminNotFoundPartial" />
+                            }
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</form>

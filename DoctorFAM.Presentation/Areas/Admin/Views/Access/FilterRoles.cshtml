@@ -1,0 +1,130 @@
+﻿@using DoctorFAM.Application.Extensions
+@model DoctorFAM.Domain.ViewModels.Access.FilterRolesViewModel
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
+
+@{
+    ViewData["Title"] = @Localizer["Page Title"];
+}
+
+@section Styles
+{
+
+}
+
+@section Scripts
+{
+<partial name="_AdminSweetAlertLocalizer" />
+}
+
+@section breadcrumb
+{
+<li>
+    <a href="javascript:void(0)"> @ViewData["Title"] </a>
+</li>
+}
+
+<div class="row">
+    <div class="col-lg-3 col-sm-12">
+        <a class="btn btn-sky w-100 margin-bottom-10" asp-action="CreateRole" asp-controller="Access" asp-area="Admin">@Localizer["Create New Role"]</a>
+
+        <div class="widget">
+            <div class="widget-header bordered-bottom bordered-green">
+                <span class="widget-caption"> @Localizer["Filter Roles"] </span>
+            </div>
+            <div class="widget-body">
+                <div>
+                    <form asp-action="FilterRoles" asp-controller="Access" asp-area="Admin" id="filter-search" method="get">
+
+                        <input type="hidden" asp-for="Page"/>
+
+                        <div class="form-group">
+                            <label asp-for="RoleTitle"> @Localizer["Role Title"] </label>
+                            <input type="text" class="form-control" asp-for="RoleTitle">
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="RoleUniqueName"> @Localizer["Role Unique Name"] </label>
+                            <input type="text" class="form-control" asp-for="RoleUniqueName">
+                        </div>
+
+                        <hr/>
+
+                        <div class="row">
+                            <div class="col-md-12 flex-style">
+                                <button type="submit" class="btn btn-labeled w-100 btn-palegreen">
+                                    <i class="btn-label glyphicon glyphicon-filter"></i>@Localizer["Filter"]
+                                </button>
+
+                                @if (Context.Request.QueryString.HasValue)
+                                {
+                                    <a asp-area="Admin" asp-controller="Access" asp-action="FilterRoles" class="btn btn-labeled w-100 btn-darkorange mr-10px">
+                                        <i class="btn-label glyphicon glyphicon-remove"></i>@Localizer["Delete Filter"]
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-9 col-sm-12">
+        <div class="well with-header with-footer table-responsive">
+            <div class="header bordered-azure">
+                <div class="flex-style">
+                    <span> @ViewData["Title"] </span>
+                    <span>@Model.GetShownEntitiesPagesTitle()</span>
+                </div>
+            </div>
+
+            @if (Model.Entities != null && Model.Entities.Any())
+            {
+                <table class="table table-hover table-bordered tc vm">
+                    <thead class="tc vm">
+                    <tr class="tc vm">
+                        <th class="tc vm">
+                            @Localizer["Role Title"]
+                        </th>
+                        <th class="tc vm">
+                            @Localizer["Role Unique Name"]
+                        </th>
+                        <th class="tc vm">
+                            @Localizer["Options"]
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody class="tc vm">
+                    @foreach (var role in Model.Entities)
+                    {
+                        <tr class="tc vm" remove-ajax-item="@role.Id">
+                            <td class="tc vm">
+                                <p> @role.Title </p>
+                            </td>
+                            <td class="tc vm">
+                                <p> @role.RoleUniqueName </p>
+                            </td>
+                            <td class="tc vm">
+                                <a asp-action="EditRole" asp-controller="Access" asp-area="Admin" asp-route-id="@role.Id" class="btn btn-warning btn-circle btn-xs"><i class="glyphicon glyphicon-edit"></i></a>
+                                <button onclick="DeleteAjax(@role.Id, '@Url.Action("DeleteRole", "Access", new { area = "Admin", roleId = role.Id })')" class="btn btn-danger btn-circle btn-xs"><i class="glyphicon glyphicon-trash"></i></button>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+
+                <div class="footer tc">
+                
+                    <partial name="_AdminPaging" model="@Model.GetCurrentPaging()"/>
+
+                </div>
+            }
+            else
+            {
+                <partial name="_AdminNotFoundPartial"/>
+            }
+        </div>
+    </div>
+</div>
+

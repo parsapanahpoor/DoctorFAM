@@ -1,0 +1,10 @@
+﻿
+@if (User.Identity.IsAuthenticated)
+{
+    <a class="btn   ml-sm-3 btn-primary">@User.Identity.Name خوش آمدید</a>
+    <a class="btn    ml-sm-3 " href="/LogOut"><span> خروج </span></a>
+}
+else
+{
+    <a class="btn  ml-sm-3" href="/Login"><span> ورود/ثبت‌نام </span></a>
+}

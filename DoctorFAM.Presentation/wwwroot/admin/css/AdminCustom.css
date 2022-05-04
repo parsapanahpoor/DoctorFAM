@@ -1,0 +1,88 @@
+﻿.btn-sky {
+    width:100%;
+}
+
+.btn-labeled {
+    width:100% ;
+    margin-top:10px;
+}
+
+.tc {
+    text-align:center;
+}
+.selectStateInFilterUsersListInAdmin {
+    padding: 1vw
+}
+.radioButtonInFilterInAdmin {
+    display: block;
+}
+.submitFilterInAdmin {
+   padding: 1vw
+}
+.submitFilterInAdmin button {
+    width: 100%;
+    display: block
+
+}
+    .custom-file-input {
+        display: none !important
+    }
+
+.showLocationsListInAddUserPage select {
+    width: 100%
+}
+.showLocationsInAddUserSection {
+    margin-bottom: 5vh
+}
+.chooseUserAvatarInEditUserInAdmin {
+    display: flex;
+    justify-content: center;
+    margin-top: 2vh;
+}
+.pagingInInIndex {
+    display: flex;
+    justify-content: center;
+    margin-top: 2vh;
+}
+.ck-content {
+    height: 30vh
+}
+
+.address-field {
+    resize: vertical;
+}
+
+.panelBody {
+     padding: 5px 15px 0 15px !important
+ }
+
+.address-field {
+    resize: vertical;
+}
+
+.bordered-0 {
+    border: none !important;
+}
+
+.d-none {
+    display: none !important;
+}
+
+.d-inline-block {
+    display: inline-block !important;
+}
+
+.c-pointer {
+    cursor: pointer !important;
+}
+
+.text-right {
+    text-align: right !important;
+}
+.subPermissionSectionHr {
+    margin-top: 10px !important;
+    margin-bottom: 10px !important
+}
+.tableShowListInAdmin th, tbody td {
+    text-align: center ;
+}

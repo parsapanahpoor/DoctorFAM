@@ -1,0 +1,122 @@
+/* ------------------------------------------------
+  NOTE: This is Color customizer stylesheet of template.
+------------------------------------------------ */
+
+
+.color-customizer {
+  z-index          : 10000;
+  left             : -70px;
+  width            : 70px;
+  position         : fixed;
+  top              : 50%;
+  -webkit-transform: translateY(-50%);
+  -moz-transform   : translateY(-50%);
+  -ms-transform    : translateY(-50%);
+  -o-transform     : translateY(-50%);
+  transform        : translateY(-50%);
+}
+
+.color-customizer .color-chooser {
+  padding           : 20px;
+  background-color  : #ffffff;
+  -webkit-box-shadow: 0 0 20px 0 rgba(28, 30, 35, 0.2);
+  -moz-box-shadow   : 0 0 20px 0 rgba(28, 30, 35, 0.2);
+  box-shadow        : 0 0 20px 0 rgba(28, 30, 35, 0.2);
+}
+
+.color-customizer.opened .color-chooser {
+  opacity: 1;
+}
+
+.color-customizer a.opener {
+  display                   : flex;
+  height                    : 45px;
+  background                : #ffffff;
+  border-top-right-radius   : .25rem;
+  border-bottom-right-radius: .25rem;
+  width                     : 45px;
+  font-size                 : 24px;
+  color                     : #0d092c;
+  position                  : absolute;
+  left                      : 70px;
+  top                       : 50%;
+  -webkit-transform         : translateY(-50%);
+  -moz-transform            : translateY(-50%);
+  -ms-transform             : translateY(-50%);
+  -o-transform              : translateY(-50%);
+  transform                 : translateY(-50%);
+  align-items               : center;
+  text-decoration           : none;
+  -webkit-box-shadow        : 0px 0px 15px 0px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow           : 0px 0px 15px 0px rgba(0, 0, 0, 0.1);
+  box-shadow                : 0px 0px 15px 0px rgba(0, 0, 0, 0.1);
+  justify-content           : center;
+}
+
+.color-customizer.opened a.opener {
+  right       : -45px;
+  border-color: transparent;
+}
+
+.color-customizer ul {
+  list-style: none;
+  margin    : 0;
+  padding   : 0;
+  font-size : 0;
+}
+
+.color-customizer ul li {
+  width             : 30px;
+  height            : 30px;
+  border-radius     : 50%;
+  position          : relative;
+  display           : block;
+  cursor            : pointer;
+  margin            : 10px 0;
+  -webkit-transition: all linear 0.5s;
+  -moz-transition   : all linear 0.5s;
+  -o-transition     : all linear 0.5s;
+  -ms-transition    : all linear 0.5s;
+  transition        : all linear 0.5s;
+}
+
+.color-customizer ul li:last-child {
+  margin-left: 0;
+}
+
+.color-customizer ul li.selected {
+  border-radius: .25rem;
+}
+
+.color-customizer .theme-default {
+  background: #3143ef;
+}
+
+.color-customizer .theme-2 {
+  background: #fd5b03;
+}
+
+.color-customizer .theme-3 {
+  background: #83c72b;
+}
+
+.color-customizer .theme-4 {
+  background: #e90f2a;
+}
+
+
+@media (max-width: 576px) {
+  .color-customizer .color-chooser {
+    padding: 10px;
+  }
+
+  .color-customizer ul li {
+    width : 35px;
+    height: 35px;
+    margin: 5px;
+  }
+
+  .color-customizer ul li:nth-child(3n+3) {
+    margin-left: 5px;
+  }
+}

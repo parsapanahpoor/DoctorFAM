@@ -1,0 +1,796 @@
+﻿@{
+    ViewBag.Title = "صفحه نخست";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .divch {
+        transform: scale(1, 1);
+    }
+
+        .divch:hover {
+            -webkit-transition: .5s !important;
+            transition: .5s !important;
+            border: none !important;
+            transform: scale(1.15, 1.15);
+        }
+
+    .bordersec {
+        border: 1px solid #0b0637 !important;
+        border-radius: .25rem !important;
+    }
+</style>
+<!--body content start-->
+<div class="page-content">
+    <div class="row mt-4 text-center justify-content-center ">
+        <div class="col-md-3 theme-bg p-4 m-2   text-center justify-content-center">
+            <h5 class="font-w-7 text-white mt-3">  خانه سلامت </h5>
+
+            <p class="text-justify right text-light">
+                خانه سلامت یک فضای فیزیکی‌است که در آن اقدامات حمایتی و آموزشی جهت  فعالیت‌های مرتبط با سلامت انجام می‌شود. در این فضا به هیچ‌وجه اقدامات درمانی فاقد مجوز انجام نمی‌گیرد برای دیدن سایر خدمات کلیک کنید.
+            </p>
+            <hr />
+            <div class="row mt-3 text-center justify-content-center">
+                <div class="col-md-6 col-sm-6 text-center justify-content-center">
+                    <a class=" hover-icon" asp-action="HomeVisit" asp-controller="HomeVisit">
+
+                        <div class="featured-icon">
+                            @*<i class="flaticon-research fa-2x"></i>*@
+                            <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/01.jpg" alt="">
+                        </div>
+                        <p class="text-white mt-2"> ویزیت در منزل </p>
+                    </a>
+                </div>
+                <div class="col-md-6 col-sm-6 text-center justify-content-center">
+                    <a class=" hover-icon" asp-action="HomeNurse" asp-controller="HomeNurse">
+
+                        <div class="featured-icon">
+                            @*<i class="flaticon-report fa-2x"></i>*@
+                            <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/02.jpg" alt="">
+                        </div>
+                        <p class="text-white mt-2"> پرستاری در منزل </p>
+                    </a>
+                </div>
+                <div class="col-md-6 col-sm-6 text-center justify-content-center">
+                    <a class=" hover-icon">
+
+                        <div class="featured-icon">
+                            @*<i class="flaticon-testing fa-2x"></i>*@
+                            <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/03.jpg" alt="">
+                        </div>
+                        <p class="text-white mt-2"> داروخانه در منزل </p>
+                    </a>
+                </div>
+                <div class="col-md-6 col-sm-6 text-center justify-content-center">
+                    <a class=" hover-icon">
+
+                        <div class="featured-icon">
+                            @*<i class="flaticon-customer-service fa-2x"></i>*@
+                            <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/04.jpg" alt="">
+                        </div>
+                        <p class="text-white mt-2"> آزمایشگاه در منزل </p>
+                    </a>
+                </div>
+                <a class="btn hover-icon p-3 text-center" style="border:1px solid #0b0637; border-radius:5px !important;" asp-action="HealthHouseItems" asp-controller="Home">
+                    <span class="p-5"> بیشتر    </span>
+
+                </a>
+            </div>
+        </div>
+        <div class="col-md-3 dark-bg p-4 m-2  text-center justify-content-center">
+            <h5 class="font-w-7 text-white mt-3">  خدمات سلامت</h5>
+            <p class="text-justify right text-light">
+                پزشکان، کادر درمان و کلیه افرادی که در حوزه بهداشت، درمان، سلامت و خدمات پزشکی فعالیت دارند میتوانند از طریق این سایت خدمات خود را ارئه دهند، برای داشتن پنل اختصاصی با امکانات مدیریتی کلیک کنید.
+            </p>
+
+            <hr />
+            <div class="row mt-3 text-center justify-content-center">
+                <div class="col-md-6 col-sm-6 text-center justify-content-center">
+                    <a class=" hover-icon">
+
+                        <div class="featured-icon">
+                            @*<i class="flaticon-testing fa-2x"></i>*@
+                            <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/03.jpg" alt="">
+                        </div>
+                        <p class="text-white mt-2"> دیابت<p>
+                    </a>
+                </div>
+                <div class="col-md-6 col-sm-6 text-center justify-content-center">
+                    <a class=" hover-icon">
+
+                        <div class="featured-icon">
+                            @*<i class="flaticon-connection fa-2x"></i>*@
+                            <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/04.jpg" alt="">
+                        </div>
+                        <p class="text-white mt-2"> فشار خون </p>
+                    </a>
+                </div>
+                <div class="col-md-6 col-sm-6  text-center justify-content-center">
+                    <a class=" hover-icon">
+
+                        <div class="featured-icon">
+                            @*<i class="flaticon-report fa-2x"></i>*@
+                            <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/02.jpg" alt="">
+                        </div>
+                        <p class="text-white mt-2"> تغذیه </p>
+                    </a>
+                </div>
+                <div class="col-md-6 col-sm-6  text-center justify-content-center">
+                    <a class=" hover-icon">
+
+                        <div class="featured-icon">
+                            @*<i class="flaticon-research fa-2x"></i>*@
+                            <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/01.jpg" alt="">
+                        </div>
+                        <p class="text-white mt-2"> پوست و زیبایی </p>
+                    </a>
+                </div>
+                <a class="btn hover-icon p-3 text-center" style="border:1px solid #3143ef; border-radius:5px !important;" asp-action="HealthServicesItems" asp-controller="Home">
+                    <span class="p-5"> بیشتر    </span>
+
+                </a>
+            </div>
+        </div>
+        <div class="col-md-3 theme-bg-2 p-4 m-2  text-center justify-content-center">
+            <h5 class="font-w-7 text-white mt-3">  محصولات سلامت </h5>
+            <p class="text-justify right text-light">
+                عرضه محصولات و تجهیزات پزشکی، دارویی، بهداشتی و آرایشی در سراسر کشور و با همکاری صدها عرضه کننده کالا و خدمات برای همکاری با ما و داشتن فروشگاه اختصاصی خود بر روی دکمه زیر کلیک کنید.
+            </p>
+
+            <hr />
+            <div class="row mt-3 text-center justify-content-center">
+                <div class="col-md-6 col-sm-6 text-center justify-content-center">
+                    <a class=" hover-icon" href="~/Marketing/Home">
+
+                        <div class="featured-icon">
+                            @*<i class="flaticon-testing fa-2x"></i>*@
+                            <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/03.jpg" alt="">
+                        </div>
+                        <p class="text-white mt-2"> تجهیزات پزشکی  </p>
+                    </a>
+                </div>
+                <div class="col-md-6 col-sm-6 text-center justify-content-center">
+                    <a class=" hover-icon" href="~/Marketing/Home/Index2">
+
+                        <div class="featured-icon">
+                            <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/02.jpg" alt="">
+                            @*<i class="flaticon-report fa-2x"></i>*@
+                        </div>
+                        <p class="text-white mt-2"> لوازم آرایشی و بهداشتی </p>
+                    </a>
+                </div>
+                <div class="col-md-6 col-sm-6 text-center justify-content-center">
+                    <a class=" hover-icon">
+
+                        <div class="featured-icon">
+                            @*<i class="flaticon-research fa-2x"></i>*@
+                            <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/01.jpg" alt="">
+                        </div>
+                        <p class="text-white mt-2"> کتب و مجلات </p>
+                    </a>
+                </div>
+                <div class="col-md-6 col-sm-6 text-center justify-content-center">
+                    <a class=" hover-icon">
+
+                        <div class="featured-icon">
+                            @*<i class="flaticon-connection fa-2x"></i>*@
+                            <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/04.jpg" alt="">
+                        </div>
+                        <p class="text-white mt-2"> خدمات بیمه </p>
+                    </a>
+                </div>
+                <a class="btn hover-icon p-3 text-center" style="border:1px solid #0b0637; border-radius:5px !important;" asp-action="HealthProductsItems" asp-controller="Home">
+                    <span class="p-5"> بیشتر    </span>
+
+                </a>
+
+            </div>
+        </div>
+        <div class="col-md-2  text-center justify-content-center">
+            <div class="row text-white p-4  m-2  bordersec text-center justify-content-center" style="background: #ff0000; width: 100%; height: 140px; ">
+                <div class="featured-item">
+
+                    <div class="featured-title">
+                        <h5 class=" divch font-w-7 text-white mt-2"> مشاوره پزشکی آنلاین </h5>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row text-white p-4  m-2 mt-3  bordersec text-center justify-content-center" style="background: #fd5b03 ; width: 100%; height: 140px; ">
+                <div class="featured-item">
+
+                    <div class="featured-title">
+                        <h5 class=" divch font-w-7 text-white mt-2"> پزشک خانواده من </h5>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row text-white p-4 m-2 mt-3 bordersec  text-center justify-content-center" style="background: #3143ef; width: 100%; height: 140px; ">
+                <div class="featured-item">
+
+                    <div class="featured-title">
+                        <h5 class=" divch font-w-7 text-white mt-2"> پزشکان متخصص </h5>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="row text-white  p-4 m-2 mt-3 bordersec text-center justify-content-center" style="background: #59ab4e; width: 100%; height: 140px; ">
+                <div class="featured-item">
+
+                    <div class="featured-title">
+                        <h5 class=" divch font-w-7 text-white mt-2">  کارشناسان مشاوره  </h5>
+                        <p class=" text-center">روان، ازدواج، تحصیلی و ...</p>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!--test-->
+    <section>
+        <div class="container">
+            <div class="row  p-3 text-center justify-content-center">
+                <div class="col-md-12 text-center justify-content-center mt-1 mb-2">
+                    <h2 class="title text-center justify-content-center">دانستنیهای سلامت </h2>
+                </div>
+                <div class="col-lg-12 col-md-12 mb-4">
+                    <div class="owl-carousel no-pb" data-dots="false" data-nav="true" data-items="3" data-md-items="2" data-sm-items="1" data-autoplay="true">
+                        <div class="item">
+                            <div class="featured-item style-5">
+                                <div class="">
+                                    <img class="img-fluid rounded  " src="~/Content/images/case-studies/01.jpg" alt="">
+                                </div>
+                                <div class="featured-title">
+                                    <h5 class="mt-2"> پزشک خانواده </h5>
+                                </div>
+                                <div class="featured-desc">
+                                    <p class="text-center"> ویزیت دوره ای </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="featured-item style-5 active">
+                                <div class="">
+                                    <img class="img-fluid rounded " src="~/Content/images/case-studies/02.jpg" alt="">
+                                </div>
+                                <div class="featured-title">
+                                    <h5 class="mt-2"> پزشک خانواده </h5>
+                                </div>
+                                <div class="featured-desc">
+                                    <p class="text-center"> مراقبت و راهنمایی </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="featured-item style-5">
+                                <div class="">
+                                    <img class="img-fluid rounded " src="~/Content/images/case-studies/03.jpg" alt="">
+                                </div>
+                                <div class="featured-title">
+                                    <h5 class="mt-2"> پزشک خانواده </h5>
+                                </div>
+                                <div class="featured-desc">
+                                    <p class="text-center"> کنترل دیابت و فشار خون </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="featured-item style-5 active">
+                                <div class="">
+                                    <img class="img-fluid rounded " src="~/Content/images/case-studies/04.jpg" alt="">
+                                </div>
+                                <div class="featured-title">
+                                    <h5 class="mt-2"> پزشک خانواده </h5>
+                                </div>
+                                <div class="featured-desc">
+                                    <p class="text-center"> مراقبت دوران بارداری </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-md-4 p-3 ">
+                    <a>
+                        <div class="in-doreh" style="overflow: hidden;">
+                            <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/01.jpg" alt="">
+                            <div class="text-center in-hover-matn" style=" position: absolute; bottom: 0;right: 0;left: 0;padding: 50px 10px;background: linear-gradient(to bottom , transparent , #000); color: #fff;font-size: 20px;font-weight: bold;">دیابت</div>
+                            <div class="text-center in-doreh-hover" style="position: absolute;top: 0;bottom: 0; width: 100%;height: 100%;color: #fff;padding: 50px 10px 0 10px;font-size: 20px;background:rgb(13,9,44); ">با ما تماس بگیرید و ما چیزی را پیدا خواهیم کرد که برای همه مفید است</div>
+
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4 p-3 ">
+                    <a>
+                        <div class="in-doreh" style="overflow: hidden;">
+                            <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/02.jpg" alt="">
+                            <div class="text-center in-hover-matn" style=" position: absolute; bottom: 0;right: 0;left: 0;padding: 50px 10px;background: linear-gradient(to bottom , transparent , #000); color: #fff;font-size: 20px;font-weight: bold;">فشار خون</div>
+                            <div class="text-center in-doreh-hover" style="position: absolute;top: 0;bottom: 0; width: 100%;height: 100%;color: #fff;padding: 50px 10px 0 10px;font-size: 20px;background:rgb(13,9,44); ">با ما تماس بگیرید و ما چیزی را پیدا خواهیم کرد که برای همه مفید است</div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4 p-3 ">
+                    <a>
+                        <div class="in-doreh" style="overflow: hidden;">
+                            <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/03.jpg" alt="">
+                            <div class="text-center in-hover-matn" style=" position: absolute; bottom: 0;right: 0;left: 0;padding: 50px 10px;background: linear-gradient(to bottom , transparent , #000); color: #fff;font-size: 20px;font-weight: bold;">تغذیه</div>
+                            <div class="text-center in-doreh-hover" style="position: absolute;top: 0;bottom: 0; width: 100%;height: 100%;color: #fff;padding: 50px 10px 0 10px;font-size: 20px;background:rgb(13,9,44); ">با ما تماس بگیرید و ما چیزی را پیدا خواهیم کرد که برای همه مفید است</div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4 p-3 ">
+                    <a>
+                        <div class="in-doreh" style="overflow: hidden;">
+                            <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/04.jpg" alt="">
+                            <div class="text-center in-hover-matn" style=" position: absolute; bottom: 0;right: 0;left: 0;padding: 50px 10px;background: linear-gradient(to bottom , transparent , #000); color: #fff;font-size: 20px;font-weight: bold;">سالمندان</div>
+                            <div class="text-center in-doreh-hover" style="position: absolute;top: 0;bottom: 0; width: 100%;height: 100%;color: #fff;padding: 50px 10px 0 10px;font-size: 20px;background:rgb(13,9,44); ">با ما تماس بگیرید و ما چیزی را پیدا خواهیم کرد که برای همه مفید است</div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4 p-3 ">
+                    <a>
+                        <div class="in-doreh" style="overflow: hidden;">
+                            <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/05.jpg" alt="">
+                            <div class="text-center in-hover-matn" style=" position: absolute; bottom: 0;right: 0;left: 0;padding: 50px 10px;background: linear-gradient(to bottom , transparent , #000); color: #fff;font-size: 20px;font-weight: bold;">سرطان</div>
+                            <div class="text-center in-doreh-hover" style="position: absolute;top: 0;bottom: 0; width: 100%;height: 100%;color: #fff;padding: 50px 10px 0 10px;font-size: 20px;background:rgb(13,9,44); ">با ما تماس بگیرید و ما چیزی را پیدا خواهیم کرد که برای همه مفید است</div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4 p-3 ">
+                    <a>
+                        <div class="in-doreh" style="overflow: hidden;">
+                            <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/06.jpg" alt="">
+                            <div class="text-center in-hover-matn" style=" position: absolute; bottom: 0;right: 0;left: 0;padding: 50px 10px;background: linear-gradient(to bottom , transparent , #000); color: #fff;font-size: 20px;font-weight: bold;">پوست و زیبایی</div>
+                            <div class="text-center in-doreh-hover" style="position: absolute;top: 0;bottom: 0; width: 100%;height: 100%;color: #fff;padding: 50px 10px 0 10px;font-size: 20px;background:rgb(13,9,44); ">با ما تماس بگیرید و ما چیزی را پیدا خواهیم کرد که برای همه مفید است</div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4 p-3 ">
+                    <a>
+                        <div class="in-doreh" style="overflow: hidden;">
+                            <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/02.jpg" alt="">
+                            <div class="text-center in-hover-matn" style=" position: absolute; bottom: 0;right: 0;left: 0;padding: 50px 10px;background: linear-gradient(to bottom , transparent , #000); color: #fff;font-size: 20px;font-weight: bold;">آزمایشات و پاراکلینیک</div>
+                            <div class="text-center in-doreh-hover" style="position: absolute;top: 0;bottom: 0; width: 100%;height: 100%;color: #fff;padding: 50px 10px 0 10px;font-size: 20px;background:rgb(13,9,44); ">با ما تماس بگیرید و ما چیزی را پیدا خواهیم کرد که برای همه مفید است</div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4 p-3 ">
+                    <a>
+                        <div class="in-doreh" style="overflow: hidden;">
+                            <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/04.jpg" alt="">
+                            <div class="text-center in-hover-matn" style=" position: absolute; bottom: 0;right: 0;left: 0;padding: 50px 10px;background: linear-gradient(to bottom , transparent , #000); color: #fff;font-size: 20px;font-weight: bold;">مادر و کودک</div>
+                            <div class="text-center in-doreh-hover" style="position: absolute;top: 0;bottom: 0; width: 100%;height: 100%;color: #fff;padding: 50px 10px 0 10px;font-size: 20px;background:rgb(13,9,44); ">با ما تماس بگیرید و ما چیزی را پیدا خواهیم کرد که برای همه مفید است</div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4 p-3 ">
+                    <a>
+                        <div class="in-doreh" style="overflow: hidden;">
+                            <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/01.jpg" alt="">
+                            <div class="text-center in-hover-matn" style=" position: absolute; bottom: 0;right: 0;left: 0;padding: 50px 10px;background: linear-gradient(to bottom , transparent , #000); color: #fff;font-size: 20px;font-weight: bold;">طب سنتی</div>
+                            <div class="text-center in-doreh-hover" style="position: absolute;top: 0;bottom: 0; width: 100%;height: 100%;color: #fff;padding: 50px 10px 0 10px;font-size: 20px;background:rgb(13,9,44); ">با ما تماس بگیرید و ما چیزی را پیدا خواهیم کرد که برای همه مفید است</div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-12 col-md-12 mb-4">
+                    <div class="col-md-12 text-center justify-content-center mt-3 mb-2">
+                        <h2 class="title text-center justify-content-center">دانستنیهای روان </h2>
+                    </div>
+                    <div class="owl-carousel no-pb" data-dots="false" data-nav="true" data-items="3" data-md-items="2" data-sm-items="1" data-autoplay="true">
+                        <div class="item">
+                            <div class="featured-item style-5">
+                                <div class="">
+                                    <img class="img-fluid rounded  " src="~/Content/images/case-studies/01.jpg" alt="">
+                                </div>
+                                <div class="featured-title">
+                                    <h5 class="mt-2"> مشاوره </h5>
+                                </div>
+                                <div class="featured-desc">
+                                    <p class="text-center"> مشاور خانواده </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="featured-item style-5 active">
+                                <div class="">
+                                    <img class="img-fluid rounded " src="~/Content/images/case-studies/02.jpg" alt="">
+                                </div>
+                                <div class="featured-title">
+                                    <h5 class="mt-2"> مشاوره </h5>
+                                </div>
+                                <div class="featured-desc">
+                                    <p class="text-center"> مشاور تحصیلی </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="featured-item style-5">
+                                <div class="">
+                                    <img class="img-fluid rounded " src="~/Content/images/case-studies/03.jpg" alt="">
+                                </div>
+                                <div class="featured-title">
+                                    <h5 class="mt-2"> مشاوره </h5>
+                                </div>
+                                <div class="featured-desc">
+                                    <p class="text-center"> مشاور زناشویی </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="featured-item style-5 active">
+                                <div class="">
+                                    <img class="img-fluid rounded " src="~/Content/images/case-studies/04.jpg" alt="">
+                                </div>
+                                <div class="featured-title">
+                                    <h5 class="mt-2"> مشاوره </h5>
+                                </div>
+                                <div class="featured-desc">
+                                    <p class="text-center"> مهارتهای زندگی </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+
+    <!--team start-->
+    <section>
+        <div class="container">
+            <div class="row justify-content-center text-center">
+                <div class="col-lg-8 col-md-12">
+                    <div class="section-title">
+                        <h6> همکاران ما </h6>
+                        <h2 class="title"> با همکاران ما در خانواده سلامت آشنا شوید </h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="owl-carousel" data-items="3" data-md-items="2" data-margin="30" data-sm-items="1" data-autoplay="true">
+                        <div class="item">
+                            <div class="team-member style-1">
+                                <div class="team-images">
+                                    <img class="img-fluid" src="~/Content/images/team/01.jpg" alt="">
+                                    <div class="team-social-icon">
+                                        <ul>
+                                            <li>
+                                                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                                            </li>
+                                            <li>
+                                                <a href="#"><i class="fab fa-twitter"></i></a>
+                                            </li>
+                                            <li>
+                                                <a href="#"><i class="fab fa-google-plus-g"></i></a>
+                                            </li>
+                                            <li>
+                                                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="team-description">
+                                    <h5><a href="team-single.html"> الکساندرا </a></h5>
+                                    <span> مدیر </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="team-member style-1">
+                                <div class="team-images">
+                                    <img class="img-fluid" src="~/Content/images/team/02.jpg" alt="">
+                                    <div class="team-social-icon">
+                                        <ul>
+                                            <li>
+                                                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                                            </li>
+                                            <li>
+                                                <a href="#"><i class="fab fa-twitter"></i></a>
+                                            </li>
+                                            <li>
+                                                <a href="#"><i class="fab fa-google-plus-g"></i></a>
+                                            </li>
+                                            <li>
+                                                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="team-description">
+                                    <h5><a href="team-single.html"> ریلون جونی </a></h5>
+                                    <span> مشاور </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="team-member style-1">
+                                <div class="team-images">
+                                    <img class="img-fluid" src="~/Content/images/team/03.jpg" alt="">
+                                    <div class="team-social-icon">
+                                        <ul>
+                                            <li>
+                                                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                                            </li>
+                                            <li>
+                                                <a href="#"><i class="fab fa-twitter"></i></a>
+                                            </li>
+                                            <li>
+                                                <a href="#"><i class="fab fa-google-plus-g"></i></a>
+                                            </li>
+                                            <li>
+                                                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="team-description">
+                                    <h5><a href="team-single.html"> دیزی لوی </a></h5>
+                                    <span> مالی </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="team-member style-1">
+                                <div class="team-images">
+                                    <img class="img-fluid" src="~/Content/images/team/04.jpg" alt="">
+                                    <div class="team-social-icon">
+                                        <ul>
+                                            <li>
+                                                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                                            </li>
+                                            <li>
+                                                <a href="#"><i class="fab fa-twitter"></i></a>
+                                            </li>
+                                            <li>
+                                                <a href="#"><i class="fab fa-google-plus-g"></i></a>
+                                            </li>
+                                            <li>
+                                                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="team-description">
+                                    <h5><a href="team-single.html"> سام کوییون</a></h5>
+                                    <span> حسابدار </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--team end-->
+    <!--blog start-->
+    <section>
+        <div class="container">
+            <div class="row justify-content-center text-center">
+                <div class="col-lg-8 col-md-12">
+                    <div class="section-title">
+                        <h6> وبلاگ </h6>
+                        <h2 class="title"> تازه‌ترین خبرها </h2>
+                        <p class="text-center"> لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد .</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-md-12">
+                    <div class="post">
+                        <div class="post-image">
+                            <img class="img-fluid rounded w-100" src="~/Content/images/blog/01.jpg" alt="">
+                        </div>
+                        <div class="post-desc">
+                            <div class="post-meta">
+                                <ul class="list-inline">
+                                    <li>
+                                        <a href="#"> مشاوره </a>
+                                    </li>
+                                    <li> ۱۴ بهمن ، ۱۴۰۰ </li>
+                                </ul>
+                            </div>
+                            <div class="post-title">
+                                <h4><a href="blog-single.html"> بزرگترین نگرانی در مورد مشاوره تحصیلی فرزندان چیست؟ </a></h4>
+                            </div>
+                            <div class="post-author">
+                                <div class="post-author-img">
+                                    <img class="img-fluid" src="~/Content/images/thumbnail/01.png" alt="">
+                                </div> <span> ولی کیم</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-12 md-mt-5">
+                    <div class="post">
+                        <div class="post-image">
+                            <img class="img-fluid rounded w-100" src="~/Content/images/blog/02.jpg" alt="">
+                        </div>
+                        <div class="post-desc">
+                            <div class="post-meta">
+                                <ul class="list-inline">
+                                    <li>
+                                        <a href="#"> دیابت </a>
+                                    </li>
+                                    <li> ۱۵ بهمن ، ۱۴۰۰ </li>
+                                </ul>
+                            </div>
+                            <div class="post-title">
+                                <h4><a href="blog-single.html"> برای کنترل دیابت ابتدا باید سبک زندگی خود را مورد بازبینی قراردهید </a></h4>
+                            </div>
+                            <div class="post-author">
+                                <div class="post-author-img">
+                                    <img class="img-fluid" src="~/Content/images/thumbnail/02.png" alt="">
+                                </div> <span> دنی جو </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-12 md-mt-5">
+                    <div class="post">
+                        <div class="post-image">
+                            <img class="img-fluid rounded w-100" src="~/Content/images/blog/03.jpg" alt="">
+                        </div>
+                        <div class="post-desc">
+                            <div class="post-meta">
+                                <ul class="list-inline">
+                                    <li>
+                                        <a href="#"> سرطان </a>
+                                    </li>
+                                    <li> ۱۵ بهمن ، ۱۴۰۰ </li>
+                                </ul>
+                            </div>
+                            <div class="post-title">
+                                <h4><a href="blog-single.html"> جدیدترین خدمات خانواده سلامت معرفی شد </a></h4>
+                            </div>
+                            <div class="post-author">
+                                <div class="post-author-img">
+                                    <img class="img-fluid" src="~/Content/images/thumbnail/03.png" alt="">
+                                </div> <span> لیتا رین </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--blog end-->
+    <!--form start-->
+    <section class="pos-r pt-0 mt-8 custom-mt-10 sm-mt-0">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row no-gutters box-shadow">
+                        <div class="col-md-5 theme-bg p-5">
+                            <div class="section-title mb-4">
+                                <h2 class="title"> مشاوره رایگان </h2>
+                            </div>
+                            <p class="line-h-3 text-rgba">
+                                هر سوالی دارید کافیست اطلاعات تماس خود را برای ماارسال فرمایید تا در سریع‌ترین زمان ممکن با شما ارتباط
+                                برقرار کنیم
+                            </p>
+                            <form id="queto-form" method="post" action="http://themeht.com/consulterz/rtl/php/contact.php">
+                                <div id="formmessage"></div>
+                                <div class="form-group">
+                                    <input id="form_name" type="text" name="name" class="form-control" placeholder="نام شما" required="required" data-error="لطفا نام خود را وارد کنید .">
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                                <div class="form-group">
+                                    <input id="form_email" type="email" name="email" class="form-control" placeholder="ایمیل شما" required="required" data-error="لطفا ایمیل خود را وارد کنید .">
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                                <div class="form-group">
+                                    <input id="form_number" type="text" name="phone" class="form-control" placeholder="شماره تلفن" required="required">
+                                </div>
+                                <div class="form-group">
+                                    <select name="select" class="form-control">
+                                        <option> - سرویس را انتخاب کنید </option>
+                                        <option> خدمات درمانی </option>
+                                        <option> خدمات مشاوره</option>
+                                        <option> درخواست محصولات </option>
+                                        <option> درخواست همکاری </option>
+                                        <option> سایر </option>
+                                    </select>
+                                </div>
+                                <button class="btn btn-2 btn-border white mt-5">
+                                    <span class="btn-icon btn-arrow"></span>
+                                    <span class="btn-text"> ارسال </span>
+                                </button>
+                            </form>
+                        </div>
+                        <div class="col-md-1"></div>
+                        <div class="col-md-6 white-bg p-5">
+                            <div class="row justify-content-center text-center">
+                                <div class="col-md-12">
+                                    <div class="section-title">
+                                        <h2 class="title"> دیدگاه کاربران سایت </h2>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="owl-carousel no-pb" data-dots="false" data-nav="true" data-items="1" data-autoplay="true">
+                                        <div class="item">
+                                            <div class="row justify-content-center text-center">
+                                                <div class="col-md-8">
+                                                    <div class="testimonial style-2">
+                                                        <div class="testimonial-img">
+
+                                                            <img class="img-fluid d-inline" src="~/Content/images/testimonial/small/01.jpg" alt="">
+
+                                                        </div>
+                                                        <div class="testimonial-content">
+                                                            <p>
+                                                                با استفاده از امکانات این پروژه بیماران، پاسخ همه سوالات خود را خواهند یافت
+                                                            </p>
+                                                            <div class="testimonial-caption">
+                                                                <h5> لیوره کیولی </h5>
+                                                                <label> فوق تخصص عروق </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="item">
+                                            <div class="row justify-content-center text-center">
+                                                <div class="col-md-8">
+                                                    <div class="testimonial style-2">
+                                                        <div class="testimonial-img">
+                                                            <img class="img-fluid d-inline" src="~/Content/images/testimonial/small/02.jpg" alt="">
+
+                                                        </div>
+                                                        <div class="testimonial-content">
+                                                            <p>این پروژه بسیار کاربردی و مناسب برای کاربران از هر قشری است.</p>
+
+                                                            <div class="testimonial-caption">
+                                                                <h5> دینو اردن </h5>
+                                                                <label> مدرس دانشگاه </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--form end-->
+
+    <div class="row mt-3 text-center justify-content-center" style="border-top: 1px solid #3143ee;">
+        <div class="col-md-3 mt-3 counter text-center">
+            <span class="count-number text-center" data-to="580" data-speed="100">۵۸۰</span>
+            <span>+</span>
+            <p class="text-center"> خدمت دهندگان </p>
+        </div>
+        <div class="col-md-3 mt-3 counter text-center">
+            <span class="count-number text-center" data-to="912" data-speed="100">۹۱۲</span>
+            <span>+</span>
+            <p class="text-center"> عرضه کنندگان محصولات</p>
+        </div>
+        <div class="col-md-3 mt-3 counter text-center">
+            <span class="count-number text-center" data-to="180000" data-speed="100">۱۸۰۰۰۰</span>
+            <span>+</span>
+            <p class="text-center"> خدمت گیرندگان </p>
+        </div>
+        <div class="col-md-3 mt-3 counter text-center">
+            <span class="count-number text-center" data-to="202000" data-speed="100">۲۰۲۰۰۰</span>
+            <span>+</span>
+            <p class="text-center"> بازدیدکنندگان </p>
+        </div>
+
+    </div>
+</div>
+<!--body content end-->

@@ -1,0 +1,350 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title> خانه سلامت-@ViewData["Title"] </title>
+
+    <partial name="_MarketingMetaTags" />
+
+    @await RenderSectionAsync("MetaTags", false)
+
+    <partial name="_MarketingHeaderReferences" />
+
+    @await RenderSectionAsync("Styles", false)
+</head>
+
+
+<body>
+    <!-- page wrapper start -->
+    <div class="page-wrapper">
+        <!-- preloader start -->
+        <div id="ht-preloader">
+            <div class="clear-loader">
+                <div class="loader"></div>
+            </div>
+        </div>
+        <!-- preloader end -->
+        <!--header start-->
+        <header id="site-header" class="header">
+
+
+            <div id="header-wrap">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-2 text-center mt-4">
+                            <a href="#">
+                                <span class="" style="color:white; font-weight:900 !important; font-size:20px !important;"><b>DOCTOR</b></span>
+                                <span class="" style="color:#fd5b03; font-weight:900 !important; font-size:28px !important;"><b>F</b></span>
+                                <span class="" style="color:#fd5b03; font-weight:900 !important; font-size:28px !important;"><b>A</b></span>
+                                <span class="" style="color:#fd5b03; font-weight:900 !important; font-size:28px !important;"><b>M</b></span>
+                            </a>
+                            @*<span style=" color:white !important;">H</span><span style=" color:#fd5b03 !important;">EALTH</span><span style=" color:white !important;">H</span><span style=" color:#fd5b03 !important;">OUSE</span>*@
+
+                        </div>
+                        <div class="col-lg-10">
+                            <!-- Navbar -->
+                            <nav class="navbar navbar-expand-lg">
+                                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </button>
+
+                                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                                    <ul class="navbar-nav ml-auto">
+                                        <!-- Home -->
+                                        <li class="nav-item ">
+                                            <a class="nav-link active" href="/Home"> خانه </a>
+                                        </li>
+                                        <li class="nav-item dropdown" data-toggle="hover">
+                                            <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> خدمات </a>
+                                            <div class="dropdown-menu">
+                                                <ul class="list-unstyled">
+                                                    <li>
+                                                        <a href="about-our-company.html"> خدمات پزشکی </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="our-history.html">خدمات درمانی</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="our-history.html">خدمات آموزشی</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="mission-values.html"> فروش تجهیزات </a>
+                                                    </li>
+
+                                                </ul>
+                                            </div>
+                                        </li>
+                                        <li class="nav-item dropdown" data-toggle="hover">
+                                            <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> مشاوره </a>
+                                            <div class="dropdown-menu">
+                                                <ul class="list-unstyled">
+                                                    <li>
+                                                        <a href="about-our-company.html"> مشاوره پزشکی </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="our-history.html">مشاوره خانواده</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="our-history.html">مشاوره اجتماعی</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="mission-values.html"> مشاوره تحصیلی </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="mission-values.html"> سایر </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                        <li class="nav-item dropdown" data-toggle="hover">
+                                            <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> آموزش </a>
+                                            <div class="dropdown-menu">
+                                                <ul class="list-unstyled">
+                                                    <li>
+                                                        <a href="about-our-company.html">همکاران</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="our-history.html">دانشجویان</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="mission-values.html">مراجعین</a>
+                                                    </li>
+
+
+                                                </ul>
+                                            </div>
+                                        </li>
+
+                                        <li class="nav-item " data-toggle="hover">
+                                            <a class="nav-link " href="/Weblog" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> وبلاگ </a>
+                                        </li>
+                                        <li class="nav-item " data-toggle="hover">
+
+                                            <a class="nav-link " href="/Home/AboutUs"> درباره ما </a>
+                                        </li>
+                                        <li class="nav-item " data-toggle="hover">
+                                            <a class="nav-link " href="/Home/ContactUs"> تماس با ما </a>
+                                        </li>
+
+                                    </ul>
+                                </div>
+                                <div class="right-nav align-items-center d-flex justify-content-end">
+
+                                    <div class="">
+                                        @if (User.Identity.IsAuthenticated)
+                                        {
+                                            <li style="list-style: none;">
+                                                <a asp-action="Logout" asp-controller="Account" class="btn-Accept   ml-sm-3 btn-primary"><span> خروج </span> </a>
+                                                <a href="/"  class="btn-Accept    ml-sm-3 ">@User.Identity.Name </a>
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                             <li style="list-style: none;">
+                                                <a asp-action="Login" asp-controller="Account" class="btn-Accept  ml-sm-3"><span> ورود/ثبت‌نام </span></a>
+                                            </li>
+                                        }
+
+
+                                    </div>
+                                    <div class="search-icon ml-1 ml-sm-3">
+                                        <a id="search" href="javascript:void(0)"><i class="flaticon-search"></i></a>
+                                    </div>
+                                    <div>
+                                        <div class="cart">
+                                            <a href="#" id="header-cart-btn"><span class="cart-badge">2</span> <i class="flaticon-shopping-cart"></i></a>
+                                            <!-- Cart List Area Start -->
+                                            <ul class="cart-list">
+                                                <li>
+                                                    <a href="#" class="image">
+                                                        <img src="~/Content/images/product-thumb/01.jpg" class="img-fluid cart-thumb" alt="">
+                                                    </a>
+                                                    <div class="cart-item-desc">
+                                                        <h6><a href="#"> ضد آفتاب </a></h6>
+                                                        <p>
+                                                            <span class="price d-inline-block">132.000 تومان</span> -
+                                                            <span dir="ltr"> 1 x</span>
+                                                        </p>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <a href="#" class="image">
+                                                        <img src="~/Content/images/product-thumb/02.jpg" class="img-fluid cart-thumb" alt="">
+                                                    </a>
+                                                    <div class="cart-item-desc">
+                                                        <h6><a href="#"> عینک محافظ </a></h6>
+                                                        <p>
+                                                            <span class="price d-inline-block">28.000 تومان</span> -
+                                                            <span dir="ltr"> 10 x</span>
+                                                        </p>
+                                                    </div>
+                                                </li>
+                                                <li class="total text-left">
+                                                    <span class="d-block"> کل: 160.00 تومان </span>
+                                                </li>
+                                                <li>
+                                                    <a href="product-cart.html" class="btn"> سبد خرید </a>
+                                                    <a href="product-checkout.html" class="btn btn-border"> پرداخت </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="search-input" id="search-input-box">
+            <div class="container ">
+                <form class="d-flex justify-content-between search-inner">
+                    <input type="text" class="form-control" id="search-input" placeholder="جستجو ">
+                    <button type="submit" class="btn"></button> <span class="flaticon-close" id="close-search" title="Close Search"></span>
+                </form>
+            </div>
+        </div>
+        <!--header end-->
+
+        <div>
+            @RenderBody()
+        </div>
+        <!--footer start-->
+        <footer class="footer">
+            <div class="primary-footer dark-bg">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-6 sm-mt-5">
+                            <h4 class="mb-4 text-white"> خدمات ما </h4>
+                            <div class="footer-list">
+                                <ul class="list-unstyled">
+                                    <li>
+                                        <a href="business-services.html"> خدمات درمانی </a>
+                                    </li>
+                                    <li>
+                                        <a href="software-research.html"> خدمات مشاوره‌ای </a>
+                                    </li>
+                                    <li>
+                                        <a href="finance-restructuring.html"> گردشگری سلامت </a>
+                                    </li>
+                                    <li>
+                                        <a href="energy-environment.html"> فروش تجهیزات </a>
+                                    </li>
+                                    <li>
+                                        <a href="investment-planning.html"> پیشگیری و کنترل بیماریهای زمینه‌ای  </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6 sm-mt-5">
+                            <h4 class="mb-4 text-white"> اخبار </h4>
+
+                            <div class="subscribe-form sm-mt-2">
+                                <form id="mc-form" class="group">
+                                    <input value="" name="EMAIL" class="email" id="mc-email" placeholder="آدرس ایمیل" required="" type="email">
+                                    <input class="btn btn-theme" name="subscribe" value="اشتراک" type="submit">
+                                </form>
+                            </div>
+                            <div class="social-icons social-colored mt-5">
+                                <ul class="list-inline">
+                                    <li class="social-facebook">
+                                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                                    </li>
+                                    <li class="social-dribbble">
+                                        <a href="#"><i class="fab fa-dribbble"></i></a>
+                                    </li>
+                                    <li class="social-skype">
+                                        <a href="#"><i class="fab fa-skype"></i></a>
+                                    </li>
+                                    <li class="social-linkedin">
+                                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                                    </li>
+                                    <li class="social-youtube">
+                                        <a href="#"><i class="fab fa-youtube"></i></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-xl-4 col-lg-5 mr-auto col-md-12 md-mt-5">
+                            <h4 class="mb-4 text-white">درباره خانه سلامت</h4>
+                            <p class="mb-3">
+                                دسترسی سریع ، آسان و مطمئن به خدمات متنوع در حوزه های مختلف
+                                سلامت
+                            </p>
+                            <div class="footer-cntct">
+                                <ul class="media-icon list-unstyled">
+                                    <li>
+                                        <p class="mb-0"><i class="flaticon-paper-plane"></i><span dir="rtl">ساری میدان امام روبروی بیمارستان بوعلی  </span></p>
+                                    </li>
+                                    <li>
+                                        <i class="flaticon-email"></i> <a dir="ltr" href="mailto:healthHouse@gmail.com">HealthHouse@gmail.com</a>
+                                    </li>
+                                    <li>
+                                        <i class="flaticon-phone"></i> <a dir="ltr" href="tel:+981133304030">+98-113-330-4030</a>
+
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="secondary-footer theme-bg">
+                <div class="container">
+                    <div class="copyright">
+                        <div class="row">
+                            <div class="col-lg-6 text-right" style="color:white !important;">
+
+                                <a href="https://www.healthhouse.ir" style="color:white !important;"> کلیه حقوق مادی و معنوی برای <b style="color:#fd5b03;font-weight:700 !important; "> گروه خانواده سلامت </b> محفوظ است.</a>
+
+                            </div>
+                            <div class="col-lg-6 text-lg-left footer-list md-mt-2">
+                                <ul class="list-inline">
+                                    <li class="list-inline-item mb-0 active">
+                                        <a href="/Home"> خانه </a>
+                                    </li>
+                                    <li class="list-inline-item mb-0 active">
+                                        <a href="/Home/AboutUs"> درباره ما </a>
+                                    </li>
+                                    <li class="list-inline-item active mb-0">
+                                        <a href="team.html"> تیم </a>
+                                    </li>
+                                    <li class="list-inline-item active mb-0">
+                                        <a href="/Home/ContactUs"> تماس با ما </a>
+                                    </li>
+                                    <li class="list-inline-item active mb-0">
+                                        <a href="privacy-policy.html"> سیاست حفظ حریم خصوصی </a>
+                                    </li>
+                                    <li class="list-inline-item active mb-0">
+                                        <a href="terms-and-conditions.html"> شرایط </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!--footer end-->
+
+    </div>
+    <!-- page wrapper end -->
+    <!--back-to-top start-->
+    <div class="scroll-top"><a class="smoothscroll" href="#top"><i class="flaticon-top"></i></a></div>
+    <!--back-to-top end-->
+    @* <footer class="border-top footer text-muted">
+        <div class="container">
+        &copy; 2022 - HEALTH HOUSE - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+        </footer>*@
+    <partial name="_MarketingFooterReferences" />
+
+    <partial name="_MarketingNotification" />
+
+    @await RenderSectionAsync("Scripts", false)
+</body>
+</html>

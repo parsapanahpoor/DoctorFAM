@@ -1,0 +1,22 @@
+/* ------------------------
+    Table of Css
+
+  1. bootstrap.min
+  2. animate
+  3. fontawesome-all
+  4. magnific-popup
+  5. owl.carousel
+  6. base  
+  7. shortcodes
+ ------------------------ */
+
+
+@import 'bootstrap.min.css';
+@import 'animate.css';
+@import 'fontawesome-all.css';
+@import 'magnific-popup.css';
+@import 'owl.carousel.css';
+@import 'lightslider.min.css';
+@import 'jquery-ui.css';
+@import 'base.css';
+@import 'shortcodes.css';

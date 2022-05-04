@@ -1,0 +1,153 @@
+/* ------------------------
+    General
+------------------------*/
+::-moz-selection { background: #83c72b; color: #fff; text-shadow: none; }
+::-moz-selection { background: #83c72b; color: #fff; text-shadow: none; }
+::selection { background: #83c72b; color: #fff; text-shadow: none; }
+
+/* ------------------------
+    Background Color
+------------------------*/
+.theme-bg,
+.btn,
+.btn-2::before,
+.btn.btn-border:hover,
+#header-wrap,
+#header-wrap.fixed-header,
+.tab .nav-tabs .nav-link.active, .tab .nav-tabs .nav-link:hover, .tab .nav-tabs.active > a:focus, .tab .nav-tabs > a:hover,
+.scroll-top a,
+.pagination > li.active .page-link, .page-link:hover, .page-link:focus,
+[data-overlay].theme-overlay:before,
+.widget .widget-tags li a:hover,
+.post-tags li a:hover,
+.cart-badge,
+.team-member .team-social-icon,
+.ht-progress-bar .progress .progress-bar,
+.side-top-bg::before,
+.featured-item.style-4:hover,
+.featured-item.style-5:hover, .featured-item.style-5.active,
+.testimonial.style-2 .testimonial-quote,
+.ht-nav-toggle span,
+.ht-nav-toggle span::before, .ht-nav-toggle span::after,
+.product-overlay ul li a:hover,
+.ui-widget-header,
+.widget .widget-size ul li a:hover,
+.owl-carousel .owl-nav button.owl-prev:hover, .owl-carousel .owl-nav button.owl-next:hover, .banner-slider.owl-carousel .owl-nav button.owl-prev:hover, .banner-slider.owl-carousel .owl-nav button.owl-next:hover
+{ background-color: #83c72b;}
+
+.theme-bg-2,
+.btn:hover,
+.btn.btn-white:hover,
+#header-wrap::before,
+.btn-2:hover::before,
+.btn-2.btn-border:hover::before,
+.navbar-nav .nav-link:hover, .navbar-nav .nav-item .nav-link.active,
+.team-member .team-social-icon ul li a:hover,
+.owl-carousel .owl-dots .owl-dot.active::before, .owl-carousel .owl-dots .owl-dot.active::after,
+.sidebar-links li.active a, .sidebar-links li a:hover::before,
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default, .ui-button, html .ui-button.ui-state-disabled:hover, html .ui-button.ui-state-disabled:active
+ {background-color: #064CDB;}
+
+
+/* ------------------------
+    Background Rgb Color
+------------------------*/
+.cases-desc span{background-color: rgba(131,199,43,0.1)}
+.cases-item.style-3:hover::before {
+    background: -webkit-linear-gradient(top, rgba(131,199,43,0) 0%, rgba(131,199,43,0.9) 55%);
+    background: linear-gradient(to bottom, rgba(131,199,43,0) 0%, rgba(131,199,43,0.9) 55%);
+}
+
+/* ------------------------
+    Color
+------------------------*/
+a, button, input, 
+a:focus, a:hover,
+.text-theme,
+h1 span,
+.topbar-link i,
+.breadcrumb-item.active, .breadcrumb-item a:hover,
+.list-icon li i,
+.scroll-top a:hover, .scroll-top a:focus,
+.section-title h6,
+.counter span,
+.accordion .card.active a, .accordion .card a:hover,
+.contact-media a:hover,
+.contact-media.style-2 a,
+.color-customizer a.opener,
+.post .post-desc h4 a:hover,
+.widget-title,
+.widget-about h4,
+.widget .widget-categories a span,
+.comment-reply a:hover,
+.widget .widget-categories li a:hover,
+.widget .recent-post-desc a:hover,
+.widget-searchbox .search-btn,
+.featured-item .featured-icon,
+.cases-desc span,
+.team-member .team-description h5,
+.video-btn .play-btn:hover i,
+.featured-item.style-3 .featured-icon,
+.price-list li i,
+.price-value h2,
+.tab .nav-tabs .nav-link i,
+.testimonial .testimonial-caption h5,
+.brochure,
+.brochure i,
+.cases-meta li i,
+.team-cntct .team-icon li i,
+.product-overlay ul li a,
+.view-filter a.active,
+.product-price .review-rating,
+.total-rating .box-total h4,
+.total-rating .rating-list li a i,
+.review-list .review-rating,
+.timeline-title h2,
+.btn-simple:hover
+{color: #83c72b;}
+
+
+.featured-item:hover .featured-icon i,
+.testimonial .testimonial-caption label,
+.team-member .team-description h5 a:hover,
+.footer-list li a:hover,
+.media-icon li i,
+.media-icon li a:hover,
+.header-2 .topbar-link i,
+.header-2 .navbar-nav .nav-link:hover, .header-2 .navbar-nav .nav-item .nav-link.active,
+.ht-progress-bar .progress-parcent,
+.cases-item.style-3 .cases-desc span,
+.dark-bg .counter h6,
+.price-value > span,
+.counter-icon i,
+.contact-media.style-2 a:hover,
+.brochure:hover
+{color: #064CDB;}
+
+
+
+/* ------------------------
+    border Color
+------------------------*/
+.btn.btn-border,
+.form-inline .form-control,
+.owl-carousel .owl-dots .owl-dot:hover span, .owl-carousel .owl-dots .owl-dot.active span,
+.owl-carousel .owl-nav button.owl-prev, .owl-carousel .owl-nav button.owl-next,
+.owl-carousel .owl-nav button.owl-prev:hover, .owl-carousel .owl-nav button.owl-next:hover, .banner-slider.owl-carousel .owl-nav button.owl-prev:hover, .banner-slider.owl-carousel .owl-nav button.owl-next:hover,
+.pagination > li.active .page-link, .page-link:hover, .page-link:focus
+{border-color: #83c72b;}
+
+
+/* ------------------------
+    border Color
+------------------------*/
+.btn-2.btn-border:hover::before
+{border-color: #064CDB;}
+
+.form-control
+{border-bottom-color: #83c72b;}
+
+
+.theme-bg input:-webkit-autofill,
+.theme-bg textarea:-webkit-autofill,
+.theme-bg select:-webkit-autofill {-webkit-box-shadow: 0 0 0 1000px #83c72b inset !important; -webkit-text-fill-color: #ffffff !important; transition: background-color 5000s ease-in-out 0s;}
