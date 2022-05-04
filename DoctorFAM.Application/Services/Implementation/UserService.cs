@@ -6,6 +6,7 @@ using DoctorFAM.Application.StaticTools;
 using DoctorFAM.Application.Utils;
 using DoctorFAM.Data.DbContext;
 using DoctorFAM.Domain.Entities.Account;
+using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Account;
 using DoctorFAM.Domain.ViewModels.Admin;
 using DoctorFAM.Domain.ViewModels.Admin.Account;
@@ -26,21 +27,31 @@ namespace DoctorFAM.Application.Services.Implementation
 
         public DoctorFAMDbContext _context { get; set; }
         public ISiteSettingService _siteSettingService { get; set; }
+
         private IViewRenderService _viewRenderService;
+
         private IEmailSender _emailSender;
 
-        public UserService(DoctorFAMDbContext context , ISiteSettingService siteSettingService , IViewRenderService viewRenderService, IEmailSender emailSender)
+        public IUserRepository _userRepository;
+
+        public UserService(DoctorFAMDbContext context, ISiteSettingService siteSettingService, IViewRenderService viewRenderService, IEmailSender emailSender, IUserRepository userRepository)
         {
             _context = context;
             _siteSettingService = siteSettingService;
             _viewRenderService = viewRenderService;
             _emailSender = emailSender;
+            _userRepository = userRepository;
         }
 
         #endregion
 
         #region Authorize
-       
+
+        public async Task<bool> IsExistUserById(ulong userId)
+        {
+            return await _userRepository.IsExistUserById(userId);
+        }
+
         public async Task<User?> GetUserByMobile(string mobile)
         {
             return await _context.Users.FirstOrDefaultAsync(s =>
@@ -413,6 +424,5 @@ namespace DoctorFAM.Application.Services.Implementation
         }
 
         #endregion
-
     }
 }

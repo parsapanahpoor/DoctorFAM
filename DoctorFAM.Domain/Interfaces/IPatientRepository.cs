@@ -15,6 +15,8 @@ namespace DoctorFAM.Domain.Interfaces
 
         Task<Patient?> GetPatientById(ulong patientId);
 
+        Task AddPatient(Patient patient);
+
         #endregion
     }
 }

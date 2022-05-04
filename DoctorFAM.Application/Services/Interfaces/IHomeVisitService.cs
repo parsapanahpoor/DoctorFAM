@@ -12,9 +12,7 @@ namespace DoctorFAM.Application.Services.Interfaces
         #region Site Side
 
         #endregion
-
         Task<ulong?> CreateHomeVisitRequest(ulong userId);
-        Task<bool> IsExistHomeVisitRequestById(ulong requestId);
         Task<CreatePatientResult> ValidateCreatePatient(PatientViewModel model);
         Task<ulong> CreatePatientDetail(PatientViewModel patient);        
     }

@@ -1,4 +1,5 @@
-﻿using DoctorFAM.Application.Services.Interfaces;
+﻿using DoctorFAM.Application.Security;
+using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Data.DbContext;
 using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Patient;
@@ -26,13 +27,16 @@ namespace DoctorFAM.Application.Services.Implementation
 
         public IUserService _userService;
 
-        public HomeVisitService(DoctorFAMDbContext context, IHomeVisitRepository homeVisit, IRequestService requestService ,
-                                IUserService userService)
+        public IPatientService _patientService;
+
+        public HomeVisitService(DoctorFAMDbContext context, IHomeVisitRepository homeVisit, IRequestService requestService,
+                                IUserService userService, IPatientService patientService)
         {
             _context = context;
             _homeVisit = homeVisit;
             _requestService = requestService;
             _userService = userService;
+            _patientService = patientService;
         }
 
         #endregion
@@ -71,16 +75,9 @@ namespace DoctorFAM.Application.Services.Implementation
             return request.Id;
         }      
 
-        public async Task<bool> IsExistHomeVisitRequestById(ulong requestId)
-        {
-            return await _context.Requests.AnyAsync(p => p.Id == requestId
-                                                    && p.RequestType == RequestType.HomeVisit
-                                                    && !p.IsDelete);
-        }
-
         public async Task<CreatePatientResult> ValidateCreatePatient(PatientViewModel model)
         {
-            var result = await IsExistHomeVisitRequestById(model.RequestId);
+            var result = await _requestService.IsExistRequestByRequestId(model.RequestId);
 
             if (result == false) return CreatePatientResult.RequestIdNotFound;
 
@@ -89,21 +86,28 @@ namespace DoctorFAM.Application.Services.Implementation
 
         public async Task<ulong> CreatePatientDetail(PatientViewModel patient)
         {
-            //Fill Entity
+            #region Fill Entity
+
             Patient model = new Patient
             {
                 RequestId = patient.RequestId,
                 Age = patient.Age,
                 Gender = patient.Gender,
-                InsuranceType=patient.InsuranceType,
+                InsuranceType = patient.InsuranceType,
                 NationalId = patient.NationalId,
-                PatientName = patient.PatientName,
-                PatientLastName = patient.PatientLastName,
-                RequestDescription = patient.RequestDescription,
+                PatientName = patient.PatientName.SanitizeText(),
+                PatientLastName = patient.PatientLastName.SanitizeText(),
+                RequestDescription = patient.RequestDescription.SanitizeText(),
+                UserId = patient.UserId
             };
 
-            await _context.Patients.AddAsync(model);
-            await _context.SaveChangesAsync();
+            #endregion
+
+            #region MyRegion
+
+            await _patientService.AddPatient(model);
+
+            #endregion
 
             return model.Id;
         }

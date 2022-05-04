@@ -24,13 +24,16 @@ namespace DoctorFAM.Web.Controllers
 
         public IRequestService _requestService;
 
-        public HomeVisitController(IHomeVisitService homeVisitService, ILocationService locationService , IPatientService patientService
-                                    , IRequestService requestService)
+        public IUserService _userService;
+
+        public HomeVisitController(IHomeVisitService homeVisitService, ILocationService locationService, IPatientService patientService
+                                    , IRequestService requestService, IUserService userService)
         {
             _homeVisitService = homeVisitService;
             _locationService = locationService;
             _patientService = patientService;
             _requestService = requestService;
+            _userService = userService;
         }
 
         #endregion
@@ -64,17 +67,30 @@ namespace DoctorFAM.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> PatientDetails(ulong requestId)
         {
-            if (!await _homeVisitService.IsExistHomeVisitRequestById(requestId)) return NotFound();
+            #region Data Validation
+
+            if(! await _requestService.IsExistRequestByRequestId(requestId)) return NotFound();
+
+            if(! await _userService.IsExistUserById(User.GetUserId())) return NotFound();
+
+            #endregion
 
             return View(new PatientViewModel()
             {
-                RequestId = requestId
+                RequestId = requestId,
+                UserId = User.GetUserId(),
             });
         }
 
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> PatientDetails(PatientViewModel patient)
         {
+            #region Data Validation
+
+            if (!await _userService.IsExistUserById(User.GetUserId())) return NotFound();
+
+            #endregion
+
             #region Model State
 
             if (!ModelState.IsValid) return View(patient);
@@ -94,7 +110,13 @@ namespace DoctorFAM.Web.Controllers
                     return NotFound();
 
                 case CreatePatientResult.Success:
+
+                    //Add Patient Detail
                     var patientId = await _homeVisitService.CreatePatientDetail(patient);
+
+                    //Add PatientId To The Request
+                    await _requestService.AddPatientIdToRequest(patient.RequestId , patientId);
+
                     return RedirectToAction("PatientRequestDetail", "HomeVisit", new { requestId = patient.RequestId , patientId = patientId});
             }
 
@@ -105,7 +127,7 @@ namespace DoctorFAM.Web.Controllers
 
         #endregion
 
-        #region Patient Address
+        #region Patient Request Detail
 
         [HttpGet]
         public async Task<IActionResult> PatientRequestDetail(ulong requestId , ulong patientId)

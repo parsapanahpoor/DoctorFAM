@@ -14,17 +14,28 @@ namespace DoctorFAM.Application.Services.Interfaces
     {
         #region Authorize
 
+        Task<bool> IsExistUserById(ulong userId);
+
         Task<User?> GetUserById(ulong userId);
+
         Task<RegisterUserResult> RegisterUser(RegisterUserViewModel register);
+
         Task<bool> IsExistsUserByEmail(string email);
+
         Task<bool> IsExistUserByMobile(string mobile);
+
         Task<LoginResult> CheckUserForLogin(LoginUserViewModel login);
-        //Task<User?> GetUserByEmail(string email);
+
         Task<User?> GetUserByMobile(string mobile);
+
         Task<bool> AccountActivation(string emailActivationCode);
+
         Task<User> GetUserByEmailActivationCode(string emailActivationCode);
+
         Task<bool> ForgotPasswordUser(ForgotPasswordViewModel forgotPassword);
+
         Task<ResetPasswordViewModel> GetResetPasswordViewModel(string emailActivationCode);
+
         Task<bool> ResetPassword(ResetPasswordViewModel resetPassword);
 
         #endregion

@@ -45,6 +45,12 @@ namespace DoctorFAM.Data.Repository
             await _context.SaveChangesAsync();
         }
 
+        public async Task UpdateRequest(Request request)
+        {
+            _context.Requests.Update(request);
+            await _context.SaveChangesAsync();
+        }
+
         #endregion
 
         #region Patient Request Detail

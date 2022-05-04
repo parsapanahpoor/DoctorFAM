@@ -41,6 +41,8 @@ namespace DoctorFAM.Domain.ViewModels.Site.Patient
         [Display(Name = "علت درخواست/ علایم بیمار")]
         [Required(ErrorMessage = "لطفا{0} را وارد نمایید...")]
         public string RequestDescription { get; set; }
+
+        public ulong UserId { get; set; }
     }
 
     public enum CreatePatientResult

@@ -24,6 +24,11 @@ namespace DoctorFAM.Application.Services.Implementation
 
         #region Site Side
 
+        public async Task AddPatient(Patient patient)
+        {
+            await _patient.AddPatient(patient);
+        }
+
         public async Task<bool> IsExistPatientById(ulong patientId)
         {
             return await _patient.IsExistPatientById(patientId);

@@ -21,6 +21,8 @@ namespace DoctorFAM.Domain.Interfaces
 
         Task AddRequest(Request request);
 
+        Task UpdateRequest(Request request);
+
         #endregion
 
         #region Patient Request Detail

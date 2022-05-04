@@ -52,6 +52,23 @@ namespace DoctorFAM.Application.Services.Implementation
             await _request.AddRequest(request);
         }
 
+        public async Task AddPatientIdToRequest(ulong requestId , ulong patientId)
+        {
+            #region Get Request 
+
+            var request = await _request.GetRequestById(requestId);
+
+            #endregion
+
+            #region Update request
+
+            request.PatientId = patientId;
+
+            await _request.UpdateRequest(request);
+
+            #endregion
+        }
+
         #endregion
 
         #region Patient Request Detail

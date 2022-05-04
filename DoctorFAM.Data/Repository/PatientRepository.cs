@@ -35,6 +35,12 @@ namespace DoctorFAM.Data.Repository
             return await _context.Patients.FirstOrDefaultAsync(p => p.Id == patientId && !p.IsDelete);
         }
 
+        public async Task AddPatient(Patient patient)
+        {
+            await _context.Patients.AddAsync(patient);
+            await _context.SaveChangesAsync();
+        }
+
         #endregion
     }
 }
