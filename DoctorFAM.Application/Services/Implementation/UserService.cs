@@ -259,6 +259,34 @@ namespace DoctorFAM.Application.Services.Implementation
                 .OrderByDescending(s => s.CreateDate)
                 .AsQueryable();
 
+            #region Status
+
+            switch (filter.Status)
+            {
+                case UserStatus.All:
+                    break;
+                case UserStatus.EmailConfirmed:
+                    query = query.Where(s => s.IsEmailConfirm);
+                    break;
+                case UserStatus.EmailNotConfirmed:
+                    query = query.Where(s => !s.IsEmailConfirm);
+                    break;
+                case UserStatus.MobileConfirmed:
+                    query = query.Where(s => s.IsMobileConfirm);
+                    break;
+                case UserStatus.MobileNotConfirmed:
+                    query = query.Where(s => !s.IsMobileConfirm);
+                    break;
+                case UserStatus.BanForComment:
+                    query = query.Where(s => s.BanForComment);
+                    break;
+                case UserStatus.IsBan:
+                    query = query.Where(s => s.IsBan);
+                    break;
+            }
+
+            #endregion
+
             #region Filter
 
             if (!string.IsNullOrEmpty(filter.Email))
@@ -282,9 +310,9 @@ namespace DoctorFAM.Application.Services.Implementation
                 query = query.Where(s => s.CreateDate >= fromDate);
             }
 
-            if (!string.IsNullOrEmpty(filter.username))
+            if (!string.IsNullOrEmpty(filter.FullName))
             {
-                query = query.Where(s => s.Username.Contains(filter.username));
+                query = query.Where(s => s.Username.Contains(filter.FullName));
             }
 
             if (!string.IsNullOrEmpty(filter.ToDate))

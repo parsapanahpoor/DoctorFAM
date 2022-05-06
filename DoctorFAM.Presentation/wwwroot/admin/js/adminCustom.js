@@ -145,3 +145,20 @@ $("input[name=Permissions]").click(function (e) {
 });
 
 //#endregion
+
+//#region Document Ready
+
+$(function () {
+    var adminDatePickers = $("[AdminDatePicker]");
+    if (adminDatePickers.length > 0) {
+        $('<link/>',
+            {
+                rel: 'stylesheet',
+                type: 'text/css',
+                href: '/common/admindatapicker/kamadatepicker.min.css'
+            }).appendTo('head');
+        $.getScript("/common/admindatapicker/kamadatepicker.min.js", function (script, textStatus, jqXHR) { });
+    }
+});
+
+//#endregion

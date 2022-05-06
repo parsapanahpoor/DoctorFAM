@@ -30,5 +30,9 @@ namespace DoctorFAM.Data.Repository
         }
 
         #endregion
+
+        #region Admin Side
+
+        #endregion
     }
 }

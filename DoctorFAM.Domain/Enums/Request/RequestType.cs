@@ -21,6 +21,5 @@ namespace DoctorFAM.Domain.Enums.RequestType
         PatientTransfer,
         [Display(Name = "گواهی فوت")]
         DeathCertificate
-
     }
 }

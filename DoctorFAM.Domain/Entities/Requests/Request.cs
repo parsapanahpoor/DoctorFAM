@@ -10,6 +10,7 @@ using DoctorFAM.Domain.Entities.Common;
 using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Enums.RequestType;
 using DoctorFAM.Domain.Entities.Requests;
+using DoctorFAM.Domain.Enums.Request;
 
 namespace DoctorFAM.DataLayer.Entities
 {
@@ -20,6 +21,8 @@ namespace DoctorFAM.DataLayer.Entities
         public ulong UserId { get; set; }
 
         public RequestType RequestType { get; set; }
+
+        public RequestState RequestState { get; set; }
 
         public ulong? PatientId { get; set; }
 

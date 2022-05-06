@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DoctorFAM.Application.StaticTools;
+using DoctorFAM.Domain.Entities.Account;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -23,6 +25,16 @@ namespace DoctorFAM.Application.Extensions
             var user = (ClaimsPrincipal)principal;
 
             return user.GetUserId();
+        }
+
+        public static string GetUserAvatar(this User user)
+        {
+            if (!string.IsNullOrEmpty(user.Avatar))
+            {
+                return Path.Combine(PathTools.UserAvatarPathThumb, user.Avatar);
+            }
+
+            return PathTools.DefaultUserAvatar;
         }
     }
 }

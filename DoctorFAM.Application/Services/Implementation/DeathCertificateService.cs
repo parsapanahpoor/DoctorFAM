@@ -25,8 +25,6 @@ namespace DoctorFAM.Application.Services.Implementation
 
         #endregion
 
-
-
         public async Task<ulong> CreateDeathCertificateRequest(string? userName)
         {
             //Fill Entitie

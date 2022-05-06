@@ -117,94 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Add new User" xml:space="preserve">
-    <value>إضافة مستخدم جديد</value>
+  <data name="Approved" xml:space="preserve">
+    <value>Onaylı</value>
   </data>
-  <data name="Articles List" xml:space="preserve">
-    <value>قائمة المقالات</value>
+  <data name="Email Not Found" xml:space="preserve">
+    <value>Email bulunamadı</value>
   </data>
-  <data name="Change Picture" xml:space="preserve">
-    <value>تغيير الصورة</value>
+  <data name="Email State" xml:space="preserve">
+    <value>E-posta Durumu</value>
   </data>
-  <data name="Create Location" xml:space="preserve">
-    <value>إنشاء موقع</value>
+  <data name="Mobile State" xml:space="preserve">
+    <value>Mobil Durum</value>
   </data>
-  <data name="Create New Article" xml:space="preserve">
-    <value>إنشاء مقال جديد</value>
+  <data name="Not Approved" xml:space="preserve">
+    <value>Onaylanmamış</value>
   </data>
-  <data name="Create New Role" xml:space="preserve">
-    <value>إنشاء دور جديد</value>
-  </data>
-  <data name="CreateDynamicPage" xml:space="preserve">
-    <value>إنشاء صفحة جديدة</value>
-  </data>
-  <data name="Dashboard" xml:space="preserve">
-    <value>لوحة القيادة</value>
-  </data>
-  <data name="From" xml:space="preserve">
-    <value>من عند</value>
-  </data>
-  <data name="Home" xml:space="preserve">
-    <value>الصفحة الرئيسية</value>
-  </data>
-  <data name="Items" xml:space="preserve">
-    <value>أغراض</value>
-  </data>
-  <data name="List Of Roles" xml:space="preserve">
-    <value>قائمة الأدوار</value>
-  </data>
-  <data name="ListOfPages" xml:space="preserve">
-    <value>قائمة الصفحات</value>
-  </data>
-  <data name="Locations List" xml:space="preserve">
-    <value>قائمة المواقع</value>
-  </data>
-  <data name="LogOut" xml:space="preserve">
-    <value>تسجيل خروج</value>
-  </data>
-  <data name="Manage Articles" xml:space="preserve">
-    <value>إدارة المقالات</value>
-  </data>
-  <data name="Manage Locations" xml:space="preserve">
-    <value>إدارة المواقع</value>
-  </data>
-  <data name="Manage Pages" xml:space="preserve">
-    <value>إدارة صفحات</value>
-  </data>
-  <data name="Manage Roles" xml:space="preserve">
-    <value>إدارة الأدوار</value>
-  </data>
-  <data name="Manage Users" xml:space="preserve">
-    <value>ادارة المستخدمين</value>
-  </data>
-  <data name="Not Found" xml:space="preserve">
-    <value>لا يوجد لا تجد</value>
-  </data>
-  <data name="Options" xml:space="preserve">
-    <value>خيارات</value>
-  </data>
-  <data name="Profile" xml:space="preserve">
-    <value>حساب تعريفي</value>
-  </data>
-  <data name="Sweet Alert Announcement" xml:space="preserve">
-    <value>إعلان</value>
-  </data>
-  <data name="Sweet Alert Failed Message" xml:space="preserve">
-    <value>فشلت العملية</value>
-  </data>
-  <data name="Sweet Alert No Answer" xml:space="preserve">
-    <value>لا</value>
-  </data>
-  <data name="Sweet Alert Question" xml:space="preserve">
-    <value>هل أنت متأكد أنك تريد إجراء العملية؟</value>
-  </data>
-  <data name="Sweet Alert Success Message" xml:space="preserve">
-    <value>تمت المهمة</value>
-  </data>
-  <data name="Sweet Alert Yes Answer" xml:space="preserve">
-    <value>نعم</value>
-  </data>
-  <data name="Users List" xml:space="preserve">
-    <value>قائمة المستخدمين</value>
+  <data name="Register Date" xml:space="preserve">
+    <value>kayıt Tarihi</value>
   </data>
 </root>

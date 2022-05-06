@@ -48,17 +48,5 @@ namespace DoctorFAM.Application.StaticTools
 
         #endregion
 
-        #region Advertisement Image
-
-        public static string DefaultAdvertisementimage = "/UploadedImages/DefaultImages/Default.png";
-
-        public static string AdvertisementOriginimage = "/UploadedImages/AdvertisementImages/Origin/";
-        public static string AdvertisementThumbimage = "/UploadedImages/AdvertisementImages/Thumb/";
-        public static string AdvertisementimageServerOrigin = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/UploadedImages/AdvertisementImages/Origin/");
-        public static string AdvertisementImageServerThumb = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/UploadedImages/AdvertisementImages/Thumb/");
-        public static string AdvertisementimageServerOriginThumb = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/UploadedImages/AdvertisementImages/Thumb/");
-
-        #endregion
-
     }
 }

@@ -1,0 +1,28 @@
+﻿@model DoctorFAM.Domain.Entities.Account.User
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
+
+<div class="widget">
+    <div class="widget-header">
+        <i class="widget-icon fa fa-link"></i>
+        <span class="widget-caption"> @Localizer["Best Links"] </span>
+        <div class="widget-buttons">
+            <a href="#" data-toggle="collapse">
+                <i class="fa fa-minus"></i>
+            </a>
+        </div><!--Widget Buttons-->
+    </div><!--Widget Header-->
+    <div class="widget-body">
+        <p>
+            
+            <a asp-controller="Account" asp-area="Admin" asp-action="EditUserInfo" asp-route-id="@Model.Id" class="btn btn-warning btn-sm mt-10px ml-10px"> @Localizer["Edit"] </a>
+            
+            <a onclick="ShowAddUserWalletModal(@Model.Id)" class="btn btn-darkorange btn-sm mt-10px ml-10px"> @Localizer["Add New Transaction"] </a>
+
+            <a onclick="ShowChangePasswordModal(@Model.Id)" class="btn btn-maroon btn-sm mt-10px ml-10px"> @Localizer["Change Password"] </a>
+            
+            <a onclick="ConfigurationAlert('@Url.Action("LoginWithUser","Account", new{area = "Admin", userId = @Model.Id})')" class="btn btn-blue btn-sm mt-10px ml-10px"> @Localizer["Login With This User"] </a>
+
+        </p>
+    </div><!--Widget Body-->
+</div>

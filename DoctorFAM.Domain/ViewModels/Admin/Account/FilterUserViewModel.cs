@@ -11,8 +11,12 @@ namespace DoctorFAM.Domain.ViewModels.Admin
 {
     public class FilterUserViewModel : BasePaging<User>
     {
-    
-        public string? username { get; set; }
+        public FilterUserViewModel()
+        {
+            Status = UserStatus.All;
+        }
+
+        public string? FullName { get; set; }
 
         public string? Email { get; set; }
 
@@ -27,6 +31,9 @@ namespace DoctorFAM.Domain.ViewModels.Admin
         public ulong RoleId { get; set; }
 
         public bool TodayRegister { get; set; }
+
+        public UserStatus Status { get; set; }
+
     }
 
     public enum UserStatus
@@ -37,7 +44,6 @@ namespace DoctorFAM.Domain.ViewModels.Admin
         [Display(Name = "موبایل تایید شده")] MobileConfirmed,
         [Display(Name = "موبایل تایید نشده")] MobileNotConfirmed,
         [Display(Name = "محدود برای ارسال کامنت")] BanForComment,
-        [Display(Name = "محدود برای چت")] BanForChat,
         [Display(Name = "مسدود شده")] IsBan,
     }
 }

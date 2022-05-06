@@ -119,6 +119,24 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #endregion
 
+            #region Update Reuqest State
+
+            #region Get Request 
+
+            var requestState = await _request.GetRequestById(model.RequestId);
+
+            #endregion
+
+            #region Update request
+
+            requestState.RequestState = Domain.Enums.Request.RequestState.TramsferringToTheBankingPortal;
+
+            await _request.UpdateRequest(requestState);
+
+            #endregion
+
+            #endregion
+
             return CreatePatientAddressResult.Success;
         }
 

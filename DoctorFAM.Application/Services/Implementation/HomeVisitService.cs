@@ -59,6 +59,7 @@ namespace DoctorFAM.Application.Services.Implementation
             Request request = new Request()
             {
                 RequestType = Domain.Enums.RequestType.RequestType.HomeVisit,
+                RequestState = Domain.Enums.Request.RequestState.WaitingForCompleteInformationFromUser,
                 CreateDate = DateTime.Now,
                 IsDelete = false,
                 UserId = userId

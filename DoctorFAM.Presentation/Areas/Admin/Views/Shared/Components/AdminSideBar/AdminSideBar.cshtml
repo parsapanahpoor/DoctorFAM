@@ -36,6 +36,22 @@
 
         <li>
             <a href="#" class="menu-dropdown">
+                <i class="menu-icon glyphicon glyphicon-user"></i>
+                <span class="menu-text"> @SharedLocalizer["Manage Users"] </span>
+                <i class="menu-expand"></i>
+            </a>
+
+            <ul class="submenu">
+                <li>
+                    <a asp-action="FilterUsers" asp-area="Admin" asp-controller="Account">
+                        <span class="menu-text"> @SharedLocalizer["Users List"] </span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="#" class="menu-dropdown">
                 <i class="menu-icon glyphicon glyphicon-map-marker"></i>
                 <span class="menu-text">@SharedLocalizer["Manage Locations"]</span>
                 <i class="menu-expand"></i>
