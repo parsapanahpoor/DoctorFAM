@@ -117,88 +117,82 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Add new User" xml:space="preserve">
-    <value>Add new User</value>
+  <data name="Action" xml:space="preserve">
+    <value>فعالیت</value>
   </data>
-  <data name="Articles List" xml:space="preserve">
-    <value>Articles List</value>
+  <data name="Add Wallet For User" xml:space="preserve">
+    <value>افزودن کیف پول برای این کاربر</value>
   </data>
-  <data name="Change Picture" xml:space="preserve">
-    <value>Change Picture</value>
+  <data name="Buy" xml:space="preserve">
+    <value>خرید</value>
   </data>
-  <data name="Create Location" xml:space="preserve">
-    <value>Create Location</value>
+  <data name="Charge Wallet" xml:space="preserve">
+    <value>شارژ کیف پول</value>
   </data>
-  <data name="Create New Article" xml:space="preserve">
-    <value>Create New Article</value>
+  <data name="Clear Filter" xml:space="preserve">
+    <value>پاک کردن فیلتر</value>
   </data>
-  <data name="CreateDynamicPage" xml:space="preserve">
-    <value>Create New page</value>
+  <data name="Clear User Filter" xml:space="preserve">
+    <value>پاک کردن فیلتر کاربر</value>
   </data>
-  <data name="Dashboard" xml:space="preserve">
-    <value>Dashboard</value>
+  <data name="Create Date" xml:space="preserve">
+    <value>تاریخ ایجاد</value>
   </data>
-  <data name="From" xml:space="preserve">
-    <value>From</value>
+  <data name="Delete Wallet" xml:space="preserve">
+    <value>حذف تراکنش</value>
   </data>
-  <data name="Home" xml:space="preserve">
-    <value>Home Page</value>
+  <data name="Deleted" xml:space="preserve">
+    <value>حذف شده</value>
   </data>
-  <data name="Items" xml:space="preserve">
-    <value>Items</value>
+  <data name="Deposit" xml:space="preserve">
+    <value>واریز</value>
   </data>
-  <data name="ListOfPages" xml:space="preserve">
-    <value>List Of Pages</value>
+  <data name="Edit wallet" xml:space="preserve">
+    <value>ویرایش تراکنش</value>
   </data>
-  <data name="Locations List" xml:space="preserve">
-    <value>Locations List</value>
+  <data name="Email" xml:space="preserve">
+    <value>ایمیل</value>
   </data>
-  <data name="LogOut" xml:space="preserve">
-    <value>LogOut</value>
+  <data name="Filter" xml:space="preserve">
+    <value>فیلتر</value>
   </data>
-  <data name="Manage Articles" xml:space="preserve">
-    <value>Manage Articles</value>
+  <data name="Gateway Type" xml:space="preserve">
+    <value>درگاه پرداخت</value>
   </data>
-  <data name="Manage Locations" xml:space="preserve">
-    <value>Manage Locations</value>
+  <data name="Payment For" xml:space="preserve">
+    <value>پرداخت برای</value>
   </data>
-  <data name="Manage Pages" xml:space="preserve">
-    <value>Manage Pages</value>
+  <data name="PayPal" xml:space="preserve">
+    <value>پی پال</value>
   </data>
-  <data name="Manage Users" xml:space="preserve">
-    <value>Manage Users</value>
+  <data name="Price" xml:space="preserve">
+    <value>قیمت</value>
   </data>
-  <data name="Not Found" xml:space="preserve">
-    <value>Not Found</value>
+  <data name="Rial" xml:space="preserve">
+    <value>ریال</value>
   </data>
-  <data name="Options" xml:space="preserve">
-    <value>Options</value>
+  <data name="Stripe" xml:space="preserve">
+    <value>استرایپ</value>
   </data>
-  <data name="Profile" xml:space="preserve">
-    <value>Profile</value>
+  <data name="System" xml:space="preserve">
+    <value>سیستم</value>
   </data>
-  <data name="Sweet Alert Announcement" xml:space="preserve">
-    <value>Announcement</value>
+  <data name="Transaction Type" xml:space="preserve">
+    <value>نوع تراکنش</value>
   </data>
-  <data name="Sweet Alert Failed Message" xml:space="preserve">
-    <value>The operation failed</value>
+  <data name="User" xml:space="preserve">
+    <value>کاربر</value>
   </data>
-  <data name="Sweet Alert No Answer" xml:space="preserve">
-    <value>No</value>
+  <data name="Users" xml:space="preserve">
+    <value>کاربران</value>
   </data>
-  <data name="Sweet Alert Question" xml:space="preserve">
-    <value>Are you sure you want to perform the operation?</value>
+  <data name="Wallets" xml:space="preserve">
+    <value>کیف پول ها</value>
   </data>
-  <data name="Sweet Alert Success Message" xml:space="preserve">
-    <value>Mission Accomplished</value>
+  <data name="Withdraw" xml:space="preserve">
+    <value>برداشت</value>
   </data>
-  <data name="Sweet Alert Yes Answer" xml:space="preserve">
-    <value>Yes</value>
-  </data>
-  <data name="Users List" xml:space="preserve">
-    <value>Users List</value>
-  </data>
-  <data name="Wallet list" xml:space="preserve">
-    <value>Wallet list</value>
+  <data name="ZarinPal" xml:space="preserve">
+    <value>زرین پال</value>
   </data>
 </root>

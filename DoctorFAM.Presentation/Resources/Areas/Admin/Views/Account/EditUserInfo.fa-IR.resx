@@ -117,88 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Add new User" xml:space="preserve">
-    <value>Add new User</value>
+  <data name="List Of Users" xml:space="preserve">
+    <value>لیست کاربران</value>
   </data>
-  <data name="Articles List" xml:space="preserve">
-    <value>Articles List</value>
+  <data name="Page Title" xml:space="preserve">
+    <value>ویرایش اطلاعات کاربری </value>
   </data>
-  <data name="Change Picture" xml:space="preserve">
-    <value>Change Picture</value>
-  </data>
-  <data name="Create Location" xml:space="preserve">
-    <value>Create Location</value>
-  </data>
-  <data name="Create New Article" xml:space="preserve">
-    <value>Create New Article</value>
-  </data>
-  <data name="CreateDynamicPage" xml:space="preserve">
-    <value>Create New page</value>
-  </data>
-  <data name="Dashboard" xml:space="preserve">
-    <value>Dashboard</value>
-  </data>
-  <data name="From" xml:space="preserve">
-    <value>From</value>
-  </data>
-  <data name="Home" xml:space="preserve">
-    <value>Home Page</value>
-  </data>
-  <data name="Items" xml:space="preserve">
-    <value>Items</value>
-  </data>
-  <data name="ListOfPages" xml:space="preserve">
-    <value>List Of Pages</value>
-  </data>
-  <data name="Locations List" xml:space="preserve">
-    <value>Locations List</value>
-  </data>
-  <data name="LogOut" xml:space="preserve">
-    <value>LogOut</value>
-  </data>
-  <data name="Manage Articles" xml:space="preserve">
-    <value>Manage Articles</value>
-  </data>
-  <data name="Manage Locations" xml:space="preserve">
-    <value>Manage Locations</value>
-  </data>
-  <data name="Manage Pages" xml:space="preserve">
-    <value>Manage Pages</value>
-  </data>
-  <data name="Manage Users" xml:space="preserve">
-    <value>Manage Users</value>
-  </data>
-  <data name="Not Found" xml:space="preserve">
-    <value>Not Found</value>
-  </data>
-  <data name="Options" xml:space="preserve">
-    <value>Options</value>
-  </data>
-  <data name="Profile" xml:space="preserve">
-    <value>Profile</value>
-  </data>
-  <data name="Sweet Alert Announcement" xml:space="preserve">
-    <value>Announcement</value>
-  </data>
-  <data name="Sweet Alert Failed Message" xml:space="preserve">
-    <value>The operation failed</value>
-  </data>
-  <data name="Sweet Alert No Answer" xml:space="preserve">
-    <value>No</value>
-  </data>
-  <data name="Sweet Alert Question" xml:space="preserve">
-    <value>Are you sure you want to perform the operation?</value>
-  </data>
-  <data name="Sweet Alert Success Message" xml:space="preserve">
-    <value>Mission Accomplished</value>
-  </data>
-  <data name="Sweet Alert Yes Answer" xml:space="preserve">
-    <value>Yes</value>
-  </data>
-  <data name="Users List" xml:space="preserve">
-    <value>Users List</value>
-  </data>
-  <data name="Wallet list" xml:space="preserve">
-    <value>Wallet list</value>
+  <data name="User Information" xml:space="preserve">
+    <value>اطلاعات عمومی</value>
   </data>
 </root>

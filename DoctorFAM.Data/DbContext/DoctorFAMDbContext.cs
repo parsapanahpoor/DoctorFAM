@@ -5,6 +5,7 @@ using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Entities.SiteSetting;
 using DoctorFAM.Domain.Entities.States;
+using DoctorFAM.Domain.Entities.Wallet;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -33,6 +34,13 @@ namespace DoctorFAM.Data.DbContext
         public DbSet<Role> Roles { get; set; }
         public DbSet<RolePermission> RolePermissions { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
+
+        #endregion
+
+        #region Wallet
+
+        public DbSet<Wallet> Wallets { get; set; }
+        public DbSet<WalletData> WalletData { get; set; }
 
         #endregion
 

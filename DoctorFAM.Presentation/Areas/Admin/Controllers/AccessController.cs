@@ -48,7 +48,7 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
             if (create.Permissions == null || !create.Permissions.Any())
             {
                 ViewData["Permissions"] = PermissionsList.Permissions.Where(s => !s.IsDelete).ToList();
-                TempData[ErrorMessage] = _localizer["Selecting at least one access is required"];
+                TempData[ErrorMessage] = _localizer["Selecting at least one access is required"].Value;
                 return View(create);
             }
 
@@ -56,11 +56,11 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
 
             if (result)
             {
-                TempData[SuccessMessage] = _localizer["mission accomplished"];
+                TempData[SuccessMessage] = _localizer["mission accomplished"].Value;
                 return RedirectToAction("FilterRoles", "Access", new { area = "Admin" });
             }
 
-            TempData[WarningMessage] = _localizer["The unique name already exists"];
+            TempData[WarningMessage] = _localizer["The unique name already exists"].Value;
             ViewData["Permissions"] = PermissionsList.Permissions.Where(s => !s.IsDelete).ToList();
 
             return View(create);
@@ -101,14 +101,14 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
             if (!ModelState.IsValid)
             {
                 ViewData["Permissions"] = PermissionsList.Permissions.Where(s => !s.IsDelete).ToList();
-                TempData[ErrorMessage] = _localizer["Input values ​​are not valid"];
+                TempData[ErrorMessage] = _localizer["Input values ​​are not valid"].Value;
                 return View(edit);
             }
 
             if (edit.Permissions == null || !edit.Permissions.Any())
             {
                 ViewData["Permissions"] = PermissionsList.Permissions.Where(s => !s.IsDelete).ToList();
-                TempData[ErrorMessage] = _localizer["Selecting at least one access is required"];
+                TempData[ErrorMessage] = _localizer["Selecting at least one access is required"].Value;
                 return View(edit);
             }
 
@@ -117,13 +117,13 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
             switch (result)
             {
                 case EditRoleResult.Success:
-                    TempData[SuccessMessage] = _localizer["mission accomplished"];
+                    TempData[SuccessMessage] = _localizer["mission accomplished"].Value;
                     return RedirectToAction("FilterRoles", "Access", new { area = "Admin" });
                 case EditRoleResult.RoleNotFound:
-                    TempData[ErrorMessage] = _localizer["The role could not be found"];
+                    TempData[ErrorMessage] = _localizer["The role could not be found"].Value;
                     return RedirectToAction("FilterRoles", "Access", new { area = "Admin" });
                 case EditRoleResult.UniqueNameExists:
-                    TempData[WarningMessage] = _localizer["The unique name already exists"];
+                    TempData[WarningMessage] = _localizer["The unique name already exists"].Value;
                     break;
             }
 

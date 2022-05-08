@@ -38,8 +38,6 @@ namespace DoctorFAM.Domain.ViewModels.Admin.Account
 
         public bool IsAdmin { get; set; } = false;
 
-        public bool BanForChat { get; set; }
-
         public bool BanForComment { get; set; }
 
         public bool BanForTicket { get; set; }

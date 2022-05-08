@@ -1,0 +1,222 @@
+﻿@using DoctorFAM.Domain.ViewModels.Admin.Wallet
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@model DoctorFAM.Domain.ViewModels.Admin.Wallet.FilterWalletViewModel
+@{
+    ViewData["Title"] = Localizer["Wallets"];
+}
+
+@section Breadcrumb
+{
+    <li class="active">@Localizer["Wallets"]</li>
+}
+
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-12 col-xl-3 col-lg-3">
+            @if (Model.UserId.HasValue)
+            {
+                <a class="btn btn-sky w-100 margin-bottom-10" asp-action="CreateWallet" asp-route-id="@Model.UserId">@Localizer["Add Wallet For User"]</a>
+            }
+            <div class="widget">
+                <div class="widget-header">
+                    <span class="widget-caption">@Localizer["Filter"]</span>
+                </div>
+                <div class="widget-body">
+                    <div class="row">
+                        <div class="basic-form">
+                            <form method="get" id="filter-search">
+                                <input type="hidden" asp-for="Page"/>
+                                @if (Model.UserId.HasValue)
+                                {
+                                    <input type="hidden" asp-for="UserId"/>
+                                    <input type="hidden" asp-for="UserFilter"/>
+                                }
+
+                                <div class="form-row">
+                                    <div class="form-group col-md-12">
+                                        <label asp-for="UserFilter"></label>
+                                        @if (!Model.UserId.HasValue)
+                                        {
+                                            <input asp-for="UserFilter" class="form-control">
+                                        }
+                                        else
+                                        {
+                                            <input asp-for="UserFilter" class="form-control" disabled="">
+                                        }
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group col-md-12">
+                                        <label asp-for="MinPrice"></label>
+                                        <input asp-for="MinPrice" class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group col-md-12">
+                                        <label asp-for="MaxPrice"></label>
+                                        <input asp-for="MaxPrice" class="form-control">
+                                    </div>
+                                </div>
+
+                                <hr/>
+                                <div class="selectStateInFilterUsersListInAdmin">
+                                    <div class="form-group">
+                                        <label asp-for="OrderType"></label>
+                                        <select asp-for="OrderType" class="form-control" asp-items="@(Html.GetEnumSelectList<FilterWalletViewModel.FilterWalletOrderType>())">
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <hr/>
+
+                                <div class="submitFilterInAdmin">
+                                    <button type="submit" class="btn btn-success ">
+                                        @Localizer["Filter"] <span class="btn-icon-right"><i class="fa fa-search"></i></span>
+                                    </button>
+
+                                    @if (Context.Request.Query.Any())
+                                    {
+                                        @if (Model.UserId.HasValue)
+                                        {
+                                            @if (Context.Request.Query.Any(q => q.Key != "UserId" && q.Key != "UserFilter"))
+                                            {
+                                                <a class="btn btn-labeled w-100 btn-darkorange mr-10px" asp-action="Index" asp-route-UserId="@Model.UserId" asp-route-UserFilter="@Model.UserFilter" class="margin-top-10">
+                                                    <i class="btn-label glyphicon glyphicon-remove"></i>@Localizer["Clear Filter"]
+                                                </a>
+                                            }
+
+                                            <a class="btn btn-labeled w-100 btn-darkorange mr-10px" asp-action="Index" class="margin-top-10">
+                                                <i class="btn-label glyphicon glyphicon-remove"></i>@Localizer["Clear User Filter"]
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <a class="btn btn-labeled w-100 btn-darkorange mr-10px" asp-action="Index" class="margin-top-10">
+                                                <i class="btn-label glyphicon glyphicon-remove"></i>@Localizer["Clear Filter"]
+                                            </a>
+                                        }
+                                    }
+                                </div>
+
+                            </form>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-md-12 col-lg-9">
+            <div class="widget">
+                <div class="widget-header  with-footer">
+                    <span class="widget-caption">@Localizer["Wallets"]</span>
+                </div>
+                <div class="widget-body">
+
+                    <div class="flip-scroll">
+                        @if (Model != null)
+                        {
+                            <table class="table table-bordered table-striped table-condensed flip-content tableShowListInAdmin" id="showUsersListInAdmin">
+                                <thead class="flip-content bordered-palegreen">
+                                <tr>
+                                    <th>
+                                        #
+                                    </th>
+                                    <th>
+                                        @Localizer["User"]
+                                    </th>
+                                    <th>
+                                        @Localizer["Email"]
+                                    </th>
+                                    <th>
+                                        @Localizer["Price"]
+                                    </th>
+                                    <th>
+                                        @Localizer["Create Date"]
+                                    </th>
+                                    <th>
+                                        @Localizer["Transaction Type"]
+                                    </th>
+                                    <th>
+                                        @Localizer["Gateway Type"]
+                                    </th>
+                                    <th>
+                                        @Localizer["Payment For"]
+                                    </th>
+                                    <th>
+                                        @Localizer["Action"]
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.Entities)
+                                    {
+                                        <tr id="wallet_@item.Id" remove-ajax-item="@item.Id">
+                                            <td>
+                                                @item.Id
+                                            </td>
+                                            <td>
+                                                <a asp-action="Index" asp-route-UserId="@item.UserId" asp-route-UserFilter="@item.User.Username">
+                                                    @item.User.Username @(item.IsDelete ? " - " + Localizer["Deleted"].Value : "")
+                                                </a>
+                                            </td>
+                                            <td>
+                                                @item.User.Email
+                                            </td>
+                                            <td>
+                                                @item.Price.ToRialFormat() @Localizer["Rial"]
+                                            </td>
+                                            <td>
+                                                @item.CreateDate.ToShamsiDate()
+                                            </td>
+
+                                            <td>
+                                                @Localizer[item.TransactionType.GetEnumName()]
+                                            </td>
+                                            <td>
+                                                @Localizer[item.GatewayType.GetEnumName()]
+                                            </td>
+                                            <td>
+                                                @Localizer[item.PaymentType.GetEnumName()]
+                                            </td>
+
+                                            <td>
+                                                <div class="d-flex justify-content-center ">
+                                                    @if (!item.IsDelete)
+                                                    {
+                                                        <a title="@Localizer["Edit wallet"]" asp-action="EditWallet" asp-route-id="@item.Id" class="btn btn-warning shadow btn-xs sharp mr-1">
+                                                            <i class="fa fa-pencil"></i>
+                                                        </a>
+                                                        <button title="@Localizer["Delete Wallet"]" onclick="DeleteAjax(@item.Id, '@Url.Action("RemoveWallet", new {area = "Admin", id = @item.Id})')" class="btn btn-danger shadow btn-xs sharp mr-1"><i class="fa fa-trash"></i></button>
+                                                    }
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+
+
+                            <partial name="_AdminPaging" model="@Model.GetCurrentPaging()" />
+                        }
+                        else
+                        {
+                            <partial name="_AdminNotFoundPartial" />
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts
+{
+<partial name="_AdminSweetAlertLocalizer" />
+}

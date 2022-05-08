@@ -126,11 +126,23 @@
   <data name="Article Category title" xml:space="preserve">
     <value>عنوان دسته بندی </value>
   </data>
+  <data name="Ascending" xml:space="preserve">
+    <value>صعودی</value>
+  </data>
+  <data name="Base Price" xml:space="preserve">
+    <value>قیمت پایه</value>
+  </data>
+  <data name="Charge Wallet" xml:space="preserve">
+    <value>شارژ کیف پول</value>
+  </data>
   <data name="City" xml:space="preserve">
     <value>شهر</value>
   </data>
   <data name="Country" xml:space="preserve">
     <value>کشور</value>
+  </data>
+  <data name="Create Date Descending" xml:space="preserve">
+    <value>تاریخ ایجاد از جدید به قدیم</value>
   </data>
   <data name="Current Password" xml:space="preserve">
     <value>رمزعبور فعلی</value>
@@ -138,8 +150,26 @@
   <data name="Default" xml:space="preserve">
     <value>پیش فرض</value>
   </data>
+  <data name="Default1" xml:space="preserve">
+    <value>پیش فرض</value>
+  </data>
   <data name="Deleted" xml:space="preserve">
     <value>حذف شده</value>
+  </data>
+  <data name="Deleted ?" xml:space="preserve">
+    <value>حذف شده ؟</value>
+  </data>
+  <data name="Deleted1" xml:space="preserve">
+    <value>حذف شده</value>
+  </data>
+  <data name="Deposit" xml:space="preserve">
+    <value>واریز</value>
+  </data>
+  <data name="Descending" xml:space="preserve">
+    <value>نزولی</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>توضیحات</value>
   </data>
   <data name="Display Name" xml:space="preserve">
     <value>نام نمایشی</value>
@@ -159,11 +189,17 @@
   <data name="Enable SSL" xml:space="preserve">
     <value>فعال سازی SSL</value>
   </data>
+  <data name="EndPrice" xml:space="preserve">
+    <value>پایان قیمت</value>
+  </data>
   <data name="Failed" xml:space="preserve">
     <value>ناموفق</value>
   </data>
   <data name="First Name" xml:space="preserve">
     <value>نام</value>
+  </data>
+  <data name="Gateway Type" xml:space="preserve">
+    <value>نوع درگاه</value>
   </data>
   <data name="Last Name" xml:space="preserve">
     <value>نام خانوادگی</value>
@@ -171,9 +207,15 @@
   <data name="Location title" xml:space="preserve">
     <value>عنوان مکان</value>
   </data>
+  <data name="Max Price" xml:space="preserve">
+    <value>حداکثر قیمت</value>
+  </data>
   <data name="Meta Tag" xml:space="preserve">
     <value>
 متا تگ</value>
+  </data>
+  <data name="Min Price" xml:space="preserve">
+    <value>حداقل قیمت</value>
   </data>
   <data name="Mobile" xml:space="preserve">
     <value>موبایل</value>
@@ -193,6 +235,12 @@
   <data name="Password And Re Password Does Not Match" xml:space="preserve">
     <value>رمز عبور و تکرار آن برابر نیستند</value>
   </data>
+  <data name="Payment Type" xml:space="preserve">
+    <value>پرداخت \ واریز برای</value>
+  </data>
+  <data name="PayPal" xml:space="preserve">
+    <value>پی پال</value>
+  </data>
   <data name="Permission Name" xml:space="preserve">
     <value>نام دسترسی</value>
   </data>
@@ -209,6 +257,9 @@
     <value>{0} شما نمیتواند بیش تر از {1} کاراکتر باشد</value>
   </data>
   <data name="Port Number" xml:space="preserve">
+    <value>شماره پورت</value>
+  </data>
+  <data name="Port Number1" xml:space="preserve">
     <value>شماره پورت</value>
   </data>
   <data name="Re New Password" xml:space="preserve">
@@ -232,11 +283,20 @@
   <data name="State" xml:space="preserve">
     <value>استان</value>
   </data>
+  <data name="Stripe" xml:space="preserve">
+    <value>استرایپ</value>
+  </data>
   <data name="Success" xml:space="preserve">
     <value>موفق</value>
   </data>
+  <data name="System" xml:space="preserve">
+    <value>سیستم</value>
+  </data>
   <data name="Title" xml:space="preserve">
     <value>عنوان </value>
+  </data>
+  <data name="Transaction Type" xml:space="preserve">
+    <value>نوع تراکنش</value>
   </data>
   <data name="Unique Name" xml:space="preserve">
     <value>نام یکتا</value>
@@ -246,5 +306,11 @@
   </data>
   <data name="User Name" xml:space="preserve">
     <value>نام کاربری</value>
+  </data>
+  <data name="Withdraw" xml:space="preserve">
+    <value>برداشت</value>
+  </data>
+  <data name="ZarinPal" xml:space="preserve">
+    <value>زرین پال</value>
   </data>
 </root>

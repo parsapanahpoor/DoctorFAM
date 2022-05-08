@@ -246,4 +246,7 @@
   <data name="Manage Roles" xml:space="preserve">
     <value>مدیریت نقش ها</value>
   </data>
+  <data name="Wallet list" xml:space="preserve">
+    <value>لیست کیف پول ها</value>
+  </data>
 </root>
