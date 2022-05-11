@@ -4,6 +4,7 @@ using DoctorFAM.Data.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DoctorFAM.Data.Migrations
 {
     [DbContext(typeof(DoctorFAMDbContext))]
-    partial class DoctorFAMDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220510194213_Update-HomePharmacy-Table-NullAble-For-DrugDescription-Field")]
+    partial class UpdateHomePharmacyTableNullAbleForDrugDescriptionField
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -421,39 +423,6 @@ namespace DoctorFAM.Data.Migrations
                     b.ToTable("PaitientRequestDetails");
                 });
 
-            modelBuilder.Entity("DoctorFAM.Domain.Entities.Requests.PatientRequestDateTimeDetail", b =>
-                {
-                    b.Property<decimal>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("decimal(20,0)");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<decimal>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("EndTime")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsDelete")
-                        .HasColumnType("bit");
-
-                    b.Property<decimal>("RequestId")
-                        .HasColumnType("decimal(20,0)");
-
-                    b.Property<DateTime>("SendDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("StartTime")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RequestId");
-
-                    b.ToTable("PatientRequestDateTimeDetails");
-                });
-
             modelBuilder.Entity("DoctorFAM.Domain.Entities.SiteSetting.EmailSetting", b =>
                 {
                     b.Property<decimal>("Id")
@@ -789,17 +758,6 @@ namespace DoctorFAM.Data.Migrations
                     b.Navigation("State");
                 });
 
-            modelBuilder.Entity("DoctorFAM.Domain.Entities.Requests.PatientRequestDateTimeDetail", b =>
-                {
-                    b.HasOne("DoctorFAM.DataLayer.Entities.Request", "Requests")
-                        .WithMany("PatientRequestDateTimeDetails")
-                        .HasForeignKey("RequestId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Requests");
-                });
-
             modelBuilder.Entity("DoctorFAM.Domain.Entities.States.Location", b =>
                 {
                     b.HasOne("DoctorFAM.Domain.Entities.States.Location", "Parent")
@@ -859,8 +817,6 @@ namespace DoctorFAM.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Patient");
-
-                    b.Navigation("PatientRequestDateTimeDetails");
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Account.Role", b =>

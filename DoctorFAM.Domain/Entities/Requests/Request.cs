@@ -11,6 +11,7 @@ using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Enums.RequestType;
 using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Enums.Request;
+using DoctorFAM.Domain.Entities.Pharmacy;
 
 namespace DoctorFAM.DataLayer.Entities
 {
@@ -35,7 +36,11 @@ namespace DoctorFAM.DataLayer.Entities
         [ForeignKey("PatientId")]
         public ICollection<Patient>  Patient { get; set; }
 
+        public ICollection<HomePharmacyRequestDetail> HomePharmacyRequestDetails { get; set; }
+
         public PaitientRequestDetail PaitientRequestDetails { get; set; }
+
+        public ICollection<PatientRequestDateTimeDetail> PatientRequestDateTimeDetails { get; set; }
 
         #endregion
     }

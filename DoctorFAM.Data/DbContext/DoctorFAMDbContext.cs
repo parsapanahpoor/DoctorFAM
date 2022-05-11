@@ -2,6 +2,7 @@
 using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Languages;
 using DoctorFAM.Domain.Entities.Patient;
+using DoctorFAM.Domain.Entities.Pharmacy;
 using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Entities.SiteSetting;
 using DoctorFAM.Domain.Entities.States;
@@ -62,6 +63,8 @@ namespace DoctorFAM.Data.DbContext
 
         public DbSet<PaitientRequestDetail> PaitientRequestDetails { get; set; }
 
+        public DbSet<PatientRequestDateTimeDetail>  PatientRequestDateTimeDetails { get; set; }
+
         #endregion
 
         #region Language
@@ -75,6 +78,12 @@ namespace DoctorFAM.Data.DbContext
         public DbSet<Location> Locations { get; set; }
 
         public DbSet<LocationInfo> LocationInfoes { get; set; }
+
+        #endregion
+
+        #region Pharmacy
+
+        public DbSet<HomePharmacyRequestDetail> HomePharmacyRequestDetails { get; set; }
 
         #endregion
 

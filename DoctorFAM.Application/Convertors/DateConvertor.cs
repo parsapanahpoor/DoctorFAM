@@ -1,10 +1,10 @@
-﻿using DoctorFAM.Application.Extensions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DoctorFAM.Application.Extensions;
 
 namespace DoctorFAM.Application.Convertors
 {
@@ -137,14 +137,14 @@ namespace DoctorFAM.Application.Convertors
             return ts.Hours.ToString("00") + ":" + ts.Minutes.ToString("00");
         }
 
-        //public static DateTime ToMiladiDateTime(this string ts)
-        //{
-        //    var spliteDate = ts.GetEnglishNumbers().Split('/');
-        //    int year = int.Parse(spliteDate[0]);
-        //    int month = int.Parse(spliteDate[1]);
-        //    int day = int.Parse(spliteDate[2]);
-        //    DateTime currentDate = new DateTime(year, month, day, new PersianCalendar());
-        //    return currentDate;
-        //}
+        public static DateTime ToMiladiDateTime(this string ts)
+        {
+            var spliteDate = ts.GetEnglishNumbers().Split('/');
+            int year = int.Parse(spliteDate[0]);
+            int month = int.Parse(spliteDate[1]);
+            int day = int.Parse(spliteDate[2]);
+            DateTime currentDate = new DateTime(year, month, day, new PersianCalendar());
+            return currentDate;
+        }
     }
 }

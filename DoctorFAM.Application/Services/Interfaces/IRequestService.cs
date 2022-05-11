@@ -1,5 +1,6 @@
 ﻿using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Patient;
+using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.ViewModels.Site.HomeVisit;
 using System;
 using System.Collections.Generic;
@@ -23,11 +24,15 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         Task AddPatientIdToRequest(ulong requestId, ulong patientId);
 
+        Task UpdateRequest(Request request);
+
         #endregion
 
         #region Patient Request Detail
 
         Task<CreatePatientAddressResult> CreatePatientRequestDetail(PatienAddressViewModel model);
+
+        Task AddPatientRequestDetail(PaitientRequestDetail patient);
 
         #endregion
 

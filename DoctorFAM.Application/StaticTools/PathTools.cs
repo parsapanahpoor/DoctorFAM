@@ -29,6 +29,16 @@ namespace DoctorFAM.Application.StaticTools
 
         #endregion
 
+        #region Drug Prescription
+
+        public static readonly string DrugPrescriptionPath = "/content/images/DrugPrescription/main/";
+        public static readonly string DrugPrescriptionPathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/DrugPrescription/main/");
+
+        public static readonly string DrugPrescriptionPathThumb = "/content/images/DrugPrescription/thumb/";
+        public static readonly string DrugPrescriptionPathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/DrugPrescription/thumb/");
+
+        #endregion
+
         #region UserAvatar
 
         public static readonly string UserAvatarPath = "/content/images/user/main/";

@@ -1,0 +1,40 @@
+﻿@model DoctorFAM.Domain.ViewModels.Site.Request.RequestViewModel
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.StaticTools
+@{
+    ViewData["Title"] = "داروخانه در منزل";
+}
+
+@section Styles
+{
+
+}
+
+@section Scripts
+{
+<partial name="_JqueryValidation" />
+}
+<form asp-action="HomePharmacy" asp-controller="HomePharmacy" asp-area="">
+
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="page-content text-center mt-5 mb-3">
+
+        <h2 class="p-3"> فرم درخواست داروخانه در منزل</h2>
+        <p class="p-3">
+            جهت ارسال دارو 
+            پس از رويت تعرفه ها ، فرم زير را تكميل و ارسال
+            فرماييد:
+        </p>
+
+        <div class="row">
+            <div class="col-md-12 mt-3 text-center mb-2">
+                <div class="form-group">
+                    <input type="submit" value="تایید" class="btn-Accept" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>

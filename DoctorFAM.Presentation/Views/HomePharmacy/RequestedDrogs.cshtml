@@ -1,0 +1,257 @@
+﻿@model DoctorFAM.Domain.ViewModels.Site.HomePharmacy.RequestedDrugsViewModel
+@using DoctorFAM.Domain.ViewModels.Site.HomePharmacy
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.StaticTools
+
+@{
+    ViewData["Title"] = "ثبت دارو";
+}
+
+
+@section Styles
+{
+<style>
+
+    .d-none {
+        display: none;
+    }
+
+    #DrugRequestMethod {
+        display: initial !important;
+    }
+
+    .nice-select {
+        display: none !important;
+    }
+
+    table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    td, th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+
+    tr:nth-child(even) {
+        background-color: #dddddd;
+    }
+
+</style>
+}
+
+@section Scripts
+{
+<partial name="_JqueryValidation" />
+
+<script>
+    $("#DrugRequestMethod").on("change",
+      function() {
+          var selectedDrugRequestMethodValue = $("#DrugRequestMethod :selected").val();
+
+          if (selectedDrugRequestMethodValue == 0) {
+              $("#FirstMethod").removeClass("d-none");
+              $("#SecondeMethod").addClass("d-none");
+              $("#ThirdMethod").addClass("d-none");
+
+              $("#SecondeInput").val('');
+              $("#ThirdInput").val('');
+              $("#FourthInput").val('');
+          }
+
+          if (selectedDrugRequestMethodValue == 1) {
+              $("#SecondeMethod").removeClass("d-none");
+              $("#FirstMethod").addClass("d-none");
+              $("#ThirdMethod").addClass("d-none");
+
+              $("#FirstInput").val('');
+              $("#ThirdInput").val('');
+              $("#FourthInput").val('');
+          }
+
+          if (selectedDrugRequestMethodValue == 2) {
+              $("#ThirdMethod").removeClass("d-none");
+              $("#FirstMethod").addClass("d-none");
+              $("#SecondeMethod").addClass("d-none");
+
+              $("#FirstInput").val('');
+              $("#SecondeInput").val('');
+          }
+      });
+</script>
+
+}
+
+<div class="page-content  ">
+
+    <section>
+
+        <div class="container">
+
+            <div class="row">
+
+                <div class="col-md-6">
+
+                    <div class="row" style="border:2px solid #fd5b03;">
+                        <div class="col-md-12">
+                            <h2 class="title-2 z-index-1 text-uppercase mt-3 mb-4 text-center"> درخواست <span> دارو </span></h2>
+                            <p>لطفا مشخصات داروهای مدنظر خود را وارد کنید </p>
+                            <div>
+                                <form asp-action="RequestedDrogs" asp-controller="HomePharmacy" asp-area="" enctype="multipart/form-data">
+                                    <input asp-for="RequestId" type="hidden" />
+                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                                    <div class="row" style="margin-bottom:30px;">
+
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="control-label"> یکی از روش های ثبت داروی خود را انتخاب کنید  </label>
+                                                <select asp-for="DrugRequestMethod" id="DrugRequestMethod" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DrugRequestMethod))">
+                                                    <option value="" selected> --------- انتخاب کنید --------- </option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row d-none" id="FirstMethod">
+
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label asp-for="DrugTrakingCode" class="control-label"></label>
+                                                <input id="FirstInput" asp-for="DrugTrakingCode" class="form-control" />
+                                                <span asp-validation-for="DrugTrakingCode" class="text-danger"></span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row d-none" id="SecondeMethod">
+
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="control-label"> تصویر نسحه ی پزشکی  </label>
+                                                <input type="file" id="SecondeInput" name="DrugPrescriptionImage" class="form-control" />
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row d-none" id="ThirdMethod">
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label asp-for="DrugName" class="control-label"></label>
+                                                <input asp-for="DrugName" id="ThirdInput" class="form-control" />
+                                                <span asp-validation-for="DrugName" class="text-danger"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label asp-for="DrugCount" class="control-label"></label>
+                                                <input asp-for="DrugCount" id="FourthInput" class="form-control" />
+                                                <span asp-validation-for="DrugCount" class="text-danger"></span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row ">
+
+                                        <div class="col-md-12">
+
+                                            <div class="form-group">
+                                                <label asp-for="Description" class="control-label"></label>
+                                                <input asp-for="Description" class="form-control" />
+                                                <span asp-validation-for="Description" class="text-danger"></span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-12 mt-3 text-center mb-2">
+                                            <div class="form-group">
+                                                <input type="submit" value="ثبت دارو" class="btn-Accept" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="row" style="border:2px solid #fd5b03;">
+                        <div class="col-md-12">
+                            <h2 class="title-2 z-index-1 text-uppercase mt-3 mb-4 text-center">  <span> لیست داروهای انتخابی شما  </span></h2>
+                            <div>
+                                @if (Model.ListOfRequestedDrugs != null && Model.ListOfRequestedDrugs.Any())
+                                {
+                                    <table class="table table-hover table-bordered tc vm">
+
+                                        <tr>
+                                            <th>امکانات</th>
+                                            <th>توضیحات</th>
+                                            <th>اطلاعات دارو</th>
+                                        </tr>
+
+                                        @foreach (var item in Model.ListOfRequestedDrugs)
+                                        {
+                                            <tr class="tc vm" remove-ajax-item="@item.Id">
+                                                <td>
+                                                    <button onclick="DeleteAjax(@item.Id, '@Url.Action("DeleteRequestedDrug", "HomePharmacy", new {area = "", requestedDrugId = item.Id})')" class="btn btn-danger btn-circle btn-xs">حذف</button>
+                                                </td>
+
+                                                <td>@item.Description</td>
+
+
+                                                @if (!string.IsNullOrEmpty(item.DrugTrakingCode))
+                                                {
+                                                    <td>@item.DrugTrakingCode</td>
+                                                }
+                                                @if (!string.IsNullOrEmpty(item.DrugPrescription))
+                                                {
+                                                    <td>
+                                                        <img src="@PathTools.DrugPrescriptionPathThumb/@item.DrugPrescription" class="avatar-style" />
+                                                    </td>
+                                                }
+                                                @if (!string.IsNullOrEmpty(item.DrugCount) && !string.IsNullOrEmpty(item.DrugName))
+                                                {
+                                                    <td>@item.DrugName - تعداد @item.DrugCount  </td>
+                                                }
+                                            </tr>
+                                        }
+                                    </table>
+                                }
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12 mt-3 text-center mb-2">
+                                    <div class="form-group">
+                                        <a asp-route-requestId="@Model.RequestId" asp-action="PatientRequestDetail" asp-area="" asp-controller="HomePharmacy" class="btn-Accept">ثبت درخواست</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+</div>
