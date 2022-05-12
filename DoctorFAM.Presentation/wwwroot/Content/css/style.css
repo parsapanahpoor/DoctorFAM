@@ -905,7 +905,7 @@ select:-webkit-autofill {
     line-height                : 50px;
     outline                    : none;
     padding-left               : 30px;
-    position                   : relative;
+    position                   :center;
     text-align                 : right !important;
     -webkit-transition         : all 0.2s ease-in-out;
     transition                 : all 0.2s ease-in-out;

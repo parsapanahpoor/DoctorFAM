@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DoctorFAM.Domain.ViewModels.Site.HomeVisit
+namespace DoctorFAM.Domain.ViewModels.Site.Common
 {
     public class PatienAddressViewModel
     {

@@ -18,6 +18,7 @@
 <partial name="_JqueryValidation" />
 }
 
+
 <div class="page-content  ">
 
     <section>
@@ -27,8 +28,9 @@
                     <h2 class="title-2 z-index-1 text-uppercase mt-3 mb-4 text-center"> درخواست <span> پرستار در منزل </span></h2>
                     <p>لطفا مشخصات بیمار را ثبت کنید</p>
                     <div>
-                        <form asp-action="PatientDetails" asp-controller="HomeNurse" asp-area="">
+                        <form asp-action="PatientDetails" asp-controller="HomeVisit" asp-area="">
                             <input asp-for="RequestId" type="hidden" />
+                            <input asp-for="UserId" type="hidden" />
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                             <div class="row">
@@ -112,5 +114,3 @@
     </section>
 
 </div>
-
-

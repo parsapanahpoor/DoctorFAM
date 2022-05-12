@@ -1,8 +1,10 @@
-﻿using DoctorFAM.Application.Services.Interfaces;
+﻿using DoctorFAM.Application.Security;
+using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Data.DbContext;
 using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Enums.RequestType;
+using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -16,52 +18,67 @@ namespace DoctorFAM.Application.Services.Implementation
     public class DeathCertificateService : IDeathCertificateService
     {
         #region Ctor
-        public DoctorFAMDbContext _context { get; set; }
 
-        public DeathCertificateService(DoctorFAMDbContext context)
+        public DoctorFAMDbContext _context;
+
+        public IDeathCertificateRepository _deathCertificate;
+
+        public IRequestService _requestService;
+
+        public IUserService _userService;
+
+        public IPatientService _patientService;
+
+        public DeathCertificateService(DoctorFAMDbContext context, IDeathCertificateRepository deathCertificate, IRequestService requestService,
+                                IUserService userService, IPatientService patientService)
         {
             _context = context;
+            _deathCertificate = deathCertificate;
+            _requestService = requestService;
+            _userService = userService;
+            _patientService = patientService;
         }
 
         #endregion
 
-        public async Task<ulong> CreateDeathCertificateRequest(string? userName)
+        #region Home Visit Methods 
+
+        public async Task<ulong?> CreateDeathCertificateRequest(ulong userId)
         {
-            //Fill Entitie
-            Request request = new Request()
+            #region User Validation
+
+            if (await _userService.GetUserById(userId) == null)
             {
-                RequestType = Domain.Enums.RequestType.RequestType.DeathCertificate,
-                CreateDate = DateTime.Now,
-                IsDelete = false
-            };
-
-            #region Get User By userName
-
-            var user = await _context.Users.FirstOrDefaultAsync(p => p.Username == userName && !p.IsDelete);
-
-            if (user != null)
-            {
-                request.UserId = user.Id;
+                return null;
             }
 
             #endregion
 
-            await _context.Requests.AddAsync(request);
-            await _context.SaveChangesAsync();
+            #region Fill Entitie
+
+            Request request = new Request()
+            {
+                RequestType = Domain.Enums.RequestType.RequestType.DeathCertificate,
+                RequestState = Domain.Enums.Request.RequestState.WaitingForCompleteInformationFromUser,
+                CreateDate = DateTime.Now,
+                IsDelete = false,
+                UserId = userId
+            };
+
+            #endregion
+
+            #region Add Request Method
+
+            await _requestService.AddRequest(request);
+
+            #endregion
 
             return request.Id;
         }
 
-        public async Task<bool> IsExistDeathCertificateRequestById(ulong requestId)
-        {
-            return await _context.Requests.AnyAsync(p => p.Id == requestId
-                                                   && p.RequestType == RequestType.DeathCertificate
-                                                   && !p.IsDelete);
-        }
-
         public async Task<CreatePatientResult> ValidateCreatePatient(PatientViewModel model)
         {
-            var result = await IsExistDeathCertificateRequestById(model.RequestId);
+            var result = await _requestService.IsExistRequestByRequestId(model.RequestId);
 
             if (result == false) return CreatePatientResult.RequestIdNotFound;
 
@@ -70,8 +87,8 @@ namespace DoctorFAM.Application.Services.Implementation
 
         public async Task<ulong> CreatePatientDetail(PatientViewModel patient)
         {
+            #region Fill Entity
 
-            //Fill Entity
             Patient model = new Patient
             {
                 RequestId = patient.RequestId,
@@ -79,19 +96,28 @@ namespace DoctorFAM.Application.Services.Implementation
                 Gender = patient.Gender,
                 InsuranceType = patient.InsuranceType,
                 NationalId = patient.NationalId,
-                PatientName = patient.PatientName,
-                PatientLastName = patient.PatientLastName,
-                RequestDescription = patient.RequestDescription,
+                PatientName = patient.PatientName.SanitizeText(),
+                PatientLastName = patient.PatientLastName.SanitizeText(),
+                RequestDescription = patient.RequestDescription.SanitizeText(),
+                UserId = patient.UserId
             };
 
-            await _context.Patients.AddAsync(model);
-            await _context.SaveChangesAsync();
+            #endregion
+
+            #region MyRegion
+
+            await _patientService.AddPatient(model);
+
+            #endregion
 
             return model.Id;
         }
 
-       
 
-       
+        #endregion
+
+        #region Site Side
+
+        #endregion
     }
 }

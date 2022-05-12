@@ -1,8 +1,10 @@
-﻿using DoctorFAM.Application.Services.Interfaces;
+﻿using DoctorFAM.Application.Security;
+using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Data.DbContext;
 using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Enums.RequestType;
+using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -15,55 +17,68 @@ namespace DoctorFAM.Application.Services.Implementation
 {
     public class HomeNurseService : IHomeNurseService
     {
-
         #region Ctor
-        public DoctorFAMDbContext _context { get; set; }
 
-        public HomeNurseService(DoctorFAMDbContext context)
+        public DoctorFAMDbContext _context;
+
+        public IHomeNurseRepository _homeVisit;
+
+        public IRequestService _requestService;
+
+        public IUserService _userService;
+
+        public IPatientService _patientService;
+
+        public HomeNurseService(DoctorFAMDbContext context, IHomeNurseRepository homeNurse, IRequestService requestService,
+                                IUserService userService, IPatientService patientService)
         {
             _context = context;
+            _homeVisit = homeNurse;
+            _requestService = requestService;
+            _userService = userService;
+            _patientService = patientService;
         }
 
         #endregion
 
-        #region Home Nurse Methods
+        #region Home Visit Methods 
 
-        public async Task<ulong> CreateHomeNurseRequest(string? userName)
+        public async Task<ulong?> CreateHomeNurseRequest(ulong userId)
         {
-            //Fill Entitie
-            Request request = new Request()
+            #region User Validation
+
+            if (await _userService.GetUserById(userId) == null)
             {
-                RequestType = Domain.Enums.RequestType.RequestType.HomeNurse,
-                CreateDate = DateTime.Now,
-                IsDelete = false
-            };
-
-            #region Get User
-
-            var user = await _context.Users.FirstOrDefaultAsync(p=>p.Username == userName && !p.IsDelete);
-
-            if (user != null)
-            {
-                request.UserId = user.Id;
+                return null;
             }
 
             #endregion
 
-            await _context.Requests.AddAsync(request);
-            await _context.SaveChangesAsync();
+            #region Fill Entitie
+
+            Request request = new Request()
+            {
+                RequestType = Domain.Enums.RequestType.RequestType.HomeNurse,
+                RequestState = Domain.Enums.Request.RequestState.WaitingForCompleteInformationFromUser,
+                CreateDate = DateTime.Now,
+                IsDelete = false,
+                UserId = userId
+            };
+
+            #endregion
+
+            #region Add Request Method
+
+            await _requestService.AddRequest(request);
+
+            #endregion
 
             return request.Id;
-        }
-        public async Task<bool> IsExistHomeNurseRequestById(ulong requestId)
-        {
-            return await _context.Requests.AnyAsync(p => p.Id == requestId
-                                                    && p.RequestType == RequestType.HomeNurse
-                                                    && !p.IsDelete);
         }
 
         public async Task<CreatePatientResult> ValidateCreatePatient(PatientViewModel model)
         {
-            var result = await IsExistHomeNurseRequestById(model.RequestId);
+            var result = await _requestService.IsExistRequestByRequestId(model.RequestId);
 
             if (result == false) return CreatePatientResult.RequestIdNotFound;
 
@@ -72,24 +87,36 @@ namespace DoctorFAM.Application.Services.Implementation
 
         public async Task<ulong> CreatePatientDetail(PatientViewModel patient)
         {
-            //Fill Entity
+            #region Fill Entity
+
             Patient model = new Patient
             {
                 RequestId = patient.RequestId,
                 Age = patient.Age,
                 Gender = patient.Gender,
-                InsuranceType=patient.InsuranceType,
+                InsuranceType = patient.InsuranceType,
                 NationalId = patient.NationalId,
-                PatientName = patient.PatientName,
-                PatientLastName = patient.PatientLastName,
-                RequestDescription = patient.RequestDescription,
+                PatientName = patient.PatientName.SanitizeText(),
+                PatientLastName = patient.PatientLastName.SanitizeText(),
+                RequestDescription = patient.RequestDescription.SanitizeText(),
+                UserId = patient.UserId
             };
 
-            await _context.Patients.AddAsync(model);
-            await _context.SaveChangesAsync();
+            #endregion
+
+            #region MyRegion
+
+            await _patientService.AddPatient(model);
+
+            #endregion
 
             return model.Id;
         }
+
+
+        #endregion
+
+        #region Site Side
 
         #endregion
     }

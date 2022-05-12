@@ -9,9 +9,13 @@ namespace DoctorFAM.Application.Services.Interfaces
 {
     public interface IDeathCertificateService
     {
-        Task<ulong> CreateDeathCertificateRequest(string? userName);
-        Task<bool> IsExistDeathCertificateRequestById(ulong requestId);
+        #region Site Side
+
+        #endregion
+
+        Task<ulong?> CreateDeathCertificateRequest(ulong userId);
         Task<CreatePatientResult> ValidateCreatePatient(PatientViewModel model);
         Task<ulong> CreatePatientDetail(PatientViewModel patient);
+
     }
 }

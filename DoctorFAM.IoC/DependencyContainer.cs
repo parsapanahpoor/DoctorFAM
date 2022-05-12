@@ -36,8 +36,12 @@ namespace DoctorFAM.IoC
 
             #region Repository
 
+            
+
             services.AddScoped<ILocationRepository, LocationRepository>();
             services.AddScoped<IHomeVisitRepository, HomeVisitRepository>();
+            services.AddScoped<IHomeNurseRepository, HomeNurseRepository>();
+            services.AddScoped<IDeathCertificateRepository, DeathCertificateRepository>();
             services.AddScoped<IPatientRepository, PatientRepository>();
             services.AddScoped<IRequestRepository, RequestRepository>();
             services.AddScoped<IUserRepository, UserRepository>();

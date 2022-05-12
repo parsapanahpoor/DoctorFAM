@@ -2,7 +2,7 @@
 using DoctorFAM.Application.Interfaces;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Data.DbContext;
-using DoctorFAM.Domain.ViewModels.Site.HomeVisit;
+using DoctorFAM.Domain.ViewModels.Site.Common;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
 using DoctorFAM.Domain.ViewModels.Site.Request;
 using Microsoft.AspNetCore.Authorization;

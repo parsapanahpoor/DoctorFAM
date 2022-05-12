@@ -2172,3 +2172,11 @@
   font-weight: 400;
 }
 
+.divbgpic {
+    background-image: url('/Content/images/bg/old-tv.png');
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+.btn-acc {
+    color: #3143ef;
+}

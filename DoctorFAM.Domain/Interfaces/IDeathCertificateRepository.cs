@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace DoctorFAM.Domain.Interfaces
 {
-    public interface IHomeVisitRepository
+    public interface IDeathCertificateRepository
     {
         #region Site Side
 
         #endregion
-
     }
 }

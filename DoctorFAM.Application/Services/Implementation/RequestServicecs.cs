@@ -5,7 +5,7 @@ using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Interfaces;
-using DoctorFAM.Domain.ViewModels.Site.HomeVisit;
+using DoctorFAM.Domain.ViewModels.Site.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;

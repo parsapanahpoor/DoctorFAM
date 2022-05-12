@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DoctorFAM.Domain.Interfaces
 {
-    public interface IHomeVisitRepository
+    public interface IHomeNurseRepository
     {
         #region Site Side
 
@@ -14,3 +14,5 @@ namespace DoctorFAM.Domain.Interfaces
 
     }
 }
+
+

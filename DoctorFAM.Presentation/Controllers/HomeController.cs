@@ -88,6 +88,15 @@ namespace DoctorFAM.Web.Controllers
 
         #endregion
 
+        #region HealthProductsItems
+
+        public IActionResult TeleFamItems()
+        {
+            return View();
+        }
+
+        #endregion
+
         #region Privacy
 
         public IActionResult Privacy()

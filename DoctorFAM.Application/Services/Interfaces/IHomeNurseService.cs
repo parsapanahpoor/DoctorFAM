@@ -9,8 +9,10 @@ namespace DoctorFAM.Application.Services.Interfaces
 {
     public  interface IHomeNurseService
     {
-        Task<ulong> CreateHomeNurseRequest(string? userName);
-        Task<bool> IsExistHomeNurseRequestById(ulong requestId);
+        #region Site Side
+
+        #endregion
+        Task<ulong?> CreateHomeNurseRequest(ulong userId);
         Task<CreatePatientResult> ValidateCreatePatient(PatientViewModel model);
         Task<ulong> CreatePatientDetail(PatientViewModel patient);
     }
