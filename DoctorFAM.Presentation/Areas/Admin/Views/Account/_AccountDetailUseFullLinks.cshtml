@@ -16,8 +16,10 @@
         <p>
             
             <a asp-controller="Account" asp-area="Admin" asp-action="EditUserInfo" asp-route-id="@Model.Id" class="btn btn-warning btn-sm mt-10px ml-10px"> @Localizer["Edit"] </a>
+
+            <a asp-action="CreateWallet" asp-controller="Wallet" asp-route-id="@Model.Id" class="btn btn-warning btn-sm mt-10px ml-10px"> @Localizer["Add Wallet"] </a>
             
-            <a onclick="ShowAddUserWalletModal(@Model.Id)" class="btn btn-darkorange btn-sm mt-10px ml-10px"> @Localizer["Add New Transaction"] </a>
+            <a asp-action="Index" asp-controller="Wallet" asp-route-UserId="@Model.Id" class="btn btn-darkorange btn-sm mt-10px ml-10px"> @Localizer["User Wallets"] </a>
 
             <a onclick="ShowChangePasswordModal(@Model.Id)" class="btn btn-maroon btn-sm mt-10px ml-10px"> @Localizer["Change Password"] </a>
             

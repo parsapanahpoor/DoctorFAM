@@ -361,5 +361,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-/DoctorFAM.Presentation/wwwroot/Content/images/bg
-/DoctorFAM.Presentation/wwwroot/Content/images/logo-customizer
+/DoctorFAM.Presentation/wwwroot/Content/images/user
+/DoctorFAM.Presentation/wwwroot/Content/images/DrugPrescription/main
+/DoctorFAM.Presentation/wwwroot/Content/images/DrugPrescription/thumb

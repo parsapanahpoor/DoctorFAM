@@ -60,6 +60,11 @@ namespace DoctorFAM.Domain.Entities.Account
 
         public bool BanForComment { get; set; }
 
+        public int WalletBalance { get; set; }
+
+        public List<Wallet.Wallet> Wallets { get; set; }
+
+
         #endregion
 
         #region Relations

@@ -37,6 +37,16 @@ namespace DoctorFAM.Application.Services.Implementation
 
         #region Request 
 
+        public async Task UpdateRequest(Request request)
+        {
+            await _request.UpdateRequest(request);
+        }
+
+        public async Task AddPatientRequestDetail(PaitientRequestDetail patient)
+        {
+            await _request.AddPatientRequestDetail(patient);
+        }
+
         public async Task<bool> IsExistRequestByRequestId(ulong requestId)
         {
             return await _request.IsExistRequestByRequestId(requestId);

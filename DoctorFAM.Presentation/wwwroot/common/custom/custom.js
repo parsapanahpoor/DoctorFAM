@@ -571,7 +571,22 @@ function FilterCoursesForm(id) {
 
 //#endregion
 
+//#region Document Ready
 
+$(function () {
+    var DatePickers = $("[DatePicker]");
+    if (DatePickers.length > 0) {
+        $('<link/>',
+            {
+                rel: 'stylesheet',
+                type: 'text/css',
+                href: '/common/admindatapicker/kamadatepicker.min.css'
+            }).appendTo('head');
+        $.getScript("/common/admindatapicker/kamadatepicker.min.js", function (script, textStatus, jqXHR) { });
+    }
+});
+
+//#endregion
 
 
 

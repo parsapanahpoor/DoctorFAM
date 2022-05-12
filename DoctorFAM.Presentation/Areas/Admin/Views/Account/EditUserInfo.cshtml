@@ -1,0 +1,230 @@
+﻿@using DoctorFAM.Domain.Enums
+@using DoctorFAM.Application.StaticTools
+@using DoctorFAM.Domain.ViewModels.Common
+@model DoctorFAM.Domain.ViewModels.Admin.Account.AdminEditUserInfoViewModel
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
+
+
+@{
+    ViewData["Title"] = @Localizer["Page Title"];
+}
+
+@{
+    var roles = ViewData["Roles"] != null ? ViewData["Roles"] as List<SelectListViewModel> : null;
+}
+
+@section Scripts
+{
+<partial name="_JqueryValidation" />
+}
+
+@section Breadcrumb
+{
+<li>
+    <a asp-action="FilterUsers" asp-controller="Account" asp-area="Admin"> @Localizer["List Of Users"] </a>
+</li>
+<li>
+    <a href="javascript:void(0)"> @ViewData["Title"] </a>
+</li>
+}
+
+<form method="post" asp-action="EditUserInfo" asp-controller="Account" asp-area="Admin" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-lg-9 col-sm-12">
+            <div class="row">
+
+                <input type="hidden" asp-for="UserId" />
+                <input type="hidden" asp-for="AvatarName" />
+
+                <div class="col-lg-12">
+                    <div class="widget">
+                        <div class="widget-header bordered-bottom bordered-green">
+                            <span class="widget-caption"> @Localizer["User Information"] </span>
+                        </div>
+                        <div class="widget-body">
+                            <div class="row">
+
+                                <div class="form-group col-md-4 col-sm-12">
+                                    <label asp-for="username"></label>
+                                    <input type="text" class="form-control" asp-for="username">
+                                    <span class="text-danger" asp-validation-for="username"></span>
+                                </div>
+
+                                <div class="form-group col-md-4 col-sm-12">
+                                    <label asp-for="Email"></label>
+                                    <input type="text" class="form-control" asp-for="Email">
+                                    <span class="text-danger" asp-validation-for="Email"></span>
+                                </div>
+
+                                <div class="form-group col-md-4 col-sm-12">
+                                    <label asp-for="Mobile"></label>
+                                    <input type="text" class="form-control" asp-for="Mobile">
+                                    <span class="text-danger" asp-validation-for="Mobile"></span>
+                                </div>
+
+                                
+                                <hr class="margin-bottom-10 margin-top-10" />
+
+                                <div class="col-md-12 flex-style">
+                                    <button type="submit" class="btn btn-labeled btn-palegreen">
+                                        <i class="btn-label glyphicon glyphicon-ok"></i>ثبت
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-sm-12">
+            <div class="row">
+
+                <div class="col-lg-12">
+                    <div class="widget">
+                        <div class="widget-header bordered-bottom bordered-green">
+                            <span class="widget-caption"> آواتار کاربر </span>
+                        </div>
+                        <div class="widget-body">
+                            <div class="row">
+
+                                <input type="file" class="display-none" name="UserAvatar" id="UserAvatar" ImageInput="1" accept=".jpg,.jpeg,.png" />
+
+                                <div class="col-md-12">
+                                    <label for="UserAvatar" class="file-input-style">
+                                        <i class="glyphicon glyphicon-upload"></i>
+                                        <span class="mr-8px"> لطفا آواتار کاربر را انتخاب کنید .</span>
+                                    </label>
+                                </div>
+
+                                @{
+                                    var avatarUrl = PathTools.DefaultUserAvatar;
+
+                                    if (Model != null && !string.IsNullOrEmpty(Model.AvatarName))
+                                    {
+                                        avatarUrl = $"{PathTools.UserAvatarPathThumb}{Model.AvatarName}";
+                                    }
+                                }
+
+                                <div class="col-md-12 tc mt-10px">
+                                    <img src="@avatarUrl" class="image-style" ImageFile="1" />
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-12">
+                    <div class="widget">
+                        <div class="widget-header bordered-bottom bordered-green">
+                            <span class="widget-caption"> وضعیت </span>
+                        </div>
+                        <div class="widget-body">
+                            <div class="row">
+                                <div class="col-md-12">
+
+                                    <div class="form-group">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" asp-for="IsMobileConfirm">
+                                                <span class="text"> موبایل فعال است </span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" asp-for="IsEmailConfirm">
+                                                <span class="text"> ایمیل فعال است </span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" asp-for="IsAdmin">
+                                                <span class="text"> ادمین اصلی </span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" asp-for="IsBan">
+                                                <span class="text"> بن شده است </span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" asp-for="BanForComment">
+                                                <span class="text"> بن برای ارسال کامنت </span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" asp-for="BanForTicket">
+                                                <span class="text"> بن برای تیکت </span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-12">
+                    <div class="widget">
+                        <div class="widget-header bordered-bottom bordered-green">
+                            <span class="widget-caption"> نقش های کاربر </span>
+                        </div>
+                        <div class="widget-body">
+                            <div class="row">
+                                <div class="col-md-12">
+
+                                    @if (roles != null && roles.Any())
+                                    {
+                                        foreach (var role in roles)
+                                        {
+                                            <div class="form-group">
+                                                <div class="checkbox">
+                                                    <label>
+                                                        @if (Model != null && Model.UserRoles != null && Model.UserRoles.Any(s => s == role.Id))
+                                                        {
+                                                            <input type="checkbox" checked="checked" name="UserRoles" value="@role.Id">
+                                                        }
+                                                        else
+                                                        {
+                                                            <input type="checkbox" name="UserRoles" value="@role.Id">
+                                                        }
+                                                        <span class="text"> @role.Title </span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</form>

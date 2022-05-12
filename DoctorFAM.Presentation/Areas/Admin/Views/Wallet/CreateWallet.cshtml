@@ -1,0 +1,103 @@
+﻿@using DoctorFAM.Application.StaticTools
+@using DoctorFAM.Domain.Entities.Wallet
+@using DoctorFAM.Application.Extensions
+@model DoctorFAM.Domain.ViewModels.Admin.Wallet.AdminCreateWalletViewModel
+
+@{
+    ViewData["Title"] = Localizer["Create Wallet Transaction"];
+}
+
+@section Breadcrumb
+{
+<li>
+    <a asp-action="Index">@Localizer["Wallets"]</a>
+</li>
+<li>
+    @ViewData["Title"]
+</li>
+}
+
+<div class="row">
+
+    <div class="col-sm-12">
+        <div class="widget">
+            <div class="widget-header bordered-bottom bordered-blue">
+                <span class="widget-caption"> @ViewData["Title"] </span>
+            </div>
+            <div class="widget-body">
+                <div>
+                    <div class="card">
+                        <div class="card-body">
+                            <form method="post" asp-antiforgery="true">
+                                <input type="hidden" asp-for="UserId" />
+
+                                @if (ViewData.ModelState.ErrorCount > 0)
+                                {
+                                    <div class="alert alert-danger" asp-validation-summary="All"></div>
+                                }
+
+                                <div class="row">
+
+                                    <div class="col-xs-6">
+                                        <div class="form-group">
+                                            <label asp-for="TransactionType"></label>
+                                            <select asp-for="TransactionType" class="form-control" asp-items="@(Html.GetEnumSelectList<TransactionType>())">
+                                            </select>
+                                            <span asp-validation-for="TransactionType" class="text-danger small"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xs-6">
+                                        <div class="form-group">
+                                            <label asp-for="GatewayType"></label>
+                                            <select asp-for="GatewayType" class="form-control" asp-items="@(Html.GetEnumSelectList<GatewayType>())">
+                                            </select>
+                                            <span asp-validation-for="GatewayType" class="text-danger small"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xs-6">
+                                        <div class="form-group">
+                                            <label asp-for="PaymentType"></label>
+                                            <select asp-for="PaymentType" class="form-control" asp-items="@(Html.GetEnumSelectList<PaymentType>())">
+                                            </select>
+                                            <span asp-validation-for="PaymentType" class="text-danger small"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xs-6">
+                                        <div class="form-group">
+                                            <label asp-for="Price"></label>
+                                            <input asp-for="Price" class="form-control" />
+                                            <span asp-validation-for="Price" class="text-danger small"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xs-12">
+                                        <div class="form-group">
+                                            <label asp-for="Description"></label>
+                                            <textarea asp-for="Description" class="form-control"></textarea>
+                                            <span asp-validation-for="Description" class="text-danger small"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xs-12">
+                                        <div class="form-group">
+                                            <input type="submit" value="@Localizer["Add Transaction"]" class="btn btn-info btn-block" />
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+<partial name="_ValidationScriptsPartial" />
+}

@@ -174,6 +174,9 @@ namespace DoctorFAM.Data.Migrations
                         .HasMaxLength(300)
                         .HasColumnType("nvarchar(300)");
 
+                    b.Property<int>("WalletBalance")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.ToTable("Users");
@@ -312,6 +315,48 @@ namespace DoctorFAM.Data.Migrations
                     b.ToTable("Patients");
                 });
 
+            modelBuilder.Entity("DoctorFAM.Domain.Entities.Pharmacy.HomePharmacyRequestDetail", b =>
+                {
+                    b.Property<decimal>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(20,0)");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<decimal>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DrugCount")
+                        .HasMaxLength(400)
+                        .HasColumnType("nvarchar(400)");
+
+                    b.Property<string>("DrugName")
+                        .HasMaxLength(400)
+                        .HasColumnType("nvarchar(400)");
+
+                    b.Property<string>("DrugPrescription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DrugTrakingCode")
+                        .HasMaxLength(400)
+                        .HasColumnType("nvarchar(400)");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal>("RequestId")
+                        .HasColumnType("decimal(20,0)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RequestId");
+
+                    b.ToTable("HomePharmacyRequestDetails");
+                });
+
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Requests.PaitientRequestDetail", b =>
                 {
                     b.Property<decimal>("Id")
@@ -374,6 +419,39 @@ namespace DoctorFAM.Data.Migrations
                     b.HasIndex("StateId");
 
                     b.ToTable("PaitientRequestDetails");
+                });
+
+            modelBuilder.Entity("DoctorFAM.Domain.Entities.Requests.PatientRequestDateTimeDetail", b =>
+                {
+                    b.Property<decimal>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(20,0)");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<decimal>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EndTime")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal>("RequestId")
+                        .HasColumnType("decimal(20,0)");
+
+                    b.Property<DateTime>("SendDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("StartTime")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RequestId");
+
+                    b.ToTable("PatientRequestDateTimeDetails");
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.SiteSetting.EmailSetting", b =>
@@ -509,6 +587,89 @@ namespace DoctorFAM.Data.Migrations
                     b.ToTable("LocationInfoes");
                 });
 
+            modelBuilder.Entity("DoctorFAM.Domain.Entities.Wallet.Wallet", b =>
+                {
+                    b.Property<decimal>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(20,0)");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<decimal>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int>("GatewayType")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsFinally")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("PaymentType")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TransactionType")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TransactionWay")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("UserId")
+                        .HasColumnType("decimal(20,0)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Wallets");
+                });
+
+            modelBuilder.Entity("DoctorFAM.Domain.Entities.Wallet.WalletData", b =>
+                {
+                    b.Property<decimal>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(20,0)");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<decimal>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("GatewayType")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ReferenceCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Token")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TrackingCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("WalletId")
+                        .HasColumnType("decimal(20,0)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("WalletId")
+                        .IsUnique();
+
+                    b.ToTable("WalletData");
+                });
+
             modelBuilder.Entity("DoctorFAM.DataLayer.Entities.Request", b =>
                 {
                     b.HasOne("DoctorFAM.Domain.Entities.Account.User", "User")
@@ -574,6 +735,17 @@ namespace DoctorFAM.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("DoctorFAM.Domain.Entities.Pharmacy.HomePharmacyRequestDetail", b =>
+                {
+                    b.HasOne("DoctorFAM.DataLayer.Entities.Request", "Request")
+                        .WithMany("HomePharmacyRequestDetails")
+                        .HasForeignKey("RequestId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Request");
+                });
+
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Requests.PaitientRequestDetail", b =>
                 {
                     b.HasOne("DoctorFAM.Domain.Entities.States.Location", "City")
@@ -617,6 +789,17 @@ namespace DoctorFAM.Data.Migrations
                     b.Navigation("State");
                 });
 
+            modelBuilder.Entity("DoctorFAM.Domain.Entities.Requests.PatientRequestDateTimeDetail", b =>
+                {
+                    b.HasOne("DoctorFAM.DataLayer.Entities.Request", "Requests")
+                        .WithMany("PatientRequestDateTimeDetails")
+                        .HasForeignKey("RequestId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Requests");
+                });
+
             modelBuilder.Entity("DoctorFAM.Domain.Entities.States.Location", b =>
                 {
                     b.HasOne("DoctorFAM.Domain.Entities.States.Location", "Parent")
@@ -646,12 +829,38 @@ namespace DoctorFAM.Data.Migrations
                     b.Navigation("Location");
                 });
 
+            modelBuilder.Entity("DoctorFAM.Domain.Entities.Wallet.Wallet", b =>
+                {
+                    b.HasOne("DoctorFAM.Domain.Entities.Account.User", "User")
+                        .WithMany("Wallets")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("DoctorFAM.Domain.Entities.Wallet.WalletData", b =>
+                {
+                    b.HasOne("DoctorFAM.Domain.Entities.Wallet.Wallet", "Wallet")
+                        .WithOne("WalletData")
+                        .HasForeignKey("DoctorFAM.Domain.Entities.Wallet.WalletData", "WalletId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Wallet");
+                });
+
             modelBuilder.Entity("DoctorFAM.DataLayer.Entities.Request", b =>
                 {
+                    b.Navigation("HomePharmacyRequestDetails");
+
                     b.Navigation("PaitientRequestDetails")
                         .IsRequired();
 
                     b.Navigation("Patient");
+
+                    b.Navigation("PatientRequestDateTimeDetails");
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Account.Role", b =>
@@ -666,6 +875,8 @@ namespace DoctorFAM.Data.Migrations
                     b.Navigation("Requests");
 
                     b.Navigation("UserRoles");
+
+                    b.Navigation("Wallets");
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Languages.Language", b =>
@@ -687,6 +898,12 @@ namespace DoctorFAM.Data.Migrations
                     b.Navigation("PaitientRequestDetailCountries");
 
                     b.Navigation("PaitientRequestDetailStates");
+                });
+
+            modelBuilder.Entity("DoctorFAM.Domain.Entities.Wallet.Wallet", b =>
+                {
+                    b.Navigation("WalletData")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

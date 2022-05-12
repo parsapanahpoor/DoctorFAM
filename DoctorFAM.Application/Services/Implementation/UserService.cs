@@ -1,4 +1,5 @@
 ﻿using DoctorFAM.Application.Convertors;
+using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Generators;
 using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
@@ -304,22 +305,22 @@ namespace DoctorFAM.Application.Services.Implementation
                 query = query.Include(s => s.UserRoles).Where(s => s.UserRoles.Select(s => s.RoleId).Contains(filter.RoleId));
             }
 
-            if (!string.IsNullOrEmpty(filter.FromDate))
-            {
-                var fromDate = filter.FromDate.ToMiladiDateTime();
-                query = query.Where(s => s.CreateDate >= fromDate);
-            }
+            //if (!string.IsNullOrEmpty(filter.FromDate))
+            //{
+            //    var fromDate = filter.FromDate.ToMiladiDateTime();
+            //    query = query.Where(s => s.CreateDate >= fromDate);
+            //}
 
             if (!string.IsNullOrEmpty(filter.FullName))
             {
                 query = query.Where(s => s.Username.Contains(filter.FullName));
             }
 
-            if (!string.IsNullOrEmpty(filter.ToDate))
-            {
-                var toDate = filter.ToDate.ToMiladiDateTime();
-                query = query.Where(s => s.CreateDate <= toDate);
-            }
+            //if (!string.IsNullOrEmpty(filter.ToDate))
+            //{
+            //    var toDate = filter.ToDate.ToMiladiDateTime();
+            //    query = query.Where(s => s.CreateDate <= toDate);
+            //}
 
             if (filter.TodayRegister == true)
             {
@@ -378,9 +379,33 @@ namespace DoctorFAM.Application.Services.Implementation
             };
         }
 
-        public async Task<AdminEditUserInfoResult> EditUserInfo(AdminEditUserInfoViewModel edit)
+        public async Task<AdminEditUserInfoResult> EditUserInfo(AdminEditUserInfoViewModel edit, IFormFile? UserAvatar)
         {
+            #region Data Valdiation
+
             var user = await GetUserById(edit.UserId);
+
+            if (user == null)
+            {
+                return AdminEditUserInfoResult.UserNotFound;
+            }
+
+            if (UserAvatar != null && !UserAvatar.IsImage())
+            {
+                return AdminEditUserInfoResult.NotValidImage;
+            }
+
+            if (UserAvatar != null)
+            {
+                if (!string.IsNullOrEmpty(user.Avatar))
+                {
+                    user.Avatar.DeleteImage(PathTools.UserAvatarPathServer, PathTools.UserAvatarPathThumbServer);
+                }
+
+                var imageName = CodeGenerator.GenerateUniqCode() + Path.GetExtension(UserAvatar.FileName);
+                UserAvatar.AddImageToServer(imageName, PathTools.UserAvatarPathServer, 270, 270, PathTools.UserAvatarPathThumbServer);
+                user.Avatar = imageName;
+            }
 
             if (!await IsValidEmailForUserEditByAdmin(edit.Email, user.Id))
             {
@@ -392,7 +417,11 @@ namespace DoctorFAM.Application.Services.Implementation
                 return AdminEditUserInfoResult.NotValidMobile;
             }
 
-            user.Username = edit.username;
+            #endregion
+
+            #region Update User Field
+
+            user.Username = edit.username.SanitizeText();
             user.Email = edit.Email;
             user.Mobile = edit.Mobile;
             user.IsMobileConfirm = edit.IsMobileConfirm;
@@ -405,6 +434,8 @@ namespace DoctorFAM.Application.Services.Implementation
             _context.Update(user);
             await _context.SaveChangesAsync();
 
+            #endregion
+
             #region Delete User Rols
 
             var roles = await _context.UserRoles.Where(s => !s.IsDelete && s.UserId == user.Id).ToListAsync();
@@ -412,6 +443,8 @@ namespace DoctorFAM.Application.Services.Implementation
             _context.RemoveRange(roles);
 
             #endregion
+
+            #region Add User Roles
 
             if (edit.UserRoles != null && edit.UserRoles.Any())
             {
@@ -427,6 +460,8 @@ namespace DoctorFAM.Application.Services.Implementation
 
                 await _context.SaveChangesAsync();
             }
+
+            #endregion
 
             return AdminEditUserInfoResult.Success;
         }

@@ -198,4 +198,7 @@
   <data name="Users List" xml:space="preserve">
     <value>Users List</value>
   </data>
+  <data name="Wallet list" xml:space="preserve">
+    <value>Wallet list</value>
+  </data>
 </root>

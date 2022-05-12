@@ -120,6 +120,9 @@
   <data name="Add New Transaction" xml:space="preserve">
     <value>Add New Transaction</value>
   </data>
+  <data name="Add Wallet" xml:space="preserve">
+    <value>افزودن کیف پول</value>
+  </data>
   <data name="Best Links" xml:space="preserve">
     <value>Best Links</value>
   </data>
@@ -131,5 +134,14 @@
   </data>
   <data name="Login With This User" xml:space="preserve">
     <value>Login With This User</value>
+  </data>
+  <data name="User Wallets" xml:space="preserve">
+    <value>کیف پول کاربر</value>
+  </data>
+  <data name="Wallet" xml:space="preserve">
+    <value>کیف پول</value>
+  </data>
+  <data name="Wallet Balance" xml:space="preserve">
+    <value>موجودی کیف پول</value>
   </data>
 </root>

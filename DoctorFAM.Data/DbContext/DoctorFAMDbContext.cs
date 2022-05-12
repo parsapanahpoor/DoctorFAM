@@ -2,9 +2,11 @@
 using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Languages;
 using DoctorFAM.Domain.Entities.Patient;
+using DoctorFAM.Domain.Entities.Pharmacy;
 using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Entities.SiteSetting;
 using DoctorFAM.Domain.Entities.States;
+using DoctorFAM.Domain.Entities.Wallet;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -36,6 +38,13 @@ namespace DoctorFAM.Data.DbContext
 
         #endregion
 
+        #region Wallet
+
+        public DbSet<Wallet> Wallets { get; set; }
+        public DbSet<WalletData> WalletData { get; set; }
+
+        #endregion
+
         #region Email Setting
 
         public DbSet<EmailSetting> EmailSettings { get; set; }
@@ -54,6 +63,8 @@ namespace DoctorFAM.Data.DbContext
 
         public DbSet<PaitientRequestDetail> PaitientRequestDetails { get; set; }
 
+        public DbSet<PatientRequestDateTimeDetail>  PatientRequestDateTimeDetails { get; set; }
+
         #endregion
 
         #region Language
@@ -67,6 +78,12 @@ namespace DoctorFAM.Data.DbContext
         public DbSet<Location> Locations { get; set; }
 
         public DbSet<LocationInfo> LocationInfoes { get; set; }
+
+        #endregion
+
+        #region Pharmacy
+
+        public DbSet<HomePharmacyRequestDetail> HomePharmacyRequestDetails { get; set; }
 
         #endregion
 
