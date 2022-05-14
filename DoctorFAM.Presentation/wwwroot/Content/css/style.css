@@ -599,7 +599,8 @@ label {
     color        : #081b3a;
     background   : none;
     border       : none;
-    border-bottom: 1px solid #eeeff7;
+    border: 1px solid #999999;
+    background-color: #e6e4e4;
 }
 
 .theme-bg .form-control,

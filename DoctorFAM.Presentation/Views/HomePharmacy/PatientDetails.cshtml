@@ -23,7 +23,7 @@
         <div class="container">
             <div class="row" style="border:2px solid #fd5b03;">
                 <div class="col-md-12">
-                    <h2 class="title-2 z-index-1 text-uppercase mt-3 mb-4 text-center"> درخواست <span> داروخانه در منزل </span></h2>
+                    <h2 class="title-2 z-index-1 text-uppercase mt-3 mb-4 text-center"> درخواست <span> دارو در منزل </span></h2>
                     <p>لطفا مشخصات متقاضی را ثبت کنید</p>
                     <div>
                         <form asp-action="PatientDetails" asp-controller="HomePharmacy" asp-area="">
@@ -35,6 +35,7 @@
 
                                 <div class="col-md-6">
                                     <div class="form-group">
+                                        <span style="color:red;">*</span>
                                         <label asp-for="PatientName" class="control-label"></label>
                                         <input asp-for="PatientName" class="form-control" />
                                         <span asp-validation-for="PatientName" class="text-danger"></span>
@@ -43,6 +44,7 @@
 
                                 <div class="col-md-6">
                                     <div class="form-group">
+                                        <span style="color:red;">*</span>
                                         <label asp-for="PatientLastName" class="control-label"></label>
                                         <input asp-for="PatientLastName" class="form-control" />
                                         <span asp-validation-for="PatientLastName" class="text-danger"></span>
@@ -54,6 +56,7 @@
 
                                 <div class="col-md-3">
                                     <div class="form-group">
+                                        <span style="color:red;">*</span>
                                         <label asp-for="NationalId" class="control-label"></label>
                                         <input asp-for="NationalId" class="form-control" />
                                         <span asp-validation-for="NationalId" class="text-danger"></span>
@@ -62,6 +65,7 @@
 
                                 <div class="col-md-3">
                                     <div class="form-group">
+                                        <span style="color:red;">*</span>
                                         <label asp-for="Gender" class="control-label"></label>
                                         <select asp-for="Gender" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.Gender.Gender))"></select>
                                         <span asp-validation-for="Gender" class="text-danger"></span>
@@ -70,6 +74,7 @@
 
                                 <div class="col-md-3">
                                     <div class="form-group">
+                                        <span style="color:red;">*</span>
                                         <label asp-for="Age" class="control-label"></label>
                                         <input asp-for="Age" class="form-control " />
                                         <span asp-validation-for="Age" class="text-danger"></span>
@@ -78,6 +83,7 @@
 
                                 <div class="col-md-3">
                                     <div class="form-group">
+                                        <span style="color:red;">*</span>
                                         <label asp-for="InsuranceType" class="control-label"></label>
                                         <select asp-for="InsuranceType" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.InsuranceType.InsuranceType))"></select>
                                         <span asp-validation-for="InsuranceType" class="text-danger"></span>
@@ -88,7 +94,8 @@
                             <div class="row">
                                 <div class="col-md-9">
                                     <div class="form-group">
-                                        <label asp-for="RequestDescription" class="control-label"></label>
+                                        <span style="color:red;">*</span>
+                                        <label asp-for="RequestDescription" class="control-label">توضیحات</label>
                                         <input asp-for="RequestDescription" class="form-control" />
                                         <span asp-validation-for="RequestDescription" class="text-danger"></span>
                                     </div>

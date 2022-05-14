@@ -1,5 +1,5 @@
-﻿using DoctorFAM.Domain.ViewModels.Site.HomePharmacy;
-using DoctorFAM.Domain.ViewModels.Site.HomeVisit;
+﻿using DoctorFAM.Domain.ViewModels.Site.Common;
+using DoctorFAM.Domain.ViewModels.Site.HomePharmacy;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -22,7 +22,7 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         Task<RequestedDrugsViewModel?> FillRequestedDrugsViewModel(ulong requestId);
 
-        Task<CreateDrugRequestSiteSideResult> CreateDrugRequestSiteSide(RequestedDrugsViewModel model, IFormFile? DrugPrescriptionImage);
+        Task<CreateDrugRequestSiteSideResult> CreateDrugRequestSiteSide(RequestedDrugsViewModel model, IFormFile? DrugPrescriptionImage, IFormFile? DrugImage);
 
         Task<bool> DeleteRequestedDrug(ulong requestedDrugId);
 

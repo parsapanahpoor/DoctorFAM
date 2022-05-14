@@ -10,8 +10,8 @@ using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.Pharmacy;
 using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Interfaces;
+using DoctorFAM.Domain.ViewModels.Site.Common;
 using DoctorFAM.Domain.ViewModels.Site.HomePharmacy;
-using DoctorFAM.Domain.ViewModels.Site.HomeVisit;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -145,7 +145,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
             RequestedDrugsViewModel requestDrugs = new RequestedDrugsViewModel()
             {
-                RequestId=requestId,
+                RequestId = requestId,
                 ListOfRequestedDrugs = drugs,
             };
 
@@ -154,66 +154,66 @@ namespace DoctorFAM.Application.Services.Implementation
             return requestDrugs;
         }
 
-        public async Task<CreateDrugRequestSiteSideResult> CreateDrugRequestSiteSide(RequestedDrugsViewModel model , IFormFile? DrugPrescriptionImage )
+        public async Task<CreateDrugRequestSiteSideResult> CreateDrugRequestSiteSide(RequestedDrugsViewModel model, IFormFile? DrugPrescriptionImage, IFormFile? DrugImage)
         {
             #region Model Validation
 
-            //if in step one drugTrackingCode is null but their other properties are fill
-            if (model.DrugRequestMethod == DrugRequestMethod.DrugTrakingCode)
+            //if drugTrackingCode has value and thier other properties have value too
+            if (!string.IsNullOrEmpty(model.DrugTrakingCode) && (!string.IsNullOrEmpty(model.DrugName) || DrugImage != null || !string.IsNullOrEmpty(model.DrugCount) || DrugPrescriptionImage != null))
             {
-                if (string.IsNullOrEmpty(model.DrugTrakingCode) && (!string.IsNullOrEmpty(model.DrugName) || !string.IsNullOrEmpty(model.DrugCount) || DrugPrescriptionImage != null))
-                {
-                    return CreateDrugRequestSiteSideResult.DetailNotValid;
-                }
+                return CreateDrugRequestSiteSideResult.MoreThanOneChoice;
             }
 
-            //if in step one drugTrackingCode is not null and their other properties are fill
-            if (model.DrugRequestMethod == DrugRequestMethod.DrugTrakingCode)
+            //if DrugPrescriptionImage has value and thier other properties have value too
+            if (DrugPrescriptionImage != null && (!string.IsNullOrEmpty(model.DrugName) || !string.IsNullOrEmpty(model.DrugCount) || DrugImage != null || !string.IsNullOrEmpty(model.DrugTrakingCode)))
             {
-                if (!string.IsNullOrEmpty(model.DrugTrakingCode) && (!string.IsNullOrEmpty(model.DrugName) || !string.IsNullOrEmpty(model.DrugCount) || DrugPrescriptionImage != null))
-                {
-                    return CreateDrugRequestSiteSideResult.DetailNotValid;
-                }
+                return CreateDrugRequestSiteSideResult.MoreThanOneChoice;
             }
 
-            //if in step two DrugPrescription is null but their other properties are fill
-            if (model.DrugRequestMethod == DrugRequestMethod.DrugPrescription)
+            //if drugName and Drug Count has value and thier other properties have value too
+            if (!string.IsNullOrEmpty(model.DrugName) && (!string.IsNullOrEmpty(model.DrugTrakingCode) || DrugPrescriptionImage != null))
             {
-                if (DrugPrescriptionImage == null && (!string.IsNullOrEmpty(model.DrugName) || !string.IsNullOrEmpty(model.DrugCount) || !string.IsNullOrEmpty(model.DrugTrakingCode)))
-                {
-                    return CreateDrugRequestSiteSideResult.DetailNotValid;
-                }
+                return CreateDrugRequestSiteSideResult.MoreThanOneChoice;
             }
 
-            //if in step two DrugPrescription is not null and their other properties are fill
-            if (model.DrugRequestMethod == DrugRequestMethod.DrugPrescription)
+            //if drugImage and Drug Count has value and thier other properties have value too
+            if (DrugImage != null && (!string.IsNullOrEmpty(model.DrugTrakingCode) || DrugPrescriptionImage != null))
             {
-                if (DrugPrescriptionImage != null && (!string.IsNullOrEmpty(model.DrugName) || !string.IsNullOrEmpty(model.DrugCount) || !string.IsNullOrEmpty(model.DrugTrakingCode)))
-                {
-                    return CreateDrugRequestSiteSideResult.DetailNotValid;
-                }
+                return CreateDrugRequestSiteSideResult.MoreThanOneChoice;
             }
 
-            //if in step third DrugPrescription is null but their other properties are fill
-            if (model.DrugRequestMethod == DrugRequestMethod.DrugName)
+            //if user fill drugName but doesnt Fill drug Count
+            if (!string.IsNullOrEmpty(model.DrugName) && string.IsNullOrEmpty(model.DrugCount))
             {
-                if ((model.DrugCount == null || model.DrugName == null) && (DrugPrescriptionImage != null || !string.IsNullOrEmpty(model.DrugTrakingCode)))
-                {
-                    return CreateDrugRequestSiteSideResult.DetailNotValid;
-                }
+                return CreateDrugRequestSiteSideResult.DrugCountIsNull;
             }
 
-            //if in step third DrugPrescription is not null and their other properties are fill
-            if (model.DrugRequestMethod == DrugRequestMethod.DrugName)
+            //if user fill drugImage but doesnt Fill drug Count
+            if (DrugImage != null && string.IsNullOrEmpty(model.DrugCount))
             {
-                if ((!string.IsNullOrEmpty(model.DrugName) || !string.IsNullOrEmpty(model.DrugCount)) && (DrugPrescriptionImage != null || !string.IsNullOrEmpty(model.DrugTrakingCode)))
-                {
-                    return CreateDrugRequestSiteSideResult.DetailNotValid;
-                }
+                return CreateDrugRequestSiteSideResult.DrugCountIsNull;
             }
 
-            //if in step third DrugPrescription is not null and their other properties are fill
-            if (string.IsNullOrEmpty(model.DrugName) && string.IsNullOrEmpty(model.DrugCount) && string.IsNullOrEmpty(model.DrugTrakingCode) && DrugPrescriptionImage == null)
+            //if user fill drugCount but doesnt fill drugName and drugImage
+            if (string.IsNullOrEmpty(model.DrugName) && DrugImage == null && !string.IsNullOrEmpty(model.DrugCount))
+            {
+                return CreateDrugRequestSiteSideResult.DrugNameAndImageIsNull;
+            }
+
+            //if all of the properties dont fill
+            if (string.IsNullOrEmpty(model.DrugTrakingCode) && string.IsNullOrEmpty(model.DrugName) && string.IsNullOrEmpty(model.DrugCount) && DrugPrescriptionImage == null)
+            {
+                return CreateDrugRequestSiteSideResult.AllOfPropertiesAreNull;
+            }
+
+            //if image is not image
+            if (DrugPrescriptionImage != null && !DrugPrescriptionImage.IsImage())
+            {
+                return CreateDrugRequestSiteSideResult.DetailNotValid;
+            }
+
+            //if image is not image
+            if (DrugImage != null && !DrugImage.IsImage())
             {
                 return CreateDrugRequestSiteSideResult.DetailNotValid;
             }
@@ -232,6 +232,8 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #region Fill Data And Add Home Druge Request Detail
 
+            #region Fill peroperties
+
             HomePharmacyRequestDetail drugRequest = new HomePharmacyRequestDetail()
             {
                 RequestId = model.RequestId,
@@ -243,6 +245,9 @@ namespace DoctorFAM.Application.Services.Implementation
                 IsDelete = false,
             };
 
+
+            #endregion
+
             #region Image
 
             if (DrugPrescriptionImage != null)
@@ -250,6 +255,13 @@ namespace DoctorFAM.Application.Services.Implementation
                 var imageName = CodeGenerator.GenerateUniqCode() + Path.GetExtension(DrugPrescriptionImage.FileName);
                 DrugPrescriptionImage.AddImageToServer(imageName, PathTools.DrugPrescriptionPathServer, 270, 270, PathTools.DrugPrescriptionPathThumbServer);
                 drugRequest.DrugPrescription = imageName;
+            }
+
+            if (DrugImage != null)
+            {
+                var imageName = CodeGenerator.GenerateUniqCode() + Path.GetExtension(DrugImage.FileName);
+                DrugImage.AddImageToServer(imageName, PathTools.DrugPrescriptionPathServer, 270, 270, PathTools.DrugPrescriptionPathThumbServer);
+                drugRequest.DrugImage = imageName;
             }
 
             #endregion
@@ -276,6 +288,11 @@ namespace DoctorFAM.Application.Services.Implementation
             if (drug.DrugPrescription != null)
             {
                 drug.DrugPrescription.DeleteImage(PathTools.DrugPrescriptionPathServer, PathTools.DrugPrescriptionPathThumbServer);
+            }
+
+            if (drug.DrugImage != null)
+            {
+                drug.DrugImage.DeleteImage(PathTools.DrugPrescriptionPathServer, PathTools.DrugPrescriptionPathThumbServer);
             }
 
             #endregion

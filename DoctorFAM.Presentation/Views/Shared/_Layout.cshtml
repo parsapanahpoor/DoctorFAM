@@ -31,15 +31,13 @@
             <div id="header-wrap">
                 <div class="container">
                     <div class="row">
-                        <div class="col-lg-2 text-center mt-4">
+                        <div class="col-lg-2 text-center mt-3">
                             <a href="#">
                                 <span class="" style="color:white; font-weight:900 !important; font-size:20px !important;"><b>DOCTOR</b></span>
                                 <span class="" style="color:#fd5b03; font-weight:900 !important; font-size:28px !important;"><b>F</b></span>
                                 <span class="" style="color:#fd5b03; font-weight:900 !important; font-size:28px !important;"><b>A</b></span>
                                 <span class="" style="color:#fd5b03; font-weight:900 !important; font-size:28px !important;"><b>M</b></span>
                             </a>
-                            @*<span style=" color:white !important;">H</span><span style=" color:#fd5b03 !important;">EALTH</span><span style=" color:white !important;">H</span><span style=" color:#fd5b03 !important;">OUSE</span>*@
-
                         </div>
                         <div class="col-lg-10">
                             <!-- Navbar -->
@@ -116,7 +114,6 @@
                                                 </ul>
                                             </div>
                                         </li>
-
                                         <li class="nav-item " data-toggle="hover">
                                             <a class="nav-link " href="/Weblog" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> وبلاگ </a>
                                         </li>
@@ -129,77 +126,77 @@
                                         </li>
 
                                     </ul>
+
                                 </div>
-                                <div class="right-nav align-items-center d-flex justify-content-end">
-
-                                    <div class="">
-                                        @if (User.Identity.IsAuthenticated)
-                                        {
-                                            <li style="list-style: none;">
-                                                <a asp-action="Logout" asp-controller="Account" class="btn-Accept   ml-sm-3 btn-primary"><span> خروج </span> </a>
-                                                <a href="/"  class="btn-Accept    ml-sm-3 ">@User.Identity.Name </a>
-                                            </li>
-                                        }
-                                        else
-                                        {
-                                             <li style="list-style: none;">
-                                                <a asp-action="Login" asp-controller="Account" class="btn-Accept  ml-sm-3"><span> ورود/ثبت‌نام </span></a>
-                                            </li>
-                                        }
-
-
-                                    </div>
-                                     <div class="mr-1 mr-sm-3 text-center text-align-justify ">
-                                        <a id="" href="">
-                                            <img src="~/Content/images/logo-customizer/radio2.png" style="width:35px; height:30px; margin-top: -15px;" title="رادیوفام"/>
-                                        </a>
-                                    </div>
-                                    <div class="search-icon ml-1 ml-sm-3 mr-1 mr-sm-3">
-                                        <a id="search" href="javascript:void(0)"><i class="flaticon-search"></i></a>
-                                    </div>
-                                    <div>
-                                        <div class="cart">
-                                            <a href="#" id="header-cart-btn"><span class="cart-badge">0</span> <i class="flaticon-shopping-cart"></i></a>
-                                            <!-- Cart List Area Start -->
-                                            <ul class="cart-list">
-                                                <li>
-                                                    <a href="#" class="image">
-                                                        <img src="~/Content/images/product-thumb/01.jpg" class="img-fluid cart-thumb" alt="">
-                                                    </a>
-                                                    <div class="cart-item-desc">
-                                                        <h6><a href="#"> ضد آفتاب </a></h6>
-                                                        <p>
-                                                            <span class="price d-inline-block">132.000 تومان</span> -
-                                                            <span dir="ltr"> 1 x</span>
-                                                        </p>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <a href="#" class="image">
-                                                        <img src="~/Content/images/product-thumb/02.jpg" class="img-fluid cart-thumb" alt="">
-                                                    </a>
-                                                    <div class="cart-item-desc">
-                                                        <h6><a href="#"> عینک محافظ </a></h6>
-                                                        <p>
-                                                            <span class="price d-inline-block">28.000 تومان</span> -
-                                                            <span dir="ltr"> 10 x</span>
-                                                        </p>
-                                                    </div>
-                                                </li>
-                                                <li class="total text-left">
-                                                    <span class="d-block"> کل: 160.00 تومان </span>
-                                                </li>
-                                                <li>
-                                                    <a href="product-cart.html" class="btn"> سبد خرید </a>
-                                                    <a href="product-checkout.html" class="btn btn-border"> پرداخت </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    
+                           
+                       
+                            <div class=" align-items-center d-flex justify-content-end">
+                                <div class="text-center text-align-justify ml-1 ml-sm-3 mr-1 mr-sm-3">
+                                    <a id="" href="">
+                                        <img src="~/Content/images/logo-customizer/radio2.png" style="width:35px; height:30px; margin-top: -15px;" title="رادیوفام" />
+                                    </a>
                                 </div>
+                                
+                                <div class="text-center text-align-justify ml-1 ml-sm-3 mr-1 mr-sm-3">
+                                    <div class="cart">
+                                        <a href="#" id="header-cart-btn"><span class="cart-badge">0</span> <i class="flaticon-shopping-cart" title="سبد خرید"></i></a>
+                                        <!-- Cart List Area Start -->
+                                        <ul class="cart-list">
+                                            <li>
+                                                <a href="#" class="image">
+                                                    <img src="~/Content/images/product-thumb/01.jpg" class="img-fluid cart-thumb" alt="">
+                                                </a>
+                                                <div class="cart-item-desc">
+                                                    <h6><a href="#"> ضد آفتاب </a></h6>
+                                                    <p>
+                                                        <span class="price d-inline-block">132.000 تومان</span> -
+                                                        <span dir="ltr"> 1 x</span>
+                                                    </p>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <a href="#" class="image">
+                                                    <img src="~/Content/images/product-thumb/02.jpg" class="img-fluid cart-thumb" alt="">
+                                                </a>
+                                                <div class="cart-item-desc">
+                                                    <h6><a href="#"> عینک محافظ </a></h6>
+                                                    <p>
+                                                        <span class="price d-inline-block">28.000 تومان</span> -
+                                                        <span dir="ltr"> 10 x</span>
+                                                    </p>
+                                                </div>
+                                            </li>
+                                            <li class="total text-left">
+                                                <span class="d-block"> کل: 160.00 تومان </span>
+                                            </li>
+                                            <li>
+                                                <a href="product-cart.html" class="btn"> سبد خرید </a>
+                                                <a href="product-checkout.html" class="btn btn-border"> پرداخت </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="search-icon ml-1 ml-sm-3 mr-1 mr-sm-3">
+                                    <a id="search" href="javascript:void(0)"><i class="flaticon-search" title="جستجو"></i></a>
+                                </div>
+                                <div class="mr-3 mr-sm-3 text-center align-items-center">
+                                    @if (User.Identity.IsAuthenticated)
+                                    {
+                                        <li style="list-style: none;">
+                                             <a href="/" class="btn-Accept">@User.Identity.Name </a>
+                                            <a asp-action="Logout" asp-controller="Account" class="btn-Accept "><span> خروج </span> </a>                                           
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li style="list-style: none;">
+                                            <a asp-action="Login" asp-controller="Account" class="btn-Accept "><span> ورود/ثبت‌نام </span></a>
+                                        </li>
+                                    }
 
-                            </nav>
+                                </div>
+                            </div>
+                             </nav>
                         </div>
                     </div>
                 </div>

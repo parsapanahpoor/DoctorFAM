@@ -50,186 +50,168 @@
 <partial name="_JqueryValidation" />
 
 <script>
-    $("#DrugRequestMethod").on("change",
-      function() {
-          var selectedDrugRequestMethodValue = $("#DrugRequestMethod :selected").val();
 
-          if (selectedDrugRequestMethodValue == 0) {
-              $("#FirstMethod").removeClass("d-none");
-              $("#SecondeMethod").addClass("d-none");
-              $("#ThirdMethod").addClass("d-none");
+    $(document).ready(function(){
+      $("#DrugTrakingCode").val('');
+      $("#DrugPrescriptionImage").val('');
+      $("#DrugName").val('');
+      $("#DrugCount").val('');
+      $("#DrugImage").val('');
+    });
 
-              $("#SecondeInput").val('');
-              $("#ThirdInput").val('');
-              $("#FourthInput").val('');
-          }
-
-          if (selectedDrugRequestMethodValue == 1) {
-              $("#SecondeMethod").removeClass("d-none");
-              $("#FirstMethod").addClass("d-none");
-              $("#ThirdMethod").addClass("d-none");
-
-              $("#FirstInput").val('');
-              $("#ThirdInput").val('');
-              $("#FourthInput").val('');
-          }
-
-          if (selectedDrugRequestMethodValue == 2) {
-              $("#ThirdMethod").removeClass("d-none");
-              $("#FirstMethod").addClass("d-none");
-              $("#SecondeMethod").addClass("d-none");
-
-              $("#FirstInput").val('');
-              $("#SecondeInput").val('');
-          }
-      });
 </script>
 
 }
 
 <div class="page-content  ">
 
-    <section>
+    <section class="grey-bg">
+        <div class="">
+            <div class="row m-1 p-1">
+                <div class="col-md-7  col-sm-12 " style="border:1px solid #999999; ">
+                    <form asp-action="RequestedDrogs" asp-controller="HomePharmacy" asp-area="" enctype="multipart/form-data">
+                        <input asp-for="RequestId" type="hidden" />
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="tab">
+                            <!-- Nav tabs -->
+                            <nav>
+                                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                    <a class="nav-item nav-link active" id="nav-tab1" data-toggle="tab" href="#FirstMethod" role="tab" aria-selected="true"><i class="flaticon-brainstorming"></i> درخواست با کد نسخه الکترونیکی </a>
+                                    <a class="nav-item nav-link" id="nav-tab2" data-toggle="tab" href="#SecondeMethod" role="tab" aria-selected="false"><i class="flaticon-research"></i> درخواست با تصویر نسخه </a>
+                                    <a class="nav-item nav-link" id="nav-tab3" data-toggle="tab" href="#ThirdMethod" role="tab" aria-selected="false"><i class="flaticon-testing"></i> درخواست با نام دارو / اقلام بهداشتی  </a>
+                                </div>
+                            </nav>
+                            <!-- Tab panes -->
+                            <div class="tab-content pr-0" id="nav-tabContent">
+                                <div role="tabpanel" class="tab-pane fade show d-non active" id="FirstMethod">
+                                    <div class="col-md-10">
+                                        <div class="form-group">
+                                            <label asp-for="DrugTrakingCode" class="control-label"></label>
+                                            <input id="DrugTrakingCode" asp-for="DrugTrakingCode" class="form-control" />
+                                            <span asp-validation-for="DrugTrakingCode" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div role="tabpanel" class="tab-pane fade d-non" id="SecondeMethod">
+                                    <div class="col-md-10">
+                                        <div class="form-group">
+                                            <label class="control-label"> تصویر نسخه ی پزشکی  </label>
+                                            <input type="file" id="DrugPrescriptionImage" name="DrugPrescriptionImage" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div role="tabpanel" class="tab-pane fade d-non" id="ThirdMethod">
+                                    <div class="row">
 
-        <div class="container">
-
-            <div class="row">
-
-                <div class="col-md-6">
-
-                    <div class="row" style="border:2px solid #fd5b03;">
-                        <div class="col-md-12">
-                            <h2 class="title-2 z-index-1 text-uppercase mt-3 mb-4 text-center"> درخواست <span> دارو </span></h2>
-                            <p>لطفا مشخصات داروهای مدنظر خود را وارد کنید </p>
-                            <div>
-                                <form asp-action="RequestedDrogs" asp-controller="HomePharmacy" asp-area="" enctype="multipart/form-data">
-                                    <input asp-for="RequestId" type="hidden" />
-                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-                                    <div class="row" style="margin-bottom:30px;">
-
-                                        <div class="col-md-12">
+                                        <div class="col-md-10">
                                             <div class="form-group">
-                                                <label class="control-label"> یکی از روش های ثبت داروی خود را انتخاب کنید  </label>
-                                                <select asp-for="DrugRequestMethod" id="DrugRequestMethod" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DrugRequestMethod))">
-                                                    <option value="" selected> --------- انتخاب کنید --------- </option>
-                                                </select>
+                                                <label class="control-label"> تصویر دارو  </label>
+                                                <input type="file" id="DrugImage" name="DrugImage" class="form-control" />
                                             </div>
                                         </div>
 
-                                    </div>
-
-                                    <div class="row d-none" id="FirstMethod">
-
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label asp-for="DrugTrakingCode" class="control-label"></label>
-                                                <input id="FirstInput" asp-for="DrugTrakingCode" class="form-control" />
-                                                <span asp-validation-for="DrugTrakingCode" class="text-danger"></span>
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-                                    <div class="row d-none" id="SecondeMethod">
-
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label class="control-label"> تصویر نسحه ی پزشکی  </label>
-                                                <input type="file" id="SecondeInput" name="DrugPrescriptionImage" class="form-control" />
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-                                    <div class="row d-none" id="ThirdMethod">
-
-                                        <div class="col-md-6">
+                                        <div class="col-md-5">
                                             <div class="form-group">
                                                 <label asp-for="DrugName" class="control-label"></label>
-                                                <input asp-for="DrugName" id="ThirdInput" class="form-control" />
+                                                <input asp-for="DrugName" id="DrugName" class="form-control" />
                                                 <span asp-validation-for="DrugName" class="text-danger"></span>
                                             </div>
                                         </div>
 
-                                        <div class="col-md-6">
+                                        <div class="col-md-5">
                                             <div class="form-group">
                                                 <label asp-for="DrugCount" class="control-label"></label>
-                                                <input asp-for="DrugCount" id="FourthInput" class="form-control" />
+                                                <input asp-for="DrugCount" id="DrugCount" class="form-control" />
                                                 <span asp-validation-for="DrugCount" class="text-danger"></span>
                                             </div>
                                         </div>
 
                                     </div>
-
-                                    <div class="row ">
-
-                                        <div class="col-md-12">
-
-                                            <div class="form-group">
-                                                <label asp-for="Description" class="control-label"></label>
-                                                <input asp-for="Description" class="form-control" />
-                                                <span asp-validation-for="Description" class="text-danger"></span>
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-md-12 mt-3 text-center mb-2">
-                                            <div class="form-group">
-                                                <input type="submit" value="ثبت دارو" class="btn-Accept" />
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </form>
+                                </div>
                             </div>
                         </div>
-                    </div>
-
+                        <div class="row m-1 p-1">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Description" class="control-label"></label>
+                                    <input asp-for="Description" class="form-control" />
+                                    <span asp-validation-for="Description" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4  text-center mt-4">
+                                <div class="form-group">
+                                    <input type="submit" value="ثبت دارو" class="btn-Accept" />
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-
-                <div class="col-md-6">
-
-                    <div class="row" style="border:2px solid #fd5b03;">
+                <div class="col-md-5  col-sm-12">
+                    <div class="row " style="border:1px solid #999999; ">
                         <div class="col-md-12">
-                            <h2 class="title-2 z-index-1 text-uppercase mt-3 mb-4 text-center">  <span> لیست داروهای انتخابی شما  </span></h2>
+                            <h2 class="title-2 z-index-1 text-uppercase mt-3 mb-4 text-center">  <span> سفارش نهایی   </span></h2>
                             <div>
                                 @if (Model.ListOfRequestedDrugs != null && Model.ListOfRequestedDrugs.Any())
                                 {
-                                    <table class="table table-hover table-bordered tc vm">
+                                    <table class="table table-hover table-bordered tc vm text-center align-items-center">
 
                                         <tr>
-                                            <th>امکانات</th>
-                                            <th>توضیحات</th>
-                                            <th>اطلاعات دارو</th>
+                                            <th class=" text-center align-items-center">اطلاعات دارو</th>
+                                            <th class=" text-center align-items-center">توضیحات</th>
+                                            <th class=" text-center align-items-center">عملیات</th>
                                         </tr>
 
                                         @foreach (var item in Model.ListOfRequestedDrugs)
                                         {
-                                            <tr class="tc vm" remove-ajax-item="@item.Id">
-                                                <td>
-                                                    <button onclick="DeleteAjax(@item.Id, '@Url.Action("DeleteRequestedDrug", "HomePharmacy", new {area = "", requestedDrugId = item.Id})')" class="btn btn-danger btn-circle btn-xs">حذف</button>
-                                                </td>
-
-                                                <td>@item.Description</td>
-
+                                            <tr class="tc vm text-center align-items-center" remove-ajax-item="@item.Id">
 
                                                 @if (!string.IsNullOrEmpty(item.DrugTrakingCode))
                                                 {
-                                                    <td>@item.DrugTrakingCode</td>
+
+                                                    <td class=" text-center align-items-center">
+                                                        <span>کد رهگیری نسخه/ کد ملی متقاضی</span>
+                                                        <h5 style="color:#fd5b03"> @item.DrugTrakingCode</h5>
+                                                    </td>
                                                 }
                                                 @if (!string.IsNullOrEmpty(item.DrugPrescription))
                                                 {
-                                                    <td>
+                                                    <td class=" text-center align-items-center">
+                                                        <span>تصویر نسخه</span>
                                                         <img src="@PathTools.DrugPrescriptionPathThumb/@item.DrugPrescription" class="avatar-style" />
                                                     </td>
                                                 }
-                                                @if (!string.IsNullOrEmpty(item.DrugCount) && !string.IsNullOrEmpty(item.DrugName))
+                                                @if (!string.IsNullOrEmpty(item.DrugImage) && !string.IsNullOrEmpty(item.DrugCount) && !string.IsNullOrEmpty(item.DrugName))
                                                 {
-                                                    <td>@item.DrugName - تعداد @item.DrugCount  </td>
+                                                    <td class=" text-center align-items-center">
+                                                            <span>تصویر دارو</span>
+                                                            <img src="@PathTools.DrugPrescriptionPathThumb/@item.DrugImage" class="avatar-style" />
+                                                            -
+                                                            @item.DrugName - تعداد @item.DrugCount 
+                                                        </td>
                                                 }
+                                                else
+                                                {
+                                                    @if (!string.IsNullOrEmpty(item.DrugImage))
+                                                    {
+                                                        <td class=" text-center align-items-center">
+                                                            <span>تصویر دارو</span>
+                                                            <img src="@PathTools.DrugPrescriptionPathThumb/@item.DrugImage" class="avatar-style" />
+                                                            -
+                                                            تعداد @item.DrugCount
+                                                        </td>
+                                                    }
+                                                    @if (!string.IsNullOrEmpty(item.DrugCount) && !string.IsNullOrEmpty(item.DrugName))
+                                                    {
+                                                        <td class=" text-center align-items-center">@item.DrugName - تعداد @item.DrugCount  </td>
+                                                    }
+                                                }
+
+                                                <td class=" text-center align-items-center">@item.Description</td>
+                                                <td class=" text-center align-items-center">
+                                                    <button onclick="DeleteAjax(@item.Id, '@Url.Action("DeleteRequestedDrug", "HomePharmacy", new {area = "", requestedDrugId = item.Id})')" class="btn-Accept-Danger">حذف</button>
+                                                </td>
+
+
                                             </tr>
                                         }
                                     </table>
@@ -248,9 +230,7 @@
                     </div>
 
                 </div>
-
             </div>
-
         </div>
     </section>
 

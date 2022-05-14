@@ -28,6 +28,8 @@ namespace DoctorFAM.Domain.Entities.Pharmacy
 
         public string? Description { get; set; }
 
+        public string? DrugImage { get; set; }
+
         #endregion
 
         #region relations

@@ -1,8 +1,8 @@
 ﻿using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Interfaces;
 using DoctorFAM.Application.Services.Interfaces;
+using DoctorFAM.Domain.ViewModels.Site.Common;
 using DoctorFAM.Domain.ViewModels.Site.HomePharmacy;
-using DoctorFAM.Domain.ViewModels.Site.HomeVisit;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
 using DoctorFAM.Domain.ViewModels.Site.Request;
 using DoctorFAM.Web.HttpManager;
@@ -157,7 +157,7 @@ namespace DoctorFAM.Web.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> RequestedDrogs(RequestedDrugsViewModel model , IFormFile? DrugPrescriptionImage)
+        public async Task<IActionResult> RequestedDrogs(RequestedDrugsViewModel model , IFormFile? DrugPrescriptionImage, IFormFile? DrugImage)
         {
             #region Get Request
 
@@ -173,7 +173,7 @@ namespace DoctorFAM.Web.Controllers
 
             #region Create Drug Method
 
-            var res = await _homePharmacy.CreateDrugRequestSiteSide(model , DrugPrescriptionImage);
+            var res = await _homePharmacy.CreateDrugRequestSiteSide(model , DrugPrescriptionImage , DrugImage);
 
             switch (res)
             {
@@ -182,7 +182,23 @@ namespace DoctorFAM.Web.Controllers
                     return RedirectToAction("RequestedDrogs", "HomePharmacy", new { requestId = request.Id, patientId = request.PatientId });
 
                 case CreateDrugRequestSiteSideResult.DetailNotValid:
-                    TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد  ";
+                    TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد";
+                    break;
+
+                case CreateDrugRequestSiteSideResult.MoreThanOneChoice:
+                    TempData[ErrorMessage] = "کاربر عزیز شما نمی توانید در یک انتخاب تمام روش ها و مقادیر را یکجا پر کنید  ";
+                    break;
+
+                case CreateDrugRequestSiteSideResult.DrugNameAndImageIsNull:
+                    TempData[ErrorMessage] = "کاربر عزیز شما باید نام دارو را نیز وارد کنید  ";
+                    break;
+
+                case CreateDrugRequestSiteSideResult.DrugCountIsNull:
+                    TempData[ErrorMessage] = "کاربر عزیز شما باید مقدار داروی درخواستی را وارد کنید ";
+                    break;
+
+                case CreateDrugRequestSiteSideResult.AllOfPropertiesAreNull:
+                    TempData[ErrorMessage] = "کاربر عزیز شما باید یکی از روش های بالا را انتخاب کنید و مقادیر را پر کنید ";
                     break;
             }
 

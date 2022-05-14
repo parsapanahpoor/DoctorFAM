@@ -19,9 +19,14 @@
                             <img class="img-fluid" src="~/Site/images/login.png" alt="">
                         </div>
                         <div class="col-lg-5 col-md-12 ">
-                            <div class="login-form">
-                                <img class="img-fluid mb-5" src="images/logo-white.png" alt="">
-                                <h3 class="text-white"> ورود به سایت </h3>
+                            <div class="login-form text-center">
+                                <a href="/Home/SecPage" class="text-center">
+                                    <span class="" style="color:#3143ef; font-weight:900 !important; font-size:30px !important;"><b>DOCTOR</b></span>
+                                    <span class="" style="color:#fd5b03; font-weight:900 !important; font-size:32px !important;"><b>F</b></span>
+                                    <span class="" style="color:#fd5b03; font-weight:900 !important; font-size:32px !important;"><b>A</b></span>
+                                    <span class="" style="color:#fd5b03; font-weight:900 !important; font-size:32px !important;"><b>M</b></span>
+                                </a>
+                               
                                 @if (User.Identity.IsAuthenticated && Context.Request.Query["ReturnUrl"] != "")
                                 {
                                     <div class="alert alert-danger mt-3">
@@ -62,12 +67,11 @@
                                             </p>
                                         </div>
 
-                                        <div class="row p-3 m-3  text-center  align-items-center justify-content-center ">
-                                            <button type="submit" class="btn-Accept">ثبت نام</button>
+                                        <div class="row  text-center  align-items-center justify-content-center ">
+                                            <button type="submit" class="btn-Accept m-2">ثبت نام</button>
+                                             <span></span> <a asp-action="Login" asp-controller="Account" class="btn-Accept"><span> حساب کاربری دارید؟   از اینجا وارد شوید  </span></a>
                                         </div>
-                                        <div class="account-text">
-                                            <p>حساب کاربری دارید؟ <a asp-action="Login" asp-controller="Account">ورود</a></p>
-                                        </div>
+                                       
 
                                     </form>
 

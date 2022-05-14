@@ -790,7 +790,7 @@ span,
 #search-input-box .form-control {
     background: transparent;
     border: 0;
-    color: #ffffff;
+    color: white;
     font-size: 15px;
     padding: 0;
 }
@@ -829,7 +829,7 @@ span,
 }
 
 .cart-badge {
-    background-color: #3143ef;
+    background-color: #fd5b03;
     border-radius: 50%;
     color: #fff;
     font-size: 10px;
@@ -1713,3 +1713,4 @@ span,
         background-color: #fd5b03 !important;
         color: white !important;
     }
+

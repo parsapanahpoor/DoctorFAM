@@ -54,13 +54,14 @@ namespace DoctorFAM.Domain.ViewModels.Site.HomePharmacy
 
         [Display(Name = "شروع ساعت ارسال")]
         [Required(ErrorMessage = "لطفا{0} را وارد نمایید...")]
+        [RegularExpression(@"2[0-4]|1[0-9]|[1-9]", ErrorMessage = "ساعت وارد شده معتبر نمی باشد ")]
         public int StartTime { get; set; }
 
         [Display(Name = "پایان ساعت ارسال ")]
         [Required(ErrorMessage = "لطفا{0} را وارد نمایید...")]
+        [RegularExpression(@"2[0-4]|1[0-9]|[1-9]", ErrorMessage = "ساعت وارد شده معتبر نمی باشد ")]
         public int EndTime { get; set; }
 
         #endregion
-
     }
 }

@@ -92,6 +92,26 @@
         border: 2px solid #fd5b03;
     }
 
+.btn-Accept-Danger {
+    background: red;
+    color: #ffffff;
+    padding: 12px 20px;
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    outline: none;
+    border: 1px solid #3143ef;
+    vertical-align: middle;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+    .btn-Accept-Danger:hover {
+        background: #f8b5c3;
+        color: #ffffff;
+        border: 1px solid #fd5b03;
+    }
+
 .btn-sm {
   padding: 10px;
   color  : #081b3a
@@ -898,8 +918,8 @@
   display      : flex;
   align-items  : center;
   border-radius: .25rem;
-  font-size    : 16px;
-  font-weight  : 600;
+  font-size    : 14px;
+  
   color        : #081b3a;
   position     : relative;
   border       : 1px solid #eeeff7;
@@ -938,9 +958,9 @@
 .tab.style-2 .nav-tabs .nav-link {
   width        : 100%;
   border       : 1px solid rgb(228, 228, 228);
-  margin-bottom: 20px;
-  font-size    : 20px;
-  padding      : 25px;
+  margin-bottom: 5px;
+  font-size    : 14px;
+  padding      : 10px;
   display      : flex;
   align-items  : center;
 }
