@@ -1,4 +1,5 @@
 ﻿using DoctorFAM.Data.DbContext;
+using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -32,6 +33,16 @@ namespace DoctorFAM.Data.Repository
         #endregion
 
         #region Admin Side
+
+        #endregion
+
+        #region User Panel
+
+        public async Task EditUser(User user)
+        {
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+        }
 
         #endregion
     }

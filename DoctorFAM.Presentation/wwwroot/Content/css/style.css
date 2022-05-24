@@ -891,31 +891,32 @@ select:-webkit-autofill {
 
 .nice-select {
     -webkit-tap-highlight-color: transparent;
-    border                     : none;
-    padding-top                : 0;
-    padding-bottom             : 0;
-    padding-right              : 0.5rem;
-    border-bottom              : 1px solid #eeeff7;
-    box-sizing                 : border-box;
-    clear                      : both;
-    cursor                     : pointer;
-    display                    : block;
-    float                      : left;
-    font-size                  : 14px;
-    height                     : 50px;
-    line-height                : 50px;
-    outline                    : none;
-    padding-left               : 30px;
-    position                   :center;
-    text-align                 : right !important;
-    -webkit-transition         : all 0.2s ease-in-out;
-    transition                 : all 0.2s ease-in-out;
-    -webkit-user-select        : none;
-    -moz-user-select           : none;
-    -ms-user-select            : none;
-    user-select                : none;
-    white-space                : nowrap;
-    width                      : 100%;
+    border: none;
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-right: 0.5rem;
+    border: 1px solid #999999;
+    border-bottom: 1px solid #eeeff7;
+    box-sizing: border-box;
+    clear: both;
+    cursor: pointer;
+    display: block;
+    float: left;
+    font-size: 14px;
+    height: 50px;
+    line-height: 50px;
+    outline: none;
+    padding-left: 30px;
+    position: center;
+    text-align: right !important;
+    -webkit-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    white-space: nowrap;
+    width: 100%;
 }
 
 .dark-bg .nice-select span,
@@ -926,7 +927,7 @@ select:-webkit-autofill {
 .nice-select:active,
 .nice-select.open,
 .nice-select:focus {
-    border-color: #3143ef;
+    border-color: #fd5b03;
 }
 
 .nice-select:after {

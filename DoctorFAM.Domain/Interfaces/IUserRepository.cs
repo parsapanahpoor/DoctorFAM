@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DoctorFAM.Domain.Entities.Account;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,12 @@ namespace DoctorFAM.Domain.Interfaces
         #region Site Side
 
         Task<bool> IsExistUserById(ulong userId);
+
+        #endregion
+
+        #region User Panel
+
+        Task EditUser(User user);
 
         #endregion
     }

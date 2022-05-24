@@ -1,0 +1,60 @@
+﻿@using DoctorFAM.Domain.Entities.SiteSetting
+
+<!-- Page Sidebar -->
+<div class="page-sidebar" id="sidebar">
+    <!-- Page Sidebar Header-->
+    <div class="sidebar-header-wrapper">
+        <input type="text" class="searchinput" />
+        <i class="searchicon fa fa-search"></i>
+        <div class="searchhelper">به جستجوی صفحات، گزارشات، پیام ها و ایمیل خود بپردازید</div>
+    </div>
+    <!-- /Page Sidebar Header -->
+    <!-- Sidebar Menu -->
+    <ul class="nav sidebar-menu">
+        <!--Dashboard-->
+
+        <li>
+            <a asp-area="Doctor" asp-controller="Home" asp-action="Index">
+                <i class="menu-icon glyphicon glyphicon-home"></i>
+                <span class="menu-text"> @Localizer["Dashboard"] </span>
+            </a>
+        </li>
+
+        @if (ViewBag.DoctorInfoState == "Accepted")
+        {
+            <li>
+                <a href="#" class="menu-dropdown">
+                    <i class="menu-icon fa fa-user"></i>
+                    <span class="menu-text"> @Localizer["Profile"] </span>
+                    <i class="menu-expand"></i>
+                </a>
+
+                <ul class="submenu">
+
+                    <li>
+                        <a asp-area="Doctor" asp-controller="Account" asp-action="EditProfile">
+                            <span class="menu-text">@Localizer["Edit Profile"]</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a asp-area="Doctor" asp-controller="Account" asp-action="ChangePassword">
+                            <span class="menu-text">@Localizer["Change Password"]</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            @await Component.InvokeAsync("DoctorsInfosBadge")
+        }
+
+        @if (ViewBag.DoctorInfoState != "Accepted")
+        {
+            @await Component.InvokeAsync("DoctorsInfosBadge")
+        }
+
+
+    </ul>
+    <!-- /Sidebar Menu -->
+</div>
+<!-- /Page Sidebar -->

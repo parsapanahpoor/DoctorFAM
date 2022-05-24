@@ -1,5 +1,7 @@
 ﻿using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Account;
+using DoctorFAM.Domain.Entities.Doctors;
+using DoctorFAM.Domain.Entities.Laboratory;
 using DoctorFAM.Domain.Entities.Languages;
 using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.Pharmacy;
@@ -87,6 +89,18 @@ namespace DoctorFAM.Data.DbContext
 
         #endregion
 
+        #region Doctors
+
+        public DbSet<DoctorsInfo> DoctorsInfos { get; set; }
+
+        #endregion
+
+        #region Laboratory
+
+        public DbSet<HomeLaboratoryRequestDetail> HomeLaboratoryRequestDetails { get; set; }
+
+        #endregion
+
         #endregion
 
         #region On Model Creating
@@ -130,6 +144,37 @@ namespace DoctorFAM.Data.DbContext
                 SystemName = "ar-SA",
                 Title = "Arabic",
                 IsActive = true
+            });
+
+            #endregion
+
+            #region Role Seed Data
+
+            modelBuilder.Entity<Role>().HasData(new Role
+            {
+                Id = 1,
+                Title = "Admin",
+                RoleUniqueName = "Admin",
+                CreateDate = DateTime.Now,
+                IsDelete = false
+            });
+
+            modelBuilder.Entity<Role>().HasData(new Role
+            {
+                Id = 2,
+                Title = "Doctor",
+                RoleUniqueName = "Doctor",
+                CreateDate = DateTime.Now,
+                IsDelete = false
+            });
+
+            modelBuilder.Entity<Role>().HasData(new Role
+            {
+                Id = 3,
+                Title = "Support",
+                RoleUniqueName = "Support",
+                CreateDate = DateTime.Now,
+                IsDelete = false
             });
 
             #endregion

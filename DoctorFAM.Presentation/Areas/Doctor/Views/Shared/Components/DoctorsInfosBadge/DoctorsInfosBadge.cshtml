@@ -1,0 +1,53 @@
+﻿@model string
+
+@if (Model == "NewUser")
+{
+    <li>
+        <a asp-area="Doctor" asp-controller="DoctorsInfo" asp-action="ManageDoctorsInfo">
+            <i class="menu-icon glyphicon glyphicon-education"></i>
+            <span class="menu-text">@Localizer["Doctor Info"]</span>
+            <div class="badge badge-warning" id="DoctorInfoState">
+                در انتظار
+            </div>
+        </a>
+    </li>
+}
+
+@if (Model == "WatingForConfirm")
+{
+    <li>
+        <a asp-area="Doctor" asp-controller="DoctorsInfo" asp-action="ManageDoctorsInfo">
+            <i class="menu-icon glyphicon glyphicon-education"></i>
+            <span class="menu-text">@Localizer["Doctor Info"]</span>
+            <div class="badge badge-warning" id="DoctorInfoState">
+                درانتظار برسی
+            </div>
+        </a>
+    </li>
+}
+
+@if (Model == "Rejected")
+{
+    <li>
+        <a asp-area="Doctor" asp-controller="DoctorsInfo" asp-action="ManageDoctorsInfo">
+            <i class="menu-icon glyphicon glyphicon-education"></i>
+            <span class="menu-text">@Localizer["Doctor Info"]</span>
+            <div class="badge badge-danger" id="DoctorInfoState">
+                پذیرفته نشده
+            </div>
+        </a>
+    </li>
+}
+
+@if (Model == "Accepted")
+{
+    <li>
+        <a asp-area="Doctor" asp-controller="DoctorsInfo" asp-action="ManageDoctorsInfo">
+            <i class="menu-icon glyphicon glyphicon-education"></i>
+            <span class="menu-text">@Localizer["Doctor Info"]</span>
+            <div class="badge badge-success" id="DoctorInfoState">
+                پذیرفته شده
+            </div>
+        </a>
+    </li>
+}

@@ -67,8 +67,11 @@
 
     <section class="grey-bg">
         <div class="">
+            <h2 class="title-2 z-index-1 text-uppercase  mb-2 text-center"> درخواست <span> دارو در منزل </span></h2>
+            <p class="title-2 z-index-1 text-uppercase mt-2 mb-4 text-center">کاربر گرامی, توجه داشته باشید شما میتوانید با هر یک از روشهای زیر, و  یا  هر  سه روش, دارو و اقلام مورد نیاز خود راسفارش دهید.</p>
+            <hr class="alert" />
             <div class="row m-1 p-1">
-                <div class="col-md-7  col-sm-12 " style="border:1px solid #999999; ">
+                <div class="col-md-7  col-sm-12 ">
                     <form asp-action="RequestedDrogs" asp-controller="HomePharmacy" asp-area="" enctype="multipart/form-data">
                         <input asp-for="RequestId" type="hidden" />
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -83,7 +86,19 @@
                             </nav>
                             <!-- Tab panes -->
                             <div class="tab-content pr-0" id="nav-tabContent">
+
+
                                 <div role="tabpanel" class="tab-pane fade show d-non active" id="FirstMethod">
+                                    <div class="row">
+                                        <div class="col-md-2"></div>
+                                        <div class="col-md-8 p-2 m-2">
+                                            <span style="color:red; font-size:12px;">
+                                                کاربر گرامی, در صورتیکه بیمه شده سلامت هستید, کد رهگیری نسخه و در صورتیکه بیمه شده تامین اجتماعی هستید, کد ملی متقاضی دارو را در این قسمت وارد نمایید.
+                                            </span>
+                                        </div>
+                                        <div class="col-md-2"></div>
+                                    </div>
+                                    <hr />
                                     <div class="col-md-10">
                                         <div class="form-group">
                                             <label asp-for="DrugTrakingCode" class="control-label"></label>
@@ -93,22 +108,35 @@
                                     </div>
                                 </div>
                                 <div role="tabpanel" class="tab-pane fade d-non" id="SecondeMethod">
+                                    <div class="row">
+                                        <div class="col-md-2"></div>
+                                        <div class="col-md-9 p-2 m-2">
+                                            <span style="color:red; font-size:12px;">
+                                                کاربر گرامی, شما میتوانید تصویر نسخه, یا لیست داروها و اقلام مورد نیاز خود را از این قسمت آپلود (بارگذاری) نمایید.
+                                            </span>
+                                        </div>
+                                        <div class="col-md-1"></div>
+                                    </div>
+                                    <hr />
                                     <div class="col-md-10">
                                         <div class="form-group">
-                                            <label class="control-label"> تصویر نسخه ی پزشکی  </label>
+                                            <label class="control-label"> تصویر نسخه ی پزشک  </label>
                                             <input type="file" id="DrugPrescriptionImage" name="DrugPrescriptionImage" class="form-control" />
                                         </div>
                                     </div>
                                 </div>
                                 <div role="tabpanel" class="tab-pane fade d-non" id="ThirdMethod">
                                     <div class="row">
-
-                                        <div class="col-md-10">
-                                            <div class="form-group">
-                                                <label class="control-label"> تصویر دارو  </label>
-                                                <input type="file" id="DrugImage" name="DrugImage" class="form-control" />
-                                            </div>
+                                        <div class="col-md-2"></div>
+                                        <div class="col-md-9 p-2 m-2">
+                                            <span style="color:red; font-size:12px;">
+                                               کاربر گرامی, شما میتوانید نام و تعداد داروی مورد نیاز خود را در این قسمت ثبت نمایید, در صورتیکه ثبت نام دارو برای شما مشکل است, میتوانید تصویر دارو را آپلود(بارگذاری) نمایید.
+                                            </span>
                                         </div>
+                                        <div class="col-md-1"></div>
+                                    </div>
+                                    <hr />
+                                    <div class="row">
 
                                         <div class="col-md-5">
                                             <div class="form-group">
@@ -126,6 +154,12 @@
                                             </div>
                                         </div>
 
+                                        <div class="col-md-10">
+                                            <div class="form-group">
+                                                <label class="control-label"> تصویر دارو  </label>
+                                                <input type="file" id="DrugImage" name="DrugImage" class="form-control" />
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -147,9 +181,9 @@
                     </form>
                 </div>
                 <div class="col-md-5  col-sm-12">
-                    <div class="row " style="border:1px solid #999999; ">
+                    <div class="row " style="border:1px solid #fd5b03; ">
                         <div class="col-md-12">
-                            <h2 class="title-2 z-index-1 text-uppercase mt-3 mb-4 text-center">  <span> سفارش نهایی   </span></h2>
+                            <h4 class="title-2 z-index-1 text-uppercase mt-3 mb-4 text-center">  <span> سفارش نهایی   </span></h4>
                             <div>
                                 @if (Model.ListOfRequestedDrugs != null && Model.ListOfRequestedDrugs.Any())
                                 {
@@ -169,25 +203,50 @@
                                                 {
 
                                                     <td class=" text-center align-items-center">
-                                                        <span>کد رهگیری نسخه/ کد ملی متقاضی</span>
-                                                        <h5 style="color:#fd5b03"> @item.DrugTrakingCode</h5>
+
+                                                        <div class="row">
+
+                                                            <div class=col-md-6>
+                                                                <span>کد رهگیری نسخه/ کد ملی متقاضی</span>
+                                                            </div>
+                                                            <div class=col-md-6>
+                                                                <h5 style="color:#fd5b03"> @item.DrugTrakingCode</h5>
+                                                            </div>
+                                                        </div>
+
                                                     </td>
                                                 }
                                                 @if (!string.IsNullOrEmpty(item.DrugPrescription))
                                                 {
                                                     <td class=" text-center align-items-center">
-                                                        <span>تصویر نسخه</span>
-                                                        <img src="@PathTools.DrugPrescriptionPathThumb/@item.DrugPrescription" class="avatar-style" />
+
+                                                        <div class="row">
+
+                                                            <div class=col-md-6>
+                                                                <span>تصویر نسخه</span>
+                                                            </div>
+                                                            <div class=col-md-6>
+                                                                <img src="@PathTools.DrugPrescriptionPathThumb/@item.DrugPrescription" class="avatar-style" />
+                                                            </div>
+                                                        </div>
+
                                                     </td>
                                                 }
                                                 @if (!string.IsNullOrEmpty(item.DrugImage) && !string.IsNullOrEmpty(item.DrugCount) && !string.IsNullOrEmpty(item.DrugName))
                                                 {
                                                     <td class=" text-center align-items-center">
-                                                            <span>تصویر دارو</span>
-                                                            <img src="@PathTools.DrugPrescriptionPathThumb/@item.DrugImage" class="avatar-style" />
-                                                            -
-                                                            @item.DrugName - تعداد @item.DrugCount 
-                                                        </td>
+
+                                                        <div class="row">
+
+                                                            <div class=col-md-6>
+                                                                @item.DrugName - تعداد @item.DrugCount
+                                                            </div>
+                                                            <div class=col-md-6>
+                                                                <img src="@PathTools.DrugPrescriptionPathThumb/@item.DrugImage" class="avatar-style" />
+                                                            </div>
+                                                        </div>
+
+                                                    </td>
                                                 }
                                                 else
                                                 {

@@ -12,6 +12,7 @@ using DoctorFAM.Domain.ViewModels.Account;
 using DoctorFAM.Domain.ViewModels.Admin;
 using DoctorFAM.Domain.ViewModels.Admin.Account;
 using DoctorFAM.Domain.ViewModels.Common;
+using DoctorFAM.Domain.ViewModels.UserPanel.Account;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -116,6 +117,12 @@ namespace DoctorFAM.Application.Services.Implementation
                 return RegisterUserResult.MobileExist;
             }
 
+            //Field about Accept Site Roles
+            if (register.SiteRoles == false)
+            {
+                return RegisterUserResult.SiteRoleNotAccept; 
+            }
+
             //Hash Password
             var password = PasswordHasher.EncodePasswordMd5(register.Password.SanitizeText());
 
@@ -146,9 +153,9 @@ namespace DoctorFAM.Application.Services.Implementation
                 EmailBanner = string.Empty,
             };
 
-           // string body = _viewRenderService.RenderToStringAsync("_Email", emailViewModel);
+            // string body = _viewRenderService.RenderToStringAsync("_Email", emailViewModel);
 
-          //  await _emailSender.SendEmail(email, "فعالسازی حساب کاربری", body);
+            //  await _emailSender.SendEmail(email, "فعالسازی حساب کاربری", body);
 
             //var result = SendEmail.Send(User.Email, "فعالسازی حساب کاربری", body);
 
@@ -204,9 +211,9 @@ namespace DoctorFAM.Application.Services.Implementation
                 EmailBanner = string.Empty,
             };
 
-           // string body = _viewRenderService.RenderToStringAsync("_Email", emailViewModel);
+            // string body = _viewRenderService.RenderToStringAsync("_Email", emailViewModel);
 
-           // await _emailSender.SendEmail(forgotPassword.Email.SanitizeText(), "بازیابی کلمه عبور", body);
+            // await _emailSender.SendEmail(forgotPassword.Email.SanitizeText(), "بازیابی کلمه عبور", body);
 
             #endregion
 
@@ -247,6 +254,33 @@ namespace DoctorFAM.Application.Services.Implementation
             await _context.SaveChangesAsync();
 
             return true;
+        }
+
+        #endregion
+
+        #region Site Side
+
+        public async Task RegisterDoctors(string mobile)
+        {
+            #region Get User By Mobile
+
+            var user = await GetUserByMobile(mobile);
+
+            #endregion
+
+            #region Add Doctor Role To User
+
+            var userRole = new UserRole()
+            {
+                RoleId = 2,
+                UserId = user.Id
+            };
+
+            await _context.UserRoles.AddAsync(userRole);
+
+            await _context.SaveChangesAsync();
+
+            #endregion
         }
 
         #endregion
@@ -299,7 +333,7 @@ namespace DoctorFAM.Application.Services.Implementation
             {
                 query = query.Where(s => s.Mobile != null && EF.Functions.Like(s.Mobile, $"%{filter.Mobile}%"));
             }
-      
+
             if (filter.RoleId != 0)
             {
                 query = query.Include(s => s.UserRoles).Where(s => s.UserRoles.Select(s => s.RoleId).Contains(filter.RoleId));
@@ -475,6 +509,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
             return false;
         }
+
         public async Task<bool> IsValidEmailForUserEditByAdmin(string email, ulong userId)
         {
             var user = await _context.Users.FirstOrDefaultAsync(s => !s.IsDelete && s.Email == email.Trim().ToLower());
@@ -484,6 +519,107 @@ namespace DoctorFAM.Application.Services.Implementation
             if (user.Id == userId) return true;
 
             return false;
+        }
+
+        #endregion
+
+        #region User Panel
+
+        public async Task<UserPanelEditUserInfoViewModel> FillUserPanelEditUserInfoViewModel(ulong userId)
+        {
+            #region Get User By Id
+
+            var user = await GetUserById(userId);
+
+            if (user == null) return null;
+
+            #endregion
+
+            #region Fill View Model
+
+            return new UserPanelEditUserInfoViewModel()
+            {
+                Mobile = user.Mobile,
+                Email = user.Email,
+                UserId = user.Id,
+                AvatarName = user.Avatar,
+                username = user.Username
+            };
+
+            #endregion
+        }
+
+        public async Task<UserPanelEditUserInfoResult> EditUserInfoInUserPanel(UserPanelEditUserInfoViewModel edit, IFormFile? UserAvatar)
+        {
+            #region Data Valdiation
+
+            var user = await GetUserById(edit.UserId);
+
+            if (user == null)
+            {
+                return UserPanelEditUserInfoResult.UserNotFound;
+            }
+
+            if (UserAvatar != null && !UserAvatar.IsImage())
+            {
+                return UserPanelEditUserInfoResult.NotValidImage;
+            }
+
+            if (UserAvatar != null)
+            {
+                if (!string.IsNullOrEmpty(user.Avatar))
+                {
+                    user.Avatar.DeleteImage(PathTools.UserAvatarPathServer, PathTools.UserAvatarPathThumbServer);
+                }
+
+                var imageName = CodeGenerator.GenerateUniqCode() + Path.GetExtension(UserAvatar.FileName);
+                UserAvatar.AddImageToServer(imageName, PathTools.UserAvatarPathServer, 270, 270, PathTools.UserAvatarPathThumbServer);
+                user.Avatar = imageName;
+            }
+
+            if (!await IsValidEmailForUserEditByAdmin(edit.Email, user.Id))
+            {
+                return UserPanelEditUserInfoResult.NotValidEmail;
+            }
+
+            #endregion
+
+            #region Update User Field
+
+            user.Username = edit.username.SanitizeText();
+            user.Email = edit.Email.SanitizeText();
+
+            _context.Update(user);
+            await _context.SaveChangesAsync();
+
+            #endregion
+
+            return UserPanelEditUserInfoResult.Success;
+        }
+
+        public async Task<ChangeUserPasswordResponse> ChangeUserPasswordAsync(ulong userId, ChangeUserPasswordViewModel model)
+        {
+            #region Get User By Id
+
+            var user = await GetUserById(userId);
+
+            if (user == null) return ChangeUserPasswordResponse.UserNotFound;
+
+            #endregion
+
+            #region Change Password
+
+            if (user.Password != PasswordHasher.EncodePasswordMd5(model.CurrentPassword))
+            {
+                return ChangeUserPasswordResponse.WrongPassword;
+            }
+
+            user.Password = PasswordHasher.EncodePasswordMd5(model.NewPassword);
+            await _userRepository.EditUser(user);
+
+            #endregion
+
+            return ChangeUserPasswordResponse.Success;
         }
 
         #endregion

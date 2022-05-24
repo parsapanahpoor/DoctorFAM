@@ -19,16 +19,23 @@ namespace BusinessPortal.Application.Services.Implementation
 
         public IUserService _userService { get; set; }
         public DoctorFAMDbContext _context { get; set; }
+        public IDoctorsService _doctorsService;
 
-        public PermissionService(DoctorFAMDbContext context , IUserService userServie)
+        public PermissionService(DoctorFAMDbContext context , IUserService userServie , IDoctorsService doctorsService)
         {
             _context = context;
             _userService = userServie;
+            _doctorsService = doctorsService;
         }
 
         #endregion
 
         #region Check Permission
+
+        public async Task<string> GetDoctorsInfosState(ulong userId)
+        {
+            return await _doctorsService.GetDoctorsInfosState(userId);
+        }
 
         public async Task<bool> HasUserPermission(ulong userId, string permissionName)
         {
@@ -255,6 +262,68 @@ namespace BusinessPortal.Application.Services.Implementation
             return true;
         }
 
+        public async Task<GetUserRoles> GetUserRole(ulong userId)
+        {
+            #region Get User 
+
+            var user = await _userService.GetUserById(userId);
+
+            if (user.IsAdmin) return GetUserRoles.Admin;
+
+            #endregion
+
+            #region Get All Of User Roles
+
+            var userRoles = await _context.UserRoles.Include(p => p.Role).Where(p => p.UserId == userId && !p.IsDelete)
+                                                                .Select(p => p.Role.RoleUniqueName).ToListAsync();
+
+            #endregion
+
+            #region check user Role
+
+            if (userRoles.Any() && userRoles.Contains("Admin")) return GetUserRoles.Admin;
+
+            if (userRoles.Any() && userRoles.Contains("Doctor")) return GetUserRoles.Doctor;
+
+            if (userRoles.Any() && userRoles.Contains("Support")) return GetUserRoles.Supporter;
+
+            if (!userRoles.Any()) return GetUserRoles.User;
+
+            #endregion
+
+            return GetUserRoles.User;
+        }
+
+        public async Task<bool> IsUserAdmin(ulong userId)
+        {
+            var result = await GetUserRole(userId);
+
+            if (result == GetUserRoles.Admin) return true;
+
+            return false;
+        }
+
+        public async Task<bool> IsUserDoctor(ulong userId)
+        {
+            var result = await GetUserRole(userId);
+
+            if (result == GetUserRoles.Admin) return true;
+
+            if (result == GetUserRoles.Doctor) return true;
+
+            return false;
+        }
+
+        public async Task<bool> IsUserSupporter(ulong userId)
+        {
+            var result = await GetUserRole(userId);
+
+            if (result == GetUserRoles.Admin) return true;
+
+            if (result == GetUserRoles.Supporter) return true;
+
+            return false;
+        }
 
         #endregion
     }

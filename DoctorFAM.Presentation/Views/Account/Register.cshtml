@@ -20,12 +20,14 @@
                         </div>
                         <div class="col-lg-5 col-md-12 ">
                             <div class="login-form text-center">
-                                <a href="/Home/SecPage" class="text-center">
-                                    <span class="" style="color:#3143ef; font-weight:900 !important; font-size:30px !important;"><b>DOCTOR</b></span>
-                                    <span class="" style="color:#fd5b03; font-weight:900 !important; font-size:32px !important;"><b>F</b></span>
-                                    <span class="" style="color:#fd5b03; font-weight:900 !important; font-size:32px !important;"><b>A</b></span>
-                                    <span class="" style="color:#fd5b03; font-weight:900 !important; font-size:32px !important;"><b>M</b></span>
-                                </a>
+                               <div class="container login-header  text-center">
+                                    <a href="/Home/Secpage" class="text-center align-items-center">
+
+                                        <img class="logoImage text-center align-items-center" src="~/Content/images/Logo/doctorfam-Header-Logo.png" alt="دکترفام" />
+
+                                    </a>
+                                </div>
+
                                
                                 @if (User.Identity.IsAuthenticated && Context.Request.Query["ReturnUrl"] != "")
                                 {

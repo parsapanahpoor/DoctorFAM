@@ -80,6 +80,32 @@ namespace DoctorFAM.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1m,
+                            CreateDate = new DateTime(2022, 5, 23, 1, 5, 22, 730, DateTimeKind.Local).AddTicks(3454),
+                            IsDelete = false,
+                            RoleUniqueName = "Admin",
+                            Title = "Admin"
+                        },
+                        new
+                        {
+                            Id = 2m,
+                            CreateDate = new DateTime(2022, 5, 23, 1, 5, 22, 730, DateTimeKind.Local).AddTicks(3469),
+                            IsDelete = false,
+                            RoleUniqueName = "Doctor",
+                            Title = "Doctor"
+                        },
+                        new
+                        {
+                            Id = 3m,
+                            CreateDate = new DateTime(2022, 5, 23, 1, 5, 22, 730, DateTimeKind.Local).AddTicks(3479),
+                            IsDelete = false,
+                            RoleUniqueName = "Support",
+                            Title = "Support"
+                        });
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Account.RolePermission", b =>
@@ -209,6 +235,53 @@ namespace DoctorFAM.Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("UserRoles");
+                });
+
+            modelBuilder.Entity("DoctorFAM.Domain.Entities.Doctors.DoctorsInfo", b =>
+                {
+                    b.Property<decimal>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(20,0)");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<decimal>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DoctorsInfosType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Education")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("MediacalFile")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("MedicalSystemCode")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NationalCode")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RejectDescription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Specialty")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("UserId")
+                        .HasColumnType("decimal(20,0)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("DoctorsInfos");
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Languages.Language", b =>
@@ -714,6 +787,17 @@ namespace DoctorFAM.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("DoctorFAM.Domain.Entities.Doctors.DoctorsInfo", b =>
+                {
+                    b.HasOne("DoctorFAM.Domain.Entities.Account.User", "User")
+                        .WithMany("DoctorsInfos")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Patient.Patient", b =>
                 {
                     b.HasOne("DoctorFAM.DataLayer.Entities.Request", null)
@@ -873,6 +957,8 @@ namespace DoctorFAM.Data.Migrations
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Account.User", b =>
                 {
+                    b.Navigation("DoctorsInfos");
+
                     b.Navigation("Patients");
 
                     b.Navigation("Requests");

@@ -1,5 +1,6 @@
 ﻿using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Common;
+using DoctorFAM.Domain.Entities.Doctors;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -74,6 +75,8 @@ namespace DoctorFAM.Domain.Entities.Account
         public ICollection<Request> Requests { get; set; }
 
         public ICollection<Patient.Patient> Patients { get; set; }
+
+        public ICollection<DoctorsInfo> DoctorsInfos { get; set; }
 
         #endregion
     }

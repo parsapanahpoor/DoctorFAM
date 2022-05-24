@@ -8,7 +8,6 @@ namespace DoctorFAM.Application.StaticTools
 {
     public static class PathTools
     {
-
         #region Site
 
         public static string SiteFarsiName = "DoctorFAM";
@@ -55,6 +54,28 @@ namespace DoctorFAM.Application.StaticTools
 
         public static readonly string UploadCkEditorImagePath = "/content/upload/ckeditor/images/";
         public static readonly string UploadCkEditorImagePathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/upload/ckeditor/images/");
+
+        #endregion
+
+        #region Doctor Information
+
+        public static readonly string DefaultMediacalFile = "/content/images/MediacalFile/DefaultMediacalFile.png";
+
+        public static readonly string MediacalFilePath = "/content/images/MediacalFile/main/";
+        public static readonly string MediacalFilePathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/MediacalFile/main/");
+
+        public static readonly string MediacalFilePathThumb = "/content/images/MediacalFile/thumb/";
+        public static readonly string MediacalFilePathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/MediacalFile/thumb/");
+
+        #endregion
+
+        #region Lab Prescription
+
+        public static readonly string LabPrescriptionPath = "/content/images/LabPrescription/main/";
+        public static readonly string LabPrescriptionPathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/LabPrescription/main/");
+
+        public static readonly string LabPrescriptionPathThumb = "/content/images/LabPrescription/thumb/";
+        public static readonly string LabPrescriptionPathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/LabPrescription/thumb/");
 
         #endregion
 

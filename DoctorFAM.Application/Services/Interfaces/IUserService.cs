@@ -2,6 +2,7 @@
 using DoctorFAM.Domain.ViewModels.Account;
 using DoctorFAM.Domain.ViewModels.Admin;
 using DoctorFAM.Domain.ViewModels.Admin.Account;
+using DoctorFAM.Domain.ViewModels.UserPanel.Account;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -41,14 +42,34 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         #endregion
 
-        #region Admin
+        #region Site Side
 
+        Task RegisterDoctors(string mobile);
+
+        #endregion
+
+        #region Admin
         Task<FilterUserViewModel> FilterUsers(FilterUserViewModel filter);
+
         Task<bool> ChangePasswordInAdmin(ChangePasswordInAdminViewModel passwordViewModel);
+
         Task<AdminEditUserInfoViewModel> FillAdminEditUserInfoViewModel(ulong userId);
+
         Task<bool> IsValidMobileForUserEditByAdmin(string mobile, ulong userId);
+
         Task<bool> IsValidEmailForUserEditByAdmin(string email, ulong userId);
+
         Task<AdminEditUserInfoResult> EditUserInfo(AdminEditUserInfoViewModel edit, IFormFile? UserAvatar);
+
+        #endregion
+
+        #region User Panel
+
+        Task<UserPanelEditUserInfoViewModel> FillUserPanelEditUserInfoViewModel(ulong userId);
+
+        Task<UserPanelEditUserInfoResult> EditUserInfoInUserPanel(UserPanelEditUserInfoViewModel edit, IFormFile? UserAvatar);
+
+        Task<ChangeUserPasswordResponse> ChangeUserPasswordAsync(ulong userId, ChangeUserPasswordViewModel model);
 
         #endregion
 

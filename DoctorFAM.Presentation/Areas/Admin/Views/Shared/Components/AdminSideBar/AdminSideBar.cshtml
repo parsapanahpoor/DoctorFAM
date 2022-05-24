@@ -54,9 +54,18 @@
             <a asp-controller="Wallet" asp-action="Index">
                 <i class="menu-icon glyphicon glyphicon-usd"></i>
                 <span class="menu-text"> @SharedLocalizer["Wallet list"]  </span>
+                                <i class="menu-expand"></i>
             </a>
         </li>
         
+         <li>
+            <a asp-controller="Doctors" asp-action="ListOfDoctorsInfo">
+                <i class="menu-icon glyphicon glyphicon-education"></i>
+                <span class="menu-text"> @SharedLocalizer["Manage Doctors Info"]  </span>
+                                <i class="menu-expand"></i>
+            </a>
+        </li>
+
         <li>
             <a href="#" class="menu-dropdown">
                 <i class="menu-icon glyphicon glyphicon-map-marker"></i>

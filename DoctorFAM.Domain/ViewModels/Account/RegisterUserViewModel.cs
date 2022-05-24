@@ -26,12 +26,16 @@ namespace DoctorFAM.Domain.ViewModels.Account
         [Compare("Password", ErrorMessage = "کلمه های عبور مغایرت دارند .")]
         public string RePassword { get; set; }
 
-        
+        public bool? DoctorsRegister { get; set; }
+
+        public bool SiteRoles { get; set; }
+
     }
 
     public enum RegisterUserResult
     {
         Success,       
-        MobileExist
+        MobileExist,
+        SiteRoleNotAccept
     }
 }

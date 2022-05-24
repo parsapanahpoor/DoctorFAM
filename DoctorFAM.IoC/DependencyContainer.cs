@@ -33,6 +33,8 @@ namespace DoctorFAM.IoC
             services.AddScoped<IPatientService, PatientService>();
             services.AddScoped<IWalletService, WalletService>();
             services.AddScoped<IHomePharmacyServicec, HomePharmacyService>();
+            services.AddScoped<IDoctorsService, DoctorsService>();
+            services.AddScoped<IHomeLaboratoryServices, HomeLaboratoryService>();
 
             #endregion
 
@@ -49,6 +51,8 @@ namespace DoctorFAM.IoC
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IWalletRepository, WalletRepository>();
             services.AddScoped<IHomePharmacyRepository, HomePharmacyRepository>();
+            services.AddScoped<IDoctorsRepository, DoctorsRepostory>();
+            services.AddScoped<IHomeLaboratoryRepository, HomeLaboratoryRepository>();
 
             #endregion
         }

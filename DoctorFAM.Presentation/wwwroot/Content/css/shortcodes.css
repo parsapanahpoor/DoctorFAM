@@ -2200,3 +2200,18 @@
 .btn-acc {
     color: #3143ef;
 }
+
+.logoImage {
+    
+   width:150px;
+  height:40px !important;
+
+}
+
+.login-header {
+    padding:7px;
+    background-color: #3143ef;
+}
+.alarmimg {
+   height:200px;
+}

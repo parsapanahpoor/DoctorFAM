@@ -1,0 +1,89 @@
+﻿@model string
+
+<div class="row">
+
+    @if (Model == "NewUser")
+    {
+        <div class="col-lg-12 col-sm-12 col-xs-12">
+            <div class="widget">
+                <div class="widget-header bg-warning">
+                    <span class="widget-caption">عدم دسترسی </span>
+                    <div class="widget-buttons">
+                        <a href="#" data-toggle="config">
+                            <i class="fa fa-cog"></i>
+                        </a>
+                        <a href="#" data-toggle="maximize">
+                            <i class="fa fa-expand"></i>
+                        </a>
+                        <a href="#" data-toggle="collapse">
+                            <i class="fa fa-minus"></i>
+                        </a>
+                        <a href="#" data-toggle="dispose">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div><!--Widget Buttons-->
+            </div><!--Widget Header-->
+            <div class="widget-body bg-warning">
+                    <p> کاربر محترم ضمن عرض خوش آمد برای ادامه ی فعالیت در سایت باید اطلاعات فردی خود را <a asp-action="ManageDoctorsInfo" asp-area="Doctor" asp-controller="DoctorsInfo"> از لینک زیر  </a>پر کنید </p>
+                </div><!--Widget Body-->
+        </div><!--Widget-->
+    </div>
+    }
+
+    @if (Model == "WatingForConfirm")
+    {
+        <div class="col-lg-12 col-sm-12 col-xs-12">
+            <div class="widget">
+                <div class="widget-header bg-info">
+                    <span class="widget-caption">عدم دسترسی </span>
+                    <div class="widget-buttons">
+                        <a href="#" data-toggle="config">
+                            <i class="fa fa-cog"></i>
+                        </a>
+                        <a href="#" data-toggle="maximize">
+                            <i class="fa fa-expand"></i>
+                        </a>
+                        <a href="#" data-toggle="collapse">
+                            <i class="fa fa-minus"></i>
+                        </a>
+                        <a href="#" data-toggle="dispose">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div><!--Widget Buttons-->
+            </div><!--Widget Header-->
+            <div class="widget-body bg-info">
+                    <p> کاربر محترم اطلاعات شما درحال برسی توسط پشتیبان است . لطفا تا اعلام نتیجه صبور باشید  </p>
+                </div><!--Widget Body-->
+        </div><!--Widget-->
+    </div>
+    }
+
+    @if (Model == "Rejected")
+    {
+        <div class="col-lg-12 col-sm-12 col-xs-12">
+            <div class="widget">
+                <div class="widget-header bg-red">
+                    <span class="widget-caption">عدم دسترسی </span>
+                    <div class="widget-buttons">
+                        <a href="#" data-toggle="config">
+                            <i class="fa fa-cog"></i>
+                        </a>
+                        <a href="#" data-toggle="maximize">
+                            <i class="fa fa-expand"></i>
+                        </a>
+                        <a href="#" data-toggle="collapse">
+                            <i class="fa fa-minus"></i>
+                        </a>
+                        <a href="#" data-toggle="dispose">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div><!--Widget Buttons-->
+            </div><!--Widget Header-->
+            <div class="widget-body bg-red">
+                    <p> کاربر محترم اطلاعات شما توسط پشتیبانی سایت رد شده است . شما می توانید علت آن را در صفحه ی مورد نظر بیابید </p>
+                </div><!--Widget Body-->
+        </div><!--Widget-->
+    </div>
+    }
+
+</div>
