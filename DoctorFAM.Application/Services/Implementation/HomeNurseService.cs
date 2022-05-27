@@ -1,10 +1,13 @@
-﻿using DoctorFAM.Application.Security;
+﻿using DoctorFAM.Application.Interfaces;
+using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Data.DbContext;
 using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Patient;
+using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Enums.RequestType;
 using DoctorFAM.Domain.Interfaces;
+using DoctorFAM.Domain.ViewModels.Admin.HealthHouse.HomeNurse;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -21,7 +24,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
         public DoctorFAMDbContext _context;
 
-        public IHomeNurseRepository _homeVisit;
+        public IHomeNurseRepository _homeNurse;
 
         public IRequestService _requestService;
 
@@ -29,14 +32,17 @@ namespace DoctorFAM.Application.Services.Implementation
 
         public IPatientService _patientService;
 
+        private readonly ILocationService _locationService;
+
         public HomeNurseService(DoctorFAMDbContext context, IHomeNurseRepository homeNurse, IRequestService requestService,
-                                IUserService userService, IPatientService patientService)
+                                IUserService userService, IPatientService patientService , ILocationService locationService)
         {
             _context = context;
-            _homeVisit = homeNurse;
+            _homeNurse = homeNurse;
             _requestService = requestService;
             _userService = userService;
             _patientService = patientService;
+            _locationService = locationService;
         }
 
         #endregion
@@ -117,6 +123,98 @@ namespace DoctorFAM.Application.Services.Implementation
         #endregion
 
         #region Site Side
+
+        #endregion
+
+        #region Admin Side
+
+        public async Task<FilterHomeNurseViewModel> FilterHomeNurse(FilterHomeNurseViewModel filter)
+        {
+            return await _homeNurse.FilterHomeNurse(filter);
+        }
+
+        public async Task<Request?> GetRquestForHomeNurseById(ulong requestId)
+        {
+            return await _homeNurse.GetRquestForHomeNurseById(requestId);
+        }
+
+        public async Task<Patient?> GetPatientByRequestId(ulong requestId)
+        {
+            return await _homeNurse.GetPatientByRequestId(requestId);
+        }
+
+        public async Task<PaitientRequestDetail?> GetRequestPatientDetailByRequestId(ulong requestId)
+        {
+            return await _homeNurse.GetRequestPatientDetailByRequestId(requestId);
+        }
+
+        public async Task<HomeNurseRequestDetailViewModel> ShowHomeNurseDetail(ulong requestId)
+        {
+            #region Get request By Id
+
+            var request = await GetRquestForHomeNurseById(requestId);
+
+            if (request == null) return null;
+
+            #endregion
+
+            #region Get Patient By Id 
+
+            var patient = await GetPatientByRequestId(requestId);
+
+            #endregion
+
+            #region Get Patient Request Detail 
+
+            var requestDetail = await GetRequestPatientDetailByRequestId(requestId);
+
+            #endregion
+
+            #region Fill View Model
+
+            HomeNurseRequestDetailViewModel model = new HomeNurseRequestDetailViewModel()
+            {
+                Email = request.User.Email,
+                Username = request.User.Username,
+                Mobile = request.User.Mobile,
+                RequestState = request.RequestState,
+                PatientName = patient?.PatientName,
+                PatientLastName = patient?.PatientLastName,
+                NationalId = patient?.NationalId,
+                Gender = patient?.Gender,
+                Age = patient?.Age,
+                InsuranceType = patient?.InsuranceType,
+                RequestDescription = patient?.RequestDescription,
+                Vilage = requestDetail?.Vilage,
+                FullAddress = requestDetail?.FullAddress,
+                Phone = requestDetail?.Phone,
+                RequestDetailMobile = requestDetail?.Mobile,
+                Distance = requestDetail?.Distance
+            };
+
+            #endregion
+
+            #region Get Location
+
+            if (requestDetail != null)
+            {
+                var country = await _locationService.GetLocationById(requestDetail.CountryId);
+
+                var state = await _locationService.GetLocationById(requestDetail.StateId);
+
+                var city = await _locationService.GetLocationById(requestDetail.CityId);
+
+                model.Country = country.UniqueName;
+
+                model.State = state.UniqueName;
+
+                model.City = city.UniqueName;
+            }
+
+            #endregion
+
+            return model;
+        }
 
         #endregion
     }

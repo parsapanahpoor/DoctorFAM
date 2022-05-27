@@ -48,7 +48,7 @@ namespace DoctorFAM.Application.Services
 
         #region Admin Side 
 
-        public async Task<Location> GetLocationById(ulong locationId)
+        public async Task<Location?> GetLocationById(ulong locationId)
         {
             return await _location.GetLocationById(locationId);
         }

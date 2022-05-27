@@ -1,0 +1,213 @@
+﻿@model DoctorFAM.Domain.ViewModels.Admin.HealthHouse.HomeNurse.HomeNurseRequestDetailViewModel
+@using DoctorFAM.Domain.ViewModels.Admin.HealthHouse.HomeNurse
+@using DoctorFAM.Web.Culture
+@using DoctorFAM.Domain.ViewModels.Admin.HealthHouse
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Domain.ViewModels.Common
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = @Localizer["Home Nurse Request Detail"];
+}
+
+@section Scripts
+{
+<partial name="_JqueryValidation" />
+}
+
+@section Breadcrumb
+{
+<li>
+    <a href="javascript:void(0)"> @Localizer["Home Nurse Request List"] / </a>
+    <a href="javascript:void(0)"> @ViewData["Title"] </a>
+</li>
+}
+
+<div class="row">
+    <div class="col-lg-12 col-sm-12">
+        <div class="widget">
+            <div class="widget-header bordered-bottom bordered-green">
+                <span class="widget-caption"> @Localizer["User Infos"] </span>
+            </div>
+            <div class="widget-body">
+                <div>
+
+                    <div class="row">
+                        <div class="form-group col-md-12 col-sm-12">
+                            <label asp-for="Username"></label>
+                            <input type="text" class="form-control" asp-for="Username">
+                            <span class="text-danger" asp-validation-for="Username"></span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-md-12 col-sm-12">
+                            <label asp-for="Email"></label>
+                            <input type="text" class="form-control" asp-for="Email" value="@(string.IsNullOrEmpty(Model.Email) ? "وارد نشده " : Model.Email)">
+                            <span class="text-danger" asp-validation-for="Email"></span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-md-12 col-sm-12">
+                            <label asp-for="Mobile"></label>
+                            <input type="text" class="form-control" asp-for="Mobile">
+                            <span class="text-danger" asp-validation-for="Mobile"></span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12 col-sm-12">
+        <div class="widget">
+            <div class="widget-header bordered-bottom bordered-green">
+                <span class="widget-caption"> @Localizer["Patient Information"] </span>
+            </div>
+            <div class="widget-body">
+                <div>
+
+                    <div class="row">
+                        <div class="form-group col-md-12 col-sm-12">
+                            <label asp-for="PatientName"> @Localizer["First Name"] </label>
+                            <input type="text" class="form-control" asp-for="PatientName"  value="@(string.IsNullOrEmpty(Model.PatientName) ? "وارد نشده " : Model.PatientName)">
+                            <span class="text-danger" asp-validation-for="PatientName"></span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-md-12 col-sm-12">
+                            <label asp-for="PatientLastName">@Localizer["Last Name"]</label>
+                            <input type="text" class="form-control" asp-for="PatientLastName" value="@(string.IsNullOrEmpty(Model.PatientLastName) ? "وارد نشده " : Model.PatientLastName)">
+                            <span class="text-danger" asp-validation-for="PatientLastName"></span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-md-12 col-sm-12">
+                            <label asp-for="NationalId">@Localizer["National Id"]</label>
+                            <input type="text" class="form-control" asp-for="NationalId"  value="@(string.IsNullOrEmpty(Model.NationalId) ? "وارد نشده " : Model.NationalId)">
+                            <span class="text-danger" asp-validation-for="NationalId"></span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-md-12 col-sm-12">
+                            <label asp-for="Gender">@Localizer["Patient Gender"]</label>
+                            <input type="text" class="form-control" asp-for="Gender"  value="@(Model.Gender == null ? "وارد نشده " : Model.Gender)">
+                            <span class="text-danger" asp-validation-for="Gender"></span>
+                        </div>
+                    </div>
+
+                      <div class="row">
+                        <div class="form-group col-md-12 col-sm-12">
+                            <label asp-for="Age">@Localizer["Patient Age"]</label>
+                            <div class="form-con trol"> @(Model.Age == null ? "وارد نشده " : Model.Age)</div>
+                        </div>
+                    </div>
+
+                       <div class="row">
+                        <div class="form-group col-md-12 col-sm-12">
+                            <label asp-for="InsuranceType">@Localizer["Patient InsuranceType"]</label>
+                            <input type="text" class="form-control" asp-for="InsuranceType"  value="@(Model.InsuranceType == null ? "وارد نشده " : Model.InsuranceType)">
+                            <span class="text-danger" asp-validation-for="InsuranceType"></span>
+                        </div>
+                    </div>
+
+                      <div class="row">
+                        <div class="form-group col-md-12 col-sm-12">
+                            <label asp-for="RequestDescription">@Localizer["Patient RequestDescription"]</label>
+                            <textarea  class="form-control" > @(Model.RequestDescription == null ? "وارد نشده " : Model.RequestDescription)</textarea>
+                            <span class="text-danger" asp-validation-for="RequestDescription"></span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12 col-sm-12">
+        <div class="widget">
+            <div class="widget-header bordered-bottom bordered-green">
+                <span class="widget-caption"> @Localizer["Request Detail"] </span>
+            </div>
+            <div class="widget-body">
+                <div>
+
+                    <div class="row">
+                        <div class="form-group col-md-12 col-sm-12">
+                            <label asp-for="Country"> @Localizer["Country"] </label>
+                            <input type="text" class="form-control" asp-for="Country"  value="@(string.IsNullOrEmpty(Model.Country) ? "وارد نشده " : Model.Country)">
+                            <span class="text-danger" asp-validation-for="Country"></span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-md-12 col-sm-12">
+                            <label asp-for="State">@Localizer["State"]</label>
+                            <input type="text" class="form-control" asp-for="State" value="@(string.IsNullOrEmpty(Model.State) ? "وارد نشده " : Model.State)">
+                            <span class="text-danger" asp-validation-for="State"></span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-md-12 col-sm-12">
+                            <label asp-for="City">@Localizer["City"]</label>
+                            <input type="text" class="form-control" asp-for="City"  value="@(string.IsNullOrEmpty(Model.City) ? "وارد نشده " : Model.City)">
+                            <span class="text-danger" asp-validation-for="City"></span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-md-12 col-sm-12">
+                            <label asp-for="Vilage">@Localizer["Vilage"]</label>
+                            <input type="text" class="form-control" asp-for="Vilage"  value="@(Model.Vilage == null ? "وارد نشده " : Model.Vilage)">
+                            <span class="text-danger" asp-validation-for="Vilage"></span>
+                        </div>
+                    </div>
+
+                       <div class="row">
+                        <div class="form-group col-md-12 col-sm-12">
+                            <label asp-for="Phone">@Localizer["Phone"]</label>
+                            <input type="text" class="form-control" asp-for="Phone"  value="@(Model.Phone == null ? "وارد نشده " : Model.Phone)">
+                            <span class="text-danger" asp-validation-for="Phone"></span>
+                        </div>
+                    </div>
+
+                       <div class="row">
+                        <div class="form-group col-md-12 col-sm-12">
+                            <label asp-for="RequestDetailMobile">@Localizer["RequestDetailMobile"]</label>
+                            <input type="text" class="form-control" asp-for="RequestDetailMobile"  value="@(Model.RequestDetailMobile == null ? "وارد نشده " : Model.RequestDetailMobile)">
+                            <span class="text-danger" asp-validation-for="RequestDetailMobile"></span>
+                        </div>
+                    </div>
+
+                      <div class="row">
+                        <div class="form-group col-md-12 col-sm-12">
+                            <label asp-for="Distance">@Localizer["Distance"]</label>
+                            <input type="text" class="form-control" asp-for="Distance"  value="@(Model.Distance == null ? "وارد نشده " : Model.Distance)">
+                            <span class="text-danger" asp-validation-for="Distance"></span>
+                        </div>
+                    </div>
+
+                      <div class="row">
+                        <div class="form-group col-md-12 col-sm-12">
+                            <label asp-for="FullAddress">@Localizer["FullAddress"]</label>
+                            <textarea  class="form-control" > @(Model.FullAddress == null ? "وارد نشده " : Model.FullAddress)</textarea>
+                            <span class="text-danger" asp-validation-for="FullAddress"></span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,5 +1,8 @@
-﻿using DoctorFAM.Domain.Entities.Laboratory;
+﻿using DoctorFAM.DataLayer.Entities;
+using DoctorFAM.Domain.Entities.Laboratory;
+using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.Requests;
+using DoctorFAM.Domain.ViewModels.Admin.HealthHouse.HomeLabratory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,5 +26,22 @@ namespace DoctorFAM.Domain.Interfaces
         Task AddPatientRequestDateTimeDetail(PatientRequestDateTimeDetail request);
 
         #endregion
+
+        #region Admin Side
+
+        Task<FilterHomeLabratoryViewModel> FilterHomeLabratory(FilterHomeLabratoryViewModel filter);
+
+        Task<Request?> GetRquestForHomeLabratoryById(ulong requestId);
+
+        Task<Patient?> GetPatientByRequestId(ulong requestId);
+
+        Task<PaitientRequestDetail?> GetRequestPatientDetailByRequestId(ulong requestId);
+
+        Task<PatientRequestDateTimeDetail?> GetRequestDateTimeDetailByRequestDetailId(ulong requestDetailId);
+
+        Task<List<RequestedLabratoryAdminSideViewModel>?> GetRequestLabratoryByRequestId(ulong requestId);
+
+        #endregion
+
     }
 }

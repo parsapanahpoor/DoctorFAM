@@ -25,19 +25,31 @@ namespace DoctorFAM.Web.Controllers
 
         [HttpGet("Register")]
         [RedirectHomeIfLoggedInActionFilter]
-        public IActionResult Register()
+        public IActionResult Register(bool? doctors)
         {
+            #region About Doctors
+
+            ViewBag.DoctorsRegister = doctors;
+
+            #endregion
+
             return View();
         }
 
         [HttpPost("Register"), ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterUserViewModel register)
         {
+            #region Model State Validations
+
             if (!ModelState.IsValid)
             {
                 TempData[ErrorMessage] = "مقادیر وارد شده معتبر نمی باشد . ";
                 return View(register);
             }
+
+            #endregion
+
+            #region Register User Methods
 
             var result = await _userService.RegisterUser(register);
 
@@ -47,11 +59,27 @@ namespace DoctorFAM.Web.Controllers
                     TempData[ErrorMessage] = "شماره موبایل وارد شده موجود است ";
                     break;
 
+                case RegisterUserResult.SiteRoleNotAccept:
+                    TempData[ErrorMessage] = "قوانین سایت باید پذیرفته شوند ";
+                    break;
+
                 case RegisterUserResult.Success:
                     TempData[SuccessMessage] = "عملیات با موفقیت انجام شد .";
                     TempData[InfoMessage] = $"پیامی  حاوی کد فعالسازی حساب کاربری به {register.Mobile} ارسال شد .";
+
+                    #region Doctors Register
+
+                    if (register.DoctorsRegister == true)
+                    {
+                        await _userService.RegisterDoctors(register.Mobile);
+                    }
+
+                    #endregion
+
                     return RedirectToAction("Login", "Account");
             }
+
+            #endregion
 
             return View(register);
         }

@@ -27,7 +27,7 @@ namespace DoctorFAM.Application.Interfaces
 
         Task<FilterLocationViewModel> FilterLocation(FilterLocationViewModel filter);
 
-        Task<Location> GetLocationById(ulong locationId);
+        Task<Location?> GetLocationById(ulong locationId);
 
         Task<CreateLocationResult> CreateLocation(CreateLocationViewModel location);
 

@@ -1,10 +1,13 @@
-﻿using DoctorFAM.Application.Security;
+﻿using DoctorFAM.Application.Interfaces;
+using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Data.DbContext;
 using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Patient;
+using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Enums.RequestType;
 using DoctorFAM.Domain.Interfaces;
+using DoctorFAM.Domain.ViewModels.Admin.HealthHouse.HomePatientTransport;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -29,14 +32,17 @@ namespace DoctorFAM.Application.Services.Implementation
 
         public IPatientService _patientService;
 
+        private readonly ILocationService _locationService;
+
         public HomePatientTransportService(DoctorFAMDbContext context, IHomePatientTransportRepository homePatientTransport, IRequestService requestService,
-                                IUserService userService, IPatientService patientService)
+                                IUserService userService, IPatientService patientService , ILocationService locationService)
         {
             _context = context;
             _homePatientTransport = homePatientTransport;
             _requestService = requestService;
             _userService = userService;
             _patientService = patientService;
+            _locationService = locationService;
         }
 
         #endregion
@@ -117,6 +123,98 @@ namespace DoctorFAM.Application.Services.Implementation
         #endregion
 
         #region Site Side
+
+        #endregion
+
+        #region Admin Side
+
+        public async Task<FilterHomePatientTransportViewModel> FilterHomePatientTransport(FilterHomePatientTransportViewModel filter)
+        {
+            return await _homePatientTransport.FilterHomePatientTransport(filter);
+        }
+
+        public async Task<HomePatientTransportRequestDetailViewModel> ShowHomePatientTransportDetail(ulong requestId)
+        {
+            #region Get request By Id
+
+            var request = await GetRquestForHomePatientTransportById(requestId);
+
+            if (request == null) return null;
+
+            #endregion
+
+            #region Get Patient By Id 
+
+            var patient = await GetPatientByRequestId(requestId);
+
+            #endregion
+
+            #region Get Patient Request Detail 
+
+            var requestDetail = await GetRequestPatientDetailByRequestId(requestId);
+
+            #endregion
+
+            #region Fill View Model
+
+            HomePatientTransportRequestDetailViewModel model = new HomePatientTransportRequestDetailViewModel()
+            {
+                Email = request.User.Email,
+                Username = request.User.Username,
+                Mobile = request.User.Mobile,
+                RequestState = request.RequestState,
+                PatientName = patient?.PatientName,
+                PatientLastName = patient?.PatientLastName,
+                NationalId = patient?.NationalId,
+                Gender = patient?.Gender,
+                Age = patient?.Age,
+                InsuranceType = patient?.InsuranceType,
+                RequestDescription = patient?.RequestDescription,
+                Vilage = requestDetail?.Vilage,
+                FullAddress = requestDetail?.FullAddress,
+                Phone = requestDetail?.Phone,
+                RequestDetailMobile = requestDetail?.Mobile,
+                Distance = requestDetail?.Distance
+            };
+
+            #endregion
+
+            #region Get Location
+
+            if (requestDetail != null)
+            {
+                var country = await _locationService.GetLocationById(requestDetail.CountryId);
+
+                var state = await _locationService.GetLocationById(requestDetail.StateId);
+
+                var city = await _locationService.GetLocationById(requestDetail.CityId);
+
+                model.Country = country.UniqueName;
+
+                model.State = state.UniqueName;
+
+                model.City = city.UniqueName;
+            }
+
+            #endregion
+
+            return model;
+        }
+
+        public async Task<Patient?> GetPatientByRequestId(ulong requestId)
+        {
+            return await _homePatientTransport.GetPatientByRequestId(requestId);
+        }
+
+        public async Task<Request?> GetRquestForHomePatientTransportById(ulong requestId)
+        {
+            return await _homePatientTransport.GetRquestForHomePatientTransportById(requestId);
+        }
+
+        public async Task<PaitientRequestDetail?> GetRequestPatientDetailByRequestId(ulong requestId)
+        {
+            return await _homePatientTransport.GetRequestPatientDetailByRequestId(requestId);
+        }
 
         #endregion
     }

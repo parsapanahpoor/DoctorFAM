@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DoctorFAM.Domain.ViewModels.Admin.HealthHouse.HomeLabratory;
 
 namespace DoctorFAM.Application.Services.Implementation
 {
@@ -374,6 +375,130 @@ namespace DoctorFAM.Application.Services.Implementation
             return CreatePatientAddressResult.Success;
         }
 
+
+        #endregion
+
+        #region Admin Side
+
+        public async Task<FilterHomeLabratoryViewModel> FilterHomeLabratory(FilterHomeLabratoryViewModel filter)
+        {
+            return await _homeLaboratory.FilterHomeLabratory(filter);
+        }
+
+        public async Task<HomeLabratoryRequestDetailViewModel> ShowHomeLabratoryDetail(ulong requestId)
+        {
+            #region Get request By Id
+
+            var request = await GetRquestForHomeLabratoryById(requestId);
+
+            if (request == null) return null;
+
+            #endregion
+
+            #region Get Patient By Id 
+
+            var patient = await GetPatientByRequestId(requestId);
+
+            #endregion
+
+            #region Get Patient Request Detail 
+
+            var requestDetail = await GetRequestPatientDetailByRequestId(requestId);
+
+            #endregion
+
+            #region Fill View Model
+
+            HomeLabratoryRequestDetailViewModel model = new HomeLabratoryRequestDetailViewModel()
+            {
+                Email = request.User.Email,
+                Username = request.User.Username,
+                Mobile = request.User.Mobile,
+                RequestState = request.RequestState,
+                PatientName = patient?.PatientName,
+                PatientLastName = patient?.PatientLastName,
+                NationalId = patient?.NationalId,
+                Gender = patient?.Gender,
+                Age = patient?.Age,
+                InsuranceType = patient?.InsuranceType,
+                RequestDescription = patient?.RequestDescription,
+                Vilage = requestDetail?.Vilage,
+                FullAddress = requestDetail?.FullAddress,
+                Phone = requestDetail?.Phone,
+                RequestDetailMobile = requestDetail?.Mobile,
+                Distance = requestDetail?.Distance
+            };
+
+            #endregion
+
+            #region Get Location
+
+            if (requestDetail != null)
+            {
+                var country = await _locationService.GetLocationById(requestDetail.CountryId);
+
+                var state = await _locationService.GetLocationById(requestDetail.StateId);
+
+                var city = await _locationService.GetLocationById(requestDetail.CityId);
+
+                model.Country = country.UniqueName;
+
+                model.State = state.UniqueName;
+
+                model.City = city.UniqueName;
+            }
+
+            #endregion
+
+            #region Get Request Detail Date Time 
+
+            if (requestDetail != null)
+            {
+                var dateTime = await GetRequestDateTimeDetailByRequestDetailId(requestDetail.Id);
+
+                if (dateTime != null)
+                {
+                    model.SendDate = dateTime.SendDate;
+                    model.StartTime = dateTime.StartTime;
+                    model.EndTime = dateTime.EndTime;
+                }
+            }
+
+            #endregion
+
+            #region Get Request Drugs 
+
+            model.RequestedLabratory = await GetRequestLabratoryByRequestId(request.Id);
+
+            #endregion
+
+            return model;
+        }
+
+        public async Task<Patient?> GetPatientByRequestId(ulong requestId)
+        {
+            return await _homeLaboratory.GetPatientByRequestId(requestId);
+        }
+
+        public async Task<Request?> GetRquestForHomeLabratoryById(ulong requestId)
+        {
+            return await _homeLaboratory.GetRquestForHomeLabratoryById(requestId);
+        }
+
+        public async Task<PaitientRequestDetail?> GetRequestPatientDetailByRequestId(ulong requestId)
+        {
+            return await _homeLaboratory.GetRequestPatientDetailByRequestId(requestId);
+        }
+
+        public async Task<PatientRequestDateTimeDetail?> GetRequestDateTimeDetailByRequestDetailId(ulong requestDetailId)
+        {
+            return await _homeLaboratory.GetRequestDateTimeDetailByRequestDetailId(requestDetailId);
+        }
+
+        public async Task<List<RequestedLabratoryAdminSideViewModel>?> GetRequestLabratoryByRequestId(ulong requestId)
+        {
+            return await _homeLaboratory.GetRequestLabratoryByRequestId(requestId);
+        }
 
         #endregion
     }

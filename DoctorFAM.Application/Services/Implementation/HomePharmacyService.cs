@@ -10,6 +10,7 @@ using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.Pharmacy;
 using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Interfaces;
+using DoctorFAM.Domain.ViewModels.Admin.HealthHouse.HomePharmacy;
 using DoctorFAM.Domain.ViewModels.Site.Common;
 using DoctorFAM.Domain.ViewModels.Site.HomePharmacy;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
@@ -394,5 +395,130 @@ namespace DoctorFAM.Application.Services.Implementation
 
 
         #endregion
+
+        #region Admin Side
+
+        public async Task<FilterHomePharmacyViewModel> FilterHomePharmacy(FilterHomePharmacyViewModel filter)
+        {
+            return await _homePharmacy.FilterHomePharmacy(filter);
+        }
+
+        public async Task<HomePharmacyRequestDetailViewModel> ShowHomePharmacyDetail(ulong requestId)
+        {
+            #region Get request By Id
+
+            var request = await GetRquestForHomePharmacyById(requestId);
+
+            if (request == null) return null;
+
+            #endregion
+
+            #region Get Patient By Id 
+
+            var patient = await GetPatientByRequestId(requestId);
+
+            #endregion
+
+            #region Get Patient Request Detail 
+
+            var requestDetail = await GetRequestPatientDetailByRequestId(requestId);
+
+            #endregion
+
+            #region Fill View Model
+
+            HomePharmacyRequestDetailViewModel model = new HomePharmacyRequestDetailViewModel()
+            {
+                Email = request.User.Email,
+                Username = request.User.Username,
+                Mobile = request.User.Mobile,
+                RequestState = request.RequestState,
+                PatientName = patient?.PatientName,
+                PatientLastName = patient?.PatientLastName,
+                NationalId = patient?.NationalId,
+                Gender = patient?.Gender,
+                Age = patient?.Age,
+                InsuranceType = patient?.InsuranceType,
+                RequestDescription = patient?.RequestDescription,
+                Vilage = requestDetail?.Vilage,
+                FullAddress = requestDetail?.FullAddress,
+                Phone = requestDetail?.Phone,
+                RequestDetailMobile = requestDetail?.Mobile,
+                Distance = requestDetail?.Distance
+            };
+
+            #endregion
+
+            #region Get Location
+
+            if (requestDetail != null)
+            {
+                var country = await _locationService.GetLocationById(requestDetail.CountryId);
+
+                var state = await _locationService.GetLocationById(requestDetail.StateId);
+
+                var city = await _locationService.GetLocationById(requestDetail.CityId);
+
+                model.Country = country.UniqueName;
+
+                model.State = state.UniqueName;
+
+                model.City = city.UniqueName;
+            }
+
+            #endregion
+
+            #region Get Request Detail Date Time 
+
+            if (requestDetail != null)
+            {
+                var dateTime = await GetRequestDateTimeDetailByRequestDetailId(requestDetail.Id);
+
+                if (dateTime != null)
+                {
+                    model.SendDate = dateTime.SendDate;
+                    model.StartTime = dateTime.StartTime;
+                    model.EndTime = dateTime.EndTime;
+                }
+            }
+
+            #endregion
+
+            #region Get Request Drugs 
+
+            model.RequestedDrugs = await GetRequestDrugsByRequestId(request.Id);
+
+            #endregion
+
+            return model;
+        }
+
+        public async Task<Patient?> GetPatientByRequestId(ulong requestId)
+        {
+            return await _homePharmacy.GetPatientByRequestId(requestId);
+        }
+
+        public async Task<Request?> GetRquestForHomePharmacyById(ulong requestId)
+        {
+            return await _homePharmacy.GetRquestForHomePharmacyById(requestId);
+        }
+
+        public async Task<PaitientRequestDetail?> GetRequestPatientDetailByRequestId(ulong requestId)
+        {
+            return await _homePharmacy.GetRequestPatientDetailByRequestId(requestId);
+        }
+
+        public async Task<PatientRequestDateTimeDetail?> GetRequestDateTimeDetailByRequestDetailId(ulong requestDetailId)
+        {
+            return await _homePharmacy.GetRequestDateTimeDetailByRequestDetailId(requestDetailId);
+        }
+
+        public async Task<List<RequestedDrugsAdminSideViewModel>?> GetRequestDrugsByRequestId(ulong requestId)
+        {
+            return await _homePharmacy.GetRequestDrugsByRequestId(requestId);
+        }
+
+        #endregion
+
     }
 }

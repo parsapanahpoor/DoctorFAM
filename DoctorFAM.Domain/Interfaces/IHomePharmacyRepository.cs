@@ -1,5 +1,8 @@
-﻿using DoctorFAM.Domain.Entities.Pharmacy;
+﻿using DoctorFAM.DataLayer.Entities;
+using DoctorFAM.Domain.Entities.Patient;
+using DoctorFAM.Domain.Entities.Pharmacy;
 using DoctorFAM.Domain.Entities.Requests;
+using DoctorFAM.Domain.ViewModels.Admin.HealthHouse.HomePharmacy;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,5 +26,22 @@ namespace DoctorFAM.Domain.Interfaces
         Task AddPatientRequestDateTimeDetail(PatientRequestDateTimeDetail request);
 
         #endregion
+
+        #region Admin Side
+
+        Task<FilterHomePharmacyViewModel> FilterHomePharmacy(FilterHomePharmacyViewModel filter);
+
+        Task<Request?> GetRquestForHomePharmacyById(ulong requestId);
+
+        Task<Patient?> GetPatientByRequestId(ulong requestId);
+
+        Task<PaitientRequestDetail?> GetRequestPatientDetailByRequestId(ulong requestId);
+
+        Task<PatientRequestDateTimeDetail?> GetRequestDateTimeDetailByRequestDetailId(ulong requestDetailId);
+
+        Task<List<RequestedDrugsAdminSideViewModel>?> GetRequestDrugsByRequestId(ulong requestId);
+
+        #endregion
+
     }
 }

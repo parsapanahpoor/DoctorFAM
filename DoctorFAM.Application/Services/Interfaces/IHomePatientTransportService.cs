@@ -1,4 +1,8 @@
-﻿using DoctorFAM.Domain.ViewModels.Site.Patient;
+﻿using DoctorFAM.DataLayer.Entities;
+using DoctorFAM.Domain.Entities.Patient;
+using DoctorFAM.Domain.Entities.Requests;
+using DoctorFAM.Domain.ViewModels.Admin.HealthHouse.HomePatientTransport;
+using DoctorFAM.Domain.ViewModels.Site.Patient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +16,25 @@ namespace DoctorFAM.Application.Services.Interfaces
         #region Site Side
 
         #endregion
+
+        #region Admin Side
+
+        Task<FilterHomePatientTransportViewModel> FilterHomePatientTransport(FilterHomePatientTransportViewModel filter);
+
+        Task<HomePatientTransportRequestDetailViewModel> ShowHomePatientTransportDetail(ulong requestId);
+
+        Task<Patient?> GetPatientByRequestId(ulong requestId);
+
+        Task<Request?> GetRquestForHomePatientTransportById(ulong requestId);
+
+        Task<PaitientRequestDetail?> GetRequestPatientDetailByRequestId(ulong requestId);
+
+        #endregion
+
         Task<ulong?> CreateHomePatientTransportRequest(ulong userId);
+
         Task<CreatePatientResult> ValidateCreatePatient(PatientViewModel model);
+
         Task<ulong> CreatePatientDetail(PatientViewModel patient);
     }
 }

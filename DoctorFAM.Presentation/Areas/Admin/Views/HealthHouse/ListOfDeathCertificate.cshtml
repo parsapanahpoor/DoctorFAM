@@ -1,0 +1,200 @@
+﻿@model DoctorFAM.Domain.ViewModels.Admin.HealthHouse.DeathCertificate.FilterDeathCertificateViewModel
+@using DoctorFAM.Domain.ViewModels.Admin.HealthHouse
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Domain.ViewModels.Common
+@using DoctorFAM.Domain.Enums.Request
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
+
+
+@{
+    ViewData["Title"] = @Localizer["Page Title"];
+}
+
+@section Styles
+{
+
+}
+
+@section Scripts
+{
+<partial name="_JqueryValidation" />
+}
+
+@section Breadcrumb
+{
+<li>
+    <a href="javascript:void(0)"> @ViewData["Title"] </a>
+</li>
+}
+
+<div class="row">
+    <div class="col-lg-3 col-sm-12">
+        <div class="widget">
+            <div class="widget-header bordered-bottom bordered-green">
+                <span class="widget-caption"> @Localizer["DeathCertificateList"] </span>
+            </div>
+            <div class="widget-body">
+                <div>
+                    <form asp-action="ListOfDeathCertificate" asp-controller="HealthHouse" asp-area="Admin" id="filter-search" method="get">
+
+                        <input type="hidden" asp-for="Page" />
+
+                        <div class="form-group">
+                            <label asp-for="Username"> @Localizer["Username"] </label>
+                            <input type="text" class="form-control" asp-for="Username">
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="UserEmail"> @Localizer["Email"] </label>
+                            <input type="text" class="form-control" asp-for="UserEmail">
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="UserMobile"> @Localizer["Mobile"] </label>
+                            <input type="text" class="form-control" asp-for="UserMobile">
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="RequestState"> @Localizer["State"] </label>
+                            <select asp-for="RequestState" class="form-control" asp-items="Html.GetEnumSelectList(typeof(RequestStateForFilterAdminSide))"></select>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="FilterRequestAdminSideOrder"> @Localizer["Order By"] </label>
+                            <select asp-for="FilterRequestAdminSideOrder" class="form-control" asp-items="Html.GetEnumSelectList(typeof(FilterRequestAdminSideOrder))"></select>
+                        </div>
+
+                        <hr />
+
+                        <div class="row">
+                            <div class="col-md-12 flex-style">
+                                <button type="submit" class="btn btn-labeled w-100 btn-palegreen">
+                                    <i class="btn-label glyphicon glyphicon-filter"></i>@Localizer["Filter"]
+                                </button>
+
+                                @if (Context.Request.QueryString.HasValue)
+                                {
+                                    <a asp-action="ListOfDeathCertificate" asp-controller="HealthHouse" asp-area="Admin" class="btn btn-labeled w-100 btn-darkorange mr-10px">
+                                        <i class="btn-label glyphicon glyphicon-remove"></i>@Localizer["Delete Filter"]
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-9 col-sm-12">
+        <div class="well with-header with-footer table-responsive">
+            <div class="header bordered-azure">
+                <div class="flex-style">
+                    <span>@Localizer["Page Title"]</span>
+                    <span>@Model.GetShownEntitiesPagesTitle()</span>
+                </div>
+            </div>
+
+            @if (Model.Entities != null && Model.Entities.Any())
+            {
+                <table class="table table-hover table-bordered tc vm">
+                    <thead class="tc vm">
+                        <tr class="tc vm">
+                            <th class="tc vm">
+                                @Localizer["User Avatar"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["User Email"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["User Mobile"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["State"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["Options"]
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="tc vm">
+                        @foreach (var request in Model.Entities)
+                        {
+                            <tr class="tc vm">
+                                <td class="vm">
+                                    <div class="flex-style-center">
+                                        <img src="@request.User.GetUserAvatar()" class="avatar-style" />
+                                        <div class="mr-10px">
+                                            <span> @request.User.Username </span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="tc vm">
+                                    <p>
+                                        @Localizer["Email"] :
+                                        @if (request.User.Email == null)
+                                        {
+                                            <span class="mr-8px label label-orange">@Localizer["Empty"] </span>
+                                        }
+                                        else
+                                        {
+                                            @request.User.Email
+                                        }
+                                    </p>
+                                </td>
+                                  <td class="tc vm">
+                                    @if (!string.IsNullOrEmpty(request.User.Mobile))
+                                    {
+                                        <p>@Localizer["Mobile"] : @request.User.Mobile</p>
+                                    }
+                                </td>
+                                <td class="tc vm">
+                                    <p>
+
+                                        @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.Paid)
+                                        {
+                                            <span class="mr-8px label label-success"> پرداخت شده </span>
+                                        }
+
+                                        @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.TramsferringToTheBankingPortal)
+                                        {
+                                            <span class="mr-8px label label-info"> درحال پرداخت </span>
+                                        }
+
+                                        @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.unpaid)
+                                        {
+                                            <span class="mr-8px label label-danger"> پرداحت نشده  </span>
+                                        }
+
+                                        @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.WaitingForCompleteInformationFromUser)
+                                        {
+                                            <span class="mr-8px label label-danger"> درانتظار پرداخت   </span>
+                                        }
+
+                                    </p>
+                                </td>
+                               
+                                <td class="tc vm">
+                                    <a asp-action="DeathCertificateRequestDetail" asp-controller="HealthHouse" asp-area="Admin" asp-route-requestId="@request.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <div class="footer tc">
+
+                    <partial name="_AdminPaging" model="@Model.GetCurrentPaging()" />
+
+                </div>
+            }
+            else
+            {
+                <partial name="_AdminNotFoundPartial" />
+            }
+        </div>
+    </div>
+</div>
+

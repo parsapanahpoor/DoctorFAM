@@ -20,14 +20,12 @@
                         </div>
                         <div class="col-lg-5 col-md-12 ">
                             <div class="login-form text-center">
-                               <div class="container login-header  text-center">
-                                    <a href="/Home/Secpage" class="text-center align-items-center">
-
-                                        <img class="logoImage text-center align-items-center" src="~/Content/images/Logo/doctorfam-Header-Logo.png" alt="دکترفام" />
-
-                                    </a>
-                                </div>
-
+                                <a href="/Home/SecPage" class="text-center">
+                                    <span class="" style="color:#3143ef; font-weight:900 !important; font-size:30px !important;"><b>DOCTOR</b></span>
+                                    <span class="" style="color:#fd5b03; font-weight:900 !important; font-size:32px !important;"><b>F</b></span>
+                                    <span class="" style="color:#fd5b03; font-weight:900 !important; font-size:32px !important;"><b>A</b></span>
+                                    <span class="" style="color:#fd5b03; font-weight:900 !important; font-size:32px !important;"><b>M</b></span>
+                                </a>
                                
                                 @if (User.Identity.IsAuthenticated && Context.Request.Query["ReturnUrl"] != "")
                                 {
@@ -41,6 +39,8 @@
                                 <div class="login-form">
 
                                     <form asp-action="Register" asp-controller="Account" method="post">
+
+                                        <input type="hidden" asp-for="DoctorsRegister" value="@ViewBag.DoctorsRegister" />
 
                                         <h4 class="text-center ">ایجاد حساب کاربری</h4>
                                         <div class="form-group">                                           
@@ -64,7 +64,7 @@
                                         </div>
                                         <div class="remember-me-wrap">
                                             <p>
-                                                <input type="checkbox" id="test1">
+                                                <input type="checkbox" asp-for="SiteRoles" id="test1">
                                                 <label for="test1">با   <a href="terms-of-service.html">شرایط و ضوابط سایت </a> موافق هستم</label>
                                             </p>
                                         </div>

@@ -20,6 +20,6 @@ namespace DoctorFAM.Domain.Enums.RequestType
         [Display(Name = "انتقال بیمار و متوفی")]
         PatientTransfer,
         [Display(Name = "گواهی فوت")]
-        DeathCertificate
+        DeathCertificate,
     }
 }

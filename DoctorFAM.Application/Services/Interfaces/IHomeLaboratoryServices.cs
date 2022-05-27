@@ -1,4 +1,8 @@
-﻿using DoctorFAM.Domain.ViewModels.Site.Common;
+﻿using DoctorFAM.DataLayer.Entities;
+using DoctorFAM.Domain.Entities.Patient;
+using DoctorFAM.Domain.Entities.Requests;
+using DoctorFAM.Domain.ViewModels.Admin.HealthHouse.HomeLabratory;
+using DoctorFAM.Domain.ViewModels.Site.Common;
 using DoctorFAM.Domain.ViewModels.Site.HomeLaboratory;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
 using Microsoft.AspNetCore.Http;
@@ -27,6 +31,24 @@ namespace DoctorFAM.Application.Services.Interfaces
         Task<bool> DeleteRequestedLaboratory(ulong requestedLaboratoryId);
 
         Task<CreatePatientAddressResult> CreatePatientRequestDetail(PatientRequestedLaboratoryAddressViewModel model);
+
+        #endregion
+
+        #region Admin Side
+
+        Task<FilterHomeLabratoryViewModel> FilterHomeLabratory(FilterHomeLabratoryViewModel filter);
+
+        Task<HomeLabratoryRequestDetailViewModel> ShowHomeLabratoryDetail(ulong requestId);
+
+        Task<Patient?> GetPatientByRequestId(ulong requestId);
+
+        Task<Request?> GetRquestForHomeLabratoryById(ulong requestId);
+
+        Task<PaitientRequestDetail?> GetRequestPatientDetailByRequestId(ulong requestId);
+
+        Task<PatientRequestDateTimeDetail?> GetRequestDateTimeDetailByRequestDetailId(ulong requestDetailId);
+
+        Task<List<RequestedLabratoryAdminSideViewModel>?> GetRequestLabratoryByRequestId(ulong requestId);
 
         #endregion
     }
