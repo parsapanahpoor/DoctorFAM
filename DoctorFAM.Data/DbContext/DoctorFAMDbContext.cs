@@ -3,6 +3,7 @@ using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.Laboratory;
 using DoctorFAM.Domain.Entities.Languages;
+using DoctorFAM.Domain.Entities.MarketCategory;
 using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.Pharmacy;
 using DoctorFAM.Domain.Entities.Requests;
@@ -80,6 +81,14 @@ namespace DoctorFAM.Data.DbContext
         public DbSet<Location> Locations { get; set; }
 
         public DbSet<LocationInfo> LocationInfoes { get; set; }
+
+        #endregion
+
+        #region Category
+
+        public DbSet<Category> Category { get; set; }
+
+        public DbSet<CategoryInfo> CategoryInfos { get; set; }
 
         #endregion
 
@@ -184,6 +193,8 @@ namespace DoctorFAM.Data.DbContext
             #region query filter
 
             modelBuilder.Entity<LocationInfo>().HasQueryFilter(e => e.LanguageId == culture);
+
+            modelBuilder.Entity<CategoryInfo>().HasQueryFilter(e => e.LanguageId == culture);
 
             #endregion
 

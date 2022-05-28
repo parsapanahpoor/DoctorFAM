@@ -33,7 +33,6 @@ namespace DoctorFAM.Domain.Entities.States
         [InverseProperty("State")]
         public ICollection<PaitientRequestDetail> PaitientRequestDetailStates { get; set; }
 
-        //[InverseProperty("City")]
         public ICollection<PaitientRequestDetail> PaitientRequestDetailCities { get; set; }
 
         #endregion

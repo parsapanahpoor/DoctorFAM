@@ -137,5 +137,26 @@
             </ul>
         </li>
 
+           <li>
+            <a href="#" class="menu-dropdown">
+                <i class="menu-icon  glyphicon glyphicon-th-large"></i>
+                <span class="menu-text">@SharedLocalizer["Manage Market Categories"]</span>
+                <i class="menu-expand"></i>
+            </a>
+
+            <ul class="submenu">
+                <li>
+                    <a asp-action="FilterMarketCategory" asp-controller="MarketCategory" asp-area="Admin">
+                        <span class="menu-text"> @SharedLocalizer["Market Categories List"] </span>
+                    </a>
+                </li>
+                <li>
+                    <a asp-action="CreateMarketCategory" asp-controller="MarketCategory" asp-area="Admin">
+                        <span class="menu-text"> @SharedLocalizer["Create Market Categories"] </span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
     </ul>
 </div>

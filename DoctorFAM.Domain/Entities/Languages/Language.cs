@@ -1,4 +1,5 @@
-﻿using DoctorFAM.Domain.Entities.SiteSetting;
+﻿using DoctorFAM.Domain.Entities.MarketCategory;
+using DoctorFAM.Domain.Entities.SiteSetting;
 using DoctorFAM.Domain.Entities.States;
 using System.ComponentModel.DataAnnotations;
 
@@ -25,6 +26,8 @@ namespace DoctorFAM.Domain.Entities.Languages
         #region relations
 
         public ICollection<LocationInfo> MyProperty { get; set; }
+
+        public ICollection<CategoryInfo> CategoryInfos { get; set; }
 
         #endregion
     }
