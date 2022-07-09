@@ -19,8 +19,7 @@ namespace DoctorFAM.Web.Areas.UserPanel.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            ViewBag.DoctorInfoState = await _doctorService.GetDoctorsInfosState(User.GetUserId());
-            return View("DoctorPanelSideBar");
+            return View("DoctorPanelSideBar" , await _doctorService.GetDoctorsSideBarInfo(User.GetUserId()));
         }
     }
 }

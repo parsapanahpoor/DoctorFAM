@@ -21,7 +21,7 @@
     Section Title
 ------------------------*/
 .section-title {
-  margin-bottom: 50px;
+  margin-bottom: 30px;
   position     : relative;
 }
 
@@ -52,7 +52,7 @@
 }
 
 .section-title h2 {
-  margin-bottom: 15px;
+  /*margin-bottom: 15px;*/
 }
 
 
@@ -827,7 +827,7 @@
 }
 
 .team-member.style-1:hover .team-description {
-  transform: translateY(-65px);
+  transform: translateY(-10px);
 }
 
 /*** Style 2 ***/
@@ -2056,18 +2056,18 @@
   margin-bottom: 0;
 }
 
-.sidebar-links li a {
-  border       : 2px solid #eeeff7;
-  border-radius: .25rem;
-  color        : #081b3a;
-  display      : block;
-  font-size    : 16px;
-  font-weight  : 600;
-  position     : relative;
-  padding      : 0 30px 0 0;
-  line-height  : 3.5rem;
-  background   : transparent;
-}
+    .sidebar-links li a {
+        border: 2px solid #eeeff7;
+        border-radius: 8px;
+        color: #081b3a;
+        display: block;
+        font-size: 16px;
+        font-weight: 600;
+        position: relative;
+        padding: 0 0 0 0;
+        line-height: 3.5rem;
+        background: #fd5b03;
+    }
 
 .sidebar-links li a:before {
   content      : "";
@@ -2127,15 +2127,15 @@
   text-align    : center;
 }
 
-.sidebar-links li a:hover {
-  background: none
-}
+    .sidebar-links li a:hover {
+        background: #fd5b03
+    }
 
-.sidebar-links li.active a,
-.sidebar-links li a:hover:before {
-  width     : 100%;
-  background: #fd5b03;
-}
+        .sidebar-links li.active a,
+        .sidebar-links li a:hover:before {
+            width: 100%;
+            background: transparent;
+        }
 
 .sidebar-links li.active a .link-icon.link-arrow,
 .sidebar-links li a:hover .link-icon.link-arrow {
@@ -2214,4 +2214,32 @@
 }
 .alarmimg {
    height:200px;
+}
+
+.radiobbg {
+
+   /* background-image: url('/Content/images/bg/radio2.png');
+    background-repeat: no-repeat;
+    background-size: 100%;*/
+   /*width:100% !important;*/
+   height:210px !important;
+    
+}
+.fbDivBor {
+    border: 1px solid #ebe9e8;
+    border-radius: 5px;
+}
+    .fbDivBor:hover {
+        border: 1px solid #fd5b03;
+        border-radius: 5px;
+    }
+
+.linediv {
+    border-top: 2px solid #ebe9e8;
+}
+.linediv:hover {
+    border-top: 4px solid #fd5b03;
+}
+.widgetdiv {
+    border-radius: 8px !important;
 }

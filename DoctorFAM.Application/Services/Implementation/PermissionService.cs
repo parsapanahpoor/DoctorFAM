@@ -4,6 +4,7 @@ using DoctorFAM.Data.DbContext;
 using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.ViewModels.Access;
 using DoctorFAM.Domain.ViewModels.Common;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.DosctorSideBarInfo;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -32,9 +33,9 @@ namespace BusinessPortal.Application.Services.Implementation
 
         #region Check Permission
 
-        public async Task<string> GetDoctorsInfosState(ulong userId)
+        public async Task<DoctorSideBarViewModel> GetDoctorsInfosState(ulong userId)
         {
-            return await _doctorsService.GetDoctorsInfosState(userId);
+            return await _doctorsService.GetDoctorsSideBarInfo(userId);
         }
 
         public async Task<bool> HasUserPermission(ulong userId, string permissionName)
@@ -286,6 +287,8 @@ namespace BusinessPortal.Application.Services.Implementation
             if (userRoles.Any() && userRoles.Contains("Doctor")) return GetUserRoles.Doctor;
 
             if (userRoles.Any() && userRoles.Contains("Support")) return GetUserRoles.Supporter;
+
+            if (userRoles.Any() && userRoles.Contains("Seller")) return GetUserRoles.Seller;
 
             if (!userRoles.Any()) return GetUserRoles.User;
 

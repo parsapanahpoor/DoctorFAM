@@ -21,6 +21,8 @@
             
             <a asp-action="Index" asp-controller="Wallet" asp-route-UserId="@Model.Id" class="btn btn-darkorange btn-sm mt-10px ml-10px"> @Localizer["User Wallets"] </a>
 
+            <a asp-action="FilterPopulationCoveredAdminViewModel" asp-controller="PopulationCovered" asp-route-UserId="@Model.Id" class="btn btn-blue btn-sm mt-10px ml-10px"> @Localizer["Population Covered"] </a>
+
             <a onclick="ShowChangePasswordModal(@Model.Id)" class="btn btn-maroon btn-sm mt-10px ml-10px"> @Localizer["Change Password"] </a>
             
             <a onclick="ConfigurationAlert('@Url.Action("LoginWithUser","Account", new{area = "Admin", userId = @Model.Id})')" class="btn btn-blue btn-sm mt-10px ml-10px"> @Localizer["Login With This User"] </a>

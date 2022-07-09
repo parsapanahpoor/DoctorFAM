@@ -1,0 +1,108 @@
+﻿@using DoctorFAM.Application.Extensions
+@model DoctorFAM.Domain.Entities.Account.User
+
+@{
+    var currentCulture = ApplicationCultures.GetCurrentCulture();
+    var isRtl = currentCulture.IsRtl;
+}
+
+<!-- Loading Container -->
+<div class="loading-container">
+    <div class="loader"></div>
+</div>
+<!--  /Loading Container -->
+<!-- Navbar -->
+<div class="navbar">
+    <div class="navbar-inner">
+        <div class="navbar-container">
+            <!-- Navbar Barnd -->
+            <div class="navbar-header @(currentCulture.IsRtl ? "pull-right":"pull-left")">
+                <a href="/Home/SecPage" class="navbar-brand">
+                    <small>
+                        <img src="/Content/images/Logo/doctorfamTes.png" alt="" />
+                    </small>
+                </a>
+            </div>
+            <!-- /Navbar Barnd -->
+            <!-- Sidebar Collapse -->
+            <div class="sidebar-collapse" id="sidebar-collapse">
+                <i class="collapse-icon fa fa-bars"></i>
+            </div>
+            <!-- /Sidebar Collapse -->
+            <!-- Account Area and Settings --->
+           <div class="navbar-header pull-left">
+                <div class="navbar-account">
+                    <ul class="account-area mt-3">
+                      
+
+                        <li class="marli" >
+                            
+                            <a class="dropdown-toggle btn btn-blue " data-toggle="dropdown" title="انتخاب زبان" href="#"><i class="fa fa-angle-down"></i>
+                                انتخاب زبان
+                            </a>
+                            <!--Tasks Dropdown-->
+                            <ul class="pull-right dropdown-menu dropdown-tasks dropdown-arrow ">
+
+                                @foreach (var language in ApplicationCultures.CultureItems)
+                                {
+                                    <li>
+                                        <a asp-area="" asp-controller="Home" asp-action="ChangeLanguage" asp-route-culture="@language.CultureKey">
+                                            <div class="clearfix">
+                                                <span class="pull-right">@language.Title</span>
+                                                <span class="pull-left">@language.CultureKey</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                           
+                        </li>
+
+                        <li>
+                            <a class="login-area dropdown-toggle" data-toggle="dropdown">
+                                <div class="avatar" title="View your public profile">
+                                    <img src="/admin/img/avatars/avatar.png">
+                                </div>
+                                <section>
+                                    <h2><span class="profile"><span>@User.Identity.Name </span></span></h2>
+                                </section>
+                            </a>
+                            <!--Login Area Dropdown-->
+                            <ul class="pull-right dropdown-menu dropdown-arrow dropdown-login-area">
+                                <li class="username"><a>@User.Identity.Name</a></li>
+                                <!--Avatar Area-->
+                                <li>
+                                    <div class="avatar-area">
+                                        <img src="/admin/img/avatars/avatar.png" class="avatar">
+                                        <span class="caption">@SharedLocalizer["Change Picture"]</span>
+                                    </div>
+                                </li>
+                                <!--Avatar Area-->
+                                <li class="edit">
+                                    <a href="profile.html" class="pull-left">@SharedLocalizer["Profile"]</a>
+                                    <a href="#" class="pull-right">@SharedLocalizer["Options"]</a>
+                                </li>
+                                <!--Theme Selector Area-->
+                                <li class="theme-area">
+
+                                </li>
+                                <!--/Theme Selector Area-->
+                                <li class="dropdown-footer">
+                                    <a asp-controller="Account" asp-action="LogOut" asp-area="">
+                                        @SharedLocalizer["LogOut"]
+                                    </a>
+                                </li>
+                            </ul>
+                            <!--/Login Area Dropdown-->
+                        </li>
+
+                    </ul>
+
+                    <!-- Settings -->
+                </div>
+            </div>
+            <!-- /Account Area and Settings -->
+        </div>
+    </div>
+</div>
+<!-- /Navbar -->

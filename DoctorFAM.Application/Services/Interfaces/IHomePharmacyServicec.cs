@@ -18,6 +18,10 @@ namespace DoctorFAM.Application.Services.Interfaces
     {
         #region Site Side
 
+        Task<bool> ChargeUserWallet(ulong userId, int price);
+
+        Task<bool> PayHomePharmacyTariff(ulong userId, int price);
+
         Task<ulong?> CreateHomePharmacyRequest(ulong userId);
 
         Task<CreatePatientResult> ValidateCreatePatient(PatientViewModel model);

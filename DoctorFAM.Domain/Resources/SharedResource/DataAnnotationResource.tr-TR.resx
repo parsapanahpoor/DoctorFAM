@@ -117,14 +117,29 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Accepted" xml:space="preserve">
+    <value>onaylanmış</value>
+  </data>
   <data name="Address" xml:space="preserve">
     <value>Adres</value>
+  </data>
+  <data name="Age" xml:space="preserve">
+    <value>Yaş</value>
   </data>
   <data name="All" xml:space="preserve">
     <value>Herşey</value>
   </data>
   <data name="Article Category title" xml:space="preserve">
     <value>Kategori başlığı</value>
+  </data>
+  <data name="BirthDay" xml:space="preserve">
+    <value>Doğum günü</value>
+  </data>
+  <data name="Brother" xml:space="preserve">
+    <value>Abi</value>
+  </data>
+  <data name="Child" xml:space="preserve">
+    <value>Çocuk</value>
   </data>
   <data name="City" xml:space="preserve">
     <value>Şehir</value>
@@ -153,23 +168,77 @@
   <data name="DynamicPage Title" xml:space="preserve">
     <value>sayfa başlığı</value>
   </data>
+  <data name="education" xml:space="preserve">
+    <value>Eğitim</value>
+  </data>
   <data name="Email" xml:space="preserve">
     <value>e-posta</value>
   </data>
   <data name="Enable SSL" xml:space="preserve">
     <value>SSL aktivasyonu</value>
   </data>
+  <data name="Extra Phone Number" xml:space="preserve">
+    <value>Ekstra Telefon Numarası</value>
+  </data>
   <data name="Failed" xml:space="preserve">
     <value>Başarısız</value>
+  </data>
+  <data name="Father" xml:space="preserve">
+    <value>Baba</value>
+  </data>
+  <data name="Father Name" xml:space="preserve">
+    <value>Baba adı</value>
+  </data>
+  <data name="female" xml:space="preserve">
+    <value>Dişi</value>
+  </data>
+  <data name="Filling information from the user's side and transfer to the bank portal" xml:space="preserve">
+    <value>Kullanıcı tarafından bilgilerin doldurulması ve banka portalına aktarılması</value>
+  </data>
+  <data name="finalized" xml:space="preserve">
+    <value>kesinleşmiş</value>
   </data>
   <data name="First Name" xml:space="preserve">
     <value>isim</value>
   </data>
+  <data name="Free" xml:space="preserve">
+    <value>Özgür</value>
+  </data>
+  <data name="Gender" xml:space="preserve">
+    <value>Cinsiyet</value>
+  </data>
+  <data name="Health Insurance" xml:space="preserve">
+    <value>Sağlık Sigortası</value>
+  </data>
+  <data name="Home Phone Number" xml:space="preserve">
+    <value>Ev telefon numarası</value>
+  </data>
+  <data name="InsuranceType" xml:space="preserve">
+    <value>Sigorta</value>
+  </data>
+  <data name="Iranian health" xml:space="preserve">
+    <value>İran sağlığı</value>
+  </data>
+  <data name="Laboratory fee at home in Rials" xml:space="preserve">
+    <value>Rials'ta evde laboratuvar ücreti</value>
+  </data>
   <data name="Last Name" xml:space="preserve">
+    <value>Soyadı</value>
+  </data>
+  <data name="LastName" xml:space="preserve">
     <value>Soyadı</value>
   </data>
   <data name="Location title" xml:space="preserve">
     <value>Yer başlığı</value>
+  </data>
+  <data name="male" xml:space="preserve">
+    <value>Erkek adam</value>
+  </data>
+  <data name="Medical record" xml:space="preserve">
+    <value>Tıbbi kayıt</value>
+  </data>
+  <data name="Medical system code" xml:space="preserve">
+    <value>Tıbbi sistem kodu</value>
   </data>
   <data name="Meta Tag" xml:space="preserve">
     <value>
@@ -177,6 +246,12 @@ meta etiket</value>
   </data>
   <data name="Mobile" xml:space="preserve">
     <value>mobil</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>isim</value>
+  </data>
+  <data name="NationalId" xml:space="preserve">
+    <value>Ulusal Kod</value>
   </data>
   <data name="New Password" xml:space="preserve">
     <value>Yeni Şifre</value>
@@ -187,14 +262,26 @@ meta etiket</value>
   <data name="NotDeleted" xml:space="preserve">
     <value>silinmedi</value>
   </data>
+  <data name="Paid and waiting to choose a doctor" xml:space="preserve">
+    <value>Ücretli ve doktor seçmeyi bekliyor</value>
+  </data>
+  <data name="Partner" xml:space="preserve">
+    <value>Eş</value>
+  </data>
   <data name="Password" xml:space="preserve">
     <value>parola</value>
   </data>
   <data name="Password And Re Password Does Not Match" xml:space="preserve">
     <value>Şifre ve tekrarı eşit değil</value>
   </data>
+  <data name="Patient transfer fee in Rials" xml:space="preserve">
+    <value>transfer</value>
+  </data>
   <data name="Permission Name" xml:space="preserve">
     <value>Erişim adı</value>
+  </data>
+  <data name="Pharmacy tariff at home in Rials" xml:space="preserve">
+    <value>Rials'ta evde eczane tarifesi</value>
   </data>
   <data name="Please Enter Valid Email Address" xml:space="preserve">
     <value>lütfen geçerli eposta adresini giriniz</value>
@@ -208,8 +295,14 @@ meta etiket</value>
   <data name="Please Enter {0} Less Than {1} Character" xml:space="preserve">
     <value>{0} daha fazlasını yapamazsın {1} karakter ol</value>
   </data>
+  <data name="Population Covered List" xml:space="preserve">
+    <value>Kapsanan kişilerin listesi</value>
+  </data>
   <data name="Port Number" xml:space="preserve">
     <value>Port numarası</value>
+  </data>
+  <data name="Ratio" xml:space="preserve">
+    <value>Oran</value>
   </data>
   <data name="Re New Password" xml:space="preserve">
     <value>Yeni şifreyi tekrarlayın</value>
@@ -223,17 +316,59 @@ meta etiket</value>
   <data name="Register Date - Descending" xml:space="preserve">
     <value>Kayıt Tarihi - Azalan</value>
   </data>
+  <data name="Register Now" xml:space="preserve">
+    <value>Yeni kayıt</value>
+  </data>
+  <data name="Rejected" xml:space="preserve">
+    <value>onaylanmadı</value>
+  </data>
   <data name="Role Title" xml:space="preserve">
     <value>Rol ünvanı</value>
   </data>
+  <data name="Selected by a doctor" xml:space="preserve">
+    <value>Bir doktor tarafından seçildi</value>
+  </data>
+  <data name="Self-employed" xml:space="preserve">
+    <value>Serbest meslek</value>
+  </data>
   <data name="Send From" xml:space="preserve">
     <value>gönder</value>
+  </data>
+  <data name="Sister" xml:space="preserve">
+    <value>kardeş</value>
+  </data>
+  <data name="Social Security" xml:space="preserve">
+    <value>Sosyal Güvenlik</value>
+  </data>
+  <data name="Specialty" xml:space="preserve">
+    <value>uzmanlık</value>
   </data>
   <data name="State" xml:space="preserve">
     <value>Belirtmek, bildirmek</value>
   </data>
   <data name="Success" xml:space="preserve">
     <value>Başarılı</value>
+  </data>
+  <data name="Tariff for home visits in Rials" xml:space="preserve">
+    <value>Rials'ta ev ziyaretleri için tarife</value>
+  </data>
+  <data name="Tariff for issuance of death certificate in Rials" xml:space="preserve">
+    <value>Riyal cinsinden ölüm belgesi düzenleme tarifesi</value>
+  </data>
+  <data name="The entered national code is not valid" xml:space="preserve">
+    <value>Girilen ulusal kod geçerli değil</value>
+  </data>
+  <data name="The information entered is not valid." xml:space="preserve">
+    <value>Girilen bilgiler geçerli değil.</value>
+  </data>
+  <data name="The medical system code entered is not valid" xml:space="preserve">
+    <value>Girilen tıbbi sistem kodu geçerli değil</value>
+  </data>
+  <data name="The reason for the rejection of the information" xml:space="preserve">
+    <value>Bilginin reddedilme nedeni</value>
+  </data>
+  <data name="The tariff of the nurse at home is in Rials" xml:space="preserve">
+    <value>Evde hemşirenin tarifesi Riyal cinsindendir.</value>
   </data>
   <data name="Title" xml:space="preserve">
     <value>Başlık</value>
@@ -244,7 +379,19 @@ meta etiket</value>
   <data name="Unique Name1" xml:space="preserve">
     <value>benzersiz ad</value>
   </data>
+  <data name="unpaid" xml:space="preserve">
+    <value>ödenmemiş</value>
+  </data>
   <data name="User Name" xml:space="preserve">
     <value>Kullanıcı adı</value>
+  </data>
+  <data name="Waiting for information to be filled by the user" xml:space="preserve">
+    <value>Kullanıcı tarafından doldurulacak bilgi bekleniyor</value>
+  </data>
+  <data name="WaitingForConfirm" xml:space="preserve">
+    <value>Onay bekleniyor</value>
+  </data>
+  <data name="Work Address" xml:space="preserve">
+    <value>İş adresi</value>
   </data>
 </root>

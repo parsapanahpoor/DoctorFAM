@@ -26,6 +26,12 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         Task UpdateRequest(Request request);
 
+        Task UpdateRequestStateForTramsferringToTheBankingPortal(Request request);
+
+        Task UpdateRequestStateForPayed(Request request);
+
+        Task UpdateRequestStateForNotPayed(Request request);
+
         #endregion
 
         #region Patient Request Detail

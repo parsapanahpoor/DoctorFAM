@@ -5,6 +5,8 @@ using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Enums.Request;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.HealthHouse;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.DeathCertificate;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.HomeVisit;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -28,6 +30,104 @@ namespace DoctorFAM.Data.Repository
         #endregion
 
         #region Site Side
+
+
+
+        #endregion
+
+        #region Doctor Panel Side
+
+        public async Task<ListOfPayedHomeVisitsRequestsDoctorPanelSideViewModel> ListOfPayedHomeVisitsRequestsDoctorPanelSide(ListOfPayedHomeVisitsRequestsDoctorPanelSideViewModel filter)
+        {
+            var query = _context.Requests
+             .Include(p => p.Patient)
+             .Include(p => p.User)
+             .Where(s => !s.IsDelete && s.RequestType == Domain.Enums.RequestType.RequestType.HomeVisit && s.RequestState == RequestState.Paid)
+             .OrderByDescending(s => s.CreateDate)
+             .AsQueryable();
+
+            #region Status
+
+            switch (filter.FilterRequestAdminSideOrder)
+            {
+                case FilterRequestAdminSideOrder.CreateDate_Des:
+                    break;
+                case FilterRequestAdminSideOrder.CreateDate_Asc:
+                    query = query.OrderBy(p => p.CreateDate);
+                    break;
+            }
+
+            #endregion
+
+            #region Filter
+
+            if (!string.IsNullOrEmpty(filter.UserEmail))
+            {
+                query = query.Where(s => EF.Functions.Like(s.User.Email, $"%{filter.UserEmail}%"));
+            }
+
+            if (!string.IsNullOrEmpty(filter.UserMobile))
+            {
+                query = query.Where(s => s.User.Mobile != null && EF.Functions.Like(s.User.Mobile, $"%{filter.UserMobile}%"));
+            }
+
+            if (!string.IsNullOrEmpty(filter.Username))
+            {
+                query = query.Where(s => EF.Functions.Like(s.User.Username, $"%{filter.Username}%"));
+            }
+
+            #endregion
+
+            await filter.Paging(query);
+
+            return filter;
+        }
+
+        public async Task<ListOfPayedDeathCertificateRequestDoctorSideViewModel> ListOfPayedDeathCertificateRequestsDoctorPanelSide(ListOfPayedDeathCertificateRequestDoctorSideViewModel filter)
+        {
+            var query = _context.Requests
+             .Include(p => p.Patient)
+             .Include(p => p.User)
+             .Where(s => !s.IsDelete && s.RequestType == Domain.Enums.RequestType.RequestType.DeathCertificate && s.RequestState == RequestState.Paid)
+             .OrderByDescending(s => s.CreateDate)
+             .AsQueryable();
+
+            #region Status
+
+            switch (filter.FilterRequestAdminSideOrder)
+            {
+                case FilterRequestAdminSideOrder.CreateDate_Des:
+                    break;
+                case FilterRequestAdminSideOrder.CreateDate_Asc:
+                    query = query.OrderBy(p => p.CreateDate);
+                    break;
+            }
+
+            #endregion
+
+            #region Filter
+
+            if (!string.IsNullOrEmpty(filter.UserEmail))
+            {
+                query = query.Where(s => EF.Functions.Like(s.User.Email, $"%{filter.UserEmail}%"));
+            }
+
+            if (!string.IsNullOrEmpty(filter.UserMobile))
+            {
+                query = query.Where(s => s.User.Mobile != null && EF.Functions.Like(s.User.Mobile, $"%{filter.UserMobile}%"));
+            }
+
+            if (!string.IsNullOrEmpty(filter.Username))
+            {
+                query = query.Where(s => EF.Functions.Like(s.User.Username, $"%{filter.Username}%"));
+            }
+
+            #endregion
+
+            await filter.Paging(query);
+
+            return filter;
+        }
 
         #endregion
 

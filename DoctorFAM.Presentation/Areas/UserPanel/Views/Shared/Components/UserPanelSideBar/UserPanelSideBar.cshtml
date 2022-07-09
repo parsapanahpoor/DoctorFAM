@@ -6,7 +6,6 @@
     <div class="sidebar-header-wrapper">
         <input type="text" class="searchinput" />
         <i class="searchicon fa fa-search"></i>
-        <div class="searchhelper">به جستجوی صفحات، گزارشات، پیام ها و ایمیل خود بپردازید</div>
     </div>
     <!-- /Page Sidebar Header -->
     <!-- Sidebar Menu -->
@@ -15,14 +14,14 @@
         <li>
             <a asp-area="UserPanel" asp-controller="Home" asp-action="Index">
                 <i class="menu-icon glyphicon glyphicon-home"></i>
-                <span class="menu-text"> @Localizer["Dashboard"] </span>
+                <span class="menu-text"> @SharedLocalizer["Dashboard"] </span>
             </a>
         </li>
 
         <li>
             <a href="#" class="menu-dropdown">
                 <i class="menu-icon fa fa-user"></i>
-                <span class="menu-text"> @Localizer["Profile"] </span>
+                <span class="menu-text"> @SharedLocalizer["Profile"] </span>
 
                 <i class="menu-expand"></i>
             </a>
@@ -30,57 +29,40 @@
             <ul class="submenu">
                 <li>
                     <a asp-area="UserPanel" asp-controller="Account" asp-action="EditProfile">
-                        <span class="menu-text">@Localizer["Edit Profile"]</span>
+                        <span class="menu-text">@SharedLocalizer["Edit Profile"]</span>
                     </a>
                 </li>
 
                 <li>
                     <a asp-area="UserPanel" asp-controller="Account" asp-action="ChangePassword">
-                        <span class="menu-text">@Localizer["Change Password"]</span>
+                        <span class="menu-text">@SharedLocalizer["Change Password"]</span>
                     </a>
                 </li>
             </ul>
         </li>
-        
-       @* <li>
+
+        <li>
             <a href="#" class="menu-dropdown">
-                <i class="menu-icon fa fa-money"></i>
-                <span class="menu-text"> @Localizer["Wallet"]</span>
+                <i class="menu-icon fa fa-user"></i>
+                <span class="menu-text"> @SharedLocalizer["Population Covered"] </span>
 
                 <i class="menu-expand"></i>
             </a>
 
             <ul class="submenu">
                 <li>
-                    <a asp-area="User" asp-controller="Payment" asp-action="ManageWallet">
-                        <span class="menu-text">@Localizer["Charge Wallet"]</span>
+                    <a asp-area="UserPanel" asp-controller="PopulationCovered" asp-action="ListOfPopulationCovered">
+                        <span class="menu-text">@SharedLocalizer["Population Covered"]</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a asp-area="UserPanel" asp-controller="PopulationCovered" asp-action="CreatePopulationCovered">
+                        <span class="menu-text">@SharedLocalizer["Create Population Covered"]</span>
                     </a>
                 </li>
             </ul>
-        </li>*@
-@*
-            <li>
-            <a href="#" class="menu-dropdown">
-                <i class="menu-icon fa fa-ticket"></i>
-                <span class="menu-text"> @Localizer["Manage Tickets"]</span>
-
-                <i class="menu-expand"></i>
-            </a>
-
-            <ul class="submenu">
-                <li>
-                    <a asp-area="User" asp-controller="Ticket" asp-action="FilterTickets">
-                        <span class="menu-text">@Localizer["List Of Tickets"]</span>
-                    </a>
-                </li>
-                <li>
-                    <a asp-area="User" asp-controller="Ticket" asp-action="CreateTicket">
-                        <span class="menu-text">@Localizer["Create Ticket"]</span>
-                    </a>
-                </li>
-            </ul>
-        </li>*@
-
+        </li>
 
     </ul>
     <!-- /Sidebar Menu -->

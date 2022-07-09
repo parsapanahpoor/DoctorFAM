@@ -79,6 +79,27 @@ namespace DoctorFAM.Application.Services.Implementation
             #endregion
         }
 
+        public async Task UpdateRequestStateForTramsferringToTheBankingPortal(Request request)
+        {
+            request.RequestState = Domain.Enums.Request.RequestState.TramsferringToTheBankingPortal;
+
+            await _request.UpdateRequest(request);
+        }
+
+        public async Task UpdateRequestStateForPayed(Request request)
+        {
+            request.RequestState = Domain.Enums.Request.RequestState.Paid;
+
+            await _request.UpdateRequest(request);
+        }
+
+        public async Task UpdateRequestStateForNotPayed(Request request)
+        {
+            request.RequestState = Domain.Enums.Request.RequestState.unpaid;
+
+            await _request.UpdateRequest(request);
+        }
+
         #endregion
 
         #region Patient Request Detail

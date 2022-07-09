@@ -28,8 +28,9 @@ namespace DoctorFAM.Domain.ViewModels.Account
 
         public bool? DoctorsRegister { get; set; }
 
-        public bool SiteRoles { get; set; }
+        public bool? SellerRegister { get; set; }
 
+        public bool SiteRoles { get; set; }
     }
 
     public enum RegisterUserResult

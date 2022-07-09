@@ -5,6 +5,7 @@ using DoctorFAM.Data.DbContext;
 using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.Requests;
+using DoctorFAM.Domain.Entities.Wallet;
 using DoctorFAM.Domain.Enums.RequestType;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.HealthHouse.HomeNurse;
@@ -22,20 +23,22 @@ namespace DoctorFAM.Application.Services.Implementation
     {
         #region Ctor
 
-        public DoctorFAMDbContext _context;
+        private readonly DoctorFAMDbContext _context;
 
-        public IHomeNurseRepository _homeNurse;
+        private readonly IHomeNurseRepository _homeNurse;
 
-        public IRequestService _requestService;
+        private readonly IRequestService _requestService;
 
-        public IUserService _userService;
+        private readonly IUserService _userService;
 
-        public IPatientService _patientService;
+        private readonly IPatientService _patientService;
 
         private readonly ILocationService _locationService;
 
+        private readonly IWalletRepository _walletRepository;
+
         public HomeNurseService(DoctorFAMDbContext context, IHomeNurseRepository homeNurse, IRequestService requestService,
-                                IUserService userService, IPatientService patientService , ILocationService locationService)
+                                IUserService userService, IPatientService patientService , ILocationService locationService , IWalletRepository walletRepository)
         {
             _context = context;
             _homeNurse = homeNurse;
@@ -43,11 +46,56 @@ namespace DoctorFAM.Application.Services.Implementation
             _userService = userService;
             _patientService = patientService;
             _locationService = locationService;
+            _walletRepository = walletRepository;
         }
 
         #endregion
 
-        #region Home Visit Methods 
+        #region Home Nurse Methods 
+
+        public async Task<bool> ChargeUserWallet(ulong userId, int price)
+        {
+            if (!await _userService.IsExistUserById(userId))
+            {
+                return false;
+            }
+
+            var wallet = new Wallet
+            {
+                UserId = userId,
+                TransactionType = TransactionType.Deposit,
+                GatewayType = GatewayType.Zarinpal,
+                PaymentType = PaymentType.ChargeWallet,
+                Price = price,
+                Description = "شارژ حساب کاربری برای پرداخت هزینه ی پرستار در منزل ",
+                IsFinally = true
+            };
+
+            await _walletRepository.CreateWalletAsync(wallet);
+            return true;
+        }
+
+        public async Task<bool> PayHomeNurseTariff(ulong userId, int price)
+        {
+            if (!await _userService.IsExistUserById(userId))
+            {
+                return false;
+            }
+
+            var wallet = new Wallet
+            {
+                UserId = userId,
+                TransactionType = TransactionType.Withdraw,
+                GatewayType = GatewayType.Zarinpal,
+                PaymentType = PaymentType.HomeNurse,
+                Price = price,
+                Description = "پرداخت مبلغ پرستار در منزل ",
+                IsFinally = true
+            };
+
+            await _walletRepository.CreateWalletAsync(wallet);
+            return true;
+        }
 
         public async Task<ulong?> CreateHomeNurseRequest(ulong userId)
         {

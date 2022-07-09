@@ -729,15 +729,16 @@ span,
 }
 
 .header-middle {
-    padding: 20px 0;
+   /* padding: 20px 0;*/
 }
 
 .language-selection button {
     box-shadow: none;
     border: none;
     background: none;
-    color: #5f6368;
+    color: white;
     font-size: 14px;
+    font-weight:600;
     padding: 0;
 }
 
@@ -818,7 +819,7 @@ span,
 
 .cart {
     position: relative;
-    z-index: 200;
+   /* z-index: 200;*/
 }
 
 .cart>a {
@@ -906,7 +907,7 @@ span,
 /*--Header Main--*/
 
 .logo img {
-    height: 40px;
+    height: 60px;
 }
 
 .header {
@@ -1713,4 +1714,6 @@ span,
         background-color: #fd5b03 !important;
         color: white !important;
     }
+
+
 

@@ -81,13 +81,13 @@
                                     <a asp-action="EditProfile" asp-controller="Account">
                                         <div class="avatar-area">
                                             <img src="@Model.GetUserAvatar()" class="avatar">
-                                            <span class="caption">@Localizer["Edit profile"]</span>
+                                            <span class="caption">@SharedLocalizer["Edit Profile"]</span>
                                         </div>
                                     </a>
                                 </li>
                                 <!--Avatar Area-->
                                 <li class="edit">
-                                    <a asp-controller="Account" asp-action="EditProfile">@Localizer["Edit profile"]</a>
+                                    <a asp-controller="Account" asp-action="EditProfile">@SharedLocalizer["Edit Profile"]</a>
                                 </li>
                                 <!--Theme Selector Area-->
                                 <li class="theme-area">

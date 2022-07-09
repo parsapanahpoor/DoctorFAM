@@ -2,6 +2,8 @@
 using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.ViewModels.Admin.HealthHouse;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.DeathCertificate;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.HomeVisit;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +15,15 @@ namespace DoctorFAM.Domain.Interfaces
     public interface IHomeVisitRepository
     {
         #region Site Side
+
+        #endregion
+
+        #region Doctor Panel Side
+
+        Task<ListOfPayedHomeVisitsRequestsDoctorPanelSideViewModel> ListOfPayedHomeVisitsRequestsDoctorPanelSide(ListOfPayedHomeVisitsRequestsDoctorPanelSideViewModel filter);
+
+        Task<ListOfPayedDeathCertificateRequestDoctorSideViewModel> ListOfPayedDeathCertificateRequestsDoctorPanelSide(ListOfPayedDeathCertificateRequestDoctorSideViewModel filter);
+
 
         #endregion
 

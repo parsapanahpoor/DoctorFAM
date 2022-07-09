@@ -1,12 +1,26 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DoctorFAM.Application.Extensions;
+using DoctorFAM.Application.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DoctorFAM.Web.Areas.Admin.ViewComponents
 {
     public class AdminNavbarViewComponent : ViewComponent
     {
+        #region Ctor
+
+        private readonly IUserService _userService;
+
+        public AdminNavbarViewComponent(IUserService userService)
+        {
+            _userService = userService;
+        }
+
+        #endregion
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            return View("AdminNavbar");
+            var user = await _userService.GetUserById(User.GetUserId());
+
+            return View("AdminNavbar" , user);
         }
     }
 }

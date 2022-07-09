@@ -4,6 +4,7 @@ using DoctorFAM.Domain.Entities.Doctors;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,6 +19,23 @@ namespace DoctorFAM.Domain.Entities.Account
         [Required(ErrorMessage = "این فیلد الزامی است .")]
         [MaxLength(300, ErrorMessage = "تعداد کاراکتر های {0} نمیتواند بیشتر از {1} باشد")]
         public string Username { get; set; }
+
+        public string? FirstName { get; set; }
+
+        public string? LastName { get; set; }
+
+        public DateTime? BithDay { get; set; }
+
+        public string? FatherName { get; set; }
+
+        [MaxLength(30)]
+        public string? NationalId { get; set; }
+
+        public string? ExtraPhoneNumber { get; set; }
+
+        public string? HomePhoneNumber { get; set; }
+
+        public string? WorkAddress { get; set; }
 
         [Display(Name = "تلفن همراه")]
         [MaxLength(20, ErrorMessage = "تعداد کاراکتر های {0} نمیتواند بیشتر از {1} باشد")]
@@ -72,11 +90,19 @@ namespace DoctorFAM.Domain.Entities.Account
 
         public ICollection<UserRole> UserRoles { get; set; }
 
+        [InverseProperty("User")]
         public ICollection<Request> Requests { get; set; }
+
+        [InverseProperty("Operation")]
+        public ICollection<Request?> OperationRequest { get; set; }
 
         public ICollection<Patient.Patient> Patients { get; set; }
 
-        public ICollection<DoctorsInfo> DoctorsInfos { get; set; }
+        public ICollection<PopulationCovered.PopulationCovered> PopulationCovered { get; set; }
+
+        public ICollection<Product.Product> Products { get; set; }
+
+        public Doctor Doctors { get; set; }
 
         #endregion
     }

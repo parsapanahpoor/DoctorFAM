@@ -249,4 +249,115 @@
   <data name="Wallet list" xml:space="preserve">
     <value>لیست کیف پول ها</value>
   </data>
+  <data name="Change Password" xml:space="preserve">
+    <value>تغییر کلمه ی عبور </value>
+  </data>
+  <data name="Edit Profile" xml:space="preserve">
+    <value>ویرایش اطلاعات کاربری</value>
+  </data>
+  <data name="Create Population Covered" xml:space="preserve">
+    <value>افزودن جمعیت تحت پوشش</value>
+  </data>
+  <data name="Manage Population Covered" xml:space="preserve">
+    <value>مدیریت جمعیت تحت پوشش</value>
+  </data>
+  <data name="Population Covered" xml:space="preserve">
+    <value>جمعیت تحت پوشش</value>
+  </data>
+  <data name="Population Covered List" xml:space="preserve">
+    <value>لیست افراد تحت پوشش</value>
+  </data>
+  <data name="Doctor Info" xml:space="preserve">
+    <value>اطلاعات پزشک</value>
+  </data>
+  <data name="Accepted" xml:space="preserve">
+    <value>پذیرفته شده</value>
+  </data>
+  <data name="Decline" xml:space="preserve">
+    <value>پذیرفته نشده</value>
+  </data>
+  <data name="Waiting" xml:space="preserve">
+    <value>در انتظار</value>
+  </data>
+  <data name="Dear user, your information has been rejected by the site support. You can find the reason on the desired page" xml:space="preserve">
+    <value>کاربر محترم اطلاعات شما توسط پشتیبانی سایت رد شده است . شما می توانید علت آن را در صفحه ی مورد نظر بیابید</value>
+  </data>
+  <data name="Dear user, your information is being checked by the support. Please be patient until the result is announced" xml:space="preserve">
+    <value>کاربر محترم اطلاعات شما درحال بررسی توسط پشتیبان است . لطفا تا اعلام نتیجه صبور باشید</value>
+  </data>
+  <data name="Inaccessibility" xml:space="preserve">
+    <value>عدم دسترسی</value>
+  </data>
+  <data name="Manage Doctors Info" xml:space="preserve">
+    <value>مدیریت اطلاعات پزشکان</value>
+  </data>
+  <data name="List of covered people" xml:space="preserve">
+    <value>لیست افراد تحت پوشش</value>
+  </data>
+  <data name="Queuing settings" xml:space="preserve">
+    <value>تنظیمات نوبت دهی</value>
+  </data>
+  <data name="Records of medical" xml:space="preserve">
+    <value>سوابق اقدامات پزشکی</value>
+  </data>
+  <data name="Turn ratings" xml:space="preserve">
+    <value>نوبت دهی</value>
+  </data>
+  <data name="Please upload your educational certificate or license" xml:space="preserve">
+    <value>لطفا مدرک تحصیلی یا پروانه ی مطب خود را بارگذاری (آپلود) کنید</value>
+  </data>
+  <data name="The input values ​​are not valid" xml:space="preserve">
+    <value>مقادیر ورودی معتبر نمی باشد .</value>
+  </data>
+  <data name="The operation has failed" xml:space="preserve">
+    <value>عملیات با شکست مواجه شده است</value>
+  </data>
+  <data name="You have not selected this item." xml:space="preserve">
+    <value>شما این آیتم را انتخاب نکرده اید .</value>
+  </data>
+  <data name="You have selected this item." xml:space="preserve">
+    <value>شما این آیتم را انتخاب کرده اید .</value>
+  </data>
+  <data name="Site Setting" xml:space="preserve">
+    <value>تنظیمات سایت</value>
+  </data>
+  <data name="Death Certificate" xml:space="preserve">
+    <value>صدور گواهی فوت</value>
+  </data>
+  <data name="Health House" xml:space="preserve">
+    <value>خانه ی سلامت</value>
+  </data>
+  <data name="Home Nurse" xml:space="preserve">
+    <value>پرستار در منزل</value>
+  </data>
+  <data name="Home Visit" xml:space="preserve">
+    <value>ویزیت در منزل</value>
+  </data>
+  <data name="Laboratory At Home" xml:space="preserve">
+    <value>آزمایشگاه در منزل</value>
+  </data>
+  <data name="Patient Transport" xml:space="preserve">
+    <value>انتقال بیمار </value>
+  </data>
+  <data name="Pharmacy At Home" xml:space="preserve">
+    <value>داروخانه در منزل</value>
+  </data>
+  <data name="Doctor Family" xml:space="preserve">
+    <value>پزشک خانواده </value>
+  </data>
+  <data name="Favorite activities" xml:space="preserve">
+    <value>فعالیت های انتخابی شما</value>
+  </data>
+  <data name="Online Visit" xml:space="preserve">
+    <value>ویزیت آنلاین </value>
+  </data>
+  <data name="An error occurred in the change password process" xml:space="preserve">
+    <value>خطایی در فرآیند تغییر رمز عبور رخ داد</value>
+  </data>
+  <data name="Current password is invalid" xml:space="preserve">
+    <value>رمز عبور فعلی نامعتبر است</value>
+  </data>
+  <data name="The input values ​​are not valid1" xml:space="preserve">
+    <value>مقادیر ورودی معتبر نمی باشد .</value>
+  </data>
 </root>

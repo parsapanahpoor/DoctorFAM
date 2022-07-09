@@ -1,0 +1,25 @@
+﻿@model DoctorFAM.Domain.ViewModels.Common.PagingViewModel
+
+<nav aria-label="Page navigation" class="mt-5">
+    <ul class="pagination">
+        @if (Model.StartPage < Model.Page)
+        {
+            <li class="page-item"><a class="page-link" onclick="FillPageId(@(Model.Page - 1))"><i class="fas fa-arrow-right"></i></a></li>
+        }
+        @for (int i = Model.StartPage; i <= Model.EndPage; i++)
+        {
+            if (Model.Page == i)
+            {
+                <li class="page-item active"><a class="cursor-pointer page-link">@i</a></li>
+            }
+            else
+            {
+                <li class="page-item"><a class="page-item cursor-pointer page-link" onclick="FillPageId(@i)">@i</a></li>
+            }
+        }
+        @if (Model.EndPage > Model.Page)
+        {
+            <li class="page-item"><a class="page-link" onclick="FillPageId(@(Model.Page + 1))"><i class="fas fa-arrow-left"></i></a></li>
+        }
+    </ul>
+</nav>

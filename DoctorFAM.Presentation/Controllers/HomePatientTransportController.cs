@@ -14,24 +14,27 @@ namespace DoctorFAM.Web.Controllers
     {
         #region Ctor
 
-        public IHomePatientTransportService _homePatientTransportService;
+        private readonly IHomePatientTransportService _homePatientTransportService;
 
-        public ILocationService _locationService;
+        private readonly ILocationService _locationService;
 
-        public IPatientService _patientService;
+        private readonly IPatientService _patientService;
 
-        public IRequestService _requestService;
+        private readonly IRequestService _requestService;
 
-        public IUserService _userService;
+        private readonly IUserService _userService;
+
+        private readonly ISiteSettingService _siteSettingService;
 
         public HomePatientTransportController(IHomePatientTransportService homePatientTransportService, ILocationService locationService, IPatientService patientService
-                                    , IRequestService requestService, IUserService userService)
+                                    , IRequestService requestService, IUserService userService , ISiteSettingService siteSettingService)
         {
             _homePatientTransportService = homePatientTransportService;
             _locationService = locationService;
             _patientService = patientService;
             _requestService = requestService;
             _userService = userService;
+            _siteSettingService = siteSettingService;
         }
 
         #endregion
@@ -203,12 +206,108 @@ namespace DoctorFAM.Web.Controllers
 
         #endregion
 
-        #region Bank Payment
+        #region Bank Redirect
 
         [HttpGet]
-        public IActionResult BankPay(ulong requestId)
+        public async Task<IActionResult> BankPay(ulong requestId)
         {
-            ViewBag.RequestId = requestId;
+            #region Get Request By Id
+
+            var request = await _requestService.GetRequestById(requestId);
+            if (request == null) return NotFound();
+
+            #endregion
+
+            #region Get Home Patient Transport Tarif 
+
+            var homePatientTransportTariff = await _siteSettingService.GetHomePatientTransportTariff();
+            if (homePatientTransportTariff == 0)
+            {
+                TempData[ErrorMessage] = "لطفا با پشتیبانی تماس بگیرید";
+                return View();
+            }
+
+            #endregion
+
+            #region Online Payment
+
+            var payment = new ZarinpalSandbox.Payment(homePatientTransportTariff);
+
+            var res = payment.PaymentRequest("پرداخت  ", "https://localhost:44322/HomePatientTransportPayment/" + requestId, "Parsapanahpoor@yahoo.com", "09117878804");
+
+            if (res.Result.Status == 100)
+            {
+
+                #region Update Request State 
+
+                await _requestService.UpdateRequestStateForTramsferringToTheBankingPortal(request);
+
+                #endregion
+
+                return Redirect("https://sandbox.zarinpal.com/pg/StartPay/" + res.Result.Authority);
+            }
+
+            #endregion
+
+            return View();
+        }
+
+        #endregion
+
+        #region Home Patient Transport Payment
+
+        [Route("HomePatientTransportPayment/{id}")]
+        public async Task<IActionResult> HomePatientTransportPayment(ulong id)
+        {
+            #region Get Request 
+
+            var request = await _requestService.GetRequestById(id);
+
+            #endregion
+
+            if (HttpContext.Request.Query["Status"] != "" &&
+                HttpContext.Request.Query["Status"].ToString().ToLower() == "ok"
+                && HttpContext.Request.Query["Authority"] != "")
+            {
+                string authority = HttpContext.Request.Query["Authority"];
+
+                #region Get Home Patient Transport Tarif 
+
+                var homePatientTransport = await _siteSettingService.GetHomePatientTransportTariff();
+                if (homePatientTransport == 0)
+                {
+                    TempData[ErrorMessage] = "لطفا با پشتیبانی تماس بگیرید";
+                    return View();
+                }
+
+                #endregion
+
+                var payment = new ZarinpalSandbox.Payment(homePatientTransport);
+                var res = payment.Verification(authority).Result;
+
+                if (res.Status == 100)
+                {
+                    ViewBag.code = res.RefId;
+                    ViewBag.IsSuccess = true;
+
+                    //Update Request State 
+                    await _requestService.UpdateRequestStateForPayed(request);
+
+                    //Charge User Wallet
+                    await _homePatientTransportService.ChargeUserWallet(User.GetUserId(), homePatientTransport);
+
+                    //Pay Home Patient Transport Tariff
+                    await _homePatientTransportService.PayHomePatientTransportTariff(User.GetUserId(), homePatientTransport);
+
+                    return View();
+                }
+
+            }
+            else
+            {
+                await _requestService.UpdateRequestStateForNotPayed(request);
+            }
+
             return View();
         }
 

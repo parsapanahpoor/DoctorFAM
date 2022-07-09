@@ -1,6 +1,7 @@
 ﻿using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.ViewModels.Access;
 using DoctorFAM.Domain.ViewModels.Common;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.DosctorSideBarInfo;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         #region Role
 
-        Task<string> GetDoctorsInfosState(ulong userId);
+        Task<DoctorSideBarViewModel> GetDoctorsInfosState(ulong userId);
 
         Task<FilterRolesViewModel> FilterRoles(FilterRolesViewModel filter);
 

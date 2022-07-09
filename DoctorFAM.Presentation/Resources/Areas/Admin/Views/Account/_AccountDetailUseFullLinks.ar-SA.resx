@@ -120,6 +120,9 @@
   <data name="Add New Transaction" xml:space="preserve">
     <value>أضف معاملة جديدة</value>
   </data>
+  <data name="Add Wallet" xml:space="preserve">
+    <value>أضف المحفظة</value>
+  </data>
   <data name="Best Links" xml:space="preserve">
     <value>أفضل الروابط</value>
   </data>
@@ -131,5 +134,11 @@
   </data>
   <data name="Login With This User" xml:space="preserve">
     <value>تسجيل الدخول مع هذا المستخدم</value>
+  </data>
+  <data name="Population Covered" xml:space="preserve">
+    <value>تغطية السكان</value>
+  </data>
+  <data name="User Wallets" xml:space="preserve">
+    <value>محافظ المستخدم</value>
   </data>
 </root>

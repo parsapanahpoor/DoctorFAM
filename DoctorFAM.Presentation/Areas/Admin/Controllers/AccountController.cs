@@ -5,6 +5,7 @@ using DoctorFAM.Web.HttpManager;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using System.Security.Claims;
 
 namespace DoctorFAM.Web.Areas.Admin.Controllers
@@ -17,10 +18,13 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
 
         public IPermissionService _permissionService;
 
-        public AccountController(IUserService userService, IPermissionService permissionService)
+        private readonly IStringLocalizer<SharedLocalizer.SharedLocalizer> _sharedLocalizer;
+
+        public AccountController(IUserService userService, IPermissionService permissionService , IStringLocalizer<SharedLocalizer.SharedLocalizer> sharedLocalizer)
         {
             _userService = userService;
             _permissionService = permissionService;
+            _sharedLocalizer = sharedLocalizer;
         }
 
         #endregion
@@ -89,7 +93,7 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
 
                 #endregion
 
-                TempData[ErrorMessage] = "مقادیر ورودی معتبر نمی باشد .";
+                TempData[ErrorMessage] = _sharedLocalizer["The input values ​​are not valid"].Value;
                 return View(edit);
             }
 
@@ -102,22 +106,19 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
             switch (result)
             {
                 case AdminEditUserInfoResult.NotValidImage:
-                    TempData[ErrorMessage] = "تصویر انتخاب شده معتبر نمی باشد .";
+                    TempData[ErrorMessage] = _sharedLocalizer["Image Is Not Valid ."].Value;
                     break;
                 case AdminEditUserInfoResult.UserNotFound:
-                    TempData[ErrorMessage] = "کاربر مورد نظر یافت نشد .";
+                    TempData[ErrorMessage] = _sharedLocalizer["User Not Found"].Value;
                     return RedirectToAction("FilterUsers", "Account", new { area = "Admin" });
                 case AdminEditUserInfoResult.Success:
-                    TempData[SuccessMessage] = "عملیات با موفقیت انجام شد .";
+                    TempData[SuccessMessage] = _sharedLocalizer["Operation Successfully"].Value;
                     return RedirectToAction("AccountDetail", "Account", new { area = "Admin", id = edit.UserId });
                 case AdminEditUserInfoResult.NotValidEmail:
-                    TempData[ErrorMessage] = "ایمیل وارد شده از قبل در سایت موجود است";
+                    TempData[ErrorMessage] = _sharedLocalizer["The entered email is already available on the site"].Value;
                     break;
                 case AdminEditUserInfoResult.NotValidMobile:
-                    TempData[ErrorMessage] = "موبایل وارد شده از قبل در سایت موجود است";
-                    break;
-                case AdminEditUserInfoResult.NotValidBirthDate:
-                    TempData[ErrorMessage] = "تاریخ وارد شده نمی تواند بزرگتر از الان باشد .";
+                    TempData[ErrorMessage] = "The entered Mobile is already available on the site";
                     break;
             }
 

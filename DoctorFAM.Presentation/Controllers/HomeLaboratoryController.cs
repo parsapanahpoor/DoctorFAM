@@ -16,23 +16,26 @@ namespace DoctorFAM.Web.Controllers
     {
         #region Ctor
 
-        public IHomeLaboratoryServices _homeLaboratory;
+        private readonly IHomeLaboratoryServices _homeLaboratory;
 
-        public IRequestService _requestService;
+        private readonly IRequestService _requestService;
 
-        public IUserService _userService;
+        private readonly IUserService _userService;
 
-        public IPatientService _patientService;
+        private readonly IPatientService _patientService;
 
-        public ILocationService _locationService;
+        private readonly ILocationService _locationService;
 
-        public HomeLaboratoryController(IHomeLaboratoryServices homeLaboratory, IRequestService requestService, IUserService userService, IPatientService patientService, ILocationService locationService)
+        private readonly ISiteSettingService _siteSettingService;
+
+        public HomeLaboratoryController(IHomeLaboratoryServices homeLaboratory, IRequestService requestService, IUserService userService, IPatientService patientService, ILocationService locationService, ISiteSettingService siteSettingService )
         {
             _homeLaboratory = homeLaboratory;
             _requestService = requestService;
             _userService = userService;
             _patientService = patientService;
             _locationService = locationService;
+            _siteSettingService = siteSettingService;
         }
 
         #endregion
@@ -274,7 +277,7 @@ namespace DoctorFAM.Web.Controllers
             {
                 case CreatePatientAddressResult.Success:
                     TempData[SuccessMessage] = "عملیات با موفقیت انجام شده است ";
-                    return RedirectToAction("SecPage", "Home");
+                    return RedirectToAction("BankPay", "HomeLaboratory", new { requestId = patientRequest.RequestId });
 
                 case CreatePatientAddressResult.Failed:
                     TempData[ErrorMessage] = "عملیات با شکست مواجه شده است ";
@@ -296,6 +299,113 @@ namespace DoctorFAM.Web.Controllers
             #endregion
 
             return View(patientRequest);
+        }
+
+        #endregion
+
+        #region Bank Redirect
+
+        [HttpGet]
+        public async Task<IActionResult> BankPay(ulong requestId)
+        {
+            #region Get Request By Id
+
+            var request = await _requestService.GetRequestById(requestId);
+            if (request == null) return NotFound();
+
+            #endregion
+
+            #region Get Home Visit Tarif 
+
+            var homeLaboratory = await _siteSettingService.GetHomeLaboratoryTariff();
+            if (homeLaboratory == 0)
+            {
+                TempData[ErrorMessage] = "لطفا با پشتیبانی تماس بگیرید";
+                return View();
+            }
+
+            #endregion
+
+            #region Online Payment
+
+            var payment = new ZarinpalSandbox.Payment(homeLaboratory);
+
+            var res = payment.PaymentRequest("پرداخت  ", "https://localhost:44322/HomeLaboratoryPayment/" + requestId, "Parsapanahpoor@yahoo.com", "09117878804");
+
+            if (res.Result.Status == 100)
+            {
+
+                #region Update Request State 
+
+                await _requestService.UpdateRequestStateForTramsferringToTheBankingPortal(request);
+
+                #endregion
+
+                return Redirect("https://sandbox.zarinpal.com/pg/StartPay/" + res.Result.Authority);
+            }
+
+            #endregion
+
+            return View();
+        }
+
+        #endregion
+
+        #region Home Laboratory Payment
+
+        [Route("HomeLaboratoryPayment/{id}")]
+        public async Task<IActionResult> HomeLaboratoryPayment(ulong id)
+        {
+            #region Get Request 
+
+            var request = await _requestService.GetRequestById(id);
+
+            #endregion
+
+            if (HttpContext.Request.Query["Status"] != "" &&
+                HttpContext.Request.Query["Status"].ToString().ToLower() == "ok"
+                && HttpContext.Request.Query["Authority"] != "")
+            {
+                string authority = HttpContext.Request.Query["Authority"];
+
+                #region Get Home Laboratory Tarif 
+
+                var homeLaboratory = await _siteSettingService.GetHomeLaboratoryTariff();
+                if (homeLaboratory == 0)
+                {
+                    TempData[ErrorMessage] = "لطفا با پشتیبانی تماس بگیرید";
+                    return View();
+                }
+
+                #endregion
+
+                var payment = new ZarinpalSandbox.Payment(homeLaboratory);
+                var res = payment.Verification(authority).Result;
+
+                if (res.Status == 100)
+                {
+                    ViewBag.code = res.RefId;
+                    ViewBag.IsSuccess = true;
+
+                    //Update Request State 
+                    await _requestService.UpdateRequestStateForPayed(request);
+
+                    //Charge User Wallet
+                    await _homeLaboratory.ChargeUserWallet(User.GetUserId(), homeLaboratory);
+
+                    //Pay Home Laboratory Tariff
+                    await _homeLaboratory.PayHomeLAboratoryTariff(User.GetUserId(), homeLaboratory);
+
+                    return View();
+                }
+
+            }
+            else
+            {
+                await _requestService.UpdateRequestStateForNotPayed(request);
+            }
+
+            return View();
         }
 
         #endregion

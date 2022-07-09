@@ -14,7 +14,7 @@ namespace DoctorFAM.Web.Areas.Doctor.ActionFilterAttributes
 
             var doctorsState = service.GetDoctorsInfosState(context.HttpContext.User.GetUserId()).Result;
 
-            if (doctorsState != "Accepted")
+            if (doctorsState.DoctorInfoState != "Accepted")
             {
                 context.HttpContext.Response.Redirect("/Doctor");
             }

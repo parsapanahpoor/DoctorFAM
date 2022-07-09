@@ -22,6 +22,47 @@ namespace DoctorFAM.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("Academy.Domain.Entities.SiteSetting.SiteSetting", b =>
+                {
+                    b.Property<decimal>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(20,0)");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<decimal>("Id"), 1L, 1);
+
+                    b.Property<string>("CopyRightText")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DeathCertificateTariff")
+                        .HasColumnType("int");
+
+                    b.Property<int>("HomeLaboratoryTariff")
+                        .HasColumnType("int");
+
+                    b.Property<int>("HomeNurseTariff")
+                        .HasColumnType("int");
+
+                    b.Property<int>("HomePatientTransportTariff")
+                        .HasColumnType("int");
+
+                    b.Property<int>("HomePharmacyTariff")
+                        .HasColumnType("int");
+
+                    b.Property<int>("HomeVisitTariff")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SiteSettings");
+                });
+
             modelBuilder.Entity("DoctorFAM.DataLayer.Entities.Request", b =>
                 {
                     b.Property<decimal>("Id")
@@ -36,6 +77,9 @@ namespace DoctorFAM.Data.Migrations
                     b.Property<bool>("IsDelete")
                         .HasColumnType("bit");
 
+                    b.Property<decimal?>("OperationId")
+                        .HasColumnType("decimal(20,0)");
+
                     b.Property<decimal?>("PatientId")
                         .HasColumnType("decimal(20,0)");
 
@@ -49,6 +93,8 @@ namespace DoctorFAM.Data.Migrations
                         .HasColumnType("decimal(20,0)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OperationId");
 
                     b.HasIndex("UserId");
 
@@ -85,7 +131,7 @@ namespace DoctorFAM.Data.Migrations
                         new
                         {
                             Id = 1m,
-                            CreateDate = new DateTime(2022, 5, 28, 21, 10, 3, 424, DateTimeKind.Local).AddTicks(5698),
+                            CreateDate = new DateTime(2022, 7, 9, 9, 5, 21, 976, DateTimeKind.Local).AddTicks(3928),
                             IsDelete = false,
                             RoleUniqueName = "Admin",
                             Title = "Admin"
@@ -93,7 +139,7 @@ namespace DoctorFAM.Data.Migrations
                         new
                         {
                             Id = 2m,
-                            CreateDate = new DateTime(2022, 5, 28, 21, 10, 3, 424, DateTimeKind.Local).AddTicks(5718),
+                            CreateDate = new DateTime(2022, 7, 9, 9, 5, 21, 976, DateTimeKind.Local).AddTicks(4146),
                             IsDelete = false,
                             RoleUniqueName = "Doctor",
                             Title = "Doctor"
@@ -101,10 +147,18 @@ namespace DoctorFAM.Data.Migrations
                         new
                         {
                             Id = 3m,
-                            CreateDate = new DateTime(2022, 5, 28, 21, 10, 3, 424, DateTimeKind.Local).AddTicks(5730),
+                            CreateDate = new DateTime(2022, 7, 9, 9, 5, 21, 976, DateTimeKind.Local).AddTicks(4158),
                             IsDelete = false,
                             RoleUniqueName = "Support",
                             Title = "Support"
+                        },
+                        new
+                        {
+                            Id = 4m,
+                            CreateDate = new DateTime(2022, 7, 9, 9, 5, 21, 976, DateTimeKind.Local).AddTicks(4167),
+                            IsDelete = false,
+                            RoleUniqueName = "Seller",
+                            Title = "Seller"
                         });
                 });
 
@@ -153,6 +207,9 @@ namespace DoctorFAM.Data.Migrations
                     b.Property<bool>("BanForTicket")
                         .HasColumnType("bit");
 
+                    b.Property<DateTime?>("BithDay")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
 
@@ -164,6 +221,18 @@ namespace DoctorFAM.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("ExtraPhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FatherName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HomePhoneNumber")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsAdmin")
                         .HasColumnType("bit");
@@ -180,6 +249,9 @@ namespace DoctorFAM.Data.Migrations
                     b.Property<bool>("IsMobileConfirm")
                         .HasColumnType("bit");
 
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Mobile")
                         .IsRequired()
                         .HasMaxLength(20)
@@ -189,6 +261,10 @@ namespace DoctorFAM.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("NationalId")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -202,6 +278,9 @@ namespace DoctorFAM.Data.Migrations
 
                     b.Property<int>("WalletBalance")
                         .HasColumnType("int");
+
+                    b.Property<string>("WorkAddress")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -237,7 +316,7 @@ namespace DoctorFAM.Data.Migrations
                     b.ToTable("UserRoles");
                 });
 
-            modelBuilder.Entity("DoctorFAM.Domain.Entities.Doctors.DoctorsInfo", b =>
+            modelBuilder.Entity("DoctorFAM.Domain.Entities.Doctors.Doctor", b =>
                 {
                     b.Property<decimal>("Id")
                         .ValueGeneratedOnAdd()
@@ -250,6 +329,37 @@ namespace DoctorFAM.Data.Migrations
 
                     b.Property<int>("DoctorsInfosType")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("RejectDescription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("UserId")
+                        .HasColumnType("decimal(20,0)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("Doctors");
+                });
+
+            modelBuilder.Entity("DoctorFAM.Domain.Entities.Doctors.DoctorsInfo", b =>
+                {
+                    b.Property<decimal>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(20,0)");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<decimal>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("DoctorId")
+                        .HasColumnType("decimal(20,0)");
 
                     b.Property<string>("Education")
                         .IsRequired()
@@ -268,20 +378,270 @@ namespace DoctorFAM.Data.Migrations
                     b.Property<int>("NationalCode")
                         .HasColumnType("int");
 
-                    b.Property<string>("RejectDescription")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Specialty")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("UserId")
+                    b.HasKey("Id");
+
+                    b.HasIndex("DoctorId")
+                        .IsUnique();
+
+                    b.ToTable("DoctorsInfos");
+                });
+
+            modelBuilder.Entity("DoctorFAM.Domain.Entities.Doctors.DoctorsSelectedInterests", b =>
+                {
+                    b.Property<decimal>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("decimal(20,0)");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<decimal>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("DoctorId")
+                        .HasColumnType("decimal(20,0)");
+
+                    b.Property<decimal>("InterestId")
+                        .HasColumnType("decimal(20,0)");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("DoctorId");
 
-                    b.ToTable("DoctorsInfos");
+                    b.HasIndex("InterestId");
+
+                    b.ToTable("DoctorsSelectedInterests");
+                });
+
+            modelBuilder.Entity("DoctorFAM.Domain.Entities.Interest.DoctorsInterest", b =>
+                {
+                    b.Property<decimal>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(20,0)");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<decimal>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Interests");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1m,
+                            CreateDate = new DateTime(2022, 7, 9, 9, 5, 21, 976, DateTimeKind.Local).AddTicks(4708),
+                            IsDelete = false
+                        },
+                        new
+                        {
+                            Id = 2m,
+                            CreateDate = new DateTime(2022, 7, 9, 9, 5, 21, 976, DateTimeKind.Local).AddTicks(4722),
+                            IsDelete = false
+                        },
+                        new
+                        {
+                            Id = 3m,
+                            CreateDate = new DateTime(2022, 7, 9, 9, 5, 21, 976, DateTimeKind.Local).AddTicks(4732),
+                            IsDelete = false
+                        },
+                        new
+                        {
+                            Id = 4m,
+                            CreateDate = new DateTime(2022, 7, 9, 9, 5, 21, 976, DateTimeKind.Local).AddTicks(4743),
+                            IsDelete = false
+                        });
+                });
+
+            modelBuilder.Entity("DoctorFAM.Domain.Entities.Interest.DoctorsInterestInfo", b =>
+                {
+                    b.Property<decimal>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(20,0)");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<decimal>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("InterestId")
+                        .HasColumnType("decimal(20,0)");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LanguageId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InterestId");
+
+                    b.HasIndex("LanguageId");
+
+                    b.ToTable("InterestInfos");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1m,
+                            CreateDate = new DateTime(2022, 7, 9, 9, 5, 21, 976, DateTimeKind.Local).AddTicks(4764),
+                            InterestId = 1m,
+                            IsDelete = false,
+                            LanguageId = "fa-IR",
+                            Title = "ویزیت آنلاین"
+                        },
+                        new
+                        {
+                            Id = 2m,
+                            CreateDate = new DateTime(2022, 7, 9, 9, 5, 21, 976, DateTimeKind.Local).AddTicks(4776),
+                            InterestId = 1m,
+                            IsDelete = false,
+                            LanguageId = "en-US",
+                            Title = "Online Visit"
+                        },
+                        new
+                        {
+                            Id = 3m,
+                            CreateDate = new DateTime(2022, 7, 9, 9, 5, 21, 976, DateTimeKind.Local).AddTicks(4790),
+                            InterestId = 1m,
+                            IsDelete = false,
+                            LanguageId = "tr-TR",
+                            Title = "çevrimiçi ziyaret"
+                        },
+                        new
+                        {
+                            Id = 4m,
+                            CreateDate = new DateTime(2022, 7, 9, 9, 5, 21, 976, DateTimeKind.Local).AddTicks(4804),
+                            InterestId = 1m,
+                            IsDelete = false,
+                            LanguageId = "ar-SA",
+                            Title = "زيارة عبر الإنترنت"
+                        },
+                        new
+                        {
+                            Id = 5m,
+                            CreateDate = new DateTime(2022, 7, 9, 9, 5, 21, 976, DateTimeKind.Local).AddTicks(4820),
+                            InterestId = 2m,
+                            IsDelete = false,
+                            LanguageId = "ar-SA",
+                            Title = "زيارة منزلية"
+                        },
+                        new
+                        {
+                            Id = 6m,
+                            CreateDate = new DateTime(2022, 7, 9, 9, 5, 21, 976, DateTimeKind.Local).AddTicks(4836),
+                            InterestId = 2m,
+                            IsDelete = false,
+                            LanguageId = "tr-TR",
+                            Title = "Ev ziyareti"
+                        },
+                        new
+                        {
+                            Id = 7m,
+                            CreateDate = new DateTime(2022, 7, 9, 9, 5, 21, 976, DateTimeKind.Local).AddTicks(4861),
+                            InterestId = 2m,
+                            IsDelete = false,
+                            LanguageId = "fa-IR",
+                            Title = "ویزیت در منزل"
+                        },
+                        new
+                        {
+                            Id = 8m,
+                            CreateDate = new DateTime(2022, 7, 9, 9, 5, 21, 976, DateTimeKind.Local).AddTicks(4935),
+                            InterestId = 2m,
+                            IsDelete = false,
+                            LanguageId = "en-US",
+                            Title = "Home Visit"
+                        },
+                        new
+                        {
+                            Id = 9m,
+                            CreateDate = new DateTime(2022, 7, 9, 9, 5, 21, 976, DateTimeKind.Local).AddTicks(4947),
+                            InterestId = 3m,
+                            IsDelete = false,
+                            LanguageId = "en-US",
+                            Title = "Family Doctor"
+                        },
+                        new
+                        {
+                            Id = 10m,
+                            CreateDate = new DateTime(2022, 7, 9, 9, 5, 21, 976, DateTimeKind.Local).AddTicks(4960),
+                            InterestId = 3m,
+                            IsDelete = false,
+                            LanguageId = "tr-TR",
+                            Title = "aile hekimliği"
+                        },
+                        new
+                        {
+                            Id = 11m,
+                            CreateDate = new DateTime(2022, 7, 9, 9, 5, 21, 976, DateTimeKind.Local).AddTicks(4971),
+                            InterestId = 3m,
+                            IsDelete = false,
+                            LanguageId = "ar-SA",
+                            Title = "أطباء الأسرة"
+                        },
+                        new
+                        {
+                            Id = 12m,
+                            CreateDate = new DateTime(2022, 7, 9, 9, 5, 21, 976, DateTimeKind.Local).AddTicks(4980),
+                            InterestId = 3m,
+                            IsDelete = false,
+                            LanguageId = "fa-IR",
+                            Title = "پزشک خانواده"
+                        },
+                        new
+                        {
+                            Id = 13m,
+                            CreateDate = new DateTime(2022, 7, 9, 9, 5, 21, 976, DateTimeKind.Local).AddTicks(4989),
+                            InterestId = 4m,
+                            IsDelete = false,
+                            LanguageId = "fa-IR",
+                            Title = "صدور گواهی فوت"
+                        },
+                        new
+                        {
+                            Id = 14m,
+                            CreateDate = new DateTime(2022, 7, 9, 9, 5, 21, 976, DateTimeKind.Local).AddTicks(4999),
+                            InterestId = 4m,
+                            IsDelete = false,
+                            LanguageId = "en-US",
+                            Title = "Issuance of death certificate"
+                        },
+                        new
+                        {
+                            Id = 15m,
+                            CreateDate = new DateTime(2022, 7, 9, 9, 5, 21, 976, DateTimeKind.Local).AddTicks(5008),
+                            InterestId = 4m,
+                            IsDelete = false,
+                            LanguageId = "tr-TR",
+                            Title = "Ölüm belgesi verilmesi"
+                        },
+                        new
+                        {
+                            Id = 16m,
+                            CreateDate = new DateTime(2022, 7, 9, 9, 5, 21, 976, DateTimeKind.Local).AddTicks(5018),
+                            InterestId = 4m,
+                            IsDelete = false,
+                            LanguageId = "ar-SA",
+                            Title = "اصدار شهادة وفاة"
+                        });
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Laboratory.HomeLaboratoryRequestDetail", b =>
@@ -397,6 +757,22 @@ namespace DoctorFAM.Data.Migrations
                     b.HasIndex("ParentId");
 
                     b.ToTable("Category");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1m,
+                            CreateDate = new DateTime(2022, 7, 9, 9, 5, 21, 976, DateTimeKind.Local).AddTicks(5033),
+                            IsDelete = false,
+                            UniqueName = "Cosmetics"
+                        },
+                        new
+                        {
+                            Id = 2m,
+                            CreateDate = new DateTime(2022, 7, 9, 9, 5, 21, 976, DateTimeKind.Local).AddTicks(5048),
+                            IsDelete = false,
+                            UniqueName = "Medical Equipment"
+                        });
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.MarketCategory.CategoryInfo", b =>
@@ -432,6 +808,80 @@ namespace DoctorFAM.Data.Migrations
                     b.HasIndex("LanguageId");
 
                     b.ToTable("CategoryInfos");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1m,
+                            CategoryId = 1m,
+                            CreateDate = new DateTime(2022, 7, 9, 9, 5, 21, 976, DateTimeKind.Local).AddTicks(5061),
+                            IsDelete = false,
+                            LanguageId = "fa-IR",
+                            Title = "لوازم آرایشی بهداشتی"
+                        },
+                        new
+                        {
+                            Id = 2m,
+                            CategoryId = 1m,
+                            CreateDate = new DateTime(2022, 7, 9, 9, 5, 21, 976, DateTimeKind.Local).AddTicks(5073),
+                            IsDelete = false,
+                            LanguageId = "en-US",
+                            Title = "Cosmetics"
+                        },
+                        new
+                        {
+                            Id = 3m,
+                            CategoryId = 1m,
+                            CreateDate = new DateTime(2022, 7, 9, 9, 5, 21, 976, DateTimeKind.Local).AddTicks(5083),
+                            IsDelete = false,
+                            LanguageId = "tr-TR",
+                            Title = "Makyaj malzemeleri"
+                        },
+                        new
+                        {
+                            Id = 4m,
+                            CategoryId = 1m,
+                            CreateDate = new DateTime(2022, 7, 9, 9, 5, 21, 976, DateTimeKind.Local).AddTicks(5093),
+                            IsDelete = false,
+                            LanguageId = "ar-SA",
+                            Title = "مستحضرات التجميل"
+                        },
+                        new
+                        {
+                            Id = 5m,
+                            CategoryId = 2m,
+                            CreateDate = new DateTime(2022, 7, 9, 9, 5, 21, 976, DateTimeKind.Local).AddTicks(5103),
+                            IsDelete = false,
+                            LanguageId = "ar-SA",
+                            Title = "معدات طبية"
+                        },
+                        new
+                        {
+                            Id = 6m,
+                            CategoryId = 2m,
+                            CreateDate = new DateTime(2022, 7, 9, 9, 5, 21, 976, DateTimeKind.Local).AddTicks(5115),
+                            IsDelete = false,
+                            LanguageId = "tr-TR",
+                            Title = "Tıbbi malzeme"
+                        },
+                        new
+                        {
+                            Id = 7m,
+                            CategoryId = 2m,
+                            CreateDate = new DateTime(2022, 7, 9, 9, 5, 21, 976, DateTimeKind.Local).AddTicks(5124),
+                            IsDelete = false,
+                            LanguageId = "en-US",
+                            Title = "Medical Equipment"
+                        },
+                        new
+                        {
+                            Id = 8m,
+                            CategoryId = 2m,
+                            CreateDate = new DateTime(2022, 7, 9, 9, 5, 21, 976, DateTimeKind.Local).AddTicks(5134),
+                            IsDelete = false,
+                            LanguageId = "fa-IR",
+                            Title = "تجهیزات پزشکی"
+                        });
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Patient.Patient", b =>
@@ -536,6 +986,248 @@ namespace DoctorFAM.Data.Migrations
                     b.HasIndex("RequestId");
 
                     b.ToTable("HomePharmacyRequestDetails");
+                });
+
+            modelBuilder.Entity("DoctorFAM.Domain.Entities.PopulationCovered.PopulationCovered", b =>
+                {
+                    b.Property<decimal>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(20,0)");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<decimal>("Id"), 1L, 1);
+
+                    b.Property<int>("Age")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("BirthDay")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Gender")
+                        .HasColumnType("int");
+
+                    b.Property<int>("InsuranceType")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("NationalId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PatientLastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PatientName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Ratio")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("UserId")
+                        .HasColumnType("decimal(20,0)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("PopulationCovered");
+                });
+
+            modelBuilder.Entity("DoctorFAM.Domain.Entities.Product.Product", b =>
+                {
+                    b.Property<decimal>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(20,0)");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<decimal>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("IsInOffer")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LongDescription")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("OfferPercent")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PackedProductsDescription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("ProductImageName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("ProductSaleType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ProductTitle")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("ProductsCount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductsState")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RejectedNote")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ShortDescription")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("UserId")
+                        .HasColumnType("decimal(20,0)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("DoctorFAM.Domain.Entities.Product.ProductFeature", b =>
+                {
+                    b.Property<decimal>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(20,0)");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<decimal>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FeatureTitle")
+                        .IsRequired()
+                        .HasMaxLength(800)
+                        .HasColumnType("nvarchar(800)");
+
+                    b.Property<string>("FeatureValue")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal>("ProductID")
+                        .HasColumnType("decimal(20,0)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductID");
+
+                    b.ToTable("ProductFeatures");
+                });
+
+            modelBuilder.Entity("DoctorFAM.Domain.Entities.Product.ProductGallery", b =>
+                {
+                    b.Property<decimal>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(20,0)");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<decimal>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ImageName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal>("ProductID")
+                        .HasColumnType("decimal(20,0)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(800)
+                        .HasColumnType("nvarchar(800)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductID");
+
+                    b.ToTable("ProductGalleries");
+                });
+
+            modelBuilder.Entity("DoctorFAM.Domain.Entities.Product.ProductSelectedCategory", b =>
+                {
+                    b.Property<decimal>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(20,0)");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<decimal>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal>("ProductCategoryId")
+                        .HasColumnType("decimal(20,0)");
+
+                    b.Property<decimal>("ProductID")
+                        .HasColumnType("decimal(20,0)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductCategoryId");
+
+                    b.HasIndex("ProductID");
+
+                    b.ToTable("ProductSelectedCategories");
+                });
+
+            modelBuilder.Entity("DoctorFAM.Domain.Entities.Product.ProductsTags", b =>
+                {
+                    b.Property<decimal>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(20,0)");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<decimal>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal>("ProductId")
+                        .HasColumnType("decimal(20,0)");
+
+                    b.Property<string>("TagTitle")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductsTags");
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Requests.PaitientRequestDetail", b =>
@@ -853,11 +1545,18 @@ namespace DoctorFAM.Data.Migrations
 
             modelBuilder.Entity("DoctorFAM.DataLayer.Entities.Request", b =>
                 {
+                    b.HasOne("DoctorFAM.Domain.Entities.Account.User", "Operation")
+                        .WithMany("OperationRequest")
+                        .HasForeignKey("OperationId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("DoctorFAM.Domain.Entities.Account.User", "User")
                         .WithMany("Requests")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Operation");
 
                     b.Navigation("User");
                 });
@@ -892,15 +1591,64 @@ namespace DoctorFAM.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("DoctorFAM.Domain.Entities.Doctors.DoctorsInfo", b =>
+            modelBuilder.Entity("DoctorFAM.Domain.Entities.Doctors.Doctor", b =>
                 {
                     b.HasOne("DoctorFAM.Domain.Entities.Account.User", "User")
-                        .WithMany("DoctorsInfos")
-                        .HasForeignKey("UserId")
+                        .WithOne("Doctors")
+                        .HasForeignKey("DoctorFAM.Domain.Entities.Doctors.Doctor", "UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("DoctorFAM.Domain.Entities.Doctors.DoctorsInfo", b =>
+                {
+                    b.HasOne("DoctorFAM.Domain.Entities.Doctors.Doctor", "Doctor")
+                        .WithOne("DoctorsInfos")
+                        .HasForeignKey("DoctorFAM.Domain.Entities.Doctors.DoctorsInfo", "DoctorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Doctor");
+                });
+
+            modelBuilder.Entity("DoctorFAM.Domain.Entities.Doctors.DoctorsSelectedInterests", b =>
+                {
+                    b.HasOne("DoctorFAM.Domain.Entities.Doctors.Doctor", "Doctor")
+                        .WithMany()
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("DoctorFAM.Domain.Entities.Interest.DoctorsInterest", "Interest")
+                        .WithMany("DoctorsSelectedInterests")
+                        .HasForeignKey("InterestId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Doctor");
+
+                    b.Navigation("Interest");
+                });
+
+            modelBuilder.Entity("DoctorFAM.Domain.Entities.Interest.DoctorsInterestInfo", b =>
+                {
+                    b.HasOne("DoctorFAM.Domain.Entities.Interest.DoctorsInterest", "Interest")
+                        .WithMany("InterestInfo")
+                        .HasForeignKey("InterestId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("DoctorFAM.Domain.Entities.Languages.Language", "Language")
+                        .WithMany("InterestInfos")
+                        .HasForeignKey("LanguageId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Interest");
+
+                    b.Navigation("Language");
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Laboratory.HomeLaboratoryRequestDetail", b =>
@@ -976,6 +1724,80 @@ namespace DoctorFAM.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Request");
+                });
+
+            modelBuilder.Entity("DoctorFAM.Domain.Entities.PopulationCovered.PopulationCovered", b =>
+                {
+                    b.HasOne("DoctorFAM.Domain.Entities.Account.User", "User")
+                        .WithMany("PopulationCovered")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("DoctorFAM.Domain.Entities.Product.Product", b =>
+                {
+                    b.HasOne("DoctorFAM.Domain.Entities.Account.User", "Users")
+                        .WithMany("Products")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("DoctorFAM.Domain.Entities.Product.ProductFeature", b =>
+                {
+                    b.HasOne("DoctorFAM.Domain.Entities.Product.Product", "Product")
+                        .WithMany("ProductFeatures")
+                        .HasForeignKey("ProductID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("DoctorFAM.Domain.Entities.Product.ProductGallery", b =>
+                {
+                    b.HasOne("DoctorFAM.Domain.Entities.Product.Product", "Product")
+                        .WithMany("ProductGalleries")
+                        .HasForeignKey("ProductID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("DoctorFAM.Domain.Entities.Product.ProductSelectedCategory", b =>
+                {
+                    b.HasOne("DoctorFAM.Domain.Entities.MarketCategory.Category", "ProductCategory")
+                        .WithMany("ProductSelectedCategories")
+                        .HasForeignKey("ProductCategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("DoctorFAM.Domain.Entities.Product.Product", "Product")
+                        .WithMany("ProductSelectedCategories")
+                        .HasForeignKey("ProductID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("ProductCategory");
+                });
+
+            modelBuilder.Entity("DoctorFAM.Domain.Entities.Product.ProductsTags", b =>
+                {
+                    b.HasOne("DoctorFAM.Domain.Entities.Product.Product", "Product")
+                        .WithMany("ProductsTags")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Requests.PaitientRequestDetail", b =>
@@ -1102,9 +1924,16 @@ namespace DoctorFAM.Data.Migrations
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Account.User", b =>
                 {
-                    b.Navigation("DoctorsInfos");
+                    b.Navigation("Doctors")
+                        .IsRequired();
+
+                    b.Navigation("OperationRequest");
 
                     b.Navigation("Patients");
+
+                    b.Navigation("PopulationCovered");
+
+                    b.Navigation("Products");
 
                     b.Navigation("Requests");
 
@@ -1113,9 +1942,24 @@ namespace DoctorFAM.Data.Migrations
                     b.Navigation("Wallets");
                 });
 
+            modelBuilder.Entity("DoctorFAM.Domain.Entities.Doctors.Doctor", b =>
+                {
+                    b.Navigation("DoctorsInfos")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DoctorFAM.Domain.Entities.Interest.DoctorsInterest", b =>
+                {
+                    b.Navigation("DoctorsSelectedInterests");
+
+                    b.Navigation("InterestInfo");
+                });
+
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Languages.Language", b =>
                 {
                     b.Navigation("CategoryInfos");
+
+                    b.Navigation("InterestInfos");
 
                     b.Navigation("MyProperty");
                 });
@@ -1123,11 +1967,24 @@ namespace DoctorFAM.Data.Migrations
             modelBuilder.Entity("DoctorFAM.Domain.Entities.MarketCategory.Category", b =>
                 {
                     b.Navigation("CategoryInfo");
+
+                    b.Navigation("ProductSelectedCategories");
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Patient.Patient", b =>
                 {
                     b.Navigation("PaitientRequestDetails");
+                });
+
+            modelBuilder.Entity("DoctorFAM.Domain.Entities.Product.Product", b =>
+                {
+                    b.Navigation("ProductFeatures");
+
+                    b.Navigation("ProductGalleries");
+
+                    b.Navigation("ProductSelectedCategories");
+
+                    b.Navigation("ProductsTags");
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.States.Location", b =>

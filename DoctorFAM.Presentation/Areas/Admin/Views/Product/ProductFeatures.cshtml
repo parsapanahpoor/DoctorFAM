@@ -1,0 +1,119 @@
+﻿@model DoctorFAM.Domain.ViewModels.MarketPanel.Product.ProductFeatureViewModel
+@using DoctorFAM.Domain.Enums.Products
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Domain.ViewModels.Common
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
+
+
+@{
+    ViewData["Title"] = "ویژگی های محصول  ";
+}
+
+@section Styles
+{
+
+}
+
+@section Scripts
+{
+<partial name="_JqueryValidation" />
+}
+
+@section Breadcrumb
+{
+<li>
+    <a href="javascript:void(0)"> @ViewData["Title"] </a>
+</li>
+}
+
+<div class="row">
+    <div class="col-lg-12 col-sm-12">
+        <div class="widget">
+            <div class="widget-header bordered-bottom bordered-green">
+                <span class="widget-caption"> افزودن ویژگی محصول   </span>
+            </div>
+            <div class="widget-body">
+                <div>
+                    <form asp-action="ProductFeatures" asp-controller="Product" asp-area="Admin" id="filter-search" enctype="multipart/form-data" method="post">
+
+                        <input type="hidden" asp-for="ProductID" />
+
+                        <div class="form-group">
+                            <label asp-for="FeatureTitle"> عنوان ویژگی  </label>
+                            <input type="text" class="form-control" asp-for="FeatureTitle">
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="FeatureValue"> مقدار ویژکی   </label>
+                            <input type="text" class="form-control" asp-for="FeatureValue">
+                        </div>
+
+                        <hr />
+
+                        <div class="row">
+                            <div class="col-md-12 flex-style">
+                                <button type="submit" class="btn btn-labeled w-100 btn-palegreen">
+                                    <i class="btn-label glyphicon glyphicon-filter"></i>ثبت
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-12 col-sm-12">
+        <div class="well with-header with-footer table-responsive">
+            <div class="header bordered-azure">
+                <div class="flex-style">
+                    <span>ویژگی های محصول </span>
+                </div>
+            </div>
+
+            @if (Model.ProductFeature != null && Model.ProductFeature.Any())
+            {
+                <table class="table table-hover table-bordered tc vm">
+                    <thead class="tc vm">
+                        <tr class="tc vm">
+                            <th class="tc vm">
+                                عنوان
+                            </th>
+                            <th class="tc vm">
+                                مقدار
+                            </th>
+                            <th class="tc vm">
+                                امکانات
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="tc vm">
+                        @foreach (var product in Model.ProductFeature)
+                        {
+                            <tr class="tc vm">
+                                <td class="vm">
+                                    <p> @product.FeatureTitle </p>
+                                </td>
+
+                                <td class="tc vm">
+                                    <p> @product.FeatureValue </p>
+                                </td>
+
+                                <td class="tc vm">
+                                    <button onclick="DeleteAjax(@product.Id, '@Url.Action("DeleteProductFeature", "Product", new {area = "Admin", productFeatureId = product.Id})')" class="btn btn-danger btn-circle btn-xs"><i class="glyphicon glyphicon-trash"></i></button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <partial name="_AdminNotFoundPartial" />
+            }
+        </div>
+    </div>
+</div>
+

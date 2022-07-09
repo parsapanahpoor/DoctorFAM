@@ -24,8 +24,7 @@
             </div>
         </div>
         <!-- preloader end -->
-
-                       @await Component.InvokeAsync("SiteSideBar")
+        @await Component.InvokeAsync("SiteSideBar")
 
         <div>
             @RenderBody()
@@ -35,67 +34,77 @@
             <div class="primary-footer dark-bg">
                 <div class="container">
                     <div class="row">
-                        <div class="col-lg-3 col-md-6 sm-mt-5">
-                            <h4 class="mb-4 text-white"> خدمات ما </h4>
-                            <div class="footer-list">
-                                <ul class="list-unstyled">
-                                    <li>
-                                        <a href="business-services.html"> خدمات درمانی </a>
-                                    </li>
-                                    <li>
-                                        <a href="software-research.html"> خدمات مشاوره‌ای </a>
-                                    </li>
-                                    <li>
-                                        <a href="finance-restructuring.html"> گردشگری سلامت </a>
-                                    </li>
-                                    <li>
-                                        <a href="energy-environment.html"> فروش تجهیزات </a>
-                                    </li>
-                                    <li>
-                                        <a href="investment-planning.html"> پیشگیری و کنترل بیماریهای زمینه‌ای  </a>
-                                    </li>
-                                </ul>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-6" style="border-right:1px solid #fd5b03;">
+                                    <div class="footer-list">
+                                        <ul class="list-unstyled">
+                                            <li>
+                                                <a href="business-services.html"> خانه سلامت </a>
+                                            </li>
+                                            <li>
+                                                <a href="software-research.html"> خدمات سلامت </a>
+                                            </li>
+                                            <li>
+                                                <a href="finance-restructuring.html"> محصولات </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-md-6" style="border-right:1px solid #fd5b03;">
+                                    <div class="footer-list">
+                                        <ul class="list-unstyled">
+                                            <li>
+                                                <a href="business-services.html"> پزشک آنلاین </a>
+                                            </li>
+                                            <li>
+                                                <a href="software-research.html"> پزشک خانواده من </a>
+                                            </li>
+                                            <li>
+                                                <a href="finance-restructuring.html"> پزشکان متخصص </a>
+                                            </li>
+                                            <li>
+                                                <a href="finance-restructuring.html">روانشناس و مشاور </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6 sm-mt-5">
-                            <h4 class="mb-4 text-white"> اخبار </h4>
+                            <div class="row">
+                                <div class="col-md-12 text-center">
+                                    <div class="social-icons social-colored mt-5">
+                                        <ul class="list-inline">
+                                            <li class="mb-2 social-facebook">
+                                                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                                            </li>
+                                            <li class="mb-2 social-twitter">
+                                                <a href="#"><i class="fab fa-twitter"></i></a>
+                                            </li>
+                                            <li class="mb-2 social-linkedin">
+                                                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                                            </li>
+                                            <li class="mb-2 social-youtube">
+                                                <a href="#"><i class="fab fa-youtube"></i></a>
+                                            </li>
+                                            <li class="mb-2 social-instagram">
+                                                <a href="#"><i class="fab fa-instagram"></i></a>
+                                            </li>
 
-                            <div class="subscribe-form sm-mt-2">
-                                <form id="mc-form" class="group">
-                                    <input value="" name="EMAIL" class="email" id="mc-email" placeholder="آدرس ایمیل" required="" type="email">
-                                    <input class="btn-Accept btn btn-theme" name="subscribe" value="اشتراک" type="submit">
-                                </form>
-                            </div>
-                            <div class="social-icons social-colored mt-5">
-                                <ul class="list-inline">
-                                    <li class="social-facebook">
-                                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                    </li>
-                                    <li class="social-dribbble">
-                                        <a href="#"><i class="fab fa-dribbble"></i></a>
-                                    </li>
-                                    <li class="social-skype">
-                                        <a href="#"><i class="fab fa-skype"></i></a>
-                                    </li>
-                                    <li class="social-linkedin">
-                                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                                    </li>
-                                    <li class="social-youtube">
-                                        <a href="#"><i class="fab fa-youtube"></i></a>
-                                    </li>
-                                </ul>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-xl-4 col-lg-5 mr-auto col-md-12 md-mt-5">
-                            <h4 class="mb-4 text-white">درباره خانه سلامت</h4>
-                            <p class="mb-3">
+                        <div class="col-md-6" style="border-right:1px solid #fd5b03;">
+                            <h4 class=" text-white">ارتباط با ما</h4>
+                            <p class="">
                                 دسترسی سریع ، آسان و مطمئن به خدمات متنوع در حوزه های مختلف
                                 سلامت
                             </p>
                             <div class="footer-cntct">
                                 <ul class="media-icon list-unstyled">
                                     <li>
-                                        <p class="mb-0"><i class="flaticon-paper-plane"></i><span dir="rtl">ساری میدان امام روبروی بیمارستان بوعلی  </span></p>
+                                        <p class="mb-0"><i class="flaticon-paper-plane"></i><span dir="rtl">ساری خیابان فرهنگ خیابان حافظ ساختمان شبره واحد4  </span></p>
                                     </li>
                                     <li>
                                         <i class="flaticon-email"></i> <a dir="ltr" href="mailto:doctorfam@gmail.com">doctorfam@gmail.com</a>
@@ -107,6 +116,7 @@
                                 </ul>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -128,16 +138,13 @@
                                         <a href="/Home/AboutUs"> درباره ما </a>
                                     </li>
                                     <li class="list-inline-item active mb-0">
-                                        <a href="team.html"> تیم </a>
-                                    </li>
-                                    <li class="list-inline-item active mb-0">
                                         <a href="/Home/ContactUs"> تماس با ما </a>
                                     </li>
                                     <li class="list-inline-item active mb-0">
                                         <a href="privacy-policy.html"> سیاست حفظ حریم خصوصی </a>
                                     </li>
                                     <li class="list-inline-item active mb-0">
-                                        <a href="terms-and-conditions.html"> شرایط </a>
+                                        <a href="terms-and-conditions.html"> ضوابط و مقررات </a>
                                     </li>
                                 </ul>
                             </div>

@@ -1,4 +1,5 @@
 ﻿//using DoctorFAM.Domain.Entities.Advertisement;
+using DoctorFAM.DataLayer.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,20 @@ namespace DoctorFAM.Domain.ViewModels.Admin.Dashboard
 {
     public class AdminDashboardViewModel
     {
-      //  public List<ViewModels.Admin.Dashboard.LastestWaitingCustomersAdvertisements> ListOfWaitingRequestedAdvertisements { get; set; }
+        #region properties
 
-       // public List<ViewModels.Admin.Dashboard.LastestWaitingEmployeesAdvertisements> ListOfWaitingOnSaleAdvertisements { get; set; }
+        public List<Request> LastestHomeVisitRequest { get; set; }
+
+        public List<Request> LastestHomeNurseRequest { get; set; }
+
+        public List<Request> LastestHomePatientTransportRequest { get; set; }
+
+        public List<Request> LastestHomeLaboratoryRequest { get; set; }
+
+        public List<Request> LastestHomePharmacyRequest { get; set; }
+
+        public List<Request> LastestDeathCertificateRequest { get; set; }
+
+        #endregion
     }
 }

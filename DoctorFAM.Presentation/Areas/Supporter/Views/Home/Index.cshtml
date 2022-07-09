@@ -1,0 +1,64 @@
+﻿@model DoctorFAM.Domain.ViewModels.Supporter.SuppoeterDashboardViewModel
+
+@{
+    ViewData["Title"] = @Localizer["Supporter Dashboard"];
+}
+
+@section Breadcrumb {
+<li class="active">@Localizer["Supporter Dashboard"]</li>
+}
+
+@section Styles
+{
+<style>
+
+    .databox-bottom {
+        height: 100% !important;
+    }
+
+    .databox.databox-vertical.databox-lg {
+        height: 100%;
+        width: 100%;
+    }
+
+    .databox.databox-vertical.databox-halved .databox-top {
+        height: 60px;
+    }
+
+    .databox-icon {
+        margin-top: 10px !important;
+    }
+
+    .dropdown-menu {
+        left: 0;
+        right: auto;
+    }
+
+</style>
+}
+
+<div class="page-body">
+
+    <div class="row">
+
+        @*Box Of Lastest Home Visit Requests*@
+        <partial name="_LastestHomeVisitRequestPartial" model="@Model.LastestHomeVisitRequest" />
+
+        @*Box Of Lastest Nurse Visit Requests*@
+        <partial name="_LastestHomeNurseRequestPartial" model="@Model.LastestHomeNurseRequest" />
+
+        @*Box Of Lastest Home Laboratory Requests*@
+        <partial name="_LastestHomeLaboratoryRequestPartial" model="@Model.LastestHomeLaboratoryRequest" />
+
+        @*Box Of Lastest Home Pharmcy Requests*@
+        <partial name="_LastestHomePharmacyRequestPartial" model="@Model.LastestHomePharmacyRequest" />
+
+        @*Box Of Lastest Home Patient Transport Requests*@
+        <partial name="_LastestHomePatientTransportRequestPartial" model="@Model.LastestHomePatientTransportRequest" />
+
+        @*Box Of Lastest Home Death Certificate Requests*@
+        <partial name="_LastestHomeDeathCertificateRequestPartial" model="@Model.LastestDeathCertificateRequest" />
+
+    </div>
+
+</div>

@@ -1,0 +1,105 @@
+﻿@model DoctorFAM.Domain.ViewModels.UserPanel.PopulationCovered.EditPopulationCoveredUserPanelViewModel
+@using DoctorFAM.Web.Culture
+@inject IViewLocalizer Localizer
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.StaticTools
+
+@{
+
+    ViewData["Title"] = Localizer["Edit Covered Person"];
+
+}
+
+
+@section Scripts
+{
+<partial name="_JqueryValidation" />
+}
+
+@section Breadcrumb
+{
+<li>
+    <a asp-area="UserPanel" asp-controller="Home" asp-action="Index"> @Localizer["User Dashboard"] / </a>
+    <a href="javascript:void(0)"> @ViewData["Title"] </a>
+</li>
+}
+
+<form method="post" asp-action="EditPopulationCovered" asp-controller="PopulationCovered" asp-area="UserPanel">
+    <input type="hidden" asp-for="Id" />
+    <div class="row">
+        <div class="col-lg-12 col-sm-12">
+            <div class="widget">
+                <div class="widget-body">
+                    <div>
+
+                        <div class="row">
+
+                            <div class="form-group col-md-6 col-sm-12">
+                                <label asp-for="Name"></label>
+                                <input type="text" class="form-control" asp-for="Name">
+                                <span class="text-danger" asp-validation-for="Name"></span>
+                            </div>
+
+                            <div class="form-group col-md-6 col-sm-12">
+                                <label asp-for="LastName"></label>
+                                <input type="text" class="form-control" asp-for="LastName">
+                                <span class="text-danger" asp-validation-for="LastName"></span>
+                            </div>
+
+                            <div class="form-group col-md-6 col-sm-12">
+                                <label asp-for="Age"></label>
+                                <input type="text" class="form-control" asp-for="Age">
+                                <span class="text-danger" asp-validation-for="Age"></span>
+                            </div>
+
+                            <div class="form-group col-md-6 col-sm-12">
+                                <label asp-for="NationalId"></label>
+                                <input type="text" class="form-control" asp-for="NationalId">
+                                <span class="text-danger" asp-validation-for="NationalId"></span>
+                            </div>
+
+                            <div class="form-group col-md-6 col-sm-12">
+                                <label asp-for="Gender"></label>
+                                <select asp-for="Gender" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.Gender.Gender))"></select>
+                                <span class="text-danger" asp-validation-for="Gender"></span>
+                            </div>
+
+                            <div class="form-group col-md-6 col-sm-12">
+                                <label asp-for="InsuranceType"></label>
+                                <select asp-for="InsuranceType" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.InsuranceType.InsuranceType))"></select>
+                                <span class="text-danger" asp-validation-for="InsuranceType"></span>
+                            </div>
+                            
+                            <div class="form-group col-md-6 col-sm-12">
+                                <label asp-for="Ratio"></label>
+                                <select asp-for="Ratio" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.Population_Covered.Ratio))"></select>
+                                <span class="text-danger" asp-validation-for="Ratio"></span>
+                            </div>
+
+                            <div class="form-group col-md-6 col-sm-12">
+                                <label asp-for="BirthDay"></label>
+                                <input asp-for="BirthDay" class="form-control" autocomplete="off" AdminDatePicker="1"/>
+                                <span class="text-danger" asp-validation-for="BirthDay"></span>
+                            </div>
+
+                        </div>
+
+                        <hr class="margin-bottom-10 margin-top-10" />
+
+                        <div class="row">
+                            <div class="col-md-12 flex-style">
+                                <button type="submit" class="btn btn-labeled btn-blue">
+                                    <i class="btn-label glyphicon glyphicon-ok"></i>@Localizer["Submit"]
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+

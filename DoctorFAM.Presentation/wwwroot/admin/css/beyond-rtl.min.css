@@ -1537,11 +1537,81 @@ html {
     overflow-x: hidden
 }
 
+
+
+@font-face {
+    font-family: 'YekanBakh-FaNum-Hairline';
+    src: url('../fonts/YekanBakhFaNum-Hairline.woff2') format('woff2'), url('../fonts/YekanBakhFaNum-Hairline.woff') format('woff');
+    font-weight: 100;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'YekanBakh-FaNum';
+    src: url('../fonts/YekanBakhFaNum-Thin.woff2') format('woff2'), url('../fonts/YekanBakhFaNum-Thin.woff') format('woff');
+    font-weight: 100;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'YekanBakh-FaNum';
+    src: url('../fonts/YekanBakhFaNum-Light.woff2') format('woff2'), url('../fonts/YekanBakhFaNum-Light.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'YekanBakh-FaNum';
+    src: url('../fonts/YekanBakhFaNum-Regular.woff2') format('woff2'), url('../fonts/YekanBakhFaNum-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'YekanBakh-FaNum';
+    src: url('../fonts/YekanBakhFaNum-Medium.woff2') format('woff2'), url('../fonts/YekanBakhFaNum-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'YekanBakh-FaNum';
+    src: url('../fonts/YekanBakhFaNum-Bold.woff2') format('woff2'), url('../fonts/YekanBakhFaNum-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'YekanBakh-FaNum';
+    src: url('../fonts/YekanBakhFaNum-Heavy.woff2') format('woff2'), url('../fonts/YekanBakhFaNum-Heavy.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'YekanBakh-FaNum-Fat';
+    src: url('../fonts/YekanBakhFaNum-Fat.woff2') format('woff2'), url('../fonts/YekanBakhFaNum-Fat.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
 body {
+    font-family: 'YekanBakh-FaNum';
+    font-style: normal;
+    font-size: 15px;
+  
     padding-bottom: 0;
     min-height: 100%;
-    font-family: "Droid Arabic Kufi","WYekan";
-    font-size: 13px;
+   
+   
     color: #444
 }
 
@@ -1559,7 +1629,7 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
     font-weight: 300 !important;
-    font-family: "Droid Arabic Kufi","WYekan"
+    font-family: 'YekanBakh-FaNum';
 }
 
     h1 small, h2 small, h3 small, h4 small, h5 small, h6 small {
@@ -1762,9 +1832,10 @@ a:focus, a:active {
         margin: 0;
         padding-right: 0;
         padding-left: 0;
-        min-height: 45px;
+        min-height: 65px;
         position: relative;
-        background: #2dc3e8
+        background: #2dc3e8;
+        padding-bottom:20px;
     }
 
         .navbar .navbar-inner .navbar-container {
@@ -1798,15 +1869,18 @@ a:focus, a:active {
                 .navbar .navbar-inner .navbar-header .navbar-account .account-area > li {
                     float: right;
                     position: relative;
-                    height: 45px
+                    /*height: 45px*/
                 }
 
-                    .navbar .navbar-inner .navbar-header .navbar-account .account-area > li > a {
-                        position: relative;
-                        min-width: 50px;
-                        height: 45px;
-                        display: inline-block
-                    }
+.navbar .navbar-inner .navbar-header .navbar-account .account-area > li > a {
+    position: relative;
+    min-width: 50px;
+   /* height: 45px;*/
+    display: inline-block
+}
+.marli {
+    margin-top:10px !important;
+}
 
                         .navbar .navbar-inner .navbar-header .navbar-account .account-area > li > a:hover {
                             text-decoration: none
@@ -2617,9 +2691,9 @@ a:focus, a:active {
     }
 
         .navbar .sidebar-collapse:hover {
-            -webkit-box-shadow: 0 0 20px rgba(0,0,0,.2);
+         /*   -webkit-box-shadow: 0 0 20px rgba(0,0,0,.2);
             -moz-box-shadow: 0 0 20px rgba(0,0,0,.2);
-            box-shadow: 0 0 20px rgba(0,0,0,.2)
+            box-shadow: 0 0 20px rgba(0,0,0,.2)*/
         }
 
         .navbar .sidebar-collapse .collapse-icon {
@@ -2627,10 +2701,10 @@ a:focus, a:active {
             cursor: pointer;
             font-size: 18px;
             color: #fff;
-            padding: 11px 5px;
+            padding: 21px 5px;
             line-height: 22px;
             position: relative;
-            -webkit-transition: background-color .218s ease;
+          /*  -webkit-transition: background-color .218s ease;
             -moz-transition: background-color .218s ease;
             -o-transition: background-color .218s ease;
             transition: background-color .218s ease;
@@ -2641,7 +2715,7 @@ a:focus, a:active {
             -webkit-transition: color .318s ease;
             -moz-transition: color .318s ease;
             -o-transition: color .318s ease;
-            transition: color .318s ease
+            transition: color .318s ease*/
         }
 
         .navbar .sidebar-collapse.active:hover {
@@ -2650,10 +2724,10 @@ a:focus, a:active {
 
         .navbar .sidebar-collapse.active .collapse-icon {
             font-size: 14px;
-            -webkit-box-shadow: 0 0 20px rgba(0,0,0,.2);
+       /*     -webkit-box-shadow: 0 0 20px rgba(0,0,0,.2);
             -moz-box-shadow: 0 0 20px rgba(0,0,0,.2);
-            box-shadow: 0 0 20px rgba(0,0,0,.2);
-            padding: 11px
+            box-shadow: 0 0 20px rgba(0,0,0,.2);*/
+            padding: 21px 5px;
         }
 
     .navbar.navbar-fixed-top {
@@ -2968,7 +3042,7 @@ a:focus, a:active {
             background-color: #fff;
             display: block;
             position: absolute;
-            top: 0;
+            top: 30px;
             right: 0;
             border: 1px solid #fff;
             padding-right: 40px;
@@ -2990,25 +3064,25 @@ a:focus, a:active {
             .page-sidebar .sidebar-header-wrapper .searchinput::-webkit-input-placeholder {
                 color: #d0d0d0;
                 font-weight: 300;
-                font-family: "Droid Arabic Kufi","WYekan"
+                font-family: 'YekanBakh-FaNum';
             }
 
             .page-sidebar .sidebar-header-wrapper .searchinput::-moz-placeholder {
                 color: #d0d0d0;
                 font-weight: 300;
-                font-family: "Droid Arabic Kufi","WYekan"
+                font-family: 'YekanBakh-FaNum';
             }
 
             .page-sidebar .sidebar-header-wrapper .searchinput:-moz-placeholder {
                 color: #d0d0d0;
                 font-weight: 300;
-                font-family: "Droid Arabic Kufi","WYekan"
+                font-family: 'YekanBakh-FaNum';
             }
 
             .page-sidebar .sidebar-header-wrapper .searchinput:-ms-input-placeholder {
                 color: #d0d0d0;
                 font-weight: 300;
-                font-family: "Droid Arabic Kufi","WYekan"
+                font-family: 'YekanBakh-FaNum';
             }
 
         .page-sidebar .sidebar-header-wrapper .searchicon {
@@ -3564,6 +3638,7 @@ a:focus, a:active {
     min-height: 40px;
     line-height: 39px;
     padding: 0;
+    margin-top: 20px;
     display: block;
     z-index: 1;
     -webkit-box-shadow: 0 2px 4px 0 rgba(0,0,0,.15);
@@ -4349,7 +4424,7 @@ a:focus, a:active {
     .databox .databox-header {
         display: block;
         font-size: 18px;
-        font-family: "Droid Arabic Kufi","WYekan";
+        font-family: 'YekanBakh-FaNum';
         font-weight: 300;
         margin: 8px 5px;
         position: relative
@@ -4365,7 +4440,7 @@ a:focus, a:active {
         line-height: 26px;
         margin: 2px;
         position: relative;
-        font-family: "Droid Arabic Kufi","WYekan"
+        font-family: 'YekanBakh-FaNum';
     }
 
         .databox .databox-number i {
@@ -10967,7 +11042,7 @@ flot-donut-caption .legendLabel span {
 }
 
     .jqstooltip .jqsfield {
-        font-family: "Droid Arabic Kufi","WYekan";
+        font-family: 'YekanBakh-FaNum';
         font-size: 11px
     }
 
@@ -11788,7 +11863,7 @@ input[type=checkbox].checkbox-slider {
     }
 
     input[type=checkbox].checkbox-slider.yesno ~ .text:before {
-        font-family: "Droid Arabic Kufi","WYekan";
+        font-family: 'YekanBakh-FaNum';
         content: "NO            YES"
     }
 
@@ -11798,7 +11873,7 @@ input[type=checkbox].checkbox-slider {
     }
 
         input[type=checkbox].checkbox-slider ~ .text:before {
-            font-family: "Droid Arabic Kufi","WYekan";
+            font-family: 'YekanBakh-FaNum';
             content: "OFF           ON";
             background-color: #fff;
             color: #999;
@@ -11822,7 +11897,7 @@ input[type=checkbox].checkbox-slider {
         }
 
         input[type=checkbox].checkbox-slider ~ .text:after {
-            font-family: "Droid Arabic Kufi","WYekan";
+            font-family: 'YekanBakh-FaNum';
             content: '';
             font-size: 10px;
             font-weight: 300;
@@ -15889,7 +15964,7 @@ div[data-role="editor-toolbar"] {
                 padding: 10px 20px 0;
                 min-width: 200px;
                 font-size: 14px;
-                font-family: "Droid Arabic Kufi","WYekan";
+                font-family: 'YekanBakh-FaNum';
                 font-weight: 700
             }
 
@@ -15897,7 +15972,7 @@ div[data-role="editor-toolbar"] {
                 position: absolute;
                 top: 5px;
                 left: 10px;
-                font-family: "Droid Arabic Kufi","WYekan";
+                font-family: 'YekanBakh-FaNum';
                 font-size: 13px;
                 display: none
             }
@@ -16153,7 +16228,7 @@ div[data-role="editor-toolbar"] {
                 margin: 0 auto;
                 text-align: center;
                 font-size: 30px;
-                font-family: "Droid Arabic Kufi","WYekan"
+                font-family: 'YekanBakh-FaNum';
             }
 
             .profile-container .profile-header .profile-stats .stats-col .stats-title {
@@ -16165,7 +16240,7 @@ div[data-role="editor-toolbar"] {
         .profile-container .profile-header .profile-stats .inlinestats-col {
             padding-top: 15px;
             text-align: center;
-            font-family: "Droid Arabic Kufi","WYekan";
+            font-family: 'YekanBakh-FaNum';
             border-top: 1px solid #eee;
             min-height: 55px
         }
@@ -18886,25 +18961,25 @@ a.fc-more {
                 .page-chatbar .chatbar-contacts .contacts-search .searchinput::-webkit-input-placeholder {
                     color: #d0d0d0;
                     font-weight: 300;
-                    font-family: "Droid Arabic Kufi","WYekan"
+                    font-family: 'YekanBakh-FaNum';
                 }
 
                 .page-chatbar .chatbar-contacts .contacts-search .searchinput::-moz-placeholder {
                     color: #d0d0d0;
                     font-weight: 300;
-                    font-family: "Droid Arabic Kufi","WYekan"
+                    font-family: 'YekanBakh-FaNum';
                 }
 
                 .page-chatbar .chatbar-contacts .contacts-search .searchinput:-moz-placeholder {
                     color: #d0d0d0;
                     font-weight: 300;
-                    font-family: "Droid Arabic Kufi","WYekan"
+                    font-family: 'YekanBakh-FaNum';
                 }
 
                 .page-chatbar .chatbar-contacts .contacts-search .searchinput:-ms-input-placeholder {
                     color: #d0d0d0;
                     font-weight: 300;
-                    font-family: "Droid Arabic Kufi","WYekan"
+                    font-family: 'YekanBakh-FaNum';
                 }
 
             .page-chatbar .chatbar-contacts .contacts-search .searchicon {

@@ -1,0 +1,457 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Accepted" xml:space="preserve">
+    <value>وافق</value>
+  </data>
+  <data name="Address" xml:space="preserve">
+    <value>Translation</value>
+  </data>
+  <data name="Age" xml:space="preserve">
+    <value>سن</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>الجميع</value>
+  </data>
+  <data name="Article Category title" xml:space="preserve">
+    <value>عنوان الفئة</value>
+  </data>
+  <data name="Ascending" xml:space="preserve">
+    <value>تصاعدي</value>
+  </data>
+  <data name="Base Price" xml:space="preserve">
+    <value>السعر الأساسي</value>
+  </data>
+  <data name="BirthDay" xml:space="preserve">
+    <value>عيد الميلاد</value>
+  </data>
+  <data name="Brother" xml:space="preserve">
+    <value>أخ</value>
+  </data>
+  <data name="Charge Wallet" xml:space="preserve">
+    <value>محفظة الشحن</value>
+  </data>
+  <data name="Child" xml:space="preserve">
+    <value>طفل</value>
+  </data>
+  <data name="City" xml:space="preserve">
+    <value>مدينة</value>
+  </data>
+  <data name="Country" xml:space="preserve">
+    <value>دولة</value>
+  </data>
+  <data name="Create Date Descending" xml:space="preserve">
+    <value>تاريخ الخلق من الجديد إلى القديم</value>
+  </data>
+  <data name="Current Password" xml:space="preserve">
+    <value>كلمة المرور الحالية</value>
+  </data>
+  <data name="Default" xml:space="preserve">
+    <value>پیش فرض</value>
+  </data>
+  <data name="Deleted" xml:space="preserve">
+    <value>تم الحذف</value>
+  </data>
+  <data name="Deleted ?" xml:space="preserve">
+    <value>تم الحذف ؟</value>
+  </data>
+  <data name="Deleted1" xml:space="preserve">
+    <value>تم الحذف</value>
+  </data>
+  <data name="Deposit" xml:space="preserve">
+    <value>الوديعة</value>
+  </data>
+  <data name="Descending" xml:space="preserve">
+    <value>تنازلي</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>وصف</value>
+  </data>
+  <data name="Display Name" xml:space="preserve">
+    <value>أظهر الاسم</value>
+  </data>
+  <data name="DynamicPage ShortDescription" xml:space="preserve">
+    <value>وصف موجز للصفحة</value>
+  </data>
+  <data name="DynamicPage Text" xml:space="preserve">
+    <value>نص الصفحة</value>
+  </data>
+  <data name="DynamicPage Title" xml:space="preserve">
+    <value>عنوان الصفحة</value>
+  </data>
+  <data name="education" xml:space="preserve">
+    <value>التعليم</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>البريد الإلكتروني</value>
+  </data>
+  <data name="Enable SSL" xml:space="preserve">
+    <value>تفعيل SSL</value>
+  </data>
+  <data name="EndPrice" xml:space="preserve">
+    <value>نهاية السعر</value>
+  </data>
+  <data name="Extra Phone Number" xml:space="preserve">
+    <value>رقم هاتف إضافي</value>
+  </data>
+  <data name="Failed" xml:space="preserve">
+    <value>غير ناجح</value>
+  </data>
+  <data name="Father" xml:space="preserve">
+    <value>أب</value>
+  </data>
+  <data name="Father Name" xml:space="preserve">
+    <value>اسم الأب</value>
+  </data>
+  <data name="female" xml:space="preserve">
+    <value>أنثى</value>
+  </data>
+  <data name="Filling information from the user's side and transfer to the bank portal" xml:space="preserve">
+    <value>تعبئة المعلومات من قبل المستخدم وتحويلها إلى بوابة البنك</value>
+  </data>
+  <data name="finalized" xml:space="preserve">
+    <value>تم الانتهاء منه</value>
+  </data>
+  <data name="First Name" xml:space="preserve">
+    <value>اسم</value>
+  </data>
+  <data name="Free" xml:space="preserve">
+    <value>حر</value>
+  </data>
+  <data name="Gateway Type" xml:space="preserve">
+    <value>نوع المنفذ</value>
+  </data>
+  <data name="Gender" xml:space="preserve">
+    <value>جنس</value>
+  </data>
+  <data name="Health Insurance" xml:space="preserve">
+    <value>تأمين صحي</value>
+  </data>
+  <data name="Home Phone Number" xml:space="preserve">
+    <value>رقم الهاتف المنزلي</value>
+  </data>
+  <data name="InsuranceType" xml:space="preserve">
+    <value>تأمين</value>
+  </data>
+  <data name="Iranian health" xml:space="preserve">
+    <value>الصحة الإيرانية</value>
+  </data>
+  <data name="Laboratory fee at home in Rials" xml:space="preserve">
+    <value>رسوم المختبر في المنزل بالريال</value>
+  </data>
+  <data name="Last Name" xml:space="preserve">
+    <value>اللقب</value>
+  </data>
+  <data name="LastName" xml:space="preserve">
+    <value>اللقب</value>
+  </data>
+  <data name="Location title" xml:space="preserve">
+    <value>عنوان المكان</value>
+  </data>
+  <data name="male" xml:space="preserve">
+    <value>رجل</value>
+  </data>
+  <data name="Max Price" xml:space="preserve">
+    <value>السعر الأقصى</value>
+  </data>
+  <data name="Medical record" xml:space="preserve">
+    <value>السجل الطبي</value>
+  </data>
+  <data name="Medical system code" xml:space="preserve">
+    <value>كود النظام الطبي</value>
+  </data>
+  <data name="Meta Tag" xml:space="preserve">
+    <value>
+متا تگ</value>
+  </data>
+  <data name="Min Price" xml:space="preserve">
+    <value>سعر الحد الأدنى</value>
+  </data>
+  <data name="Mobile" xml:space="preserve">
+    <value>التليفون المحمول</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>اسم</value>
+  </data>
+  <data name="NationalId" xml:space="preserve">
+    <value>رمز دولي</value>
+  </data>
+  <data name="New Password" xml:space="preserve">
+    <value>كلمة السر الجديدة</value>
+  </data>
+  <data name="Not Found" xml:space="preserve">
+    <value>لم يتم العثور على</value>
+  </data>
+  <data name="NotDeleted" xml:space="preserve">
+    <value>غير محذوف</value>
+  </data>
+  <data name="Paid and waiting to choose a doctor" xml:space="preserve">
+    <value>تدفع وتنتظر اختيار الطبيب</value>
+  </data>
+  <data name="Partner" xml:space="preserve">
+    <value>شريك</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>كلمه السر</value>
+  </data>
+  <data name="Password And Re Password Does Not Match" xml:space="preserve">
+    <value>كلمة المرور وتكرارها ليسا متساويين</value>
+  </data>
+  <data name="Patient transfer fee in Rials" xml:space="preserve">
+    <value>رسوم تحويل المريض بالريال</value>
+  </data>
+  <data name="Payment Type" xml:space="preserve">
+    <value>پرداخت \ واریز برای</value>
+  </data>
+  <data name="PayPal" xml:space="preserve">
+    <value>پی پال</value>
+  </data>
+  <data name="Permission Name" xml:space="preserve">
+    <value>نام دسترسی</value>
+  </data>
+  <data name="Pharmacy tariff at home in Rials" xml:space="preserve">
+    <value>تعرفة الصيدلة في المنزل بالريال</value>
+  </data>
+  <data name="Please Enter Valid Email Address" xml:space="preserve">
+    <value>Please Enter Valid Email Address</value>
+  </data>
+  <data name="Please enter valid number" xml:space="preserve">
+    <value>Please enter valid number</value>
+  </data>
+  <data name="Please Enter {0}" xml:space="preserve">
+    <value>Please Enter {0}</value>
+  </data>
+  <data name="Please Enter {0} Less Than {1} Character" xml:space="preserve">
+    <value>Please Enter {0} Less Than {1} Character</value>
+  </data>
+  <data name="Port Number" xml:space="preserve">
+    <value>شماره پورت</value>
+  </data>
+  <data name="Port Number1" xml:space="preserve">
+    <value>شماره پورت</value>
+  </data>
+  <data name="Ratio" xml:space="preserve">
+    <value>نسبة</value>
+  </data>
+  <data name="Re New Password" xml:space="preserve">
+    <value>كرر كلمة المرور الجديدة</value>
+  </data>
+  <data name="Re Password" xml:space="preserve">
+    <value>كرر كلمة المرور</value>
+  </data>
+  <data name="Register Date - Ascending" xml:space="preserve">
+    <value>تاریخ ثبت نام - صعودی</value>
+  </data>
+  <data name="Register Date - Descending" xml:space="preserve">
+    <value>تاریخ ثبت نام - نزولی</value>
+  </data>
+  <data name="Register Now" xml:space="preserve">
+    <value>تسجيل جديد</value>
+  </data>
+  <data name="Rejected" xml:space="preserve">
+    <value>غير مقبول</value>
+  </data>
+  <data name="Role Title" xml:space="preserve">
+    <value>عنوان نقش</value>
+  </data>
+  <data name="Selected by a doctor" xml:space="preserve">
+    <value>يختاره الطبيب</value>
+  </data>
+  <data name="Self-employed" xml:space="preserve">
+    <value>الوكلاء لديهم حساب خاص بهم</value>
+  </data>
+  <data name="Send From" xml:space="preserve">
+    <value>ارسال از</value>
+  </data>
+  <data name="Sister" xml:space="preserve">
+    <value>أخت</value>
+  </data>
+  <data name="Social Security" xml:space="preserve">
+    <value>الضمان الاجتماعي</value>
+  </data>
+  <data name="Specialty" xml:space="preserve">
+    <value>تخصص</value>
+  </data>
+  <data name="State" xml:space="preserve">
+    <value>استان</value>
+  </data>
+  <data name="Stripe" xml:space="preserve">
+    <value>استرایپ</value>
+  </data>
+  <data name="Success" xml:space="preserve">
+    <value>موفق</value>
+  </data>
+  <data name="System" xml:space="preserve">
+    <value>سیستم</value>
+  </data>
+  <data name="Tariff for home visits in Rials" xml:space="preserve">
+    <value>تعرفة الزيارات المنزلية بالريال</value>
+  </data>
+  <data name="Tariff for issuance of death certificate in Rials" xml:space="preserve">
+    <value>تعريفة إصدار شهادة الوفاة بالريال</value>
+  </data>
+  <data name="The entered national code is not valid" xml:space="preserve">
+    <value>الكود الوطني الذي تم إدخاله غير صالح</value>
+  </data>
+  <data name="The information entered is not valid." xml:space="preserve">
+    <value>المعلومات التي تم إدخالها غير صالحة.</value>
+  </data>
+  <data name="The medical system code entered is not valid" xml:space="preserve">
+    <value>رمز النظام الطبي الذي تم إدخاله غير صالح</value>
+  </data>
+  <data name="The reason for the rejection of the information" xml:space="preserve">
+    <value>سبب رفض المعلومة</value>
+  </data>
+  <data name="The tariff of the nurse at home is in Rials" xml:space="preserve">
+    <value>تعرفة الممرضة في المنزل بالريال</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>عنوان </value>
+  </data>
+  <data name="Transaction Type" xml:space="preserve">
+    <value>نوع تراکنش</value>
+  </data>
+  <data name="Unique Name" xml:space="preserve">
+    <value />
+  </data>
+  <data name="unpaid" xml:space="preserve">
+    <value>غير مدفوع الأجر</value>
+  </data>
+  <data name="User Name" xml:space="preserve">
+    <value>اسم االمستخدم</value>
+  </data>
+  <data name="Username" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Waiting for information to be filled by the user" xml:space="preserve">
+    <value>في انتظار المعلومات ليتم ملؤها من قبل المستخدم</value>
+  </data>
+  <data name="WaitingForConfirm" xml:space="preserve">
+    <value>انتظر القبول</value>
+  </data>
+  <data name="Withdraw" xml:space="preserve">
+    <value>برداشت</value>
+  </data>
+  <data name="Work Address" xml:space="preserve">
+    <value>عنوان العمل</value>
+  </data>
+  <data name="ZarinPal" xml:space="preserve">
+    <value>زرین پال</value>
+  </data>
+</root>

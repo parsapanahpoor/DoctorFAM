@@ -19,8 +19,8 @@ namespace DoctorFAM.Web.Areas.Doctor.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var model = await _doctorService.GetDoctorsInfosState(User.GetUserId());
-            return View("DoctorsInfos" , model );
+            var model = await _doctorService.GetDoctorsSideBarInfo(User.GetUserId());
+            return View("DoctorsInfos" , model.DoctorInfoState );
         }
     }
 
@@ -39,8 +39,8 @@ namespace DoctorFAM.Web.Areas.Doctor.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var model = await _doctorService.GetDoctorsInfosState(User.GetUserId());
-            return View("DoctorsInfosBadge", model);
+            var model = await _doctorService.GetDoctorsSideBarInfo(User.GetUserId());
+            return View("DoctorsInfosBadge", model.DoctorInfoState);
         }
     }
 }

@@ -17,24 +17,27 @@ namespace DoctorFAM.Web.Controllers
     {
         #region Ctor
 
-        public IDeathCertificateService _deathCertificateService;
+        private readonly IDeathCertificateService _deathCertificateService;
 
-        public ILocationService _locationService;
+        private readonly ILocationService _locationService;
 
-        public IPatientService _patientService;
+        private readonly IPatientService _patientService;
 
-        public IRequestService _requestService;
+        private readonly IRequestService _requestService;
 
-        public IUserService _userService;
+        private readonly IUserService _userService;
+
+        private readonly ISiteSettingService _siteSettingService;
 
         public DeathCertificatController(IDeathCertificateService deathCertificateService, ILocationService locationService, IPatientService patientService
-                                    , IRequestService requestService, IUserService userService)
+                                    , IRequestService requestService, IUserService userService , ISiteSettingService siteSettingService)
         {
             _deathCertificateService = deathCertificateService;
             _locationService = locationService;
             _patientService = patientService;
             _requestService = requestService;
             _userService = userService;
+            _siteSettingService = siteSettingService;
         }
 
         #endregion
@@ -206,17 +209,111 @@ namespace DoctorFAM.Web.Controllers
 
         #endregion
 
-        #region Bank Payment
+        #region Bank Redirect
 
         [HttpGet]
-        public IActionResult BankPay(ulong requestId)
+        public async Task<IActionResult> BankPay(ulong requestId)
         {
-            ViewBag.RequestId = requestId;
+            #region Get Request By Id
+
+            var request = await _requestService.GetRequestById(requestId);
+            if (request == null) return NotFound();
+
+            #endregion
+
+            #region Get Death Certificate Tarif 
+
+            var deathCertificate = await _siteSettingService.GetDeathCertificateTariff();
+            if (deathCertificate == 0)
+            {
+                TempData[ErrorMessage] = "لطفا با پشتیبانی تماس بگیرید";
+                return View();
+            }
+
+            #endregion
+
+            #region Online Payment
+
+            var payment = new ZarinpalSandbox.Payment(deathCertificate);
+
+            var res = payment.PaymentRequest("پرداخت  ", "https://localhost:44322/PayDeathCertificate/" + requestId, "Parsapanahpoor@yahoo.com", "09117878804");
+
+            if (res.Result.Status == 100)
+            {
+
+                #region Update Request State 
+
+                await _requestService.UpdateRequestStateForTramsferringToTheBankingPortal(request);
+
+                #endregion
+
+                return Redirect("https://sandbox.zarinpal.com/pg/StartPay/" + res.Result.Authority);
+            }
+
+            #endregion
+
+            return View();
+        }
+
+        #endregion
+
+        #region Death Certificate Payment
+
+        [Route("PayDeathCertificate/{id}")]
+        public async Task<IActionResult> PayDeathCertificate(ulong id)
+        {
+            #region Get Request 
+
+            var request = await _requestService.GetRequestById(id);
+
+            #endregion
+
+            if (HttpContext.Request.Query["Status"] != "" &&
+                HttpContext.Request.Query["Status"].ToString().ToLower() == "ok"
+                && HttpContext.Request.Query["Authority"] != "")
+            {
+                string authority = HttpContext.Request.Query["Authority"];
+
+                #region Get Death Certificate Tarif 
+
+                var deathCertificate = await _siteSettingService.GetDeathCertificateTariff();
+                if (deathCertificate == 0)
+                {
+                    TempData[ErrorMessage] = "لطفا با پشتیبانی تماس بگیرید";
+                    return View();
+                }
+
+                #endregion
+
+                var payment = new ZarinpalSandbox.Payment(deathCertificate);
+                var res = payment.Verification(authority).Result;
+
+                if (res.Status == 100)
+                {
+                    ViewBag.code = res.RefId;
+                    ViewBag.IsSuccess = true;
+
+                    //Update Request State 
+                    await _requestService.UpdateRequestStateForPayed(request);
+
+                    //Charge User Wallet
+                    await _deathCertificateService.ChargeUserWallet(User.GetUserId(), deathCertificate);
+
+                    //Pay Death Certificate Tariff
+                    await _deathCertificateService.PayDeathCertificateTariff(User.GetUserId(), deathCertificate);
+
+                    return View();
+                }
+
+            }
+            else
+            {
+                await _requestService.UpdateRequestStateForNotPayed(request);
+            }
+
             return View();
         }
 
         #endregion
     }
-
-
 }

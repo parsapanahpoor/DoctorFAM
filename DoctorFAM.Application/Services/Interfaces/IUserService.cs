@@ -46,6 +46,8 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         Task RegisterDoctors(string mobile);
 
+        Task RegisterSeller(string mobile);
+
         #endregion
 
         #region Admin

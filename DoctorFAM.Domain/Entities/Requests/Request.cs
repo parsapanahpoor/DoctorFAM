@@ -12,6 +12,7 @@ using DoctorFAM.Domain.Enums.RequestType;
 using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Enums.Request;
 using DoctorFAM.Domain.Entities.Pharmacy;
+using DoctorFAM.Domain.Entities.PopulationCovered;
 
 namespace DoctorFAM.DataLayer.Entities
 {
@@ -27,11 +28,17 @@ namespace DoctorFAM.DataLayer.Entities
 
         public ulong? PatientId { get; set; }
 
+        public ulong? OperationId { get; set; }
+
         #endregion
 
         #region Relation
 
+        [ForeignKey("UserId")]
         public User User { get; set; }
+
+        [ForeignKey("OperationId")]
+        public User? Operation { get; set; }
 
         [ForeignKey("PatientId")]
         public ICollection<Patient>  Patient { get; set; }

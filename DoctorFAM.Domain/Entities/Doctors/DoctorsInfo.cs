@@ -2,6 +2,7 @@
 using DoctorFAM.Domain.Entities.Common;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,7 +13,7 @@ namespace DoctorFAM.Domain.Entities.Doctors
     {
         #region properties
 
-        public ulong UserId { get; set; }
+        public ulong DoctorId { get; set; }
 
         public int NationalCode { get; set; }
 
@@ -24,23 +25,24 @@ namespace DoctorFAM.Domain.Entities.Doctors
 
         public string MediacalFile { get; set; }
 
-        public string? RejectDescription { get; set; }
-
-        public DoctorsInfosType DoctorsInfosType { get; set; }
-
         #endregion
 
         #region Relations
 
-        public User User { get; set; }
+        public Doctor Doctor { get; set; }
 
         #endregion
     }
 
     public enum DoctorsInfosType
     {
+        [Display(Name = "Accepted")]
         Accepted,
+        [Display(Name = "WaitingForConfirm")]
         WatingForConfirm,
-        Rejected
+        [Display(Name = "Rejected")]
+        Rejected,
+        [Display(Name = "Register Now")]
+        JustRegister
     }
 }

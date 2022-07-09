@@ -9,6 +9,7 @@ using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.Pharmacy;
 using DoctorFAM.Domain.Entities.Requests;
+using DoctorFAM.Domain.Entities.Wallet;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.HealthHouse.HomePharmacy;
 using DoctorFAM.Domain.ViewModels.Site.Common;
@@ -27,28 +28,78 @@ namespace DoctorFAM.Application.Services.Implementation
     {
         #region Ctor
 
-        public IHomePharmacyRepository _homePharmacy;
+        private readonly IHomePharmacyRepository _homePharmacy;
 
-        public IUserService _userService;
+        private readonly IUserService _userService;
 
-        public IRequestService _requestService;
+        private readonly IRequestService _requestService;
 
-        public IPatientService _patientService;
+        private readonly IPatientService _patientService;
 
-        public ILocationService _locationService;
+        private readonly ILocationService _locationService;
 
-        public HomePharmacyService(IHomePharmacyRepository homePharmacy, IUserService userService, IRequestService requestService, IPatientService patientService, ILocationService locationService)
+        private readonly IWalletRepository _walletRepository;
+
+        public HomePharmacyService(IHomePharmacyRepository homePharmacy, IUserService userService,
+                                    IRequestService requestService, IPatientService patientService
+                                    , ILocationService locationService , IWalletRepository walletRepository)
         {
             _homePharmacy = homePharmacy;
             _userService = userService;
             _requestService = requestService;
             _patientService = patientService;
             _locationService = locationService;
+            _walletRepository = walletRepository; 
         }
 
         #endregion
 
         #region Site Side
+
+        public async Task<bool> ChargeUserWallet(ulong userId, int price)
+        {
+            if (!await _userService.IsExistUserById(userId))
+            {
+                return false;
+            }
+
+            var wallet = new Wallet
+            {
+                UserId = userId,
+                TransactionType = TransactionType.Deposit,
+                GatewayType = GatewayType.Zarinpal,
+                PaymentType = PaymentType.ChargeWallet,
+                Price = price,
+                Description = "شارژ حساب کاربری برای پرداخت هزینه ی ویزیت در منزل",
+                IsFinally = true
+            };
+
+            await _walletRepository.CreateWalletAsync(wallet);
+            return true;
+        }
+
+        public async Task<bool> PayHomePharmacyTariff(ulong userId, int price)
+        {
+            if (!await _userService.IsExistUserById(userId))
+            {
+                return false;
+            }
+
+            var wallet = new Wallet
+            {
+                UserId = userId,
+                TransactionType = TransactionType.Withdraw,
+                GatewayType = GatewayType.Zarinpal,
+                PaymentType = PaymentType.HomePharmacy,
+                Price = price,
+                Description = "پرداخت مبلغ آزمایشگاه در منزل",
+                IsFinally = true
+            };
+
+            await _walletRepository.CreateWalletAsync(wallet);
+            return true;
+        }
+
 
         public async Task<CreatePatientResult> ValidateCreatePatient(PatientViewModel model)
         {

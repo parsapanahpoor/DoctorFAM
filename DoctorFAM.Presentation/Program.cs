@@ -146,8 +146,6 @@ builder.Services.AddLocalization(
 builder.Services.Configure<RequestLocalizationOptions>(
     opts =>
     {
-
-
         CultureInfo faIR = CultureInfo.CreateSpecificCulture("fa-IR");
         faIR.DateTimeFormat.Calendar = new GregorianCalendar();
         faIR.NumberFormat.CurrencyDecimalSeparator = ".";

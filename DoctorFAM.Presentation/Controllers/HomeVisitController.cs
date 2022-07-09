@@ -26,14 +26,21 @@ namespace DoctorFAM.Web.Controllers
 
         public IUserService _userService;
 
+        private readonly IPopulationCoveredService _populationCovered;
+
+        private readonly ISiteSettingService _siteSettingService;
+
         public HomeVisitController(IHomeVisitService homeVisitService, ILocationService locationService, IPatientService patientService
-                                    , IRequestService requestService, IUserService userService)
+                                    , IRequestService requestService, IUserService userService, ISiteSettingService siteSettingService ,
+                                        IPopulationCoveredService populationCovered)
         {
             _homeVisitService = homeVisitService;
             _locationService = locationService;
             _patientService = patientService;
             _requestService = requestService;
             _userService = userService;
+            _siteSettingService = siteSettingService;
+            _populationCovered = populationCovered;
         }
 
         #endregion
@@ -65,13 +72,32 @@ namespace DoctorFAM.Web.Controllers
         #region Patient Detail
 
         [HttpGet]
-        public async Task<IActionResult> PatientDetails(ulong requestId)
+        public async Task<IActionResult> PatientDetails(ulong requestId , ulong? populationCoveredId)
         {
             #region Data Validation
 
-            if(! await _requestService.IsExistRequestByRequestId(requestId)) return NotFound();
+            if (!await _requestService.IsExistRequestByRequestId(requestId)) return NotFound();
 
-            if(! await _userService.IsExistUserById(User.GetUserId())) return NotFound();
+            if (!await _userService.IsExistUserById(User.GetUserId())) return NotFound();
+
+            #endregion
+
+            #region Get User Population Covered
+
+            ViewBag.PopulationCovered = await _populationCovered.GetUserPopulation(User.GetUserId());
+
+            #endregion
+
+            #region Fill Data From Selected Population Covered
+
+            if (populationCoveredId != null && populationCoveredId.HasValue)
+            {
+                //Fill Page Model From Selected Population Covered Data
+                var mode = await _homeVisitService.FillPatientViewModelFromSelectedPopulationCoveredData(populationCoveredId.Value , requestId , User.GetUserId());
+                if (mode == null) return NotFound();
+
+                return View(mode);
+            }
 
             #endregion
 
@@ -93,7 +119,16 @@ namespace DoctorFAM.Web.Controllers
 
             #region Model State
 
-            if (!ModelState.IsValid) return View(patient);
+            if (!ModelState.IsValid)
+            {
+                #region Get User Population Covered
+
+                ViewBag.PopulationCovered = await _populationCovered.GetUserPopulation(User.GetUserId());
+
+                #endregion
+
+                return NotFound();
+            }
 
             #endregion
 
@@ -115,10 +150,16 @@ namespace DoctorFAM.Web.Controllers
                     var patientId = await _homeVisitService.CreatePatientDetail(patient);
 
                     //Add PatientId To The Request
-                    await _requestService.AddPatientIdToRequest(patient.RequestId , patientId);
+                    await _requestService.AddPatientIdToRequest(patient.RequestId, patientId);
 
-                    return RedirectToAction("PatientRequestDetail", "HomeVisit", new { requestId = patient.RequestId , patientId = patientId});
+                    return RedirectToAction("PatientRequestDetail", "HomeVisit", new { requestId = patient.RequestId, patientId = patientId });
             }
+
+            #endregion
+
+            #region Get User Population Covered
+
+            ViewBag.PopulationCovered = await _populationCovered.GetUserPopulation(User.GetUserId());
 
             #endregion
 
@@ -130,7 +171,7 @@ namespace DoctorFAM.Web.Controllers
         #region Patient Request Detail
 
         [HttpGet]
-        public async Task<IActionResult> PatientRequestDetail(ulong requestId , ulong patientId)
+        public async Task<IActionResult> PatientRequestDetail(ulong requestId, ulong patientId)
         {
             #region Is Exist Request & Patient
 
@@ -139,7 +180,7 @@ namespace DoctorFAM.Web.Controllers
                 return NotFound();
             }
 
-            if (! await _patientService.IsExistPatientById(patientId))
+            if (!await _patientService.IsExistPatientById(patientId))
             {
                 return NotFound();
             }
@@ -164,7 +205,7 @@ namespace DoctorFAM.Web.Controllers
         {
             #region Model State Validation
 
-            if (! ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return View(patientRequest);
             }
@@ -179,7 +220,7 @@ namespace DoctorFAM.Web.Controllers
             {
                 case CreatePatientAddressResult.Success:
                     TempData[SuccessMessage] = "عملیات با موفقیت انجام شده است ";
-                    return RedirectToAction("BankPay", "HomeVisit" , new { requestId = patientRequest.RequestId });
+                    return RedirectToAction("BankPay", "HomeVisit", new { requestId = patientRequest.RequestId });
 
                 case CreatePatientAddressResult.Failed:
                     TempData[ErrorMessage] = "عملیات با شکست مواجه شده است ";
@@ -187,7 +228,7 @@ namespace DoctorFAM.Web.Controllers
 
                 case CreatePatientAddressResult.RquestNotFound:
                     TempData[ErrorMessage] = "درخواست یافت نشده است ";
-                    break ;
+                    break;
 
                 case CreatePatientAddressResult.PatientNotFound:
                     TempData[ErrorMessage] = "بیمار یافت نشده است ";
@@ -205,12 +246,108 @@ namespace DoctorFAM.Web.Controllers
 
         #endregion
 
-        #region Bank Payment
+        #region Bank Redirect
 
         [HttpGet]
-        public IActionResult BankPay(ulong requestId)
+        public async Task<IActionResult> BankPay(ulong requestId)
         {
-            ViewBag.RequestId = requestId;
+            #region Get Request By Id
+
+            var request = await _requestService.GetRequestById(requestId);
+            if (request == null) return NotFound();
+
+            #endregion
+
+            #region Get Home Visit Tarif 
+
+            var homeVisitTarif = await _siteSettingService.GetHomeVisitTariff();
+            if (homeVisitTarif == 0)
+            {
+                TempData[ErrorMessage] = "لطفا با پشتیبانی تماس بگیرید";
+                return View();
+            }
+
+            #endregion
+
+            #region Online Payment
+
+            var payment = new ZarinpalSandbox.Payment(homeVisitTarif);
+
+            var res = payment.PaymentRequest("پرداخت  ", "https://localhost:44322/HomeVisitPayment/" + requestId, "Parsapanahpoor@yahoo.com", "09117878804");
+
+            if (res.Result.Status == 100)
+            {
+
+                #region Update Request State 
+
+                await _requestService.UpdateRequestStateForTramsferringToTheBankingPortal(request);
+
+                #endregion
+
+                return Redirect("https://sandbox.zarinpal.com/pg/StartPay/" + res.Result.Authority);
+            }
+
+            #endregion
+
+            return View();
+        }
+
+        #endregion
+
+        #region Home Visit Payment
+
+        [Route("HomeVisitPayment/{id}")]
+        public async Task<IActionResult> HomeVisitPayment(ulong id)
+        {
+            #region Get Request 
+
+            var request = await _requestService.GetRequestById(id);
+
+            #endregion
+
+            if (HttpContext.Request.Query["Status"] != "" &&
+                HttpContext.Request.Query["Status"].ToString().ToLower() == "ok"
+                && HttpContext.Request.Query["Authority"] != "")
+            {
+                string authority = HttpContext.Request.Query["Authority"];
+                
+                #region Get Home Visit Tarif 
+
+                var homeVisitTarif = await _siteSettingService.GetHomeVisitTariff();
+                if (homeVisitTarif == 0)
+                {
+                    TempData[ErrorMessage] = "لطفا با پشتیبانی تماس بگیرید";
+                    return View();
+                }
+
+                #endregion
+
+                var payment = new ZarinpalSandbox.Payment(homeVisitTarif);
+                var res = payment.Verification(authority).Result;
+
+                if (res.Status == 100)
+                {
+                    ViewBag.code = res.RefId;
+                    ViewBag.IsSuccess = true;
+
+                    //Update Request State 
+                    await _requestService.UpdateRequestStateForPayed(request);
+
+                    //Charge User Wallet
+                    await _homeVisitService.ChargeUserWallet(User.GetUserId(), homeVisitTarif);
+
+                    //Pay Home Visit Tariff
+                    await _homeVisitService.PayHomeVisitTariff(User.GetUserId(), homeVisitTarif);
+
+                    return View();
+                }
+
+            }
+            else
+            {
+                await _requestService.UpdateRequestStateForNotPayed(request);
+            }
+
             return View();
         }
 

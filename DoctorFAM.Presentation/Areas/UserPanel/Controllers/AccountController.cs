@@ -48,13 +48,13 @@ namespace DoctorFAM.Web.Areas.UserPanel.Controllers
 
             if (!ModelState.IsValid)
             {
-                TempData[ErrorMessage] = "مقادیر ورودی معتبر نمی باشد .";
+                TempData[ErrorMessage] = _sharedLocalizer["The input values ​​are not valid"].Value;
                 return View(edit);
             }
 
             if (edit.UserId != User.GetUserId())
             {
-                TempData[ErrorMessage] = "کاربر مورد نظر یافت نشده است ";
+                TempData[ErrorMessage] = _sharedLocalizer["User Not Found"].Value;
                 return View(edit);
             }
 
@@ -67,16 +67,19 @@ namespace DoctorFAM.Web.Areas.UserPanel.Controllers
             switch (result)
             {
                 case UserPanelEditUserInfoResult.NotValidImage:
-                    TempData[ErrorMessage] = "تصویر انتخاب شده معتبر نمی باشد .";
+                    TempData[ErrorMessage] = _sharedLocalizer["Image Is Not Valid ."].Value;
                     break;
                 case UserPanelEditUserInfoResult.UserNotFound:
-                    TempData[ErrorMessage] = "کاربر مورد نظر یافت نشد .";
+                    TempData[ErrorMessage] = _sharedLocalizer["User Not Found"].Value;
                     return RedirectToAction("EditProfile", "Account", new { area = "UserPanel" });
                 case UserPanelEditUserInfoResult.Success:
-                    TempData[SuccessMessage] = "عملیات با موفقیت انجام شد .";
+                    TempData[SuccessMessage] = _sharedLocalizer["Operation Successfully"].Value;
                     return RedirectToAction("Index", "Home", new { area = "UserPanel" });
                 case UserPanelEditUserInfoResult.NotValidEmail:
-                    TempData[ErrorMessage] = "ایمیل وارد شده از قبل در سایت موجود است";
+                    TempData[ErrorMessage] = _sharedLocalizer["The entered email is already available on the site"].Value;
+                    break;
+                case UserPanelEditUserInfoResult.NationalId:
+                    TempData[ErrorMessage] = _sharedLocalizer["National Id Is Not Valid"].Value;
                     break;
             }
 

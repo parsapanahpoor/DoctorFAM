@@ -1,6 +1,7 @@
 ﻿using DoctorFAM.Domain.ViewModels.Common;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,9 +38,13 @@ namespace DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo
 
     public enum DoctorsState
     {
+        [Display(Name = "Accepted")]
         Accepted,
+        [Display(Name = "WaitingForConfirm")]
         WaitingForConfirm,
+        [Display(Name = "Rejected")]
         Rejected,
+        [Display(Name = "All")]
         All
     }
 }

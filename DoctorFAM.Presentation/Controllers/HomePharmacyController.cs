@@ -16,23 +16,27 @@ namespace DoctorFAM.Web.Controllers
     {
         #region Ctor
 
-        public IHomePharmacyServicec _homePharmacy;
+        private readonly IHomePharmacyServicec _homePharmacy;
 
-        public IRequestService _requestService;
+        private readonly IRequestService _requestService;
 
-        public IUserService _userService;
+        private readonly IUserService _userService;
 
-        public IPatientService _patientService;
+        private readonly IPatientService _patientService;
 
-        public ILocationService _locationService;
+        private readonly ILocationService _locationService;
 
-        public HomePharmacyController(IHomePharmacyServicec homePharmacy, IRequestService requestService, IUserService userService, IPatientService patientService, ILocationService locationService)
+        private readonly ISiteSettingService _siteSettingService;
+
+        public HomePharmacyController(IHomePharmacyServicec homePharmacy, IRequestService requestService, IUserService userService
+                                     , IPatientService patientService, ILocationService locationService , ISiteSettingService siteSettingService)
         {
             _homePharmacy = homePharmacy;
             _requestService = requestService;
             _userService = userService;
             _patientService = patientService;
             _locationService = locationService;
+            _siteSettingService = siteSettingService;
         }
 
         #endregion
@@ -278,7 +282,7 @@ namespace DoctorFAM.Web.Controllers
             {
                 case CreatePatientAddressResult.Success:
                     TempData[SuccessMessage] = "عملیات با موفقیت انجام شده است ";
-                    return RedirectToAction("SecPage", "Home");
+                    return RedirectToAction("BankPay", "HomePharmacy", new { requestId = patientRequest.RequestId });
 
                 case CreatePatientAddressResult.Failed:
                     TempData[ErrorMessage] = "عملیات با شکست مواجه شده است ";
@@ -300,6 +304,113 @@ namespace DoctorFAM.Web.Controllers
             #endregion
 
             return View(patientRequest);
+        }
+
+        #endregion
+
+        #region Bank Redirect
+
+        [HttpGet]
+        public async Task<IActionResult> BankPay(ulong requestId)
+        {
+            #region Get Request By Id
+
+            var request = await _requestService.GetRequestById(requestId);
+            if (request == null) return NotFound();
+
+            #endregion
+
+            #region Get Home Pharmacy Tarif 
+
+            var homePharmacyTariff = await _siteSettingService.GetHomePahrmacyTariff();
+            if (homePharmacyTariff == 0)
+            {
+                TempData[ErrorMessage] = "لطفا با پشتیبانی تماس بگیرید";
+                return View();
+            }
+
+            #endregion
+
+            #region Online Payment
+
+            var payment = new ZarinpalSandbox.Payment(homePharmacyTariff);
+
+            var res = payment.PaymentRequest("پرداخت  ", "https://localhost:44322/HomePharmacyPayment/" + requestId, "Parsapanahpoor@yahoo.com", "09117878804");
+
+            if (res.Result.Status == 100)
+            {
+
+                #region Update Request State 
+
+                await _requestService.UpdateRequestStateForTramsferringToTheBankingPortal(request);
+
+                #endregion
+
+                return Redirect("https://sandbox.zarinpal.com/pg/StartPay/" + res.Result.Authority);
+            }
+
+            #endregion
+
+            return View();
+        }
+
+        #endregion
+
+        #region Home Pharmacy Payment
+
+        [Route("HomePharmacyPayment/{id}")]
+        public async Task<IActionResult> HomePharmacyPayment(ulong id)
+        {
+            #region Get Request 
+
+            var request = await _requestService.GetRequestById(id);
+
+            #endregion
+
+            if (HttpContext.Request.Query["Status"] != "" &&
+                HttpContext.Request.Query["Status"].ToString().ToLower() == "ok"
+                && HttpContext.Request.Query["Authority"] != "")
+            {
+                string authority = HttpContext.Request.Query["Authority"];
+
+                #region Get Home Pharmacy Tarif 
+
+                var homePharmacyTariff = await _siteSettingService.GetHomePahrmacyTariff();
+                if (homePharmacyTariff == 0)
+                {
+                    TempData[ErrorMessage] = "لطفا با پشتیبانی تماس بگیرید";
+                    return View();
+                }
+
+                #endregion
+
+                var payment = new ZarinpalSandbox.Payment(homePharmacyTariff);
+                var res = payment.Verification(authority).Result;
+
+                if (res.Status == 100)
+                {
+                    ViewBag.code = res.RefId;
+                    ViewBag.IsSuccess = true;
+
+                    //Update Request State 
+                    await _requestService.UpdateRequestStateForPayed(request);
+
+                    //Charge User Wallet
+                    await _homePharmacy.ChargeUserWallet(User.GetUserId(), homePharmacyTariff);
+
+                    //Pay Home Pharmacy Tariff
+                    await _homePharmacy.PayHomePharmacyTariff(User.GetUserId(), homePharmacyTariff);
+
+                    return View();
+                }
+
+            }
+            else
+            {
+                await _requestService.UpdateRequestStateForNotPayed(request);
+            }
+
+            return View();
         }
 
         #endregion

@@ -48,6 +48,15 @@
                     </a>
                 </li>
             </ul>
+
+               <ul class="submenu">
+                <li>
+                    <a asp-action="FilterPopulationCoveredAdminViewModel" asp-area="Admin" asp-controller="PopulationCovered">
+                        <span class="menu-text"> @SharedLocalizer["Population Covered List"] </span>
+                    </a>
+                </li>
+            </ul>
+
         </li>
 
         <li>
@@ -72,34 +81,35 @@
                     </a>
                 </li>
             </ul>
-               <ul class="submenu">
+            <ul class="submenu">
                 <li>
                     <a asp-action="ListOfHomeNurse" asp-area="Admin" asp-controller="HealthHouse">
                         <span class="menu-text"> @SharedLocalizer["Home Nurse"] </span>
                     </a>
                 </li>
             </ul>
-               <ul class="submenu">
+            <ul class="submenu">
                 <li>
                     <a asp-action="ListOfHomePharmacy" asp-area="Admin" asp-controller="HealthHouse">
                         <span class="menu-text"> @SharedLocalizer["Pharmacy At Home"] </span>
                     </a>
                 </li>
             </ul>
-               <ul class="submenu">
+            <ul class="submenu">
                 <li>
                     <a asp-action="ListOfHomeLabratory" asp-area="Admin" asp-controller="HealthHouse">
                         <span class="menu-text"> @SharedLocalizer["Laboratory At Home"] </span>
                     </a>
                 </li>
             </ul>
-               <ul class="submenu">
+            <ul class="submenu">
                 <li>
                     <a asp-action="ListOfHomePatientTransport" asp-area="Admin" asp-controller="HealthHouse">
-                        <span class="menu-text"> @SharedLocalizer["Patient Transport "] </span>
+                        <span class="menu-text"> @SharedLocalizer["Patient Transport"] </span>
                     </a>
                 </li>
-            </ul>   <ul class="submenu">
+            </ul>
+            <ul class="submenu">
                 <li>
                     <a asp-action="ListOfDeathCertificate" asp-area="Admin" asp-controller="HealthHouse">
                         <span class="menu-text"> @SharedLocalizer["Death Certificate"] </span>
@@ -137,7 +147,7 @@
             </ul>
         </li>
 
-           <li>
+        <li>
             <a href="#" class="menu-dropdown">
                 <i class="menu-icon  glyphicon glyphicon-th-large"></i>
                 <span class="menu-text">@SharedLocalizer["Manage Market Categories"]</span>
@@ -153,6 +163,39 @@
                 <li>
                     <a asp-action="CreateMarketCategory" asp-controller="MarketCategory" asp-area="Admin">
                         <span class="menu-text"> @SharedLocalizer["Create Market Categories"] </span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="#" class="menu-dropdown">
+                <i class="menu-icon fa fa-buysellads"></i>
+                <span class="menu-text"> مدیریت محصولات </span>
+
+                <i class="menu-expand"></i>
+            </a>
+
+            <ul class="submenu">
+                <li>
+                    <a asp-area="Admin" asp-controller="Product" asp-action="FilterProducts">
+                        <span class="menu-text">لیست محصولات</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="#" class="menu-dropdown">
+                <i class="menu-icon glyphicon glyphicon-wrench"></i>
+                <span class="menu-text"> @SharedLocalizer["Site Setting"] </span>
+                <i class="menu-expand"></i>
+            </a>
+
+            <ul class="submenu">
+                <li>
+                    <a asp-action="EditSiteSetting" asp-controller="SiteSetting" asp-area="Admin">
+                        <span class="menu-text"> @SharedLocalizer["Site Setting"]</span>
                     </a>
                 </li>
             </ul>

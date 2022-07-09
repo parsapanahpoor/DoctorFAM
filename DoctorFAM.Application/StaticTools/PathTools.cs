@@ -79,5 +79,26 @@ namespace DoctorFAM.Application.StaticTools
 
         #endregion
 
+        #region Products
+
+        public static readonly string ProductsPath = "/content/images/Products/main/";
+        public static readonly string ProductsPathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/Products/main/");
+
+        public static readonly string ProductsPathThumb = "/content/images/Products/thumb/";
+        public static readonly string ProductsPathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/Products/thumb/");
+
+        public static readonly string DefaultProductAvatar = "/content/images/Products/DefaultProducts.jpg";
+
+        #endregion
+
+        #region Product Gallery
+
+        public static readonly string ProductsGalleryPath = "/content/images/Products/Gallery/main/";
+        public static readonly string ProductsGalleryPathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/Products/Gallery/main/");
+
+        public static readonly string ProductsGalleryPathThumb = "/content/images/Products/Gallery/thumb/";
+        public static readonly string ProductsGalleryPathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/Products/Gallery/thumb/");
+
+        #endregion
     }
 }

@@ -117,11 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Accepted" xml:space="preserve">
+    <value>وافقت</value>
+  </data>
   <data name="Add new User" xml:space="preserve">
     <value>إضافة مستخدم جديد</value>
   </data>
+  <data name="An error occurred in the change password process" xml:space="preserve">
+    <value>حدث خطأ في عملية تغيير كلمة المرور</value>
+  </data>
   <data name="Articles List" xml:space="preserve">
     <value>قائمة المقالات</value>
+  </data>
+  <data name="Change Password" xml:space="preserve">
+    <value>غير كلمة السر</value>
   </data>
   <data name="Change Picture" xml:space="preserve">
     <value>تغيير الصورة</value>
@@ -135,20 +144,74 @@
   <data name="Create New Role" xml:space="preserve">
     <value>إنشاء دور جديد</value>
   </data>
+  <data name="Create Population Covered" xml:space="preserve">
+    <value>أضف مجتمعًا مغطى</value>
+  </data>
   <data name="CreateDynamicPage" xml:space="preserve">
     <value>إنشاء صفحة جديدة</value>
+  </data>
+  <data name="Current password is invalid" xml:space="preserve">
+    <value>كلمة المرور الحالية غير صحيحة</value>
   </data>
   <data name="Dashboard" xml:space="preserve">
     <value>لوحة القيادة</value>
   </data>
+  <data name="Dear user, your information has been rejected by the site support. You can find the reason on the desired page" xml:space="preserve">
+    <value>عزيزي المستخدم ، تم رفض معلوماتك من قبل دعم الموقع. يمكنك العثور على السبب على الصفحة التي تريدها.</value>
+  </data>
+  <data name="Dear user, your information is being checked by the support. Please be patient until the result is announced" xml:space="preserve">
+    <value>عزيزي المستخدم ، يتم فحص معلوماتك عن طريق الدعم. يرجى التحلي بالصبر حتى يتم الإعلان عن النتيجة</value>
+  </data>
+  <data name="Death Certificate" xml:space="preserve">
+    <value>اصدار شهادة وفاة</value>
+  </data>
+  <data name="Decline" xml:space="preserve">
+    <value>انخفاض</value>
+  </data>
+  <data name="Doctor Family" xml:space="preserve">
+    <value>طبيب الأسرة</value>
+  </data>
+  <data name="Doctor Info" xml:space="preserve">
+    <value>معلومات الطبيب</value>
+  </data>
+  <data name="Edit Profile" xml:space="preserve">
+    <value>تعديل الملف الشخصي</value>
+  </data>
+  <data name="Favorite activities" xml:space="preserve">
+    <value>الأنشطة الخاصة بك</value>
+  </data>
   <data name="From" xml:space="preserve">
     <value>من عند</value>
+  </data>
+  <data name="Health House" xml:space="preserve">
+    <value>المنزل الصحي</value>
   </data>
   <data name="Home" xml:space="preserve">
     <value>الصفحة الرئيسية</value>
   </data>
+  <data name="Home Nurse" xml:space="preserve">
+    <value>ممرضة منزلية</value>
+  </data>
+  <data name="Home Visit" xml:space="preserve">
+    <value>زيارة منزلية</value>
+  </data>
+  <data name="Home1" xml:space="preserve">
+    <value>المنزل الرئيسي</value>
+  </data>
+  <data name="Image Is Not Valid ." xml:space="preserve">
+    <value>الصورة غير صالحة.</value>
+  </data>
+  <data name="Inaccessibility" xml:space="preserve">
+    <value>صعوبة الوصول</value>
+  </data>
   <data name="Items" xml:space="preserve">
     <value>أغراض</value>
+  </data>
+  <data name="Laboratory At Home" xml:space="preserve">
+    <value>معمل منزلي</value>
+  </data>
+  <data name="List of covered people" xml:space="preserve">
+    <value>قائمة الأشخاص المغطاة</value>
   </data>
   <data name="List Of Roles" xml:space="preserve">
     <value>قائمة الأدوار</value>
@@ -165,11 +228,17 @@
   <data name="Manage Articles" xml:space="preserve">
     <value>إدارة المقالات</value>
   </data>
+  <data name="Manage Doctors Info" xml:space="preserve">
+    <value>إدارة معلومات الأطباء</value>
+  </data>
   <data name="Manage Locations" xml:space="preserve">
     <value>إدارة المواقع</value>
   </data>
   <data name="Manage Pages" xml:space="preserve">
     <value>إدارة صفحات</value>
+  </data>
+  <data name="Manage Population Covered" xml:space="preserve">
+    <value>إدارة السكان المغطاة</value>
   </data>
   <data name="Manage Roles" xml:space="preserve">
     <value>إدارة الأدوار</value>
@@ -180,11 +249,38 @@
   <data name="Not Found" xml:space="preserve">
     <value>لا يوجد لا تجد</value>
   </data>
+  <data name="Online Visit" xml:space="preserve">
+    <value>زيارة عبر الإنترنت</value>
+  </data>
+  <data name="Operation Successfully" xml:space="preserve">
+    <value>العملية بنجاح</value>
+  </data>
   <data name="Options" xml:space="preserve">
     <value>خيارات</value>
   </data>
+  <data name="Patient Transport" xml:space="preserve">
+    <value>نقل المريض</value>
+  </data>
+  <data name="Pharmacy At Home" xml:space="preserve">
+    <value>صيدلية في المنزل</value>
+  </data>
+  <data name="Population Covered" xml:space="preserve">
+    <value>تغطية السكان</value>
+  </data>
+  <data name="Population Covered List" xml:space="preserve">
+    <value>قائمة الأشخاص المغطاة</value>
+  </data>
   <data name="Profile" xml:space="preserve">
     <value>حساب تعريفي</value>
+  </data>
+  <data name="Queuing settings" xml:space="preserve">
+    <value>إعدادات قائمة الانتظار</value>
+  </data>
+  <data name="Records of medical" xml:space="preserve">
+    <value>سجلات الإجراءات الطبية</value>
+  </data>
+  <data name="Site Setting" xml:space="preserve">
+    <value>إعداد الموقع</value>
   </data>
   <data name="Sweet Alert Announcement" xml:space="preserve">
     <value>إعلان</value>
@@ -204,7 +300,31 @@
   <data name="Sweet Alert Yes Answer" xml:space="preserve">
     <value>نعم</value>
   </data>
+  <data name="The entered email is already available on the site" xml:space="preserve">
+    <value>البريد الإلكتروني المدخل متاح بالفعل على الموقع</value>
+  </data>
+  <data name="The input values ​​are not valid" xml:space="preserve">
+    <value>قيم الإدخال غير صالحة</value>
+  </data>
+  <data name="The operation failed" xml:space="preserve">
+    <value>فشلت العملية</value>
+  </data>
+  <data name="Turn ratings" xml:space="preserve">
+    <value>تقييمات الدور</value>
+  </data>
+  <data name="User Not Found" xml:space="preserve">
+    <value>المستخدم ليس موجود</value>
+  </data>
   <data name="Users List" xml:space="preserve">
     <value>قائمة المستخدمين</value>
+  </data>
+  <data name="Waiting" xml:space="preserve">
+    <value>انتظار</value>
+  </data>
+  <data name="Your account not found, please re login" xml:space="preserve">
+    <value>حسابك غير موجود ، يرجى إعادة تسجيل الدخول</value>
+  </data>
+  <data name="Your Account Successfully Activated, Now You Can Login" xml:space="preserve">
+    <value>تم تفعيل حسابك بنجاح ، الآن يمكنك تسجيل الدخول إلى الموقع</value>
   </data>
 </root>

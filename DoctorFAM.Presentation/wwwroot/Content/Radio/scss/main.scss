@@ -1,0 +1,212 @@
+* {
+    font-family: "vazir";
+}
+@mixin flex($j-c: center, $a-i: center, $dir: row) {
+    display: flex;
+    flex-direction: $dir;
+    justify-content: $j-c;
+    align-items: $a-i;
+}
+#radio {
+    background-color: #40454b;
+    .radio-content {
+        @include flex($j-c: space-between);
+        .radio-right {
+            background-color: #141517;
+            border-radius: 3px;
+            padding: 15px 40px  ;
+            // .radio-name {
+            //     @include flex();
+            //     color: #fd5b03;
+            //     span {
+            //         font-size: 32px;
+            //     }
+            // }
+            .radio-equalizer {
+                @include flex();
+                height: 30px;
+                .music-bars {
+                    background-color: aliceblue;
+                }
+                #music-bars span {
+                    background-color: #fd5b03;
+                    width: 4px;
+                    border-radius: 10px;
+                    float: left;
+                    margin-left: 4px;
+                    height: 25px;
+                }
+
+                #music-bars .one {
+                    -webkit-animation-name: move-1;
+                    -moz-animation-name: move-1;
+                    -o-animation-name: move-1;
+                    animation-name: move-1;
+                }
+
+                #music-bars .two {
+                    -webkit-animation-name: move-2;
+                    -moz-animation-name: move-2;
+                    -o-animation-name: move-2;
+                    animation-name: move-2;
+                }
+
+                #music-bars .three {
+                    -webkit-animation-name: move-3;
+                    -moz-animation-name: move-3;
+                    -o-animation-name: move-3;
+                    animation-name: move-3;
+                }
+
+                #music-bars .four {
+                    -webkit-animation-name: move-4;
+                    -moz-animation-name: move-4;
+                    -o-animation-name: move-4;
+                    animation-name: move-4;
+                }
+
+                #music-bars .five {
+                    -webkit-animation-name: move-5;
+                    -moz-animation-name: move-5;
+                    -o-animation-name: move-5;
+                    animation-name: move-5;
+                }
+
+            }
+        }
+        .radio-left {
+            position: relative;
+            .radio-controls {
+                @include flex();
+                .radio-next {
+                    position: absolute;
+                    left: 113px;
+                    // i {
+                    //     padding: 8px !important;
+                    //     border-radius: 0 10px 10px 0;
+                    // }
+                    padding: 23px;
+                    border-radius: 0 10px 10px 0;
+                        border: 1px solid #3c4041;
+                        // background-color: rgb(149, 157, 165);
+                    box-shadow: 0px 0px 10px rgba(255, 255, 255, .3);
+                    background-color: #191a1e;
+                    }
+                .radio-previous {
+                    position: absolute;
+                    left: 0px;
+
+                    padding: 23px;
+                    border-radius: 10px 0 0 10px;
+                        border: 1px solid #3c4041;
+                    box-shadow: 0px 0px 10px rgba(255, 255, 255, .3);
+                    background-color: #191a1e;
+                    }
+                .radio-stop-play {
+                    position: absolute;
+                    z-index: 9999;
+                    left: 40px;
+                    box-shadow: 0px 0px 10px rgba(255, 255, 255, .3);
+                    padding: 40px;
+                    border-radius: 50%;
+                        border: 1px solid #3c4041;
+                        background-color: #191a1e;
+                    }
+            }
+        }
+    }
+    margin-top: 30px;
+    border-radius: 10px;
+    width: 600px;
+    height: 90px;
+    @include flex();
+    padding: 50px 20px;
+}
+
+@font-face {
+    font-family: "vazir";
+    src: url("../fonts/Vazir.ttf");
+}
+
+.active-equlizer {
+    #music-bars span {
+        height: 35px !important;
+          -webkit-animation: 2.5s infinite ease-in-out;
+                    -moz-animation: 2.5s infinite ease-in-out;
+                    -o-animation: 2.5s infinite ease-in-out;
+                    animation: 2.5s infinite ease-in-out;
+    }
+    @keyframes move-1 {
+        0%,
+        100% {
+            transform: scaleY(0.5);
+        }
+        50% {
+            transform: scaleY(1);
+        }
+    }
+
+    /* Move 2 */
+
+
+    @keyframes move-2 {
+        0%,
+        100% {
+            transform: scaleY(0.25);
+        }
+        50% {
+            transform: scaleY(0.75);
+        }
+    }
+
+    /* Move 3 */
+
+
+    @keyframes move-3 {
+        0%,
+        100% {
+            transform: scaleY(0.5);
+        }
+        30%,
+        75% {
+            transform: scaleY(0.75);
+        }
+        50% {
+            transform: scaleY(0.25);
+        }
+    }
+
+    /* Move 4 */
+
+
+
+    @keyframes move-4 {
+        0%,
+        100% {
+            transform: scaleY(0.5);
+        }
+        12%,
+        85% {
+            transform: scaleY(0.75);
+        }
+        35% {
+            transform: scaleY(0.25);
+        }
+    }
+
+    /* Move 5 */
+
+   
+
+    @keyframes move-5 {
+        0%,
+        50%,
+        100% {
+            transform: scaleY(0);
+        }
+        25%,
+        75% {
+            transform: scaleY(0.5);
+        }
+    }
+}

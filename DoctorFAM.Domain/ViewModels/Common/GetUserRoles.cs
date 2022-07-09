@@ -11,6 +11,7 @@ namespace DoctorFAM.Domain.ViewModels.Common
         Admin,
         Doctor,
         User,
-        Supporter
+        Supporter,
+        Seller
     }
 }

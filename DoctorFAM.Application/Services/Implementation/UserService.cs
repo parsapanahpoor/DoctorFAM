@@ -283,6 +283,29 @@ namespace DoctorFAM.Application.Services.Implementation
             #endregion
         }
 
+        public async Task RegisterSeller(string mobile)
+        {
+            #region Get User By Mobile
+
+            var user = await GetUserByMobile(mobile);
+
+            #endregion
+
+            #region Add Seller Role To User
+
+            var userRole = new UserRole()
+            {
+                RoleId = 4,
+                UserId = user.Id
+            };
+
+            await _context.UserRoles.AddAsync(userRole);
+
+            await _context.SaveChangesAsync();
+
+            #endregion
+        }
+
         #endregion
 
         #region Admin
@@ -387,16 +410,26 @@ namespace DoctorFAM.Application.Services.Implementation
 
         public async Task<AdminEditUserInfoViewModel> FillAdminEditUserInfoViewModel(ulong userId)
         {
+            #region Get User By Id
+
             var user = await GetUserById(userId);
 
             if (user == null) return null;
 
-            var userRoleIds = await _context.UserRoles
-                .Where(s => !s.IsDelete && s.UserId == userId)
-                .Select(s => s.RoleId)
-                .ToListAsync();
+            #endregion
 
-            return new AdminEditUserInfoViewModel()
+            #region Get User Role
+
+            var userRoleIds = await _context.UserRoles
+               .Where(s => !s.IsDelete && s.UserId == userId)
+               .Select(s => s.RoleId)
+               .ToListAsync();
+
+            #endregion
+
+            #region Fill View Model
+
+            AdminEditUserInfoViewModel model = new AdminEditUserInfoViewModel()
             {
                 Mobile = user.Mobile,
                 Email = user.Email,
@@ -409,8 +442,29 @@ namespace DoctorFAM.Application.Services.Implementation
                 username = user.Username,
                 UserRoles = userRoleIds,
                 UserId = user.Id,
-                AvatarName = user.Avatar
+                AvatarName = user.Avatar,
+                ExtraPhoneNumber = user.ExtraPhoneNumber,
+                FatherName = user.FatherName,
+                FirstName = user.FirstName,
+                HomePhoneNumber = user.HomePhoneNumber,
+                LastName = user.LastName,
+                NationalId = user.NationalId,
+                WorkAddress = user.WorkAddress
             };
+
+            if (user.BithDay != null && user.BithDay.HasValue)
+            {
+                model.BithDay = user.BithDay.Value.ToShamsi();
+            }
+
+            if (!string.IsNullOrEmpty(user.NationalId))
+            {
+                model.NationalId = user.NationalId;
+            }
+
+            #endregion
+
+            return model;
         }
 
         public async Task<AdminEditUserInfoResult> EditUserInfo(AdminEditUserInfoViewModel edit, IFormFile? UserAvatar)
@@ -441,9 +495,12 @@ namespace DoctorFAM.Application.Services.Implementation
                 user.Avatar = imageName;
             }
 
-            if (!await IsValidEmailForUserEditByAdmin(edit.Email, user.Id))
+            if (!string.IsNullOrEmpty(edit.Email))
             {
-                return AdminEditUserInfoResult.NotValidEmail;
+                if (!await IsValidEmailForUserEditByAdmin(edit.Email, user.Id))
+                {
+                    return AdminEditUserInfoResult.NotValidEmail;
+                }
             }
 
             if (!string.IsNullOrEmpty(edit.Mobile) && !await IsValidMobileForUserEditByAdmin(edit.Mobile, user.Id))
@@ -464,6 +521,18 @@ namespace DoctorFAM.Application.Services.Implementation
             user.IsBan = edit.IsBan;
             user.BanForComment = edit.BanForComment;
             user.BanForTicket = edit.BanForTicket;
+            user.NationalId = edit.NationalId;
+            user.FirstName = edit.FirstName;
+            user.LastName = edit.LastName;
+            user.ExtraPhoneNumber = edit.ExtraPhoneNumber;
+            user.FatherName = edit.FatherName;
+            user.HomePhoneNumber = edit.HomePhoneNumber;
+            user.WorkAddress = edit.WorkAddress;
+
+            if (!string.IsNullOrEmpty(edit.BithDay))
+            {
+                user.BithDay = edit.BithDay.ToMiladiDateTime();
+            }
 
             _context.Update(user);
             await _context.SaveChangesAsync();
@@ -537,16 +606,34 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #region Fill View Model
 
-            return new UserPanelEditUserInfoViewModel()
+            UserPanelEditUserInfoViewModel model =  new UserPanelEditUserInfoViewModel()
             {
                 Mobile = user.Mobile,
                 Email = user.Email,
                 UserId = user.Id,
                 AvatarName = user.Avatar,
-                username = user.Username
+                username = user.Username,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                ExtraPhoneNumber = user.ExtraPhoneNumber,  
+                FatherName = user.FatherName,
+                HomePhoneNumber = user.HomePhoneNumber,
+                WorkAddress = user.WorkAddress,
             };
 
+            if (user.BithDay != null && user.BithDay.HasValue)
+            {
+                model.BithDay = user.BithDay.Value.ToShamsi();
+            }
+
+            if (!string.IsNullOrEmpty(user.NationalId))
+            {
+                model.NationalId = user.NationalId;
+            }
+
             #endregion
+
+            return model;
         }
 
         public async Task<UserPanelEditUserInfoResult> EditUserInfoInUserPanel(UserPanelEditUserInfoViewModel edit, IFormFile? UserAvatar)
@@ -577,17 +664,33 @@ namespace DoctorFAM.Application.Services.Implementation
                 user.Avatar = imageName;
             }
 
-            if (!await IsValidEmailForUserEditByAdmin(edit.Email, user.Id))
+            if (!string.IsNullOrEmpty(edit.Email))
             {
-                return UserPanelEditUserInfoResult.NotValidEmail;
+                if (!await IsValidEmailForUserEditByAdmin(edit.Email, user.Id))
+                {
+                    return UserPanelEditUserInfoResult.NotValidEmail;
+                }
             }
 
+            if (string.IsNullOrEmpty(edit.NationalId))
+            {
+                return UserPanelEditUserInfoResult.NationalId;
+            }
+          
             #endregion
 
             #region Update User Field
 
             user.Username = edit.username.SanitizeText();
             user.Email = edit.Email.SanitizeText();
+            user.FirstName = edit.FirstName.SanitizeText();
+            user.LastName = edit.LastName.SanitizeText();
+            user.BithDay = edit.BithDay.ToMiladiDateTime();
+            user.FatherName = edit.FatherName.SanitizeText();
+            user.NationalId = edit.NationalId;
+            user.ExtraPhoneNumber = edit.ExtraPhoneNumber.SanitizeText();
+            user.HomePhoneNumber = edit.HomePhoneNumber.SanitizeText();
+            user.WorkAddress = edit.WorkAddress.SanitizeText();
 
             _context.Update(user);
             await _context.SaveChangesAsync();

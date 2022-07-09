@@ -9,35 +9,44 @@ namespace DoctorFAM.Domain.Enums.Request
 {
     public enum RequestState
     {
-        [Display(Name = "در انتظار پر کردن اطلاعات از طرف کاربر")]
+        [Display(Name = "Waiting for information to be filled by the user")]
         WaitingForCompleteInformationFromUser,
-        [Display(Name = "پرشدن اطلاعات از سمت کاربر و انتقال به درگاه بانکی")]
+        [Display(Name = "Filling information from the user's side and transfer to the bank portal")]
         TramsferringToTheBankingPortal,
-        [Display(Name = "پرداخت شده ")]
+        [Display(Name = "Paid and waiting to choose a doctor")]
         Paid,
-        [Display(Name = "پرداخت نشده")]
+        [Display(Name = "unpaid")]
         unpaid,
+        [Display(Name = "Selected by a doctor")]
+        SelectedFromDoctor,
+        [Display(Name = "finalized")]
+        Finalized,
     }
 
     public enum RequestStateForFilterAdminSide
     {
-        [Display(Name = "همه")]
+        [Display(Name = "All")]
         All,
-        [Display(Name = "در انتظار پر کردن اطلاعات از طرف کاربر")]
+        [Display(Name = "Waiting for information to be filled by the user")]
         WaitingForCompleteInformationFromUser,
-        [Display(Name = "پرشدن اطلاعات از سمت کاربر و انتقال به درگاه بانکی")]
+        [Display(Name = "Filling information from the user's side and transfer to the bank portal")]
         TramsferringToTheBankingPortal,
-        [Display(Name = "پرداخت شده ")]
+        [Display(Name = "Paid and waiting to choose a doctor")]
         Paid,
-        [Display(Name = "پرداخت نشده")]
+        [Display(Name = "unpaid")]
         unpaid,
+        [Display(Name = "Selected by a doctor")]
+        SelectedFromDoctor,
+        [Display(Name = "finalized")]
+        Finalized,
     }
 
     public enum FilterRequestAdminSideOrder
     {
-        [Display(Name = "تاریخ ثبت نام - نزولی")]
+        [Display(Name = "Register Date - Descending")]
         CreateDate_Des,
-        [Display(Name = "تاریخ ثبت نام - صعودی ")]
+        [Display(Name = "Register Date - Ascending")]
         CreateDate_Asc
     }
+
 }

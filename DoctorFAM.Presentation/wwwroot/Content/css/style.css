@@ -1455,14 +1455,16 @@ html .ui-button.ui-state-disabled:active {
 
 .ui-widget.ui-widget-content {
     border    : none;
+    
     background: #fcfcff;
 }
 
 .widget-price #amount {
     margin-top: 10px;
-    width     : 150px;
-    color     : #081b3a;
+    width: 150px;
+    color: #081b3a;
     text-align: right;
+    
     /* direction: ltr; */
 }
 
@@ -1735,4 +1737,54 @@ input.form-product {
 .in-doreh:hover .in-hover-matn  {
     transition: 0.4s all;
     opacity: 0;
+}
+
+
+
+/* Speedometer*/
+.gauge {
+    display: flex;
+    justify-content: center;
+}
+
+.MagDiv {
+border:1px solid #3498db;
+border-radius:5px;
+}
+.MagDivBG {
+    /* background-image: url('images/magdivbg.jpg');
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100%;
+    background-size: cover;*/
+    /*background: #cddff6;*/
+    background: #cddff63b;
+}
+
+
+.divch {
+    transform: scale(1, 1);
+}
+
+    .divch:hover {
+        -webkit-transition: .5s !important;
+        transition: .5s !important;
+        border: none !important;
+        transform: scale(1.05, 1.05);
+    }
+
+.bordersec {
+    border: 1px solid #0b0637 !important;
+    border-radius: .25rem !important;
+}
+
+
+
+.KlinikContent {
+    color: white !important;
+    font-size: 14px !important;
+}
+.KlinikImage {
+    width:65%;
+    height:auto;
 }

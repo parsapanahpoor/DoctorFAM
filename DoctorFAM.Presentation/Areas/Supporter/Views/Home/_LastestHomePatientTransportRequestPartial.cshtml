@@ -1,0 +1,124 @@
+﻿@model List<DoctorFAM.DataLayer.Entities.Request>
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
+
+<div class="col-lg-12 col-md-12 col-xl-12 col-sm-12 col-xs-12 boxForDashboard">
+    <div class="widget">
+        <div class="widget-header">
+            <i class="widget-icon  glyphicon glyphicon-home"></i>
+            <span class="widget-caption"> @Localizer["List Of Lastest Home Patient Transport Requests"] </span>
+            <div class="widget-buttons">
+                <div class="row">
+                    <a id="ShowUserCommentInAdminPanelMinus" href="#" data-toggle="collapse">
+                        <i class="fa fa-minus"></i>
+                    </a>
+                </div>
+            </div><!--Widget Buttons-->
+        </div>
+        <div class="widget-body" style="height: 230px !important; overflow-y: scroll;">
+            @if (Model != null && Model.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered tc vm">
+                        <thead class="tc vm">
+                            <tr class="tc vm">
+                                <th class="tc vm">
+                                    @Localizer["User Avatar"]
+                                </th>
+                                <th class="tc vm">
+                                    @Localizer["Email"]
+                                </th>
+                                <th class="tc vm">
+                                    @Localizer["Mobile"]
+                                </th>
+                                <th class="tc vm">
+                                    @Localizer["Date Time"]
+                                </th>
+                                <th class="tc vm">
+                                    @Localizer["State"]
+                                </th>
+                                <th class="tc vm">
+                                    @Localizer["Options"]
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="tc vm">
+                            @foreach (var request in Model)
+                            {
+                                <tr class="tc vm">
+                                    <td class="vm">
+                                        <div class="flex-style-center">
+                                            <img src="@request.User.GetUserAvatar()" class="avatar-style" style="border-radius:50px;" />
+                                            <div class="mr-10px">
+                                                <span> @request.User.Username </span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="tc vm">
+                                        <p>
+                                            @if (request.User.Email == null)
+                                            {
+                                                <span class="mr-8px label label-orange">@Localizer["Empty"] </span>
+                                            }
+                                            else
+                                            {
+                                                @request.User.Email
+                                            }
+                                        </p>
+                                    </td>
+                                      <td class="tc vm">
+                                        @if (!string.IsNullOrEmpty(request.User.Mobile))
+                                        {
+                                            <p> @request.User.Mobile</p>
+                                        }
+                                    </td>
+                                    <td class="tc vm">
+                                        <p>  @request.CreateDate.ToStringShamsiDate() </p>
+                                        <p> @request.CreateDate.Hour:@request.CreateDate.Minute:@request.CreateDate.Second</p>
+                                    </td>
+                                    <td class="tc vm">
+                                        <p>
+
+                                            @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.Paid)
+                                            {
+                                                <span class="mr-8px label label-success"> @Localizer["Paid"] </span>
+                                            }
+
+                                            @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.TramsferringToTheBankingPortal)
+                                            {
+                                                <span class="mr-8px label label-info"> @Localizer["Paying"] </span>
+                                            }
+
+                                            @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.unpaid)
+                                            {
+                                                <span class="mr-8px label label-danger"> @Localizer["unpaid"]  </span>
+                                            }
+
+                                            @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.WaitingForCompleteInformationFromUser)
+                                            {
+                                                <span class="mr-8px label label-danger"> @Localizer["Awaiting Payment"]   </span>
+                                            }
+
+                                        </p>
+                                    </td>
+
+                                    <td class="tc vm">
+                                    <a asp-action="HomePatientTransportRequestDetail" asp-controller="HealthHouse" asp-area="Supporter" asp-route-requestId="@request.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <!--Widget Body-->
+            }
+            else
+            {
+                <partial name="_SupporterNotFoundPartial" />
+            }
+        </div>
+    </div>
+</div>

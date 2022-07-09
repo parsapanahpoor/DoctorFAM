@@ -135,6 +135,9 @@
   <data name="Login With This User" xml:space="preserve">
     <value>ورود با اکانت این کاربر</value>
   </data>
+  <data name="Population Covered" xml:space="preserve">
+    <value>جمعیت تحت پوشش</value>
+  </data>
   <data name="User Wallets" xml:space="preserve">
     <value>کیف پول کاربر</value>
   </data>

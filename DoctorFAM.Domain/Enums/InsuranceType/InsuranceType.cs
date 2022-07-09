@@ -9,15 +9,15 @@ namespace DoctorFAM.Domain.Enums.InsuranceType
 {
     public enum InsuranceType
     {
-        [Display(Name = "آزاد")]
+        [Display(Name = "Free")]
         Free,
-        [Display(Name = "بیمه سلامت")]
+        [Display(Name = "Health Insurance")]
         Salamat,
-        [Display(Name = "تامین اجتماعی")]
+        [Display(Name = "Social Security")]
         Tamin,
-        [Display(Name = "مشاغل آزاد")]
+        [Display(Name = "Self-employed")]
         FreeJobs,
-        [Display(Name = "سلامت ایرانیان")]
+        [Display(Name = "Iranian health")]
         Iranian
     }
 }

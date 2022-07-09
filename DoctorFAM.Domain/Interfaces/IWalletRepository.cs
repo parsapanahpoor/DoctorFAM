@@ -30,6 +30,12 @@ namespace DoctorFAM.Domain.Interfaces
 
         Task<ulong> CreateWallet(Wallet charge);
 
+        Task<int> GetUserTotalDepositTransactions(ulong userId);
+
+        Task<int> GetUserTotalWithdrawTransactions(ulong userId);
+
+        Task<int> GetUserWalletBalance(ulong userId);
+
         #endregion
 
         #region Save Changes

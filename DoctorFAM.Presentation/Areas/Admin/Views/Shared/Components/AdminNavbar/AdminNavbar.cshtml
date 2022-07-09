@@ -1,5 +1,9 @@
-﻿@{
+﻿@using DoctorFAM.Application.Extensions
+@model DoctorFAM.Domain.Entities.Account.User
+
+@{
     var currentCulture = ApplicationCultures.GetCurrentCulture();
+        var isRtl = currentCulture.IsRtl;
 }
 
 <!-- Loading Container -->
@@ -13,9 +17,12 @@
         <div class="navbar-container">
             <!-- Navbar Barnd -->
             <div class="navbar-header @(currentCulture.IsRtl ? "pull-right":"pull-left")">
-                <a href="#" class="navbar-brand">
+                <a href="/Home/SecPage" class="navbar-brand">
                     <small>
-                        <img src="/admin/img/logo-rtl.png" alt="" />
+
+                        <img class="logoImage text-center align-items-center" src="/Content/images/Logo/doctorfamTes.png" alt="دکترفام">
+
+                        @*<img src="/admin/img/logo-rtl.png" alt="" />*@
                     </small>
                 </a>
             </div>
@@ -182,9 +189,11 @@
                             <!--/Messages Dropdown-->
                         </li>*@
 
-                        <li>
-                            <a class="dropdown-toggle" data-toggle="dropdown" title="Tasks" href="#">
-                                <i class="icon fa fa-language"></i>
+                    <li class="marli">
+
+                            <a class="dropdown-toggle btn btn-blue " data-toggle="dropdown" title="انتخاب زبان" href="#">
+                                <i class="fa fa-angle-down"></i>
+                                انتخاب زبان
                             </a>
                             <!--Tasks Dropdown-->
                             <ul class="pull-right dropdown-menu dropdown-tasks dropdown-arrow ">
@@ -201,58 +210,43 @@
                                     </li>
                                 }
                             </ul>
-                            <!--/Tasks Dropdown-->
+
                         </li>
-                    @*    <li>
-                            <a class="wave in" id="chat-link" title="Chat" href="#">
-                                <i class="icon glyphicon glyphicon-comment"></i>
-                            </a>
-                        </li>*@
+
                         <li>
-                            <a class="login-area dropdown-toggle" data-toggle="dropdown">
+                             <a class="login-area dropdown-toggle" data-toggle="dropdown">
                                 <div class="avatar" title="View your public profile">
-                                    <img src="/admin/img/avatars/adam-jansen.jpg">
+                                    <img src="@Model.GetUserAvatar()">
                                 </div>
                                 <section>
-                                    <h2><span class="profile"><span>@User.Identity.Name </span></span></h2>
+                                    <h2><span class="profile"><span>@Model.Username </span></span></h2>
                                 </section>
                             </a>
                             <!--Login Area Dropdown-->
                             <ul class="pull-right dropdown-menu dropdown-arrow dropdown-login-area">
-                                <li class="username"><a>@User.Identity.Name</a></li>
+                                <li class="username"><a>@Model.Username</a></li>
+                                <li class="email"><a>@Model.Email</a></li>
                                 <!--Avatar Area-->
                                 <li>
-                                    <div class="avatar-area">
-                                        <img src="/admin/img/avatars/adam-jansen.jpg" class="avatar">
-                                        <span class="caption">@SharedLocalizer["Change Picture"]</span>
-                                    </div>
+                                    <a asp-action="EditProfile" asp-controller="Account">
+                                        <div class="avatar-area">
+                                            <img src="@Model.GetUserAvatar()" class="avatar">
+                                            <span class="caption">@Localizer["Edit profile"]</span>
+                                        </div>
+                                    </a>
                                 </li>
                                 <!--Avatar Area-->
                                 <li class="edit">
-                                    <a href="profile.html" class="pull-left">@SharedLocalizer["Profile"]</a>
-                                    <a href="#" class="pull-right">@SharedLocalizer["Options"]</a>
+                                    <a asp-controller="Account" asp-action="EditProfile">@Localizer["Edit profile"]</a>
                                 </li>
                                 <!--Theme Selector Area-->
                                 <li class="theme-area">
-                                    <ul class="colorpicker" id="skin-changer">
-                                        <li><a class="colorpick-btn" href="#" style="background-color:#5DB2FF;" rel="/admin/css/skins/blue.min.css"></a></li>
-                                        <li><a class="colorpick-btn" href="#" style="background-color:#2dc3e8;" rel="/admin/css/skins/azure.min.css"></a></li>
-                                        <li><a class="colorpick-btn" href="#" style="background-color:#03B3B2;" rel="/admin/css/skins/teal.min.css"></a></li>
-                                        <li><a class="colorpick-btn" href="#" style="background-color:#53a93f;" rel="/admin/css/skins/green.min.css"></a></li>
-                                        <li><a class="colorpick-btn" href="#" style="background-color:#FF8F32;" rel="/admin/css/skins/orange.min.css"></a></li>
-                                        <li><a class="colorpick-btn" href="#" style="background-color:#cc324b;" rel="/admin/css/skins/pink.min.css"></a></li>
-                                        <li><a class="colorpick-btn" href="#" style="background-color:#AC193D;" rel="/admin/css/skins/darkred.min.css"></a></li>
-                                        <li><a class="colorpick-btn" href="#" style="background-color:#8C0095;" rel="/admin/css/skins/purple.min.css"></a></li>
-                                        <li><a class="colorpick-btn" href="#" style="background-color:#0072C6;" rel="/admin/css/skins/darkblue.min.css"></a></li>
-                                        <li><a class="colorpick-btn" href="#" style="background-color:#585858;" rel="/admin/css/skins/gray.min.css"></a></li>
-                                        <li><a class="colorpick-btn" href="#" style="background-color:#474544;" rel="/admin/css/skins/black.min.css"></a></li>
-                                        <li><a class="colorpick-btn" href="#" style="background-color:#001940;" rel="/admin/css/skins/deepblue.min.css"></a></li>
-                                    </ul>
+
                                 </li>
                                 <!--/Theme Selector Area-->
-                                <li class="dropdown-footer">
-                                    <a asp-controller="Account" asp-action="LogOut" asp-area="">
-                                        @SharedLocalizer["LogOut"]
+                                <li class="dropdown-footer @(isRtl ? "text-right": "")">
+                                    <a asp-area="" asp-controller="Account" asp-action="Logout">
+                                        @SharedHtmlLocalizer["LogOut"]
                                     </a>
                                 </li>
                             </ul>

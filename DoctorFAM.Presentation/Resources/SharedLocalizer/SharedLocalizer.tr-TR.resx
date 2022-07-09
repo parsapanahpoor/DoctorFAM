@@ -117,14 +117,23 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Accepted" xml:space="preserve">
+    <value>Kabul edilmiş</value>
+  </data>
   <data name="Add New Role" xml:space="preserve">
     <value>Yeni Rol Ekle</value>
   </data>
   <data name="Add new User" xml:space="preserve">
     <value>Yeni Kullanıcı Ekle</value>
   </data>
+  <data name="An error occurred in the change password process" xml:space="preserve">
+    <value>Şifre değiştirme işleminde bir hata oluştu</value>
+  </data>
   <data name="Articles List" xml:space="preserve">
     <value>Makale Listesi</value>
+  </data>
+  <data name="Change Password" xml:space="preserve">
+    <value>şifre değiştir</value>
   </data>
   <data name="Change Picture" xml:space="preserve">
     <value>Resmi değiştir</value>
@@ -138,20 +147,74 @@
   <data name="Create New Role" xml:space="preserve">
     <value>Yeni Rol Oluştur</value>
   </data>
+  <data name="Create Population Covered" xml:space="preserve">
+    <value>nüfus yönetimini ekleyin</value>
+  </data>
   <data name="CreateDynamicPage" xml:space="preserve">
     <value>Yeni sayfa oluştur</value>
+  </data>
+  <data name="Current password is invalid" xml:space="preserve">
+    <value>Mevcut şifre geçersiz</value>
   </data>
   <data name="Dashboard" xml:space="preserve">
     <value>Gösterge Paneli</value>
   </data>
+  <data name="Dear user, your information has been rejected by the site support. You can find the reason on the desired page" xml:space="preserve">
+    <value>Sayın kullanıcı, bilgileriniz site desteği tarafından reddedilmiştir. Nedenini istediğiniz sayfada bulabilirsiniz</value>
+  </data>
+  <data name="Dear user, your information is being checked by the support. Please be patient until the result is announced" xml:space="preserve">
+    <value>Sayın kullanıcı, bilgileriniz destek tarafından kontrol edilmektedir. Sonuç açıklanana kadar lütfen sabırlı olun</value>
+  </data>
+  <data name="Death Certificate" xml:space="preserve">
+    <value>Ölüm belgesi verilmesi</value>
+  </data>
+  <data name="Decline" xml:space="preserve">
+    <value>Reddetmek</value>
+  </data>
+  <data name="Doctor Family" xml:space="preserve">
+    <value>family doctor</value>
+  </data>
+  <data name="Doctor Info" xml:space="preserve">
+    <value>Doktor Bilgileri</value>
+  </data>
+  <data name="Edit Profile" xml:space="preserve">
+    <value>profili Düzenle</value>
+  </data>
+  <data name="Favorite activities" xml:space="preserve">
+    <value>Faaliyetleriniz</value>
+  </data>
   <data name="From" xml:space="preserve">
     <value>İtibaren</value>
+  </data>
+  <data name="Health House" xml:space="preserve">
+    <value>sağlık evi</value>
   </data>
   <data name="Home" xml:space="preserve">
     <value>Ana Sayfa</value>
   </data>
+  <data name="Home Nurse" xml:space="preserve">
+    <value>evde hemşire</value>
+  </data>
+  <data name="Home Visit" xml:space="preserve">
+    <value>Ev ziyareti</value>
+  </data>
+  <data name="Home1" xml:space="preserve">
+    <value>ana ev</value>
+  </data>
+  <data name="Image Is Not Valid ." xml:space="preserve">
+    <value>Resim Geçerli Değil .</value>
+  </data>
+  <data name="Inaccessibility" xml:space="preserve">
+    <value>erişilemezlik</value>
+  </data>
   <data name="Items" xml:space="preserve">
     <value>Öğeler</value>
+  </data>
+  <data name="Laboratory At Home" xml:space="preserve">
+    <value>evde laboratuvar</value>
+  </data>
+  <data name="List of covered people" xml:space="preserve">
+    <value>Kapsanan kişilerin listesi</value>
   </data>
   <data name="List Of Roles" xml:space="preserve">
     <value>Roller Listesi</value>
@@ -168,11 +231,17 @@
   <data name="Manage Articles" xml:space="preserve">
     <value>Makaleleri Yönet</value>
   </data>
+  <data name="Manage Doctors Info" xml:space="preserve">
+    <value>Doktor bilgilerinin yönetimi</value>
+  </data>
   <data name="Manage Locations" xml:space="preserve">
     <value>Konumları Yönet</value>
   </data>
   <data name="Manage Pages" xml:space="preserve">
     <value>Sayfaları yönet</value>
+  </data>
+  <data name="Manage Population Covered" xml:space="preserve">
+    <value>Kapsanan nüfus yönetimi</value>
   </data>
   <data name="Manage Roles" xml:space="preserve">
     <value>Rolleri Yönet</value>
@@ -183,11 +252,38 @@
   <data name="Not Found" xml:space="preserve">
     <value>Bulunamadı</value>
   </data>
+  <data name="Online Visit" xml:space="preserve">
+    <value>Online visit</value>
+  </data>
+  <data name="Operation Successfully" xml:space="preserve">
+    <value>Operasyon Başarıyla</value>
+  </data>
   <data name="Options" xml:space="preserve">
     <value>Seçenekler</value>
   </data>
+  <data name="Patient Transport" xml:space="preserve">
+    <value>hasta transferi</value>
+  </data>
+  <data name="Pharmacy At Home" xml:space="preserve">
+    <value>evde eczane</value>
+  </data>
+  <data name="Population Covered" xml:space="preserve">
+    <value>Kapsanan nüfus</value>
+  </data>
+  <data name="Population Covered List" xml:space="preserve">
+    <value>Kapsanan kişilerin listesi</value>
+  </data>
   <data name="Profile" xml:space="preserve">
     <value>Profil</value>
+  </data>
+  <data name="Queuing settings" xml:space="preserve">
+    <value>Sıra Ayarları</value>
+  </data>
+  <data name="Records of medical" xml:space="preserve">
+    <value>Tıbbi Prosedür Kayıtları</value>
+  </data>
+  <data name="Site Setting" xml:space="preserve">
+    <value>Site Ayarı</value>
   </data>
   <data name="Sweet Alert Announcement" xml:space="preserve">
     <value>Duyuru</value>
@@ -207,7 +303,31 @@
   <data name="Sweet Alert Yes Answer" xml:space="preserve">
     <value>Evet</value>
   </data>
+  <data name="The entered email is already available on the site" xml:space="preserve">
+    <value>Girilen e-posta sitede zaten mevcut</value>
+  </data>
+  <data name="The input values ​​are not valid" xml:space="preserve">
+    <value>Girilen değerler geçerli değil</value>
+  </data>
+  <data name="The operation failed" xml:space="preserve">
+    <value>Operasyon başarısız</value>
+  </data>
+  <data name="Turn ratings" xml:space="preserve">
+    <value>Rol Derecelendirmeleri</value>
+  </data>
+  <data name="User Not Found" xml:space="preserve">
+    <value>Kullanıcı bulunamadı</value>
+  </data>
   <data name="Users List" xml:space="preserve">
     <value>Kullanıcı Listesi</value>
+  </data>
+  <data name="Waiting" xml:space="preserve">
+    <value>Beklemek</value>
+  </data>
+  <data name="Your account not found, please re login" xml:space="preserve">
+    <value>Hesabınız bulunamadı, lütfen tekrar giriş yapın</value>
+  </data>
+  <data name="Your Account Successfully Activated, Now You Can Login" xml:space="preserve">
+    <value>Hesabınız başarıyla etkinleştirildi, şimdi siteye giriş yapabilirsiniz</value>
   </data>
 </root>

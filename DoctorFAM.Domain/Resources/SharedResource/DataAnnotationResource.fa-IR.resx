@@ -117,8 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Accepted" xml:space="preserve">
+    <value>تایید شده</value>
+  </data>
   <data name="Address" xml:space="preserve">
     <value>آدرس</value>
+  </data>
+  <data name="Age" xml:space="preserve">
+    <value>سن</value>
   </data>
   <data name="All" xml:space="preserve">
     <value>همه</value>
@@ -132,11 +138,23 @@
   <data name="Base Price" xml:space="preserve">
     <value>قیمت پایه</value>
   </data>
+  <data name="BirthDay" xml:space="preserve">
+    <value>تاریخ تولد </value>
+  </data>
+  <data name="Brother" xml:space="preserve">
+    <value>برادر</value>
+  </data>
   <data name="Charge Wallet" xml:space="preserve">
     <value>شارژ کیف پول</value>
   </data>
+  <data name="Child" xml:space="preserve">
+    <value>فرزند</value>
+  </data>
   <data name="City" xml:space="preserve">
     <value>شهر</value>
+  </data>
+  <data name="Copyright text" xml:space="preserve">
+    <value>متن کپی رایت</value>
   </data>
   <data name="Country" xml:space="preserve">
     <value>کشور</value>
@@ -183,6 +201,9 @@
   <data name="DynamicPage Title" xml:space="preserve">
     <value>عنوان صفحه </value>
   </data>
+  <data name="education" xml:space="preserve">
+    <value>تحصیلات</value>
+  </data>
   <data name="Email" xml:space="preserve">
     <value>ایمیل</value>
   </data>
@@ -192,23 +213,77 @@
   <data name="EndPrice" xml:space="preserve">
     <value>پایان قیمت</value>
   </data>
+  <data name="Extra Phone Number" xml:space="preserve">
+    <value>شماره موبایل</value>
+  </data>
   <data name="Failed" xml:space="preserve">
     <value>ناموفق</value>
+  </data>
+  <data name="Father" xml:space="preserve">
+    <value>بابا</value>
+  </data>
+  <data name="Father Name" xml:space="preserve">
+    <value>نام پدر </value>
+  </data>
+  <data name="female" xml:space="preserve">
+    <value>زن</value>
+  </data>
+  <data name="Filling information from the user's side and transfer to the bank portal" xml:space="preserve">
+    <value>پرشدن اطلاعات از سمت کاربر و انتقال به درگاه بانکی</value>
+  </data>
+  <data name="finalized" xml:space="preserve">
+    <value>نهایی شده</value>
   </data>
   <data name="First Name" xml:space="preserve">
     <value>نام</value>
   </data>
+  <data name="FirstName" xml:space="preserve">
+    <value>نام</value>
+  </data>
+  <data name="Free" xml:space="preserve">
+    <value>آزاد</value>
+  </data>
   <data name="Gateway Type" xml:space="preserve">
     <value>نوع درگاه</value>
   </data>
+  <data name="Gender" xml:space="preserve">
+    <value>جنسیت</value>
+  </data>
+  <data name="Health Insurance" xml:space="preserve">
+    <value>بیمه سلامت</value>
+  </data>
+  <data name="Home Phone Number" xml:space="preserve">
+    <value>شماره تلفن ثابت</value>
+  </data>
+  <data name="InsuranceType" xml:space="preserve">
+    <value>بیمه</value>
+  </data>
+  <data name="Iranian health" xml:space="preserve">
+    <value>سلامت ایرانیان</value>
+  </data>
+  <data name="Laboratory fee at home in Rials" xml:space="preserve">
+    <value>تعرفه ی آزمایشگاه در منزل به ریال</value>
+  </data>
   <data name="Last Name" xml:space="preserve">
+    <value>نام خانوادگی</value>
+  </data>
+  <data name="LastName" xml:space="preserve">
     <value>نام خانوادگی</value>
   </data>
   <data name="Location title" xml:space="preserve">
     <value>عنوان مکان</value>
   </data>
+  <data name="male" xml:space="preserve">
+    <value>مرد</value>
+  </data>
   <data name="Max Price" xml:space="preserve">
     <value>حداکثر قیمت</value>
+  </data>
+  <data name="Medical record" xml:space="preserve">
+    <value>پرونده پزشکی</value>
+  </data>
+  <data name="Medical system code" xml:space="preserve">
+    <value>کد نظام پزشکی</value>
   </data>
   <data name="Meta Tag" xml:space="preserve">
     <value>
@@ -220,6 +295,12 @@
   <data name="Mobile" xml:space="preserve">
     <value>موبایل</value>
   </data>
+  <data name="Name" xml:space="preserve">
+    <value>نام</value>
+  </data>
+  <data name="NationalId" xml:space="preserve">
+    <value>کد ملی</value>
+  </data>
   <data name="New Password" xml:space="preserve">
     <value>رمز عبور جدید</value>
   </data>
@@ -229,11 +310,20 @@
   <data name="NotDeleted" xml:space="preserve">
     <value>حذف نشده</value>
   </data>
+  <data name="Paid and waiting to choose a doctor" xml:space="preserve">
+    <value>پرداخت شده و در انتظار انتخاب پزشک</value>
+  </data>
+  <data name="Partner" xml:space="preserve">
+    <value>همسر </value>
+  </data>
   <data name="Password" xml:space="preserve">
     <value>رمز عبور</value>
   </data>
   <data name="Password And Re Password Does Not Match" xml:space="preserve">
     <value>رمز عبور و تکرار آن برابر نیستند</value>
+  </data>
+  <data name="Patient transfer fee in Rials" xml:space="preserve">
+    <value>تعرفه ی انتقال بیمار به ریال</value>
   </data>
   <data name="Payment Type" xml:space="preserve">
     <value>پرداخت \ واریز برای</value>
@@ -243,6 +333,9 @@
   </data>
   <data name="Permission Name" xml:space="preserve">
     <value>نام دسترسی</value>
+  </data>
+  <data name="Pharmacy tariff at home in Rials" xml:space="preserve">
+    <value>تعرفه ی داروخانه در منزل به ریال</value>
   </data>
   <data name="Please Enter Valid Email Address" xml:space="preserve">
     <value>لطفا یک ایمیل معتبر وارد کنید</value>
@@ -262,6 +355,9 @@
   <data name="Port Number1" xml:space="preserve">
     <value>شماره پورت</value>
   </data>
+  <data name="Ratio" xml:space="preserve">
+    <value>نسبت</value>
+  </data>
   <data name="Re New Password" xml:space="preserve">
     <value>تکرار رمز عبور جدید</value>
   </data>
@@ -274,11 +370,32 @@
   <data name="Register Date - Descending" xml:space="preserve">
     <value>تاریخ ثبت نام - نزولی</value>
   </data>
+  <data name="Register Now" xml:space="preserve">
+    <value>ثبت نام جدید </value>
+  </data>
+  <data name="Rejected" xml:space="preserve">
+    <value>تایید نشده</value>
+  </data>
   <data name="Role Title" xml:space="preserve">
     <value>عنوان نقش</value>
   </data>
+  <data name="Selected by a doctor" xml:space="preserve">
+    <value>انتخاب شده توسط پزشک</value>
+  </data>
+  <data name="Self-employed" xml:space="preserve">
+    <value>مشاغل آزاد</value>
+  </data>
   <data name="Send From" xml:space="preserve">
     <value>ارسال از</value>
+  </data>
+  <data name="Sister" xml:space="preserve">
+    <value>خواهر</value>
+  </data>
+  <data name="Social Security" xml:space="preserve">
+    <value>تامین اجتماعی</value>
+  </data>
+  <data name="Specialty" xml:space="preserve">
+    <value>تخصص</value>
   </data>
   <data name="State" xml:space="preserve">
     <value>استان</value>
@@ -292,6 +409,27 @@
   <data name="System" xml:space="preserve">
     <value>سیستم</value>
   </data>
+  <data name="Tariff for home visits in Rials" xml:space="preserve">
+    <value>تعرفه ی ویزیت در منزل به ریال</value>
+  </data>
+  <data name="Tariff for issuance of death certificate in Rials" xml:space="preserve">
+    <value>تعرفه ی صدور گواهی فوت به ریال</value>
+  </data>
+  <data name="The entered national code is not valid" xml:space="preserve">
+    <value>کد ملی وارد شده معتبر نمی باشد</value>
+  </data>
+  <data name="The information entered is not valid." xml:space="preserve">
+    <value>اطلاعات وارد شده معتبر نمی باشد.</value>
+  </data>
+  <data name="The medical system code entered is not valid" xml:space="preserve">
+    <value>کد نظام پزشکی وارد شده معتبر نمی باشد</value>
+  </data>
+  <data name="The reason for the rejection of the information" xml:space="preserve">
+    <value>علت رد شدن اطلاعات</value>
+  </data>
+  <data name="The tariff of the nurse at home is in Rials" xml:space="preserve">
+    <value>تعرفه ی پرستار در منزل به ریال</value>
+  </data>
   <data name="Title" xml:space="preserve">
     <value>عنوان </value>
   </data>
@@ -304,11 +442,26 @@
   <data name="Unique Name1" xml:space="preserve">
     <value>نام یکتا</value>
   </data>
+  <data name="unpaid" xml:space="preserve">
+    <value>پرداخت نشده </value>
+  </data>
   <data name="User Name" xml:space="preserve">
     <value>نام کاربری</value>
   </data>
+  <data name="Username" xml:space="preserve">
+    <value>نام کاربری </value>
+  </data>
+  <data name="Waiting for information to be filled by the user" xml:space="preserve">
+    <value>در انتظار پر کردن اطلاعات از طرف کاربر</value>
+  </data>
+  <data name="WaitingForConfirm" xml:space="preserve">
+    <value>درانتظار تایید </value>
+  </data>
   <data name="Withdraw" xml:space="preserve">
     <value>برداشت</value>
+  </data>
+  <data name="Work Address" xml:space="preserve">
+    <value>آدرس محل کار </value>
   </data>
   <data name="ZarinPal" xml:space="preserve">
     <value>زرین پال</value>

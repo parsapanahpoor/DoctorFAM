@@ -1,0 +1,302 @@
+
+
+#radio {
+    background-color: #40454b;
+    margin-top: 30px;
+    border-radius: 10px;
+    width: 600px;
+    height: 90px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    padding: 50px 20px
+}
+
+    #radio .radio-content {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+        flex-direction: row;
+        -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+        justify-content: space-between;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center
+    }
+
+        #radio .radio-content .radio-right {
+            background-color: #141517;
+            border-radius: 3px;
+            padding: 15px 40px
+        }
+
+            #radio .radio-content .radio-right .radio-equalizer {
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                -webkit-box-orient: horizontal;
+                -webkit-box-direction: normal;
+                -ms-flex-direction: row;
+                flex-direction: row;
+                -webkit-box-pack: center;
+                -ms-flex-pack: center;
+                justify-content: center;
+                -webkit-box-align: center;
+                -ms-flex-align: center;
+                align-items: center;
+                height: 30px
+            }
+
+                #radio .radio-content .radio-right .radio-equalizer .music-bars {
+                    background-color: aliceblue
+                }
+
+                #radio .radio-content .radio-right .radio-equalizer #music-bars span {
+                    background-color: #fd5b03;
+                    width: 4px;
+                    border-radius: 10px;
+                    float: left;
+                    margin-left: 4px;
+                    height: 25px
+                }
+
+                #radio .radio-content .radio-right .radio-equalizer #music-bars .one {
+                    -webkit-animation-name: move-1;
+                    animation-name: move-1
+                }
+
+                #radio .radio-content .radio-right .radio-equalizer #music-bars .two {
+                    -webkit-animation-name: move-2;
+                    animation-name: move-2
+                }
+
+                #radio .radio-content .radio-right .radio-equalizer #music-bars .three {
+                    -webkit-animation-name: move-3;
+                    animation-name: move-3
+                }
+
+                #radio .radio-content .radio-right .radio-equalizer #music-bars .four {
+                    -webkit-animation-name: move-4;
+                    animation-name: move-4
+                }
+
+                #radio .radio-content .radio-right .radio-equalizer #music-bars .five {
+                    -webkit-animation-name: move-5;
+                    animation-name: move-5
+                }
+
+        #radio .radio-content .radio-left {
+            position: relative
+        }
+
+            #radio .radio-content .radio-left .radio-controls {
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                -webkit-box-orient: horizontal;
+                -webkit-box-direction: normal;
+                -ms-flex-direction: row;
+                flex-direction: row;
+                -webkit-box-pack: center;
+                -ms-flex-pack: center;
+                justify-content: center;
+                -webkit-box-align: center;
+                -ms-flex-align: center;
+                align-items: center
+            }
+
+                #radio .radio-content .radio-left .radio-controls .radio-next {
+                    position: absolute;
+                    left: 113px;
+                    padding: 23px;
+                    border-radius: 0 10px 10px 0;
+                    border: 1px solid #3c4041;
+                    -webkit-box-shadow: 0px 0px 10px rgba(255,255,255,0.3);
+                    box-shadow: 0px 0px 10px rgba(255,255,255,0.3);
+                    background-color: #191a1e
+                }
+
+                #radio .radio-content .radio-left .radio-controls .radio-previous {
+                    position: absolute;
+                    left: 0px;
+                    padding: 23px;
+                    border-radius: 10px 0 0 10px;
+                    border: 1px solid #3c4041;
+                    -webkit-box-shadow: 0px 0px 10px rgba(255,255,255,0.3);
+                    box-shadow: 0px 0px 10px rgba(255,255,255,0.3);
+                    background-color: #191a1e
+                }
+
+                #radio .radio-content .radio-left .radio-controls .radio-stop-play {
+                    position: absolute;
+                    z-index: 845;
+                    left: 40px;
+                    -webkit-box-shadow: 0px 0px 10px rgba(255,255,255,0.3);
+                    box-shadow: 0px 0px 10px rgba(255,255,255,0.3);
+                    padding: 40px;
+                    border-radius: 50%;
+                    border: 1px solid #3c4041;
+                    background-color: #191a1e
+                }
+
+
+.active-equlizer #music-bars span {
+    height: 35px !important;
+    -webkit-animation: 2.5s infinite ease-in-out;
+    animation: 2.5s infinite ease-in-out
+}
+
+@-webkit-keyframes move-1 {
+    0%,100% {
+        -webkit-transform: scaleY(0.5);
+        transform: scaleY(0.5)
+    }
+
+    50% {
+        -webkit-transform: scaleY(1);
+        transform: scaleY(1)
+    }
+}
+
+@keyframes move-1 {
+    0%,100% {
+        -webkit-transform: scaleY(0.5);
+        transform: scaleY(0.5)
+    }
+
+    50% {
+        -webkit-transform: scaleY(1);
+        transform: scaleY(1)
+    }
+}
+
+@-webkit-keyframes move-2 {
+    0%,100% {
+        -webkit-transform: scaleY(0.25);
+        transform: scaleY(0.25)
+    }
+
+    50% {
+        -webkit-transform: scaleY(0.75);
+        transform: scaleY(0.75)
+    }
+}
+
+@keyframes move-2 {
+    0%,100% {
+        -webkit-transform: scaleY(0.25);
+        transform: scaleY(0.25)
+    }
+
+    50% {
+        -webkit-transform: scaleY(0.75);
+        transform: scaleY(0.75)
+    }
+}
+
+@-webkit-keyframes move-3 {
+    0%,100% {
+        -webkit-transform: scaleY(0.5);
+        transform: scaleY(0.5)
+    }
+
+    30%,75% {
+        -webkit-transform: scaleY(0.75);
+        transform: scaleY(0.75)
+    }
+
+    50% {
+        -webkit-transform: scaleY(0.25);
+        transform: scaleY(0.25)
+    }
+}
+
+@keyframes move-3 {
+    0%,100% {
+        -webkit-transform: scaleY(0.5);
+        transform: scaleY(0.5)
+    }
+
+    30%,75% {
+        -webkit-transform: scaleY(0.75);
+        transform: scaleY(0.75)
+    }
+
+    50% {
+        -webkit-transform: scaleY(0.25);
+        transform: scaleY(0.25)
+    }
+}
+
+@-webkit-keyframes move-4 {
+    0%,100% {
+        -webkit-transform: scaleY(0.5);
+        transform: scaleY(0.5)
+    }
+
+    12%,85% {
+        -webkit-transform: scaleY(0.75);
+        transform: scaleY(0.75)
+    }
+
+    35% {
+        -webkit-transform: scaleY(0.25);
+        transform: scaleY(0.25)
+    }
+}
+
+@keyframes move-4 {
+    0%,100% {
+        -webkit-transform: scaleY(0.5);
+        transform: scaleY(0.5)
+    }
+
+    12%,85% {
+        -webkit-transform: scaleY(0.75);
+        transform: scaleY(0.75)
+    }
+
+    35% {
+        -webkit-transform: scaleY(0.25);
+        transform: scaleY(0.25)
+    }
+}
+
+@-webkit-keyframes move-5 {
+    0%,50%,100% {
+        -webkit-transform: scaleY(0);
+        transform: scaleY(0)
+    }
+
+    25%,75% {
+        -webkit-transform: scaleY(0.5);
+        transform: scaleY(0.5)
+    }
+}
+
+@keyframes move-5 {
+    0%,50%,100% {
+        -webkit-transform: scaleY(0);
+        transform: scaleY(0)
+    }
+
+    25%,75% {
+        -webkit-transform: scaleY(0.5);
+        transform: scaleY(0.5)
+    }
+}
+/*# sourceMappingURL=main.css.map */

@@ -10,9 +10,9 @@ namespace DoctorFAM.Domain.Enums.Gender
 {
     public enum Gender
     {
-        [Display(Name = "مرد")]
+        [Display(Name = "male")]
         Male,
-        [Display(Name = "زن")]
+        [Display(Name = "female")]
         Female
     }
 }

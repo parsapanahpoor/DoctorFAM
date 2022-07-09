@@ -2,7 +2,9 @@
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo;
 using DoctorFAM.Web.Doctor.Controllers;
+using DoctorFAM.Web.HttpManager;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 
 namespace DoctorFAM.Web.Areas.Doctor.Controllers
 {
@@ -12,14 +14,26 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
         public IDoctorsService _doctorService;
 
-        public DoctorsInfoController(IDoctorsService doctorService)
+        public IStringLocalizer<SharedLocalizer.SharedLocalizer> _sharedLocalizer;
+
+        public DoctorsInfoController(IDoctorsService doctorService , IStringLocalizer<SharedLocalizer.SharedLocalizer> sharedLocalizer)
         {
             _doctorService = doctorService;
+            _sharedLocalizer = sharedLocalizer;
         }
 
         #endregion
 
-        #region Manage Doctors Info
+        #region Page of Manage Doctor Infos
+
+        public async Task<IActionResult> PageOfManageDoctorInfo()
+        {
+            return View(await _doctorService.GetDoctorByUserId(User.GetUserId()));
+        }
+
+        #endregion
+
+        #region Manage Doctors Personal Info
 
         [HttpGet]
         public async Task<IActionResult> ManageDoctorsInfo()
@@ -61,7 +75,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
             if (!ModelState.IsValid)
             {
-                TempData[ErrorMessage] = "مقادیر ورودی معتبر نمی باشد .";
+                TempData[ErrorMessage] = _sharedLocalizer["The input values ​​are not valid"].Value;
                 return View(returnModel);
             }
 
@@ -74,21 +88,90 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
             switch (result)
             {
                 case AddOrEditDoctorInfoResult.FileNotUploaded:
-                    TempData[ErrorMessage] = "لطفا پرونده ی پزشکی یا پرونده ی مطب را وارد کنید ";
+                    TempData[ErrorMessage] = _sharedLocalizer["Please upload your educational certificate or license"].Value;
                     break;
 
                 case AddOrEditDoctorInfoResult.Faild:
-                    TempData[ErrorMessage] = "عملیات با شکست مواجه شده است ";
+                    TempData[ErrorMessage] = _sharedLocalizer["The operation has failed"].Value;
                     return RedirectToAction("ManageDoctorsInfo", "DoctorsInfo", new { area = "Doctor" });
 
                 case AddOrEditDoctorInfoResult.Success:
-                    TempData[SuccessMessage] = "عملیات با موفقیت انجام شد .";
+                    TempData[SuccessMessage] = _sharedLocalizer["Operation Successfully"].Value;
                     return RedirectToAction("Index", "Home", new { area = "Doctor" });
             }
 
             #endregion
 
             return View(returnModel);
+        }
+
+        #endregion
+
+        #region Doctor Interests 
+
+        public async Task<IActionResult> DoctorInterests()
+        {
+            #region Fill Page Model 
+
+            var model = await _doctorService.FillDoctorInterestViewModelFromDoctorPanel(User.GetUserId());
+
+            #endregion
+
+            return View(model);
+        }
+
+        #endregion
+
+        #region Add Interest To Doctor
+
+        public async Task<IActionResult> AddInterestToDoctor(ulong interestId)
+        {
+            var result = await _doctorService.AddDoctorSelectedInterest(interestId , User.GetUserId());
+
+            switch (result)
+            {
+                case Domain.Entities.Doctors.DoctorSelectedInterestResult.Success:
+                    TempData[SuccessMessage] = _sharedLocalizer["Operation Successfully"].Value;
+                    return RedirectToAction(nameof(DoctorInterests));
+
+                case Domain.Entities.Doctors.DoctorSelectedInterestResult.Faild:
+                    TempData[ErrorMessage] = _sharedLocalizer["The operation has failed"].Value;
+                    return RedirectToAction(nameof(DoctorInterests));
+
+                case Domain.Entities.Doctors.DoctorSelectedInterestResult.ItemIsExist:
+                    TempData[WarningMessage] = _sharedLocalizer["You have selected this item."].Value;
+                    return RedirectToAction(nameof(DoctorInterests));
+            }
+
+            TempData[ErrorMessage] = _sharedLocalizer["The operation has failed"].Value;
+            return RedirectToAction(nameof(DoctorInterests));
+        }
+
+        #endregion
+
+        #region Delete Interest To Doctor
+
+        public async Task<IActionResult> DeleteDoctorSelectedInfo(ulong interestId)
+        {
+            var result = await _doctorService.DeleteDoctorSelectedInterestDoctorPanel(interestId, User.GetUserId());
+
+            switch (result)
+            {
+                case Domain.Entities.Doctors.DoctorSelectedInterestResult.Success:
+                    TempData[SuccessMessage] = _sharedLocalizer["Operation Successfully"].Value;
+                    return RedirectToAction(nameof(DoctorInterests));
+
+                case Domain.Entities.Doctors.DoctorSelectedInterestResult.Faild:
+                    TempData[ErrorMessage] = _sharedLocalizer["The operation has failed"].Value;
+                    return RedirectToAction(nameof(DoctorInterests));
+
+                case Domain.Entities.Doctors.DoctorSelectedInterestResult.ItemNotExist:
+                    TempData[WarningMessage] = _sharedLocalizer["You have not selected this item."].Value;
+                    return RedirectToAction(nameof(DoctorInterests));
+            }
+
+            TempData[ErrorMessage] = _sharedLocalizer["The operation has failed"].Value;
+            return RedirectToAction(nameof(DoctorInterests));
         }
 
         #endregion

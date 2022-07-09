@@ -32,6 +32,8 @@ namespace DoctorFAM.Web.Areas.Admin.ViewComponents
 
                 if (userRole == GetUserRoles.Supporter) ViewBag.Supporter = true;
 
+                if (userRole == GetUserRoles.Seller) ViewBag.Seller = true;
+
                 if (userRole == GetUserRoles.User) ViewBag.User = true;
             }
           

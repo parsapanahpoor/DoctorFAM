@@ -1,6 +1,7 @@
 ﻿using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 
 namespace DoctorFAM.Web.Areas.Admin.Controllers
 {
@@ -10,9 +11,12 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
 
         public IDoctorsService _doctorsService;
 
-        public DoctorsController(IDoctorsService doctorsService)
+        public IStringLocalizer<SharedLocalizer.SharedLocalizer> _sharedLocalizer;
+
+        public DoctorsController(IDoctorsService doctorsService , IStringLocalizer<SharedLocalizer.SharedLocalizer> sharedLocalizer)
         {
             _doctorsService = doctorsService;
+            _sharedLocalizer = sharedLocalizer;
         }
 
         #endregion
@@ -85,7 +89,39 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
 
         #endregion
 
+        #region Delete Interest To Doctor
+
+        public async Task<IActionResult> DeleteDoctorSelectedInfo(ulong interestId , ulong doctorId , ulong doctorInfoId)
+        {
+            #region Get Doctor By Id
+
+            var doctor = await _doctorsService.GetDoctorById(doctorId);
+
+            #endregion
+
+            var result = await _doctorsService.DeleteDoctorSelectedInterestDoctorPanel(interestId, doctor.UserId);
+
+            switch (result)
+            {
+                case Domain.Entities.Doctors.DoctorSelectedInterestResult.Success:
+                    TempData[SuccessMessage] = _sharedLocalizer["Operation Successfully"].Value;
+                    return RedirectToAction(nameof(DoctorsInfoDetail) , new { doctorsInfoId = doctorInfoId });
+
+                case Domain.Entities.Doctors.DoctorSelectedInterestResult.Faild:
+                    TempData[ErrorMessage] = _sharedLocalizer["The operation has failed"].Value;
+                    return RedirectToAction(nameof(DoctorsInfoDetail) , new { doctorsInfoId = doctorInfoId });
+
+                case Domain.Entities.Doctors.DoctorSelectedInterestResult.ItemNotExist:
+                    TempData[WarningMessage] = _sharedLocalizer["You have not selected this item."].Value;
+                    return RedirectToAction(nameof(DoctorsInfoDetail) , new { doctorsInfoId = doctorInfoId });
+            }
+
+            TempData[ErrorMessage] = _sharedLocalizer["The operation has failed"].Value;
+            return RedirectToAction(nameof(DoctorsInfoDetail) , new { doctorsInfoId = doctorInfoId });
+        }
+
         #endregion
 
+        #endregion
     }
 }

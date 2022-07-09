@@ -12,28 +12,28 @@ namespace DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo
     {
         public ulong UserId { get; set; }
 
-        [Display(Name = "کدملی")]
-        [Required(ErrorMessage = "این فیلد الزامی است .")]
-        [RegularExpression(@"^[0-9]*$", ErrorMessage = "کد ملی وارد شده معتبر نمی باشد")]
+        [Display(Name = "NationalId")]
+        [Required(ErrorMessage = "Please Enter {0}")]
+        [RegularExpression(@"^[0-9]*$", ErrorMessage = "The entered national code is not valid")]
         public int NationalCode { get; set; }
 
-        [Display(Name = "کد نظام پزشکی")]
-        [Required(ErrorMessage = "این فیلد الزامی است .")]
-        [RegularExpression(@"^[0-9]*$", ErrorMessage = "کد نظام پزشکی وارد شده معتبر نمی باشد")]
+        [Display(Name = "Medical system code")]
+        [Required(ErrorMessage = "Please Enter {0}")]
+        [RegularExpression(@"^[0-9]*$", ErrorMessage = "The medical system code entered is not valid")]
         public int MedicalSystemCode { get; set; }
 
-        [Display(Name = "تحصیلات")]
-        [Required(ErrorMessage = "این فیلد الزامی است .")]
+        [Display(Name = "education")]
+        [Required(ErrorMessage = "Please Enter {0}")]
         public string Education { get; set; }
 
-        [Display(Name = "تخصص")]
-        [Required(ErrorMessage = "این فیلد الزامی است .")]
+        [Display(Name = "Specialty")]
+        [Required(ErrorMessage = "Please Enter {0}")]
         public string Specialty { get; set; }
 
-        [Display(Name = "پرونده پزشکی")]
+        [Display(Name = "Medical record")]
         public string? MediacalFile { get; set; }
 
-        [Display(Name = "علت رد شدن اطلاعات ")]
+        [Display(Name = "The reason for the rejection of the information ")]
         public string? RejectDescription { get; set; }
 
         public DoctorsInfosType? DoctorsInfosType { get; set; }

@@ -1,4 +1,5 @@
 ﻿using DoctorFAM.Domain.Entities.Common;
+using DoctorFAM.Domain.Entities.Product;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -27,6 +28,8 @@ namespace DoctorFAM.Domain.Entities.MarketCategory
         public Category Parent { get; set; }
 
         public ICollection<CategoryInfo> CategoryInfo { get; set; }
+
+        public ICollection<ProductSelectedCategory> ProductSelectedCategories { get; set; }
 
         #endregion
     }

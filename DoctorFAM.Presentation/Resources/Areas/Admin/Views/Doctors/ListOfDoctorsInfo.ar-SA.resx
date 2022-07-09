@@ -117,7 +117,94 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Accepted" xml:space="preserve">
+    <value>تم تأكيد</value>
+  </data>
+  <data name="Access" xml:space="preserve">
+    <value>التمكن من</value>
+  </data>
+  <data name="Approved" xml:space="preserve">
+    <value>مفعل</value>
+  </data>
+  <data name="Avatar" xml:space="preserve">
+    <value>الصورة الرمزية</value>
+  </data>
+  <data name="Delete Filter" xml:space="preserve">
+    <value>قم بإزالة الفلتر</value>
+  </data>
+  <data name="Doctors State" xml:space="preserve">
+    <value>حالة الطبيب</value>
+  </data>
+  <data name="Does Not Have" xml:space="preserve">
+    <value>لا يمتلك</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>البريد الإلكتروني</value>
+  </data>
+  <data name="Email State" xml:space="preserve">
+    <value>حالة البريد الإلكتروني</value>
+  </data>
+  <data name="Empty" xml:space="preserve">
+    <value>شاغر</value>
+  </data>
+  <data name="Filter" xml:space="preserve">
+    <value>منقي</value>
+  </data>
+  <data name="Has It" xml:space="preserve">
+    <value>حصل عليها</value>
+  </data>
+  <data name="Infos" xml:space="preserve">
+    <value>معلومة</value>
+  </data>
   <data name="List Of Doctors Infos" xml:space="preserve">
     <value>قائمة معلومات الأطباء</value>
+  </data>
+  <data name="List Of Doctors Infos1" xml:space="preserve">
+    <value>قائمة معلومات الأطباء</value>
+  </data>
+  <data name="Manage Doctors Infos" xml:space="preserve">
+    <value>إدارة معلومات الطبيب</value>
+  </data>
+  <data name="MedicalSystemCode" xml:space="preserve">
+    <value>كود النظام الطبي</value>
+  </data>
+  <data name="Mobile" xml:space="preserve">
+    <value>التليفون المحمول</value>
+  </data>
+  <data name="Mobile State" xml:space="preserve">
+    <value>حالة المحمول</value>
+  </data>
+  <data name="NationalCode" xml:space="preserve">
+    <value>رمز دولي</value>
+  </data>
+  <data name="Not Approved" xml:space="preserve">
+    <value>غير نشط</value>
+  </data>
+  <data name="Personal Info" xml:space="preserve">
+    <value>معلومات شخصية</value>
+  </data>
+  <data name="Possibilities" xml:space="preserve">
+    <value>الاحتمالات</value>
+  </data>
+  <data name="Register Date" xml:space="preserve">
+    <value>تاريخ التسجيل</value>
+  </data>
+  <data name="Register yet" xml:space="preserve">
+    <value>تسجيل جديد</value>
+  </data>
+  <data name="Rejected" xml:space="preserve">
+    <value>باءت بالفشل</value>
+  </data>
+  <data name="Site Access" xml:space="preserve">
+    <value>الوصول إلى الموقع</value>
+  </data>
+  <data name="State" xml:space="preserve">
+    <value>حالة</value>
+  </data>
+  <data name="Username" xml:space="preserve">
+    <value>اسم االمستخدم</value>
+  </data>
+  <data name="WaitingForConfirm" xml:space="preserve">
+    <value>انتظار</value>
   </data>
 </root>

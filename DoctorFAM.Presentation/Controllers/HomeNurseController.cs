@@ -25,14 +25,17 @@ namespace DoctorFAM.Web.Controllers
 
         public IUserService _userService;
 
+        private readonly ISiteSettingService _siteSettingService;
+
         public HomeNurseController(IHomeNurseService homeNurseService, ILocationService locationService, IPatientService patientService
-                                    , IRequestService requestService, IUserService userService)
+                                    , IRequestService requestService, IUserService userService , ISiteSettingService siteSettingService)
         {
             _homeNurseService = homeNurseService;
             _locationService = locationService;
             _patientService = patientService;
             _requestService = requestService;
             _userService = userService;
+            _siteSettingService = siteSettingService;
         }
 
         #endregion
@@ -207,12 +210,109 @@ namespace DoctorFAM.Web.Controllers
         #region Bank Payment
 
         [HttpGet]
-        public IActionResult BankPay(ulong requestId)
+        public async Task<IActionResult> BankPay(ulong requestId)
         {
-            ViewBag.RequestId = requestId;
+            #region Get Request By Id
+
+            var request = await _requestService.GetRequestById(requestId);
+            if (request == null) return NotFound();
+
+            #endregion
+
+            #region Get Home Nurse Tarif 
+
+            var homeNurseTariff = await _siteSettingService.GetHomeNurseTariff();
+            if (homeNurseTariff == 0)
+            {
+                TempData[ErrorMessage] = "لطفا با پشتیبانی تماس بگیرید";
+                return View();
+            }
+
+            #endregion
+
+            #region Online Payment
+
+            var payment = new ZarinpalSandbox.Payment(homeNurseTariff);
+
+            var res = payment.PaymentRequest("پرداخت  ", "https://localhost:44322/HomeNursePayment/" + requestId, "Parsapanahpoor@yahoo.com", "09117878804");
+
+            if (res.Result.Status == 100)
+            {
+
+                #region Update Request State 
+
+                await _requestService.UpdateRequestStateForTramsferringToTheBankingPortal(request);
+
+                #endregion
+
+                return Redirect("https://sandbox.zarinpal.com/pg/StartPay/" + res.Result.Authority);
+            }
+
+            #endregion
+
             return View();
         }
 
         #endregion
+
+        #region Home Nurse Payment
+
+        [Route("HomeNursePayment/{id}")]
+        public async Task<IActionResult> HomeNursePayment(ulong id)
+        {
+            #region Get Request 
+
+            var request = await _requestService.GetRequestById(id);
+
+            #endregion
+
+            if (HttpContext.Request.Query["Status"] != "" &&
+                HttpContext.Request.Query["Status"].ToString().ToLower() == "ok"
+                && HttpContext.Request.Query["Authority"] != "")
+            {
+                string authority = HttpContext.Request.Query["Authority"];
+
+                #region Get Home Nurse Tarif 
+
+                var homeNurseTariff = await _siteSettingService.GetHomeNurseTariff();
+                if (homeNurseTariff == 0)
+                {
+                    TempData[ErrorMessage] = "لطفا با پشتیبانی تماس بگیرید";
+                    return View();
+                }
+
+                #endregion
+
+                var payment = new ZarinpalSandbox.Payment(homeNurseTariff);
+                var res = payment.Verification(authority).Result;
+
+                if (res.Status == 100)
+                {
+                    ViewBag.code = res.RefId;
+                    ViewBag.IsSuccess = true;
+
+                    //Update Request State 
+                    await _requestService.UpdateRequestStateForPayed(request);
+
+                    //Charge User Wallet
+                    await _homeNurseService.ChargeUserWallet(User.GetUserId(), homeNurseTariff);
+
+                    //Pay Home Nurse Tariff
+                    await _homeNurseService.PayHomeNurseTariff(User.GetUserId(), homeNurseTariff);
+
+                    return View();
+                }
+
+            }
+            else
+            {
+                await _requestService.UpdateRequestStateForNotPayed(request);
+            }
+
+            return View();
+        }
+
+        #endregion
+
     }
 }

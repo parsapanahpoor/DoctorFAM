@@ -22,6 +22,15 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
         public  async Task<IActionResult> Index()
         {
+            #region If Doctor Is Not Found In Doctor Table 
+
+            if (!await _doctorService.IsExistAnyDoctorByUserId(User.GetUserId()))
+            {
+                await _doctorService.AddDoctorForFirstTime(User.GetUserId());
+            }
+
+            #endregion
+
             return View();
         }
 

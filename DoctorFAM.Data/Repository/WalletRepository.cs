@@ -145,6 +145,8 @@ namespace DoctorFAM.Data.Repository
             await _context.Wallets.AddAsync(wallet);
             await SaveChangesAsync();
 
+            //CalCulate User Wallet Balance
+            var walletBalance = await GetUserWalletBalance(wallet.UserId);
         }
 
         public async Task ConfirmPayment(ulong payId, string authority, string refId)
@@ -207,6 +209,34 @@ namespace DoctorFAM.Data.Repository
             await _context.Wallets.AddAsync(charge);
             await SaveChangesAsync();
             return charge.Id;
+        }
+
+        public async Task<int> GetUserTotalDepositTransactions(ulong userId)
+        {
+            return _context.Wallets.Where(p => p.UserId == userId && !p.IsDelete && p.TransactionType == TransactionType.Deposit).Sum(p => p.Price);
+        }
+
+        public async Task<int> GetUserTotalWithdrawTransactions(ulong userId)
+        {
+            return _context.Wallets.Where(p => p.UserId == userId && !p.IsDelete && p.TransactionType == TransactionType.Withdraw).Sum(p => p.Price);
+        }
+
+        public async Task<int> GetUserWalletBalance(ulong userId)
+        {
+            //Get User Total Deposit Transactions
+            var deposits = await GetUserTotalDepositTransactions(userId);
+
+            //Get User Total Withdraw Transactions
+            var withdraw = await GetUserTotalWithdrawTransactions(userId);
+
+            //Update User Wallet Balance
+            var user = await _context.Users.FirstOrDefaultAsync(p => p.Id == userId && !p.IsDelete);
+            user.WalletBalance = deposits - withdraw;
+
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+
+            return deposits - withdraw;
         }
 
         #endregion
