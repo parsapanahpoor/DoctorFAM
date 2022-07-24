@@ -1,6 +1,7 @@
 ﻿using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo;
+using DoctorFAM.Web.Areas.Doctor.ActionFilterAttributes;
 using DoctorFAM.Web.Doctor.Controllers;
 using DoctorFAM.Web.HttpManager;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +9,7 @@ using Microsoft.Extensions.Localization;
 
 namespace DoctorFAM.Web.Areas.Doctor.Controllers
 {
+    [IsUserDoctor]
     public class DoctorsInfoController : DoctorBaseController
     {
         #region Ctor
@@ -16,10 +18,13 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
         public IStringLocalizer<SharedLocalizer.SharedLocalizer> _sharedLocalizer;
 
-        public DoctorsInfoController(IDoctorsService doctorService , IStringLocalizer<SharedLocalizer.SharedLocalizer> sharedLocalizer)
+        private readonly IOrganizationService _organization;
+
+        public DoctorsInfoController(IDoctorsService doctorService , IStringLocalizer<SharedLocalizer.SharedLocalizer> sharedLocalizer , IOrganizationService organization)
         {
             _doctorService = doctorService;
             _sharedLocalizer = sharedLocalizer;
+            _organization = organization;
         }
 
         #endregion
@@ -28,6 +33,8 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
         public async Task<IActionResult> PageOfManageDoctorInfo()
         {
+            ViewBag.DoctorOffice = await _organization.GetOrganizationByUserId(User.GetUserId());
+
             return View(await _doctorService.GetDoctorByUserId(User.GetUserId()));
         }
 

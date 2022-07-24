@@ -1,4 +1,5 @@
 ﻿using DoctorFAM.Application.Services.Interfaces;
+using DoctorFAM.Application.StaticTools;
 using DoctorFAM.Domain.ViewModels.Account;
 using DoctorFAM.Web.HttpManager;
 using Microsoft.AspNetCore.Authentication;
@@ -14,9 +15,12 @@ namespace DoctorFAM.Web.Controllers
 
         private IUserService _userService;
 
-        public AccountController(IUserService userService)
+        private readonly ISMSService _smsservice;
+
+        public AccountController(IUserService userService, ISMSService smsservice)
         {
             _userService = userService;
+            _smsservice = smsservice;
         }
 
         #endregion
@@ -58,7 +62,9 @@ namespace DoctorFAM.Web.Controllers
             switch (result)
             {
                 case RegisterUserResult.MobileExist:
-                    TempData[ErrorMessage] = "شماره موبایل وارد شده موجود است ";
+                    TempData[ErrorMessage] = "تلفن همراه وارد شده تکراری می باشد";
+                    TempData[InfoMessage] = "در صورتی که از قبل در سایت ثبت نام کردید از گزینه ی ورود به سایت استفاده کنید";
+                    ModelState.AddModelError("Mobile", "تلفن همراه وارد شده تکراری می باشد");
                     break;
 
                 case RegisterUserResult.SiteRoleNotAccept:
@@ -66,7 +72,7 @@ namespace DoctorFAM.Web.Controllers
                     break;
 
                 case RegisterUserResult.Success:
-                    TempData[SuccessMessage] = "عملیات با موفقیت انجام شد .";
+                    TempData[SuccessMessage] = "ثبت نام شما با موفقیت انجام شد .";
                     TempData[InfoMessage] = $"پیامی  حاوی کد فعالسازی حساب کاربری به {register.Mobile} ارسال شد .";
 
                     #region Doctors Register
@@ -87,13 +93,80 @@ namespace DoctorFAM.Web.Controllers
 
                     #endregion
 
-                    return RedirectToAction("Login", "Account");
+                    return RedirectToAction("ActiveUserByMobileActivationCode", new { Mobile = register.Mobile });
             }
 
             #endregion
 
             return View(register);
         }
+
+        #endregion
+
+        #region Active mobile user
+
+        //[HttpGet("Active-mobile/{Mobile}/{Resend?}")]
+        //public async Task<IActionResult> ActiveUserByMobileActivationCode(string Mobile, bool Resend = false)
+        //{
+        //    #region Model State Valdiation 
+
+        //    if (Mobile == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    #endregion
+
+        //    #region Resend SMS
+
+        //    if (Resend)
+        //    {
+        //        await _userService.ResendActivationCodeSMS(Mobile);
+        //    }
+
+        //    #endregion
+
+
+
+        //    var user = await _userService.GetUserByMobile(Mobile);
+
+        //    if (await _siteSettingService.IsExistSiteSetting())
+        //    {
+        //        var SiteSettingSMSTimer = await _siteSettingService.GetSMSTimer();
+
+        //        DateTime expireMinut = user.ExpireMobileSMSDateTime.Value.AddMinutes(SiteSettingSMSTimer);
+
+        //        var TimerMinut = expireMinut - DateTime.Now;
+
+        //        ViewBag.Time = TimerMinut.TotalMinutes * 60;
+
+        //    }
+
+        //    ViewBag.Mobile = Mobile;
+
+        //    return View();
+        //}
+
+        //[HttpPost("Active-mobile/{Mobile}/{Resend?}"), ValidateAntiForgeryToken]
+        //public async Task<IActionResult> ActiveUserByMobileActivationCode(ActiveMobileByActivationCodeViewModel activeMobileByActivationCodeViewModel)
+        //{
+            
+        //    if (ModelState.IsValid)
+        //    {
+        //        var result = await _userService.ActiveUserMobile(activeMobileByActivationCodeViewModel);
+        //        switch (result)
+        //        {
+        //            case ActiveMobileByActivationCodeResult.Success:
+        //                TempData[SuccessMessage] = "حساب کاربری شما با موفقیت فعال شد!";
+        //                return RedirectToAction(nameof(Login));
+        //            case ActiveMobileByActivationCodeResult.AccountNotFound:
+        //                TempData[ErrorMessage] = "اطلاعات وارد شده اشتباه می باشد!";
+        //                return RedirectToAction("ActiveUserByMobileActivationCode", new { Mobile = activeMobileByActivationCodeViewModel.Mobile, Resend = false });
+        //        }
+        //    }
+
+        //    return View(activeMobileByActivationCodeViewModel);
+        //}
 
         #endregion
 
@@ -156,12 +229,24 @@ namespace DoctorFAM.Web.Controllers
 
                     #endregion
 
+                    #region Send Wellcome SMS
+
+                    var message = Messages.SendSMSForLogin();
+
+                    await _smsservice.SendSimpleSMS(login.Mobile, message);
+
+                    #endregion
+
                     TempData[SuccessMessage] = $"خوش آمدید {user.Username}";
+
+                    #region Return To URL
 
                     if (!string.IsNullOrEmpty(login.ReturnUrl))
                     {
                         return Redirect(login.ReturnUrl);
                     }
+
+                    #endregion
 
                     return Redirect("/");
             }

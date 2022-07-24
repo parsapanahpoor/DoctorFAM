@@ -9,15 +9,17 @@ namespace DoctorFAM.Domain.Enums.Population_Covered
 {
     public enum Ratio
     {
-        [Display(Name ="Sister")]
-        Sister , 
-        [Display(Name ="Father")]
-        Father ,
-        [Display(Name = "Brother")]
-        Brother,
-        [Display(Name ="Partner")]
-        Partner , 
+        [Display(Name = "Partner")]
+        Partner,
         [Display(Name = "Child")]
-        Child
+        Child,
+        [Display(Name ="Mother")]
+        Mother, 
+        [Display(Name ="Father")]
+        Father ,        
+        [Display(Name = "Sister")]
+        Sister,
+        [Display(Name = "Brother")]
+        Brother
     }
 }

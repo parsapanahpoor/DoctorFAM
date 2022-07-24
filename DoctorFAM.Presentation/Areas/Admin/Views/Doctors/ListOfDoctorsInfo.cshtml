@@ -133,59 +133,59 @@
                             <tr class="tc vm">
                                 <td class="vm">
                                     <div class="flex-style-center">
-                                        <img src="@info.Doctor.User.GetUserAvatar()" class="avatar-style" />
+                                        <img src="@info.User.GetUserAvatar()" class="avatar-style" />
                                         <div class="mr-10px">
-                                            <span> @info.Doctor.User.Username </span>
+                                            <span> @info.User.Username </span>
                                             <hr class="margin-7" />
-                                            <span>@Localizer["Register Date"] : @info.Doctor.User.CreateDate.ToShamsi()</span>
+                                            <span>@Localizer["Register Date"] : @info.User.CreateDate.ToShamsi()</span>
                                         </div>
                                     </div>
                                 </td>
                                 <td class="tc vm">
                                     <p>
                                         @Localizer["Email"] :
-                                        @if (info.Doctor.User.Email == null)
+                                        @if (info.User.Email == null)
                                         {
                                             <span class="mr-8px label label-orange">@Localizer["Empty"] </span>
                                         }
                                         else
                                         {
-                                            @info.Doctor.User.Email
+                                            @info.User.Email
                                         }
                                     </p>
-                                    @if (!string.IsNullOrEmpty(info.Doctor.User.Mobile))
+                                    @if (!string.IsNullOrEmpty(info.User.Mobile))
                                     {
                                         <hr class="margin-7" />
-                                        <p>@Localizer["Mobile"] : @info.Doctor.User.Mobile</p>
+                                        <p>@Localizer["Mobile"] : @info.User.Mobile</p>
                                     }
                                 </td>
                                 <td class="tc vm">
                                     <p class="flex-style-center">
                                         <span> @Localizer["Email State"] </span>
-                                        <span class="mr-8px label @((info.Doctor.User.IsEmailConfirm) ? "label-success" : "label-orange")">@((info.Doctor.User.IsEmailConfirm) ? @Localizer["Approved"] : @Localizer["Not Approved"])</span>
+                                        <span class="mr-8px label @((info.User.IsEmailConfirm) ? "label-success" : "label-orange")">@((info.User.IsEmailConfirm) ? @Localizer["Approved"] : @Localizer["Not Approved"])</span>
                                     </p>
                                     <hr class="margin-7" />
                                     <p class="flex-style-center">
                                         <span> @Localizer["Mobile State"] </span>
-                                        <span class="mr-8px label @((info.Doctor.User.IsMobileConfirm) ? "label-success" : "label-orange")">@((info.Doctor.User.IsMobileConfirm) ? @Localizer["Approved"] : @Localizer["Not Approved"])</span>
+                                        <span class="mr-8px label @((info.User.IsMobileConfirm) ? "label-success" : "label-orange")">@((info.User.IsMobileConfirm) ? @Localizer["Approved"] : @Localizer["Not Approved"])</span>
                                     </p>
                                 </td>
                                 <td class="tc vm">
                                     <p class="flex-style-center">
                                         <span> @Localizer["Doctors State"] </span>
-                                        @if (info.Doctor.DoctorsInfosType == DoctorFAM.Domain.Entities.Doctors.DoctorsInfosType.Accepted)
+                                        @if (info.OrganizationInfoState == DoctorFAM.Domain.Entities.Doctors.OrganizationInfoState.Accepted)
                                         {
                                             <span class="mr-8px label label-success"> @Localizer["Accepted"] </span>
                                         }
-                                        @if (info.Doctor.DoctorsInfosType == DoctorFAM.Domain.Entities.Doctors.DoctorsInfosType.Rejected)
+                                        @if (info.OrganizationInfoState == DoctorFAM.Domain.Entities.Doctors.OrganizationInfoState.Rejected)
                                         {
                                             <span class="mr-8px label label-danger"> @Localizer["Rejected"] </span>
                                         }
-                                        @if (info.Doctor.DoctorsInfosType == DoctorFAM.Domain.Entities.Doctors.DoctorsInfosType.WatingForConfirm)
+                                        @if (info.OrganizationInfoState == DoctorFAM.Domain.Entities.Doctors.OrganizationInfoState.WatingForConfirm)
                                         {
                                             <span class="mr-8px label label-warning"> @Localizer["WaitingForConfirm"] </span>
                                         }
-                                         @if (info.Doctor.DoctorsInfosType == DoctorFAM.Domain.Entities.Doctors.DoctorsInfosType.JustRegister)
+                                         @if (info.OrganizationInfoState == DoctorFAM.Domain.Entities.Doctors.OrganizationInfoState.JustRegister)
                                         {
                                             <span class="mr-8px label label-warning"> @Localizer["Register yet"] </span>
                                         }
@@ -194,13 +194,13 @@
 
                                     <p class="flex-style-center">
                                         <span> @Localizer["Site Access"] </span>
-                                        <span class="mr-8px label @((!info.Doctor.User.IsBan) ? "label-success" : "label-orange")">@((!info.Doctor.User.IsBan) ? @Localizer["Has It"] : @Localizer["Does Not Have"])</span>
+                                        <span class="mr-8px label @((!info.User.IsBan) ? "label-success" : "label-orange")">@((!info.User.IsBan) ? @Localizer["Has It"] : @Localizer["Does Not Have"])</span>
                                     </p>
 
                                 </td>
                              
                                 <td class="tc vm">
-                                    <a asp-action="DoctorsInfoDetail" asp-controller="Doctors" asp-area="Admin" asp-route-doctorsInfoId="@info.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+                                    <a asp-action="DoctorsInfoDetail" asp-controller="Doctors" asp-area="Admin" asp-route-userId="@info.OwnerId" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
                                 </td>
                             </tr>
                         }

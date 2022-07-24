@@ -112,6 +112,31 @@
         border: 1px solid #fd5b03;
     }
 
+.btn-SelfTest {
+    background: #fd5b03;
+    color: #ffffff;
+    padding: 25px 30px;
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    outline: none;
+    font-size:15px;
+    font-weight:700;
+    border: 2px solid #3143ef;
+    vertical-align: middle;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+    .btn-SelfTest:hover {
+        background: #3143ef;
+        color: #ffffff;
+        font-size: 16px;
+        
+        border: 2px solid #fd5b03;
+    }
+
+
 .btn-sm {
   padding: 10px;
   color  : #081b3a
@@ -1458,11 +1483,10 @@
 
 .featured-item .featured-icon {
   display      : inline-block;
-  margin-bottom: 20px;
   overflow     : hidden;
-  font-size    : 60px;
-  line-height  : 60px;
-  color        : #3143ef;
+  font-size    : 16px;
+  font-weight:500;
+  
 }
 
 .featured-item .featured-icon i {
@@ -1588,7 +1612,7 @@
 
     .featured-item.style-5:hover,
     .featured-item.style-5.active {
-        background: #ffffff;
+        background: rgba(49, 67, 239, 0.1)
     }
 
     .featured-item.style-5:hover .featured-title h5,
@@ -1890,21 +1914,23 @@
 
 .cases-desc {
   padding: 30px;
+  
 }
 
 .cases-desc p {
   margin-bottom: 0;
 }
 
-.cases-desc span {
-  background   : rgba(49, 67, 239, 0.1);
-  font-weight  : 500;
-  color        : #3143ef;
-  padding      : 2px 8px;
-  border-radius: 30px;
-  margin-bottom: 15px;
-  display      : inline-block;
-}
+    .cases-desc span {
+        background: rgba(49, 67, 239, 0.1);
+        font-weight: 500;
+        font-size: 20px;
+        color: #3143ef;
+        padding: 2px 8px;
+        border-radius: 30px;
+        margin-bottom: 15px;
+        display: inline-block;
+    }
 
 /*** Style 2 ***/
 .cases-item.style-2 .cases-desc {

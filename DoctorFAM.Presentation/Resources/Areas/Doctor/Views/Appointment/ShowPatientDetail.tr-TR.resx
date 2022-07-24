@@ -117,10 +117,49 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Appointment Setting" xml:space="preserve">
-    <value>تنطیمات نوبت دهی </value>
+  <data name="BirthDay" xml:space="preserve">
+    <value>Doğum tarihi</value>
   </data>
-  <data name="Docotr Panel" xml:space="preserve">
-    <value>پنل پزشک</value>
+  <data name="Empty" xml:space="preserve">
+    <value>boş</value>
+  </data>
+  <data name="End Time" xml:space="preserve">
+    <value>bitiş zamanı</value>
+  </data>
+  <data name="Extra Phone" xml:space="preserve">
+    <value>Telefon</value>
+  </data>
+  <data name="FullName" xml:space="preserve">
+    <value>Ad Soyad</value>
+  </data>
+  <data name="In Persone" xml:space="preserve">
+    <value>şahsen</value>
+  </data>
+  <data name="Mobile" xml:space="preserve">
+    <value>Mobil</value>
+  </data>
+  <data name="NationalId" xml:space="preserve">
+    <value>Ulusal Kod</value>
+  </data>
+  <data name="Online" xml:space="preserve">
+    <value>Çevrimiçi</value>
+  </data>
+  <data name="Patient Personal Informations" xml:space="preserve">
+    <value>Hasta kullanıcı bilgileri</value>
+  </data>
+  <data name="Reserve Date" xml:space="preserve">
+    <value>randevu tarihi</value>
+  </data>
+  <data name="Show Patient Details" xml:space="preserve">
+    <value>Hastanın kişisel bilgilerini göster</value>
+  </data>
+  <data name="Start Time" xml:space="preserve">
+    <value>Başlangıç ​​saati</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Yönlendirme yöntemi</value>
+  </data>
+  <data name="Username" xml:space="preserve">
+    <value>Kullanıcı adı</value>
   </data>
 </root>

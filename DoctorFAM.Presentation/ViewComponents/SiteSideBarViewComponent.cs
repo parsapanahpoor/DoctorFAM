@@ -35,6 +35,8 @@ namespace DoctorFAM.Web.Areas.Admin.ViewComponents
                 if (userRole == GetUserRoles.Seller) ViewBag.Seller = true;
 
                 if (userRole == GetUserRoles.User) ViewBag.User = true;
+
+                if (userRole == GetUserRoles.DoctorOfficeEmployee) ViewBag.DoctorOfficeEmployee = true;
             }
           
             #endregion

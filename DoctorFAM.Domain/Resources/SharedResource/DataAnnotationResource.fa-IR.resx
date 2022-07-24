@@ -192,6 +192,9 @@
   <data name="Display Name" xml:space="preserve">
     <value>نام نمایشی</value>
   </data>
+  <data name="DoctorOffice" xml:space="preserve">
+    <value>مطب پزشک</value>
+  </data>
   <data name="DynamicPage ShortDescription" xml:space="preserve">
     <value>توضیح مختصر صفحه </value>
   </data>
@@ -210,6 +213,9 @@
   <data name="Enable SSL" xml:space="preserve">
     <value>فعال سازی SSL</value>
   </data>
+  <data name="End Time" xml:space="preserve">
+    <value>زمان پایان</value>
+  </data>
   <data name="EndPrice" xml:space="preserve">
     <value>پایان قیمت</value>
   </data>
@@ -220,7 +226,7 @@
     <value>ناموفق</value>
   </data>
   <data name="Father" xml:space="preserve">
-    <value>بابا</value>
+    <value>پدر</value>
   </data>
   <data name="Father Name" xml:space="preserve">
     <value>نام پدر </value>
@@ -255,11 +261,17 @@
   <data name="Home Phone Number" xml:space="preserve">
     <value>شماره تلفن ثابت</value>
   </data>
+  <data name="In Person" xml:space="preserve">
+    <value>مراجعه ی حضوری</value>
+  </data>
   <data name="InsuranceType" xml:space="preserve">
     <value>بیمه</value>
   </data>
   <data name="Iranian health" xml:space="preserve">
     <value>سلامت ایرانیان</value>
+  </data>
+  <data name="Laboratory" xml:space="preserve">
+    <value>آزمایشگاه</value>
   </data>
   <data name="Laboratory fee at home in Rials" xml:space="preserve">
     <value>تعرفه ی آزمایشگاه در منزل به ریال</value>
@@ -295,6 +307,9 @@
   <data name="Mobile" xml:space="preserve">
     <value>موبایل</value>
   </data>
+  <data name="Mother" xml:space="preserve">
+    <value>مادر</value>
+  </data>
   <data name="Name" xml:space="preserve">
     <value>نام</value>
   </data>
@@ -307,8 +322,17 @@
   <data name="Not Found" xml:space="preserve">
     <value>یافت نشده</value>
   </data>
+  <data name="Not Reserved" xml:space="preserve">
+    <value>رزرو نشده است</value>
+  </data>
   <data name="NotDeleted" xml:space="preserve">
     <value>حذف نشده</value>
+  </data>
+  <data name="Office address" xml:space="preserve">
+    <value>آدرس مطب</value>
+  </data>
+  <data name="Online" xml:space="preserve">
+    <value>آنلاین</value>
   </data>
   <data name="Paid and waiting to choose a doctor" xml:space="preserve">
     <value>پرداخت شده و در انتظار انتخاب پزشک</value>
@@ -333,6 +357,9 @@
   </data>
   <data name="Permission Name" xml:space="preserve">
     <value>نام دسترسی</value>
+  </data>
+  <data name="Pharmacy" xml:space="preserve">
+    <value>داروخانه</value>
   </data>
   <data name="Pharmacy tariff at home in Rials" xml:space="preserve">
     <value>تعرفه ی داروخانه در منزل به ریال</value>
@@ -376,6 +403,12 @@
   <data name="Rejected" xml:space="preserve">
     <value>تایید نشده</value>
   </data>
+  <data name="Reservation Date" xml:space="preserve">
+    <value>تاریخ نوبت دهی </value>
+  </data>
+  <data name="Reserved" xml:space="preserve">
+    <value>رزرو شده است</value>
+  </data>
   <data name="Role Title" xml:space="preserve">
     <value>عنوان نقش</value>
   </data>
@@ -397,6 +430,9 @@
   <data name="Specialty" xml:space="preserve">
     <value>تخصص</value>
   </data>
+  <data name="Start Time" xml:space="preserve">
+    <value>زمان شروع </value>
+  </data>
   <data name="State" xml:space="preserve">
     <value>استان</value>
   </data>
@@ -414,6 +450,9 @@
   </data>
   <data name="Tariff for issuance of death certificate in Rials" xml:space="preserve">
     <value>تعرفه ی صدور گواهی فوت به ریال</value>
+  </data>
+  <data name="The entered date is not valid" xml:space="preserve">
+    <value>تاریخ وارد شده معتبر نمی باشد</value>
   </data>
   <data name="The entered national code is not valid" xml:space="preserve">
     <value>کد ملی وارد شده معتبر نمی باشد</value>
@@ -450,6 +489,9 @@
   </data>
   <data name="Username" xml:space="preserve">
     <value>نام کاربری </value>
+  </data>
+  <data name="Waiting For Complete" xml:space="preserve">
+    <value>انتخاب شده و در انتظار نهایی شدن</value>
   </data>
   <data name="Waiting for information to be filled by the user" xml:space="preserve">
     <value>در انتظار پر کردن اطلاعات از طرف کاربر</value>

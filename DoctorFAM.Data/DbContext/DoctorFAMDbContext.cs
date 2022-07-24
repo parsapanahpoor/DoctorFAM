@@ -1,11 +1,13 @@
 ﻿using Academy.Domain.Entities.SiteSetting;
 using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Account;
+using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.Interest;
 using DoctorFAM.Domain.Entities.Laboratory;
 using DoctorFAM.Domain.Entities.Languages;
 using DoctorFAM.Domain.Entities.MarketCategory;
+using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.Pharmacy;
 using DoctorFAM.Domain.Entities.PopulationCovered;
@@ -14,6 +16,7 @@ using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Entities.SiteSetting;
 using DoctorFAM.Domain.Entities.States;
 using DoctorFAM.Domain.Entities.Wallet;
+using DoctorFAM.Domain.Entities.WorkAddress;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -148,6 +151,28 @@ namespace DoctorFAM.Data.DbContext
 
         #endregion
 
+        #region Organization
+
+        public DbSet<Organization> Organizations { get; set; }
+
+        public DbSet<OrganizationMember> OrganizationMembers { get; set; }
+
+        #endregion
+
+        #region Work Address
+
+        public DbSet<WorkAddress> WorkAddresses { get; set; }
+
+        #endregion
+
+        #region Doctor Reservation
+
+        public DbSet<DoctorReservationDate> DoctorReservationDates { get; set; }
+
+        public DbSet<DoctorReservationDateTime> DoctorReservationDateTimes { get; set; }
+
+        #endregion
+
         #endregion
 
         #region On Model Creating
@@ -229,6 +254,15 @@ namespace DoctorFAM.Data.DbContext
                 Id = 4,
                 Title = "Seller",
                 RoleUniqueName = "Seller",
+                CreateDate = DateTime.Now,
+                IsDelete = false
+            });
+
+            modelBuilder.Entity<Role>().HasData(new Role
+            {
+                Id = 5,
+                Title = "DoctorOfficeEmployee",
+                RoleUniqueName = "DoctorOfficeEmployee",
                 CreateDate = DateTime.Now,
                 IsDelete = false
             });

@@ -13,6 +13,10 @@ namespace DoctorFAM.Domain.Interfaces
 
         Task<bool> IsExistUserById(ulong userId);
 
+        Task<User?> GetUserByMobile(string Mobile);
+
+        Task SaveChangesAsync();
+
         #endregion
 
         #region User Panel

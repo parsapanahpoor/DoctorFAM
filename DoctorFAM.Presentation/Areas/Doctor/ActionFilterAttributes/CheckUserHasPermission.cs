@@ -12,7 +12,7 @@ namespace DoctorFAM.Web.Areas.Doctor.ActionFilterAttributes
 
             base.OnActionExecuting(context);
 
-            var hasUserAnyRole = service.IsUserDoctor(context.HttpContext.User.GetUserId()).Result;
+            var hasUserAnyRole = service.IsUserDoctorOrDoctorEmployee(context.HttpContext.User.GetUserId()).Result;
 
             if (!hasUserAnyRole)
             {

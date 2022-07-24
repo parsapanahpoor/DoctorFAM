@@ -34,8 +34,7 @@ namespace DoctorFAM.Domain.Entities.Requests
         public ulong CityId { get; set; }
 
         [Display(Name = "روستا")]
-        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
-        public string Vilage { get; set; }
+        public string? Vilage { get; set; }
 
         [Display(Name = "آدرس")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]

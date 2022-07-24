@@ -290,6 +290,8 @@ namespace BusinessPortal.Application.Services.Implementation
 
             if (userRoles.Any() && userRoles.Contains("Seller")) return GetUserRoles.Seller;
 
+            if (userRoles.Any() && userRoles.Contains("DoctorOfficeEmployee")) return GetUserRoles.DoctorOfficeEmployee;
+
             if (!userRoles.Any()) return GetUserRoles.User;
 
             #endregion
@@ -313,6 +315,19 @@ namespace BusinessPortal.Application.Services.Implementation
             if (result == GetUserRoles.Admin) return true;
 
             if (result == GetUserRoles.Doctor) return true;
+
+            return false;
+        }
+
+        public async Task<bool> IsUserDoctorOrDoctorEmployee(ulong userId)
+        {
+            var result = await GetUserRole(userId);
+
+            if (result == GetUserRoles.Admin) return true;
+
+            if (result == GetUserRoles.Doctor) return true;
+
+            if (result == GetUserRoles.DoctorOfficeEmployee) return true;
 
             return false;
         }

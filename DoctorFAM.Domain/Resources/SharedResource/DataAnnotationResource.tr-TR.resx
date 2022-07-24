@@ -159,6 +159,9 @@
   <data name="Display Name" xml:space="preserve">
     <value>İsim göster</value>
   </data>
+  <data name="DoctorOffice" xml:space="preserve">
+    <value>klinik</value>
+  </data>
   <data name="DynamicPage ShortDescription" xml:space="preserve">
     <value>Sayfanın kısa açıklaması</value>
   </data>
@@ -176,6 +179,9 @@
   </data>
   <data name="Enable SSL" xml:space="preserve">
     <value>SSL aktivasyonu</value>
+  </data>
+  <data name="End Time" xml:space="preserve">
+    <value>bitiş zamanı</value>
   </data>
   <data name="Extra Phone Number" xml:space="preserve">
     <value>Ekstra Telefon Numarası</value>
@@ -213,11 +219,17 @@
   <data name="Home Phone Number" xml:space="preserve">
     <value>Ev telefon numarası</value>
   </data>
+  <data name="In Person" xml:space="preserve">
+    <value>şahsen ziyaret edin</value>
+  </data>
   <data name="InsuranceType" xml:space="preserve">
     <value>Sigorta</value>
   </data>
   <data name="Iranian health" xml:space="preserve">
     <value>İran sağlığı</value>
+  </data>
+  <data name="Laboratory" xml:space="preserve">
+    <value>laboratuvar</value>
   </data>
   <data name="Laboratory fee at home in Rials" xml:space="preserve">
     <value>Rials'ta evde laboratuvar ücreti</value>
@@ -259,8 +271,17 @@ meta etiket</value>
   <data name="Not Found" xml:space="preserve">
     <value>Bulunamadı</value>
   </data>
+  <data name="Not Reserved" xml:space="preserve">
+    <value>Ayrılmadı</value>
+  </data>
   <data name="NotDeleted" xml:space="preserve">
     <value>silinmedi</value>
+  </data>
+  <data name="Office address" xml:space="preserve">
+    <value>Ofis adresi</value>
+  </data>
+  <data name="Online" xml:space="preserve">
+    <value>Çevrimiçi</value>
   </data>
   <data name="Paid and waiting to choose a doctor" xml:space="preserve">
     <value>Ücretli ve doktor seçmeyi bekliyor</value>
@@ -279,6 +300,9 @@ meta etiket</value>
   </data>
   <data name="Permission Name" xml:space="preserve">
     <value>Erişim adı</value>
+  </data>
+  <data name="Pharmacy" xml:space="preserve">
+    <value>eczane</value>
   </data>
   <data name="Pharmacy tariff at home in Rials" xml:space="preserve">
     <value>Rials'ta evde eczane tarifesi</value>
@@ -322,6 +346,12 @@ meta etiket</value>
   <data name="Rejected" xml:space="preserve">
     <value>onaylanmadı</value>
   </data>
+  <data name="Reservation Date" xml:space="preserve">
+    <value>Rezervasyon Tarihi</value>
+  </data>
+  <data name="Reserved" xml:space="preserve">
+    <value>Rezerve</value>
+  </data>
   <data name="Role Title" xml:space="preserve">
     <value>Rol ünvanı</value>
   </data>
@@ -343,6 +373,9 @@ meta etiket</value>
   <data name="Specialty" xml:space="preserve">
     <value>uzmanlık</value>
   </data>
+  <data name="Start Time" xml:space="preserve">
+    <value>Başlangıç ​​saati</value>
+  </data>
   <data name="State" xml:space="preserve">
     <value>Belirtmek, bildirmek</value>
   </data>
@@ -354,6 +387,9 @@ meta etiket</value>
   </data>
   <data name="Tariff for issuance of death certificate in Rials" xml:space="preserve">
     <value>Riyal cinsinden ölüm belgesi düzenleme tarifesi</value>
+  </data>
+  <data name="The entered date is not valid" xml:space="preserve">
+    <value>Girilen tarih geçerli değil</value>
   </data>
   <data name="The entered national code is not valid" xml:space="preserve">
     <value>Girilen ulusal kod geçerli değil</value>
@@ -384,6 +420,9 @@ meta etiket</value>
   </data>
   <data name="User Name" xml:space="preserve">
     <value>Kullanıcı adı</value>
+  </data>
+  <data name="Waiting For Complete" xml:space="preserve">
+    <value>Tamamlanmayı Bekliyor</value>
   </data>
   <data name="Waiting for information to be filled by the user" xml:space="preserve">
     <value>Kullanıcı tarafından doldurulacak bilgi bekleniyor</value>

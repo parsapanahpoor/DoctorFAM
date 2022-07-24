@@ -1,11 +1,11 @@
-
-
 #radio {
-    background-color: #40454b;
-    margin-top: 30px;
-    border-radius: 10px;
-    width: 600px;
-    height: 90px;
+    background-color: #141517;
+    /*margin: 100px 15px;*/
+    border-radius: 5px;
+    padding: 20px 15px
+}
+
+.radio-left {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -19,140 +19,64 @@
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
-    padding: 50px 20px
+    margin-bottom: 15px;
+    position: relative
 }
 
-    #radio .radio-content {
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
-        -webkit-box-orient: horizontal;
-        -webkit-box-direction: normal;
-        -ms-flex-direction: row;
-        flex-direction: row;
-        -webkit-box-pack: justify;
-        -ms-flex-pack: justify;
-        justify-content: space-between;
-        -webkit-box-align: center;
-        -ms-flex-align: center;
-        align-items: center
+.radio-equalizer {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    height: 30px
+}
+
+    .radio-equalizer .music-bars {
+        background-color: aliceblue
     }
 
-        #radio .radio-content .radio-right {
-            background-color: #141517;
-            border-radius: 3px;
-            padding: 15px 40px
-        }
+    .radio-equalizer #music-bars span {
+        background-color: #fd5b03;
+        width: 4px;
+        border-radius: 10px;
+        float: left;
+        margin-left: 4px;
+        height: 25px
+    }
 
-            #radio .radio-content .radio-right .radio-equalizer {
-                display: -webkit-box;
-                display: -ms-flexbox;
-                display: flex;
-                -webkit-box-orient: horizontal;
-                -webkit-box-direction: normal;
-                -ms-flex-direction: row;
-                flex-direction: row;
-                -webkit-box-pack: center;
-                -ms-flex-pack: center;
-                justify-content: center;
-                -webkit-box-align: center;
-                -ms-flex-align: center;
-                align-items: center;
-                height: 30px
-            }
+    .radio-equalizer #music-bars .one {
+        -webkit-animation-name: move-1;
+        animation-name: move-1
+    }
 
-                #radio .radio-content .radio-right .radio-equalizer .music-bars {
-                    background-color: aliceblue
-                }
+    .radio-equalizer #music-bars .two {
+        -webkit-animation-name: move-2;
+        animation-name: move-2
+    }
 
-                #radio .radio-content .radio-right .radio-equalizer #music-bars span {
-                    background-color: #fd5b03;
-                    width: 4px;
-                    border-radius: 10px;
-                    float: left;
-                    margin-left: 4px;
-                    height: 25px
-                }
+    .radio-equalizer #music-bars .three {
+        -webkit-animation-name: move-3;
+        animation-name: move-3
+    }
 
-                #radio .radio-content .radio-right .radio-equalizer #music-bars .one {
-                    -webkit-animation-name: move-1;
-                    animation-name: move-1
-                }
+    .radio-equalizer #music-bars .four {
+        -webkit-animation-name: move-4;
+        animation-name: move-4
+    }
 
-                #radio .radio-content .radio-right .radio-equalizer #music-bars .two {
-                    -webkit-animation-name: move-2;
-                    animation-name: move-2
-                }
-
-                #radio .radio-content .radio-right .radio-equalizer #music-bars .three {
-                    -webkit-animation-name: move-3;
-                    animation-name: move-3
-                }
-
-                #radio .radio-content .radio-right .radio-equalizer #music-bars .four {
-                    -webkit-animation-name: move-4;
-                    animation-name: move-4
-                }
-
-                #radio .radio-content .radio-right .radio-equalizer #music-bars .five {
-                    -webkit-animation-name: move-5;
-                    animation-name: move-5
-                }
-
-        #radio .radio-content .radio-left {
-            position: relative
-        }
-
-            #radio .radio-content .radio-left .radio-controls {
-                display: -webkit-box;
-                display: -ms-flexbox;
-                display: flex;
-                -webkit-box-orient: horizontal;
-                -webkit-box-direction: normal;
-                -ms-flex-direction: row;
-                flex-direction: row;
-                -webkit-box-pack: center;
-                -ms-flex-pack: center;
-                justify-content: center;
-                -webkit-box-align: center;
-                -ms-flex-align: center;
-                align-items: center
-            }
-
-                #radio .radio-content .radio-left .radio-controls .radio-next {
-                    position: absolute;
-                    left: 113px;
-                    padding: 23px;
-                    border-radius: 0 10px 10px 0;
-                    border: 1px solid #3c4041;
-                    -webkit-box-shadow: 0px 0px 10px rgba(255,255,255,0.3);
-                    box-shadow: 0px 0px 10px rgba(255,255,255,0.3);
-                    background-color: #191a1e
-                }
-
-                #radio .radio-content .radio-left .radio-controls .radio-previous {
-                    position: absolute;
-                    left: 0px;
-                    padding: 23px;
-                    border-radius: 10px 0 0 10px;
-                    border: 1px solid #3c4041;
-                    -webkit-box-shadow: 0px 0px 10px rgba(255,255,255,0.3);
-                    box-shadow: 0px 0px 10px rgba(255,255,255,0.3);
-                    background-color: #191a1e
-                }
-
-                #radio .radio-content .radio-left .radio-controls .radio-stop-play {
-                    position: absolute;
-                    z-index: 845;
-                    left: 40px;
-                    -webkit-box-shadow: 0px 0px 10px rgba(255,255,255,0.3);
-                    box-shadow: 0px 0px 10px rgba(255,255,255,0.3);
-                    padding: 40px;
-                    border-radius: 50%;
-                    border: 1px solid #3c4041;
-                    background-color: #191a1e
-                }
-
+    .radio-equalizer #music-bars .five {
+        -webkit-animation-name: move-5;
+        animation-name: move-5
+    }
 
 .active-equlizer #music-bars span {
     height: 35px !important;
@@ -297,6 +221,178 @@
     25%,75% {
         -webkit-transform: scaleY(0.5);
         transform: scaleY(0.5)
+    }
+}
+
+.radio-folder i {
+    color: #fd5b03;
+    font-size: 40px
+}
+
+.radio-music-list-popup {
+    display: none;
+    position: absolute;
+    left: -27px;
+    top: -65px;
+    border-radius: 3px
+}
+
+.radio-controls {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    margin-right: 30px
+}
+
+.radio-next {
+    background: #40454b;
+    padding: 20px;
+    border: 1px solid #3c4041;
+    border-radius: 0 10px 10px 0;
+    margin-left: -8px
+}
+
+.radio-stop-play {
+    z-index: 9;
+    border-radius: 50%;
+    border: 1px solid #3c4041;
+    padding: 35px;
+    background-color: #40454b;
+    -webkit-box-shadow: 0px 0px 10px rgba(0,0,0,0.4);
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.4)
+}
+
+.radio-previous {
+    background: #40454b;
+    padding: 20px;
+    border: 1px solid #3c4041;
+    border-radius: 10px 0 0 10px;
+    margin-right: -8px
+}
+
+.radio-content {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: reverse;
+    -ms-flex-direction: column-reverse;
+    flex-direction: column-reverse;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center
+}
+
+.desktop-folder {
+    display: none
+}
+
+@media screen and (min-width: 610px) {
+    #radio {
+        background-color: #40454b;
+        max-width: 600px;
+        margin: 100px auto
+    }
+
+    .radio-content {
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+        flex-direction: row
+    }
+
+    .radio-left {
+        margin: 0
+    }
+
+    .radio-right {
+        background-color: #141517;
+        padding: 15px 40px;
+        border-radius: 3px
+    }
+
+    .radio-folder {
+        margin-right: 15px
+    }
+
+    .radio-controls {
+        margin-right: 15px
+    }
+
+    .radio-next {
+        background-color: #191a1e;
+        -webkit-box-shadow: 0px 0px 10px rgba(255,255,255,0.3);
+        box-shadow: 0px 0px 10px rgba(255,255,255,0.3);
+        padding: 23px
+    }
+
+    .radio-previous {
+        background-color: #191a1e;
+        -webkit-box-shadow: 0px 0px 10px rgba(255,255,255,0.3);
+        box-shadow: 0px 0px 10px rgba(255,255,255,0.3);
+        padding: 23px
+    }
+
+    .radio-stop-play {
+        background-color: #191a1e;
+        -webkit-box-shadow: 0px 0px 10px rgba(255,255,255,0.3);
+        box-shadow: 0px 0px 10px rgba(255,255,255,0.3);
+        padding: 40px
+    }
+
+    .active-popup {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex
+    }
+
+    .radio-music-list-item {
+        background-color: rgba(0,0,0,0.9);
+        cursor: pointer;
+        border: 1px solid #fd5b03;
+        width: 100px;
+        padding: 10px 5px
+    }
+
+        .radio-music-list-item:first-child {
+            border-radius: 0 5px 5px 0
+        }
+
+        .radio-music-list-item:last-child {
+            border-radius: 5px 0 0 5px
+        }
+
+        .radio-music-list-item a {
+            color: #fd5b03;
+            text-decoration: none
+        }
+
+    .radio-music-list-name span {
+        color: #fd5b03;
+        font-size: 14px
+    }
+
+    .mobile-folder {
+        display: none;
+        cursor: pointer
+    }
+
+    .desktop-folder {
+        display: block;
+        cursor: pointer
     }
 }
 /*# sourceMappingURL=main.css.map */

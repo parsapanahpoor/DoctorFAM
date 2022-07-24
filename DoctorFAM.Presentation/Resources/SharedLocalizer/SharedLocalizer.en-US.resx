@@ -129,6 +129,9 @@
   <data name="Create Location" xml:space="preserve">
     <value>Create Location</value>
   </data>
+  <data name="Create Market Categories" xml:space="preserve">
+    <value>Add new category</value>
+  </data>
   <data name="Create New Article" xml:space="preserve">
     <value>Create New Article</value>
   </data>
@@ -147,6 +150,9 @@
   <data name="Items" xml:space="preserve">
     <value>Items</value>
   </data>
+  <data name="List of products" xml:space="preserve">
+    <value>List of products</value>
+  </data>
   <data name="ListOfPages" xml:space="preserve">
     <value>List Of Pages</value>
   </data>
@@ -162,11 +168,20 @@
   <data name="Manage Locations" xml:space="preserve">
     <value>Manage Locations</value>
   </data>
+  <data name="Manage Market Categories" xml:space="preserve">
+    <value>Manage Product Categories</value>
+  </data>
   <data name="Manage Pages" xml:space="preserve">
     <value>Manage Pages</value>
   </data>
+  <data name="Manage Products" xml:space="preserve">
+    <value>Manage Products</value>
+  </data>
   <data name="Manage Users" xml:space="preserve">
     <value>Manage Users</value>
+  </data>
+  <data name="Market Categories List" xml:space="preserve">
+    <value>List of categories</value>
   </data>
   <data name="Not Found" xml:space="preserve">
     <value>Not Found</value>

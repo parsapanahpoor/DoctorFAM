@@ -1,0 +1,62 @@
+@font-face {
+    font-family: "flaticon";
+    src: url("../../assets/fonts/flaticon.ttf?c353039a78cade2933258d79ec6ec342") format("truetype"),
+url("../../assets/fonts/flaticon.woff?c353039a78cade2933258d79ec6ec342") format("woff"),
+url("../fonts/flaticon.woff2-c353039a78cade2933258d79ec6ec342.htm") format("woff2"),
+url("../fonts/flaticon.eot-c353039a78cade2933258d79ec6ec342.htm#iefix") format("embedded-opentype"),
+url("../fonts/flaticon.svg-c353039a78cade2933258d79ec6ec342.htm#flaticon") format("svg");
+}
+
+i[class^="flaticon-"]:before, i[class*=" flaticon-"]:before {
+    font-family: flaticon !important;
+    font-style: normal;
+    font-weight: normal !important;
+    font-variant: normal;
+    text-transform: none;
+    line-height: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.flaticon-headphones:before {
+    content: "\f101";
+}
+.flaticon-complete:before {
+    content: "\f102";
+}
+.flaticon-expert:before {
+    content: "\f103";
+}
+.flaticon-feedback:before {
+    content: "\f104";
+}
+.flaticon-condominium:before {
+    content: "\f105";
+}
+.flaticon-commercial-structures:before {
+    content: "\f106";
+}
+.flaticon-handshake:before {
+    content: "\f107";
+}
+.flaticon-left-quote:before {
+    content: "\f108";
+}
+.flaticon-user-experience:before {
+    content: "\f109";
+}
+.flaticon-reliability:before {
+    content: "\f10a";
+}
+.flaticon-consumer-behavior:before {
+    content: "\f10b";
+}
+.flaticon-repair:before {
+    content: "\f10c";
+}
+.flaticon-tools:before {
+    content: "\f10d";
+}
+.flaticon-pdf-file:before {
+    content: "\f10e";
+}

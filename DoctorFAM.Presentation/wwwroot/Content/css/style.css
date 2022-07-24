@@ -314,18 +314,21 @@ section {
 
 .dark-bg {
     background-color: #0d092c;
+   /* background:rgba(13, 9, 44, 0.8) */
 }
 
 .grey-bg {
     background-color: #fcfcff;
 }
-
+/*6ea8ce*/
 .theme-bg {
     background-color: #3143ef;
+    /*background: rgba(49, 67, 239, 0.6);*/
 }
 
 .theme-bg-2 {
     background-color: #fd5b03;
+    /*background: rgba(253, 91, 3, 0.6);*/
 }
 
 .transparent-bg {
@@ -1787,4 +1790,47 @@ border-radius:5px;
 .KlinikImage {
     width:65%;
     height:auto;
+}
+
+.formHealth {
+    background: linear-gradient(rgba(255,255,255,10),rgba(76,200,238,0.35))
+}
+
+.HomeVisitTitle {
+    background-image: linear-gradient(rgba(255,255,255,10),rgba(255,255,255,0.5)), url("/Content/images/case-studies/Visit.jpg");
+    background-repeat: no-repeat;        
+    background-size: cover !important;
+    background-position: center;
+    text-align:center !important;
+    justify-content:center !important; 
+   padding:20px !important;
+
+}
+.HomeNurseTitle {
+    background-image: linear-gradient(rgba(255,255,255,10),rgba(255,255,255,0.5)), url("/Content/images/case-studies/Nurse.jpg");
+    background-repeat: no-repeat;
+    background-size: cover !important;
+    background-position: center;
+    text-align: center !important;
+    justify-content: center !important;
+    padding: 20px !important;
+}
+
+.HomePharmacyTitle {
+    background-image: linear-gradient(rgba(255,255,255,10),rgba(255,255,255,0.5)), url("/Content/images/case-studies/Pharmacy.jpg");
+    background-repeat: no-repeat;
+    background-size: cover !important;
+    background-position: center;
+    text-align: center !important;
+    justify-content: center !important;
+    padding: 20px !important;
+}
+.HomeLaboratoryTitle {
+    background-image: linear-gradient(rgba(255,255,255,10),rgba(255,255,255,0.5)), url("/Content/images/case-studies/HomeLab.jpg");
+    background-repeat: no-repeat;
+    background-size: cover !important;
+    background-position: center;
+    text-align: center !important;
+    justify-content: center !important;
+    padding: 20px !important;
 }

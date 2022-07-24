@@ -40,6 +40,10 @@ namespace DoctorFAM.IoC
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IPopulationCoveredService, PopulationCoveredService>();
             services.AddScoped<IDashboardsService, DashboardsService>();
+            services.AddScoped<IOrganizationService, OrganizationService>();
+            services.AddScoped<ISMSService, SMSService>();
+            services.AddScoped<IWorkAddressService, WorkAddressService>();
+            services.AddScoped<IReservationService, ReservationService>();
 
             #endregion
 
@@ -62,6 +66,9 @@ namespace DoctorFAM.IoC
             services.AddScoped<ISiteSettingRepository, SiteSettingRepository>();
             services.AddScoped<IPopulationCoveredRepository, PopulationCoveredRepository>();
             services.AddScoped<IDashboardsRepository, DashboardsRepository>();
+            services.AddScoped<IOrganizationRepository, OrganizationRepository>();
+            services.AddScoped<IWorkAddressRepository, WorkAddressRepository>();
+            services.AddScoped<IReservationRepository, ReservationRepository>();
 
             #endregion
         }

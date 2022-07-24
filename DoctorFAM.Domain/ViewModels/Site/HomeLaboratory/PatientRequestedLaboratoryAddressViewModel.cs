@@ -29,8 +29,7 @@ namespace DoctorFAM.Domain.ViewModels.Site.HomeLaboratory
         public ulong CityId { get; set; }
 
         [Display(Name = "روستا")]
-        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
-        public string Vilage { get; set; }
+        public string? Vilage { get; set; }
 
         [Display(Name = "آدرس")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
@@ -38,13 +37,16 @@ namespace DoctorFAM.Domain.ViewModels.Site.HomeLaboratory
 
         [Display(Name = "تلفن ثابت")]
         [Required(ErrorMessage = "لطفا{0} را وارد نمایید...")]
+        [RegularExpression(@"^[0-9]*$", ErrorMessage = "The information entered is not valid.")]
         public string Phone { get; set; }
 
         [Display(Name = "تلفن همراه")]
         [Required(ErrorMessage = "لطفا{0} را وارد نمایید...")]
+        [RegularExpression(@"^[0-9]*$", ErrorMessage = "The information entered is not valid.")]
         public string Mobile { get; set; }
 
         [Display(Name = "فاصله از شهر")]
+        [RegularExpression(@"^[0-9]*$", ErrorMessage = "The information entered is not valid.")]
         public int Distance { get; set; }
 
         [Required(ErrorMessage = "لطفا{0} را وارد نمایید...")]

@@ -1,5 +1,6 @@
 ﻿using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.Interest;
+using DoctorFAM.Domain.Entities.WorkAddress;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -40,10 +41,13 @@ namespace DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo
         [Display(Name = "Medical record")]
         public string MediacalFile { get; set; }
 
+        [Display(Name = "Work Address")]
+        public List<WorkAddress>? WorkAddresses { get; set; }
+
         [Display(Name = "The reason for the rejection of the information ")]
         public string? RejectDescription { get; set; }
 
-        public DoctorsInfosType DoctorsInfosType { get; set; }
+        public OrganizationInfoState DoctorsInfosType { get; set; }
 
         public List<DoctorsInterestInfo>? DoctorsInterests { get; set; }
 

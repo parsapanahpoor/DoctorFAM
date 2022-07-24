@@ -4,7 +4,9 @@
 @using DoctorFAM.Application.StaticTools
 
 @{
-    ViewData["Title"] = "ثبت مشخصات متقاضی";
+    ViewData["Title"] = "ثبت مشخصات بیمار";
+
+    var population = ViewBag.PopulationCovered as List<DoctorFAM.Domain.Entities.PopulationCovered.PopulationCovered>;
 }
 
 @section Styles
@@ -17,107 +19,129 @@
 <partial name="_JqueryValidation" />
 }
 
-<div class="page-content  ">
+<div class="page-content  formHealth">
+    <div class="row HomePharmacyTitle text-center  text-align-justify ">
+        <div class="col-md-12   text-center  text-align-justify M-5 P-5">
+            <h2 class="text-center  text-align-justify ">  درخواست دارو در منزل</h2>
+            <p class="text-center  text-align-justify">
+                لطفا مشخصات بیمار را، ثبت کنید:
+            </p>
+        </div>
+    </div>
+    <div class="container  p-4">
+        <div class="row">
+            <div class="col-md-12  col-sm-12">
+                <div class="row ">
+                    <div class="col-md-12">
+                        <h4 class="title-2 z-index-1 text-uppercase mt-3 mb-4 text-center">  <span> افراد تحت پوشش شما   </span></h4>
+                        <p>شما میتوانید از لیست زیر، شخصی که نیاز به دارو دارد را، انتخاب نمایید:</p>
+                        <div>
+                            @if (population != null && population.Any())
+                            {
+                                <table class="table table-hover table-bordered tc vm text-center align-items-center">
 
-    <section>
-        <div class="container">
-            <div class="row" style="border:2px solid #fd5b03;">
-                <div class="col-md-12">
-                    <h2 class="title-2 z-index-1 text-uppercase mt-3 mb-4 text-center"> درخواست <span> دارو در منزل </span></h2>
-                    <p>لطفا مشخصات متقاضی را ثبت کنید</p>
-                    <div>
-                        <form asp-action="PatientDetails" asp-controller="HomePharmacy" asp-area="">
-                            <input asp-for="RequestId" type="hidden" />
-                            <input asp-for="UserId" type="hidden" />
-                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                    <tr>
+                                        <th class=" text-center align-items-center">نام</th>
+                                        <th class=" text-center align-items-center">نام خانوادگی</th>
+                                        <th>نسبت</th>
+                                        <th class=" text-center align-items-center">عملیات</th>
+                                    </tr>
 
-                            <div class="row">
+                                    @foreach (var item in population)
+                                    {
+                                        <tr class="tc vm text-center align-items-center" remove-ajax-item="@item.Id">
 
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <span style="color:red;">*</span>
-                                        <label asp-for="PatientName" class="control-label"></label>
-                                        <input asp-for="PatientName" class="form-control" />
-                                        <span asp-validation-for="PatientName" class="text-danger"></span>
-                                    </div>
-                                </div>
+                                            <td class=" text-center align-items-center">@item.PatientName</td>
+                                            <td class=" text-center align-items-center">@item.PatientLastName</td>
+                                            <td class=" text-center align-items-center">@item.Ratio</td>
+                                            <td class=" text-center align-items-center">
+                                                <a asp-action="PatientDetails" asp-controller="HomePharmacy" asp-area="" asp-route-populationCoveredId="@item.Id" asp-route-requestId="@Model.RequestId" class="btn-Accept-primary">انتخاب</a>
+                                            </td>
 
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <span style="color:red;">*</span>
-                                        <label asp-for="PatientLastName" class="control-label"></label>
-                                        <input asp-for="PatientLastName" class="form-control" />
-                                        <span asp-validation-for="PatientLastName" class="text-danger"></span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <span style="color:red;">*</span>
-                                        <label asp-for="NationalId" class="control-label"></label>
-                                        <input asp-for="NationalId" class="form-control" />
-                                        <span asp-validation-for="NationalId" class="text-danger"></span>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <span style="color:red;">*</span>
-                                        <label asp-for="Gender" class="control-label"></label>
-                                        <select asp-for="Gender" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.Gender.Gender))"></select>
-                                        <span asp-validation-for="Gender" class="text-danger"></span>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <span style="color:red;">*</span>
-                                        <label asp-for="Age" class="control-label"></label>
-                                        <input asp-for="Age" class="form-control " />
-                                        <span asp-validation-for="Age" class="text-danger"></span>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <span style="color:red;">*</span>
-                                        <label asp-for="InsuranceType" class="control-label"></label>
-                                        <select asp-for="InsuranceType" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.InsuranceType.InsuranceType))"></select>
-                                        <span asp-validation-for="InsuranceType" class="text-danger"></span>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="row">
-                                <div class="col-md-9">
-                                    <div class="form-group">
-                                        <span style="color:red;">*</span>
-                                        <label asp-for="RequestDescription" class="control-label">توضیحات</label>
-                                        <input asp-for="RequestDescription" class="form-control" />
-                                        <span asp-validation-for="RequestDescription" class="text-danger"></span>
-                                    </div>
-                                </div>
-
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-12 mt-3 text-center mb-2">
-                                    <div class="form-group">
-                                        <input type="submit" value="ثبت درخواست" class="btn-Accept" />
-                                    </div>
-                                </div>
-                            </div>
-
-                        </form>
+                                        </tr>
+                                    }
+                                </table>
+                            }
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
 
+        <form class="" asp-action="PatientDetails" asp-controller="HomePharmacy" asp-area="">
+            <input asp-for="RequestId" type="hidden" />
+            <input asp-for="UserId" type="hidden" />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <span style="color:red;">*</span>
+                        <label asp-for="PatientName" class="control-label"></label>
+                        <input id="DrugTrakingCode" asp-for="PatientName" class="form-control" />
+                        <span asp-validation-for="PatientName" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <span style="color:red;">*</span>
+                        <label asp-for="PatientLastName" class="control-label"></label>
+                        <input id="DrugTrakingCode" asp-for="PatientLastName" class="form-control" />
+                        <span asp-validation-for="PatientLastName" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <span style="color:red;">*</span>
+                        <label asp-for="NationalId" class="control-label"></label>
+                        <input id="DrugTrakingCode" asp-for="NationalId" class="form-control" />
+                        <span asp-validation-for="NationalId" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <span style="color:red;">*</span>
+                        <label asp-for="Age" class="control-label"></label>
+                        <input id="DrugTrakingCode" asp-for="Age" class="form-control" />
+                        <span asp-validation-for="Age" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <span style="color:red;">*</span>
+                        <label asp-for="Gender" class="control-label"></label>
+                        <select asp-for="Gender" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.Gender.Gender))"></select>
+                        <span asp-validation-for="Gender" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <span style="color:red;">*</span>
+                        <label asp-for="InsuranceType" class="control-label"></label>
+                        <select asp-for="InsuranceType" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.InsuranceType.InsuranceType))"></select>
+                        <span asp-validation-for="InsuranceType" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">                       
+                        <label asp-for="RequestDescription" class="control-label">توضیحات</label>
+                        <input asp-for="RequestDescription" class="form-control" />
+                        <span asp-validation-for="RequestDescription" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-12 mt-4 text-center">
+                    <div class="form-group">
+                        <input type="submit" value="ثبت و ادامه " class="btn-Accept" />
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
 </div>
 
 

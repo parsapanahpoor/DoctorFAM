@@ -1,4 +1,5 @@
-﻿using DoctorFAM.Domain.ViewModels.Common;
+﻿using DoctorFAM.Domain.Entities.Organization;
+using DoctorFAM.Domain.ViewModels.Common;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo
 {
-    public class ListOfDoctorsInfoViewModel : BasePaging<Domain.Entities.Doctors.DoctorsInfo>
+    public class ListOfDoctorsInfoViewModel : BasePaging<Organization>
     {
         #region Ctor
 
@@ -27,7 +28,8 @@ namespace DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo
 
         public string? Mobile { get; set; }
 
-        public int? NationalCode { get; set; }
+        [RegularExpression(@"^[0-9]*$", ErrorMessage = "The information entered is not valid.")]
+        public string? NationalCode { get; set; }
 
         public int? MedicalSystemCode { get; set; }
 

@@ -2,21 +2,47 @@ let playBtn = document.querySelector(".radio-stop-play");
 let nextBtn = document.querySelector(".radio-next");
 let previousBtn = document.querySelector(".radio-previous");
 let audio = document.querySelector(".radio-audio audio");
-// let radioName = document.querySelector(".radio-name span");
 let radioEqulizer = document.querySelector(".radio-equalizer");
+let listItemMusicPopUp = document.querySelector(".radio-music-list-popup");
+let listItemsMusic = document.querySelectorAll(".radio-music-list-item");
+let radioFolder = document.querySelector(".radio-folder i");
 let isPlay = false;
 let musicCounter = 0;
 let audioArray = [
     {
-        // name: "F1  87.5",
+        musicName: " 1",
         musicSrc: "/Content/Radio/music/experience.mp3",
     },
     {
-        // name: "F3  27.8",
+        musicName: " 2",
         musicSrc: "/Content/Radio/music/experience1.wav",
     },
     {
-        // name: "F5 67.6",
+        musicName: " 3",
+        musicSrc: "/Content/Radio/music/experience2.mp3",
+    },
+    {
+        musicName: " 4",
+        musicSrc: "/Content/Radio/music/experience.mp3",
+    },
+    {
+        musicName: " 5",
+        musicSrc: "/Content/Radio/music/experience1.wav",
+    },
+    {
+        musicName: " 6",
+        musicSrc: "/Content/Radio/music/experience2.mp3",
+    },
+    {
+        musicName: " 7",
+        musicSrc: "/Content/Radio/music/experience.mp3",
+    },
+    {
+        musicName: " 8",
+        musicSrc: "/Content/Radio/music/experience1.wav",
+    },
+    {
+        musicName: " 9",
         musicSrc: "/Content/Radio/music/experience2.mp3",
     },
 ];
@@ -24,19 +50,20 @@ let audioArray = [
 playBtn.addEventListener("click", playMusic);
 nextBtn.addEventListener("click", nextMusic);
 previousBtn.addEventListener("click", previousMusic);
+radioFolder.addEventListener("click", showDropDown);
+window.addEventListener("load", loadMusic);
 
 audio.src = audioArray[musicCounter].musicSrc;
-// radioName.innerHTML = audioArray[counter].name;
 
 function playMusic() {
     if (isPlay === false) {
         audio.play();
         isPlay = true;
-        radioEqulizer.classList.add("active-equlizer")
+        radioEqulizer.classList.add("active-equlizer");
     } else {
         audio.pause();
         isPlay = false;
-        radioEqulizer.classList.remove("active-equlizer")
+        radioEqulizer.classList.remove("active-equlizer");
     }
 }
 
@@ -48,7 +75,7 @@ function nextMusic() {
     musicCounter++;
     audio.src = audioArray[musicCounter].musicSrc;
     playMusic();
-    // radioName.innerHTML = audioArray[counter].name;
+
 }
 
 function previousMusic() {
@@ -59,6 +86,34 @@ function previousMusic() {
     musicCounter--;
     audio.src = audioArray[musicCounter].musicSrc;
     playMusic();
-    // radioName.innerHTML = audioArray[counter].name;
+}
+
+function loadMusic() {
+    for (let i = 4; i > -1; i--) {
+        let musicName = audioArray[i].musicName;
+        let musicSrc = audioArray[i].musicSrc;
+        let musicTemplate = `
+      <div class="radio-music-list-item" onclick="playListMusic(event)">
+        <div class="radio-music-list-name">
+            <span>${musicName}</span>
+        </div>
+        <div class="radio-musix-list-audio" data-audio-src="${musicSrc}" data-id="${i}"></div>
+      </div>
+    `;
+        listItemMusicPopUp.insertAdjacentHTML("afterbegin", musicTemplate);
+    }
+}
+
+function playListMusic(event) {
+    let audioSrc = event.currentTarget.lastElementChild.dataset.audioSrc;
+    let audioId = event.currentTarget.lastElementChild.dataset.id;
+    audio.src = audioSrc;
+    isPlay = false;
+    musicCounter = audioId;
+    playMusic();
+}
+
+function showDropDown() {
+    listItemMusicPopUp.classList.toggle("active-popup");
 }
 

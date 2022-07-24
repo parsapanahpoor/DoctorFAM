@@ -117,10 +117,28 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Appointment Setting" xml:space="preserve">
-    <value>إعدادات المواعيد</value>
+  <data name="Add New Employee" xml:space="preserve">
+    <value>Yeni bir çalışan ekle</value>
   </data>
-  <data name="Docotr Panel" xml:space="preserve">
-    <value>لوحة الطبيب</value>
+  <data name="Avatar" xml:space="preserve">
+    <value>avatar</value>
+  </data>
+  <data name="Delete Filter" xml:space="preserve">
+    <value>Filtreyi kaldır</value>
+  </data>
+  <data name="Filter" xml:space="preserve">
+    <value>Filtre</value>
+  </data>
+  <data name="List Of Your Employees" xml:space="preserve">
+    <value>Çalışanlarınızın listesi</value>
+  </data>
+  <data name="Personal Info" xml:space="preserve">
+    <value>Bilgi</value>
+  </data>
+  <data name="Possibilities" xml:space="preserve">
+    <value>Olasılıklar</value>
+  </data>
+  <data name="User Fiter" xml:space="preserve">
+    <value>Kullanıcıları filtrele</value>
   </data>
 </root>

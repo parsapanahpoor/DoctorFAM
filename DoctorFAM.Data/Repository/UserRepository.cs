@@ -25,9 +25,19 @@ namespace DoctorFAM.Data.Repository
 
         #region Site Side
 
+        public async Task<User?> GetUserByMobile(string Mobile)
+        {
+            return await _context.Users.FirstOrDefaultAsync(p => !p.IsDelete && p.Mobile == Mobile);
+        }
+
         public async Task<bool> IsExistUserById(ulong userId)
         {
             return await _context.Users.AnyAsync(p => !p.IsDelete && p.Id == userId);
+        }
+
+        public async Task SaveChangesAsync()
+        {
+            await _context.SaveChangesAsync();
         }
 
         #endregion

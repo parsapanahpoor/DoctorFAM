@@ -186,6 +186,9 @@
   <data name="Display Name" xml:space="preserve">
     <value>أظهر الاسم</value>
   </data>
+  <data name="DoctorOffice" xml:space="preserve">
+    <value>عيادة</value>
+  </data>
   <data name="DynamicPage ShortDescription" xml:space="preserve">
     <value>وصف موجز للصفحة</value>
   </data>
@@ -203,6 +206,9 @@
   </data>
   <data name="Enable SSL" xml:space="preserve">
     <value>تفعيل SSL</value>
+  </data>
+  <data name="End Time" xml:space="preserve">
+    <value>وقت النهاية</value>
   </data>
   <data name="EndPrice" xml:space="preserve">
     <value>نهاية السعر</value>
@@ -246,11 +252,17 @@
   <data name="Home Phone Number" xml:space="preserve">
     <value>رقم الهاتف المنزلي</value>
   </data>
+  <data name="In Person" xml:space="preserve">
+    <value>قم بالزيارة شخصيًا</value>
+  </data>
   <data name="InsuranceType" xml:space="preserve">
     <value>تأمين</value>
   </data>
   <data name="Iranian health" xml:space="preserve">
     <value>الصحة الإيرانية</value>
+  </data>
+  <data name="Laboratory" xml:space="preserve">
+    <value>معمل</value>
   </data>
   <data name="Laboratory fee at home in Rials" xml:space="preserve">
     <value>رسوم المختبر في المنزل بالريال</value>
@@ -298,8 +310,17 @@
   <data name="Not Found" xml:space="preserve">
     <value>لم يتم العثور على</value>
   </data>
+  <data name="Not Reserved" xml:space="preserve">
+    <value>غير محجوز</value>
+  </data>
   <data name="NotDeleted" xml:space="preserve">
     <value>غير محذوف</value>
+  </data>
+  <data name="Office address" xml:space="preserve">
+    <value>عنوان المكتب</value>
+  </data>
+  <data name="Online" xml:space="preserve">
+    <value>متصل</value>
   </data>
   <data name="Paid and waiting to choose a doctor" xml:space="preserve">
     <value>تدفع وتنتظر اختيار الطبيب</value>
@@ -324,6 +345,9 @@
   </data>
   <data name="Permission Name" xml:space="preserve">
     <value>نام دسترسی</value>
+  </data>
+  <data name="Pharmacy" xml:space="preserve">
+    <value>مقابل</value>
   </data>
   <data name="Pharmacy tariff at home in Rials" xml:space="preserve">
     <value>تعرفة الصيدلة في المنزل بالريال</value>
@@ -367,6 +391,12 @@
   <data name="Rejected" xml:space="preserve">
     <value>غير مقبول</value>
   </data>
+  <data name="Reservation Date" xml:space="preserve">
+    <value>تاريخ الحجز</value>
+  </data>
+  <data name="Reserved" xml:space="preserve">
+    <value>محجوز</value>
+  </data>
   <data name="Role Title" xml:space="preserve">
     <value>عنوان نقش</value>
   </data>
@@ -388,6 +418,9 @@
   <data name="Specialty" xml:space="preserve">
     <value>تخصص</value>
   </data>
+  <data name="Start Time" xml:space="preserve">
+    <value>وقت البدء</value>
+  </data>
   <data name="State" xml:space="preserve">
     <value>استان</value>
   </data>
@@ -405,6 +438,9 @@
   </data>
   <data name="Tariff for issuance of death certificate in Rials" xml:space="preserve">
     <value>تعريفة إصدار شهادة الوفاة بالريال</value>
+  </data>
+  <data name="The entered date is not valid" xml:space="preserve">
+    <value>التاريخ المدخل غير صالح</value>
   </data>
   <data name="The entered national code is not valid" xml:space="preserve">
     <value>الكود الوطني الذي تم إدخاله غير صالح</value>
@@ -438,6 +474,9 @@
   </data>
   <data name="Username" xml:space="preserve">
     <value />
+  </data>
+  <data name="Waiting For Complete" xml:space="preserve">
+    <value>في انتظار اكتمال</value>
   </data>
   <data name="Waiting for information to be filled by the user" xml:space="preserve">
     <value>في انتظار المعلومات ليتم ملؤها من قبل المستخدم</value>

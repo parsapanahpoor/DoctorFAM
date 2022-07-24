@@ -5,10 +5,13 @@ using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Application.StaticTools;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.Interest;
+using DoctorFAM.Domain.Entities.Organization;
+using DoctorFAM.Domain.Entities.WorkAddress;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DosctorSideBarInfo;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.Employees;
 using Microsoft.AspNetCore.Http;
 
 namespace DoctorFAM.Application.Services.Implementation
@@ -17,30 +20,43 @@ namespace DoctorFAM.Application.Services.Implementation
     {
         #region Ctor
 
-        public IDoctorsRepository _doctorRepository;
+        private readonly IDoctorsRepository _doctorRepository;
 
-        public IUserService _userService;
+        private readonly IUserService _userService;
 
-        public DoctorsService(IDoctorsRepository doctorRepository , IUserService userService)
+        private readonly IOrganizationService _organizationService;
+
+        private readonly IWorkAddressService _workAddress;
+
+        public DoctorsService(IDoctorsRepository doctorRepository, IUserService userService , IOrganizationService organizationService ,
+                                IWorkAddressService workAddress)
         {
             _doctorRepository = doctorRepository;
             _userService = userService;
+            _organizationService = organizationService;
+            _workAddress = workAddress;
         }
 
         #endregion
 
         #region Doctors Panel Side
 
+        public async Task<FilterDoctorOfficeEmployeesViewmodel> FilterDoctorOfficeEmployees(FilterDoctorOfficeEmployeesViewmodel filter)
+        {
+            return await _doctorRepository.FilterDoctorOfficeEmployees(filter);
+        }
+
         public async Task AddDoctorForFirstTime(ulong userId)
         {
-            #region Fill Model
+            #region Doctor Entity
+
+            #region Fill Doctor Model
 
             Doctor doctor = new Doctor()
             {
                 UserId = userId,
                 CreateDate = DateTime.Now,
                 IsDelete = false,
-                DoctorsInfosType = DoctorsInfosType.JustRegister
             };
 
             #endregion
@@ -48,6 +64,53 @@ namespace DoctorFAM.Application.Services.Implementation
             #region Add Methods 
 
             await _doctorRepository.AddDoctor(doctor);
+
+            #endregion
+
+            #endregion
+
+            #region Organization Entity
+
+            #region Fill Organization Model
+
+            Organization organization = new Organization()
+            {
+                CreateDate = DateTime.Now,
+                IsDelete = false,
+                OrganizationInfoState = OrganizationInfoState.JustRegister,
+                OrganizationType = Domain.Enums.Organization.OrganizationType.DoctorOffice,
+                OwnerId = userId,
+            };
+
+            #endregion
+
+            #region Add Method
+
+            var organizationId = await _organizationService.AddOrganizationWithReturnId(organization);
+
+            #endregion
+
+            #endregion
+
+            #region Organization Member
+
+            #region Fill Model 
+
+            OrganizationMember member = new OrganizationMember()
+            {
+                CreateDate = DateTime.Now,
+                IsDelete=false,
+                OrganizationId = organizationId,
+                UserId = userId
+            };
+
+            #endregion
+
+            #region Add Organization Member
+
+            await _organizationService.AddOrganizationMember(member);
+
+            #endregion
 
             #endregion
         }
@@ -82,6 +145,20 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #endregion
 
+            #region Get Current Doctor Office
+
+            var doctorOffice = await _organizationService.GetOrganizationByUserId(userId);
+            if (doctorOffice == null) return null;
+            if (doctorOffice.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice) return null;
+
+            #endregion
+
+            #region Get User Office Address
+
+            var workAddress = await _workAddress.GetUserWorkAddressById(userId);
+
+            #endregion
+
             #region Exist Doctor Information
 
             //Is Exist Doctor Informations
@@ -94,14 +171,17 @@ namespace DoctorFAM.Application.Services.Implementation
                 ManageDoctorsInfoViewModel model = new ManageDoctorsInfoViewModel()
                 {
                     UserId = userId,
-                    DoctorsInfosType = doctorInfo.Doctor.DoctorsInfosType,
+                    DoctorsInfosType = doctorOffice.OrganizationInfoState,
                     Education = doctorInfo.Education,
                     MediacalFile = doctorInfo.MediacalFile,
                     MedicalSystemCode = doctorInfo.MedicalSystemCode,
                     NationalCode = doctorInfo.NationalCode,
-                    RejectDescription = doctorInfo.Doctor.RejectDescription,
+                    RejectDescription = doctorOffice.RejectDescription,
                     Specialty = doctorInfo.Specialty
                 };
+
+                //Fill Doctor Cilinic Address
+                if(workAddress != null) model.WorkAddress = workAddress.Address;
 
                 return model;
             }
@@ -133,6 +213,14 @@ namespace DoctorFAM.Application.Services.Implementation
             var user = await _userService.GetUserById(model.UserId);
 
             if (user == null) return AddOrEditDoctorInfoResult.Faild;
+
+            #endregion
+
+            #region Get Current Doctor Office
+
+            var doctorOffice = await _organizationService.GetOrganizationByUserId(model.UserId);
+            if (doctorOffice == null) return AddOrEditDoctorInfoResult.Faild;
+            if (doctorOffice.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice) return AddOrEditDoctorInfoResult.Faild;
 
             #endregion
 
@@ -172,8 +260,8 @@ namespace DoctorFAM.Application.Services.Implementation
                 info.NationalCode = model.NationalCode;
                 info.MedicalSystemCode = model.MedicalSystemCode;
 
-                //Update Doctor State 
-                doctor.DoctorsInfosType = DoctorsInfosType.WatingForConfirm;
+                //Update Doctor Office State 
+                doctorOffice.OrganizationInfoState = OrganizationInfoState.WatingForConfirm;
 
                 #endregion
 
@@ -193,11 +281,35 @@ namespace DoctorFAM.Application.Services.Implementation
 
                 #endregion
 
+                #region Update Doctor Address
+
+                var doctorAddress = await _workAddress.GetUserWorkAddressById(model.UserId);
+
+                if (doctorAddress != null)
+                {
+                    doctorAddress.Address = model.WorkAddress;
+                    await _workAddress.UpdateUserWorkAddress(doctorAddress);
+                }
+
+                if (doctorAddress == null && model.WorkAddress != null )
+                {
+                    WorkAddress workAddress = new WorkAddress()
+                    {
+                        Address = model.WorkAddress,
+                        UserId = model.UserId,
+                        CreateDate = DateTime.Now,
+                    };
+
+                    await _workAddress.AddWorkAddress(workAddress);
+                }
+
+                #endregion
+
                 #region Update Methods
 
                 await _doctorRepository.UpdateDoctorsInfo(info);
 
-                await _doctorRepository.UpdateDoctorState(doctor);
+                await _organizationService.UpdateOrganization(doctorOffice);
 
                 #endregion
             }
@@ -219,7 +331,6 @@ namespace DoctorFAM.Application.Services.Implementation
                         MedicalSystemCode = model.MedicalSystemCode,
                         NationalCode = model.NationalCode,
                         Specialty = model.Specialty.SanitizeText(),
-
                     };
 
                     #endregion
@@ -235,9 +346,24 @@ namespace DoctorFAM.Application.Services.Implementation
 
                     #endregion
 
-                    #region Update Doctror
+                    #region Add Doctor Address
 
-                    doctor.DoctorsInfosType = DoctorsInfosType.WatingForConfirm;
+                    if (model.WorkAddress != null)
+                    {
+                        WorkAddress workAddress = new WorkAddress()
+                        {
+                            UserId = model.UserId,
+                            Address = model.WorkAddress
+                        };
+
+                        await _workAddress.AddWorkAddress(workAddress);
+                    }
+                   
+                    #endregion
+
+                    #region Update Doctor Office
+
+                    doctorOffice.OrganizationInfoState = OrganizationInfoState.WatingForConfirm;
 
                     #endregion
 
@@ -245,7 +371,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
                     await _doctorRepository.AddDoctorsInfo(manageDoctorsInfoViewModel1);
 
-                    await _doctorRepository.UpdateDoctorState(doctor);
+                    await _organizationService.UpdateOrganization(doctorOffice);
 
                     #endregion
                 }
@@ -255,13 +381,72 @@ namespace DoctorFAM.Application.Services.Implementation
 
                     Doctor newDoctor = new Doctor()
                     {
-                        DoctorsInfosType = DoctorsInfosType.JustRegister,
                         CreateDate = DateTime.Now,
                         UserId = user.Id,
                         IsDelete = false
                     };
 
                     var newDoctorId = await _doctorRepository.AddDoctor(newDoctor);
+
+                    #endregion
+
+                    #region Add Doctor Address
+
+                    if (model.WorkAddress != null)
+                    {
+                        WorkAddress workAddress = new WorkAddress()
+                        {
+                            UserId = model.UserId,
+                            Address = model.WorkAddress
+                        };
+
+                        await _workAddress.AddWorkAddress(workAddress);
+                    }
+     
+                    #endregion
+
+                    #region Organization Entity
+
+                    #region Fill Organization Model
+
+                    Organization organization = new Organization()
+                    {
+                        CreateDate = DateTime.Now,
+                        IsDelete = false,
+                        OrganizationInfoState = OrganizationInfoState.JustRegister,
+                        OrganizationType = Domain.Enums.Organization.OrganizationType.DoctorOffice,
+                        OwnerId = model.UserId,
+                    };
+
+                    #endregion
+
+                    #region Add Method
+
+                    var organizationId = await _organizationService.AddOrganizationWithReturnId(organization);
+
+                    #endregion
+
+                    #endregion
+
+                    #region Organization Member
+
+                    #region Fill Model 
+
+                    OrganizationMember member = new OrganizationMember()
+                    {
+                        CreateDate = DateTime.Now,
+                        IsDelete = false,
+                        OrganizationId = organizationId,
+                        UserId = model.UserId,
+                    };
+
+                    #endregion
+
+                    #region Add Organization Member
+
+                    await _organizationService.AddOrganizationMember(member);
+
+                    #endregion
 
                     #endregion
 
@@ -333,12 +518,20 @@ namespace DoctorFAM.Application.Services.Implementation
             return await _doctorRepository.GetDoctorInterestsInfo();
         }
 
-        public async Task<DoctorSelectedInterestResult> AddDoctorSelectedInterest(ulong interestId , ulong userId)
+        public async Task<DoctorSelectedInterestResult> AddDoctorSelectedInterest(ulong interestId, ulong userId)
         {
             #region Gett Doctor
 
             var doctor = await _doctorRepository.GetDoctorByUserId(userId);
             if (doctor == null) return DoctorSelectedInterestResult.Faild;
+
+            #endregion
+
+            #region Get Current Doctor Office
+
+            var doctorOffice = await _organizationService.GetOrganizationByUserId(userId);
+            if (doctorOffice == null) return DoctorSelectedInterestResult.Faild;
+            if (doctorOffice.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice) return DoctorSelectedInterestResult.Faild;
 
             #endregion
 
@@ -376,18 +569,19 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #endregion
 
-            #region Update Doctor State 
+            #region Update Doctor Office State 
 
-            doctor.DoctorsInfosType = DoctorsInfosType.WatingForConfirm;
+            //Update Doctor Office State 
+            doctorOffice.OrganizationInfoState = OrganizationInfoState.WatingForConfirm;
 
-            await _doctorRepository.UpdateDoctorState(doctor);
+            await _organizationService.UpdateOrganization(doctorOffice);
 
             #endregion
 
             return DoctorSelectedInterestResult.Success;
         }
 
-        public async Task<DoctorSelectedInterestResult> DeleteDoctorSelectedInterestDoctorPanel(ulong interestId , ulong userId)
+        public async Task<DoctorSelectedInterestResult> DeleteDoctorSelectedInterestDoctorPanel(ulong interestId, ulong userId)
         {
             #region Get Doctor
 
@@ -398,14 +592,14 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #region Get Interest 
 
-            var interest = await _doctorRepository.GetDoctorSelectedInterestByDoctorIdAndInetestId(interestId , doctor.Id);
+            var interest = await _doctorRepository.GetDoctorSelectedInterestByDoctorIdAndInetestId(interestId, doctor.Id);
             if (interest == null) return DoctorSelectedInterestResult.ItemNotExist;
 
             #endregion
 
             #region Get Doctor Selected Interest
 
-            var selectedItem = await _doctorRepository.GetDoctorSelectedInterestByDoctorIdAndInetestId(interestId , doctor.Id);
+            var selectedItem = await _doctorRepository.GetDoctorSelectedInterestByDoctorIdAndInetestId(interestId, doctor.Id);
             if (selectedItem == null) return DoctorSelectedInterestResult.ItemNotExist;
 
             #endregion
@@ -443,7 +637,7 @@ namespace DoctorFAM.Application.Services.Implementation
             #region Get Doctor Info
 
             //Get Doctor Info By Id
-            var info = await _doctorRepository.GetDoctorsInfoById(doctorInfoId);
+            var info = await _doctorRepository.GetDoctorsInfoByDoctorId(doctorInfoId);
 
             if (info == null) return null;
 
@@ -457,6 +651,14 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #endregion
 
+            #region Get Current Doctor Office
+
+            var doctorOffice = await _organizationService.GetOrganizationByUserId(doctor.UserId);
+            if (doctorOffice == null) return null;
+            if (doctorOffice.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice) return null;
+
+            #endregion
+        
             #region Fill View Model
 
             DoctorsInfoDetailViewModel model = new DoctorsInfoDetailViewModel()
@@ -467,12 +669,18 @@ namespace DoctorFAM.Application.Services.Implementation
                 Education = info.Education,
                 Specialty = info.Specialty,
                 MediacalFile = info.MediacalFile,
-                RejectDescription = info.Doctor.RejectDescription,
-                DoctorsInfosType = doctor.DoctorsInfosType,
+                RejectDescription = doctorOffice.RejectDescription,
+                DoctorsInfosType = doctorOffice.OrganizationInfoState,
                 Id = info.Id,
                 DoctorId = doctor.Id,
                 DoctorsInterests = await _doctorRepository.GetDoctorSelectedInterests(doctor.Id),
             };
+
+            #endregion
+
+            #region Get Doctor Work Addresses
+
+            model.WorkAddresses = await _workAddress.GetUserWorkAddressesByUserId(doctor.UserId);
 
             #endregion
 
@@ -486,7 +694,7 @@ namespace DoctorFAM.Application.Services.Implementation
             //Get Doctor Info By Id
             var info = await _doctorRepository.GetDoctorsInfoById(model.Id);
 
-            if(info == null) return EditDoctorInfoResult.faild;
+            if (info == null) return EditDoctorInfoResult.faild;
 
             #endregion
 
@@ -496,17 +704,25 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #endregion
 
+            #region Get Current Doctor Office
+
+            var doctorOffice = await _organizationService.GetOrganizationByUserId(doctor.UserId);
+            if (doctorOffice == null) return EditDoctorInfoResult.faild;
+            if (doctorOffice.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice) return EditDoctorInfoResult.faild;
+
+            #endregion
+
             #region Update Doctor 
 
-            doctor.DoctorsInfosType = model.DoctorsInfosType;
-            doctor.RejectDescription = model.RejectDescription;
+            doctorOffice.OrganizationInfoState = model.DoctorsInfosType;
+            doctorOffice.RejectDescription = model.RejectDescription;
 
-            if (model.DoctorsInfosType == DoctorsInfosType.Accepted)
+            if (model.DoctorsInfosType == OrganizationInfoState.Accepted)
             {
-                doctor.RejectDescription = null;
+                doctorOffice.RejectDescription = null;
             }
 
-            await _doctorRepository.UpdateDoctorState(doctor);
+            await _organizationService.UpdateOrganization(doctorOffice);
 
             #endregion
 

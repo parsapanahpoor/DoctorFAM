@@ -2,6 +2,7 @@
 using DoctorFAM.Domain.Entities.Interest;
 using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DosctorSideBarInfo;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.Employees;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,6 +58,10 @@ namespace DoctorFAM.Domain.Interfaces
         Task<ListOfDoctorsInfoViewModel> FilterDoctorsInfoAdminSide(ListOfDoctorsInfoViewModel filter);
 
         Task<DoctorsInfo?> GetDoctorsInfoById(ulong doctorInfoId);
+
+        Task<DoctorsInfo?> GetDoctorsInfoByDoctorId(ulong doctorId);
+
+        Task<FilterDoctorOfficeEmployeesViewmodel> FilterDoctorOfficeEmployees(FilterDoctorOfficeEmployeesViewmodel filter);
 
         #endregion
     }

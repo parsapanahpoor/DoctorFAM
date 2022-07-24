@@ -1121,11 +1121,11 @@ span,
     font-weight: bold;
 }
 
-.navbar-nav .nav-link:hover,
-.navbar-nav .nav-item .nav-link.active {
-    background: #fd5b03;
-    color: #ffffff;
-}
+    .navbar-nav .nav-link:hover,
+    .navbar-nav .nav-item .nav-link.active {
+        background: #fd5b03;
+        color: #ffffff;
+    }
 
 .header-2 {
     position: absolute;

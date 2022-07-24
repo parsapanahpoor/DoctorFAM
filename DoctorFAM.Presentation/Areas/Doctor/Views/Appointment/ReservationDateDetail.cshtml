@@ -1,0 +1,195 @@
+﻿@model DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment.FilterReservationDateTimeDoctorPAnel
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Domain.ViewModels.Common
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
+
+
+@{
+    ViewData["Title"] = @Localizer["Reservation Date Time Detail"];
+}
+
+@section Styles
+{
+}
+
+@section Scripts
+{
+<partial name="_JqueryValidation" />
+}
+
+@section Breadcrumb
+{
+<li>
+    <a href="javascript:void(0)"> @ViewData["Title"] </a>
+</li>
+}
+
+<div class="row">
+    <div class="col-lg-3 col-sm-12">
+
+        <a class="btn btn-sky w-100 margin-bottom-10" asp-action="AddReservationDateTime" asp-route-reservationDateId="@Model.ReservationDateId" asp-controller="Appointment" asp-area="Doctor"> @Localizer["Add New Date Time"] </a>
+
+        <div class="widget">
+            <div class="widget-header bordered-bottom bordered-green">
+                <span class="widget-caption"> @Localizer["Manage Reservation Date Time"] </span>
+            </div>
+            <div class="widget-body">
+                <div>
+                    <form asp-action="ReservationDateDetail" asp-controller="Appointment" asp-area="Doctor" id="filter-search" method="get">
+
+                        <input type="hidden" asp-for="Page" />
+                        <input type="hidden" asp-for="ReservationDateId" />
+
+                        <div class="form-group">
+                            <label asp-for="FilterDoctorReservationState"> @Localizer["Order By State"] </label>
+                            <select asp-for="FilterDoctorReservationState" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.DoctorReservation.FilterDoctorReservationState))"></select>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="FilterDoctorReservationType"> @Localizer["Order By Type"] </label>
+                            <select asp-for="FilterDoctorReservationType" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.DoctorReservation.FilterDoctorReservationType))"></select>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="FilterRequestOrder"> @Localizer["Order By Create Date"] </label>
+                            <select asp-for="FilterRequestOrder" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.Request.FilterRequestOrder))"></select>
+                        </div>
+
+                        <hr />
+
+                        <div class="row">
+                            <div class="col-md-12 flex-style">
+                                <button type="submit" class="btn btn-labeled w-100 btn-palegreen">
+                                    <i class="btn-label glyphicon glyphicon-filter"></i>@Localizer["Filter"]
+                                </button>
+
+                                @if (Context.Request.QueryString.HasValue)
+                                {
+                                    <a asp-action="ReservationDateDetail" asp-route-ReservationDateId="@Model.ReservationDateId" asp-controller="Appointment" asp-area="Doctor" class="btn btn-labeled w-100 btn-darkorange ">
+                                        <i class="btn-label glyphicon glyphicon-remove"></i>@Localizer["Delete Filter"]
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-9 col-sm-12">
+        <div class="well with-header with-footer table-responsive">
+            <div class="header bordered-azure">
+                <div class="flex-style">
+                    <span>@ViewData["Title"]</span>
+                    <span>@Model.GetShownEntitiesPagesTitle()</span>
+                </div>
+            </div>
+
+            @if (Model.Entities != null && Model.Entities.Any())
+            {
+                <table class="table table-hover table-bordered tc vm">
+                    <thead class="tc vm">
+                        <tr class="tc vm">
+                            <th class="tc vm">
+                                @Localizer["Start Date"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["End Date"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["Status"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["Type"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["Possibilities"]
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="tc vm">
+                        @foreach (var date in Model.Entities)
+                        {
+                            <tr class="tc vm" remove-ajax-item="@date.Id">
+                                <td class="vm">
+                                    <div class="flex-style-center">
+                                        <p> @date.StartTime </p>
+                                    </div>
+                                </td>
+                                <td class="vm">
+                                    <div class="flex-style-center">
+                                        <p> @date.EndTime </p>
+                                    </div>
+                                </td>
+                                <td class="tc vm">
+                                    <p>
+                                        @if (date.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.NotReserved)
+                                        {
+                                            <span class="mr-8px label label-orange">@Localizer["Not Reserved Yet"] </span>
+                                        }
+
+                                        @if (date.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.Reserved)
+                                        {
+                                            <span class="mr-8px label label-success">@Localizer["Reserved"] </span>
+                                        }
+
+                                        @if (date.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.WaitingForComplete)
+                                        {
+                                            <span class="mr-8px label label-orange">@Localizer["Waiting For Complete"] </span>
+                                        }
+                                    </p>
+                                </td>
+
+                                <td class="tc vm">
+                                    <p>
+                                        @if (date.DoctorReservationType == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationType.Onile)
+                                        {
+                                            <span class="mr-8px label label-info">@Localizer["Online"] </span>
+                                        }
+
+                                        @if (date.DoctorReservationType == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationType.Reserved)
+                                        {
+                                            <span class="mr-8px label label-info">@Localizer["In Persone"] </span>
+                                        }
+
+                                        @if (date.DoctorReservationType == null)
+                                        {
+                                            <span class="mr-8px label label-orange">@Localizer["Not Reserved Yet"] </span>
+                                        }
+                                    </p>
+                                </td>
+
+                                <td class="tc vm">
+
+                                    @if (date.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.NotReserved && date.PatientId == null)
+                                    {
+                                        <button onclick="DeleteAjax(@date.Id, '@Url.Action("DeleteReservationDateTime", "Appointment", new {area = "Doctor", Id = date.Id})')" class="btn btn-danger btn-circle btn-xs"><i class="glyphicon glyphicon-trash"></i></button>
+                                    }
+                                    @if (date.DoctorReservationState != DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.NotReserved && date.PatientId != null)
+                                    {
+                                        <a asp-action="ShowPatientDetail" asp-controller="Appointment" asp-area="Doctor" asp-route-ReservationDateTimeId="@date.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+                                    }
+
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <div class="footer tc">
+
+                    <partial name="_DoctorPanelPaging" model="@Model.GetCurrentPaging()" />
+
+                </div>
+            }
+            else
+            {
+                <partial name="_DoctorPanelNotFoundPartial" />
+            }
+        </div>
+    </div>
+</div>
+

@@ -120,8 +120,14 @@
   <data name="Accepted" xml:space="preserve">
     <value>وافقت</value>
   </data>
+  <data name="Add New Employee" xml:space="preserve">
+    <value>أضف موظف جديد</value>
+  </data>
   <data name="Add new User" xml:space="preserve">
     <value>إضافة مستخدم جديد</value>
+  </data>
+  <data name="Add Reservation Date" xml:space="preserve">
+    <value>إضافة تاريخ الحجز</value>
   </data>
   <data name="An error occurred in the change password process" xml:space="preserve">
     <value>حدث خطأ في عملية تغيير كلمة المرور</value>
@@ -129,14 +135,23 @@
   <data name="Articles List" xml:space="preserve">
     <value>قائمة المقالات</value>
   </data>
+  <data name="Brother" xml:space="preserve">
+    <value>أخ</value>
+  </data>
   <data name="Change Password" xml:space="preserve">
     <value>غير كلمة السر</value>
   </data>
   <data name="Change Picture" xml:space="preserve">
     <value>تغيير الصورة</value>
   </data>
+  <data name="Child" xml:space="preserve">
+    <value>طفل</value>
+  </data>
   <data name="Create Location" xml:space="preserve">
     <value>إنشاء موقع</value>
+  </data>
+  <data name="Create Market Categories" xml:space="preserve">
+    <value>إضافة فئة جديدة</value>
   </data>
   <data name="Create New Article" xml:space="preserve">
     <value>إنشاء مقال جديد</value>
@@ -177,6 +192,9 @@
   <data name="Edit Profile" xml:space="preserve">
     <value>تعديل الملف الشخصي</value>
   </data>
+  <data name="Father" xml:space="preserve">
+    <value>أب</value>
+  </data>
   <data name="Favorite activities" xml:space="preserve">
     <value>الأنشطة الخاصة بك</value>
   </data>
@@ -213,6 +231,15 @@
   <data name="List of covered people" xml:space="preserve">
     <value>قائمة الأشخاص المغطاة</value>
   </data>
+  <data name="List Of Employees" xml:space="preserve">
+    <value>قائمة الموظفين</value>
+  </data>
+  <data name="List of products" xml:space="preserve">
+    <value>قائمة المنتجات</value>
+  </data>
+  <data name="List Of Reservations" xml:space="preserve">
+    <value>قائمة الحجوزات</value>
+  </data>
   <data name="List Of Roles" xml:space="preserve">
     <value>قائمة الأدوار</value>
   </data>
@@ -231,8 +258,14 @@
   <data name="Manage Doctors Info" xml:space="preserve">
     <value>إدارة معلومات الأطباء</value>
   </data>
+  <data name="Manage Employees" xml:space="preserve">
+    <value>إدارة شؤون الموظفين</value>
+  </data>
   <data name="Manage Locations" xml:space="preserve">
     <value>إدارة المواقع</value>
+  </data>
+  <data name="Manage Market Categories" xml:space="preserve">
+    <value>إدارة فئات المنتجات</value>
   </data>
   <data name="Manage Pages" xml:space="preserve">
     <value>إدارة صفحات</value>
@@ -240,11 +273,23 @@
   <data name="Manage Population Covered" xml:space="preserve">
     <value>إدارة السكان المغطاة</value>
   </data>
+  <data name="Manage Products" xml:space="preserve">
+    <value>إدارة المنتجات</value>
+  </data>
   <data name="Manage Roles" xml:space="preserve">
     <value>إدارة الأدوار</value>
   </data>
   <data name="Manage Users" xml:space="preserve">
     <value>ادارة المستخدمين</value>
+  </data>
+  <data name="Market Categories List" xml:space="preserve">
+    <value>قائمة الفئات</value>
+  </data>
+  <data name="Mobile Number is Duplicated" xml:space="preserve">
+    <value>رقم الهاتف المحمول المدخل غير مقبول.</value>
+  </data>
+  <data name="Mother" xml:space="preserve">
+    <value>الأم</value>
   </data>
   <data name="Not Found" xml:space="preserve">
     <value>لا يوجد لا تجد</value>
@@ -257,6 +302,9 @@
   </data>
   <data name="Options" xml:space="preserve">
     <value>خيارات</value>
+  </data>
+  <data name="Partner" xml:space="preserve">
+    <value>زوج</value>
   </data>
   <data name="Patient Transport" xml:space="preserve">
     <value>نقل المريض</value>
@@ -278,6 +326,12 @@
   </data>
   <data name="Records of medical" xml:space="preserve">
     <value>سجلات الإجراءات الطبية</value>
+  </data>
+  <data name="Reservation History" xml:space="preserve">
+    <value>محفوظات الحجز</value>
+  </data>
+  <data name="Sister" xml:space="preserve">
+    <value>أخت</value>
   </data>
   <data name="Site Setting" xml:space="preserve">
     <value>إعداد الموقع</value>

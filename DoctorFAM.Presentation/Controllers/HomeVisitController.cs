@@ -101,10 +101,19 @@ namespace DoctorFAM.Web.Controllers
 
             #endregion
 
+            #region Get User By Id 
+
+            var user = await _userService.GetUserById(User.GetUserId());
+
+            #endregion
+
             return View(new PatientViewModel()
             {
                 RequestId = requestId,
                 UserId = User.GetUserId(),
+                NationalId = !string.IsNullOrEmpty(user.NationalId) ? user.NationalId : null,
+                PatientName = !string.IsNullOrEmpty(user.FirstName) ? user.FirstName : null,
+                PatientLastName = !string.IsNullOrEmpty(user.LastName) ? user.LastName : null,
             });
         }
 

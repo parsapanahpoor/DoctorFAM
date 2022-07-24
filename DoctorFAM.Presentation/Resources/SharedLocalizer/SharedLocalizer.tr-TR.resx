@@ -120,11 +120,17 @@
   <data name="Accepted" xml:space="preserve">
     <value>Kabul edilmiş</value>
   </data>
+  <data name="Add New Employee" xml:space="preserve">
+    <value>Yeni bir çalışan ekle</value>
+  </data>
   <data name="Add New Role" xml:space="preserve">
     <value>Yeni Rol Ekle</value>
   </data>
   <data name="Add new User" xml:space="preserve">
     <value>Yeni Kullanıcı Ekle</value>
+  </data>
+  <data name="Add Reservation Date" xml:space="preserve">
+    <value>Yeni tarih ekle</value>
   </data>
   <data name="An error occurred in the change password process" xml:space="preserve">
     <value>Şifre değiştirme işleminde bir hata oluştu</value>
@@ -132,14 +138,23 @@
   <data name="Articles List" xml:space="preserve">
     <value>Makale Listesi</value>
   </data>
+  <data name="Brother" xml:space="preserve">
+    <value>Abi</value>
+  </data>
   <data name="Change Password" xml:space="preserve">
     <value>şifre değiştir</value>
   </data>
   <data name="Change Picture" xml:space="preserve">
     <value>Resmi değiştir</value>
   </data>
+  <data name="Child" xml:space="preserve">
+    <value>çocuk</value>
+  </data>
   <data name="Create Location" xml:space="preserve">
     <value>Konum Oluştur</value>
+  </data>
+  <data name="Create Market Categories" xml:space="preserve">
+    <value>Yeni Kategori Ekle</value>
   </data>
   <data name="Create New Article" xml:space="preserve">
     <value>Yeni Makale Oluştur</value>
@@ -180,6 +195,9 @@
   <data name="Edit Profile" xml:space="preserve">
     <value>profili Düzenle</value>
   </data>
+  <data name="Father" xml:space="preserve">
+    <value>Baba</value>
+  </data>
   <data name="Favorite activities" xml:space="preserve">
     <value>Faaliyetleriniz</value>
   </data>
@@ -216,6 +234,15 @@
   <data name="List of covered people" xml:space="preserve">
     <value>Kapsanan kişilerin listesi</value>
   </data>
+  <data name="List Of Employees" xml:space="preserve">
+    <value>çalışanların listesi</value>
+  </data>
+  <data name="List of products" xml:space="preserve">
+    <value>Ürün listesi</value>
+  </data>
+  <data name="List Of Reservations" xml:space="preserve">
+    <value>randevu listesi</value>
+  </data>
   <data name="List Of Roles" xml:space="preserve">
     <value>Roller Listesi</value>
   </data>
@@ -234,8 +261,14 @@
   <data name="Manage Doctors Info" xml:space="preserve">
     <value>Doktor bilgilerinin yönetimi</value>
   </data>
+  <data name="Manage Employees" xml:space="preserve">
+    <value>Çalışan yönetimi</value>
+  </data>
   <data name="Manage Locations" xml:space="preserve">
     <value>Konumları Yönet</value>
+  </data>
+  <data name="Manage Market Categories" xml:space="preserve">
+    <value>Ürün kategorilerini yönet</value>
   </data>
   <data name="Manage Pages" xml:space="preserve">
     <value>Sayfaları yönet</value>
@@ -243,11 +276,23 @@
   <data name="Manage Population Covered" xml:space="preserve">
     <value>Kapsanan nüfus yönetimi</value>
   </data>
+  <data name="Manage Products" xml:space="preserve">
+    <value>Ürünleri Yönet</value>
+  </data>
   <data name="Manage Roles" xml:space="preserve">
     <value>Rolleri Yönet</value>
   </data>
   <data name="Manage Users" xml:space="preserve">
     <value>Kullanıcıları Yönet</value>
+  </data>
+  <data name="Market Categories List" xml:space="preserve">
+    <value>Kategori listesi</value>
+  </data>
+  <data name="Mobile Number is Duplicated" xml:space="preserve">
+    <value>Girilen cep telefonu numarası kabul edilmiyor.</value>
+  </data>
+  <data name="Mother" xml:space="preserve">
+    <value>Anne</value>
   </data>
   <data name="Not Found" xml:space="preserve">
     <value>Bulunamadı</value>
@@ -260,6 +305,9 @@
   </data>
   <data name="Options" xml:space="preserve">
     <value>Seçenekler</value>
+  </data>
+  <data name="Partner" xml:space="preserve">
+    <value>Eş</value>
   </data>
   <data name="Patient Transport" xml:space="preserve">
     <value>hasta transferi</value>
@@ -281,6 +329,12 @@
   </data>
   <data name="Records of medical" xml:space="preserve">
     <value>Tıbbi Prosedür Kayıtları</value>
+  </data>
+  <data name="Reservation History" xml:space="preserve">
+    <value>Randevu geçmişi</value>
+  </data>
+  <data name="Sister" xml:space="preserve">
+    <value>kardeş</value>
   </data>
   <data name="Site Setting" xml:space="preserve">
     <value>Site Ayarı</value>

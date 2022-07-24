@@ -3,15 +3,14 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<!--body content start-->
-<div class="page-content">
 
+<div class="page-content">
     <div class="row mt-2 text-center justify-content-center ">
         <div class="col-md-3 theme-bg p-4 m-2   text-center justify-content-center">
             <h5 class="font-w-7 text-white mt-3">  خانه سلامت </h5>
 
             <p class="text-justify right text-light">
-               آنچه <b>دکتر فم</b> در منزل به شما ارائه می دهد:
+                آنچه <b>دکتر فم</b> در منزل به شما ارائه می دهد:
             </p>
             <hr />
             <div class="row mt-3 text-center justify-content-center">
@@ -20,7 +19,7 @@
 
                         <div class="featured-icon">
                             @*<i class="flaticon-research fa-2x"></i>*@
-                            <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/01.jpg" alt="">
+                            <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/HouseVisit.jpg" alt="">
                         </div>
                         <p class="text-white mt-2"> ویزیت در منزل </p>
                     </a>
@@ -30,7 +29,7 @@
 
                         <div class="featured-icon">
                             @*<i class="flaticon-report fa-2x"></i>*@
-                            <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/02.jpg" alt="">
+                            <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/HouseNurse.jpg" alt="">
                         </div>
                         <p class="text-white mt-2"> پرستار در منزل </p>
                     </a>
@@ -39,7 +38,7 @@
                     <a class=" hover-icon" asp-action="HomePharmacy" asp-controller="HomePharmacy">
                         <div class="featured-icon">
                             @*<i class="flaticon-testing fa-2x"></i>*@
-                            <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/03.jpg" alt="">
+                            <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/Pharmacy.jpg" alt="">
                         </div>
                         <p class="text-white mt-2"> داروخانه در منزل </p>
                     </a>
@@ -49,31 +48,32 @@
 
                         <div class="featured-icon">
                             @*<i class="flaticon-customer-service fa-2x"></i>*@
-                            <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/04.jpg" alt="">
+                            <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/HomeLab.jpg" alt="">
                         </div>
                         <p class="text-white mt-2"> آزمایشگاه در منزل </p>
                     </a>
                 </div>
-                 <div class="col-md-6 col-sm-6 text-center justify-content-center">
-                    <a class=" hover-icon" asp-action="HomePatientTransport" asp-controller="HomePatientTransport">
+                <div class="col-md-6 col-sm-6 text-center justify-content-center">
+                    <a class=" hover-icon" asp-action="HomePharmacy" asp-controller="HomePharmacy">
                         <div class="featured-icon">
                             @*<i class="flaticon-testing fa-2x"></i>*@
-                            <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/05.jpg" alt="">
+                            <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/Transfer.jpg" alt="">
                         </div>
                         <p class="text-white mt-2"> انتقال بیمار و متوفی </p>
                     </a>
                 </div>
                 <div class="col-md-6 col-sm-6 text-center justify-content-center">
-                    <a class=" hover-icon" asp-action="DeathCertificate" asp-controller="DeathCertificat">
+                    <a class=" hover-icon" asp-action="HomeLaboratory" asp-controller="HomeLaboratory">
 
                         <div class="featured-icon">
                             @*<i class="flaticon-customer-service fa-2x"></i>*@
-                            <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/06.jpg" alt="">
+                            <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/Death.jpg" alt="">
                         </div>
                         <p class="text-white mt-2"> صدور گواهی فوت </p>
                     </a>
                 </div>
-                <a class="btn hover-icon p-3 text-center" style="border:1px solid #0b0637; border-radius:5px !important;" asp-action="HealthHouseItems" asp-controller="Home">
+                
+                <a class="btn hover-icon p-3 mt-3 text-center" style="border:1px solid #0b0637; border-radius:5px !important;" asp-action="HealthHouseItems" asp-controller="Home">
                     <span class="p-5"> بیشتر    </span>
 
                 </a>
@@ -127,7 +127,7 @@
                         <p class="text-white mt-2">تغذیه</p>
                     </a>
                 </div>
-                 <div class="col-md-6 col-sm-6  text-center justify-content-center">
+                <div class="col-md-6 col-sm-6  text-center justify-content-center">
                     <a class=" hover-icon">
 
                         <div class="featured-icon">
@@ -147,22 +147,22 @@
                         <p class="text-white mt-2">سرطان</p>
                     </a>
                 </div>
-
-                <a class="btn hover-icon p-3 text-center" style="border:1px solid #3143ef; border-radius:5px !important;" asp-action="HealthServicesItems" asp-controller="Home">
+                
+                <a class="btn hover-icon mt-3 p-3 text-center" style="border:1px solid #3143ef; border-radius:5px !important;" asp-action="HealthServicesItems" asp-controller="Home">
                     <span class="p-5"> بیشتر    </span>
 
                 </a>
             </div>
         </div>
         <div class="col-md-3 theme-bg-2  p-4 m-2  text-center justify-content-center">
-            <h5 class="font-w-7 text-white mt-3">  نیازمندیهای سلامت </h5>
+            <h5 class="font-w-7 text-white mt-3">  بازار سلامت </h5>
             <p class="text-justify right text-light">
-               از فروشگاه سلامت <b>دکتر فم</b> دیدن نمایید:
+                از فروشگاه سلامت <b>دکتر فم</b> دیدن نمایید:
             </p>
 
             <hr />
             <div class="row mt-3 text-center justify-content-center">
-                <div class="col-md-3 col-sm-3 text-center justify-content-center"></div>
+
                 <div class="col-md-6 col-sm-6 text-center justify-content-center">
                     <a class=" hover-icon" asp-action="MedicalEquipment" asp-controller="Shop">
 
@@ -173,8 +173,7 @@
                         <p class="text-white mt-2"> تجهیزات پزشکی  </p>
                     </a>
                 </div>
-                <div class="col-md-3 col-sm-3 text-center justify-content-center"></div>
-                <div class="col-md-3 col-sm-3 text-center justify-content-center"></div>
+
                 <div class="col-md-6 col-sm-6 text-center justify-content-center">
                     <a class=" hover-icon" asp-action="Cosmetic" asp-controller="Shop">
 
@@ -185,13 +184,22 @@
                         <p class="text-white mt-2"> لوازم آرایشی وبهداشتی </p>
                     </a>
                 </div>
-                <div class="col-md-3 col-sm-3 text-center justify-content-center"></div>
+                <div class="col-md-6 col-sm-6 text-center justify-content-center">
+                    <a class=" hover-icon" asp-action="MedicalEquipment" asp-controller="Shop">
+
+                        <div class="featured-icon">
+                            @*<i class="flaticon-testing fa-2x"></i>*@
+                            <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/03.jpg" alt="">
+                        </div>
+                        <p class="text-white mt-2"> مکمل ها  </p>
+                    </a>
+                </div>
                 <div class="col-md-6 col-sm-6 text-center justify-content-center">
                     <a class=" hover-icon">
 
                         <div class="featured-icon">
                             @*<i class="flaticon-research fa-2x"></i>*@
-                            <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/01.jpg" alt="">
+                            <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/Books.jpg" alt="">
                         </div>
                         <p class="text-white mt-2"> کتب و مجلات </p>
                     </a>
@@ -201,12 +209,23 @@
 
                         <div class="featured-icon">
                             @*<i class="flaticon-connection fa-2x"></i>*@
-                            <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/04.jpg" alt="">
+                            <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/Insurance.jpg" alt="">
                         </div>
                         <p class="text-white mt-2"> خدمات بیمه </p>
                     </a>
                 </div>
-                <a class="btn hover-icon p-3 text-center" style="border:1px solid #0b0637; border-radius:5px !important;" asp-action="HealthProductsItems" asp-controller="Home">
+                <div class="col-md-6 col-sm-6 text-center justify-content-center">
+                    <a class=" hover-icon">
+
+                        <div class="featured-icon">
+                            @*<i class="flaticon-connection fa-2x"></i>*@
+                            <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/04.jpg" alt="">
+                        </div>
+                        <p class="text-white mt-2"> مشاوره حقوقی </p>
+                    </a>
+                </div>
+                
+                <a class="btn hover-icon mt-3 p-3 text-center" style="border:1px solid #0b0637; border-radius:5px !important;" asp-action="HealthProductsItems" asp-controller="Home">
                     <span class="p-5"> بیشتر    </span>
 
                 </a>
@@ -216,7 +235,7 @@
         <div class="col-md-2 theme-bg  p-4 m-2 text-center justify-content-center">
             <h5 class="font-w-7 text-white mt-3">  کلینیک دکترفم </h5>
 
-            <hr />
+            
             <div class="row  text-center justify-content-center ">
 
                 <div class="col-md-12">
@@ -254,21 +273,40 @@
                 </div>
 
             </div>
+            <div class="row  text-center justify-content-center ">
+                <div class="col-md-12">
+                    <img class="KlinikImage rounded box-shadow divch" src="~/Content/images/case-studies/Teath.jpg" alt="">
+                </div>
+                <div class="col-md-12">
+                    <p class="   KlinikContent ">دندانپزشک من</p>
+                </div>
 
+            </div>
         </div>
     </div>
-    
-    <div class="container">
-        <div class="row">
 
-            <div class="col-md-12 col-sm-12 col-lg-12 justify-content-center  text-center align-items-center">
+
+    <div class=" mt-5  pl-3 pr-3">
+        <div class="row mt-5 text-center">
+            <div class="col-lg-12 col-md-12  text-center ">
+                <div class="section-title">
+                    <h2 class="title"> دانستنیهای سلامت </h2>
+                    <h6 class="col-md-8 text-center"> جامعه سالم نتیجه افراد آگاه است. آگاهی در حوزه سلامت به شما کمک میکند ضمن آشنایی با بدن خود نسبت به بروز علایم بیماری حساس بوده و در خصوص بیماری های خود به طور صحیح نسبت به درمان اقدام نمایید.</h6>
+
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-3">
+                <div class="section-title">
+                    <img src="~/Content/Radio/images/icons8.png" />
+                    <h6> رادیو فم </h6>
+                    <p class="title"> <b>رادیو فم</b> هر روز یک برنامه جدید در زمینه پزشکی و سلامت برای شما مخاطب عزیز ارائه میکند. </p>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 text-center">
                 <div id="radio" class="container-fluid">
                     <div class="container">
                         <div class="radio-content">
                             <div class="radio-right">
-                                <!-- <div class="radio-name">
-                                    <span>F1 87.5</span>
-                                </div> -->
                                 <div class="radio-equalizer">
                                     <div id='music-bars' class="">
                                         <span class="four"></span>
@@ -306,6 +344,14 @@
                                 </div>
                             </div>
                             <div class="radio-left">
+                                <div class="radio-folder">
+                                    <i class="material-icons">folder_open</i>
+                                </div>
+                                <div class="radio-music-list-popup">
+                                    <div class="radio-music-list-item">
+                                        <a href="#">مشاهده همه</a>
+                                    </div>
+                                </div>
                                 <div class="radio-controls">
                                     <div class="radio-next">
                                     </div>
@@ -317,33 +363,59 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
+            </div>
+            <div class="col-lg-3 col-md-3">
+                <div class="widget">
+                    <h6 class="widget-title"> کارشناسان برنامه  </h6>
+                    <div class="recent-post">
+                        <ul class="list-unstyled">
+                            <li class="mb-4">
+                                <div class="recent-post-thumb">
+                                    <img class="img-fluid" src="~/Content/images/team/02.jpg" alt="">
+                                </div>
+                                <div class="recent-post-desc">
+                                    <a href="blog-single.html"> مراقبت از چشم  </a>
+                                    <span style="color:red; "> 14 تیر ، 1401 </span>
 
+                                </div>
+                                <a class="btn btn-acc   hover-icon  text-center" asp-action="TeleFamItems" asp-controller="Home">
+                                    <span> ارتباط با کارشناس</span>
+                                </a>
+                            </li>
+                            <li class="mb-4">
+                                <div class="recent-post-thumb">
+                                    <img class="img-fluid" src="~/Content/images/team/04.jpg" alt="">
+                                </div>
+                                <div class="recent-post-desc">
+                                    <a href="blog-single.html"> تنوع محصولات دارویی </a>
+                                    <span style="color:red; "> 6 تیر ، 1401 </span>
+
+                                </div>
+                                <a class="btn btn-acc   hover-icon  text-center" asp-action="TeleFamItems" asp-controller="Home">
+                                    <span> ارتباط با کارشناس</span>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
-
-    </div>
-</div>
-<section>
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-6 col-12  ">
+        <div class="row ">
+            <div class="col-4"></div>
+            <div class="col-4 mt-4 mb-2 linediv"></div>
+            <div class="col-4"></div>
+        </div>
+        <div class="row mt-5  ">
+            <div class="col-lg-3 col-md-3 text-center">
                 <div class="section-title">
                     <i class="fa fa-television fa-2x" style="color:#3143ef;" aria-hidden="true"></i>
-
-                    <h6> تی وی فام </h6>
-                    <h4 class="title"> در تلویزیون دکتر فام به صورت روزانه تماشاگر دانستنیهای علمی در زمینه پزشکی و سلامت باشید </h4>
-                    <p> جامعه سالم نتیجه افراد آگاه است. آگاهی در حوزه سلامت به شما کمک میکند ضمن آشنایی با بدن خود نسبت به بروز علایم بیماری حساس بوده و در خصوص بیماری های خود به طور صحیح نسبت به درمان اقدام نمایید.</p>
-                </div>
-                <div class="col-md-12 text-center">
-                    <a class="btn btn-acc  ml-sm-3 hover-icon p-3 text-center" asp-action="TeleFamItems" asp-controller="Home">
-                        <span class="p-5"> نمایش    </span>
-                    </a>
+                    <h6> تی وی فم </h6>
+                    <p class="title"> در تلویزیون <b>دکتر فم</b> به صورت روزانه تماشاگر دانستنیهای علمی در زمینه پزشکی و سلامت باشید </p>
                 </div>
             </div>
-            <div class="col-lg-6 col-12 ">
-
+            <div class="col-md-6 align-items-center">
                 <div class="video">
                     <video controls>
                         <source src="~/Content/Video/Bardari1.mp4" type="video/mp4">
@@ -353,205 +425,223 @@
                     </div>
                 </div>
             </div>
+            <div class="col-lg-3 col-md-3">
+                <div class="widget">
+                    <h6 class="widget-title"> جدیدترین برنامه  </h6>
+                    <div class="recent-post">
+                        <ul class="list-unstyled">
+                            <li class="mb-4">
+                                <div class="recent-post-thumb">
+                                    <img class="img-fluid" src="~/Content/images/team/02.jpg" alt="">
+                                </div>
+                                <div class="recent-post-desc">
+                                    <a href="blog-single.html"> مراقبت از چشم </a>
+                                    <span style="color:red; "> 14 تیر ، 1401 </span>
+                                    <a class="btn btn-acc   hover-icon  text-center" asp-action="TeleFamItems" asp-controller="Home">
+                                        <span> ارتباط با کارشناس</span>
+                                    </a>
+                                </div>
+
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
+
     </div>
 
-</section>
 
 
 
 
+    <section>
+        <div class="container">
+            <div class="row mt-3 justify-content-center text-center">
+                <div class="col-lg-8 col-md-12">
+                    <div class="section-title">
 
-
-<!--blog start-->
-<section>
-    <div class="container">
-        <div class="row justify-content-center text-center">
-            <div class="col-lg-8 col-md-12">
-                <div class="section-title">
-
-                    <h2 class="title"> اخبار سلامت </h2>
-                    <p class="text-center"> لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد .</p>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-4 col-md-12">
-                <div class="post">
-                    <div class="post-image">
-                        <img class="img-fluid rounded w-100" src="~/Content/images/blog/01.jpg" alt="">
-                    </div>
-                    <div class="post-desc">
-                        <div class="post-meta">
-                            <ul class="list-inline">
-                                <li>
-                                    <a href="#"> مشاوره </a>
-                                </li>
-                                <li> ۱۴ بهمن ، ۱۴۰۰ </li>
-                            </ul>
-                        </div>
-                        <div class="post-title">
-                            <h4><a href="blog-single.html"> بزرگترین نگرانی در مورد مشاوره تحصیلی فرزندان چیست؟ </a></h4>
-                        </div>
-                        <div class="post-author">
-                            <div class="post-author-img">
-                                <img class="img-fluid" src="~/Content/images/thumbnail/01.png" alt="">
-                            </div> <span> ولی کیم</span>
-                        </div>
+                        <h2 class="title"> اخبار سلامت </h2>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 col-md-12 md-mt-5">
-                <div class="post">
-                    <div class="post-image">
-                        <img class="img-fluid rounded w-100" src="~/Content/images/blog/02.jpg" alt="">
-                    </div>
-                    <div class="post-desc">
-                        <div class="post-meta">
-                            <ul class="list-inline">
-                                <li>
-                                    <a href="#"> دیابت </a>
-                                </li>
-                                <li> ۱۵ بهمن ، ۱۴۰۰ </li>
-                            </ul>
+            <div class="row">
+                <div class="col-lg-4 col-md-12">
+                    <div class="post">
+                        <div class="post-image">
+                            <img class="img-fluid rounded w-100" src="~/Content/images/blog/01.jpg" alt="">
                         </div>
-                        <div class="post-title">
-                            <h4><a href="blog-single.html"> برای کنترل دیابت ابتدا باید سبک زندگی خود را مورد بازبینی قراردهید </a></h4>
-                        </div>
-                        <div class="post-author">
-                            <div class="post-author-img">
-                                <img class="img-fluid" src="~/Content/images/thumbnail/02.png" alt="">
-                            </div> <span> دنی جو </span>
+                        <div class="post-desc">
+                            <div class="post-meta">
+                                <ul class="list-inline">
+                                    <li>
+                                        <a href="#"> مشاوره </a>
+                                    </li>
+                                    <li> ۱۴ بهمن ، ۱۴۰۰ </li>
+                                </ul>
+                            </div>
+                            <div class="post-title">
+                                <h4><a href="blog-single.html"> بزرگترین نگرانی در مورد مشاوره تحصیلی فرزندان چیست؟ </a></h4>
+                            </div>
+                            <div class="post-author">
+                                <div class="post-author-img">
+                                    <img class="img-fluid" src="~/Content/images/thumbnail/01.png" alt="">
+                                </div> <span> ولی کیم</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-4 col-md-12 md-mt-5">
-                <div class="post">
-                    <div class="post-image">
-                        <img class="img-fluid rounded w-100" src="~/Content/images/blog/03.jpg" alt="">
+                <div class="col-lg-4 col-md-12 md-mt-5">
+                    <div class="post">
+                        <div class="post-image">
+                            <img class="img-fluid rounded w-100" src="~/Content/images/blog/02.jpg" alt="">
+                        </div>
+                        <div class="post-desc">
+                            <div class="post-meta">
+                                <ul class="list-inline">
+                                    <li>
+                                        <a href="#"> دیابت </a>
+                                    </li>
+                                    <li> ۱۵ بهمن ، ۱۴۰۰ </li>
+                                </ul>
+                            </div>
+                            <div class="post-title">
+                                <h4><a href="blog-single.html"> برای کنترل دیابت ابتدا باید سبک زندگی خود را مورد بازبینی قراردهید </a></h4>
+                            </div>
+                            <div class="post-author">
+                                <div class="post-author-img">
+                                    <img class="img-fluid" src="~/Content/images/thumbnail/02.png" alt="">
+                                </div> <span> دنی جو </span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="post-desc">
-                        <div class="post-meta">
-                            <ul class="list-inline">
-                                <li>
-                                    <a href="#"> سرطان </a>
-                                </li>
-                                <li> ۱۵ بهمن ، ۱۴۰۰ </li>
-                            </ul>
+                </div>
+                <div class="col-lg-4 col-md-12 md-mt-5">
+                    <div class="post">
+                        <div class="post-image">
+                            <img class="img-fluid rounded w-100" src="~/Content/images/blog/03.jpg" alt="">
                         </div>
-                        <div class="post-title">
-                            <h4><a href="blog-single.html"> جدیدترین خدمات خانواده سلامت معرفی شد </a></h4>
-                        </div>
-                        <div class="post-author">
-                            <div class="post-author-img">
-                                <img class="img-fluid" src="~/Content/images/thumbnail/03.png" alt="">
-                            </div> <span> لیتا رین </span>
+                        <div class="post-desc">
+                            <div class="post-meta">
+                                <ul class="list-inline">
+                                    <li>
+                                        <a href="#"> سرطان </a>
+                                    </li>
+                                    <li> ۱۵ بهمن ، ۱۴۰۰ </li>
+                                </ul>
+                            </div>
+                            <div class="post-title">
+                                <h4><a href="blog-single.html"> جدیدترین خدمات خانواده سلامت معرفی شد </a></h4>
+                            </div>
+                            <div class="post-author">
+                                <div class="post-author-img">
+                                    <img class="img-fluid" src="~/Content/images/thumbnail/03.png" alt="">
+                                </div> <span> لیتا رین </span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
-<!--blog end-->
-<!--form start-->
-<section class="pos-r pt-0 mt-8 custom-mt-10 sm-mt-0">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="row no-gutters box-shadow">
-                    <div class="col-md-5 theme-bg p-5">
-                        <div class="section-title mb-4">
-                            <h2 class="title"> درخواست همکاری </h2>
+    </section>
+    <section class="pos-r pt-0 mt-8 custom-mt-10 sm-mt-0">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row no-gutters box-shadow">
+                        <div class="col-md-5 theme-bg p-5">
+                            <div class="section-title mb-4">
+                                <h2 class="title"> درخواست همکاری </h2>
+                            </div>
+                            <p class="line-h-3 text-rgba">
+                                برای پیوستن به همکاران ما در استارت آپ <span style="font-size:22px; color:#fd5b03;">دکترفام</span> فرم زیر را تکمیل نموده و منتظر تماس ما باشید:
+                            </p>
+                            <form id="queto-form" method="post" action="http://themeht.com/consulterz/rtl/php/contact.php">
+                                <div id="formmessage"></div>
+                                <div class="form-group">
+                                    <input id="form_name" type="text" name="name" class="form-control" placeholder="نام و نام خانوادگی " required="required" data-error="لطفا نام خود را وارد کنید .">
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                                <div class="form-group">
+                                    <input id="form_email" type="email" name="email" class="form-control" placeholder="ایمیل " required="required" data-error="لطفا ایمیل خود را وارد کنید .">
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                                <div class="form-group">
+                                    <input id="form_number" type="text" name="phone" class="form-control" placeholder="شماره همراه" required="required">
+                                </div>
+                                <div class="form-group">
+                                    <select name="select" class="form-control">
+                                        <option> - زمینه همکاری خود را انتخاب کنید </option>
+                                        <option> پزشکی </option>
+                                        <option> پیراپزشکی</option>
+                                        <option> مشاور </option>
+                                        <option> پشتیبان </option>
+                                        <option> عرضه محصولات </option>
+                                        <option> سایر </option>
+                                    </select>
+                                </div>
+                                <button class="btn btn-2 btn-border white mt-5">
+                                    <span class="btn-icon btn-arrow"></span>
+                                    <span class="btn-text"> ارسال </span>
+                                </button>
+                            </form>
                         </div>
-                        <p class="line-h-3 text-rgba">
-                            برای پیوستن به همکاران ما در استارت آپ <span style="font-size:22px; color:#fd5b03;">دکترفام</span> فرم زیر را تکمیل نموده و منتظر تماس ما باشید:
-                        </p>
-                        <form id="queto-form" method="post" action="http://themeht.com/consulterz/rtl/php/contact.php">
-                            <div id="formmessage"></div>
-                            <div class="form-group">
-                                <input id="form_name" type="text" name="name" class="form-control" placeholder="نام و نام خانوادگی " required="required" data-error="لطفا نام خود را وارد کنید .">
-                                <div class="help-block with-errors"></div>
-                            </div>
-                            <div class="form-group">
-                                <input id="form_email" type="email" name="email" class="form-control" placeholder="ایمیل " required="required" data-error="لطفا ایمیل خود را وارد کنید .">
-                                <div class="help-block with-errors"></div>
-                            </div>
-                            <div class="form-group">
-                                <input id="form_number" type="text" name="phone" class="form-control" placeholder="شماره همراه" required="required">
-                            </div>
-                            <div class="form-group">
-                                <select name="select" class="form-control">
-                                    <option> - زمینه همکاری خود را انتخاب کنید </option>
-                                    <option> پزشکی </option>
-                                    <option> پیراپزشکی</option>
-                                    <option> مشاور </option>
-                                    <option> پشتیبان </option>
-                                    <option> عرضه محصولات </option>
-                                    <option> سایر </option>
-                                </select>
-                            </div>
-                            <button class="btn btn-2 btn-border white mt-5">
-                                <span class="btn-icon btn-arrow"></span>
-                                <span class="btn-text"> ارسال </span>
-                            </button>
-                        </form>
-                    </div>
-                    <div class="col-md-1"></div>
-                    <div class="col-md-6 white-bg p-5">
-                        <div class="row justify-content-center text-center">
-                            <div class="col-md-12">
-                                <div class="section-title">
-                                    <h2 class="title"> دیدگاه کاربران سایت </h2>
+                        <div class="col-md-1"></div>
+                        <div class="col-md-6 white-bg p-5">
+                            <div class="row justify-content-center text-center">
+                                <div class="col-md-12">
+                                    <div class="section-title">
+                                        <h2 class="title"> دیدگاه کاربران سایت </h2>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="owl-carousel no-pb" data-dots="false" data-nav="true" data-items="1" data-autoplay="true">
-                                    <div class="item">
-                                        <div class="row justify-content-center text-center">
-                                            <div class="col-md-8">
-                                                <div class="testimonial style-2">
-                                                    <div class="testimonial-img">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="owl-carousel no-pb" data-dots="false" data-nav="true" data-items="1" data-autoplay="true">
+                                        <div class="item">
+                                            <div class="row justify-content-center text-center">
+                                                <div class="col-md-8">
+                                                    <div class="testimonial style-2">
+                                                        <div class="testimonial-img">
 
-                                                        <img class="img-fluid d-inline" src="~/Content/images/testimonial/small/01.jpg" alt="">
+                                                            <img class="img-fluid d-inline" src="~/Content/images/testimonial/small/01.jpg" alt="">
 
+                                                        </div>
+                                                        <div class="testimonial-content">
+                                                            <p>
+                                                                با استفاده از امکانات این پروژه بیماران، پاسخ همه سوالات خود را خواهند یافت
+                                                            </p>
+                                                            <div class="testimonial-caption">
+                                                                <h5> لیوره کیولی </h5>
+                                                                <label> فوق تخصص عروق </label>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <div class="testimonial-content">
-                                                        <p>
-                                                            با استفاده از امکانات این پروژه بیماران، پاسخ همه سوالات خود را خواهند یافت
-                                                        </p>
-                                                        <div class="testimonial-caption">
-                                                            <h5> لیوره کیولی </h5>
-                                                            <label> فوق تخصص عروق </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="item">
+                                            <div class="row justify-content-center text-center">
+                                                <div class="col-md-8">
+                                                    <div class="testimonial style-2">
+                                                        <div class="testimonial-img">
+                                                            <img class="img-fluid d-inline" src="~/Content/images/testimonial/small/02.jpg" alt="">
+
+                                                        </div>
+                                                        <div class="testimonial-content">
+                                                            <p>این پروژه بسیار کاربردی و مناسب برای کاربران از هر قشری است.</p>
+
+                                                            <div class="testimonial-caption">
+                                                                <h5> دینو اردن </h5>
+                                                                <label> مدرس دانشگاه </label>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="item">
-                                        <div class="row justify-content-center text-center">
-                                            <div class="col-md-8">
-                                                <div class="testimonial style-2">
-                                                    <div class="testimonial-img">
-                                                        <img class="img-fluid d-inline" src="~/Content/images/testimonial/small/02.jpg" alt="">
-
-                                                    </div>
-                                                    <div class="testimonial-content">
-                                                        <p>این پروژه بسیار کاربردی و مناسب برای کاربران از هر قشری است.</p>
-
-                                                        <div class="testimonial-caption">
-                                                            <h5> دینو اردن </h5>
-                                                            <label> مدرس دانشگاه </label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -559,32 +649,27 @@
                 </div>
             </div>
         </div>
+    </section>
+    <div class="row mt-3 text-center justify-content-center" style="border-top: 1px solid #3143ee;">
+        <div class="col-md-3 mt-3 counter text-center">
+            <span class="count-number text-center" data-to="580" data-speed="100">۵۸۰</span>
+            <span>+</span>
+            <p class="text-center"> خدمت دهندگان </p>
+        </div>
+        <div class="col-md-3 mt-3 counter text-center">
+            <span class="count-number text-center" data-to="912" data-speed="100">۹۱۲</span>
+            <span>+</span>
+            <p class="text-center"> عرضه کنندگان محصولات</p>
+        </div>
+        <div class="col-md-3 mt-3 counter text-center">
+            <span class="count-number text-center" data-to="180000" data-speed="100">۱۸۰۰۰۰</span>
+            <span>+</span>
+            <p class="text-center"> خدمت گیرندگان </p>
+        </div>
+        <div class="col-md-3 mt-3 counter text-center">
+            <span class="count-number text-center" data-to="202000" data-speed="100">۲۰۲۰۰۰</span>
+            <span>+</span>
+            <p class="text-center"> بازدیدکنندگان </p>
+        </div>
     </div>
-</section>
-<!--form end-->
-
-<div class="row mt-3 text-center justify-content-center" style="border-top: 1px solid #3143ee;">
-    <div class="col-md-3 mt-3 counter text-center">
-        <span class="count-number text-center" data-to="580" data-speed="100">۵۸۰</span>
-        <span>+</span>
-        <p class="text-center"> خدمت دهندگان </p>
-    </div>
-    <div class="col-md-3 mt-3 counter text-center">
-        <span class="count-number text-center" data-to="912" data-speed="100">۹۱۲</span>
-        <span>+</span>
-        <p class="text-center"> عرضه کنندگان محصولات</p>
-    </div>
-    <div class="col-md-3 mt-3 counter text-center">
-        <span class="count-number text-center" data-to="180000" data-speed="100">۱۸۰۰۰۰</span>
-        <span>+</span>
-        <p class="text-center"> خدمت گیرندگان </p>
-    </div>
-    <div class="col-md-3 mt-3 counter text-center">
-        <span class="count-number text-center" data-to="202000" data-speed="100">۲۰۲۰۰۰</span>
-        <span>+</span>
-        <p class="text-center"> بازدیدکنندگان </p>
-    </div>
-
 </div>
-</div>
-<!--body content end-->

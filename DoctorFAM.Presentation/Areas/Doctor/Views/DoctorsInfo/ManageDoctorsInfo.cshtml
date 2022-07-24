@@ -28,7 +28,7 @@
 
     <div class="row">
 
-        @if (!string.IsNullOrEmpty(Model.RejectDescription) && Model.DoctorsInfosType == DoctorFAM.Domain.Entities.Doctors.DoctorsInfosType.Rejected)
+        @if (!string.IsNullOrEmpty(Model.RejectDescription) && Model.DoctorsInfosType == DoctorFAM.Domain.Entities.Doctors.OrganizationInfoState.Rejected)
         {
             <div class="col-lg-12 col-sm-12 col-xs-12">
                 <div class="widget">
@@ -95,6 +95,12 @@
                                     <label asp-for="Specialty"></label>
                                     <input type="text" class="form-control" asp-for="Specialty">
                                     <span class="text-danger" asp-validation-for="Specialty"></span>
+                                </div>
+
+                                <div class="form-group col-md-12 col-sm-12">
+                                    <label asp-for="WorkAddress"></label>
+                                    <textarea type="text" class="form-control" asp-for="WorkAddress">@Model.WorkAddress</textarea>
+                                    <span class="text-danger" asp-validation-for="WorkAddress"></span>
                                 </div>
 
                                 <hr class="margin-bottom-10 margin-top-10" />

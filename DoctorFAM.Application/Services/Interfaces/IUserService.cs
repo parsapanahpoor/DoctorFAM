@@ -2,6 +2,7 @@
 using DoctorFAM.Domain.ViewModels.Account;
 using DoctorFAM.Domain.ViewModels.Admin;
 using DoctorFAM.Domain.ViewModels.Admin.Account;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.Employees;
 using DoctorFAM.Domain.ViewModels.UserPanel.Account;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -15,6 +16,8 @@ namespace DoctorFAM.Application.Services.Interfaces
     public interface IUserService
     {
         #region Authorize
+
+        Task ResendActivationCodeSMS(string Mobile);
 
         Task<bool> IsExistUserById(ulong userId);
 
@@ -67,6 +70,8 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         #region User Panel
 
+        Task<AddNewUserResult> CreateUserFromDoctorPanel(AddEmployeeViewModel user, IFormFile? avatar, ulong MasterId);
+
         Task<UserPanelEditUserInfoViewModel> FillUserPanelEditUserInfoViewModel(ulong userId);
 
         Task<UserPanelEditUserInfoResult> EditUserInfoInUserPanel(UserPanelEditUserInfoViewModel edit, IFormFile? UserAvatar);
@@ -74,6 +79,5 @@ namespace DoctorFAM.Application.Services.Interfaces
         Task<ChangeUserPasswordResponse> ChangeUserPasswordAsync(ulong userId, ChangeUserPasswordViewModel model);
 
         #endregion
-
     }
 }

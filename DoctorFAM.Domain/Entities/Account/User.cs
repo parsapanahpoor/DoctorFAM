@@ -1,6 +1,9 @@
 ﻿using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Common;
+using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.Entities.Doctors;
+using DoctorFAM.Domain.Entities.Organization;
+using DoctorFAM.Domain.Entities.WorkAddress;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -103,6 +106,16 @@ namespace DoctorFAM.Domain.Entities.Account
         public ICollection<Product.Product> Products { get; set; }
 
         public Doctor Doctors { get; set; }
+
+        public Organization.Organization Organization { get; set; }
+
+        public ICollection<OrganizationMember> OrganizationMembers { get; set; }
+
+        public ICollection<DoctorReservationDate> DoctorReservationDates { get; set; }
+
+        public ICollection<DoctorReservationDateTime> DoctorReservationDateTimes { get; set; }
+
+        public ICollection<WorkAddress.WorkAddress> WorkAddresses { get; set; }
 
         #endregion
     }

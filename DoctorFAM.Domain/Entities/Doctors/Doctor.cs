@@ -14,10 +14,6 @@ namespace DoctorFAM.Domain.Entities.Doctors
 
         public ulong UserId { get; set; }
 
-        public DoctorsInfosType DoctorsInfosType { get; set; }
-
-        public string? RejectDescription { get; set; }
-
         #endregion
 
         #region relations 

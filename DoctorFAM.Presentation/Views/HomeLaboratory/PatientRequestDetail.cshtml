@@ -77,172 +77,180 @@
 
 }
 
-<div class="page-content  ">
-    <section>
-        <div class="container">
-            <div class="row" style="border:2px solid #fd5b03;">
-                <div class="col-md-12">
-                    <h2 class="title-2 z-index-1 text-uppercase mt-3 mb-4 text-center"> درخواست <span> آزمایش در منزل </span></h2>
-                    <p>لطفا آدرس بیمار را ثبت کنید</p>
-                    <div>
-                        <form asp-action="PatientRequestDetail" asp-area="" asp-controller="HomeLaboratory">
-                            <input asp-for="RequestId" type="hidden" />
-                            <input asp-for="PatientId" type="hidden" />
+<div class="page-content  formHealth">
+    <div class="row HomeVisitTitle text-center  text-align-justify ">
+        <div class="col-md-12   text-center  text-align-justify M-5 P-5">
+            <h2 class="text-center  text-align-justify ">  درخواست آزمایش در منزل</h2>
+            <p class="text-center  text-align-justify">
+                لطفا آدرس مورد نظر برای اعزام نمونه گیر را، وارد کنید:
+            </p>
+        </div>
+    </div>
+    <div class="container  p-4">
+        <form asp-action="PatientRequestDetail" asp-area="" asp-controller="HomeLaboratory">
+            <input asp-for="RequestId" type="hidden" />
+            <input asp-for="PatientId" type="hidden" />
 
-                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                            <div class="row">
-
-                                <div class="form-group col-md-4">
-                                    <label asp-for="CountryId"></label>
-                                    <select class="form-control" asp-for="CountryId">
-                                        <option value=""> لطفا یک کشور را انتخاب کنید </option>
-                                        @if (countries != null && countries.Any())
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <label asp-for="CountryId"></label>
+                            <select class="form-control" asp-for="CountryId">
+                                <option value=""> لطفا یک کشور را انتخاب کنید </option>
+                                @if (countries != null && countries.Any())
+                                {
+                                    foreach (var country in countries)
+                                    {
+                                        if (Model != null && Model.CountryId == country.Id)
                                         {
-                                            foreach (var country in countries)
-                                            {
-                                                if (Model != null && Model.CountryId == country.Id)
-                                                {
-                                                    <option value="@country.Id" selected="selected"> @country.Title </option>
-                                                }
-                                                else
-                                                {
-                                                    <option value="@country.Id"> @country.Title </option>
-                                                }
-                                            }
+                                            <option value="@country.Id" selected="selected"> @country.Title </option>
                                         }
-                                    </select>
-                                    <span class="text-danger" asp-validation-for="CountryId"></span>
-                                </div>
-
-                                <div class="form-group col-md-4">
-                                    <label asp-for="StateId"></label>
-                                    <select class="form-control" asp-for="StateId">
-                                        <option value=""> لطفا یک استان را انتخاب کنید </option>
-                                        @if (states != null && states.Any())
+                                        else
                                         {
-                                            foreach (var state in states)
-                                            {
-                                                if (Model != null && Model.StateId == state.Id)
-                                                {
-                                                    <option value="@state.Id" selected="selected"> @state.Title </option>
-                                                }
-                                                else
-                                                {
-                                                    <option value="@state.Id"> @state.Title </option>
-                                                }
-                                            }
+                                            <option value="@country.Id"> @country.Title </option>
                                         }
-                                    </select>
-                                    <span class="text-danger" asp-validation-for="StateId"></span>
-                                </div>
-
-                                <div class="form-group col-md-4">
-                                    <label asp-for="CityId"></label>
-                                    <select asp-for="CityId" class="form-control">
-                                        <option value=""> لطفا یک شهر را انتخاب کنید </option>
-                                        @if (cities != null && cities.Any())
+                                    }
+                                }
+                            </select>
+                            <span class="text-danger" asp-validation-for="CountryId"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <label asp-for="StateId"></label>
+                            <select class="form-control" asp-for="StateId">
+                                <option value=""> لطفا یک استان را انتخاب کنید </option>
+                                @if (states != null && states.Any())
+                                {
+                                    foreach (var state in states)
+                                    {
+                                        if (Model != null && Model.StateId == state.Id)
                                         {
-                                            foreach (var city in cities)
-                                            {
-                                                if (Model != null && Model.CityId == city.Id)
-                                                {
-                                                    <option value="@city.Id" selected="selected"> @city.Title </option>
-                                                }
-                                                else
-                                                {
-                                                    <option value="@city.Id"> @city.Title </option>
-                                                }
-                                            }
+                                            <option value="@state.Id" selected="selected"> @state.Title </option>
                                         }
-                                    </select>
-                                    <span class="text-danger" asp-validation-for="CityId"></span>
-                                </div>
-
-                                 <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label asp-for="Vilage" class="control-label"></label>
-                                        <input asp-for="Vilage" class="form-control" />
-                                        <span asp-validation-for="Vilage" class="text-danger"></span>
-                                    </div>
-                                </div>
-                                <div class="col-md-9">
-                                    <div class="form-group">
-                                        <label asp-for="FullAddress" class="control-label"></label>
-                                        <input asp-for="FullAddress" class="form-control" />
-                                        <span asp-validation-for="FullAddress" class="text-danger"></span>
-                                    </div>
-                                </div>
-
+                                        else
+                                        {
+                                            <option value="@state.Id"> @state.Title </option>
+                                        }
+                                    }
+                                }
+                            </select>
+                            <span class="text-danger" asp-validation-for="StateId"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <label asp-for="CityId"></label>
+                            <select asp-for="CityId" class="form-control">
+                                <option value=""> لطفا یک شهر را انتخاب کنید </option>
+                                @if (cities != null && cities.Any())
+                                {
+                                    foreach (var city in cities)
+                                    {
+                                        if (Model != null && Model.CityId == city.Id)
+                                        {
+                                            <option value="@city.Id" selected="selected"> @city.Title </option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@city.Id"> @city.Title </option>
+                                        }
+                                    }
+                                }
+                            </select>
+                            <span class="text-danger" asp-validation-for="CityId"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label asp-for="Vilage" class="control-label"></label>
+                                <input asp-for="Vilage" class="form-control" />
+                                <span asp-validation-for="Vilage" class="text-danger"></span>
                             </div>
+                        </div>
 
-                                 <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label asp-for="Phone" class="control-label"></label>
-                                        <input asp-for="Phone" class="form-control" />
-                                        <span asp-validation-for="Phone" class="text-danger"></span>
-                                    </div>
-                                </div>
 
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label asp-for="Mobile" class="control-label"></label>
-                                        <input asp-for="Mobile" class="form-control " />
-                                        <span asp-validation-for="Mobile" class="text-danger"></span>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label asp-for="Distance" class="control-label"></label>
-                                        <input asp-for="Distance" class="form-control" />
-                                        <span asp-validation-for="Distance" class="text-danger"></span>
-                                    </div>
-                                </div>
-
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="Distance" class="control-label"></label>
+                                <input asp-for="Distance" class="form-control" />
+                                <span asp-validation-for="Distance" class="text-danger"></span>
                             </div>
-
-                               <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label asp-for="SendDate" class="control-label"></label>
-                                        <input asp-for="SendDate" autocomplete="off" DatePicker="3" class="form-control" />
-                                        <span asp-validation-for="SendDate" class="text-danger"></span>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                       ساعت مراجعه نمونه گیراز:
-                                        <input asp-for="StartTime" class="form-control " />
-                                        <span asp-validation-for="StartTime" class="text-danger"></span>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                      تا:
-                                        <input asp-for="EndTime" class="form-control" />
-                                        <span asp-validation-for="EndTime" class="text-danger"></span>
-                                    </div>
-                                </div>
-
-                            </div>
-                       
-                            <div class="row">
-                                <div class="col-md-12 mt-3 text-center mb-2">
-                                    <div class="form-group">
-                                        <input type="submit" value="ثبت  آدرس" class="btn-Accept" />
-                                    </div>
-                                </div>
-                            </div>
-
-                        </form>
+                        </div>
                     </div>
                 </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="FullAddress" class="control-label"></label>
+                        <input asp-for="FullAddress" class="form-control" />
+                        <span asp-validation-for="FullAddress" class="text-danger"></span>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Phone" class="control-label"></label>
+                                <input asp-for="Phone" class="form-control" />
+                                <span asp-validation-for="Phone" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Mobile" class="control-label"></label>
+                                <input asp-for="Mobile" class="form-control " />
+                                <span asp-validation-for="Mobile" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="SendDate" class="control-label"></label>
+                                <input asp-for="SendDate" autocomplete="off" DatePicker="3" class="form-control" />
+                                <span asp-validation-for="SendDate" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="EndTime" class="control-label">مراجعه از ساعت:</label>
+                                <input asp-for="StartTime" class="form-control " />
+                                <span asp-validation-for="StartTime" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="EndTime" class="control-label">تا ساعت:</label>
+                                <input asp-for="EndTime" class="form-control" />
+                                <span asp-validation-for="EndTime" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="col-md-12  text-center mt-4">
+                            <div class="form-group">
+
+                                <input type="submit" value="ثبت  آدرس" class="btn-Accept" />
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
             </div>
-        </div>
-    </section>
+
+        </form>
+    </div>
+
 </div>
+
+
+
+
 

@@ -4,6 +4,7 @@ using DoctorFAM.Domain.Entities.Interest;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DosctorSideBarInfo;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.Employees;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -28,6 +29,42 @@ namespace DoctorFAM.Data.Repository
 
         #region Doctors Panel Side
 
+        public async Task<FilterDoctorOfficeEmployeesViewmodel> FilterDoctorOfficeEmployees(FilterDoctorOfficeEmployeesViewmodel filter)
+        {
+            #region Get organization 
+
+            var doctorOffice = await _context.OrganizationMembers.FirstOrDefaultAsync(p => !p.IsDelete && p.UserId == filter.userId);
+            if (doctorOffice == null) return null;
+
+            #endregion
+
+            var query = _context.OrganizationMembers
+                .Include(p => p.User)
+                .Where(s => !s.IsDelete && s.OrganizationId == doctorOffice.OrganizationId)
+                .OrderByDescending(s => s.CreateDate)
+                .AsQueryable();
+
+
+            #region Filter
+
+            if (!string.IsNullOrEmpty(filter.Mobile))
+            {
+                query = query.Where(s => s.User.Mobile != null && EF.Functions.Like(s.User.Mobile, $"%{filter.Mobile}%"));
+            }
+
+            if (!string.IsNullOrEmpty(filter.Username))
+            {
+                query = query.Where(s => s.User.Username.Contains(filter.Username));
+            }
+
+            #endregion
+
+            await filter.Paging(query);
+
+            return filter;
+        }
+
+
         public async Task<bool> IsExistAnyDoctorByUserId(ulong userId)
         {
             return await _context.Doctors.AnyAsync(p => p.UserId == userId && !p.IsDelete);
@@ -40,27 +77,33 @@ namespace DoctorFAM.Data.Repository
 
         public async Task<DoctorSideBarViewModel> GetDoctorsSideBarInfo(ulong userId)
         {
+            #region Get Doctor Office
+
+            var OrganitionMember = await _context.OrganizationMembers.Include(p => p.Organization).FirstOrDefaultAsync(p => !p.IsDelete && p.UserId == userId);
+
+            #endregion
+
             DoctorSideBarViewModel model = new DoctorSideBarViewModel();
 
             #region Doctor State 
 
             //If Doctor Registers Now
-            if (await _context.Doctors.AnyAsync(p => p.UserId == userId && !p.IsDelete && p.DoctorsInfosType == DoctorsInfosType.JustRegister)) model.DoctorInfoState =  "NewUser";
+            if (OrganitionMember.Organization.OrganizationInfoState == OrganizationInfoState.JustRegister) model.DoctorInfoState =  "NewUser";
 
             //If Doctor State Is WatingForConfirm
-            if (await _context.Doctors.AnyAsync(p => p.UserId == userId && !p.IsDelete && p.DoctorsInfosType == DoctorsInfosType.WatingForConfirm)) model.DoctorInfoState = "WatingForConfirm";
+            if (OrganitionMember.Organization.OrganizationInfoState == OrganizationInfoState.WatingForConfirm) model.DoctorInfoState = "WatingForConfirm";
 
             //If Doctor State Is Rejected
-            if (await _context.Doctors.AnyAsync(p => p.UserId == userId && !p.IsDelete && p.DoctorsInfosType == DoctorsInfosType.Rejected)) model.DoctorInfoState = "Rejected";
+            if (OrganitionMember.Organization.OrganizationInfoState == OrganizationInfoState.Rejected) model.DoctorInfoState = "Rejected";
 
             //If Doctor State Is Accepted
-            if (await _context.Doctors.AnyAsync(p => p.UserId == userId && !p.IsDelete && p.DoctorsInfosType == DoctorsInfosType.Accepted)) model.DoctorInfoState = "Accepted";
+            if (OrganitionMember.Organization.OrganizationInfoState == OrganizationInfoState.Accepted) model.DoctorInfoState = "Accepted";
 
             #endregion
 
             #region Family Doctor
 
-            var doctor = await GetDoctorByUserId(userId);
+            var doctor = await GetDoctorByUserId(OrganitionMember.Organization.OwnerId);
 
             var doctorInterest = await _context.DoctorsSelectedInterests.Include(p => p.Interest).ThenInclude(p=>p.InterestInfo).Where(p => !p.IsDelete && p.DoctorId == doctor.Id).ToListAsync();
 
@@ -181,10 +224,9 @@ namespace DoctorFAM.Data.Repository
 
         public async Task<ListOfDoctorsInfoViewModel> FilterDoctorsInfoAdminSide(ListOfDoctorsInfoViewModel filter)
         {
-            var query = _context.DoctorsInfos
-                .Where(s => !s.IsDelete)
-                .Include(p => p.Doctor)
-                .ThenInclude(p => p.User)
+            var query = _context.Organizations
+                .Where(s => !s.IsDelete && s.OrganizationType == Domain.Enums.Organization.OrganizationType.DoctorOffice)
+                .Include(p => p.User)
                 .OrderByDescending(s => s.CreateDate)
                 .AsQueryable();
 
@@ -196,15 +238,15 @@ namespace DoctorFAM.Data.Repository
                     break;
 
                 case DoctorsState.Accepted:
-                    query = query.Where(s => s.Doctor.DoctorsInfosType == DoctorsInfosType.Accepted);
+                    query = query.Where(p=> p.OrganizationInfoState == OrganizationInfoState.Accepted);
                     break;
 
                 case DoctorsState.WaitingForConfirm:
-                    query = query.Where(s => s.Doctor.DoctorsInfosType == DoctorsInfosType.WatingForConfirm);
+                    query = query.Where(p => p.OrganizationInfoState == OrganizationInfoState.WatingForConfirm);
                     break;
 
                 case DoctorsState.Rejected:
-                    query = query.Where(s => s.Doctor.DoctorsInfosType == DoctorsInfosType.Rejected);
+                    query = query.Where(p => p.OrganizationInfoState == OrganizationInfoState.Rejected);
                     break;
             }
 
@@ -214,27 +256,22 @@ namespace DoctorFAM.Data.Repository
 
             if (!string.IsNullOrEmpty(filter.Email))
             {
-                query = query.Where(s => EF.Functions.Like(s.Doctor.User.Email, $"%{filter.Email}%"));
+                query = query.Where(s => EF.Functions.Like(s.User.Email, $"%{filter.Email}%"));
             }
 
             if (!string.IsNullOrEmpty(filter.Mobile))
             {
-                query = query.Where(s => s.Doctor.User.Mobile != null && EF.Functions.Like(s.Doctor.User.Mobile, $"%{filter.Mobile}%"));
+                query = query.Where(s => s.User.Mobile != null && EF.Functions.Like(s.User.Mobile, $"%{filter.Mobile}%"));
             }
 
             if (!string.IsNullOrEmpty(filter.FullName))
             {
-                query = query.Where(s => s.Doctor.User.Username.Contains(filter.FullName));
+                query = query.Where(s => s.User.Username.Contains(filter.FullName));
             }
 
-            if (filter.NationalCode != null && filter.NationalCode != 0)
+            if (!string.IsNullOrEmpty(filter.NationalCode))
             {
-                query = query.Where(s => s.NationalCode == filter.NationalCode);
-            }
-
-            if (filter.MedicalSystemCode != null && filter.MedicalSystemCode != 0)
-            {
-                query = query.Where(s => s.MedicalSystemCode == filter.MedicalSystemCode);
+                query = query.Where(s => s.User.NationalId.Contains(filter.NationalCode));
             }
 
             #endregion
@@ -247,6 +284,11 @@ namespace DoctorFAM.Data.Repository
         public async Task<DoctorsInfo?> GetDoctorsInfoById(ulong doctorInfoId)
         {
             return await _context.DoctorsInfos.Include(p=>p.Doctor).FirstOrDefaultAsync(p => !p.IsDelete && p.Id == doctorInfoId);
+        }
+
+        public async Task<DoctorsInfo?> GetDoctorsInfoByDoctorId(ulong doctorId)
+        {
+            return await _context.DoctorsInfos.Include(p => p.Doctor).FirstOrDefaultAsync(p => !p.IsDelete && p.DoctorId == doctorId);
         }
 
         #endregion

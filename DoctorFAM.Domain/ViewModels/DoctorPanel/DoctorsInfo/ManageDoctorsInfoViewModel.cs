@@ -33,10 +33,13 @@ namespace DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo
         [Display(Name = "Medical record")]
         public string? MediacalFile { get; set; }
 
+        [Display(Name = "Work Address")]
+        public string? WorkAddress { get; set; }
+
         [Display(Name = "The reason for the rejection of the information ")]
         public string? RejectDescription { get; set; }
 
-        public DoctorsInfosType? DoctorsInfosType { get; set; }
+        public OrganizationInfoState? DoctorsInfosType { get; set; }
     }
 
     public enum AddOrEditDoctorInfoResult

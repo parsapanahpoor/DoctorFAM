@@ -7,11 +7,13 @@ using DoctorFAM.Application.StaticTools;
 using DoctorFAM.Application.Utils;
 using DoctorFAM.Data.DbContext;
 using DoctorFAM.Domain.Entities.Account;
+using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Account;
 using DoctorFAM.Domain.ViewModels.Admin;
 using DoctorFAM.Domain.ViewModels.Admin.Account;
 using DoctorFAM.Domain.ViewModels.Common;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.Employees;
 using DoctorFAM.Domain.ViewModels.UserPanel.Account;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -28,26 +30,47 @@ namespace DoctorFAM.Application.Services.Implementation
         #region Ctor
 
         public DoctorFAMDbContext _context { get; set; }
+
         public ISiteSettingService _siteSettingService { get; set; }
 
         private IViewRenderService _viewRenderService;
 
         private IEmailSender _emailSender;
 
-        public IUserRepository _userRepository;
+        private readonly IUserRepository _userRepository;
 
-        public UserService(DoctorFAMDbContext context, ISiteSettingService siteSettingService, IViewRenderService viewRenderService, IEmailSender emailSender, IUserRepository userRepository)
+        private readonly IOrganizationService _organizationService;
+
+        public UserService(DoctorFAMDbContext context, ISiteSettingService siteSettingService, IViewRenderService viewRenderService,
+                                IEmailSender emailSender, IUserRepository userRepository, IOrganizationService organizationService)
         {
             _context = context;
             _siteSettingService = siteSettingService;
             _viewRenderService = viewRenderService;
             _emailSender = emailSender;
             _userRepository = userRepository;
+            _organizationService = organizationService;
         }
 
         #endregion
 
         #region Authorize
+
+        public async Task ResendActivationCodeSMS(string Mobile)
+        {
+            var user = await _userRepository.GetUserByMobile(Mobile);
+            user.MobileActivationCode = new Random().Next(10000, 999999).ToString();
+
+            _userRepository.EditUser(user);
+            await _userRepository.SaveChangesAsync();
+
+            #region Kavenegar
+
+            //await _kavenegarSmsService.SendVerificationSms(user.Mobile, user.MobileActiveCode);
+
+            #endregion
+
+        }
 
         public async Task<bool> IsExistUserById(ulong userId)
         {
@@ -120,7 +143,7 @@ namespace DoctorFAM.Application.Services.Implementation
             //Field about Accept Site Roles
             if (register.SiteRoles == false)
             {
-                return RegisterUserResult.SiteRoleNotAccept; 
+                return RegisterUserResult.SiteRoleNotAccept;
             }
 
             //Hash Password
@@ -134,7 +157,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 Username = mobile,
                 Mobile = register.Mobile.SanitizeText(),
                 EmailActivationCode = CodeGenerator.GenerateUniqCode(),
-                MobileActivationCode = CodeGenerator.GenerateUniqCode(),
+                MobileActivationCode = new Random().Next(10000, 999999).ToString()
             };
 
             await _context.Users.AddAsync(User);
@@ -153,15 +176,13 @@ namespace DoctorFAM.Application.Services.Implementation
                 EmailBanner = string.Empty,
             };
 
-            // string body = _viewRenderService.RenderToStringAsync("_Email", emailViewModel);
+            #endregion
 
-            //  await _emailSender.SendEmail(email, "فعالسازی حساب کاربری", body);
+            #region Send Verification Code SMS
 
-            //var result = SendEmail.Send(User.Email, "فعالسازی حساب کاربری", body);
 
 
             #endregion
-
 
             return RegisterUserResult.Success;
 
@@ -594,6 +615,81 @@ namespace DoctorFAM.Application.Services.Implementation
 
         #region User Panel
 
+        public async Task<AddNewUserResult> CreateUserFromDoctorPanel(AddEmployeeViewModel user, IFormFile? avatar, ulong MasterId)
+        {
+            #region Model State Validation 
+
+            if (await IsExistUserByMobile(user.Mobile))
+            {
+                return AddNewUserResult.DuplicateMobileNumber;
+            }
+
+            #endregion
+
+            #region Add New User
+
+            var newUser = new User()
+            {
+                CreateDate = DateTime.Now,
+                Mobile = user.Mobile.SanitizeText(),
+                Password = PasswordHasher.EncodePasswordMd5(user.Password.SanitizeText()),
+                IsAdmin = false,
+                EmailActivationCode = CodeGenerator.GenerateUniqCode(),
+                MobileActivationCode = CodeGenerator.GenerateUniqCode(),
+                IsEmailConfirm = true,
+                IsMobileConfirm = true,
+                Username = user.Mobile.SanitizeText(),
+            };
+
+            if (avatar != null && avatar.IsImage())
+            {
+                var imageName = CodeGenerator.GenerateUniqCode() + Path.GetExtension(avatar.FileName);
+                avatar.AddImageToServer(imageName, PathTools.UserAvatarPathServer, 270, 270, PathTools.UserAvatarPathThumbServer);
+                newUser.Avatar = imageName;
+            }
+
+            await _context.Users.AddAsync(newUser);
+            await _context.SaveChangesAsync();
+
+            #endregion
+
+            #region Get Organization By User Id 
+
+            var organization = await _organizationService.GetOrganizationByUserId(MasterId);
+            if (organization == null) return AddNewUserResult.DuplicateMobileNumber;
+
+            #endregion
+
+            #region Add New Organization Member
+
+            OrganizationMember member = new OrganizationMember()
+            {
+                UserId = newUser.Id,
+                OrganizationId = organization.Id
+            };
+
+            await _context.OrganizationMembers.AddAsync(member);
+            await _context.SaveChangesAsync();
+
+            #endregion
+
+            #region Add User Role
+
+            UserRole userRole = new UserRole()
+            {
+                RoleId = 5,
+                UserId = newUser.Id,
+            };
+
+            await _context.UserRoles.AddAsync(userRole);
+            await _context.SaveChangesAsync();
+
+            #endregion
+
+            return AddNewUserResult.Success;
+        }
+
+
         public async Task<UserPanelEditUserInfoViewModel> FillUserPanelEditUserInfoViewModel(ulong userId)
         {
             #region Get User By Id
@@ -606,7 +702,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #region Fill View Model
 
-            UserPanelEditUserInfoViewModel model =  new UserPanelEditUserInfoViewModel()
+            UserPanelEditUserInfoViewModel model = new UserPanelEditUserInfoViewModel()
             {
                 Mobile = user.Mobile,
                 Email = user.Email,
@@ -615,7 +711,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 username = user.Username,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                ExtraPhoneNumber = user.ExtraPhoneNumber,  
+                ExtraPhoneNumber = user.ExtraPhoneNumber,
                 FatherName = user.FatherName,
                 HomePhoneNumber = user.HomePhoneNumber,
                 WorkAddress = user.WorkAddress,
@@ -676,7 +772,7 @@ namespace DoctorFAM.Application.Services.Implementation
             {
                 return UserPanelEditUserInfoResult.NationalId;
             }
-          
+
             #endregion
 
             #region Update User Field

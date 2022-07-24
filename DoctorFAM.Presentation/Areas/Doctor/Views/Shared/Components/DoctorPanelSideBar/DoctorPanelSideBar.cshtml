@@ -48,8 +48,20 @@
                 <ul class="submenu">
 
                     <li>
-                        <a asp-area="Doctor" asp-controller="Appointment" asp-action="AppointmentSetting">
-                            <span class="menu-text">@SharedLocalizer["Queuing settings"]</span>
+                        <a asp-area="Doctor" asp-controller="Appointment" asp-action="ListOfReservationDate">
+                            <span class="menu-text">@SharedLocalizer["List Of Reservations"]</span>
+                        </a>
+                    </li>
+
+                       <li>
+                        <a asp-area="Doctor" asp-controller="Appointment" asp-action="AddReservationDateView">
+                            <span class="menu-text">@SharedLocalizer["Add Reservation Date"]</span>
+                        </a>
+                    </li>
+
+                       <li>
+                        <a asp-area="Doctor" asp-controller="Appointment" asp-action="ListOfDoctorReservationHistory">
+                            <span class="menu-text">@SharedLocalizer["Reservation History"]</span>
                         </a>
                     </li>
 
@@ -122,6 +134,29 @@
                     <li>
                         <a asp-area="Doctor" asp-controller="Account" asp-action="ChangePassword">
                             <span class="menu-text">@SharedLocalizer["Change Password"]</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li>
+                <a href="#" class="menu-dropdown">
+                    <i class="menu-icon fa fa-users"></i>
+                    <span class="menu-text"> @SharedLocalizer["Manage Employees"] </span>
+                    <i class="menu-expand"></i>
+                </a>
+
+                <ul class="submenu">
+
+                    <li>
+                        <a asp-area="Doctor" asp-controller="Account" asp-action="FilterEmployees">
+                            <span class="menu-text">@SharedLocalizer["List Of Employees"]</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a asp-area="Doctor" asp-controller="Account" asp-action="AddNewUser">
+                            <span class="menu-text">@SharedLocalizer["Add New Employee"]</span>
                         </a>
                     </li>
                 </ul>

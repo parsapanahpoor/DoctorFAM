@@ -1,11 +1,13 @@
 ﻿using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DeathCertificate;
+using DoctorFAM.Web.Areas.Doctor.ActionFilterAttributes;
 using DoctorFAM.Web.Doctor.Controllers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DoctorFAM.Web.Areas.Doctor.Controllers
 {
+    [IsUserDoctor]
     public class DeathCertificateController : DoctorBaseController
     {
         #region Ctor

@@ -81,15 +81,26 @@
                                     <span class="text-danger" asp-validation-for="Specialty"></span>
                                 </div>
 
+                                @if (Model.WorkAddresses != null && Model.WorkAddresses.Any())
+                                {
+                                    @foreach (var item in Model.WorkAddresses)
+                                    {
+                                        <div class="form-group col-md-12 col-sm-12">
+                                            <label asp-for="WorkAddresses"></label>
+                                            <textarea type="text" class="form-control" >@item.Address</textarea>
+                                        </div>
+                                    }
+                                }
+
                                 <div class="form-group col-md-12 col-sm-12">
                                     <label>@Localizer["State"]</label>
-                                    <select asp-for="DoctorsInfosType" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Entities.Doctors.DoctorsInfosType))"></select>
+                                    <select asp-for="DoctorsInfosType" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Entities.Doctors.OrganizationInfoState))"></select>
                                     <span class="text-danger" asp-validation-for="DoctorsInfosType"></span>
                                 </div>
 
                                 <div class="clearfix"></div>
 
-                                <div class="form-group col-md-12 @(Model.DoctorsInfosType==DoctorFAM.Domain.Entities.Doctors.DoctorsInfosType.Rejected?"":"d-none")" id="RejectDescription-div">
+                                <div class="form-group col-md-12 @(Model.DoctorsInfosType == DoctorFAM.Domain.Entities.Doctors.OrganizationInfoState.Rejected ?"":"d-none")" id="RejectDescription-div">
                                     <label>@Localizer["Enter the reason for not confirming the information"]</label>
                                     <textarea asp-for="RejectDescription" rows="10" class="form-control" placeholder="@Localizer["Enter the reason for not confirming the information"]"></textarea>
                                     <span asp-validation-for="RejectDescription" class="text-danger"></span>
@@ -153,7 +164,7 @@
     </div>
 
     <div class="row">
-            <div class="col-lg-9">
+        <div class="col-lg-9">
             <div class="widget">
                 <div class="widget-header bordered-bottom bordered-success">
                     <i class="widget-icon fa fa-user black"></i>
@@ -173,9 +184,9 @@
                                                 <span class="divider hidden-xs"></span>
                                                 <span class="type">@item.Title</span>
                                             </div>
-                                             <div class="ticket-state bg-darkorange">
+                                            <div class="ticket-state bg-darkorange">
                                                 <a asp-action="DeleteDoctorSelectedInfo" asp-area="Admin" asp-controller="Doctors" asp-route-interestId="@item.InterestId" asp-route-doctorId="@Model.DoctorId" asp-route-doctorInfoId="@Model.Id">
-                                                <i class="fa fa-times"></i>
+                                                    <i class="fa fa-times"></i>
                                                 </a>
                                             </div>
                                         </div>

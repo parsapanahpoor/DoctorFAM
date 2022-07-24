@@ -34,7 +34,7 @@ namespace DoctorFAM.Domain.Entities.Doctors
         #endregion
     }
 
-    public enum DoctorsInfosType
+    public enum OrganizationInfoState
     {
         [Display(Name = "Accepted")]
         Accepted,

@@ -12,6 +12,7 @@ namespace DoctorFAM.Domain.ViewModels.Common
         Doctor,
         User,
         Supporter,
-        Seller
+        Seller,
+        DoctorOfficeEmployee
     }
 }

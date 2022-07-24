@@ -35,11 +35,17 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
         #region Edit Doctors Infos
 
         [HttpGet]
-        public async Task<IActionResult> DoctorsInfoDetail(ulong doctorsInfoId)
+        public async Task<IActionResult> DoctorsInfoDetail(ulong userId)
         {
+            #region Get Doctor By User Id 
+
+            var doctor = await _doctorsService.GetDoctorByUserId(userId);
+
+            #endregion
+
             #region Get Doctor Info
 
-            var info = await _doctorsService.FillDoctorsInfoDetailViewModel(doctorsInfoId);
+            var info = await _doctorsService.FillDoctorsInfoDetailViewModel(doctor.Id);
 
             if (info == null) return NotFound();
 
@@ -51,9 +57,15 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
         [HttpPost , ValidateAntiForgeryToken]
         public async Task<IActionResult> DoctorsInfoDetail(DoctorsInfoDetailViewModel model , IFormFile? MediacalFile)
         {
+            #region Get Doctor By User Id 
+
+            var doctor = await _doctorsService.GetDoctorByUserId(model.UserId);
+
+            #endregion
+
             #region Get Doctor Info
 
-            var info = await _doctorsService.FillDoctorsInfoDetailViewModel(model.Id);
+            var info = await _doctorsService.FillDoctorsInfoDetailViewModel(doctor.Id);
 
             if (info == null) return NotFound();
 
@@ -76,12 +88,13 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
             {
                 case EditDoctorInfoResult.faild:
                     TempData[ErrorMessage] = "عملیات با شکست مواجه شده است ";
-                    return RedirectToAction("DoctorsInfoDetail", "Doctors", new { area = "Admin" });
+                    return RedirectToAction("DoctorsInfoDetail", "Doctors", new { area = "Admin" , userId = model.UserId });
 
                 case EditDoctorInfoResult.success:
                     TempData[SuccessMessage] = "عملیات با موفقیت انجام شد .";
                     return RedirectToAction("ListOfDoctorsInfo", "Doctors", new { area = "Admin" });
             }
+
             #endregion
 
             return View(info);
@@ -105,19 +118,19 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
             {
                 case Domain.Entities.Doctors.DoctorSelectedInterestResult.Success:
                     TempData[SuccessMessage] = _sharedLocalizer["Operation Successfully"].Value;
-                    return RedirectToAction(nameof(DoctorsInfoDetail) , new { doctorsInfoId = doctorInfoId });
+                    return RedirectToAction(nameof(DoctorsInfoDetail) , new { userId = doctor.UserId });
 
                 case Domain.Entities.Doctors.DoctorSelectedInterestResult.Faild:
                     TempData[ErrorMessage] = _sharedLocalizer["The operation has failed"].Value;
-                    return RedirectToAction(nameof(DoctorsInfoDetail) , new { doctorsInfoId = doctorInfoId });
+                    return RedirectToAction(nameof(DoctorsInfoDetail) , new { userId = doctor.UserId });
 
                 case Domain.Entities.Doctors.DoctorSelectedInterestResult.ItemNotExist:
                     TempData[WarningMessage] = _sharedLocalizer["You have not selected this item."].Value;
-                    return RedirectToAction(nameof(DoctorsInfoDetail) , new { doctorsInfoId = doctorInfoId });
+                    return RedirectToAction(nameof(DoctorsInfoDetail) , new { userId = doctor.UserId });
             }
 
             TempData[ErrorMessage] = _sharedLocalizer["The operation has failed"].Value;
-            return RedirectToAction(nameof(DoctorsInfoDetail) , new { doctorsInfoId = doctorInfoId });
+            return RedirectToAction(nameof(DoctorsInfoDetail) , new { userId = doctor.UserId });
         }
 
         #endregion

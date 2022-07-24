@@ -49,4 +49,12 @@ namespace DoctorFAM.Domain.Enums.Request
         CreateDate_Asc
     }
 
+    public enum FilterRequestOrder
+    {
+        [Display(Name = "Register Date - Descending")]
+        CreateDate_Des,
+        [Display(Name = "Register Date - Ascending")]
+        CreateDate_Asc
+    }
+
 }

@@ -8,5 +8,9 @@ namespace DoctorFAM.Web.Controllers
         {
             return View();
         }
+        public IActionResult two()
+        {
+            return View();
+        }
     }
 }

@@ -3,6 +3,7 @@ using DoctorFAM.Domain.Entities.Interest;
 using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DosctorSideBarInfo;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.Employees;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,8 @@ namespace DoctorFAM.Application.Services.Interfaces
     public interface IDoctorsService
     {
         #region Doctors Panel Side
+
+        Task<FilterDoctorOfficeEmployeesViewmodel> FilterDoctorOfficeEmployees(FilterDoctorOfficeEmployeesViewmodel filter);
 
         Task<bool> IsExistAnyDoctorInfoByUserId(ulong userId);
 

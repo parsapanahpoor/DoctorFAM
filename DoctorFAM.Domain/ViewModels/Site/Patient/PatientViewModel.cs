@@ -24,6 +24,7 @@ namespace DoctorFAM.Domain.ViewModels.Site.Patient
 
         [Display(Name = "کد ملی")]
         [Required(ErrorMessage = "لطفا{0} را وارد نمایید...")]
+        [RegularExpression(@"^[0-9]*$", ErrorMessage = "The information entered is not valid.")]
         public string NationalId { get; set; }
 
         [Display(Name = "جنسیت")]
@@ -32,6 +33,7 @@ namespace DoctorFAM.Domain.ViewModels.Site.Patient
 
         [Display(Name = "سن(سال)")]
         [Required(ErrorMessage = "لطفا{0} را وارد نمایید...")]
+        [RegularExpression(@"^[0-9]*$", ErrorMessage = "The information entered is not valid.")]
         public int Age { get; set; }
 
         [Display(Name = "نوع بیمه")]

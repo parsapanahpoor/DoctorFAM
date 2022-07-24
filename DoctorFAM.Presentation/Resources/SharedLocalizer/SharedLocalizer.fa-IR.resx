@@ -360,4 +360,64 @@
   <data name="The input values ​​are not valid1" xml:space="preserve">
     <value>مقادیر ورودی معتبر نمی باشد .</value>
   </data>
+  <data name="Brother" xml:space="preserve">
+    <value>برادر</value>
+  </data>
+  <data name="Child" xml:space="preserve">
+    <value>فرزند</value>
+  </data>
+  <data name="Father" xml:space="preserve">
+    <value>پدر</value>
+  </data>
+  <data name="Mother" xml:space="preserve">
+    <value>مادر </value>
+  </data>
+  <data name="Partner" xml:space="preserve">
+    <value>همسر</value>
+  </data>
+  <data name="Sister" xml:space="preserve">
+    <value>خواهر</value>
+  </data>
+  <data name="Add New Employee" xml:space="preserve">
+    <value>افزودن کارمند جدید </value>
+  </data>
+  <data name="List Of Employees" xml:space="preserve">
+    <value>لیست کارمندان</value>
+  </data>
+  <data name="Manage Employees" xml:space="preserve">
+    <value>مدیریت کارمندان </value>
+  </data>
+  <data name="Mobile Number is Duplicated" xml:space="preserve">
+    <value>شماره موبایل وارد شده پذیرفته نمی باشد.</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>بستن</value>
+  </data>
+  <data name="Submit" xml:space="preserve">
+    <value>افزودن</value>
+  </data>
+  <data name="Add Reservation Date" xml:space="preserve">
+    <value>افزودن تاریخ جدید</value>
+  </data>
+  <data name="List Of Reservations" xml:space="preserve">
+    <value>لیست نوبت دهی </value>
+  </data>
+  <data name="Reservation History" xml:space="preserve">
+    <value>تاریخچه ی نوبت دهی </value>
+  </data>
+  <data name="Manage Market Categories" xml:space="preserve">
+    <value>مدیریت دسته بندی محصولات</value>
+  </data>
+  <data name="Market Categories List" xml:space="preserve">
+    <value>لیست دسته بندی ها</value>
+  </data>
+  <data name="Create Market Categories" xml:space="preserve">
+    <value>افزودن دسته بندی جدید</value>
+  </data>
+  <data name="List of products" xml:space="preserve">
+    <value>لیست محصولات</value>
+  </data>
+  <data name="Manage Products" xml:space="preserve">
+    <value>مدیریت محصولات</value>
+  </data>
 </root>
