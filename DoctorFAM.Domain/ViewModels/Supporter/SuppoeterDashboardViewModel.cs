@@ -1,4 +1,5 @@
 ﻿using DoctorFAM.DataLayer.Entities;
+using DoctorFAM.Domain.Entities.DoctorReservation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,10 @@ namespace DoctorFAM.Domain.ViewModels.Supporter
         public List<Request> LastestHomePharmacyRequest { get; set; }
 
         public List<Request> LastestDeathCertificateRequest { get; set; }
+
+        public List<Request> AllRecords { get; set; }
+
+        public List<DoctorReservationDateTime> DoctorReservationDateTimes { get; set; }
 
         #endregion
     }

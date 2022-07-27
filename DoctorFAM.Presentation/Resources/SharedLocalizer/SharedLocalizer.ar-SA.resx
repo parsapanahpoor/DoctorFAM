@@ -234,8 +234,14 @@
   <data name="List Of Employees" xml:space="preserve">
     <value>قائمة الموظفين</value>
   </data>
+  <data name="List Of Futur Reservation" xml:space="preserve">
+    <value>قائمة التعيينات المتخذة</value>
+  </data>
   <data name="List of products" xml:space="preserve">
     <value>قائمة المنتجات</value>
+  </data>
+  <data name="List Of Reservation Date" xml:space="preserve">
+    <value>قائمة المواعيد</value>
   </data>
   <data name="List Of Reservations" xml:space="preserve">
     <value>قائمة الحجوزات</value>
@@ -275,6 +281,9 @@
   </data>
   <data name="Manage Products" xml:space="preserve">
     <value>إدارة المنتجات</value>
+  </data>
+  <data name="Manage Reservation" xml:space="preserve">
+    <value>إدارة قائمة الانتظار</value>
   </data>
   <data name="Manage Roles" xml:space="preserve">
     <value>إدارة الأدوار</value>

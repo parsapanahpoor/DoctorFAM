@@ -41,23 +41,11 @@
 
     <div class="row">
 
-        @*Box Of Lastest Home Visit Requests*@
-        <partial name="_LastestHomeVisitRequestPartial" model="@Model.LastestHomeVisitRequest" />
-
-        @*Box Of Lastest Nurse Visit Requests*@
-        <partial name="_LastestHomeNurseRequestPartial" model="@Model.LastestHomeNurseRequest" />
-
-        @*Box Of Lastest Home Laboratory Requests*@
-        <partial name="_LastestHomeLaboratoryRequestPartial" model="@Model.LastestHomeLaboratoryRequest" />
-
-        @*Box Of Lastest Home Pharmcy Requests*@
-        <partial name="_LastestHomePharmacyRequestPartial" model="@Model.LastestHomePharmacyRequest" />
-
-        @*Box Of Lastest Home Patient Transport Requests*@
-        <partial name="_LastestHomePatientTransportRequestPartial" model="@Model.LastestHomePatientTransportRequest" />
-
-        @*Box Of Lastest Home Death Certificate Requests*@
-        <partial name="_LastestHomeDeathCertificateRequestPartial" model="@Model.LastestDeathCertificateRequest" />
+        @*Box Of Lastest Requests*@
+        <partial name="_LastestRequestsPartial" model="@Model.AllRecords" />  
+        
+        @*Box Of Lastest Requests*@
+        <partial name="_TodayReservationReserved" model="@Model.DoctorReservationDateTimes" />
 
     </div>
 

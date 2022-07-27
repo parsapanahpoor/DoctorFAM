@@ -29,6 +29,9 @@ namespace DoctorFAM.Domain.ViewModels.Admin.SiteSetting
 
         [Display(Name = "Pharmacy tariff at home in Rials")]
         public int? HomePharmacyTariff { get; set; }
+
+        [Display(Name = "Reservation tariff in Rials")]
+        public int? ReservationTariff { get; set; }
     }
 
     public enum EditSiteSettingResult

@@ -349,6 +349,9 @@ meta etiket</value>
   <data name="Reservation Date" xml:space="preserve">
     <value>Rezervasyon Tarihi</value>
   </data>
+  <data name="Reservation tariff in Rials" xml:space="preserve">
+    <value>Riyal olarak sırayla alma tarifesi</value>
+  </data>
   <data name="Reserved" xml:space="preserve">
     <value>Rezerve</value>
   </data>

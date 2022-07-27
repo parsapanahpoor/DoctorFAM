@@ -2,7 +2,10 @@
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.Interfaces;
+using DoctorFAM.Domain.ViewModels.Admin.Reservation;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment;
+using DoctorFAM.Domain.ViewModels.Supporter.Reservation;
+using DoctorFAM.Domain.ViewModels.UserPanel.Reservation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,12 +46,12 @@ namespace DoctorFAM.Application.Services.Implementation
             return await _reservation.FilterDoctorReservationDateSide(filter);
         }
 
-        public  async Task<FilterAppointmentViewModel> FiltrDoctorReservationDateHistory(FilterAppointmentViewModel filter)
+        public async Task<FilterAppointmentViewModel> FiltrDoctorReservationDateHistory(FilterAppointmentViewModel filter)
         {
             return await _reservation.FiltrDoctorReservationDateHistory(filter);
         }
 
-        public async Task<bool> AddReservationDate(AddReservationDateViewModel model , ulong userId)
+        public async Task<bool> AddReservationDate(AddReservationDateViewModel model, ulong userId)
         {
             #region Get Owner Organization By EmployeeId 
 
@@ -100,7 +103,7 @@ namespace DoctorFAM.Application.Services.Implementation
             return await _reservation.GetReservationDateById(reservationDateId);
         }
 
-        public async Task<bool> DeleteReservationDate(ulong reservationDateId , ulong userId)
+        public async Task<bool> DeleteReservationDate(ulong reservationDateId, ulong userId)
         {
             #region Get Organization by UserId
 
@@ -141,7 +144,7 @@ namespace DoctorFAM.Application.Services.Implementation
             return true;
         }
 
-        public async Task<AddReservationDateTimeViewModel?> FillAddReservationDateTime(ulong reservationDateId , ulong userId)
+        public async Task<AddReservationDateTimeViewModel?> FillAddReservationDateTime(ulong reservationDateId, ulong userId)
         {
             #region Get Organization By User Id 
 
@@ -272,10 +275,10 @@ namespace DoctorFAM.Application.Services.Implementation
 
         public async Task<DoctorReservationDateTime?> GetDoctorReservationDateTimeById(ulong reservationDateTimeId)
         {
-            return await _reservation.GetDoctorReservationDateTimeById(reservationDateTimeId); 
+            return await _reservation.GetDoctorReservationDateTimeById(reservationDateTimeId);
         }
 
-        public async Task<ShowPatientDetailViewModel?> ShowPatientDetailViewModel(ulong reservationDateTimeId , ulong userId)
+        public async Task<ShowPatientDetailViewModel?> ShowPatientDetailViewModel(ulong reservationDateTimeId, ulong userId)
         {
             #region Get Organization By User Id 
 
@@ -303,8 +306,8 @@ namespace DoctorFAM.Application.Services.Implementation
             #region Get Reservation Date
 
             var reservationDate = await _reservation.GetReservationDateById(reservationDateTime.DoctorReservationDateId);
-            if(reservationDate == null) return null;
-            if(reservationDate.UserId != organization.OwnerId) return null;
+            if (reservationDate == null) return null;
+            if (reservationDate.UserId != organization.OwnerId) return null;
 
             #endregion
 
@@ -328,6 +331,211 @@ namespace DoctorFAM.Application.Services.Implementation
 
             return model;
         }
+
+        #endregion
+
+        #region User Panel
+
+        public async Task<FilterReservationViewModel?> FilterReservationUserPanelViewModel(FilterReservationViewModel filter)
+        {
+            return await _reservation.FilterReservationUserPanelViewModel(filter);
+        }
+
+        public async Task<ShowReservationDetailUserSideViewModel?> FillShowReservationUserSideViewModel(ulong reservationId, ulong userId)
+        {
+            #region Get User By Id
+
+            var user = await _userService.GetUserById(userId);
+            if (user == null) return null;
+
+            #endregion
+
+            #region Get Reservation Date Time By Id
+
+            var reservationDateTime = await _reservation.GetDoctorReservationDateTimeById(reservationId);
+            if (reservationDateTime == null) return null;
+            if (reservationDateTime.PatientId != userId) return null;
+
+            #endregion
+
+            #region Get Reservation Date By Id
+
+            var reservationDate = await _reservation.GetReservationDateById(reservationDateTime.DoctorReservationDateId);
+            if (reservationDate == null) return null;
+
+            #endregion
+
+            #region Get Doctor By Doctor Id
+
+            var doctor = await _userService.GetUserById(reservationDate.UserId);
+            if (doctor == null) return null;
+
+            #endregion
+
+            #region Fill View Model
+
+            ShowReservationDetailUserSideViewModel model = new ShowReservationDetailUserSideViewModel()
+            {
+                DoctorReservationDate = reservationDate,
+                DoctorReservationDateTime = reservationDateTime,
+                User = doctor
+            };
+
+            #endregion
+
+            #region Get Doctor Work Address
+
+            var officeAddress = await _workAddress.GetUserWorkAddressById(reservationDate.UserId);
+
+            if (officeAddress != null)
+            {
+                model.WorkAddress = officeAddress.Address;
+            }
+
+            #endregion
+
+            return model;
+        }
+
+        public async Task<FilterReservationViewModel?> FilterReservationUserPanelViewComponent(FilterReservationViewModel filter)
+        {
+            return await _reservation.FilterReservationUserPanelViewComponent(filter);
+        }
+
+        #endregion
+
+        #region Admin Panel
+
+        public async Task<FilterReservationAdminSideViewModel?> FilterReservationAdminPanelViewModel(FilterReservationAdminSideViewModel filter)
+        {
+            return await _reservation.FilterReservationAdminPanelViewModel(filter);
+        }
+
+        public async Task<ShowReservationDetailAdminSideViewModel?> FillShowReservationDetailAdminSideViewModel(ulong reservationId)
+        {
+            #region Get Reservation Date Time By Id
+
+            var reservationDateTime = await _reservation.GetDoctorReservationDateTimeById(reservationId);
+            if (reservationDateTime == null) return null;
+
+            #endregion
+
+            #region Get Reservation Date By Id
+
+            var reservationDate = await _reservation.GetReservationDateById(reservationDateTime.DoctorReservationDateId);
+            if (reservationDate == null) return null;
+
+            #endregion
+
+            #region Get Doctor By Doctor Id
+
+            var doctor = await _userService.GetUserById(reservationDate.UserId);
+            if (doctor == null) return null;
+
+            #endregion
+
+            #region Fill View Model
+
+            ShowReservationDetailAdminSideViewModel model = new ShowReservationDetailAdminSideViewModel()
+            {
+                DoctorReservationDate = reservationDate,
+                DoctorReservationDateTime = reservationDateTime,
+                Doctor = doctor
+            };
+
+            #endregion
+
+            #region Get Patient 
+
+            if (reservationDateTime.PatientId != null)
+            {
+                var patient = await _userService.GetUserById(reservationDateTime.PatientId.Value);
+                model.Patient = patient;
+            }
+
+            #endregion
+
+            #region Get Doctor Work Address
+
+            var officeAddress = await _workAddress.GetUserWorkAddressById(reservationDate.UserId);
+
+            if (officeAddress != null)
+            {
+                model.WorkAddress = officeAddress.Address;
+            }
+
+            #endregion
+
+            return model;
+        }
+
+        #endregion
+
+        #region Supporter Panel 
+
+        public async Task<FilterReservationSupporterSideViewModel?> FilterReservationSupporterPanelViewModel(FilterReservationSupporterSideViewModel filter)
+        {
+            return await _reservation.FilterReservationSupporterPanelViewModel(filter);
+        }
+
+        public async Task<ShowReservationDetailSupporterSideViewModel?> FillShowReservationDetailSupporterSideViewModel(ulong reservationId)
+        {
+            #region Get Reservation Date Time By Id
+
+            var reservationDateTime = await _reservation.GetDoctorReservationDateTimeById(reservationId);
+            if (reservationDateTime == null) return null;
+
+            #endregion
+
+            #region Get Reservation Date By Id
+
+            var reservationDate = await _reservation.GetReservationDateById(reservationDateTime.DoctorReservationDateId);
+            if (reservationDate == null) return null;
+
+            #endregion
+
+            #region Get Doctor By Doctor Id
+
+            var doctor = await _userService.GetUserById(reservationDate.UserId);
+            if (doctor == null) return null;
+
+            #endregion
+
+            #region Fill View Model
+
+            ShowReservationDetailSupporterSideViewModel model = new ShowReservationDetailSupporterSideViewModel()
+            {
+                DoctorReservationDate = reservationDate,
+                DoctorReservationDateTime = reservationDateTime,
+                Doctor = doctor
+            };
+
+            #endregion
+
+            #region Get Patient 
+
+            if (reservationDateTime.PatientId != null)
+            {
+                var patient = await _userService.GetUserById(reservationDateTime.PatientId.Value);
+                model.Patient = patient;
+            }
+
+            #endregion
+
+            #region Get Doctor Work Address
+
+            var officeAddress = await _workAddress.GetUserWorkAddressById(reservationDate.UserId);
+
+            if (officeAddress != null)
+            {
+                model.WorkAddress = officeAddress.Address;
+            }
+
+            #endregion
+
+            return model;
+        }
+
 
         #endregion
     }

@@ -90,6 +90,23 @@ namespace DoctorFAM.Data.Repository
 
             #endregion
 
+            #region All Records In One Box
+
+            model.AllRecords = await _context.Requests.Include(p => p.User).Where(p => !p.IsDelete
+                                      && (p.RequestState == Domain.Enums.Request.RequestState.SelectedFromDoctor
+                                      || p.RequestState == Domain.Enums.Request.RequestState.Finalized
+                                      || p.RequestState == Domain.Enums.Request.RequestState.Paid)).OrderByDescending(p => p.CreateDate).Take(10).ToListAsync();
+
+            #endregion
+
+            #region List Of Reservation Date Time 
+
+            model.DoctorReservationDateTimes = await _context.DoctorReservationDateTimes.Include(p => p.User).Include(p => p.DoctorReservationDate).ThenInclude(p => p.User)
+                                                    .Where(p => !p.IsDelete && p.DoctorReservationDate.ReservationDate.DayOfYear == DateTime.Now.DayOfYear
+                                                    && p.DoctorReservationDate.ReservationDate.Year == DateTime.Now.Year).ToListAsync();
+
+            #endregion
+
             return model;
         }
 
@@ -158,6 +175,23 @@ namespace DoctorFAM.Data.Repository
                                                   && (p.RequestState == Domain.Enums.Request.RequestState.SelectedFromDoctor
                                                   || p.RequestState == Domain.Enums.Request.RequestState.Finalized
                                                   || p.RequestState == Domain.Enums.Request.RequestState.Paid)).OrderByDescending(p => p.CreateDate).Take(10).ToListAsync();
+
+            #endregion
+
+            #region All Records In One Box
+
+            model.AllRecords = await _context.Requests.Include(p => p.User).Where(p => !p.IsDelete
+                                      && (p.RequestState == Domain.Enums.Request.RequestState.SelectedFromDoctor
+                                      || p.RequestState == Domain.Enums.Request.RequestState.Finalized
+                                      || p.RequestState == Domain.Enums.Request.RequestState.Paid)).OrderByDescending(p => p.CreateDate).Take(10).ToListAsync();
+
+            #endregion
+
+            #region List Of Reservation Date Time 
+
+            model.DoctorReservationDateTimes = await _context.DoctorReservationDateTimes.Include(p => p.User).Include(p => p.DoctorReservationDate).ThenInclude(p => p.User)
+                                                    .Where(p => !p.IsDelete && p.DoctorReservationDate.ReservationDate.DayOfYear == DateTime.Now.DayOfYear
+                                                    && p.DoctorReservationDate.ReservationDate.Year == DateTime.Now.Year).ToListAsync();
 
             #endregion
 

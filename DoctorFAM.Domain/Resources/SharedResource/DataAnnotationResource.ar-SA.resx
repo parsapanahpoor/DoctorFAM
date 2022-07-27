@@ -394,6 +394,9 @@
   <data name="Reservation Date" xml:space="preserve">
     <value>تاريخ الحجز</value>
   </data>
+  <data name="Reservation tariff in Rials" xml:space="preserve">
+    <value>تعرفة التناوب بالريال</value>
+  </data>
   <data name="Reserved" xml:space="preserve">
     <value>محجوز</value>
   </data>

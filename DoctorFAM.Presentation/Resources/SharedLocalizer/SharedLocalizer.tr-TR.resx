@@ -237,8 +237,14 @@
   <data name="List Of Employees" xml:space="preserve">
     <value>çalışanların listesi</value>
   </data>
+  <data name="List Of Futur Reservation" xml:space="preserve">
+    <value>Alınan randevuların listesi</value>
+  </data>
   <data name="List of products" xml:space="preserve">
     <value>Ürün listesi</value>
+  </data>
+  <data name="List Of Reservation Date" xml:space="preserve">
+    <value>randevu listesi</value>
   </data>
   <data name="List Of Reservations" xml:space="preserve">
     <value>randevu listesi</value>
@@ -278,6 +284,9 @@
   </data>
   <data name="Manage Products" xml:space="preserve">
     <value>Ürünleri Yönet</value>
+  </data>
+  <data name="Manage Reservation" xml:space="preserve">
+    <value>Kuyruk yönetimi</value>
   </data>
   <data name="Manage Roles" xml:space="preserve">
     <value>Rolleri Yönet</value>

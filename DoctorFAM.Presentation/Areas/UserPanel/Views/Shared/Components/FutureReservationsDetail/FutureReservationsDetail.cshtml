@@ -1,0 +1,64 @@
+﻿@model DoctorFAM.Domain.ViewModels.UserPanel.Reservation.FilterReservationViewModel
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Domain.ViewModels.Common
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
+
+
+<div class="col-lg-6">
+    <div class="widget">
+        <div class="widget-header bordered-bottom bordered-info">
+            <i class="widget-icon fa fa-tags info"></i>
+            <span class="widget-caption info">@SharedLocalizer["List Of Futur Reservation"]</span>
+        </div><!--Widget Header-->
+        <div class="widget-body  no-padding" style="height: 150px !important;overflow-y: scroll;">
+            <div class="tickets-container">
+                <ul class="tickets-list">
+                    @if (Model.Entities != null && Model.Entities.Any())
+                    {
+                        @foreach (var date in Model.Entities)
+                        {
+                            <li class="ticket-item">
+                                <div class="row">
+                                    <div class="ticket-user col-lg-5 col-sm-12">
+                                        <img src="@date.DoctorReservationDate.User.GetUserAvatar()" class="user-avatar" style="border-radius:50px;">
+                                        <span class="user-name">@date.DoctorReservationDate.User.Username</span>
+                                    </div>
+                                    <div class="ticket-time  col-lg-2 col-sm-6 col-xs-12">
+                                        <div class="divider hidden-md hidden-sm hidden-xs"></div>
+                                        <i class="fa fa-clock-o"></i>
+                                        <span class="time"> @date.DoctorReservationDate.ReservationDate.ToShamsi()</span>
+                                    </div>
+                                    <div class="ticket-time  col-lg-2 col-sm-6 col-xs-12">
+                                        <div class="divider hidden-md hidden-sm hidden-xs"></div>
+                                        <i class="fa fa-clock-o"></i>
+                                        <span class="time">@date.StartTime</span>
+                                    </div>
+                                    <div class="ticket-time  col-lg-2 col-sm-6 col-xs-12">
+                                        <div class="divider hidden-md hidden-sm hidden-xs"></div>
+                                        <i class="fa fa-clock-o"></i>
+                                        <span class="time">@date.EndTime</span>
+                                    </div>
+                                    <a asp-action="ReservationDetail" asp-controller="Reservation" asp-area="UserPanel" asp-route-ReservationId="@date.Id">
+                                        <div class="ticket-state bg-green">
+                                            <i class="fa fa-info"></i>
+                                        </div>
+                                    </a>
+                                </div>
+                            </li>
+                        }
+                    }
+                    else
+                    {
+                        <partial name="_UserPanelNotFoundPartial" />
+                    }
+
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+

@@ -420,4 +420,13 @@
   <data name="Manage Products" xml:space="preserve">
     <value>مدیریت محصولات</value>
   </data>
+  <data name="List Of Reservation Date" xml:space="preserve">
+    <value>لیست نوبت دهی </value>
+  </data>
+  <data name="Manage Reservation" xml:space="preserve">
+    <value>مدیریت نوبت دهی </value>
+  </data>
+  <data name="List Of Futur Reservation" xml:space="preserve">
+    <value>لیست نوبت های گرفته شده</value>
+  </data>
 </root>

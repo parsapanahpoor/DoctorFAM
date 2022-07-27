@@ -406,6 +406,9 @@
   <data name="Reservation Date" xml:space="preserve">
     <value>تاریخ نوبت دهی </value>
   </data>
+  <data name="Reservation tariff in Rials" xml:space="preserve">
+    <value>تعرفه ی نوبت گیری به ریال</value>
+  </data>
   <data name="Reserved" xml:space="preserve">
     <value>رزرو شده است</value>
   </data>

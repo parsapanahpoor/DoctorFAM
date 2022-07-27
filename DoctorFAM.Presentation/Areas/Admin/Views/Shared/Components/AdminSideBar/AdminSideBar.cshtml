@@ -118,7 +118,25 @@
             </ul>
         </li>
 
-        <li>
+           <li>
+                <a href="#" class="menu-dropdown">
+                    <i class="menu-icon glyphicon glyphicon-edit"></i>
+                    <span class="menu-text"> @SharedLocalizer["Turn ratings"] </span>
+                    <i class="menu-expand"></i>
+                </a>
+
+                <ul class="submenu">
+
+                    <li>
+                        <a asp-area="Admin" asp-controller="Reservation" asp-action="FilterReservation">
+                            <span class="menu-text">@SharedLocalizer["List Of Reservations"]</span>
+                        </a>
+                    </li>
+
+                </ul>
+            </li>
+
+               <li>
             <a asp-controller="Doctors" asp-action="ListOfDoctorsInfo">
                 <i class="menu-icon glyphicon glyphicon-education"></i>
                 <span class="menu-text"> @SharedLocalizer["Manage Doctors Info"]  </span>

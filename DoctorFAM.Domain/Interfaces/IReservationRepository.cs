@@ -1,5 +1,8 @@
 ﻿using DoctorFAM.Domain.Entities.DoctorReservation;
+using DoctorFAM.Domain.ViewModels.Admin.Reservation;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment;
+using DoctorFAM.Domain.ViewModels.Supporter.Reservation;
+using DoctorFAM.Domain.ViewModels.UserPanel.Reservation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,6 +34,26 @@ namespace DoctorFAM.Domain.Interfaces
         Task<DoctorReservationDateTime?> GetDoctorReservationDateTimeById(ulong reservationDateTimeId);
 
         Task UpdateReservationDateTime(DoctorReservationDateTime reservationDateTime);
+
+        #endregion
+
+        #region User Panel 
+
+        Task<FilterReservationViewModel?> FilterReservationUserPanelViewModel(FilterReservationViewModel filter);
+
+        Task<FilterReservationViewModel?> FilterReservationUserPanelViewComponent(FilterReservationViewModel filter);
+
+        #endregion
+
+        #region Admin Panel 
+
+        Task<FilterReservationAdminSideViewModel?> FilterReservationAdminPanelViewModel(FilterReservationAdminSideViewModel filter);
+
+        #endregion
+
+        #region Supporter Panel 
+
+        Task<FilterReservationSupporterSideViewModel?> FilterReservationSupporterPanelViewModel(FilterReservationSupporterSideViewModel filter);
 
         #endregion
     }

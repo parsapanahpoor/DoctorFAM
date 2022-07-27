@@ -1,5 +1,8 @@
 ﻿using DoctorFAM.Domain.Entities.DoctorReservation;
+using DoctorFAM.Domain.ViewModels.Admin.Reservation;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment;
+using DoctorFAM.Domain.ViewModels.Supporter.Reservation;
+using DoctorFAM.Domain.ViewModels.UserPanel.Reservation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,6 +38,32 @@ namespace DoctorFAM.Application.Services.Interfaces
         Task<DoctorReservationDateTime?> GetDoctorReservationDateTimeById(ulong reservationDateTimeId);
 
         Task<ShowPatientDetailViewModel?> ShowPatientDetailViewModel(ulong reservationDateTimeId, ulong userId);
+
+        #endregion
+
+        #region User Panel
+
+        Task<FilterReservationViewModel?> FilterReservationUserPanelViewModel(FilterReservationViewModel filter);
+
+        Task<ShowReservationDetailUserSideViewModel?> FillShowReservationUserSideViewModel(ulong reservationId, ulong userId);
+
+        Task<FilterReservationViewModel?> FilterReservationUserPanelViewComponent(FilterReservationViewModel filter);
+
+        #endregion
+
+        #region Admin Panel 
+
+        Task<FilterReservationAdminSideViewModel?> FilterReservationAdminPanelViewModel(FilterReservationAdminSideViewModel filter);
+
+        Task<ShowReservationDetailAdminSideViewModel?> FillShowReservationDetailAdminSideViewModel(ulong reservationId);
+
+        #endregion
+
+        #region Supporter Panel 
+
+        Task<FilterReservationSupporterSideViewModel?> FilterReservationSupporterPanelViewModel(FilterReservationSupporterSideViewModel filter);
+
+        Task<ShowReservationDetailSupporterSideViewModel?> FillShowReservationDetailSupporterSideViewModel(ulong reservationId);
 
         #endregion
     }

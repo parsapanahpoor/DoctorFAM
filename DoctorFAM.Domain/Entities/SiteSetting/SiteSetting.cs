@@ -27,5 +27,7 @@ namespace Academy.Domain.Entities.SiteSetting
         public int HomePatientTransportTariff { get; set; }
 
         public int HomePharmacyTariff { get; set; }
+
+        public int ReservationTarrif { get; set; }
     }
 }

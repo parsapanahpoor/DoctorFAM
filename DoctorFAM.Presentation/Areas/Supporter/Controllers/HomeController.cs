@@ -24,7 +24,5 @@ namespace DoctorFAM.Web.Areas.Supporter.Controllers
         }
 
         #endregion
-
-      
     }
 }
