@@ -49,6 +49,7 @@ namespace DoctorFAM.Application.Services.Implementation
                     HomePatientTransportTariff = setting.HomePatientTransportTariff,
                     DeathCertificateTariff = setting.DeathCertificateTariff,
                     HomePharmacyTariff = setting.HomePharmacyTariff,
+                    ReservationTariff = setting.ReservationTarrif
                 };
             }
 
@@ -77,6 +78,36 @@ namespace DoctorFAM.Application.Services.Implementation
                 return EditSiteSettingResult.Fail;
             }
 
+            if (editSiteSettingViewModel.HomeNurseTariff == null)
+            {
+                return EditSiteSettingResult.Fail;
+            }
+
+            if (editSiteSettingViewModel.HomePharmacyTariff == null)
+            {
+                return EditSiteSettingResult.Fail;
+            }
+
+            if (editSiteSettingViewModel.HomeLaboratoryTariff == null)
+            {
+                return EditSiteSettingResult.Fail;
+            }
+
+            if (editSiteSettingViewModel.DeathCertificateTariff == null)
+            {
+                return EditSiteSettingResult.Fail;
+            }
+
+            if (editSiteSettingViewModel.HomePatientTransportTariff == null)
+            {
+                return EditSiteSettingResult.Fail;
+            }
+
+            if (editSiteSettingViewModel.ReservationTariff == null)
+            {
+                return EditSiteSettingResult.Fail;
+            }
+
             #endregion
 
             if (setting == null)
@@ -92,7 +123,8 @@ namespace DoctorFAM.Application.Services.Implementation
                 setting.HomePharmacyTariff = editSiteSettingViewModel.HomePharmacyTariff.Value;
                 setting.HomeLaboratoryTariff = editSiteSettingViewModel.HomeLaboratoryTariff.Value;
                 setting.DeathCertificateTariff = editSiteSettingViewModel.DeathCertificateTariff.Value;
-                setting.HomePatientTransportTariff = editSiteSettingViewModel.HomePatientTransportTariff.Value;
+                setting.HomePatientTransportTariff = editSiteSettingViewModel.HomePatientTransportTariff.Value; 
+                setting.ReservationTarrif = editSiteSettingViewModel.ReservationTariff.Value;
             }
 
             await _siteSettingRepository.UpdateSiteSetting(setting);
@@ -102,6 +134,50 @@ namespace DoctorFAM.Application.Services.Implementation
 
         public async Task<EditSiteSettingResult> CreateSiteSetting(EditSiteSettingViewModel editSiteSettingViewModel)
         {
+            #region Model State validation
+
+            if (string.IsNullOrEmpty(editSiteSettingViewModel.CopyRightText))
+            {
+                return EditSiteSettingResult.Fail;
+            }
+
+            if (editSiteSettingViewModel.HomeVisitTariff == null)
+            {
+                return EditSiteSettingResult.Fail;
+            }
+
+            if (editSiteSettingViewModel.HomeNurseTariff == null)
+            {
+                return EditSiteSettingResult.Fail;
+            }
+
+            if (editSiteSettingViewModel.HomePharmacyTariff == null)
+            {
+                return EditSiteSettingResult.Fail;
+            }
+
+            if (editSiteSettingViewModel.HomeLaboratoryTariff == null)
+            {
+                return EditSiteSettingResult.Fail;
+            }
+
+            if (editSiteSettingViewModel.DeathCertificateTariff == null)
+            {
+                return EditSiteSettingResult.Fail;
+            }
+
+            if (editSiteSettingViewModel.HomePatientTransportTariff == null)
+            {
+                return EditSiteSettingResult.Fail;
+            }
+
+            if (editSiteSettingViewModel.ReservationTariff == null)
+            {
+                return EditSiteSettingResult.Fail;
+            }
+
+            #endregion
+
             var newSetting = new SiteSetting()
             {
                 CopyRightText = editSiteSettingViewModel.CopyRightText,
@@ -111,6 +187,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 HomePharmacyTariff = editSiteSettingViewModel.HomePharmacyTariff.Value,
                 HomePatientTransportTariff = editSiteSettingViewModel.HomePatientTransportTariff.Value,
                 DeathCertificateTariff = editSiteSettingViewModel.DeathCertificateTariff.Value,
+                ReservationTarrif = editSiteSettingViewModel.ReservationTariff.Value,
             };
 
             await _siteSettingRepository.AddSiteSetting(newSetting);
@@ -146,6 +223,11 @@ namespace DoctorFAM.Application.Services.Implementation
         public async Task<int> GetHomePahrmacyTariff()
         {
             return await _siteSettingRepository.GetHomePahrmacyTariff();
+        }
+
+        public async Task<int> GetReservationTariff()
+        {
+            return await _siteSettingRepository.GetReservationTariff();
         }
 
         #endregion

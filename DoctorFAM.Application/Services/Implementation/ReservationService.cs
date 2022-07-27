@@ -3,6 +3,7 @@ using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.Reservation;
+using DoctorFAM.Domain.ViewModels.Admin.Wallet;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment;
 using DoctorFAM.Domain.ViewModels.Supporter.Reservation;
 using DoctorFAM.Domain.ViewModels.UserPanel.Reservation;
@@ -28,13 +29,19 @@ namespace DoctorFAM.Application.Services.Implementation
 
         private readonly IUserService _userService;
 
-        public ReservationService(IReservationRepository reservation, IOrganizationService organizationService, IWorkAddressService workAddress, IDoctorsRepository doctorsRepository, IUserService userService)
+        private readonly ISiteSettingService _siteSettingService;
+
+        private readonly IWalletService _walletService;
+
+        public ReservationService(IReservationRepository reservation, IOrganizationService organizationService, IWorkAddressService workAddress, IDoctorsRepository doctorsRepository, IUserService userService, ISiteSettingService siteSettingService, IWalletService walletService)
         {
             _reservation = reservation;
             _organizationService = organizationService;
             _workAddress = workAddress;
             _doctorsRepository = doctorsRepository;
             _userService = userService;
+            _siteSettingService = siteSettingService;
+            _walletService = walletService;
         }
 
         #endregion
@@ -536,6 +543,63 @@ namespace DoctorFAM.Application.Services.Implementation
             return model;
         }
 
+        public async Task<bool> CloseReservation(ulong reservationTimeId)
+        {
+            #region Get Reservation Time By Id 
+
+            var reservationTime = await _reservation.GetDoctorReservationDateTimeById(reservationTimeId);
+            if (reservationTime == null) return false;
+
+            #endregion
+
+            #region Get Patient By User Id
+
+            var patient = await _userService.GetUserById(reservationTime.PatientId.Value);
+            if (patient == null) return false;
+
+            #endregion
+
+            #region Get Reservation Tariff
+
+            var reservationTariff = await _siteSettingService.GetReservationTariff();
+            if (reservationTariff == 0) return false;
+
+            #endregion
+
+            #region Add Transaction
+
+            if (reservationTime.DoctorReservationState == Domain.Enums.DoctorReservation.DoctorReservationState.Reserved)
+            {
+                //Fill Model
+                AdminCreateWalletViewModel model = new AdminCreateWalletViewModel
+                {
+                    Description = "بازگشت هزینه ی نوبت دریافت شده به علت لغو نوبت ." ,
+                    GatewayType = Domain.Entities.Wallet.GatewayType.System,
+                    PaymentType = Domain.Entities.Wallet.PaymentType.ChargeWallet,
+                    Price = reservationTariff,
+                    TransactionType = Domain.Entities.Wallet.TransactionType.Deposit,
+                    UserId = patient.Id
+                };
+
+                var res =  await _walletService.CreateWalletAsync(model);
+
+                if (res == AdminCreateWalletResponse.UserNotFound) return false;
+            }
+
+            #endregion
+
+            #region Change Reservation State 
+
+            reservationTime.DoctorReservationState = Domain.Enums.DoctorReservation.DoctorReservationState.NotReserved;
+            reservationTime.DoctorReservationType = null;
+            reservationTime.PatientId = null;
+
+            await _reservation.UpdateReservationDateTime(reservationTime);
+
+            #endregion
+
+            return true;
+        }
 
         #endregion
     }

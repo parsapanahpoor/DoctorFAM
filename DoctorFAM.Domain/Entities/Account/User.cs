@@ -117,6 +117,8 @@ namespace DoctorFAM.Domain.Entities.Account
 
         public ICollection<WorkAddress.WorkAddress> WorkAddresses { get; set; }
 
+        public ICollection<LogForCloseReservation> LogForCloseReservations { get; set; }
+
         #endregion
     }
 }

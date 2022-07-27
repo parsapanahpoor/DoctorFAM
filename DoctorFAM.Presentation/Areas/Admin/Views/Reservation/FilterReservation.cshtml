@@ -38,34 +38,34 @@
 
                         <input type="hidden" asp-for="Page" />
 
-                            <div class="form-group">
+                        <div class="form-group">
                             <label asp-for="PatientName"> @Localizer["Patient Name"] </label>
-                            <input type="text" class="form-control"  asp-for="PatientName">
+                            <input type="text" class="form-control" asp-for="PatientName">
                         </div>
 
-                            <div class="form-group">
+                        <div class="form-group">
                             <label asp-for="DoctorName"> @Localizer["Doctor Name"] </label>
-                            <input type="text" class="form-control"  asp-for="DoctorName">
+                            <input type="text" class="form-control" asp-for="DoctorName">
                         </div>
 
-                          <div class="form-group">
+                        <div class="form-group">
                             <label asp-for="PatientMobile"> @Localizer["Patient Mobile"] </label>
-                            <input type="text" class="form-control"  asp-for="PatientMobile">
+                            <input type="text" class="form-control" asp-for="PatientMobile">
                         </div>
 
                         <div class="form-group">
                             <label asp-for="DoctorMobile"> @Localizer["Doctor Mobile"] </label>
-                            <input type="text" class="form-control"  asp-for="DoctorMobile">
+                            <input type="text" class="form-control" asp-for="DoctorMobile">
                         </div>
 
-                         <div class="form-group">
+                        <div class="form-group">
                             <label asp-for="PatientNationalNumber"> @Localizer["Patient National Number"] </label>
-                            <input type="text" class="form-control"  asp-for="PatientNationalNumber">
+                            <input type="text" class="form-control" asp-for="PatientNationalNumber">
                         </div>
 
-                             <div class="form-group">
+                        <div class="form-group">
                             <label asp-for="DoctorNationalNumber"> @Localizer["Doctor National Number"] </label>
-                            <input type="text" class="form-control"  asp-for="DoctorNationalNumber">
+                            <input type="text" class="form-control" asp-for="DoctorNationalNumber">
                         </div>
 
                         <div class="form-group">
@@ -187,12 +187,12 @@
                                 </td>
 
                                 <td class="tc vm">
-                                        <div class="flex-style-center">
+                                    <div class="flex-style-center">
                                         <div class="mr-10px">
-                                    <p> @Localizer["Start"] : @date.StartTime </p>
-                                    <hr class="margin-7" />
-                                    <p> @Localizer["End"] : @date.EndTime </p>
-                                    </div>
+                                            <p> @Localizer["Start"] : @date.StartTime </p>
+                                            <hr class="margin-7" />
+                                            <p> @Localizer["End"] : @date.EndTime </p>
+                                        </div>
                                     </div>
                                 </td>
 
@@ -209,7 +209,7 @@
                                                 <p class="label label-danger">@Localizer["Waiting"]</p>
                                             }
 
-                                                @if (date.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.NotReserved)
+                                            @if (date.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.NotReserved)
                                             {
                                                 <p class="label label-danger">@Localizer["Not Reserved"]</p>
                                             }
@@ -226,7 +226,7 @@
                                                 <p class="label label-info">@Localizer["In Persone"]</p>
                                             }
 
-                                                                             @if (date.DoctorReservationType == null)
+                                            @if (date.DoctorReservationType == null)
                                             {
                                                 <p class="label label-info">@Localizer["not determined"]</p>
                                             }
@@ -237,6 +237,11 @@
 
                                 <td class="tc vm">
                                     <a asp-action="ReservationDetail" asp-controller="Reservation" asp-area="Admin" asp-route-ReservationId="@date.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+
+                                    @if (date.DoctorReservationState != DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.NotReserved)
+                                    {
+                                        <a asp-action="ChangeReservationState" asp-controller="Reservation" asp-area="Admin" asp-route-ReservationId="@date.Id" class="btn btn-warning btn-circle btn-xs"><i class="glyphicon glyphicon-pencil"></i></a>
+                                    }
                                 </td>
                             </tr>
                         }

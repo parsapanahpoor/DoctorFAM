@@ -39,6 +39,8 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         Task<ShowPatientDetailViewModel?> ShowPatientDetailViewModel(ulong reservationDateTimeId, ulong userId);
 
+        Task<bool> CloseReservation(ulong reservationTimeId);
+
         #endregion
 
         #region User Panel

@@ -121,6 +121,19 @@ namespace DoctorFAM.Data.Repository
             return siteSetting.HomePharmacyTariff;
         }
 
+        public async Task<int >GetReservationTariff()
+                {
+            var siteSetting = await GetSiteSetting();
+            if (siteSetting == null) return 0;
+
+            if (siteSetting.ReservationTarrif == null || siteSetting.ReservationTarrif == 0)
+            {
+                return 0;
+            }
+
+            return siteSetting.ReservationTarrif;
+        }
+
         #endregion
     }
 }

@@ -1,0 +1,64 @@
+﻿@using DoctorFAM.Domain.Entities.States
+@using DoctorFAM.Web.Culture
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = @Localizer["Change Reservation State"];
+}
+
+@section Scripts
+{
+<partial name="_JqueryValidation" />
+}
+
+@section Breadcrumb
+{
+<li>
+    <a href="javascript:void(0)"> @ViewData["Title"] </a>
+</li>
+}
+
+    <div class="row">
+
+            <div class="col-lg-12 col-sm-12 col-xs-12">
+
+           <div class="row">
+            <div class="col-lg-12 col-sm-12 col-xs-12">
+                <div class="well bordered-left bordered-themeprimary">
+                    <p> <strong> @Localizer["If the appointment received by the user has been finalized and the appointment fee has been paid for receiving the appointment, after canceling the appointment, the amount paid will be returned to the user under the name of charging the account."] </strong> </p>
+                </div>
+            </div>
+        </div>
+
+        </div>
+
+        <div class="col-lg-12 col-sm-12">
+            <div class="widget">
+                <div class="widget-header bordered-bottom bordered-warning">
+                        <span class="widget-caption"> @Localizer["Change Reservation State"]  </span>
+                </div>
+                <div class="widget-body">
+                    <div>
+
+                        <div class="row">
+                            <div class="form-group col-md-12 col-sm-12" style="margin-bottom: 0px;">
+                                <p>@Localizer["If you are sure of canceling the appointment, click on the link below"]</p>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12 flex-style">
+                                <a  asp-action="CloseReservation" asp-controller="Reservation" asp-area="Supporter" asp-route-ReservationId="@ViewBag.reservation" class="btn btn-labeled btn-warning">
+                                    <i class="btn-label glyphicon glyphicon-ok"></i>@Localizer["Close"]
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+

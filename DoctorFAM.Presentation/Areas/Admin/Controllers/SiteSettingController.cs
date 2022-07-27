@@ -55,6 +55,5 @@ namespace Academy.Web.Areas.Admin.Controllers
         }
 
         #endregion
-
     }
 }

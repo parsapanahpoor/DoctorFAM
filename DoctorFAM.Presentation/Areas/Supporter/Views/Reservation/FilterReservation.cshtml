@@ -237,6 +237,11 @@
 
                                 <td class="tc vm">
                                     <a asp-action="ReservationDetail" asp-controller="Reservation" asp-area="Supporter" asp-route-ReservationId="@date.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+
+                                     @if (date.DoctorReservationState != DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.NotReserved)
+                                    {
+                                        <a asp-action="ChangeReservationState" asp-controller="Reservation" asp-area="Supporter" asp-route-ReservationId="@date.Id" class="btn btn-warning btn-circle btn-xs"><i class="glyphicon glyphicon-pencil"></i></a>
+                                    }
                                 </td>
                             </tr>
                         }

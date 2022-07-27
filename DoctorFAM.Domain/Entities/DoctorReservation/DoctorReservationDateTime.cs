@@ -39,6 +39,8 @@ namespace DoctorFAM.Domain.Entities.DoctorReservation
 
         public WorkAddress.WorkAddress WorkAddress { get; set; }
 
+        public ICollection<LogForCloseReservation> LogForCloseReservations { get; set; }
+
         #endregion
     }
 }

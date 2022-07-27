@@ -29,6 +29,8 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         Task<int> GetHomePahrmacyTariff();
 
+        Task<int> GetReservationTariff();
+
         #endregion
     }
 }
