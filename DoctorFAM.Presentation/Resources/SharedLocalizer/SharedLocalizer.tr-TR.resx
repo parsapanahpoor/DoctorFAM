@@ -231,6 +231,9 @@
   <data name="Laboratory At Home" xml:space="preserve">
     <value>evde laboratuvar</value>
   </data>
+  <data name="List Of Closed Reservations" xml:space="preserve">
+    <value>İptal edilen randevuların listesi</value>
+  </data>
   <data name="List of covered people" xml:space="preserve">
     <value>Kapsanan kişilerin listesi</value>
   </data>

@@ -84,5 +84,14 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
         }
 
         #endregion
+
+        #region List Of Closed Reservation
+
+        public async Task<IActionResult> ListOfClosedReservation(FilterClosedReservationAdminViewModel filter)
+        {
+            return View(await _reservationService.FilterClosedReservationAdminPanelViewModel(filter));
+        }
+
+        #endregion
     }
 }

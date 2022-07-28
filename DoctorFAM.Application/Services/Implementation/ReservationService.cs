@@ -476,6 +476,11 @@ namespace DoctorFAM.Application.Services.Implementation
             return model;
         }
 
+        public async Task<FilterClosedReservationAdminViewModel?> FilterClosedReservationAdminPanelViewModel(FilterClosedReservationAdminViewModel filter)
+        {
+            return await _reservation.FilterClosedReservationAdminPanelViewModel(filter);
+        }
+
         #endregion
 
         #region Supporter Panel 
@@ -595,6 +600,18 @@ namespace DoctorFAM.Application.Services.Implementation
             reservationTime.PatientId = null;
 
             await _reservation.UpdateReservationDateTime(reservationTime);
+
+            #endregion
+
+            #region Add Log For Close Reservation
+
+            LogForCloseReservation log = new LogForCloseReservation()
+            {
+                UserId = patient.Id,
+                DoctorReservationDateTimeId = reservationTimeId,
+            };
+
+            await _reservation.AddLogForCloseReservation(log);
 
             #endregion
 

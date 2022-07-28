@@ -59,6 +59,8 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         Task<ShowReservationDetailAdminSideViewModel?> FillShowReservationDetailAdminSideViewModel(ulong reservationId);
 
+        Task<FilterClosedReservationAdminViewModel?> FilterClosedReservationAdminPanelViewModel(FilterClosedReservationAdminViewModel filter);
+
         #endregion
 
         #region Supporter Panel 

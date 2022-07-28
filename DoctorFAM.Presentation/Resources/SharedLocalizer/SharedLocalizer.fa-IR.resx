@@ -429,4 +429,7 @@
   <data name="List Of Futur Reservation" xml:space="preserve">
     <value>لیست نوبت های گرفته شده</value>
   </data>
+  <data name="List Of Closed Reservations" xml:space="preserve">
+    <value>لیست نوبت های لغو شده </value>
+  </data>
 </root>

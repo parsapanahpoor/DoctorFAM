@@ -610,6 +610,125 @@ namespace DoctorFAM.Data.Repository
             return filter;
         }
 
+        public async Task<FilterClosedReservationAdminViewModel?> FilterClosedReservationAdminPanelViewModel(FilterClosedReservationAdminViewModel filter)
+        {
+            var query = _context.LogForCloseReservations
+            .Include(s => s.User)
+            .Include(p => p.DoctorReservationDateTime)
+            .ThenInclude(p=> p.DoctorReservationDate)
+            .ThenInclude(p => p.User)
+            .Where(p => !p.IsDelete)
+            .OrderByDescending(s => s.CreateDate)
+            .AsQueryable();
+
+            #region Status
+
+            switch (filter.FilterDoctorReservationState)
+            {
+                case FilterDoctorReservationState.All:
+                    break;
+                case FilterDoctorReservationState.Reserved:
+                    query = query.Where(p => p.DoctorReservationDateTime.DoctorReservationState == DoctorReservationState.Reserved);
+                    break;
+                case FilterDoctorReservationState.NotReserved:
+                    query = query.Where(p => p.DoctorReservationDateTime.DoctorReservationState == DoctorReservationState.NotReserved);
+                    break;
+                case FilterDoctorReservationState.WaitingForComplete:
+                    query = query.Where(p => p.DoctorReservationDateTime.DoctorReservationState == DoctorReservationState.WaitingForComplete);
+                    break;
+            }
+
+            switch (filter.FilterDoctorReservationType)
+            {
+                case FilterDoctorReservationType.All:
+                    break;
+                case FilterDoctorReservationType.Onile:
+                    query = query.Where(p => p.DoctorReservationDateTime.DoctorReservationType == DoctorReservationType.Onile);
+                    break;
+                case FilterDoctorReservationType.Reserved:
+                    query = query.Where(p => p.DoctorReservationDateTime.DoctorReservationType == DoctorReservationType.Reserved);
+                    break;
+            }
+
+            switch (filter.FilterReservationOrder)
+            {
+                case Domain.Enums.DoctorReservation.FilterReservationOrder.CreateDate_Des:
+                    break;
+
+                case Domain.Enums.DoctorReservation.FilterReservationOrder.CreateDate_Asc:
+                    query = query.OrderBy(p => p.DoctorReservationDateTime.DoctorReservationDate.ReservationDate);
+                    break;
+            }
+
+            #endregion
+
+            #region Filter
+
+            if (!string.IsNullOrEmpty(filter.FromDate))
+            {
+                var spliteDate = filter.FromDate.Split('/');
+                int year = int.Parse(spliteDate[0]);
+                int month = int.Parse(spliteDate[1]);
+                int day = int.Parse(spliteDate[2]);
+                DateTime fromDate = new DateTime(year, month, day, new PersianCalendar());
+
+                query = query.Where(s => s.DoctorReservationDateTime.DoctorReservationDate.ReservationDate >= fromDate);
+            }
+
+            if (!string.IsNullOrEmpty(filter.ToDate))
+            {
+                var spliteDate = filter.ToDate.Split('/');
+                int year = int.Parse(spliteDate[0]);
+                int month = int.Parse(spliteDate[1]);
+                int day = int.Parse(spliteDate[2]);
+                DateTime toDate = new DateTime(year, month, day, new PersianCalendar());
+
+                query = query.Where(s => s.DoctorReservationDateTime.DoctorReservationDate.ReservationDate <= toDate);
+            }
+
+            if (!string.IsNullOrEmpty(filter.PatientName))
+            {
+                query = query.Where(s => s.User.Username.Contains(filter.PatientName));
+            }
+
+            if (!string.IsNullOrEmpty(filter.DoctorName))
+            {
+                query = query.Where(s => s.DoctorReservationDateTime.DoctorReservationDate.User.Username.Contains(filter.DoctorName));
+            }
+
+            if (!string.IsNullOrEmpty(filter.PatientMobile))
+            {
+                query = query.Where(s => s.User.Mobile == filter.PatientMobile);
+            }
+
+            if (!string.IsNullOrEmpty(filter.DoctorMobile))
+            {
+                query = query.Where(s => s.DoctorReservationDateTime.DoctorReservationDate.User.Mobile == filter.DoctorMobile);
+            }
+
+            if (!string.IsNullOrEmpty(filter.DoctorNationalNumber))
+            {
+                query = query.Where(s => s.DoctorReservationDateTime.DoctorReservationDate.User.NationalId == filter.DoctorNationalNumber);
+            }
+
+            if (!string.IsNullOrEmpty(filter.PatientNationalNumber))
+            {
+                query = query.Where(s => s.User.NationalId == filter.PatientNationalNumber);
+            }
+
+            #endregion
+
+            await filter.Paging(query);
+
+            return filter;
+        }
+
+
+        public async Task AddLogForCloseReservation(LogForCloseReservation log)
+        {
+            await _context.LogForCloseReservations.AddAsync(log);
+            await _context.SaveChangesAsync();
+        }
 
         #endregion
 

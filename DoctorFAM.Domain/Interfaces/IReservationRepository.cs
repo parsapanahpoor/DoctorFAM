@@ -49,6 +49,10 @@ namespace DoctorFAM.Domain.Interfaces
 
         Task<FilterReservationAdminSideViewModel?> FilterReservationAdminPanelViewModel(FilterReservationAdminSideViewModel filter);
 
+        Task AddLogForCloseReservation(LogForCloseReservation log);
+
+        Task<FilterClosedReservationAdminViewModel?> FilterClosedReservationAdminPanelViewModel(FilterClosedReservationAdminViewModel filter);
+
         #endregion
 
         #region Supporter Panel 

@@ -171,6 +171,8 @@ namespace DoctorFAM.Data.DbContext
 
         public DbSet<DoctorReservationDateTime> DoctorReservationDateTimes { get; set; }
 
+        public DbSet<LogForCloseReservation> LogForCloseReservations { get; set; }
+
         #endregion
 
         #endregion
