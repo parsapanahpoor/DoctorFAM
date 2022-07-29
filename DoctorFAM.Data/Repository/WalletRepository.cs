@@ -177,6 +177,9 @@ namespace DoctorFAM.Data.Repository
         {
             _context.Wallets.Update(wallet);
             await SaveChangesAsync();
+
+            //CalCulate User Wallet Balance
+            var walletBalance = await GetUserWalletBalance(wallet.UserId);
         }
 
         public Task<AdminEditWalletViewModel?> GetWalletForEditAsync(ulong walletId)

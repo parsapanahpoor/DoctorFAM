@@ -367,6 +367,9 @@ meta etiket</value>
   <data name="Send From" xml:space="preserve">
     <value>gönder</value>
   </data>
+  <data name="Send SMS Time" xml:space="preserve">
+    <value>SMS Zamanı Gönder</value>
+  </data>
   <data name="Sister" xml:space="preserve">
     <value>kardeş</value>
   </data>

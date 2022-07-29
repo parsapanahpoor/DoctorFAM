@@ -29,5 +29,8 @@ namespace Academy.Domain.Entities.SiteSetting
         public int HomePharmacyTariff { get; set; }
 
         public int ReservationTarrif { get; set; }
+
+        [Display(Name = "تایم  ارسال اس ام اس ")]
+        public int SendSMSTimer { get; set; }
     }
 }

@@ -135,5 +135,19 @@ namespace DoctorFAM.Data.Repository
         }
 
         #endregion
+
+        #region Site Side 
+
+        public async Task<bool> IsExistSiteSetting()
+        {
+            return await _context.SiteSettings.AnyAsync();
+        }
+
+        public async Task<int> GetSMSTimer()
+        {
+            return await _context.SiteSettings.Select(p => p.SendSMSTimer).FirstAsync();
+        }
+
+        #endregion
     }
 }

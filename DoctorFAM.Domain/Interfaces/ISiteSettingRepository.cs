@@ -32,5 +32,13 @@ namespace DoctorFAM.Domain.Interfaces
         Task<int> GetReservationTariff();
 
         #endregion
+
+        #region Site Side
+
+        Task<bool> IsExistSiteSetting();
+
+        Task<int> GetSMSTimer();
+
+        #endregion
     }
 }

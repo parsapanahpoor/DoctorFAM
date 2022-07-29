@@ -14,6 +14,7 @@ using DoctorFAM.Domain.ViewModels.Admin;
 using DoctorFAM.Domain.ViewModels.Admin.Account;
 using DoctorFAM.Domain.ViewModels.Common;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Employees;
+using DoctorFAM.Domain.ViewModels.Site.Account;
 using DoctorFAM.Domain.ViewModels.UserPanel.Account;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -29,20 +30,22 @@ namespace DoctorFAM.Application.Services.Implementation
     {
         #region Ctor
 
-        public DoctorFAMDbContext _context { get; set; }
+        private readonly DoctorFAMDbContext _context;
 
-        public ISiteSettingService _siteSettingService { get; set; }
+        private readonly ISiteSettingService _siteSettingService;
 
-        private IViewRenderService _viewRenderService;
+        private readonly IViewRenderService _viewRenderService;
 
-        private IEmailSender _emailSender;
+        private readonly IEmailSender _emailSender;
 
         private readonly IUserRepository _userRepository;
 
         private readonly IOrganizationService _organizationService;
 
+        private readonly ISMSService _smsservice;
+
         public UserService(DoctorFAMDbContext context, ISiteSettingService siteSettingService, IViewRenderService viewRenderService,
-                                IEmailSender emailSender, IUserRepository userRepository, IOrganizationService organizationService)
+                                IEmailSender emailSender, IUserRepository userRepository, IOrganizationService organizationService, ISMSService smsservice)
         {
             _context = context;
             _siteSettingService = siteSettingService;
@@ -50,6 +53,7 @@ namespace DoctorFAM.Application.Services.Implementation
             _emailSender = emailSender;
             _userRepository = userRepository;
             _organizationService = organizationService;
+            _smsservice = smsservice;
         }
 
         #endregion
@@ -60,13 +64,16 @@ namespace DoctorFAM.Application.Services.Implementation
         {
             var user = await _userRepository.GetUserByMobile(Mobile);
             user.MobileActivationCode = new Random().Next(10000, 999999).ToString();
+            user.ExpireMobileSMSDateTime = DateTime.Now;
 
-            _userRepository.EditUser(user);
-            await _userRepository.SaveChangesAsync();
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
 
-            #region Kavenegar
+            #region Send Verification Code SMS
 
-            //await _kavenegarSmsService.SendVerificationSms(user.Mobile, user.MobileActiveCode);
+            var message = Messages.SendActivationRegisterSms(user.MobileActivationCode);
+
+            await _smsservice.SendSimpleSMS(user.Mobile, message);
 
             #endregion
 
@@ -157,7 +164,8 @@ namespace DoctorFAM.Application.Services.Implementation
                 Username = mobile,
                 Mobile = register.Mobile.SanitizeText(),
                 EmailActivationCode = CodeGenerator.GenerateUniqCode(),
-                MobileActivationCode = new Random().Next(10000, 999999).ToString()
+                MobileActivationCode = new Random().Next(10000, 999999).ToString(),
+                ExpireMobileSMSDateTime = DateTime.Now
             };
 
             await _context.Users.AddAsync(User);
@@ -180,7 +188,9 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #region Send Verification Code SMS
 
+            var message = Messages.SendActivationRegisterSms(User.MobileActivationCode);
 
+            await _smsservice.SendSimpleSMS(User.Mobile, message);
 
             #endregion
 
@@ -325,6 +335,41 @@ namespace DoctorFAM.Application.Services.Implementation
             await _context.SaveChangesAsync();
 
             #endregion
+        }
+
+        public async Task<ActiveMobileByActivationCodeResult> ActiveUserMobile(ActiveMobileByActivationCodeViewModel activeMobileByActivationCodeViewModel)
+        {
+            #region Get User By Mobile
+
+            if (!await IsExistUserByMobile(activeMobileByActivationCodeViewModel.Mobile.SanitizeText()))
+            {
+                return ActiveMobileByActivationCodeResult.AccountNotFound;
+            }
+
+            var user = await GetUserByMobile(activeMobileByActivationCodeViewModel.Mobile.SanitizeText());
+            if (user == null) return ActiveMobileByActivationCodeResult.AccountNotFound;
+
+            #endregion
+
+            #region Validation Activation Code
+
+            if (user.MobileActivationCode != activeMobileByActivationCodeViewModel.MobileActiveCode)
+            {
+                return ActiveMobileByActivationCodeResult.AccountNotFound;
+            }
+
+            #endregion
+
+            #region Update User 
+
+            user.IsMobileConfirm = true;
+            user.MobileActivationCode = new Random().Next(10000, 999999).ToString();
+
+            await _context.SaveChangesAsync();
+
+            #endregion
+
+            return ActiveMobileByActivationCodeResult.Success;
         }
 
         #endregion

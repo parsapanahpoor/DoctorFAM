@@ -84,12 +84,14 @@ namespace DoctorFAM.Domain.Entities.Account
 
         public int WalletBalance { get; set; }
 
-        public List<Wallet.Wallet> Wallets { get; set; }
-
+        [Display(Name = "تاریخ انقضای تایم اس ام اس فعال سازی ")]
+        public DateTime? ExpireMobileSMSDateTime { get; set; }
 
         #endregion
 
         #region Relations
+
+        public List<Wallet.Wallet> Wallets { get; set; }
 
         public ICollection<UserRole> UserRoles { get; set; }
 

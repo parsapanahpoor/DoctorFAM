@@ -1,0 +1,109 @@
+﻿@model DoctorFAM.Domain.ViewModels.Site.Account.ActiveMobileByActivationCodeViewModel
+
+@{
+    ViewData["Title"] = "فعالسازی حساب کاربری";
+    var Time = ViewBag.Time;
+}
+
+@section Scripts
+{
+<partial name="_JqueryValidation" />
+
+<script src="~/common/Simple-Countdown-Timer-Plugin-jQuery/jquery.simple.timer.js"></script>
+<script src="~/common/Simple-Countdown-Timer-Plugin-jQuery/examples/bundle.js"></script>
+<script src="~/common/Simple-Countdown-Timer-Plugin-jQuery/examples/dojo.js"></script>
+
+<script>
+            $(function () {
+
+            $("#timer").startTimer({
+                onComplete: function () {
+                    $("#SMS").css({ 'display': 'block' });
+                    $("#timer").css({ 'display': 'none' });
+                }
+            });
+
+        });
+    </script>
+}
+
+@section styles
+{
+<style>
+    .jst-hours {
+        float: left;
+    }
+
+    .jst-minutes {
+        float: left;
+    }
+
+    .jst-seconds {
+        float: left;
+    }
+
+    .jst-clearDiv {
+        clear: both;
+    }
+
+    .jst-timeout {
+        color: red;
+    }
+</style>
+}
+
+<section class="login">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="white-bg box-shadow rounded o-hidden">
+                    <div class="row align-items-center">
+                        <div class="col-lg-7 col-md-12 p-5">
+                            <img class="img-fluid" src="~/Site/images/login.png" alt="">
+                        </div>
+                        <div class="col-lg-5 col-md-12 ">
+                            <div class="login-form text-center">
+                                <a href="/Home/SecPage" class="text-center">
+                                    <span class="" style="color:#3143ef; font-weight:900 !important; font-size:30px !important;"><b>DOCTOR</b></span>
+                                    <span class="" style="color:#fd5b03; font-weight:900 !important; font-size:32px !important;"><b>F</b></span>
+                                    <span class="" style="color:#fd5b03; font-weight:900 !important; font-size:32px !important;"><b>A</b></span>
+                                    <span class="" style="color:#fd5b03; font-weight:900 !important; font-size:32px !important;"><b>M</b></span>
+                                </a>
+
+                                <div class="login-form">
+
+                                    <form method="post" asp-area="" asp-controller="Account" asp-action="ActiveUserByMobileActivationCode">
+                                        <input type="hidden" asp-for="Mobile" value=@ViewBag.Mobile />
+
+                                        <h4 class="text-center ">@ViewData["Title"]</h4>
+
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <input asp-for="MobileActiveCode" class="form-control" placeholder="کد فعالسازی ارسال شده" />
+                                                <span class="text-danger" asp-validation-for="MobileActiveCode"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="remember-me-wrap" style="margin-left:50px;">
+                                            <p class="timerCounter" data-seconds-left="@Time" id="timer"></p>
+                                        </div>
+
+                                        <div class="row  text-center  align-items-center justify-content-center ">
+                                            <button type="submit" class="btn-Accept m-2">ارسال</button>
+
+                                            <span></span> <a id="SMS" asp-area="" asp-controller="Account" asp-action="ActiveUserByMobileActivationCode" asp-route-Mobile="@ViewBag.Mobile" asp-route-Resend="true" class="Link_Forget_my_password btn-Accept m-2" style="display: none"><span> ارسال مجدد کد  </span></a>
+                                        </div>
+
+
+                                    </form>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

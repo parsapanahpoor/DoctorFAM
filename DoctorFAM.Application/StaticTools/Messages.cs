@@ -12,6 +12,12 @@ public static class Messages
     public static string SendSMSForLogin()
     {
         return
-            $"با سلام ،ورود به حساب با موفقیت انجام شده است .{Environment.NewLine} -{PathTools.SiteFarsiName}";
+            $"با سلام ،ورود به حساب با موفقیت انجام شده است .{Environment.NewLine} {PathTools.SiteFarsiName}";
+    }
+
+    public static string SendActivationRegisterSms(string activationCode)
+    {
+        return
+            $"باعرض سلام . {Environment.NewLine} کد فعال سازی شما : {activationCode} . {Environment.NewLine} {PathTools.SiteFarsiName}";
     }
 }

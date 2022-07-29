@@ -424,6 +424,9 @@
   <data name="Send From" xml:space="preserve">
     <value>ارسال از</value>
   </data>
+  <data name="Send SMS Time" xml:space="preserve">
+    <value>تایم ارسال مجدد اس ام اس </value>
+  </data>
   <data name="Sister" xml:space="preserve">
     <value>خواهر</value>
   </data>

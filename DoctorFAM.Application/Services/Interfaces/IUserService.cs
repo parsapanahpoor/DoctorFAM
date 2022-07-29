@@ -3,6 +3,7 @@ using DoctorFAM.Domain.ViewModels.Account;
 using DoctorFAM.Domain.ViewModels.Admin;
 using DoctorFAM.Domain.ViewModels.Admin.Account;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Employees;
+using DoctorFAM.Domain.ViewModels.Site.Account;
 using DoctorFAM.Domain.ViewModels.UserPanel.Account;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -50,6 +51,8 @@ namespace DoctorFAM.Application.Services.Interfaces
         Task RegisterDoctors(string mobile);
 
         Task RegisterSeller(string mobile);
+
+        Task<ActiveMobileByActivationCodeResult> ActiveUserMobile(ActiveMobileByActivationCodeViewModel activeMobileByActivationCodeViewModel);
 
         #endregion
 

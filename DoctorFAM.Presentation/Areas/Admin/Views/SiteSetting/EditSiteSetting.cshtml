@@ -72,6 +72,12 @@
                                 <span class="text-danger" asp-validation-for="ReservationTariff"></span>
                             </div>
 
+                               <div class="form-group col-md-12">
+                                <label asp-for="SendSMSTime"></label>
+                                <input type="text" class="form-control" asp-for="SendSMSTime"/>
+                                <span class="text-danger" asp-validation-for="SendSMSTime"></span>
+                            </div>
+
                             <div class="form-group col-md-12">
                                 <label asp-for="CopyRightText"></label>
                                 <textarea class="form-control" ckeditor="1" asp-for="CopyRightText"></textarea>

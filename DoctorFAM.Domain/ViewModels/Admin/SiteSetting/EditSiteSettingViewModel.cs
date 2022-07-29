@@ -32,6 +32,9 @@ namespace DoctorFAM.Domain.ViewModels.Admin.SiteSetting
 
         [Display(Name = "Reservation tariff in Rials")]
         public int? ReservationTariff { get; set; }
+
+        [Display(Name = "Send SMS Time")]
+        public int? SendSMSTime { get; set; }
     }
 
     public enum EditSiteSettingResult
