@@ -9,17 +9,29 @@ namespace DoctorFAM.Domain.ViewModels.Account
 {
     public class ResetPasswordViewModel 
     {
-        public string MobileActivationCode { get; set; }
+        [Display(Name = "کد فعالسازی")]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
+        [MaxLength(250, ErrorMessage = "{0} نمی تواند بیشتر از {1} کاراکتر باشد")]
+        public string ActiveCode { get; set; }
 
-        [Display(Name = "رمز عبور")]
-        [Required(ErrorMessage = "این فیلد الزامی است .")]
-        [MaxLength(100, ErrorMessage = "تعداد کاراکتر های {0} نمیتواند بیشتر از {1} باشد")]
+        [Display(Name = "کلمه ی عبور")]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
+        [MaxLength(200, ErrorMessage = "{0} نمی تواند بیشتر از {1} کاراکتر باشد .")]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        [Display(Name = "رمز عبور")]
-        [Required(ErrorMessage = "این فیلد الزامی است .")]
-        [MaxLength(100, ErrorMessage = "تعداد کاراکتر های {0} نمیتواند بیشتر از {1} باشد")]
-        [Compare("Password", ErrorMessage = "کلمه های عبور مغایرت دارند .")]
-        public string RePassword { get; set; }
+        [Display(Name = " تایید کلمه ی عبور")]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
+        [MaxLength(200, ErrorMessage = "{0} نمی تواند بیشتر از {1} کاراکتر باشد .")]
+        [Compare("Password", ErrorMessage = "کلمه های عبور مغایرت دارند")]
+        [DataType(DataType.Password)]
+        public string ConfirmPassword { get; set; }
+    }
+
+    public enum ResetPasswordResult
+    {
+        Success,
+        NotFound,
+        WrongActiveCode
     }
 }

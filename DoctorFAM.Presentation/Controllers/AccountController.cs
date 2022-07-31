@@ -33,7 +33,7 @@ namespace DoctorFAM.Web.Controllers
 
         [HttpGet("Register")]
         [RedirectHomeIfLoggedInActionFilter]
-        public IActionResult Register(bool? doctors , bool? seller)
+        public IActionResult Register(bool? doctors, bool? seller)
         {
             #region About Doctors & Seller
 
@@ -237,13 +237,13 @@ namespace DoctorFAM.Web.Controllers
                     break;
                 case LoginResult.MobileNotActivated:
                     TempData[WarningMessage] = "حساب کاربری شما فعال نشده است";
-                    return RedirectToAction("ActiveUserByMobileActivationCode", new { Mobile = login.Mobile , Resend = true });
+                    return RedirectToAction("ActiveUserByMobileActivationCode", new { Mobile = login.Mobile, Resend = true });
 
                 case LoginResult.Success:
 
                     #region Login User
 
-                   // var user = await _userService.GetUserByEmail(login.Mobile);
+                    // var user = await _userService.GetUserByEmail(login.Mobile);
                     var user = await _userService.GetUserByMobile(login.Mobile);
 
                     var claims = new List<Claim>
@@ -315,80 +315,111 @@ namespace DoctorFAM.Web.Controllers
 
         #endregion
 
-        #region Forgot Password
+        #region forgot password
 
         [HttpGet("ForgotPassword")]
-        [RedirectHomeIfLoggedInActionFilter]
-        public async Task<IActionResult> ForgotPassword()
+        public IActionResult ForgotPassword()
         {
             return View();
         }
 
         [HttpPost("ForgotPassword"), ValidateAntiForgeryToken]
-        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel forgotPassword)
+        public async Task<IActionResult> ForgotPassword(ForgetPasswordViewModel forgot)
         {
-
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                TempData[ErrorMessage] = "مقادیر وارد شده معتبر نمی باشد .";
-                return View(forgotPassword);
+                var result = await _userService.RecoverUserPassword(forgot);
+                switch (result)
+                {
+                    case ForgotPasswordResult.VerificationSmsFaildFromParsGreen:
+                        TempData[ErrorMessage] = " کد تایید جدید برای شما ارسال نشد!";
+                        TempData[ErrorMessage] = "لطفا با پشتیبانی سایت تماس بگیرید!";
+                        ModelState.AddModelError("Mobile", "لطفا با پشتیبانی سایت تماس بگیرید");
+                        break;
+                    case ForgotPasswordResult.NotFound:
+                        TempData[WarningMessage] = "کاربر مورد نظر یافت نشد";
+                        break;
+                    case ForgotPasswordResult.FailSendEmail:
+                        TempData[WarningMessage] = "در ارسال ایمیل مشکلی رخ داد";
+                        break;
+                    case ForgotPasswordResult.UserIsBlocked:
+                        TempData[ErrorMessage] = "حساب کاربری شما بسته شده است!";
+                        break;
+                    case ForgotPasswordResult.SuccessSendEmail:
+                        TempData[WarningMessage] = "کد جدید برای شما ارسال شد";
+                        return RedirectToAction("ResetPassword", "Account", new { mobile = forgot.Mobile });
+                    case ForgotPasswordResult.Success:
+                        TempData[SuccessMessage] = "کد تایید جدید برای شما ارسال شد";
+                        return RedirectToAction("ResetPassword", "Account", new { mobile = forgot.Mobile });
+                }
             }
 
-            var result = await _userService.ForgotPasswordUser(forgotPassword);
-
-            if (result)
-            {
-                TempData[InfoMessage] = $"پیامی حاوی لینک بازیابی کلمه عبور به {forgotPassword.Mobile} ارسال شد .";
-                return RedirectToAction("Login", "Account");
-            }
-
-            TempData[ErrorMessage] = "کاربری با مشخصات وارد شده یافت نشد";
-
-            return View(forgotPassword);
+            return View(forgot);
         }
 
         #endregion
 
-        #region Reset Password
+        #region reset password
 
-        [HttpGet("ResetPassword/{mobileActivationCode}")]
-        [RedirectHomeIfLoggedInActionFilter]
-        public async Task<IActionResult> ResetPassword(string mobileActivationCode)
+        [HttpGet("reset-pass/{mobile}")]
+        public async Task<IActionResult> ResetPassword(string mobile, bool resend)
         {
-            var result = await _userService.GetResetPasswordViewModel(mobileActivationCode);
+            #region Send Model To View
 
-            // check user exists by activation code
-            if (result == null)
+            ViewBag.Mobile = mobile;
+
+            var user = await _userService.GetUserByMobile(mobile);
+
+            if (user == null) return NotFound();
+
+            if (resend)
             {
-                TempData[ErrorMessage] = "کد فعالسازی شما معتبر نمی باشد لطفا مجدد تلاش کنید .";
-                return RedirectToAction("Login", "Account");
+                await _userService.ResendActivationCodeSMS(mobile);
             }
 
-            return View(result);
+            if (await _siteSettingService.IsExistSiteSetting())
+            {
+                var SiteSettingSMSTimer = await _siteSettingService.GetSMSTimer();
+
+                if (SiteSettingSMSTimer == null)
+                {
+                    TempData[WarningMessage] = "لطفا با پشتیبان تماس بگیرید .";
+                    return RedirectToAction(nameof(Login));
+                }
+
+                DateTime expireMinut = user.ExpireMobileSMSDateTime.Value.AddMinutes(SiteSettingSMSTimer);
+
+                var TimerMinut = expireMinut - DateTime.Now;
+
+                ViewBag.Time = TimerMinut.TotalMinutes * 60;
+            }
+
+            #endregion
+
+            return View();
         }
 
-        [HttpPost("ResetPassword/{mobileActivationCode}"), ValidateAntiForgeryToken]
-        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel resetPassword)
+        [HttpPost("reset-pass/{mobile}"), ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPassword(string mobile, ResetPasswordViewModel reset)
         {
-
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                TempData[ErrorMessage] = "مقادیر وارد شده معتبر نمی باشد .";
-                return View(resetPassword);
+                var res = await _userService.ResetUserPassword(reset, mobile);
+                switch (res)
+                {
+                    case ResetPasswordResult.NotFound:
+                        TempData[WarningMessage] = "کاربری با مشخصات وارد شده یافت نشد";
+                        return Redirect("/");
+                    case ResetPasswordResult.WrongActiveCode:
+                        TempData[ErrorMessage] = "کد تایید وارد شده صحیح نمی باشد";
+                        break;
+                    case ResetPasswordResult.Success:
+                        TempData[SuccessMessage] = "کلمه عبور شما با موفقیت تغییر پیدا کرد";
+                        await HttpContext.SignOutAsync();
+                        return RedirectToAction("Login", "Account", new { area = "" });
+                }
             }
-
-            var result = await _userService.ResetPassword(resetPassword);
-
-            if (!result)
-            {
-                TempData[ErrorMessage] = "کد فعالسازی معتبر نمی باشد لطفا مجدد تلاش کنید .";
-            }
-            else
-            {
-                TempData[SuccessMessage] = "عملیات با موفقیت انجام شد .";
-            }
-
-            return RedirectToAction("Login", "Account");
+            return View(reset);
         }
 
         #endregion

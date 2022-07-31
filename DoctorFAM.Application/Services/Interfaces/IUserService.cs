@@ -38,11 +38,7 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         Task<User> GetUserByEmailActivationCode(string emailActivationCode);
 
-        Task<bool> ForgotPasswordUser(ForgotPasswordViewModel forgotPassword);
-
-        Task<ResetPasswordViewModel> GetResetPasswordViewModel(string emailActivationCode);
-
-        Task<bool> ResetPassword(ResetPasswordViewModel resetPassword);
+        Task<ResetPasswordResult> ResetUserPassword(ResetPasswordViewModel pass, string mobile);
 
         #endregion
 
@@ -53,6 +49,8 @@ namespace DoctorFAM.Application.Services.Interfaces
         Task RegisterSeller(string mobile);
 
         Task<ActiveMobileByActivationCodeResult> ActiveUserMobile(ActiveMobileByActivationCodeViewModel activeMobileByActivationCodeViewModel);
+
+        Task<ForgotPasswordResult> RecoverUserPassword(ForgetPasswordViewModel forgot);
 
         #endregion
 

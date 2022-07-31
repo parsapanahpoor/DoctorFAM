@@ -222,74 +222,75 @@ namespace DoctorFAM.Application.Services.Implementation
                 s.EmailActivationCode == emailActivationCode.SanitizeText());
         }
 
-        public async Task<bool> ForgotPasswordUser(ForgotPasswordViewModel forgotPassword)
+        public async Task<ResetPasswordResult> ResetUserPassword(ResetPasswordViewModel pass, string mobile)
         {
-            // get user by email
-            var user = await GetUserByMobile(forgotPassword.Mobile.SanitizeText());
+            #region Get User By Mobile
 
-            // check user exists
-            if (user == null) return false;
+            var user = await GetUserByMobile(mobile);
+            if (user == null) return ResetPasswordResult.NotFound;
 
-            #region Send Email
-
-            var emailViewModel = new EmailViewModel
-            {
-                EmailActivationCode = user.EmailActivationCode,
-                ButtonName = "فعالسازی حساب کاربری",
-                FullName = user.Username,
-                Description = $"{user.Username} عزیز لطفا جهت بازیابی کلمه عبور روی لینک زیر کلیک کنید .",
-                ButtonLink = $"{PathTools.SiteAddress}/ResetPassword/{user.EmailActivationCode}",
-                EmailBanner = string.Empty,
-            };
-
-            // string body = _viewRenderService.RenderToStringAsync("_Email", emailViewModel);
-
-            // await _emailSender.SendEmail(forgotPassword.Email.SanitizeText(), "بازیابی کلمه عبور", body);
+            if (user.MobileActivationCode != pass.ActiveCode) return ResetPasswordResult.WrongActiveCode;
 
             #endregion
 
-            return true;
-        }
+            #region Update User Info
 
-        public async Task<ResetPasswordViewModel> GetResetPasswordViewModel(string emailActivationCode)
-        {
-            // get user by activation code
-            var user = await GetUserByEmailActivationCode(emailActivationCode.SanitizeText());
-
-            // check user exists
-            if (user == null) return null;
-
-            return new ResetPasswordViewModel()
-            {
-                MobileActivationCode = user.MobileActivationCode
-            };
-        }
-
-        public async Task<bool> ResetPassword(ResetPasswordViewModel resetPassword)
-        {
-            // get user by activation code
-            var user = await GetUserByEmailActivationCode(resetPassword.MobileActivationCode);
-
-            // check user exists
-            if (user == null) return false;
-
-            // hash password
-            var password = PasswordHasher.EncodePasswordMd5(resetPassword.Password.SanitizeText());
-
-            // update user
-            user.Password = password;
-            user.IsEmailConfirm = true;
-            user.EmailActivationCode = CodeGenerator.GenerateUniqCode();
+            user.Password = PasswordHasher.EncodePasswordMd5(pass.Password.SanitizeText());
+            user.IsMobileConfirm = true;
 
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
 
-            return true;
+            #endregion
+
+            return ResetPasswordResult.Success;
         }
 
         #endregion
 
         #region Site Side
+
+        public async Task<ForgotPasswordResult> RecoverUserPassword(ForgetPasswordViewModel forgot)
+        {
+            #region Get User By Mobile
+
+            var user = await GetUserByMobile(forgot.Mobile);
+            if (user == null) return ForgotPasswordResult.NotFound;
+
+            if (user != null && user.IsBan)
+            {
+                return ForgotPasswordResult.UserIsBlocked;
+            }
+
+            #endregion
+
+            #region Update User Info
+
+            user.MobileActivationCode = new Random().Next(10000, 999999).ToString();
+            user.ExpireMobileSMSDateTime = DateTime.Now;
+
+            _context.Users.Update(user);
+
+            var smsViewModel = new SendVerificationSmsViewModel()
+            {
+                Receptor = user.Mobile,
+                Token = user.MobileActivationCode
+            };
+
+            await _context.SaveChangesAsync();
+
+            #endregion
+
+            #region Send Verification Code SMS
+
+            var message = Messages.SendActivationRegisterSms(user.MobileActivationCode);
+
+            await _smsservice.SendSimpleSMS(user.Mobile, message);
+
+            #endregion
+
+            return ForgotPasswordResult.Success;
+        }
 
         public async Task RegisterDoctors(string mobile)
         {

@@ -7,12 +7,22 @@ using System.Threading.Tasks;
 
 namespace DoctorFAM.Domain.ViewModels.Account
 {
-    public class ForgotPasswordViewModel
+    public class ForgetPasswordViewModel
     {
         [Display(Name = "تلفن همراه")]
-        [MaxLength(20, ErrorMessage = "تعداد کاراکتر های {0} نمیتواند بیشتر از {1} باشد")]
-        [RegularExpression(@"^([0-9]{11})$", ErrorMessage = "موبایل وارد شده معتبر نمی باشد")]
-        [Required(ErrorMessage = "این فیلد الزامی است .")]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
+        [MaxLength(250, ErrorMessage = "{0} نمی تواند بیشتر از {1} کاراکتر باشد")]
         public string Mobile { get; set; }
+    }
+
+    public enum ForgotPasswordResult
+    {
+        Success,
+        SuccessSendEmail,
+        NotFound,
+        Error,
+        VerificationSmsFaildFromParsGreen,
+        UserIsBlocked,
+        FailSendEmail
     }
 }
