@@ -181,7 +181,13 @@ namespace DoctorFAM.Application.Services.Implementation
                 };
 
                 //Fill Doctor Cilinic Address
-                if(workAddress != null) model.WorkAddress = workAddress.Address;
+                if (workAddress != null)
+                {
+                    model.WorkAddress = workAddress.Address;
+                    model.CountryId = workAddress.CountryId;
+                    model.StateId = workAddress.StateId;
+                    model.CityId = workAddress.CityId;
+                } 
 
                 return model;
             }
@@ -288,6 +294,10 @@ namespace DoctorFAM.Application.Services.Implementation
                 if (doctorAddress != null)
                 {
                     doctorAddress.Address = model.WorkAddress;
+                    doctorAddress.CountryId = model.CountryId.Value;
+                    doctorAddress.StateId = model.StateId.Value;
+                    doctorAddress.CityId = model.CityId.Value;
+
                     await _workAddress.UpdateUserWorkAddress(doctorAddress);
                 }
 
@@ -296,6 +306,9 @@ namespace DoctorFAM.Application.Services.Implementation
                     WorkAddress workAddress = new WorkAddress()
                     {
                         Address = model.WorkAddress,
+                        CountryId = model.CountryId.Value,
+                        CityId = model.CityId.Value,
+                        StateId = model.StateId.Value,
                         UserId = model.UserId,
                         CreateDate = DateTime.Now,
                     };

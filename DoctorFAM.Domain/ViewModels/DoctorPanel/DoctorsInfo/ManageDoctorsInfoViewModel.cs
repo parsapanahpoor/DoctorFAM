@@ -39,6 +39,15 @@ namespace DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo
         [Display(Name = "The reason for the rejection of the information ")]
         public string? RejectDescription { get; set; }
 
+        [Display(Name = "Country")]
+        public ulong? CountryId { get; set; }
+
+        [Display(Name = "State")]
+        public ulong? StateId { get; set; }
+
+        [Display(Name = "City")]
+        public ulong? CityId { get; set; }
+
         public OrganizationInfoState? DoctorsInfosType { get; set; }
     }
 

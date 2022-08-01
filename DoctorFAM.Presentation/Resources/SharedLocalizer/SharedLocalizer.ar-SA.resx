@@ -387,6 +387,9 @@
   <data name="Waiting" xml:space="preserve">
     <value>انتظار</value>
   </data>
+  <data name="You Must enter All Of Address Fields" xml:space="preserve">
+    <value>يجب عليك إدخال كافة حقول العنوان</value>
+  </data>
   <data name="Your account not found, please re login" xml:space="preserve">
     <value>حسابك غير موجود ، يرجى إعادة تسجيل الدخول</value>
   </data>

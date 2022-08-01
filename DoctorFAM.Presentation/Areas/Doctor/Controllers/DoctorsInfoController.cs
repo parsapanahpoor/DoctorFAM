@@ -1,4 +1,5 @@
 ﻿using DoctorFAM.Application.Extensions;
+using DoctorFAM.Application.Interfaces;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo;
 using DoctorFAM.Web.Areas.Doctor.ActionFilterAttributes;
@@ -20,11 +21,15 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
         private readonly IOrganizationService _organization;
 
-        public DoctorsInfoController(IDoctorsService doctorService , IStringLocalizer<SharedLocalizer.SharedLocalizer> sharedLocalizer , IOrganizationService organization)
+        private readonly ILocationService _locationService;
+
+        public DoctorsInfoController(IDoctorsService doctorService , IStringLocalizer<SharedLocalizer.SharedLocalizer> sharedLocalizer 
+                                    , IOrganizationService organization , ILocationService locationService)
         {
             _doctorService = doctorService;
             _sharedLocalizer = sharedLocalizer;
             _organization = organization;
+            _locationService = locationService;
         }
 
         #endregion
@@ -51,6 +56,14 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
             if (model == null) return NotFound();
 
+            ViewData["Countries"] = await _locationService.GetAllCountries();
+
+            if (model.CityId.HasValue && model.StateId.HasValue && model.CountryId.HasValue)
+            {
+                ViewData["States"] = await _locationService.GetStateChildren(model.CountryId.Value);
+                ViewData["Cities"] = await _locationService.GetStateChildren(model.StateId.Value);
+            }
+
             #endregion
 
             return View(model);
@@ -62,6 +75,8 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
             #region Fill Model 
 
             var returnModel = await _doctorService.FillManageDoctorsInfoViewModel(User.GetUserId());
+
+            ViewData["Countries"] = await _locationService.GetAllCountries();
 
             if (returnModel == null) return NotFound();
 
@@ -83,6 +98,18 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
             if (!ModelState.IsValid)
             {
                 TempData[ErrorMessage] = _sharedLocalizer["The input values ​​are not valid"].Value;
+                return View(returnModel);
+            }
+
+            if (!string.IsNullOrEmpty(model.WorkAddress) && (!model.CountryId.HasValue || !model.StateId.HasValue || !model.CityId.HasValue) )
+            {
+                TempData[ErrorMessage] = _sharedLocalizer["You Must enter All Of Address Fields"].Value;
+                return View(returnModel);
+            }
+
+            if ((model.CountryId.HasValue || model.CityId.HasValue || model.StateId.HasValue) && string.IsNullOrEmpty(model.WorkAddress))
+            {
+                TempData[ErrorMessage] = _sharedLocalizer["You Must enter All Of Address Fields"].Value;
                 return View(returnModel);
             }
 
@@ -108,6 +135,12 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
             }
 
             #endregion
+
+            if (returnModel.CityId.HasValue && returnModel.StateId.HasValue && returnModel.CountryId.HasValue)
+            {
+                ViewData["States"] = await _locationService.GetStateChildren(returnModel.CountryId.Value);
+                ViewData["Cities"] = await _locationService.GetStateChildren(returnModel.StateId.Value);
+            }
 
             return View(returnModel);
         }

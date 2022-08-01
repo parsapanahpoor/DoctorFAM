@@ -9,6 +9,12 @@
     ViewData["Title"] = @Localizer["Doctor Personal Informations"];
 }
 
+@{
+    var countries = ViewData["Countries"] != null ? ViewData["Countries"] as List<SelectListViewModel> : null;
+    var states = ViewData["States"] != null ? ViewData["States"] as List<SelectListViewModel> : null;
+    var cities = ViewData["Cities"] != null ? ViewData["Cities"] as List<SelectListViewModel> : null;
+}
+
 @section Scripts
 {
 <partial name="_JqueryValidation" />
@@ -95,6 +101,72 @@
                                     <label asp-for="Specialty"></label>
                                     <input type="text" class="form-control" asp-for="Specialty">
                                     <span class="text-danger" asp-validation-for="Specialty"></span>
+                                </div>
+
+                                <div class="form-group col-md-4 col-sm-12">
+                                    <label asp-for="CountryId"></label>
+                                    <select class="form-control" asp-for="CountryId">
+                                        <option value=""> لطفا یک کشور را انتخاب کنید </option>
+                                        @if (countries != null && countries.Any())
+                                        {
+                                            foreach (var country in countries)
+                                            {
+                                                if (Model != null && Model.CountryId == country.Id)
+                                                {
+                                                    <option value="@country.Id" selected="selected"> @country.Title </option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@country.Id"> @country.Title </option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    <span class="text-danger" asp-validation-for="CountryId"></span>
+                                </div>
+
+                                <div class="form-group col-md-4 col-sm-12">
+                                    <label asp-for="StateId"></label>
+                                    <select class="form-control" asp-for="StateId">
+                                        <option value=""> لطفا یک استان را انتخاب کنید </option>
+                                        @if (states != null && states.Any())
+                                        {
+                                            foreach (var state in states)
+                                            {
+                                                if (Model != null && Model.StateId == state.Id)
+                                                {
+                                                    <option value="@state.Id" selected="selected"> @state.Title </option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@state.Id"> @state.Title </option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    <span class="text-danger" asp-validation-for="StateId"></span>
+                                </div>
+
+                                <div class="form-group col-md-4 col-sm-12">
+                                    <label asp-for="CityId"></label>
+                                    <select asp-for="CityId" class="form-control">
+                                        <option value=""> لطفا یک شهر را انتخاب کنید </option>
+                                        @if (cities != null && cities.Any())
+                                        {
+                                            foreach (var city in cities)
+                                            {
+                                                if (Model != null && Model.CityId == city.Id)
+                                                {
+                                                    <option value="@city.Id" selected="selected"> @city.Title </option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@city.Id"> @city.Title </option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    <span class="text-danger" asp-validation-for="CityId"></span>
                                 </div>
 
                                 <div class="form-group col-md-12 col-sm-12">

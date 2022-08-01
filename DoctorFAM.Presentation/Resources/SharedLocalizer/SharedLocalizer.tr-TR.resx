@@ -390,6 +390,9 @@
   <data name="Waiting" xml:space="preserve">
     <value>Beklemek</value>
   </data>
+  <data name="You Must enter All Of Address Fields" xml:space="preserve">
+    <value>Tüm Adres Alanlarını Girmelisiniz</value>
+  </data>
   <data name="Your account not found, please re login" xml:space="preserve">
     <value>Hesabınız bulunamadı, lütfen tekrar giriş yapın</value>
   </data>

@@ -47,6 +47,15 @@ namespace DoctorFAM.Domain.Entities.States
 
         public ICollection<PaitientRequestDetail> PaitientRequestDetailCities { get; set; }
 
+        [InverseProperty("Country")]
+        public ICollection<WorkAddress.WorkAddress> WorkAddressCountries { get; set; }
+
+        [InverseProperty("State")]
+        public ICollection<WorkAddress.WorkAddress> WorkAddressStates { get; set; }
+
+        [InverseProperty("City")]
+        public ICollection<WorkAddress.WorkAddress> WorkAddressCities { get; set; }
+
         #endregion
     }
 }

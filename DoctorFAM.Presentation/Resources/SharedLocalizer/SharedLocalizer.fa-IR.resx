@@ -432,4 +432,7 @@
   <data name="List Of Closed Reservations" xml:space="preserve">
     <value>لیست نوبت های لغو شده </value>
   </data>
+  <data name="You Must enter All Of Address Fields" xml:space="preserve">
+    <value>شما باید تمام اطلاعات آدرس را وارد کنید</value>
+  </data>
 </root>

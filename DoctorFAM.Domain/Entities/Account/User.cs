@@ -111,7 +111,7 @@ namespace DoctorFAM.Domain.Entities.Account
 
         public Pharmacy.Pharmacy Pharmacy { get; set; }
 
-        public Organization.Organization Organization { get; set; }
+        public ICollection<Organization.Organization> Organization { get; set; }
 
         public ICollection<OrganizationMember> OrganizationMembers { get; set; }
 
