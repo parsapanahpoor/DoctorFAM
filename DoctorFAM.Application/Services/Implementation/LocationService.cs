@@ -79,6 +79,12 @@ namespace DoctorFAM.Application.Services
             var mainLocation = new Location()
             {
                 UniqueName = location.UniqueName.SanitizeText(),
+                HomeVisit = location.HomeVisit,
+                HomeNurse = location.HomeNurse,
+                HomePharmacy = location.HomePharmacy,
+                HomeLaboratory = location.HomeLaboratory,
+                HomePatientTransport = location.HomePatientTransport,
+                DeathCertificate = location.DeathCertificate,
                 IsDelete = false
             };
 
@@ -164,6 +170,12 @@ namespace DoctorFAM.Application.Services
             #region Update Location
 
             location.UniqueName = locationViewModel.UniqueName.SanitizeText();
+            location.HomeVisit = locationViewModel.HomeVisit;
+            location.HomeNurse = locationViewModel.HomeNurse;
+            location.HomePharmacy = locationViewModel.HomePharmacy;
+            location.HomeLaboratory = locationViewModel.HomeLaboratory;
+            location.HomePatientTransport = locationViewModel.HomePatientTransport;
+            location.DeathCertificate = locationViewModel.DeathCertificate;
 
             _location.UpdateLocation(location);
 

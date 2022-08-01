@@ -26,6 +26,24 @@ namespace DoctorFAM.Domain.ViewModels.Admin.Location
 
         public List<EditeLocationInfoViewModel> LocationInfo { get; set; }
 
+        [DisplayName("Home Visit")]
+        public bool HomeVisit { get; set; }
+
+        [DisplayName("Home Nurse")]
+        public bool HomeNurse { get; set; }
+
+        [DisplayName("Pharmacy At Home")]
+        public bool HomePharmacy { get; set; }
+
+        [DisplayName("Laboratory At Home")]
+        public bool HomeLaboratory { get; set; }
+
+        [DisplayName("Death Certificate")]
+        public bool DeathCertificate { get; set; }
+
+        [DisplayName("Patient Transport")]
+        public bool HomePatientTransport { get; set; }
+
         public ulong? ParentId { get; set; }
 
         #endregion

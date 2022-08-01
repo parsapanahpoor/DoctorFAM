@@ -46,6 +46,8 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         Task RegisterDoctors(string mobile);
 
+        Task RegisterPharmacy(string mobile);
+
         Task RegisterSeller(string mobile);
 
         Task<ActiveMobileByActivationCodeResult> ActiveUserMobile(ActiveMobileByActivationCodeViewModel activeMobileByActivationCodeViewModel);

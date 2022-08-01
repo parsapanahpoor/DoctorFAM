@@ -123,7 +123,6 @@ namespace CRM.Web.Areas.Admin.Controllers
         [HttpPost , ValidateAntiForgeryToken]
         public async Task<IActionResult> EditLocation(EditLocationViewModel location)
         {
-
             #region Is Exist Location By Id
 
             var model = await _locationService.FillEditLocationViewModel(location.Id);
@@ -172,7 +171,6 @@ namespace CRM.Web.Areas.Admin.Controllers
             return View(model);
 
             #endregion
-
         }
 
         #endregion

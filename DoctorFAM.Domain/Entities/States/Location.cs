@@ -15,9 +15,21 @@ namespace DoctorFAM.Domain.Entities.States
         [Required]
         public string UniqueName { get; set; }
 
-        public bool IsDelete { get; set; }
-
         public ulong? ParentId { get; set; }
+
+        public bool HomeVisit { get; set; }
+
+        public bool HomeNurse { get; set; }
+
+        public bool HomePharmacy { get; set; }
+
+        public bool HomeLaboratory { get; set; }
+
+        public bool DeathCertificate { get; set; }
+
+        public bool HomePatientTransport { get; set; }
+
+        public bool IsDelete { get; set; }
 
         #endregion
 

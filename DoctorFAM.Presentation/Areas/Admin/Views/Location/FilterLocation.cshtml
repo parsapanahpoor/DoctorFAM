@@ -68,13 +68,13 @@
                                 {
                                     @if (Model.ParentLocation != null)
                                     {
-                                        <a asp-area="Admin" asp-controller="location" asp-action="Filterlocation" asp-route-ParentId="@Model.ParentId" class="btn btn-labeled w-100 btn-darkorange mr-10px">
+                                        <a asp-area="Admin" asp-controller="location" asp-action="Filterlocation" asp-route-ParentId="@Model.ParentId" class="btn btn-labeled w-100 btn-darkorange">
                                             <i class="btn-label glyphicon glyphicon-remove"></i>@Localizer["Delete Filter"]
                                         </a>
                                     }
                                     else
                                     {
-                                        <a asp-area="Admin" asp-controller="location" asp-action="Filterlocation" class="btn btn-labeled w-100 btn-darkorange mr-10px ">
+                                        <a asp-area="Admin" asp-controller="location" asp-action="Filterlocation" class="btn btn-labeled w-100 btn-darkorange">
                                             <i class="btn-label glyphicon glyphicon-remove"></i>@Localizer["Delete Filter"]
                                         </a>
                                     }

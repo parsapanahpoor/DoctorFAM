@@ -315,6 +315,29 @@ namespace DoctorFAM.Application.Services.Implementation
             #endregion
         }
 
+        public async Task RegisterPharmacy(string mobile)
+        {
+            #region Get User By Mobile
+
+            var user = await GetUserByMobile(mobile);
+
+            #endregion
+
+            #region Add Pharmacy Role To User
+
+            var userRole = new UserRole()
+            {
+                RoleId = 6,
+                UserId = user.Id
+            };
+
+            await _context.UserRoles.AddAsync(userRole);
+
+            await _context.SaveChangesAsync();
+
+            #endregion
+        }
+
         public async Task RegisterSeller(string mobile)
         {
             #region Get User By Mobile

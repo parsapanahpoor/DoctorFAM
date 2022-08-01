@@ -269,6 +269,15 @@ namespace DoctorFAM.Data.DbContext
                 IsDelete = false
             });
 
+            modelBuilder.Entity<Role>().HasData(new Role
+            {
+                Id = 6,
+                Title = "Pharmacy",
+                RoleUniqueName = "Pharmacy",
+                CreateDate = DateTime.Now,
+                IsDelete = false
+            });
+
             #endregion
 
             #endregion

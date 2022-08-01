@@ -149,6 +149,12 @@ namespace DoctorFAM.Data.Repository
                                 Id = p.Id,
                                 UniqueName = p.UniqueName,
                                 ParentId = p.ParentId,
+                                HomeVisit = p.HomeVisit,
+                                HomeNurse = p.HomeNurse,
+                                HomePatientTransport = p.HomePatientTransport,
+                                HomeLaboratory = p.HomeLaboratory,
+                                DeathCertificate = p.DeathCertificate,
+                                HomePharmacy = p.HomePharmacy,
                                 CurrentInfos = p.LocationsInfo.AsQueryable().IgnoreQueryFilters().ToList()
                             }).FirstOrDefaultAsync();
         }
