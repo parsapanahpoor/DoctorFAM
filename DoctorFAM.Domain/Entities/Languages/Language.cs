@@ -32,6 +32,8 @@ namespace DoctorFAM.Domain.Entities.Languages
 
         public ICollection<DoctorsInterestInfo> InterestInfos { get; set; }
 
+        public ICollection<PharmacyInterestInfo> PharmacyInterests { get; set; }
+
         #endregion
     }
 }

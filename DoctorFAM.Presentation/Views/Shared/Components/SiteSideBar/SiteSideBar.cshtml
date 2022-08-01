@@ -134,7 +134,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
                                             }
 
 
@@ -154,10 +153,27 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
                                             }
 
-                                               @if (ViewBag.Seller == true)
+                                             @if (ViewBag.Pharmacy == true)
+                                            {
+                                                <div class="d-flex align-items-center">
+                                                    <div class="language-selection ">
+                                                        <div class="dropdown btn-Accept">
+                                                            <button class=" dropdown-toggle " id="dropdownlanguage" data-toggle="dropdown"> @User.Identity.Name </button>
+                                                            <div class="dropdown-menu" aria-labelledby="dropdownlanguage">
+                                                                <a asp-action="Index" asp-area="Pharmacy" asp-controller="Home" class="dropdown-item ">  پنل داروخانه</a>
+
+                                                                <a asp-action="Index" asp-area="UserPanel" asp-controller="Home" class="dropdown-item "> پنل کاربر</a>
+
+                                                                <a asp-action="Logout" asp-controller="Account" class="dropdown-item"> خروج</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+
+                                            @if (ViewBag.Seller == true)
                                             {
                                                 <div class="d-flex align-items-center">
                                                     <div class="language-selection ">
@@ -173,7 +189,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
                                             }
 
                                             @if (ViewBag.DoctorOfficeEmployee == true)
@@ -192,7 +207,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
                                             }
 
                                             @if (ViewBag.Supporter == true)
@@ -211,7 +225,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
                                             }
 
                                             @if (ViewBag.User == true)
@@ -228,9 +241,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
                                             }
-
 
                                         }
                                         else

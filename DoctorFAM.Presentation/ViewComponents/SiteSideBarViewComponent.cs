@@ -36,6 +36,8 @@ namespace DoctorFAM.Web.Areas.Admin.ViewComponents
 
                 if (userRole == GetUserRoles.User) ViewBag.User = true;
 
+                if (userRole == GetUserRoles.Pharmacy) ViewBag.Pharmacy = true;
+
                 if (userRole == GetUserRoles.DoctorOfficeEmployee) ViewBag.DoctorOfficeEmployee = true;
             }
           

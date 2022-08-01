@@ -1,0 +1,228 @@
+﻿
+<div class="page-sidebar" id="sidebar">
+    <div class="sidebar-header-wrapper">
+        <input type="text" class="searchinput" />
+        <i class="searchicon fa fa-search"></i>
+    </div>
+
+    <ul class="nav sidebar-menu">
+        <li>
+            <a asp-action="Index" asp-area="Admin" asp-controller="Home">
+                <i class="menu-icon glyphicon glyphicon-home"></i>
+                <span class="menu-text"> @SharedLocalizer["Dashboard"]  </span>
+            </a>
+        </li>
+
+        <li>
+            <a href="#" class="menu-dropdown">
+                <i class="menu-icon fa fa-user-secret"></i>
+                <span class="menu-text"> @SharedLocalizer["Manage Roles"] </span>
+                <i class="menu-expand"></i>
+            </a>
+
+            <ul class="submenu">
+                <li>
+                    <a asp-action="FilterRoles" asp-controller="Access" asp-area="Admin">
+                        <span class="menu-text"> @SharedLocalizer["List Of Roles"] </span>
+                    </a>
+                </li>
+                <li>
+                    <a asp-action="CreateRole" asp-controller="Access" asp-area="Admin">
+                        <span class="menu-text"> @SharedLocalizer["Create New Role"] </span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="#" class="menu-dropdown">
+                <i class="menu-icon glyphicon glyphicon-user"></i>
+                <span class="menu-text"> @SharedLocalizer["Manage Users"] </span>
+                <i class="menu-expand"></i>
+            </a>
+
+            <ul class="submenu">
+                <li>
+                    <a asp-action="FilterUsers" asp-area="Admin" asp-controller="Account">
+                        <span class="menu-text"> @SharedLocalizer["Users List"] </span>
+                    </a>
+                </li>
+            </ul>
+
+               <ul class="submenu">
+                <li>
+                    <a asp-action="FilterPopulationCoveredAdminViewModel" asp-area="Admin" asp-controller="PopulationCovered">
+                        <span class="menu-text"> @SharedLocalizer["Population Covered List"] </span>
+                    </a>
+                </li>
+            </ul>
+
+        </li>
+
+        <li>
+            <a asp-controller="Wallet" asp-action="Index">
+                <i class="menu-icon glyphicon glyphicon-usd"></i>
+                <span class="menu-text"> @SharedLocalizer["Wallet list"]  </span>
+                <i class="menu-expand"></i>
+            </a>
+        </li>
+
+        <li>
+            <a href="#" class="menu-dropdown">
+                <i class="menu-icon glyphicon glyphicon-th"></i>
+                <span class="menu-text"> @SharedLocalizer["Health House"] </span>
+                <i class="menu-expand"></i>
+            </a>
+
+            <ul class="submenu">
+                <li>
+                    <a asp-action="ListOfHomeVisits" asp-controller="HealthHouse" asp-area="Admin">
+                        <span class="menu-text"> @SharedLocalizer["Home Visit"] </span>
+                    </a>
+                </li>
+            </ul>
+            <ul class="submenu">
+                <li>
+                    <a asp-action="ListOfHomeNurse" asp-area="Admin" asp-controller="HealthHouse">
+                        <span class="menu-text"> @SharedLocalizer["Home Nurse"] </span>
+                    </a>
+                </li>
+            </ul>
+            <ul class="submenu">
+                <li>
+                    <a asp-action="ListOfHomePharmacy" asp-area="Admin" asp-controller="HealthHouse">
+                        <span class="menu-text"> @SharedLocalizer["Pharmacy At Home"] </span>
+                    </a>
+                </li>
+            </ul>
+            <ul class="submenu">
+                <li>
+                    <a asp-action="ListOfHomeLabratory" asp-area="Admin" asp-controller="HealthHouse">
+                        <span class="menu-text"> @SharedLocalizer["Laboratory At Home"] </span>
+                    </a>
+                </li>
+            </ul>
+            <ul class="submenu">
+                <li>
+                    <a asp-action="ListOfHomePatientTransport" asp-area="Admin" asp-controller="HealthHouse">
+                        <span class="menu-text"> @SharedLocalizer["Patient Transport"] </span>
+                    </a>
+                </li>
+            </ul>
+            <ul class="submenu">
+                <li>
+                    <a asp-action="ListOfDeathCertificate" asp-area="Admin" asp-controller="HealthHouse">
+                        <span class="menu-text"> @SharedLocalizer["Death Certificate"] </span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+           <li>
+                <a href="#" class="menu-dropdown">
+                    <i class="menu-icon glyphicon glyphicon-edit"></i>
+                    <span class="menu-text"> @SharedLocalizer["Turn ratings"] </span>
+                    <i class="menu-expand"></i>
+                </a>
+
+                <ul class="submenu">
+
+                    <li>
+                        <a asp-area="Admin" asp-controller="Reservation" asp-action="FilterReservation">
+                            <span class="menu-text">@SharedLocalizer["List Of Reservations"]</span>
+                        </a>
+                    </li> 
+                    <li>
+                        <a asp-area="Admin" asp-controller="Reservation" asp-action="ListOfClosedReservation">
+                            <span class="menu-text">@SharedLocalizer["List Of Closed Reservations"]</span>
+                        </a>
+                    </li>
+
+                </ul>
+            </li>
+
+               <li>
+            <a asp-controller="Doctors" asp-action="ListOfDoctorsInfo">
+                <i class="menu-icon glyphicon glyphicon-education"></i>
+                <span class="menu-text"> @SharedLocalizer["Manage Doctors Info"]  </span>
+                <i class="menu-expand"></i>
+            </a>
+        </li>
+
+        <li>
+            <a href="#" class="menu-dropdown">
+                <i class="menu-icon glyphicon glyphicon-map-marker"></i>
+                <span class="menu-text">@SharedLocalizer["Manage Locations"]</span>
+                <i class="menu-expand"></i>
+            </a>
+
+            <ul class="submenu">
+                <li>
+                    <a asp-action="FilterLocation" asp-controller="Location" asp-area="Admin">
+                        <span class="menu-text"> @SharedLocalizer["Locations List"] </span>
+                    </a>
+                </li>
+                <li>
+                    <a asp-action="CreateLocation" asp-controller="Location" asp-area="Admin">
+                        <span class="menu-text"> @SharedLocalizer["Create Location"] </span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="#" class="menu-dropdown">
+                <i class="menu-icon  glyphicon glyphicon-th-large"></i>
+                <span class="menu-text">@SharedLocalizer["Manage Market Categories"]</span>
+                <i class="menu-expand"></i>
+            </a>
+
+            <ul class="submenu">
+                <li>
+                    <a asp-action="FilterMarketCategory" asp-controller="MarketCategory" asp-area="Admin">
+                        <span class="menu-text"> @SharedLocalizer["Market Categories List"] </span>
+                    </a>
+                </li>
+                <li>
+                    <a asp-action="CreateMarketCategory" asp-controller="MarketCategory" asp-area="Admin">
+                        <span class="menu-text"> @SharedLocalizer["Create Market Categories"] </span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="#" class="menu-dropdown">
+                <i class="menu-icon fa fa-buysellads"></i>
+                <span class="menu-text"> @SharedLocalizer["Manage Products"] </span>
+
+                <i class="menu-expand"></i>
+            </a>
+
+            <ul class="submenu">
+                <li>
+                    <a asp-area="Admin" asp-controller="Product" asp-action="FilterProducts">
+                        <span class="menu-text">@SharedLocalizer["List of products"]</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="#" class="menu-dropdown">
+                <i class="menu-icon glyphicon glyphicon-wrench"></i>
+                <span class="menu-text"> @SharedLocalizer["Site Setting"] </span>
+                <i class="menu-expand"></i>
+            </a>
+
+            <ul class="submenu">
+                <li>
+                    <a asp-action="EditSiteSetting" asp-controller="SiteSetting" asp-area="Admin">
+                        <span class="menu-text"> @SharedLocalizer["Site Setting"]</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+    </ul>
+</div>

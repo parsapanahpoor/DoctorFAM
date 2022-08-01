@@ -1,0 +1,289 @@
+﻿@using DoctorFAM.Application.Extensions
+@model DoctorFAM.Domain.Entities.Account.User
+
+@{
+    var currentCulture = ApplicationCultures.GetCurrentCulture();
+        var isRtl = currentCulture.IsRtl;
+}
+
+<!-- Loading Container -->
+<div class="loading-container">
+    <div class="loader"></div>
+</div>
+<!--  /Loading Container -->
+<!-- Navbar -->
+<div class="navbar">
+    <div class="navbar-inner">
+        <div class="navbar-container">
+            <!-- Navbar Barnd -->
+            <div class="navbar-header @(currentCulture.IsRtl ? "pull-right":"pull-left")">
+                <a href="/Home/SecPage" class="navbar-brand">
+                    <small>
+
+                        <img class="logoImage text-center align-items-center" src="/Content/images/Logo/doctorfamTes.png" alt="دکترفام">
+
+                        @*<img src="/admin/img/logo-rtl.png" alt="" />*@
+                    </small>
+                </a>
+            </div>
+            <!-- /Navbar Barnd -->
+            <!-- Sidebar Collapse -->
+            <div class="sidebar-collapse" id="sidebar-collapse">
+                <i class="collapse-icon fa fa-bars"></i>
+            </div>
+            <!-- /Sidebar Collapse -->
+            <!-- Account Area and Settings --->
+            <div class="navbar-header pull-left">
+                <div class="navbar-account">
+                    <ul class="account-area">
+
+                   @*     <li>
+                            <a class=" dropdown-toggle" data-toggle="dropdown" title="Help" href="#">
+                                <i class="icon fa fa-warning"></i>
+                            </a>
+                            <!--Notification Dropdown-->
+                            <ul class="pull-right dropdown-menu dropdown-arrow dropdown-notifications">
+                                <li>
+                                    <a href="#">
+                                        <div class="clearfix">
+                                            <div class="notification-icon">
+                                                <i class="fa fa-phone bg-themeprimary white"></i>
+                                            </div>
+                                            <div class="notification-body">
+                                                <span class="title">ملاقات در اسکایپ با علی</span>
+                                                <span class="description">01:00 بعد از ظهر</span>
+                                            </div>
+                                            <div class="notification-extra">
+                                                <i class="fa fa-clock-o themeprimary"></i>
+                                                <span class="description">دفتر</span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <div class="clearfix">
+                                            <div class="notification-icon">
+                                                <i class="fa fa-check bg-darkorange white"></i>
+                                            </div>
+                                            <div class="notification-body">
+                                                <span class="title">استراحت پیش بینی نشده</span>
+                                                <span class="description">03:30 pm - 05:15 pm</span>
+                                            </div>
+                                            <div class="notification-extra">
+                                                <i class="fa fa-clock-o darkorange"></i>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <div class="clearfix">
+                                            <div class="notification-icon">
+                                                <i class="fa fa-gift bg-warning white"></i>
+                                            </div>
+                                            <div class="notification-body">
+                                                <span class="title">تولد مهرام</span>
+                                                <span class="description">08:30 pm</span>
+                                            </div>
+                                            <div class="notification-extra">
+                                                <i class="fa fa-calendar warning"></i>
+                                                <i class="fa fa-clock-o warning"></i>
+                                                <span class="description">خانه</span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <div class="clearfix">
+                                            <div class="notification-icon">
+                                                <i class="fa fa-glass bg-success white"></i>
+                                            </div>
+                                            <div class="notification-body">
+                                                <span class="title">شام با دوستان</span>
+                                                <span class="description">10:30 pm</span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="dropdown-footer ">
+                                    <span>
+                                        امروز، 14 تیر
+                                    </span>
+                                    <span class="pull-left">
+                                        10°c
+                                        <i class="wi wi-cloudy"></i>
+                                    </span>
+                                </li>
+                            </ul>
+                            <!--/Notification Dropdown-->
+                        </li>*@
+
+
+                    @*    <li>
+                            <a class="dropdown-toggle" data-toggle="dropdown" title="Mails" href="#">
+                                <i class="icon fa fa-envelope"></i>
+                                <span class="badge">3</span>
+                            </a>
+                            <!--Messages Dropdown-->
+                            <ul class="pull-right dropdown-menu dropdown-arrow dropdown-messages">
+                                <li>
+                                    <a href="#">
+                                        <img src="/admin/img/avatars/divyia.jpg" class="message-avatar" alt="Divyia Austin">
+                                        <div class="message">
+                                            <span class="message-sender">
+                                                دیویا فیلیپس
+                                            </span>
+                                            <span class="message-time">
+                                                2 دقیقه پیش
+                                            </span>
+                                            <span class="message-subject">
+                                                دستور پخت پای سیب ارسال می گردد
+                                            </span>
+                                            <span class="message-body">
+                                                برای پختن پای سیب تنها لازم است تا سیب داشته باشید
+                                            </span>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <img src="/admin/img/avatars/bing.png" class="message-avatar" alt="Microsoft Bing">
+                                        <div class="message">
+                                            <span class="message-sender">
+                                                Bing.com
+                                            </span>
+                                            <span class="message-time">
+                                                دیروز
+                                            </span>
+                                            <span class="message-subject">
+                                                Bing Newsletter: The January Issue‏
+                                            </span>
+                                            <span class="message-body">
+                                                Discover new music just in time for the Grammy® Awards.
+                                            </span>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <img src="/admin/img/avatars/adam-jansen.jpg" class="message-avatar" alt="Divyia Austin">
+                                        <div class="message">
+                                            <span class="message-sender">
+                                                Nicolas
+                                            </span>
+                                            <span class="message-time">
+                                                Friday, September 22
+                                            </span>
+                                            <span class="message-subject">
+                                                دوربین های 4کی جدید
+                                            </span>
+                                            <span class="message-body">
+                                                انقلاب دوربین های 4کی به مرحله جدیدی رسیده است.
+                                            </span>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                            <!--/Messages Dropdown-->
+                        </li>*@
+
+                    <li class="marli">
+
+                            <a class="dropdown-toggle btn btn-blue " data-toggle="dropdown" title="انتخاب زبان" href="#">
+                                <i class="fa fa-angle-down"></i>
+                                انتخاب زبان
+                            </a>
+                            <!--Tasks Dropdown-->
+                            <ul class="pull-right dropdown-menu dropdown-tasks dropdown-arrow ">
+
+                                @foreach (var language in ApplicationCultures.CultureItems)
+                                {
+                                    <li>
+                                        <a asp-area="" asp-controller="Home" asp-action="ChangeLanguage" asp-route-culture="@language.CultureKey">
+                                            <div class="clearfix">
+                                                <span class="pull-right">@language.Title</span>
+                                                <span class="pull-left">@language.CultureKey</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+
+                        </li>
+
+                        <li>
+                             <a class="login-area dropdown-toggle" data-toggle="dropdown">
+                                <div class="avatar" title="View your public profile">
+                                    <img src="@Model.GetUserAvatar()">
+                                </div>
+                                <section>
+                                    <h2><span class="profile"><span>@Model.Username </span></span></h2>
+                                </section>
+                            </a>
+                            <!--Login Area Dropdown-->
+                            <ul class="pull-right dropdown-menu dropdown-arrow dropdown-login-area">
+                                <li class="username"><a>@Model.Username</a></li>
+                                <li class="email"><a>@Model.Email</a></li>
+                                <!--Avatar Area-->
+                                <li>
+                                    <a asp-action="EditProfile" asp-controller="Account">
+                                        <div class="avatar-area">
+                                            <img src="@Model.GetUserAvatar()" class="avatar">
+                                            <span class="caption">@Localizer["Edit profile"]</span>
+                                        </div>
+                                    </a>
+                                </li>
+                                <!--Avatar Area-->
+                                <li class="edit">
+                                    <a asp-controller="Account" asp-action="EditProfile">@Localizer["Edit profile"]</a>
+                                </li>
+                                <!--Theme Selector Area-->
+                                <li class="theme-area">
+
+                                </li>
+                                <!--/Theme Selector Area-->
+                                <li class="dropdown-footer @(isRtl ? "text-right": "")">
+                                    <a asp-area="" asp-controller="Account" asp-action="Logout">
+                                        @SharedHtmlLocalizer["LogOut"]
+                                    </a>
+                                </li>
+                            </ul>
+                            <!--/Login Area Dropdown-->
+                        </li>
+                        <!-- /Account Area -->
+                        <!--Note: notice that setting div must start right after account area list.
+                        no space must be between these elements-->
+                        <!-- Settings -->
+                    </ul>
+                   @* <div class="setting">
+                        <a id="btn-setting" title="Setting" href="#">
+                            <i class="icon glyphicon glyphicon-cog"></i>
+                        </a>
+                    </div><div class="setting-container">
+                        <label>
+                            <input type="checkbox" id="checkbox_fixednavbar">
+                            <span class="text">نوار بالایی ثابت</span>
+                        </label>
+                        <label>
+                            <input type="checkbox" id="checkbox_fixedsidebar">
+                            <span class="text">منوی کناری ثابت</span>
+                        </label>
+                        <label>
+                            <input type="checkbox" id="checkbox_fixedbreadcrumbs">
+                            <span class="text">نوار بردکرامبز ثابت</span>
+                        </label>
+                        <label>
+                            <input type="checkbox" id="checkbox_fixedheader">
+                            <span class="text">نوار میانی ثابت</span>
+                        </label>
+                    </div>*@
+                    <!-- Settings -->
+                </div>
+            </div>
+            <!-- /Account Area and Settings -->
+        </div>
+    </div>
+</div>
+<!-- /Navbar -->

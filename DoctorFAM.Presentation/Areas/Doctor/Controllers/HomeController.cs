@@ -39,7 +39,6 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
                 }
 
                 #endregion
-
             }
 
             #endregion

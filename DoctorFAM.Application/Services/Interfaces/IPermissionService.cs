@@ -47,6 +47,8 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         Task<bool> IsUserDoctorOrDoctorEmployee(ulong userId);
 
+        Task<bool> IsUserPharmacy(ulong userId);
+
         Task<bool> IsUserSupporter(ulong userId);
 
         #endregion

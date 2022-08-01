@@ -115,7 +115,17 @@ namespace DoctorFAM.Data.DbContext
 
         public DbSet<DoctorsSelectedInterests> DoctorsSelectedInterests { get; set; }
 
-        #endregion 
+        #endregion
+
+        #region Pharmacy
+
+        public DbSet<Pharmacy> Pharmacies { get; set; }
+
+        public DbSet<PharmacyInfo> PharmacyInfos { get; set; }
+
+        public DbSet<PharmacySelectedInterests> PharmacySelectedInterests { get; set; }
+
+        #endregion
 
         #region Population Covered
 
@@ -148,6 +158,10 @@ namespace DoctorFAM.Data.DbContext
         public DbSet<DoctorsInterest> Interests { get; set; }
 
         public DbSet<DoctorsInterestInfo> InterestInfos { get; set; }
+
+        public DbSet<PharmacyInterests> PharmacyInterests { get; set; }
+
+        public DbSet<PharmacyInterestInfo> PharmacyInterestInfos { get; set; }
 
         #endregion
 
@@ -313,7 +327,7 @@ namespace DoctorFAM.Data.DbContext
 
             #endregion
 
-            #region Interests Seed Data
+            #region Doctor Interests Seed Data
 
             #region Interests
 
@@ -507,6 +521,65 @@ namespace DoctorFAM.Data.DbContext
                 CreateDate = DateTime.Now,
                 LanguageId = "ar-SA",
                 Title = "اصدار شهادة وفاة"
+            });
+
+            #endregion
+
+            #endregion
+
+            #region Pharmacy Interests
+
+            #region Interests
+
+            modelBuilder.Entity<PharmacyInterests>().HasData(new PharmacyInterests
+            {
+                Id = 1,
+                CreateDate = DateTime.Now,
+                IsDelete = false
+            });
+
+            #endregion
+
+            #region Interests Info 
+
+            modelBuilder.Entity<PharmacyInterestInfo>().HasData(new PharmacyInterestInfo
+            {
+                Id = 1,
+                InterestId = 1,
+                IsDelete = false,
+                CreateDate = DateTime.Now,
+                LanguageId = "fa-IR",
+                Title = "داروخانه در منزل"
+            });
+
+            modelBuilder.Entity<PharmacyInterestInfo>().HasData(new PharmacyInterestInfo
+            {
+                Id = 2,
+                InterestId = 1,
+                IsDelete = false,
+                CreateDate = DateTime.Now,
+                LanguageId = "tr-TR",
+                Title = "evde eczane"
+            });
+
+            modelBuilder.Entity<PharmacyInterestInfo>().HasData(new PharmacyInterestInfo
+            {
+                Id = 3,
+                InterestId = 1,
+                IsDelete = false,
+                CreateDate = DateTime.Now,
+                LanguageId = "ar-SA",
+                Title = "صيدلية في المنزل"
+            });
+
+            modelBuilder.Entity<PharmacyInterestInfo>().HasData(new PharmacyInterestInfo
+            {
+                Id = 4,
+                InterestId = 1,
+                IsDelete = false,
+                CreateDate = DateTime.Now,
+                LanguageId = "en-US",
+                Title = "Pharmacy at home"
             });
 
             #endregion

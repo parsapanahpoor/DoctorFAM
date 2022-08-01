@@ -109,6 +109,8 @@ namespace DoctorFAM.Domain.Entities.Account
 
         public Doctor Doctors { get; set; }
 
+        public Pharmacy.Pharmacy Pharmacy { get; set; }
+
         public Organization.Organization Organization { get; set; }
 
         public ICollection<OrganizationMember> OrganizationMembers { get; set; }

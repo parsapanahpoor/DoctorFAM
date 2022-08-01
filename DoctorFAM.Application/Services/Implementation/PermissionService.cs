@@ -290,6 +290,8 @@ namespace BusinessPortal.Application.Services.Implementation
 
             if (userRoles.Any() && userRoles.Contains("Seller")) return GetUserRoles.Seller;
 
+            if (userRoles.Any() && userRoles.Contains("Pharmacy")) return GetUserRoles.Pharmacy;
+
             if (userRoles.Any() && userRoles.Contains("DoctorOfficeEmployee")) return GetUserRoles.DoctorOfficeEmployee;
 
             if (!userRoles.Any()) return GetUserRoles.User;
@@ -328,6 +330,18 @@ namespace BusinessPortal.Application.Services.Implementation
             if (result == GetUserRoles.Doctor) return true;
 
             if (result == GetUserRoles.DoctorOfficeEmployee) return true;
+
+            return false;
+        }
+
+        public async Task<bool> IsUserPharmacy(ulong userId)
+        {
+            //Get User By User ID
+            var result = await GetUserRole(userId);
+
+            if (result == GetUserRoles.Admin) return true;
+
+            if (result == GetUserRoles.Pharmacy) return true;
 
             return false;
         }
