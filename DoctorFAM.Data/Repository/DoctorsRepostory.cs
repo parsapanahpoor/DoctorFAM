@@ -79,7 +79,8 @@ namespace DoctorFAM.Data.Repository
         {
             #region Get Doctor Office
 
-            var OrganitionMember = await _context.OrganizationMembers.Include(p => p.Organization).FirstOrDefaultAsync(p => !p.IsDelete && p.UserId == userId);
+            var OrganitionMember = await _context.OrganizationMembers.Include(p => p.Organization)
+                                                .FirstOrDefaultAsync(p => !p.IsDelete && p.UserId == userId && p.Organization.OrganizationType == Domain.Enums.Organization.OrganizationType.DoctorOffice);
 
             #endregion
 

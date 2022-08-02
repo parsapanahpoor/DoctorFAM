@@ -147,7 +147,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #region Get Current Doctor Office
 
-            var doctorOffice = await _organizationService.GetOrganizationByUserId(userId);
+            var doctorOffice = await _organizationService.GetDoctorOrganizationByUserId(userId);
             if (doctorOffice == null) return null;
             if (doctorOffice.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice) return null;
 
@@ -224,7 +224,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #region Get Current Doctor Office
 
-            var doctorOffice = await _organizationService.GetOrganizationByUserId(model.UserId);
+            var doctorOffice = await _organizationService.GetDoctorOrganizationByUserId(model.UserId);
             if (doctorOffice == null) return AddOrEditDoctorInfoResult.Faild;
             if (doctorOffice.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice) return AddOrEditDoctorInfoResult.Faild;
 
@@ -542,7 +542,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #region Get Current Doctor Office
 
-            var doctorOffice = await _organizationService.GetOrganizationByUserId(userId);
+            var doctorOffice = await _organizationService.GetDoctorOrganizationByUserId(userId);
             if (doctorOffice == null) return DoctorSelectedInterestResult.Faild;
             if (doctorOffice.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice) return DoctorSelectedInterestResult.Faild;
 
@@ -666,7 +666,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #region Get Current Doctor Office
 
-            var doctorOffice = await _organizationService.GetOrganizationByUserId(doctor.UserId);
+            var doctorOffice = await _organizationService.GetDoctorOrganizationByUserId(doctor.UserId);
             if (doctorOffice == null) return null;
             if (doctorOffice.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice) return null;
 
@@ -719,7 +719,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #region Get Current Doctor Office
 
-            var doctorOffice = await _organizationService.GetOrganizationByUserId(doctor.UserId);
+            var doctorOffice = await _organizationService.GetDoctorOrganizationByUserId(doctor.UserId);
             if (doctorOffice == null) return EditDoctorInfoResult.faild;
             if (doctorOffice.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice) return EditDoctorInfoResult.faild;
 

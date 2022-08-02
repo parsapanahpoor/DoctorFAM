@@ -38,7 +38,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
         public async Task<IActionResult> PageOfManageDoctorInfo()
         {
-            ViewBag.DoctorOffice = await _organization.GetOrganizationByUserId(User.GetUserId());
+            ViewBag.DoctorOffice = await _organization.GetDoctorOrganizationByUserId(User.GetUserId());
 
             return View(await _doctorService.GetDoctorByUserId(User.GetUserId()));
         }

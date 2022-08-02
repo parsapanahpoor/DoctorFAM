@@ -62,7 +62,7 @@ namespace DoctorFAM.Application.Services.Implementation
         {
             #region Get Owner Organization By EmployeeId 
 
-            var organization = await _organizationService.GetOrganizationByUserId(userId);
+            var organization = await _organizationService.GetDoctorOrganizationByUserId(userId);
             if (organization == null) return false;
 
             #endregion
@@ -114,7 +114,7 @@ namespace DoctorFAM.Application.Services.Implementation
         {
             #region Get Organization by UserId
 
-            var organization = await _organizationService.GetOrganizationByUserId(userId);
+            var organization = await _organizationService.GetDoctorOrganizationByUserId(userId);
             if (organization == null) return false;
 
             #endregion
@@ -155,7 +155,7 @@ namespace DoctorFAM.Application.Services.Implementation
         {
             #region Get Organization By User Id 
 
-            var organization = await _organizationService.GetOrganizationByUserId(userId);
+            var organization = await _organizationService.GetDoctorOrganizationByUserId(userId);
             if (organization == null) return null;
 
             #endregion
@@ -191,7 +191,7 @@ namespace DoctorFAM.Application.Services.Implementation
         {
             #region Get Organization By User Id 
 
-            var organization = await _organizationService.GetOrganizationByUserId(userId);
+            var organization = await _organizationService.GetDoctorOrganizationByUserId(userId);
             if (organization == null) return false;
 
             #endregion
@@ -245,7 +245,7 @@ namespace DoctorFAM.Application.Services.Implementation
         {
             #region Get Organization By User Id 
 
-            var organization = await _organizationService.GetOrganizationByUserId(userId);
+            var organization = await _organizationService.GetDoctorOrganizationByUserId(userId);
             if (organization == null) return false;
 
             #endregion
@@ -289,7 +289,7 @@ namespace DoctorFAM.Application.Services.Implementation
         {
             #region Get Organization By User Id 
 
-            var organization = await _organizationService.GetOrganizationByUserId(userId);
+            var organization = await _organizationService.GetDoctorOrganizationByUserId(userId);
             if (organization == null) return null;
 
             #endregion

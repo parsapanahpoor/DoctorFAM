@@ -264,6 +264,9 @@
   <data name="Manage Articles" xml:space="preserve">
     <value>إدارة المقالات</value>
   </data>
+  <data name="Manage Doctors" xml:space="preserve">
+    <value>إدارة الأطباء</value>
+  </data>
   <data name="Manage Doctors Info" xml:space="preserve">
     <value>إدارة معلومات الأطباء</value>
   </data>
@@ -278,6 +281,12 @@
   </data>
   <data name="Manage Pages" xml:space="preserve">
     <value>إدارة صفحات</value>
+  </data>
+  <data name="Manage Pharmacy" xml:space="preserve">
+    <value>إدارة الصيدليات</value>
+  </data>
+  <data name="Manage Pharmacy Info" xml:space="preserve">
+    <value>معلومات الصيدلية</value>
   </data>
   <data name="Manage Population Covered" xml:space="preserve">
     <value>إدارة السكان المغطاة</value>
@@ -323,6 +332,9 @@
   </data>
   <data name="Pharmacy At Home" xml:space="preserve">
     <value>صيدلية في المنزل</value>
+  </data>
+  <data name="Pharmacy Info" xml:space="preserve">
+    <value>معلومات الصيدلية</value>
   </data>
   <data name="Population Covered" xml:space="preserve">
     <value>تغطية السكان</value>

@@ -30,9 +30,14 @@ namespace DoctorFAM.Web.Areas.Pharmacy.Controllers
             //برای اینکه اگر سازمان مورد نظر یافت نشد آن را بسازیم
             #region If Pharmacy Is Not Found In Doctor Table 
 
-            if (!await _pharmacyService.IsExistAnyPharmacyByUserId(User.GetUserId()))
+            if (!await _organizationServicec.IsExistAnyPharmacyOfficeEmployeeByUserId(User.GetUserId()))
             {
-                await _pharmacyService.AddPharmacyForFirstTime(User.GetUserId());
+
+                if (!await _pharmacyService.IsExistAnyPharmacyByUserId(User.GetUserId()))
+                {
+                    await _pharmacyService.AddPharmacyForFirstTime(User.GetUserId());
+                }
+
             }
 
             #endregion

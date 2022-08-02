@@ -19,7 +19,7 @@ namespace DoctorFAM.Web.Areas.UserPanel.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            return View("PharmacySideBar", await _pharmacySerfvice.GetPharmacyByUserId(User.GetUserId()));
+            return View("PharmacySideBar", await _pharmacySerfvice.GetPharmacySideBarInfo(User.GetUserId()));
         }
     }
 }

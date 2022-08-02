@@ -39,16 +39,26 @@ namespace DoctorFAM.Application.Services.Implementation
             return await _organization.GetOrganizationByUserId(userId);
         }
 
+        public async Task<Organization?> GetDoctorOrganizationByUserId(ulong userId)
+        {
+            return await _organization.GetDoctorOrganizationByUserId(userId);
+        }
+
+        public async Task<Organization?> GetPharmacyOrganizationByUserId(ulong userId)
+        {
+            return await _organization.GetPharmacyOrganizationByUserId(userId);
+        }
+
         public async Task UpdateOrganization(Organization organization)
         {
             await _organization.UpdateOrganization(organization);
         }
 
-        public async Task<bool> DeleteEmployeeFromYourOrganization(ulong employeeId , ulong userId)
+        public async Task<bool> DeleteEmployeeFromDoctorOfficeOrganization(ulong employeeId , ulong userId)
         {
             #region Get Organization
 
-            var organization = await GetOrganizationByUserId(userId);
+            var organization = await GetDoctorOrganizationByUserId(userId);
             if (organization == null) return false;
 
             //Owner Can Not Be Deleted
@@ -66,9 +76,14 @@ namespace DoctorFAM.Application.Services.Implementation
             return true;
         }
 
-        public async Task<bool> IsExistAnyEmployeeByUserId(ulong userId)
+        public async Task<bool> IsExistAnyDoctorOfficeEmployeeByUserId(ulong userId)
         {
-            return await _organization.IsExistAnyEmployeeByUserId(userId);
+            return await _organization.IsExistAnyDoctorOfficeEmployeeByUserId(userId);
+        }
+
+        public async Task<bool> IsExistAnyPharmacyOfficeEmployeeByUserId(ulong userId)
+        {
+            return await _organization.IsExistAnyPharmacyOfficeEmployeeByUserId(userId);
         }
 
         #endregion

@@ -228,13 +228,17 @@ $("#CountryId").change(function () {
     if ($("#CountryId :selected").val() !== '') {
         $('#CityId option:not(:first)').remove();
         $('#StateId option:not(:first)').remove();
-        $.get("/UserPanel/Home/LoadCities", { stateId: $("#CountryId :selected").val() }).then(res => {
+        $.get("/Home/LoadCities", { stateId: $("#CountryId :selected").val() }).then(res => {
             if (res.data !== null) {
+                $("#StateId").append(
+                    '<option>' + 'لطفا یک استان را انتخاب کنید' + '</option>',
+                );
                 $.each(res.data, function () {
                     $("#StateId").append(
                         '<option value=' + this.id + '>' + this.title + '</option>'
                     );
                 });
+                $("#StateId").removeAttr("disabled");
             }
         });
     } else {
@@ -246,13 +250,14 @@ $("#CountryId").change(function () {
 $("#StateId").change(function () {
     if ($("#StateId :selected").val() !== '') {
         $('#CityId option:not(:first)').remove();
-        $.get("/UserPanel/Home/LoadCities", { stateId: $("#StateId :selected").val() }).then(res => {
+        $.get("/Home/LoadCities", { stateId: $("#StateId :selected").val() }).then(res => {
             if (res.data !== null) {
                 $.each(res.data, function () {
                     $("#CityId").append(
                         '<option value=' + this.id + '>' + this.title + '</option>'
                     );
                 });
+                $("#CityId").removeAttr("disabled");
             }
         });
     } else {

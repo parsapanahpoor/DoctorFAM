@@ -29,7 +29,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
             #region Check Doctor Login our Employee
 
-            if (!await _organizationService.IsExistAnyEmployeeByUserId(User.GetUserId()))
+            if (!await _organizationService.IsExistAnyDoctorOfficeEmployeeByUserId(User.GetUserId()))
             {
                 #region If Doctor Is Not Found In Doctor Table 
 

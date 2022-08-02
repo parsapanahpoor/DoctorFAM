@@ -3,9 +3,9 @@
 @if (Model == "NewUser")
 {
     <li>
-        <a asp-area="Doctor" asp-controller="DoctorsInfo" asp-action="PageOfManageDoctorInfo">
+        <a asp-area="Pharmacy" asp-controller="Pharmacy" asp-action="PageOfManagePharmacyInfo">
             <i class="menu-icon glyphicon glyphicon-education"></i>
-            <span class="menu-text">@SharedLocalizer["Doctor Info"]</span>
+            <span class="menu-text">@SharedLocalizer["Pharmacy Info"]</span>
             <div class="badge badge-warning" id="DoctorInfoState">
                 @SharedLocalizer["Waiting"]
             </div>
@@ -16,9 +16,9 @@
 @if (Model == "WatingForConfirm")
 {
     <li>
-        <a asp-area="Doctor" asp-controller="DoctorsInfo" asp-action="PageOfManageDoctorInfo">
+        <a asp-area="Pharmacy" asp-controller="Pharmacy" asp-action="PageOfManagePharmacyInfo">
             <i class="menu-icon glyphicon glyphicon-education"></i>
-            <span class="menu-text">@SharedLocalizer["Doctor Info"]</span>
+            <span class="menu-text">@SharedLocalizer["Pharmacy Info"]</span>
             <div class="badge badge-warning" id="DoctorInfoState">
                 @SharedLocalizer["Waiting"]
             </div>
@@ -29,9 +29,9 @@
 @if (Model == "Rejected")
 {
     <li>
-        <a asp-area="Doctor" asp-controller="DoctorsInfo" asp-action="PageOfManageDoctorInfo">
+        <a asp-area="Pharmacy" asp-controller="Pharmacy" asp-action="PageOfManagePharmacyInfo">
             <i class="menu-icon glyphicon glyphicon-education"></i>
-            <span class="menu-text">@SharedLocalizer["Doctor Info"]</span>
+            <span class="menu-text">@SharedLocalizer["Pharmacy Info"]</span>
             <div class="badge badge-danger" id="DoctorInfoState">
                 @SharedLocalizer["Decline"]
             </div>
@@ -42,12 +42,14 @@
 @if (Model == "Accepted")
 {
     <li>
-        <a asp-area="Doctor" asp-controller="DoctorsInfo" asp-action="PageOfManageDoctorInfo">
+        <a asp-area="Pharmacy" asp-controller="Pharmacy" asp-action="PageOfManagePharmacyInfo">
             <i class="menu-icon glyphicon glyphicon-education"></i>
-            <span class="menu-text">@SharedLocalizer["Doctor Info"]</span>
+            <span class="menu-text">@SharedLocalizer["Pharmacy Info"]</span>
             <div class="badge badge-success" id="DoctorInfoState">
                 @SharedLocalizer["Accepted"]
             </div>
         </a>
     </li>
 }
+
+

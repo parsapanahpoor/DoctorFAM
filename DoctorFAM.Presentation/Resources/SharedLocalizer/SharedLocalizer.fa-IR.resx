@@ -435,4 +435,16 @@
   <data name="You Must enter All Of Address Fields" xml:space="preserve">
     <value>شما باید تمام اطلاعات آدرس را وارد کنید</value>
   </data>
+  <data name="Pharmacy Info" xml:space="preserve">
+    <value>اطلاعات داروخانه</value>
+  </data>
+  <data name="Manage Doctors" xml:space="preserve">
+    <value>مدیریت پزشکان</value>
+  </data>
+  <data name="Manage Pharmacy" xml:space="preserve">
+    <value>مدیریت داروخانه ها</value>
+  </data>
+  <data name="Manage Pharmacy Info" xml:space="preserve">
+    <value>اطلاعات داروخانه ها </value>
+  </data>
 </root>

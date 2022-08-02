@@ -724,7 +724,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #region Get Organization By User Id 
 
-            var organization = await _organizationService.GetOrganizationByUserId(MasterId);
+            var organization = await _organizationService.GetDoctorOrganizationByUserId(MasterId);
             if (organization == null) return AddNewUserResult.DuplicateMobileNumber;
 
             #endregion

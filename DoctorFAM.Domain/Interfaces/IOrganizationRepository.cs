@@ -17,11 +17,17 @@ namespace DoctorFAM.Domain.Interfaces
 
         Task<Organization?> GetOrganizationByUserId(ulong userId);
 
+        Task<Organization?> GetPharmacyOrganizationByUserId(ulong userId);
+
+        Task<Organization?> GetDoctorOrganizationByUserId(ulong userId);
+
         Task UpdateOrganization(Organization organization);
 
         Task<bool> DeleteEmployeeFromOrganization(ulong employeeId, ulong organizationId);
 
-        Task<bool> IsExistAnyEmployeeByUserId(ulong userId);
+        Task<bool> IsExistAnyDoctorOfficeEmployeeByUserId(ulong userId);
+
+        Task<bool> IsExistAnyPharmacyOfficeEmployeeByUserId(ulong userId);
 
         #endregion
     }

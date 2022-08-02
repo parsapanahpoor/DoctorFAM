@@ -195,7 +195,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
         public async Task<IActionResult> DeleteEmployeeFromYourOrganization(ulong id)
         {
-            var result = await _organizationService.DeleteEmployeeFromYourOrganization(id , User.GetUserId());
+            var result = await _organizationService.DeleteEmployeeFromDoctorOfficeOrganization(id , User.GetUserId());
 
             if (result)
             {
