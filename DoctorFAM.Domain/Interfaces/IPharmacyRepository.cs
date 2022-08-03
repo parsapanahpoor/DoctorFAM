@@ -1,6 +1,7 @@
 ﻿using DoctorFAM.Domain.Entities.Interest;
 using DoctorFAM.Domain.Entities.Pharmacy;
 using DoctorFAM.Domain.ViewModels.Admin.Pharmacy;
+using DoctorFAM.Domain.ViewModels.Pharmacy.HomePharmacy;
 using DoctorFAM.Domain.ViewModels.Pharmacy.PharmacySideBar;
 using System;
 using System.Collections.Generic;
@@ -71,6 +72,9 @@ namespace DoctorFAM.Domain.Interfaces
 
         //Filter Pharmacys Informations In Admin Panels 
         Task<ListOfPharmacyInfoViewModel> FilterPharmacyInfoAdminSide(ListOfPharmacyInfoViewModel filter);
+
+        //Filter List Of Home Pharmacy Request ViewModel From User Or Supporter Panel 
+        Task<FilterListOfHomePharmacyRequestViewModel> FilterListOfHomePharmacyRequestViewModel(FilterListOfHomePharmacyRequestViewModel filter);
 
         #endregion
     }

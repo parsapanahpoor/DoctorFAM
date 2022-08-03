@@ -1,6 +1,7 @@
 ﻿using DoctorFAM.Domain.Entities.Interest;
 using DoctorFAM.Domain.Entities.Pharmacy;
 using DoctorFAM.Domain.ViewModels.Admin.Pharmacy;
+using DoctorFAM.Domain.ViewModels.Pharmacy.HomePharmacy;
 using DoctorFAM.Domain.ViewModels.Pharmacy.PharmacyInfo;
 using DoctorFAM.Domain.ViewModels.Pharmacy.PharmacySideBar;
 using Microsoft.AspNetCore.Http;
@@ -75,6 +76,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Delete Pharmacy Selected Ineterest From Pharmacy Selected Items 
         Task<PharmacySelectedInterestResult> DeletePharmacySelectedInterestDoctorPanel(ulong interestId, ulong userId);
+
+        //Filter List Of Home Pharmacy Request ViewModel From User Or Supporter Panel 
+        Task<FilterListOfHomePharmacyRequestViewModel> FilterListOfHomePharmacyRequestViewModel(FilterListOfHomePharmacyRequestViewModel filter);
 
         #endregion
     }

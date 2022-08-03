@@ -1,0 +1,165 @@
+﻿@model DoctorFAM.Domain.ViewModels.Pharmacy.HomePharmacy.FilterListOfHomePharmacyRequestViewModel
+@using DoctorFAM.Domain.ViewModels.Admin.HealthHouse
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Domain.ViewModels.Common
+@using DoctorFAM.Domain.Enums.Request
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
+
+
+@{
+    ViewData["Title"] = @Localizer["List Of Home Pharmacy Requests"];
+}
+
+@section Styles
+{
+
+}
+
+@section Scripts
+{
+<partial name="_JqueryValidation" />
+}
+
+@section Breadcrumb
+{
+<li>
+    <a href="javascript:void(0)"> @ViewData["Title"] </a>
+</li>
+}
+
+<div class="row">
+    <div class="col-lg-3 col-sm-12">
+        <div class="widget">
+            <div class="widget-header bordered-bottom bordered-green">
+                <span class="widget-caption"> @Localizer["Home Pharmacy"] </span>
+            </div>
+            <div class="widget-body">
+                <div>
+                    <form asp-action="FilterHomePharamcy" asp-controller="HomePharmacy" asp-area="Pharmacy" id="filter-search" method="get">
+
+                        <input type="hidden" asp-for="Page" />
+
+                        <div class="form-group">
+                            <label asp-for="Username"> @Localizer["Username"] </label>
+                            <input type="text" class="form-control" asp-for="Username">
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="FirstName"> @Localizer["FirstName"] </label>
+                            <input type="text" class="form-control" asp-for="FirstName">
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="LastName"> @Localizer["Mobile"] </label>
+                            <input type="text" class="form-control" asp-for="LastName">
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="FilterRequestPharmacySideOrder"> @Localizer["Order By"] </label>
+                            <select asp-for="FilterRequestPharmacySideOrder" class="form-control" asp-items="Html.GetEnumSelectList(typeof(FilterRequestAdminSideOrder))"></select>
+                        </div>
+
+                        <hr />
+
+                        <div class="row">
+                            <div class="col-md-12 flex-style">
+                                <button type="submit" class="btn btn-labeled w-100 btn-palegreen">
+                                    <i class="btn-label glyphicon glyphicon-filter"></i>@Localizer["Filter"]
+                                </button>
+
+                                @if (Context.Request.QueryString.HasValue)
+                                {
+                                    <a asp-action="FilterHomePharamcy" asp-controller="HomePharmacy" asp-area="Pharmacy" class="btn btn-labeled w-100 btn-darkorange mr-10px">
+                                        <i class="btn-label glyphicon glyphicon-remove"></i>@Localizer["Delete Filter"]
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-9 col-sm-12">
+        <div class="well with-header with-footer table-responsive">
+            <div class="header bordered-azure">
+                <div class="flex-style">
+                    <span>@ViewData["Title"]</span>
+                    <span>@Model.GetShownEntitiesPagesTitle()</span>
+                </div>
+            </div>
+
+            @if (Model.Entities != null && Model.Entities.Any())
+            {
+                <table class="table table-hover table-bordered tc vm">
+                    <thead class="tc vm">
+                        <tr class="tc vm">
+                            <th class="tc vm">
+                                @Localizer["User Avatar"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["User Mobile"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["Date Time"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["State"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["Options"]
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="tc vm">
+                        @foreach (var request in Model.Entities)
+                        {
+                            <tr class="tc vm">
+                                <td class="vm">
+                                    <div class="flex-style-center">
+                                        <img src="@request.User.GetUserAvatar()" class="avatar-style" style="border-radius:50px;" />
+                                        <div class="mr-10px">
+                                            <span> @request.User.Username </span>
+                                            <hr class="margin-7" />
+                                            <span>@Localizer["Register Date"] : @request.User.CreateDate.ToShamsi()</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="tc vm">
+                                    <p>@Localizer["Mobile"] : @request.User.Mobile</p>
+                                </td>
+                                <td class="tc vm">
+                                    <p>  @request.CreateDate.ToStringShamsiDate() </p>
+                                    <p> @request.CreateDate.Hour:@request.CreateDate.Minute:@request.CreateDate.Second</p>
+                                </td>
+                                <td class="tc vm">
+                                    <p>  @request.PatientRequestDateTimeDetails.SendDate.ToStringShamsiDate()</p>
+                                    <p>@Localizer["Start Time"] : @request.PatientRequestDateTimeDetails.StartTime</p>
+                                    <p>@Localizer["End Time"] : @request.PatientRequestDateTimeDetails.EndTime</p>
+                                </td>
+
+                                <td class="tc vm">
+                                    <a asp-action="HomePharmacyRequestDetail" asp-controller="HomePharmacy" asp-area="Pharmacy" asp-route-requestId="@request.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <div class="footer tc">
+
+                    <partial name="_PharmacyPaging" model="@Model.GetCurrentPaging()" />
+
+                </div>
+            }
+            else
+            {
+                <partial name="_PharmacyNotFoundPartial" />
+            }
+        </div>
+    </div>
+</div>
+

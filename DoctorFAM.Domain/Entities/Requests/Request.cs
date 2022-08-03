@@ -47,7 +47,7 @@ namespace DoctorFAM.DataLayer.Entities
 
         public PaitientRequestDetail PaitientRequestDetails { get; set; }
 
-        public ICollection<PatientRequestDateTimeDetail> PatientRequestDateTimeDetails { get; set; }
+        public PatientRequestDateTimeDetail PatientRequestDateTimeDetails { get; set; }
 
         #endregion
     }

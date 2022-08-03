@@ -2,8 +2,10 @@
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.Interest;
 using DoctorFAM.Domain.Entities.Pharmacy;
+using DoctorFAM.Domain.Enums.Request;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.Pharmacy;
+using DoctorFAM.Domain.ViewModels.Pharmacy.HomePharmacy;
 using DoctorFAM.Domain.ViewModels.Pharmacy.PharmacySideBar;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -20,9 +22,12 @@ namespace DoctorFAM.Data.Repository
 
         private readonly DoctorFAMDbContext _context;
 
-        public PharmacyRepository(DoctorFAMDbContext context)
+        private readonly IOrganizationRepository _organizationService;
+
+        public PharmacyRepository(DoctorFAMDbContext context, IOrganizationRepository organizationService)
         {
             _context = context;
+            _organizationService = organizationService;
         }
 
         #endregion
@@ -244,6 +249,70 @@ namespace DoctorFAM.Data.Repository
             if (!string.IsNullOrEmpty(filter.NationalCode))
             {
                 query = query.Where(s => s.User.NationalId.Contains(filter.NationalCode));
+            }
+
+            #endregion
+
+            await filter.Paging(query);
+
+            return filter;
+        }
+
+        //Filter List Of Home Pharmacy Request ViewModel From User Or Supporter Panel 
+        public async Task<FilterListOfHomePharmacyRequestViewModel> FilterListOfHomePharmacyRequestViewModel(FilterListOfHomePharmacyRequestViewModel filter)
+        {
+            #region Get Organization 
+
+            var organization = await _organizationService.GetPharmacyOrganizationByUserId(filter.PharmacyId);
+            if (organization == null) return null;
+
+            #endregion
+
+            #region Get Pharmacy Work Address
+
+            var workAddress = await _context.WorkAddresses.FirstOrDefaultAsync(p => !p.IsDelete && p.UserId == organization.OwnerId);
+            if (workAddress == null) return null;
+
+            #endregion
+
+            var query = _context.Requests
+             .Include(p => p.Patient)
+             .Include(p => p.User)
+             .Include(p => p.PaitientRequestDetails)
+             .Where(s => !s.IsDelete && s.RequestType == Domain.Enums.RequestType.RequestType.HomeDrog && s.PaitientRequestDetails.CountryId == workAddress.CountryId
+                    && s.PaitientRequestDetails.StateId == workAddress.StateId && s.PaitientRequestDetails.CityId == workAddress.CityId
+                    && s.RequestState == Domain.Enums.Request.RequestState.Paid)
+             .OrderByDescending(s => s.CreateDate)
+             .AsQueryable();
+
+            #region Status
+
+            switch (filter.FilterRequestPharmacySideOrder)
+            {
+                case FilterRequestAdminSideOrder.CreateDate_Des:
+                    break;
+                case FilterRequestAdminSideOrder.CreateDate_Asc:
+                    query = query.OrderBy(p => p.CreateDate);
+                    break;
+            }
+
+            #endregion
+
+            #region Filter
+
+            if (!string.IsNullOrEmpty(filter.Username))
+            {
+                query = query.Where(s => EF.Functions.Like(s.User.Username, $"%{filter.Username}%"));
+            }
+
+            if (!string.IsNullOrEmpty(filter.FirstName))
+            {
+                query = query.Where(s => EF.Functions.Like(s.User.FirstName, $"%{filter.FirstName}%"));
+            }
+
+            if (!string.IsNullOrEmpty(filter.LastName))
+            {
+                query = query.Where(s => EF.Functions.Like(s.User.LastName, $"%{filter.LastName}%"));
             }
 
             #endregion
