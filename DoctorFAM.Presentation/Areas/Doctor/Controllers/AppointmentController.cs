@@ -19,10 +19,13 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
         private readonly IStringLocalizer<SharedLocalizer.SharedLocalizer> _sharedLocalizer;
 
-        public AppointmentController(IReservationService reservatioService, IStringLocalizer<SharedLocalizer.SharedLocalizer> sharedLocalizer)
+        private readonly IOrganizationService _organizationService;
+
+        public AppointmentController(IReservationService reservatioService, IStringLocalizer<SharedLocalizer.SharedLocalizer> sharedLocalizer, IOrganizationService organizationService)
         {
             _reservatioService = reservatioService;
             _sharedLocalizer = sharedLocalizer;
+            _organizationService = organizationService;
         }
 
         #endregion
@@ -80,6 +83,13 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
             #endregion
 
+            #region Get Owner Organization By EmployeeId 
+
+            var organization = await _organizationService.GetDoctorOrganizationByUserId(User.GetUserId());
+            if (organization == null) return NotFound();
+
+            #endregion
+
             #region Add Reservation Date 
 
             var result = await _reservatioService.AddReservationDate(model, User.GetUserId());
@@ -88,7 +98,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
             {
                 TempData[SuccessMessage] = _sharedLocalizer["Operation Successfully"].Value;
 
-                var reservationDate = await _reservatioService.GetDoctorReservationDateByDate(model.ReservationDate.ToMiladiDateTime());
+                var reservationDate = await _reservatioService.GetDoctorReservationDateByDate(model.ReservationDate.ToMiladiDateTime() , organization.OwnerId);
 
                 if (reservationDate != null)
                 {

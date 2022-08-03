@@ -49,9 +49,9 @@ namespace DoctorFAM.Application.Services.Implementation
         #region Doctor Panel
 
         //Get Doctor Reservation Date By Date 
-        public async Task<DoctorReservationDate?> GetDoctorReservationDateByDate(DateTime date)
+        public async Task<DoctorReservationDate?> GetDoctorReservationDateByDate(DateTime date , ulong userId)
         {
-            return await _reservation.GetDoctorReservationDateByDate(date);
+            return await _reservation.GetDoctorReservationDateByDate(date , userId);
         }
 
         public async Task<FilterAppointmentViewModel> FilterDoctorReservationDateSide(FilterAppointmentViewModel filter)
@@ -67,19 +67,19 @@ namespace DoctorFAM.Application.Services.Implementation
         //Add Reservation Date 
         public async Task<bool> AddReservationDate(AddReservationDateViewModel model, ulong userId)
         {
-            #region Is Exist Any Reservastion Date 
-
-            if (await _reservation.IsExistAnyDuplicateReservationDate(model.ReservationDate.ToMiladiDateTime()))
-            {
-                return false;
-            }
-
-            #endregion
-
             #region Get Owner Organization By EmployeeId 
 
             var organization = await _organizationService.GetDoctorOrganizationByUserId(userId);
             if (organization == null) return false;
+
+            #endregion
+
+            #region Is Exist Any Reservastion Date 
+
+            if (await _reservation.IsExistAnyDuplicateReservationDate(model.ReservationDate.ToMiladiDateTime() , organization.OwnerId))
+            {
+                return false;
+            }
 
             #endregion
 

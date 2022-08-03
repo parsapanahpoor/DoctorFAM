@@ -304,6 +304,8 @@ namespace DoctorFAM.Data.DbContext
 
             modelBuilder.Entity<DoctorsInterestInfo>().HasQueryFilter(e => e.LanguageId == culture);
 
+            modelBuilder.Entity<PharmacyInterestInfo>().HasQueryFilter(e => e.LanguageId == culture);
+
             #endregion
 
             #region Email Setting Seed Data

@@ -22,6 +22,14 @@ namespace DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo
         [RegularExpression(@"^[0-9]*$", ErrorMessage = "The medical system code entered is not valid")]
         public int MedicalSystemCode { get; set; }
 
+        [Display(Name = "First Name")]
+        [Required(ErrorMessage = "Please Enter {0}")]
+        public string FirstName { get; set; }
+
+        [Display(Name = "Last Name")]
+        [Required(ErrorMessage = "Please Enter {0}")]
+        public string LastName { get; set; }
+
         [Display(Name = "education")]
         [Required(ErrorMessage = "Please Enter {0}")]
         public string Education { get; set; }

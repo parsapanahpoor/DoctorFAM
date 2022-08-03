@@ -289,7 +289,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
                 var pharmacyAddress = await _workAddress.GetUserWorkAddressById(model.UserId);
 
-                if (pharmacyAddress != null)
+                if (pharmacyAddress != null && model.WorkAddress != null)
                 {
                     pharmacyAddress.Address = model.WorkAddress;
                     pharmacyAddress.CountryId = model.CountryId.Value;

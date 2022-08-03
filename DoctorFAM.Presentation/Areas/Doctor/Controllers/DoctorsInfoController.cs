@@ -113,6 +113,12 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
                 return View(returnModel);
             }
 
+            if ((model.CountryId.HasValue || model.CityId.HasValue || model.StateId.HasValue) && string.IsNullOrEmpty(model.WorkAddress))
+            {
+                TempData[ErrorMessage] = _sharedLocalizer["You Must enter All Of Address Fields"].Value;
+                return View(returnModel);
+            }
+
             #endregion
 
             #region Add Or Edit Doctors Information

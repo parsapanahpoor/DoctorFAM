@@ -57,6 +57,10 @@ namespace DoctorFAM.Application.Services.Interfaces
         #endregion
 
         #region Admin
+
+        //Update User 
+        Task UpdateUser(User user);
+
         Task<FilterUserViewModel> FilterUsers(FilterUserViewModel filter);
 
         Task<bool> ChangePasswordInAdmin(ChangePasswordInAdminViewModel passwordViewModel);

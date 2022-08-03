@@ -28,7 +28,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
         private readonly IWorkAddressService _workAddress;
 
-        public DoctorsService(IDoctorsRepository doctorRepository, IUserService userService , IOrganizationService organizationService ,
+        public DoctorsService(IDoctorsRepository doctorRepository, IUserService userService, IOrganizationService organizationService,
                                 IWorkAddressService workAddress)
         {
             _doctorRepository = doctorRepository;
@@ -99,7 +99,7 @@ namespace DoctorFAM.Application.Services.Implementation
             OrganizationMember member = new OrganizationMember()
             {
                 CreateDate = DateTime.Now,
-                IsDelete=false,
+                IsDelete = false,
                 OrganizationId = organizationId,
                 UserId = userId
             };
@@ -171,6 +171,8 @@ namespace DoctorFAM.Application.Services.Implementation
                 ManageDoctorsInfoViewModel model = new ManageDoctorsInfoViewModel()
                 {
                     UserId = userId,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
                     DoctorsInfosType = doctorOffice.OrganizationInfoState,
                     Education = doctorInfo.Education,
                     MediacalFile = doctorInfo.MediacalFile,
@@ -187,7 +189,7 @@ namespace DoctorFAM.Application.Services.Implementation
                     model.CountryId = workAddress.CountryId;
                     model.StateId = workAddress.StateId;
                     model.CityId = workAddress.CityId;
-                } 
+                }
 
                 return model;
             }
@@ -269,6 +271,15 @@ namespace DoctorFAM.Application.Services.Implementation
                 //Update Doctor Office State 
                 doctorOffice.OrganizationInfoState = OrganizationInfoState.WatingForConfirm;
 
+                #region Update First Name And Last Name 
+
+                user.FirstName = model.FirstName;
+                user.LastName = model.LastName;
+
+                await _userService.UpdateUser(user);
+
+                #endregion
+
                 #endregion
 
                 #region Medical File 
@@ -291,7 +302,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
                 var doctorAddress = await _workAddress.GetUserWorkAddressById(model.UserId);
 
-                if (doctorAddress != null)
+                if (doctorAddress != null && !string.IsNullOrEmpty(model.WorkAddress))
                 {
                     doctorAddress.Address = model.WorkAddress;
                     doctorAddress.CountryId = model.CountryId.Value;
@@ -301,7 +312,7 @@ namespace DoctorFAM.Application.Services.Implementation
                     await _workAddress.UpdateUserWorkAddress(doctorAddress);
                 }
 
-                if (doctorAddress == null && model.WorkAddress != null )
+                if (doctorAddress == null && !string.IsNullOrEmpty(model.WorkAddress))
                 {
                     WorkAddress workAddress = new WorkAddress()
                     {
@@ -348,6 +359,16 @@ namespace DoctorFAM.Application.Services.Implementation
 
                     #endregion
 
+                    #region Update First Name And Last Name 
+
+                    user.FirstName = model.FirstName;
+                    user.LastName = model.LastName;
+
+                    await _userService.UpdateUser(user);
+
+                    #endregion
+
+
                     #region Medical File 
 
                     if (MediacalFile != null)
@@ -366,12 +387,15 @@ namespace DoctorFAM.Application.Services.Implementation
                         WorkAddress workAddress = new WorkAddress()
                         {
                             UserId = model.UserId,
-                            Address = model.WorkAddress
+                            Address = model.WorkAddress,
+                            CountryId = model.CountryId.Value,
+                            StateId = model.StateId.Value,
+                            CityId = model.CityId.Value,
                         };
 
                         await _workAddress.AddWorkAddress(workAddress);
                     }
-                   
+
                     #endregion
 
                     #region Update Doctor Office
@@ -410,12 +434,15 @@ namespace DoctorFAM.Application.Services.Implementation
                         WorkAddress workAddress = new WorkAddress()
                         {
                             UserId = model.UserId,
-                            Address = model.WorkAddress
+                            Address = model.WorkAddress,
+                            CountryId = model.CountryId.Value,
+                            StateId = model.StateId.Value,
+                            CityId = model.CityId.Value,
                         };
 
                         await _workAddress.AddWorkAddress(workAddress);
                     }
-     
+
                     #endregion
 
                     #region Organization Entity
@@ -475,6 +502,16 @@ namespace DoctorFAM.Application.Services.Implementation
                     };
 
                     #endregion
+
+                    #region Update First Name And Last Name 
+
+                    user.FirstName = model.FirstName;
+                    user.LastName = model.LastName;
+
+                    await _userService.UpdateUser(user);
+
+                    #endregion
+
 
                     #region Medical File 
 
@@ -671,7 +708,7 @@ namespace DoctorFAM.Application.Services.Implementation
             if (doctorOffice.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice) return null;
 
             #endregion
-        
+
             #region Fill View Model
 
             DoctorsInfoDetailViewModel model = new DoctorsInfoDetailViewModel()
