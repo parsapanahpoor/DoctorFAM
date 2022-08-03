@@ -1,5 +1,6 @@
 ﻿using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.Entities.Doctors;
+using DoctorFAM.Domain.Entities.Interest;
 using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.Entities.Pharmacy;
 using DoctorFAM.Domain.Entities.WorkAddress;
@@ -40,6 +41,34 @@ namespace DoctorFAM.Application.Services.Implementation
         #endregion
 
         #region Pharmacy Panel Side
+
+        //Get List Of Pharmacy Interests
+        public async Task<List<PharmacyInterestInfo>> GetPharmacyInterestsInfo()
+        {
+            return await _pharmacy.GetPharmacyInterestsInfo();
+        }
+
+        //Fill Pharmacy Ineterest In Doctor Panel
+        public async Task<PharmacyInterestsViewModel> FillPharmacyInterestViewModelFromPharmacyPanel(ulong userId)
+        {
+            PharmacyInterestsViewModel model = new PharmacyInterestsViewModel();
+
+            #region Get Pharmacy Interests List 
+
+            model.PharmacyInterests = await GetPharmacyInterestsInfo();
+
+            #endregion
+
+            #region Get Pharmacy Selected Interests 
+
+            var doctor = await GetPharmacyByUserId(userId);
+
+            model.PharmacySelectedInterests = await _pharmacy.GetPharmacySelectedInterests(doctor.Id);
+
+            #endregion
+
+            return model;
+        }
 
         public async Task AddPharmacyForFirstTime(ulong userId)
         {
@@ -441,10 +470,284 @@ namespace DoctorFAM.Application.Services.Implementation
             return AddOrEditPharmcyInfoResult.Success;
         }
 
+        //Get Pharmacy Information By Pharmacy Id 
+        public async Task<PharmacyInfo?> GetPharmacyInfoByPharmacyId(ulong pharmacyId)
+        {
+            return await _pharmacy.GetPharmacyInfoByPharmacyId(pharmacyId);
+        }
+
+        //Get Pharmacy By Pharmacy Id 
+        public async Task<Pharmacy?> GetPharmacyById(ulong pharmacyId)
+        {
+            return await _pharmacy.GetPharmacyById(pharmacyId);
+        }
+
+        //Get Pharamcy Selected Ineterests
+        public async Task<List<PharmacyInterestInfo>> GetPharmacySelectedInterests(ulong pharmacyId)
+        {
+            return await _pharmacy.GetPharmacySelectedInterests(pharmacyId);
+        }
+
+        //Delete Pharmacy Selected Interests
+        public async Task DeletePharmacySelectedInterest(PharmacySelectedInterests item)
+        {
+            await _pharmacy.DeletePharmacySelectedInterest(item);
+        }
+
+        //Is Exist Any Pharmacy Selected Interests By Pharmacy Id And Interests Id
+        async Task<bool> IsExistInterestForPharmacy(ulong interestId, ulong pharmacyId)
+        {
+            return await _pharmacy.IsExistInterestForPharmacy(interestId, pharmacyId);
+        }
+
+        //Is Exist This Current Interest
+        public async Task<bool> IsExistInterestById(ulong interestId)
+        {
+            return await _pharmacy.IsExistInterestById(interestId);
+        }
+
+        //Add Selected Interest To Pharmacy Selected Interests
+        public async Task<PharmacySelectedInterestResult> AddPharmacySelectedInterest(ulong interestId, ulong userId)
+        {
+            #region Gett Pharmacy
+
+            var pharmacy = await _pharmacy.GetPharmacyByUserId(userId);
+            if (pharmacy == null) return PharmacySelectedInterestResult.Faild;
+
+            #endregion
+
+            #region Get Current Pharmacy Office
+
+            var pharmacyOffice = await _organizationService.GetPharmacyOrganizationByUserId(userId);
+            if (pharmacyOffice == null) return PharmacySelectedInterestResult.Faild;
+            if (pharmacyOffice.OrganizationType != Domain.Enums.Organization.OrganizationType.Pharmacy) return PharmacySelectedInterestResult.Faild;
+
+            #endregion
+
+            #region Is Exist Iterest For Pharmacy
+
+            if (await _pharmacy.IsExistInterestForPharmacy(interestId, pharmacy.Id))
+            {
+                return PharmacySelectedInterestResult.ItemIsExist;
+            }
+
+            #endregion
+
+            #region Is Exist Interest By Id
+
+            if (!await _pharmacy.IsExistInterestById(interestId))
+            {
+                return PharmacySelectedInterestResult.Faild;
+            }
+
+            #endregion
+
+            #region Fill Entity
+
+            PharmacySelectedInterests model = new PharmacySelectedInterests
+            {
+                PharmacyId = pharmacy.Id,
+                InterestId = interestId
+            };
+
+            #endregion
+
+            #region Add Method
+
+            await _pharmacy.AddPharmacySelectedInterest(model);
+
+            #endregion
+
+            #region Update Pharmacy Office State 
+
+            //Update Pharmacy Office State 
+            pharmacyOffice.OrganizationInfoState = OrganizationInfoState.WatingForConfirm;
+
+            await _organizationService.UpdateOrganization(pharmacyOffice);
+
+            #endregion
+
+            return PharmacySelectedInterestResult.Success;
+        }
+
+        //Delete Inetrest From Pharmacy Selected Interest 
+        public async Task<PharmacySelectedInterestResult> DeletePharmacySelectedInterestPharmacyPanel(ulong interestId, ulong userId)
+        {
+            #region Get Pharmacy
+
+            var pharmacy = await GetPharmacyByUserId(userId);
+            if (pharmacy == null) return PharmacySelectedInterestResult.Faild;
+
+            #endregion
+
+            #region Get Interest 
+
+            var interest = await _pharmacy.GetPharmacySelectedInterestByPharmacyIdAndInetestId(interestId, pharmacy.Id);
+            if (interest == null) return PharmacySelectedInterestResult.ItemNotExist;
+
+            #endregion
+
+            #region Get Pharmacy Selected Interest
+
+            var selectedItem = await _pharmacy.GetPharmacySelectedInterestByPharmacyIdAndInetestId(interestId, pharmacy.Id);
+            if (selectedItem == null) return PharmacySelectedInterestResult.ItemNotExist;
+
+            #endregion
+
+            #region Remove item
+
+            await _pharmacy.DeletePharmacySelectedInterest(selectedItem);
+
+            #endregion
+
+            return PharmacySelectedInterestResult.Success;
+        }
+
+        #endregion
+
+        #region Admin Side 
+
+        //Show Pharmacy Information Detial For Admin Or Supporter
+        public async Task<PharmacyInfoDetailViewModel?> FillPharmacyInfoDetailViewModel(ulong pharmacyInfoId)
+        {
+            #region Get Pharmacy Info
+
+            //Get Pharmacy Info By Id
+            var info = await _pharmacy.GetPharmacyInfoByPharmacyId(pharmacyInfoId);
+
+            if (info == null) return null;
+
+            #endregion
+
+            #region Get Pharmacy Info
+
+            var pharmacy = await GetPharmacyById(info.PharmacyId);
+
+            if (pharmacy == null) return null;
+
+            #endregion
+
+            #region Get Current Pharmacy Office
+
+            var pharmacyOffice = await _organizationService.GetPharmacyOrganizationByUserId(pharmacy.UserId);
+            if (pharmacyOffice == null) return null;
+            if (pharmacyOffice.OrganizationType != Domain.Enums.Organization.OrganizationType.Pharmacy) return null;
+
+            #endregion
+
+            #region Fill View Model
+
+            PharmacyInfoDetailViewModel model = new PharmacyInfoDetailViewModel()
+            {
+                UserId = pharmacy.UserId,
+                NationalCode = info.NationalCode,
+                RejectDescription = pharmacyOffice.RejectDescription,
+                PharmacyInfosType = pharmacyOffice.OrganizationInfoState,
+                Id = info.Id,
+                PharmacyId = pharmacy.Id,
+                PharmacyInterests = await _pharmacy.GetPharmacySelectedInterests(pharmacy.Id),
+            };
+
+            #endregion
+
+            #region Get Pharmacy Work Addresses
+
+            model.WorkAddresses = await _workAddress.GetUserWorkAddressesByUserId(pharmacy.UserId);
+
+            #endregion
+
+            return model;
+        }
+
         //Filter Pharmacys Informations In Admin Panels 
         public async Task<ListOfPharmacyInfoViewModel> FilterPharmacyInfoAdminSide(ListOfPharmacyInfoViewModel filter)
         {
             return await _pharmacy.FilterPharmacyInfoAdminSide(filter);
+        }
+
+        //Edit And Check Pharmacy Information In Admin Or Supporter Side
+        public async Task<EditPharmacyInfoResult> EditPharmacyInfoAdminSide(PharmacyInfoDetailViewModel model)
+        {
+            #region Get Pharmacy Info By Id
+
+            //Get Pharmacy Info By Id
+            var info = await _pharmacy.GetPharmacyInfoByPharmacyId(model.PharmacyId);
+
+            if (info == null) return EditPharmacyInfoResult.faild;
+
+            #endregion
+
+            #region Get Pharmacy By Id 
+
+            var pharmacy = await GetPharmacyById(model.PharmacyId);
+
+            #endregion
+
+            #region Get Current Pharmacy Office
+
+            var pharmacyOffice = await _organizationService.GetPharmacyOrganizationByUserId(pharmacy.UserId);
+            if (pharmacyOffice == null) return EditPharmacyInfoResult.faild;
+            if (pharmacyOffice.OrganizationType != Domain.Enums.Organization.OrganizationType.Pharmacy) return EditPharmacyInfoResult.faild;
+
+            #endregion
+
+            #region Update Pharmacy 
+
+            pharmacyOffice.OrganizationInfoState = model.PharmacyInfosType;
+            pharmacyOffice.RejectDescription = model.RejectDescription;
+
+            if (model.PharmacyInfosType == OrganizationInfoState.Accepted)
+            {
+                pharmacyOffice.RejectDescription = null;
+            }
+
+            await _organizationService.UpdateOrganization(pharmacyOffice);
+
+            #endregion
+
+            #region Edit Pharmacy Info 
+
+            #region Edit Properties
+
+            info.NationalCode = model.NationalCode;
+
+            #endregion
+         
+            #region Update Method
+
+            await _pharmacy.UpdatePharmacyInfo(info);
+
+            #endregion
+
+            #endregion
+
+            return EditPharmacyInfoResult.success;
+        }
+
+        //Delete Pharmacy Selected Ineterest From Pharmacy Selected Items 
+        public async Task<PharmacySelectedInterestResult> DeletePharmacySelectedInterestDoctorPanel(ulong interestId, ulong userId)
+        {
+            #region Get Pharmacy
+
+            var pharmacy = await GetPharmacyByUserId(userId);
+            if (pharmacy == null) return PharmacySelectedInterestResult.Faild;
+
+            #endregion
+
+            #region Get Interest 
+
+            var interest = await _pharmacy.GetPharmacySelectedInterestByPharmacyIdAndInetestId(interestId, pharmacy.Id);
+            if (interest == null) return PharmacySelectedInterestResult.ItemNotExist;
+
+            #endregion
+
+            #region Remove item
+
+            await _pharmacy.DeletePharmacySelectedInterest(interest);
+
+            #endregion
+
+            return PharmacySelectedInterestResult.Success;
         }
 
         #endregion

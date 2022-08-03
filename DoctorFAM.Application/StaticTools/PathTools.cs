@@ -10,7 +10,7 @@ namespace DoctorFAM.Application.StaticTools
     {
         #region Site
 
-        public static string SiteFarsiName = "DoctorFAM";
+        public static string SiteFarsiName = "داکتر فم";
         public static string SiteAddress = "https://localhost:7286";
 
         public static readonly string SiteLogo = "/content/images/site/logo/main/";

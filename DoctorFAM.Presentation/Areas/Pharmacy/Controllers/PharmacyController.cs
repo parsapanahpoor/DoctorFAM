@@ -150,5 +150,75 @@ namespace DoctorFAM.Web.Areas.Pharmacy.Controllers
         }
 
         #endregion
+
+        #region Pharmacy Interests 
+
+        public async Task<IActionResult> PharmacyInterests()
+        {
+            #region Fill Page Model 
+
+            var model = await _pharmacyService.FillPharmacyInterestViewModelFromPharmacyPanel(User.GetUserId());
+
+            #endregion
+
+            return View(model);
+        }
+
+        #endregion
+
+        #region Add Interest To Pharmacy
+
+        public async Task<IActionResult> AddInterestToPharmacy(ulong interestId)
+        {
+            var result = await _pharmacyService.AddPharmacySelectedInterest(interestId, User.GetUserId());
+
+            switch (result)
+            {
+                case Domain.Entities.Pharmacy.PharmacySelectedInterestResult.Success:
+                    TempData[SuccessMessage] = _sharedLocalizer["Operation Successfully"].Value;
+                    return RedirectToAction(nameof(PharmacyInterests));
+
+                case Domain.Entities.Pharmacy.PharmacySelectedInterestResult.Faild:
+                    TempData[ErrorMessage] = _sharedLocalizer["The operation has failed"].Value;
+                    return RedirectToAction(nameof(PharmacyInterests));
+
+                case Domain.Entities.Pharmacy.PharmacySelectedInterestResult.ItemIsExist:
+                    TempData[WarningMessage] = _sharedLocalizer["You have selected this item."].Value;
+                    return RedirectToAction(nameof(PharmacyInterests));
+            }
+
+            TempData[ErrorMessage] = _sharedLocalizer["The operation has failed"].Value;
+            return RedirectToAction(nameof(PharmacyInterests));
+        }
+
+        #endregion
+
+        #region Delete Interest To Doctor
+
+        public async Task<IActionResult> DeletePharmacySelectedInfo(ulong interestId)
+        {
+            var result = await _pharmacyService.DeletePharmacySelectedInterestPharmacyPanel(interestId, User.GetUserId());
+
+            switch (result)
+            {
+                case Domain.Entities.Pharmacy.PharmacySelectedInterestResult.Success:
+                    TempData[SuccessMessage] = _sharedLocalizer["Operation Successfully"].Value;
+                    return RedirectToAction(nameof(PharmacyInterests));
+
+                case Domain.Entities.Pharmacy.PharmacySelectedInterestResult.Faild:
+                    TempData[ErrorMessage] = _sharedLocalizer["The operation has failed"].Value;
+                    return RedirectToAction(nameof(PharmacyInterests));
+
+                case Domain.Entities.Pharmacy.PharmacySelectedInterestResult.ItemNotExist:
+                    TempData[WarningMessage] = _sharedLocalizer["You have not selected this item."].Value;
+                    return RedirectToAction(nameof(PharmacyInterests));
+            }
+
+            TempData[ErrorMessage] = _sharedLocalizer["The operation has failed"].Value;
+            return RedirectToAction(nameof(PharmacyInterests));
+        }
+
+        #endregion
+
     }
 }

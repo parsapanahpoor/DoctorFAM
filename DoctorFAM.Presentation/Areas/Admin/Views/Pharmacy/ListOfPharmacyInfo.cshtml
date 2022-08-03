@@ -1,5 +1,5 @@
-﻿@model DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo.ListOfDoctorsInfoViewModel
-@using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo
+﻿@model DoctorFAM.Domain.ViewModels.Admin.Pharmacy.ListOfPharmacyInfoViewModel
+@using DoctorFAM.Domain.ViewModels.Admin.Pharmacy
 @using DoctorFAM.Application.Extensions
 @using DoctorFAM.Application.Convertors
 @using DoctorFAM.Domain.ViewModels.Common
@@ -8,7 +8,7 @@
 
 
 @{
-    ViewData["Title"] = @Localizer["List Of Doctors Infos"];
+    ViewData["Title"] = @Localizer["List Of Pharmacy Infos"];
 }
 
 @{
@@ -36,11 +36,11 @@
     <div class="col-lg-3 col-sm-12">
         <div class="widget">
             <div class="widget-header bordered-bottom bordered-green">
-                <span class="widget-caption"> @Localizer["Manage Doctors Infos"] </span>
+                <span class="widget-caption"> @Localizer["Manage Pharmacy Infos"] </span>
             </div>
             <div class="widget-body">
                 <div>
-                    <form asp-action="ListOfDoctorsInfo" asp-controller="Doctors" asp-area="Admin" id="filter-search" method="get">
+                    <form asp-action="ListOfPharmacyInfo" asp-controller="Pharmacy" asp-area="Admin" id="filter-search" method="get">
 
                         <input type="hidden" asp-for="Page" />
 
@@ -65,13 +65,8 @@
                         </div>
 
                         <div class="form-group">
-                            <label asp-for="MedicalSystemCode"> @Localizer["MedicalSystemCode"] </label>
-                            <input type="text" class="form-control" asp-for="MedicalSystemCode">
-                        </div>
-
-                        <div class="form-group">
-                            <label asp-for="DoctorsState"> @Localizer["State"] </label>
-                            <select asp-for="DoctorsState" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorsState))"></select>
+                            <label asp-for="PharmacyState"> @Localizer["State"] </label>
+                            <select asp-for="PharmacyState" class="form-control" asp-items="Html.GetEnumSelectList(typeof(PharmacyState))"></select>
                         </div>
 
                         <hr />
@@ -84,7 +79,7 @@
 
                                 @if (Context.Request.QueryString.HasValue)
                                 {
-                                    <a asp-action="ListOfDoctorsInfo" asp-controller="Doctors" asp-area="Admin" class="btn btn-labeled w-100 btn-darkorange">
+                                    <a asp-action="ListOfPharmacyInfo" asp-controller="Pharmacy" asp-area="Admin" class="btn btn-labeled w-100 btn-darkorange">
                                         <i class="btn-label glyphicon glyphicon-remove"></i>@Localizer["Delete Filter"]
                                     </a>
                                 }
@@ -172,7 +167,7 @@
                                 </td>
                                 <td class="tc vm">
                                     <p class="flex-style-center">
-                                        <span> @Localizer["Doctors State"] </span>
+                                        <span> @Localizer["Pharmacy State"] </span>
                                         @if (info.OrganizationInfoState == DoctorFAM.Domain.Entities.Doctors.OrganizationInfoState.Accepted)
                                         {
                                             <span class="mr-8px label label-success"> @Localizer["Accepted"] </span>
@@ -200,7 +195,7 @@
                                 </td>
                              
                                 <td class="tc vm">
-                                    <a asp-action="DoctorsInfoDetail" asp-controller="Doctors" asp-area="Admin" asp-route-userId="@info.OwnerId" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+                                    <a asp-action="PharmacyInfoDetail" asp-controller="Pharmacy" asp-area="Admin" asp-route-userId="@info.OwnerId" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
                                 </td>
                             </tr>
                         }

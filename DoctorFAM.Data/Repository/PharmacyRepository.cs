@@ -1,5 +1,6 @@
 ﻿using DoctorFAM.Data.DbContext;
 using DoctorFAM.Domain.Entities.Doctors;
+using DoctorFAM.Domain.Entities.Interest;
 using DoctorFAM.Domain.Entities.Pharmacy;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.Pharmacy;
@@ -113,9 +114,79 @@ namespace DoctorFAM.Data.Repository
             return model;
         }
 
+        //Add Pharmacy Seleted Interests
+        public async Task AddPharmacySelectedInterest(PharmacySelectedInterests pharmacySelectedInterests)
+        {
+            await _context.PharmacySelectedInterests.AddAsync(pharmacySelectedInterests);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<Pharmacy?> GetPharmacyByUserId(ulong userId)
         {
             return await _context.Pharmacies.Include(p => p.User).FirstOrDefaultAsync(p => !p.IsDelete && p.UserId == userId);
+        }
+
+        //Is Exist Any Pharmacy Selected Interests By Pharmacy Id And Interests Id
+        public async Task<bool> IsExistInterestForPharmacy(ulong interestId, ulong pharmacyId)
+        {
+            return await _context.PharmacySelectedInterests.AnyAsync(p => !p.IsDelete && p.PharmacyId == pharmacyId && p.InterestId == interestId);
+        }
+
+        //Is Exist This Current Interest
+        public async Task<bool> IsExistInterestById(ulong interestId)
+        {
+            return await _context.Interests.AnyAsync(p => !p.IsDelete && p.Id == interestId);
+        }
+
+        //Get Pharmacy Information By Pharmacy Id 
+        public async Task<PharmacyInfo?> GetPharmacyInfoByPharmacyId(ulong pharmacyId)
+        {
+            return await _context.PharmacyInfos.Include(p => p.Pharmacy).FirstOrDefaultAsync(p => !p.IsDelete && p.PharmacyId == pharmacyId);
+        }
+
+        //Get Pharmacy By Pharmacy Id 
+        public async Task<Pharmacy?> GetPharmacyById(ulong pharmacyId)
+        {
+            return await _context.Pharmacies.Include(p => p.User).FirstOrDefaultAsync(p => !p.IsDelete && p.Id == pharmacyId);
+        }
+
+        //Get Pharamcy Selected Ineterests
+        public async Task<List<PharmacyInterestInfo>> GetPharmacySelectedInterests(ulong pharmacyId)
+        {
+            var interest = await _context.PharmacySelectedInterests.Include(p => p.Interest).ThenInclude(p => p.InterestInfo)
+                                .Where(p => !p.IsDelete && p.PharmacyId == pharmacyId).Select(p => p.Interest).ToListAsync();
+
+            List<PharmacyInterestInfo> model = new List<PharmacyInterestInfo>();
+
+            foreach (var item in interest)
+            {
+                foreach (var interestInfo in await _context.PharmacyInterestInfos.Where(p => !p.IsDelete && p.InterestId == item.Id).ToListAsync())
+                {
+                    model.Add(interestInfo);
+                }
+            }
+
+            return model;
+        }
+
+        //Get Pharmacy Selected Interests By Pharamcy Id And Interest Id
+        public async Task<PharmacySelectedInterests?> GetPharmacySelectedInterestByPharmacyIdAndInetestId(ulong interestId, ulong pharmacyId)
+        {
+            return await _context.PharmacySelectedInterests.FirstOrDefaultAsync(p => !p.IsDelete && p.InterestId == interestId &&
+            p.PharmacyId == pharmacyId);
+        }
+
+        //Delete Pharmacy Selected Interests
+        public async Task DeletePharmacySelectedInterest(PharmacySelectedInterests item)
+        {
+            _context.PharmacySelectedInterests.Remove(item);
+            await _context.SaveChangesAsync();
+        }
+
+        //Get List Of Pharmacy Interests
+        public async Task<List<PharmacyInterestInfo>> GetPharmacyInterestsInfo()
+        {
+            return await _context.PharmacyInterestInfos.Include(p => p.Interest).Where(p => !p.IsDelete).ToListAsync();
         }
 
         #endregion

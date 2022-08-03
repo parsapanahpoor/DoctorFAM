@@ -1,4 +1,5 @@
-﻿using DoctorFAM.Domain.Entities.Pharmacy;
+﻿using DoctorFAM.Domain.Entities.Interest;
+using DoctorFAM.Domain.Entities.Pharmacy;
 using DoctorFAM.Domain.ViewModels.Admin.Pharmacy;
 using DoctorFAM.Domain.ViewModels.Pharmacy.PharmacySideBar;
 using System;
@@ -15,6 +16,9 @@ namespace DoctorFAM.Domain.Interfaces
 
         //Add Pharmacy Info To Data Base 
         Task AddPharmacyInfo(PharmacyInfo pharmacyInfo);
+
+        //Is Exist Any Pharmacy Selected Interests By Pharmacy Id And Interests Id
+        Task<bool> IsExistInterestForPharmacy(ulong interestId, ulong pharmacyId);
 
         //Add Pharmacy To Data Base 
         Task<ulong> AddPharmacy(Pharmacy pharmacy);
@@ -36,6 +40,34 @@ namespace DoctorFAM.Domain.Interfaces
 
         //Get Pharmacy State And Interest For Change Styles In Pharmacy Side Bar 
         Task<PharmacySideBarViewModel> GetPharmacySideBarInfo(ulong userId);
+
+        //Get Pharmacy Information By Pharmacy Id 
+        Task<PharmacyInfo?> GetPharmacyInfoByPharmacyId(ulong pharmacyId);
+
+        //Get Pharmacy By Pharmacy Id 
+        Task<Pharmacy?> GetPharmacyById(ulong pharmacyId);
+
+        //Get Pharamcy Selected Ineterests
+        Task<List<PharmacyInterestInfo>> GetPharmacySelectedInterests(ulong pharmacyId);
+
+        //Get Pharmacy Selected Interests By Pharamcy Id And Interest Id
+        Task<PharmacySelectedInterests?> GetPharmacySelectedInterestByPharmacyIdAndInetestId(ulong interestId, ulong pharmacyId);
+
+        //Delete Pharmacy Selected Interests
+        Task DeletePharmacySelectedInterest(PharmacySelectedInterests item);
+
+        //Get List Of Pharmacy Interests
+        Task<List<PharmacyInterestInfo>> GetPharmacyInterestsInfo();
+
+        //Is Exist This Current Interest
+        Task<bool> IsExistInterestById(ulong interestId);
+
+        //Add Pharmacy Seleted Interests
+        Task AddPharmacySelectedInterest(PharmacySelectedInterests pharmacySelectedInterests);
+
+        #endregion
+
+        #region Admin Side 
 
         //Filter Pharmacys Informations In Admin Panels 
         Task<ListOfPharmacyInfoViewModel> FilterPharmacyInfoAdminSide(ListOfPharmacyInfoViewModel filter);

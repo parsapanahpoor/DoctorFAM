@@ -27,7 +27,7 @@ namespace DoctorFAM.Data.Repository
 
         public async Task<List<WorkAddress>?> GetUserWorkAddressesByUserId(ulong userId)
         {
-            return await _context.WorkAddresses.Where(p => !p.IsDelete && p.UserId == userId).ToListAsync();
+            return await _context.WorkAddresses.Include(p=> p.State).Where(p => !p.IsDelete && p.UserId == userId).ToListAsync();
         }
 
         public async Task AddWorkAddress(WorkAddress workAddress)
