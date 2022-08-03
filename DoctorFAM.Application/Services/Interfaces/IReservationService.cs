@@ -15,8 +15,12 @@ namespace DoctorFAM.Application.Services.Interfaces
     {
         #region Doctor Panel
 
+        //Get Doctor Reservation Date By Date 
+        Task<DoctorReservationDate?> GetDoctorReservationDateByDate(DateTime date);
+
         Task<FilterAppointmentViewModel> FilterDoctorReservationDateSide(FilterAppointmentViewModel filter);
 
+        //Add Reservation Date 
         Task<bool> AddReservationDate(AddReservationDateViewModel model, ulong userId);
 
         Task<FilterAppointmentViewModel> FiltrDoctorReservationDateHistory(FilterAppointmentViewModel filter);

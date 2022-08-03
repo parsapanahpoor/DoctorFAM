@@ -123,4 +123,16 @@
   <data name="Add Reservation Date" xml:space="preserve">
     <value>Randevu tarihi ekle</value>
   </data>
+  <data name="Add Reservation Date State" xml:space="preserve">
+    <value>dönüş durumu ekle</value>
+  </data>
+  <data name="Period Number" xml:space="preserve">
+    <value>zaman aralığı</value>
+  </data>
+  <data name="Please Insert End Time" xml:space="preserve">
+    <value>Lütfen bir bitiş zamanı seçin</value>
+  </data>
+  <data name="Please Insert Start Time" xml:space="preserve">
+    <value>Lütfen bir başlangıç ​​zamanı seçin</value>
+  </data>
 </root>

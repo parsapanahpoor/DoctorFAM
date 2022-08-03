@@ -48,6 +48,12 @@ namespace DoctorFAM.Application.Services.Implementation
 
         #region Doctor Panel
 
+        //Get Doctor Reservation Date By Date 
+        public async Task<DoctorReservationDate?> GetDoctorReservationDateByDate(DateTime date)
+        {
+            return await _reservation.GetDoctorReservationDateByDate(date);
+        }
+
         public async Task<FilterAppointmentViewModel> FilterDoctorReservationDateSide(FilterAppointmentViewModel filter)
         {
             return await _reservation.FilterDoctorReservationDateSide(filter);
@@ -58,8 +64,18 @@ namespace DoctorFAM.Application.Services.Implementation
             return await _reservation.FiltrDoctorReservationDateHistory(filter);
         }
 
+        //Add Reservation Date 
         public async Task<bool> AddReservationDate(AddReservationDateViewModel model, ulong userId)
         {
+            #region Is Exist Any Reservastion Date 
+
+            if (await _reservation.IsExistAnyDuplicateReservationDate(model.ReservationDate.ToMiladiDateTime()))
+            {
+                return false;
+            }
+
+            #endregion
+
             #region Get Owner Organization By EmployeeId 
 
             var organization = await _organizationService.GetDoctorOrganizationByUserId(userId);
@@ -73,7 +89,6 @@ namespace DoctorFAM.Application.Services.Implementation
             if (doctor == null) return false;
 
             #endregion
-
 
             #region Fill Entity
 
@@ -89,6 +104,59 @@ namespace DoctorFAM.Application.Services.Implementation
             #region Add Reservation Date Method
 
             await _reservation.AddDoctorReservationDate(reservation);
+
+            #endregion
+
+            #region Get Doctor Office Address
+
+            var doctorOffice = await _workAddress.GetLastWorkAddressByUserId(organization.OwnerId);
+
+            #endregion
+
+            #region If Add Reservation Date State Is computerized
+
+            //Check That Fields Are Not Empty
+            if (model.AddReservationDateState == AddReservationDateState.computerized && model.StartTime.HasValue && model.EndTime.HasValue && model.PeriodNumber.HasValue)
+            {
+                //If Start Time Is Smaller Than End Time 
+                if (model.StartTime.Value >= model.EndTime.Value) return false;
+
+                int hours = model.StartTime.Value;
+                int minute = 0;
+
+                int startTime = model.StartTime.Value;
+                int endTimeComingFromModel = model.EndTime.Value;
+                int periodNumber = model.PeriodNumber.Value;
+
+                //Diference Between Start Time And End Time 
+                int diference = (endTimeComingFromModel - startTime) * 60;
+
+                // The Number Of Intervals
+                int intervalsCount = diference / periodNumber;
+
+                for (int i = 0; i < intervalsCount; i++)
+                {
+                    //Sampling From Reservation Date Time 
+                    DoctorReservationDateTime reservationTime = new DoctorReservationDateTime();
+
+                    //Sampling From Time DateTime 
+                    DateTime time = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, hours, minute, 0);
+                    DateTime endTime = time.AddMinutes(periodNumber);
+
+                    //Fill Reservation Date Time 
+                    reservationTime.StartTime = time.ToString($"{time.Hour.ToString("00")}:{time.Minute.ToString("00")}:00");
+                    reservationTime.EndTime = endTime.ToString($"{endTime.Hour.ToString("00")}:{endTime.Minute.ToString("00")}:00");
+                    reservationTime.DoctorReservationDateId = reservation.Id;
+                    reservationTime.DoctorReservationState = Domain.Enums.DoctorReservation.DoctorReservationState.NotReserved;
+                    if (doctorOffice != null) reservationTime.WorkAddressId = doctorOffice.Id;
+
+                    await _reservation.AddReservationDateTime(reservationTime);
+
+                    //Update Last Parameters For Proccess Next Reservation Date Time 
+                    hours = endTime.Hour;
+                    minute = endTime.Minute;
+                }
+            }
 
             #endregion
 
@@ -578,7 +646,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 //Fill Model
                 AdminCreateWalletViewModel model = new AdminCreateWalletViewModel
                 {
-                    Description = "بازگشت هزینه ی نوبت دریافت شده به علت لغو نوبت ." ,
+                    Description = "بازگشت هزینه ی نوبت دریافت شده به علت لغو نوبت .",
                     GatewayType = Domain.Entities.Wallet.GatewayType.System,
                     PaymentType = Domain.Entities.Wallet.PaymentType.ChargeWallet,
                     Price = reservationTariff,
@@ -586,7 +654,7 @@ namespace DoctorFAM.Application.Services.Implementation
                     UserId = patient.Id
                 };
 
-                var res =  await _walletService.CreateWalletAsync(model);
+                var res = await _walletService.CreateWalletAsync(model);
 
                 if (res == AdminCreateWalletResponse.UserNotFound) return false;
             }

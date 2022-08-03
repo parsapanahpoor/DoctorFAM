@@ -41,6 +41,18 @@ namespace DoctorFAM.Data.Repository
 
         #region Doctor Panel
 
+        //Get Doctor Reservation Date By Date 
+        public async Task<DoctorReservationDate?> GetDoctorReservationDateByDate(DateTime date)
+        {
+            return await _context.DoctorReservationDates.FirstOrDefaultAsync(p => !p.IsDelete && p.ReservationDate == date);
+        }
+
+        //In Add Reservation Date Check Date In Not Duplicate
+        public async Task<bool> IsExistAnyDuplicateReservationDate(DateTime date)
+        {
+            return await _context.DoctorReservationDates.AnyAsync(p => !p.IsDelete && p.ReservationDate == date);
+        }
+
         //This Is Filter For Reservation Date From Today 
         public async Task<FilterAppointmentViewModel?> FilterDoctorReservationDateSide(FilterAppointmentViewModel filter)
         {

@@ -123,4 +123,16 @@
   <data name="Add Reservation Date" xml:space="preserve">
     <value>إضافة تاريخ الموعد</value>
   </data>
+  <data name="Add Reservation Date State" xml:space="preserve">
+    <value>إضافة حالة الانعطاف</value>
+  </data>
+  <data name="Period Number" xml:space="preserve">
+    <value>الإطار الزمني</value>
+  </data>
+  <data name="Please Insert End Time" xml:space="preserve">
+    <value>الرجاء تحديد وقت الانتهاء</value>
+  </data>
+  <data name="Please Insert Start Time" xml:space="preserve">
+    <value>الرجاء تحديد وقت البدء</value>
+  </data>
 </root>

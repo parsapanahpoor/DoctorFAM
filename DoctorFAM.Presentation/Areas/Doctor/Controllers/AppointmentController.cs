@@ -1,4 +1,5 @@
-﻿using DoctorFAM.Application.Extensions;
+﻿using DoctorFAM.Application.Convertors;
+using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment;
 using DoctorFAM.Web.Areas.Doctor.ActionFilterAttributes;
@@ -48,7 +49,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
         #endregion
 
-        #region Add New Reservation Date Modal
+        #region Add New Reservation Date Modal This In Not Work Yet
 
         [HttpGet("Show-AddReservationDate-Modal")]
         public async Task<IActionResult> AddReservationDateModal()
@@ -69,16 +70,40 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> AddReservationDateView(AddReservationDateViewModel model)
         {
+            #region Model State Validation 
+
+            if (model.AddReservationDateState == AddReservationDateState.computerized && (!model.StartTime.HasValue || !model.EndTime.HasValue || !model.PeriodNumber.HasValue))
+            {
+                TempData[ErrorMessage] = _sharedLocalizer["The operation has failed"].Value;
+                return View(model);
+            }
+
+            #endregion
+
+            #region Add Reservation Date 
+
             var result = await _reservatioService.AddReservationDate(model, User.GetUserId());
 
             if (result)
             {
                 TempData[SuccessMessage] = _sharedLocalizer["Operation Successfully"].Value;
-                return RedirectToAction(nameof(ListOfReservationDate));
+
+                var reservationDate = await _reservatioService.GetDoctorReservationDateByDate(model.ReservationDate.ToMiladiDateTime());
+
+                if (reservationDate != null)
+                {
+                    return RedirectToAction(nameof(ReservationDateDetail), new { ReservationDateId = reservationDate.Id });
+                }
+                else 
+                {
+                    return RedirectToAction(nameof(ListOfReservationDate));
+                }
             }
 
             TempData[ErrorMessage] = _sharedLocalizer["The operation has failed"].Value;
             return View(model);
+
+            #endregion
         }
 
         #endregion
@@ -127,7 +152,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
             return View(model);
         }
 
-        [HttpPost , ValidateAntiForgeryToken]
+        [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> AddReservationDateTime(AddReservationDateTimeViewModel model)
         {
             #region Model State Validation
@@ -147,7 +172,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
             if (res)
             {
                 TempData[SuccessMessage] = _sharedLocalizer["Operation Successfully"].Value;
-                return RedirectToAction(nameof(ReservationDateDetail) , new { ReservationDateId  = model.ReservationDateId});
+                return RedirectToAction(nameof(ReservationDateDetail), new { ReservationDateId = model.ReservationDateId });
             }
 
             #endregion
@@ -181,7 +206,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
             #region Fill Model
 
             var res = await _reservatioService.ShowPatientDetailViewModel(ReservationDateTimeId, User.GetUserId());
-            if(res == null) return NotFound();
+            if (res == null) return NotFound();
 
             #endregion
 
@@ -191,6 +216,5 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
         #endregion
 
         #endregion
-
     }
 }

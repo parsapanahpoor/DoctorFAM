@@ -144,6 +144,9 @@
   <data name="City" xml:space="preserve">
     <value>Şehir</value>
   </data>
+  <data name="computerized" xml:space="preserve">
+    <value>Bilgisayar ekle</value>
+  </data>
   <data name="Country" xml:space="preserve">
     <value>Ülke</value>
   </data>
@@ -245,6 +248,9 @@
   </data>
   <data name="male" xml:space="preserve">
     <value>Erkek adam</value>
+  </data>
+  <data name="Manual" xml:space="preserve">
+    <value>Manuel ekleme</value>
   </data>
   <data name="Medical record" xml:space="preserve">
     <value>Tıbbi kayıt</value>

@@ -153,6 +153,9 @@
   <data name="City" xml:space="preserve">
     <value>شهر</value>
   </data>
+  <data name="computerized" xml:space="preserve">
+    <value>افزودن کامپیوتری</value>
+  </data>
   <data name="Copyright text" xml:space="preserve">
     <value>متن کپی رایت</value>
   </data>
@@ -287,6 +290,9 @@
   </data>
   <data name="male" xml:space="preserve">
     <value>مرد</value>
+  </data>
+  <data name="Manual" xml:space="preserve">
+    <value>افزودن دستی</value>
   </data>
   <data name="Max Price" xml:space="preserve">
     <value>حداکثر قیمت</value>

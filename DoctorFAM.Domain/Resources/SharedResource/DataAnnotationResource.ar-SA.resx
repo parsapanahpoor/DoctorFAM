@@ -153,6 +153,9 @@
   <data name="City" xml:space="preserve">
     <value>مدينة</value>
   </data>
+  <data name="computerized" xml:space="preserve">
+    <value>أضف جهاز كمبيوتر</value>
+  </data>
   <data name="Country" xml:space="preserve">
     <value>دولة</value>
   </data>
@@ -278,6 +281,9 @@
   </data>
   <data name="male" xml:space="preserve">
     <value>رجل</value>
+  </data>
+  <data name="Manual" xml:space="preserve">
+    <value>إضافة يدوية</value>
   </data>
   <data name="Max Price" xml:space="preserve">
     <value>السعر الأقصى</value>

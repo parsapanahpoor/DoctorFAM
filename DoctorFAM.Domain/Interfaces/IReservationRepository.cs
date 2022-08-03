@@ -15,6 +15,12 @@ namespace DoctorFAM.Domain.Interfaces
     {
         #region Doctor Panel 
 
+        //Get Doctor Reservation Date By Date 
+        Task<DoctorReservationDate?> GetDoctorReservationDateByDate(DateTime date);
+
+        //In Add Reservation Date Check Date In Not Duplicate
+        Task<bool> IsExistAnyDuplicateReservationDate(DateTime date);
+
         Task<FilterAppointmentViewModel> FilterDoctorReservationDateSide(FilterAppointmentViewModel filter);
 
         Task AddDoctorReservationDate(DoctorReservationDate doctorReservationDate);

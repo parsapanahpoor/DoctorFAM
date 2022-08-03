@@ -123,4 +123,16 @@
   <data name="Add Reservation Date" xml:space="preserve">
     <value>افزودن تاریخ نوبت دهی</value>
   </data>
+  <data name="Add Reservation Date State" xml:space="preserve">
+    <value>وضعیت افزودن نوبت</value>
+  </data>
+  <data name="Period Number" xml:space="preserve">
+    <value>بازه ی زمانی </value>
+  </data>
+  <data name="Please Insert End Time" xml:space="preserve">
+    <value>لطفا ساعت پایان را انتخاب کنید</value>
+  </data>
+  <data name="Please Insert Start Time" xml:space="preserve">
+    <value>لطفا ساعت شروع را انتخاب کنید</value>
+  </data>
 </root>
