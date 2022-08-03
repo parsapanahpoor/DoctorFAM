@@ -21,6 +21,9 @@ namespace DoctorFAM.Application.Interfaces
 
         Task<bool> IsExistAnyLocationByLocationid(ulong locationId);
 
+        //Get All Countries For Home Pharmacy Service
+        Task<List<SelectListViewModel>> GetAllCountriesForHomePharmacy();
+
         #endregion
 
         #region Admin Side

@@ -35,46 +35,6 @@
 @section Scripts
 {
 <partial name="_JqueryValidation" />
-
-<script>
-    $("#CountryId").change(function () {
-        if ($("#CountryId :selected").val() !== '') {
-            $('#CityId option:not(:first)').remove();
-            $('#StateId option:not(:first)').remove();
-            $.get("/Home/LoadCities", { stateId: $("#CountryId :selected").val() }).then(res => {
-                if (res.data !== null) {
-                    $.each(res.data, function () {
-                        $("#StateId").append(
-                            '<option value=' + this.id + '>' + this.title + '</option>'
-                        );
-                    });
-                }
-            });
-        } else {
-            $('#StateId option:not(:first)').remove();
-            $('#CityId option:not(:first)').remove();
-        }
-    });
-
-    $("#StateId").change(function () {
-        if ($("#StateId :selected").val() !== '') {
-            $('#CityId option:not(:first)').remove();
-            $.get("/Home/LoadCities", { stateId: $("#StateId :selected").val() }).then(res => {
-                if (res.data !== null) {
-                    $.each(res.data, function () {
-                        $("#CityId").append(
-                            '<option value=' + this.id + '>' + this.title + '</option>'
-                        );
-                    });
-                }
-            });
-        } else {
-            $('#CityId option:not(:first)').remove();
-        }
-    });
-
-</script>
-
 }
 
 
@@ -123,7 +83,6 @@
                         <div class="form-group col-md-12">
                             <label asp-for="StateId"></label>
                             <select class="form-control" asp-for="StateId">
-                                <option value=""> لطفا یک استان را انتخاب کنید </option>
                                 @if (states != null && states.Any())
                                 {
                                     foreach (var state in states)
@@ -146,7 +105,6 @@
                         <div class="form-group col-md-12">
                             <label asp-for="CityId"></label>
                             <select asp-for="CityId" class="form-control">
-                                <option value=""> لطفا یک شهر را انتخاب کنید </option>
                                 @if (cities != null && cities.Any())
                                 {
                                     foreach (var city in cities)

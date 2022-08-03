@@ -4,6 +4,8 @@ using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.Requests;
+using DoctorFAM.Domain.Enums.Request;
+using DoctorFAM.Domain.Enums.RequestType;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Site.Common;
 using System;
@@ -36,6 +38,33 @@ namespace DoctorFAM.Application.Services.Implementation
         #region Site Side
 
         #region Request 
+
+        //Validator For Request While Compelete Steps By Id 
+        public async Task<bool> RequestValidatorWhileCompeleteSteps(ulong requestId, ulong userId, ulong? patientId, RequestType requestType)
+        {
+            #region Get Request By Id 
+
+            var request = await GetRequestById(requestId);
+
+            #endregion
+
+            //Request Is Not Exist
+            if (request == null) return false;
+
+            //If Request Is Not For This User
+            if(request.UserId != userId) return false;
+
+            //If Request Type Is Not Valid
+            if (request.RequestType != requestType) return false;
+
+            //If Request State Is Not Valid
+            if (request.RequestState != RequestState.WaitingForCompleteInformationFromUser) return false;
+
+            //If Request Patient Is Not Valid 
+            if(patientId.HasValue && request.PatientId != patientId.Value) return false;
+
+            return true;
+        }
 
         public async Task UpdateRequest(Request request)
         {

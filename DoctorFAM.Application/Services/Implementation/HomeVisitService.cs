@@ -143,6 +143,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
             var request = await _requestService.GetRequestById(requestId);
             if (request == null) return null;
+            if (request.RequestType != RequestType.HomeVisit) return null;
 
             #endregion
 

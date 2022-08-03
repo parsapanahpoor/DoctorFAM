@@ -277,6 +277,17 @@ namespace DoctorFAM.Data.Repository
                 }).ToListAsync();
         }
 
+        //Get All Countries For Home Pharmacy Service
+        public async Task<List<SelectListViewModel>> GetAllCountriesForHomePharmacy()
+        {
+            return await _context.LocationInfoes.Include(p => p.Location).Where(s => s.Location.ParentId == null && !s.Location.IsDelete && s.Location.HomePharmacy)
+                .Select(s => new SelectListViewModel
+                {
+                    Id = s.Location.Id,
+                    Title = s.Title
+                }).ToListAsync();
+        }
+
         #endregion
     }
 }

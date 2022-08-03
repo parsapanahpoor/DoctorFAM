@@ -1,6 +1,7 @@
 ﻿using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Interfaces;
 using DoctorFAM.Application.Services.Interfaces;
+using DoctorFAM.Domain.Enums.RequestType;
 using DoctorFAM.Domain.ViewModels.Site.Common;
 using DoctorFAM.Domain.ViewModels.Site.HomePharmacy;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
@@ -28,8 +29,11 @@ namespace DoctorFAM.Web.Controllers
 
         private readonly ISiteSettingService _siteSettingService;
 
+        private readonly IPopulationCoveredService _populationCovered;
+
         public HomePharmacyController(IHomePharmacyServicec homePharmacy, IRequestService requestService, IUserService userService
-                                     , IPatientService patientService, ILocationService locationService , ISiteSettingService siteSettingService)
+                                     , IPatientService patientService, ILocationService locationService , ISiteSettingService siteSettingService
+                                        , IPopulationCoveredService populationCovered)
         {
             _homePharmacy = homePharmacy;
             _requestService = requestService;
@@ -37,6 +41,7 @@ namespace DoctorFAM.Web.Controllers
             _patientService = patientService;
             _locationService = locationService;
             _siteSettingService = siteSettingService;
+            _populationCovered = populationCovered;
         }
 
         #endregion
@@ -68,7 +73,7 @@ namespace DoctorFAM.Web.Controllers
         #region Patient Detail
 
         [HttpGet]
-        public async Task<IActionResult> PatientDetails(ulong requestId)
+        public async Task<IActionResult> PatientDetails(ulong requestId, ulong? populationCoveredId)
         {
             #region Data Validation
 
@@ -78,10 +83,44 @@ namespace DoctorFAM.Web.Controllers
 
             #endregion
 
+            #region Request Validation 
+
+            if (!await _requestService.RequestValidatorWhileCompeleteSteps(requestId, User.GetUserId(), null, RequestType.HomeDrog)) return NotFound();
+
+            #endregion
+
+            #region Get User Population Covered
+
+            ViewBag.PopulationCovered = await _populationCovered.GetUserPopulation(User.GetUserId());
+
+            #endregion
+
+            #region Fill Data From Selected Population Covered
+
+            if (populationCoveredId != null && populationCoveredId.HasValue)
+            {
+                //Fill Page Model From Selected Population Covered Data
+                var mode = await _homePharmacy.FillPatientViewModelFromSelectedPopulationCoveredData(populationCoveredId.Value, requestId, User.GetUserId());
+                if (mode == null) return NotFound();
+
+                return View(mode);
+            }
+
+            #endregion
+
+            #region Get User By Id 
+
+            var user = await _userService.GetUserById(User.GetUserId());
+
+            #endregion
+
             return View(new PatientViewModel()
             {
                 RequestId = requestId,
                 UserId = User.GetUserId(),
+                NationalId = !string.IsNullOrEmpty(user.NationalId) ? user.NationalId : null,
+                PatientName = !string.IsNullOrEmpty(user.FirstName) ? user.FirstName : null,
+                PatientLastName = !string.IsNullOrEmpty(user.LastName) ? user.LastName : null,
             });
         }
 
@@ -91,6 +130,13 @@ namespace DoctorFAM.Web.Controllers
             #region Data Validation
 
             if (!await _userService.IsExistUserById(User.GetUserId())) return NotFound();
+            if (User.GetUserId() != patient.UserId) return NotFound();
+
+            #endregion
+
+            #region Request Validation 
+
+            if (!await _requestService.RequestValidatorWhileCompeleteSteps(patient.RequestId, User.GetUserId(), null, RequestType.HomeDrog)) return NotFound();
 
             #endregion
 
@@ -125,6 +171,12 @@ namespace DoctorFAM.Web.Controllers
 
             #endregion
 
+            #region Get User Population Covered
+
+            ViewBag.PopulationCovered = await _populationCovered.GetUserPopulation(User.GetUserId());
+
+            #endregion
+
             return View(patient);
         }
 
@@ -135,17 +187,19 @@ namespace DoctorFAM.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> RequestedDrogs(ulong requestId, ulong patientId)
         {
-            #region Is Exist Request & Patient
+            #region Model State Validation 
 
-            if (!await _requestService.IsExistRequestByRequestId(requestId))
-            {
-                return NotFound();
-            }
+            #region Request Validation 
 
-            if (!await _patientService.IsExistPatientById(patientId))
-            {
-                return NotFound();
-            }
+            if (!await _requestService.RequestValidatorWhileCompeleteSteps(requestId, User.GetUserId(), patientId, RequestType.HomeDrog)) return NotFound();
+
+            #endregion
+
+            #region Patient Validation 
+
+            if(!await _patientService.PatientValidatorWhileCompeleteDataFromUser(patientId , User.GetUserId() , requestId)) return NotFound();
+
+            #endregion
 
             #endregion
 
@@ -163,6 +217,12 @@ namespace DoctorFAM.Web.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> RequestedDrogs(RequestedDrugsViewModel model , IFormFile? DrugPrescriptionImage, IFormFile? DrugImage)
         {
+            #region Request Validation 
+
+            if (!await _requestService.RequestValidatorWhileCompeleteSteps(model.RequestId, User.GetUserId(), null , RequestType.HomeDrog)) return NotFound();
+
+            #endregion
+
             #region Get Request
 
             var request = await _requestService.GetRequestById(model.RequestId);
@@ -226,6 +286,7 @@ namespace DoctorFAM.Web.Controllers
 
             return ApiResponse.SetResponse(ApiResponseStatus.Danger, null, "عملیات با شکست روبرو شده است ");
         }
+
         #endregion
 
         #region Patient Request Detail
@@ -233,13 +294,14 @@ namespace DoctorFAM.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> PatientRequestDetail(ulong requestId)
         {
+            #region Request Validation 
+
+            if (!await _requestService.RequestValidatorWhileCompeleteSteps(requestId , User.GetUserId(), null, RequestType.HomeDrog)) return NotFound();
+
+            #endregion
+
             #region Is Exist Request & Patient
-
-            if (!await _requestService.IsExistRequestByRequestId(requestId))
-            {
-                return NotFound();
-            }
-
+           
             var request = await _requestService.GetRequestById(requestId);
 
             if (!await _patientService.IsExistPatientById(request.PatientId.Value))
@@ -251,7 +313,7 @@ namespace DoctorFAM.Web.Controllers
 
             #region Page Data
 
-            ViewData["Countries"] = await _locationService.GetAllCountries();
+            ViewData["Countries"] = await _locationService.GetAllCountriesForHomePharmacy();
 
             #endregion
 
@@ -265,6 +327,18 @@ namespace DoctorFAM.Web.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> PatientRequestDetail(PatientRequestedDrugAddressViewModel patientRequest)
         {
+            #region Page Data
+
+            ViewData["Countries"] = await _locationService.GetAllCountriesForHomePharmacy();
+
+            #endregion
+
+            #region Request Validation 
+
+            if (!await _requestService.RequestValidatorWhileCompeleteSteps(patientRequest.RequestId, User.GetUserId(), null, RequestType.HomeDrog)) return NotFound();
+
+            #endregion
+
             #region Model State Validation
 
             if (!ModelState.IsValid)

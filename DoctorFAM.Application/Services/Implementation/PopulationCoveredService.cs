@@ -4,6 +4,7 @@ using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.Entities.PopulationCovered;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.PopulationCovered;
+using DoctorFAM.Domain.ViewModels.Site.Patient;
 using DoctorFAM.Domain.ViewModels.UserPanel.PopulationCovered;
 using System;
 using System.Collections.Generic;
@@ -21,10 +22,13 @@ namespace DoctorFAM.Application.Services.Implementation
 
         private readonly IUserService _userService;
 
-        public PopulationCoveredService(IPopulationCoveredRepository populationCovered , IUserService userService)
+        private readonly IRequestService _requestService;
+
+        public PopulationCoveredService(IPopulationCoveredRepository populationCovered, IUserService userService, IRequestService requestService)
         {
             _populationCovered = populationCovered;
             _userService = userService;
+            _requestService = requestService;
         }
 
         #endregion
@@ -276,6 +280,12 @@ namespace DoctorFAM.Application.Services.Implementation
         {
             return await _populationCovered.GetUserPopulation(userId);
         }
+
+        #endregion
+
+        #region Pharmacy Panel Side 
+
+
 
         #endregion
     }

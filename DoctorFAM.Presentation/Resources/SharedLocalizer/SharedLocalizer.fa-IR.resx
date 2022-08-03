@@ -447,4 +447,10 @@
   <data name="Manage Pharmacy Info" xml:space="preserve">
     <value>اطلاعات داروخانه ها </value>
   </data>
+  <data name="Home Pharmacy" xml:space="preserve">
+    <value>داروخانه در منزل</value>
+  </data>
+  <data name="List Of Requests" xml:space="preserve">
+    <value>لیست درخواست ها </value>
+  </data>
 </root>

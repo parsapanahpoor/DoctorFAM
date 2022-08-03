@@ -213,6 +213,9 @@
   <data name="Home Nurse" xml:space="preserve">
     <value>evde hemşire</value>
   </data>
+  <data name="Home Pharmacy" xml:space="preserve">
+    <value>داروخانه در منزل</value>
+  </data>
   <data name="Home Visit" xml:space="preserve">
     <value>Ev ziyareti</value>
   </data>
@@ -245,6 +248,9 @@
   </data>
   <data name="List of products" xml:space="preserve">
     <value>Ürün listesi</value>
+  </data>
+  <data name="List Of Requests" xml:space="preserve">
+    <value>İstek listesi</value>
   </data>
   <data name="List Of Reservation Date" xml:space="preserve">
     <value>randevu listesi</value>

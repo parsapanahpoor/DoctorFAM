@@ -1,6 +1,8 @@
 ﻿using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.Requests;
+using DoctorFAM.Domain.Enums.Request;
+using DoctorFAM.Domain.Enums.RequestType;
 using DoctorFAM.Domain.ViewModels.Site.Common;
 using System;
 using System.Collections.Generic;
@@ -15,6 +17,9 @@ namespace DoctorFAM.Application.Services.Interfaces
         #region Site Side
 
         #region Request 
+
+        //Validator For Request While Compelete Steps By Id 
+        Task<bool> RequestValidatorWhileCompeleteSteps(ulong requestId, ulong userId, ulong? patientId, RequestType requestType);
 
         Task<bool> IsExistRequestByRequestId(ulong requestId);
 

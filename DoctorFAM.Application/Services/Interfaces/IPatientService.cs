@@ -11,6 +11,9 @@ namespace DoctorFAM.Application.Services.Interfaces
     {
         #region Site Side
 
+        //Patient Validator While Compelete Data From User In Services Steps 
+        Task<bool> PatientValidatorWhileCompeleteDataFromUser(ulong patientId, ulong userId, ulong requestId);
+
         Task<bool> IsExistPatientById(ulong patientId);
 
         Task<Patient?> GetPatientById(ulong patientId);

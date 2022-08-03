@@ -62,6 +62,9 @@ namespace DoctorFAM.Domain.Interfaces
 
         Task<List<SelectListViewModel>> GetAllCountries();
 
+        //Get All Countries For Home Pharmacy Service
+        Task<List<SelectListViewModel>> GetAllCountriesForHomePharmacy();
+
         #endregion
     }
 }

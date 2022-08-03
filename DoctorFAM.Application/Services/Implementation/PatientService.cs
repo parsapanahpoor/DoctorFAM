@@ -24,6 +24,27 @@ namespace DoctorFAM.Application.Services.Implementation
 
         #region Site Side
 
+        //Patient Validator While Compelete Data From User In Services Steps 
+        public async Task<bool> PatientValidatorWhileCompeleteDataFromUser(ulong patientId , ulong userId , ulong requestId)
+        {
+            #region Get Patient By Patient Id 
+
+            var patient = await _patient.GetPatientById(patientId);
+
+            #endregion
+
+            //If Patient Is Not Exist 
+            if (patient == null) return false;
+
+            //If Patient User Id Is Not Valid
+            if(patient.UserId != userId) return false;
+
+            //If patient Request Is Not Valid 
+            if(patient.RequestId != requestId) return false;
+
+            return true;
+        }
+
         public async Task AddPatient(Patient patient)
         {
             await _patient.AddPatient(patient);

@@ -36,6 +36,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         Task<CreatePatientAddressResult> CreatePatientRequestDetail(PatientRequestedDrugAddressViewModel model);
 
+        //Fill Patient ViewModel From Selected Population Covered Data
+        Task<PatientViewModel> FillPatientViewModelFromSelectedPopulationCoveredData(ulong populationId, ulong requestId, ulong userId);
+
         #endregion
 
         #region Admin Side
@@ -55,6 +58,5 @@ namespace DoctorFAM.Application.Services.Interfaces
         Task<List<RequestedDrugsAdminSideViewModel>?> GetRequestDrugsByRequestId(ulong requestId);
 
         #endregion
-
     }
 }

@@ -210,6 +210,9 @@
   <data name="Home Nurse" xml:space="preserve">
     <value>ممرضة منزلية</value>
   </data>
+  <data name="Home Pharmacy" xml:space="preserve">
+    <value>داروخانه در منزل</value>
+  </data>
   <data name="Home Visit" xml:space="preserve">
     <value>زيارة منزلية</value>
   </data>
@@ -242,6 +245,9 @@
   </data>
   <data name="List of products" xml:space="preserve">
     <value>قائمة المنتجات</value>
+  </data>
+  <data name="List Of Requests" xml:space="preserve">
+    <value>قائمة الطلبات</value>
   </data>
   <data name="List Of Reservation Date" xml:space="preserve">
     <value>قائمة المواعيد</value>
@@ -359,6 +365,9 @@
   </data>
   <data name="Site Setting" xml:space="preserve">
     <value>إعداد الموقع</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value>صيدلية في المنزل</value>
   </data>
   <data name="Sweet Alert Announcement" xml:space="preserve">
     <value>إعلان</value>

@@ -1,5 +1,6 @@
 ﻿using DoctorFAM.Domain.Entities.PopulationCovered;
 using DoctorFAM.Domain.ViewModels.Admin.PopulationCovered;
+using DoctorFAM.Domain.ViewModels.Site.Patient;
 using DoctorFAM.Domain.ViewModels.UserPanel.PopulationCovered;
 using System;
 using System.Collections.Generic;
