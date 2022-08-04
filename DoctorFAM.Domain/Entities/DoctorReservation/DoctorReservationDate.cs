@@ -24,6 +24,8 @@ namespace DoctorFAM.Domain.Entities.DoctorReservation
 
         public ICollection<DoctorReservationDateTime> DoctorReservationDateTimes { get; set; }
 
+        public ICollection<CancelReservationRequest> CancelReservationRequests { get; set; }
+
         #endregion
     }
 }
