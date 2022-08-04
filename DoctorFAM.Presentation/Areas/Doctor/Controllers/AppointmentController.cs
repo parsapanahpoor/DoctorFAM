@@ -229,7 +229,69 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
         #region Cancel Reservation 
 
+        [HttpGet]
+        public async Task<IActionResult> CancelReservationRequest()
+        {
+            #region Fill Model
 
+            ViewBag.ReservationDate = await _reservatioService.GetReservationsForAddCancelRequest(User.GetUserId());
+
+            #endregion
+
+            return View();            
+        }
+
+        [HttpPost , ValidateAntiForgeryToken]
+        public async Task<IActionResult> CancelReservationRequest(CancelReservationRequestViewModel model)
+        {
+            #region Fill Model
+
+            ViewBag.ReservationDate = await _reservatioService.GetReservationsForAddCancelRequest(User.GetUserId());
+
+            #endregion
+
+            #region Model State Validations
+
+            if (model.ReservationDateId == null)
+            {
+                TempData[ErrorMessage] = _sharedLocalizer["لطفا تاریخ مورد نظر خود را انتخاب کنید ."].Value;
+                return View(model);
+            }
+
+            if (model.ReservationDateTimeId == null)
+            {
+                TempData[ErrorMessage] = _sharedLocalizer["لطفا حداقل یکی از نوبت ها را انتخاب کنید ."].Value;
+                return View(model);
+            }
+
+            #endregion
+
+            #region Cancel Reservation Date Request Method 
+
+            var res = await _reservatioService.CreateCancelReservationRequestFromDoctorPanel(model , User.GetUserId());
+
+            if (res)
+            {
+                TempData[SuccessMessage] = _sharedLocalizer["Operation Successfully"].Value;
+                return RedirectToAction("Index" , "Home" , new { area = "Doctor" });
+            }
+
+            #endregion
+
+            TempData[ErrorMessage] = _sharedLocalizer["The operation has failed"].Value;
+            return View();
+        }
+
+        #endregion
+
+        #region Load Reservation Date Time 
+
+        public async Task<IActionResult> LoadReservationDateTime(ulong reservationDateId)
+        {
+            var result = await _reservatioService.GetReservationDateTimeByReservationDateIdSelectList(reservationDateId , User.GetUserId());
+
+            return JsonResponseStatus.Success(result);
+        }
 
         #endregion
     }

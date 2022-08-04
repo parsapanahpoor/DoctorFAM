@@ -132,7 +132,7 @@
                                         }
                                         else
                                         {
-                                            <span class="mr-8px label label-info">@date.DoctorReservationDateTimes.Count() </span>
+                                            <span class="mr-8px label label-info">@date.DoctorReservationDateTimes.Count(p=> p.DoctorReservationState != DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.Canceled) </span>
                                         }
                                     </p>
                                 </td>

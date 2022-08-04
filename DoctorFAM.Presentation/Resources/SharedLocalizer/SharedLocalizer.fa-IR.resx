@@ -453,4 +453,7 @@
   <data name="List Of Requests" xml:space="preserve">
     <value>لیست درخواست ها </value>
   </data>
+  <data name="Canecl Reservation Request" xml:space="preserve">
+    <value>درخواست لغو نوبت</value>
+  </data>
 </root>

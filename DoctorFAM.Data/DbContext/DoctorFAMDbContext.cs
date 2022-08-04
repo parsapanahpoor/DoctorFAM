@@ -17,6 +17,7 @@ using DoctorFAM.Domain.Entities.SiteSetting;
 using DoctorFAM.Domain.Entities.States;
 using DoctorFAM.Domain.Entities.Wallet;
 using DoctorFAM.Domain.Entities.WorkAddress;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -76,6 +77,8 @@ namespace DoctorFAM.Data.DbContext
         public DbSet<PaitientRequestDetail> PaitientRequestDetails { get; set; }
 
         public DbSet<PatientRequestDateTimeDetail> PatientRequestDateTimeDetails { get; set; }
+
+        public DbSet<CancelReservationRequest> CancelReservationRequest { get; set; }
 
         #endregion
 

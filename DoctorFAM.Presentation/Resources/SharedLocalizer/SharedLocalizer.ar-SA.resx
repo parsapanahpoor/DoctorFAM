@@ -138,6 +138,9 @@
   <data name="Brother" xml:space="preserve">
     <value>أخ</value>
   </data>
+  <data name="Canecl Reservation Request" xml:space="preserve">
+    <value>إلغاء طلب الحجز</value>
+  </data>
   <data name="Change Password" xml:space="preserve">
     <value>غير كلمة السر</value>
   </data>

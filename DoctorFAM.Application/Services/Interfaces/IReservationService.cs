@@ -1,5 +1,6 @@
 ﻿using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.ViewModels.Admin.Reservation;
+using DoctorFAM.Domain.ViewModels.Common;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment;
 using DoctorFAM.Domain.ViewModels.Supporter.Reservation;
 using DoctorFAM.Domain.ViewModels.UserPanel.Reservation;
@@ -15,8 +16,17 @@ namespace DoctorFAM.Application.Services.Interfaces
     {
         #region Doctor Panel
 
+        //Add Cancel Reservation Request 
+        Task<bool> CreateCancelReservationRequestFromDoctorPanel(CancelReservationRequestViewModel model, ulong userId);
+
+        //Get List Of Reservation Dete Time By Reservation Date Id For Select List  
+        Task<List<SelectListViewModel>> GetReservationDateTimeByReservationDateIdSelectList(ulong reservationDateId, ulong userId);
+
         //Get Doctor Reservation Date By Date 
         Task<DoctorReservationDate?> GetDoctorReservationDateByDate(DateTime date , ulong userId);
+
+        //Get Future Doctor Reservation For Cancel Reservation Request 
+        Task<List<SelectListViewModel>> GetReservationsForAddCancelRequest(ulong userId);
 
         Task<FilterAppointmentViewModel> FilterDoctorReservationDateSide(FilterAppointmentViewModel filter);
 

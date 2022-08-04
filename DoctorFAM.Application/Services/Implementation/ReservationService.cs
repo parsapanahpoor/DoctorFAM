@@ -4,6 +4,7 @@ using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.Reservation;
 using DoctorFAM.Domain.ViewModels.Admin.Wallet;
+using DoctorFAM.Domain.ViewModels.Common;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment;
 using DoctorFAM.Domain.ViewModels.Supporter.Reservation;
 using DoctorFAM.Domain.ViewModels.UserPanel.Reservation;
@@ -48,10 +49,99 @@ namespace DoctorFAM.Application.Services.Implementation
 
         #region Doctor Panel
 
-        //Get Doctor Reservation Date By Date 
-        public async Task<DoctorReservationDate?> GetDoctorReservationDateByDate(DateTime date , ulong userId)
+        //Add Cancel Reservation Request 
+        public async Task<bool> CreateCancelReservationRequestFromDoctorPanel(CancelReservationRequestViewModel model , ulong userId)
         {
-            return await _reservation.GetDoctorReservationDateByDate(date , userId);
+            #region Get Organization 
+
+            var organization = await _organizationService.GetOrganizationByUserId(userId);
+            if (organization == null) return false;
+
+            #endregion
+
+            #region Get Doctor Reservation Date By Id 
+
+            var reservation = await _reservation.GetReservationDateById(model.ReservationDateId);
+            if (reservation == null) return false;
+            if (reservation.UserId != organization.OwnerId) return false;
+
+            #endregion
+
+            #region Validation On Reservation Date Time 
+
+            foreach (var item in model.ReservationDateTimeId)
+            {
+                var reservationDateTime = await _reservation.GetDoctorReservationDateTimeById(item);
+                if (reservationDateTime == null) return false;
+                if(reservationDateTime.DoctorReservationDateId != reservation.Id) return false;
+                if (reservationDateTime.DoctorReservationState == Domain.Enums.DoctorReservation.DoctorReservationState.Canceled) return false;
+
+                #region Fill Entity
+
+                CancelReservationRequest cancel = new CancelReservationRequest()
+                {
+                    DoctorReservationDateId = reservation.Id,
+                    DoctorReservationDateTimeId = reservationDateTime.Id,
+                    UserId = organization.OwnerId,
+                };
+
+                #endregion
+
+                await _reservation.AddCancelReservationRequest(cancel);
+            }
+
+            #endregion
+
+            //Save changes
+            await _reservation.Savechanges();
+
+            return true;
+        }
+
+        //Get List Of Reservation Dete Time By Reservation Date Id For Select List  
+        public async Task<List<SelectListViewModel>> GetReservationDateTimeByReservationDateIdSelectList(ulong reservationDateId, ulong userId)
+        {
+            #region Get Organization 
+
+            var organization = await _organizationService.GetOrganizationByUserId(userId);
+            if (organization == null) return null;
+
+            #endregion
+
+            #region Get Doctor Reservation Date By Id 
+
+            var reservation = await _reservation.GetReservationDateById(reservationDateId);
+            if (reservation == null) return null;
+            if (reservation.UserId != organization.OwnerId) return null; 
+
+            #endregion
+
+            return await _reservation.GetReservationDateTimeByReservationDateIdSelectList(reservationDateId , userId);
+        }
+
+        //Get Future Doctor Reservation For Cancel Reservation Request 
+        public async Task<List<SelectListViewModel>> GetReservationsForAddCancelRequest(ulong userId)
+        {
+            #region Get Organization 
+
+            var organization = await _organizationService.GetOrganizationByUserId(userId);
+            if (organization == null) return null;
+
+            #endregion
+
+            var model = await _reservation.GetReservationsForAddCancelRequest(organization.OwnerId);
+
+            return model.Select(p => new SelectListViewModel()
+            {
+                Id = p.Id,
+                Title = p.ReservationDate.ToShamsi()
+            }).ToList();
+        }
+
+        //Get Doctor Reservation Date By Date 
+        public async Task<DoctorReservationDate?> GetDoctorReservationDateByDate(DateTime date, ulong userId)
+        {
+            return await _reservation.GetDoctorReservationDateByDate(date, userId);
         }
 
         public async Task<FilterAppointmentViewModel> FilterDoctorReservationDateSide(FilterAppointmentViewModel filter)
@@ -76,7 +166,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #region Is Exist Any Reservastion Date 
 
-            if (await _reservation.IsExistAnyDuplicateReservationDate(model.ReservationDate.ToMiladiDateTime() , organization.OwnerId))
+            if (await _reservation.IsExistAnyDuplicateReservationDate(model.ReservationDate.ToMiladiDateTime(), organization.OwnerId))
             {
                 return false;
             }
@@ -374,7 +464,7 @@ namespace DoctorFAM.Application.Services.Implementation
             var reservationDateTime = await _reservation.GetDoctorReservationDateTimeById(reservationDateTimeId);
             if (reservationDateTime == null) return null;
             if (reservationDateTime.PatientId == null) return null;
-            if (reservationDateTime.DoctorReservationState == Domain.Enums.DoctorReservation.DoctorReservationState.NotReserved 
+            if (reservationDateTime.DoctorReservationState == Domain.Enums.DoctorReservation.DoctorReservationState.NotReserved
                 && reservationDateTime.DoctorReservationState == Domain.Enums.DoctorReservation.DoctorReservationState.Canceled) return null;
 
             #endregion

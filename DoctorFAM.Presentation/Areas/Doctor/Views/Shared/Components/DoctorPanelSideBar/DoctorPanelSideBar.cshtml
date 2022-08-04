@@ -53,15 +53,21 @@
                         </a>
                     </li>
 
-                       <li>
+                    <li>
                         <a asp-area="Doctor" asp-controller="Appointment" asp-action="AddReservationDateView">
                             <span class="menu-text">@SharedLocalizer["Add Reservation Date"]</span>
                         </a>
                     </li>
 
-                       <li>
+                    <li>
                         <a asp-area="Doctor" asp-controller="Appointment" asp-action="ListOfDoctorReservationHistory">
                             <span class="menu-text">@SharedLocalizer["Reservation History"]</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a asp-area="Doctor" asp-controller="Appointment" asp-action="CancelReservationRequest">
+                            <span class="menu-text">@SharedLocalizer["Canecl Reservation Request"]</span>
                         </a>
                     </li>
 

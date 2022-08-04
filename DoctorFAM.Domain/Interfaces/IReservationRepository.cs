@@ -1,5 +1,6 @@
 ﻿using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.ViewModels.Admin.Reservation;
+using DoctorFAM.Domain.ViewModels.Common;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment;
 using DoctorFAM.Domain.ViewModels.Supporter.Reservation;
 using DoctorFAM.Domain.ViewModels.UserPanel.Reservation;
@@ -14,6 +15,21 @@ namespace DoctorFAM.Domain.Interfaces
     public interface IReservationRepository
     {
         #region Doctor Panel 
+
+        //Cancel Reservation Date Time State 
+        Task CancelReservationDateTime(DoctorReservationDateTime reservationDateTime);
+
+        //Save Changes
+        Task Savechanges();
+
+        //Add Cancel Reservation Request To Data Base Without Save Changes
+        Task AddCancelReservationRequest(CancelReservationRequest cancel);
+
+        //Get List Of Reservation Dete Time By Reservation Date Id For Select List  
+        Task<List<SelectListViewModel>> GetReservationDateTimeByReservationDateIdSelectList(ulong reservationDateId, ulong userId);
+
+        //Get Future Doctor Reservation For Cancel Reservation Request To List
+        Task<List<DoctorReservationDate>> GetReservationsForAddCancelRequest(ulong userId);
 
         //Get Doctor Reservation Date By Date 
         Task<DoctorReservationDate?> GetDoctorReservationDateByDate(DateTime date , ulong userId);

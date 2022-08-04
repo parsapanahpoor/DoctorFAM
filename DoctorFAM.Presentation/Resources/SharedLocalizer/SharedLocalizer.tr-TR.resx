@@ -141,6 +141,9 @@
   <data name="Brother" xml:space="preserve">
     <value>Abi</value>
   </data>
+  <data name="Canecl Reservation Request" xml:space="preserve">
+    <value>Canecl Rezervasyon Talebi</value>
+  </data>
   <data name="Change Password" xml:space="preserve">
     <value>şifre değiştir</value>
   </data>

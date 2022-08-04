@@ -1,0 +1,92 @@
+﻿@model DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment.CancelReservationRequestViewModel
+@using DoctorFAM.Domain.ViewModels.Common
+@using DoctorFAM.Application.StaticTools
+
+@{
+    ViewData["Title"] = @Localizer["Canecel Reservation Request"];
+}
+@{
+    var reservationDate = ViewData["ReservationDate"] != null ? ViewData["ReservationDate"] as List<SelectListViewModel> : null;
+}
+
+@section Scripts
+{
+<partial name="_JqueryValidation" />
+
+<script>
+
+    $("#ReservationDateId").change(function () {
+        if ($("#ReservationDateId :selected").val() !== '') {
+                        $('#ReservationDateTimeId option:not(:first)').remove();
+            $.get("/Doctor/Appointment/LoadReservationDateTime", { reservationDateId: $("#ReservationDateId :selected").val() }).then(res => {
+                if (res.data !== null) {
+                    $.each(res.data, function () {
+                        $("#ReservationDateTimeId").append(
+                             '<option value=' + this.id + '>' + this.title + '</option>'
+                        );
+                    });
+                }
+            });
+        }
+    });
+
+</script>
+}
+
+@section Breadcrumb
+{
+<li>
+    <a href="javascript:void(0)"> @ViewData["Title"] </a>
+</li>
+}
+
+<div class="row">
+    <div class="col-lg-12 col-sm-12">
+
+        <div class="widget">
+            <div class="widget-header bordered-bottom bordered-green">
+                <span class="widget-caption"> @Localizer["Canecel Reservation Request"] </span>
+            </div>
+            <div class="widget-body">
+                <div>
+
+                    <form asp-action="CancelReservationRequest" asp-controller="Appointment" asp-area="Doctor" method="post">
+                        <div class="modal-body">
+                            <div class="row">
+
+                                <div class="form-group col-md-6 col-sm-12">
+                                    <label> @Localizer["Date"] </label>
+                                    <select asp-for="ReservationDateId" class="form-control">
+                                        <option value=""> @Localizer["Please Select One Date"] </option>
+                                        @if (reservationDate != null && reservationDate.Any())
+                                        {
+                                            foreach (var date in reservationDate)
+                                            {
+                                                <option value="@date.Id"> @date.Title </option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-md-6 col-sm-12">
+                                    <label> @Localizer["Reserve Time"] </label>
+                                    <select multiple asp-for="ReservationDateTimeId" class="form-control">
+                                        <option value=""> @Localizer["Please Select Yout Reservation Times"] </option>
+
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-md-12">
+                                    <button type="submit" class="btn btn-success">@SharedLocalizer["Submit"]</button>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
