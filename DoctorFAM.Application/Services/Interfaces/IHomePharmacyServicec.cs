@@ -1,5 +1,6 @@
 ﻿using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Patient;
+using DoctorFAM.Domain.Entities.Pharmacy;
 using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.ViewModels.Admin.HealthHouse.HomePharmacy;
 using DoctorFAM.Domain.ViewModels.Site.Common;
@@ -16,6 +17,13 @@ namespace DoctorFAM.Application.Services.Interfaces
 {
     public interface IHomePharmacyServicec
     {
+        #region General
+
+        //Get List Of Home Pharmacy Request Detail By Request Id 
+        Task<List<HomePharmacyRequestDetail>> GetHomePharmacyRequestDetailByRequestId(ulong requestId);
+
+        #endregion
+
         #region Site Side
 
         Task<bool> ChargeUserWallet(ulong userId, int price);
@@ -53,7 +61,7 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         Task<PaitientRequestDetail?> GetRequestPatientDetailByRequestId(ulong requestId);
 
-        Task<PatientRequestDateTimeDetail?> GetRequestDateTimeDetailByRequestDetailId(ulong requestDetailId);
+        Task<PatientRequestDateTimeDetail?> GetRequestDateTimeDetailByRequestDetailId(ulong requestId);
 
         Task<List<RequestedDrugsAdminSideViewModel>?> GetRequestDrugsByRequestId(ulong requestId);
 

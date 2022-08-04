@@ -105,8 +105,8 @@ namespace DoctorFAM.Data.Repository
 
             var pharmacy = await GetPharmacyByUserId(userId);
 
-            var pharmacyIneterest = await _context.PharmacySelectedInterests.Include(p=> p.Interest).ThenInclude(p=> p.InterestInfo)
-                                                        .Where(p=> !p.IsDelete && p.PharmacyId == pharmacy.Id).ToListAsync();
+            var pharmacyIneterest = await _context.PharmacySelectedInterests.Include(p => p.Interest).ThenInclude(p => p.InterestInfo)
+                                                        .Where(p => !p.IsDelete && p.PharmacyId == pharmacy.Id).ToListAsync();
 
             if (pharmacyIneterest != null && pharmacyIneterest.Any())
             {
@@ -276,6 +276,7 @@ namespace DoctorFAM.Data.Repository
             #endregion
 
             var query = _context.Requests
+             .Include(p => p.PatientRequestDateTimeDetails)
              .Include(p => p.Patient)
              .Include(p => p.User)
              .Include(p => p.PaitientRequestDetails)

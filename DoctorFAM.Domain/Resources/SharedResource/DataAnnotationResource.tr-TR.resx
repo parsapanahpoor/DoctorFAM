@@ -138,6 +138,9 @@
   <data name="Brother" xml:space="preserve">
     <value>Abi</value>
   </data>
+  <data name="Cancelled" xml:space="preserve">
+    <value>İptal edildi</value>
+  </data>
   <data name="Child" xml:space="preserve">
     <value>Çocuk</value>
   </data>

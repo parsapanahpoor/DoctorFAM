@@ -18,6 +18,9 @@ namespace DoctorFAM.Application.Services.Interfaces
     {
         #region Pharmacy Panel Side
 
+        //Show Home Pharmacy Request Detail
+        Task<HomePharmacyRequestViewModel?> FillHomePharmacyRequestViewModel(ulong requestId);
+
         //Get List Of Pharmacy Interests
         Task<List<PharmacyInterestInfo>> GetPharmacyInterestsInfo();
 

@@ -14,7 +14,9 @@ namespace DoctorFAM.Domain.Enums.DoctorReservation
         [Display(Name = "Reserved")]
         Reserved,
         [Display(Name = "Waiting For Complete")]
-        WaitingForComplete
+        WaitingForComplete,
+        [Display(Name = "Canceled")]
+        Canceled
     }
 
     public enum DoctorReservationType

@@ -31,17 +31,59 @@ namespace DoctorFAM.Application.Services.Implementation
 
         private readonly IWorkAddressService _workAddress;
 
-        public PharmacyService(IPharmacyRepository pharmacy , IOrganizationService organizationService , IUserService userService , IWorkAddressService workAddress)
+        private readonly IRequestService _requestService;
+
+        private readonly IPatientService _patientService;
+
+        private readonly IHomePharmacyServicec _homePharmacyService;
+
+        public PharmacyService(IPharmacyRepository pharmacy, IOrganizationService organizationService, IUserService userService
+                        , IPatientService patientService, IWorkAddressService workAddress, IRequestService requestService, IHomePharmacyServicec homePharmacyService)
         {
             _pharmacy = pharmacy;
             _organizationService = organizationService;
             _userService = userService;
             _workAddress = workAddress;
+            _requestService = requestService;
+            _patientService = patientService;
+            _homePharmacyService = homePharmacyService;
         }
 
         #endregion
 
         #region Pharmacy Panel Side
+
+        //Show Home Pharmacy Request Detail
+        public async Task<HomePharmacyRequestViewModel?> FillHomePharmacyRequestViewModel(ulong requestId)
+        {
+            #region Get Request By Request Id
+
+            var request = await _requestService.GetRequestById(requestId);
+
+            if (request == null) return null;
+            if (request.RequestType != Domain.Enums.RequestType.RequestType.HomeDrog) return null;
+            if (request.RequestState !=  Domain.Enums.Request.RequestState.Paid) return null;
+            if (request.OperationId.HasValue) return null;
+            if (!request.PatientId.HasValue) return null;
+
+            #endregion
+
+            #region Fill Model 
+
+            HomePharmacyRequestViewModel model = new HomePharmacyRequestViewModel()
+            {
+                Patient = await _patientService.GetPatientById(request.PatientId.Value),
+                User = await _userService.GetUserById(request.UserId),
+                HomePharmacyRequestDetails = await _homePharmacyService.GetHomePharmacyRequestDetailByRequestId(request.Id),
+                PatientRequestDetail = await _homePharmacyService.GetRequestPatientDetailByRequestId(request.Id),
+                PatientRequestDateTimeDetail = await _homePharmacyService.GetRequestDateTimeDetailByRequestDetailId(request.Id),
+                Request = request
+            };
+
+            #endregion
+
+            return model;
+        }
 
         //Get List Of Pharmacy Interests
         public async Task<List<PharmacyInterestInfo>> GetPharmacyInterestsInfo()

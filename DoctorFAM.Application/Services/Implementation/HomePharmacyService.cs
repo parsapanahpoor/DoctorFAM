@@ -609,14 +609,20 @@ namespace DoctorFAM.Application.Services.Implementation
             return await _homePharmacy.GetRequestPatientDetailByRequestId(requestId);
         }
 
-        public async Task<PatientRequestDateTimeDetail?> GetRequestDateTimeDetailByRequestDetailId(ulong requestDetailId)
+        public async Task<PatientRequestDateTimeDetail?> GetRequestDateTimeDetailByRequestDetailId(ulong requestId)
         {
-            return await _homePharmacy.GetRequestDateTimeDetailByRequestDetailId(requestDetailId);
+            return await _homePharmacy.GetRequestDateTimeDetailByRequestDetailId(requestId);
         }
 
         public async Task<List<RequestedDrugsAdminSideViewModel>?> GetRequestDrugsByRequestId(ulong requestId)
         {
             return await _homePharmacy.GetRequestDrugsByRequestId(requestId);
+        }
+
+        //Get List Of Home Pharmacy Request Detail By Request Id 
+        public async Task<List<HomePharmacyRequestDetail>> GetHomePharmacyRequestDetailByRequestId(ulong requestId)
+        {
+            return await _homePharmacy.GetHomePharmacyRequestDetailByRequestId(requestId);
         }
 
         #endregion

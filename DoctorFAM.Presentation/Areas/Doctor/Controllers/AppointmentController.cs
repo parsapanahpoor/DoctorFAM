@@ -226,5 +226,11 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
         #endregion
 
         #endregion
+
+        #region Cancel Reservation 
+
+
+
+        #endregion
     }
 }

@@ -27,5 +27,21 @@ namespace DoctorFAM.Web.Areas.Pharmacy.Controllers
         }
 
         #endregion
+
+        #region Home Pharmacy Request Detail 
+
+        public async Task<IActionResult> HomePharmacyRequestDetail(ulong requestId)
+        {
+            #region Get Pharmacy Request Detail
+
+            var model = await _pharmacyService.FillHomePharmacyRequestViewModel(requestId);
+            if (model == null) return NotFound();
+
+            #endregion
+
+            return View(model);
+        }
+
+        #endregion
     }
 }

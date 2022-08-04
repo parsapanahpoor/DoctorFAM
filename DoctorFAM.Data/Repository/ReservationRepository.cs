@@ -239,7 +239,8 @@ namespace DoctorFAM.Data.Repository
 
             var query = _context.DoctorReservationDateTimes
                 .Include(p => p.DoctorReservationDate)
-                .Where(s => !s.IsDelete && s.DoctorReservationDate.UserId == organization.OwnerId && s.DoctorReservationDateId == filter.ReservationDateId)
+                .Where(s => !s.IsDelete && s.DoctorReservationDate.UserId == organization.OwnerId 
+                                && s.DoctorReservationDateId == filter.ReservationDateId && s.DoctorReservationState != DoctorReservationState.Canceled)
                 .OrderByDescending(s => s.CreateDate)
                 .AsQueryable();
 

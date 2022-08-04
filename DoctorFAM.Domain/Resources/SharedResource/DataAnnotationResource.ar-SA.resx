@@ -144,6 +144,9 @@
   <data name="Brother" xml:space="preserve">
     <value>أخ</value>
   </data>
+  <data name="Cancelled" xml:space="preserve">
+    <value>ألغيت</value>
+  </data>
   <data name="Charge Wallet" xml:space="preserve">
     <value>محفظة الشحن</value>
   </data>
