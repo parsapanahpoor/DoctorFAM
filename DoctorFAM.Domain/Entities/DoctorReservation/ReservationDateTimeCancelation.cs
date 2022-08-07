@@ -1,5 +1,4 @@
-﻿using DoctorFAM.Domain.Entities.Account;
-using DoctorFAM.Domain.Entities.Common;
+﻿using DoctorFAM.Domain.Entities.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,25 +7,21 @@ using System.Threading.Tasks;
 
 namespace DoctorFAM.Domain.Entities.DoctorReservation
 {
-    public class CancelReservationRequest : BaseEntity
+    public class ReservationDateTimeCancelation : BaseEntity
     {
         #region properties
 
         public ulong DoctorReservationDateId { get; set; }
 
-        public ulong DoctorReservationDateTimeId { get; set; }
-
-        public ulong UserId { get; set; }
+        public ulong  DoctorReservationDateTimeId{ get; set; }
 
         #endregion
 
-        #region relations
+        #region relations 
 
-        public DoctorReservationDate DoctorReservationDate { get; set; }
+        public ReservationDateCancelation ReservationDateCancelation { get; set; }
 
         public DoctorReservationDateTime DoctorReservationDateTime { get; set; }
-
-        public User User { get; set; }
 
         #endregion
     }

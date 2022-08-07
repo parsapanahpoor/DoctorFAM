@@ -22,8 +22,11 @@ namespace DoctorFAM.Domain.Interfaces
         //Save Changes
         Task Savechanges();
 
-        //Add Cancel Reservation Request To Data Base Without Save Changes
-        Task AddCancelReservationRequest(CancelReservationRequest cancel);
+        //Add Reservation Date Cancelation
+        Task AddReservationDateCancelation(ReservationDateCancelation date);
+
+        //Add Reservation Date Time Cancelation 
+        Task AddReservationDateTimeCancelation(ReservationDateTimeCancelation dateTime);
 
         //Get List Of Reservation Dete Time By Reservation Date Id For Select List  
         Task<List<SelectListViewModel>> GetReservationDateTimeByReservationDateIdSelectList(ulong reservationDateId, ulong userId);
@@ -74,6 +77,9 @@ namespace DoctorFAM.Domain.Interfaces
         Task AddLogForCloseReservation(LogForCloseReservation log);
 
         Task<FilterClosedReservationAdminViewModel?> FilterClosedReservationAdminPanelViewModel(FilterClosedReservationAdminViewModel filter);
+
+        //List Of Request For Cancelation Reservation
+        Task<FilterCancelReservationRequestsViewModel?> FilterCancelReservationRequestsViewModel(FilterCancelReservationRequestsViewModel filter);
 
         #endregion
 

@@ -78,7 +78,9 @@ namespace DoctorFAM.Data.DbContext
 
         public DbSet<PatientRequestDateTimeDetail> PatientRequestDateTimeDetails { get; set; }
 
-        public DbSet<CancelReservationRequest> CancelReservationRequest { get; set; }
+        public DbSet<ReservationDateCancelation> ReservationDateCancelations { get; set; }
+
+        public DbSet<ReservationDateTimeCancelation> ReservationDateTimeCancelations { get; set; }
 
         #endregion
 

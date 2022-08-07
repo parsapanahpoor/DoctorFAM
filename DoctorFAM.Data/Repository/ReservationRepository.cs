@@ -56,10 +56,16 @@ namespace DoctorFAM.Data.Repository
             await _context.SaveChangesAsync();
         }
 
-        //Add Cancel Reservation Request To Data Base Without Save Changes
-        public async Task AddCancelReservationRequest(CancelReservationRequest cancel)
+        //Add Reservation Date Cancelation
+        public async Task AddReservationDateCancelation(ReservationDateCancelation date)
         {
-            await _context.CancelReservationRequest.AddAsync(cancel);
+            await _context.ReservationDateCancelations.AddAsync(date);
+        }
+
+        //Add Reservation Date Time Cancelation Whitout Save Changes
+        public async Task AddReservationDateTimeCancelation(ReservationDateTimeCancelation dateTime)
+        {
+            await _context.ReservationDateTimeCancelations.AddAsync(dateTime);
         }
 
         //Get List Of Reservation Dete Time By Reservation Date Id For Select List  
@@ -775,11 +781,81 @@ namespace DoctorFAM.Data.Repository
             return filter;
         }
 
-
         public async Task AddLogForCloseReservation(LogForCloseReservation log)
         {
             await _context.LogForCloseReservations.AddAsync(log);
             await _context.SaveChangesAsync();
+        }
+
+        //List Of Request For Cancelation Reservation
+        public async Task<FilterCancelReservationRequestsViewModel?> FilterCancelReservationRequestsViewModel(FilterCancelReservationRequestsViewModel filter)
+        {
+            var query = _context.ReservationDateCancelations
+            .Include(p=> p.DoctorReservationDate)
+            .ThenInclude(p => p.User)
+            .Where(p => !p.IsDelete)
+            .OrderByDescending(s => s.DoctorReservationDate.ReservationDate)
+            .AsQueryable();
+
+            #region Filter
+
+            if (!string.IsNullOrEmpty(filter.FromDate))
+            {
+                var spliteDate = filter.FromDate.Split('/');
+                int year = int.Parse(spliteDate[0]);
+                int month = int.Parse(spliteDate[1]);
+                int day = int.Parse(spliteDate[2]);
+                DateTime fromDate = new DateTime(year, month, day, new PersianCalendar());
+
+                query = query.Where(s => s.DoctorReservationDate.ReservationDate >= fromDate);
+            }
+
+            if (!string.IsNullOrEmpty(filter.ToDate))
+            {
+                var spliteDate = filter.ToDate.Split('/');
+                int year = int.Parse(spliteDate[0]);
+                int month = int.Parse(spliteDate[1]);
+                int day = int.Parse(spliteDate[2]);
+                DateTime toDate = new DateTime(year, month, day, new PersianCalendar());
+
+                query = query.Where(s => s.DoctorReservationDate.ReservationDate <= toDate);
+            }
+
+            if (!string.IsNullOrEmpty(filter.PatientName))
+            {
+                query = query.Where(s => s.DoctorReservationDate.User.Username.Contains(filter.PatientName));
+            }
+
+            if (!string.IsNullOrEmpty(filter.DoctorName))
+            {
+                query = query.Where(s => s.DoctorReservationDate.User.Username.Contains(filter.DoctorName));
+            }
+
+            if (!string.IsNullOrEmpty(filter.PatientMobile))
+            {
+                query = query.Where(s => s.DoctorReservationDate.User.Mobile == filter.PatientMobile);
+            }
+
+            if (!string.IsNullOrEmpty(filter.DoctorMobile))
+            {
+                query = query.Where(s => s.DoctorReservationDate.User.Mobile == filter.DoctorMobile);
+            }
+
+            if (!string.IsNullOrEmpty(filter.DoctorNationalNumber))
+            {
+                query = query.Where(s => s.DoctorReservationDate.User.NationalId == filter.DoctorNationalNumber);
+            }
+
+            if (!string.IsNullOrEmpty(filter.PatientNationalNumber))
+            {
+                query = query.Where(s => s.DoctorReservationDate.User.NationalId == filter.PatientNationalNumber);
+            }
+
+            #endregion
+
+            await filter.Paging(query);
+
+            return filter;
         }
 
         #endregion

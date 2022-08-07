@@ -123,8 +123,6 @@ namespace DoctorFAM.Domain.Entities.Account
 
         public ICollection<LogForCloseReservation> LogForCloseReservations { get; set; }
 
-        public ICollection<CancelReservationRequest> CancelReservationRequest { get; set; }
-
         #endregion
     }
 }

@@ -93,5 +93,14 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
         }
 
         #endregion
+
+        #region List Of Requests For Cancelation Reservation 
+
+        public async Task<IActionResult> FilterCancelReservationRequests(FilterCancelReservationRequestsViewModel filter)
+        {
+            return View(await _reservationService.FilterCancelReservationRequestsViewModel(filter));
+        }
+
+        #endregion
     }
 }

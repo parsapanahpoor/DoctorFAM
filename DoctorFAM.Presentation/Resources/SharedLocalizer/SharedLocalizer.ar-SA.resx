@@ -234,6 +234,9 @@
   <data name="Laboratory At Home" xml:space="preserve">
     <value>معمل منزلي</value>
   </data>
+  <data name="List Of Cancel Request" xml:space="preserve">
+    <value>طلبات إلغاء المواعيد</value>
+  </data>
   <data name="List Of Closed Reservations" xml:space="preserve">
     <value>قائمة المواعيد الملغاة</value>
   </data>

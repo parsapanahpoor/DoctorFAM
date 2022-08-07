@@ -41,7 +41,7 @@ namespace DoctorFAM.Domain.Entities.DoctorReservation
 
         public ICollection<LogForCloseReservation> LogForCloseReservations { get; set; }
 
-        public CancelReservationRequest CancelReservationRequest { get; set; }
+        public ReservationDateTimeCancelation ReservationDateTimeCancelation { get; set; }
 
         #endregion
     }

@@ -67,28 +67,50 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #endregion
 
-            #region Validation On Reservation Date Time 
+            #region Validation On Reservation Date Time Add Add Cancelation Date
+
+            #region Add Reservation Date Cancelation 
+
+            #region Fill Reservation Date Cancelation View Model 
+
+            ReservationDateCancelation date = new ReservationDateCancelation()
+            {
+                DoctorReservationDateId = reservation.Id,
+            };
+
+            #endregion
+
+            #region Add Reservation Date Cancelation 
+
+            await _reservation.AddReservationDateCancelation(date);
+
+            #endregion
+
+            #endregion
+
+            #region Add Reservation Date Time Cancelation 
 
             foreach (var item in model.ReservationDateTimeId)
             {
                 var reservationDateTime = await _reservation.GetDoctorReservationDateTimeById(item);
                 if (reservationDateTime == null) return false;
-                if(reservationDateTime.DoctorReservationDateId != reservation.Id) return false;
+                if (reservationDateTime.DoctorReservationDateId != reservation.Id) return false;
                 if (reservationDateTime.DoctorReservationState == Domain.Enums.DoctorReservation.DoctorReservationState.Canceled) return false;
 
                 #region Fill Entity
 
-                CancelReservationRequest cancel = new CancelReservationRequest()
+                ReservationDateTimeCancelation dateTime = new ReservationDateTimeCancelation()
                 {
-                    DoctorReservationDateId = reservation.Id,
                     DoctorReservationDateTimeId = reservationDateTime.Id,
-                    UserId = organization.OwnerId,
+                    DoctorReservationDateId = date.Id
                 };
 
                 #endregion
 
-                await _reservation.AddCancelReservationRequest(cancel);
+                await _reservation.AddReservationDateTimeCancelation(dateTime);
             }
+
+            #endregion
 
             #endregion
 
@@ -572,6 +594,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
         #region Admin Panel
 
+        //Filter Date Time Reservation
         public async Task<FilterReservationAdminSideViewModel?> FilterReservationAdminPanelViewModel(FilterReservationAdminSideViewModel filter)
         {
             return await _reservation.FilterReservationAdminPanelViewModel(filter);
@@ -638,6 +661,12 @@ namespace DoctorFAM.Application.Services.Implementation
         public async Task<FilterClosedReservationAdminViewModel?> FilterClosedReservationAdminPanelViewModel(FilterClosedReservationAdminViewModel filter)
         {
             return await _reservation.FilterClosedReservationAdminPanelViewModel(filter);
+        }
+
+        //List Of Request For Cancelation Reservation
+        public async Task<FilterCancelReservationRequestsViewModel?> FilterCancelReservationRequestsViewModel(FilterCancelReservationRequestsViewModel filter)
+        {
+            return await _reservation.FilterCancelReservationRequestsViewModel(filter);
         }
 
         #endregion

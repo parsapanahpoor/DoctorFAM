@@ -75,6 +75,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         Task<FilterClosedReservationAdminViewModel?> FilterClosedReservationAdminPanelViewModel(FilterClosedReservationAdminViewModel filter);
 
+        //List Of Request For Cancelation Reservation
+        Task<FilterCancelReservationRequestsViewModel?> FilterCancelReservationRequestsViewModel(FilterCancelReservationRequestsViewModel filter);
+
         #endregion
 
         #region Supporter Panel 

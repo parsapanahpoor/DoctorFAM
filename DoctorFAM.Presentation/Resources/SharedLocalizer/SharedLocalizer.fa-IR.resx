@@ -456,4 +456,7 @@
   <data name="Canecl Reservation Request" xml:space="preserve">
     <value>درخواست لغو نوبت</value>
   </data>
+  <data name="List Of Cancel Request" xml:space="preserve">
+    <value>درخواست های لغو نوبت</value>
+  </data>
 </root>
