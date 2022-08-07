@@ -230,9 +230,6 @@ $("#CountryId").change(function () {
         $('#StateId option:not(:first)').remove();
         $.get("/Home/LoadCities", { stateId: $("#CountryId :selected").val() }).then(res => {
             if (res.data !== null) {
-                $("#StateId").append(
-                    '<option>' + 'لطفا یک استان را انتخاب کنید' + '</option>',
-                );
                 $.each(res.data, function () {
                     $("#StateId").append(
                         '<option value=' + this.id + '>' + this.title + '</option>'
