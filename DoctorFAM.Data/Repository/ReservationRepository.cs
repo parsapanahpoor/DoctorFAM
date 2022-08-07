@@ -60,6 +60,7 @@ namespace DoctorFAM.Data.Repository
         public async Task AddReservationDateCancelation(ReservationDateCancelation date)
         {
             await _context.ReservationDateCancelations.AddAsync(date);
+            await _context.SaveChangesAsync();
         }
 
         //Add Reservation Date Time Cancelation Whitout Save Changes
@@ -787,7 +788,7 @@ namespace DoctorFAM.Data.Repository
             await _context.SaveChangesAsync();
         }
 
-        //List Of Request For Cancelation Reservation
+        //List Of Request For Cancelation Reservation Date 
         public async Task<FilterCancelReservationRequestsViewModel?> FilterCancelReservationRequestsViewModel(FilterCancelReservationRequestsViewModel filter)
         {
             var query = _context.ReservationDateCancelations
@@ -821,19 +822,9 @@ namespace DoctorFAM.Data.Repository
                 query = query.Where(s => s.DoctorReservationDate.ReservationDate <= toDate);
             }
 
-            if (!string.IsNullOrEmpty(filter.PatientName))
-            {
-                query = query.Where(s => s.DoctorReservationDate.User.Username.Contains(filter.PatientName));
-            }
-
             if (!string.IsNullOrEmpty(filter.DoctorName))
             {
                 query = query.Where(s => s.DoctorReservationDate.User.Username.Contains(filter.DoctorName));
-            }
-
-            if (!string.IsNullOrEmpty(filter.PatientMobile))
-            {
-                query = query.Where(s => s.DoctorReservationDate.User.Mobile == filter.PatientMobile);
             }
 
             if (!string.IsNullOrEmpty(filter.DoctorMobile))
@@ -846,12 +837,21 @@ namespace DoctorFAM.Data.Repository
                 query = query.Where(s => s.DoctorReservationDate.User.NationalId == filter.DoctorNationalNumber);
             }
 
-            if (!string.IsNullOrEmpty(filter.PatientNationalNumber))
-            {
-                query = query.Where(s => s.DoctorReservationDate.User.NationalId == filter.PatientNationalNumber);
-            }
-
             #endregion
+
+            await filter.Paging(query);
+
+            return filter;
+        }
+
+        //List Of Request For Cancelation Reservatio Date Time 
+        public async Task<FilterCancelationRequestReservationDateTimeViewModel?> FilterCancelationRequestReservationDateTime(FilterCancelationRequestReservationDateTimeViewModel filter)
+        {
+            var query = _context.ReservationDateTimeCancelations
+                .Include(p => p.DoctorReservationDateTime)
+                .Where(s => !s.IsDelete && s.ReservationDateCancelationId == filter.ReservationDateId && s.DoctorReservationDateTime.DoctorReservationState != DoctorReservationState.Canceled)
+                .OrderByDescending(s => s.CreateDate)
+                .AsQueryable();
 
             await filter.Paging(query);
 

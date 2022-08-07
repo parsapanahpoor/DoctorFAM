@@ -102,5 +102,14 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
         }
 
         #endregion
+
+        #region List Of Request For Cancelation Reservation Date Time 
+
+        public async Task<IActionResult> FilterCancelReservationDateTimeRequests(FilterCancelationRequestReservationDateTimeViewModel filter)
+        {
+            return View(await _reservationService.FilterCancelationRequestReservationDateTime(filter));
+        }
+
+        #endregion
     }
 }

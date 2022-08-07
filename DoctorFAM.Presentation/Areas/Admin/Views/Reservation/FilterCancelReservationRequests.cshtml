@@ -7,7 +7,7 @@
 
 
 @{
-    ViewData["Title"] = @Localizer["List Of Reservation Date"];
+    ViewData["Title"] = @Localizer["List Of Cancelation Reservation Date"];
 }
 
 @section Styles
@@ -34,14 +34,9 @@
             </div>
             <div class="widget-body">
                 <div>
-                    <form asp-action="FilterReservation" asp-controller="Reservation" asp-area="Admin" id="filter-search" method="get">
+                    <form asp-action="FilterCancelReservationRequests" asp-controller="Reservation" asp-area="Admin" id="filter-search" method="get">
 
                         <input type="hidden" asp-for="Page" />
-
-                        <div class="form-group">
-                            <label asp-for="PatientName"> @Localizer["Patient Name"] </label>
-                            <input type="text" class="form-control" asp-for="PatientName">
-                        </div>
 
                         <div class="form-group">
                             <label asp-for="DoctorName"> @Localizer["Doctor Name"] </label>
@@ -49,18 +44,8 @@
                         </div>
 
                         <div class="form-group">
-                            <label asp-for="PatientMobile"> @Localizer["Patient Mobile"] </label>
-                            <input type="text" class="form-control" asp-for="PatientMobile">
-                        </div>
-
-                        <div class="form-group">
                             <label asp-for="DoctorMobile"> @Localizer["Doctor Mobile"] </label>
                             <input type="text" class="form-control" asp-for="DoctorMobile">
-                        </div>
-
-                        <div class="form-group">
-                            <label asp-for="PatientNationalNumber"> @Localizer["Patient National Number"] </label>
-                            <input type="text" class="form-control" asp-for="PatientNationalNumber">
                         </div>
 
                         <div class="form-group">
@@ -78,11 +63,6 @@
                             <input type="text" class="form-control" AdminDatePicker="2" asp-for="ToDate">
                         </div>
 
-                        <div class="form-group">
-                            <label asp-for="FilterReservationOrder"> @Localizer["Order By Reservation Date"] </label>
-                            <select asp-for="FilterReservationOrder" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.DoctorReservation.FilterReservationOrder))"></select>
-                        </div>
-
                         <hr />
 
                         <div class="row">
@@ -93,7 +73,7 @@
 
                                 @if (Context.Request.QueryString.HasValue)
                                 {
-                                    <a asp-action="FilterReservation" asp-controller="Reservation" asp-area="Admin" class="btn btn-labeled w-100 btn-darkorange ">
+                                    <a asp-action="FilterCancelReservationRequests" asp-controller="Reservation" asp-area="Admin" class="btn btn-labeled w-100 btn-darkorange ">
                                         <i class="btn-label glyphicon glyphicon-remove"></i>@Localizer["Delete Filter"]
                                     </a>
                                 }
@@ -123,6 +103,9 @@
                                 @Localizer["Doctor Information"]
                             </th>
                             <th class="tc vm">
+                                @Localizer["Doctor Mobile"]
+                            </th>
+                            <th class="tc vm">
                                 @Localizer["Date"]
                             </th>
                             <th class="tc vm">
@@ -139,9 +122,14 @@
                                         <img src="@date.DoctorReservationDate.User.GetUserAvatar()" class="avatar-style" style="border-radius:50px;" />
                                         <div class="mr-10px">
                                             <span>@Localizer["Username"] : @date.DoctorReservationDate.User.Username</span>
-                                            <hr class="margin-7" />
-                                            <span>@Localizer["Mobile"] : @date.DoctorReservationDate.User.Mobile</span>
                                         </div>
+                                    </div>
+                                </td>
+                                <td class="vm">
+                                    <div class="flex-style-center">
+                                        <p>
+                                            <span> @date.DoctorReservationDate.User.Mobile</span>
+                                        </p>
                                     </div>
                                 </td>
                                 <td class="vm">
@@ -150,7 +138,7 @@
                                     </div>
                                 </td>
                                 <td class="tc vm">
-                                    <a asp-action="ReservationDetail" asp-controller="Reservation" asp-area="Admin" asp-route-ReservationId="@date.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+                                    <a asp-action="FilterCancelReservationDateTimeRequests" asp-controller="Reservation" asp-area="Admin" asp-route-ReservationDateId="@date.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
                                 </td>
                             </tr>
                         }

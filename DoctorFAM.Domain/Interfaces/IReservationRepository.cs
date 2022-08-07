@@ -81,6 +81,9 @@ namespace DoctorFAM.Domain.Interfaces
         //List Of Request For Cancelation Reservation
         Task<FilterCancelReservationRequestsViewModel?> FilterCancelReservationRequestsViewModel(FilterCancelReservationRequestsViewModel filter);
 
+        //List Of Request For Cancelation Reservatio Date Time 
+        Task<FilterCancelationRequestReservationDateTimeViewModel?> FilterCancelationRequestReservationDateTime(FilterCancelationRequestReservationDateTimeViewModel filter);
+
         #endregion
 
         #region Supporter Panel 

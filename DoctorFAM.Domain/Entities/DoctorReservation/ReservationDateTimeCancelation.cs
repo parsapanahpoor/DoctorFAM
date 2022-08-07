@@ -11,7 +11,7 @@ namespace DoctorFAM.Domain.Entities.DoctorReservation
     {
         #region properties
 
-        public ulong DoctorReservationDateId { get; set; }
+        public ulong ReservationDateCancelationId { get; set; }
 
         public ulong  DoctorReservationDateTimeId{ get; set; }
 

@@ -15,15 +15,9 @@ namespace DoctorFAM.Domain.ViewModels.Admin.Reservation
     {
         #region properties
 
-        public string? PatientName { get; set; }
-
         public string? DoctorName { get; set; }
 
-        public string? PatientNationalNumber { get; set; }
-
         public string? DoctorNationalNumber { get; set; }
-
-        public string? PatientMobile { get; set; }
 
         public string? DoctorMobile { get; set; }
 
@@ -32,10 +26,6 @@ namespace DoctorFAM.Domain.ViewModels.Admin.Reservation
 
         [RegularExpression(@"^\d{4}\/(0?[1-9]|1[012])\/(0?[1-9]|[12][0-9]|3[01])$", ErrorMessage = "The entered date is not valid")]
         public string? ToDate { get; set; }
-
-        public FilterRequestOrder FilterRequestOrder { get; set; }
-
-        public FilterReservationOrder FilterReservationOrder { get; set; }
 
         #endregion
     }

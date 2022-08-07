@@ -102,7 +102,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 ReservationDateTimeCancelation dateTime = new ReservationDateTimeCancelation()
                 {
                     DoctorReservationDateTimeId = reservationDateTime.Id,
-                    DoctorReservationDateId = date.Id
+                    ReservationDateCancelationId = date.Id
                 };
 
                 #endregion
@@ -138,7 +138,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #endregion
 
-            return await _reservation.GetReservationDateTimeByReservationDateIdSelectList(reservationDateId , userId);
+            return await _reservation.GetReservationDateTimeByReservationDateIdSelectList(reservationDateId , organization.OwnerId);
         }
 
         //Get Future Doctor Reservation For Cancel Reservation Request 
@@ -669,6 +669,12 @@ namespace DoctorFAM.Application.Services.Implementation
             return await _reservation.FilterCancelReservationRequestsViewModel(filter);
         }
 
+        //List Of Request For Cancelation Reservatio Date Time 
+        public async Task<FilterCancelationRequestReservationDateTimeViewModel?> FilterCancelationRequestReservationDateTime(FilterCancelationRequestReservationDateTimeViewModel filter)
+        {
+            return await _reservation.FilterCancelationRequestReservationDateTime(filter);
+        }
+
         #endregion
 
         #region Supporter Panel 
@@ -745,13 +751,6 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #endregion
 
-            #region Get Patient By User Id
-
-            var patient = await _userService.GetUserById(reservationTime.PatientId.Value);
-            if (patient == null) return false;
-
-            #endregion
-
             #region Get Reservation Tariff
 
             var reservationTariff = await _siteSettingService.GetReservationTariff();
@@ -759,47 +758,62 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #endregion
 
-            #region Add Transaction
+            #region Add Transaction And Log
 
-            if (reservationTime.DoctorReservationState == Domain.Enums.DoctorReservation.DoctorReservationState.Reserved)
+            if (reservationTime.PatientId.HasValue)
             {
-                //Fill Model
-                AdminCreateWalletViewModel model = new AdminCreateWalletViewModel
+                #region Get Patient By User Id
+
+                var patient = await _userService.GetUserById(reservationTime.PatientId.Value);
+                if (patient == null) return false;
+
+                #endregion
+
+                #region Add Transaction
+
+                if (reservationTime.DoctorReservationState == Domain.Enums.DoctorReservation.DoctorReservationState.Reserved)
                 {
-                    Description = "بازگشت هزینه ی نوبت دریافت شده به علت لغو نوبت .",
-                    GatewayType = Domain.Entities.Wallet.GatewayType.System,
-                    PaymentType = Domain.Entities.Wallet.PaymentType.ChargeWallet,
-                    Price = reservationTariff,
-                    TransactionType = Domain.Entities.Wallet.TransactionType.Deposit,
-                    UserId = patient.Id
+                    //Fill Model
+                    AdminCreateWalletViewModel model = new AdminCreateWalletViewModel
+                    {
+                        Description = "بازگشت هزینه ی نوبت دریافت شده به علت لغو نوبت .",
+                        GatewayType = Domain.Entities.Wallet.GatewayType.System,
+                        PaymentType = Domain.Entities.Wallet.PaymentType.ChargeWallet,
+                        Price = reservationTariff,
+                        TransactionType = Domain.Entities.Wallet.TransactionType.Deposit,
+                        UserId = patient.Id
+                    };
+
+                    var res = await _walletService.CreateWalletAsync(model);
+
+                    if (res == AdminCreateWalletResponse.UserNotFound) return false;
+                }
+
+
+                #endregion
+
+                #region Add Log For Close Reservation
+
+                LogForCloseReservation log = new LogForCloseReservation()
+                {
+                    UserId = patient.Id,
+                    DoctorReservationDateTimeId = reservationTimeId,
                 };
 
-                var res = await _walletService.CreateWalletAsync(model);
+                await _reservation.AddLogForCloseReservation(log);
 
-                if (res == AdminCreateWalletResponse.UserNotFound) return false;
+                #endregion
             }
 
             #endregion
 
             #region Change Reservation State 
 
-            reservationTime.DoctorReservationState = Domain.Enums.DoctorReservation.DoctorReservationState.NotReserved;
+            reservationTime.DoctorReservationState = Domain.Enums.DoctorReservation.DoctorReservationState.Canceled;
             reservationTime.DoctorReservationType = null;
             reservationTime.PatientId = null;
 
             await _reservation.UpdateReservationDateTime(reservationTime);
-
-            #endregion
-
-            #region Add Log For Close Reservation
-
-            LogForCloseReservation log = new LogForCloseReservation()
-            {
-                UserId = patient.Id,
-                DoctorReservationDateTimeId = reservationTimeId,
-            };
-
-            await _reservation.AddLogForCloseReservation(log);
 
             #endregion
 

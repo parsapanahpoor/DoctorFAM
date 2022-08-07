@@ -117,73 +117,106 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Contact Information" xml:space="preserve">
-    <value>اطلاعات تماس</value>
+  <data name="Date" xml:space="preserve">
+    <value>Tarih</value>
   </data>
-  <data name="Create Date" xml:space="preserve">
-    <value>تاریخ ایحاد</value>
+  <data name="Delete Filter" xml:space="preserve">
+    <value>Filtreyi kaldır</value>
   </data>
-  <data name="Doctor" xml:space="preserve">
-    <value>پزشک</value>
+  <data name="Doctor Information" xml:space="preserve">
+    <value>Doktor bilgileri</value>
   </data>
-  <data name="Doctor Personal Info" xml:space="preserve">
-    <value>اطلاعات پزشک</value>
+  <data name="Doctor Mobile" xml:space="preserve">
+    <value>Doktor cep telefonu</value>
   </data>
-  <data name="Doctor Personal Informations" xml:space="preserve">
-    <value>اطلاعات پزشک شما</value>
+  <data name="Doctor Name" xml:space="preserve">
+    <value>doktorun kullanıcı adı</value>
+  </data>
+  <data name="Doctor National Number" xml:space="preserve">
+    <value>Doktorun milliyeti nedir?</value>
+  </data>
+  <data name="End" xml:space="preserve">
+    <value>Hasta</value>
   </data>
   <data name="End Time" xml:space="preserve">
-    <value>زمان پایان</value>
+    <value>bitiş zamanı</value>
   </data>
-  <data name="Extra Phone" xml:space="preserve">
-    <value>موبایل 2 </value>
+  <data name="Filter" xml:space="preserve">
+    <value>Filtre</value>
   </data>
-  <data name="FullName" xml:space="preserve">
-    <value>نام و نام خانوادگی</value>
+  <data name="From Date" xml:space="preserve">
+    <value>itibaren</value>
   </data>
   <data name="In Persone" xml:space="preserve">
-    <value>حضوری</value>
+    <value>şahsen</value>
+  </data>
+  <data name="List Of Reservation Date" xml:space="preserve">
+    <value>Planlanan tarihlerin listesi</value>
+  </data>
+  <data name="Manage Reservation Date Info" xml:space="preserve">
+    <value>Randevu bilgi yönetimi</value>
   </data>
   <data name="Mobile" xml:space="preserve">
-    <value>موبایل</value>
+    <value>Mobil</value>
   </data>
   <data name="not determined" xml:space="preserve">
-    <value>تعیین نشده</value>
+    <value>belirlenmemiş</value>
   </data>
   <data name="Not Reserved" xml:space="preserve">
-    <value>رزرو نشده</value>
+    <value>rezerve edilmemiş</value>
   </data>
   <data name="Online" xml:space="preserve">
-    <value>آنلاین</value>
+    <value>Çevrimiçi</value>
   </data>
-  <data name="Patient" xml:space="preserve">
-    <value>بیمار</value>
+  <data name="Order By Reservation Date" xml:space="preserve">
+    <value>Randevu tarihine göre sırala</value>
   </data>
-  <data name="Patient Personal Informations" xml:space="preserve">
-    <value>اطلاعات بیمار</value>
+  <data name="Order By State" xml:space="preserve">
+    <value>Dönüş durumuna göre sırala</value>
   </data>
-  <data name="Reserve Date" xml:space="preserve">
-    <value>تاریخ نوبت</value>
+  <data name="Order By Type" xml:space="preserve">
+    <value>Referans yöntemine göre sırala</value>
+  </data>
+  <data name="Patient Mobile" xml:space="preserve">
+    <value>Hastanın cep telefonu</value>
+  </data>
+  <data name="Patient Name" xml:space="preserve">
+    <value>Hastanın kullanıcı adı</value>
+  </data>
+  <data name="Patient National Number" xml:space="preserve">
+    <value>Hastanın uyruğu nedir?</value>
+  </data>
+  <data name="Possibilities" xml:space="preserve">
+    <value>Olasılıklar</value>
   </data>
   <data name="Reserved" xml:space="preserve">
-    <value>رزرو شده</value>
+    <value>rezerve</value>
   </data>
-  <data name="Show Reservation Details" xml:space="preserve">
-    <value>نمایش اطلاعات نوبت شما</value>
+  <data name="Start" xml:space="preserve">
+    <value>Başlangıç</value>
   </data>
   <data name="Start Time" xml:space="preserve">
-    <value>زمان شروع</value>
+    <value>Başlangıç ​​saati</value>
   </data>
   <data name="State" xml:space="preserve">
-    <value>وضعیت</value>
+    <value>Şart</value>
   </data>
-  <data name="Type" xml:space="preserve">
-    <value>روش مراجعه</value>
+  <data name="String22" xml:space="preserve">
+    <value>String1</value>
+  </data>
+  <data name="To Date" xml:space="preserve">
+    <value>Güncel</value>
+  </data>
+  <data name="Un Visible" xml:space="preserve">
+    <value>erişilemez</value>
+  </data>
+  <data name="User Information" xml:space="preserve">
+    <value>Hasta bilgisi</value>
   </data>
   <data name="Username" xml:space="preserve">
-    <value>نام کاربری سامانه</value>
+    <value>Kullanıcı adı</value>
   </data>
   <data name="Waiting" xml:space="preserve">
-    <value>در انتظار</value>
+    <value>Rezervasyon bekleniyor</value>
   </data>
 </root>
