@@ -392,8 +392,12 @@ namespace DoctorFAM.Application.Services.Implementation
                     {
                         WorkAddress workAddress = new WorkAddress()
                         {
+                            Address = model.WorkAddress,
+                            CountryId = model.CountryId.Value,
+                            CityId = model.CityId.Value,
+                            StateId = model.StateId.Value,
                             UserId = model.UserId,
-                            Address = model.WorkAddress
+                            CreateDate = DateTime.Now,
                         };
 
                         await _workAddress.AddWorkAddress(workAddress);
@@ -436,8 +440,12 @@ namespace DoctorFAM.Application.Services.Implementation
                     {
                         WorkAddress workAddress = new WorkAddress()
                         {
+                            Address = model.WorkAddress,
+                            CountryId = model.CountryId.Value,
+                            CityId = model.CityId.Value,
+                            StateId = model.StateId.Value,
                             UserId = model.UserId,
-                            Address = model.WorkAddress
+                            CreateDate = DateTime.Now,
                         };
 
                         await _workAddress.AddWorkAddress(workAddress);
