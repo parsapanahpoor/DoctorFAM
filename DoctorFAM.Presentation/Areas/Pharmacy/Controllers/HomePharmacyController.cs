@@ -36,6 +36,13 @@ namespace DoctorFAM.Web.Areas.Pharmacy.Controllers
 
             var model = await _pharmacyService.FillHomePharmacyRequestViewModel(requestId);
             if (model == null) return NotFound();
+            if (model == null) return NotFound();
+            if (model.User == null) return NotFound();
+            if (model.Request == null) return NotFound();
+            if (model.HomePharmacyRequestDetails == null) return NotFound();
+            if (model.PatientRequestDetail == null) return NotFound();
+            if (model.PatientRequestDateTimeDetail == null) return NotFound();
+            if (model.Patient == null) return NotFound();
 
             #endregion
 

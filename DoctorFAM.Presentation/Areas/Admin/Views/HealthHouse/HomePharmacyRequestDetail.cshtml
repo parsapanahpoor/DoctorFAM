@@ -1,15 +1,26 @@
-﻿@model DoctorFAM.Domain.ViewModels.Admin.HealthHouse.HomePharmacy.HomePharmacyRequestDetailViewModel
-@using DoctorFAM.Domain.ViewModels.Admin.HealthHouse.HomePharmacy
-@using DoctorFAM.Web.Culture
-@using DoctorFAM.Domain.ViewModels.Admin.HealthHouse
+﻿@model DoctorFAM.Domain.ViewModels.Pharmacy.HomePharmacy.HomePharmacyRequestViewModel
 @using DoctorFAM.Application.Extensions
 @using DoctorFAM.Application.Convertors
 @using DoctorFAM.Domain.ViewModels.Common
-@using DoctorFAM.Application.StaticTools
 @inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
+@using DoctorFAM.Application.StaticTools
 
 @{
-    ViewData["Title"] = @Localizer["Home Pharmacy Request Detail"];
+    ViewData["Title"] = @Localizer["Show Details"];
+}
+
+@section Styles
+{
+<style>
+
+    .header-fullname {
+        font: 21px 'YekanBakh-FaNum';
+        margin-top: 27px;
+        display: inline-block;
+    }
+
+</style>
 }
 
 @section Scripts
@@ -20,325 +31,332 @@
 @section Breadcrumb
 {
 <li>
-    <a href="javascript:void(0)"> @Localizer["Home Pharmacy Request List"] / </a>
-    <a href="javascript:void(0)"> @ViewData["Title"] </a>
+    <a href="javascript:void(0)"> @Localizer["Request Code"] : @Model.Request.Id </a>
 </li>
 }
 
 <div class="row">
 
-    <div class="col-lg-12 col-sm-12">
-        <div class="well with-header with-footer table-responsive">
-            <div class="header bordered-azure">
-                <div class="flex-style">
-                    <span>@Localizer["List Of Drugs"]</span>
+    <div class="col-md-12">
+
+        <div class="col-md-12">
+            <div class="profile-container">
+                <div class="profile-header row">
+                    <div class="col-lg-2 col-md-4 col-sm-12 text-center">
+                        <img src="@Model.User.GetUserAvatar()" alt="" class="header-avatar">
+                    </div>
+                    <div class="col-lg-3 col-md-8 col-sm-12 profile-info">
+                        <div class="header-fullname">@Model.User.Username</div>
+                        <a href="#" class="btn btn-palegreen btn-sm  btn-follow">
+                            <i class="fa fa-user"></i>
+                            @Localizer["Client"]
+                        </a>
+                        <div class="header-information">
+                            @Localizer["Mobile"] : @Model.User.Mobile
+                        </div>
+                    </div>
+                     <div class="col-lg-7 col-md-12 col-sm-12 col-xs-12 profile-stats">
+                        <div class="row">
+                            <div class="col-lg-4 col-md-3 col-sm-3 col-xs-12 stats-col">
+                                <div class="stats-value blue">@(Model.Request.CreateDate != null ? Model.Request.CreateDate.ToStringShamsiDate() : Localizer["Empty"])</div>
+                                <div class="stats-title">@Localizer["Request Create Date"]</div>
+                            </div>
+                            <div class="col-lg-2 col-md-3 col-sm-3 col-xs-12 stats-col">
+                                <div class="stats-value blue">@(Model.PatientRequestDateTimeDetail != null ? Model.PatientRequestDateTimeDetail.StartTime.ToString("00 : 00") : Localizer["Empty"] )</div>
+                                <div class="stats-title">@Localizer["Start Time"]</div>
+                            </div>
+                            <div class="col-lg-2 col-md-3 col-sm-3 col-xs-12 stats-col">
+                                <div class="stats-value blue"> @(Model.PatientRequestDateTimeDetail != null ? Model.PatientRequestDateTimeDetail.EndTime.ToString("00 : 00") : Localizer["Empty"] )
+                                    </div>
+                                <div class="stats-title">@Localizer["End Time"]</div>
+                            </div>
+                            <div class="col-lg-4 col-md-3 col-sm-3 col-xs-12 stats-col">
+                                <div class="stats-value blue">@(Model.PatientRequestDateTimeDetail != null ? Model.PatientRequestDateTimeDetail.SendDate.ToStringShamsiDate() : Localizer["Empty"] )
+                                    </div>
+                                <div class="stats-title">@Localizer["Patient Date Time"]</div>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
-            </div>
 
-            @if (Model.RequestedDrugs != null && Model.RequestedDrugs.Any())
-            {
-                <table class="table table-hover table-bordered tc vm text-center align-items-center">
+                <div class="profile-body">
+                    <div class="col-lg-12">
+                        <div class="tabbable">
+                            <ul class="nav nav-tabs tabs-flat  nav-justified" id="myTab11">
+                                <li class="tab-red">
+                                    <a data-toggle="tab" href="#timeline" aria-expanded="false">
+                                        @Localizer["Client Information"]
+                                    </a>
+                                </li>
+                                <li class="tab-palegreen">
+                                    <a data-toggle="tab" id="contacttab" href="#contacts" aria-expanded="false">
+                                        @Localizer["Drogs Informations"]
+                                    </a>
+                                </li>
+                                <li class="tab-yellow active">
+                                    <a data-toggle="tab" href="#settings" aria-expanded="true">
+                                        @Localizer["Patient Information"]
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="tab-content tabs-flat">
+                                <div id="timeline" class="tab-pane">
 
-                    <tr>
-                        <th class=" text-center align-items-center">اطلاعات دارو</th>
-                        <th class=" text-center align-items-center">توضیحات</th>
-                    </tr>
-
-                    @foreach (var item in Model.RequestedDrugs)
-                    {
-                        <tr class="tc vm text-center align-items-center">
-
-                            @if (!string.IsNullOrEmpty(item.DrugTrakingCode))
-                            {
-
-                                <td class=" text-center align-items-center">
-
+                                    <div class="form-title">
+                                        @Localizer["Client Information"]
+                                    </div>
                                     <div class="row">
 
-                                        <div class=col-md-6>
-                                            <span>کد رهگیری نسخه/ کد ملی متقاضی</span>
+                                        <div class="form-group col-md-6 col-sm-12">
+                                            <label>@Localizer["Client Username"]</label>
+                                            <input type="text" class="form-control" readonly value="@Model.User.Username">
                                         </div>
-                                        <div class=col-md-6>
-                                            <h5 style="color:#fd5b03"> @item.DrugTrakingCode</h5>
+
+                                        <div class="form-group col-md-6 col-sm-12">
+                                            <label>@Localizer["Client Mobile"]</label>
+                                            <input type="text" class="form-control" readonly value="@(string.IsNullOrEmpty(Model.User.Mobile) ? @Localizer["Empty"] : @Model.User.Mobile )">
                                         </div>
+
+                                        <div class="form-group col-md-6 col-sm-12">
+                                            <label>@Localizer["Client First Name"]</label>
+                                            <input type="text" class="form-control" readonly value="@(string.IsNullOrEmpty(Model.User.LastName) ? @Localizer["Empty"] : @Model.User.FirstName )">
+                                        </div>
+
+                                        <div class="form-group col-md-6 col-sm-12">
+                                            <label>@Localizer["Client Last Name"]</label>
+                                            <input type="text" class="form-control" readonly value="@(string.IsNullOrEmpty(Model.User.LastName) ? @Localizer["Empty"] : @Model.User.LastName )">
+                                        </div>
+
+                                        <div class="form-group col-md-6 col-sm-12">
+                                            <label>@Localizer["Email"]</label>
+                                            <input type="text" class="form-control" readonly value="@(string.IsNullOrEmpty(Model.User.Email) ? @Localizer["Empty"] : @Model.User.Email )">
+                                        </div>
+
+                                        <div class="form-group col-md-6 col-sm-12">
+                                            <label>@Localizer["Extra Mobile"]</label>
+                                            <input type="text" class="form-control" readonly value="@(string.IsNullOrEmpty(Model.User.ExtraPhoneNumber) ? @Localizer["Empty"] : @Model.User.ExtraPhoneNumber )">
+                                        </div>
+
                                     </div>
 
-                                </td>
-                            }
-                            @if (!string.IsNullOrEmpty(item.DrugPrescription))
-                            {
-                                <td class=" text-center align-items-center">
+                                </div>
+                                <div id="contacts" class="tab-pane">
+                                    <div class="row">
+                                        <div class="col-lg-12 col-sm-12">
+                                            <div class="well with-header with-footer table-responsive">
 
+
+                                                @if (Model.HomePharmacyRequestDetails != null && Model.HomePharmacyRequestDetails.Any())
+                                                {
+                                                    <table class="table table-hover table-bordered tc vm text-center align-items-center">
+
+                                                        <tr>
+                                                            <th class=" text-center align-items-center">#</th>
+                                                            <th class=" text-center align-items-center">اطلاعات دارو</th>
+                                                            <th class=" text-center align-items-center">توضیحات</th>
+                                                        </tr>
+
+                                                        @{
+                                                            int i = 1;
+                                                        }
+
+                                                        @foreach (var item in Model.HomePharmacyRequestDetails)
+                                                        {
+                                                            <tr class="tc vm text-center align-items-center">
+
+                                                                <td class=" text-center align-items-center"> @i </td>
+
+
+                                                                @if (!string.IsNullOrEmpty(item.DrugTrakingCode))
+                                                                {
+
+                                                                    <td class=" text-center align-items-center">
+
+                                                                        <div class="row">
+
+                                                                            <div class=col-md-6>
+                                                                                <span>@Localizer["Prescription tracking code/applicant's national code"]</span>
+                                                                            </div>
+                                                                            <div class=col-md-6>
+                                                                                <h5 style="color:#fd5b03"> @item.DrugTrakingCode</h5>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </td>
+                                                                }
+                                                                @if (!string.IsNullOrEmpty(item.DrugPrescription))
+                                                                {
+                                                                    <td class=" text-center align-items-center">
+
+                                                                        <div class="row">
+
+                                                                            <div class=col-md-6>
+                                                                                <span>@Localizer["Version image"]</span>
+                                                                            </div>
+                                                                            <div class=col-md-6>
+                                                                                <a target="_blank" href="@PathTools.SiteAddress@PathTools.DrugPrescriptionPathThumb/@item.DrugPrescription"><img src="@PathTools.DrugPrescriptionPathThumb/@item.DrugPrescription" class="avatar-style" /></a>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </td>
+                                                                }
+                                                                @if (!string.IsNullOrEmpty(item.DrugImage) && !string.IsNullOrEmpty(item.DrugCount) && !string.IsNullOrEmpty(item.DrugName))
+                                                                {
+                                                                    <td class=" text-center align-items-center">
+
+                                                                        <div class="row">
+
+                                                                            <div class=col-md-6>
+                                                                                @item.DrugName - @Localizer["Count"] @item.DrugCount
+                                                                            </div>
+                                                                            <div class=col-md-6>
+                                                                                <a target="_blank" href="@PathTools.SiteAddress@PathTools.DrugPrescriptionPathThumb/@item.DrugImage"> <img src="@PathTools.DrugPrescriptionPathThumb/@item.DrugImage" class="avatar-style" /> </a>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    @if (!string.IsNullOrEmpty(item.DrugImage))
+                                                                    {
+                                                                        <td class=" text-center align-items-center">
+                                                                            <span>@Localizer["drug picture"]</span>
+                                                                            <a target="_blank" href="@PathTools.SiteAddress@PathTools.DrugPrescriptionPathThumb/@item.DrugImage">  <img src="@PathTools.DrugPrescriptionPathThumb/@item.DrugImage" class="avatar-style" /></a>
+                                                                            -
+                                                                            @Localizer["Count"] @item.DrugCount
+                                                                        </td>
+                                                                    }
+                                                                    @if (!string.IsNullOrEmpty(item.DrugCount) && !string.IsNullOrEmpty(item.DrugName))
+                                                                    {
+                                                                        <td class=" text-center align-items-center">@item.DrugName - @Localizer["Count"] @item.DrugCount  </td>
+                                                                    }
+                                                                }
+
+                                                                <td class=" text-center align-items-center">@item.Description</td>
+
+                                                                @{
+                                                                    i++;
+                                                                }
+
+                                                            </tr>
+                                                        }
+                                                    </table>
+                                                }
+                                                else
+                                                {
+                                                    <partial name="_PharmacyNotFoundPartial" />
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="settings" class="tab-pane active">
+                                    <div class="form-title">
+                                        @Localizer["Patient Information"]
+                                    </div>
                                     <div class="row">
 
-                                        <div class=col-md-6>
-                                            <span>تصویر نسخه</span>
+                                        <div class="form-group col-md-6 col-sm-12">
+                                            <label>@Localizer["Patient First Name"]</label>
+                                            <input type="text" class="form-control" readonly value="@Model.Patient.PatientName">
                                         </div>
-                                        <div class=col-md-6>
-                                            <img src="@PathTools.DrugPrescriptionPathThumb/@item.DrugPrescription" class="avatar-style" />
+
+                                        <div class="form-group col-md-6 col-sm-12">
+                                            <label>@Localizer["Patient Last Name"]</label>
+                                            <input type="text" class="form-control" readonly value="@Model.Patient.PatientLastName">
                                         </div>
+
+                                        <div class="form-group col-md-6 col-sm-12">
+                                            <label>@Localizer["Patient National Code"]</label>
+                                            <input type="text" class="form-control" readonly value="@Model.Patient.NationalId">
+                                        </div>
+
+                                        <div class="form-group col-md-6 col-sm-12">
+                                            <label>@Localizer["Gender"]</label>
+                                              @if (Model.Patient.Gender == DoctorFAM.Domain.Enums.Gender.Gender.Male)
+                                            {
+                                                <input type="text" class="form-control" readonly value="@Localizer["Male"]">
+                                            }
+                                                 @if (Model.Patient.Gender == DoctorFAM.Domain.Enums.Gender.Gender.Female)
+                                            {
+                                                <input type="text" class="form-control" readonly value="@Localizer["Female"]">
+                                            }
+                                        </div>
+
+                                        <div class="form-group col-md-6 col-sm-12">
+                                            <label>@Localizer["Age"]</label>
+                                            <input type="text" class="form-control" readonly value="@Model.Patient.Age">
+                                        </div>
+
+                                        <div class="form-group col-md-6 col-sm-12">
+                                            <label>@Localizer["Insurance Type"]</label>
+                                            @if (Model.Patient.InsuranceType == DoctorFAM.Domain.Enums.InsuranceType.InsuranceType.Free)
+                                            {
+                                                <input type="text" class="form-control" readonly value="@Localizer["Free"]">
+                                            }
+                                            @if (Model.Patient.InsuranceType == DoctorFAM.Domain.Enums.InsuranceType.InsuranceType.Salamat)
+                                            {
+                                                <input type="text" class="form-control" readonly value="@Localizer["Health Insurance"]">
+                                            }
+                                            @if (Model.Patient.InsuranceType == DoctorFAM.Domain.Enums.InsuranceType.InsuranceType.FreeJobs)
+                                            {
+                                                <input type="text" class="form-control" readonly value="@Localizer["بیمه ی آزاد"]">
+                                            }
+                                            @if (Model.Patient.InsuranceType == DoctorFAM.Domain.Enums.InsuranceType.InsuranceType.Iranian)
+                                            {
+                                                <input type="text" class="form-control" readonly value="@Localizer["Iranian health"]">
+                                            }
+                                            @if (Model.Patient.InsuranceType == DoctorFAM.Domain.Enums.InsuranceType.InsuranceType.Tamin)
+                                            {
+                                                <input type="text" class="form-control" readonly value="@Localizer["Social Security"]">
+                                            }
+                                        </div>
+
+                                        <div class="form-group col-md-12 col-sm-12">
+                                            <label>@Localizer["Request Description"]</label>
+                                            <textarea type="text" style="max-width:100%;" class="form-control" readonly >@Model.Patient.RequestDescription</textarea>
+                                        </div>
+                                            
+                                          <div class="form-group col-md-6 col-sm-12">
+                                            <label>@Localizer["Patient Phone Number"]</label>
+                                            <input type="text" class="form-control" readonly value="@(string.IsNullOrEmpty(Model.PatientRequestDetail.Phone) ? @Localizer["Empty"] : @Model.PatientRequestDetail.Phone )">
+                                        </div>
+
+                                          <div class="form-group col-md-6 col-sm-12">
+                                            <label>@Localizer["Patient Mobile"]</label>
+                                            <input type="text" class="form-control" readonly value="@(string.IsNullOrEmpty(Model.PatientRequestDetail.Mobile) ? @Localizer["Empty"] : @Model.PatientRequestDetail.Mobile )">
+                                        </div>
+
+                                           <div class="form-group col-md-6 col-sm-12">
+                                            <label>@Localizer["Distance from the city"]</label>
+                                            <input type="text" class="form-control" readonly value="@((Model.PatientRequestDetail.Distance == null) ? @Localizer["Empty"] : @Model.PatientRequestDetail.Distance )">
+                                        </div>
+                                        
+                                          <div class="form-group col-md-6 col-sm-12">
+                                            <label>@Localizer["Vilage Name"]</label>
+                                            <input type="text" class="form-control" readonly value="@(string.IsNullOrEmpty(Model.PatientRequestDetail.Vilage) ? @Localizer["Empty"] : @Model.PatientRequestDetail.Vilage )">
+                                        </div>
+
+                                           <div class="form-group col-md-12 col-sm-12">
+                                            <label>@Localizer["Address"]</label>
+                                            <textarea type="text" style="max-width:100%;" class="form-control" readonly >@Model.PatientRequestDetail.FullAddress</textarea>
+                                        </div>
+
                                     </div>
 
-                                </td>
-                            }
-                            @if (!string.IsNullOrEmpty(item.DrugImage) && !string.IsNullOrEmpty(item.DrugCount) && !string.IsNullOrEmpty(item.DrugName))
-                            {
-                                <td class=" text-center align-items-center">
-
-                                    <div class="row">
-
-                                        <div class=col-md-6>
-                                            @item.DrugName - تعداد @item.DrugCount
-                                        </div>
-                                        <div class=col-md-6>
-                                            <img src="@PathTools.DrugPrescriptionPathThumb/@item.DrugImage" class="avatar-style" />
-                                        </div>
-                                    </div>
-
-                                </td>
-                            }
-                            else
-                            {
-                                @if (!string.IsNullOrEmpty(item.DrugImage))
-                                {
-                                    <td class=" text-center align-items-center">
-                                        <span>تصویر دارو</span>
-                                        <img src="@PathTools.DrugPrescriptionPathThumb/@item.DrugImage" class="avatar-style" />
-                                        -
-                                        تعداد @item.DrugCount
-                                    </td>
-                                }
-                                @if (!string.IsNullOrEmpty(item.DrugCount) && !string.IsNullOrEmpty(item.DrugName))
-                                {
-                                    <td class=" text-center align-items-center">@item.DrugName - تعداد @item.DrugCount  </td>
-                                }
-                            }
-
-                            <td class=" text-center align-items-center">@item.Description</td>
-
-                        </tr>
-                    }
-                </table>
-            }
-            else
-            {
-                <partial name="_AdminNotFoundPartial" />
-            }
-        </div>
-    </div>
-
-</div>
-
-<div class="row">
-    <div class="col-lg-12 col-sm-12">
-        <div class="widget">
-            <div class="widget-header bordered-bottom bordered-green">
-                <span class="widget-caption"> @Localizer["User Infos"] </span>
-            </div>
-            <div class="widget-body">
-                <div>
-
-                    <div class="row">
-                        <div class="form-group col-md-12 col-sm-12">
-                            <label asp-for="Username"></label>
-                            <input type="text" class="form-control" asp-for="Username">
-                            <span class="text-danger" asp-validation-for="Username"></span>
+                                </div>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="row">
-                        <div class="form-group col-md-12 col-sm-12">
-                            <label asp-for="Email"></label>
-                            <input type="text" class="form-control" asp-for="Email" value="@(string.IsNullOrEmpty(Model.Email) ? "وارد نشده " : Model.Email)">
-                            <span class="text-danger" asp-validation-for="Email"></span>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="form-group col-md-12 col-sm-12">
-                            <label asp-for="Mobile"></label>
-                            <input type="text" class="form-control" asp-for="Mobile">
-                            <span class="text-danger" asp-validation-for="Mobile"></span>
-                        </div>
-                    </div>
-
                 </div>
+
+
             </div>
         </div>
+
     </div>
+
 </div>
-
-<div class="row">
-    <div class="col-lg-12 col-sm-12">
-        <div class="widget">
-            <div class="widget-header bordered-bottom bordered-green">
-                <span class="widget-caption"> @Localizer["Patient Information"] </span>
-            </div>
-            <div class="widget-body">
-                <div>
-
-                    <div class="row">
-                        <div class="form-group col-md-12 col-sm-12">
-                            <label asp-for="PatientName"> @Localizer["First Name"] </label>
-                            <input type="text" class="form-control" asp-for="PatientName" value="@(string.IsNullOrEmpty(Model.PatientName) ? "وارد نشده " : Model.PatientName)">
-                            <span class="text-danger" asp-validation-for="PatientName"></span>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="form-group col-md-12 col-sm-12">
-                            <label asp-for="PatientLastName">@Localizer["Last Name"]</label>
-                            <input type="text" class="form-control" asp-for="PatientLastName" value="@(string.IsNullOrEmpty(Model.PatientLastName) ? "وارد نشده " : Model.PatientLastName)">
-                            <span class="text-danger" asp-validation-for="PatientLastName"></span>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="form-group col-md-12 col-sm-12">
-                            <label asp-for="NationalId">@Localizer["National Id"]</label>
-                            <input type="text" class="form-control" asp-for="NationalId" value="@(string.IsNullOrEmpty(Model.NationalId) ? "وارد نشده " : Model.NationalId)">
-                            <span class="text-danger" asp-validation-for="NationalId"></span>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="form-group col-md-12 col-sm-12">
-                            <label asp-for="Gender">@Localizer["Patient Gender"]</label>
-                            <input type="text" class="form-control" asp-for="Gender" value="@(Model.Gender == null ? "وارد نشده " : Model.Gender)">
-                            <span class="text-danger" asp-validation-for="Gender"></span>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="form-group col-md-12 col-sm-12">
-                            <label asp-for="Age">@Localizer["Patient Age"]</label>
-                            <div class="form-con trol"> @(Model.Age == null ? "وارد نشده " : Model.Age)</div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="form-group col-md-12 col-sm-12">
-                            <label asp-for="InsuranceType">@Localizer["Patient InsuranceType"]</label>
-                            <input type="text" class="form-control" asp-for="InsuranceType" value="@(Model.InsuranceType == null ? "وارد نشده " : Model.InsuranceType)">
-                            <span class="text-danger" asp-validation-for="InsuranceType"></span>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="form-group col-md-12 col-sm-12">
-                            <label asp-for="RequestDescription">@Localizer["Patient RequestDescription"]</label>
-                            <textarea class="form-control"> @(Model.RequestDescription == null ? "وارد نشده " : Model.RequestDescription)</textarea>
-                            <span class="text-danger" asp-validation-for="RequestDescription"></span>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-lg-12 col-sm-12">
-        <div class="widget">
-            <div class="widget-header bordered-bottom bordered-green">
-                <span class="widget-caption"> @Localizer["Request Detail"] </span>
-            </div>
-            <div class="widget-body">
-                <div>
-
-                    <div class="row">
-                        <div class="form-group col-md-12 col-sm-12">
-                            <label asp-for="Country"> @Localizer["Country"] </label>
-                            <input type="text" class="form-control" asp-for="Country" value="@(string.IsNullOrEmpty(Model.Country) ? "وارد نشده " : Model.Country)">
-                            <span class="text-danger" asp-validation-for="Country"></span>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="form-group col-md-12 col-sm-12">
-                            <label asp-for="State">@Localizer["State"]</label>
-                            <input type="text" class="form-control" asp-for="State" value="@(string.IsNullOrEmpty(Model.State) ? "وارد نشده " : Model.State)">
-                            <span class="text-danger" asp-validation-for="State"></span>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="form-group col-md-12 col-sm-12">
-                            <label asp-for="City">@Localizer["City"]</label>
-                            <input type="text" class="form-control" asp-for="City" value="@(string.IsNullOrEmpty(Model.City) ? "وارد نشده " : Model.City)">
-                            <span class="text-danger" asp-validation-for="City"></span>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="form-group col-md-12 col-sm-12">
-                            <label asp-for="Vilage">@Localizer["Vilage"]</label>
-                            <input type="text" class="form-control" asp-for="Vilage" value="@(Model.Vilage == null ? "وارد نشده " : Model.Vilage)">
-                            <span class="text-danger" asp-validation-for="Vilage"></span>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="form-group col-md-12 col-sm-12">
-                            <label asp-for="Phone">@Localizer["Phone"]</label>
-                            <input type="text" class="form-control" asp-for="Phone" value="@(Model.Phone == null ? "وارد نشده " : Model.Phone)">
-                            <span class="text-danger" asp-validation-for="Phone"></span>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="form-group col-md-12 col-sm-12">
-                            <label asp-for="RequestDetailMobile">@Localizer["RequestDetailMobile"]</label>
-                            <input type="text" class="form-control" asp-for="RequestDetailMobile" value="@(Model.RequestDetailMobile == null ? "وارد نشده " : Model.RequestDetailMobile)">
-                            <span class="text-danger" asp-validation-for="RequestDetailMobile"></span>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="form-group col-md-12 col-sm-12">
-                            <label asp-for="Distance">@Localizer["Distance"]</label>
-                            <input type="text" class="form-control" asp-for="Distance" value="@(Model.Distance == null ? "وارد نشده " : Model.Distance)">
-                            <span class="text-danger" asp-validation-for="Distance"></span>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="form-group col-md-12 col-sm-12">
-                            <label asp-for="SendDate">@Localizer["SendDate"]</label>
-                            <input type="text" class="form-control" asp-for="SendDate" value="@(Model.SendDate == null ? "وارد نشده " : Model.SendDate.Value.ToShamsi())">
-                            <span class="text-danger" asp-validation-for="SendDate"></span>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="form-group col-md-12 col-sm-12">
-                            <label asp-for="StartTime">@Localizer["StartTime"]</label>
-                            <input type="text" class="form-control" asp-for="StartTime" value="@(Model.StartTime == null ? "وارد نشده " : Model.StartTime)">
-                            <span class="text-danger" asp-validation-for="StartTime"></span>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="form-group col-md-12 col-sm-12">
-                            <label asp-for="EndTime">@Localizer["Distance"]</label>
-                            <input type="text" class="form-control" asp-for="EndTime" value="@(Model.EndTime == null ? "وارد نشده " : Model.EndTime)">
-                            <span class="text-danger" asp-validation-for="EndTime"></span>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="form-group col-md-12 col-sm-12">
-                            <label asp-for="FullAddress">@Localizer["FullAddress"]</label>
-                            <textarea class="form-control"> @(Model.FullAddress == null ? "وارد نشده " : Model.FullAddress)</textarea>
-                            <span class="text-danger" asp-validation-for="FullAddress"></span>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 

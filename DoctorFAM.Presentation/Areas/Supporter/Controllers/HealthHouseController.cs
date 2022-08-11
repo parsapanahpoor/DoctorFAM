@@ -26,7 +26,9 @@ namespace DoctorFAM.Web.Areas.Supporter.Controllers
 
         private readonly IHomeLaboratoryServices _homeLaboratoryServices;
 
-        public HealthHouseController(IHomeVisitService homeVisit, IHomeNurseService homeNurse, IDeathCertificateService deathCertificate, IHomePatientTransportService homePatientTransportService, IHomePharmacyServicec homePharmacyService, IHomeLaboratoryServices homeLaboratoryServices)
+        private readonly IPharmacyService _pharmacyService;
+
+        public HealthHouseController(IHomeVisitService homeVisit, IHomeNurseService homeNurse, IDeathCertificateService deathCertificate, IHomePatientTransportService homePatientTransportService, IHomePharmacyServicec homePharmacyService, IHomeLaboratoryServices homeLaboratoryServices, IPharmacyService pharmacyService)
         {
             _homeVisit = homeVisit;
             _homeNurse = homeNurse;
@@ -34,6 +36,7 @@ namespace DoctorFAM.Web.Areas.Supporter.Controllers
             _homePatientTransportService = homePatientTransportService;
             _homePharmacyService = homePharmacyService;
             _homeLaboratoryServices = homeLaboratoryServices;
+            _pharmacyService = pharmacyService;
         }
 
         #endregion
@@ -174,10 +177,9 @@ namespace DoctorFAM.Web.Areas.Supporter.Controllers
 
         public async Task<IActionResult> HomePharmacyRequestDetail(ulong requestId)
         {
-            #region Get Request
+            #region Get Pharmacy Request Detail
 
-            var model = await _homePharmacyService.ShowHomePharmacyDetail(requestId);
-
+            var model = await _pharmacyService.FillHomePharmacyRequestAdminPanelViewModel(requestId);
             if (model == null) return NotFound();
 
             #endregion

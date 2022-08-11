@@ -434,7 +434,7 @@ namespace DoctorFAM.Application.Services.Implementation
             PatientRequestDateTimeDetail datetimeRequest = new PatientRequestDateTimeDetail()
             {
                 SendDate = time,
-                RequestId = request.Id,
+                RequestId = model.RequestId,
                 CreateDate = DateTime.Now,
                 StartTime = model.StartTime,
                 EndTime = model.EndTime,

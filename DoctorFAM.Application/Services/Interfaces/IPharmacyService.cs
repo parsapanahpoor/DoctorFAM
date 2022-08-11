@@ -68,6 +68,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         #region Admin Panel 
 
+        //Show Home Pharmacy Request Detail In Admin Panel
+        Task<HomePharmacyRequestViewModel?> FillHomePharmacyRequestAdminPanelViewModel(ulong requestId);
+
         //Filter Pharmacys Informations In Admin Panels 
         Task<ListOfPharmacyInfoViewModel> FilterPharmacyInfoAdminSide(ListOfPharmacyInfoViewModel filter);
 

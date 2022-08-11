@@ -38,29 +38,54 @@
                         <div>
                             @if (population != null && population.Any())
                             {
-                                <table class="table table-hover table-bordered tc vm text-center align-items-center">
+                                    <table class="table table-hover table-bordered tc vm text-center align-items-center">
 
-                                    <tr>
-                                        <th class=" text-center align-items-center">نام</th>
-                                        <th class=" text-center align-items-center">نام خانوادگی</th>
-                                        <th>نسبت</th>
-                                        <th class=" text-center align-items-center">عملیات</th>
-                                    </tr>
+                                        <tr>
+                                            <th class=" text-center align-items-center">نام</th>
+                                            <th class=" text-center align-items-center">نام خانوادگی</th>
+                                            <th>نسبت</th>
+                                            <th class=" text-center align-items-center">عملیات</th>
+                                        </tr>
 
                                     @foreach (var item in population)
                                     {
-                                        <tr class="tc vm text-center align-items-center" remove-ajax-item="@item.Id">
+                                                <tr class="tc vm text-center align-items-center" remove-ajax-item="@item.Id">
 
-                                            <td class=" text-center align-items-center">@item.PatientName</td>
-                                            <td class=" text-center align-items-center">@item.PatientLastName</td>
-                                            <td class=" text-center align-items-center">@item.Ratio</td>
+                                                    <td class=" text-center align-items-center">@item.PatientName</td>
+                                                    <td class=" text-center align-items-center">@item.PatientLastName</td>
+
+                                            @if (item.Ratio == DoctorFAM.Domain.Enums.Population_Covered.Ratio.Brother)
+                                            {
+                                                            <td class=" text-center align-items-center">@SharedLocalizer["Brother"]</td>
+                                            }
+                                            @if (item.Ratio == DoctorFAM.Domain.Enums.Population_Covered.Ratio.Child)
+                                            {
+                                                            <td class=" text-center align-items-center">@SharedLocalizer["Child"]</td>
+                                            }
+                                            @if (item.Ratio == DoctorFAM.Domain.Enums.Population_Covered.Ratio.Father)
+                                            {
+                                                            <td class=" text-center align-items-center">@SharedLocalizer["Father"]</td>
+                                            }
+                                            @if (item.Ratio == DoctorFAM.Domain.Enums.Population_Covered.Ratio.Mother)
+                                            {
+                                                            <td class=" text-center align-items-center">@SharedLocalizer["Mother"]</td>
+                                            }
+                                            @if (item.Ratio == DoctorFAM.Domain.Enums.Population_Covered.Ratio.Sister)
+                                            {
+                                                            <td class=" text-center align-items-center">@SharedLocalizer["Sister"]</td>
+                                            }
+                                            @if (item.Ratio == DoctorFAM.Domain.Enums.Population_Covered.Ratio.Partner)
+                                            {
+                                                            <td class=" text-center align-items-center">@SharedLocalizer["Partner"]</td>
+                                            }
+
                                             <td class=" text-center align-items-center">
-                                                <a asp-action="PatientDetails" asp-controller="HomePharmacy" asp-area="" asp-route-populationCoveredId="@item.Id" asp-route-requestId="@Model.RequestId" class="btn-Accept-primary">انتخاب</a>
-                                            </td>
+                                                        <a asp-action="PatientDetails" asp-controller="HomePharmacy" asp-area="" asp-route-populationCoveredId="@item.Id" asp-route-requestId="@Model.RequestId" class="btn-Accept-primary">انتخاب</a>
+                                                    </td>
 
-                                        </tr>
+                                                </tr>
                                     }
-                                </table>
+                                    </table>
                             }
                         </div>
                     </div>
@@ -127,7 +152,7 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <div class="form-group">                       
+                    <div class="form-group">
                         <label asp-for="RequestDescription" class="control-label">توضیحات</label>
                         <input asp-for="RequestDescription" class="form-control" />
                         <span asp-validation-for="RequestDescription" class="text-danger"></span>

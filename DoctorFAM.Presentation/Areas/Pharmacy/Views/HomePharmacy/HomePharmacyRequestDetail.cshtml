@@ -43,34 +43,36 @@
             <div class="profile-container">
                 <div class="profile-header row">
                     <div class="col-lg-2 col-md-4 col-sm-12 text-center">
-                        <img src="@Model.User.GetUserAvatar()" alt="" class="header-avatar">
+                        <img src="@(Model.User != null ? Model.User.GetUserAvatar() : Localizer["Empty"])" alt="" class="header-avatar">
                     </div>
                     <div class="col-lg-3 col-md-8 col-sm-12 profile-info">
-                        <div class="header-fullname">@Model.User.Username</div>
+                        <div class="header-fullname">@(Model.User.Username != null ? Model.User.Username : Localizer["Empty"])</div>
                         <a href="#" class="btn btn-palegreen btn-sm  btn-follow">
                             <i class="fa fa-user"></i>
                             @Localizer["Client"]
                         </a>
                         <div class="header-information">
-                            @Localizer["Mobile"] : @Model.User.Mobile
+                            @Localizer["Mobile"] : @(Model.User.Mobile != null ? Model.User.Mobile : Localizer["Empty"])
                         </div>
                     </div>
                     <div class="col-lg-7 col-md-12 col-sm-12 col-xs-12 profile-stats">
                         <div class="row">
                             <div class="col-lg-4 col-md-3 col-sm-3 col-xs-12 stats-col">
-                                <div class="stats-value blue">@Model.Request.CreateDate.ToStringShamsiDate()</div>
+                                <div class="stats-value blue">@(Model.Request.CreateDate != null ? Model.Request.CreateDate.ToStringShamsiDate() : Localizer["Empty"])</div>
                                 <div class="stats-title">@Localizer["Request Create Date"]</div>
                             </div>
                             <div class="col-lg-2 col-md-3 col-sm-3 col-xs-12 stats-col">
-                                <div class="stats-value blue">@Model.PatientRequestDateTimeDetail.StartTime.ToString("00 : 00")</div>
+                                <div class="stats-value blue">@(Model.PatientRequestDateTimeDetail != null ? Model.PatientRequestDateTimeDetail.StartTime.ToString("00 : 00") : Localizer["Empty"] )</div>
                                 <div class="stats-title">@Localizer["Start Time"]</div>
                             </div>
                             <div class="col-lg-2 col-md-3 col-sm-3 col-xs-12 stats-col">
-                                <div class="stats-value blue">@Model.PatientRequestDateTimeDetail.EndTime.ToString("00 : 00")</div>
+                                <div class="stats-value blue"> @(Model.PatientRequestDateTimeDetail != null ? Model.PatientRequestDateTimeDetail.EndTime.ToString("00 : 00") : Localizer["Empty"] )
+                                    </div>
                                 <div class="stats-title">@Localizer["End Time"]</div>
                             </div>
                             <div class="col-lg-4 col-md-3 col-sm-3 col-xs-12 stats-col">
-                                <div class="stats-value blue">@Model.PatientRequestDateTimeDetail.SendDate.ToStringShamsiDate()</div>
+                                <div class="stats-value blue">@(Model.PatientRequestDateTimeDetail != null ? Model.PatientRequestDateTimeDetail.SendDate.ToStringShamsiDate() : Localizer["Empty"] )
+                                    </div>
                                 <div class="stats-title">@Localizer["Patient Date Time"]</div>
                             </div>
                         </div>
@@ -319,22 +321,22 @@
                                             
                                           <div class="form-group col-md-6 col-sm-12">
                                             <label>@Localizer["Patient Phone Number"]</label>
-                                            <input type="text" class="form-control" readonly value="@(string.IsNullOrEmpty(Model.PatientRequestDetail.Phone) ? @Localizer["Empty"] : @Model.PatientRequestDetail.Phone )">
+                                            <input type="text" class="form-control" readonly value="@(string.IsNullOrEmpty(Model.PatientRequestDetail.Phone) ? Localizer["Empty"] : Model.PatientRequestDetail.Phone )">
                                         </div>
 
                                           <div class="form-group col-md-6 col-sm-12">
                                             <label>@Localizer["Patient Mobile"]</label>
-                                            <input type="text" class="form-control" readonly value="@(string.IsNullOrEmpty(Model.PatientRequestDetail.Mobile) ? @Localizer["Empty"] : @Model.PatientRequestDetail.Mobile )">
+                                            <input type="text" class="form-control" readonly value="@(string.IsNullOrEmpty(Model.PatientRequestDetail.Mobile) ? Localizer["Empty"] : Model.PatientRequestDetail.Mobile )">
                                         </div>
 
                                            <div class="form-group col-md-6 col-sm-12">
                                             <label>@Localizer["Distance from the city"]</label>
-                                            <input type="text" class="form-control" readonly value="@((Model.PatientRequestDetail.Distance == null) ? @Localizer["Empty"] : @Model.PatientRequestDetail.Distance )">
+                                            <input type="text" class="form-control" readonly value="@(Model.PatientRequestDetail.Distance == null ? Localizer["Empty"] : Model.PatientRequestDetail.Distance )">
                                         </div>
                                         
                                           <div class="form-group col-md-6 col-sm-12">
                                             <label>@Localizer["Vilage Name"]</label>
-                                            <input type="text" class="form-control" readonly value="@(string.IsNullOrEmpty(Model.PatientRequestDetail.Vilage) ? @Localizer["Empty"] : @Model.PatientRequestDetail.Vilage )">
+                                            <input type="text" class="form-control" readonly value="@(string.IsNullOrEmpty(Model.PatientRequestDetail.Vilage) ? Localizer["Empty"] : Model.PatientRequestDetail.Vilage )">
                                         </div>
 
                                            <div class="form-group col-md-12 col-sm-12">
@@ -344,7 +346,6 @@
 
                                     </div>
 
-                                    <a class="btn btn-primary">@Localizer["Accept Request"]</a>
                                 </div>
                             </div>
                         </div>
@@ -358,4 +359,3 @@
     </div>
 
 </div>
-

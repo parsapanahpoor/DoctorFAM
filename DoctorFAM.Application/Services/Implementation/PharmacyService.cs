@@ -53,7 +53,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
         #region Pharmacy Panel Side
 
-        //Show Home Pharmacy Request Detail
+        //Show Home Pharmacy Request Detail In Pharmacy Panel
         public async Task<HomePharmacyRequestViewModel?> FillHomePharmacyRequestViewModel(ulong requestId)
         {
             #region Get Request By Request Id
@@ -657,6 +657,36 @@ namespace DoctorFAM.Application.Services.Implementation
         #endregion
 
         #region Admin Side 
+
+        //Show Home Pharmacy Request Detail In Admin Panel
+        public async Task<HomePharmacyRequestViewModel?> FillHomePharmacyRequestAdminPanelViewModel(ulong requestId)
+        {
+            #region Get Request By Request Id
+
+            var request = await _requestService.GetRequestById(requestId);
+
+            if (request == null) return null;
+            if (request.RequestType != Domain.Enums.RequestType.RequestType.HomeDrog) return null;
+            if (!request.PatientId.HasValue) return null;
+
+            #endregion
+
+            #region Fill Model 
+
+            HomePharmacyRequestViewModel model = new HomePharmacyRequestViewModel()
+            {
+                Patient = await _patientService.GetPatientById(request.PatientId.Value),
+                User = await _userService.GetUserById(request.UserId),
+                HomePharmacyRequestDetails = await _homePharmacyService.GetHomePharmacyRequestDetailByRequestId(request.Id),
+                PatientRequestDetail = await _homePharmacyService.GetRequestPatientDetailByRequestId(request.Id),
+                PatientRequestDateTimeDetail = await _homePharmacyService.GetRequestDateTimeDetailByRequestDetailId(request.Id),
+                Request = request
+            };
+
+            #endregion
+
+            return model;
+        }
 
         //Show Pharmacy Information Detial For Admin Or Supporter
         public async Task<PharmacyInfoDetailViewModel?> FillPharmacyInfoDetailViewModel(ulong pharmacyInfoId)
