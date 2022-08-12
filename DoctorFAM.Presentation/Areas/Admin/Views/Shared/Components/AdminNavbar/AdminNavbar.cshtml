@@ -3,7 +3,7 @@
 
 @{
     var currentCulture = ApplicationCultures.GetCurrentCulture();
-        var isRtl = currentCulture.IsRtl;
+    var isRtl = currentCulture.IsRtl;
 }
 
 <!-- Loading Container -->
@@ -37,159 +37,33 @@
                 <div class="navbar-account">
                     <ul class="account-area">
 
-                   @*     <li>
-                            <a class=" dropdown-toggle" data-toggle="dropdown" title="Help" href="#">
-                                <i class="icon fa fa-warning"></i>
+                        <!--Notification-->
+                        <li>
+                            <a class="wave in" id="chat-link" title="Chat" href="#">
+                                <i class="icon glyphicon glyphicon-comment"></i>
+                                <span class="badge">4</span>
                             </a>
-                            <!--Notification Dropdown-->
-                            <ul class="pull-right dropdown-menu dropdown-arrow dropdown-notifications">
-                                <li>
-                                    <a href="#">
-                                        <div class="clearfix">
-                                            <div class="notification-icon">
-                                                <i class="fa fa-phone bg-themeprimary white"></i>
-                                            </div>
-                                            <div class="notification-body">
-                                                <span class="title">ملاقات در اسکایپ با علی</span>
-                                                <span class="description">01:00 بعد از ظهر</span>
-                                            </div>
-                                            <div class="notification-extra">
-                                                <i class="fa fa-clock-o themeprimary"></i>
-                                                <span class="description">دفتر</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <div class="clearfix">
-                                            <div class="notification-icon">
-                                                <i class="fa fa-check bg-darkorange white"></i>
-                                            </div>
-                                            <div class="notification-body">
-                                                <span class="title">استراحت پیش بینی نشده</span>
-                                                <span class="description">03:30 pm - 05:15 pm</span>
-                                            </div>
-                                            <div class="notification-extra">
-                                                <i class="fa fa-clock-o darkorange"></i>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <div class="clearfix">
-                                            <div class="notification-icon">
-                                                <i class="fa fa-gift bg-warning white"></i>
-                                            </div>
-                                            <div class="notification-body">
-                                                <span class="title">تولد مهرام</span>
-                                                <span class="description">08:30 pm</span>
-                                            </div>
-                                            <div class="notification-extra">
-                                                <i class="fa fa-calendar warning"></i>
-                                                <i class="fa fa-clock-o warning"></i>
-                                                <span class="description">خانه</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <div class="clearfix">
-                                            <div class="notification-icon">
-                                                <i class="fa fa-glass bg-success white"></i>
-                                            </div>
-                                            <div class="notification-body">
-                                                <span class="title">شام با دوستان</span>
-                                                <span class="description">10:30 pm</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li class="dropdown-footer ">
-                                    <span>
-                                        امروز، 14 تیر
-                                    </span>
-                                    <span class="pull-left">
-                                        10°c
-                                        <i class="wi wi-cloudy"></i>
-                                    </span>
-                                </li>
-                            </ul>
-                            <!--/Notification Dropdown-->
-                        </li>*@
+                        </li>
 
+                        <!--Online-->
+                        <li class="marli margin-left-10" id="Online">
 
-                    @*    <li>
-                            <a class="dropdown-toggle" data-toggle="dropdown" title="Mails" href="#">
-                                <i class="icon fa fa-envelope"></i>
-                                <span class="badge">3</span>
+                            <a class="dropdown-toggle btn btn-success" href="#">
+                                آنلاین
                             </a>
-                            <!--Messages Dropdown-->
-                            <ul class="pull-right dropdown-menu dropdown-arrow dropdown-messages">
-                                <li>
-                                    <a href="#">
-                                        <img src="/admin/img/avatars/divyia.jpg" class="message-avatar" alt="Divyia Austin">
-                                        <div class="message">
-                                            <span class="message-sender">
-                                                دیویا فیلیپس
-                                            </span>
-                                            <span class="message-time">
-                                                2 دقیقه پیش
-                                            </span>
-                                            <span class="message-subject">
-                                                دستور پخت پای سیب ارسال می گردد
-                                            </span>
-                                            <span class="message-body">
-                                                برای پختن پای سیب تنها لازم است تا سیب داشته باشید
-                                            </span>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <img src="/admin/img/avatars/bing.png" class="message-avatar" alt="Microsoft Bing">
-                                        <div class="message">
-                                            <span class="message-sender">
-                                                Bing.com
-                                            </span>
-                                            <span class="message-time">
-                                                دیروز
-                                            </span>
-                                            <span class="message-subject">
-                                                Bing Newsletter: The January Issue‏
-                                            </span>
-                                            <span class="message-body">
-                                                Discover new music just in time for the Grammy® Awards.
-                                            </span>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <img src="/admin/img/avatars/adam-jansen.jpg" class="message-avatar" alt="Divyia Austin">
-                                        <div class="message">
-                                            <span class="message-sender">
-                                                Nicolas
-                                            </span>
-                                            <span class="message-time">
-                                                Friday, September 22
-                                            </span>
-                                            <span class="message-subject">
-                                                دوربین های 4کی جدید
-                                            </span>
-                                            <span class="message-body">
-                                                انقلاب دوربین های 4کی به مرحله جدیدی رسیده است.
-                                            </span>
-                                        </div>
-                                    </a>
-                                </li>
-                            </ul>
-                            <!--/Messages Dropdown-->
-                        </li>*@
 
-                    <li class="marli">
+                        </li>
+
+                        <!--Offline-->
+                        <li class="marli margin-left-10 " id="disConnect">
+
+                            <a class="dropdown-toggle btn btn-danger" href="#">
+                                آفلاین
+                            </a>
+
+                        </li>
+
+                        <li class="marli margin-left-10">
 
                             <a class="dropdown-toggle btn btn-blue " data-toggle="dropdown" title="انتخاب زبان" href="#">
                                 <i class="fa fa-angle-down"></i>
@@ -214,7 +88,7 @@
                         </li>
 
                         <li>
-                             <a class="login-area dropdown-toggle" data-toggle="dropdown">
+                            <a class="login-area dropdown-toggle" data-toggle="dropdown">
                                 <div class="avatar" title="View your public profile">
                                     <img src="@Model.GetUserAvatar()">
                                 </div>
@@ -257,28 +131,7 @@
                         no space must be between these elements-->
                         <!-- Settings -->
                     </ul>
-                   @* <div class="setting">
-                        <a id="btn-setting" title="Setting" href="#">
-                            <i class="icon glyphicon glyphicon-cog"></i>
-                        </a>
-                    </div><div class="setting-container">
-                        <label>
-                            <input type="checkbox" id="checkbox_fixednavbar">
-                            <span class="text">نوار بالایی ثابت</span>
-                        </label>
-                        <label>
-                            <input type="checkbox" id="checkbox_fixedsidebar">
-                            <span class="text">منوی کناری ثابت</span>
-                        </label>
-                        <label>
-                            <input type="checkbox" id="checkbox_fixedbreadcrumbs">
-                            <span class="text">نوار بردکرامبز ثابت</span>
-                        </label>
-                        <label>
-                            <input type="checkbox" id="checkbox_fixedheader">
-                            <span class="text">نوار میانی ثابت</span>
-                        </label>
-                    </div>*@
+         
                     <!-- Settings -->
                 </div>
             </div>

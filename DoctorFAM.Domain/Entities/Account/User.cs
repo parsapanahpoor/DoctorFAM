@@ -2,6 +2,7 @@
 using DoctorFAM.Domain.Entities.Common;
 using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.Entities.Doctors;
+using DoctorFAM.Domain.Entities.Notification;
 using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.Entities.WorkAddress;
 using System;
@@ -122,6 +123,8 @@ namespace DoctorFAM.Domain.Entities.Account
         public ICollection<WorkAddress.WorkAddress> WorkAddresses { get; set; }
 
         public ICollection<LogForCloseReservation> LogForCloseReservations { get; set; }
+
+        public ICollection<SupporterNotification> SupporterNotifications { get; set; }
 
         #endregion
     }

@@ -7,6 +7,7 @@ using DoctorFAM.Domain.Entities.Interest;
 using DoctorFAM.Domain.Entities.Laboratory;
 using DoctorFAM.Domain.Entities.Languages;
 using DoctorFAM.Domain.Entities.MarketCategory;
+using DoctorFAM.Domain.Entities.Notification;
 using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.Pharmacy;
@@ -191,6 +192,12 @@ namespace DoctorFAM.Data.DbContext
         public DbSet<DoctorReservationDateTime> DoctorReservationDateTimes { get; set; }
 
         public DbSet<LogForCloseReservation> LogForCloseReservations { get; set; }
+
+        #endregion
+
+        #region Notification 
+
+        public DbSet<SupporterNotification> SupporterNotification { get; set; }
 
         #endregion
 

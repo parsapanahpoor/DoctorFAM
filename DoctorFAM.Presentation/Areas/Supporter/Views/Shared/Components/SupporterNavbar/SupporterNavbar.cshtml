@@ -37,8 +37,25 @@
                 <div class="navbar-account">
                     <ul class="account-area mt-3">
 
+                        <!--Online-->
+                        <li class="marli margin-left-10" id="Online">
 
-                        <li class="marli">
+                            <a class="dropdown-toggle btn btn-success" href="#">
+                                آنلاین
+                            </a>
+
+                        </li>
+
+                        <!--Offline-->
+                        <li class="marli margin-left-10 " id="disConnect">
+
+                            <a class="dropdown-toggle btn btn-danger" href="#">
+                                آفلاین
+                            </a>
+
+                        </li>
+
+                        <li class="marli margin-left-10">
 
                             <a class="dropdown-toggle btn btn-blue " data-toggle="dropdown" title="انتخاب زبان" href="#">
                                 <i class="fa fa-angle-down"></i>
@@ -63,7 +80,7 @@
                         </li>
 
                         <li>
-                             <a class="login-area dropdown-toggle" data-toggle="dropdown">
+                            <a class="login-area dropdown-toggle" data-toggle="dropdown">
                                 <div class="avatar" title="View your public profile">
                                     <img src="@Model.GetUserAvatar()">
                                 </div>

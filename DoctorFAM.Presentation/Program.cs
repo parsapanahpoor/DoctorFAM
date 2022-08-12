@@ -2,6 +2,7 @@ using DoctorFAM.Application.SiteServices;
 using DoctorFAM.Data.DbContext;
 using DoctorFAM.Domain.SharedResource;
 using DoctorFAM.IoC;
+using DoctorFAM.Web.Hubs;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Localization;
@@ -81,8 +82,12 @@ builder.Services.AddMvc();
 
 #endregion
 
+#region Session
+
 builder.Services.AddSession();
 builder.Services.AddHttpContextAccessor();
+
+#endregion
 
 #region Add DBContext
 
@@ -169,6 +174,12 @@ builder.Services.Configure<RequestLocalizationOptions>(
 
 #endregion
 
+#region SignalR
+
+builder.Services.AddSignalR();
+
+#endregion
+
 #endregion
 
 #region MiddleWares
@@ -231,7 +242,6 @@ app.UseRequestLocalization(options);
 
 #endregion
 
-
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
@@ -241,6 +251,9 @@ app.UseSession();
 
 SiteCurrentContext.Configure(app.Services.GetRequiredService<IHttpContextAccessor>());
 
+app.UseEndpoints(configure => {
+    configure.MapHub<NotificationHub>("/hub/Notification");
+});
 
 app.MapControllerRoute(
     name: "area",
