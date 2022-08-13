@@ -400,6 +400,24 @@ namespace DoctorFAM.Application.Services.Implementation
 
         #region Admin
 
+        //Get List Of Admins and Supporters User Id For Send Notification 
+        public async Task<List<string>?> GetAdminsAndSupportersNotificationForSendNotification()
+        {
+            return await _userRepository.GetAdminsAndSupportersNotificationForSendNotification();
+        }
+
+        //Get List Of Admins 
+        public async Task<List<User>?> GetListOfAdmins()
+        {
+            return await _userRepository.GetListOfAdmins();
+        }
+
+        //Get List Of Supporters
+        public async Task<List<User>?> GetListOfSupporters()
+        {
+            return await _userRepository.GetListOfSupporters();
+        }
+
         //Update User 
         public async Task UpdateUser(User user)
         {

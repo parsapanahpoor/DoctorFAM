@@ -1,14 +1,18 @@
-﻿using DoctorFAM.Application.Extensions;
+﻿using DoctorFAM.Application.Convertors;
+using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Interfaces;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.Enums.RequestType;
 using DoctorFAM.Domain.ViewModels.Site.Common;
 using DoctorFAM.Domain.ViewModels.Site.HomePharmacy;
+using DoctorFAM.Domain.ViewModels.Site.Notification;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
 using DoctorFAM.Domain.ViewModels.Site.Request;
 using DoctorFAM.Web.HttpManager;
+using DoctorFAM.Web.Hubs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace DoctorFAM.Web.Controllers
 {
@@ -31,9 +35,13 @@ namespace DoctorFAM.Web.Controllers
 
         private readonly IPopulationCoveredService _populationCovered;
 
+        private readonly IHubContext<NotificationHub> _notificationHub;
+
+        private readonly INotificationService _notificationService;
+
         public HomePharmacyController(IHomePharmacyServicec homePharmacy, IRequestService requestService, IUserService userService
-                                     , IPatientService patientService, ILocationService locationService , ISiteSettingService siteSettingService
-                                        , IPopulationCoveredService populationCovered)
+                                     , IPatientService patientService, ILocationService locationService, ISiteSettingService siteSettingService
+                                        , IPopulationCoveredService populationCovered, IHubContext<NotificationHub> notificationHub, INotificationService notificationService)
         {
             _homePharmacy = homePharmacy;
             _requestService = requestService;
@@ -42,6 +50,8 @@ namespace DoctorFAM.Web.Controllers
             _locationService = locationService;
             _siteSettingService = siteSettingService;
             _populationCovered = populationCovered;
+            _notificationHub = notificationHub;
+            _notificationService = notificationService;
         }
 
         #endregion
@@ -474,6 +484,34 @@ namespace DoctorFAM.Web.Controllers
 
                     //Pay Home Pharmacy Tariff
                     await _homePharmacy.PayHomePharmacyTariff(User.GetUserId(), homePharmacyTariff);
+
+                    #region Send Notification In SignalR
+
+                    //Create Notification For Supporters And Admins
+                    var notifyResult = await _notificationService.CreateSupporterNotification(request.Id , Domain.Enums.Notification.SupporterNotificationText.HomePharmacyCreateFromUser , Domain.Enums.Notification.NotificationTarget.request , User.GetUserId());
+
+                    //Get Current User
+                    var currentUser = await _userService.GetUserById(User.GetUserId());
+
+                    if (notifyResult)
+                    {
+                        //Get List Of Admins And Supporter To Send Notification Into Them
+                        var users = await _userService.GetAdminsAndSupportersNotificationForSendNotification();
+
+                        //Fill Send Supporter Notification ViewModel For Send Notification
+                        SendSupporterNotificationViewModel viewModel = new SendSupporterNotificationViewModel()
+                        {
+                            CreateNotificationDate = $"{DateTime.Now.ToShamsi()} - {DateTime.Now.Hour}:{DateTime.Now.Minute}",
+                            NotificationText = "درخواست برای داروخانه در منزل",
+                            RequestId = request.Id,
+                            Username = User.Identity.Name,
+                            UserImage = currentUser.Avatar
+                        };
+
+                        await _notificationHub.Clients.Users(users).SendAsync("SendSupporterNotification", viewModel);
+                    }
+
+                    #endregion
 
                     return View();
                 }

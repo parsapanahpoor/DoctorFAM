@@ -363,6 +363,9 @@
   <data name="Records of medical" xml:space="preserve">
     <value>سجلات الإجراءات الطبية</value>
   </data>
+  <data name="Request For Home Pharmacy" xml:space="preserve">
+    <value>درخواست برای داروخانه در منزل</value>
+  </data>
   <data name="Reservation History" xml:space="preserve">
     <value>محفوظات الحجز</value>
   </data>

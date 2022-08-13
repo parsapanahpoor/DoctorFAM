@@ -58,6 +58,15 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         #region Admin
 
+        //Get List Of Admins and Supporters User Id For Send Notification 
+        Task<List<string>?> GetAdminsAndSupportersNotificationForSendNotification();
+
+        //Get List Of Admins 
+        Task<List<User>?> GetListOfAdmins();
+
+        //Get List Of Supporters
+        Task<List<User>?> GetListOfSupporters();
+
         //Update User 
         Task UpdateUser(User user);
 

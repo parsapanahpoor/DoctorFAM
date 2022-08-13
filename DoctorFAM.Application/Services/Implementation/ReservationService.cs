@@ -606,6 +606,8 @@ namespace DoctorFAM.Application.Services.Implementation
 
             var reservationDateTime = await _reservation.GetDoctorReservationDateTimeById(reservationId);
             if (reservationDateTime == null) return null;
+            if (reservationDateTime.DoctorReservationState == Domain.Enums.DoctorReservation.DoctorReservationState.Canceled) return null;
+
 
             #endregion
 

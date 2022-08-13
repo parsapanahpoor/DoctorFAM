@@ -459,4 +459,7 @@
   <data name="List Of Cancel Request" xml:space="preserve">
     <value>درخواست های لغو نوبت</value>
   </data>
+  <data name="Request For Home Pharmacy" xml:space="preserve">
+    <value>درخواست برای داروخانه در منزل</value>
+  </data>
 </root>

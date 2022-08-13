@@ -412,6 +412,9 @@
   <data name="Rejected" xml:space="preserve">
     <value>تایید نشده</value>
   </data>
+  <data name="Request For Home Pharmacy" xml:space="preserve">
+    <value>درخواست برای داروخانه در منزل</value>
+  </data>
   <data name="Reservation Date" xml:space="preserve">
     <value>تاریخ نوبت دهی </value>
   </data>

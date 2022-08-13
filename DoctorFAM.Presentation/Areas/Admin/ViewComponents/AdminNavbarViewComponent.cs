@@ -10,9 +10,12 @@ namespace DoctorFAM.Web.Areas.Admin.ViewComponents
 
         private readonly IUserService _userService;
 
-        public AdminNavbarViewComponent(IUserService userService)
+        private readonly INotificationService _notificationService;
+
+        public AdminNavbarViewComponent(IUserService userService , INotificationService notificationService)
         {
             _userService = userService;
+            _notificationService = notificationService;
         }
 
         #endregion
