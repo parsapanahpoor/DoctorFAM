@@ -1,10 +1,13 @@
-﻿using DoctorFAM.Application.Interfaces;
+﻿using DoctorFAM.Application.Extensions;
+using DoctorFAM.Application.Interfaces;
 using DoctorFAM.Presentation.Models;
 using DoctorFAM.Web.HttpManager;
+using DoctorFAM.Web.Hubs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.SignalR;
 using System.Diagnostics;
 
 namespace DoctorFAM.Web.Controllers
@@ -17,10 +20,13 @@ namespace DoctorFAM.Web.Controllers
 
         public ILocationService _locationService;
 
-        public HomeController(ILogger<HomeController> logger , ILocationService lcaotionService)
+        private readonly IHubContext<NotificationHub> _notificationHub;
+
+        public HomeController(ILogger<HomeController> logger , ILocationService lcaotionService , IHubContext<NotificationHub> notificationHub)
         {
             _logger = logger;
             _locationService = lcaotionService;
+            _notificationHub = notificationHub;
         }
 
         #endregion
@@ -36,7 +42,7 @@ namespace DoctorFAM.Web.Controllers
 
         #region SecPage
 
-        public IActionResult SecPage()
+        public async  Task<IActionResult> SecPage()
         {
             return View();
         }
