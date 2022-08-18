@@ -1,4 +1,5 @@
 ﻿using DoctorFAM.Domain.Entities.Common;
+using DoctorFAM.Domain.Entities.States;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -19,12 +20,16 @@ namespace DoctorFAM.Domain.Entities.Account
         [Display(Name = "نام یکتا")]
         [Required(ErrorMessage = "این فیلد الزامی است .")]
         public string  RoleUniqueName { get; set; }
+
+        public ulong? ParentId { get; set; }
+
         #endregion
 
         #region Relation
 
         public ICollection<RolePermission> RolePermissions { get; set; }
 
+        public Role Parent { get; set; }
 
         #endregion
     }

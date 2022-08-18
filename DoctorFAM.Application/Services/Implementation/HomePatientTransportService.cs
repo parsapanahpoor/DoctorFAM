@@ -66,13 +66,16 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #region Fill Entitie
 
+            Random key = new Random();
+
             Request request = new Request()
             {
                 RequestType = Domain.Enums.RequestType.RequestType.PatientTransfer,
                 RequestState = Domain.Enums.Request.RequestState.WaitingForCompleteInformationFromUser,
                 CreateDate = DateTime.Now,
                 IsDelete = false,
-                UserId = userId
+                UserId = userId,
+                BusinessKey = (ulong)key.Next(0, 1000000000)
             };
 
             #endregion
