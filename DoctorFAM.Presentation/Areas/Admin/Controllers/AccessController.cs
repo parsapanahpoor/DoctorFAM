@@ -28,9 +28,15 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
 
         #region Create Role
 
-        public IActionResult CreateRole()
+        public async Task<IActionResult> CreateRole(ulong? parentId)
         {
             ViewData["Permissions"] = PermissionsList.Permissions.Where(s => !s.IsDelete).ToList();
+            ViewBag.parentId = parentId;
+
+            if (parentId != null)
+            {
+                ViewBag.parentRole = await _permissionService.GetRoleById(parentId.Value);
+            }
 
             return View();
         }

@@ -58,14 +58,17 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         #region Admin
 
-        //Get List Of Admins and Supporters User Id For Send Notification 
-        Task<List<string>?> GetAdminsAndSupportersNotificationForSendNotification();
+        //Get List Of Admins and Supporters User Id For Send Notification For Home Pharmacy
+        Task<List<string>?> GetAdminsAndSupportersNotificationForSendNotificationInHomePharmacy();
 
         //Get List Of Admins 
         Task<List<User>?> GetListOfAdmins();
 
         //Get List Of Supporters
         Task<List<User>?> GetListOfSupporters();
+
+        //Get Home Pharmacy Supporters
+        Task<List<User>?> GetHomePharmacySupporters();
 
         //Update User 
         Task UpdateUser(User user);

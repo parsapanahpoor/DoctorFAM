@@ -1,4 +1,5 @@
-﻿using DoctorFAM.Application.Services.Implementation;
+﻿using DoctorFAM.Application.Security;
+using DoctorFAM.Application.Services.Implementation;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.HealthHouse;
 using DoctorFAM.Domain.ViewModels.Admin.HealthHouse.DeathCertificate;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DoctorFAM.Web.Areas.Supporter.Controllers
 {
+    [PermissionChecker("SupporterPanel")]
     public class HealthHouseController : SupporterBaseController
     {
         #region Ctor
@@ -45,6 +47,7 @@ namespace DoctorFAM.Web.Areas.Supporter.Controllers
 
         #region Listt Of Home Visit
 
+        [PermissionChecker("HomeVisit")]
         public async Task<IActionResult> ListOfHomeVisits(FilterHomeVisistViewModel filter)
         {
             return View(await _homeVisit.FilterHomeVisit(filter));
@@ -54,6 +57,7 @@ namespace DoctorFAM.Web.Areas.Supporter.Controllers
 
         #region Home Visit Detail 
 
+        [PermissionChecker("HomeVisit")]
         public async Task<IActionResult> HomeVisitRequestDetail(ulong requestId)
         {
             #region Get Request
@@ -75,6 +79,7 @@ namespace DoctorFAM.Web.Areas.Supporter.Controllers
 
         #region List Of Home Nurse 
 
+        [PermissionChecker("HomeNurse")]
         public async Task<IActionResult> ListOfHomeNurse(FilterHomeNurseViewModel filter)
         {
             return View(await _homeNurse.FilterHomeNurse(filter));
@@ -84,6 +89,7 @@ namespace DoctorFAM.Web.Areas.Supporter.Controllers
 
         #region Home Nurse Detail
 
+        [PermissionChecker("HomeNurse")]
         public async Task<IActionResult> HomeNurseRequestDetail(ulong requestId)
         {
             #region Get Request
@@ -105,6 +111,7 @@ namespace DoctorFAM.Web.Areas.Supporter.Controllers
 
         #region List Of Death Certificate
 
+        [PermissionChecker("DeathCertificate")]
         public async Task<IActionResult> ListOfDeathCertificate(FilterDeathCertificateViewModel filter)
         {
             return View(await _deathCertificate.FilterDeathCertificate(filter));
@@ -114,6 +121,7 @@ namespace DoctorFAM.Web.Areas.Supporter.Controllers
 
         #region Death Certificate Detail
 
+        [PermissionChecker("DeathCertificate")]
         public async Task<IActionResult> DeathCertificateRequestDetail(ulong requestId)
         {
             #region Get Request
@@ -136,6 +144,7 @@ namespace DoctorFAM.Web.Areas.Supporter.Controllers
 
         #region List Of Home Patient Transport
 
+        [PermissionChecker("PetientTransport")]
         public async Task<IActionResult> ListOfHomePatientTransport(FilterHomePatientTransportViewModel filter)
         {
             return View(await _homePatientTransportService.FilterHomePatientTransport(filter));
@@ -145,6 +154,7 @@ namespace DoctorFAM.Web.Areas.Supporter.Controllers
 
         #region Home Patient Transport Detail
 
+        [PermissionChecker("PetientTransport")]
         public async Task<IActionResult> HomePatientTransportRequestDetail(ulong requestId)
         {
             #region Get Request
@@ -166,6 +176,7 @@ namespace DoctorFAM.Web.Areas.Supporter.Controllers
 
         #region List Of Home Pharmacy
 
+        [PermissionChecker("HomePharmacy")]
         public async Task<IActionResult> ListOfHomePharmacy(FilterHomePharmacyViewModel filter)
         {
             return View(await _homePharmacyService.FilterHomePharmacy(filter));
@@ -175,6 +186,7 @@ namespace DoctorFAM.Web.Areas.Supporter.Controllers
 
         #region Home Pharmacy Detail
 
+        [PermissionChecker("HomePharmacy")]
         public async Task<IActionResult> HomePharmacyRequestDetail(ulong requestId)
         {
             #region Get Pharmacy Request Detail
@@ -195,6 +207,7 @@ namespace DoctorFAM.Web.Areas.Supporter.Controllers
 
         #region List Of Home Labratory
 
+        [PermissionChecker("HomeLaboratory")]
         public async Task<IActionResult> ListOfHomeLabratory(FilterHomeLabratoryViewModel filter)
         {
             return View(await _homeLaboratoryServices.FilterHomeLabratory(filter));
@@ -204,6 +217,7 @@ namespace DoctorFAM.Web.Areas.Supporter.Controllers
 
         #region Home Pharmacy Detail
 
+        [PermissionChecker("HomeLaboratory")]
         public async Task<IActionResult> HomeLabratoryRequestDetail(ulong requestId)
         {
             #region Get Request

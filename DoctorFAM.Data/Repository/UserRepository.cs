@@ -56,8 +56,14 @@ namespace DoctorFAM.Data.Repository
             return await _context.UserRoles.Include(p=>p.User).Where(p => !p.IsDelete && p.RoleId == 3).Select(p => p.User).ToListAsync();
         }
 
-        //Get List Of Admins and Supporters User Id For Send Notification 
-        public async Task<List<string>?> GetAdminsAndSupportersNotificationForSendNotification()
+        //Get Home Pharmacy Supporters
+        public async Task<List<User>?> GetHomePharmacySupporters()
+        {
+            return await _context.UserRoles.Include(p => p.User).Where(p => !p.IsDelete && p.RoleId == 9).Select(p => p.User).ToListAsync();
+        }
+
+        //Get List Of Admins and Supporters User Id For Send Notification For Home Pharmacy
+        public async Task<List<string>?> GetAdminsAndSupportersNotificationForSendNotificationInHomePharmacy()
         {
             List<string> model = new List<string>();
 
@@ -66,7 +72,7 @@ namespace DoctorFAM.Data.Repository
             model.AddRange(admins);
 
             //Get Supporters User Id
-            var supporters = await _context.UserRoles.Where(p => !p.IsDelete && p.RoleId == 3).Select(p => p.UserId.ToString()).ToListAsync();
+            var supporters = await _context.UserRoles.Where(p => !p.IsDelete && p.RoleId == 9).Select(p => p.UserId.ToString()).ToListAsync();
             model.AddRange(supporters);
 
             return model;

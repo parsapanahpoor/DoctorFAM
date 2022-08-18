@@ -21,6 +21,8 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         #region Role
 
+        Task<List<Role>> GetListOfRoles();
+
         Task<DoctorSideBarViewModel> GetDoctorsInfosState(ulong userId);
 
         Task<FilterRolesViewModel> FilterRoles(FilterRolesViewModel filter);

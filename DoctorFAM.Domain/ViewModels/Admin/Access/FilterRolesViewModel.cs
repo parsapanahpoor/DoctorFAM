@@ -13,5 +13,9 @@ namespace DoctorFAM.Domain.ViewModels.Access
         public string? RoleTitle { get; set; }
 
         public string? RoleUniqueName { get; set; }
+
+        public ulong? ParentId { get; set; }
+
+        public Role ParentRole { get; set; }
     }
 }

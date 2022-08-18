@@ -11,143 +11,143 @@
 }
 
 @{
-    var roles = ViewData["Roles"] != null ? ViewData["Roles"] as List<SelectListViewModel> : null;
+    var roles = ViewData["Roles"] != null ? ViewData["Roles"] as List<DoctorFAM.Domain.Entities.Account.Role> : null;
 }
 
 @section Scripts
-{
-<partial name="_JqueryValidation" />
+    {
+    <partial name="_JqueryValidation" />
 }
 
-@section Breadcrumb
-{
-<li>
-    <a asp-action="FilterUsers" asp-controller="Account" asp-area="Admin"> @Localizer["List Of Users"] </a>
-</li>
-<li>
-    <a href="javascript:void(0)"> @ViewData["Title"] </a>
-</li>
+    @section Breadcrumb
+    {
+    <li>
+        <a asp-action="FilterUsers" asp-controller="Account" asp-area="Admin"> @Localizer["List Of Users"] </a>
+    </li>
+    <li>
+        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+    </li>
 }
 
-<form method="post" asp-action="EditUserInfo" asp-controller="Account" asp-area="Admin" enctype="multipart/form-data">
-    <div class="row">
-        <div class="col-lg-9 col-sm-12">
-            <div class="row">
+    <form method="post" asp-action="EditUserInfo" asp-controller="Account" asp-area="Admin" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col-lg-9 col-sm-12">
+                <div class="row">
 
-                <input type="hidden" asp-for="UserId" />
-                <input type="hidden" asp-for="AvatarName" />
+                    <input type="hidden" asp-for="UserId" />
+                    <input type="hidden" asp-for="AvatarName" />
 
-                <div class="col-lg-12">
-                    <div class="widget">
-                        <div class="widget-header bordered-bottom bordered-green">
-                            <span class="widget-caption"> @Localizer["User Information"] </span>
-                        </div>
-                        <div class="widget-body">
-                            <div class="row">
+                    <div class="col-lg-12">
+                        <div class="widget">
+                            <div class="widget-header bordered-bottom bordered-green">
+                                <span class="widget-caption"> @Localizer["User Information"] </span>
+                            </div>
+                            <div class="widget-body">
+                                <div class="row">
 
-                                <div class="form-group col-md-6 col-sm-12">
-                                    <label asp-for="username"></label>
-                                    <input type="text" class="form-control" asp-for="username">
-                                    <span class="text-danger" asp-validation-for="username"></span>
+                                    <div class="form-group col-md-12 col-sm-12">
+                                        <label asp-for="username"></label>
+                                        <input type="text" class="form-control" asp-for="username">
+                                        <span class="text-danger" asp-validation-for="username"></span>
+                                    </div>
+
+                                    <div class="form-group col-md-12 col-sm-12">
+                                        <label asp-for="Email"></label>
+                                        <input type="text" class="form-control" asp-for="Email">
+                                        <span class="text-danger" asp-validation-for="Email"></span>
+                                    </div>
+
+                                    <div class="form-group col-md-12 col-sm-12">
+                                        <label asp-for="Mobile"></label>
+                                        <input type="text" class="form-control" asp-for="Mobile">
+                                        <span class="text-danger" asp-validation-for="Mobile"></span>
+                                    </div>
+
+                                    <div class="form-group col-md-12 col-sm-12">
+                                        <label asp-for="FirstName"></label>
+                                        <input type="text" class="form-control" asp-for="FirstName">
+                                        <span class="text-danger" asp-validation-for="FirstName"></span>
+                                    </div>
+
+                                    <div class="form-group col-md-12 col-sm-12">
+                                        <label asp-for="LastName"></label>
+                                        <input type="text" class="form-control" asp-for="LastName">
+                                        <span class="text-danger" asp-validation-for="LastName"></span>
+                                    </div>
+
+                                    <div class="form-group col-md-12 col-sm-12">
+                                        <label asp-for="BithDay"></label>
+                                        <input asp-for="BithDay" class="form-control" autocomplete="off" AdminDatePicker="1" />
+                                        <span class="text-danger" asp-validation-for="BithDay"></span>
+                                    </div>
+
+                                    <div class="form-group col-md-12 col-sm-12">
+                                        <label asp-for="FatherName"></label>
+                                        <input type="text" class="form-control" asp-for="FatherName">
+                                        <span class="text-danger" asp-validation-for="FatherName"></span>
+                                    </div>
+
+                                    <div class="form-group col-md-12 col-sm-12">
+                                        <label asp-for="NationalId"></label>
+                                        <input type="text" class="form-control" asp-for="NationalId">
+                                        <span class="text-danger" asp-validation-for="NationalId"></span>
+                                    </div>
+
+                                    <div class="form-group col-md-12 col-sm-12">
+                                        <label asp-for="ExtraPhoneNumber"></label>
+                                        <input type="text" class="form-control" asp-for="ExtraPhoneNumber">
+                                        <span class="text-danger" asp-validation-for="ExtraPhoneNumber"></span>
+                                    </div>
+
+                                    <div class="form-group col-md-12 col-sm-12">
+                                        <label asp-for="HomePhoneNumber"></label>
+                                        <input type="text" class="form-control" asp-for="HomePhoneNumber">
+                                        <span class="text-danger" asp-validation-for="HomePhoneNumber"></span>
+                                    </div>
+
+                                    <div class="form-group col-md-12 col-sm-12">
+                                        <label asp-for="WorkAddress"></label>
+                                        <textarea type="text" class="form-control" asp-for="WorkAddress">@Model.WorkAddress</textarea>
+                                        <span class="text-danger" asp-validation-for="WorkAddress"></span>
+                                    </div>
+
+                                    <hr class="margin-bottom-10 margin-top-10" />
+
+                                    <div class="col-md-12 flex-style">
+                                        <button type="submit" class="btn btn-labeled btn-palegreen">
+                                            <i class="btn-label glyphicon glyphicon-ok"></i>@Localizer["Submit"]
+                                        </button>
+                                    </div>
+
                                 </div>
-
-                                <div class="form-group col-md-6 col-sm-12">
-                                    <label asp-for="Email"></label>
-                                    <input type="text" class="form-control" asp-for="Email">
-                                    <span class="text-danger" asp-validation-for="Email"></span>
-                                </div>
-
-                                <div class="form-group col-md-6 col-sm-12">
-                                    <label asp-for="Mobile"></label>
-                                    <input type="text"  class="form-control" asp-for="Mobile">
-                                    <span class="text-danger" asp-validation-for="Mobile"></span>
-                                </div>
-
-                                <div class="form-group col-md-6 col-sm-12">
-                                    <label asp-for="FirstName"></label>
-                                    <input type="text" class="form-control" asp-for="FirstName">
-                                    <span class="text-danger" asp-validation-for="FirstName"></span>
-                                </div>
-
-                                <div class="form-group col-md-6 col-sm-12">
-                                    <label asp-for="LastName"></label>
-                                    <input type="text" class="form-control" asp-for="LastName">
-                                    <span class="text-danger" asp-validation-for="LastName"></span>
-                                </div>
-
-                                <div class="form-group col-md-6 col-sm-12">
-                                    <label asp-for="BithDay"></label>
-                                <input asp-for="BithDay" class="form-control" autocomplete="off" AdminDatePicker="1"/>
-                                    <span class="text-danger" asp-validation-for="BithDay"></span>
-                                </div>
-
-                                <div class="form-group col-md-6 col-sm-12">
-                                    <label asp-for="FatherName"></label>
-                                    <input type="text" class="form-control" asp-for="FatherName">
-                                    <span class="text-danger" asp-validation-for="FatherName"></span>
-                                </div>
-
-                                <div class="form-group col-md-6 col-sm-12">
-                                    <label asp-for="NationalId"></label>
-                                    <input type="text" class="form-control" asp-for="NationalId">
-                                    <span class="text-danger" asp-validation-for="NationalId"></span>
-                                </div>
-
-                                 <div class="form-group col-md-6 col-sm-12">
-                                    <label asp-for="ExtraPhoneNumber"></label>
-                                    <input type="text" class="form-control" asp-for="ExtraPhoneNumber">
-                                    <span class="text-danger" asp-validation-for="ExtraPhoneNumber"></span>
-                                </div>
-
-                                 <div class="form-group col-md-6 col-sm-12">
-                                    <label asp-for="HomePhoneNumber"></label>
-                                    <input type="text" class="form-control" asp-for="HomePhoneNumber">
-                                    <span class="text-danger" asp-validation-for="HomePhoneNumber"></span>
-                                </div>
-
-                                 <div class="form-group col-md-12 col-sm-12">
-                                    <label asp-for="WorkAddress"></label>
-                                    <textarea type="text" class="form-control" asp-for="WorkAddress">@Model.WorkAddress</textarea>
-                                    <span class="text-danger" asp-validation-for="WorkAddress"></span>
-                                </div>
-
-                                <hr class="margin-bottom-10 margin-top-10" />
-
-                                <div class="col-md-12 flex-style">
-                                    <button type="submit" class="btn btn-labeled btn-palegreen">
-                                        <i class="btn-label glyphicon glyphicon-ok"></i>@Localizer["Submit"]
-                                    </button>
-                                </div>
-
                             </div>
                         </div>
                     </div>
+
                 </div>
-
             </div>
-        </div>
 
-        <div class="col-lg-3 col-sm-12">
-            <div class="row">
+            <div class="col-lg-3 col-sm-12">
+                <div class="row">
 
-                <div class="col-lg-12">
-                    <div class="widget">
-                        <div class="widget-header bordered-bottom bordered-green">
-                            <span class="widget-caption"> آواتار کاربر </span>
-                        </div>
-                        <div class="widget-body">
-                            <div class="row">
+                    <div class="col-lg-12">
+                        <div class="widget">
+                            <div class="widget-header bordered-bottom bordered-green">
+                                <span class="widget-caption"> آواتار کاربر </span>
+                            </div>
+                            <div class="widget-body">
+                                <div class="row">
 
-                                <input type="file" class="display-none" name="UserAvatar" id="UserAvatar" ImageInput="1" accept=".jpg,.jpeg,.png" />
+                                    <input type="file" class="display-none" name="UserAvatar" id="UserAvatar" ImageInput="1" accept=".jpg,.jpeg,.png" />
 
-                                <div class="col-md-12">
-                                    <label for="UserAvatar" class="file-input-style">
-                                        <i class="glyphicon glyphicon-upload"></i>
-                                        <span class="mr-8px"> لطفا آواتار کاربر را انتخاب کنید .</span>
-                                    </label>
-                                </div>
+                                    <div class="col-md-12">
+                                        <label for="UserAvatar" class="file-input-style">
+                                            <i class="glyphicon glyphicon-upload"></i>
+                                            <span class="mr-8px"> لطفا آواتار کاربر را انتخاب کنید .</span>
+                                        </label>
+                                    </div>
 
-                                @{
+                                    @{
                                     var avatarUrl = PathTools.DefaultUserAvatar;
 
                                     if (Model != null && !string.IsNullOrEmpty(Model.AvatarName))
@@ -245,23 +245,34 @@
 
                                     @if (roles != null && roles.Any())
                                     {
-                                        foreach (var role in roles)
+                                        foreach (var role in roles.Where(p => p.ParentId == null))
                                         {
                                             <div class="form-group">
                                                 <div class="checkbox">
                                                     <label>
-                                                        @if (Model != null && Model.UserRoles != null && Model.UserRoles.Any(s => s == role.Id))
-                                                        {
-                                                            <input type="checkbox" checked="checked" name="UserRoles" value="@role.Id">
-                                                        }
-                                                        else
-                                                        {
-                                                            <input type="checkbox" name="UserRoles" value="@role.Id">
-                                                        }
+
+                                                        <input type="checkbox" @((Model != null && Model.UserRoles != null && Model.UserRoles.Any(s => s == role.Id)) ? "checked=checked" : "" ) name="UserRoles" value="@role.Id">
                                                         <span class="text"> @role.Title </span>
+
                                                     </label>
                                                 </div>
                                             </div>
+                                            @if (roles.Any(p => p.ParentId == role.Id))
+                                            {
+                                                foreach (var role2 in roles.Where(p => p.ParentId == role.Id))
+                                                {
+                                                    <div class="form-group" style="margin-top: 0px;margin-bottom: 0px;" >
+                                                        <div class="checkbox" style="margin-top: 0px;margin-bottom: 0px;">
+                                                            <label>
+
+                                                                <input style="padding-right:20px;" type="checkbox" @((Model != null && Model.UserRoles != null && Model.UserRoles.Any(s => s == role2.Id)) ? "checked=checked" : "" ) name="UserRoles" value="@role2.Id">
+                                                                <span style="padding-right:20px;" class="text"> @role2.Title </span>
+
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            }
                                         }
                                     }
 

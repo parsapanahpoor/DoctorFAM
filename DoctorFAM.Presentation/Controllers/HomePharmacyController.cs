@@ -495,7 +495,7 @@ namespace DoctorFAM.Web.Controllers
                     if (notifyResult)
                     {
                         //Get List Of Admins And Supporter To Send Notification Into Them
-                        var users = await _userService.GetAdminsAndSupportersNotificationForSendNotification();
+                        var users = await _userService.GetAdminsAndSupportersNotificationForSendNotificationInHomePharmacy();
 
                         //Fill Send Supporter Notification ViewModel For Send Notification
                         SendSupporterNotificationViewModel viewModel = new SendSupporterNotificationViewModel()

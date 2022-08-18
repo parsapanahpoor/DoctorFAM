@@ -21,6 +21,8 @@ namespace DoctorFAM.Domain.ViewModels.Access
         public List<ulong>? Permissions { get; set; }
 
         public ulong Id { get; set; }
+
+        public ulong? ParentId { get; set; }
     }
 
     public enum EditRoleResult

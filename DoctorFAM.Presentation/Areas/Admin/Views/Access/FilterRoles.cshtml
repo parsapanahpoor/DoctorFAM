@@ -8,26 +8,32 @@
 }
 
 @section Styles
-{
+    {
 
 }
 
-@section Scripts
-{
-<partial name="_AdminSweetAlertLocalizer" />
+    @section Scripts
+    {
+    <partial name="_AdminSweetAlertLocalizer" />
 }
 
-@section Breadcrumb
-{
-<li>
-    <a href="javascript:void(0)"> @ViewData["Title"] </a>
-</li>
+    @section Breadcrumb
+    {
+    <li>
+        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+    </li>
 }
 
-<div class="row">
-    <div class="col-lg-3 col-sm-12">
-        <a class="btn btn-sky w-100 margin-bottom-10" asp-action="CreateRole" asp-controller="Access" asp-area="Admin">@Localizer["Create New Role"]</a>
-
+    <div class="row">
+        <div class="col-lg-3 col-sm-12">
+        @if (Model != null && Model.ParentRole != null)
+        {
+            <a class="btn btn-sky w-100 margin-bottom-10" asp-route-ParentId="@Model.ParentRole.Id" asp-action="CreateRole" asp-controller="Access" asp-area="Admin"> @Localizer["Create New Role"] @Model.ParentRole.Title</a>
+        }
+        else
+        {
+            <a class="btn btn-sky w-100 margin-bottom-10" asp-action="CreateRole" asp-controller="Access" asp-area="Admin">@Localizer["Create New Role"]</a>
+        }
         <div class="widget">
             <div class="widget-header bordered-bottom bordered-green">
                 <span class="widget-caption"> @Localizer["Filter Roles"] </span>
@@ -35,8 +41,8 @@
             <div class="widget-body">
                 <div>
                     <form asp-action="FilterRoles" asp-controller="Access" asp-area="Admin" id="filter-search" method="get">
-
-                        <input type="hidden" asp-for="Page"/>
+                        <input type="hidden" asp-for="ParentId" />
+                        <input type="hidden" asp-for="Page" />
 
                         <div class="form-group">
                             <label asp-for="RoleTitle"> @Localizer["Role Title"] </label>
@@ -48,7 +54,7 @@
                             <input type="text" class="form-control" asp-for="RoleUniqueName">
                         </div>
 
-                        <hr/>
+                        <hr />
 
                         <div class="row">
                             <div class="col-md-12 flex-style">
@@ -58,9 +64,19 @@
 
                                 @if (Context.Request.QueryString.HasValue)
                                 {
-                                    <a asp-area="Admin" asp-controller="Access" asp-action="FilterRoles" class="btn btn-labeled w-100 btn-darkorange mr-10px">
-                                        <i class="btn-label glyphicon glyphicon-remove"></i>@Localizer["Delete Filter"]
-                                    </a>
+
+                                    @if (Model.ParentRole != null)
+                                    {
+                                        <a asp-area="Admin" asp-controller="Access" asp-action="FilterRoles" asp-route-ParentId="@Model.ParentId" class="btn btn-labeled w-100 btn-darkorange">
+                                            <i class="btn-label glyphicon glyphicon-remove"></i>@Localizer["Delete Filter"]
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a asp-area="Admin" asp-controller="Access" asp-action="FilterRoles" class="btn btn-labeled w-100 btn-darkorange">
+                                            <i class="btn-label glyphicon glyphicon-remove"></i>@Localizer["Delete Filter"]
+                                        </a>
+                                    }
                                 }
                             </div>
                         </div>
@@ -83,46 +99,47 @@
             {
                 <table class="table table-hover table-bordered tc vm">
                     <thead class="tc vm">
-                    <tr class="tc vm">
-                        <th class="tc vm">
-                            @Localizer["Role Title"]
-                        </th>
-                        <th class="tc vm">
-                            @Localizer["Role Unique Name"]
-                        </th>
-                        <th class="tc vm">
-                            @Localizer["Options"]
-                        </th>
-                    </tr>
+                        <tr class="tc vm">
+                            <th class="tc vm">
+                                @Localizer["Role Title"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["Role Unique Name"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["Options"]
+                            </th>
+                        </tr>
                     </thead>
                     <tbody class="tc vm">
-                    @foreach (var role in Model.Entities)
-                    {
-                        <tr class="tc vm" remove-ajax-item="@role.Id">
-                            <td class="tc vm">
-                                <p> @role.Title </p>
-                            </td>
-                            <td class="tc vm">
-                                <p> @role.RoleUniqueName </p>
-                            </td>
-                            <td class="tc vm">
-                                <a asp-action="EditRole" asp-controller="Access" asp-area="Admin" asp-route-id="@role.Id" class="btn btn-warning btn-circle btn-xs"><i class="glyphicon glyphicon-edit"></i></a>
-                                <button onclick="DeleteAjax(@role.Id, '@Url.Action("DeleteRole", "Access", new { area = "Admin", roleId = role.Id })')" class="btn btn-danger btn-circle btn-xs"><i class="glyphicon glyphicon-trash"></i></button>
-                            </td>
-                        </tr>
-                    }
+                        @foreach (var role in Model.Entities)
+                        {
+                            <tr class="tc vm" remove-ajax-item="@role.Id">
+                                <td class="tc vm">
+                                    <p> @role.Title </p>
+                                </td>
+                                <td class="tc vm">
+                                    <p> @role.RoleUniqueName </p>
+                                </td>
+                                <td class="tc vm">
+                                    <a asp-area="Admin" asp-controller="Access" asp-action="FilterRoles" asp-route-ParentId="@role.Id" class="btn btn-primary btn-circle btn-xs"><i class="glyphicon glyphicon-list"></i></a>
+                                    <a asp-action="EditRole" asp-controller="Access" asp-area="Admin" asp-route-id="@role.Id" class="btn btn-warning btn-circle btn-xs"><i class="glyphicon glyphicon-edit"></i></a>
+                                    <button onclick="DeleteAjax(@role.Id, '@Url.Action("DeleteRole", "Access", new { area = "Admin", roleId = role.Id })')" class="btn btn-danger btn-circle btn-xs"><i class="glyphicon glyphicon-trash"></i></button>
+                                </td>
+                            </tr>
+                        }
                     </tbody>
                 </table>
 
                 <div class="footer tc">
-                
-                    <partial name="_AdminPaging" model="@Model.GetCurrentPaging()"/>
+
+                    <partial name="_AdminPaging" model="@Model.GetCurrentPaging()" />
 
                 </div>
             }
             else
             {
-                <partial name="_AdminNotFoundPartial"/>
+                <partial name="_AdminNotFoundPartial" />
             }
         </div>
     </div>

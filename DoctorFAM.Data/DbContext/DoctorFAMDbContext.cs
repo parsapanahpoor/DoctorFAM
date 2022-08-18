@@ -248,6 +248,8 @@ namespace DoctorFAM.Data.DbContext
 
             #endregion
 
+            #endregion
+
             #region Role Seed Data
 
             modelBuilder.Entity<Role>().HasData(new Role
@@ -256,7 +258,8 @@ namespace DoctorFAM.Data.DbContext
                 Title = "Admin",
                 RoleUniqueName = "Admin",
                 CreateDate = DateTime.Now,
-                IsDelete = false
+                IsDelete = false,
+                ParentId = null
             });
 
             modelBuilder.Entity<Role>().HasData(new Role
@@ -265,7 +268,8 @@ namespace DoctorFAM.Data.DbContext
                 Title = "Doctor",
                 RoleUniqueName = "Doctor",
                 CreateDate = DateTime.Now,
-                IsDelete = false
+                IsDelete = false,
+                ParentId = null
             });
 
             modelBuilder.Entity<Role>().HasData(new Role
@@ -274,7 +278,8 @@ namespace DoctorFAM.Data.DbContext
                 Title = "Support",
                 RoleUniqueName = "Support",
                 CreateDate = DateTime.Now,
-                IsDelete = false
+                IsDelete = false,
+                ParentId = null
             });
 
             modelBuilder.Entity<Role>().HasData(new Role
@@ -283,7 +288,8 @@ namespace DoctorFAM.Data.DbContext
                 Title = "Seller",
                 RoleUniqueName = "Seller",
                 CreateDate = DateTime.Now,
-                IsDelete = false
+                IsDelete = false,
+                ParentId = null
             });
 
             modelBuilder.Entity<Role>().HasData(new Role
@@ -292,7 +298,8 @@ namespace DoctorFAM.Data.DbContext
                 Title = "DoctorOfficeEmployee",
                 RoleUniqueName = "DoctorOfficeEmployee",
                 CreateDate = DateTime.Now,
-                IsDelete = false
+                IsDelete = false,
+                ParentId = null
             });
 
             modelBuilder.Entity<Role>().HasData(new Role
@@ -301,10 +308,69 @@ namespace DoctorFAM.Data.DbContext
                 Title = "Pharmacy",
                 RoleUniqueName = "Pharmacy",
                 CreateDate = DateTime.Now,
-                IsDelete = false
+                IsDelete = false,
+                ParentId = null
             });
 
-            #endregion
+            modelBuilder.Entity<Role>().HasData(new Role
+            {
+                Id = 7,
+                Title = "HomeVisit",
+                RoleUniqueName = "HomeVisit",
+                CreateDate = DateTime.Now,
+                IsDelete = false,
+                ParentId = 3
+            });
+
+            modelBuilder.Entity<Role>().HasData(new Role
+            {
+                Id = 8,
+                Title = "HomeNurse",
+                RoleUniqueName = "HomeNurse",
+                CreateDate = DateTime.Now,
+                IsDelete = false,
+                ParentId = 3
+            });
+
+            modelBuilder.Entity<Role>().HasData(new Role
+            {
+                Id = 9,
+                Title = "HomePharmacy",
+                RoleUniqueName = "HomePharmacy",
+                CreateDate = DateTime.Now,
+                IsDelete = false,
+                ParentId = 3
+            });
+
+            modelBuilder.Entity<Role>().HasData(new Role
+            {
+                Id = 10,
+                Title = "HomeLabratory",
+                RoleUniqueName = "HomeLabratory",
+                CreateDate = DateTime.Now,
+                IsDelete = false,
+                ParentId = 3
+            });
+
+            modelBuilder.Entity<Role>().HasData(new Role
+            {
+                Id = 11,
+                Title = "HomePatientTransport",
+                RoleUniqueName = "HomePatientTransport",
+                CreateDate = DateTime.Now,
+                IsDelete = false,
+                ParentId = 3
+            });
+
+            modelBuilder.Entity<Role>().HasData(new Role
+            {
+                Id = 12,
+                Title = "DeathCertificate",
+                RoleUniqueName = "DeathCertificate",
+                CreateDate = DateTime.Now,
+                IsDelete = false,
+                ParentId = 3
+            });
 
             #endregion
 

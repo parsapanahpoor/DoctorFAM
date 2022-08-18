@@ -400,10 +400,10 @@ namespace DoctorFAM.Application.Services.Implementation
 
         #region Admin
 
-        //Get List Of Admins and Supporters User Id For Send Notification 
-        public async Task<List<string>?> GetAdminsAndSupportersNotificationForSendNotification()
+        //Get List Of Admins and Supporters User Id For Send Notification  For Home Pharmacy
+        public async Task<List<string>?> GetAdminsAndSupportersNotificationForSendNotificationInHomePharmacy()
         {
-            return await _userRepository.GetAdminsAndSupportersNotificationForSendNotification();
+            return await _userRepository.GetAdminsAndSupportersNotificationForSendNotificationInHomePharmacy();
         }
 
         //Get List Of Admins 
@@ -416,6 +416,12 @@ namespace DoctorFAM.Application.Services.Implementation
         public async Task<List<User>?> GetListOfSupporters()
         {
             return await _userRepository.GetListOfSupporters();
+        }
+
+        //Get Home Pharmacy Supporters
+        public async Task<List<User>?> GetHomePharmacySupporters()
+        {
+            return await _userRepository.GetHomePharmacySupporters();
         }
 
         //Update User 

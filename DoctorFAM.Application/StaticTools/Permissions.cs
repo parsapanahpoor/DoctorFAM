@@ -19,6 +19,8 @@ namespace DoctorFAM.Application.StaticTools
 
                 #region Add Permissions
 
+                #region Admin Panel
+
                 #region Dashboard
 
                 list.Add(new Permission
@@ -113,7 +115,83 @@ namespace DoctorFAM.Application.StaticTools
 
                 #endregion
 
-                // Last Id Use is : 8
+                #region Supporter Panel
+
+                list.Add(new Permission
+                {
+                    Id = 8,
+                    CreateDate = date,
+                    IsDelete = false,
+                    ParentId = null,
+                    PermissionUniqueName = "SupporterPanel",
+                    Title = "پنل پشتیبان"
+                });
+
+                list.Add(new Permission
+                {
+                    Id = 9,
+                    CreateDate = date,
+                    IsDelete = false,
+                    ParentId = 8,
+                    PermissionUniqueName = "HomeVisit",
+                    Title = "ویزیت در منزل"
+                });
+
+                list.Add(new Permission
+                {
+                    Id = 10,
+                    CreateDate = date,
+                    IsDelete = false,
+                    ParentId = 8,
+                    PermissionUniqueName = "HomeNurse",
+                    Title = "پرستار در منزل"
+                });
+
+                list.Add(new Permission
+                {
+                    Id = 11,
+                    CreateDate = date,
+                    IsDelete = false,
+                    ParentId = 8,
+                    PermissionUniqueName = "HomePharmacy",
+                    Title = "داروخانه در منزل"
+                });
+
+                list.Add(new Permission
+                {
+                    Id = 12,
+                    CreateDate = date,
+                    IsDelete = false,
+                    ParentId = 8,
+                    PermissionUniqueName = "HomeLaboratory",
+                    Title = "آزمایشگاه در منزل"
+                });
+
+                list.Add(new Permission
+                {
+                    Id = 13,
+                    CreateDate = date,
+                    IsDelete = false,
+                    ParentId = 8,
+                    PermissionUniqueName = "PetientTransport",
+                    Title = "انتقال بیمار"
+                });
+
+                list.Add(new Permission
+                {
+                    Id = 14,
+                    CreateDate = date,
+                    IsDelete = false,
+                    ParentId = 8,
+                    PermissionUniqueName = "DeathCertificate",
+                    Title = "صدور گواهی فوت"
+                });
+
+                #endregion
+
+                #endregion
+
+                // Last Id Use is : 14
 
                 return list;
             }

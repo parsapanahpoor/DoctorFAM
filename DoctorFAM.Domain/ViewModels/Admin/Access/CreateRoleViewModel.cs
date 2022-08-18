@@ -19,5 +19,7 @@ namespace DoctorFAM.Domain.ViewModels.Access
         public string RoleUniqueName { get; set; }
 
         public List<ulong>? Permissions { get; set; }
+
+        public ulong? ParentId { get; set; }
     }
 }

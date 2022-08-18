@@ -43,8 +43,8 @@ namespace DoctorFAM.Application.Services.Implementation
             var admins = await _userService.GetListOfAdmins();
             user.AddRange(admins);
 
-            //Get Supporters
-            var supporters = await _userService.GetListOfSupporters();
+            //Get Home Pharmacy Supporters
+            var supporters = await _userService.GetHomePharmacySupporters();
             user.AddRange(supporters);
 
             #endregion

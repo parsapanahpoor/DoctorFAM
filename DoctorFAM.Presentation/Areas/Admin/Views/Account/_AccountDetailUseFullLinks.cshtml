@@ -13,20 +13,20 @@
         </div><!--Widget Buttons-->
     </div><!--Widget Header-->
     <div class="widget-body">
-        <p>
+        <div class="row"> 
             
-            <a asp-controller="Account" asp-area="Admin" asp-action="EditUserInfo" asp-route-id="@Model.Id" class="btn btn-warning btn-sm mt-10px ml-10px"> @Localizer["Edit"] </a>
+            <a style="width:80%;margin-right: 20px;" asp-controller="Account" asp-area="Admin" asp-action="EditUserInfo" asp-route-id="@Model.Id" class="btn btn-warning btn-sm mt-10px col-md-12 ml-10px"> @Localizer["Edit"] </a>
 
-            <a asp-action="CreateWallet" asp-controller="Wallet" asp-route-id="@Model.Id" class="btn btn-warning btn-sm mt-10px ml-10px"> @Localizer["Add Wallet"] </a>
+            <a style="width:80%;margin-right: 20px;" asp-action="CreateWallet" asp-controller="Wallet" asp-route-id="@Model.Id" class="btn btn-warning btn-sm  col-md-12 mt-10px ml-10px"> @Localizer["Add Wallet"] </a>
             
-            <a asp-action="Index" asp-controller="Wallet" asp-route-UserId="@Model.Id" class="btn btn-darkorange btn-sm mt-10px ml-10px"> @Localizer["User Wallets"] </a>
+            <a style="width:80%;margin-right: 20px;" asp-action="Index" asp-controller="Wallet" asp-route-UserId="@Model.Id" class="btn btn-darkorange btn-sm col-md-12 mt-10px ml-10px"> @Localizer["User Wallets"] </a>
 
-            <a asp-action="FilterPopulationCoveredAdminViewModel" asp-controller="PopulationCovered" asp-route-UserId="@Model.Id" class="btn btn-blue btn-sm mt-10px ml-10px"> @Localizer["Population Covered"] </a>
+            <a style="width:80%;margin-right: 20px;" asp-action="FilterPopulationCoveredAdminViewModel" asp-controller="PopulationCovered" asp-route-UserId="@Model.Id" class="btn btn-blue btn-sm col-md-12  mt-10px ml-10px"> @Localizer["Population Covered"] </a>
 
-            <a onclick="ShowChangePasswordModal(@Model.Id)" class="btn btn-maroon btn-sm mt-10px ml-10px"> @Localizer["Change Password"] </a>
+            <a style="width:80%;margin-right: 20px;" onclick="ShowChangePasswordModal(@Model.Id)" class="btn btn-maroon btn-sm mt-10px col-md-12 ml-10px"> @Localizer["Change Password"] </a>
             
-            <a onclick="ConfigurationAlert('@Url.Action("LoginWithUser","Account", new{area = "Admin", userId = @Model.Id})')" class="btn btn-blue btn-sm mt-10px ml-10px"> @Localizer["Login With This User"] </a>
+            <a style="width:80%;margin-right: 20px;" onclick="ConfigurationAlert('@Url.Action("LoginWithUser","Account", new{area = "Admin", userId = @Model.Id})')" class="btn btn-blue btn-sm mt-10px col-md-12 ml-10px"> @Localizer["Login With This User"] </a>
 
-        </p>
+        </div>
     </div><!--Widget Body-->
 </div>

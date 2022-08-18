@@ -5,6 +5,8 @@
 
 @{
     ViewData["Title"] = @Localizer["Create New Role"];
+    var parentId = ViewBag.parentId != null ? (ulong)ViewBag.parentId : (ulong?)null;
+    var parentRole = ViewBag.parentRole != null ? ViewBag.parentRole as Role : null;
 }
 
 @{
@@ -25,6 +27,8 @@
 }
 
 <form method="post" asp-action="CreateRole" asp-controller="Access" asp-area="Admin">
+    <input type="hidden" asp-for="ParentId" />
+
     <div class="row">
         <div class="col-lg-9 col-sm-12">
             <div class="widget">
@@ -48,7 +52,7 @@
                             </div>
                         </div>
 
-                        <hr class="margin-bottom-10 margin-top-10" />
+                        <hr class="margin-bottom-10 margin-top-10"/>
 
                         <div class="row">
                             <div class="col-md-12 flex-style">
@@ -110,7 +114,7 @@
 
                                                     @if (permissions.Any(s => s.ParentId.HasValue && s.ParentId.Value == permission.Id))
                                                     {
-                                                        <hr style="margin-top: 10px !important; margin-bottom: 10px !important" />
+                                                        <hr style="margin-top: 10px !important; margin-bottom: 10px !important"/>
 
                                                         <span class="label-style">@Localizer["Sub"]</span>
 
@@ -137,7 +141,7 @@
                             }
                             else
                             {
-                                <partial name="_AdminNotFoundPartial" />
+                                <partial name="_AdminNotFoundPartial"/>
                             }
 
                         </div>

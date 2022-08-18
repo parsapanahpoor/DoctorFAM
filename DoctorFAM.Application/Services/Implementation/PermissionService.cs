@@ -93,6 +93,11 @@ namespace BusinessPortal.Application.Services.Implementation
             }).ToListAsync();
         }
 
+        public async Task<List<Role>> GetListOfRoles()
+        {
+            return await _context.Roles.Where(s => !s.IsDelete).ToListAsync();
+        }
+
         public async Task<bool> IsRoleNameValid(string name, ulong roleId)
         {
             var role = await _context.Roles.FirstOrDefaultAsync(s => s.RoleUniqueName.Equals(name.Trim().ToLower()));
@@ -118,7 +123,8 @@ namespace BusinessPortal.Application.Services.Implementation
             var role = new Role
             {
                 RoleUniqueName = create.RoleUniqueName,
-                Title = create.Title
+                Title = create.Title,
+                ParentId = create.ParentId
             };
 
             await _context.Roles.AddAsync(role);
@@ -146,7 +152,7 @@ namespace BusinessPortal.Application.Services.Implementation
 
         public async Task<FilterRolesViewModel> FilterRoles(FilterRolesViewModel filter)
         {
-            var query = _context.Roles.Where(s => !s.IsDelete).AsQueryable();
+            var query = _context.Roles.Include(p=> p.Parent).Where(s => !s.IsDelete).AsQueryable();
 
             #region Filter
 
@@ -158,6 +164,17 @@ namespace BusinessPortal.Application.Services.Implementation
             if (!string.IsNullOrEmpty(filter.RoleUniqueName))
             {
                 query = query.Where(s => s.RoleUniqueName.Contains(filter.RoleUniqueName));
+            }
+
+            if (filter.ParentId != null)
+            {
+                query = query.Where(a => a.ParentId == filter.ParentId);
+                filter.ParentRole = await _context.Roles.FirstOrDefaultAsync(a => a.Id == filter.ParentId);
+            }
+
+            else
+            {
+                query = query.Where(a => a.ParentId == null);
             }
 
             #endregion
@@ -184,7 +201,8 @@ namespace BusinessPortal.Application.Services.Implementation
                 Id = roleId,
                 RoleUniqueName = role.RoleUniqueName,
                 Title = role.Title,
-                Permissions = permissionIds
+                Permissions = permissionIds,
+                ParentId = role.ParentId
             };
 
             return result;
@@ -211,6 +229,7 @@ namespace BusinessPortal.Application.Services.Implementation
 
             role.Title = edit.Title;
             role.RoleUniqueName = edit.RoleUniqueName;
+            role.ParentId = edit.ParentId;
 
             _context.Update(role);
             await _context.SaveChangesAsync();
@@ -218,6 +237,7 @@ namespace BusinessPortal.Application.Services.Implementation
             // remove all permissions
             var rolePermissions =
                 await _context.RolePermissions.Where(s => !s.IsDelete && s.RoleId == edit.Id).ToListAsync();
+
             _context.RolePermissions.RemoveRange(rolePermissions);
             await _context.SaveChangesAsync();
 
@@ -257,8 +277,36 @@ namespace BusinessPortal.Application.Services.Implementation
             // remove all permissions
             var rolePermissions =
                 await _context.RolePermissions.Where(s => !s.IsDelete && s.RoleId == roleId).ToListAsync();
+
             _context.RolePermissions.RemoveRange(rolePermissions);
             await _context.SaveChangesAsync();
+
+            #region Remove Role Childs
+
+            var childs = await _context.Roles.Where(p => p.IsDelete && p.ParentId == role.Id).ToListAsync();
+
+            if (childs != null || childs.Any())
+            {
+                foreach (var item in childs)
+                {
+                    item.IsDelete = true;
+                }
+            }
+
+            //Delete User Role 
+            var userRoles = await _context.UserRoles.Where(p => !p.IsDelete && p.RoleId == role.Id).ToListAsync();
+
+            if (userRoles != null || userRoles.Any()) 
+            {
+                foreach (var item in userRoles)
+                {
+                    _context.UserRoles.Remove(item);
+                }
+            }
+
+            await _context.SaveChangesAsync();
+
+            #endregion
 
             return true;
         }

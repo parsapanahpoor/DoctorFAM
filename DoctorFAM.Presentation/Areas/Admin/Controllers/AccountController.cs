@@ -73,7 +73,7 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
 
             #region Page Data
 
-            ViewData["Roles"] = await _permissionService.GetSelectRolesList();
+            ViewData["Roles"] = await _permissionService.GetListOfRoles();
           
             #endregion
 
@@ -89,7 +89,7 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
             {
                 #region Page Data
 
-                ViewData["Roles"] = await _permissionService.GetSelectRolesList();
+                ViewData["Roles"] = await _permissionService.GetListOfRoles();
 
                 #endregion
 
@@ -127,7 +127,7 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
 
             #region Page Data
 
-            ViewData["Roles"] = await _permissionService.GetSelectRolesList();
+            ViewData["Roles"] = await _permissionService.GetListOfRoles();
 
             #endregion
 
