@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title> خانه سلامت دکتر فام-@ViewData["Title"] </title>
+    <title>  دکتر فام-@ViewData["Title"] </title>
 
     <partial name="_MetaTags" />
 
@@ -36,17 +36,17 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="row">
-                                <div class="col-md-6" style="border-right:1px solid #fd5b03;">
+                                <div class="col-md-4 " style="border-right:1px solid #fd5b03;">
                                     <div class="footer-list">
                                         <ul class="list-unstyled">
-                                            <li>
+                                            <li class="mt-2">
                                                 <a href="/Home"> خانه  </a>
                                             </li>
                                             <li>
                                                 <a asp-action="HealthHouseItems" asp-controller="Home"> خانه سلامت </a>
                                             </li>
                                             <li>
-                                                <a asp-action="HealthServicesItems" asp-controller="Home"> راه سلامت </a>
+                                                <a asp-action="HealthServicesItems" asp-controller="Home"> کلینیک سلامت </a>
                                             </li>
                                             <li>
                                                 <a asp-action="HealthProductsItems" asp-controller="Home"> بازار سلامت </a>
@@ -54,17 +54,38 @@
                                         </ul>
                                     </div>
                                 </div>
-                                <div class="col-md-6" style="border-right:1px solid #fd5b03;">
+                                <div class="col-md-4 " style="border-right:1px solid #fd5b03;">
                                     <div class="footer-list">
                                         <ul class="list-unstyled">
+                                            <li class="mt-2">
+                                                <a href="business-services.html"> پزشک آنلاین </a>
+                                            </li>
                                             <li>
+                                                <a href="software-research.html"> پزشک خانواده من </a>
+                                            </li>
+                                            <li>
+                                                <a href="finance-restructuring.html"> پزشکان متخصص </a>
+                                            </li>
+                                            <li>
+                                                <a href="finance-restructuring.html">روانشناس و مشاور </a>
+                                            </li>
+                                            <li>
+                                                <a href="finance-restructuring.html">دندانپزشک من </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 " style="border-right:1px solid #fd5b03;">
+                                    <div class="footer-list">
+                                        <ul class="list-unstyled">
+                                            <li class="mt-2">
                                                 <a asp-action="Register" asp-controller="Account" asp-area="" asp-route-doctors="true"> ثبت نام پزشک </a>
                                             </li>
                                             <li>
-                                                <a  asp-action="Register" asp-controller="Account" asp-area="" asp-route-pharmacy="true"> ثبت نام داروخانه </a>
+                                                <a asp-action="Register" asp-controller="Account" asp-area="" asp-route-pharmacy="true"> ثبت نام داروخانه </a>
                                             </li>
                                             <li>
-                                                <a  asp-action="Register" asp-controller="Account" asp-area="" asp-route-seller="true"> ثبت نام فروشنده </a>
+                                                <a asp-action="Register" asp-controller="Account" asp-area="" asp-route-seller="true"> ثبت نام فروشنده </a>
                                             </li>
                                         </ul>
                                     </div>
@@ -95,9 +116,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6" style="border-right:1px solid #fd5b03;">
+                        <div class="col-md-6 mt-1" style="border-right:1px solid #fd5b03;">
                             <h4 class=" text-white">ارتباط با ما</h4>
-                            
+
                             <div class="footer-cntct">
                                 <ul class="media-icon list-unstyled">
                                     <li>

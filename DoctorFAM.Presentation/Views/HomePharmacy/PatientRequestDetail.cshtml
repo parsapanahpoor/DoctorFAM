@@ -83,6 +83,7 @@
                         <div class="form-group col-md-12">
                             <label asp-for="StateId"></label>
                             <select class="form-control" asp-for="StateId">
+                                <option value=""> لطفا یک استان را انتخاب کنید </option>
                                 @if (states != null && states.Any())
                                 {
                                     foreach (var state in states)
@@ -166,44 +167,44 @@
                             </div>
                         </div>
                     </div>
-                     <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label asp-for="SendDate" class="control-label"></label>
-                        <input asp-for="SendDate" autocomplete="off" DatePicker="3" class="form-control" />
-                        <span asp-validation-for="SendDate" class="text-danger"></span>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="SendDate" class="control-label"></label>
+                                <input asp-for="SendDate" autocomplete="off" DatePicker="3" class="form-control" />
+                                <span asp-validation-for="SendDate" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="StartTime" class="control-label">از ساعت</label>
+                                <input asp-for="StartTime" class="form-control " />
+                                <span asp-validation-for="StartTime" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="EndTime" class="control-label">تا ساعت</label>
+                                <input asp-for="EndTime" class="form-control" />
+                                <span asp-validation-for="EndTime" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="col-md-12  text-center mt-4">
+                            <div class="form-group">
+
+                                <input type="submit" value="ثبت  آدرس" class="btn-Accept" />
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label asp-for="StartTime" class="control-label">از ساعت</label>
-                        <input asp-for="StartTime" class="form-control " />
-                        <span asp-validation-for="StartTime" class="text-danger"></span>
-                    </div>
-                </div>
-
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label asp-for="EndTime" class="control-label">تا ساعت</label>
-                        <input asp-for="EndTime" class="form-control" />
-                        <span asp-validation-for="EndTime" class="text-danger"></span>
-                    </div>
-                </div>
-                <hr />
-                <div class="col-md-12  text-center mt-4">
-                    <div class="form-group">
-                         
-                        <input type="submit" value="ثبت  آدرس" class="btn-Accept" />
-                    </div>
-                </div>
 
             </div>
-                </div>
 
-
-            </div>
-           
 
 
 

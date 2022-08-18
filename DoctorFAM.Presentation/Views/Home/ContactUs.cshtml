@@ -1,58 +1,80 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "تماس با ما";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div class="page-wrapper">
 
     <!--page title start-->
-   
     <!--page title end-->
     <!--body content start-->
     <div class="page-content">
         <!--contact start-->
         <section>
             <div class="container">
+                <div class="section-title sm-mt-3 text-center justify-content-center">
+                    <h5> تماس با ما </h5>
+                </div>
                 <div class="row">
-                    <div class="col-md-4">
-                        <div class="section-title sm-mt-3">
-                            <h6> تماس با ما </h6>
-                            <h2 class="title"> لطفا مشخصات خواسته شده را وارد نمایید.</h2>
-                            <p> تماس بگیرید و به ما اطلاع دهید که چگونه می توانیم کمک کنیم. فرم را پر کنید، ما در اسرع وقت با شما تماس خواهیم گرفت. </p>
-                        </div>
+                    <div class="col-md-6">
+                        <section class="contact-info">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-lg-4 col-md-12">
+                                        <div class="contact-media">
+                                            <i class="flaticon-paper-plane"></i>
+                                            <h6 class="text-theme"> آدرس: </h6>
+
+                                            <div class="mb-3">
+                                                <h6 class="font-w-5"> دفتر ساری: </h6>
+                                                <span class="text-black"> ساری، خیابان فرهنگ، خیابان حافظ، ساختمان شبره واحد 4  </span>
+                                            </div>
+                                            <div>
+                                                <h6 class="font-w-5"> دفتر تهران: </h6>
+                                                <span class="text-black"> پاسداران، هروی، نبش فلاح‌زاده</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-6 md-mt-5">
+                                        <div class="contact-media">
+                                            <i class="flaticon-email"></i>
+                                            <h6 class="text-theme">  ایمیل  </h6>
+
+                                            <a href="mailto:doctorfam2022@yahoo.com"> doctorfam2022@yahoo.com</a>
+                                            <a href="mailto:doctorfam2022@gmail.com"> doctorfam2022@gmail.com</a>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-6 md-mt-5">
+                                        <div class="contact-media">
+                                            <i class="flaticon-phone"></i>
+                                            <h6 class="text-theme">  تلفن و فکس  </h6>
+
+                                            <a dir="ltr" href="Tel:+981133304030">Tel:+98-113-330-4030</a>
+                                            <a dir="ltr" href="Tel:+981133304031">Tel:+98-113-330-4031</a>
+                                            <a dir="ltr" href="Tel:+981133304032">Tel:+98-113-330-4032</a>
+                                            <a dir="ltr" href="Fax:+981133304033">Fax:+98-113-330-4033</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
                     </div>
-                    <div class="col-md-8">
+                    <div class="col-md-6">
                         <div class="contact-main white-bg p-5 box-shadow">
+                            <div class="section-title sm-mt-3">                                
+                                <h5 class="title"> پیشنهادات، انتقادات و ایده های خود را با ما در میان بگذارید:</h5>
+                            </div>
                             <form id="contact-form" class="row" method="post" action="">
                                 <div id="formmessage"></div>
                                 <div class="form-group col-md-6">
-                                    <input id="form_name" type="text" name="firstname" class="form-control" placeholder="نام" required="required" data-error="لطفا نام خود را وارد کنید .">
+                                    <input id="form_name" type="text" name="firstname" class="form-control" placeholder="نام و نام خانوادگی" required="required" data-error="لطفا نام خود را وارد کنید .">
                                     <div class="help-block with-errors"></div>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <input id="form_name1" type="text" name="lastname" class="form-control" placeholder="نام خانوادگی" required="required" data-error="لطفا نام خود را وارد کنید .">
+                                    <input id="form_phone" type="tel" name="phone" class="form-control" placeholder="تلفن" required="required" data-error="لطفا شماره تماس خود را وارد کنید">
                                     <div class="help-block with-errors"></div>
                                 </div>
                                 <div class="form-group col-md-12">
                                     <input id="form_email" type="email" name="email" class="form-control" placeholder="ایمیل" required="required" data-error="لطفا ایمیل خود را وارد کنید .">
-                                    <div class="help-block with-errors"></div>
-                                </div>
-                                <div class="form-group col-md-12">
-                                    <input id="form_phone" type="tel" name="phone" class="form-control" placeholder="تلفن" required="required" data-error="لطفا شماره تماس خود را وارد کنید">
-                                    <div class="help-block with-errors"></div>
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <select name="select" class="form-control">
-                                        <option> - سرویس را انتخاب کنید </option>
-                                        <option> خدمات درمانی </option>
-                                        <option> خدمات مشاوره</option>
-                                        <option> درخواست محصولات </option>
-                                        <option> درخواست همکاری </option>
-                                        <option> سایر </option>
-                                    </select>
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <input id="form_subject" type="tel" name="subject" class="form-control" placeholder="موضوع" required="required" data-error="لطفا موضوع را وارد کنید">
                                     <div class="help-block with-errors"></div>
                                 </div>
                                 <div class="form-group col-md-12">
@@ -61,7 +83,7 @@
                                 </div>
                                 <div class="col-md-12 text-center mt-4">
                                     <button class="btn-Accept ">
-                                        <span> ارسال پیام </span>
+                                        <span> ارسال  </span>
                                     </button>
                                 </div>
                             </form>
@@ -71,45 +93,8 @@
                 </div>
             </div>
         </section>
-        <section class="contact-info">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-4 col-md-12">
-                        <div class="contact-media">
-                            <i class="flaticon-paper-plane"></i>
-                            <h4 class="text-theme"> آدرس: </h4>
-                            <p class="mb-3"> به دفتر شعبه ما مراجعه کنید </p>
-                            <div class="mb-3">
-                                <h6 class="font-w-5"> دفتر ساری: </h6>
-                                <span class="text-black"> ساری، بلوار پاسدران، روبروی بیمارستان بوعلی </span>
-                            </div>
-                            <div>
-                                <h6 class="font-w-5"> دفتر تهران: </h6>
-                                <span class="text-black"> پاسداران، هروی، نبش فلاح‌زاده</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 md-mt-5">
-                        <div class="contact-media">
-                            <i class="flaticon-email"></i>
-                            <h4 class="text-theme"> برای ما ایمیل بفرستید </h4>
-                            <p class="mb-3"> برای سوالات عمومی از جمله همکاری و عرضه محصولات از طریق ایمیل با ما در ارتباط باشید</p> <a href="mailto:doctorfam@gmail.com"> doctorfam@gmail.com</a>
-                            <a href="mailto:info@DoctorFAM.com"> info@DoctorFAM.com</a>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 md-mt-5">
-                        <div class="contact-media">
-                            <i class="flaticon-phone"></i>
-                            <h4 class="text-theme"> با ما تماس بگیرید </h4>
-                            <p class="mb-3"> با ما تماس بگیرید تا با یکی از اعضای تیم صحبت کنید</p> <a dir="ltr" href="tel:+981133304030">+98-113-330-4030</a>
-                            <a dir="ltr" href="tel:+981133304031">+98-113-330-4031</a>
-                            <a dir="ltr" href="tel:+981133304032">+98-113-330-4032</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
+
+
         <!--contact end-->
     </div>
     <!--body content end-->

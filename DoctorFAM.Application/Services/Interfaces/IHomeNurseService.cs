@@ -16,6 +16,11 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         Task<bool> PayHomeNurseTariff(ulong userId, int price);
 
+        Task<ulong> CreatePatientDetailByPopulationCovered(ulong populationId, ulong requestId, ulong userId);
+
+        Task<PatientViewModel> FillPatientViewModelFromSelectedPopulationCoveredData(ulong populationId, ulong requestId, ulong userId);
+
+
         #endregion
 
         #region Admin Side

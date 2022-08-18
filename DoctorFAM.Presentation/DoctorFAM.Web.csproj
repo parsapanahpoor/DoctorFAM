@@ -38,8 +38,35 @@
 
 	<ItemGroup>
 		<None Include="Views\Account\Register.cshtml" />
+		<None Include="Views\Diabet\Index.cshtml" />
+		<None Include="Views\Diabet\two.cshtml" />
+		<None Include="Views\HomeNurse\BankPay.cshtml" />
+		<None Include="Views\HomeNurse\HomeNurse.cshtml" />
+		<None Include="Views\HomeNurse\HomeNursePayment.cshtml" />
+		<None Include="Views\HomeNurse\PatientDetails.cshtml" />
+		<None Include="Views\HomeNurse\PatientRequestDetail.cshtml" />
+		<None Include="Views\Home\AboutUs.cshtml" />
+		<None Include="Views\Home\ContactUs.cshtml" />
+		<None Include="Views\Home\HealthHouseItems.cshtml" />
+		<None Include="Views\Home\HealthProductsItems.cshtml" />
+		<None Include="Views\Home\HealthServicesItems.cshtml" />
 		<None Include="Views\Home\Index.cshtml" />
 		<None Include="Views\Home\Privacy.cshtml" />
+		<None Include="Views\Home\SecPage.cshtml" />
+		<None Include="Views\Home\TeleFamItems.cshtml" />
+		<None Include="Views\ScienceMag\Index.cshtml" />
+		<None Include="Views\Shared\Components\SiteSideBar\SiteSideBar.cshtml" />
+		<None Include="Views\Shared\Error.cshtml" />
+		<None Include="Views\Shared\_FooterReferences.cshtml" />
+		<None Include="Views\Shared\_HeaderReferences.cshtml" />
+		<None Include="Views\Shared\_JqueryValidation.cshtml" />
+		<None Include="Views\Shared\_Layout.cshtml" />
+		<None Include="Views\Shared\_LoggedIn.cshtml" />
+		<None Include="Views\Shared\_MetaTags.cshtml" />
+		<None Include="Views\Shared\_Modals.cshtml" />
+		<None Include="Views\Shared\_Notification.cshtml" />
+		<None Include="Views\Shared\_Paging.cshtml" />
+		<None Include="Views\Shared\_ValidationScriptsPartial.cshtml" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -1,120 +1,146 @@
-﻿
-@{
-    ViewData["Title"] = "خدمات سلامت";
+﻿@{
+    ViewData["Title"] = "کلینیک سلامت";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-  <div class="page-content">
+<div class="page-content">
 
-            <!--case studies start-->
+    <!--case studies start-->
 
-            <section>
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-4 col-md-6">
-                            <div class="cases-item style-3 text-center">
-                                <div class="cases-images">
-                                    <img class="img-fluid rounded box-shadow" src="~/Content/images/case-studies/Diabete.jpg" alt="">
-                                </div>
-                                  <div class="cases-desc"> <span> دیابت </span>
-                                    <h5><a href="/Diabet"> پیشگیری, مراقبت و درمان </a></h5>
-                                    <p> آنچه برای پیشگیری از ابتلا به دیابت و یا پس از ابتلا برای مراقبت و درمان نیاز دارید.</p>
-                                </div>
-                            </div>
+    <section>
+        <div class="container">
+            <div class="row text-center justify-content-center">
+                <div class="col-lg-3 col-md-6">
+                    <div class="cases-item style-3 text-center">
+                        <div class="cases-images">
+                            <img class="img-fluid rounded box-shadow" src="~/Content/images/case-studies/Diabete.jpg" alt="">
                         </div>
-                        <div class="col-lg-4 col-md-6 sm-mt-5">
-                            <div class="cases-item style-3 text-center">
-                                <div class="cases-images">
-                                    <img class="img-fluid rounded box-shadow" src="~/Content/images/case-studies/Blod.jpg" alt="">
-                                </div>
-                                 <div class="cases-desc"> <span> فشار خون </span>
-                                    <h5><a href="/BloodPressure"> کنترل و مراقبت </a></h5>
-                                    <p> با کنترل و مراقبت روزانه خطرات ناشی از فشار خون بالا را به حداقل برسانید.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6 sm-mt-5">
-                            <div class="cases-item style-3 text-center">
-                                <div class="cases-images">
-                                    <img class="img-fluid rounded box-shadow" src="~/Content/images/case-studies/Skin.jpg" alt="">
-                                </div>
-                               <div class="cases-desc"> <span> پوست و زیبایی </span>
-                                    <h5><a href="#"> مراقبت و درمان </a></h5>
-                                    <p> انجام اقدامات درمانی و مراقبتی برای داشتن پوستی سالم و زیبا</p>
-                                </div>  
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6 mt-5 md-mt-5">
-                            <div class="cases-item style-3 text-center">
-                                <div class="cases-images">
-                                    <img class="img-fluid rounded box-shadow" src="~/Content/images/case-studies/Food.jpg" alt="">
-                                </div>
-                                <div class="cases-desc"> <span> تغذیه  </span>
-                                    <h5><a href="#"> برنامه ریزی و اصلاح رفتار غذایی </a></h5>
-                                    <p> با اصلاح رفتار غذایی ضمن پیشگیری از ابتلا به بیماریهای مختلف زندگی سالمی داشته باشید.</p>
-                                </div>                           
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6 mt-5 md-mt-5">
-                            <div class="cases-item style-3 text-center">
-                                <div class="cases-images">
-                                    <img class="img-fluid rounded box-shadow" src="~/Content/images/case-studies/Grow.jpg" alt="">
-                                </div>
-                                <div class="cases-desc"> <span>  رشد </span>
-                                    <h5><a href="#"> بررسی رشد کودک و نوجوان </a></h5>
-                                    <p> رشد متناسب از ویژگیهای تاثیرگذار در سلامت جسمی و روانی افراد است. </p>
-                                </div>                           
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6 mt-5">
-                            <div class="cases-item style-3 text-center">
-                                <div class="cases-images">
-                                    <img class="img-fluid rounded box-shadow" src="~/Content/images/case-studies/Cancer.jpg" alt="">
-                                </div>
-                                <div class="cases-desc"> <span> سرطان </span>
-                                    <h5><a href="#"> تیم تخصصی ویژه سرطان </a></h5>
-                                    <p> مراقبت و درمان, تحت نظر تیمی متشکل از متخصصین و کارشناسان سرطان </p>
-                                </div> 
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6 mt-5">
-                            <div class="cases-item style-3 text-center">
-                                <div class="cases-images">
-                                    <img class="img-fluid rounded box-shadow" src="~/Content/images/case-studies/Lab.jpg" alt="">
-                                </div>
-                               <div class="cases-desc"> <span> آزمایشها و پاراکلینیک </span>
-                                    <h5><a href="/Lab"> آموزش و مراقبت </a></h5>
-                                    <p> ارائه آموزش و مراقبتهای لازم برای انجام آزمایشهای دوره ای بخصوص در بیماریهای مزمن</p>
-                                </div>  
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6 mt-5">
-                            <div class="cases-item style-3 text-center">
-                                <div class="cases-images">
-                                    <img class="img-fluid rounded box-shadow" src="~/Content/images/case-studies/Trad.jpg" alt="">
-                                </div>
-                                <div class="cases-desc"> <span> طب سنتی </span>
-                                    <h5><a href="#"> تحت نظر متخصصین </a></h5>
-                                    <p> استفاده از طب سنتی تحت نظر پزشک متخصص طب سنتی برای پیشگیری, درمان و حفظ سلامتی </p>
-                                </div> 
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6 mt-5">
-                            <div class="cases-item style-3 text-center">
-                                <div class="cases-images">
-                                    <img class="img-fluid rounded box-shadow" src="~/Content/images/case-studies/Teath.jpg" alt="">
-                                </div>
-                                 <div class="cases-desc"> <span> دندانپزشکی </span>
-                                    <h5><a href="#"> آموزش، مراقبت و درمان </a></h5>
-                                    <p> آموزش، مراقبت و درمان تحت نظر تیم دندانپزشکی بسیار مجرب و کارآزموده  </p>
-                                </div> 
-                            </div>
+                        <div class="cases-desc">
+                            <span> دیابت </span>
+                            <h5><a href="/Diabet"> پیشگیری, مراقبت و درمان </a></h5>
+                            <p> چگونگی پیشگیری از دیابت و یا پس از ابتلا،  مراقبت و درمان </p>
                         </div>
                     </div>
                 </div>
-            </section>
-
-            <!--case studies end-->
-
+                <div class="col-lg-3 col-md-6 sm-mt-5">
+                    <div class="cases-item style-3 text-center">
+                        <div class="cases-images">
+                            <img class="img-fluid rounded box-shadow" src="~/Content/images/case-studies/Blod.jpg" alt="">
+                        </div>
+                        <div class="cases-desc">
+                            <span> فشار خون </span>
+                            <h5><a href="/BloodPressure"> کنترل و مراقبت </a></h5>
+                            <p> با کنترل و مراقبت روزانه خطرات ناشی از فشار خون بالا را به حداقل برسانید.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 sm-mt-5">
+                    <div class="cases-item style-3 text-center">
+                        <div class="cases-images">
+                            <img class="img-fluid rounded box-shadow" src="~/Content/images/case-studies/Cancer.jpg" alt="">
+                        </div>
+                        <div class="cases-desc">
+                            <span> سرطان </span>
+                            <h5><a href="#"> تیم تخصصی ویژه سرطان </a></h5>
+                            <p> مراقبت و درمان, تیمی متشکل از متخصصین و کارشناسان سرطان </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6  sm-mt-5">
+                    <div class="cases-item style-3 text-center">
+                        <div class="cases-images">
+                            <img class="img-fluid rounded box-shadow" src="~/Content/images/case-studies/Grow.jpg" alt="">
+                        </div>
+                        <div class="cases-desc">
+                            <span>  روانشناسی  </span>
+                            <h5><a href="#">  مشاوره و روانشناسی </a></h5>
+                            <p> تحت نظر روانپزشک و یک تیم خبره از مشاوران و روانشناسان با تجربه </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mt-5">
+                    <div class="cases-item style-3 text-center">
+                        <div class="cases-images">
+                            <img class="img-fluid rounded box-shadow" src="~/Content/images/case-studies/Trad.jpg" alt="">
+                        </div>
+                        <div class="cases-desc">
+                            <span> طب سنتی </span>
+                            <h5><a href="#"> تحت نظر متخصصین </a></h5>
+                            <p>  تحت نظر پزشک متخصص طب سنتی برای پیشگیری, درمان و حفظ سلامتی </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mt-5">
+                    <div class="cases-item style-3 text-center">
+                        <div class="cases-images">
+                            <img class="img-fluid rounded box-shadow" src="~/Content/images/case-studies/Skin.jpg" alt="">
+                        </div>
+                        <div class="cases-desc">
+                            <span> پوست و زیبایی </span>
+                            <h5><a href="#"> مراقبت و درمان </a></h5>
+                            <p> انجام اقدامات درمانی و مراقبتی برای داشتن پوستی سالم و زیبا</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mt-5 md-mt-5">
+                    <div class="cases-item style-3 text-center">
+                        <div class="cases-images">
+                            <img class="img-fluid rounded box-shadow" src="~/Content/images/case-studies/Food.jpg" alt="">
+                        </div>
+                        <div class="cases-desc">
+                            <span> تغذیه  </span>
+                            <h5><a href="#"> برنامه ریزی و اصلاح  </a></h5>
+                            <p>  اصلاح رفتار غذایی جهت پیشگیری از بیماری و داشتن زندگی سالم </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mt-5 md-mt-5">
+                    <div class="cases-item style-3 text-center">
+                        <div class="cases-images">
+                            <img class="img-fluid rounded box-shadow" src="~/Content/images/case-studies/Grow.jpg" alt="">
+                        </div>
+                        <div class="cases-desc">
+                            <span>  رشد </span>
+                            <h5><a href="#"> بررسی رشد کودک و نوجوان </a></h5>
+                            <p> رشد متناسب از ویژگیهای تاثیرگذار در سلامت جسمی و روانی افراد است. </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mt-5">
+                    <div class="cases-item style-3 text-center">
+                        <div class="cases-images">
+                            <img class="img-fluid rounded box-shadow" src="~/Content/images/case-studies/Lab.jpg" alt="">
+                        </div>
+                        <div class="cases-desc">
+                            <span> آزمایشها و پاراکلینیک </span>
+                            <h5><a href="/Lab"> آموزش و مراقبت </a></h5>
+                            <p> ارائه آموزش و مراقبتهای لازم برای انجام آزمایشهای دوره ای </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mt-5">
+                    <div class="cases-item style-3 text-center">
+                        <div class="cases-images">
+                            <img class="img-fluid rounded box-shadow" src="~/Content/images/case-studies/Teath.jpg" alt="">
+                        </div>
+                        <div class="cases-desc">
+                            <span> دندانپزشکی </span>
+                            <h5><a href="#"> آموزش، مراقبت و درمان </a></h5>
+                            <p> آموزش، مراقبت و درمان تحت نظر تیم دندانپزشکی بسیار مجرب و کارآزموده  </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    
+                </div>
+                 <div class="col-lg-3 col-md-6">
+                    
+                </div>
+            </div>
         </div>
+    </section>
+
+    <!--case studies end-->
+
+</div>
 

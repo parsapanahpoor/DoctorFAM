@@ -31,7 +31,7 @@ a:focus {
 
 a:focus,
 a:hover {
-    color: #3143ef;
+    color: #2264c5;
     text-decoration: none !important;
 }
 
@@ -39,23 +39,23 @@ a,
 button,
 input {
     outline: medium none !important;
-    color: #3143ef;
+    color: #2264c5;
 }
 
 *::-moz-selection {
-    background: #3143ef;
+    background: #2264c5;
     color: #fff;
     text-shadow: none;
 }
 
 ::-moz-selection {
-    background: #3143ef;
+    background: #2264c5;
     color: #fff;
     text-shadow: none;
 }
 
 ::selection {
-    background: #3143ef;
+    background: #2264c5;
     color: #fff;
     text-shadow: none;
 }
@@ -437,7 +437,7 @@ span,
 
 .loader:after {
     content: "Doctor FAM";
-    color: #3143ef;
+    color: #2264c5;
     font-size: 50px;
     position: absolute;
     width: 100%;
@@ -530,11 +530,11 @@ span,
 }
 
 [data-overlay].theme-overlay:before {
-    background-color: #3143ef;
+    background-color: #2264c5;
 }
 
 [data-overlay].grediant-overlay:before {
-    background: #3143ef;
+    background: #2264c5;
     background: linear-gradient(-58deg, #3143ef 70%, #fff 100%);
 }
 
@@ -620,12 +620,12 @@ span,
     transition: all 0.3s ease-in-out;
     font-size: 32px;
     color: #ffffff;
-    background: #3143ef;
+    background: #2264c5;
 }
 
 .scroll-top a:hover,
 .scroll-top a:focus {
-    color: #3143ef;
+    color: #2264c5;
     background: #ffffff;
 }
 
@@ -710,7 +710,7 @@ span,
 
 .topbar-link i {
     margin-left: 10px;
-    color: #3143ef;
+    color: #2264c5;
     font-size: 30px;
     vertical-align: middle;
 }
@@ -918,7 +918,7 @@ span,
 
 #header-wrap {
     position: relative;
-    background: #3143ef;
+    background: #2264c5;
 }
 
 .header-2 #header-wrap,
@@ -932,12 +932,13 @@ span,
     left: 0;
     width: 100%;
     z-index: 999 !important;
-    background: #3143ef;
-    animation: smoothScroll 1s forwards;
+    background: #2264c5;
+     animation: smoothScroll 1s forwards;
 }
 
 #header-wrap::before {
-    background: #fd5b03;
+    /* background: #fd5b03;*/
+    background: #2264c5;
     content: "";
     width: 100%;
     height: 100%;
@@ -1188,7 +1189,7 @@ span,
     }
     .header-3 .navbar-nav .nav-link:hover,
     .header-3 .navbar-nav .nav-item .nav-link.active {
-        background: #3143ef;
+        background: #2264c5;
     }
     .header-2 .navbar-nav .nav-link {
         padding: 0 10px !important;
@@ -1304,7 +1305,7 @@ span,
     height: 2px;
     text-transform: uppercase;
     text-indent: -55px;
-    background: #3143ef;
+    background: #2264c5;
     -webkit-transition: all .2s ease-out;
     -o-transition: all .2s ease-out;
     transition: all .2s ease-out;
@@ -1319,7 +1320,7 @@ span,
     content: '';
     width: 40px;
     height: 2px;
-    background: #3143ef;
+    background: #2264c5;
     position: absolute;
     right: 0;
     -webkit-transition: 0.1s;
@@ -1378,7 +1379,7 @@ span,
     content: '';
     width: 40px;
     height: 2px;
-    background: #3143ef;
+    background: #2264c5;
     position: absolute;
     left: 0;
 }
@@ -1529,7 +1530,7 @@ span,
 
 .breadcrumb-item.active,
 .breadcrumb-item a:hover {
-    color: #3143ef;
+    color: #2264c5;
 }
 
 .page-title-pattern {

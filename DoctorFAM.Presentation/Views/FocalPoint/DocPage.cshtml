@@ -1,0 +1,101 @@
+﻿@{
+    ViewBag.Title = "صفحه پزشک";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="content">
+    <div class="container">
+
+        <div class="card m-3 p-3">
+            <div class="card-body">
+                <div class="doctor-widget">
+                    <div class="row">
+                        <div class=" doc-info-left">
+                            <div class="doctor-img">
+                                <img src="~/Content/Doctor/assets/img/doctors/doctor-thumb-02.jpg" class="img-fluid" alt="User Image">
+                            </div>
+                            <div class="doc-info-cont">
+                                <h4 class="doc-name">پزشک: یاسر قزوینی</h4>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p class="doc-speciality"> GP ، FD - پزشک عمومی - پزشک خانواده </p>
+
+                                        <div class="rating">
+                                            <i class="fas fa-star filled"></i>
+                                            <i class="fas fa-star filled"></i>
+                                            <i class="fas fa-star filled"></i>
+                                            <i class="fas fa-star filled"></i>
+                                            <i class="fas fa-star"></i>
+                                            <span class="d-inline-block average-rating">(35)</span>
+                                        </div>
+                                        <div class="clinic-details">
+                                            <p class="doc-location"><i class="fas fa-map-marker-alt"></i> ساری، مازندران - <a href="javascript:void(0);">مشاهده مسیر</a></p>
+                                            <ul class="clinic-gallery">
+                                                <li>
+                                                    <a href="~/Content/Doctor/assets/img/features/feature-01.jpg" data-fancybox="gallery">
+                                                        <img src="~/Content/Doctor/assets/img/features/feature-01.jpg" alt="Feature">
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="~/Content/Doctor/assets/img/features/feature-02.jpg" data-fancybox="gallery">
+                                                        <img src="~/Content/Doctor/assets/img/features/feature-02.jpg" alt="Feature Image">
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="~/Content/Doctor/assets/img/features/feature-03.jpg" data-fancybox="gallery">
+                                                        <img src="~/Content/Doctor/assets/img/features/feature-03.jpg" alt="Feature">
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="~/Content/Doctor/assets/img/features/feature-04.jpg" data-fancybox="gallery">
+                                                        <img src="~/Content/Doctor/assets/img/features/feature-04.jpg" alt="Feature">
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="clinic-services">
+                                            <span>دیابت</span>
+                                            <span>فشار خون</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="clini-infos">
+                                            <ul>
+                                                <li><i class="far fa-thumbs-up"></i> 99%</li>
+                                                <li><i class="far fa-comment"></i> 35 فیدبک </li>
+                                                <li><i class="fas fa-map-marker-alt"></i> ساری، مازندران</li>
+                                                <li><i class="far fa-money-bill-alt"></i> حق ویزیت: سامانه </li>
+                                            </ul>
+                                        </div>
+                                        <div class=" doctor-action">
+                                            <a href="javascript:void(0)" class="btnDoc btn-white fav-btn">
+                                                <i class="far fa-bookmark" title="پزشک برگزیده"></i>
+                                            </a>
+                                            <a href="chat.html" class="btnDoc btn-white msg-btn">
+                                                <i class="far fa-comment-alt" title="ارسال پیام"></i>
+                                            </a>
+                                            <a href="javascript:void(0)" class="btnDoc btn-white call-btn" data-bs-toggle="modal" data-bs-target="#voice_call">
+                                                <i class="fas fa-phone" title="تماس صوتی"></i>
+                                            </a>
+                                            <a href="javascript:void(0)" class="btnDoc btn-white call-btn" data-bs-toggle="modal" data-bs-target="#video_call">
+                                                <i class="fas fa-video" title="تماس تصویری"></i>
+                                            </a>
+                                        </div>
+                                        <div class="clinic-booking">
+                                            <a class="apt-btn" asp-action="DocBooking" asp-controller="FocalPoint">رزرو نوبت</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+    </div>
+</div>

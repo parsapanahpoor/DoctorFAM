@@ -5,8 +5,53 @@
 
 
 <div class="page-content">
-    <div class="row mt-2 text-center justify-content-center ">
-        <div class="col-md-3 theme-bg p-4 m-2   text-center justify-content-center">
+
+    <div class="pricing-area bg-f9fafb ">
+        <div class="row mt-3 text-center justify-content-center">
+            <table class="table-responsive-md table-responsive-sm">
+                <tr>
+                    <div class="col-lg-3 col-md-3 col-sm-3 p-4 m-2">
+                        <div class="single-pricing-box bg-image">
+                            <div class="pricing-header">
+                                <h5 class="hColorFon">پزشک آنلاین</h5>
+                            </div>
+                            <div class="pricing-btn  text-center">
+                                <a href="contact.html" class="col-md-12 default-btn">پزشک آنلاین</a>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-lg-3 col-md-3 col-sm-3 p-4 m-2">
+                        <div class="single-pricing-box bg-image">
+                            <div class="pricing-header">
+                                <h5 class="hColorFon">پزشک خانواده من</h5>
+                            </div>
+                            <div class="pricing-btn  text-center">
+                                <a href="contact.html" class="col-md-12 default-btn">پزشک خانواده من</a>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-lg-3 col-md-3 col-sm-3 p-4 m-2">
+                        <div class="single-pricing-box bg-image">
+                            <div class="pricing-header">
+                                <h5 class="hColorFon">پزشکان متخصص</h5>
+                            </div>
+                            <div class="pricing-btn  text-center">
+                                <a href="contact.html" class="col-md-12 default-btn">پزشکان متخصص</a>
+                            </div>
+                        </div>
+                    </div>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="row  text-center justify-content-center ">
+
+        <div class=" col-md-3 theme-bg p-4 m-2   text-center justify-content-center">
             <h5 class="font-w-7 text-white mt-3">  خانه سلامت </h5>
 
             <p class="text-justify right text-light">
@@ -59,7 +104,7 @@
                             @*<i class="flaticon-testing fa-2x"></i>*@
                             <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/Transfer.jpg" alt="">
                         </div>
-                        <p class="text-white mt-2"> انتقال بیمار و متوفی </p>
+                        <p class="text-white mt-2"> انتقال بیمار  </p>
                     </a>
                 </div>
                 <div class="col-md-6 col-sm-6 text-center justify-content-center">
@@ -72,15 +117,15 @@
                         <p class="text-white mt-2"> صدور گواهی فوت </p>
                     </a>
                 </div>
-                
+
                 <a class="btn hover-icon p-3 mt-3 text-center" style="border:1px solid #0b0637; border-radius:5px !important;" asp-action="HealthHouseItems" asp-controller="Home">
                     <span class="p-5"> بیشتر    </span>
 
                 </a>
             </div>
         </div>
-        <div class="col-md-3 dark-bg p-4 m-2  text-center justify-content-center">
-            <h5 class="font-w-7 text-white mt-3">  راه سلامت</h5>
+        <div class=" col-md-3 dark-bg p-4 m-2   text-center justify-content-center">
+            <h5 class="font-w-7 text-white mt-3">  کلینیک سلامت</h5>
             <p class="text-justify right text-light">
                 خدمات ویژه <b>دکتر فم</b> بر اساس  نیاز شما:
             </p>
@@ -88,7 +133,7 @@
             <hr />
             <div class="row mt-3 text-center justify-content-center">
                 <div class="col-md-6 col-sm-6 text-center justify-content-center">
-                    <a class=" hover-icon" asp-action="two" asp-controller="Diabet">
+                    <a class=" hover-icon" asp-action="Index" asp-controller="Diabet">
 
                         <div class="featured-icon">
                             @*<i class="flaticon-testing fa-2x"></i>*@
@@ -111,20 +156,10 @@
                     <a class=" hover-icon">
 
                         <div class="featured-icon">
-                            @*<i class="flaticon-research fa-2x"></i>*@
-                            <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/Skin.jpg" alt="">
-                        </div>
-                        <p class="text-white mt-2"> پوست و زیبایی </p>
-                    </a>
-                </div>
-                <div class="col-md-6 col-sm-6  text-center justify-content-center">
-                    <a class=" hover-icon">
-
-                        <div class="featured-icon">
                             @*<i class="flaticon-report fa-2x"></i>*@
-                            <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/Food.jpg" alt="">
+                            <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/Cancer.jpg" alt="">
                         </div>
-                        <p class="text-white mt-2">تغذیه</p>
+                        <p class="text-white mt-2">سرطان</p>
                     </a>
                 </div>
                 <div class="col-md-6 col-sm-6  text-center justify-content-center">
@@ -134,7 +169,7 @@
                             @*<i class="flaticon-research fa-2x"></i>*@
                             <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/Grow.jpg" alt="">
                         </div>
-                        <p class="text-white mt-2"> رشد </p>
+                        <p class="text-white mt-2"> روان </p>
                     </a>
                 </div>
                 <div class="col-md-6 col-sm-6  text-center justify-content-center">
@@ -142,19 +177,30 @@
 
                         <div class="featured-icon">
                             @*<i class="flaticon-report fa-2x"></i>*@
-                            <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/Cancer.jpg" alt="">
+                            <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/Trad.jpg" alt="">
                         </div>
-                        <p class="text-white mt-2">سرطان</p>
+                        <p class="text-white mt-2">طب سنتی</p>
                     </a>
                 </div>
-                
+                <div class="col-md-6 col-sm-6  text-center justify-content-center">
+                    <a class=" hover-icon">
+
+                        <div class="featured-icon">
+                            @*<i class="flaticon-research fa-2x"></i>*@
+                            <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/Skin.jpg" alt="">
+                        </div>
+                        <p class="text-white mt-2"> پوست و زیبائی </p>
+                    </a>
+                </div>
+
+
                 <a class="btn hover-icon mt-3 p-3 text-center" style="border:1px solid #3143ef; border-radius:5px !important;" asp-action="HealthServicesItems" asp-controller="Home">
                     <span class="p-5"> بیشتر    </span>
 
                 </a>
             </div>
         </div>
-        <div class="col-md-3 theme-bg-2  p-4 m-2  text-center justify-content-center">
+        <div class=" col-md-3 theme-bg-2 p-4 m-2   text-center justify-content-center">
             <h5 class="font-w-7 text-white mt-3">  بازار سلامت </h5>
             <p class="text-justify right text-light">
                 از فروشگاه سلامت <b>دکتر فم</b> دیدن نمایید:
@@ -224,7 +270,7 @@
                         <p class="text-white mt-2"> مشاوره حقوقی </p>
                     </a>
                 </div>
-                
+
                 <a class="btn hover-icon mt-3 p-3 text-center" style="border:1px solid #0b0637; border-radius:5px !important;" asp-action="HealthProductsItems" asp-controller="Home">
                     <span class="p-5"> بیشتر    </span>
 
@@ -232,60 +278,104 @@
 
             </div>
         </div>
-        <div class="col-md-2 theme-bg  p-4 m-2 text-center justify-content-center">
-            <h5 class="font-w-7 text-white mt-3">  کلینیک دکترفم </h5>
 
-            
-            <div class="row  text-center justify-content-center ">
-
-                <div class="col-md-12">
-                    <img class="KlinikImage rounded box-shadow divch" src="~/Content/images/case-studies/02.jpg" alt="">
+    </div>
+    <section class="patient-select mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="select-box aos m-3" data-aos="fade-up">
+                        <div class="d-flex align-items-center">
+                            <div class="image-holder">
+                                <span>
+                                    <img src="~/Content/Doctor/assets/img/icons/doct-01.png" alt="" />
+                                </span>
+                            </div>
+                            <div>
+                                <h2>معرفی پزشکان</h2>
+                                <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. .</p>
+                                <div class="row">
+                                    <div class="col-md-5"></div>
+                                    <div class="col-md-7 text-center justify-content-center">
+                                        <a href="booking.html" class="book-now ">مشاهده</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-md-12">
-                    <p class="   KlinikContent ">پزشک آنلاین</p>
+                <div class="col-md-6">
+                    <div class="select-box theme aos m-3" data-aos="fade-up">
+                        <div class="d-flex align-items-center">
+                            <div class="image-holder">
+                                <span>
+                                    <img src="~/Content/Doctor/assets/img/icons/doct-02.png" alt="" />
+                                </span>
+                            </div>
+                            <div>
+                                <h2>معرفی مراکز</h2>
+                                <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. </p>
+                                <div class="row">
+                                    <div class="col-md-5"></div>
+                                    <div class="col-md-7 text-center justify-content-center">
+                                        <a href="booking.html" class="book-now ">مشاهده</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
-            </div>
-            <div class="row  text-center justify-content-center ">
-                <div class="col-md-12">
-                    <img class="KlinikImage rounded box-shadow divch" src="~/Content/images/case-studies/01.jpg" alt="">
-                </div>
-                <div class="col-md-12">
-                    <p class="   KlinikContent ">پزشک خانواده من</p>
-                </div>
-
-            </div>
-            <div class="row  text-center justify-content-center ">
-                <div class="col-md-12">
-                    <img class="KlinikImage rounded box-shadow divch" src="~/Content/images/case-studies/04.jpg" alt="">
-                </div>
-                <div class="col-md-12">
-                    <p class="   KlinikContent ">پزشکان متخصص</p>
-                </div>
-
-            </div>
-            <div class="row  text-center justify-content-center ">
-                <div class="col-md-12">
-                    <img class="KlinikImage rounded box-shadow divch" src="~/Content/images/case-studies/03.jpg" alt="">
-                </div>
-                <div class="col-md-12">
-                    <p class="   KlinikContent ">روانشناس و مشاور</p>
-                </div>
-
-            </div>
-            <div class="row  text-center justify-content-center ">
-                <div class="col-md-12">
-                    <img class="KlinikImage rounded box-shadow divch" src="~/Content/images/case-studies/Teath.jpg" alt="">
-                </div>
-                <div class="col-md-12">
-                    <p class="   KlinikContent ">دندانپزشک من</p>
-                </div>
-
             </div>
         </div>
-    </div>
-
-
+    </section>
+    <section class="">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="select-box select-box3 aos m-3" data-aos="fade-up">
+                        <div class="d-flex align-items-center">
+                            <div class="image-holder">
+                                <span>
+                                    <img src="~/Content/Doctor/assets/img/icons/doct-01.png" alt="" />
+                                </span>
+                            </div>
+                            <div>
+                                <h2>نوبت گیری</h2>
+                                <p>در این بخش به شما در اخذ نوبت از مراکز درمانی و پزشکانی که در مجموعه دکترفم حضور ندارند کمک می کنیم.</p>
+                                <div class="row">
+                                    <div class="col-md-5"></div>
+                                    <div class="col-md-7 text-center justify-content-center">
+                                        <a href="booking.html" class="book-now ">مشاهده</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="select-box select-box3 theme aos m-3" data-aos="fade-up">
+                        <div class="d-flex align-items-center">
+                            <div class="image-holder">
+                                <span>
+                                    <img src="~/Content/Doctor/assets/img/icons/doct-02.png" alt="" />
+                                </span>
+                            </div>
+                            <div>
+                                <h2>مددکاری</h2>
+                                <p>در این بخش تلاش می کنیم بیماران مبتلا به سرطان را جهت دریافت کمکهای درمانی به مراکز مددکاری معرفی نمائیم. </p>
+                                <div class="row">
+                                    <div class="col-md-5"></div>
+                                    <div class="col-md-7 text-center justify-content-center">
+                                        <a href="booking.html" class="book-now ">مشاهده</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
     <div class=" mt-5  pl-3 pr-3">
         <div class="row mt-5 text-center">
             <div class="col-lg-12 col-md-12  text-center ">
@@ -449,14 +539,9 @@
                 </div>
             </div>
         </div>
-
     </div>
 
-
-
-
-
-    <section>
+    <section class="mt-5" id="News">
         <div class="container">
             <div class="row mt-3 justify-content-center text-center">
                 <div class="col-lg-8 col-md-12">
@@ -545,6 +630,7 @@
             </div>
         </div>
     </section>
+
     <section class="pos-r pt-0 mt-8 custom-mt-10 sm-mt-0">
         <div class="container">
             <div class="row">
@@ -588,56 +674,43 @@
                             </form>
                         </div>
                         <div class="col-md-1"></div>
-                        <div class="col-md-6 white-bg p-5">
-                            <div class="row justify-content-center text-center">
-                                <div class="col-md-12">
-                                    <div class="section-title">
-                                        <h2 class="title"> دیدگاه کاربران سایت </h2>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="owl-carousel no-pb" data-dots="false" data-nav="true" data-items="1" data-autoplay="true">
-                                        <div class="item">
-                                            <div class="row justify-content-center text-center">
-                                                <div class="col-md-8">
-                                                    <div class="testimonial style-2">
-                                                        <div class="testimonial-img">
-
-                                                            <img class="img-fluid d-inline" src="~/Content/images/testimonial/small/01.jpg" alt="">
-
-                                                        </div>
-                                                        <div class="testimonial-content">
-                                                            <p>
-                                                                با استفاده از امکانات این پروژه بیماران، پاسخ همه سوالات خود را خواهند یافت
-                                                            </p>
-                                                            <div class="testimonial-caption">
-                                                                <h5> لیوره کیولی </h5>
-                                                                <label> فوق تخصص عروق </label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                        <div class="col-md-6 white-bg ">
+                            <div class="col-md-12 mt-5">
+                                <div class="select-box2 theme aos" data-aos="fade-up">
+                                    <div class="d-flex align-items-center">
+                                        <div class="image-holder">
+                                            <span>
+                                                <img src="~/Content/Doctor/assets/img/icons/doct-02.png" alt="" />
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <h2>نوبت گیری</h2>
+                                            <p>در این بخش به شما در اخذ نوبت از مراکز درمانی و پزشکانی که در مجموعه دکترفم حضور ندارند کمک می کنیم.</p>
+                                            <div class="row">
+                                                <div class="col-md-5"></div>
+                                                <div class="col-md-7 text-center justify-content-center">
+                                                    <a href="booking.html" class="book-now ">مشاهده</a>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="item">
-                                            <div class="row justify-content-center text-center">
-                                                <div class="col-md-8">
-                                                    <div class="testimonial style-2">
-                                                        <div class="testimonial-img">
-                                                            <img class="img-fluid d-inline" src="~/Content/images/testimonial/small/02.jpg" alt="">
-
-                                                        </div>
-                                                        <div class="testimonial-content">
-                                                            <p>این پروژه بسیار کاربردی و مناسب برای کاربران از هر قشری است.</p>
-
-                                                            <div class="testimonial-caption">
-                                                                <h5> دینو اردن </h5>
-                                                                <label> مدرس دانشگاه </label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mt-5">
+                                <div class="select-box2 theme aos" data-aos="fade-up">
+                                    <div class="d-flex align-items-center">
+                                        <div class="image-holder">
+                                            <span>
+                                                <img src="~/Content/Doctor/assets/img/icons/doct-02.png" alt="" />
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <h2>مددکاری</h2>
+                                            <p>در این بخش تلاش می کنیم بیماران مبتلا به سرطان را جهت دریافت کمکهای درمانی به مراکز مددکاری معرفی نمائیم. </p>
+                                            <div class="row">
+                                                <div class="col-md-5"></div>
+                                                <div class="col-md-7 text-center justify-content-center">
+                                                    <a href="booking.html" class="book-now ">مشاهده</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -650,6 +723,7 @@
             </div>
         </div>
     </section>
+
     <div class="row mt-3 text-center justify-content-center" style="border-top: 1px solid #3143ee;">
         <div class="col-md-3 mt-3 counter text-center">
             <span class="count-number text-center" data-to="580" data-speed="100">۵۸۰</span>
@@ -672,4 +746,5 @@
             <p class="text-center"> بازدیدکنندگان </p>
         </div>
     </div>
+
 </div>

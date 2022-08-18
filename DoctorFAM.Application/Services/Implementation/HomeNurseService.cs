@@ -37,8 +37,11 @@ namespace DoctorFAM.Application.Services.Implementation
 
         private readonly IWalletRepository _walletRepository;
 
+        private readonly IPopulationCoveredRepository _populationCovered;
+
         public HomeNurseService(DoctorFAMDbContext context, IHomeNurseRepository homeNurse, IRequestService requestService,
-                                IUserService userService, IPatientService patientService , ILocationService locationService , IWalletRepository walletRepository)
+                                IUserService userService, IPatientService patientService , ILocationService locationService ,
+                                IWalletRepository walletRepository, IPopulationCoveredRepository populationCovered)
         {
             _context = context;
             _homeNurse = homeNurse;
@@ -47,6 +50,8 @@ namespace DoctorFAM.Application.Services.Implementation
             _patientService = patientService;
             _locationService = locationService;
             _walletRepository = walletRepository;
+            _populationCovered = populationCovered;
+
         }
 
         #endregion
@@ -159,6 +164,106 @@ namespace DoctorFAM.Application.Services.Implementation
             #endregion
 
             #region MyRegion
+
+            await _patientService.AddPatient(model);
+
+            #endregion
+
+            return model.Id;
+        }
+
+        public async Task<PatientViewModel> FillPatientViewModelFromSelectedPopulationCoveredData(ulong populationId, ulong requestId, ulong userId)
+        {
+            #region Get User
+
+            var user = await _userService.GetUserById(userId);
+            if (user == null) return null;
+
+            #endregion
+
+            #region Get Request 
+
+            var request = await _requestService.GetRequestById(requestId);
+            if (request == null) return null;
+            if (request.RequestType != RequestType.HomeNurse) return null;
+
+            #endregion
+
+            #region Get Population Coverd
+
+            var population = await _populationCovered.GetPopulationCoveredById(populationId);
+
+            if (population == null) return null;
+
+            //When popluation Covered Is not For Current User 
+            if (population.UserId != userId) return null;
+
+            #endregion
+
+            #region Fill Entity
+
+            PatientViewModel model = new PatientViewModel
+            {
+                RequestId = requestId,
+                Age = population.Age,
+                Gender = population.Gender,
+                InsuranceType = population.InsuranceType,
+                NationalId = population.NationalId,
+                PatientName = population.PatientName.SanitizeText(),
+                PatientLastName = population.PatientLastName.SanitizeText(),
+                UserId = userId
+            };
+
+            #endregion
+
+            return model;
+        }
+
+        public async Task<ulong> CreatePatientDetailByPopulationCovered(ulong populationId, ulong requestId, ulong userId)
+        {
+            #region Get User
+
+            var user = await _userService.GetUserById(userId);
+            if (user == null) return 0;
+
+            #endregion
+
+            #region Get Request 
+
+            var request = await _requestService.GetRequestById(requestId);
+            if (request == null) return 0;
+
+            #endregion
+
+            #region Get Population Coverd
+
+            var population = await _populationCovered.GetPopulationCoveredById(populationId);
+
+            if (population == null) return 0;
+
+            //When popluation Covered Is not For Current User 
+            if (population.UserId != userId) return 0;
+
+            #endregion
+
+            #region Fill Entity
+
+            Patient model = new Patient
+            {
+                RequestId = requestId,
+                Age = population.Age,
+                Gender = population.Gender,
+                InsuranceType = population.InsuranceType,
+                NationalId = population.NationalId,
+                PatientName = population.PatientName.SanitizeText(),
+                PatientLastName = population.PatientLastName.SanitizeText(),
+                RequestDescription = "Population Covered",
+                UserId = userId
+            };
+
+            #endregion
+
+            #region Add Patient
 
             await _patientService.AddPatient(model);
 
