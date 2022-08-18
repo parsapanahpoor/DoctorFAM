@@ -30,6 +30,8 @@ namespace DoctorFAM.DataLayer.Entities
 
         public ulong? OperationId { get; set; }
 
+        public ulong BusinessKey { get; set; }
+
         #endregion
 
         #region Relation

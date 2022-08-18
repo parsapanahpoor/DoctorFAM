@@ -135,6 +135,9 @@
   <data name="Ascending" xml:space="preserve">
     <value>صعودی</value>
   </data>
+  <data name="Awaiting The Payment Of The Invoice Amount" xml:space="preserve">
+    <value>درانتظار پرداخت مبلغ پیش نویس</value>
+  </data>
   <data name="Base Price" xml:space="preserve">
     <value>قیمت پایه</value>
   </data>
@@ -158,6 +161,9 @@
   </data>
   <data name="computerized" xml:space="preserve">
     <value>افزودن کامپیوتری</value>
+  </data>
+  <data name="Confirm From Destination And Waiting For Issuance Of Draft Invoice" xml:space="preserve">
+    <value>تایید شده و درانتظار صدور پیش نویس فاکتور</value>
   </data>
   <data name="Copyright text" xml:space="preserve">
     <value>متن کپی رایت</value>
@@ -185,6 +191,9 @@
   </data>
   <data name="Deleted1" xml:space="preserve">
     <value>حذف شده</value>
+  </data>
+  <data name="Delivery To Courier And Sending" xml:space="preserve">
+    <value>تحویل به پیک و درحال ارسال</value>
   </data>
   <data name="Deposit" xml:space="preserve">
     <value>واریز</value>
@@ -391,6 +400,9 @@
   <data name="Port Number1" xml:space="preserve">
     <value>شماره پورت</value>
   </data>
+  <data name="Preparing The Order" xml:space="preserve">
+    <value>درحال آماده سازی سفارش</value>
+  </data>
   <data name="Ratio" xml:space="preserve">
     <value>نسبت</value>
   </data>
@@ -510,6 +522,9 @@
   </data>
   <data name="Waiting For Complete" xml:space="preserve">
     <value>انتخاب شده و در انتظار نهایی شدن</value>
+  </data>
+  <data name="Waiting For Confirm From Destination" xml:space="preserve">
+    <value>درانتظار تایید مقصد</value>
   </data>
   <data name="Waiting for information to be filled by the user" xml:space="preserve">
     <value>در انتظار پر کردن اطلاعات از طرف کاربر</value>

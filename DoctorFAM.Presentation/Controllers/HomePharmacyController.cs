@@ -423,7 +423,6 @@ namespace DoctorFAM.Web.Controllers
 
             if (res.Result.Status == 100)
             {
-
                 #region Update Request State 
 
                 await _requestService.UpdateRequestStateForTramsferringToTheBankingPortal(request);
@@ -512,6 +511,8 @@ namespace DoctorFAM.Web.Controllers
                     }
 
                     #endregion
+
+                    TempData[SuccessMessage] = "لطفا تا تایید داروخانه صبور باشید.این فرایند حداکثر تا 1ساعت زمان خواهد برد.";
 
                     return View();
                 }

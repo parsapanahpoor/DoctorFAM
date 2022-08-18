@@ -132,6 +132,9 @@
   <data name="Article Category title" xml:space="preserve">
     <value>Kategori başlığı</value>
   </data>
+  <data name="Awaiting The Payment Of The Invoice Amount" xml:space="preserve">
+    <value>Taslak tutarının ödenmesi bekleniyor</value>
+  </data>
   <data name="BirthDay" xml:space="preserve">
     <value>Doğum günü</value>
   </data>
@@ -150,6 +153,9 @@
   <data name="computerized" xml:space="preserve">
     <value>Bilgisayar ekle</value>
   </data>
+  <data name="Confirm From Destination And Waiting For Issuance Of Draft Invoice" xml:space="preserve">
+    <value>Onaylandı ve taslak faturanın düzenlenmesini bekliyor</value>
+  </data>
   <data name="Country" xml:space="preserve">
     <value>Ülke</value>
   </data>
@@ -161,6 +167,9 @@
   </data>
   <data name="Deleted" xml:space="preserve">
     <value>Kaldırıldı</value>
+  </data>
+  <data name="Delivery To Courier And Sending" xml:space="preserve">
+    <value>Kuryeye teslim ve gönderim</value>
   </data>
   <data name="Display Name" xml:space="preserve">
     <value>İsim göster</value>
@@ -334,6 +343,9 @@ meta etiket</value>
   <data name="Port Number" xml:space="preserve">
     <value>Port numarası</value>
   </data>
+  <data name="Preparing The Order" xml:space="preserve">
+    <value>Siparişi hazırlamak ve göndermek</value>
+  </data>
   <data name="Ratio" xml:space="preserve">
     <value>Oran</value>
   </data>
@@ -441,6 +453,9 @@ meta etiket</value>
   </data>
   <data name="Waiting For Complete" xml:space="preserve">
     <value>Tamamlanmayı Bekliyor</value>
+  </data>
+  <data name="Waiting For Confirm From Destination" xml:space="preserve">
+    <value>Hedef onayı bekleniyor</value>
   </data>
   <data name="Waiting for information to be filled by the user" xml:space="preserve">
     <value>Kullanıcı tarafından doldurulacak bilgi bekleniyor</value>

@@ -21,6 +21,16 @@ namespace DoctorFAM.Domain.Enums.Request
         SelectedFromDoctor,
         [Display(Name = "finalized")]
         Finalized,
+        [Display(Name = "Waiting For Confirm From Destination")]
+        WaitingForConfirmFromDestination,
+        [Display(Name = "Confirm From Destination And Waiting For Issuance Of Draft Invoice")]
+        ConfirmFromDestinationAndWaitingForIssuanceOfDraftInvoice,
+        [Display(Name = "Awaiting The Payment Of The Invoice Amount")]
+        AwaitingThePaymentOfTheInvoiceAmount,
+        [Display(Name = "Preparing The Order")]
+        PreparingTheOrder,
+        [Display(Name = "Delivery To Courier And Sending")]
+        DeliveryToCourierAndSending
     }
 
     public enum RequestStateForFilterAdminSide
