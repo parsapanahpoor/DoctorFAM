@@ -126,6 +126,8 @@ namespace DoctorFAM.Domain.Entities.Account
 
         public ICollection<SupporterNotification> SupporterNotifications { get; set; }
 
+        public ICollection<BMI.BMI> BMI { get; set; }
+
         #endregion
     }
 }

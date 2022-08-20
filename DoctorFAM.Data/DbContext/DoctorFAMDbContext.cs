@@ -1,6 +1,7 @@
 ﻿using Academy.Domain.Entities.SiteSetting;
 using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Account;
+using DoctorFAM.Domain.Entities.BMI;
 using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.Interest;
@@ -198,6 +199,12 @@ namespace DoctorFAM.Data.DbContext
         #region Notification 
 
         public DbSet<SupporterNotification> SupporterNotification { get; set; }
+
+        #endregion
+
+        #region BMI
+
+        public DbSet<BMI> BMI { get; set; }
 
         #endregion
 
