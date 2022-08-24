@@ -45,6 +45,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         Task AddPatientRequestDetail(PaitientRequestDetail patient);
 
+        //Get Request Detail By Request Id
+        Task<PaitientRequestDetail?> GetPatientRequestDetailByRequestId(ulong requestId);
+
         #endregion
 
         #endregion

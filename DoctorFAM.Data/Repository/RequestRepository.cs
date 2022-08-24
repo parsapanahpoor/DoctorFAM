@@ -61,6 +61,12 @@ namespace DoctorFAM.Data.Repository
             await _context.SaveChangesAsync();
         }
 
+        //Get Request Detail By Request Id
+        public async Task<PaitientRequestDetail?> GetPatientRequestDetailByRequestId(ulong requestId)
+        {
+            return await _context.PaitientRequestDetails.FirstOrDefaultAsync(p => !p.IsDelete && p.RequestId == requestId);
+        }
+
         #endregion
 
         #endregion

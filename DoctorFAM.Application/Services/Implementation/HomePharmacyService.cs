@@ -498,6 +498,32 @@ namespace DoctorFAM.Application.Services.Implementation
             return model;
         }
 
+        //Get List Of Pharmacys For Send Notification For Home Pharmacys Notification 
+        public async Task<List<string?>> GetListOfPharmacysForArrivalsHomePharmacyRequests(ulong requestId)
+        {
+            #region Get Request By Id 
+
+            var request = await _requestService.GetRequestById(requestId);
+            if (request == null) return null;
+
+            #endregion
+
+            #region Get Request Detail 
+
+            var requetsDetail = await _requestService.GetPatientRequestDetailByRequestId(requestId);
+            if (requetsDetail == null) return null;
+
+            #endregion
+
+            #region Get Activated Pharmacy By Home Pharmacy Interests And Location Address
+
+            var returnValue = await _homePharmacy.GetActivatedAndHomePharamcyInterestPharmacy(requetsDetail.CountryId , requetsDetail.StateId , requetsDetail.CityId);
+
+            #endregion
+
+            return returnValue;
+        }
+
         #endregion
 
         #region Admin Side

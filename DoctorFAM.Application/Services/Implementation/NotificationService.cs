@@ -21,11 +21,52 @@ namespace DoctorFAM.Application.Services.Implementation
 
         private readonly IRequestService _requestService;
 
-        public NotificationService(INotificationRepository notificationService, IUserService userService, IRequestService requestService)
+        private readonly IHomePharmacyServicec _homePharmacyService;
+
+        public NotificationService(INotificationRepository notificationService, IUserService userService, IRequestService requestService, IHomePharmacyServicec homePharmacyService)
         {
             _notificationService = notificationService;
             _userService = userService;
             _requestService = requestService;
+            _homePharmacyService = homePharmacyService;
+        }
+
+        #endregion
+
+        #region Site Side 
+
+        //Create Notification For Pharmacy From Home Pharmacy Request 
+        public async Task CreateNotificationForPharmacyFromHomePharmacyRequest(ulong requestId , SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId)
+        {
+            #region Get Validated Pharmacyes
+
+            var usersId = await _homePharmacyService.GetListOfPharmacysForArrivalsHomePharmacyRequests(requestId);
+
+            #endregion
+
+            #region Fill Notification Entity
+
+            List<SupporterNotification> model = new List<SupporterNotification>();
+
+            foreach (var item in usersId)
+            {
+                SupporterNotification notif = new SupporterNotification()
+                {
+                    CreateDate = DateTime.Now,
+                    IsDelete = false,
+                    IsSeen = false,
+                    SupporterNotificationText = SupporterNotificationText,
+                    TargetId = requestId,
+                    UserId = senderId,
+                    ReciverId = Convert.ToUInt64(Int64.Parse(item)),
+                };
+
+                model.Add(notif);
+            };
+
+            await _notificationService.CreateRangeSupporter(model);
+
+            #endregion
         }
 
         #endregion

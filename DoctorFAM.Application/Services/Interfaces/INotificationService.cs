@@ -10,6 +10,13 @@ namespace DoctorFAM.Application.Services.Interfaces
 {
     public interface INotificationService
     {
+        #region Site Side 
+
+        //Create Notification For Pharmacy From Home Pharmacy Request 
+        Task CreateNotificationForPharmacyFromHomePharmacyRequest(ulong requestId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId);
+
+        #endregion
+
         #region Supporter And Admin 
 
         //Create Notification For Admin And Supporters

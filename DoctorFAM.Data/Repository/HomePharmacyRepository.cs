@@ -1,8 +1,10 @@
 ﻿using DoctorFAM.Data.DbContext;
 using DoctorFAM.DataLayer.Entities;
+using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.Pharmacy;
 using DoctorFAM.Domain.Entities.Requests;
+using DoctorFAM.Domain.Entities.WorkAddress;
 using DoctorFAM.Domain.Enums.Request;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.HealthHouse.HomePharmacy;
@@ -56,6 +58,46 @@ namespace DoctorFAM.Data.Repository
         {
             await _context.PatientRequestDateTimeDetails.AddAsync(request);
             await _context.SaveChangesAsync();
+        }
+
+        //Get Activated And Home Pharmacy Interests Pharmacy For Send Correct Notification For Arrival Home Pharmacy Request 
+        public async Task<List<string?>> GetActivatedAndHomePharamcyInterestPharmacy(ulong countryId , ulong stateId , ulong cityId)
+        {
+            #region Get Home Pharmacy Interests Pharmacys  
+
+            var users = await _context.PharmacySelectedInterests.Include(p=> p.Pharmacy)
+                                .Where(p => !p.IsDelete && p.InterestId == 1).Select(p => p.Pharmacy.UserId).ToListAsync();
+            if (users == null) return null;
+
+            #endregion
+
+            #region Check User Work Addresses 
+
+            //Initial Model Of String 
+            List<string?> returnValue = new List<string?>();
+
+            foreach (var item in users)
+            {
+                //Check Pharmacy Location By Country Id && State Id && CityId
+                var checkLocation = await _context.WorkAddresses.FirstOrDefaultAsync(p => !p.IsDelete && p.CityId == cityId && p.CountryId == countryId && p.StateId == stateId
+                                                              && p.UserId == item );
+
+                if (checkLocation != null)
+                {
+                    //Check Pharmacy Is Activated
+                    var activated = await _context.Organizations.FirstOrDefaultAsync(p => !p.IsDelete && p.OwnerId == checkLocation.UserId
+                                            && p.OrganizationType == Domain.Enums.Organization.OrganizationType.Pharmacy && p.OrganizationInfoState == Domain.Entities.Doctors.OrganizationInfoState.Accepted);
+
+                    if (activated != null)
+                    {
+                        returnValue.Add(activated.OwnerId.ToString());
+                    }
+                }
+            }
+
+            #endregion
+
+            return returnValue;
         }
 
         #endregion
@@ -162,6 +204,5 @@ namespace DoctorFAM.Data.Repository
         }
 
         #endregion
-
     }
 }

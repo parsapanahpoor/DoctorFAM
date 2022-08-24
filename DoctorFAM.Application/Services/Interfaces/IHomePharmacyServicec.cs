@@ -47,6 +47,9 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Fill Patient ViewModel From Selected Population Covered Data
         Task<PatientViewModel> FillPatientViewModelFromSelectedPopulationCoveredData(ulong populationId, ulong requestId, ulong userId);
 
+        //Get List Of Pharmacys For Send Notification For Home Pharmacys Notification 
+        Task<List<string?>> GetListOfPharmacysForArrivalsHomePharmacyRequests(ulong requestId);
+
         #endregion
 
         #region Admin Side

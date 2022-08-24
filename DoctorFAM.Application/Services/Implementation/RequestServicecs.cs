@@ -200,6 +200,12 @@ namespace DoctorFAM.Application.Services.Implementation
             return CreatePatientAddressResult.Success;
         }
 
+        //Get Request Detail By Request Id
+        public async Task<PaitientRequestDetail?> GetPatientRequestDetailByRequestId(ulong requestId)
+        {
+            return await _request.GetPatientRequestDetailByRequestId(requestId);
+        }
+
         #endregion
 
         #endregion

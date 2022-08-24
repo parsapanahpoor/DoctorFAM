@@ -25,6 +25,9 @@ namespace DoctorFAM.Domain.Interfaces
 
         Task AddPatientRequestDateTimeDetail(PatientRequestDateTimeDetail request);
 
+        //Get Activated And Home Pharmacy Interests Pharmacy For Send Correct Notification For Arrival Home Pharmacy Request 
+        Task<List<string?>> GetActivatedAndHomePharamcyInterestPharmacy(ulong countryId, ulong stateId, ulong cityId);
+
         #endregion
 
         #region Admin Side
@@ -42,6 +45,5 @@ namespace DoctorFAM.Domain.Interfaces
         Task<List<RequestedDrugsAdminSideViewModel>?> GetRequestDrugsByRequestId(ulong requestId);
 
         #endregion
-
     }
 }
