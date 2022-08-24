@@ -38,29 +38,6 @@
         <li>
             <a href="#" class="menu-dropdown">
                 <i class="menu-icon fa fa-user"></i>
-                <span class="menu-text"> @SharedLocalizer["Profile"] </span>
-
-                <i class="menu-expand"></i>
-            </a>
-
-            <ul class="submenu">
-                <li>
-                    <a asp-area="UserPanel" asp-controller="Account" asp-action="EditProfile">
-                        <span class="menu-text">@SharedLocalizer["Edit Profile"]</span>
-                    </a>
-                </li>
-
-                <li>
-                    <a asp-area="UserPanel" asp-controller="Account" asp-action="ChangePassword">
-                        <span class="menu-text">@SharedLocalizer["Change Password"]</span>
-                    </a>
-                </li>
-            </ul>
-        </li>
-
-        <li>
-            <a href="#" class="menu-dropdown">
-                <i class="menu-icon fa fa-user"></i>
                 <span class="menu-text"> @SharedLocalizer["Population Covered"] </span>
 
                 <i class="menu-expand"></i>
@@ -76,6 +53,49 @@
                 <li>
                     <a asp-area="UserPanel" asp-controller="PopulationCovered" asp-action="CreatePopulationCovered">
                         <span class="menu-text">@SharedLocalizer["Create Population Covered"]</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="#" class="menu-dropdown">
+                <i class="menu-icon fa fa-heart"></i>
+                <span class="menu-text"> @SharedLocalizer["Health Test"] </span>
+
+                <i class="menu-expand"></i>
+            </a>
+
+            <ul class="submenu">
+
+                <li>
+                    <a asp-area="" asp-controller="Diabet" asp-action="Index">
+                        <span class="menu-text">@SharedLocalizer["BMI"]</span>
+                    </a>
+                </li>
+
+            </ul>
+        </li>
+
+
+        <li>
+            <a href="#" class="menu-dropdown">
+                <i class="menu-icon fa fa-user"></i>
+                <span class="menu-text"> @SharedLocalizer["Profile"] </span>
+
+                <i class="menu-expand"></i>
+            </a>
+
+            <ul class="submenu">
+                <li>
+                    <a asp-area="UserPanel" asp-controller="Account" asp-action="EditProfile">
+                        <span class="menu-text">@SharedLocalizer["Edit Profile"]</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a asp-area="UserPanel" asp-controller="Account" asp-action="ChangePassword">
+                        <span class="menu-text">@SharedLocalizer["Change Password"]</span>
                     </a>
                 </li>
             </ul>

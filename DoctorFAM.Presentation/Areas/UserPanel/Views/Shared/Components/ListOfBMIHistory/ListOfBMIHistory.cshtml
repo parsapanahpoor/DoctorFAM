@@ -1,0 +1,95 @@
+﻿@model List<DoctorFAM.Domain.Entities.BMI.BMI>
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Domain.ViewModels.Common
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
+
+
+<div class="col-lg-6">
+    <div class="widget">
+        <div class="widget-header bordered-bottom bordered-info">
+            <i class="widget-icon fa fa-tags info"></i>
+            <span class="widget-caption info">@SharedLocalizer["List Of BMI History"]</span>
+        </div><!--Widget Header-->
+        <div class="widget-body  no-padding" style="height: 150px !important;overflow-y: scroll;">
+            <div class="tickets-container">
+                <ul class="tickets-list">
+                    @if (Model != null && Model.Any())
+                    {
+                        @foreach (var bmi in Model)
+                        {
+                            <li class="ticket-item">
+                                <div class="row">
+                                    <div class="ticket-time  col-lg-2 col-sm-6 col-xs-12">
+                                        <div class="divider hidden-md hidden-sm hidden-xs"></div>
+                                        <i class="fa fa-arrows-v"></i>
+                                        <span class="time"> @SharedHtmlLocalizer["Your Height"] : @bmi.Height</span>
+                                    </div>
+                                    <div class="ticket-time  col-lg-2 col-sm-6 col-xs-12">
+                                        <div class="divider hidden-md hidden-sm hidden-xs"></div>
+                                        <i class="fa fa-bolt"></i>
+                                        <span class="time"> @SharedHtmlLocalizer["Your Weight"] : @bmi.Weight</span>
+                                    </div>
+                                    <div class="ticket-time  col-lg-2 col-sm-6 col-xs-12">
+                                        <div class="divider hidden-md hidden-sm hidden-xs"></div>
+                                        <i class="fa fa-heart"></i>
+                                        <span class="time"> @SharedHtmlLocalizer["Your BMI"] : @bmi.BMIResult</span>
+                                    </div>
+                                    <div class="ticket-time  col-lg-2 col-sm-6 col-xs-12">
+                                        <div class="divider hidden-md hidden-sm hidden-xs"></div>
+                                        <i class="fa fa-clock-o"></i>
+                                        <span class="time">  @bmi.CreateDate.ToShamsiDate()</span>
+                                    </div>
+                                    @if (bmi.BMIResultState == DoctorFAM.Domain.Enums.Diabet_Results.BMIResult.Underweight)
+                                    {
+                                        <div class="ticket-time  col-lg-4 col-sm-6 col-xs-12">
+                                            <div class="divider hidden-md hidden-sm hidden-xs"></div>
+                                            <span class="label label-primary">@SharedHtmlLocalizer["Underweight"]</span>
+                                        </div>
+                                    }
+                                    @if (bmi.BMIResultState == DoctorFAM.Domain.Enums.Diabet_Results.BMIResult.ExcessiveObesity)
+                                    {
+                                        <div class="ticket-time  col-lg-4 col-sm-6 col-xs-12">
+                                            <div class="divider hidden-md hidden-sm hidden-xs"></div>
+                                            <span class="label label-danger">@SharedHtmlLocalizer["ExcessiveObesity"]</span>
+                                        </div>
+                                    }
+                                    @if (bmi.BMIResultState == DoctorFAM.Domain.Enums.Diabet_Results.BMIResult.Appropriate)
+                                    {
+                                        <div class="ticket-time  col-lg-4 col-sm-6 col-xs-12">
+                                            <div class="divider hidden-md hidden-sm hidden-xs"></div>
+                                            <span class="label label-success">@SharedHtmlLocalizer["Appropriate"]</span>
+                                        </div>
+                                    }
+                                    @if (bmi.BMIResultState == DoctorFAM.Domain.Enums.Diabet_Results.BMIResult.fat)
+                                    {
+                                        <div class="ticket-time  col-lg-4 col-sm-6 col-xs-12">
+                                            <div class="divider hidden-md hidden-sm hidden-xs"></div>
+                                            <span class="label label-danger">@SharedHtmlLocalizer["fat"]</span>
+                                        </div>
+                                    }
+                                    @if (bmi.BMIResultState == DoctorFAM.Domain.Enums.Diabet_Results.BMIResult.Overweight)
+                                    {
+                                        <div class="ticket-time  col-lg-4 col-sm-6 col-xs-12">
+                                            <div class="divider hidden-md hidden-sm hidden-xs"></div>
+                                            <span class="label label-danger">@SharedHtmlLocalizer["Overweight"]</span>
+                                        </div>
+                                    }
+                                </div>
+                            </li>
+                        }
+                    }
+                    else
+                    {
+                        <partial name="_UserPanelNotFoundPartial" />
+                    }
+
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+

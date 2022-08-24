@@ -129,6 +129,9 @@
   <data name="All" xml:space="preserve">
     <value>همه</value>
   </data>
+  <data name="Appropriate" xml:space="preserve">
+    <value>مناسب</value>
+  </data>
   <data name="Article Category title" xml:space="preserve">
     <value>عنوان دسته بندی </value>
   </data>
@@ -234,11 +237,17 @@
   <data name="EndPrice" xml:space="preserve">
     <value>پایان قیمت</value>
   </data>
+  <data name="ExcessiveObesity" xml:space="preserve">
+    <value>چاقی مفرط</value>
+  </data>
   <data name="Extra Phone Number" xml:space="preserve">
     <value>شماره موبایل</value>
   </data>
   <data name="Failed" xml:space="preserve">
     <value>ناموفق</value>
+  </data>
+  <data name="fat" xml:space="preserve">
+    <value>چاق</value>
   </data>
   <data name="Father" xml:space="preserve">
     <value>پدر</value>
@@ -351,6 +360,9 @@
   </data>
   <data name="Online" xml:space="preserve">
     <value>آنلاین</value>
+  </data>
+  <data name="Overweight" xml:space="preserve">
+    <value>اضافه وزن</value>
   </data>
   <data name="Paid and waiting to choose a doctor" xml:space="preserve">
     <value>پرداخت شده و در انتظار انتخاب پزشک</value>
@@ -504,6 +516,9 @@
   </data>
   <data name="Transaction Type" xml:space="preserve">
     <value>نوع تراکنش</value>
+  </data>
+  <data name="Underweight" xml:space="preserve">
+    <value>کمبود وزن</value>
   </data>
   <data name="Unique Name" xml:space="preserve">
     <value>نام یکتا</value>

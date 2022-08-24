@@ -1,5 +1,6 @@
 ﻿using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Common;
+using DoctorFAM.Domain.Enums.Diabet_Results;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,8 @@ namespace DoctorFAM.Domain.Entities.BMI
         public int Height { get; set; }
 
         public int BMIResult { get; set; }
+
+        public BMIResult BMIResultState { get; set; }
 
         #endregion
 

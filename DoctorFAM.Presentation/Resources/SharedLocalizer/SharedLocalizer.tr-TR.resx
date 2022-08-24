@@ -135,6 +135,9 @@
   <data name="An error occurred in the change password process" xml:space="preserve">
     <value>Şifre değiştirme işleminde bir hata oluştu</value>
   </data>
+  <data name="Appropriate" xml:space="preserve">
+    <value>Uygun</value>
+  </data>
   <data name="Articles List" xml:space="preserve">
     <value>Makale Listesi</value>
   </data>
@@ -198,6 +201,12 @@
   <data name="Edit Profile" xml:space="preserve">
     <value>profili Düzenle</value>
   </data>
+  <data name="ExcessiveObesity" xml:space="preserve">
+    <value>aşırı obezite</value>
+  </data>
+  <data name="fat" xml:space="preserve">
+    <value>yağ</value>
+  </data>
   <data name="Father" xml:space="preserve">
     <value>Baba</value>
   </data>
@@ -209,6 +218,9 @@
   </data>
   <data name="Health House" xml:space="preserve">
     <value>sağlık evi</value>
+  </data>
+  <data name="Health Test" xml:space="preserve">
+    <value>sağlık testi</value>
   </data>
   <data name="Home" xml:space="preserve">
     <value>Ana Sayfa</value>
@@ -236,6 +248,9 @@
   </data>
   <data name="Laboratory At Home" xml:space="preserve">
     <value>evde laboratuvar</value>
+  </data>
+  <data name="List Of BMI History" xml:space="preserve">
+    <value>Kullanıcının BMI'lerinin geçmişi</value>
   </data>
   <data name="List Of Cancel Request" xml:space="preserve">
     <value>Randevu iptal talepleri</value>
@@ -339,6 +354,9 @@
   <data name="Options" xml:space="preserve">
     <value>Seçenekler</value>
   </data>
+  <data name="Overweight" xml:space="preserve">
+    <value>Kilolu</value>
+  </data>
   <data name="Partner" xml:space="preserve">
     <value>Eş</value>
   </data>
@@ -408,6 +426,9 @@
   <data name="Turn ratings" xml:space="preserve">
     <value>Rol Derecelendirmeleri</value>
   </data>
+  <data name="Underweight" xml:space="preserve">
+    <value>zayıf</value>
+  </data>
   <data name="User Not Found" xml:space="preserve">
     <value>Kullanıcı bulunamadı</value>
   </data>
@@ -425,5 +446,14 @@
   </data>
   <data name="Your Account Successfully Activated, Now You Can Login" xml:space="preserve">
     <value>Hesabınız başarıyla etkinleştirildi, şimdi siteye giriş yapabilirsiniz</value>
+  </data>
+  <data name="Your BMI" xml:space="preserve">
+    <value>BMI</value>
+  </data>
+  <data name="Your Height" xml:space="preserve">
+    <value>senin boyun</value>
+  </data>
+  <data name="Your Weight" xml:space="preserve">
+    <value>senin kilon</value>
   </data>
 </root>

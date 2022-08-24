@@ -462,4 +462,34 @@
   <data name="Request For Home Pharmacy" xml:space="preserve">
     <value>درخواست برای داروخانه در منزل</value>
   </data>
+  <data name="Appropriate" xml:space="preserve">
+    <value>مناسب</value>
+  </data>
+  <data name="ExcessiveObesity" xml:space="preserve">
+    <value>چاقی مفرط</value>
+  </data>
+  <data name="fat" xml:space="preserve">
+    <value>چاق</value>
+  </data>
+  <data name="List Of BMI History" xml:space="preserve">
+    <value>تاریخجه ی BMI های کاربر</value>
+  </data>
+  <data name="Overweight" xml:space="preserve">
+    <value>اضافه وزن</value>
+  </data>
+  <data name="Underweight" xml:space="preserve">
+    <value>کمبود وزن</value>
+  </data>
+  <data name="Your BMI" xml:space="preserve">
+    <value>BMI</value>
+  </data>
+  <data name="Your Height" xml:space="preserve">
+    <value>قد شما</value>
+  </data>
+  <data name="Your Weight" xml:space="preserve">
+    <value>وزن شما</value>
+  </data>
+  <data name="Health Test" xml:space="preserve">
+    <value>تست سلامت</value>
+  </data>
 </root>

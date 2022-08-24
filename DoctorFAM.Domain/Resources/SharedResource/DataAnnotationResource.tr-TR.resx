@@ -129,6 +129,9 @@
   <data name="All" xml:space="preserve">
     <value>Herşey</value>
   </data>
+  <data name="Appropriate" xml:space="preserve">
+    <value>Uygun</value>
+  </data>
   <data name="Article Category title" xml:space="preserve">
     <value>Kategori başlığı</value>
   </data>
@@ -198,11 +201,17 @@
   <data name="End Time" xml:space="preserve">
     <value>bitiş zamanı</value>
   </data>
+  <data name="ExcessiveObesity" xml:space="preserve">
+    <value>aşırı obezite</value>
+  </data>
   <data name="Extra Phone Number" xml:space="preserve">
     <value>Ekstra Telefon Numarası</value>
   </data>
   <data name="Failed" xml:space="preserve">
     <value>Başarısız</value>
+  </data>
+  <data name="fat" xml:space="preserve">
+    <value>yağ</value>
   </data>
   <data name="Father" xml:space="preserve">
     <value>Baba</value>
@@ -300,6 +309,9 @@ meta etiket</value>
   </data>
   <data name="Online" xml:space="preserve">
     <value>Çevrimiçi</value>
+  </data>
+  <data name="Overweight" xml:space="preserve">
+    <value>Kilolu</value>
   </data>
   <data name="Paid and waiting to choose a doctor" xml:space="preserve">
     <value>Ücretli ve doktor seçmeyi bekliyor</value>
@@ -409,6 +421,9 @@ meta etiket</value>
   <data name="State" xml:space="preserve">
     <value>Belirtmek, bildirmek</value>
   </data>
+  <data name="Stripe" xml:space="preserve">
+    <value />
+  </data>
   <data name="Success" xml:space="preserve">
     <value>Başarılı</value>
   </data>
@@ -438,6 +453,9 @@ meta etiket</value>
   </data>
   <data name="Title" xml:space="preserve">
     <value>Başlık</value>
+  </data>
+  <data name="Underweight" xml:space="preserve">
+    <value>zayıf</value>
   </data>
   <data name="Unique Name" xml:space="preserve">
     <value>benzersiz ad</value>

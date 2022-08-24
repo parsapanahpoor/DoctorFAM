@@ -1,16 +1,87 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DoctorFAM.Application.Extensions;
+using DoctorFAM.Application.Services.Interfaces;
+using DoctorFAM.Domain.Entities.BMI;
+using DoctorFAM.Domain.ViewModels.Site.Diabet;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DoctorFAM.Web.Controllers
 {
-    public class DiabetController : Controller
+    public class DiabetController : SiteBaseController
     {
-        public IActionResult Index()
+        #region Ctor 
+
+        private readonly IBMIService _bmiService;
+
+        public DiabetController(IBMIService bmiService)
         {
+            _bmiService = bmiService;
+        }
+
+        #endregion
+
+        #region Index Page
+
+        public IActionResult Index(int? bmiResult)
+        {
+            #region Send BMI Result To View 
+
+            if (bmiResult != null)
+            {
+                ViewBag.bmiResult = bmiResult;
+            }
+
+            #endregion
+
             return View();
         }
+
+        #endregion
+
+        #region Two
+
         public IActionResult two()
         {
             return View();
         }
+
+        #endregion
+
+        #region BMI 
+
+        #region Show BMI Modal
+
+        [HttpGet("/Show-BMI-Modal")]
+        public async Task<IActionResult> ShowBMIModal()
+        {
+            return PartialView("_BMIModal");
+        }
+
+        #endregion
+
+        #region Add Process BMI Result
+
+        public async Task<IActionResult> ProcessBMI(BMIViewModel bmi)
+        {
+            //IF User Is Loged In 
+            if (User.Identity.IsAuthenticated)
+            {
+                var res = await _bmiService.ProcessBMI(bmi, User.GetUserId());
+
+                return RedirectToAction(nameof(Index) , new { bmiResult = res.BMIResult });
+            }
+            else
+            {
+                var res = await _bmiService.ProcessBMI(bmi , null);
+
+                return RedirectToAction(nameof(Index), new { bmiResult = res.BMIResult });
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        #endregion
+
+        #endregion
+
     }
 }

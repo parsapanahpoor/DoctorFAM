@@ -132,6 +132,9 @@
   <data name="An error occurred in the change password process" xml:space="preserve">
     <value>حدث خطأ في عملية تغيير كلمة المرور</value>
   </data>
+  <data name="Appropriate" xml:space="preserve">
+    <value>ملائم</value>
+  </data>
   <data name="Articles List" xml:space="preserve">
     <value>قائمة المقالات</value>
   </data>
@@ -195,6 +198,12 @@
   <data name="Edit Profile" xml:space="preserve">
     <value>تعديل الملف الشخصي</value>
   </data>
+  <data name="ExcessiveObesity" xml:space="preserve">
+    <value>السمنة المفرطة</value>
+  </data>
+  <data name="fat" xml:space="preserve">
+    <value>سمين</value>
+  </data>
   <data name="Father" xml:space="preserve">
     <value>أب</value>
   </data>
@@ -206,6 +215,9 @@
   </data>
   <data name="Health House" xml:space="preserve">
     <value>المنزل الصحي</value>
+  </data>
+  <data name="Health Test" xml:space="preserve">
+    <value>اختبار الصحة</value>
   </data>
   <data name="Home" xml:space="preserve">
     <value>الصفحة الرئيسية</value>
@@ -233,6 +245,9 @@
   </data>
   <data name="Laboratory At Home" xml:space="preserve">
     <value>معمل منزلي</value>
+  </data>
+  <data name="List Of BMI History" xml:space="preserve">
+    <value>تاريخ مؤشر كتلة الجسم للمستخدم</value>
   </data>
   <data name="List Of Cancel Request" xml:space="preserve">
     <value>طلبات إلغاء المواعيد</value>
@@ -336,6 +351,9 @@
   <data name="Options" xml:space="preserve">
     <value>خيارات</value>
   </data>
+  <data name="Overweight" xml:space="preserve">
+    <value>زيادة الوزن</value>
+  </data>
   <data name="Partner" xml:space="preserve">
     <value>زوج</value>
   </data>
@@ -408,6 +426,9 @@
   <data name="Turn ratings" xml:space="preserve">
     <value>تقييمات الدور</value>
   </data>
+  <data name="Underweight" xml:space="preserve">
+    <value>نقص الوزن</value>
+  </data>
   <data name="User Not Found" xml:space="preserve">
     <value>المستخدم ليس موجود</value>
   </data>
@@ -425,5 +446,14 @@
   </data>
   <data name="Your Account Successfully Activated, Now You Can Login" xml:space="preserve">
     <value>تم تفعيل حسابك بنجاح ، الآن يمكنك تسجيل الدخول إلى الموقع</value>
+  </data>
+  <data name="Your BMI" xml:space="preserve">
+    <value>BMI</value>
+  </data>
+  <data name="Your Height" xml:space="preserve">
+    <value>طولك</value>
+  </data>
+  <data name="Your Weight" xml:space="preserve">
+    <value>وزنك</value>
   </data>
 </root>

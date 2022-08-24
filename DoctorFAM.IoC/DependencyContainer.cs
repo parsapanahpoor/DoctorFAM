@@ -46,6 +46,7 @@ namespace DoctorFAM.IoC
             services.AddScoped<IReservationService, ReservationService>();
             services.AddScoped<IPharmacyService , PharmacyService>();
             services.AddScoped<INotificationService , NotificationService>();
+            services.AddScoped<IBMIService , BMIService>();
 
             #endregion
 
@@ -73,6 +74,7 @@ namespace DoctorFAM.IoC
             services.AddScoped<IReservationRepository, ReservationRepository>();
             services.AddScoped<IPharmacyRepository , PharmacyRepository>();
             services.AddScoped<INotificationRepository, NotificationRepository>();
+            services.AddScoped<IBMIRepository , BMIRepository>();
 
             #endregion
         }

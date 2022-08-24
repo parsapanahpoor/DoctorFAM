@@ -182,13 +182,15 @@
     <div class="scroll-top"><a class="smoothscroll" href="#top"><i class="flaticon-top"></i></a></div>
     <!--back-to-top end-->
     @* <footer class="border-top footer text-muted">
-        <div class="container">
-        &copy; 2022 - HEALTH HOUSE - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-        </footer>*@
+    <div class="container">
+    &copy; 2022 - HEALTH HOUSE - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    </div>
+    </footer>*@
     <partial name="_FooterReferences" />
 
     <partial name="_Notification" />
+
+    <partial name="_Modals" />
 
     @await RenderSectionAsync("Scripts", false)
 </body>
