@@ -1,0 +1,289 @@
+﻿@model List<DoctorFAM.Domain.ViewModels.Pharmacy.HomePharmacy.HomePharmacyInvoiceViewModel>
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Domain.ViewModels.Common
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
+@using DoctorFAM.Application.StaticTools
+
+@{
+    ViewData["Title"] = @Localizer["Show Details"];
+}
+
+@{
+    var totalPrice = ViewBag.TotalPrice;
+    var transferingPrice = ((ViewBag.TransferingPrice != null) ? ViewBag.TransferingPrice : null);
+
+    var InvoiceFinallyPrice = totalPrice + transferingPrice;
+}
+
+@section Styles
+    {
+
+}
+
+    @section Scripts
+    {
+    <partial name="_JqueryValidation" />
+
+    <script>
+
+        //#region Load Add Drug Plus From Pharmacy View Model
+
+        function ShowAddDrugPlus(DetailId) {
+            $.ajax({
+                url: "/Add-Drug-To-Invoice",
+                type: "get",
+                data: {
+                    DetailId: DetailId
+                },
+                success: function (response) {
+                    $("#NormalModalBody").html(response);
+
+                    $('#AddDrug').data('validator', null);
+                    $.validator.unobtrusive.parse('#AddDrug');
+
+                    $("#NormalModal").modal("show");
+                }
+            });
+        }
+
+        //#endregion
+
+        //#region Load BMI View Model
+
+        function AddTransferingPrice(requestId) {
+            $.ajax({
+                url: "/Add-Transfering-Price-For-Home-Pharmacy",
+                type: "get",
+                data: {
+                    requestId: requestId
+                },
+                success: function (response) {
+                    $("#NormalModalBody").html(response);
+
+                    $('#AddTransfering').data('validator', null);
+                    $.validator.unobtrusive.parse('#AddTransfering');
+
+                    $("#NormalModal").modal("show");
+                }
+            });
+        }
+
+        //#endregion
+    </script>
+
+}
+
+    @section Breadcrumb
+    {
+    <li>
+        <a href="javascript:void(0)"> @Localizer["Request Code"] : @ViewBag.RequestId </a>
+    </li>
+}
+
+    <div class="row">
+        <div class="col-lg-12 col-sm-12">
+
+        @if (ViewBag.TransferingPrice == null)
+        {
+            <a class="btn btn-sky w-100 margin-bottom-10" onclick="AddTransferingPrice(@ViewBag.RequestId)">@Localizer["Add Transfering Price"]</a>
+        }
+
+        <div class="well with-header with-footer table-responsive" style="padding-top: 30px;padding-bottom: 30px;">
+
+            @if (Model != null && Model.Any())
+            {
+
+                <table class="table table-hover table-bordered tc vm text-center align-items-center">
+
+                    <tr>
+                        <th class=" text-center align-items-center">#</th>
+                        <th class=" text-center align-items-center">@Localizer["Drug Information"]</th>
+                        <th class=" text-center align-items-center">@Localizer["Information"]</th>
+                        <th class=" text-center align-items-center">@Localizer["Price(Rial)"]</th>
+                        <th class=" text-center align-items-center">@Localizer["Submit"]</th>
+                    </tr>
+
+                    @{
+                        int i = 1;
+                    }
+
+                    @foreach (var item in Model)
+                    {
+                        <form asp-action="AddPriceForDrugInInvoicingHomePharmacyRequest" asp-area="Pharmacy" asp-controller="HomePharmacy" method="post">
+                            <input type="hidden" name="homePhramcyRequestDetailId" value="@item.HomePharmacyRequestDetail.Id">
+                        <tr class="tc vm text-center align-items-center">
+
+                                @if (!string.IsNullOrEmpty(item.HomePharmacyRequestDetail.DrugTrakingCode) && !string.IsNullOrEmpty(item.DrugNameFromPharmacy))
+                                {
+                                <td class="warning text-center align-items-center">
+                                        @i
+                                </td>
+                                }
+                                else
+                                {
+                                <td class=" text-center align-items-center">
+                                        @i
+                                </td>
+                                }
+
+
+                                @if (!string.IsNullOrEmpty(item.HomePharmacyRequestDetail.DrugTrakingCode) && string.IsNullOrEmpty(item.DrugNameFromPharmacy))
+                                {
+
+                                <td class=" text-center align-items-center">
+
+                                    <div class="row">
+
+                                        <div class=col-md-6>
+                                            <span>@Localizer["Prescription tracking code/applicant's national code"]</span>
+                                        </div>
+                                        <div class=col-md-6>
+                                            <h5 style="color:#fd5b03"> @item.HomePharmacyRequestDetail.DrugTrakingCode</h5>
+                                        </div>
+                                    </div>
+
+                                </td>
+                                }
+                                @if (!string.IsNullOrEmpty(item.HomePharmacyRequestDetail.DrugTrakingCode) && !string.IsNullOrEmpty(item.DrugNameFromPharmacy))
+                                {
+
+                                <td class="warning text-center align-items-center">
+
+                                    <div class="row">
+
+                                        <div class=col-md-6>
+                                            <span>@Localizer["DrugName From Pharmacy"]</span>
+                                        </div>
+                                        <div class=col-md-6>
+                                            <h5 style="color:#fd5b03"> @item.DrugNameFromPharmacy</h5>
+                                        </div>
+                                    </div>
+
+                                </td>
+                                }
+                                @if (!string.IsNullOrEmpty(item.HomePharmacyRequestDetail.DrugPrescription))
+                                {
+                                <td class=" text-center align-items-center">
+
+                                    <div class="row">
+
+                                        <div class=col-md-6>
+                                            <span>@Localizer["Version image"]</span>
+                                        </div>
+                                        <div class=col-md-6>
+                                            <a target="_blank" href="@PathTools.SiteAddress@PathTools.DrugPrescriptionPathThumb/@item.HomePharmacyRequestDetail.DrugPrescription"><img src="@PathTools.DrugPrescriptionPathThumb/@item.HomePharmacyRequestDetail.DrugPrescription" class="avatar-style" /></a>
+                                        </div>
+                                    </div>
+
+                                </td>
+                                }
+                                @if (!string.IsNullOrEmpty(item.HomePharmacyRequestDetail.DrugImage) && !string.IsNullOrEmpty(item.HomePharmacyRequestDetail.DrugCount) && !string.IsNullOrEmpty(item.HomePharmacyRequestDetail.DrugName))
+                                {
+                                <td class=" text-center align-items-center">
+
+                                    <div class="row">
+
+                                        <div class=col-md-6>
+                                                @item.HomePharmacyRequestDetail.DrugName - @Localizer["Count"] @item.HomePharmacyRequestDetail.DrugCount
+                                        </div>
+                                        <div class=col-md-6>
+                                            <a target="_blank" href="@PathTools.SiteAddress@PathTools.DrugPrescriptionPathThumb/@item.HomePharmacyRequestDetail.DrugImage"> <img src="@PathTools.DrugPrescriptionPathThumb/@item.HomePharmacyRequestDetail.DrugImage" class="avatar-style" /> </a>
+                                        </div>
+                                    </div>
+
+                                </td>
+                                }
+                                else
+                                {
+                                    @if (!string.IsNullOrEmpty(item.HomePharmacyRequestDetail.DrugImage))
+                                    {
+                                    <td class=" text-center align-items-center">
+                                        <span>@Localizer["drug picture"]</span>
+                                        <a target="_blank" href="@PathTools.SiteAddress@PathTools.DrugPrescriptionPathThumb/@item.HomePharmacyRequestDetail.DrugImage">  <img src="@PathTools.DrugPrescriptionPathThumb/@item.HomePharmacyRequestDetail.DrugImage" class="avatar-style" /></a>
+                                        -
+                                            @Localizer["Count"] @item.HomePharmacyRequestDetail.DrugCount
+                                    </td>
+                                    }
+                                    @if (!string.IsNullOrEmpty(item.HomePharmacyRequestDetail.DrugCount) && !string.IsNullOrEmpty(item.HomePharmacyRequestDetail.DrugName))
+                                    {
+                                    <td class=" text-center align-items-center">@item.HomePharmacyRequestDetail.DrugName - @Localizer["Count"] @item.HomePharmacyRequestDetail.DrugCount  </td>
+                                    }
+                                }
+
+                                @if (!string.IsNullOrEmpty(item.HomePharmacyRequestDetail.DrugTrakingCode) && !string.IsNullOrEmpty(item.DrugNameFromPharmacy))
+                                {
+                                <td class=" warning text-center align-items-center"> @Localizer["Drug Tracking Code"] : @item.HomePharmacyRequestDetail.DrugTrakingCode</td>
+                                }
+                                else
+                                {
+                                <td class=" text-center align-items-center">@item.HomePharmacyRequestDetail.Description</td>
+                                }
+
+                                @if (!string.IsNullOrEmpty(item.HomePharmacyRequestDetail.DrugTrakingCode) && !string.IsNullOrEmpty(item.DrugNameFromPharmacy))
+                                {
+                                <td class="warning text-center align-items-center">
+                                    <input type="number" readonly min="0" name="price" value="@item.Price" />
+                                </td>
+                                }
+                                else
+                                {
+                                <td class=" text-center align-items-center">
+                                    <input type="number" min="0" name="price" value="@item.Price" />
+                                </td>
+                                }
+
+                                @if (!string.IsNullOrEmpty(item.DrugNameFromPharmacy))
+                                {
+                                <td class="warning text-center align-items-center">
+                                    <a class="btn btn-danger btn-circle btn-xs" asp-action="DeleteDrugChildPricingFromPharmacy" asp-route-requestPharmacyPricingId="@item.PricingId" asp-area="Pharmacy" asp-controller="HomePharmacy"> <i class="glyphicon glyphicon-trash"></i> </a>
+                                </td>
+                                }
+                                else
+                                {
+                                <td class=" text-center align-items-center">
+                                        @if (Model.Count(p => p.HomePharmacyRequestDetail.Id == item.HomePharmacyRequestDetail.Id) == 1)
+                                        {
+                                        <button type="submit" class="btn btn-success btn-circle btn-xs"> <i class="glyphicon glyphicon-ok"></i> </button>
+                                        }
+                                        @if (!string.IsNullOrEmpty(item.HomePharmacyRequestDetail.DrugTrakingCode))
+                                        {
+                                        <a class="btn btn-primary btn-circle btn-xs" onclick="ShowAddDrugPlus(@item.HomePharmacyRequestDetail.Id)"> <i class="glyphicon glyphicon-plus"></i> </a>
+                                        }
+                                </td>
+                                }
+
+
+                                @{
+                                    i++;
+                                }
+
+                        </tr>
+                        </form>
+                    }
+                </table>
+
+                <div class="row" style="margin-top:40px;">
+                    <div class="col-xs-3">
+                        <div type="text" class="form-control"> @Localizer["Count Of Feilds"] : @(i - 1)</div>
+                    </div>
+                    <div class="col-xs-3">
+                        <div type="text" class="form-control">  @Localizer["Total Drugs Price"] : @totalPrice.ToString("#,000") </div>
+                    </div>
+                    <div class="col-xs-3">
+                        <div type="text" class="form-control">  @Localizer["Transfering Price"] : @((transferingPrice != null) ? transferingPrice.ToString("#,000") : 0) @Localizer["Rial"]</div>
+                    </div>
+                    <div class="col-xs-3">
+                        <div type="text" class="form-control">  @Localizer["Total Invocie Price"] : @((InvoiceFinallyPrice != null) ? InvoiceFinallyPrice.ToString("#,000") : 0) @Localizer["Rial"]</div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <partial name="_PharmacyNotFoundPartial" />
+            }
+        </div>
+    </div>
+</div>
+

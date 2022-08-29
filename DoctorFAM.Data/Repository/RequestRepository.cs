@@ -51,6 +51,20 @@ namespace DoctorFAM.Data.Repository
             await _context.SaveChangesAsync();
         }
 
+        //Get Request Transfering Price From Operator 
+        public async Task<RequestTransferingPriceFromOperator?> GetRequestTransferingPriceFromOperator(ulong sellerId , ulong requestId)
+        {
+            return await _context.TransferingPriceFromOperators.Include(p=> p.Request)
+                                .FirstOrDefaultAsync(p => !p.IsDelete && p.Request.OperationId == sellerId && p.RequestId == requestId);
+        }
+
+        //Add Request Transfering Price From Operator 
+        public async Task AddRequestTransferingPriceFromOperator(RequestTransferingPriceFromOperator request)
+        {
+            await _context.TransferingPriceFromOperators.AddAsync(request);
+            await _context.SaveChangesAsync();
+        }
+
         #endregion
 
         #region Patient Request Detail

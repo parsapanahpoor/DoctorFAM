@@ -1,4 +1,5 @@
 ﻿using DoctorFAM.Data.DbContext;
+using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.Interest;
 using DoctorFAM.Domain.Entities.Pharmacy;
@@ -33,6 +34,13 @@ namespace DoctorFAM.Data.Repository
         #endregion
 
         #region General Methods 
+
+        //Get Home Pharmacy Request Id By Home Pharmacy Request Detail Pricing Id And Seller Id
+        public async Task<ulong> GetRequestIdByHomePharmacyRequestDetailPricingId(ulong requestDetailPricingId , ulong userId)
+        {
+            return await _context.HomePharmacyRequestDetailPrices.Include(p=> p.HomePharmacyRequestDetail).Where(p => !p.IsDelete && p.SellerId == userId && p.Id == requestDetailPricingId)
+                                .Select(p=> p.HomePharmacyRequestDetail.RequestId).FirstOrDefaultAsync();
+        }
 
         //Add Pharmacy Info to Data Base
         public async Task AddPharmacyInfo(PharmacyInfo pharmacyInfo)
@@ -194,6 +202,72 @@ namespace DoctorFAM.Data.Repository
             return await _context.PharmacyInterestInfos.Include(p => p.Interest).Where(p => !p.IsDelete).ToListAsync();
         }
 
+        //Get Home Phrmacy Request Detail By Id 
+        public async Task<HomePharmacyRequestDetail?> GetHomePhamracyRequestDetailById(ulong requestDetailId)
+        {
+            return await _context.HomePharmacyRequestDetails.FirstOrDefaultAsync(p => p.Id == requestDetailId && !p.IsDelete);
+        }
+
+        //Add Price For Current Drug From Pharmacy 
+        public async Task AddPricingForDrugFromHomePharmacyRequestDetail(HomePharmacyRequestDetailPrice price)
+        {
+            await _context.HomePharmacyRequestDetailPrices.AddAsync(price);
+            await _context.SaveChangesAsync();
+        }
+
+        //Update Price For Current Drug From Pharmacy 
+        public async Task UpdatePricingForDrugFromHomePharmacyRequestDetail(HomePharmacyRequestDetailPrice price)
+        {
+            _context.HomePharmacyRequestDetailPrices.Update(price);
+            await _context.SaveChangesAsync();
+        }
+
+        //Get Drug Pricing Child With Drug Trancking Code And Seller ID 
+        public async Task<List<HomePharmacyRequestDetailPrice>?> GetDrugPricingChildWithDrugTrackingCodeAndSellerID(ulong requestDetailId, ulong sellerId)
+        {
+            return await _context.HomePharmacyRequestDetailPrices.Where(p => !p.IsDelete && p.SellerId == sellerId && p.HomePharmacyRequestDetailId == requestDetailId).ToListAsync();
+        }
+
+        //Remove Parent Pricing When Add Child For Pricing 
+        public async Task RemoveParentDrugPricingWhenAddChildDrugPricing(ulong sellerId , ulong requesDetailId)
+        {
+            //Get Parent Pricing
+            var pricing = await _context.HomePharmacyRequestDetailPrices
+                                .FirstOrDefaultAsync(p => !p.IsDelete && p.SellerId == sellerId && p.HomePharmacyRequestDetailId == requesDetailId && p.DrugNameFromPharmacy == null);
+
+            if (pricing != null)
+            {
+                pricing.Price = 0;
+
+                _context.HomePharmacyRequestDetailPrices.Update(pricing);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        //Delete Home Drug Request Detail Pricing Child From Pharmacy
+        public async Task<bool> DeleteHomeDrugRequestDetailPricingChildFromPharmacy(ulong requestDetailPricingId , ulong userId)
+        {
+            //Get Request Detail Pricing By Seller Id And Id And Not Null DrugName 
+            var pricing = await _context.HomePharmacyRequestDetailPrices.FirstOrDefaultAsync(p => !p.IsDelete && p.Id == requestDetailPricingId && p.SellerId == userId);
+            if (pricing == null) return false;
+
+            //Remove Request Detail Pricing 
+            _context.HomePharmacyRequestDetailPrices.Remove(pricing);
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
+        //Get Sum Of Invoice From Home Pharmacy Request Detail Pricing Fields
+        public async Task<int> GetSumOfInvoiceHomePharmacyRequestDetailPricing(ulong requestId , ulong sellerId) 
+        {
+            //Get List Of Home Pharmacy Request Detail Price 
+            var pricings = await _context.HomePharmacyRequestDetailPrices.Include(p=> p.HomePharmacyRequestDetail)
+                                        .Where(p => !p.IsDelete && p.SellerId == sellerId && p.HomePharmacyRequestDetail.RequestId == requestId).ToListAsync();
+
+            return pricings.Sum(p=> p.Price);
+        }
+
         #endregion
 
         #region Admin Side 
@@ -323,6 +397,73 @@ namespace DoctorFAM.Data.Repository
             return filter;
         }
 
+        //Filter List Of Yours Accepted  Home Pharmacy Request ViewModel  
+        public async Task<FilterListOfHomePharmacyRequestViewModel> FilterListOfYourAcceptedHomePharmacyRequest(FilterListOfHomePharmacyRequestViewModel filter)
+        {
+            #region Get Organization 
+
+            var organization = await _organizationService.GetPharmacyOrganizationByUserId(filter.PharmacyId);
+            if (organization == null) return null;
+
+            #endregion
+
+            var query = _context.Requests
+             .Include(p => p.PatientRequestDateTimeDetails)
+             .Include(p => p.Patient)
+             .Include(p => p.User)
+             .Include(p => p.PaitientRequestDetails)
+             .Where(s => !s.IsDelete && s.RequestType == Domain.Enums.RequestType.RequestType.HomeDrog && s.OperationId == organization.OwnerId)
+             .OrderByDescending(s => s.CreateDate)
+             .AsQueryable();
+
+            #region Status
+
+            switch (filter.FilterRequestPharmacySideOrder)
+            {
+                case FilterRequestAdminSideOrder.CreateDate_Des:
+                    break;
+                case FilterRequestAdminSideOrder.CreateDate_Asc:
+                    query = query.OrderBy(p => p.CreateDate);
+                    break;
+            }
+
+            #endregion
+
+            #region Filter
+
+            if (!string.IsNullOrEmpty(filter.Username))
+            {
+                query = query.Where(s => EF.Functions.Like(s.User.Username, $"%{filter.Username}%"));
+            }
+
+            if (!string.IsNullOrEmpty(filter.FirstName))
+            {
+                query = query.Where(s => EF.Functions.Like(s.User.FirstName, $"%{filter.FirstName}%"));
+            }
+
+            if (!string.IsNullOrEmpty(filter.LastName))
+            {
+                query = query.Where(s => EF.Functions.Like(s.User.LastName, $"%{filter.LastName}%"));
+            }
+
+            #endregion
+
+            await filter.Paging(query);
+
+            return filter;
+        }
+
         #endregion
+
+        #region Pharmacy Panel
+
+        //Get Home Pharmacy Request Detail Price By Pahramcy Id And Request Detail Id 
+        public async Task<HomePharmacyRequestDetailPrice?> GetHomePharmacyRequestDetailPriceByPharmacyIdAndRequestDetailId(ulong pharamcyId, ulong requestDetailId)
+        {
+            return await _context.HomePharmacyRequestDetailPrices.FirstOrDefaultAsync(p => !p.IsDelete && p.HomePharmacyRequestDetailId == requestDetailId && p.SellerId == pharamcyId);
+        }
+
+        #endregion
+
     }
 }

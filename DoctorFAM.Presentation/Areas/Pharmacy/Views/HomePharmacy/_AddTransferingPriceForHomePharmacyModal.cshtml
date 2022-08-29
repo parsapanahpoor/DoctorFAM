@@ -1,0 +1,31 @@
+﻿@model DoctorFAM.Domain.Entities.Requests.RequestTransferingPriceFromOperator
+
+<form id="AddTransfering" method="post" asp-action="AddTransferingPiceForHomePharmacy" asp-controller="HomePharmacy" asp-area="Pharmacy">
+    <input type="hidden" asp-for="RequestId" />
+    <div class="row">
+        <div class="col-lg-12 col-sm-12">
+            <div>
+                <div class="row">
+
+                    <div class="form-group col-md-12 col-sm-12">
+                        <label asp-for="Price">@Localizer["Price"]</label>
+                        <input type="text" class="form-control" asp-for="Price">
+                        <span class="text-danger" asp-validation-for="Price"></span>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 flex-style">
+                        <button type="submit" class="btn btn-labeled btn-palegreen">
+                            <i class="btn-label glyphicon glyphicon-ok"></i>@Localizer["Submit"]
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</form>

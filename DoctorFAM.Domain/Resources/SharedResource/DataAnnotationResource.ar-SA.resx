@@ -132,6 +132,9 @@
   <data name="Appropriate" xml:space="preserve">
     <value>ملائم</value>
   </data>
+  <data name="Approval of the request from the pharmacy" xml:space="preserve">
+    <value>الموافقة على الطلب من الصيدلية</value>
+  </data>
   <data name="Article Category title" xml:space="preserve">
     <value>عنوان الفئة</value>
   </data>

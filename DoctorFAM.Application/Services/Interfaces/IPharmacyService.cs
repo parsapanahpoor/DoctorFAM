@@ -18,8 +18,20 @@ namespace DoctorFAM.Application.Services.Interfaces
     {
         #region Pharmacy Panel Side
 
+        //Get Sum Of Invoice From Home Pharmacy Request Detail Pricing Fields
+        Task<int> GetSumOfInvoiceHomePharmacyRequestDetailPricing(ulong requestId, ulong sellerId);
+
+        //Get Request Id By Home Pharmacy Request Detail Pricing Id And Seller Id
+        Task<ulong> GetRequestIdByHomePharmacyRequestDetailPricingId(ulong requestDetailPricingId, ulong userId);
+
+        //Fill Add Drug From Pharamcy In Invoice Modal
+        Task<AddDrugFromPharmacyInInvoice> AddDrugFromPharamcyIntoInvoice(ulong requestDetailId);
+
+        //Filter List Of Yours Accepted  Home Pharmacy Request ViewModel  
+        Task<FilterListOfHomePharmacyRequestViewModel> FilterListOfYourAcceptedHomePharmacyRequest(FilterListOfHomePharmacyRequestViewModel filter);
+
         //Show Home Pharmacy Request Detail
-        Task<HomePharmacyRequestViewModel?> FillHomePharmacyRequestViewModel(ulong requestId);
+        Task<HomePharmacyRequestViewModel?> FillHomePharmacyRequestViewModel(ulong requestId , ulong userId);
 
         //Get List Of Pharmacy Interests
         Task<List<PharmacyInterestInfo>> GetPharmacyInterestsInfo();
@@ -64,6 +76,24 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Delete Inetrest From Pharmacy Selected Interest 
         Task<PharmacySelectedInterestResult> DeletePharmacySelectedInterestPharmacyPanel(ulong interestId, ulong userId);
 
+        //Get Home Phrmacy Request Detail By Id 
+        Task<HomePharmacyRequestDetail?> GetHomePhamracyRequestDetailById(ulong requestDetailId);
+
+        //Add Picing For Drug In Invoivcing Home Pharmacy Request
+        Task<bool> AddPricingFromPharmacyForDrugInInvoicingHomePhamracyRequest(ulong homePhramcyRequestDetailId, int price, ulong userId);
+
+        //Add Drug Pricing From Pharmacy Into Invoicing
+        Task<bool> AddDrugPricingFromPharmacyIntoInvoic(ulong homePhramcyRequestDetailId, int price, ulong userId, string? drugNameFromPharmacy);
+
+        //Get Home Pharmacy Request Detail Price By Pahramcy Id And Request Detail Id 
+        Task<HomePharmacyRequestDetailPrice?> GetHomePharmacyRequestDetailPriceByPharmacyIdAndRequestDetailId(ulong pharamcyId, ulong requestDetailId);
+
+        //Fill Home Pharmacy Invoice Page Model
+        Task<List<HomePharmacyInvoiceViewModel>> FillHomePharmcyInvoicePageModel(ulong requestId, ulong userId);
+
+        //Delete Home Drug Request Detail Pricing Child From Pharmacy
+        Task<bool> DeleteHomeDrugRequestDetailPricingChildFromPharmacy(ulong requestDetailPricingId, ulong userId);
+
         #endregion
 
         #region Admin Panel 
@@ -87,5 +117,6 @@ namespace DoctorFAM.Application.Services.Interfaces
         Task<FilterListOfHomePharmacyRequestViewModel> FilterListOfHomePharmacyRequestViewModel(FilterListOfHomePharmacyRequestViewModel filter);
 
         #endregion
+
     }
 }

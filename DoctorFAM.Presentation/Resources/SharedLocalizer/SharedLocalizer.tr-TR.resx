@@ -282,6 +282,9 @@
   <data name="List Of Roles" xml:space="preserve">
     <value>Roller Listesi</value>
   </data>
+  <data name="List Of Yours Requests" xml:space="preserve">
+    <value>Alınan istekleriniz</value>
+  </data>
   <data name="ListOfPages" xml:space="preserve">
     <value>Sayfa Listesi</value>
   </data>

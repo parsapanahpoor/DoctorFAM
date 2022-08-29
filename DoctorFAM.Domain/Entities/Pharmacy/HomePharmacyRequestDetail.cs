@@ -36,6 +36,8 @@ namespace DoctorFAM.Domain.Entities.Pharmacy
 
         public Request Request { get; set; }
 
+        public ICollection<HomePharmacyRequestDetailPrice>  HomePharmacyRequestDetailPrices{ get; set; }
+
         #endregion
     }
 }

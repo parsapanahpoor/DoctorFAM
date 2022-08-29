@@ -1,4 +1,5 @@
-﻿using DoctorFAM.DataLayer.Entities;
+﻿using DoctorFAM.Application.Services.Implementation;
+using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Enums.Request;
@@ -36,6 +37,12 @@ namespace DoctorFAM.Application.Services.Interfaces
         Task UpdateRequestStateForPayed(Request request);
 
         Task UpdateRequestStateForNotPayed(Request request);
+
+        //Get Request Transfering Price From Operator 
+        Task<RequestTransferingPriceFromOperator?> GetRequestTransferingPriceFromOperator(ulong sellerId, ulong requestId);
+
+        //Add Request Transfering Price From Operator 
+        Task<bool> AddRequestTransferingPriceFromOperator(RequestTransferingPriceFromOperator requestTransfering, ulong operatorId);
 
         #endregion
 

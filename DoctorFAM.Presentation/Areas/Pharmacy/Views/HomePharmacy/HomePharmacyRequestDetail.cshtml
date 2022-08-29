@@ -47,10 +47,7 @@
                     </div>
                     <div class="col-lg-3 col-md-8 col-sm-12 profile-info">
                         <div class="header-fullname">@(Model.User.Username != null ? Model.User.Username : Localizer["Empty"])</div>
-                        <a href="#" class="btn btn-palegreen btn-sm  btn-follow">
-                            <i class="fa fa-user"></i>
-                            @Localizer["Client"]
-                        </a>
+                   
                         <div class="header-information">
                             @Localizer["Mobile"] : @(Model.User.Mobile != null ? Model.User.Mobile : Localizer["Empty"])
                         </div>
@@ -62,11 +59,11 @@
                                 <div class="stats-title">@Localizer["Request Create Date"]</div>
                             </div>
                             <div class="col-lg-2 col-md-3 col-sm-3 col-xs-12 stats-col">
-                                <div class="stats-value blue">@(Model.PatientRequestDateTimeDetail != null ? Model.PatientRequestDateTimeDetail.StartTime.ToString("00 : 00") : Localizer["Empty"] )</div>
+                                <div class="stats-value blue">@(Model.PatientRequestDateTimeDetail != null ? Model.PatientRequestDateTimeDetail.StartTime.ToString("00") : Localizer["Empty"] )</div>
                                 <div class="stats-title">@Localizer["Start Time"]</div>
                             </div>
                             <div class="col-lg-2 col-md-3 col-sm-3 col-xs-12 stats-col">
-                                <div class="stats-value blue"> @(Model.PatientRequestDateTimeDetail != null ? Model.PatientRequestDateTimeDetail.EndTime.ToString("00 : 00") : Localizer["Empty"] )
+                                <div class="stats-value blue"> @(Model.PatientRequestDateTimeDetail != null ? Model.PatientRequestDateTimeDetail.EndTime.ToString("00") : Localizer["Empty"] )
                                     </div>
                                 <div class="stats-title">@Localizer["End Time"]</div>
                             </div>
@@ -344,8 +341,11 @@
                                             <textarea type="text" style="max-width:100%;" class="form-control" readonly >@Model.PatientRequestDetail.FullAddress</textarea>
                                         </div>
 
+                                       
+
                                     </div>
 
+                                    <a asp-action="AcceptHomePharmacyRequestFromPharmacy" asp-area="Pharmacy" asp-controller="HomePharmacy" asp-route-requestId="@Model.Request.Id" class="btn btn-primary">@Localizer["Accept Request"]</a>
                                 </div>
                             </div>
                         </div>

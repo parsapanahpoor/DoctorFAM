@@ -36,7 +36,7 @@ namespace DoctorFAM.Application.Services.Implementation
         #region Site Side 
 
         //Create Notification For Pharmacy From Home Pharmacy Request 
-        public async Task CreateNotificationForPharmacyFromHomePharmacyRequest(ulong requestId , SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId)
+        public async Task CreateNotificationForPharmacyFromHomePharmacyRequest(ulong requestId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId)
         {
             #region Get Validated Pharmacyes
 
@@ -69,12 +69,43 @@ namespace DoctorFAM.Application.Services.Implementation
             #endregion
         }
 
+        //Create Notification For User Patiet 
+        public async Task CreateNotificationForUserPatient(ulong requestId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId)
+        {
+            #region Get Validated Pharmacyes
+
+            var request = await _requestService.GetRequestById(requestId);
+
+            #endregion
+
+            #region Fill Notification Entity
+
+            List<SupporterNotification> model = new List<SupporterNotification>();
+
+            SupporterNotification notif = new SupporterNotification()
+            {
+                CreateDate = DateTime.Now,
+                IsDelete = false,
+                IsSeen = false,
+                SupporterNotificationText = SupporterNotificationText,
+                TargetId = requestId,
+                UserId = senderId,
+                ReciverId = request.UserId,
+            };
+
+            model.Add(notif);
+
+            await _notificationService.CreateRangeSupporter(model);
+
+            #endregion
+        }
+
         #endregion
 
         #region Supporter And Admin Method 
 
         //Create Notification For Admin And Supporters
-        public async Task<bool> CreateSupporterNotification(ulong targetId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification , ulong senderId)
+        public async Task<bool> CreateSupporterNotification(ulong targetId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId)
         {
             #region Get Admins And Supporters 
 

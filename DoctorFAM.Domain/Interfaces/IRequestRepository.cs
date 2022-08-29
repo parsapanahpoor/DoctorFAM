@@ -1,6 +1,7 @@
 ﻿using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.Requests;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,6 +32,12 @@ namespace DoctorFAM.Domain.Interfaces
 
         //Get Request Detail By Request Id
         Task<PaitientRequestDetail?> GetPatientRequestDetailByRequestId(ulong requestId);
+
+        //Get Request Transfering Price From Operator 
+        Task<RequestTransferingPriceFromOperator?> GetRequestTransferingPriceFromOperator(ulong sellerId, ulong requestId);
+
+        //Add Request Transfering Price From Operator 
+        Task AddRequestTransferingPriceFromOperator(RequestTransferingPriceFromOperator request);
 
         #endregion
 

@@ -279,6 +279,9 @@
   <data name="List Of Roles" xml:space="preserve">
     <value>قائمة الأدوار</value>
   </data>
+  <data name="List Of Yours Requests" xml:space="preserve">
+    <value>طلباتك المستلمة</value>
+  </data>
   <data name="ListOfPages" xml:space="preserve">
     <value>قائمة الصفحات</value>
   </data>

@@ -84,6 +84,8 @@ namespace DoctorFAM.Data.DbContext
 
         public DbSet<ReservationDateTimeCancelation> ReservationDateTimeCancelations { get; set; }
 
+        public DbSet<RequestTransferingPriceFromOperator> TransferingPriceFromOperators{ get; set; }
+
         #endregion
 
         #region Language
@@ -131,6 +133,8 @@ namespace DoctorFAM.Data.DbContext
         public DbSet<PharmacyInfo> PharmacyInfos { get; set; }
 
         public DbSet<PharmacySelectedInterests> PharmacySelectedInterests { get; set; }
+
+        public DbSet<HomePharmacyRequestDetailPrice> HomePharmacyRequestDetailPrices { get; set; }
 
         #endregion
 

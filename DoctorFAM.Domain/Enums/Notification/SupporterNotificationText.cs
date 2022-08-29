@@ -10,6 +10,8 @@ namespace DoctorFAM.Domain.Enums.Notification
     public enum SupporterNotificationText 
     {
         [Display(Name ="Request For Home Pharmacy")]
-        HomePharmacyCreateFromUser
+        HomePharmacyCreateFromUser,
+        [Display(Name = "Approval of the request from the pharmacy")]
+        ApprovalOfTheRequestFromThePharmacy
     }
 }

@@ -2,6 +2,7 @@
 using DoctorFAM.Application.Interfaces;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.DataLayer.Entities;
+using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Enums.Request;
@@ -26,11 +27,14 @@ namespace DoctorFAM.Application.Services.Implementation
 
         public ILocationService _locationService;
 
-        public RequestServicecs(IPatientService patientService, IRequestRepository request, ILocationService locationService)
+        private readonly IOrganizationService _organizationService;
+
+        public RequestServicecs(IPatientService patientService, IRequestRepository request, ILocationService locationService, IOrganizationService organizationService)
         {
             _patientService = patientService;
             _request = request;
             _locationService = locationService;
+            _organizationService = organizationService;
         }
 
         #endregion
@@ -127,6 +131,46 @@ namespace DoctorFAM.Application.Services.Implementation
             request.RequestState = Domain.Enums.Request.RequestState.unpaid;
 
             await _request.UpdateRequest(request);
+        }
+
+        //Get Request Transfering Price From Operator 
+        public async Task<RequestTransferingPriceFromOperator?> GetRequestTransferingPriceFromOperator(ulong sellerId, ulong requestId)
+        {
+            #region Get Organization By User Id
+
+            var organization = await _organizationService.GetOrganizationByUserId(sellerId);
+            if (organization == null) return null;
+
+            #endregion
+
+            return await _request.GetRequestTransferingPriceFromOperator(organization.OwnerId , requestId);
+        }
+
+        //Add Request Transfering Price From Operator 
+        public async Task<bool> AddRequestTransferingPriceFromOperator(RequestTransferingPriceFromOperator requestTransfering , ulong operatorId)
+        {
+            #region Get Organization By User Id
+
+            var organization = await _organizationService.GetOrganizationByUserId(operatorId);
+            if (organization == null) return false;
+
+            #endregion
+
+            #region Get Request 
+
+            var request = await GetRequestById(requestTransfering.RequestId);
+            if(request == null) return false;
+            if (request.OperationId != organization.OwnerId) return false;
+
+            #endregion
+
+            #region Add Method 
+
+            await _request.AddRequestTransferingPriceFromOperator(requestTransfering);
+
+            #endregion
+
+            return true;
         }
 
         #endregion

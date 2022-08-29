@@ -51,6 +51,8 @@ namespace DoctorFAM.DataLayer.Entities
 
         public PatientRequestDateTimeDetail PatientRequestDateTimeDetails { get; set; }
 
+        public ICollection<RequestTransferingPriceFromOperator> RequestTransferingPriceFromOperators { get; set; }
+
         #endregion
     }
 }

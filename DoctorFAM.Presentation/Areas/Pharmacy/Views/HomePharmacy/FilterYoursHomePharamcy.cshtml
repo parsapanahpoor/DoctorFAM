@@ -37,7 +37,7 @@
             </div>
             <div class="widget-body">
                 <div>
-                    <form asp-action="FilterHomePharamcy" asp-controller="HomePharmacy" asp-area="Pharmacy" id="filter-search" method="get">
+                    <form asp-action="FilterYoursHomePharamcy" asp-controller="HomePharmacy" asp-area="Pharmacy" id="filter-search" method="get">
 
                         <input type="hidden" asp-for="Page" />
 
@@ -76,7 +76,7 @@
 
                                 @if (Context.Request.QueryString.HasValue)
                                 {
-                                    <a asp-action="FilterHomePharamcy" asp-controller="HomePharmacy" asp-area="Pharmacy" class="btn btn-labeled w-100 btn-darkorange">
+                                    <a asp-action="FilterYoursHomePharamcy" asp-controller="HomePharmacy" asp-area="Pharmacy" class="btn btn-labeled w-100 btn-darkorange ">
                                         <i class="btn-label glyphicon glyphicon-remove"></i>@Localizer["Delete Filter"]
                                     </a>
                                 }

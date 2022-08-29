@@ -4,6 +4,7 @@ using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.Notification;
 using DoctorFAM.Domain.Entities.Organization;
+using DoctorFAM.Domain.Entities.Pharmacy;
 using DoctorFAM.Domain.Entities.WorkAddress;
 using System;
 using System.Collections.Generic;
@@ -127,6 +128,8 @@ namespace DoctorFAM.Domain.Entities.Account
         public ICollection<SupporterNotification> SupporterNotifications { get; set; }
 
         public ICollection<BMI.BMI> BMI { get; set; }
+
+        public ICollection<HomePharmacyRequestDetailPrice> HomePharmacyRequestDetailPrices { get; set; }
 
         #endregion
     }

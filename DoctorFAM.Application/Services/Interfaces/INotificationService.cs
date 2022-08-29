@@ -15,6 +15,9 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Create Notification For Pharmacy From Home Pharmacy Request 
         Task CreateNotificationForPharmacyFromHomePharmacyRequest(ulong requestId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId);
 
+        //Create Notification For User Patiet 
+        Task CreateNotificationForUserPatient(ulong requestId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId);
+
         #endregion
 
         #region Supporter And Admin 

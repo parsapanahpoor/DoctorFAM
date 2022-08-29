@@ -492,4 +492,7 @@
   <data name="Health Test" xml:space="preserve">
     <value>تست سلامت</value>
   </data>
+  <data name="List Of Yours Requests" xml:space="preserve">
+    <value>درخواست های دریافتی شما</value>
+  </data>
 </root>
