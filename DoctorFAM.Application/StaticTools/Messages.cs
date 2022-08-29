@@ -22,4 +22,18 @@ public static class Messages
         return
             $"باعرض سلام . {Environment.NewLine} کد فعال سازی شما : {activationCode} . {Environment.NewLine} {PathTools.SiteFarsiName}";
     }
+
+    //The invoice of your request has been provided by the pharmacy.
+    public static string SendSMSForProvideInvoiceFromPharmacy()
+    {
+        return
+            $"باعرض سلام . {Environment.NewLine} فاکتور درخواست شما از سمت داروخانه ارائه گردیده است . {Environment.NewLine} {PathTools.SiteFarsiName}";
+    }
+
+    //The invoice of your request has been provided by the pharmacy.
+    public static string SendSMSForAccepteDrugRequestFromPharamcy()
+    {
+        return
+            $"باعرض سلام . {Environment.NewLine} درخواست سفارش داروی شما از سمت داروخانه قبول شده است . لطفا تا ارائه ی پیش فاکتور صبور باشید. {Environment.NewLine} {PathTools.SiteFarsiName}";
+    }
 }

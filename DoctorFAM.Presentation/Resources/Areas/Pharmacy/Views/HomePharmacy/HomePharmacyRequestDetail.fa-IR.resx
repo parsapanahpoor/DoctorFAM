@@ -240,6 +240,9 @@
   <data name="Version image" xml:space="preserve">
     <value>تصویر نسخه</value>
   </data>
+  <data name="View Invoice" xml:space="preserve">
+    <value>برسی فاکتور</value>
+  </data>
   <data name="Vilage Name" xml:space="preserve">
     <value>نام روستا</value>
   </data>

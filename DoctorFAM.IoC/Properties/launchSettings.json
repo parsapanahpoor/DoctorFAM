@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "DoctorFAM.IoC": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:49414;http://localhost:49417"
+    }
+  }
+}

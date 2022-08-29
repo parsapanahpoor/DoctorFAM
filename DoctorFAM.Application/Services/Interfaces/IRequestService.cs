@@ -19,6 +19,12 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         #region Request 
 
+        //Invoice Finalization And See Invoice Detail
+        Task<int> FinalizationHomePharmacyInvoiceFromPharmacy(ulong requestId, ulong userId);
+
+        //Is Operator Is Current User 
+        Task<bool> IsOperatorIsCurrentUser(ulong userId, ulong requestId);
+
         //Validator For Request While Compelete Steps By Id 
         Task<bool> RequestValidatorWhileCompeleteSteps(ulong requestId, ulong userId, ulong? patientId, RequestType requestType);
 

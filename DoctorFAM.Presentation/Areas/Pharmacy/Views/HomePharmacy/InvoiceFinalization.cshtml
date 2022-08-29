@@ -1,0 +1,271 @@
+﻿@model DoctorFAM.Domain.ViewModels.Pharmacy.HomePharmacy.FinallyInvoiceViewModel
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Domain.ViewModels.Common
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
+@using DoctorFAM.Application.StaticTools
+
+@{
+    ViewData["Title"] = @Localizer["Show Finall Invoice"];
+}
+
+@{
+    var totalPrice = ViewBag.TotalPrice;
+    var transferingPrice = ((ViewBag.TransferingPrice != null) ? ViewBag.TransferingPrice : null);
+
+    var InvoiceFinallyPrice = totalPrice + transferingPrice;
+}
+
+@section Styles
+    {
+
+}
+
+    @section Scripts
+    {
+
+}
+
+    @section Breadcrumb
+    {
+    <li>
+        <a href="javascript:void(0)"> @Localizer["Request Code"] : @Model.Request.Id </a>
+    </li>
+}
+
+    <div class="page-body">
+        <div class="row">
+            <div class="col-lg-12 col-sm-12 col-xs-12">
+                <div class="well invoice-container">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <h3 class="">
+                                <i class="fa fa-check"></i>
+                            @if (Model.Request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.Finalized)
+                            {
+                                <p class="label label-success">@Localizer["Finalized"]</p>
+                            }
+                            @if (Model.Request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.WaitingForConfirmFromDestination)
+                            {
+                                <p class="label label-warning">@Localizer["Waiting For Confirm From User"]</p>
+                            }
+                            @if (Model.Request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.AwaitingThePaymentOfTheInvoiceAmount)
+                            {
+                                <p class="label label-warning">@Localizer["Waiting For Confirm From User"]</p>
+                            }
+                            @if (Model.Request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.ConfirmFromDestinationAndWaitingForIssuanceOfDraftInvoice)
+                            {
+                                @Localizer["Confirm From Customer"]
+
+                                <a class="label label-success">
+                                    @Localizer["Transfer Drugs"]
+                                </a>
+                            }
+                        </h3>
+
+                    </div>
+                    <div class="col-xs-12 text-right">
+
+                        <div>
+                            <span>@Localizer["Request Id"]:</span>
+                            <span>#@Model.Request.Id</span>
+
+                            <a href="#">
+                                <i class="glyphicon glyphicon-print carbon"></i>
+                            </a>
+                        </div>
+                        <div class="horizontal-space"></div>
+
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-5">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h6>@Localizer["Pharmacy Info"] </h6>
+                            </div>
+                            <div class="panel-body">
+                                <ul>
+                                    <li>
+                                        @Model.Pharmacy.Username : @Localizer["Username"]
+                                    </li>
+                                    <li> @Model.Pharmacy.Mobile : @Localizer["Mobile"]</li>
+                                    <li>@((Model.Pharmacy.NationalId != null) ? Model.Pharmacy.NationalId : null) : @Localizer["National Id"]</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-5 col-xs-offset-2 text-right">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h6>@Localizer["Patient Info"]</h6>
+                            </div>
+                            <div class="panel-body">
+                                <ul>
+                                    <li>
+                                        @Model.Patient.Username : @Localizer["Username"]
+                                    </li>
+                                    <li>@Model.Patient.Mobile : @Localizer["Mobile"]</li>
+                                    <li>@((Model.Patient.NationalId != null) ? Model.Patient.NationalId : null) : @Localizer["National Id"]</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- / end client details section -->
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th><h5 class="no-margin-bottom align-items-center">#</h5></th>
+                            <th><h5 class="no-margin-bottom align-items-center">@Localizer["Drug Information"]</h5></th>
+                            <th><h5 class="no-margin-bottom align-items-center">@Localizer["Information"]</h5></th>
+                            <th><h5 class="no-margin-bottom align-items-center">@Localizer["Price(Rial)"]</h5></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            int i = 1;
+                        }
+                        @foreach (var item in Model.HomePharmacyInvoiceViewModels)
+                        {
+                            <tr>
+                                @if (!string.IsNullOrEmpty(item.HomePharmacyRequestDetail.DrugTrakingCode) && !string.IsNullOrEmpty(item.DrugNameFromPharmacy))
+                                {
+                                    <td class="warning text-center align-items-center">
+                                        @i
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td class=" text-center align-items-center">
+                                        @i
+                                    </td>
+                                }
+
+                                @if (!string.IsNullOrEmpty(item.HomePharmacyRequestDetail.DrugTrakingCode) && string.IsNullOrEmpty(item.DrugNameFromPharmacy))
+                                {
+
+                                    <td class=" text-center align-items-center">
+
+                                        <div class="row">
+
+                                            <div class=col-md-6>
+                                                <span>@Localizer["Prescription tracking code/applicant's national code"]</span>
+                                            </div>
+                                            <div class=col-md-6>
+                                                <h5 style="color:#fd5b03"> @item.HomePharmacyRequestDetail.DrugTrakingCode</h5>
+                                            </div>
+                                        </div>
+
+                                    </td>
+                                }
+                                @if (!string.IsNullOrEmpty(item.HomePharmacyRequestDetail.DrugTrakingCode) && !string.IsNullOrEmpty(item.DrugNameFromPharmacy))
+                                {
+
+                                    <td class="warning text-center align-items-center">
+
+                                        <div class="row">
+
+                                            <div class=col-md-6>
+                                                <span>@Localizer["DrugName From Pharmacy"]</span>
+                                            </div>
+                                            <div class=col-md-6>
+                                                <h5 style="color:#fd5b03"> @item.DrugNameFromPharmacy</h5>
+                                            </div>
+                                        </div>
+
+                                    </td>
+                                }
+                                @if (!string.IsNullOrEmpty(item.HomePharmacyRequestDetail.DrugPrescription))
+                                {
+                                    <td class=" text-center align-items-center">
+
+                                        <div class="row">
+
+                                            <div class=col-md-6>
+                                                <span>@Localizer["Version image"]</span>
+                                            </div>
+                                            <div class=col-md-6>
+                                                <a target="_blank" href="@PathTools.SiteAddress@PathTools.DrugPrescriptionPathThumb/@item.HomePharmacyRequestDetail.DrugPrescription"><img src="@PathTools.DrugPrescriptionPathThumb/@item.HomePharmacyRequestDetail.DrugPrescription" class="avatar-style" /></a>
+                                            </div>
+                                        </div>
+
+                                    </td>
+                                }
+                                @if (!string.IsNullOrEmpty(item.HomePharmacyRequestDetail.DrugImage) && !string.IsNullOrEmpty(item.HomePharmacyRequestDetail.DrugCount) && !string.IsNullOrEmpty(item.HomePharmacyRequestDetail.DrugName))
+                                {
+                                    <td class=" text-center align-items-center">
+
+                                        <div class="row">
+
+                                            <div class=col-md-6>
+                                                @item.HomePharmacyRequestDetail.DrugName - @Localizer["Count"] @item.HomePharmacyRequestDetail.DrugCount
+                                            </div>
+                                            <div class=col-md-6>
+                                                <a target="_blank" href="@PathTools.SiteAddress@PathTools.DrugPrescriptionPathThumb/@item.HomePharmacyRequestDetail.DrugImage"> <img src="@PathTools.DrugPrescriptionPathThumb/@item.HomePharmacyRequestDetail.DrugImage" class="avatar-style" /> </a>
+                                            </div>
+                                        </div>
+
+                                    </td>
+                                }
+                                else
+                                {
+                                    @if (!string.IsNullOrEmpty(item.HomePharmacyRequestDetail.DrugImage))
+                                    {
+                                        <td class=" text-center align-items-center">
+                                            <span>@Localizer["drug picture"]</span>
+                                            <a target="_blank" href="@PathTools.SiteAddress@PathTools.DrugPrescriptionPathThumb/@item.HomePharmacyRequestDetail.DrugImage">  <img src="@PathTools.DrugPrescriptionPathThumb/@item.HomePharmacyRequestDetail.DrugImage" class="avatar-style" /></a>
+                                            -
+                                            @Localizer["Count"] @item.HomePharmacyRequestDetail.DrugCount
+                                        </td>
+                                    }
+                                    @if (!string.IsNullOrEmpty(item.HomePharmacyRequestDetail.DrugCount) && !string.IsNullOrEmpty(item.HomePharmacyRequestDetail.DrugName))
+                                    {
+                                        <td class=" text-center align-items-center">@item.HomePharmacyRequestDetail.DrugName - @Localizer["Count"] @item.HomePharmacyRequestDetail.DrugCount  </td>
+                                    }
+                                }
+
+                                @if (!string.IsNullOrEmpty(item.HomePharmacyRequestDetail.DrugTrakingCode) && !string.IsNullOrEmpty(item.DrugNameFromPharmacy))
+                                {
+                                    <td class=" warning text-center align-items-center"> @Localizer["Drug Tracking Code"] : @item.HomePharmacyRequestDetail.DrugTrakingCode</td>
+                                }
+                                else
+                                {
+                                    <td class=" text-center align-items-center">@((!string.IsNullOrEmpty(item.HomePharmacyRequestDetail.Description)) ? item.HomePharmacyRequestDetail.Description : " - " )</td>
+                                }
+
+                                @if (!string.IsNullOrEmpty(item.HomePharmacyRequestDetail.DrugTrakingCode) && !string.IsNullOrEmpty(item.DrugNameFromPharmacy))
+                                {
+                                    <td class="warning text-center align-items-center">
+                                        @((item.Price.HasValue)  ? item.Price.Value.ToString("#,000") : 0) @Localizer["Rial"]
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td class=" text-center align-items-center">
+                                        @((item.Price.HasValue)  ? item.Price.Value.ToString("#,000") : 0) @Localizer["Rial"]
+                                    </td>
+                                }
+
+                                @{
+                                    i++;
+                                }
+                            </tr>
+                        }
+                        <tr>
+                            <td colspan="2" class="invisible bg-snow"></td>
+                            <td class="text-center">@Localizer["Transfering Price"] </td>
+                            <td class="text-center"> @((transferingPrice != null) ? transferingPrice.ToString("#,000") : 0) @Localizer["Rial"]</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="invisible bg-snow"></td>
+                            <td class="text-center"><strong>@Localizer["Total Invocie Price"]</strong></td>
+                            <td class="text-center "><strong> @((InvoiceFinallyPrice != null) ? InvoiceFinallyPrice.ToString("#,000") : 0) @Localizer["Rial"]</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

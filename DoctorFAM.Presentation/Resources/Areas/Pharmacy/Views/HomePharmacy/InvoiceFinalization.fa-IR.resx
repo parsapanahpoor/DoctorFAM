@@ -117,133 +117,76 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Accept Request" xml:space="preserve">
-    <value>Talepleri Kabul Et</value>
-  </data>
-  <data name="Address" xml:space="preserve">
-    <value>tam adresi</value>
-  </data>
-  <data name="Age" xml:space="preserve">
-    <value>Yaş</value>
-  </data>
-  <data name="Client" xml:space="preserve">
-    <value>Müşteri</value>
-  </data>
-  <data name="Client First Name" xml:space="preserve">
-    <value>sipariş verenin adı</value>
-  </data>
-  <data name="Client Information" xml:space="preserve">
-    <value>Müşteri Bilgileri</value>
-  </data>
-  <data name="Client Last Name" xml:space="preserve">
-    <value>Sipariş verenin soyadı</value>
-  </data>
-  <data name="Client Mobile" xml:space="preserve">
-    <value>Sipariş verenin cep telefonu</value>
-  </data>
-  <data name="Client Username" xml:space="preserve">
-    <value>Müşterinin kullanıcı adı</value>
+  <data name="Confirm From Customer" xml:space="preserve">
+    <value>تایید شده از طرف سفارش دهنده</value>
   </data>
   <data name="Count" xml:space="preserve">
-    <value>Sayı</value>
+    <value>تعداد</value>
   </data>
-  <data name="Distance from the city" xml:space="preserve">
-    <value>şehirden uzaklık</value>
-  </data>
-  <data name="Drogs Informations" xml:space="preserve">
-    <value>İlaç bilgileri</value>
+  <data name="Drug Information" xml:space="preserve">
+    <value>اطلاعات دارو</value>
   </data>
   <data name="drug picture" xml:space="preserve">
-    <value>uyuşturucu resmi</value>
+    <value>تصویر دارو</value>
   </data>
-  <data name="Email" xml:space="preserve">
-    <value>e-posta</value>
+  <data name="Drug Tracking Code" xml:space="preserve">
+    <value>کد رهگیری دارو</value>
   </data>
-  <data name="Empty" xml:space="preserve">
-    <value>boş</value>
+  <data name="DrugName From Pharmacy" xml:space="preserve">
+    <value>نام دارو از طرف داروخانه</value>
   </data>
-  <data name="End Time" xml:space="preserve">
-    <value>Bitiş zamanı gönder</value>
+  <data name="Finalized" xml:space="preserve">
+    <value>نهایی شده و به اتمام رسیده</value>
   </data>
-  <data name="Extra Mobile" xml:space="preserve">
-    <value>Harici telefon</value>
-  </data>
-  <data name="Female" xml:space="preserve">
-    <value>Dişi</value>
-  </data>
-  <data name="Free" xml:space="preserve">
-    <value>Ücretsiz sigorta</value>
-  </data>
-  <data name="Gender" xml:space="preserve">
-    <value>Hastanın cinsiyeti</value>
-  </data>
-  <data name="Health Insurance" xml:space="preserve">
-    <value>sağlık Sigortası</value>
-  </data>
-  <data name="Insurance Type" xml:space="preserve">
-    <value>Sigorta türü</value>
-  </data>
-  <data name="Iranian health" xml:space="preserve">
-    <value>İran sağlık sigortası</value>
-  </data>
-  <data name="Male" xml:space="preserve">
-    <value>Erkek adam</value>
+  <data name="Information" xml:space="preserve">
+    <value>توضیحات</value>
   </data>
   <data name="Mobile" xml:space="preserve">
-    <value>Mobil</value>
+    <value>موبایل</value>
   </data>
-  <data name="Patient Date Time" xml:space="preserve">
-    <value>Hastanın istediği alım süresi</value>
+  <data name="National Id" xml:space="preserve">
+    <value>کد ملی</value>
   </data>
-  <data name="Patient First Name" xml:space="preserve">
-    <value>hasta adı</value>
+  <data name="Patient Info" xml:space="preserve">
+    <value>اطلاعات سفارش دهنده</value>
   </data>
-  <data name="Patient Information" xml:space="preserve">
-    <value>Hasta bilgisi</value>
-  </data>
-  <data name="Patient Last Name" xml:space="preserve">
-    <value>Hastanın soyadı</value>
-  </data>
-  <data name="Patient Mobile" xml:space="preserve">
-    <value>Hastanın cep telefonu</value>
-  </data>
-  <data name="Patient National Code" xml:space="preserve">
-    <value>Hastanın uyruğu nedir?</value>
-  </data>
-  <data name="Patient Phone Number" xml:space="preserve">
-    <value>Hastanın sabit hattı</value>
+  <data name="Pharmacy Info" xml:space="preserve">
+    <value>اطلاعات داروخانه</value>
   </data>
   <data name="Prescription tracking code/applicant's national code" xml:space="preserve">
-    <value>Reçete takip kodu/başvuranın ulusal kodu</value>
+    <value>کدرهگیری/کدملی بیمار</value>
+  </data>
+  <data name="Price(Rial)" xml:space="preserve">
+    <value>مبلغ (ریال)</value>
   </data>
   <data name="Request Code" xml:space="preserve">
-    <value>İzleme kodu iste</value>
+    <value>کد رهگیری درخواست</value>
   </data>
-  <data name="Request Create Date" xml:space="preserve">
-    <value>İsteğin oluşturulduğu tarih</value>
+  <data name="Request Id" xml:space="preserve">
+    <value>کد رهگیری درخواست</value>
   </data>
-  <data name="Request Description" xml:space="preserve">
-    <value>Sipariş açıklaması</value>
+  <data name="Rial" xml:space="preserve">
+    <value>ریال</value>
   </data>
-  <data name="Self-employed" xml:space="preserve">
-    <value>Serbest meslek sigortası</value>
+  <data name="Show Finall Invoice" xml:space="preserve">
+    <value>نمایش پیش فاکتور نهایی</value>
   </data>
-  <data name="Show Details" xml:space="preserve">
-    <value>Bilgi göster</value>
+  <data name="Total Invocie Price" xml:space="preserve">
+    <value>مبلغ نهایی مرسوله</value>
   </data>
-  <data name="Social Security" xml:space="preserve">
-    <value>Sosyal Güvenlik Sigortası</value>
+  <data name="Transfer Drugs" xml:space="preserve">
+    <value>ارسال بسته و نهایی کردن </value>
   </data>
-  <data name="Start Time" xml:space="preserve">
-    <value>Gönderme başlama zamanı</value>
+  <data name="Transfering Price" xml:space="preserve">
+    <value>مبلغ پیک</value>
+  </data>
+  <data name="Username" xml:space="preserve">
+    <value>نام </value>
   </data>
   <data name="Version image" xml:space="preserve">
-    <value>Sürüm resmi</value>
+    <value>تصویر نسخه</value>
   </data>
-  <data name="View Invoice" xml:space="preserve">
-    <value>faturayı kontrol et</value>
-  </data>
-  <data name="Vilage Name" xml:space="preserve">
-    <value>Köyün adı</value>
+  <data name="Waiting For Confirm From User" xml:space="preserve">
+    <value>در انتظار تایید سفارش دهنده</value>
   </data>
 </root>

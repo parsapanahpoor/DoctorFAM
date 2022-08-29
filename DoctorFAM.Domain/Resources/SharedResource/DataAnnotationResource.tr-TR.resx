@@ -135,6 +135,9 @@
   <data name="Approval of the request from the pharmacy" xml:space="preserve">
     <value>Eczaneden gelen talebin onaylanması</value>
   </data>
+  <data name="ApprovalOfTheRequestFromThePharmacy" xml:space="preserve">
+    <value>Eczaneden Gelen Talebin Onayı</value>
+  </data>
   <data name="Article Category title" xml:space="preserve">
     <value>Kategori başlığı</value>
   </data>
@@ -360,6 +363,9 @@ meta etiket</value>
   </data>
   <data name="Preparing The Order" xml:space="preserve">
     <value>Siparişi hazırlamak ve göndermek</value>
+  </data>
+  <data name="ProvidingAnInvoiceFromThePharmacy" xml:space="preserve">
+    <value>Eczaneden fatura temin etmek</value>
   </data>
   <data name="Ratio" xml:space="preserve">
     <value>Oran</value>

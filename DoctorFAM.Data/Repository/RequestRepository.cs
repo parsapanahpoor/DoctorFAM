@@ -36,7 +36,7 @@ namespace DoctorFAM.Data.Repository
 
         public async Task<Request?> GetRequestById(ulong requestId)
         {
-            return await _context.Requests.FirstOrDefaultAsync(p => p.Id == requestId && !p.IsDelete);
+            return await _context.Requests.Include(p=> p.User).FirstOrDefaultAsync(p => p.Id == requestId && !p.IsDelete);
         }
 
         public async Task AddRequest(Request request)

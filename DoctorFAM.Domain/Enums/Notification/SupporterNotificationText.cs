@@ -7,11 +7,13 @@ using System.Threading.Tasks;
 
 namespace DoctorFAM.Domain.Enums.Notification
 {
-    public enum SupporterNotificationText 
+    public enum SupporterNotificationText
     {
-        [Display(Name ="Request For Home Pharmacy")]
+        [Display(Name = "Request For Home Pharmacy")]
         HomePharmacyCreateFromUser,
         [Display(Name = "Approval of the request from the pharmacy")]
-        ApprovalOfTheRequestFromThePharmacy
+        ApprovalOfTheRequestFromThePharmacy,
+        [Display(Name = "Providing an invoice from the pharmacy")]
+        ProvidingAnInvoiceFromThePharmacy
     }
 }

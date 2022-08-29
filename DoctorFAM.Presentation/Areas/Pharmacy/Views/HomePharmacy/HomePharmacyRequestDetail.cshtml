@@ -11,43 +11,43 @@
 }
 
 @section Styles
-{
-<style>
+    {
+    <style>
 
-    .header-fullname {
-        font: 21px 'YekanBakh-FaNum';
-        margin-top: 27px;
-        display: inline-block;
-    }
+        .header-fullname {
+            font: 21px 'YekanBakh-FaNum';
+            margin-top: 27px;
+            display: inline-block;
+        }
 
-</style>
+    </style>
 }
 
-@section Scripts
-{
-<partial name="_JqueryValidation" />
+    @section Scripts
+    {
+    <partial name="_JqueryValidation" />
 }
 
-@section Breadcrumb
-{
-<li>
-    <a href="javascript:void(0)"> @Localizer["Request Code"] : @Model.Request.Id </a>
-</li>
+    @section Breadcrumb
+    {
+    <li>
+        <a href="javascript:void(0)"> @Localizer["Request Code"] : @Model.Request.Id </a>
+    </li>
 }
 
-<div class="row">
-
-    <div class="col-md-12">
+    <div class="row">
 
         <div class="col-md-12">
-            <div class="profile-container">
-                <div class="profile-header row">
-                    <div class="col-lg-2 col-md-4 col-sm-12 text-center">
-                        <img src="@(Model.User != null ? Model.User.GetUserAvatar() : Localizer["Empty"])" alt="" class="header-avatar">
-                    </div>
-                    <div class="col-lg-3 col-md-8 col-sm-12 profile-info">
-                        <div class="header-fullname">@(Model.User.Username != null ? Model.User.Username : Localizer["Empty"])</div>
-                   
+
+            <div class="col-md-12">
+                <div class="profile-container">
+                    <div class="profile-header row">
+                        <div class="col-lg-2 col-md-4 col-sm-12 text-center">
+                            <img src="@(Model.User != null ? Model.User.GetUserAvatar() : Localizer["Empty"])" alt="" class="header-avatar">
+                        </div>
+                        <div class="col-lg-3 col-md-8 col-sm-12 profile-info">
+                            <div class="header-fullname">@(Model.User.Username != null ? Model.User.Username : Localizer["Empty"])</div>
+
                         <div class="header-information">
                             @Localizer["Mobile"] : @(Model.User.Mobile != null ? Model.User.Mobile : Localizer["Empty"])
                         </div>
@@ -59,17 +59,19 @@
                                 <div class="stats-title">@Localizer["Request Create Date"]</div>
                             </div>
                             <div class="col-lg-2 col-md-3 col-sm-3 col-xs-12 stats-col">
-                                <div class="stats-value blue">@(Model.PatientRequestDateTimeDetail != null ? Model.PatientRequestDateTimeDetail.StartTime.ToString("00") : Localizer["Empty"] )</div>
+                                <div class="stats-value blue">@(Model.PatientRequestDateTimeDetail != null ? Model.PatientRequestDateTimeDetail.StartTime.ToString("00") : Localizer["Empty"])</div>
                                 <div class="stats-title">@Localizer["Start Time"]</div>
                             </div>
                             <div class="col-lg-2 col-md-3 col-sm-3 col-xs-12 stats-col">
-                                <div class="stats-value blue"> @(Model.PatientRequestDateTimeDetail != null ? Model.PatientRequestDateTimeDetail.EndTime.ToString("00") : Localizer["Empty"] )
-                                    </div>
+                                <div class="stats-value blue">
+                                    @(Model.PatientRequestDateTimeDetail != null ? Model.PatientRequestDateTimeDetail.EndTime.ToString("00") : Localizer["Empty"])
+                                </div>
                                 <div class="stats-title">@Localizer["End Time"]</div>
                             </div>
                             <div class="col-lg-4 col-md-3 col-sm-3 col-xs-12 stats-col">
-                                <div class="stats-value blue">@(Model.PatientRequestDateTimeDetail != null ? Model.PatientRequestDateTimeDetail.SendDate.ToStringShamsiDate() : Localizer["Empty"] )
-                                    </div>
+                                <div class="stats-value blue">
+                                    @(Model.PatientRequestDateTimeDetail != null ? Model.PatientRequestDateTimeDetail.SendDate.ToStringShamsiDate() : Localizer["Empty"])
+                                </div>
                                 <div class="stats-title">@Localizer["Patient Date Time"]</div>
                             </div>
                         </div>
@@ -272,11 +274,11 @@
 
                                         <div class="form-group col-md-6 col-sm-12">
                                             <label>@Localizer["Gender"]</label>
-                                              @if (Model.Patient.Gender == DoctorFAM.Domain.Enums.Gender.Gender.Male)
+                                            @if (Model.Patient.Gender == DoctorFAM.Domain.Enums.Gender.Gender.Male)
                                             {
                                                 <input type="text" class="form-control" readonly value="@Localizer["Male"]">
                                             }
-                                                 @if (Model.Patient.Gender == DoctorFAM.Domain.Enums.Gender.Gender.Female)
+                                            @if (Model.Patient.Gender == DoctorFAM.Domain.Enums.Gender.Gender.Female)
                                             {
                                                 <input type="text" class="form-control" readonly value="@Localizer["Female"]">
                                             }
@@ -313,39 +315,46 @@
 
                                         <div class="form-group col-md-12 col-sm-12">
                                             <label>@Localizer["Request Description"]</label>
-                                            <textarea type="text" style="max-width:100%;" class="form-control" readonly >@Model.Patient.RequestDescription</textarea>
+                                            <textarea type="text" style="max-width:100%;" class="form-control" readonly>@Model.Patient.RequestDescription</textarea>
                                         </div>
-                                            
-                                          <div class="form-group col-md-6 col-sm-12">
+
+                                        <div class="form-group col-md-6 col-sm-12">
                                             <label>@Localizer["Patient Phone Number"]</label>
                                             <input type="text" class="form-control" readonly value="@(string.IsNullOrEmpty(Model.PatientRequestDetail.Phone) ? Localizer["Empty"] : Model.PatientRequestDetail.Phone )">
                                         </div>
 
-                                          <div class="form-group col-md-6 col-sm-12">
+                                        <div class="form-group col-md-6 col-sm-12">
                                             <label>@Localizer["Patient Mobile"]</label>
                                             <input type="text" class="form-control" readonly value="@(string.IsNullOrEmpty(Model.PatientRequestDetail.Mobile) ? Localizer["Empty"] : Model.PatientRequestDetail.Mobile )">
                                         </div>
 
-                                           <div class="form-group col-md-6 col-sm-12">
+                                        <div class="form-group col-md-6 col-sm-12">
                                             <label>@Localizer["Distance from the city"]</label>
                                             <input type="text" class="form-control" readonly value="@(Model.PatientRequestDetail.Distance == null ? Localizer["Empty"] : Model.PatientRequestDetail.Distance )">
                                         </div>
-                                        
-                                          <div class="form-group col-md-6 col-sm-12">
+
+                                        <div class="form-group col-md-6 col-sm-12">
                                             <label>@Localizer["Vilage Name"]</label>
                                             <input type="text" class="form-control" readonly value="@(string.IsNullOrEmpty(Model.PatientRequestDetail.Vilage) ? Localizer["Empty"] : Model.PatientRequestDetail.Vilage )">
                                         </div>
 
-                                           <div class="form-group col-md-12 col-sm-12">
+                                        <div class="form-group col-md-12 col-sm-12">
                                             <label>@Localizer["Address"]</label>
-                                            <textarea type="text" style="max-width:100%;" class="form-control" readonly >@Model.PatientRequestDetail.FullAddress</textarea>
+                                            <textarea type="text" style="max-width:100%;" class="form-control" readonly>@Model.PatientRequestDetail.FullAddress</textarea>
                                         </div>
 
-                                       
+
 
                                     </div>
 
-                                    <a asp-action="AcceptHomePharmacyRequestFromPharmacy" asp-area="Pharmacy" asp-controller="HomePharmacy" asp-route-requestId="@Model.Request.Id" class="btn btn-primary">@Localizer["Accept Request"]</a>
+                                    @if (ViewBag.IsThisRequestForThisPharmacy == true)
+                                    {
+                                        <a asp-action="AcceptHomePharmacyRequestFromPharmacy" asp-area="Pharmacy" asp-controller="HomePharmacy" asp-route-requestId="@Model.Request.Id" class="btn btn-primary">@Localizer["View Invoice"]</a>
+                                    }
+                                    else
+                                    {
+                                        <a asp-action="AcceptHomePharmacyRequestFromPharmacy" asp-area="Pharmacy" asp-controller="HomePharmacy" asp-route-requestId="@Model.Request.Id" class="btn btn-primary">@Localizer["Accept Request"]</a>
+                                    }
                                 </div>
                             </div>
                         </div>

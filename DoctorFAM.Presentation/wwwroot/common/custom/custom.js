@@ -331,7 +331,7 @@ $(function () {
                     var id = $(value).attr('NumericInput');
                     new AutoNumeric(document.querySelector('[NumericInput="' + id + '"]'),
                         {
-                            currencySymbol: '  تومان  ',
+                            currencySymbol: '  ریال  ',
                             outputFormat: "number",
                             allowDecimalPadding: false,
                             currencySymbolPlacement: "s",

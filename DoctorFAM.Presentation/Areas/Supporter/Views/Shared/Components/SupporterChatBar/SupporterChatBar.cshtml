@@ -47,9 +47,17 @@
                                 <div class="status">@item.CreateDate.Hour.ToString("00"):@item.CreateDate.Minute.ToString("00") - @item.CreateDate.ToShamsi() </div>
                             </div>
                             <div class="last-chat-time">
-                                @if (item.SupporterNotificationText == DoctorFAM.Domain.Enums.Notification.SupporterNotificationText.HomePharmacyCreateFromUser)
+                               @if (item.SupporterNotificationText == DoctorFAM.Domain.Enums.Notification.SupporterNotificationText.HomePharmacyCreateFromUser)
                                 {
                                     <div>درخواست برای داروخانه در منزل</div>
+                                }
+                                @if (item.SupporterNotificationText == DoctorFAM.Domain.Enums.Notification.SupporterNotificationText.ApprovalOfTheRequestFromThePharmacy)
+                                {
+                                    <div>قبول درخواست از طرف داروخانه</div>
+                                }
+                                @if (item.SupporterNotificationText == DoctorFAM.Domain.Enums.Notification.SupporterNotificationText.ProvidingAnInvoiceFromThePharmacy)
+                                {
+                                    <div>ارائه ی فاکتور از داروخانه</div>
                                 }
                             </div>
                         </div>

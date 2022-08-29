@@ -51,6 +51,14 @@
                                 {
                                     <div>درخواست برای داروخانه در منزل</div>
                                 }
+                                @if (item.SupporterNotificationText == DoctorFAM.Domain.Enums.Notification.SupporterNotificationText.ApprovalOfTheRequestFromThePharmacy)
+                                {
+                                    <div>قبول درخواست از طرف داروخانه</div>
+                                }
+                                @if (item.SupporterNotificationText == DoctorFAM.Domain.Enums.Notification.SupporterNotificationText.ProvidingAnInvoiceFromThePharmacy)
+                                {
+                                    <div>ارائه ی فاکتور از داروخانه</div>
+                                }
                             </div>
                         </div>
                     </li>

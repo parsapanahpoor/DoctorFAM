@@ -1,6 +1,8 @@
 ﻿using DoctorFAM.Application.Convertors;
 using DoctorFAM.Application.Extensions;
+using DoctorFAM.Application.Services.Implementation;
 using DoctorFAM.Application.Services.Interfaces;
+using DoctorFAM.Application.StaticTools;
 using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.ViewModels.Pharmacy.HomePharmacy;
 using DoctorFAM.Domain.ViewModels.Site.Notification;
@@ -23,10 +25,11 @@ namespace DoctorFAM.Web.Areas.Pharmacy.Controllers
         private readonly IOrganizationService _organizationService;
         private readonly IUserService _userService;
         private readonly IHubContext<NotificationHub> _notificationHub;
+        private readonly ISMSService _smsService;
 
         public HomePharmacyController(IPharmacyService pharmacyService, IStringLocalizer<AccountController> localizer
                                 , IStringLocalizer<SharedLocalizer.SharedLocalizer> sharedLocalizer, INotificationService notificationService, IRequestService requestService
-                                , IOrganizationService organizationService, IUserService userService , IHubContext<NotificationHub> notificationHub)
+                                , IOrganizationService organizationService, IUserService userService, IHubContext<NotificationHub> notificationHub, ISMSService smsService)
         {
             _pharmacyService = pharmacyService;
             _localizer = localizer;
@@ -36,6 +39,7 @@ namespace DoctorFAM.Web.Areas.Pharmacy.Controllers
             _organizationService = organizationService;
             _userService = userService;
             _notificationHub = notificationHub;
+            _smsService = smsService;
         }
 
         #endregion
@@ -78,6 +82,19 @@ namespace DoctorFAM.Web.Areas.Pharmacy.Controllers
 
             #endregion
 
+            #region Get Request By Id
+
+            var request = await _requestService.GetRequestById(requestId);
+
+            #endregion
+
+            #region Is This Doctor Get This Request For Him Self
+
+
+            ViewBag.IsThisRequestForThisPharmacy = await _requestService.IsOperatorIsCurrentUser(User.GetUserId(), requestId);
+
+            #endregion
+
             return View(model);
         }
 
@@ -85,18 +102,32 @@ namespace DoctorFAM.Web.Areas.Pharmacy.Controllers
 
         #region Accept Home Pharmacy Request From Pharmacy
 
+        [HttpGet]
         public async Task<IActionResult> AcceptHomePharmacyRequestFromPharmacy(ulong requestId)
         {
             #region Send Notification For Admin And Supporters And Patient User
 
             var request = await _requestService.GetRequestById(requestId);
+            if (request == null) return NotFound();
+
+            #region Check Pharmacy Request
+
+            if (request.RequestState == Domain.Enums.Request.RequestState.Finalized
+                || request.RequestState == Domain.Enums.Request.RequestState.WaitingForConfirmFromDestination
+                || request.RequestState == Domain.Enums.Request.RequestState.AwaitingThePaymentOfTheInvoiceAmount)
+            {
+                return RedirectToAction(nameof(InvoiceFinalization), new { requestId = requestId });
+            }
+
+            #endregion
+
             if (request.OperationId.HasValue == false)
             {
                 //Create Notification For Supporters And Admins
                 var notifyResult = await _notificationService.CreateSupporterNotification(request.Id, Domain.Enums.Notification.SupporterNotificationText.ApprovalOfTheRequestFromThePharmacy, Domain.Enums.Notification.NotificationTarget.request, User.GetUserId());
 
                 //Create Notification For User Patient
-                await _notificationService.CreateNotificationForUserPatient(request.Id, Domain.Enums.Notification.SupporterNotificationText.ApprovalOfTheRequestFromThePharmacy, Domain.Enums.Notification.NotificationTarget.request, User.GetUserId());
+                //await _notificationService.CreateNotificationForUserPatient(request.Id, Domain.Enums.Notification.SupporterNotificationText.ApprovalOfTheRequestFromThePharmacy, Domain.Enums.Notification.NotificationTarget.request, User.GetUserId());
 
                 //Get Current Organization
                 var currentOrganization = await _organizationService.GetOrganizationByUserId(User.GetUserId());
@@ -107,13 +138,13 @@ namespace DoctorFAM.Web.Areas.Pharmacy.Controllers
                     var users = await _userService.GetAdminsAndSupportersNotificationForSendNotificationInHomePharmacy();
 
                     //Get Validated Pharmacys For Send Notification 
-                    users.Add(request.UserId.ToString());
+                    //users.Add(request.UserId.ToString());
 
                     //Fill Send Supporter Notification ViewModel For Send Notification
                     SendSupporterNotificationViewModel viewModel = new SendSupporterNotificationViewModel()
                     {
                         CreateNotificationDate = $"{DateTime.Now.ToShamsi()} - {DateTime.Now.Hour}:{DateTime.Now.Minute}",
-                        NotificationText = "تایید درخواست از طرف داروخانه",
+                        NotificationText = "قبول درخواست از طرف داروخانه",
                         RequestId = request.Id,
                         Username = User.Identity.Name,
                         UserImage = currentOrganization.User.Avatar
@@ -121,6 +152,14 @@ namespace DoctorFAM.Web.Areas.Pharmacy.Controllers
 
                     await _notificationHub.Clients.Users(users).SendAsync("SendSupporterNotification", viewModel);
                 }
+
+                #region Send SMS For Customer User 
+
+                var message = Messages.SendSMSForAccepteDrugRequestFromPharamcy();
+
+                await _smsService.SendSimpleSMS(request.User.Mobile, message);
+
+                #endregion
             }
 
             #endregion
@@ -133,8 +172,8 @@ namespace DoctorFAM.Web.Areas.Pharmacy.Controllers
             #endregion
 
             ViewBag.RequestId = requestId;
-            ViewBag.TotalPrice = await _pharmacyService.GetSumOfInvoiceHomePharmacyRequestDetailPricing(requestId , User.GetUserId());
-            var TransferingPrice = await _requestService.GetRequestTransferingPriceFromOperator(User.GetUserId() , requestId);
+            ViewBag.TotalPrice = await _pharmacyService.GetSumOfInvoiceHomePharmacyRequestDetailPricing(requestId, User.GetUserId());
+            var TransferingPrice = await _requestService.GetRequestTransferingPriceFromOperator(User.GetUserId(), requestId);
             if (TransferingPrice != null)
             {
                 ViewBag.TransferingPrice = TransferingPrice.Price;
@@ -191,7 +230,7 @@ namespace DoctorFAM.Web.Areas.Pharmacy.Controllers
             //Initial Model
             var model = await _pharmacyService.AddDrugFromPharamcyIntoInvoice(DetailId);
 
-            return PartialView("_AddDrugToInvoiceFromPharmacy" , model);
+            return PartialView("_AddDrugToInvoiceFromPharmacy", model);
         }
 
         #endregion
@@ -240,7 +279,7 @@ namespace DoctorFAM.Web.Areas.Pharmacy.Controllers
         {
             #region Get Request Id By Home Pharmacy Request Detail Pricing Id 
 
-            var requestId = await _pharmacyService.GetRequestIdByHomePharmacyRequestDetailPricingId(requestPharmacyPricingId , User.GetUserId());
+            var requestId = await _pharmacyService.GetRequestIdByHomePharmacyRequestDetailPricingId(requestPharmacyPricingId, User.GetUserId());
 
             #endregion
 
@@ -288,7 +327,7 @@ namespace DoctorFAM.Web.Areas.Pharmacy.Controllers
 
             #region Add Transfering Price
 
-            var res = await _requestService.AddRequestTransferingPriceFromOperator(requestTransfering , User.GetUserId());
+            var res = await _requestService.AddRequestTransferingPriceFromOperator(requestTransfering, User.GetUserId());
             if (res)
             {
                 TempData[SuccessMessage] = _sharedLocalizer["Operation Successfully"].Value;
@@ -298,6 +337,106 @@ namespace DoctorFAM.Web.Areas.Pharmacy.Controllers
             #endregion
 
             return NotFound();
+        }
+
+        #endregion
+
+        #region Invoice Finalization And See Invoice Detail
+
+        public async Task<IActionResult> InvoiceFinalization(ulong requestId)
+        {
+            #region Check Is Pharmacy Add Request Transfering Price 
+
+            var requestTransferingPrice = await _requestService.GetRequestTransferingPriceFromOperator(User.GetUserId(), requestId);
+            if (requestTransferingPrice == null)
+            {
+                TempData[WarningMessage] = "لطفا هزینه ی ارسال بسته را وارد کنید.";
+                return RedirectToAction(nameof(AcceptHomePharmacyRequestFromPharmacy), new { requestId = requestId });
+            }
+
+            #endregion
+
+            #region Fill Page Model
+
+            var model = await _pharmacyService.FinallyInvoiceViewModel(requestId, User.GetUserId());
+            if (model == null)
+            {
+                return NotFound();
+            }
+
+            #endregion
+
+            #region Update Request State Into Finalization  
+
+            var res = await _requestService.FinalizationHomePharmacyInvoiceFromPharmacy(requestId, User.GetUserId());
+            if (res == 0)
+            {
+                return NotFound();
+            }
+            if (res == 1)
+            {
+                TempData[SuccessMessage] = "فاکتور شما تهایی شده است. لطفا تا تایید از سمت سفارش دهنده صبور باشید";
+
+                #region Send Notification For Admin And Supporters And Patient User
+
+                var request = await _requestService.GetRequestById(requestId);
+
+                //Create Notification For Supporters And Admins
+                var notifyResult = await _notificationService.CreateSupporterNotification(request.Id, Domain.Enums.Notification.SupporterNotificationText.ProvidingAnInvoiceFromThePharmacy, Domain.Enums.Notification.NotificationTarget.request, User.GetUserId());
+
+                //Create Notification For User Patient
+                //await _notificationService.CreateNotificationForUserPatient(request.Id, Domain.Enums.Notification.SupporterNotificationText.ProvidingAnInvoiceFromThePharmacy, Domain.Enums.Notification.NotificationTarget.request, User.GetUserId());
+
+                //Get Current Organization
+                var currentOrganization = await _organizationService.GetOrganizationByUserId(User.GetUserId());
+
+                if (notifyResult)
+                {
+                    //Get List Of Admins And Supporter To Send Notification Into Them
+                    var users = await _userService.GetAdminsAndSupportersNotificationForSendNotificationInHomePharmacy();
+
+                    //Get Validated Pharmacys For Send Notification 
+                    //users.Add(request.UserId.ToString());
+
+                    //Fill Send Supporter Notification ViewModel For Send Notification
+                    SendSupporterNotificationViewModel viewModel = new SendSupporterNotificationViewModel()
+                    {
+                        CreateNotificationDate = $"{DateTime.Now.ToShamsi()} - {DateTime.Now.Hour}:{DateTime.Now.Minute}",
+                        NotificationText = "ارائه ی فاکتور از داروخانه",
+                        RequestId = request.Id,
+                        Username = User.Identity.Name,
+                        UserImage = currentOrganization.User.Avatar
+                    };
+
+                    await _notificationHub.Clients.Users(users).SendAsync("SendSupporterNotification", viewModel);
+                }
+
+                #endregion
+
+                #region Send SMS For Customer User 
+
+                var message = Messages.SendSMSForProvideInvoiceFromPharmacy();
+
+                await _smsService.SendSimpleSMS(request.User.Mobile, message);
+
+                #endregion
+            }
+
+            #endregion
+
+            #region Send View Bags
+
+            ViewBag.RequestId = requestId;
+            ViewBag.TotalPrice = await _pharmacyService.GetSumOfInvoiceHomePharmacyRequestDetailPricing(requestId, User.GetUserId());
+            var TransferingPrice = await _requestService.GetRequestTransferingPriceFromOperator(User.GetUserId(), requestId);
+            if (TransferingPrice != null)
+            {
+                ViewBag.TransferingPrice = TransferingPrice.Price;
+            }
+
+            #endregion
+
+            return View(model);
         }
 
         #endregion

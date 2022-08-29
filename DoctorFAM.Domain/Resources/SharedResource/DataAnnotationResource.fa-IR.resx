@@ -135,6 +135,9 @@
   <data name="Approval of the request from the pharmacy" xml:space="preserve">
     <value>تایید درخواست از طرف داروخانه</value>
   </data>
+  <data name="ApprovalOfTheRequestFromThePharmacy" xml:space="preserve">
+    <value>تایید درخواست از داروخانه</value>
+  </data>
   <data name="Article Category title" xml:space="preserve">
     <value>عنوان دسته بندی </value>
   </data>
@@ -417,6 +420,9 @@
   </data>
   <data name="Preparing The Order" xml:space="preserve">
     <value>درحال آماده سازی سفارش</value>
+  </data>
+  <data name="ProvidingAnInvoiceFromThePharmacy" xml:space="preserve">
+    <value>ارائه ی فاکتور از داروخانه</value>
   </data>
   <data name="Ratio" xml:space="preserve">
     <value>نسبت</value>

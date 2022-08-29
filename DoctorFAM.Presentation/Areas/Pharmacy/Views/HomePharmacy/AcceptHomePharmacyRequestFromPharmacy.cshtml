@@ -128,7 +128,6 @@
                                 </td>
                                 }
 
-
                                 @if (!string.IsNullOrEmpty(item.HomePharmacyRequestDetail.DrugTrakingCode) && string.IsNullOrEmpty(item.DrugNameFromPharmacy))
                                 {
 
@@ -254,19 +253,17 @@
                                 </td>
                                 }
 
-
                                 @{
                                     i++;
                                 }
-
                         </tr>
                         </form>
                     }
                 </table>
 
                 <div class="row" style="margin-top:40px;">
-                    <div class="col-xs-3">
-                        <div type="text" class="form-control"> @Localizer["Count Of Feilds"] : @(i - 1)</div>
+                    <div class="col-xs-1">
+                        <div type="text" class="form-control"> @(i - 1)</div>
                     </div>
                     <div class="col-xs-3">
                         <div type="text" class="form-control">  @Localizer["Total Drugs Price"] : @totalPrice.ToString("#,000") </div>
@@ -276,6 +273,11 @@
                     </div>
                     <div class="col-xs-3">
                         <div type="text" class="form-control">  @Localizer["Total Invocie Price"] : @((InvoiceFinallyPrice != null) ? InvoiceFinallyPrice.ToString("#,000") : 0) @Localizer["Rial"]</div>
+                    </div>
+                    <div class="col-xs-2">
+                        <a class="col-md-12 btn btn-labeled btn-warning" style="margin-top:0px" asp-action="InvoiceFinalization" asp-area="Pharmacy" asp-controller="HomePharmacy" asp-route-requestId="@ViewBag.RequestId">
+                            @Localizer["Invoice finalization"]
+                        </a>
                     </div>
                 </div>
             }

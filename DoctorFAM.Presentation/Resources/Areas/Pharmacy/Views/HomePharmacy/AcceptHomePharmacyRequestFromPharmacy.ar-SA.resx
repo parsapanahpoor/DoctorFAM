@@ -141,6 +141,9 @@
   <data name="Information" xml:space="preserve">
     <value>وصف</value>
   </data>
+  <data name="Invoice finalization" xml:space="preserve">
+    <value>إنهاء الفاتورة</value>
+  </data>
   <data name="Prescription tracking code/applicant's national code" xml:space="preserve">
     <value>كود التعريف / جنسية المريض</value>
   </data>

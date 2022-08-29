@@ -43,6 +43,76 @@ namespace DoctorFAM.Application.Services.Implementation
 
         #region Request 
 
+        //Invoice Finalization And See Invoice Detail
+        public async Task<int> FinalizationHomePharmacyInvoiceFromPharmacy(ulong requestId , ulong userId)
+        {
+            //return 0 : NotFound
+            //return 1 : Success
+            //return 2 : Dont Update 
+
+            #region Get Organization By User Id
+
+            var organization = await _organizationService.GetOrganizationByUserId(userId);
+            if (organization == null) return 0;
+
+            #endregion
+
+            #region Get Request
+
+            var request = await GetRequestById(requestId);
+            if (request == null) return 0;
+            if (!request.OperationId.HasValue || request.OperationId.Value != organization.OwnerId) return 0;
+            if(request.RequestType != RequestType.HomeDrog) return 0;
+
+            #endregion
+
+            #region Update Request State
+
+            if (request.RequestState == RequestState.ConfirmFromDestinationAndWaitingForIssuanceOfDraftInvoice)
+            {
+                request.RequestState = RequestState.AwaitingThePaymentOfTheInvoiceAmount;
+
+                await UpdateRequest(request);
+                return 1;
+            }
+
+            #endregion
+
+            //Dont Update State
+            return 2;
+        }
+
+        //Is Operator Is Current User 
+        public async Task<bool> IsOperatorIsCurrentUser(ulong userId , ulong requestId)
+        {
+            #region Get Organization By User Id
+
+            var organization = await _organizationService.GetOrganizationByUserId(userId);
+            if (organization == null) return false;
+
+            #endregion
+
+            #region Get Request 
+
+            var request = await GetRequestById(requestId);
+            if (request == null) return false;
+
+            #endregion
+
+            #region Validation Method 
+
+            if (!request.OperationId.HasValue) return false;
+
+            if (request.OperationId.Value == organization.OwnerId)
+            {
+                return true;
+            }
+
+            #endregion
+
+            return false;
+        }
+
         //Validator For Request While Compelete Steps By Id 
         public async Task<bool> RequestValidatorWhileCompeleteSteps(ulong requestId, ulong userId, ulong? patientId, RequestType requestType)
         {

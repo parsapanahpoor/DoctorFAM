@@ -18,6 +18,9 @@ namespace DoctorFAM.Application.Services.Interfaces
     {
         #region Pharmacy Panel Side
 
+        //Fill Finally Invoice From Pharmacy View Model
+        Task<FinallyInvoiceViewModel?> FinallyInvoiceViewModel(ulong requestId, ulong userId);
+
         //Get Sum Of Invoice From Home Pharmacy Request Detail Pricing Fields
         Task<int> GetSumOfInvoiceHomePharmacyRequestDetailPricing(ulong requestId, ulong sellerId);
 
