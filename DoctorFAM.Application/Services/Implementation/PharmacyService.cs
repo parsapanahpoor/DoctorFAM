@@ -1217,5 +1217,175 @@ namespace DoctorFAM.Application.Services.Implementation
         }
 
         #endregion
+
+        #region User Panel 
+
+        //Filter User Home Pharmacy Requests
+        public async Task<Domain.ViewModels.UserPanel.HealthHouse.FilterHomePharmacyViewModel> FilterListOfUserHomePhamracyRequest(Domain.ViewModels.UserPanel.HealthHouse.FilterHomePharmacyViewModel filter)
+        {
+            return await _pharmacy.FilterListOfUserHomePhamracyRequest(filter);
+        }
+
+        //Show Home Pharmacy Request Detail In User Panel
+        public async Task<Domain.ViewModels.UserPanel.HealthHouse.HomePharmacyRequestViewModel?> FillHomePharmacyRequestInUserPanelViewModel(ulong requestId, ulong userId)
+        {
+            #region Get Request By Request Id
+
+            var request = await _requestService.GetRequestById(requestId);
+
+            if (request == null) return null;
+            if (request.RequestType != Domain.Enums.RequestType.RequestType.HomeDrog) return null;
+            if (request.UserId != userId) return null;
+            if (!request.PatientId.HasValue) return null;
+
+            #endregion
+
+            #region Fill Model 
+
+            Domain.ViewModels.UserPanel.HealthHouse.HomePharmacyRequestViewModel model = new Domain.ViewModels.UserPanel.HealthHouse.HomePharmacyRequestViewModel()
+            {
+                Patient = await _patientService.GetPatientById(request.PatientId.Value),
+                User = await _userService.GetUserById(request.UserId),
+                HomePharmacyRequestDetails = await _homePharmacyService.GetHomePharmacyRequestDetailByRequestId(request.Id),
+                PatientRequestDetail = await _homePharmacyService.GetRequestPatientDetailByRequestId(request.Id),
+                PatientRequestDateTimeDetail = await _homePharmacyService.GetRequestDateTimeDetailByRequestDetailId(request.Id),
+                Request = request
+            };
+
+            #endregion
+
+            return model;
+        }
+
+        //Fill Finally Invoice From User Panel View Model
+        public async Task<Domain.ViewModels.UserPanel.HealthHouse.FinallyInvoiceViewModel?> FinallyInvoiceFromUserPanelViewModel(ulong requestId, ulong userId)
+        {
+            #region Get Request By Request Id
+
+            var request = await _requestService.GetRequestById(requestId);
+
+            if (request == null) return null;
+            if (request.RequestType != Domain.Enums.RequestType.RequestType.HomeDrog) return null;
+            if (request.RequestState == Domain.Enums.Request.RequestState.Paid
+              || request.RequestState == Domain.Enums.Request.RequestState.WaitingForConfirmFromDestination
+              || request.RequestState == Domain.Enums.Request.RequestState.ConfirmFromDestinationAndWaitingForIssuanceOfDraftInvoice
+              || request.RequestState == Domain.Enums.Request.RequestState.TramsferringToTheBankingPortal
+              || request.RequestState == Domain.Enums.Request.RequestState.PreparingTheOrder
+              || request.RequestState == Domain.Enums.Request.RequestState.unpaid
+              || request.RequestState == Domain.Enums.Request.RequestState.TramsferringToTheBankingPortal) return null;
+            if (request.UserId != userId) return null;
+            if (!request.PatientId.HasValue) return null;
+
+            #endregion
+
+            #region Get Patient 
+
+            var patient = await _userService.GetUserById(request.UserId);
+            if (patient == null) return null;
+
+            #endregion
+
+            #region Home Pharamcy Request Detail 
+
+            var pharmacyDetail = await _homePharmacyService.GetHomePharmacyRequestDetailByRequestId(request.Id);
+
+            #endregion
+
+            #region Fill Page Model
+
+            List<HomePharmacyInvoiceViewModel> priceModel = new List<HomePharmacyInvoiceViewModel>();
+
+            foreach (var item in pharmacyDetail)
+            {
+                //Is Exist Invoice Pricing For This Drug Get This Price 
+                var price = await GetHomePharmacyRequestDetailPriceByPharmacyIdAndRequestDetailId(request.OperationId.Value, item.Id);
+
+                //Is Exist Any Drug For This Drug With Drug Tracking Code 
+                if (!string.IsNullOrEmpty(item.DrugTrakingCode))
+                {
+                    var childDrugs = await _pharmacy.GetDrugPricingChildWithDrugTrackingCodeAndSellerID(item.Id, request.OperationId.Value);
+
+                    //Add Parent Pricing
+                    HomePharmacyInvoiceViewModel parent = new HomePharmacyInvoiceViewModel()
+                    {
+                        HomePharmacyRequestDetail = item,
+                        Price = ((childDrugs == null) ? 0 : ((price != null) ? price.Price : null)),
+                        DrugNameFromPharmacy = null,
+                        PricingId = null
+                    };
+                    priceModel.Add(parent);
+
+                    //Add Child Pricing
+                    if (childDrugs != null && childDrugs.Any())
+                    {
+                        foreach (var child in childDrugs.Where(p => p.DrugNameFromPharmacy != null))
+                        {
+                            HomePharmacyInvoiceViewModel childPricing = new HomePharmacyInvoiceViewModel()
+                            {
+                                HomePharmacyRequestDetail = item,
+                                Price = ((child != null) ? child.Price : null),
+                                DrugNameFromPharmacy = child.DrugNameFromPharmacy,
+                                PricingId = child.Id
+                            };
+                            priceModel.Add(childPricing);
+                        }
+                    }
+                }
+
+                //Any Drugs Without Drug Tracking Code 
+                else
+                {
+                    HomePharmacyInvoiceViewModel returnModel = new HomePharmacyInvoiceViewModel()
+                    {
+                        HomePharmacyRequestDetail = item,
+                        Price = ((price != null) ? price.Price : null),
+                        DrugNameFromPharmacy = null,
+                        PricingId = null
+                    };
+
+                    priceModel.Add(returnModel);
+                }
+            }
+
+            #endregion
+
+
+            #region Fill View Model 
+
+            Domain.ViewModels.UserPanel.HealthHouse.FinallyInvoiceViewModel model = new Domain.ViewModels.UserPanel.HealthHouse.FinallyInvoiceViewModel()
+            {
+                Patient = patient,
+                Request = request,
+                HomePharmacyInvoiceViewModels = priceModel
+            };
+
+            #endregion
+
+            return model;
+        }
+
+        //Accept Request From User
+        public async Task<bool> AcceptRequestFromUser(ulong requestId , ulong userId)
+        {
+            #region Get Request By Id
+
+            var request = await _requestService.GetRequestById(requestId);
+            if (request == null) return false;
+            if (request.UserId != userId) return false;
+
+            #endregion
+
+            #region Update Request State 
+
+            request.RequestState = Domain.Enums.Request.RequestState.AcceptFromCustomer;
+
+            await _requestService.UpdateRequest(request);
+
+            #endregion
+
+            return true;
+        }
+
+        #endregion
     }
 }

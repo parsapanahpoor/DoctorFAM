@@ -1,0 +1,146 @@
+﻿@model List<DoctorFAM.DataLayer.Entities.Request>
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
+
+<div class="col-lg-12 col-md-12 col-xl-12 col-sm-12 col-xs-12 boxForDashboard">
+    <div class="widget">
+        <div class="widget-header">
+            <i class="widget-icon  glyphicon glyphicon-home"></i>
+            <span class="widget-caption"> @Localizer["List Of In Progress Requests"] </span>
+            <div class="widget-buttons">
+                <div class="row">
+                    <a id="ShowUserCommentInAdminPanelMinus" href="#" data-toggle="collapse">
+                        <i class="fa fa-minus"></i>
+                    </a>
+                </div>
+            </div><!--Widget Buttons-->
+        </div>
+        <div class="widget-body" style="height: 400px !important; overflow-y: scroll;">
+            @if (Model != null && Model.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered tc vm">
+                        <thead class="tc vm">
+                            <tr class="tc vm">
+                                <th class="tc vm">
+                                    @Localizer["Request Type"]
+                                </th>
+                                <th class="tc vm">
+                                    @Localizer["Request State"]
+                                </th>
+                                <th class="tc vm">
+                                    @Localizer["Date Time"]
+                                </th>
+                                <th class="tc vm">
+                                    @Localizer["Options"]
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="tc vm">
+                            @foreach (var request in Model)
+                            {
+                                <tr class="tc vm">
+
+                                    <td class="tc vm">
+                                        <p>
+
+                                            @if (request.RequestType == DoctorFAM.Domain.Enums.RequestType.RequestType.PatientTransfer)
+                                            {
+                                                 @Localizer["Patient Transfer"] 
+                                            }
+                                            @if (request.RequestType == DoctorFAM.Domain.Enums.RequestType.RequestType.HomeNurse)
+                                            {
+                                                 @Localizer["Home Nurse"] 
+                                            }
+                                            @if (request.RequestType == DoctorFAM.Domain.Enums.RequestType.RequestType.DeathCertificate)
+                                            {
+                                                 @Localizer["Death Certificate"] 
+                                            }
+                                            @if (request.RequestType == DoctorFAM.Domain.Enums.RequestType.RequestType.HomeDrog)
+                                            {
+                                                 @Localizer["Home Drog"] 
+                                            }
+                                            @if (request.RequestType == DoctorFAM.Domain.Enums.RequestType.RequestType.HomeVisit)
+                                            {
+                                                 @Localizer["Home Visit"] 
+                                            }
+                                                @if (request.RequestType == DoctorFAM.Domain.Enums.RequestType.RequestType.HomeLab)
+                                            {
+                                                 @Localizer["Home Lab"] 
+                                            }
+
+                                        </p>
+                                    </td>
+
+                                    <td class="tc vm">
+                                        <p>
+
+                                            @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.Paid)
+                                            {
+                                                <span class="mr-8px label label-success"> @Localizer["Paid"] </span>
+                                            }
+                                            @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.ConfirmFromDestinationAndWaitingForIssuanceOfDraftInvoice)
+                                            {
+                                                <span class="mr-8px label label-info"> @Localizer["ConfirmFromDestinationAndWaitingForIssuanceOfDraftInvoice"] </span>
+                                            }
+                                             @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.AwaitingThePaymentOfTheInvoiceAmount)
+                                            {
+                                                <span class="mr-8px label label-warning"> @Localizer["AwaitingThePaymentOfTheInvoiceAmount"] </span>
+                                            }
+                                            @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.DeliveryToCourierAndSending)
+                                            {
+                                                <span class="mr-8px label label-info"> @Localizer["DeliveryToCourierAndSending"] </span>
+                                            }
+                                              @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.PreparingTheOrder)
+                                            {
+                                                <span class="mr-8px label label-info"> @Localizer["DeliveryToCourierAndSending"] </span>
+                                            }
+                                            @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.SelectedFromDoctor)
+                                            {
+                                                <span class="mr-8px label label-info"> @Localizer["SelectedFromDoctor"] </span>
+                                            }
+                                            @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.WaitingForConfirmFromDestination)
+                                            {
+                                                <span class="mr-8px label label-warning"> @Localizer["WaitingForConfirmFromDestination"] </span>
+                                            }
+                                            @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.AcceptFromCustomer)
+                                            {
+                                                <span class="mr-8px label label-info"> @Localizer["Accepted From Customer"] </span>
+                                            }
+                                            @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.Finalized)
+                                            {
+                                                <span class="mr-8px label label-success"> @Localizer["Finalized"] </span>
+                                            }
+                                            @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.DeliveryToCourierAndSending)
+                                            {
+                                                <span class="mr-8px label label-info"> @Localizer["Delivery To Courier And Sending"] </span>
+                                            }
+
+                                        </p>
+                                    </td>
+
+                                    <td class="tc vm">
+                                        <p>  @request.CreateDate.ToStringShamsiDate() </p>
+                                        <p> @request.CreateDate.Hour:@request.CreateDate.Minute:@request.CreateDate.Second</p>
+                                    </td>
+
+                                    <td class="tc vm">
+                                        <a asp-action="ProcessRequest" asp-controller="HealthHouseController" asp-area="UserPanel" asp-route-requestId="@request.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <!--Widget Body-->
+            }
+            else
+            {
+                        <partial name="_UserPanelNotFoundPartial" />
+            }
+        </div>
+    </div>
+</div>

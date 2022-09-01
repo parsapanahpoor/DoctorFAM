@@ -121,5 +121,20 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         #endregion
 
+        #region User Panel 
+
+        //Filter User Home Pharmacy Requests
+        Task<Domain.ViewModels.UserPanel.HealthHouse.FilterHomePharmacyViewModel> FilterListOfUserHomePhamracyRequest(Domain.ViewModels.UserPanel.HealthHouse.FilterHomePharmacyViewModel filter);
+
+        //Show Home Pharmacy Request Detail In User Panel
+        Task<Domain.ViewModels.UserPanel.HealthHouse.HomePharmacyRequestViewModel?> FillHomePharmacyRequestInUserPanelViewModel(ulong requestId, ulong userId);
+
+        //Fill Finally Invoice From User Panel View Model
+        Task<Domain.ViewModels.UserPanel.HealthHouse.FinallyInvoiceViewModel?> FinallyInvoiceFromUserPanelViewModel(ulong requestId, ulong userId);
+
+        //Accept Request From User
+        Task<bool> AcceptRequestFromUser(ulong requestId, ulong userId);
+
+        #endregion
     }
 }

@@ -90,7 +90,6 @@ namespace DoctorFAM.Web.Areas.Pharmacy.Controllers
 
             #region Is This Doctor Get This Request For Him Self
 
-
             ViewBag.IsThisRequestForThisPharmacy = await _requestService.IsOperatorIsCurrentUser(User.GetUserId(), requestId);
 
             #endregion

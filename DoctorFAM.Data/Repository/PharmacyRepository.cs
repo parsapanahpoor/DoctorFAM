@@ -5,6 +5,7 @@ using DoctorFAM.Domain.Entities.Interest;
 using DoctorFAM.Domain.Entities.Pharmacy;
 using DoctorFAM.Domain.Enums.Request;
 using DoctorFAM.Domain.Interfaces;
+using DoctorFAM.Domain.ViewModels.Admin.HealthHouse.HomePharmacy;
 using DoctorFAM.Domain.ViewModels.Admin.Pharmacy;
 using DoctorFAM.Domain.ViewModels.Pharmacy.HomePharmacy;
 using DoctorFAM.Domain.ViewModels.Pharmacy.PharmacySideBar;
@@ -36,10 +37,10 @@ namespace DoctorFAM.Data.Repository
         #region General Methods 
 
         //Get Home Pharmacy Request Id By Home Pharmacy Request Detail Pricing Id And Seller Id
-        public async Task<ulong> GetRequestIdByHomePharmacyRequestDetailPricingId(ulong requestDetailPricingId , ulong userId)
+        public async Task<ulong> GetRequestIdByHomePharmacyRequestDetailPricingId(ulong requestDetailPricingId, ulong userId)
         {
-            return await _context.HomePharmacyRequestDetailPrices.Include(p=> p.HomePharmacyRequestDetail).Where(p => !p.IsDelete && p.SellerId == userId && p.Id == requestDetailPricingId)
-                                .Select(p=> p.HomePharmacyRequestDetail.RequestId).FirstOrDefaultAsync();
+            return await _context.HomePharmacyRequestDetailPrices.Include(p => p.HomePharmacyRequestDetail).Where(p => !p.IsDelete && p.SellerId == userId && p.Id == requestDetailPricingId)
+                                .Select(p => p.HomePharmacyRequestDetail.RequestId).FirstOrDefaultAsync();
         }
 
         //Add Pharmacy Info to Data Base
@@ -229,7 +230,7 @@ namespace DoctorFAM.Data.Repository
         }
 
         //Remove Parent Pricing When Add Child For Pricing 
-        public async Task RemoveParentDrugPricingWhenAddChildDrugPricing(ulong sellerId , ulong requesDetailId)
+        public async Task RemoveParentDrugPricingWhenAddChildDrugPricing(ulong sellerId, ulong requesDetailId)
         {
             //Get Parent Pricing
             var pricing = await _context.HomePharmacyRequestDetailPrices
@@ -245,7 +246,7 @@ namespace DoctorFAM.Data.Repository
         }
 
         //Delete Home Drug Request Detail Pricing Child From Pharmacy
-        public async Task<bool> DeleteHomeDrugRequestDetailPricingChildFromPharmacy(ulong requestDetailPricingId , ulong userId)
+        public async Task<bool> DeleteHomeDrugRequestDetailPricingChildFromPharmacy(ulong requestDetailPricingId, ulong userId)
         {
             //Get Request Detail Pricing By Seller Id And Id And Not Null DrugName 
             var pricing = await _context.HomePharmacyRequestDetailPrices.FirstOrDefaultAsync(p => !p.IsDelete && p.Id == requestDetailPricingId && p.SellerId == userId);
@@ -259,13 +260,13 @@ namespace DoctorFAM.Data.Repository
         }
 
         //Get Sum Of Invoice From Home Pharmacy Request Detail Pricing Fields
-        public async Task<int> GetSumOfInvoiceHomePharmacyRequestDetailPricing(ulong requestId , ulong sellerId) 
+        public async Task<int> GetSumOfInvoiceHomePharmacyRequestDetailPricing(ulong requestId, ulong sellerId)
         {
             //Get List Of Home Pharmacy Request Detail Price 
-            var pricings = await _context.HomePharmacyRequestDetailPrices.Include(p=> p.HomePharmacyRequestDetail)
+            var pricings = await _context.HomePharmacyRequestDetailPrices.Include(p => p.HomePharmacyRequestDetail)
                                         .Where(p => !p.IsDelete && p.SellerId == sellerId && p.HomePharmacyRequestDetail.RequestId == requestId).ToListAsync();
 
-            return pricings.Sum(p=> p.Price);
+            return pricings.Sum(p => p.Price);
         }
 
         #endregion
@@ -462,6 +463,26 @@ namespace DoctorFAM.Data.Repository
         {
             return await _context.HomePharmacyRequestDetailPrices.FirstOrDefaultAsync(p => !p.IsDelete && p.HomePharmacyRequestDetailId == requestDetailId && p.SellerId == pharamcyId);
         }
+
+        #endregion
+
+        #region User Panel 
+
+        //Filter User Home Pharmacy Requests
+        public async Task<Domain.ViewModels.UserPanel.HealthHouse.FilterHomePharmacyViewModel> FilterListOfUserHomePhamracyRequest(Domain.ViewModels.UserPanel.HealthHouse.FilterHomePharmacyViewModel filter)
+        {
+            var query = _context.Requests
+             .Include(p => p.PatientRequestDateTimeDetails)
+             .Where(s => !s.IsDelete && s.RequestType == Domain.Enums.RequestType.RequestType.HomeDrog && s.UserId == filter.UserId
+              && s.RequestState != RequestState.WaitingForCompleteInformationFromUser)
+             .OrderByDescending(s => s.CreateDate)
+             .AsQueryable();
+
+            await filter.Paging(query);
+
+            return filter;
+        }
+
 
         #endregion
 

@@ -112,5 +112,12 @@ namespace DoctorFAM.Domain.Interfaces
         Task<HomePharmacyRequestDetailPrice?> GetHomePharmacyRequestDetailPriceByPharmacyIdAndRequestDetailId(ulong pharamcyId, ulong requestDetailId);
 
         #endregion
+
+        #region User Panel 
+
+        //Filter User Home Pharmacy Requests
+        Task<Domain.ViewModels.UserPanel.HealthHouse.FilterHomePharmacyViewModel> FilterListOfUserHomePhamracyRequest(Domain.ViewModels.UserPanel.HealthHouse.FilterHomePharmacyViewModel filter);
+
+        #endregion
     }
 }

@@ -2,6 +2,7 @@
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.Dashboard;
 using DoctorFAM.Domain.ViewModels.Supporter;
+using DoctorFAM.Domain.ViewModels.UserPanel.Home;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,6 +38,15 @@ namespace DoctorFAM.Application.Services.Implementation
         public async Task<AdminDashboardViewModel> FillAdminDashboardViewModel()
         {
             return await _dashboardRepostory.FillAdminDashboardViewModel();
+        }
+
+        #endregion
+
+        #region User Panel Dashboard
+
+        public async Task<HomeDashboardViewModel> FillUserPanelDashboardViewModel(ulong userId)
+        {
+            return await _dashboardRepostory.FillUserPanelDashboardViewModel(userId);
         }
 
         #endregion

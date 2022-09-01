@@ -120,6 +120,9 @@
   <data name="Accepted" xml:space="preserve">
     <value>onaylanmış</value>
   </data>
+  <data name="AcceptFromCustomer" xml:space="preserve">
+    <value>Başvuru sahibi tarafından onaylandı</value>
+  </data>
   <data name="Address" xml:space="preserve">
     <value>Adres</value>
   </data>

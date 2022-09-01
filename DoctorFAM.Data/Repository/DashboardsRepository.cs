@@ -2,6 +2,7 @@
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.Dashboard;
 using DoctorFAM.Domain.ViewModels.Supporter;
+using DoctorFAM.Domain.ViewModels.UserPanel.Home;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -192,6 +193,31 @@ namespace DoctorFAM.Data.Repository
             model.DoctorReservationDateTimes = await _context.DoctorReservationDateTimes.Include(p => p.User).Include(p => p.DoctorReservationDate).ThenInclude(p => p.User)
                                                     .Where(p => !p.IsDelete && p.DoctorReservationDate.ReservationDate.DayOfYear == DateTime.Now.DayOfYear
                                                     && p.DoctorReservationDate.ReservationDate.Year == DateTime.Now.Year).ToListAsync();
+
+            #endregion
+
+            return model;
+        }
+
+        #endregion
+
+        #region User Panel Dashboard
+
+        public async Task<HomeDashboardViewModel> FillUserPanelDashboardViewModel(ulong userId)
+        {
+            HomeDashboardViewModel model = new HomeDashboardViewModel();
+
+            #region Lastest In Progress Request For CurrentUser
+
+            model.ListOfInProgressRequests = await _context.Requests.Where(p => !p.IsDelete && p.UserId == userId
+                                            && (p.RequestState == Domain.Enums.Request.RequestState.Paid
+                                            ||  p.RequestState == Domain.Enums.Request.RequestState.WaitingForConfirmFromDestination
+                                            ||  p.RequestState == Domain.Enums.Request.RequestState.ConfirmFromDestinationAndWaitingForIssuanceOfDraftInvoice
+                                            ||  p.RequestState == Domain.Enums.Request.RequestState.AwaitingThePaymentOfTheInvoiceAmount
+                                            ||  p.RequestState == Domain.Enums.Request.RequestState.DeliveryToCourierAndSending
+                                            ||  p.RequestState == Domain.Enums.Request.RequestState.PreparingTheOrder
+                                            ||  p.RequestState == Domain.Enums.Request.RequestState.WaitingForConfirmFromDestination))
+                                            .OrderByDescending(p=> p.CreateDate).ToListAsync();
 
             #endregion
 

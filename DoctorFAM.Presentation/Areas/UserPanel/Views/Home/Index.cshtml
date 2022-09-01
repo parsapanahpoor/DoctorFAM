@@ -1,4 +1,6 @@
-﻿@{
+﻿@model DoctorFAM.Domain.ViewModels.UserPanel.Home.HomeDashboardViewModel
+
+@{
     ViewData["Title"] = "Index";
 }
 
@@ -8,6 +10,9 @@
     <div class="page-body">
 
         <div class="row">
+
+            @*Box Of Lastest Requests*@
+            <partial name="_ListOfInProgressRequests" model="@Model.ListOfInProgressRequests" />
 
             @*List Of Future Reservation*@
             @await Component.InvokeAsync("FutureReservationsDetail")

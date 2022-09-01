@@ -30,7 +30,9 @@ namespace DoctorFAM.Domain.Enums.Request
         [Display(Name = "Preparing The Order")]
         PreparingTheOrder,
         [Display(Name = "Delivery To Courier And Sending")]
-        DeliveryToCourierAndSending
+        DeliveryToCourierAndSending,
+        [Display(Name = "Accept From Customer")]
+        AcceptFromCustomer
     }
 
     public enum RequestStateForFilterAdminSide

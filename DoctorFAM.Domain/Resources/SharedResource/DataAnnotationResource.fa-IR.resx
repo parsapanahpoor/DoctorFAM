@@ -120,6 +120,9 @@
   <data name="Accepted" xml:space="preserve">
     <value>تایید شده</value>
   </data>
+  <data name="AcceptFromCustomer" xml:space="preserve">
+    <value>تایید شده توسط درخواست دهنده</value>
+  </data>
   <data name="Address" xml:space="preserve">
     <value>آدرس</value>
   </data>
