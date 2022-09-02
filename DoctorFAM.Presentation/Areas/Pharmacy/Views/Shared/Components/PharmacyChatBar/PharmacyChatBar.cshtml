@@ -60,6 +60,10 @@
                                 {
                                     <div>ارائه ی فاکتور از داروخانه</div>
                                 }
+                                @if (item.SupporterNotificationText == DoctorFAM.Domain.Enums.Notification.SupporterNotificationText.AcceptInvoiceFromCustomer)
+                                {
+                                    <div>تایید فاکتور از فروشنده</div>
+                                }
                             </div>
                         </div>
                     </li>

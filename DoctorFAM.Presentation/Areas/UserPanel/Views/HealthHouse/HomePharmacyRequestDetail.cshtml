@@ -350,9 +350,10 @@
                                     @if (Model.Request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.AwaitingThePaymentOfTheInvoiceAmount
                                       || Model.Request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.Finalized
                                       || Model.Request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.DeliveryToCourierAndSending
-                                      || Model.Request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.AcceptFromCustomer)
+                                      || Model.Request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.AcceptFromCustomer
+                                      || Model.Request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.WaitingForAcceptFromCustomer)
                                     {
-                                        <a asp-action="AcceptHomePharmacyRequestFromPharmacy" asp-area="UserPanel" asp-controller="HomePharmacy" asp-route-requestId="@Model.Request.Id" class="btn btn-primary">@Localizer["View Invoice"]</a>
+                                        <a asp-action="InvoiceFinalization" asp-area="UserPanel" asp-controller="HealthHouse" asp-route-requestId="@Model.Request.Id" class="btn btn-primary">@Localizer["View Invoice"]</a>
                                     }
                                   
                                 </div>

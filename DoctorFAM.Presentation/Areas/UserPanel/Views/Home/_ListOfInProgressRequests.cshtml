@@ -79,7 +79,7 @@
 
                                             @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.Paid)
                                             {
-                                                <span class="mr-8px label label-success"> @Localizer["Paid"] </span>
+                                                <span class="mr-8px label label-warning"> @Localizer["Paid"] </span>
                                             }
                                             @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.ConfirmFromDestinationAndWaitingForIssuanceOfDraftInvoice)
                                             {
@@ -88,10 +88,6 @@
                                              @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.AwaitingThePaymentOfTheInvoiceAmount)
                                             {
                                                 <span class="mr-8px label label-warning"> @Localizer["AwaitingThePaymentOfTheInvoiceAmount"] </span>
-                                            }
-                                            @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.DeliveryToCourierAndSending)
-                                            {
-                                                <span class="mr-8px label label-info"> @Localizer["DeliveryToCourierAndSending"] </span>
                                             }
                                               @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.PreparingTheOrder)
                                             {
@@ -117,6 +113,10 @@
                                             {
                                                 <span class="mr-8px label label-info"> @Localizer["Delivery To Courier And Sending"] </span>
                                             }
+                                            @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.WaitingForAcceptFromCustomer)
+                                            {
+                                                <span class="mr-8px label label-warning"> @Localizer["Waiting For Accept From Customer"] </span>
+                                            }
 
                                         </p>
                                     </td>
@@ -127,8 +127,8 @@
                                     </td>
 
                                     <td class="tc vm">
-                                        <a asp-action="ProcessRequest" asp-controller="HealthHouseController" asp-area="UserPanel" asp-route-requestId="@request.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
-                                    </td>
+@*                                        <a asp-action="ProcessRequest" asp-controller="HealthHouseController" asp-area="UserPanel" asp-route-requestId="@request.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+*@                                    </td>
                                 </tr>
                             }
                         </tbody>

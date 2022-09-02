@@ -59,6 +59,14 @@
                                 {
                                     <div>ارائه ی فاکتور از داروخانه</div>
                                 }
+                                @if (item.SupporterNotificationText == DoctorFAM.Domain.Enums.Notification.SupporterNotificationText.AcceptInvoiceFromCustomer)
+                                {
+                                    <div>تایید فاکتور از فروشنده</div>
+                                }
+                                @if (item.SupporterNotificationText == DoctorFAM.Domain.Enums.Notification.SupporterNotificationText.DeliveryByCourier)
+                                {
+                                    <div>تحویل بسته ی دارو به پیک</div>
+                                }
                             </div>
                         </div>
                     </li>

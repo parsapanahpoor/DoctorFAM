@@ -4,6 +4,8 @@ using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DosctorSideBarInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Employees;
+using DoctorFAM.Domain.ViewModels.Site.Doctor;
+using DoctorFAM.Domain.ViewModels.Site.Reservation;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -56,6 +58,19 @@ namespace DoctorFAM.Application.Services.Interfaces
         Task<DoctorsInfo?> GetDoctorsInfoById(ulong doctorInfoId);
 
         Task<EditDoctorInfoResult> EditDoctorInfoAdminSide(DoctorsInfoDetailViewModel model, IFormFile? MediacalFile);
+
+        #endregion
+
+        #region Site Side 
+
+        //Get List Of All Doctors
+        Task<List<ListOfAllDoctorsViewModel>> ListOfDoctors();
+
+        //Fill Doctor Page In Reservation Page 
+        Task<DoctorPageInReservationViewModel?> FillDoctorPageDetailInReservationPage(ulong userId);
+
+        //Fill Doctor Reservation Detail For Show Site Side View Model
+        Task<ShowDoctorReservationDetailViewModel?> FillDoctorReservationDetailForShowSiteSide(ulong userId, string? loggedDateTime);
 
         #endregion
     }

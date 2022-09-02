@@ -1,0 +1,46 @@
+﻿@model List<DoctorFAM.Domain.ViewModels.Site.Doctor.ListOfAllDoctorsViewModel>
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+
+<section class="mt-3 pt-0">
+    <div class="container">
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <div class="section-title text-center mb-3">
+
+                    <h2 class="title"> پزشکان داکترفام </h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="owl-carousel" data-items="5" data-md-items="4" data-margin="30" data-sm-items="2" data-autoplay="true">
+                    @if (Model != null && Model.Any())
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <div class="item">
+                                <a asp-action="DocPage" asp-area="" asp-controller="FocalPoint" asp-route-userId="@item.UserId">
+                                <div class="team-member style-1">
+                                    <div class="team-images">
+                                        <img class="img-fluid" src="/content/images/user/@((string.IsNullOrEmpty(item.UserAvatar)) ? "DefaultAvatar.png" : $"thumb/{item.UserAvatar}")" alt="">
+                                       
+                                    </div>
+                                    <div class="team-description">
+                                        <span><a asp-action="DocPage" asp-area="" asp-controller="FocalPoint" asp-route-userId="@item.UserId"> @item.Username</a></span>
+                                        <span> @((!string.IsNullOrEmpty(item.Education)) ? item.Education : null) - @((!string.IsNullOrEmpty(item.Specialist)) ? item.Specialist : null) </span>
+                                    </div>
+                                </div>
+                                </a>
+                            </div>
+                        }
+
+                    }
+                </div>
+                <a class="btn btn-acc  ml-sm-3 hover-icon p-3 text-center" asp-action="TeleFamItems" asp-controller="Home">
+                    <span class="p-5"> بیشتر    </span>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>

@@ -36,4 +36,11 @@ public static class Messages
         return
             $"باعرض سلام . {Environment.NewLine} درخواست سفارش داروی شما از سمت داروخانه قبول شده است . لطفا تا ارائه ی پیش فاکتور صبور باشید. {Environment.NewLine} {PathTools.SiteFarsiName}";
     }
+
+    //Send SMS For Delivery Drug By Courier.
+    public static string SendSMSForDeliveryDrugByCourier()
+    {
+        return
+            $"باعرض سلام . {Environment.NewLine} بسته ی سفارشی شما تحویل پیک داده شده است و درحال ارسال به شما می باشد. {Environment.NewLine} {PathTools.SiteFarsiName}";
+    }
 }

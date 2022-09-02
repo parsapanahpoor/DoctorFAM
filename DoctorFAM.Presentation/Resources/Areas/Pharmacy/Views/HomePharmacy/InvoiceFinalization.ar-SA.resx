@@ -123,6 +123,9 @@
   <data name="Count" xml:space="preserve">
     <value>رقم</value>
   </data>
+  <data name="Delivery To Courier" xml:space="preserve">
+    <value>استلمها العميل</value>
+  </data>
   <data name="Drug Information" xml:space="preserve">
     <value>معلومات المخدرات</value>
   </data>

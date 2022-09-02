@@ -174,6 +174,9 @@
   <data name="SelectedFromDoctor" xml:space="preserve">
     <value>انتخاب شده توسط پزشک</value>
   </data>
+  <data name="Waiting For Accept From Customer" xml:space="preserve">
+    <value>در انتظار تایید شما</value>
+  </data>
   <data name="WaitingForConfirmFromDestination" xml:space="preserve">
     <value>در انتظار تایید از مقصد</value>
   </data>

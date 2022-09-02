@@ -1,33 +1,38 @@
-﻿@{
-    ViewBag.Title = "صفحه پزشک";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+﻿@model DoctorFAM.Domain.ViewModels.Site.Reservation.ShowDoctorReservationDetailViewModel
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.Utils
+
+@{
+    ViewBag.Title = "دریافت نوبت";
 }
 
+@section Scripts{
+}
 
-<div class="content">
-    <div class="container">
+    <div class="content">
+        <div class="container">
 
-        <div class="card m-3 p-3">
-            <div class="card-body">
-                <div class="doctor-widget">
-                    <div class="row">
-                        <div class=" doc-info-left">
-                            <div class="doctor-img">
-                                <img src="~/Content/Doctor/assets/img/doctors/doctor-thumb-02.jpg" class="img-fluid" alt="User Image">
-                            </div>
-                            <div class="doc-info-cont">
-                                <h4 class="doc-name">پزشک: یاسر قزوینی</h4>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <p class="doc-speciality">  پزشک عمومی - پزشک خانواده </p>
-                                         <span class="doc-speciality"> GP ، FD  </span>
+            <div class="card m-3 p-3">
+                <div class="card-body">
+                    <div class="doctor-widget">
+                        <div class="row">
+                            <div class=" doc-info-left">
+                                <div class="doctor-img">
+                                    <img src="/content/images/user/@((string.IsNullOrEmpty(Model.DoctorPageInReservationViewModel.UserAvatar)) ? "DefaultAvatar.png" : $"thumb/{Model.DoctorPageInReservationViewModel.UserAvatar}")" class="img-fluid" alt="User Image">
+                                </div>
+                                <div class="doc-info-cont">
+                                    <h4 class="doc-name">پزشک: @Model.DoctorPageInReservationViewModel.Username</h4>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <p class="doc-speciality">  @((!string.IsNullOrEmpty(Model.DoctorPageInReservationViewModel.Education)) ? Model.DoctorPageInReservationViewModel.Education : null) </p>
+                                        <span class="doc-speciality"> @((!string.IsNullOrEmpty(Model.DoctorPageInReservationViewModel.Specialist)) ? Model.DoctorPageInReservationViewModel.Specialist : null) </span>
                                         <div class="rating">
                                             <i class="fas fa-star filled"></i>
                                             <i class="fas fa-star filled"></i>
                                             <i class="fas fa-star filled"></i>
                                             <i class="fas fa-star filled"></i>
                                             <i class="fas fa-star"></i>
-                                            <span class="d-inline-block average-rating">(35)</span>
                                         </div>
 
 
@@ -41,164 +46,74 @@
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-12 col-sm-4 col-md-6">
-                <h4 class="mb-1">11 مهر 1401</h4>
-                <p class="text-muted">دوشنبه</p>
-            </div>
-            <div class="col-12 col-sm-8 col-md-6 ">
-                <div class="bookingrange btn btn-white btn-sm mb-3">
-                    <i class="far fa-calendar-alt me-2"></i>
-                    <span></span>
-                    <i class="fas fa-chevron-down ms-2"></i>
+        <form asp-action="DocBooking" asp-area="" asp-controller="FocalPoint" method="post">
+            <input type="hidden" asp-for="UserId" />
+
+            <div class="row">
+                <div class="col-12 col-sm-4 col-md-4">
+                    <h4 class="mb-1"> @((Model.DoctorReservationDate != null) ? Model.DoctorReservationDate.ReservationDate.ToStringShamsiDate() : "تاریخ وارد نشده است")</h4>
+                    @*                        <p class="text-muted">دوشنبه</p>
+                    *@
                 </div>
-            </div>
-        </div>
+                <div class="col-12 col-sm-8 col-md-8 ">
+                    <div class="bookingrange btn btn-white btn-sm mb-3" style="width: 100%;">
+                        <div class="row">
+                            <div class="form-group col-md-6 col-sm-12" style="margin-bottom:0px;">
+                                <input type="text" class="form-control" DatePicker="1" asp-for="LoggedDateTime" style="z-index:9999!important;">
+                            </div>
 
-        <div class="card booking-schedule schedule-widget">
-            <div class="schedule-header">
-                <div class="row">
-                    <div class="col-md-12">
-
-                        <div class="day-slot ">
-                            <ul>
-                                <li class="left-arrow">
-                                    <a href="#">
-                                        <i class="fa fa-chevron-left"></i>
-                                    </a>
-                                </li>
-                                 <li>
-                                    <span>جمعه</span>
-                                    <span class="slot-date">17  مهر <small class="slot-year">1401</small></span>
-                                </li>
-                                <li>
-                                    <span>پنجشنبه</span>
-                                    <span class="slot-date">16  مهر <small class="slot-year">1401</small></span>
-                                </li>
-                                 <li>
-                                    <span>چهارشنبه</span>
-                                    <span class="slot-date">15  مهر <small class="slot-year">1401</small></span>
-                                </li>
-                                 <li>
-                                    <span>سه‌شنبه</span>
-                                    <span class="slot-date">14  مهر <small class="slot-year">1401</small></span>
-                                </li>
-                                <li>
-                                    <span>دوشنبه</span>
-                                    <span class="slot-date">13  مهر <small class="slot-year">1401</small></span>
-                                </li>
-                                <li>
-                                    <span>یکشنبه</span>
-                                    <span class="slot-date">12  مهر <small class="slot-year">1401</small></span>
-                                </li>
-                                <li>
-                                    <span>شنبه</span>
-                                    <span class="slot-date">11  مهر <small class="slot-year">1401</small></span>
-                                </li>                                
-                                <li class="right-arrow">
-                                    <a href="#">
-                                        <i class="fa fa-chevron-right"></i>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="schedule-cont">
-                <div class="row">
-                    <div class="col-md-12">
-
-                        <div class="time-slot">
-                            <ul class="clearfix">
-                                <li>
-                                    <a class="timing" href="#">
-                                        <span>9:00</span> <span>صبح</span>
-                                    </a>
-                                    <a class="timing" href="#">
-                                        <span>10:00</span> <span>صبح</span>
-                                    </a>
-                                    <a class="timing" href="#">
-                                        <span>11:00</span> <span>صبح</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="timing" href="#">
-                                        <span>9:00</span> <span>صبح</span>
-                                    </a>
-                                    <a class="timing" href="#">
-                                        <span>10:00</span> <span>صبح</span>
-                                    </a>
-                                    <a class="timing" href="#">
-                                        <span>11:00</span> <span>صبح</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="timing" href="#">
-                                        <span>9:00</span> <span>صبح</span>
-                                    </a>
-                                    <a class="timing" href="#">
-                                        <span>10:00</span> <span>صبح</span>
-                                    </a>
-                                    <a class="timing" href="#">
-                                        <span>11:00</span> <span>صبح</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="timing" href="#">
-                                        <span>9:00</span> <span>صبح</span>
-                                    </a>
-                                    <a class="timing" href="#">
-                                        <span>10:00</span> <span>صبح</span>
-                                    </a>
-                                    <a class="timing" href="#">
-                                        <span>11:00</span> <span>صبح</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="timing" href="#">
-                                        <span>9:00</span> <span>صبح</span>
-                                    </a>
-                                    <a class="timing selected" href="#">
-                                        <span>10:00</span> <span>صبح</span>
-                                    </a>
-                                    <a class="timing" href="#">
-                                        <span>11:00</span> <span>صبح</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="timing" href="#">
-                                        <span>9:00</span> <span>صبح</span>
-                                    </a>
-                                    <a class="timing" href="#">
-                                        <span>10:00</span> <span>صبح</span>
-                                    </a>
-                                    <a class="timing" href="#">
-                                        <span>11:00</span> <span>صبح</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="timing" href="#">
-                                        <span>9:00</span> <span>صبح</span>
-                                    </a>
-                                    <a class="timing" href="#">
-                                        <span>10:00</span> <span>صبح</span>
-                                    </a>
-                                    <a class="timing" href="#">
-                                        <span>11:00</span> <span>صبح</span>
-                                    </a>
-                                </li>
-                            </ul>
+                            <div class="col-md-6 col-sm-12 submit-section proceed-btn text-left mt-2" style="margin-bottom:0px;margin-top: 0px !important;">
+                                <input type="submit" class="btn btn-primary btn-Accept" value="استعلام" placeholder="ثبت نوبت" />
+                            </div>
                         </div>
 
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="submit-section proceed-btn text-left mt-2">
-            <a href="checkout.html" class="btn btn-primary btn-Accept"> ثبت نوبت </a>
-        </div>
 
+        </form>
+
+        @if (Model.DoctorReservationDateTimes != null && Model.DoctorReservationDateTimes.Any())
+        {
+            <div class="card booking-schedule schedule-widget">
+                <div class="schedule-cont">
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            <div class="time-slot">
+                                <ul class="clearfix">
+
+                                    @foreach (var item in Model.DoctorReservationDateTimes)
+                                    {
+                                        @if (item.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.Reserved
+                                       || item.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.WaitingForComplete)
+                                        {
+                                            <li style="margin-top:10px;">
+                                                <div class="timing" style="background-color: #ff0c00;border: 1px solid #f00;color: #fff;" href="#">
+                                                    <span> @item.StartTime</span> تا <span> @item.EndTime</span>
+                                                </div>
+                                            </li>
+                                        }
+                                        @if (item.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.NotReserved)
+                                        {
+                                            <li style="margin-top:10px;">
+                                                  <a class="timing" style="background-color: #11e802;border: 1px solid #11e802;color: #fff;"
+                                                       asp-action="" asp-area="" asp-controller="FocalPoint" asp-route-reservationDateTimeId="@item.Id" asp-route-doctorId="@Model.DoctorReservationDate.UserId">
+                                                         <span> @item.StartTime</span> تا <span> @item.EndTime</span>
+                                                  </a>
+                                            </li>
+                                        }
+                                    }
+
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        }
 
     </div>
 </div>

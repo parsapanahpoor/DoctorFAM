@@ -35,10 +35,10 @@ namespace DoctorFAM.Domain.Interfaces
         Task<List<DoctorReservationDate>> GetReservationsForAddCancelRequest(ulong userId);
 
         //Get Doctor Reservation Date By Date 
-        Task<DoctorReservationDate?> GetDoctorReservationDateByDate(DateTime date , ulong userId);
+        Task<DoctorReservationDate?> GetDoctorReservationDateByDate(DateTime date, ulong userId);
 
         //In Add Reservation Date Check Date In Not Duplicate
-        Task<bool> IsExistAnyDuplicateReservationDate(DateTime date , ulong userId);
+        Task<bool> IsExistAnyDuplicateReservationDate(DateTime date, ulong userId);
 
         Task<FilterAppointmentViewModel> FilterDoctorReservationDateSide(FilterAppointmentViewModel filter);
 
@@ -89,6 +89,16 @@ namespace DoctorFAM.Domain.Interfaces
         #region Supporter Panel 
 
         Task<FilterReservationSupporterSideViewModel?> FilterReservationSupporterPanelViewModel(FilterReservationSupporterSideViewModel filter);
+
+        #endregion
+
+        #region Site Side
+
+        //Get Reservation Date By Reservation Date And User Id
+        Task<DoctorReservationDate?> GetDoctorReservationDateByReservationDateAndUserId(DateTime reservationDate, ulong userId);
+
+        //Get List Of Doctor Reservation Date Time By Reservation Date Id
+        Task<List<DoctorReservationDateTime>?> GetListOfDoctorReservationDateTimeByReservationDateId(ulong reservationDateId);
 
         #endregion
     }

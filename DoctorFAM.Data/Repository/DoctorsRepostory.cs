@@ -5,6 +5,7 @@ using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DosctorSideBarInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Employees;
+using DoctorFAM.Domain.ViewModels.Site.Doctor;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -63,7 +64,6 @@ namespace DoctorFAM.Data.Repository
 
             return filter;
         }
-
 
         public async Task<bool> IsExistAnyDoctorByUserId(ulong userId)
         {
@@ -290,6 +290,40 @@ namespace DoctorFAM.Data.Repository
         public async Task<DoctorsInfo?> GetDoctorsInfoByDoctorId(ulong doctorId)
         {
             return await _context.DoctorsInfos.Include(p => p.Doctor).FirstOrDefaultAsync(p => !p.IsDelete && p.DoctorId == doctorId);
+        }
+
+        #endregion
+
+        #region Site Side 
+
+        //Get List Of All Doctors
+        public async Task<List<ListOfAllDoctorsViewModel>> ListOfDoctors()
+        {
+            //Get List Of Doctors
+            var doctors = await _context.Doctors.Include(p => p.User).Include(p => p.DoctorsInfos)
+                .Where(p => !p.IsDelete).ToListAsync();
+
+            List<ListOfAllDoctorsViewModel> model = new List<ListOfAllDoctorsViewModel>(); 
+
+            foreach (var item in doctors)
+            {
+                if (await _context.Organizations.AnyAsync(p=> !p.IsDelete && p.OrganizationType == Domain.Enums.Organization.OrganizationType.DoctorOffice
+                                                                        && p.OrganizationInfoState == OrganizationInfoState.Accepted && p.OwnerId == item.UserId))
+                {
+                    ListOfAllDoctorsViewModel modelChild = new ListOfAllDoctorsViewModel()
+                    {
+                        UserId = item.UserId,
+                        Username = item.User.Username,
+                        UserAvatar = item.User.Avatar,
+                        Education = item.DoctorsInfos.Education,
+                        Specialist = item.DoctorsInfos.Specialty
+                    };
+
+                    model.Add(modelChild);
+                }
+            }
+
+            return model;
         }
 
         #endregion

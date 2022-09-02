@@ -10,6 +10,7 @@ using DoctorFAM.Domain.ViewModels.Supporter.Reservation;
 using DoctorFAM.Domain.ViewModels.UserPanel.Reservation;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -820,6 +821,67 @@ namespace DoctorFAM.Application.Services.Implementation
             #endregion
 
             return true;
+        }
+
+        #endregion
+
+        #region Site Side
+
+        //Get Reservation Date By Reservation Date And User Id
+        public async Task<DoctorReservationDate?> GetDoctorReservationDateByReservationDateAndUserId(DateTime reservationDate, ulong userId)
+        {
+            return await _reservation.GetDoctorReservationDateByReservationDateAndUserId(reservationDate , userId);
+        }
+
+        //Get Reservation Date By Reservation Date And User Id
+        public async Task<DoctorReservationDate?> GetDoctorReservationDateByReservationDateAndUserId(string reservationDate , ulong userId)
+        {
+            #region Convert Logged Date To Date Time 
+
+            var spliteDate = reservationDate.Split('/');
+            int year = int.Parse(spliteDate[0]);
+            int month = int.Parse(spliteDate[1]);
+            int day = int.Parse(spliteDate[2]);
+            DateTime date = new DateTime(year, month, day, new PersianCalendar());
+
+            #endregion
+
+            return await GetDoctorReservationDateByReservationDateAndUserId(date, userId);
+        }
+
+        //Get List Of Doctor Reservation Date Time By Reservation Date Id
+        public async Task<List<DoctorReservationDateTime>?> GetListOfDoctorReservationDateTimeByReservationDateId(ulong reservationDateId)
+        {
+            return await _reservation.GetListOfDoctorReservationDateTimeByReservationDateId(reservationDateId);
+        }
+
+        //Get Reservation Date Time By Reservation Date And User Id
+        public async Task<List<DoctorReservationDateTime>?> GetDoctorReservationDateByReservationDateTimeAndUserId(string loggedreservationDate, ulong userId)
+        {
+            #region Convert Logged Date To Date Time 
+
+            var spliteDate = loggedreservationDate.Split('/');
+            int year = int.Parse(spliteDate[0]);
+            int month = int.Parse(spliteDate[1]);
+            int day = int.Parse(spliteDate[2]);
+            DateTime date = new DateTime(year, month, day, new PersianCalendar());
+
+            #endregion
+
+            #region Get Doctor Reservation Date 
+
+            var reservationDate = await GetDoctorReservationDateByReservationDateAndUserId(date, userId);
+            if (reservationDate == null) return null;
+
+            #endregion
+
+            #region Get Doctor Reservation Date Time 
+
+            var doctorReservationDateTime = await _reservation.GetListOfDoctorReservationDateTimeByReservationDateId(reservationDate.Id);
+
+            #endregion
+
+            return doctorReservationDateTime;
         }
 
         #endregion

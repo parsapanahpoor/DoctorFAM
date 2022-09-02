@@ -90,5 +90,18 @@ namespace DoctorFAM.Application.Services.Interfaces
         Task<ShowReservationDetailSupporterSideViewModel?> FillShowReservationDetailSupporterSideViewModel(ulong reservationId);
 
         #endregion
+
+        #region Site Side 
+
+        //Get Reservation Date By Reservation Date And User Id
+        Task<DoctorReservationDate?> GetDoctorReservationDateByReservationDateAndUserId(DateTime reservationDate, ulong userId);
+
+        //Get Reservation Date By Reservation Date And User Id
+        Task<DoctorReservationDate?> GetDoctorReservationDateByReservationDateAndUserId(string reservationDate, ulong userId);
+
+        //Get Reservation Date Time By Reservation Date And User Id
+        Task<List<DoctorReservationDateTime>?> GetDoctorReservationDateByReservationDateTimeAndUserId(string loggedreservationDate, ulong userId);
+
+        #endregion
     }
 }

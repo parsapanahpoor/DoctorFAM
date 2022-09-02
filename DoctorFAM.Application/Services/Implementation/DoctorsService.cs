@@ -12,6 +12,8 @@ using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DosctorSideBarInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Employees;
+using DoctorFAM.Domain.ViewModels.Site.Doctor;
+using DoctorFAM.Domain.ViewModels.Site.Reservation;
 using Microsoft.AspNetCore.Http;
 
 namespace DoctorFAM.Application.Services.Implementation
@@ -28,13 +30,19 @@ namespace DoctorFAM.Application.Services.Implementation
 
         private readonly IWorkAddressService _workAddress;
 
+        private readonly ILocationRepository _locationRepository;
+
+        private readonly IReservationService _reservationService;
+
         public DoctorsService(IDoctorsRepository doctorRepository, IUserService userService, IOrganizationService organizationService,
-                                IWorkAddressService workAddress)
+                                IWorkAddressService workAddress, ILocationRepository locationRepository , IReservationService reservationService)
         {
             _doctorRepository = doctorRepository;
             _userService = userService;
             _organizationService = organizationService;
             _workAddress = workAddress;
+            _locationRepository = locationRepository;
+            _reservationService = reservationService;
         }
 
         #endregion
@@ -814,6 +822,133 @@ namespace DoctorFAM.Application.Services.Implementation
             #endregion
 
             return EditDoctorInfoResult.success;
+        }
+
+        #endregion
+
+        #region Site Side 
+
+        //Get List Of All Doctors
+        public async Task<List<ListOfAllDoctorsViewModel>> ListOfDoctors()
+        {
+            return await _doctorRepository.ListOfDoctors();
+        }
+
+        //Fill Doctor Page In Reservation Page 
+        public async Task<DoctorPageInReservationViewModel?> FillDoctorPageDetailInReservationPage(ulong userId)
+        {
+            #region Get Doctor By User Id
+
+            var doctor = await _doctorRepository.GetDoctorByUserId(userId);
+            if (doctor == null) return null;
+
+            #endregion
+
+            #region Validate Doctor 
+
+            var organization = await _organizationService.GetOrganizationByUserId(userId);
+            if (organization == null) return null;
+            if (organization.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice) return null;
+            if (organization.OrganizationInfoState != OrganizationInfoState.Accepted) return null;
+
+            #endregion
+
+            #region Get Doctor Personal Info 
+
+            var doctorPersonalInfo = await _doctorRepository.GetDoctorsInfoByDoctorId(doctor.Id);
+            if (doctorPersonalInfo == null) return null;
+
+            #endregion
+
+            #region Fill Model 
+
+            DoctorPageInReservationViewModel model = new DoctorPageInReservationViewModel()
+            {
+                UserId = userId,
+                Username = doctor.User.Username,
+                UserAvatar = doctor.User.Avatar,
+                Education = doctorPersonalInfo.Education,
+                Specialist = doctorPersonalInfo.Specialty,
+            };
+
+            #endregion
+
+            #region Get User Office Address
+
+            var workAddress = await _workAddress.GetUserWorkAddressById(userId);
+
+            if (workAddress != null)
+            {
+                var country = await _locationRepository.GetLocationById(workAddress.CountryId);
+                if (country == null) return null;
+
+                var state = await _locationRepository.GetLocationById(workAddress.StateId);
+                if (state == null) return null;
+
+                var city = await _locationRepository.GetLocationById(workAddress.CityId);
+                if (city == null) return null;
+
+                model.CountryName = country.UniqueName;
+                model.StateName = state.UniqueName;
+                model.CityName = city.UniqueName;
+                model.WorkAddress = workAddress.Address;
+            }
+
+            #endregion
+
+            return model;
+        }
+
+        //Fill Doctor Reservation Detail For Show Site Side View Model
+        public async Task<ShowDoctorReservationDetailViewModel?> FillDoctorReservationDetailForShowSiteSide(ulong userId , string? loggedDateTime)
+        {
+            #region Get Doctor By User Id
+
+            var doctor = await _doctorRepository.GetDoctorByUserId(userId);
+            if (doctor == null) return null;
+
+            #endregion
+
+            #region Validate Doctor 
+
+            var organization = await _organizationService.GetOrganizationByUserId(userId);
+            if (organization == null) return null;
+            if (organization.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice) return null;
+            if (organization.OrganizationInfoState != OrganizationInfoState.Accepted) return null;
+
+            #endregion
+
+            #region Get Doctor Personal Info 
+
+            var doctorPersonalInfo = await _doctorRepository.GetDoctorsInfoByDoctorId(doctor.Id);
+            if (doctorPersonalInfo == null) return null;
+
+            #endregion
+
+            #region Fill Model 
+
+            ShowDoctorReservationDetailViewModel model = new ShowDoctorReservationDetailViewModel()
+            {
+                UserId = userId,
+                LoggedDateTime = loggedDateTime,
+                DoctorReservationDate = ((!string.IsNullOrEmpty(loggedDateTime) ? await _reservationService.GetDoctorReservationDateByReservationDateAndUserId(loggedDateTime , userId) : null)),
+                DoctorReservationDateTimes = ((!string.IsNullOrEmpty(loggedDateTime) ? await _reservationService.GetDoctorReservationDateByReservationDateTimeAndUserId(loggedDateTime, userId) : null))
+            };
+
+            DoctorPageInReservationViewModel childModel = new DoctorPageInReservationViewModel()
+            {
+                UserId = userId,
+                Username = doctor.User.Username,
+                UserAvatar = doctor.User.Avatar,
+                Education = doctorPersonalInfo.Education,
+                Specialist = doctorPersonalInfo.Specialty,
+            };
+
+            model.DoctorPageInReservationViewModel = childModel;
+
+            #endregion
+
+            return model;
         }
 
         #endregion

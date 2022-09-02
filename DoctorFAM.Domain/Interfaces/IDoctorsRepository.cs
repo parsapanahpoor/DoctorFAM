@@ -3,6 +3,7 @@ using DoctorFAM.Domain.Entities.Interest;
 using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DosctorSideBarInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Employees;
+using DoctorFAM.Domain.ViewModels.Site.Doctor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -62,6 +63,13 @@ namespace DoctorFAM.Domain.Interfaces
         Task<DoctorsInfo?> GetDoctorsInfoByDoctorId(ulong doctorId);
 
         Task<FilterDoctorOfficeEmployeesViewmodel> FilterDoctorOfficeEmployees(FilterDoctorOfficeEmployeesViewmodel filter);
+
+        #endregion
+
+        #region Site Side 
+
+        //Get List Of All Doctors
+        Task<List<ListOfAllDoctorsViewModel>> ListOfDoctors();
 
         #endregion
     }

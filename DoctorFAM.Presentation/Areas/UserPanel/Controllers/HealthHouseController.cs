@@ -5,7 +5,9 @@ using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Application.StaticTools;
 using DoctorFAM.Domain.ViewModels.Site.Notification;
 using DoctorFAM.Domain.ViewModels.UserPanel.HealthHouse;
+using DoctorFAM.Web.Hubs;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace DoctorFAM.Web.Areas.UserPanel.Controllers
 {
@@ -14,13 +16,19 @@ namespace DoctorFAM.Web.Areas.UserPanel.Controllers
         #region Ctor 
 
         private readonly IRequestService _requestService;
-
         private readonly IPharmacyService _pharmacyService;
+        private readonly INotificationService _notificationService;
+        private readonly IHubContext<NotificationHub> _notificationHub;
+        private readonly IUserService _userService;
 
-        public HealthHouseController(IRequestService requestService, IPharmacyService pharmacyService)
+        public HealthHouseController(IRequestService requestService, IPharmacyService pharmacyService 
+            , IHubContext<NotificationHub> notificationHub, INotificationService notificationService, IUserService userService)
         {
             _requestService = requestService;
             _pharmacyService = pharmacyService;
+            _notificationService = notificationService;
+            _notificationHub = notificationHub;
+            _userService = userService;
         }
 
         #endregion
@@ -129,12 +137,109 @@ namespace DoctorFAM.Web.Areas.UserPanel.Controllers
             var res = await _pharmacyService.AcceptRequestFromUser(requestId , User.GetUserId());
             if (res)
             {
+                #region Get Request By Request Id
+
+                var request = await _requestService.GetRequestById(requestId);
+
+                #endregion
+
+                #region Send Message 
+
+                //Create Notification For Supporters And Admins And Operator
+                var notifyResult = await _notificationService.CreateSupporterNotification(requestId, Domain.Enums.Notification.SupporterNotificationText.AcceptInvoiceFromCustomer, Domain.Enums.Notification.NotificationTarget.request, User.GetUserId());
+
+                //Create Notification For Operator
+                await _notificationService.CreateNotificationForOperator(requestId, Domain.Enums.Notification.SupporterNotificationText.AcceptInvoiceFromCustomer, Domain.Enums.Notification.NotificationTarget.request, User.GetUserId());
+
+                if (notifyResult)
+                {
+                    //Get Current Customer
+                    var customer = await _userService.GetUserById(User.GetUserId());
+
+                    //Get List Of Admins And Supporter To Send Notification Into Them
+                    var users = await _userService.GetAdminsAndSupportersNotificationForSendNotificationInHomePharmacy();
+
+                    //Get Validated Pharmacys For Send Notification 
+                    users.Add(request.OperationId.Value.ToString());
+
+                    //Fill Send Supporter Notification ViewModel For Send Notification
+                    SendSupporterNotificationViewModel viewModel = new SendSupporterNotificationViewModel()
+                    {
+                        CreateNotificationDate = $"{DateTime.Now.ToShamsi()} - {DateTime.Now.Hour}:{DateTime.Now.Minute}",
+                        NotificationText = "قبول فاکتوراز سمت سفارش دهنده",
+                        RequestId = request.Id,
+                        Username = User.Identity.Name,
+                        UserImage = customer.Avatar,
+                    };
+
+                    await _notificationHub.Clients.Users(users).SendAsync("SendSupporterNotification", viewModel);
+                }
+
+                #endregion
+
+                TempData[SuccessMessage] = "فاکتور صادر شده با موفقیت صادر شده است.";
                 return RedirectToAction("Index" , "Home" , new { area = "UserPanel" });
             }
 
             #endregion
 
-            return View();
+            TempData[ErrorMessage] = "عملیات باشکست مواجه شده است .";
+            return RedirectToAction("Index", "Home", new { area = "UserPanel" });
+        }
+
+        #endregion
+
+        #region Received By The Customer
+
+        public async Task<IActionResult> ReceivedByTheCustomer(ulong requestId)
+        {
+            #region Accept Request From User
+
+            var res = await _pharmacyService.ReceivedByTheCustomerFromUserPanel(requestId, User.GetUserId());
+            if (res)
+            {
+                #region Get Request By Request Id
+
+                var request = await _requestService.GetRequestById(requestId);
+
+                #endregion
+
+                #region Send Message 
+
+                //Create Notification For Supporters And Admins And Operator
+                var notifyResult = await _notificationService.CreateSupporterNotification(requestId, Domain.Enums.Notification.SupporterNotificationText.ReceivedByTheCustomer, Domain.Enums.Notification.NotificationTarget.request, User.GetUserId());
+
+                if (notifyResult)
+                {
+                    //Get Current Customer
+                    var customer = await _userService.GetUserById(User.GetUserId());
+
+                    //Get List Of Admins And Supporter To Send Notification Into Them
+                    var users = await _userService.GetAdminsAndSupportersNotificationForSendNotificationInHomePharmacy();
+
+                    //Fill Send Supporter Notification ViewModel For Send Notification
+                    SendSupporterNotificationViewModel viewModel = new SendSupporterNotificationViewModel()
+                    {
+                        CreateNotificationDate = $"{DateTime.Now.ToShamsi()} - {DateTime.Now.Hour}:{DateTime.Now.Minute}",
+                        NotificationText = "تحویل بسته دارو به سفارش دهنده",
+                        RequestId = request.Id,
+                        Username = User.Identity.Name,
+                        UserImage = customer.Avatar,
+                    };
+
+                    await _notificationHub.Clients.Users(users).SendAsync("SendSupporterNotification", viewModel);
+                }
+
+                #endregion
+
+                TempData[SuccessMessage] = "بسته توسط سفارش دهنده دریافت شده است.";
+                return RedirectToAction("Index", "Home", new { area = "UserPanel" });
+            }
+
+            #endregion
+
+            TempData[ErrorMessage] = "عملیات باشکست مواجه شده است .";
+            return RedirectToAction("Index", "Home", new { area = "UserPanel" });
         }
 
         #endregion

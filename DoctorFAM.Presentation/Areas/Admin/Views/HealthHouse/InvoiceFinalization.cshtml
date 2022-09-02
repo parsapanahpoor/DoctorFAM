@@ -1,4 +1,4 @@
-﻿@model DoctorFAM.Domain.ViewModels.Pharmacy.HomePharmacy.FinallyInvoiceViewModel
+﻿@model DoctorFAM.Domain.ViewModels.Admin.HealthHouse.HomePharmacy.FinallyInvoiceViewModel
 @using DoctorFAM.Application.Extensions
 @using DoctorFAM.Application.Convertors
 @using DoctorFAM.Domain.ViewModels.Common
@@ -58,17 +58,17 @@
                             {
                                 <p class="label label-warning">@Localizer["Waiting For Confirm From User"]</p>
                             }
-                            @if (Model.Request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.DeliveryToCourierAndSending)
+                            @if (Model.Request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.ConfirmFromDestinationAndWaitingForIssuanceOfDraftInvoice)
                             {
-                                <p class="label label-success">@Localizer["Delivery To Courier"]</p>
+                                <p class="label label-warning">@Localizer["Confirm From Customer"]</p>
                             }
                             @if (Model.Request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.AcceptFromCustomer)
                             {
-                                @Localizer["Confirm From Customer"]
-
-                                <a asp-action="DeliveryByCourier" asp-area="Pharmacy" asp-controller="HomePharmacy" asp-route-requestId="@Model.Request.Id" class="label label-success">
-                                    @Localizer["Transfer Drugs"]
-                                </a>
+                                <p class="label label-warning">@Localizer["Accept From Customer"]</p>
+                            }
+                            @if (Model.Request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.DeliveryToCourierAndSending)
+                            {
+                                <span class="mr-8px label label-info"> @Localizer["Delivery To Courier And Sending"] </span>
                             }
                         </h3>
 
@@ -88,40 +88,7 @@
 
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-xs-5">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h6>@Localizer["Pharmacy Info"] </h6>
-                            </div>
-                            <div class="panel-body">
-                                <ul>
-                                    <li>
-                                        @Model.Pharmacy.Username : @Localizer["Username"]
-                                    </li>
-                                    <li> @Model.Pharmacy.Mobile : @Localizer["Mobile"]</li>
-                                    <li>@((Model.Pharmacy.NationalId != null) ? Model.Pharmacy.NationalId : null) : @Localizer["National Id"]</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xs-5 col-xs-offset-2 text-right">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h6>@Localizer["Patient Info"]</h6>
-                            </div>
-                            <div class="panel-body">
-                                <ul>
-                                    <li>
-                                        @Model.Patient.Username : @Localizer["Username"]
-                                    </li>
-                                    <li>@Model.Patient.Mobile : @Localizer["Mobile"]</li>
-                                    <li>@((Model.Patient.NationalId != null) ? Model.Patient.NationalId : null) : @Localizer["National Id"]</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div> <!-- / end client details section -->
+
                 <table class="table table-bordered table-striped">
                     <thead>
                         <tr>
@@ -273,6 +240,7 @@
                         </tr>
                     </tbody>
                 </table>
+
             </div>
         </div>
     </div>

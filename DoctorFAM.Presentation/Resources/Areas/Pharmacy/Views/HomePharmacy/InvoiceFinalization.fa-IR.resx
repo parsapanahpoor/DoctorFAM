@@ -123,6 +123,9 @@
   <data name="Count" xml:space="preserve">
     <value>تعداد</value>
   </data>
+  <data name="Delivery To Courier" xml:space="preserve">
+    <value>تحویل داده شده به پیک</value>
+  </data>
   <data name="Drug Information" xml:space="preserve">
     <value>اطلاعات دارو</value>
   </data>

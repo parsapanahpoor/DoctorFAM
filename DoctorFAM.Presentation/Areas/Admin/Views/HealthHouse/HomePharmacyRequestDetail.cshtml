@@ -62,11 +62,11 @@
                                 <div class="stats-title">@Localizer["Request Create Date"]</div>
                             </div>
                             <div class="col-lg-2 col-md-3 col-sm-3 col-xs-12 stats-col">
-                                <div class="stats-value blue">@(Model.PatientRequestDateTimeDetail != null ? Model.PatientRequestDateTimeDetail.StartTime.ToString("00 : 00") : Localizer["Empty"] )</div>
+                                <div class="stats-value blue">@(Model.PatientRequestDateTimeDetail != null ? Model.PatientRequestDateTimeDetail.StartTime.ToString("00") : Localizer["Empty"] )</div>
                                 <div class="stats-title">@Localizer["Start Time"]</div>
                             </div>
                             <div class="col-lg-2 col-md-3 col-sm-3 col-xs-12 stats-col">
-                                <div class="stats-value blue"> @(Model.PatientRequestDateTimeDetail != null ? Model.PatientRequestDateTimeDetail.EndTime.ToString("00 : 00") : Localizer["Empty"] )
+                                <div class="stats-value blue"> @(Model.PatientRequestDateTimeDetail != null ? Model.PatientRequestDateTimeDetail.EndTime.ToString("00") : Localizer["Empty"] )
                                     </div>
                                 <div class="stats-title">@Localizer["End Time"]</div>
                             </div>
@@ -346,6 +346,15 @@
 
                                     </div>
 
+                                      @if (Model.Request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.AwaitingThePaymentOfTheInvoiceAmount
+                                      || Model.Request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.Finalized
+                                      || Model.Request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.DeliveryToCourierAndSending
+                                      || Model.Request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.AcceptFromCustomer
+                                      || Model.Request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.WaitingForAcceptFromCustomer)
+                                    {
+                                        <a asp-action="InvoiceFinalization" asp-area="admin" asp-controller="HealthHouse" asp-route-requestId="@Model.Request.Id" class="btn btn-primary">@Localizer["View Invoice"]</a>
+                                    }
+                                   
                                 </div>
                             </div>
                         </div>

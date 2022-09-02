@@ -54,13 +54,21 @@
                             {
                                 <p class="label label-warning">@Localizer["Waiting For Confirm From User"]</p>
                             }
+                            @if (Model.Request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.WaitingForAcceptFromCustomer)
+                            {
+                                <p class="label label-warning">@Localizer["Waiting For Confirm From User"]</p>
+                            }
                             @if (Model.Request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.ConfirmFromDestinationAndWaitingForIssuanceOfDraftInvoice)
                             {
-                                @Localizer["Confirm From Customer"]
-
-                                <a class="label label-success">
-                                    @Localizer["Transfer Drugs"]
-                                </a>
+                                <p class="label label-warning">@Localizer["Confirm From Customer"]</p>
+                            }
+                            @if (Model.Request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.AcceptFromCustomer)
+                            {
+                                <p class="label label-warning">@Localizer["Accept From Customer"]</p>
+                            }
+                            @if (Model.Request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.DeliveryToCourierAndSending)
+                            {
+                                <span class="mr-8px label label-info"> @Localizer["Delivery To Courier And Sending"] </span>
                             }
                         </h3>
 
@@ -80,7 +88,7 @@
 
                     </div>
                 </div>
-            
+
                 <table class="table table-bordered table-striped">
                     <thead>
                         <tr>
@@ -233,7 +241,16 @@
                     </tbody>
                 </table>
 
-                <a style="margin-top:20px" class="btn btn-success" asp-action="AcceptHomePharmacyRequest" asp-area="UserPanel" asp-controller="HealthHouse" asp-route-requestId="@Model.Request.Id">@Localizer["Accept Invoice"]</a>
+                @if (Model.Request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.WaitingForAcceptFromCustomer)
+                {
+                    <a style="margin-top:20px" class="btn btn-success" asp-action="AcceptHomePharmacyRequest" asp-area="UserPanel" asp-controller="HealthHouse" asp-route-requestId="@Model.Request.Id">@Localizer["Accept Invoice"]</a>
+                }
+
+                @if (Model.Request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.DeliveryToCourierAndSending)
+                {
+                    <a style="margin-top:20px" class="btn btn-success" asp-action="ReceivedByTheCustomer" asp-area="UserPanel" asp-controller="HealthHouse" asp-route-requestId="@Model.Request.Id">@Localizer["Received By The Customer"]</a>
+                }
+
             </div>
         </div>
     </div>

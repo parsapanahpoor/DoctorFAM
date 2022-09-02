@@ -70,7 +70,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
             if (request.RequestState == RequestState.ConfirmFromDestinationAndWaitingForIssuanceOfDraftInvoice)
             {
-                request.RequestState = RequestState.AwaitingThePaymentOfTheInvoiceAmount;
+                request.RequestState = RequestState.WaitingForAcceptFromCustomer;
 
                 await UpdateRequest(request);
                 return 1;

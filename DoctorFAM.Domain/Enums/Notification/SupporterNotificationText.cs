@@ -14,6 +14,12 @@ namespace DoctorFAM.Domain.Enums.Notification
         [Display(Name = "Approval of the request from the pharmacy")]
         ApprovalOfTheRequestFromThePharmacy,
         [Display(Name = "Providing an invoice from the pharmacy")]
-        ProvidingAnInvoiceFromThePharmacy
+        ProvidingAnInvoiceFromThePharmacy,
+        [Display(Name ="Accept Invoice From Customer")]
+        AcceptInvoiceFromCustomer,
+        [Display(Name = "Delivery by courier")]
+        DeliveryByCourier,
+        [Display(Name = "Received by the customer")]
+        ReceivedByTheCustomer
     }
 }

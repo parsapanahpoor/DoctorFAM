@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Accept Invoice From Customer" xml:space="preserve">
+    <value>تایید فاکتور از سفارش دهنده</value>
+  </data>
   <data name="Accepted" xml:space="preserve">
     <value>تایید شده</value>
   </data>
@@ -203,6 +206,9 @@
   </data>
   <data name="Deleted1" xml:space="preserve">
     <value>حذف شده</value>
+  </data>
+  <data name="Delivery by courier" xml:space="preserve">
+    <value>تحویل بسته به پیک</value>
   </data>
   <data name="Delivery To Courier And Sending" xml:space="preserve">
     <value>تحویل به پیک و درحال ارسال</value>
@@ -436,6 +442,9 @@
   <data name="Re Password" xml:space="preserve">
     <value>تکرار رمزعبور</value>
   </data>
+  <data name="Received by the customer" xml:space="preserve">
+    <value>دریافت شده توسط سفارش دهنده</value>
+  </data>
   <data name="Register Date - Ascending" xml:space="preserve">
     <value>تاریخ ثبت نام - صعودی</value>
   </data>
@@ -546,6 +555,9 @@
   </data>
   <data name="Username" xml:space="preserve">
     <value>نام کاربری </value>
+  </data>
+  <data name="Waiting For Accept From Customer" xml:space="preserve">
+    <value>در انتظار پذیرش از مشتری</value>
   </data>
   <data name="Waiting For Complete" xml:space="preserve">
     <value>انتخاب شده و در انتظار نهایی شدن</value>

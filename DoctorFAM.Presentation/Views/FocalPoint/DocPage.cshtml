@@ -1,6 +1,9 @@
-﻿@{
+﻿@model DoctorFAM.Domain.ViewModels.Site.Doctor.DoctorPageInReservationViewModel
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+
+@{
     ViewBag.Title = "صفحه پزشک";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 
@@ -13,13 +16,13 @@
                     <div class="row">
                         <div class=" doc-info-left">
                             <div class="doctor-img">
-                                <img src="~/Content/Doctor/assets/img/doctors/doctor-thumb-02.jpg" class="img-fluid" alt="User Image">
+                                <img src="/content/images/user/@((string.IsNullOrEmpty(Model.UserAvatar)) ? "DefaultAvatar.png" : $"thumb/{Model.UserAvatar}")" class="img-fluid" alt="User Image">
                             </div>
                             <div class="doc-info-cont">
-                                <h4 class="doc-name">پزشک: یاسر قزوینی</h4>
+                                <h4 class="doc-name">پزشک: @Model.Username</h4>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <p class="doc-speciality"> GP ، FD - پزشک عمومی - پزشک خانواده </p>
+                                        <p class="doc-speciality"> @((!string.IsNullOrEmpty(Model.Education)) ? Model.Education : null) - @((!string.IsNullOrEmpty(Model.Specialist)) ? Model.Specialist : null) </p>
 
                                         <div class="rating">
                                             <i class="fas fa-star filled"></i>
@@ -27,10 +30,19 @@
                                             <i class="fas fa-star filled"></i>
                                             <i class="fas fa-star filled"></i>
                                             <i class="fas fa-star"></i>
-                                            <span class="d-inline-block average-rating">(35)</span>
                                         </div>
                                         <div class="clinic-details">
-                                            <p class="doc-location"><i class="fas fa-map-marker-alt"></i> ساری، مازندران - <a href="javascript:void(0);">مشاهده مسیر</a></p>
+                                            <p class="doc-location">
+                                                @if (!string.IsNullOrEmpty(Model.CountryName) || !string.IsNullOrEmpty(Model.StateName) || !string.IsNullOrEmpty(Model.CityName))
+                                                {
+                                                    <i class="fas fa-map-marker-alt"></i>
+                                                }
+
+                                                @((!string.IsNullOrEmpty(Model.CountryName)) ? Model.CountryName + "-" : null)
+                                                @((!string.IsNullOrEmpty(Model.StateName)) ? Model.StateName + "-" : null)
+                                                @((!string.IsNullOrEmpty(Model.CityName)) ? Model.CityName : null)
+
+                                            </p>
                                             <ul class="clinic-gallery">
                                                 <li>
                                                     <a href="~/Content/Doctor/assets/img/features/feature-01.jpg" data-fancybox="gallery">
@@ -55,8 +67,14 @@
                                             </ul>
                                         </div>
                                         <div class="clinic-services">
-                                            <span>دیابت</span>
-                                            <span>فشار خون</span>
+
+                                            <span>آنلاین</span>
+
+                                            @if (!string.IsNullOrEmpty(Model.CountryName) || !string.IsNullOrEmpty(Model.StateName) || !string.IsNullOrEmpty(Model.CityName))
+                                            {
+                                                <span>حضوری</span>
+                                            }
+
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -64,7 +82,13 @@
                                             <ul>
                                                 <li><i class="far fa-thumbs-up"></i> 99%</li>
                                                 <li><i class="far fa-comment"></i> 35 فیدبک </li>
-                                                <li><i class="fas fa-map-marker-alt"></i> ساری، مازندران</li>
+                                                <li>
+                                                    @if (!string.IsNullOrEmpty(Model.WorkAddress))
+                                                    {
+                                                        <i class="fas fa-map-marker-alt"></i>
+                                                    }
+                                                    @((string.IsNullOrEmpty(Model.WorkAddress)) ? null : Model.WorkAddress)
+                                                </li>
                                                 <li><i class="far fa-money-bill-alt"></i> حق ویزیت: سامانه </li>
                                             </ul>
                                         </div>
@@ -78,12 +102,9 @@
                                             <a href="javascript:void(0)" class="btnDoc btn-white call-btn" data-bs-toggle="modal" data-bs-target="#voice_call">
                                                 <i class="fas fa-phone" title="تماس صوتی"></i>
                                             </a>
-                                            <a href="javascript:void(0)" class="btnDoc btn-white call-btn" data-bs-toggle="modal" data-bs-target="#video_call">
-                                                <i class="fas fa-video" title="تماس تصویری"></i>
-                                            </a>
                                         </div>
                                         <div class="clinic-booking">
-                                            <a class="apt-btn" asp-action="DocBooking" asp-controller="FocalPoint">رزرو نوبت</a>
+                                            <a class="apt-btn" asp-action="DocBooking" asp-controller="FocalPoint" asp-area="" asp-route-userId="@Model.UserId">رزرو نوبت</a>
                                         </div>
                                     </div>
                                 </div>
@@ -93,9 +114,6 @@
                 </div>
             </div>
         </div>
-
-
-
 
     </div>
 </div>

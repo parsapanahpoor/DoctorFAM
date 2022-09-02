@@ -103,11 +103,10 @@
                                         {
                                             <span class="mr-8px label label-success"> @Localizer["Finalized"] </span>
                                         }
-                                        @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.DeliveryToCourierAndSending)
+                                          @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.WaitingForAcceptFromCustomer)
                                         {
-                                            <span class="mr-8px label label-info"> @Localizer["Delivery To Courier And Sending"] </span>
+                                            <span class="mr-8px label label-warning"> @Localizer["Waiting For Accept From Customer"] </span>
                                         }
-
                                     </p>
                                 </td>
                                 <td class="tc vm">
@@ -120,7 +119,7 @@
                                     <p>  @request.PatientRequestDateTimeDetails.SendDate.ToStringShamsiDate() </p>
                                 </td>
                                 <td class="tc vm">
-                                    <a asp-action="InvoiceFinalization" asp-controller="HealthHouse" asp-area="UserPanel" asp-route-requestId="@request.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+                                    <a asp-action="HomePharmacyRequestDetail" asp-controller="HealthHouse" asp-area="UserPanel" asp-route-requestId="@request.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
                                 </td>
                             </tr>
                         }

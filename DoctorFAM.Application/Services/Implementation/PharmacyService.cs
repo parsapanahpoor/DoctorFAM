@@ -1033,9 +1033,147 @@ namespace DoctorFAM.Application.Services.Implementation
             return await _pharmacy.GetSumOfInvoiceHomePharmacyRequestDetailPricing(requestId, sellerId);
         }
 
+        //Update Request To Delivary By Courier
+        public async Task<bool> DeliveryByCourier(ulong requestId , ulong pharmacyId)
+        {
+            #region Get Organization By User Id
+
+            var organization = await _organizationService.GetOrganizationByUserId(pharmacyId);
+            if (organization == null) return false;
+
+            #endregion
+
+            #region Get Request By Request Id
+
+            var request = await _requestService.GetRequestById(requestId);
+
+            if (request == null) return false;
+            if (request.RequestType != Domain.Enums.RequestType.RequestType.HomeDrog) return false;
+            if (request.OperationId.HasValue && request.OperationId.Value != organization.OwnerId) return false;
+            if (!request.PatientId.HasValue) return false;
+
+            #endregion
+
+            #region Update Request State 
+
+            request.RequestState = Domain.Enums.Request.RequestState.DeliveryToCourierAndSending;
+
+            await _requestService.UpdateRequest(request);
+
+            #endregion
+
+            return true;
+        }
+
         #endregion
 
         #region Admin Side 
+
+        //Fill Finally Invoice From Admin Panel View Model
+        public async Task<DoctorFAM.Domain.ViewModels.Admin.HealthHouse.HomePharmacy.FinallyInvoiceViewModel?> FinallyInvoiceFromAdminViewModel(ulong requestId)
+        {
+            #region Get Request By Request Id
+
+            var request = await _requestService.GetRequestById(requestId);
+
+            if (request == null) return null;
+            if (request.RequestType != Domain.Enums.RequestType.RequestType.HomeDrog) return null;
+            if (request.RequestState == Domain.Enums.Request.RequestState.Paid
+              || request.RequestState == Domain.Enums.Request.RequestState.WaitingForConfirmFromDestination
+              || request.RequestState == Domain.Enums.Request.RequestState.ConfirmFromDestinationAndWaitingForIssuanceOfDraftInvoice
+              || request.RequestState == Domain.Enums.Request.RequestState.TramsferringToTheBankingPortal
+              || request.RequestState == Domain.Enums.Request.RequestState.PreparingTheOrder
+              || request.RequestState == Domain.Enums.Request.RequestState.unpaid
+              || request.RequestState == Domain.Enums.Request.RequestState.TramsferringToTheBankingPortal) return null;
+            if (!request.PatientId.HasValue) return null;
+
+            #endregion
+
+            #region Get Patient 
+
+            var patient = await _userService.GetUserById(request.UserId);
+            if (patient == null) return null;
+
+            #endregion
+
+            #region Home Pharamcy Request Detail 
+
+            var pharmacyDetail = await _homePharmacyService.GetHomePharmacyRequestDetailByRequestId(request.Id);
+
+            #endregion
+
+            #region Fill Page Model
+
+            List<HomePharmacyInvoiceViewModel> priceModel = new List<HomePharmacyInvoiceViewModel>();
+
+            foreach (var item in pharmacyDetail)
+            {
+                //Is Exist Invoice Pricing For This Drug Get This Price 
+                var price = await GetHomePharmacyRequestDetailPriceByPharmacyIdAndRequestDetailId(request.OperationId.Value, item.Id);
+
+                //Is Exist Any Drug For This Drug With Drug Tracking Code 
+                if (!string.IsNullOrEmpty(item.DrugTrakingCode))
+                {
+                    var childDrugs = await _pharmacy.GetDrugPricingChildWithDrugTrackingCodeAndSellerID(item.Id, request.OperationId.Value);
+
+                    //Add Parent Pricing
+                    HomePharmacyInvoiceViewModel parent = new HomePharmacyInvoiceViewModel()
+                    {
+                        HomePharmacyRequestDetail = item,
+                        Price = ((childDrugs == null) ? 0 : ((price != null) ? price.Price : null)),
+                        DrugNameFromPharmacy = null,
+                        PricingId = null
+                    };
+                    priceModel.Add(parent);
+
+                    //Add Child Pricing
+                    if (childDrugs != null && childDrugs.Any())
+                    {
+                        foreach (var child in childDrugs.Where(p => p.DrugNameFromPharmacy != null))
+                        {
+                            HomePharmacyInvoiceViewModel childPricing = new HomePharmacyInvoiceViewModel()
+                            {
+                                HomePharmacyRequestDetail = item,
+                                Price = ((child != null) ? child.Price : null),
+                                DrugNameFromPharmacy = child.DrugNameFromPharmacy,
+                                PricingId = child.Id
+                            };
+                            priceModel.Add(childPricing);
+                        }
+                    }
+                }
+
+                //Any Drugs Without Drug Tracking Code 
+                else
+                {
+                    HomePharmacyInvoiceViewModel returnModel = new HomePharmacyInvoiceViewModel()
+                    {
+                        HomePharmacyRequestDetail = item,
+                        Price = ((price != null) ? price.Price : null),
+                        DrugNameFromPharmacy = null,
+                        PricingId = null
+                    };
+
+                    priceModel.Add(returnModel);
+                }
+            }
+
+            #endregion
+
+
+            #region Fill View Model 
+
+            DoctorFAM.Domain.ViewModels.Admin.HealthHouse.HomePharmacy.FinallyInvoiceViewModel model = new DoctorFAM.Domain.ViewModels.Admin.HealthHouse.HomePharmacy.FinallyInvoiceViewModel()
+            {
+                Patient = patient,
+                Request = request,
+                HomePharmacyInvoiceViewModels = priceModel
+            };
+
+            #endregion
+
+            return model;
+        }
 
         //Show Home Pharmacy Request Detail In Admin Panel
         public async Task<HomePharmacyRequestViewModel?> FillHomePharmacyRequestAdminPanelViewModel(ulong requestId)
@@ -1372,12 +1510,54 @@ namespace DoctorFAM.Application.Services.Implementation
             var request = await _requestService.GetRequestById(requestId);
             if (request == null) return false;
             if (request.UserId != userId) return false;
+            if(request.OperationId.HasValue == false) return false;
+
+            #endregion
+
+            #region Check Request State 
+
+            if (request.RequestState != Domain.Enums.Request.RequestState.WaitingForAcceptFromCustomer)
+            {
+                return false;
+            }
 
             #endregion
 
             #region Update Request State 
 
             request.RequestState = Domain.Enums.Request.RequestState.AcceptFromCustomer;
+
+            await _requestService.UpdateRequest(request);
+
+            #endregion
+
+            return true;
+        }
+
+        //Received By The Customer From User
+        public async Task<bool> ReceivedByTheCustomerFromUserPanel(ulong requestId, ulong userId)
+        {
+            #region Get Request By Id
+
+            var request = await _requestService.GetRequestById(requestId);
+            if (request == null) return false;
+            if (request.UserId != userId) return false;
+            if (request.OperationId.HasValue == false) return false;
+
+            #endregion
+
+            #region Check Request State 
+
+            if (request.RequestState != Domain.Enums.Request.RequestState.DeliveryToCourierAndSending)
+            {
+                return false;
+            }
+
+            #endregion
+
+            #region Update Request State 
+
+            request.RequestState = Domain.Enums.Request.RequestState.Finalized;
 
             await _requestService.UpdateRequest(request);
 

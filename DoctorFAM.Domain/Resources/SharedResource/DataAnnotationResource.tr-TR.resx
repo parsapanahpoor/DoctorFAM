@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Accept Invoice From Customer" xml:space="preserve">
+    <value>Müşteriden Fatura Kabul Et</value>
+  </data>
   <data name="Accepted" xml:space="preserve">
     <value>onaylanmış</value>
   </data>
@@ -179,6 +182,9 @@
   </data>
   <data name="Deleted" xml:space="preserve">
     <value>Kaldırıldı</value>
+  </data>
+  <data name="Delivery by courier" xml:space="preserve">
+    <value>kurye ile teslimat</value>
   </data>
   <data name="Delivery To Courier And Sending" xml:space="preserve">
     <value>Kuryeye teslim ve gönderim</value>
@@ -379,6 +385,9 @@ meta etiket</value>
   <data name="Re Password" xml:space="preserve">
     <value>şifreyi tekrarla</value>
   </data>
+  <data name="Received by the customer" xml:space="preserve">
+    <value>Müşteri tarafından alındı</value>
+  </data>
   <data name="Register Date - Ascending" xml:space="preserve">
     <value>Kayıt Tarihi - Artan</value>
   </data>
@@ -480,6 +489,9 @@ meta etiket</value>
   </data>
   <data name="User Name" xml:space="preserve">
     <value>Kullanıcı adı</value>
+  </data>
+  <data name="Waiting For Accept From Customer" xml:space="preserve">
+    <value>Müşteriden Kabul Bekleniyor</value>
   </data>
   <data name="Waiting For Complete" xml:space="preserve">
     <value>Tamamlanmayı Bekliyor</value>

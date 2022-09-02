@@ -216,7 +216,9 @@ namespace DoctorFAM.Data.Repository
                                             ||  p.RequestState == Domain.Enums.Request.RequestState.AwaitingThePaymentOfTheInvoiceAmount
                                             ||  p.RequestState == Domain.Enums.Request.RequestState.DeliveryToCourierAndSending
                                             ||  p.RequestState == Domain.Enums.Request.RequestState.PreparingTheOrder
-                                            ||  p.RequestState == Domain.Enums.Request.RequestState.WaitingForConfirmFromDestination))
+                                            ||  p.RequestState == Domain.Enums.Request.RequestState.WaitingForConfirmFromDestination
+                                            ||  p.RequestState == Domain.Enums.Request.RequestState.WaitingForAcceptFromCustomer
+                                            ||  p.RequestState == Domain.Enums.Request.RequestState.AcceptFromCustomer))
                                             .OrderByDescending(p=> p.CreateDate).ToListAsync();
 
             #endregion

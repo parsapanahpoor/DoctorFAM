@@ -125,9 +125,6 @@ namespace DoctorFAM.Web.Areas.Pharmacy.Controllers
                 //Create Notification For Supporters And Admins
                 var notifyResult = await _notificationService.CreateSupporterNotification(request.Id, Domain.Enums.Notification.SupporterNotificationText.ApprovalOfTheRequestFromThePharmacy, Domain.Enums.Notification.NotificationTarget.request, User.GetUserId());
 
-                //Create Notification For User Patient
-                //await _notificationService.CreateNotificationForUserPatient(request.Id, Domain.Enums.Notification.SupporterNotificationText.ApprovalOfTheRequestFromThePharmacy, Domain.Enums.Notification.NotificationTarget.request, User.GetUserId());
-
                 //Get Current Organization
                 var currentOrganization = await _organizationService.GetOrganizationByUserId(User.GetUserId());
 
@@ -135,9 +132,6 @@ namespace DoctorFAM.Web.Areas.Pharmacy.Controllers
                 {
                     //Get List Of Admins And Supporter To Send Notification Into Them
                     var users = await _userService.GetAdminsAndSupportersNotificationForSendNotificationInHomePharmacy();
-
-                    //Get Validated Pharmacys For Send Notification 
-                    //users.Add(request.UserId.ToString());
 
                     //Fill Send Supporter Notification ViewModel For Send Notification
                     SendSupporterNotificationViewModel viewModel = new SendSupporterNotificationViewModel()
@@ -374,7 +368,7 @@ namespace DoctorFAM.Web.Areas.Pharmacy.Controllers
             }
             if (res == 1)
             {
-                TempData[SuccessMessage] = "فاکتور شما تهایی شده است. لطفا تا تایید از سمت سفارش دهنده صبور باشید";
+                TempData[SuccessMessage] = "فاکتور شما نهایی شده است. لطفا تا تایید از سمت سفارش دهنده صبور باشید";
 
                 #region Send Notification For Admin And Supporters And Patient User
 
@@ -436,6 +430,69 @@ namespace DoctorFAM.Web.Areas.Pharmacy.Controllers
             #endregion
 
             return View(model);
+        }
+
+        #endregion
+
+        #region Delivery by courier
+
+        public async Task<IActionResult> DeliveryByCourier(ulong requestId)
+        {
+            #region Update Request State 
+
+            var res = await _pharmacyService.DeliveryByCourier(requestId , User.GetUserId());
+            if (res)
+            {
+                #region Get Request By Request Id
+
+                var request = await _requestService.GetRequestById(requestId);
+
+                #endregion
+
+                #region Send Message 
+
+                //Create Notification For Supporters And Admins And Operator
+                var notifyResult = await _notificationService.CreateSupporterNotification(requestId, Domain.Enums.Notification.SupporterNotificationText.DeliveryByCourier, Domain.Enums.Notification.NotificationTarget.request, User.GetUserId());
+
+                if (notifyResult)
+                {
+                    //Get Current Organization
+                    var currentOrganization = await _organizationService.GetOrganizationByUserId(User.GetUserId());
+
+                    //Get List Of Admins And Supporter To Send Notification Into Them
+                    var users = await _userService.GetAdminsAndSupportersNotificationForSendNotificationInHomePharmacy();
+
+                    //Fill Send Supporter Notification ViewModel For Send Notification
+                    SendSupporterNotificationViewModel viewModel = new SendSupporterNotificationViewModel()
+                    {
+                        CreateNotificationDate = $"{DateTime.Now.ToShamsi()} - {DateTime.Now.Hour}:{DateTime.Now.Minute}",
+                        NotificationText = "تحویل بسته دارو به پیک ",
+                        RequestId = request.Id,
+                        Username = User.Identity.Name,
+                        UserImage = currentOrganization.User.Avatar,
+                    };
+
+                    await _notificationHub.Clients.Users(users).SendAsync("SendSupporterNotification", viewModel);
+                }
+
+                #region Send SMS For Customer User 
+
+                var message = Messages.SendSMSForDeliveryDrugByCourier();
+
+                await _smsService.SendSimpleSMS(request.User.Mobile, message);
+
+                #endregion
+
+                #endregion
+
+                TempData[SuccessMessage] = "ضمن تشکر از همکاری شما . بسته به پیک تحویل داده شده است.";
+                return RedirectToAction("Index", "Home", new { area = "Pharmacy" });
+            }
+
+            #endregion
+
+            TempData[ErrorMessage] = "عملیات باشکست مواجه شده است .";
+            return RedirectToAction("Index", "Home", new { area = "Pharmacy" });
         }
 
         #endregion

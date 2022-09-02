@@ -15,6 +15,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace DoctorFAM.Data.Repository
 {
@@ -792,7 +793,7 @@ namespace DoctorFAM.Data.Repository
         public async Task<FilterCancelReservationRequestsViewModel?> FilterCancelReservationRequestsViewModel(FilterCancelReservationRequestsViewModel filter)
         {
             var query = _context.ReservationDateCancelations
-            .Include(p=> p.DoctorReservationDate)
+            .Include(p => p.DoctorReservationDate)
             .ThenInclude(p => p.User)
             .Where(p => !p.IsDelete)
             .OrderByDescending(s => s.DoctorReservationDate.ReservationDate)
@@ -974,6 +975,25 @@ namespace DoctorFAM.Data.Repository
             return filter;
         }
 
+
+        #endregion
+
+        #region Site Side 
+
+        //Get Reservation Date By Reservation Date And User Id
+        public async Task<DoctorReservationDate?> GetDoctorReservationDateByReservationDateAndUserId(DateTime reservationDate, ulong userId)
+        {
+            return await _context.DoctorReservationDates.FirstOrDefaultAsync(p => !p.IsDelete && p.ReservationDate.Year == reservationDate.Year
+                                                                                && p.ReservationDate.DayOfYear == reservationDate.DayOfYear
+                                                                                && p.UserId == userId);
+        }
+
+        //Get List Of Doctor Reservation Date Time By Reservation Date Id
+        public async Task<List<DoctorReservationDateTime>?> GetListOfDoctorReservationDateTimeByReservationDateId(ulong reservationDateId)
+        {
+            return await _context.DoctorReservationDateTimes.Where(p => !p.IsDelete && p.DoctorReservationDateId == reservationDateId
+                                                                    && p.DoctorReservationState != DoctorReservationState.Canceled).ToListAsync();
+        }
 
         #endregion
     }

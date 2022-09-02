@@ -123,6 +123,9 @@
   <data name="Count" xml:space="preserve">
     <value>Sayı</value>
   </data>
+  <data name="Delivery To Courier" xml:space="preserve">
+    <value>Müşteri tarafından alındı</value>
+  </data>
   <data name="Drug Information" xml:space="preserve">
     <value>İlaç bilgileri</value>
   </data>

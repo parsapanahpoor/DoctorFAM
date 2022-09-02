@@ -18,6 +18,9 @@ namespace DoctorFAM.Application.Services.Interfaces
     {
         #region Pharmacy Panel Side
 
+        //Update Request To Delivary By Courier
+        Task<bool> DeliveryByCourier(ulong requestId, ulong pharmacyId);
+
         //Fill Finally Invoice From Pharmacy View Model
         Task<FinallyInvoiceViewModel?> FinallyInvoiceViewModel(ulong requestId, ulong userId);
 
@@ -101,6 +104,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         #region Admin Panel 
 
+        //Fill Finally Invoice From Admin Panel View Model
+        Task<DoctorFAM.Domain.ViewModels.Admin.HealthHouse.HomePharmacy.FinallyInvoiceViewModel?> FinallyInvoiceFromAdminViewModel(ulong requestId);
+
         //Show Home Pharmacy Request Detail In Admin Panel
         Task<HomePharmacyRequestViewModel?> FillHomePharmacyRequestAdminPanelViewModel(ulong requestId);
 
@@ -134,6 +140,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Accept Request From User
         Task<bool> AcceptRequestFromUser(ulong requestId, ulong userId);
+
+        //Received By The Customer From User
+        Task<bool> ReceivedByTheCustomerFromUserPanel(ulong requestId, ulong userId);
 
         #endregion
     }

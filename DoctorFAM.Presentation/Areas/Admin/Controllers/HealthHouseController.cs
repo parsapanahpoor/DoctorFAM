@@ -1,4 +1,5 @@
-﻿using DoctorFAM.Application.Services.Implementation;
+﻿using DoctorFAM.Application.Extensions;
+using DoctorFAM.Application.Services.Implementation;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.HealthHouse;
 using DoctorFAM.Domain.ViewModels.Admin.HealthHouse.DeathCertificate;
@@ -28,7 +29,11 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
 
         private readonly IPharmacyService _pharmacyService;
 
-        public HealthHouseController(IHomeVisitService homeVisit, IHomeNurseService homeNurse, IDeathCertificateService deathCertificate, IHomePatientTransportService homePatientTransportService, IHomePharmacyServicec homePharmacyService, IHomeLaboratoryServices homeLaboratoryServices, IPharmacyService pharmacyService)
+        private readonly IRequestService _requestService;
+
+        public HealthHouseController(IHomeVisitService homeVisit, IHomeNurseService homeNurse,
+                        IDeathCertificateService deathCertificate, IHomePatientTransportService homePatientTransportService
+                        , IHomePharmacyServicec homePharmacyService, IHomeLaboratoryServices homeLaboratoryServices, IPharmacyService pharmacyService, IRequestService requestService)
         {
             _homeVisit = homeVisit;
             _homeNurse = homeNurse;
@@ -37,6 +42,7 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
             _homePharmacyService = homePharmacyService;
             _homeLaboratoryServices = homeLaboratoryServices;
             _pharmacyService = pharmacyService;
+            _requestService = requestService;
         }
 
         #endregion
@@ -181,6 +187,44 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
 
             var model = await _pharmacyService.FillHomePharmacyRequestAdminPanelViewModel(requestId);
             if (model == null) return NotFound();
+
+            #endregion
+
+            return View(model);
+        }
+
+        #endregion
+
+        #region Invoice Finalization And See Invoice Detail
+
+        public async Task<IActionResult> InvoiceFinalization(ulong requestId)
+        {
+            #region Get Request By Id 
+
+            var request = await _requestService.GetRequestById(requestId);
+            if (request == null) return NotFound();
+
+            #endregion
+
+            #region Fill Page Model
+
+            var model = await _pharmacyService.FinallyInvoiceFromAdminViewModel(requestId);
+            if (model == null)
+            {
+                return NotFound();
+            }
+
+            #endregion
+
+            #region Send View Bags
+
+            ViewBag.RequestId = requestId;
+            ViewBag.TotalPrice = await _pharmacyService.GetSumOfInvoiceHomePharmacyRequestDetailPricing(requestId, request.OperationId.Value);
+            var TransferingPrice = await _requestService.GetRequestTransferingPriceFromOperator(request.OperationId.Value, requestId);
+            if (TransferingPrice != null)
+            {
+                ViewBag.TransferingPrice = TransferingPrice.Price;
+            }
 
             #endregion
 

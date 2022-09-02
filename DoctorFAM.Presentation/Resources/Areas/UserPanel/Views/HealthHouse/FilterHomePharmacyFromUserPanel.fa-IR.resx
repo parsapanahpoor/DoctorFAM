@@ -159,6 +159,9 @@
   <data name="The Time your choice" xml:space="preserve">
     <value>زمان انتخابی شما</value>
   </data>
+  <data name="Waiting For Accept From Customer" xml:space="preserve">
+    <value>در انتظار تایید شما </value>
+  </data>
   <data name="WaitingForConfirmFromDestination" xml:space="preserve">
     <value>در انتظار تایید از مقصد</value>
   </data>

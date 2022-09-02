@@ -153,6 +153,9 @@
   <data name="The Time your choice" xml:space="preserve">
     <value>Seçtiğiniz zaman</value>
   </data>
+  <data name="Waiting For Accept From Customer" xml:space="preserve">
+    <value>Müşteriden Fatura Kabul Et</value>
+  </data>
   <data name="WaitingForConfirmFromDestination" xml:space="preserve">
     <value>Hedeften onay bekleniyor</value>
   </data>
