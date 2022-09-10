@@ -496,6 +496,9 @@
   <data name="System" xml:space="preserve">
     <value>سیستم</value>
   </data>
+  <data name="Take Reservation" xml:space="preserve">
+    <value>الحصول على دور</value>
+  </data>
   <data name="Tariff for home visits in Rials" xml:space="preserve">
     <value>تعرفة الزيارات المنزلية بالريال</value>
   </data>

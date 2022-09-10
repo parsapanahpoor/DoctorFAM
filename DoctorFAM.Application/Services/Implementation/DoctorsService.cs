@@ -951,6 +951,19 @@ namespace DoctorFAM.Application.Services.Implementation
             return model;
         }
 
+        //Get Doctro For Send Notification For Take Reservation Notification 
+        public async Task<string?> GetDoctroForSendNotificationForTakeReservationNotification(ulong reservationDateTimeId)
+        {
+            #region Get Reservation Date Time By Id
+
+            var reservationDateTime = await _reservationService.GetDoctorReservationDateTimeById(reservationDateTimeId);
+            if (reservationDateTime == null) return null;
+
+            #endregion
+
+            return reservationDateTime.DoctorReservationDate.UserId.ToString();
+        }
+
         #endregion
     }
 }

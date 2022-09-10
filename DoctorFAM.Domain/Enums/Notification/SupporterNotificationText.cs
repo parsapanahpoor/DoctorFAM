@@ -20,6 +20,8 @@ namespace DoctorFAM.Domain.Enums.Notification
         [Display(Name = "Delivery by courier")]
         DeliveryByCourier,
         [Display(Name = "Received by the customer")]
-        ReceivedByTheCustomer
+        ReceivedByTheCustomer,
+        [Display(Name ="Take Reservation")]
+        TakeReservation
     }
 }

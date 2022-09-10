@@ -1,5 +1,6 @@
 ﻿using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.Entities.Account;
+using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.Notification;
 using DoctorFAM.Domain.Enums.Notification;
 using DoctorFAM.Domain.Interfaces;
@@ -23,12 +24,16 @@ namespace DoctorFAM.Application.Services.Implementation
 
         private readonly IHomePharmacyServicec _homePharmacyService;
 
-        public NotificationService(INotificationRepository notificationService, IUserService userService, IRequestService requestService, IHomePharmacyServicec homePharmacyService)
+        private readonly IReservationService _reservationService;
+
+        public NotificationService(INotificationRepository notificationService, IUserService userService,
+                                    IRequestService requestService, IHomePharmacyServicec homePharmacyService, IReservationService reservationService)
         {
             _notificationService = notificationService;
             _userService = userService;
             _requestService = requestService;
             _homePharmacyService = homePharmacyService;
+            _reservationService = reservationService;
         }
 
         #endregion
@@ -131,6 +136,33 @@ namespace DoctorFAM.Application.Services.Implementation
             #endregion
         }
 
+        //Create Notification For Doctor That Reserve Her Reservation 
+        public async Task CreateNotificationForDoctorThatReserveHerReservation(ulong reservationDateTimeId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId)
+        {
+            #region Get Validated Pharmacyes
+
+            var reservationDateTime = await _reservationService.GetDoctorReservationDateTimeById(reservationDateTimeId);
+
+            #endregion
+
+            #region Fill Notification Entity
+
+            SupporterNotification notif = new SupporterNotification()
+            {
+                CreateDate = DateTime.Now,
+                IsDelete = false,
+                IsSeen = false,
+                SupporterNotificationText = SupporterNotificationText,
+                TargetId = reservationDateTimeId,
+                UserId = senderId,
+                ReciverId = reservationDateTime.DoctorReservationDate.UserId,
+            };
+
+            await _notificationService.CreateRangeSupporter(notif);
+
+            #endregion
+        }
+
         #endregion
 
         #region Supporter And Admin Method 
@@ -159,6 +191,13 @@ namespace DoctorFAM.Application.Services.Implementation
             {
                 var request = await _requestService.GetRequestById(targetId);
                 if (request == null) return false;
+            }
+
+            //If Target Is Reservation
+            if (notification == NotificationTarget.reservation)
+            {
+                var reservation = await _reservationService.GetDoctorReservationDateTimeById(targetId);
+                if (reservation == null) return false;
             }
 
             #endregion

@@ -2,6 +2,7 @@
 using DoctorFAM.Domain.ViewModels.Admin.Reservation;
 using DoctorFAM.Domain.ViewModels.Common;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment;
+using DoctorFAM.Domain.ViewModels.Site.Reservation;
 using DoctorFAM.Domain.ViewModels.Supporter.Reservation;
 using DoctorFAM.Domain.ViewModels.UserPanel.Reservation;
 using System;
@@ -101,6 +102,12 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Get Reservation Date Time By Reservation Date And User Id
         Task<List<DoctorReservationDateTime>?> GetDoctorReservationDateByReservationDateTimeAndUserId(string loggedreservationDate, ulong userId);
+
+        //Get Reservation Date Time To User Patient
+        Task<bool> GetReservationDateTimeToUserPatient(ChooseTypeOfReservationViewModel model, ulong patientId);
+
+        //Reserve Doctor Reservation Date Time After Success Payment
+        Task ReserveDoctorReservationDateTimeAfterSuccessPayment(ulong reservationDateTimeId);
 
         #endregion
     }

@@ -72,6 +72,9 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Fill Doctor Reservation Detail For Show Site Side View Model
         Task<ShowDoctorReservationDetailViewModel?> FillDoctorReservationDetailForShowSiteSide(ulong userId, string? loggedDateTime);
 
+        //Get Doctro For Send Notification For Take Reservation Notification 
+        Task<string?> GetDoctroForSendNotificationForTakeReservationNotification(ulong reservationDateTimeId);
+
         #endregion
     }
 }

@@ -1,0 +1,26 @@
+﻿@model DoctorFAM.Domain.ViewModels.Site.Reservation.ChooseTypeOfReservationViewModel
+
+<form id="ChooseReservationType" method="post" asp-action="ChooseTypeOfReservation" asp-controller="FocalPoint" asp-area="">
+    <input type="hidden" asp-for="ReservationDateTimeId" />
+    <input type="hidden" asp-for="DoctorId" />
+        <h5 class="modal-title" id="exampleModalLabel">انتخاب روش مراجعه </h5>
+
+    <div class="modal-body">
+        <div class="row">
+
+            <div class="form-group col-md-12 col-sm-12">
+                <label asp-for="DoctorReservationType">نوع نوبت </label>
+                <select asp-for="DoctorReservationType" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationType))"></select>
+                <span class="text-danger" asp-validation-for="DoctorReservationType"></span>
+            </div>
+
+            <hr />
+
+            <div class="footer">
+                <button type="submit" style="padding-top: 10px;padding-bottom: 10px;padding-right: 20px;padding-left: 20px;" class="btn-SelfTest">ثبت</button>
+                <button type="button" style="padding-top: 10px;padding-bottom: 10px;padding-right: 20px;padding-left: 20px;" class="btn-SelfTest" data-dismiss="modal">بستن</button>
+            </div>
+
+        </div>
+    </div>
+</form>

@@ -39,6 +39,13 @@ namespace DoctorFAM.Data.Repository
             await _context.SaveChangesAsync();
         }
 
+        //Create Notification For Admin And Supporters
+        public async Task CreateRangeSupporter(SupporterNotification notification)
+        {
+            await _context.SupporterNotification.AddAsync(notification);
+            await _context.SaveChangesAsync();
+        }
+
         //Get User Notifications
         public async Task<List<SupporterNotification>?> GetListOfSupporterNotificationByUserId(ulong userId)
         {

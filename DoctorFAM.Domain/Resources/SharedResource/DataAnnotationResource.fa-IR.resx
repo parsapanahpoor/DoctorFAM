@@ -508,6 +508,9 @@
   <data name="System" xml:space="preserve">
     <value>سیستم</value>
   </data>
+  <data name="Take Reservation" xml:space="preserve">
+    <value>دریافت نوبت</value>
+  </data>
   <data name="Tariff for home visits in Rials" xml:space="preserve">
     <value>تعرفه ی ویزیت در منزل به ریال</value>
   </data>
