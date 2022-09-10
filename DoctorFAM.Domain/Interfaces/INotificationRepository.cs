@@ -32,6 +32,9 @@ namespace DoctorFAM.Domain.Interfaces
         //Update Supporter Notifications 
         Task UpdateSupporterNotifications(SupporterNotification notifications);
 
+        //Create Notification For Admin And Supporters
+        Task CreateRangeSupporter(SupporterNotification notification);
+
         #endregion
     }
 }

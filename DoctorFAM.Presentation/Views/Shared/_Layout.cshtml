@@ -34,9 +34,9 @@
             <div class="primary-footer dark-bg">
                 <div class="container">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-7">
                             <div class="row">
-                                <div class="col-md-4 " style="border-right:1px solid #fd5b03;">
+                                <div class="col-md-3 " style="border-right:1px solid #fd5b03;">
                                     <div class="footer-list">
                                         <ul class="list-unstyled">
                                             <li class="mt-2">
@@ -54,7 +54,7 @@
                                         </ul>
                                     </div>
                                 </div>
-                                <div class="col-md-4 " style="border-right:1px solid #fd5b03;">
+                                <div class="col-md-3 " style="border-right:1px solid #fd5b03;">
                                     <div class="footer-list">
                                         <ul class="list-unstyled">
                                             <li class="mt-2">
@@ -75,7 +75,7 @@
                                         </ul>
                                     </div>
                                 </div>
-                                <div class="col-md-4 " style="border-right:1px solid #fd5b03;">
+                                <div class="col-md-3 " style="border-right:1px solid #fd5b03;">
                                     <div class="footer-list">
                                         <ul class="list-unstyled">
                                             <li class="mt-2">
@@ -87,6 +87,18 @@
                                             <li>
                                                 <a asp-action="Register" asp-controller="Account" asp-area="" asp-route-seller="true"> ثبت نام فروشنده </a>
                                             </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 " style="border-right:1px solid #fd5b03;">
+                                    <div class="footer-list">
+                                        <ul class="list-unstyled">
+                                            <li class="mt-2">
+                                                <a asp-action="TermsConditions" asp-controller="Home" asp-area="" > قوانین و مقررات </a>
+                                            </li>
+                                            <li>
+                                                <a asp-action="Privacy" asp-controller="Home" asp-area="" > حریم خصوصی </a>
+                                            </li>                                            
                                         </ul>
                                     </div>
                                 </div>
@@ -116,7 +128,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6 mt-1" style="border-right:1px solid #fd5b03;">
+                        <div class="col-md-5 mt-1" style="border-right:1px solid #fd5b03;">
                             <h4 class=" text-white">ارتباط با ما</h4>
 
                             <div class="footer-cntct">
@@ -155,17 +167,17 @@
                                     <li class="list-inline-item mb-0 active">
                                         <a href="/Home"> خانه </a>
                                     </li>
+                                    <li class="list-inline-item active mb-0">
+                                        <a href="/Home/TermsConditions"> قوانین و مقررات </a>
+                                    </li>
+                                    <li class="list-inline-item active mb-0">
+                                        <a href="/Home/Privacy">  حریم خصوصی </a>
+                                    </li>
                                     <li class="list-inline-item mb-0 active">
                                         <a href="/Home/AboutUs"> درباره ما </a>
                                     </li>
                                     <li class="list-inline-item active mb-0">
                                         <a href="/Home/ContactUs"> تماس با ما </a>
-                                    </li>
-                                    <li class="list-inline-item active mb-0">
-                                        <a href="privacy-policy.html"> سیاست حفظ حریم خصوصی </a>
-                                    </li>
-                                    <li class="list-inline-item active mb-0">
-                                        <a href="terms-and-conditions.html"> ضوابط و مقررات </a>
                                     </li>
                                 </ul>
                             </div>
@@ -182,10 +194,10 @@
     <div class="scroll-top"><a class="smoothscroll" href="#top"><i class="flaticon-top"></i></a></div>
     <!--back-to-top end-->
     @* <footer class="border-top footer text-muted">
-    <div class="container">
-    &copy; 2022 - HEALTH HOUSE - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-    </div>
-    </footer>*@
+        <div class="container">
+        &copy; 2022 - HEALTH HOUSE - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+        </footer>*@
     <partial name="_FooterReferences" />
 
     <partial name="_Notification" />

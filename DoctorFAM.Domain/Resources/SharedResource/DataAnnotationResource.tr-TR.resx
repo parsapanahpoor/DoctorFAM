@@ -448,6 +448,9 @@ meta etiket</value>
   <data name="Success" xml:space="preserve">
     <value>Başarılı</value>
   </data>
+  <data name="Take Reservation" xml:space="preserve">
+    <value>sıra al</value>
+  </data>
   <data name="Tariff for home visits in Rials" xml:space="preserve">
     <value>Rials'ta ev ziyaretleri için tarife</value>
   </data>

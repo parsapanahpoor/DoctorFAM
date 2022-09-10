@@ -25,10 +25,13 @@ namespace DoctorFAM.Web.Controllers
 
         public IUserService _userService;
 
+        private readonly IPopulationCoveredService _populationCovered;
+
         private readonly ISiteSettingService _siteSettingService;
 
         public HomeNurseController(IHomeNurseService homeNurseService, ILocationService locationService, IPatientService patientService
-                                    , IRequestService requestService, IUserService userService , ISiteSettingService siteSettingService)
+                                    , IRequestService requestService, IUserService userService , ISiteSettingService siteSettingService ,
+                                      IPopulationCoveredService populationCovered)
         {
             _homeNurseService = homeNurseService;
             _locationService = locationService;
@@ -36,6 +39,7 @@ namespace DoctorFAM.Web.Controllers
             _requestService = requestService;
             _userService = userService;
             _siteSettingService = siteSettingService;
+            _populationCovered = populationCovered;
         }
 
         #endregion
@@ -67,13 +71,32 @@ namespace DoctorFAM.Web.Controllers
         #region Patient Detail
 
         [HttpGet]
-        public async Task<IActionResult> PatientDetails(ulong requestId)
+        public async Task<IActionResult> PatientDetails(ulong requestId, ulong? populationCoveredId)
         {
             #region Data Validation
 
             if (!await _requestService.IsExistRequestByRequestId(requestId)) return NotFound();
 
             if (!await _userService.IsExistUserById(User.GetUserId())) return NotFound();
+
+            #endregion
+
+            #region Get User Population Covered
+
+            ViewBag.PopulationCovered = await _populationCovered.GetUserPopulation(User.GetUserId());
+
+            #endregion
+
+            #region Fill Data From Selected Population Covered
+
+            if (populationCoveredId != null && populationCoveredId.HasValue)
+            {
+                //Fill Page Model From Selected Population Covered Data
+                var mode = await _homeNurseService.FillPatientViewModelFromSelectedPopulationCoveredData(populationCoveredId.Value, requestId, User.GetUserId());
+                if (mode == null) return NotFound();
+
+                return View(mode);
+            }
 
             #endregion
 
@@ -95,7 +118,16 @@ namespace DoctorFAM.Web.Controllers
 
             #region Model State
 
-            if (!ModelState.IsValid) return View(patient);
+            if (!ModelState.IsValid)
+            {
+                #region Get User Population Covered
+
+                ViewBag.PopulationCovered = await _populationCovered.GetUserPopulation(User.GetUserId());
+
+                #endregion
+
+                return NotFound();
+            }
 
             #endregion
 
@@ -121,6 +153,12 @@ namespace DoctorFAM.Web.Controllers
 
                     return RedirectToAction("PatientRequestDetail", "HomeNurse", new { requestId = patient.RequestId, patientId = patientId });
             }
+
+            #endregion
+
+            #region Get User Population Covered
+
+            ViewBag.PopulationCovered = await _populationCovered.GetUserPopulation(User.GetUserId());
 
             #endregion
 

@@ -21,9 +21,11 @@ namespace DoctorFAM.Domain.Enums.DoctorReservation
 
     public enum DoctorReservationType
     {
-        [Display(Name = "Online")]
+        //[Display(Name = "Online")]
+        [Display(Name ="آنلاین")]
         Onile,
-        [Display(Name = "In Person")]
+        //[Display(Name = "In Person")]
+        [Display(Name = "حضوری")]
         Reserved,
     }
 

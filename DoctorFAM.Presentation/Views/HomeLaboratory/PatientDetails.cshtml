@@ -54,7 +54,32 @@
 
                                             <td class=" text-center align-items-center">@item.PatientName</td>
                                             <td class=" text-center align-items-center">@item.PatientLastName</td>
-                                            <td class=" text-center align-items-center">@item.Ratio</td>
+
+                                            @if (item.Ratio == DoctorFAM.Domain.Enums.Population_Covered.Ratio.Brother)
+                                            {
+                                                <td class=" text-center align-items-center">@SharedLocalizer["Brother"]</td>
+                                            }
+                                            @if (item.Ratio == DoctorFAM.Domain.Enums.Population_Covered.Ratio.Child)
+                                            {
+                                                <td class=" text-center align-items-center">@SharedLocalizer["Child"]</td>
+                                            }
+                                            @if (item.Ratio == DoctorFAM.Domain.Enums.Population_Covered.Ratio.Father)
+                                            {
+                                                <td class=" text-center align-items-center">@SharedLocalizer["Father"]</td>
+                                            }
+                                            @if (item.Ratio == DoctorFAM.Domain.Enums.Population_Covered.Ratio.Mother)
+                                            {
+                                                <td class=" text-center align-items-center">@SharedLocalizer["Mother"]</td>
+                                            }
+                                            @if (item.Ratio == DoctorFAM.Domain.Enums.Population_Covered.Ratio.Sister)
+                                            {
+                                                <td class=" text-center align-items-center">@SharedLocalizer["Sister"]</td>
+                                            }
+                                            @if (item.Ratio == DoctorFAM.Domain.Enums.Population_Covered.Ratio.Partner)
+                                            {
+                                                <td class=" text-center align-items-center">@SharedLocalizer["Partner"]</td>
+                                            }
+
                                             <td class=" text-center align-items-center">
                                                 <a asp-action="PatientDetails" asp-controller="HomeLaboratory" asp-area="" asp-route-populationCoveredId="@item.Id" asp-route-requestId="@Model.RequestId" class="btn-Accept-primary">انتخاب</a>
                                             </td>

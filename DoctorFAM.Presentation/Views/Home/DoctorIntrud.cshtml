@@ -1,0 +1,450 @@
+﻿@{
+    ViewBag.Title = "معرفی پزشکان";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+
+   
+
+
+    <div class="content mt-3">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12 col-lg-4 col-xl-3 theiaStickySidebar">
+
+                    <div class="card search-filter">
+                        <div class="card-header">
+                            <h4 class="card-title mb-0">فیلتر جستجو</h4>
+                        </div>
+                        <div class="card-body">
+                           @* <div class="filter-widget">
+                                <div class="cal-icon">
+                                    <input type="text" class="form-control datetimepicker" placeholder=" انتخاب تاریخ ">
+                                </div>
+                            </div>*@
+                            <div class="filter-widget">
+                                <h4>جنسیت</h4>
+                                <div>
+                                    <label class="custom_check">
+                                        <input type="checkbox" name="gender_type" checked>
+                                        <span class="checkmark"></span>  پزشک مرد
+                                    </label>
+                                </div>
+                                <div>
+                                    <label class="custom_check">
+                                        <input type="checkbox" name="gender_type">
+                                        <span class="checkmark"></span> پزشک زن
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="filter-widget">
+                                <h4> تخصص را انتخاب کنید </h4>
+                                <div>
+                                    <label class="custom_check">
+                                        <input type="checkbox" name="select_specialist" checked>
+                                        <span class="checkmark"></span> اورولوژی
+                                    </label>
+                                </div>
+                                <div>
+                                    <label class="custom_check">
+                                        <input type="checkbox" name="select_specialist" checked>
+                                        <span class="checkmark"></span> عصب شناسی
+                                    </label>
+                                </div>
+                                <div>
+                                    <label class="custom_check">
+                                        <input type="checkbox" name="select_specialist">
+                                        <span class="checkmark"></span> دندانپزشک
+                                    </label>
+                                </div>
+                                <div>
+                                    <label class="custom_check">
+                                        <input type="checkbox" name="select_specialist">
+                                        <span class="checkmark"></span> ارتوپدی
+                                    </label>
+                                </div>
+                                <div>
+                                    <label class="custom_check">
+                                        <input type="checkbox" name="select_specialist">
+                                        <span class="checkmark"></span> متخصص قلب و عروق
+                                    </label>
+                                </div>
+                                <div>
+                                    <label class="custom_check">
+                                        <input type="checkbox" name="select_specialist">
+                                        <span class="checkmark"></span> متخصص قلب و عروق
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="btn-search">
+                                <button type="button" class=" btn-Accept w-100">جستجو</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-md-12 col-lg-8 col-xl-9">
+
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="doctor-widget">
+                                <div class="doc-info-left">
+                                    <div class="doctor-img">
+                                        <a href="doctor-profile.html">
+                                            <img src="~/Content/img/doctors/doctor-thumb-01.jpg" class="img-fluid" alt="User Image">
+                                        </a>
+                                    </div>
+                                    <div class="doc-info-cont">
+                                        <h4 class="doc-name"><a href="doctor-profile.html">پزشک. رابی پرین</a></h4>
+                                        <p class="doc-speciality">MDS -پریودنتولوژی و ایمپلنت دهانی BDS</p>
+                                        <h5 class="doc-department"><img src="~/Content/img/specialities/specialities-05.png" class="img-fluid" alt="Speciality">دندان پزشک</h5>
+                                        <div class="rating">
+                                            <i class="fas fa-star filled"></i>
+                                            <i class="fas fa-star filled"></i>
+                                            <i class="fas fa-star filled"></i>
+                                            <i class="fas fa-star filled"></i>
+                                            <i class="fas fa-star"></i>
+                                            <span class="d-inline-block average-rating">(17)</span>
+                                        </div>
+                                        <div class="clinic-details">
+                                            <p class="doc-location"><i class="fas fa-map-marker-alt"></i> فلوریدا، آمریکا</p>
+                                            <ul class="clinic-gallery">
+                                                <li>
+                                                    <a href="~/Content/img/features/feature-01.jpg" data-fancybox="gallery">
+                                                        <img src="~/Content/img/features/feature-01.jpg" alt="Feature">
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="~/Content/img/features/feature-02.jpg" data-fancybox="gallery">
+                                                        <img src="~/Content/img/features/feature-02.jpg" alt="Feature">
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="~/Content/img/features/feature-03.jpg" data-fancybox="gallery">
+                                                        <img src="~/Content/img/features/feature-03.jpg" alt="Feature">
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="~/Content/img/features/feature-04.jpg" data-fancybox="gallery">
+                                                        <img src="~/Content/img/features/feature-04.jpg" alt="Feature">
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="clinic-services">
+                                            <span>پر کردن دندان</span>
+                                            <span>سفید کردن</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="doc-info-right">
+                                    <div class="clini-infos">
+                                        <ul>
+                                            <li><i class="far fa-thumbs-up"></i> 98%</li>
+                                            <li><i class="far fa-comment"></i> 17 فیدبک </li>
+                                            <li><i class="fas fa-map-marker-alt"></i> فلوریدا، آمریکا</li>
+                                            <li><i class="far fa-money-bill-alt"></i> 100 تومان - 300 تومان <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Lorem Ipsum"></i> </li>
+                                        </ul>
+                                    </div>
+                                    <div class="clinic-booking">
+                                        <a class="view-pro-btn" href="doctor-profile.html">مشاهده پروفایل</a>
+                                        <a class="apt-btn" href="booking.html">رزرو نوبت</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="doctor-widget">
+                                <div class="doc-info-left">
+                                    <div class="doctor-img">
+                                        <a href="doctor-profile.html">
+                                            <img src="~/Content/img/doctors/doctor-thumb-02.jpg" class="img-fluid" alt="User Image">
+                                        </a>
+                                    </div>
+                                    <div class="doc-info-cont">
+                                        <h4 class="doc-name"><a href="doctor-profile.html">پزشک. دارن الدر</a></h4>
+                                        <p class="doc-speciality"> BDS ، MDS - جراحی دهان و فک و صورت </p>
+                                        <h5 class="doc-department"><img src="~/Content/img/specialities/specialities-05.png" class="img-fluid" alt="Speciality">دندان پزشک</h5>
+                                        <div class="rating">
+                                            <i class="fas fa-star filled"></i>
+                                            <i class="fas fa-star filled"></i>
+                                            <i class="fas fa-star filled"></i>
+                                            <i class="fas fa-star filled"></i>
+                                            <i class="fas fa-star"></i>
+                                            <span class="d-inline-block average-rating">(35)</span>
+                                        </div>
+                                        <div class="clinic-details">
+                                            <p class="doc-location"><i class="fas fa-map-marker-alt"></i> نیویورک، آمریکا</p>
+                                            <ul class="clinic-gallery">
+                                                <li>
+                                                    <a href="~/Content/img/features/feature-01.jpg" data-fancybox="gallery">
+                                                        <img src="~/Content/img/features/feature-01.jpg" alt="Feature">
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="~/Content/img/features/feature-02.jpg" data-fancybox="gallery">
+                                                        <img src="~/Content/img/features/feature-02.jpg" alt="Feature">
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="~/Content/img/features/feature-03.jpg" data-fancybox="gallery">
+                                                        <img src="~/Content/img/features/feature-03.jpg" alt="Feature">
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="~/Content/img/features/feature-04.jpg" data-fancybox="gallery">
+                                                        <img src="~/Content/img/features/feature-04.jpg" alt="Feature">
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="clinic-services">
+                                            <span>پر کردن دندان</span>
+                                            <span>سفید کردن</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="doc-info-right">
+                                    <div class="clini-infos">
+                                        <ul>
+                                            <li><i class="far fa-thumbs-up"></i> 100%</li>
+                                            <li><i class="far fa-comment"></i> 35 فیدبک </li>
+                                            <li><i class="fas fa-map-marker-alt"></i> نیویورک، آمریکا</li>
+                                            <li><i class="far fa-money-bill-alt"></i> 50 تومان -  300 تومان <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Lorem Ipsum"></i></li>
+                                        </ul>
+                                    </div>
+                                    <div class="clinic-booking">
+                                        <a class="view-pro-btn" href="doctor-profile.html">مشاهده پروفایل</a>
+                                        <a class="apt-btn" href="booking.html">رزرو نوبت</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="doctor-widget">
+                                <div class="doc-info-left">
+                                    <div class="doctor-img">
+                                        <a href="doctor-profile.html">
+                                            <img src="~/Content/img/doctors/doctor-thumb-03.jpg" class="img-fluid" alt="User Image">
+                                        </a>
+                                    </div>
+                                    <div class="doc-info-cont">
+                                        <h4 class="doc-name"><a href="doctor-profile.html">پزشک. دبورا انجل</a></h4>
+                                        <p class="doc-speciality">MBBS ، MD - پزشکی عمومی ، DNB - قلب و عروق</p>
+                                        <p class="doc-department"><img src="~/Content/img/specialities/specialities-04.png" class="img-fluid" alt="Speciality">متخصص قلب</p>
+                                        <div class="rating">
+                                            <i class="fas fa-star filled"></i>
+                                            <i class="fas fa-star filled"></i>
+                                            <i class="fas fa-star filled"></i>
+                                            <i class="fas fa-star filled"></i>
+                                            <i class="fas fa-star"></i>
+                                            <span class="d-inline-block average-rating">(27)</span>
+                                        </div>
+                                        <div class="clinic-details">
+                                            <p class="doc-location"><i class="fas fa-map-marker-alt"></i> جورجیا ، آمریکا</p>
+                                            <ul class="clinic-gallery">
+                                                <li>
+                                                    <a href="~/Content/img/features/feature-01.jpg" data-fancybox="gallery">
+                                                        <img src="~/Content/img/features/feature-01.jpg" alt="Feature">
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="~/Content/img/features/feature-02.jpg" data-fancybox="gallery">
+                                                        <img src="~/Content/img/features/feature-02.jpg" alt="Feature">
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="~/Content/img/features/feature-03.jpg" data-fancybox="gallery">
+                                                        <img src="~/Content/img/features/feature-03.jpg" alt="Feature">
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="~/Content/img/features/feature-04.jpg" data-fancybox="gallery">
+                                                        <img src="~/Content/img/features/feature-04.jpg" alt="Feature">
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="clinic-services">
+                                            <span>پر کردن دندان</span>
+                                            <span>سفید کردن</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="doc-info-right">
+                                    <div class="clini-infos">
+                                        <ul>
+                                            <li><i class="far fa-thumbs-up"></i> 99%</li>
+                                            <li><i class="far fa-comment"></i> 35 فیدبک </li>
+                                            <li><i class="fas fa-map-marker-alt"></i> نیویورک، آمریکا</li>
+                                            <li><i class="far fa-money-bill-alt"></i>100 تومان -  400 تومان <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Lorem Ipsum"></i></li>
+                                        </ul>
+                                    </div>
+                                    <div class="clinic-booking">
+                                        <a class="view-pro-btn" href="doctor-profile.html">مشاهده پروفایل</a>
+                                        <a class="apt-btn" href="booking.html">رزرو نوبت</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="doctor-widget">
+                                <div class="doc-info-left">
+                                    <div class="doctor-img">
+                                        <a href="doctor-profile.html">
+                                            <img src="~/Content/img/doctors/doctor-thumb-04.jpg" class="img-fluid" alt="User Image">
+                                        </a>
+                                    </div>
+                                    <div class="doc-info-cont">
+                                        <h4 class="doc-name"><a href="doctor-profile.html">پزشک. سوفیا برینت</a></h4>
+                                        <p class="doc-speciality">MBBS ، MS - جراحی عمومی ، MCH - اورولوژی</p>
+                                        <p class="doc-department"><img src="~/Content/img/specialities/specialities-01.png" class="img-fluid" alt="Speciality"> اورولوژی </p>
+                                        <div class="rating">
+                                            <i class="fas fa-star filled"></i>
+                                            <i class="fas fa-star filled"></i>
+                                            <i class="fas fa-star filled"></i>
+                                            <i class="fas fa-star filled"></i>
+                                            <i class="fas fa-star"></i>
+                                            <span class="d-inline-block average-rating">(4)</span>
+                                        </div>
+                                        <div class="clinic-details">
+                                            <p class="doc-location"><i class="fas fa-map-marker-alt"></i> لویزینا، آمریکا</p>
+                                            <ul class="clinic-gallery">
+                                                <li>
+                                                    <a href="~/Content/img/features/feature-01.jpg" data-fancybox="gallery">
+                                                        <img src="~/Content/img/features/feature-01.jpg" alt="Feature">
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="~/Content/img/features/feature-02.jpg" data-fancybox="gallery">
+                                                        <img src="~/Content/img/features/feature-02.jpg" alt="Feature">
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="~/Content/img/features/feature-03.jpg" data-fancybox="gallery">
+                                                        <img src="~/Content/img/features/feature-03.jpg" alt="Feature">
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="~/Content/img/features/feature-04.jpg" data-fancybox="gallery">
+                                                        <img src="~/Content/img/features/feature-04.jpg" alt="Feature">
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="clinic-services">
+                                            <span>پر کردن دندان</span>
+                                            <span>سفید کردن</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="doc-info-right">
+                                    <div class="clini-infos">
+                                        <ul>
+                                            <li><i class="far fa-thumbs-up"></i> 97%</li>
+                                            <li><i class="far fa-comment"></i> 4 فیدبک </li>
+                                            <li><i class="fas fa-map-marker-alt"></i> نیویورک، آمریکا</li>
+                                            <li><i class="far fa-money-bill-alt"></i>150 تومان  -  250  تومان <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Lorem Ipsum"></i></li>
+                                        </ul>
+                                    </div>
+                                    <div class="clinic-booking">
+                                        <a class="view-pro-btn" href="doctor-profile.html">مشاهده پروفایل</a>
+                                        <a class="apt-btn" href="booking.html">رزرو نوبت</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="doctor-widget">
+                                <div class="doc-info-left">
+                                    <div class="doctor-img">
+                                        <a href="doctor-profile.html">
+                                            <img src="~/Content/img/doctors/doctor-thumb-06.jpg" class="img-fluid" alt="User Image">
+                                        </a>
+                                    </div>
+                                    <div class="doc-info-cont">
+                                        <h4 class="doc-name"><a href="doctor-profile.html">پزشک. کاترین برتلد</a></h4>
+                                        <p class="doc-speciality">MS - ارتوپدی ، MBBS ، M.CH - ارتوپدی</p>
+                                        <p class="doc-department"><img src="~/Content/img/specialities/specialities-03.png" class="img-fluid" alt="Speciality"> ارتوپدی </p>
+                                        <div class="rating">
+                                            <i class="fas fa-star filled"></i>
+                                            <i class="fas fa-star filled"></i>
+                                            <i class="fas fa-star filled"></i>
+                                            <i class="fas fa-star filled"></i>
+                                            <i class="fas fa-star"></i>
+                                            <span class="d-inline-block average-rating">(52)</span>
+                                        </div>
+                                        <div class="clinic-details">
+                                            <p class="doc-location"><i class="fas fa-map-marker-alt"></i> تگزاس، آمریکا</p>
+                                            <ul class="clinic-gallery">
+                                                <li>
+                                                    <a href="~/Content/img/features/feature-01.jpg" data-fancybox="gallery">
+                                                        <img src="~/Content/img/features/feature-01.jpg" alt="Feature">
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="~/Content/img/features/feature-02.jpg" data-fancybox="gallery">
+                                                        <img src="~/Content/img/features/feature-02.jpg" alt="Feature">
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="~/Content/img/features/feature-03.jpg" data-fancybox="gallery">
+                                                        <img src="~/Content/img/features/feature-03.jpg" alt="Feature">
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="~/Content/img/features/feature-04.jpg" data-fancybox="gallery">
+                                                        <img src="~/Content/img/features/feature-04.jpg" alt="Feature">
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="clinic-services">
+                                            <span>پر کردن دندان</span>
+                                            <span>سفید کردن</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="doc-info-right">
+                                    <div class="clini-infos">
+                                        <ul>
+                                            <li><i class="far fa-thumbs-up"></i> 100%</li>
+                                            <li><i class="far fa-comment"></i> 52 فیدبک </li>
+                                            <li><i class="fas fa-map-marker-alt"></i> تگزاس، آمریکا</li>
+                                            <li><i class="far fa-money-bill-alt"></i> 100 تومان -  500 تومان  <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Lorem Ipsum"></i></li>
+                                        </ul>
+                                    </div>
+                                    <div class="clinic-booking">
+                                        <a class="view-pro-btn" href="doctor-profile.html">مشاهده پروفایل</a>
+                                        <a class="apt-btn" href="booking.html">رزرو نوبت</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="load-more text-center">
+                        <a class="btn btn-primary btn-sm" href="javascript:void(0);">بارگذاری بیشتر</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

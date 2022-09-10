@@ -7,8 +7,39 @@
     ViewBag.Title = "دریافت نوبت";
 }
 
-@section Scripts{
+@section Scripts
+    {
+    <partial name="_JqueryValidation" />
+
+    <script>
+
+        //#region Choose Reservation Type
+
+        function ChooseReservationType(reservationDateTimeId,doctorId) {
+            $.ajax({
+                url: "/Choose-Type-Of-Reservation",
+                type: "get",
+                data: {
+                    reservationDateTimeId: reservationDateTimeId,
+                    doctorId : doctorId
+                },
+                success: function (response) {
+                    $("#modal-body").html(response);
+
+                    $('#ChooseReservationType').data('validator', null);
+                    $.validator.unobtrusive.parse('#ChooseReservationType');
+
+                    $("#exampleModal").modal("show");
+                }
+            });
+        }
+
+        //#endregion
+
+    </script>
+
 }
+
 
     <div class="content">
         <div class="container">
@@ -97,10 +128,9 @@
                                         @if (item.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.NotReserved)
                                         {
                                             <li style="margin-top:10px;">
-                                                  <a class="timing" style="background-color: #11e802;border: 1px solid #11e802;color: #fff;"
-                                                       asp-action="" asp-area="" asp-controller="FocalPoint" asp-route-reservationDateTimeId="@item.Id" asp-route-doctorId="@Model.DoctorReservationDate.UserId">
-                                                         <span> @item.StartTime</span> تا <span> @item.EndTime</span>
-                                                  </a>
+                                                <button onclick="ChooseReservationType(@item.Id,@Model.UserId)" type="button" class="timing" data-toggle="modal" data-target="#exampleModal" style="background-color: #11e802;border: 1px solid #11e802;color: #fff;">
+                                                    <span> @item.StartTime</span> تا <span> @item.EndTime</span>
+                                                </button>
                                             </li>
                                         }
                                     }

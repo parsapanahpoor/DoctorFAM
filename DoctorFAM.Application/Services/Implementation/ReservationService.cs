@@ -1,11 +1,15 @@
 ﻿using DoctorFAM.Application.Convertors;
 using DoctorFAM.Application.Services.Interfaces;
+using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.DoctorReservation;
+using DoctorFAM.Domain.Entities.Doctors;
+using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.Reservation;
 using DoctorFAM.Domain.ViewModels.Admin.Wallet;
 using DoctorFAM.Domain.ViewModels.Common;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment;
+using DoctorFAM.Domain.ViewModels.Site.Reservation;
 using DoctorFAM.Domain.ViewModels.Supporter.Reservation;
 using DoctorFAM.Domain.ViewModels.UserPanel.Reservation;
 using System;
@@ -882,6 +886,61 @@ namespace DoctorFAM.Application.Services.Implementation
             #endregion
 
             return doctorReservationDateTime;
+        }
+
+        //Get Reservation Date Time To User Patient
+        public async Task<bool> GetReservationDateTimeToUserPatient(ChooseTypeOfReservationViewModel model , ulong patientId)
+        {
+            #region get Doctor Reservation Date Time By Id 
+
+            var reservationDateTime = await _reservation.GetDoctorReservationDateTimeById(model.ReservationDateTimeId);
+            if(reservationDateTime == null) return false;
+            if (reservationDateTime.DoctorReservationDate.UserId != model.DoctorId) return false;
+            if (reservationDateTime.DoctorReservationState != Domain.Enums.DoctorReservation.DoctorReservationState.NotReserved) return false;
+
+            #endregion
+
+            #region Update Method 
+
+            reservationDateTime.DoctorReservationState = Domain.Enums.DoctorReservation.DoctorReservationState.WaitingForComplete;
+            reservationDateTime.PatientId = patientId;
+            reservationDateTime.DoctorReservationType = model.DoctorReservationType;
+
+            #region Get User Office Address
+
+            var workAddress = await _workAddress.GetUserWorkAddressById(model.DoctorId);
+
+            if (workAddress == null && model.DoctorReservationType == Domain.Enums.DoctorReservation.DoctorReservationType.Reserved) return false;
+            if (workAddress != null && model.DoctorReservationType == Domain.Enums.DoctorReservation.DoctorReservationType.Reserved)
+            {
+                reservationDateTime.WorkAddressId = workAddress.Id;
+            }
+
+            #endregion
+
+            await _reservation.UpdateReservationDateTime(reservationDateTime);
+
+            #endregion
+
+            return true;
+        }
+
+        //Reserve Doctor Reservation Date Time After Success Payment
+        public async Task ReserveDoctorReservationDateTimeAfterSuccessPayment(ulong reservationDateTimeId)
+        {
+            #region get Doctor Reservation Date Time By Id 
+
+            var reservationDateTime = await _reservation.GetDoctorReservationDateTimeById(reservationDateTimeId);
+
+            #endregion
+
+            #region Update Method 
+
+            reservationDateTime.DoctorReservationState = Domain.Enums.DoctorReservation.DoctorReservationState.Reserved;
+
+            await _reservation.UpdateReservationDateTime(reservationDateTime);
+
+            #endregion
         }
 
         #endregion

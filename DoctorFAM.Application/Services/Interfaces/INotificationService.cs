@@ -21,6 +21,9 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Create Notification For Operator 
         Task CreateNotificationForOperator(ulong requestId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId);
 
+        //Create Notification For Doctor That Reserve Her Reservation 
+        Task CreateNotificationForDoctorThatReserveHerReservation(ulong reservationDateTimeId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId);
+
         #endregion
 
         #region Supporter And Admin 

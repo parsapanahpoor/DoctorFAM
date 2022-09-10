@@ -24,6 +24,11 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         Task<ulong?> CreateHomeLaboratoryRequest(ulong userId);
 
+        Task<ulong> CreatePatientDetailByPopulationCovered(ulong populationId, ulong requestId, ulong userId);
+
+        Task<PatientViewModel> FillPatientViewModelFromSelectedPopulationCoveredData(ulong populationId, ulong requestId, ulong userId);
+
+
         Task<CreatePatientResult> ValidateCreatePatient(PatientViewModel model);
 
         Task<ulong> CreatePatientDetail(PatientViewModel patient);

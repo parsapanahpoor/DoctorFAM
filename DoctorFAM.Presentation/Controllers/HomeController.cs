@@ -67,6 +67,15 @@ namespace DoctorFAM.Web.Controllers
 
         #endregion
 
+        #region Terms and Conditions
+
+        public IActionResult TermsConditions()
+        {
+            return View();
+        }
+
+        #endregion
+
         #region HealthHouseItems
 
         public IActionResult HealthHouseItems()
@@ -97,6 +106,25 @@ namespace DoctorFAM.Web.Controllers
         #region HealthProductsItems
 
         public IActionResult TeleFamItems()
+        {
+            return View();
+        }
+
+        #endregion
+
+
+        #region CentersIntrud
+
+        public IActionResult CentersIntrud()
+        {
+            return View();
+        }
+        #endregion
+
+
+        #region DoctorIntrud
+
+        public IActionResult DoctorIntrud()
         {
             return View();
         }

@@ -1,6 +1,7 @@
 ﻿using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Interfaces;
 using DoctorFAM.Application.Services.Interfaces;
+using DoctorFAM.Data.DbContext;
 using DoctorFAM.Domain.ViewModels.Site.Common;
 using DoctorFAM.Domain.ViewModels.Site.HomeLaboratory;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
@@ -8,6 +9,7 @@ using DoctorFAM.Domain.ViewModels.Site.Request;
 using DoctorFAM.Web.HttpManager;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DoctorFAM.Web.Controllers
 {
@@ -26,9 +28,12 @@ namespace DoctorFAM.Web.Controllers
 
         private readonly ILocationService _locationService;
 
+        private readonly IPopulationCoveredService _populationCovered;
+
         private readonly ISiteSettingService _siteSettingService;
 
-        public HomeLaboratoryController(IHomeLaboratoryServices homeLaboratory, IRequestService requestService, IUserService userService, IPatientService patientService, ILocationService locationService, ISiteSettingService siteSettingService )
+        public HomeLaboratoryController(IHomeLaboratoryServices homeLaboratory, IRequestService requestService, IUserService userService, IPatientService patientService, ILocationService locationService, ISiteSettingService siteSettingService , IPopulationCoveredService populationCovered)
+        
         {
             _homeLaboratory = homeLaboratory;
             _requestService = requestService;
@@ -36,6 +41,7 @@ namespace DoctorFAM.Web.Controllers
             _patientService = patientService;
             _locationService = locationService;
             _siteSettingService = siteSettingService;
+            _populationCovered = populationCovered;
         }
 
         #endregion
@@ -67,13 +73,32 @@ namespace DoctorFAM.Web.Controllers
         #region Patient Detail
 
         [HttpGet]
-        public async Task<IActionResult> PatientDetails(ulong requestId)
+        public async Task<IActionResult> PatientDetails(ulong requestId, ulong? populationCoveredId)
         {
             #region Data Validation
 
             if (!await _requestService.IsExistRequestByRequestId(requestId)) return NotFound();
 
             if (!await _userService.IsExistUserById(User.GetUserId())) return NotFound();
+
+            #endregion
+
+            #region Get User Population Covered
+
+            ViewBag.PopulationCovered = await _populationCovered.GetUserPopulation(User.GetUserId());
+
+            #endregion
+
+            #region Fill Data From Selected Population Covered
+
+            if (populationCoveredId != null && populationCoveredId.HasValue)
+            {
+                //Fill Page Model From Selected Population Covered Data
+                var mode = await _homeLaboratory.FillPatientViewModelFromSelectedPopulationCoveredData(populationCoveredId.Value, requestId, User.GetUserId());
+                if (mode == null) return NotFound();
+
+                return View(mode);
+            }
 
             #endregion
 
@@ -91,11 +116,20 @@ namespace DoctorFAM.Web.Controllers
 
             if (!await _userService.IsExistUserById(User.GetUserId())) return NotFound();
 
-            #endregion
+            #endregion           
 
             #region Model State
 
-            if (!ModelState.IsValid) return View(patient);
+            if (!ModelState.IsValid)
+            {
+                #region Get User Population Covered
+
+                ViewBag.PopulationCovered = await _populationCovered.GetUserPopulation(User.GetUserId());
+
+                #endregion
+
+                return NotFound();
+            }
 
             #endregion
 
@@ -121,6 +155,12 @@ namespace DoctorFAM.Web.Controllers
 
                     return RedirectToAction("RequestedLaboratory", "HomeLaboratory", new { requestId = patient.RequestId, patientId = patientId });
             }
+
+            #endregion
+
+            #region Get User Population Covered
+
+            ViewBag.PopulationCovered = await _populationCovered.GetUserPopulation(User.GetUserId());
 
             #endregion
 

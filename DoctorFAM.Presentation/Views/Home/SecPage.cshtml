@@ -11,7 +11,7 @@
             <table class="table-responsive-md table-responsive-sm">
                 <tr>
                     <div class="col-lg-3 col-md-3 col-sm-3 p-4 m-2">
-                        <div class="single-pricing-box bg-image">
+                        <div class="single-pricing-box bg-image  single-pricing_Div">
                             <div class="pricing-header">
                                 <h5 class="hColorFon">پزشک آنلاین</h5>
                             </div>
@@ -51,7 +51,7 @@
 
     <div class="row  text-center justify-content-center ">
 
-        <div class=" col-md-3 theme-bg p-4 m-2   text-center justify-content-center">
+        <div class=" col-md-3 single-pricing_Div theme-bg p-4 m-2   text-center justify-content-center">
             <h5 class="font-w-7 text-white mt-3">  خانه سلامت </h5>
 
             <p class="text-justify right text-light">
@@ -99,7 +99,7 @@
                     </a>
                 </div>
                 <div class="col-md-6 col-sm-6 text-center justify-content-center">
-                    <a class=" hover-icon" asp-action="HomePharmacy" asp-controller="HomePharmacy">
+                    <a class=" hover-icon" asp-action="HomePatientTransport" asp-controller="HomePatientTransport">
                         <div class="featured-icon">
                             @*<i class="flaticon-testing fa-2x"></i>*@
                             <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/Transfer.jpg" alt="">
@@ -124,7 +124,7 @@
                 </a>
             </div>
         </div>
-        <div class=" col-md-3 dark-bg p-4 m-2   text-center justify-content-center">
+        <div class=" col-md-3 single-pricing_Div  dark-bg p-4 m-2   text-center justify-content-center">
             <h5 class="font-w-7 text-white mt-3">  کلینیک سلامت</h5>
             <p class="text-justify right text-light">
                 خدمات ویژه <b>دکتر فم</b> بر اساس  نیاز شما:
@@ -153,7 +153,7 @@
                     </a>
                 </div>
                 <div class="col-md-6 col-sm-6  text-center justify-content-center">
-                    <a class=" hover-icon">
+                    <a class=" hover-icon" asp-action="Index" asp-controller="Cancer">
 
                         <div class="featured-icon">
                             @*<i class="flaticon-report fa-2x"></i>*@
@@ -163,7 +163,7 @@
                     </a>
                 </div>
                 <div class="col-md-6 col-sm-6  text-center justify-content-center">
-                    <a class=" hover-icon">
+                    <a class=" hover-icon" asp-action="Index" asp-controller="Psych">
 
                         <div class="featured-icon">
                             @*<i class="flaticon-research fa-2x"></i>*@
@@ -173,7 +173,7 @@
                     </a>
                 </div>
                 <div class="col-md-6 col-sm-6  text-center justify-content-center">
-                    <a class=" hover-icon">
+                    <a class=" hover-icon" asp-action="Index" asp-controller="TradMed">
 
                         <div class="featured-icon">
                             @*<i class="flaticon-report fa-2x"></i>*@
@@ -183,7 +183,7 @@
                     </a>
                 </div>
                 <div class="col-md-6 col-sm-6  text-center justify-content-center">
-                    <a class=" hover-icon">
+                    <a class=" hover-icon" asp-action="Index" asp-controller="Skin">
 
                         <div class="featured-icon">
                             @*<i class="flaticon-research fa-2x"></i>*@
@@ -200,7 +200,7 @@
                 </a>
             </div>
         </div>
-        <div class=" col-md-3 theme-bg-2 p-4 m-2   text-center justify-content-center">
+        <div class=" col-md-3 single-pricing_Div  theme-bg-2 p-4 m-2   text-center justify-content-center">
             <h5 class="font-w-7 text-white mt-3">  بازار سلامت </h5>
             <p class="text-justify right text-light">
                 از فروشگاه سلامت <b>دکتر فم</b> دیدن نمایید:
@@ -224,7 +224,7 @@
                     <a class=" hover-icon" asp-action="Cosmetic" asp-controller="Shop">
 
                         <div class="featured-icon">
-                            <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/Hygienic.jpg" alt="">
+                            <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/Cosmetics.jpeg" alt="">
                             @*<i class="flaticon-report fa-2x"></i>*@
                         </div>
                         <p class="text-white mt-2">  آرایشی وبهداشتی </p>
@@ -235,7 +235,7 @@
 
                         <div class="featured-icon">
                             @*<i class="flaticon-testing fa-2x"></i>*@
-                            <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/03.jpg" alt="">
+                            <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/Adjective.jpeg" alt="">
                         </div>
                         <p class="text-white mt-2"> مکمل ها  </p>
                     </a>
@@ -265,7 +265,7 @@
 
                         <div class="featured-icon">
                             @*<i class="flaticon-connection fa-2x"></i>*@
-                            <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/04.jpg" alt="">
+                            <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/Legal.jpeg" alt="">
                         </div>
                         <p class="text-white mt-2"> مشاوره حقوقی </p>
                     </a>
@@ -297,7 +297,7 @@
                                 <div class="row">
                                     <div class="col-md-5"></div>
                                     <div class="col-md-7 text-center justify-content-center">
-                                        <a href="booking.html" class="book-now ">مشاهده</a>
+                                        <a class="book-now  hover-icon" asp-action="DoctorIntrud" asp-controller="Home">مشاهده</a>
                                     </div>
                                 </div>
                             </div>
@@ -318,7 +318,7 @@
                                 <div class="row">
                                     <div class="col-md-5"></div>
                                     <div class="col-md-7 text-center justify-content-center">
-                                        <a href="booking.html" class="book-now ">مشاهده</a>
+                                        <a class="book-now  hover-icon" asp-action="CentersIntrud" asp-controller="Home">مشاهده</a>
                                     </div>
                                 </div>
                             </div>
@@ -328,45 +328,93 @@
             </div>
         </div>
     </section>
-    <section class="">
+
+    <section class=" pt-0 mt-8 custom-mt-10 sm-mt-0">
         <div class="container">
             <div class="row">
-                <div class="col-md-6">
-                    <div class="select-box select-box3 aos m-3" data-aos="fade-up">
-                        <div class="d-flex align-items-center">
-                            <div class="image-holder">
-                                <span>
-                                    <img src="~/Content/Doctor/assets/img/icons/doct-01.png" alt="" />
-                                </span>
-                            </div>
-                            <div>
-                                <h2>نوبت گیری</h2>
-                                <p>در این بخش به شما در اخذ نوبت از مراکز درمانی و پزشکانی که در مجموعه دکترفم حضور ندارند کمک می کنیم.</p>
-                                <div class="row">
-                                    <div class="col-md-5"></div>
-                                    <div class="col-md-7 text-center justify-content-center">
-                                        <a href="booking.html" class="book-now ">مشاهده</a>
+                <div class="col-md-12">
+                    <div class="row  ">                        
+                        <div class="col-md-6 mt-3 text-center justify-content-center">
+                            <section class="banner p-0  fullscreen-banner">
+                                <div class="banner-slider owl-carousel no-pb" data-dots="false" data-nav="true">
+                                    <div class="item" data-bg-img="/Content/images/bg/02.jpg" data-overlay="5">
+                                        <div class="align-center">
+                                            <div class="container">
+                                                <div class="row justify-content-center text-center">
+                                                    <div class="col-lg-7 col-md-12">
+                                                        <h1 class="mb-4 text-white animated1"> نوبت گیری </h1>
+                                                        <p class="lead text-white animated2">  اخذ نوبت از مراکز پر ترافیک درمانی در سراسر کشور </p>
+                                                        <div class="animated3 mt-5">
+                                                            <a class="btn-Accept " href="#">
+                                                                ثبت درخواست
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="item" data-bg-img="/Content/images/bg/01.jpg" data-overlay="5">
+                                        <div class="align-center">
+                                            <div class="container">
+                                                <div class="row justify-content-center text-center">
+                                                    <div class="col-lg-7 col-md-12">
+                                                        <h1 class="mb-4 text-white animated1"> مددکاری </h1>
+                                                        <p class="lead text-white animated2"> معرفی بیماران مبتلا به سرطان به موسسات خیریه </p>
+                                                        <div class="animated3 mt-5">
+                                                            <a class="btn-Accept " href="#">
+                                                                ثبت درخواست
+                                                            </a>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                        <div class="col-md-6  ">
+                            <div class="col-md-12 mt-5">
+                                <div class="select-box2 theme aos" data-aos="fade-up">
+                                    <div class="d-flex align-items-center">
+                                        <div class="image-holder">
+                                            <span>
+                                                <img src="~/Content/Doctor/assets/img/icons/doct-02.png" alt="" />
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <h2>نوبت گیری</h2>
+                                            <p>در این بخش به شما در اخذ نوبت از مراکز درمانی و پزشکانی که در مجموعه دکترفم حضور ندارند کمک می کنیم.</p>
+                                            <div class="row">
+                                                <div class="col-md-5"></div>
+                                                <div class="col-md-7 text-center justify-content-center">
+                                                    <a href="booking.html" class="book-now ">مشاهده</a>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="select-box select-box3 theme aos m-3" data-aos="fade-up">
-                        <div class="d-flex align-items-center">
-                            <div class="image-holder">
-                                <span>
-                                    <img src="~/Content/Doctor/assets/img/icons/doct-02.png" alt="" />
-                                </span>
-                            </div>
-                            <div>
-                                <h2>مددکاری</h2>
-                                <p>در این بخش تلاش می کنیم بیماران مبتلا به سرطان را جهت دریافت کمکهای درمانی به مراکز مددکاری معرفی نمائیم. </p>
-                                <div class="row">
-                                    <div class="col-md-5"></div>
-                                    <div class="col-md-7 text-center justify-content-center">
-                                        <a href="booking.html" class="book-now ">مشاهده</a>
+                            <div class="col-md-12 mt-5">
+                                <div class="select-box2 theme aos" data-aos="fade-up">
+                                    <div class="d-flex align-items-center">
+                                        <div class="image-holder">
+                                            <span>
+                                                <img src="~/Content/Doctor/assets/img/icons/doct-02.png" alt="" />
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <h2>مددکاری</h2>
+                                            <p>در این بخش تلاش می کنیم بیماران مبتلا به سرطان را جهت دریافت کمکهای درمانی به مراکز مددکاری معرفی نمائیم. </p>
+                                            <div class="row">
+                                                <div class="col-md-5"></div>
+                                                <div class="col-md-7 text-center justify-content-center">
+                                                    <a href="booking.html" class="book-now ">مشاهده</a>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -376,6 +424,11 @@
             </div>
         </div>
     </section>
+
+
+
+
+
     <div class=" mt-5  pl-3 pr-3">
         <div class="row mt-5 text-center">
             <div class="col-lg-12 col-md-12  text-center ">
@@ -631,7 +684,35 @@
         </div>
     </section>
 
-    <section class="pos-r pt-0 mt-8 custom-mt-10 sm-mt-0">
+    <section class="dark-bg parallaxie" data-bg-img="/Content/images/bg/01.jpg" data-overlay="6">
+                <div class="container">
+                    <div class="row text-center">
+                        <div class="col-md-3 col-sm-6">
+                            <div class="counter"> <span class="count-number" data-to="235" data-speed="200">235</span>
+                                <span>+</span>
+                                <h6> خدمت دهندگان </h6>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 xs-mt-5">
+                            <div class="counter"> <span class="count-number" data-to="20" data-speed="200">20</span><span>+</span>
+                                <h6> عرضه کنندگان محصولات </h6>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 sm-mt-5">
+                            <div class="counter"> <span class="count-number" data-to="4000" data-speed="200">4000</span><span>+</span>
+                                <h6> خدمت گیرندگان </h6>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 sm-mt-5">
+                            <div class="counter"> <span class="count-number" data-to="15000" data-speed="200">15000</span><span>+</span>
+                                <h6> بازدیدکنندگان</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+    <section class="pos-r pt-0 mt-8 mb-3 custom-mt-10 sm-mt-0">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
@@ -674,45 +755,46 @@
                             </form>
                         </div>
                         <div class="col-md-1"></div>
-                        <div class="col-md-6 white-bg ">
-                            <div class="col-md-12 mt-5">
-                                <div class="select-box2 theme aos" data-aos="fade-up">
-                                    <div class="d-flex align-items-center">
-                                        <div class="image-holder">
-                                            <span>
-                                                <img src="~/Content/Doctor/assets/img/icons/doct-02.png" alt="" />
-                                            </span>
+                        <div class="col-lg-6 col-md-12 mt-5">
+                            <div class="owl-carousel no-pb" data-items="1" data-margin="30" data-dots="false" data-autoplay="true">
+                                <div class="item">
+                                    <div class="post">
+                                        <div class="post-image">
+                                            <img class="img-fluid rounded w-100" src="~/Content/images/blog/01.jpg" alt="">
                                         </div>
-                                        <div>
-                                            <h2>نوبت گیری</h2>
-                                            <p>در این بخش به شما در اخذ نوبت از مراکز درمانی و پزشکانی که در مجموعه دکترفم حضور ندارند کمک می کنیم.</p>
-                                            <div class="row">
-                                                <div class="col-md-5"></div>
-                                                <div class="col-md-7 text-center justify-content-center">
-                                                    <a href="booking.html" class="book-now ">مشاهده</a>
-                                                </div>
+                                        <div class="post-desc">
+                                            <div class="post-meta">
+                                                <ul class="list-inline">
+                                                    <li>پزشکان، متخصصین، داروخانه ها و آزمایشگاهها
+                                                    </li>
+
+                                                </ul>
                                             </div>
+                                            <div class="post-title">
+                                                <h4><a href="blog-single.html"> پذیرش کادر محترم درمان در سراسر کشور </a></h4>
+                                            </div>
+                                            
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-12 mt-5">
-                                <div class="select-box2 theme aos" data-aos="fade-up">
-                                    <div class="d-flex align-items-center">
-                                        <div class="image-holder">
-                                            <span>
-                                                <img src="~/Content/Doctor/assets/img/icons/doct-02.png" alt="" />
-                                            </span>
+                                <div class="item">
+                                    <div class="post">
+                                        <div class="post-image">
+                                            <img class="img-fluid rounded w-100" src="~/Content/images/blog/02.jpg" alt="">
                                         </div>
-                                        <div>
-                                            <h2>مددکاری</h2>
-                                            <p>در این بخش تلاش می کنیم بیماران مبتلا به سرطان را جهت دریافت کمکهای درمانی به مراکز مددکاری معرفی نمائیم. </p>
-                                            <div class="row">
-                                                <div class="col-md-5"></div>
-                                                <div class="col-md-7 text-center justify-content-center">
-                                                    <a href="booking.html" class="book-now ">مشاهده</a>
-                                                </div>
+                                        <div class="post-desc">
+                                            <div class="post-meta">
+                                                <ul class="list-inline">
+                                                    <li>
+                                                       عرضه کنندگان محصولات و تجهیزات پزشکی
+                                                    </li>
+                                                    
+                                                </ul>
                                             </div>
+                                            <div class="post-title">
+                                                <h4><a href="blog-single.html"> با عرضه محصولات خود در بازار سلامت عضو خدمت دهندگان دکترفم شوید </a></h4>
+                                            </div>
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -724,27 +806,10 @@
         </div>
     </section>
 
-    <div class="row mt-3 text-center justify-content-center" style="border-top: 1px solid #3143ee;">
-        <div class="col-md-3 mt-3 counter text-center">
-            <span class="count-number text-center" data-to="580" data-speed="100">۵۸۰</span>
-            <span>+</span>
-            <p class="text-center"> خدمت دهندگان </p>
-        </div>
-        <div class="col-md-3 mt-3 counter text-center">
-            <span class="count-number text-center" data-to="912" data-speed="100">۹۱۲</span>
-            <span>+</span>
-            <p class="text-center"> عرضه کنندگان محصولات</p>
-        </div>
-        <div class="col-md-3 mt-3 counter text-center">
-            <span class="count-number text-center" data-to="180000" data-speed="100">۱۸۰۰۰۰</span>
-            <span>+</span>
-            <p class="text-center"> خدمت گیرندگان </p>
-        </div>
-        <div class="col-md-3 mt-3 counter text-center">
-            <span class="count-number text-center" data-to="202000" data-speed="100">۲۰۲۰۰۰</span>
-            <span>+</span>
-            <p class="text-center"> بازدیدکنندگان </p>
-        </div>
-    </div>
+
+      
+
+
+    
 
 </div>

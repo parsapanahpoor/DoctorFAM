@@ -489,9 +489,6 @@ namespace DoctorFAM.Web.Controllers
                     //Create Notification For Supporters And Admins
                     var notifyResult = await _notificationService.CreateSupporterNotification(request.Id , Domain.Enums.Notification.SupporterNotificationText.HomePharmacyCreateFromUser , Domain.Enums.Notification.NotificationTarget.request , User.GetUserId());
 
-                    //Send Notification For Pharmacies 
-                    await _notificationService.CreateNotificationForPharmacyFromHomePharmacyRequest(request.Id , Domain.Enums.Notification.SupporterNotificationText.HomePharmacyCreateFromUser , Domain.Enums.Notification.NotificationTarget.request , User.GetUserId());
-
                     //Get Current User
                     var currentUser = await _userService.GetUserById(User.GetUserId());
 
@@ -499,9 +496,6 @@ namespace DoctorFAM.Web.Controllers
                     {
                         //Get List Of Admins And Supporter To Send Notification Into Them
                         var users = await _userService.GetAdminsAndSupportersNotificationForSendNotificationInHomePharmacy();
-
-                        //Get Validated Pharmacys For Send Notification 
-                        users.AddRange(await _homePharmacy.GetListOfPharmacysForArrivalsHomePharmacyRequests(request.Id));
 
                         //Fill Send Supporter Notification ViewModel For Send Notification
                         SendSupporterNotificationViewModel viewModel = new SendSupporterNotificationViewModel()
