@@ -129,6 +129,9 @@
   <data name="The operation has failed" xml:space="preserve">
     <value>عملیات با شکست مواجه شده است</value>
   </data>
+  <data name="To choose a family doctor, you must specify the address of your practice or activity in the doctor's information section." xml:space="preserve">
+    <value>برای انتخاب پزشک خانواده باید در قسمت اطلاعات پزشک آدرس مطب یا فعالیت خود را تعیین کنید.</value>
+  </data>
   <data name="You have not selected this item." xml:space="preserve">
     <value>شما این آیتم را انتخاب نکرده اید .</value>
   </data>

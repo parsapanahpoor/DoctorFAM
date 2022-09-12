@@ -14,6 +14,7 @@ using DoctorFAM.Domain.ViewModels.DoctorPanel.DosctorSideBarInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Employees;
 using DoctorFAM.Domain.ViewModels.Site.Doctor;
 using DoctorFAM.Domain.ViewModels.Site.Reservation;
+using DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor;
 using Microsoft.AspNetCore.Http;
 
 namespace DoctorFAM.Application.Services.Implementation
@@ -48,6 +49,11 @@ namespace DoctorFAM.Application.Services.Implementation
         #endregion
 
         #region Doctors Panel Side
+
+        public async Task<List<DoctorsInterestInfo>> GetDoctorSelectedInterests(ulong doctorId)
+        {
+            return await _doctorRepository.GetDoctorSelectedInterests(doctorId);
+        }
 
         public async Task<FilterDoctorOfficeEmployeesViewmodel> FilterDoctorOfficeEmployees(FilterDoctorOfficeEmployeesViewmodel filter)
         {
@@ -595,7 +601,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #endregion
 
-            #region Is Exist iterest For Doctor
+            #region Is Exist interest For Doctor
 
             if (await _doctorRepository.IsExistInterestForDoctor(interestId, doctor.Id))
             {
@@ -610,6 +616,24 @@ namespace DoctorFAM.Application.Services.Implementation
             {
                 return DoctorSelectedInterestResult.Faild;
             }
+
+            #endregion
+
+            #region If Interest Is Family Doctor 
+
+            //If Select Family Doctor That Doctor Must Have Address And Location 
+
+            #region Get Doctor Locations And Address
+
+            var workAddress = await _workAddress.GetLastWorkAddressByUserId(doctorOffice.OwnerId);
+
+            //Doctor Selected Family Doctor And Not Insert Office Location And Address
+            if (workAddress == null && interestId == 3)
+            {
+                return DoctorSelectedInterestResult.YouMustInsertLocationAndAddress;
+            }
+
+            #endregion
 
             #endregion
 
@@ -962,6 +986,73 @@ namespace DoctorFAM.Application.Services.Implementation
             #endregion
 
             return reservationDateTime.DoctorReservationDate.UserId.ToString();
+        }
+
+        #endregion
+
+        #region User Panel Side 
+
+        //Get List Of Doctors With Family Doctor Interests
+        public async Task<List<Doctor?>> FilterFamilyDoctorUserPanelSide(FilterFamilyDoctorUserPanelSideViewModel filter)
+        {
+            return await _doctorRepository.FilterFamilyDoctorUserPanelSide(filter);
+        }
+
+        //Fill Doctor Family Reservation Information Detail View Model
+        public async Task<ShowDoctorInformationDetailViewModel?> FillShowDoctorInformationDetailViewModel(ulong doctorId)
+        {
+            #region Get Doctor By Doctor Id
+
+            var doctor = await GetDoctorById(doctorId);
+            if(doctor == null) return null;
+
+            #endregion
+
+            #region Check Doctor Validation 
+
+            #region Organization Validation 
+
+            var organization = await _organizationService.GetDoctorOrganizationByUserId(doctor.UserId);
+            if(organization == null) return null;
+            if (organization.OrganizationInfoState != OrganizationInfoState.Accepted) return null;
+
+            #endregion
+
+            #region Validation Doctor Interest
+
+            var getDoctorInterest = await _doctorRepository.GetDoctorSelectedInterests(doctorId);
+            if (!getDoctorInterest.Any(p => !p.IsDelete && p.InterestId == 3)) return null;
+
+            #endregion
+
+            #endregion
+
+            #region Get Doctor Work Address 
+
+            var workAddress = await _workAddress.GetLastWorkAddressByUserId(doctor.UserId);
+
+            #endregion
+
+            #region Get Doctor Personal Information 
+
+            var doctorInfo = await _doctorRepository.GetDoctorsInfoByDoctorId(doctorId);
+            if (doctorInfo == null) return null;
+
+            #endregion
+
+            #region Fill View Model 
+
+            ShowDoctorInformationDetailViewModel model = new ShowDoctorInformationDetailViewModel()
+            {
+                DoctorsInfo = doctorInfo,
+                User = doctor.User,
+                WorkAddress = workAddress,
+                WorkLocation = doctor.User.WorkAddress
+            };
+
+            #endregion
+
+            return model;
         }
 
         #endregion

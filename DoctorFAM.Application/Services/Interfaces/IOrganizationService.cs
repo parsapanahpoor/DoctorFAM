@@ -1,4 +1,5 @@
-﻿using DoctorFAM.Domain.Entities.Organization;
+﻿using DoctorFAM.Domain.Entities.Account;
+using DoctorFAM.Domain.Entities.Organization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +29,12 @@ namespace DoctorFAM.Application.Services.Interfaces
         Task<bool> IsExistAnyDoctorOfficeEmployeeByUserId(ulong userId);
 
         Task<bool> IsExistAnyPharmacyOfficeEmployeeByUserId(ulong userId);
+
+        //Get Organization Members By Organization Id
+        Task<List<User>?> GetOrganizationMembersByOrganizationId(ulong organizationId);
+
+        //Get All Of organization Member By Organization Member User Id
+        Task<List<User>?> GetAllOfOrganizationMemberByOrganizationMemberUserId(ulong userId);
 
         #endregion
     }

@@ -178,9 +178,35 @@ namespace DoctorFAM.Application.Services.Implementation
             var admins = await _userService.GetListOfAdmins();
             user.AddRange(admins);
 
-            //Get Home Pharmacy Supporters
-            var supporters = await _userService.GetHomePharmacySupporters();
-            user.AddRange(supporters);
+            #region Send Notification For Current Supporter
+
+            if (SupporterNotificationText == SupporterNotificationText.HomePharmacyCreateFromUser
+              ||SupporterNotificationText == SupporterNotificationText.ApprovalOfTheRequestFromThePharmacy
+              ||SupporterNotificationText == SupporterNotificationText.ProvidingAnInvoiceFromThePharmacy
+              ||SupporterNotificationText == SupporterNotificationText.AcceptInvoiceFromCustomer
+              ||SupporterNotificationText == SupporterNotificationText.DeliveryByCourier
+              ||SupporterNotificationText == SupporterNotificationText.ReceivedByTheCustomer)
+            {
+                //Get Home Pharmacy Supporters
+                var supporters = await _userService.GetHomePharmacySupporters();
+                user.AddRange(supporters);
+            }
+
+            if (SupporterNotificationText == SupporterNotificationText.TakeReservation)
+            {
+                //Get Home Pharmacy Supporters
+                var supporters = await _userService.GetHomePharmacySupporters();
+                user.AddRange(supporters);
+            }
+
+            if (SupporterNotificationText == SupporterNotificationText.FamilyHomeRequest)
+            {
+                //Get Home Pharmacy Supporters
+                var supporters = await _userService.GetHomePharmacySupporters();
+                user.AddRange(supporters);
+            }
+
+            #endregion
 
             #endregion
 
@@ -266,6 +292,68 @@ namespace DoctorFAM.Application.Services.Implementation
         public async Task<List<SupporterNotification>?> GetAllOfUnSeenNoficationByReciverId(ulong reciverId)
         {
             return await _notificationService.GetAllOfUnSeenNoficationByReciverId(reciverId);
+        }
+
+        #endregion
+
+        #region User Panel Side 
+
+        //Create Notification For Family Doctor 
+        public async Task<bool> CreateNotificationForFamilyDoctor(ulong doctorUserId , ulong targetId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId)
+        {
+            #region Get Admins And Supporters 
+
+            List<User> user = new List<User>();
+
+            //Get Admins
+            var doctor = await _userService.GetUserById(doctorUserId);
+            user.Add(doctor);
+
+            #endregion
+
+            #region Check target 
+
+            //If Target is Request
+            if (notification == NotificationTarget.request)
+            {
+                var request = await _requestService.GetRequestById(targetId);
+                if (request == null) return false;
+            }
+
+            //If Target Is Reservation
+            if (notification == NotificationTarget.reservation)
+            {
+                var reservation = await _reservationService.GetDoctorReservationDateTimeById(targetId);
+                if (reservation == null) return false;
+            }
+
+            #endregion
+
+            #region Fill Notification Entity
+
+            List<SupporterNotification> model = new List<SupporterNotification>();
+
+            foreach (var item in user)
+            {
+                SupporterNotification notif = new SupporterNotification()
+                {
+                    CreateDate = DateTime.Now,
+                    IsDelete = false,
+                    IsSeen = false,
+                    SupporterNotificationText = SupporterNotificationText,
+                    TargetId = targetId,
+                    UserId = senderId,
+                    ReciverId = item.Id,
+                };
+
+                model.Add(notif);
+            };
+
+            await _notificationService.CreateRangeSupporter(model);
+
+            #endregion
+
+            return true;
         }
 
         #endregion

@@ -426,6 +426,9 @@
   <data name="The operation failed" xml:space="preserve">
     <value>فشلت العملية</value>
   </data>
+  <data name="To choose a family doctor, you must specify the address of your practice or activity in the doctor's information section." xml:space="preserve">
+    <value>لاختيار طبيب الأسرة ، يجب عليك تحديد عنوان ممارستك أو نشاطك في قسم معلومات الطبيب.</value>
+  </data>
   <data name="Turn ratings" xml:space="preserve">
     <value>تقييمات الدور</value>
   </data>

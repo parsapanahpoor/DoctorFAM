@@ -22,13 +22,16 @@
 
         @if (Model.DoctorInfoState == "Accepted")
         {
-            <li>
-                <a asp-area="Doctor" asp-controller="PopulationCovered" asp-action="FilterPopulationCovered">
-                    <i class="menu-icon glyphicon glyphicon-file"></i>
-                    <span class="menu-text"> @SharedLocalizer["List of covered people"] </span>
-                    <i class="menu-expand"></i>
-                </a>
-            </li>
+            @if (Model.DoctorFamily == true)
+            {
+                <li>
+                    <a asp-area="Doctor" asp-controller="PopulationCovered" asp-action="FilterPopulationCovered">
+                        <i class="menu-icon glyphicon glyphicon-file"></i>
+                        <span class="menu-text"> @SharedLocalizer["List of covered people"] </span>
+                        <i class="menu-expand"></i>
+                    </a>
+                </li>
+            }
 
             <li>
                 <a asp-area="Doctor" asp-controller="MedicalRecords" asp-action="FilterMedicalRecord">
@@ -86,7 +89,7 @@
                     @if (Model.DoctorFamily == true)
                     {
                         <li>
-                            <a href="#">
+                            <a asp-area="Doctor" asp-controller="PopulationCovered" asp-action="FilterPopulationCovered">
                                 <span class="menu-text">@SharedLocalizer["Doctor Family"]</span>
                             </a>
                         </li>

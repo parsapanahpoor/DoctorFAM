@@ -4,6 +4,7 @@ using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.BMI;
 using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.Entities.Doctors;
+using DoctorFAM.Domain.Entities.FamilyDoctor;
 using DoctorFAM.Domain.Entities.Interest;
 using DoctorFAM.Domain.Entities.Laboratory;
 using DoctorFAM.Domain.Entities.Languages;
@@ -209,6 +210,12 @@ namespace DoctorFAM.Data.DbContext
         #region BMI
 
         public DbSet<BMI> BMI { get; set; }
+
+        #endregion
+
+        #region Family Doctor 
+
+        public DbSet<UserSelectedFamilyDoctor> UserSelectedFamilyDoctor{ get; set; }
 
         #endregion
 

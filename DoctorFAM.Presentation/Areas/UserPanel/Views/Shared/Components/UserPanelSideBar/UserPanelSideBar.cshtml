@@ -19,6 +19,14 @@
         </li>
 
         <li>
+            <a asp-area="UserPanel" asp-controller="FamilyDoctor" asp-action="CheckUserHasFamilyDoctor">
+                <i class="menu-icon glyphicon glyphicon-file"></i>
+                <span class="menu-text"> @SharedLocalizer["Doctor Family"] </span>
+                <i class="menu-expand"></i>
+            </a>
+        </li>
+
+        <li>
             <a href="#" class="menu-dropdown">
                 <i class="menu-icon fa fa-calendar-o"></i>
                 <span class="menu-text"> @SharedLocalizer["Manage Reservation"] </span>

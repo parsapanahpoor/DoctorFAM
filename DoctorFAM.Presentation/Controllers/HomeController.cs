@@ -112,7 +112,6 @@ namespace DoctorFAM.Web.Controllers
 
         #endregion
 
-
         #region CentersIntrud
 
         public IActionResult CentersIntrud()
@@ -120,7 +119,6 @@ namespace DoctorFAM.Web.Controllers
             return View();
         }
         #endregion
-
 
         #region DoctorIntrud
 

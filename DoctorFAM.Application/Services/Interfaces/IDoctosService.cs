@@ -6,6 +6,7 @@ using DoctorFAM.Domain.ViewModels.DoctorPanel.DosctorSideBarInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Employees;
 using DoctorFAM.Domain.ViewModels.Site.Doctor;
 using DoctorFAM.Domain.ViewModels.Site.Reservation;
+using DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,8 @@ namespace DoctorFAM.Application.Services.Interfaces
     public interface IDoctorsService
     {
         #region Doctors Panel Side
+
+        Task<List<DoctorsInterestInfo>> GetDoctorSelectedInterests(ulong doctorId);
 
         Task<FilterDoctorOfficeEmployeesViewmodel> FilterDoctorOfficeEmployees(FilterDoctorOfficeEmployeesViewmodel filter);
 
@@ -74,6 +77,16 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Get Doctro For Send Notification For Take Reservation Notification 
         Task<string?> GetDoctroForSendNotificationForTakeReservationNotification(ulong reservationDateTimeId);
+
+        #endregion
+
+        #region User Panel Side 
+
+        //Get List Of Doctors With Family Doctor Interests
+        Task<List<Doctor?>> FilterFamilyDoctorUserPanelSide(FilterFamilyDoctorUserPanelSideViewModel filter);
+
+        //Fill Doctor Family Reservation Information Detail View Model
+        Task<ShowDoctorInformationDetailViewModel?> FillShowDoctorInformationDetailViewModel(ulong doctorId);
 
         #endregion
     }

@@ -4,6 +4,7 @@ using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DosctorSideBarInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Employees;
 using DoctorFAM.Domain.ViewModels.Site.Doctor;
+using DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,6 @@ namespace DoctorFAM.Domain.Interfaces
     public interface IDoctorsRepository
     {
         #region Doctors Panel Side
-
         Task<DoctorSideBarViewModel> GetDoctorsSideBarInfo(ulong userId);
 
         Task<DoctorsInfo?> GetDoctorsInformationByUserId(ulong userId);
@@ -70,6 +70,13 @@ namespace DoctorFAM.Domain.Interfaces
 
         //Get List Of All Doctors
         Task<List<ListOfAllDoctorsViewModel>> ListOfDoctors();
+
+        #endregion
+
+        #region User Panel Side 
+
+        //Get List Of Doctors With Family Doctor Interests
+        Task<List<Doctor?>> FilterFamilyDoctorUserPanelSide(FilterFamilyDoctorUserPanelSideViewModel filter);
 
         #endregion
     }

@@ -1,4 +1,5 @@
 ﻿using DoctorFAM.Application.Services.Interfaces;
+using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.Interfaces;
 using System;
@@ -84,6 +85,29 @@ namespace DoctorFAM.Application.Services.Implementation
         public async Task<bool> IsExistAnyPharmacyOfficeEmployeeByUserId(ulong userId)
         {
             return await _organization.IsExistAnyPharmacyOfficeEmployeeByUserId(userId);
+        }
+
+        //Get Organization Members By Organization Id
+        public async Task<List<User>?> GetOrganizationMembersByOrganizationId(ulong organizationId)
+        {
+            return await _organization.GetOrganizationMembersByOrganizationId(organizationId);
+        }
+
+        //Get All Of organization Member By Organization Member User Id
+        public async Task<List<User>?> GetAllOfOrganizationMemberByOrganizationMemberUserId(ulong userId)
+        {
+            #region get Organization 
+
+            var organization = await GetOrganizationByUserId(userId);
+            if (organization == null) return null;
+
+            #endregion
+
+            #region Get Organization Members By Organization Id
+
+            return await GetOrganizationMembersByOrganizationId(organization.Id);
+
+            #endregion
         }
 
         #endregion

@@ -22,6 +22,8 @@ namespace DoctorFAM.Domain.Enums.Notification
         [Display(Name = "Received by the customer")]
         ReceivedByTheCustomer,
         [Display(Name ="Take Reservation")]
-        TakeReservation
+        TakeReservation,
+        [Display(Name ="Family Home Request")]
+        FamilyHomeRequest
     }
 }

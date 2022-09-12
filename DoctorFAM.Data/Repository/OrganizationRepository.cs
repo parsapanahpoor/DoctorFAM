@@ -1,4 +1,5 @@
 ﻿using DoctorFAM.Data.DbContext;
+using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -89,6 +90,13 @@ namespace DoctorFAM.Data.Repository
         {
             return await _context.OrganizationMembers.Include(p=> p.Organization)
                                         .AnyAsync(p => p.UserId == userId && !p.IsDelete && p.Organization.OrganizationType == Domain.Enums.Organization.OrganizationType.Pharmacy);
+        }
+
+        //Get Organization Members By Organization Id
+        public async Task<List<User>?> GetOrganizationMembersByOrganizationId(ulong organizationId)
+        {
+            return await _context.OrganizationMembers.Include(p => p.User)
+                                    .Where(p => !p.IsDelete && p.OrganizationId == organizationId).Select(p => p.User).ToListAsync();
         }
 
         #endregion

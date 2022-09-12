@@ -9,6 +9,7 @@ namespace DoctorFAM.Domain.Enums.Notification
     public enum NotificationTarget
     {
         request,
-        reservation
+        reservation,
+        HomeFamilyRequest
     }
 }

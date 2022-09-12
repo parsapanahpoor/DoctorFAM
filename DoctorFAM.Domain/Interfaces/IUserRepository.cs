@@ -23,6 +23,9 @@ namespace DoctorFAM.Domain.Interfaces
 
         Task EditUser(User user);
 
+        //Get List Of Admins and Supporters 
+        Task<List<string>?> GetAllAdminsAndSupportersNotification();
+
         #endregion
 
         #region Admin Side 

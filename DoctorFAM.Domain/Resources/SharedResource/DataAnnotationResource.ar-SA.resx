@@ -189,6 +189,9 @@
   <data name="Current Password" xml:space="preserve">
     <value>كلمة المرور الحالية</value>
   </data>
+  <data name="Decline" xml:space="preserve">
+    <value>ليس مقبولا</value>
+  </data>
   <data name="Default" xml:space="preserve">
     <value>پیش فرض</value>
   </data>
@@ -254,6 +257,9 @@
   </data>
   <data name="Failed" xml:space="preserve">
     <value>غير ناجح</value>
+  </data>
+  <data name="Family Home Request" xml:space="preserve">
+    <value>طلب طبيب الأسرة</value>
   </data>
   <data name="fat" xml:space="preserve">
     <value>زيت</value>

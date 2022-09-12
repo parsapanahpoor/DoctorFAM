@@ -97,6 +97,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         Task<ChangeUserPasswordResponse> ChangeUserPasswordAsync(ulong userId, ChangeUserPasswordViewModel model);
 
+        //Get List Of Admins and Supporters 
+        Task<List<string>?> GetAllAdminsAndSupportersNotification();
+
         #endregion
     }
 }

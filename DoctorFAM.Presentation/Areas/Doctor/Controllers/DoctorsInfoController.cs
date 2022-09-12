@@ -187,6 +187,10 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
                 case Domain.Entities.Doctors.DoctorSelectedInterestResult.ItemIsExist:
                     TempData[WarningMessage] = _sharedLocalizer["You have selected this item."].Value;
                     return RedirectToAction(nameof(DoctorInterests));
+
+                case Domain.Entities.Doctors.DoctorSelectedInterestResult.YouMustInsertLocationAndAddress:
+                    TempData[ErrorMessage] = _sharedLocalizer["To choose a family doctor, you must specify the address of your practice or activity in the doctor's information section."].Value;
+                    return RedirectToAction(nameof(DoctorInterests));
             }
 
             TempData[ErrorMessage] = _sharedLocalizer["The operation has failed"].Value;

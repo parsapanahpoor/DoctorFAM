@@ -9,14 +9,15 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
     {
         #region Ctor
 
-        public IDoctorsService _doctorService { get; set; }
-
+        private readonly IDoctorsService _doctorService;
+        private readonly IDashboardsService _dashboardService;
         private readonly IOrganizationService _organizationService;
 
-        public HomeController(IDoctorsService doctorService , IOrganizationService organizationService)
+        public HomeController(IDoctorsService doctorService , IOrganizationService organizationService , IDashboardsService dashboardService)
         {
             _doctorService = doctorService;
             _organizationService = organizationService;
+            _dashboardService = dashboardService;
         }
 
         #endregion
@@ -52,7 +53,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
             #endregion
 
-            return View();
+            return View(await _dashboardService.FillDoctorPanelDashboardViewModel(User.GetUserId()));
         }
 
         #endregion

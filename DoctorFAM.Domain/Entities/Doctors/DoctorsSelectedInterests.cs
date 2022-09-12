@@ -32,6 +32,7 @@ namespace DoctorFAM.Domain.Entities.Doctors
         Success,
         Faild,
         ItemIsExist,
-        ItemNotExist
+        ItemNotExist,
+        YouMustInsertLocationAndAddress
     }
 }

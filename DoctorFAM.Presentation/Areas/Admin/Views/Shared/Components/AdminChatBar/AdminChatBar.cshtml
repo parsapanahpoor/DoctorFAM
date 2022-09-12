@@ -71,6 +71,14 @@
                                 {
                                     <div>دریافت بسته توسط سفارش دهنده</div>
                                 }
+                                @if (item.SupporterNotificationText == DoctorFAM.Domain.Enums.Notification.SupporterNotificationText.TakeReservation)
+                                {
+                                    <div>نوبت دریافت شده از پزشک</div>
+                                }
+                                @if (item.SupporterNotificationText == DoctorFAM.Domain.Enums.Notification.SupporterNotificationText.FamilyHomeRequest)
+                                {
+                                    <div>درخواست برای پزشک خانواده</div>
+                                }
                             </div>
                         </div>
                     </li>

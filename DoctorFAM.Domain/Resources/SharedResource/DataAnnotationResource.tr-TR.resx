@@ -177,6 +177,9 @@
   <data name="Current Password" xml:space="preserve">
     <value>Mevcut Şifre</value>
   </data>
+  <data name="Decline" xml:space="preserve">
+    <value>Kabul edilmedi</value>
+  </data>
   <data name="Default" xml:space="preserve">
     <value>Varsayım</value>
   </data>
@@ -224,6 +227,9 @@
   </data>
   <data name="Failed" xml:space="preserve">
     <value>Başarısız</value>
+  </data>
+  <data name="Family Home Request" xml:space="preserve">
+    <value>Aile hekiminin isteği</value>
   </data>
   <data name="fat" xml:space="preserve">
     <value>yağ</value>

@@ -2,6 +2,7 @@
 using DoctorFAM.Domain.Entities.Common;
 using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.Entities.Doctors;
+using DoctorFAM.Domain.Entities.FamilyDoctor;
 using DoctorFAM.Domain.Entities.Notification;
 using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.Entities.Pharmacy;
@@ -130,6 +131,12 @@ namespace DoctorFAM.Domain.Entities.Account
         public ICollection<BMI.BMI> BMI { get; set; }
 
         public ICollection<HomePharmacyRequestDetailPrice> HomePharmacyRequestDetailPrices { get; set; }
+
+        [InverseProperty("Doctor")]
+        public ICollection<UserSelectedFamilyDoctor> FamilyDoctor { get; set; }
+
+        [InverseProperty("Patient")]
+        public ICollection<UserSelectedFamilyDoctor> PatientForFamilyDoctor { get; set; }
 
         #endregion
     }

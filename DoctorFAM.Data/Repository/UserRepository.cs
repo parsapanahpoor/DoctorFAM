@@ -78,6 +78,22 @@ namespace DoctorFAM.Data.Repository
             return model;
         }
 
+        //Get List Of Admins and Supporters 
+        public async Task<List<string>?> GetAllAdminsAndSupportersNotification()
+        {
+            List<string> model = new List<string>();
+
+            //Get Admins User Id
+            var admins = await _context.Users.Where(p => !p.IsDelete && p.IsAdmin).Select(p => p.Id.ToString()).ToListAsync();
+            model.AddRange(admins);
+
+            //Get Supporters User Id
+            var supporters = await _context.UserRoles.Where(p => !p.IsDelete && p.RoleId == 3).Select(p => p.UserId.ToString()).ToListAsync();
+            model.AddRange(supporters);
+
+            return model;
+        }
+
         #endregion
 
         #region User Panel

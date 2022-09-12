@@ -17,9 +17,9 @@
         <div class="navbar-container">
             <!-- Navbar Barnd -->
             <div class="navbar-header @(currentCulture.IsRtl ? "pull-right":"pull-left")">
-               <a href="/Home/SecPage" class="navbar-brand">
+                <a href="/Home/SecPage" class="navbar-brand">
                     <small>
-                        <img  class="logoImage text-center align-items-center" src="/Content/images/Logo/doctorfamTes.png" alt="دکترفام">                       
+                        <img class="logoImage text-center align-items-center" src="/Content/images/Logo/doctorfamTes.png" alt="دکترفام">
                     </small>
                 </a>
             </div>
@@ -34,9 +34,37 @@
                 <div class="navbar-account">
                     <ul class="account-area">
 
-                             <li class="marli" >
-                            
-                            <a class="dropdown-toggle btn btn-blue " data-toggle="dropdown" title="انتخاب زبان" href="#"><i class="fa fa-angle-down"></i>
+                        <!--Notification-->
+                        <li>
+                            <a class="wave in" id="chat-link" title="Chat" href="#">
+                                <i class="icon glyphicon glyphicon-comment"></i>
+                                @*                                <span class="badge">4</span>
+                                *@
+                            </a>
+                        </li>
+
+                        <!--Online-->
+                        <li class="marli margin-left-10" id="Online">
+
+                            <a class="dropdown-toggle btn btn-success" href="#">
+                                آنلاین
+                            </a>
+
+                        </li>
+
+                        <!--Offline-->
+                        <li class="marli margin-left-10 " id="disConnect">
+
+                            <a class="dropdown-toggle btn btn-danger" href="#">
+                                آفلاین
+                            </a>
+
+                        </li>
+
+                        <li class="marli margin-left-10">
+
+                            <a class="dropdown-toggle btn btn-blue " data-toggle="dropdown" title="انتخاب زبان" href="#">
+                                <i class="fa fa-angle-down"></i>
                                 انتخاب زبان
                             </a>
                             <!--Tasks Dropdown-->
@@ -54,16 +82,9 @@
                                     </li>
                                 }
                             </ul>
-                           
+
                         </li>
 
-                    
-                     
-                        <li>
-                            <a class="wave in" id="chat-link" title="Chat" href="#">
-                                <i class="icon glyphicon glyphicon-comment"></i>
-                            </a>
-                        </li>
                         <li>
                             <a class="login-area dropdown-toggle" data-toggle="dropdown">
                                 <div class="avatar" title="View your public profile">
@@ -92,7 +113,7 @@
                                 </li>
                                 <!--Theme Selector Area-->
                                 <li class="theme-area">
-                                  
+
                                 </li>
                                 <!--/Theme Selector Area-->
                                 <li class="dropdown-footer @(isRtl ? "text-right": "")">
@@ -108,7 +129,7 @@
                         no space must be between these elements-->
                         <!-- Settings -->
                     </ul>
-                
+
                     <!-- Settings -->
                 </div>
             </div>

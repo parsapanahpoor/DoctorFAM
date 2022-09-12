@@ -44,5 +44,12 @@ namespace DoctorFAM.Application.Services.Interfaces
         Task<bool> SeenAllOfUnSeenCurrentUserNotification(ulong userId);
 
         #endregion
+
+        #region User Panel Side 
+
+        //Create Notification For Family Doctor
+        Task<bool> CreateNotificationForFamilyDoctor(ulong doctorUserId, ulong targetId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId);
+
+        #endregion
     }
 }

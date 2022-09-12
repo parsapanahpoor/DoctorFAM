@@ -1,9 +1,55 @@
-﻿@{
-    ViewData["Title"] = "Index";
+﻿@model DoctorFAM.Domain.ViewModels.DoctorPanel.Dashbaord.DoctorPanelDashboardViewModel
+
+@{
+    ViewData["Title"] = "Doctor Panel Dashboard";
 }
 
-@section Breadcrumb{
+@section Breadcrumb {
+    <li class="active">@SharedHtmlLocalizer["Home"]</li>
+}
+
+    @section Styles
+    {
+    <style>
+
+        .databox-bottom {
+            height: 100% !important;
+        }
+
+        .databox.databox-vertical.databox-lg {
+            height: 100%;
+            width: 100%;
+        }
+
+        .databox.databox-vertical.databox-halved .databox-top {
+            height: 60px;
+        }
+
+        .databox-icon {
+            margin-top: 10px !important;
+        }
+
+        .dropdown-menu {
+            left: 0;
+            right: auto;
+        }
+
+    </style>
 }
 
 @await Component.InvokeAsync("DoctorsInfos")
 
+
+    <div class="page-body">
+
+        <div class="row">
+
+            @*Count Of Population Covered*@
+            <partial name="_CountOfPopulationCovered" model="@Model" />
+
+            @*Box Of Lastest Family Doctor Requests*@
+            <partial name="_LastestFamilyDoctorRequests" model="@Model.ListOfRequestForFamilyDoctor" />
+
+        </div>
+
+    </div>
