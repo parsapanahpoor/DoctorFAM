@@ -1,4 +1,6 @@
 ﻿using DoctorFAM.Domain.Entities.FamilyDoctor;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.PopulationCovered;
+using DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +21,28 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Choosing A Doctor Family
         Task<bool> ChoosingFamilyDoctor(ulong doctorUserId, ulong patientId);
+
+        //Show User Family Doctor Info In User Panel
+        Task<ShowUserFamilyDoctorInfo?> FillShowUserFamilyDoctorInfoViewModel(ulong userId);
+
+        #endregion
+
+        #region Doctor Panel 
+
+        //Get Persone Information Detail In Doctor Population Covered
+        Task<ShowPopulationCoveredDetailViewModel?> GetPersoneInformationDetailInDoctorPopulationCovered(ulong requestId, ulong doctorId);
+
+        //Get User Selected Family Doctor By Patient Id And Doctor Id With Accepted And Waiting State
+        Task<UserSelectedFamilyDoctor?> GetUserSelectedFamilyDoctorByPatientIdAndDoctorIdWithAcceptedAndWaitingState(ulong userId, ulong doctorId);
+
+        //Get User Selected Family Doctor By Request Id
+        Task<UserSelectedFamilyDoctor?> GetUserSelectedFamilyDoctorByRequestId(ulong requestId);
+
+        //Change User Selected Family Doctor Request From Doctor
+        Task<bool> ChangeUserSeletedFamilyDoctorRequestFromDoctor(UserSelectedFamilyDoctor userSelectedRequest, ulong doctorId);
+
+        //List Of Doctor Population Covered Users
+        Task<ListOfDoctorPopulationCoveredViewModel> FilterDoctorPopulationCovered(ListOfDoctorPopulationCoveredViewModel filter);
 
         #endregion
     }

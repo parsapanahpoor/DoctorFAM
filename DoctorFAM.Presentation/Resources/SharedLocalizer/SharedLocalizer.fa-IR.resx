@@ -498,4 +498,31 @@
   <data name="To choose a family doctor, you must specify the address of your practice or activity in the doctor's information section." xml:space="preserve">
     <value>برای انتخاب پزشک خانواده باید در قسمت اطلاعات پزشک آدرس مطب یا فعالیت خود را تعیین کنید.</value>
   </data>
+  <data name="Female" xml:space="preserve">
+    <value>زن</value>
+  </data>
+  <data name="Free" xml:space="preserve">
+    <value>بیمه ی آزاد</value>
+  </data>
+  <data name="FreeJobs" xml:space="preserve">
+    <value>مشاغل آزاد</value>
+  </data>
+  <data name="Iranian" xml:space="preserve">
+    <value>سلامت ایرانیان</value>
+  </data>
+  <data name="Male" xml:space="preserve">
+    <value>مرد</value>
+  </data>
+  <data name="Salamat" xml:space="preserve">
+    <value>بیمه ی سلامت</value>
+  </data>
+  <data name="Tamin" xml:space="preserve">
+    <value>تامین اجتماعی</value>
+  </data>
+  <data name="Decline Request From Doctor" xml:space="preserve">
+    <value>رد درخواست توسط پزشک خانواده</value>
+  </data>
+  <data name="Reject Description From Doctor" xml:space="preserve">
+    <value>علت رد درخواست</value>
+  </data>
 </root>

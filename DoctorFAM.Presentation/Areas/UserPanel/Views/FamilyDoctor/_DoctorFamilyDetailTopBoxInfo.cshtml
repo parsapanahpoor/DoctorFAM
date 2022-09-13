@@ -1,0 +1,39 @@
+﻿@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.Extensions
+@model DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor.ShowUserFamilyDoctorInfo
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
+
+<div class="databox databox-xlg databox-halved databox-shadowed databox-vertical no-margin-bottom">
+    <div class="databox-top bg-white padding-10">
+        <div class="col-lg-4 col-sm-4 col-xs-4">
+            <img src="@Model.User.GetUserAvatar()" style="width: 75px; height: 75px;" class="image-circular bordered-3 bordered-palegreen">
+        </div>
+        <div class="col-lg-8 col-sm-8 col-xs-8 text-align-left padding-10">
+            <span class="databox-header carbon no-margin"> @Model.User.Username </span>
+                @if (@Model.DoctorsInfo.Education == null)
+                {
+                <span class="databox-text lightcarbon no-margin danger">@Localizer["Education Not Found"]</span>
+                }else
+                {
+                   <span class="databox-text lightcarbon no-margin">@Model.DoctorsInfo.Education</span>
+                }
+        </div>
+    </div>
+
+    <div class="databox-bottom bg-white no-padding">
+        <div class="databox-row row-12">
+            <div class="databox-row row-6 no-padding">
+                <div class="databox-cell cell-6 no-padding text-align-center bordered-right bordered-platinum">
+                    <span class="databox-text sonic-silver  no-margin"> @Localizer["Mobile"] </span>
+                    <span class="databox-number lightcarbon no-margin"> @Model.User.Mobile </span>
+                </div>
+             
+                <div class="databox-cell cell-6 no-padding text-align-center">
+                    <span class="databox-text sonic-silver no-margin"> @Localizer["Register Date"] </span>
+                    <span class="databox-number lightcarbon no-margin"> @Model.User.CreateDate.ToShamsi() </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

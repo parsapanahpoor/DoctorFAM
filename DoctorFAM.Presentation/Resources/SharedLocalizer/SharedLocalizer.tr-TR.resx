@@ -192,6 +192,9 @@
   <data name="Decline" xml:space="preserve">
     <value>Reddetmek</value>
   </data>
+  <data name="Decline Request From Doctor" xml:space="preserve">
+    <value>Doktor talebi reddetti</value>
+  </data>
   <data name="Doctor Family" xml:space="preserve">
     <value>family doctor</value>
   </data>
@@ -386,6 +389,9 @@
   </data>
   <data name="Records of medical" xml:space="preserve">
     <value>Tıbbi Prosedür Kayıtları</value>
+  </data>
+  <data name="Reject Description From Doctor" xml:space="preserve">
+    <value>Başvurunun reddedilme nedeni</value>
   </data>
   <data name="Request For Home Pharmacy" xml:space="preserve">
     <value>درخواست برای داروخانه در منزل</value>

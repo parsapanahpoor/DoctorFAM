@@ -1,0 +1,31 @@
+﻿@model DoctorFAM.Domain.Entities.FamilyDoctor.UserSelectedFamilyDoctor
+
+@if (Model != null && Model.FamilyDoctorRequestState == DoctorFAM.Domain.Enums.FamilyDoctor.FamilyDoctorRequestState.Decline)
+{
+
+    <div class="col-lg-12 col-sm-12 col-xs-12">
+        <div class="widget">
+            <div class="widget-header bg-danger">
+                <span class="widget-caption">@SharedLocalizer["Decline Request From Doctor"] </span>
+                <div class="widget-buttons">
+                    <a href="#" data-toggle="config">
+                        <i class="fa fa-cog"></i>
+                    </a>
+                    <a href="#" data-toggle="maximize">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a href="#" data-toggle="collapse">
+                        <i class="fa fa-minus"></i>
+                    </a>
+                    <a href="#" data-toggle="dispose">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div><!--Widget Buttons-->
+            </div><!--Widget Header-->
+            <div class="widget-body bg-danger">
+                <p> @SharedLocalizer["Reject Description From Doctor"] : @Model.RejectDescription </p>
+            </div><!--Widget Body-->
+        </div><!--Widget-->
+    </div>
+
+}

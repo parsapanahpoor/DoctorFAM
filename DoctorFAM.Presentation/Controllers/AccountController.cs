@@ -14,10 +14,8 @@ namespace DoctorFAM.Web.Controllers
     {
         #region Ctor
 
-        private IUserService _userService;
-
+        private readonly IUserService _userService;
         private readonly ISMSService _smsservice;
-
         private readonly ISiteSettingService _siteSettingService;
 
         public AccountController(IUserService userService, ISMSService smsservice, ISiteSettingService siteSettingService)

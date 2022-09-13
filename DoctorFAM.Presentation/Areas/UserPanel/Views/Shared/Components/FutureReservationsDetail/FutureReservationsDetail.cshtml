@@ -12,7 +12,7 @@
             <i class="widget-icon fa fa-tags info"></i>
             <span class="widget-caption info">@SharedLocalizer["List Of Futur Reservation"]</span>
         </div><!--Widget Header-->
-        <div class="widget-body  no-padding" style="height: 150px !important;overflow-y: scroll;">
+        <div class="widget-body  no-padding" style="height:auto; max-height: 150px !important;overflow-y: scroll;">
             <div class="tickets-container">
                 <ul class="tickets-list">
                     @if (Model.Entities != null && Model.Entities.Any())

@@ -117,46 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Avatar" xml:space="preserve">
-    <value>آواتار</value>
+  <data name="Date Time" xml:space="preserve">
+    <value>Tarih Saat</value>
   </data>
-  <data name="Count Of Population Covered" xml:space="preserve">
-    <value>تعداد افراد تحت پوشش فرد</value>
+  <data name="Email" xml:space="preserve">
+    <value>E-posta</value>
   </data>
-  <data name="Delete Filter" xml:space="preserve">
-    <value>حذف فیلتر</value>
-  </data>
-  <data name="Docotr Panel" xml:space="preserve">
-    <value>پنل پزشک</value>
-  </data>
-  <data name="Filter" xml:space="preserve">
-    <value>فیلتر</value>
-  </data>
-  <data name="List Of Population Covered" xml:space="preserve">
-    <value>لیست جمعیت تحت پوشش</value>
-  </data>
-  <data name="List Of Your Population Covered" xml:space="preserve">
-    <value>لیست افراد تحت پوشش شما</value>
+  <data name="List Of Lastest Family Doctor Requests" xml:space="preserve">
+    <value>En Son Aile Hekimi Taleplerinin Listesi</value>
   </data>
   <data name="Mobile" xml:space="preserve">
-    <value>موبایل</value>
+    <value>Mobil</value>
   </data>
-  <data name="NationalId" xml:space="preserve">
-    <value>کدملی</value>
-  </data>
-  <data name="Personal Info" xml:space="preserve">
-    <value>اطلاعات فرد</value>
-  </data>
-  <data name="Persone" xml:space="preserve">
-    <value>فرد</value>
-  </data>
-  <data name="Possibilities" xml:space="preserve">
-    <value>امکانات</value>
-  </data>
-  <data name="User Fiter" xml:space="preserve">
-    <value>مدیریت افراد</value>
-  </data>
-  <data name="Username" xml:space="preserve">
-    <value>نام کاربر در سامانه</value>
+  <data name="User Avatar" xml:space="preserve">
+    <value>Kullanıcı Avatarı</value>
   </data>
 </root>

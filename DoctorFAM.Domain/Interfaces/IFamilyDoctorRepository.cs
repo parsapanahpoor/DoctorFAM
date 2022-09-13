@@ -1,4 +1,5 @@
 ﻿using DoctorFAM.Domain.Entities.FamilyDoctor;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.PopulationCovered;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,22 @@ namespace DoctorFAM.Domain.Interfaces
 
         //Remove Family Doctor For This Patient 
         Task RemoveFamilyDoctorForThisPatient(UserSelectedFamilyDoctor familyDoctor);
+
+        //Update User Selected Family Doctor 
+        Task UpdateUserSelectedFamilyDoctor(UserSelectedFamilyDoctor userSelectedFamilyDoctor);
+
+        #endregion
+
+        #region Doctor Panel 
+
+        //Get User Selected Family Doctor By Patient Id And Doctor Id With Accepted And Waiting State
+        Task<UserSelectedFamilyDoctor?> GetUserSelectedFamilyDoctorByPatientIdAndDoctorIdWithAcceptedAndWaitingState(ulong userId, ulong doctorId);
+
+        //Get User Selected Family Doctor By Request Id
+        Task<UserSelectedFamilyDoctor?> GetUserSelectedFamilyDoctorByRequestId(ulong requestId);
+
+        //List Of Doctor Population Covered Users
+        Task<ListOfDoctorPopulationCoveredViewModel> FilterDoctorPopulationCovered(ListOfDoctorPopulationCoveredViewModel filter);
 
         #endregion
     }

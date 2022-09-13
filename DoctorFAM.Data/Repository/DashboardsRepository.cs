@@ -261,6 +261,7 @@ namespace DoctorFAM.Data.Repository
             model.ListOfRequestForFamilyDoctor = await _context.UserSelectedFamilyDoctor.Include(p => p.Patient)
                                                     .Where(p => !p.IsDelete && p.DoctorId == organization.OwnerId
                                                         && p.FamilyDoctorRequestState == Domain.Enums.FamilyDoctor.FamilyDoctorRequestState.WaitingForConfirm)
+                                                            .OrderByDescending(p=> p.CreateDate)
                                                                 .Select(p=> p.Patient).ToListAsync();
 
             #endregion

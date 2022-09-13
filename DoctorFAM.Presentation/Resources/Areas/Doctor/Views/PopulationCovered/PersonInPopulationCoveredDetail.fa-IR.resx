@@ -117,46 +117,79 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Avatar" xml:space="preserve">
-    <value>آواتار</value>
+  <data name="Accepted" xml:space="preserve">
+    <value>پذیرفته شده</value>
   </data>
-  <data name="Count Of Population Covered" xml:space="preserve">
-    <value>تعداد افراد تحت پوشش فرد</value>
+  <data name="Age" xml:space="preserve">
+    <value>سن</value>
   </data>
-  <data name="Delete Filter" xml:space="preserve">
-    <value>حذف فیلتر</value>
+  <data name="BirthDay" xml:space="preserve">
+    <value>تاریخ تولد</value>
   </data>
-  <data name="Docotr Panel" xml:space="preserve">
-    <value>پنل پزشک</value>
+  <data name="Change Population Covered State" xml:space="preserve">
+    <value>تغییر وضعیت کاربر در جمعیت تحت پوشش شما</value>
   </data>
-  <data name="Filter" xml:space="preserve">
-    <value>فیلتر</value>
+  <data name="Change User Population Covered State" xml:space="preserve">
+    <value>تغییر وضعیت کاربر در جمعیت تحت پوشش شما</value>
   </data>
-  <data name="List Of Population Covered" xml:space="preserve">
-    <value>لیست جمعیت تحت پوشش</value>
+  <data name="Decline" xml:space="preserve">
+    <value>رد درخواست</value>
   </data>
-  <data name="List Of Your Population Covered" xml:space="preserve">
-    <value>لیست افراد تحت پوشش شما</value>
+  <data name="Email" xml:space="preserve">
+    <value>ایمیل</value>
+  </data>
+  <data name="Empty" xml:space="preserve">
+    <value>خالی</value>
+  </data>
+  <data name="Enter the reason for not confirming the information" xml:space="preserve">
+    <value>دلیل عدم پذیرش کاربر </value>
+  </data>
+  <data name="Extra Mobile" xml:space="preserve">
+    <value>موبایل 2</value>
+  </data>
+  <data name="First Name" xml:space="preserve">
+    <value>نام </value>
+  </data>
+  <data name="Gender" xml:space="preserve">
+    <value>جنسیت</value>
+  </data>
+  <data name="Insurance Type" xml:space="preserve">
+    <value>بیمه</value>
+  </data>
+  <data name="Last Name" xml:space="preserve">
+    <value>نام خانوادگی</value>
   </data>
   <data name="Mobile" xml:space="preserve">
     <value>موبایل</value>
   </data>
-  <data name="NationalId" xml:space="preserve">
+  <data name="National Id" xml:space="preserve">
     <value>کدملی</value>
   </data>
-  <data name="Personal Info" xml:space="preserve">
-    <value>اطلاعات فرد</value>
+  <data name="Patient Information" xml:space="preserve">
+    <value>اطلاعات کاربر</value>
   </data>
-  <data name="Persone" xml:space="preserve">
-    <value>فرد</value>
+  <data name="Patient population Covered" xml:space="preserve">
+    <value>جمعیت تحت پوشش کاربر </value>
   </data>
-  <data name="Possibilities" xml:space="preserve">
-    <value>امکانات</value>
+  <data name="Ratio" xml:space="preserve">
+    <value>نسبت</value>
   </data>
-  <data name="User Fiter" xml:space="preserve">
-    <value>مدیریت افراد</value>
+  <data name="Request Create Date" xml:space="preserve">
+    <value>تاریخ درج درخواست </value>
   </data>
-  <data name="Username" xml:space="preserve">
-    <value>نام کاربر در سامانه</value>
+  <data name="Show Person Detail Details" xml:space="preserve">
+    <value>نمایش اطلاعات کاربر</value>
+  </data>
+  <data name="State" xml:space="preserve">
+    <value>وضعیت</value>
+  </data>
+  <data name="Submit" xml:space="preserve">
+    <value>ثبت</value>
+  </data>
+  <data name="User name" xml:space="preserve">
+    <value>نام کاربری در سامانه</value>
+  </data>
+  <data name="User Selected Famili Doctor Request Id" xml:space="preserve">
+    <value>شماره ی پیگیری درخواست</value>
   </data>
 </root>

@@ -189,6 +189,9 @@
   <data name="Decline" xml:space="preserve">
     <value>انخفاض</value>
   </data>
+  <data name="Decline Request From Doctor" xml:space="preserve">
+    <value>رفض الطبيب للطلب</value>
+  </data>
   <data name="Doctor Family" xml:space="preserve">
     <value>طبيب الأسرة</value>
   </data>
@@ -209,6 +212,15 @@
   </data>
   <data name="Favorite activities" xml:space="preserve">
     <value>الأنشطة الخاصة بك</value>
+  </data>
+  <data name="Female" xml:space="preserve">
+    <value>أنثى</value>
+  </data>
+  <data name="Free" xml:space="preserve">
+    <value>تأمين مجاني</value>
+  </data>
+  <data name="FreeJobs" xml:space="preserve">
+    <value>العاملون لحسابهم الخاص</value>
   </data>
   <data name="From" xml:space="preserve">
     <value>من عند</value>
@@ -239,6 +251,9 @@
   </data>
   <data name="Inaccessibility" xml:space="preserve">
     <value>صعوبة الوصول</value>
+  </data>
+  <data name="Iranian" xml:space="preserve">
+    <value>صحة الإيرانيين</value>
   </data>
   <data name="Items" xml:space="preserve">
     <value>أغراض</value>
@@ -290,6 +305,9 @@
   </data>
   <data name="LogOut" xml:space="preserve">
     <value>تسجيل خروج</value>
+  </data>
+  <data name="Male" xml:space="preserve">
+    <value>رجل</value>
   </data>
   <data name="Manage Articles" xml:space="preserve">
     <value>إدارة المقالات</value>
@@ -384,11 +402,17 @@
   <data name="Records of medical" xml:space="preserve">
     <value>سجلات الإجراءات الطبية</value>
   </data>
+  <data name="Reject Description From Doctor" xml:space="preserve">
+    <value>سبب رفض الطلب</value>
+  </data>
   <data name="Request For Home Pharmacy" xml:space="preserve">
     <value>درخواست برای داروخانه در منزل</value>
   </data>
   <data name="Reservation History" xml:space="preserve">
     <value>محفوظات الحجز</value>
+  </data>
+  <data name="Salamat" xml:space="preserve">
+    <value>تأمين صحي</value>
   </data>
   <data name="Sister" xml:space="preserve">
     <value>أخت</value>
@@ -416,6 +440,9 @@
   </data>
   <data name="Sweet Alert Yes Answer" xml:space="preserve">
     <value>نعم</value>
+  </data>
+  <data name="Tamin" xml:space="preserve">
+    <value>ضمان اجتماعي</value>
   </data>
   <data name="The entered email is already available on the site" xml:space="preserve">
     <value>البريد الإلكتروني المدخل متاح بالفعل على الموقع</value>

@@ -65,7 +65,7 @@ namespace DoctorFAM.Web.Areas.UserPanel.Controllers
 
             if (userSelectedFamilyDoctor != null && userSelectedFamilyDoctor.FamilyDoctorRequestState == Domain.Enums.FamilyDoctor.FamilyDoctorRequestState.Accepted)
             {
-                return RedirectToAction();
+                return RedirectToAction(nameof(ShowUserFamilyDoctorDetail));
             }
 
             #endregion
@@ -74,7 +74,7 @@ namespace DoctorFAM.Web.Areas.UserPanel.Controllers
 
             if (userSelectedFamilyDoctor != null && userSelectedFamilyDoctor.FamilyDoctorRequestState == Domain.Enums.FamilyDoctor.FamilyDoctorRequestState.WaitingForConfirm)
             {
-                return RedirectToAction();
+                return RedirectToAction(nameof(ShowUserFamilyDoctorDetail));
             }
 
             #endregion
@@ -215,7 +215,6 @@ namespace DoctorFAM.Web.Areas.UserPanel.Controllers
 
                 #endregion
 
-
                 TempData[SuccessMessage] = "درخواست شما برای پزشک مورد نطر ارسال شده است . لطفا تا اعلام نتیجه شکیبا باشید .";
                 return RedirectToAction("Index", "Home", new { area = "UserPanel" });
             }
@@ -224,6 +223,22 @@ namespace DoctorFAM.Web.Areas.UserPanel.Controllers
 
             TempData[ErrorMessage] = "عملیات با شکست روبرو شده است.";
             return RedirectToAction("CheckUserHasFamilyDoctor", "FamilyDoctor", new { area = "UserPanel" });
+        }
+
+        #endregion
+
+        #region Show User Family Doctor Detail
+
+        public async Task<IActionResult> ShowUserFamilyDoctorDetail()
+        {
+            #region Fill Model
+
+            var model = await _familyDoctorService.FillShowUserFamilyDoctorInfoViewModel(User.GetUserId());
+            if (model == null) return NotFound();
+
+            #endregion
+
+            return View(model);
         }
 
         #endregion

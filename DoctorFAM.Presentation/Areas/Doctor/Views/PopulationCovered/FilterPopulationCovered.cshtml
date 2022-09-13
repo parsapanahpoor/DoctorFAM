@@ -1,21 +1,144 @@
-﻿@{
-    ViewData["Title"] = @Localizer["List Of Population Covered"];
+﻿@model DoctorFAM.Domain.ViewModels.DoctorPanel.PopulationCovered.ListOfDoctorPopulationCoveredViewModel
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Domain.ViewModels.Common
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
+
+@{
+    ViewData["Title"] = @Localizer["List Of Your Population Covered"];
 }
 
 @section Scripts
-{
-<partial name="_JqueryValidation" />
+    {
+    <partial name="_DoctorPanelSweetAlertLocalizer" />
+    <partial name="_JqueryValidation" />
 }
 
-@section Breadcrumb
-{
-<li>
-    <a asp-action="Index" asp-controller="Home" asp-area="Doctor"> @Localizer["Docotr Panel"] </a>
-</li>
-<li>
-    <a href="javascript:void(0)"> @ViewData["Title"] </a>
-</li>
+
+    @section Breadcrumb
+    {
+    <li>
+        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+    </li>
 }
 
-<partial name="_DoctorPanelNotFoundPartial" />
+    <div class="row">
+        <div class="col-lg-3 col-sm-12">
+            <div class="widget">
+                <div class="widget-header bordered-bottom bordered-green">
+                    <span class="widget-caption"> @Localizer["User Fiter"] </span>
+                </div>
+                <div class="widget-body">
+                    <div>
+                        <form asp-action="FilterPopulationCovered" asp-controller="PopulationCovered" asp-area="Doctor" id="filter-search" method="get">
+
+                            <input type="hidden" asp-for="Page" />
+
+                            <div class="form-group">
+                                <label> @Localizer["Username"] </label>
+                                <input type="text" class="form-control" asp-for="Username">
+                            </div>
+
+                            <div class="form-group">
+                                <label>@Localizer["Mobile"] </label>
+                                <input type="text" class="form-control" asp-for="Mobile">
+                            </div>
+
+                            <div class="form-group">
+                                <label>@Localizer["NationalId"] </label>
+                                <input type="text" class="form-control" asp-for="NationalId">
+                            </div>
+
+                            <hr />
+
+                            <div class="row">
+                                <div class="col-md-12 flex-style">
+                                    <button type="submit" class="btn btn-labeled w-100 btn-palegreen">
+                                        <i class="btn-label glyphicon glyphicon-filter"></i>@Localizer["Filter"]
+                                    </button>
+
+                                @if (Context.Request.QueryString.HasValue)
+                                {
+                                    <a asp-action="FilterPopulationCovered" asp-controller="PopulationCovered" asp-area="Doctor" class="btn btn-labeled w-100 btn-darkorange">
+                                        <i class="btn-label glyphicon glyphicon-remove"></i>@Localizer["Delete Filter"]
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-9 col-sm-12">
+        <div class="well with-header with-footer table-responsive">
+            <div class="header bordered-azure">
+                <div class="flex-style">
+                    <span> @ViewData["Title"]</span>
+                </div>
+            </div>
+
+            @if (Model.Entities != null && Model.Entities.Any())
+            {
+                <table class="table table-hover table-bordered tc vm">
+                    <thead class="tc vm">
+                        <tr class="tc vm">
+                            <th class="tc vm">
+                                @Localizer["Avatar"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["Personal Info"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["Count Of Population Covered"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["Possibilities"]
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="tc vm">
+                        @foreach (var user in Model.Entities)
+                        {
+                            <tr class="tc vm" remove-ajax-item="@user.Id">
+                                <td class="vm">
+                                    <div class="flex-style-center">
+                                        <img src="@user.GetUserAvatar()" style="border-radius:50px;" class="avatar-style" />
+                                        <div class="mr-10px">
+                                            <span> @user.Username </span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="tc vm">
+                                    @if (!string.IsNullOrEmpty(user.Mobile))
+                                    {
+                                        <p> @user.Mobile</p>
+                                    }
+                                </td>
+                                <td class="tc vm">
+                                    @user.PopulationCovered.Count(p=> !p.IsDelete) @Localizer["Persone"]
+                                </td>
+                                <td class="tc vm">
+                                    <a asp-action="PersonInPopulationCoveredDetail" asp-controller="PopulationCovered" asp-area="Doctor" asp-route-patientId="@user.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <div class="footer tc">
+
+                    <partial name="_DoctorPanelPaging" model="@Model.GetCurrentPaging()" />
+
+                </div>
+            }
+            else
+            {
+                <partial name="_DoctorPanelNotFoundPartial" />
+            }
+        </div>
+    </div>
+</div>
 

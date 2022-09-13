@@ -17,7 +17,7 @@
                 </div>
             </div><!--Widget Buttons-->
         </div>
-        <div class="widget-body" style="height: 410px !important; overflow-y: scroll;">
+        <div class="widget-body" style="max-height: 410px !important; overflow-y: scroll; height:auto;">
             @if (Model != null && Model.Any())
             {
                 <div class="table-responsive">
@@ -35,6 +35,9 @@
                                 </th>
                                 <th class="tc vm">
                                     @Localizer["Date Time"]
+                                </th>
+                                <th class="tc vm">
+
                                 </th>
                             </tr>
                         </thead>
@@ -71,7 +74,9 @@
                                     <td class="tc vm">
                                         <p>  @request.CreateDate.ToStringShamsiDate() </p>
                                         <p> @request.CreateDate.Hour:@request.CreateDate.Minute:@request.CreateDate.Second</p>
-
+                                    </td>
+                                    <td class="tc vm">
+                                        <a asp-action="PersonInPopulationCoveredDetail" asp-controller="PopulationCovered" asp-area="Doctor" asp-route-patientId="@request.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
                                     </td>
                                 </tr>
                             }

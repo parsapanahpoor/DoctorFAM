@@ -1,4 +1,7 @@
-﻿namespace DoctorFAM.Application.StaticTools;
+﻿using DoctorFAM.Domain.Entities.Doctors;
+using SixLabors.ImageSharp.ColorSpaces;
+
+namespace DoctorFAM.Application.StaticTools;
 
 public static class Messages
 {
@@ -42,5 +45,19 @@ public static class Messages
     {
         return
             $"باعرض سلام . {Environment.NewLine} بسته ی سفارشی شما تحویل پیک داده شده است و درحال ارسال به شما می باشد. {Environment.NewLine} {PathTools.SiteFarsiName}";
+    }
+
+    //Send SMS For Accept Family Doctor Request 
+    public static string SendSMSForAcceptFamilyDoctorRequest()
+    {
+        return
+            $"باعرض سلام . {Environment.NewLine} درخواست پزشک خانواده ی شما توسط پزشک موردنطر تایید شده است . {Environment.NewLine} {PathTools.SiteFarsiName}";
+    }
+
+    //Send SMS For Decline Family Doctor Request 
+    public static string SendSMSForDeclineFamilyDoctorRequest()
+    {
+        return
+            $"باعرض سلام . {Environment.NewLine} درخواست پزشک خانواده ی شما توسط پزشک موردنطر رد شده است . {Environment.NewLine} {PathTools.SiteFarsiName}";
     }
 }

@@ -1,7 +1,7 @@
 ﻿@model DoctorFAM.Domain.ViewModels.DoctorPanel.Dashbaord.DoctorPanelDashboardViewModel
 
 @{
-    ViewData["Title"] = "Doctor Panel Dashboard";
+    ViewData["Title"] = Localizer["Doctor Panel Dashboard"];
 }
 
 @section Breadcrumb {
@@ -43,6 +43,15 @@
     <div class="page-body">
 
         <div class="row">
+
+            @*Count Of Population Covered*@
+            <partial name="_CountOfPopulationCovered" model="@Model" />
+
+             @*Count Of Population Covered*@
+            <partial name="_CountOfPopulationCovered" model="@Model" />
+
+            @*Count Of Population Covered*@
+            <partial name="_CountOfPopulationCovered" model="@Model" />
 
             @*Count Of Population Covered*@
             <partial name="_CountOfPopulationCovered" model="@Model" />
