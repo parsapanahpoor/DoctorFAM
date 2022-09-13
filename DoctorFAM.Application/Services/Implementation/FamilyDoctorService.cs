@@ -4,6 +4,7 @@ using DoctorFAM.Domain.Entities.FamilyDoctor;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.PopulationCovered;
 using DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor;
+using DoctorFAM.Domain.ViewModels.UserPanel.Reservation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
 using System;
@@ -24,15 +25,17 @@ namespace DoctorFAM.Application.Services.Implementation
         private readonly IOrganizationService _organizationService;
         private readonly IUserService _userService;
         private readonly IPopulationCoveredService _populationCovered;
+        private readonly IReservationService _reservationService;
 
         public FamilyDoctorService(IFamilyDoctorRepository familyDoctor , IDoctorsService doctorServicec, IOrganizationService organizationService
-                                    , IUserService userService, IPopulationCoveredService populationCovered)
+                                    , IUserService userService, IPopulationCoveredService populationCovered, IReservationService reservationService)
         {
             _familyDoctor = familyDoctor;
             _doctorService = doctorServicec;
             _organizationService = organizationService;
             _userService = userService;
             _populationCovered = populationCovered;
+            _reservationService = reservationService;
         }
 
         #endregion
@@ -161,6 +164,46 @@ namespace DoctorFAM.Application.Services.Implementation
             #endregion
 
             return model;
+        }
+
+        //Filter Family Doctor Reservation Date
+        public async Task<FilterDoctorFamilyReservationDateViewModel?> FilterDoctorFamilyReservationDate(FilterDoctorFamilyReservationDateViewModel filter)
+        {
+            #region Check Validation For User Selected Family Doctor 
+
+            var userSelectedFamilyDoctor = await GetUserSelectedFamilyDoctorByPatientIdAndDoctorIdWithAcceptedAndWaitingState(filter.PatientId , filter.UserId);
+            if (userSelectedFamilyDoctor == null)
+            {
+                return null;
+            }
+
+            #endregion
+
+            #region return Model
+
+            return await _reservationService.FilterFamilyDoctorReservationDateFromUserPanel(filter);
+
+            #endregion
+        }
+
+        //Filter Family Doctor Reservation Date Time
+        public async Task<FilterFamilyDoctorReservationDateTimeUserPanelViewModel?> FilterFamilyDoctorReservationDateTimeUserPanel(FilterFamilyDoctorReservationDateTimeUserPanelViewModel filter)
+        {
+            #region Check Validation For User Selected Family Doctor 
+
+            var userSelectedFamilyDoctor = await GetUserSelectedFamilyDoctorByPatientIdAndDoctorIdWithAcceptedAndWaitingState(filter.PatientId, filter.UserId);
+            if (userSelectedFamilyDoctor == null)
+            {
+                return null;
+            }
+
+            #endregion
+
+            #region return Model
+
+            return await _reservationService.FilterFamilyDoctorReservationDateTimeUserPanel(filter);
+
+            #endregion
         }
 
         #endregion

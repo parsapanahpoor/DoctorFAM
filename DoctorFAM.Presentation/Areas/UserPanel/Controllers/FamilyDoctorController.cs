@@ -74,7 +74,8 @@ namespace DoctorFAM.Web.Areas.UserPanel.Controllers
 
             if (userSelectedFamilyDoctor != null && userSelectedFamilyDoctor.FamilyDoctorRequestState == Domain.Enums.FamilyDoctor.FamilyDoctorRequestState.WaitingForConfirm)
             {
-                return RedirectToAction(nameof(ShowUserFamilyDoctorDetail));
+                TempData[WarningMessage] = "لطفا تا اعلام پاسخ توسط پزشک شکیبا باشید";
+                return RedirectToAction("Index", "Home", new { area = "UserPanel" });
             }
 
             #endregion

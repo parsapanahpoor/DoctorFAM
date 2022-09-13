@@ -119,8 +119,82 @@ namespace DoctorFAM.Data.Repository
 
             var query = _context.DoctorReservationDates
                 .Include(p => p.DoctorReservationDateTimes)
-                .Where(s => !s.IsDelete && s.UserId == organization.OwnerId && s.ReservationDate.DayOfYear >= DateTime.Now.DayOfYear
-                && s.ReservationDate.Year >= DateTime.Now.Year)
+                .Where(s => !s.IsDelete && s.UserId == organization.OwnerId && ((s.ReservationDate.Year > DateTime.Now.Year)
+                                          || (s.ReservationDate.Year == DateTime.Now.Year
+                                               && s.ReservationDate.DayOfYear >= DateTime.Now.DayOfYear)))
+                .OrderBy(s => s.ReservationDate)
+                .AsQueryable();
+
+            #region Status
+
+            switch (filter.FilterRequestOrder)
+            {
+                case FilterRequestOrder.CreateDate_Des:
+                    break;
+                case FilterRequestOrder.CreateDate_Asc:
+                    query = query.OrderBy(p => p.CreateDate);
+                    break;
+            }
+
+            switch (filter.FilterReservationOrder)
+            {
+                case Domain.Enums.DoctorReservation.FilterReservationOrder.CreateDate_Des:
+                    break;
+
+                case Domain.Enums.DoctorReservation.FilterReservationOrder.CreateDate_Asc:
+                    query = query.OrderBy(p => p.ReservationDate);
+                    break;
+            }
+
+            #endregion
+
+            #region Filter
+
+            if (!string.IsNullOrEmpty(filter.FromDate))
+            {
+                var spliteDate = filter.FromDate.Split('/');
+                int year = int.Parse(spliteDate[0]);
+                int month = int.Parse(spliteDate[1]);
+                int day = int.Parse(spliteDate[2]);
+                DateTime fromDate = new DateTime(year, month, day, new PersianCalendar());
+
+                query = query.Where(s => s.ReservationDate >= fromDate);
+            }
+
+            if (!string.IsNullOrEmpty(filter.ToDate))
+            {
+                var spliteDate = filter.ToDate.Split('/');
+                int year = int.Parse(spliteDate[0]);
+                int month = int.Parse(spliteDate[1]);
+                int day = int.Parse(spliteDate[2]);
+                DateTime toDate = new DateTime(year, month, day, new PersianCalendar());
+
+                query = query.Where(s => s.ReservationDate <= toDate);
+            }
+
+            #endregion
+
+            await filter.Paging(query);
+
+            return filter;
+        }
+
+        //This Is Filter For Reservation Date From Today 
+        public async Task<FilterDoctorFamilyReservationDateViewModel?> FilterFamilyDoctorReservationDateFromUserPanel(FilterDoctorFamilyReservationDateViewModel filter)
+        {
+            #region Get Owner Organization By EmployeeId 
+
+            var organization = await _organizationRepository.GetOrganizationByUserId(filter.UserId);
+            if (organization == null) return null;
+            if (organization.OrganizationInfoState != Domain.Entities.Doctors.OrganizationInfoState.Accepted) return null;
+
+            #endregion
+
+            var query = _context.DoctorReservationDates
+                .Include(p => p.DoctorReservationDateTimes)
+                .Where(s => !s.IsDelete && s.UserId == filter.UserId && ((s.ReservationDate.Year > DateTime.Now.Year)
+                                                                          || (s.ReservationDate.Year == DateTime.Now.Year
+                                                                               && s.ReservationDate.DayOfYear >= DateTime.Now.DayOfYear)))
                 .OrderBy(s => s.ReservationDate)
                 .AsQueryable();
 
@@ -546,6 +620,71 @@ namespace DoctorFAM.Data.Repository
 
             query = query.Where(p => p.DoctorReservationDate.ReservationDate.DayOfYear >= DateTime.Now.DayOfYear
                                 && p.DoctorReservationDate.ReservationDate.Year >= DateTime.Now.Year && p.DoctorReservationState == DoctorReservationState.Reserved);
+
+            #endregion
+
+            await filter.Paging(query);
+
+            return filter;
+        }
+
+        //Filter Family Doctor Reservation DateTime In UserPanel ViewModel
+        public async Task<FilterFamilyDoctorReservationDateTimeUserPanelViewModel?> FilterFamilyDoctorReservationDateTimeUserPanel(FilterFamilyDoctorReservationDateTimeUserPanelViewModel filter)
+        {
+            #region Get Owner Organization By EmployeeId 
+
+            var organization = await _organizationRepository.GetOrganizationByUserId(filter.UserId);
+            if (organization == null) return null;
+            if (organization.OrganizationInfoState != Domain.Entities.Doctors.OrganizationInfoState.Accepted) return null;
+
+            #endregion
+
+            var query = _context.DoctorReservationDateTimes
+                .Include(p => p.DoctorReservationDate)
+                .Where(s => !s.IsDelete && s.DoctorReservationDate.UserId == organization.OwnerId
+                                && s.DoctorReservationDateId == filter.ReservationDateId && 
+                                                (s.DoctorReservationState == DoctorReservationState.NotReserved || s.DoctorReservationState == DoctorReservationState.Reserved))
+                .OrderByDescending(s => s.CreateDate)
+                .AsQueryable();
+
+            #region Status
+
+            switch (filter.FilterRequestOrder)
+            {
+                case FilterRequestOrder.CreateDate_Des:
+                    break;
+                case FilterRequestOrder.CreateDate_Asc:
+                    query = query.OrderBy(p => p.CreateDate);
+                    break;
+            }
+
+            switch (filter.FilterFamilyDoctorReservationInUserPanelState)
+            {
+                case FilterFamilyDoctorReservationInUserPanelState.All:
+                    break;
+                case FilterFamilyDoctorReservationInUserPanelState.Reserved:
+                    query = query.Where(p => p.DoctorReservationState == DoctorReservationState.Reserved);
+                    break;
+                case FilterFamilyDoctorReservationInUserPanelState.NotReserved:
+                    query = query.Where(p => p.DoctorReservationState == DoctorReservationState.NotReserved);
+                    break;
+            }
+
+            switch (filter.FilterDoctorReservationType)
+            {
+                case FilterDoctorReservationType.All:
+                    break;
+                case FilterDoctorReservationType.Onile:
+                    query = query.Where(p => p.DoctorReservationType == DoctorReservationType.Onile);
+                    break;
+                case FilterDoctorReservationType.Reserved:
+                    query = query.Where(p => p.DoctorReservationType == DoctorReservationType.Reserved);
+                    break;
+            }
+
+            #endregion
+
+            #region Filter
 
             #endregion
 

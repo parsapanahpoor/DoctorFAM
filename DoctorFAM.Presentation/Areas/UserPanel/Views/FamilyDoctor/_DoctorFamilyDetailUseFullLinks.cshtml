@@ -15,7 +15,7 @@
     <div class="widget-body">
         <div class="row"> 
             
-            <a style="width:80%;margin-right: 20px;" asp-controller="Account" asp-area="Admin" asp-action="EditUserInfo" asp-route-id="@Model.User.Id" class="btn btn-warning btn-sm mt-10px col-md-12 ml-10px"> @Localizer["Doctor Reservation"] </a>
+            <a style="width:80%;margin-right: 20px;" asp-controller="Reservation" asp-area="UserPanel" asp-action="ListOfReservationDate" asp-route-UserId="@Model.User.Id" class="btn btn-warning btn-sm mt-10px col-md-12 ml-10px"> @Localizer["Doctor Reservation"] </a>
 
             <a style="width:80%;margin-right: 20px;" onclick="ShowChangePasswordModal(@Model.User.Id)" class="btn btn-maroon btn-sm mt-10px col-md-12 ml-10px"> @Localizer["Cancel of cooperation with the doctor"] </a>
 

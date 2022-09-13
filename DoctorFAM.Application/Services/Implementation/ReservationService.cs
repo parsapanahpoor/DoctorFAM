@@ -595,6 +595,18 @@ namespace DoctorFAM.Application.Services.Implementation
             return await _reservation.FilterReservationUserPanelViewComponent(filter);
         }
 
+        //This Is Filter For Reservation Date From Today 
+        public async Task<FilterDoctorFamilyReservationDateViewModel?> FilterFamilyDoctorReservationDateFromUserPanel(FilterDoctorFamilyReservationDateViewModel filter)
+        {
+            return await _reservation.FilterFamilyDoctorReservationDateFromUserPanel(filter);
+        }
+
+        //Filter Family Doctor Reservation DateTime In UserPanel ViewModel
+        public async Task<FilterFamilyDoctorReservationDateTimeUserPanelViewModel?> FilterFamilyDoctorReservationDateTimeUserPanel(FilterFamilyDoctorReservationDateTimeUserPanelViewModel filter)
+        {
+            return await _reservation.FilterFamilyDoctorReservationDateTimeUserPanel(filter);
+        }
+
         #endregion
 
         #region Admin Panel

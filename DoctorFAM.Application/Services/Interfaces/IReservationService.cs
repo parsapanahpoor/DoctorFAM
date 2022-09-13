@@ -66,6 +66,12 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         Task<FilterReservationViewModel?> FilterReservationUserPanelViewComponent(FilterReservationViewModel filter);
 
+        //This Is Filter For Reservation Date From Today 
+        Task<FilterDoctorFamilyReservationDateViewModel?> FilterFamilyDoctorReservationDateFromUserPanel(FilterDoctorFamilyReservationDateViewModel filter);
+
+        //Filter Family Doctor Reservation DateTime In UserPanel ViewModel
+        Task<FilterFamilyDoctorReservationDateTimeUserPanelViewModel?> FilterFamilyDoctorReservationDateTimeUserPanel(FilterFamilyDoctorReservationDateTimeUserPanelViewModel filter);
+
         #endregion
 
         #region Admin Panel 

@@ -58,4 +58,14 @@ namespace DoctorFAM.Domain.Enums.DoctorReservation
         [Display(Name = "Waiting For Complete")]
         WaitingForComplete
     }
+
+    public enum FilterFamilyDoctorReservationInUserPanelState
+    {
+        [Display(Name = "All")]
+        All,
+        [Display(Name = "Not Reserved")]
+        NotReserved,
+        [Display(Name = "Reserved")]
+        Reserved
+    }
 }

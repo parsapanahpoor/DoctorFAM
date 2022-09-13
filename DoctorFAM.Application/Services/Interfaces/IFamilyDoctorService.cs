@@ -1,6 +1,7 @@
 ﻿using DoctorFAM.Domain.Entities.FamilyDoctor;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.PopulationCovered;
 using DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor;
+using DoctorFAM.Domain.ViewModels.UserPanel.Reservation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +25,12 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Show User Family Doctor Info In User Panel
         Task<ShowUserFamilyDoctorInfo?> FillShowUserFamilyDoctorInfoViewModel(ulong userId);
+
+        //Filter Family Doctor Reservation Date
+        Task<FilterDoctorFamilyReservationDateViewModel?> FilterDoctorFamilyReservationDate(FilterDoctorFamilyReservationDateViewModel filter);
+
+        //Filter Family Doctor Reservation Date Time
+        Task<FilterFamilyDoctorReservationDateTimeUserPanelViewModel?> FilterFamilyDoctorReservationDateTimeUserPanel(FilterFamilyDoctorReservationDateTimeUserPanelViewModel filter);
 
         #endregion
 
