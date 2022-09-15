@@ -29,6 +29,8 @@
 <div class="row">
     <div class="col-lg-3 col-sm-12">
 
+        <a class="btn btn-sky w-100 margin-bottom-10" asp-action="AddreservationDateTimeWithComputer" asp-route-reservationDateId="@Model.ReservationDateId" asp-controller="Appointment" asp-area="Doctor"> @Localizer["Add Time With System"] </a>
+
         <a class="btn btn-sky w-100 margin-bottom-10" asp-action="AddReservationDateTime" asp-route-reservationDateId="@Model.ReservationDateId" asp-controller="Appointment" asp-area="Doctor"> @Localizer["Add New Date Time"] </a>
 
         <div class="widget">

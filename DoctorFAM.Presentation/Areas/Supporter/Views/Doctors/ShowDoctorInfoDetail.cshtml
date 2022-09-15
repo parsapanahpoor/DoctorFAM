@@ -27,7 +27,7 @@
     @section Breadcrumb
     {
     <li>
-        <a asp-action="FilterUsers" asp-controller="Account" asp-area="Admin"> @Localizer["Page Title"] </a>
+        <a asp-action="FilterUsers" asp-controller="Account" asp-area="Supporter"> @Localizer["Page Title"] </a>
     </li>
     <li>
         <a href="javascript:void(0)"> @ViewData["Title"] </a>
@@ -66,7 +66,7 @@
                         <div class="tab-content">
 
                             <div id="PopulationCovered" class="tab-pane active">
-                                @await Component.InvokeAsync("DoctorPopulationCovered", new { userId = Model.Id })
+                                @await Component.InvokeAsync("SupporterDoctorPopulationCovered", new { userId = Model.Id })
                             </div>
 
                         </div>

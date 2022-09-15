@@ -341,6 +341,12 @@ namespace DoctorFAM.Application.Services.Implementation
 
         #region Admin And Supporter Side 
 
+        //Get List Of Doctor Population Covered By Doctor Id
+        public async Task<List<UserSelectedFamilyDoctor>?> GetListOfDoctorPopulationCoveredByDoctorId(ulong doctorId)
+        {
+            return await _familyDoctor.GetListOfDoctorPopulationCoveredByDoctorId(doctorId);
+        }
+
         //List Of Family Doctor Request Admin Side 
         public async Task<FilterFamilyDoctorViewModel> FilterFamilyDoctorRequestAdminAndSupporterSide(FilterFamilyDoctorViewModel filter)
         {

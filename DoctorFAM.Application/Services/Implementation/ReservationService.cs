@@ -12,6 +12,7 @@ using DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment;
 using DoctorFAM.Domain.ViewModels.Site.Reservation;
 using DoctorFAM.Domain.ViewModels.Supporter.Reservation;
 using DoctorFAM.Domain.ViewModels.UserPanel.Reservation;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -54,8 +55,31 @@ namespace DoctorFAM.Application.Services.Implementation
 
         #region Doctor Panel
 
+        //Fill Add Reservation Date Time With Computer View Model
+        public async Task<AddReservationDateTimeWithComputerViewModel?> FillAddReservationDateTimeWithComputerViewModel(ulong reservationDateId, ulong doctorId)
+        {
+            #region Get Reservation Date By Id
+
+            var reservationDate = await _reservation.GetReservationDateById(reservationDateId);
+            if (reservationDate == null) return null;
+            if (reservationDate.UserId != doctorId) return null;
+
+            #endregion
+
+            #region Fill View Model 
+
+            AddReservationDateTimeWithComputerViewModel model = new AddReservationDateTimeWithComputerViewModel()
+            {
+                ReservationDateId = reservationDateId
+            };
+
+            #endregion
+
+            return model;
+        }
+
         //Add Cancel Reservation Request 
-        public async Task<bool> CreateCancelReservationRequestFromDoctorPanel(CancelReservationRequestViewModel model , ulong userId)
+        public async Task<bool> CreateCancelReservationRequestFromDoctorPanel(CancelReservationRequestViewModel model, ulong userId)
         {
             #region Get Organization 
 
@@ -139,11 +163,11 @@ namespace DoctorFAM.Application.Services.Implementation
 
             var reservation = await _reservation.GetReservationDateById(reservationDateId);
             if (reservation == null) return null;
-            if (reservation.UserId != organization.OwnerId) return null; 
+            if (reservation.UserId != organization.OwnerId) return null;
 
             #endregion
 
-            return await _reservation.GetReservationDateTimeByReservationDateIdSelectList(reservationDateId , organization.OwnerId);
+            return await _reservation.GetReservationDateTimeByReservationDateIdSelectList(reservationDateId, organization.OwnerId);
         }
 
         //Get Future Doctor Reservation For Cancel Reservation Request 
@@ -274,6 +298,112 @@ namespace DoctorFAM.Application.Services.Implementation
                     minute = endTime.Minute;
                 }
             }
+
+            #endregion
+
+            return true;
+        }
+
+        //Add Reservation Date Time With Coputer   
+        public async Task<bool> AddReservationDateTimeWithCoputer(AddReservationDateTimeWithComputerViewModel model, ulong userId)
+        {
+            #region Get Owner Organization By EmployeeId 
+
+            var organization = await _organizationService.GetDoctorOrganizationByUserId(userId);
+            if (organization == null) return false;
+
+            #endregion
+
+            #region Get Reservation Date  
+
+            var reservationDate = await _reservation.GetReservationDateById(model.ReservationDateId);
+            if (reservationDate == null) return false;
+            if (reservationDate.UserId != organization.OwnerId) return false;
+
+            #endregion
+
+            #region Check Doctor Is Valid
+
+            var doctor = await _doctorsRepository.GetDoctorByUserId(organization.OwnerId);
+            if (doctor == null) return false;
+
+            #endregion
+
+            #region Get Doctor Office Address
+
+            var doctorOffice = await _workAddress.GetLastWorkAddressByUserId(organization.OwnerId);
+
+            #endregion
+
+            #region Get Reservation Date Times By This Reservation Date Id
+
+            var reservationDateTimes = await GetListOfDoctorReservationDateTimeByReservationDateId(reservationDate.Id);
+
+            #endregion
+
+            #region Add Reservation Date State Is computerized
+
+            //If Start Time Is Smaller Than End Time 
+            if (model.StartTime >= model.EndTime) return false;
+
+            int hours = model.StartTime;
+            int minute = 0;
+
+            int startTime = model.StartTime;
+            int endTimeComingFromModel = model.EndTime;
+            int periodNumber = model.PeriodNumber;
+
+            //Diference Between Start Time And End Time 
+            int diference = (endTimeComingFromModel - startTime) * 60;
+
+            // The Number Of Intervals
+            int intervalsCount = diference / periodNumber;
+
+            for (int i = 0; i < intervalsCount; i++)
+            {
+                //Sampling From Reservation Date Time 
+                DoctorReservationDateTime reservationTime = new DoctorReservationDateTime();
+
+                //Sampling From Time DateTime 
+                DateTime time = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, hours, minute, 0);
+                DateTime endTime = time.AddMinutes(periodNumber);
+
+                //Fill Reservation Date Time 
+                reservationTime.StartTime = time.ToString($"{time.Hour.ToString("00")}:{time.Minute.ToString("00")}:00");
+                reservationTime.EndTime = endTime.ToString($"{endTime.Hour.ToString("00")}:{endTime.Minute.ToString("00")}:00");
+                reservationTime.DoctorReservationDateId = reservationDate.Id;
+                reservationTime.DoctorReservationState = Domain.Enums.DoctorReservation.DoctorReservationState.NotReserved;
+                if (doctorOffice != null) reservationTime.WorkAddressId = doctorOffice.Id;
+
+                #region Check Is Exist Doctor Reservation Date Time With This Time 
+
+                if (reservationDateTimes != null && reservationDateTimes.Any())
+                {
+                    var startTimes = Int32.Parse(reservationTime.StartTime.Substring(0, 2));
+                    var endTimes = Int32.Parse(reservationTime.EndTime.Substring(0, 2));
+
+                    foreach (var item in reservationDateTimes)
+                    {
+                        var lastStart = Int32.Parse(item.StartTime.Substring(0, 2));
+                        var lastEnd = Int32.Parse(item.EndTime.Substring(0, 2));
+
+                        if (lastStart <= startTimes && lastEnd >= endTimes)
+                        {
+                            return false;
+                        }
+                    }
+                }
+
+                #endregion
+
+                await _reservation.AddReservationDateTime(reservationTime);
+
+                //Update Last Parameters For Proccess Next Reservation Date Time 
+                hours = endTime.Hour;
+                minute = endTime.Minute;
+            }
+
+            await _reservation.Savechanges();
 
             #endregion
 
@@ -846,11 +976,11 @@ namespace DoctorFAM.Application.Services.Implementation
         //Get Reservation Date By Reservation Date And User Id
         public async Task<DoctorReservationDate?> GetDoctorReservationDateByReservationDateAndUserId(DateTime reservationDate, ulong userId)
         {
-            return await _reservation.GetDoctorReservationDateByReservationDateAndUserId(reservationDate , userId);
+            return await _reservation.GetDoctorReservationDateByReservationDateAndUserId(reservationDate, userId);
         }
 
         //Get Reservation Date By Reservation Date And User Id
-        public async Task<DoctorReservationDate?> GetDoctorReservationDateByReservationDateAndUserId(string reservationDate , ulong userId)
+        public async Task<DoctorReservationDate?> GetDoctorReservationDateByReservationDateAndUserId(string reservationDate, ulong userId)
         {
             #region Convert Logged Date To Date Time 
 
@@ -901,12 +1031,12 @@ namespace DoctorFAM.Application.Services.Implementation
         }
 
         //Get Reservation Date Time To User Patient
-        public async Task<bool> GetReservationDateTimeToUserPatient(ChooseTypeOfReservationViewModel model , ulong patientId)
+        public async Task<bool> GetReservationDateTimeToUserPatient(ChooseTypeOfReservationViewModel model, ulong patientId)
         {
             #region get Doctor Reservation Date Time By Id 
 
             var reservationDateTime = await _reservation.GetDoctorReservationDateTimeById(model.ReservationDateTimeId);
-            if(reservationDateTime == null) return false;
+            if (reservationDateTime == null) return false;
             if (reservationDateTime.DoctorReservationDate.UserId != model.DoctorId) return false;
             if (reservationDateTime.DoctorReservationState != Domain.Enums.DoctorReservation.DoctorReservationState.NotReserved) return false;
 

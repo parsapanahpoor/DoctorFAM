@@ -1,6 +1,7 @@
 ﻿using DoctorFAM.Application.Convertors;
 using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Services.Interfaces;
+using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment;
 using DoctorFAM.Web.Areas.Doctor.ActionFilterAttributes;
 using DoctorFAM.Web.Doctor.Controllers;
@@ -98,13 +99,13 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
             {
                 TempData[SuccessMessage] = _sharedLocalizer["Operation Successfully"].Value;
 
-                var reservationDate = await _reservatioService.GetDoctorReservationDateByDate(model.ReservationDate.ToMiladiDateTime() , organization.OwnerId);
+                var reservationDate = await _reservatioService.GetDoctorReservationDateByDate(model.ReservationDate.ToMiladiDateTime(), organization.OwnerId);
 
                 if (reservationDate != null)
                 {
                     return RedirectToAction(nameof(ReservationDateDetail), new { ReservationDateId = reservationDate.Id });
                 }
-                else 
+                else
                 {
                     return RedirectToAction(nameof(ListOfReservationDate));
                 }
@@ -187,6 +188,62 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
             #endregion
 
+            #region MyRegion
+
+            #endregion
+
+            TempData[ErrorMessage] = _sharedLocalizer["The operation has failed"].Value;
+            return View(model);
+        }
+
+        #endregion
+
+        #region Add Reservation Date Time With Computer
+
+        [HttpGet]
+        public async Task<IActionResult> AddreservationDateTimeWithComputer(ulong reservationDateId)
+        {
+            #region Get Owner Organization By EmployeeId 
+
+            var organization = await _organizationService.GetDoctorOrganizationByUserId(User.GetUserId());
+            if (organization == null) return NotFound();
+
+            #endregion
+
+            #region Fill Model 
+
+            var model = await _reservatioService.FillAddReservationDateTimeWithComputerViewModel(reservationDateId, organization.OwnerId);
+            if (model == null) return NotFound();
+
+            #endregion
+
+            return View(model);
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddreservationDateTimeWithComputer(AddReservationDateTimeWithComputerViewModel model)
+        {
+            #region Model State Validation 
+
+            if (!ModelState.IsValid)
+            {
+                TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+                return View(model);
+            }
+
+            #endregion
+
+            #region Add Methods
+
+            var result = await _reservatioService.AddReservationDateTimeWithCoputer(model, User.GetUserId());
+
+            if (result)
+            {
+                TempData[SuccessMessage] = _sharedLocalizer["Operation Successfully"].Value;
+                return RedirectToAction(nameof(ReservationDateDetail), new { ReservationDateId = model.ReservationDateId });
+            }
+
+            #endregion
             TempData[ErrorMessage] = _sharedLocalizer["The operation has failed"].Value;
             return View(model);
         }
@@ -238,10 +295,10 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
             #endregion
 
-            return View();            
+            return View();
         }
 
-        [HttpPost , ValidateAntiForgeryToken]
+        [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> CancelReservationRequest(CancelReservationRequestViewModel model)
         {
             #region Fill Model
@@ -268,12 +325,12 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
             #region Cancel Reservation Date Request Method 
 
-            var res = await _reservatioService.CreateCancelReservationRequestFromDoctorPanel(model , User.GetUserId());
+            var res = await _reservatioService.CreateCancelReservationRequestFromDoctorPanel(model, User.GetUserId());
 
             if (res)
             {
                 TempData[SuccessMessage] = _sharedLocalizer["Operation Successfully"].Value;
-                return RedirectToAction("Index" , "Home" , new { area = "Doctor" });
+                return RedirectToAction("Index", "Home", new { area = "Doctor" });
             }
 
             #endregion
@@ -288,7 +345,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
         public async Task<IActionResult> LoadReservationDateTime(ulong reservationDateId)
         {
-            var result = await _reservatioService.GetReservationDateTimeByReservationDateIdSelectList(reservationDateId , User.GetUserId());
+            var result = await _reservatioService.GetReservationDateTimeByReservationDateIdSelectList(reservationDateId, User.GetUserId());
 
             return JsonResponseStatus.Success(result);
         }

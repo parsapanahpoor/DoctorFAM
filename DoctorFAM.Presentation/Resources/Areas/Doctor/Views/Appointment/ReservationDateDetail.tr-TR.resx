@@ -120,6 +120,9 @@
   <data name="Add New Date Time" xml:space="preserve">
     <value>dönüş zamanı ekle</value>
   </data>
+  <data name="Add Time With System" xml:space="preserve">
+    <value>Bilgisayar ekle</value>
+  </data>
   <data name="Delete Filter" xml:space="preserve">
     <value>Filtreyi kaldır</value>
   </data>

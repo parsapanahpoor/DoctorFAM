@@ -1,5 +1,6 @@
 ﻿using DoctorFAM.Data.DbContext;
 using DoctorFAM.Domain.Entities.Account;
+using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.FamilyDoctor;
 using DoctorFAM.Domain.Enums.FamilyDoctor;
 using DoctorFAM.Domain.Interfaces;
@@ -141,6 +142,14 @@ namespace DoctorFAM.Data.Repository
         #endregion
 
         #region Admin And Supporter Side 
+
+        //Get List Of Doctor Population Covered By Doctor Id
+        public async Task<List<UserSelectedFamilyDoctor>?> GetListOfDoctorPopulationCoveredByDoctorId(ulong doctorId)
+        {
+            return await _context.UserSelectedFamilyDoctor.Include(p => p.Patient)
+                                    .Where(p => !p.IsDelete && p.DoctorId == doctorId)
+                                        .OrderByDescending(p => p.CreateDate).ToListAsync();
+        }
 
         //List Of Family Doctor Request Admin Side 
         public async Task<FilterFamilyDoctorViewModel> FilterFamilyDoctorRequestAdminAndSupporterSide(FilterFamilyDoctorViewModel filter)

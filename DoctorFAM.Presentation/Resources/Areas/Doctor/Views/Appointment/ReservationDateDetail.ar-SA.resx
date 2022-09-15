@@ -120,6 +120,9 @@
   <data name="Add New Date Time" xml:space="preserve">
     <value>أضف وقت الدور</value>
   </data>
+  <data name="Add Time With System" xml:space="preserve">
+    <value>أضف جهاز كمبيوتر</value>
+  </data>
   <data name="Delete Filter" xml:space="preserve">
     <value>قم بإزالة الفلتر</value>
   </data>

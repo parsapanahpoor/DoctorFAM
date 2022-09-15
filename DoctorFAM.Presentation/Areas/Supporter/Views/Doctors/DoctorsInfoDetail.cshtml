@@ -32,14 +32,14 @@
 @section Breadcrumb
 {
 <li>
-    <a asp-action="Index" asp-controller="Home" asp-area="Admin"> @Localizer["Docotr Panel"] </a>
+    <a asp-action="Index" asp-controller="Home" asp-area="Supporter"> @Localizer["Docotr Panel"] </a>
 </li>
 <li>
     <a href="javascript:void(0)"> @ViewData["Title"] </a>
 </li>
 }
 
-<form method="post" asp-action="DoctorsInfoDetail" asp-controller="Doctors" asp-area="Admin" enctype="multipart/form-data">
+<form method="post" asp-action="DoctorsInfoDetail" asp-controller="Doctors" asp-area="Supporter" enctype="multipart/form-data">
     <div class="row">
         <div class="col-lg-9 col-sm-12">
             <div class="row">
@@ -185,7 +185,7 @@
                                                 <span class="type">@item.Title</span>
                                             </div>
                                             <div class="ticket-state bg-darkorange">
-                                                <a asp-action="DeleteDoctorSelectedInfo" asp-area="Admin" asp-controller="Doctors" asp-route-interestId="@item.InterestId" asp-route-doctorId="@Model.DoctorId" asp-route-doctorInfoId="@Model.Id">
+                                                <a asp-action="DeleteDoctorSelectedInfo" asp-area="Supporter" asp-controller="Doctors" asp-route-interestId="@item.InterestId" asp-route-doctorId="@Model.DoctorId" asp-route-doctorInfoId="@Model.Id">
                                                     <i class="fa fa-times"></i>
                                                 </a>
                                             </div>

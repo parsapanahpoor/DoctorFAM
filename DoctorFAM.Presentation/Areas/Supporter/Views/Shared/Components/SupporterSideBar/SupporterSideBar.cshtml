@@ -16,6 +16,22 @@
 
         <li>
             <a href="#" class="menu-dropdown">
+                <i class="menu-icon glyphicon glyphicon-user"></i>
+                <span class="menu-text"> @SharedLocalizer["Manage Doctors"]  </span>
+                <i class="menu-expand"></i>
+            </a>
+
+            <ul class="submenu">
+                <li>
+                    <a asp-controller="Doctors" asp-action="ListOfDoctorsInfo">
+                        <span class="menu-text"> @SharedLocalizer["Manage Doctors Info"]  </span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="#" class="menu-dropdown">
                 <i class="menu-icon glyphicon glyphicon-education"></i>
                 <span class="menu-text"> @SharedLocalizer["Manage Family Doctors"]  </span>
                 <i class="menu-expand"></i>

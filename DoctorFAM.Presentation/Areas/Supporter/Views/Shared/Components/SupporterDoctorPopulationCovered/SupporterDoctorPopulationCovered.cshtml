@@ -1,0 +1,61 @@
+﻿@model List<DoctorFAM.Domain.Entities.FamilyDoctor.UserSelectedFamilyDoctor>
+@using DoctorFAM.Domain.ViewModels.Admin
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Domain.ViewModels.Common
+
+<div class="row">
+    <div class="col-lg-12">
+
+        @if (Model != null && Model.Any())
+        {
+            <table class="table table-hover table-bordered tc vm">
+                <thead class="tc vm">
+                    <tr class="tc vm">
+                        <th class="tc vm">
+                            @SharedLocalizer["Avatar"]
+                        </th>
+                        <th class="tc vm">
+                            @SharedLocalizer["First Name"]
+                        </th>
+                        <th class="tc vm">
+                            @SharedLocalizer["Last Name"]
+                        </th>
+                        <th class="tc vm">
+                            @SharedLocalizer["National Id"]
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="tc vm">
+                    @foreach (var population in Model)
+                    {
+                        <tr class="tc vm" remove-ajax-item="@population.Id">
+                            <td class="vm">
+                                <div class="flex-style-center">
+                                    <img src="@population.Patient.GetUserAvatar()" class="avatar-style" />
+                                    <div class="mr-10px">
+                                        <span> @population.Patient.Username </span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="tc vm" style="max-width: 200px">
+                                <p>@((string.IsNullOrEmpty(population.Patient.FirstName)) ? "-" : population.Patient.FirstName)  </p>
+                            </td>
+                            <td class="tc vm" style="max-width: 200px">
+                                <p>@((string.IsNullOrEmpty(population.Patient.LastName)) ? "-" : population.Patient.LastName)  </p>
+                            </td>
+                            <td class="tc vm" style="max-width: 200px">
+                                <p>@((string.IsNullOrEmpty(population.Patient.NationalId)) ? "-" : population.Patient.NationalId)  </p>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <partial name="_AdminNotFoundPartial" />
+        }
+
+    </div>
+</div>

@@ -117,61 +117,91 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Add New Date Time" xml:space="preserve">
-    <value>افزودن تایم نوبت دهی </value>
+  <data name="Accepted" xml:space="preserve">
+    <value>تایید شده</value>
   </data>
-  <data name="Add Time With System" xml:space="preserve">
-    <value>افزودن کامپیوتری</value>
+  <data name="Access" xml:space="preserve">
+    <value>دسترسی</value>
+  </data>
+  <data name="Approved" xml:space="preserve">
+    <value>فعال شده</value>
+  </data>
+  <data name="Avatar" xml:space="preserve">
+    <value>آواتار</value>
   </data>
   <data name="Delete Filter" xml:space="preserve">
-    <value>حذف فیلتر</value>
+    <value>حذف فیلتر </value>
   </data>
-  <data name="End Date" xml:space="preserve">
-    <value>پایان</value>
+  <data name="Doctors State" xml:space="preserve">
+    <value>وضعیت پزشک</value>
+  </data>
+  <data name="Does Not Have" xml:space="preserve">
+    <value>ندارد</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>ایمیل</value>
+  </data>
+  <data name="Email State" xml:space="preserve">
+    <value>وضعیت ایمیل</value>
+  </data>
+  <data name="Empty" xml:space="preserve">
+    <value>خالی</value>
   </data>
   <data name="Filter" xml:space="preserve">
     <value>فیلتر</value>
   </data>
-  <data name="In Persone" xml:space="preserve">
-    <value>مراجعه ی حضوری</value>
+  <data name="Has It" xml:space="preserve">
+    <value>دارد</value>
   </data>
-  <data name="Manage Reservation Date Time" xml:space="preserve">
-    <value>مدیریت تایم های نوبت دهی</value>
+  <data name="Infos" xml:space="preserve">
+    <value>اطلاعات</value>
   </data>
-  <data name="Not Reserved Yet" xml:space="preserve">
-    <value>رزور نشده</value>
+  <data name="List Of Doctors Infos" xml:space="preserve">
+    <value>لیست اطلاعات پزشکان</value>
   </data>
-  <data name="Online" xml:space="preserve">
-    <value>مراجعه ی آنلاین</value>
+  <data name="Manage Doctors Infos" xml:space="preserve">
+    <value>مدیریت اطلاعات پزشک</value>
   </data>
-  <data name="Order By Create Date" xml:space="preserve">
-    <value>مرتب سازی براساس تاریخ درج</value>
+  <data name="MedicalSystemCode" xml:space="preserve">
+    <value>کد نظام پزشکی</value>
   </data>
-  <data name="Order By State" xml:space="preserve">
-    <value>مرتب سازی بر اساس وضعیت</value>
+  <data name="Mobile" xml:space="preserve">
+    <value>موبایل</value>
   </data>
-  <data name="Order By Type" xml:space="preserve">
-    <value>مرتب سازی براساس نوع مراجعه</value>
+  <data name="Mobile State" xml:space="preserve">
+    <value>وضعیت موبایل</value>
+  </data>
+  <data name="NationalCode" xml:space="preserve">
+    <value>کد ملی </value>
+  </data>
+  <data name="Not Approved" xml:space="preserve">
+    <value>غیر فعال</value>
+  </data>
+  <data name="Personal Info" xml:space="preserve">
+    <value>اطلاعات فردی</value>
   </data>
   <data name="Possibilities" xml:space="preserve">
     <value>امکانات</value>
   </data>
-  <data name="Reservation Date Time Detail" xml:space="preserve">
-    <value>جزییات نوبت دهی</value>
+  <data name="Register Date" xml:space="preserve">
+    <value>تاریخ ثبت نام </value>
   </data>
-  <data name="Reserved" xml:space="preserve">
-    <value>رزرو شده </value>
+  <data name="Register yet" xml:space="preserve">
+    <value>ثبت نامی جدید</value>
   </data>
-  <data name="Start Date" xml:space="preserve">
-    <value>شروع </value>
+  <data name="Rejected" xml:space="preserve">
+    <value>رد شده</value>
   </data>
-  <data name="Status" xml:space="preserve">
+  <data name="Site Access" xml:space="preserve">
+    <value>دسترسی به سایت</value>
+  </data>
+  <data name="State" xml:space="preserve">
     <value>وضعیت</value>
   </data>
-  <data name="Type" xml:space="preserve">
-    <value>نوع</value>
+  <data name="Username" xml:space="preserve">
+    <value>نام کاربری </value>
   </data>
-  <data name="Waiting For Complete" xml:space="preserve">
-    <value>منتظر تکمیل</value>
+  <data name="WaitingForConfirm" xml:space="preserve">
+    <value>در انتظار</value>
   </data>
 </root>

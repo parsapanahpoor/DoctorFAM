@@ -10,6 +10,7 @@ using DoctorFAM.Domain.ViewModels.Supporter.Reservation;
 using DoctorFAM.Domain.ViewModels.UserPanel.Reservation;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -431,8 +432,8 @@ namespace DoctorFAM.Data.Repository
         public async Task AddReservationDateTime(DoctorReservationDateTime dateTime)
         {
             await _context.DoctorReservationDateTimes.AddAsync(dateTime);
-            await _context.SaveChangesAsync();
         }
+
 
         public async Task<DoctorReservationDateTime?> GetDoctorReservationDateTimeById(ulong reservationDateTimeId)
         {
@@ -642,7 +643,7 @@ namespace DoctorFAM.Data.Repository
             var query = _context.DoctorReservationDateTimes
                 .Include(p => p.DoctorReservationDate)
                 .Where(s => !s.IsDelete && s.DoctorReservationDate.UserId == organization.OwnerId
-                                && s.DoctorReservationDateId == filter.ReservationDateId && 
+                                && s.DoctorReservationDateId == filter.ReservationDateId &&
                                                 (s.DoctorReservationState == DoctorReservationState.NotReserved || s.DoctorReservationState == DoctorReservationState.Reserved))
                 .OrderByDescending(s => s.CreateDate)
                 .AsQueryable();

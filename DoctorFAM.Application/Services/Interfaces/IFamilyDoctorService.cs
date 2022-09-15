@@ -59,6 +59,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         #region Admin And Supporter Side 
 
+        //Get List Of Doctor Population Covered By Doctor Id
+        Task<List<UserSelectedFamilyDoctor>?> GetListOfDoctorPopulationCoveredByDoctorId(ulong doctorId);
+
         //List Of Family Doctor Request Admin Side 
         Task<FilterFamilyDoctorViewModel> FilterFamilyDoctorRequestAdminAndSupporterSide(FilterFamilyDoctorViewModel filter);
 

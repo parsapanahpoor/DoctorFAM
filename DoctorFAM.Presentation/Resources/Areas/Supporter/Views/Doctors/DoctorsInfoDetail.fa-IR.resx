@@ -117,61 +117,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Add New Date Time" xml:space="preserve">
-    <value>افزودن تایم نوبت دهی </value>
+  <data name="Docotr Panel" xml:space="preserve">
+    <value>پنل پزشک</value>
   </data>
-  <data name="Add Time With System" xml:space="preserve">
-    <value>افزودن کامپیوتری</value>
+  <data name="Doctor Information" xml:space="preserve">
+    <value>اطلاعات پزشک</value>
   </data>
-  <data name="Delete Filter" xml:space="preserve">
-    <value>حذف فیلتر</value>
+  <data name="Doctors Personal Infomations" xml:space="preserve">
+    <value>جزییات اطلاعات شخصی </value>
   </data>
-  <data name="End Date" xml:space="preserve">
-    <value>پایان</value>
+  <data name="Enter the reason for not confirming the information" xml:space="preserve">
+    <value>علت عدم تایید اطلاعات را وارد کنید</value>
   </data>
-  <data name="Filter" xml:space="preserve">
-    <value>فیلتر</value>
+  <data name="Fields Of Your Interests" xml:space="preserve">
+    <value>فعالیت های انتخابی پزشک</value>
   </data>
-  <data name="In Persone" xml:space="preserve">
-    <value>مراجعه ی حضوری</value>
+  <data name="Medical file/office file" xml:space="preserve">
+    <value>پرونده ی پزشکی / پرونده ی مطب</value>
   </data>
-  <data name="Manage Reservation Date Time" xml:space="preserve">
-    <value>مدیریت تایم های نوبت دهی</value>
+  <data name="Please select the medical file / office file" xml:space="preserve">
+    <value>لطفا پرونده ی پزشکی / پرونده ی مطب را انتخاب کنید</value>
   </data>
-  <data name="Not Reserved Yet" xml:space="preserve">
-    <value>رزور نشده</value>
-  </data>
-  <data name="Online" xml:space="preserve">
-    <value>مراجعه ی آنلاین</value>
-  </data>
-  <data name="Order By Create Date" xml:space="preserve">
-    <value>مرتب سازی براساس تاریخ درج</value>
-  </data>
-  <data name="Order By State" xml:space="preserve">
-    <value>مرتب سازی بر اساس وضعیت</value>
-  </data>
-  <data name="Order By Type" xml:space="preserve">
-    <value>مرتب سازی براساس نوع مراجعه</value>
-  </data>
-  <data name="Possibilities" xml:space="preserve">
-    <value>امکانات</value>
-  </data>
-  <data name="Reservation Date Time Detail" xml:space="preserve">
-    <value>جزییات نوبت دهی</value>
-  </data>
-  <data name="Reserved" xml:space="preserve">
-    <value>رزرو شده </value>
-  </data>
-  <data name="Start Date" xml:space="preserve">
-    <value>شروع </value>
-  </data>
-  <data name="Status" xml:space="preserve">
+  <data name="State" xml:space="preserve">
     <value>وضعیت</value>
   </data>
-  <data name="Type" xml:space="preserve">
-    <value>نوع</value>
-  </data>
-  <data name="Waiting For Complete" xml:space="preserve">
-    <value>منتظر تکمیل</value>
+  <data name="Submit" xml:space="preserve">
+    <value>ثبت</value>
   </data>
 </root>

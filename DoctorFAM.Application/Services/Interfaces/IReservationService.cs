@@ -17,6 +17,12 @@ namespace DoctorFAM.Application.Services.Interfaces
     {
         #region Doctor Panel
 
+        //Add Reservation Date Time With Coputer   
+        Task<bool> AddReservationDateTimeWithCoputer(AddReservationDateTimeWithComputerViewModel model, ulong userId);
+
+        //Fill Add Reservation Date Time With Computer View Model
+        Task<AddReservationDateTimeWithComputerViewModel?> FillAddReservationDateTimeWithComputerViewModel(ulong reservationDateId, ulong doctorId);
+
         //Add Cancel Reservation Request 
         Task<bool> CreateCancelReservationRequestFromDoctorPanel(CancelReservationRequestViewModel model, ulong userId);
 

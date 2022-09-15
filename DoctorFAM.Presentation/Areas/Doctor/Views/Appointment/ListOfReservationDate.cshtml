@@ -132,7 +132,7 @@
                                         }
                                         else
                                         {
-                                            <span class="mr-8px label label-info">@date.DoctorReservationDateTimes.Count(p=> p.DoctorReservationState != DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.Canceled) </span>
+                                            <span class="mr-8px label label-info">@date.DoctorReservationDateTimes.Count(p=> !p.IsDelete &&  p.DoctorReservationState != DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.Canceled) </span>
                                         }
                                     </p>
                                 </td>
@@ -145,7 +145,7 @@
                                         }
                                         else
                                         {
-                                            <span class="mr-8px label label-success">@date.DoctorReservationDateTimes.Count(p=> p.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.Reserved) </span>
+                                            <span class="mr-8px label label-success">@date.DoctorReservationDateTimes.Count(p=>!p.IsDelete &&  p.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.Reserved) </span>
                                         }
                                     </p>
                                 </td>
