@@ -1,4 +1,5 @@
 ﻿using DoctorFAM.Domain.Entities.FamilyDoctor;
+using DoctorFAM.Domain.ViewModels.Admin.FamilyDoctor;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.PopulationCovered;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -40,6 +41,16 @@ namespace DoctorFAM.Domain.Interfaces
 
         //List Of Doctor Population Covered Users
         Task<ListOfDoctorPopulationCoveredViewModel> FilterDoctorPopulationCovered(ListOfDoctorPopulationCoveredViewModel filter);
+
+        #endregion
+
+        #region Admin And Supporter Side 
+
+        //List Of Family Doctor Request Admin Side 
+        Task<FilterFamilyDoctorViewModel> FilterFamilyDoctorRequestAdminAndSupporterSide(FilterFamilyDoctorViewModel filter);
+
+        //Get User Selected Family Doctor By Request Id With Doctor And Patient Information
+        Task<UserSelectedFamilyDoctor?> GetUserSelectedFamilyDoctorByRequestIdWithDoctorAndPatientInformation(ulong requestId);
 
         #endregion
     }

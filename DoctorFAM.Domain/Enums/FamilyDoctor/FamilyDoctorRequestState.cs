@@ -11,11 +11,31 @@ namespace DoctorFAM.Domain.Enums.FamilyDoctor
     {
         [Display(Name ="Accepted")]
         Accepted,
-
         [Display(Name = "Decline")]
         Decline,
-
         [Display(Name = "WaitingForConfirm")]
         WaitingForConfirm,
+    }
+
+    public enum FamilyDoctorRequestStateAdminFilter
+    {
+        [Display(Name = "All")]
+        All,
+        [Display(Name = "Accepted")]
+        Accepted,
+        [Display(Name = "Decline")]
+        Decline,
+        [Display(Name = "WaitingForConfirm")]
+        WaitingForConfirm,
+    }
+
+    public enum FamilyDoctorRequestDeleteState
+    {
+        [Display(Name = "All")]
+        All,
+        [Display(Name = "Deleted")]
+        Deleted,
+        [Display(Name = "NotDeleted")]
+        NotDeleted
     }
 }

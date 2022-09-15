@@ -117,22 +117,76 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Age" xml:space="preserve">
-    <value>سن</value>
+  <data name="Accepted" xml:space="preserve">
+    <value>onaylanmış</value>
   </data>
-  <data name="Email Not Found" xml:space="preserve">
-    <value>ایمیل وارد نشده است</value>
+  <data name="Active" xml:space="preserve">
+    <value>aktif</value>
   </data>
-  <data name="First Name" xml:space="preserve">
-    <value>نام</value>
+  <data name="Create Date" xml:space="preserve">
+    <value>Kayıt Tarihi</value>
   </data>
-  <data name="Last Name" xml:space="preserve">
-    <value>نام خانوادگی</value>
+  <data name="Decline" xml:space="preserve">
+    <value>Kabul edilmedi</value>
   </data>
-  <data name="National Id" xml:space="preserve">
-    <value>کدملی</value>
+  <data name="Delete Filter" xml:space="preserve">
+    <value>Filtreyi kaldır</value>
   </data>
-  <data name="Page Title" xml:space="preserve">
-    <value>جزئیات کاربر</value>
+  <data name="Deleted" xml:space="preserve">
+    <value>silindi</value>
+  </data>
+  <data name="Doctor Information" xml:space="preserve">
+    <value>Doktor bilgileri</value>
+  </data>
+  <data name="Doctor Mobile" xml:space="preserve">
+    <value>Doktor cep telefonu</value>
+  </data>
+  <data name="Doctor Name" xml:space="preserve">
+    <value>Doktorun adı</value>
+  </data>
+  <data name="Doctor NationalId" xml:space="preserve">
+    <value>Doktorun milliyeti nedir?</value>
+  </data>
+  <data name="Filter" xml:space="preserve">
+    <value>Filtre</value>
+  </data>
+  <data name="List Of Family Doctor Requests" xml:space="preserve">
+    <value>Aile hekimi istek listesi</value>
+  </data>
+  <data name="Manage Family Doctor Requests" xml:space="preserve">
+    <value>Aile hekimi talep yönetimi</value>
+  </data>
+  <data name="Mobile" xml:space="preserve">
+    <value>Mobil</value>
+  </data>
+  <data name="Order By State" xml:space="preserve">
+    <value>Türe göre sırala</value>
+  </data>
+  <data name="Order By Type" xml:space="preserve">
+    <value>Duruma göre sırala</value>
+  </data>
+  <data name="Patient Mobile" xml:space="preserve">
+    <value>kullanıcının cep telefonu</value>
+  </data>
+  <data name="Patient Name" xml:space="preserve">
+    <value>Kullanıcı adı</value>
+  </data>
+  <data name="Patient NationalId" xml:space="preserve">
+    <value>kullanıcının uyruğu</value>
+  </data>
+  <data name="Possibilities" xml:space="preserve">
+    <value>Olasılıklar</value>
+  </data>
+  <data name="States" xml:space="preserve">
+    <value>Şart</value>
+  </data>
+  <data name="User Information" xml:space="preserve">
+    <value>Kullanıcı bilgisi</value>
+  </data>
+  <data name="Username" xml:space="preserve">
+    <value>isim</value>
+  </data>
+  <data name="Waiting For Confirm" xml:space="preserve">
+    <value>Senin için bekleniyor</value>
   </data>
 </root>

@@ -120,19 +120,136 @@
   <data name="Age" xml:space="preserve">
     <value>سن</value>
   </data>
-  <data name="Email Not Found" xml:space="preserve">
-    <value>ایمیل وارد نشده است</value>
+  <data name="BirthDay" xml:space="preserve">
+    <value>تاريخ الولادة</value>
+  </data>
+  <data name="Brother" xml:space="preserve">
+    <value>أخ</value>
+  </data>
+  <data name="Child" xml:space="preserve">
+    <value>طفل</value>
+  </data>
+  <data name="Contact Information" xml:space="preserve">
+    <value>جهات الاتصال</value>
+  </data>
+  <data name="Create Date" xml:space="preserve">
+    <value>تاريخ المسيحية</value>
+  </data>
+  <data name="Doctor" xml:space="preserve">
+    <value>طبيب</value>
+  </data>
+  <data name="Doctor Personal Info" xml:space="preserve">
+    <value>معلومات الطبيب</value>
+  </data>
+  <data name="Doctor Personal Informations" xml:space="preserve">
+    <value>معلومات طبيبك</value>
+  </data>
+  <data name="End Time" xml:space="preserve">
+    <value>وقت النهاية</value>
+  </data>
+  <data name="Extra Phone" xml:space="preserve">
+    <value>الجوال 2</value>
+  </data>
+  <data name="Father" xml:space="preserve">
+    <value>أب</value>
+  </data>
+  <data name="Female" xml:space="preserve">
+    <value>أنثى</value>
   </data>
   <data name="First Name" xml:space="preserve">
-    <value>نام</value>
+    <value>اسم</value>
+  </data>
+  <data name="Free" xml:space="preserve">
+    <value>مجانا</value>
+  </data>
+  <data name="FreeJobs" xml:space="preserve">
+    <value>العاملون لحسابهم الخاص</value>
+  </data>
+  <data name="FullName" xml:space="preserve">
+    <value>الاسم الأول واسم العائلة</value>
+  </data>
+  <data name="Gender" xml:space="preserve">
+    <value>جنس</value>
+  </data>
+  <data name="In Persone" xml:space="preserve">
+    <value>شخصيا</value>
+  </data>
+  <data name="Insurance Type" xml:space="preserve">
+    <value>تأمين</value>
+  </data>
+  <data name="Iranian" xml:space="preserve">
+    <value>الإيرانيين</value>
   </data>
   <data name="Last Name" xml:space="preserve">
-    <value>نام خانوادگی</value>
+    <value>اللقب</value>
+  </data>
+  <data name="Male" xml:space="preserve">
+    <value>رجل</value>
+  </data>
+  <data name="Mobile" xml:space="preserve">
+    <value>التليفون المحمول</value>
+  </data>
+  <data name="Mother" xml:space="preserve">
+    <value>الأم</value>
   </data>
   <data name="National Id" xml:space="preserve">
-    <value>کدملی</value>
+    <value>رمز دولي</value>
   </data>
-  <data name="Page Title" xml:space="preserve">
-    <value>جزئیات کاربر</value>
+  <data name="not determined" xml:space="preserve">
+    <value>لم يحدد</value>
+  </data>
+  <data name="Not Reserved" xml:space="preserve">
+    <value>غير محجوز</value>
+  </data>
+  <data name="Online" xml:space="preserve">
+    <value>متصل</value>
+  </data>
+  <data name="Partner" xml:space="preserve">
+    <value>زوج</value>
+  </data>
+  <data name="Patient" xml:space="preserve">
+    <value>صبور</value>
+  </data>
+  <data name="Patient Personal Informations" xml:space="preserve">
+    <value>معلومات المريض</value>
+  </data>
+  <data name="Patient population Covered" xml:space="preserve">
+    <value>السكان التي يغطيها المستخدم</value>
+  </data>
+  <data name="Ratio" xml:space="preserve">
+    <value>نسبة</value>
+  </data>
+  <data name="Reserve Date" xml:space="preserve">
+    <value>تاريخ الموعد</value>
+  </data>
+  <data name="Reserved" xml:space="preserve">
+    <value>محجوز</value>
+  </data>
+  <data name="Salamat" xml:space="preserve">
+    <value>تأمين صحي</value>
+  </data>
+  <data name="Show Reservation Details" xml:space="preserve">
+    <value>اعرض معلومات دورك</value>
+  </data>
+  <data name="Sister" xml:space="preserve">
+    <value>أخت</value>
+  </data>
+  <data name="Start Time" xml:space="preserve">
+    <value>وقت البدء</value>
+  </data>
+  <data name="State" xml:space="preserve">
+    <value>حالة</value>
+  </data>
+  <data name="Tamin" xml:space="preserve">
+    <value>تأمين الضمان الاجتماعي</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>طريقة الإحالة</value>
+  </data>
+  <data name="Username" xml:space="preserve">
+    <value>اسم مستخدم النظام</value>
+  </data>
+  <data name="Waiting" xml:space="preserve">
+    <value>انتظار</value>
   </data>
 </root>

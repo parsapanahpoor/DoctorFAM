@@ -118,21 +118,138 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Age" xml:space="preserve">
-    <value>سن</value>
+    <value>Yaş</value>
   </data>
-  <data name="Email Not Found" xml:space="preserve">
-    <value>ایمیل وارد نشده است</value>
+  <data name="BirthDay" xml:space="preserve">
+    <value>Doğum tarihi</value>
+  </data>
+  <data name="Brother" xml:space="preserve">
+    <value>Abi</value>
+  </data>
+  <data name="Child" xml:space="preserve">
+    <value>çocuk</value>
+  </data>
+  <data name="Contact Information" xml:space="preserve">
+    <value>Kişiler</value>
+  </data>
+  <data name="Create Date" xml:space="preserve">
+    <value>Hıristiyanlığın tarihi</value>
+  </data>
+  <data name="Doctor" xml:space="preserve">
+    <value>doktor</value>
+  </data>
+  <data name="Doctor Personal Info" xml:space="preserve">
+    <value>Doktor bilgileri</value>
+  </data>
+  <data name="Doctor Personal Informations" xml:space="preserve">
+    <value>Doktorunuzun bilgileri</value>
+  </data>
+  <data name="End Time" xml:space="preserve">
+    <value>bitiş zamanı</value>
+  </data>
+  <data name="Extra Phone" xml:space="preserve">
+    <value>Mobil 2</value>
+  </data>
+  <data name="Father" xml:space="preserve">
+    <value>Baba</value>
+  </data>
+  <data name="Female" xml:space="preserve">
+    <value>Dişi</value>
   </data>
   <data name="First Name" xml:space="preserve">
-    <value>نام</value>
+    <value>isim</value>
+  </data>
+  <data name="Free" xml:space="preserve">
+    <value>Bedava</value>
+  </data>
+  <data name="FreeJobs" xml:space="preserve">
+    <value>Serbest meslek</value>
+  </data>
+  <data name="FullName" xml:space="preserve">
+    <value>Ad ve soyad</value>
+  </data>
+  <data name="Gender" xml:space="preserve">
+    <value>Cinsiyet</value>
+  </data>
+  <data name="In Persone" xml:space="preserve">
+    <value>şahsen</value>
+  </data>
+  <data name="Insurance Type" xml:space="preserve">
+    <value>Sigorta</value>
+  </data>
+  <data name="Iranian" xml:space="preserve">
+    <value>İranlılar</value>
   </data>
   <data name="Last Name" xml:space="preserve">
-    <value>نام خانوادگی</value>
+    <value>Soyadı</value>
+  </data>
+  <data name="Male" xml:space="preserve">
+    <value>Erkek adam</value>
+  </data>
+  <data name="Mobile" xml:space="preserve">
+    <value>Mobil</value>
+  </data>
+  <data name="Mother" xml:space="preserve">
+    <value>Anne</value>
   </data>
   <data name="National Id" xml:space="preserve">
-    <value>کدملی</value>
+    <value>Ulusal Kod</value>
   </data>
-  <data name="Page Title" xml:space="preserve">
-    <value>جزئیات کاربر</value>
+  <data name="not determined" xml:space="preserve">
+    <value>belirlenmemiş</value>
+  </data>
+  <data name="Not Reserved" xml:space="preserve">
+    <value>rezerve edilmemiş</value>
+  </data>
+  <data name="Online" xml:space="preserve">
+    <value>Çevrimiçi</value>
+  </data>
+  <data name="Partner" xml:space="preserve">
+    <value>Eş</value>
+  </data>
+  <data name="Patient" xml:space="preserve">
+    <value>Hasta</value>
+  </data>
+  <data name="Patient Personal Informations" xml:space="preserve">
+    <value>Hasta bilgisi</value>
+  </data>
+  <data name="Patient population Covered" xml:space="preserve">
+    <value>Kullanıcı tarafından kapsanan nüfus</value>
+  </data>
+  <data name="Ratio" xml:space="preserve">
+    <value>Oran</value>
+  </data>
+  <data name="Reserve Date" xml:space="preserve">
+    <value>randevu tarihi</value>
+  </data>
+  <data name="Reserved" xml:space="preserve">
+    <value>rezerve</value>
+  </data>
+  <data name="Salamat" xml:space="preserve">
+    <value>sağlık Sigortası</value>
+  </data>
+  <data name="Show Reservation Details" xml:space="preserve">
+    <value>Dönüş bilgilerinizi görüntüleyin</value>
+  </data>
+  <data name="Sister" xml:space="preserve">
+    <value>kardeş</value>
+  </data>
+  <data name="Start Time" xml:space="preserve">
+    <value>Başlangıç ​​saati</value>
+  </data>
+  <data name="State" xml:space="preserve">
+    <value>Şart</value>
+  </data>
+  <data name="Tamin" xml:space="preserve">
+    <value>sosyal güvenlik sigortası</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Yönlendirme yöntemi</value>
+  </data>
+  <data name="Username" xml:space="preserve">
+    <value>Sistem kullanıcı adı</value>
+  </data>
+  <data name="Waiting" xml:space="preserve">
+    <value>beklemek</value>
   </data>
 </root>

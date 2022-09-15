@@ -129,6 +129,9 @@
   <data name="Add Reservation Date" xml:space="preserve">
     <value>إضافة تاريخ الحجز</value>
   </data>
+  <data name="Age" xml:space="preserve">
+    <value>سن</value>
+  </data>
   <data name="An error occurred in the change password process" xml:space="preserve">
     <value>حدث خطأ في عملية تغيير كلمة المرور</value>
   </data>
@@ -216,6 +219,9 @@
   <data name="Female" xml:space="preserve">
     <value>أنثى</value>
   </data>
+  <data name="First Name" xml:space="preserve">
+    <value>اسم</value>
+  </data>
   <data name="Free" xml:space="preserve">
     <value>تأمين مجاني</value>
   </data>
@@ -261,6 +267,9 @@
   <data name="Laboratory At Home" xml:space="preserve">
     <value>معمل منزلي</value>
   </data>
+  <data name="Last Name" xml:space="preserve">
+    <value>اللقب</value>
+  </data>
   <data name="List Of BMI History" xml:space="preserve">
     <value>تاريخ مؤشر كتلة الجسم للمستخدم</value>
   </data>
@@ -275,6 +284,9 @@
   </data>
   <data name="List Of Employees" xml:space="preserve">
     <value>قائمة الموظفين</value>
+  </data>
+  <data name="List Of Family Doctors" xml:space="preserve">
+    <value>aile hekimleri listesi</value>
   </data>
   <data name="List Of Futur Reservation" xml:space="preserve">
     <value>قائمة التعيينات المتخذة</value>
@@ -321,6 +333,9 @@
   <data name="Manage Employees" xml:space="preserve">
     <value>إدارة شؤون الموظفين</value>
   </data>
+  <data name="Manage Family Doctors" xml:space="preserve">
+    <value>Aile hekimlerinin yönetimi</value>
+  </data>
   <data name="Manage Locations" xml:space="preserve">
     <value>إدارة المواقع</value>
   </data>
@@ -359,6 +374,9 @@
   </data>
   <data name="Mother" xml:space="preserve">
     <value>الأم</value>
+  </data>
+  <data name="National Id" xml:space="preserve">
+    <value>رمز دولي</value>
   </data>
   <data name="Not Found" xml:space="preserve">
     <value>لا يوجد لا تجد</value>

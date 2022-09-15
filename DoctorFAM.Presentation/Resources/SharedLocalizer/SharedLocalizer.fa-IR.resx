@@ -525,4 +525,25 @@
   <data name="Reject Description From Doctor" xml:space="preserve">
     <value>علت رد درخواست</value>
   </data>
+  <data name="List Of Family Doctors" xml:space="preserve">
+    <value>لیست پزشکان خانواده</value>
+  </data>
+  <data name="Manage Family Doctors" xml:space="preserve">
+    <value>مدیریت پزشکان خانواده</value>
+  </data>
+  <data name="Age" xml:space="preserve">
+    <value>سن</value>
+  </data>
+  <data name="First Name" xml:space="preserve">
+    <value>نام</value>
+  </data>
+  <data name="Last Name" xml:space="preserve">
+    <value>نام خانوادگی</value>
+  </data>
+  <data name="National Id" xml:space="preserve">
+    <value>کدملی</value>
+  </data>
+  <data name="Wallet Balance" xml:space="preserve">
+    <value>موجودی کیف پول</value>
+  </data>
 </root>

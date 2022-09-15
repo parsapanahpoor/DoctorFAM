@@ -1,0 +1,472 @@
+﻿@model DoctorFAM.Domain.Entities.FamilyDoctor.UserSelectedFamilyDoctor
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Domain.ViewModels.Common
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
+
+
+@{
+    ViewData["Title"] = @Localizer["Show Family doctor Detail"];
+}
+
+@section Styles
+    {
+    <style>
+
+        .header-fullname {
+            font: 21px 'YekanBakh-FaNum';
+            margin-top: 27px;
+            display: inline-block;
+        }
+
+    </style>
+}
+
+    @section Scripts
+    {
+    <partial name="_JqueryValidation" />
+}
+
+    @section Breadcrumb
+    {
+    <li>
+        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+    </li>
+}
+
+    <div class="row">
+
+        <div class="col-md-12">
+
+        @if (Model != null && Model.FamilyDoctorRequestState == DoctorFAM.Domain.Enums.FamilyDoctor.FamilyDoctorRequestState.Decline)
+        {
+            <div class="col-lg-12 col-sm-12 col-xs-12">
+                <div class="widget">
+                    <div class="widget-header bg-danger">
+                        <span class="widget-caption">@SharedLocalizer["Decline Request From Doctor"] </span>
+                        <div class="widget-buttons">
+                            <a href="#" data-toggle="config">
+                                <i class="fa fa-cog"></i>
+                            </a>
+                            <a href="#" data-toggle="maximize">
+                                <i class="fa fa-expand"></i>
+                            </a>
+                            <a href="#" data-toggle="collapse">
+                                <i class="fa fa-minus"></i>
+                            </a>
+                            <a href="#" data-toggle="dispose">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div><!--Widget Buttons-->
+                    </div><!--Widget Header-->
+                    <div class="widget-body bg-danger">
+                        <p> @SharedLocalizer["Reject Description From Doctor"] : @Model.RejectDescription </p>
+                    </div><!--Widget Body-->
+                </div><!--Widget-->
+            </div>
+
+        }
+        <div class="col-md-12">
+
+            <dsiv class="profile-container">
+
+                <div class="profile-header row">
+
+                    <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12 profile-stats">
+                        <div class="row">
+
+                            <div class="col-lg-12 col-md-3 col-sm-3 col-xs-12 stats-col">
+
+                                <div class="stats-value pink" style="margin-top: 40px;">@Localizer["Doctor"]</div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-2 col-md-4 col-sm-12 text-center">
+                        <img src="@Model.Doctor.GetUserAvatar()" alt="" class="header-avatar">
+                    </div>
+                    <div class="col-lg-2 col-md-8 col-sm-12 profile-info">
+                        @if (Model.Doctor.FirstName != null && Model.Doctor.LastName != null)
+                        {
+                            <div class="header-fullname">@Model.Doctor.FirstName @Model.Doctor.LastName</div>
+                        }
+
+                        <div class="header-information">
+                            @Localizer["Mobile"] : @Model.Doctor.Mobile
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12 profile-stats">
+                        <div class="row">
+
+                            <div class="col-lg-12 col-md-3 col-sm-3 col-xs-12 stats-col">
+
+                                <div class="stats-value pink" style="margin-top: 40px;">@Localizer["Patient"]</div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-2 col-md-4 col-sm-12 text-center">
+                        <img src="@Model.Patient.GetUserAvatar()" alt="" class="header-avatar">
+                    </div>
+                    <div class="col-lg-2 col-md-8 col-sm-12 profile-info">
+                        @if (Model.Patient.FirstName != null && Model.Patient.LastName != null)
+                        {
+                            <div class="header-fullname">@Model.Patient.FirstName @Model.Patient.LastName</div>
+                        }
+
+                        <div class="header-information">
+                            @Localizer["Mobile"] : @Model.Patient.Mobile
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="profile-header row">
+
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 profile-stats">
+                        <div class="row">
+                            <div class="col-lg-4 col-md-3 col-sm-3 col-xs-12 stats-col">
+                                @if (Model.FamilyDoctorRequestState == DoctorFAM.Domain.Enums.FamilyDoctor.FamilyDoctorRequestState.Decline)
+                                {
+                                    <div class="stats-value danger">@Localizer["Decline"]</div>
+                                    <div class="stats-title">@Localizer["State"]</div>
+                                }
+                                @if (Model.FamilyDoctorRequestState == DoctorFAM.Domain.Enums.FamilyDoctor.FamilyDoctorRequestState.Accepted)
+                                {
+                                    <div class="stats-value success">@Localizer["accepted"]</div>
+                                    <div class="stats-title">@Localizer["State"]</div>
+                                }
+                                @if (Model.FamilyDoctorRequestState == DoctorFAM.Domain.Enums.FamilyDoctor.FamilyDoctorRequestState.WaitingForConfirm)
+                                {
+                                    <div class="stats-value warning">@Localizer["Waiting For Confirm"]</div>
+                                    <div class="stats-title">@Localizer["State"]</div>
+                                }
+                            </div>
+                            <div class="col-lg-4 col-md-3 col-sm-3 col-xs-12 stats-col">
+                                @if (Model.IsDelete)
+                                {
+                                    <div class="stats-value danger">@Localizer["Delete"]</div>
+                                    <div class="stats-title">@Localizer["Type"]</div>
+                                }
+                                @if (!Model.IsDelete)
+                                {
+                                    <div class="stats-value success">@Localizer["Active"]</div>
+                                    <div class="stats-title">@Localizer["Type"]</div>
+                                }
+                            </div>
+
+                            <div class="col-lg-4 col-md-3 col-sm-3 col-xs-12 stats-col">
+                                <div class="stats-value blue">@Model.CreateDate.ToStringShamsiDate()</div>
+                                <div class="stats-title">@Localizer["Create Date"]</div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="profile-body">
+                    <div class="col-lg-12">
+                        <div class="tabbable">
+
+                            <div class="tab-content tabs-flat">
+
+                                <div id="settings" class="tab-pane active">
+                                    <div class="form-title">
+                                        @Localizer["Doctor Personal Info"]
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <span class="input-icon icon-right">
+                                                    <input type="text" readonly class="form-control" value="@Model.Doctor.Username" placeholder="@Localizer["Username"]">
+                                                    <i class="fa fa-user blue"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <span class="input-icon icon-right">
+                                                    @if (Model.Doctor.LastName != null && Model.Doctor.FirstName != null)
+                                                    {
+                                                        <input type="text" readonly class="form-control" value="@Model.Doctor.FirstName @Model.Doctor.LastName" placeholder="@Localizer["FullName"]">
+                                                    }
+                                                    else
+                                                    {
+                                                        <input type="text" class="form-control" placeholder="@Localizer["FullName"]">
+                                                    }
+                                                    <i class="fa fa-user orange"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <span class="input-icon icon-right">
+                                                    @if (Model.Doctor.ExtraPhoneNumber != null)
+                                                    {
+                                                        <input type="text" readonly class="form-control" value="@Model.Doctor.ExtraPhoneNumber" placeholder="@Localizer["Extra Phone"]">
+                                                    }
+                                                    else
+                                                    {
+                                                        <input type="text" class="form-control" placeholder="@Localizer["Extra Phone"]">
+                                                    }
+                                                    <i class="glyphicon glyphicon-earphone yellow"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <span class="input-icon icon-right">
+                                                    <input type="text" readonly class="form-control" value="@Model.Doctor.Mobile" placeholder="@Localizer["Extra Phone"]">
+                                                    <i class="glyphicon glyphicon-phone palegreen"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <span class="input-icon icon-right">
+                                                    @if (Model.Doctor.BithDay != null)
+                                                    {
+                                                        <input type="text" readonly class="form-control" value="@Model.Doctor.BithDay.Value.ToShamsi()" placeholder="@Localizer["BirthDay"]">
+                                                    }
+                                                    else
+                                                    {
+                                                        <input type="text" class="form-control" placeholder="@Localizer["BirthDay"]">
+                                                    }
+                                                    <i class="fa fa-calendar"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <span class="input-icon icon-right">
+                                                    @if (Model.Doctor.NationalId != null)
+                                                    {
+                                                        <input type="text" readonly class="form-control" value="@Model.Doctor.NationalId" placeholder="@Localizer["NationalId"]">
+                                                    }
+                                                    else
+                                                    {
+                                                        <input type="text" class="form-control" placeholder="@Localizer["NationalId"]">
+                                                    }                                                        <i class="fa fa-globe"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-title">
+                                        @Localizer["Patient Personal Informations"]
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <span class="input-icon icon-right">
+                                                    <input type="text" readonly class="form-control" value="@Model.Patient.Username" placeholder="@Localizer["Username"]">
+                                                    <i class="fa fa-user blue"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <span class="input-icon icon-right">
+                                                    @if (Model.Patient.LastName != null && Model.Patient.FirstName != null)
+                                                    {
+                                                        <input type="text" readonly class="form-control" value="@Model.Patient.FirstName @Model.Patient.LastName" placeholder="@Localizer["FullName"]">
+                                                    }
+                                                    else
+                                                    {
+                                                        <input type="text" class="form-control" placeholder="@Localizer["FullName"]">
+                                                    }
+                                                    <i class="fa fa-user orange"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <span class="input-icon icon-right">
+                                                    @if (Model.Patient.ExtraPhoneNumber != null)
+                                                    {
+                                                        <input type="text" readonly class="form-control" value="@Model.Patient.ExtraPhoneNumber" placeholder="@Localizer["Extra Phone"]">
+                                                    }
+                                                    else
+                                                    {
+                                                        <input type="text" class="form-control" placeholder="@Localizer["Extra Phone"]">
+                                                    }
+                                                    <i class="glyphicon glyphicon-earphone yellow"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <span class="input-icon icon-right">
+                                                    <input type="text" readonly class="form-control" value="@Model.Patient.Mobile" placeholder="@Localizer["Extra Phone"]">
+                                                    <i class="glyphicon glyphicon-phone palegreen"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <span class="input-icon icon-right">
+                                                    @if (Model.Patient.BithDay != null)
+                                                    {
+                                                        <input type="text" readonly class="form-control" value="@Model.Patient.BithDay.Value.ToShamsi()" placeholder="@Localizer["BirthDay"]">
+                                                    }
+                                                    else
+                                                    {
+                                                        <input type="text" class="form-control" placeholder="@Localizer["BirthDay"]">
+                                                    }
+                                                    <i class="fa fa-calendar"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <span class="input-icon icon-right">
+                                                    @if (Model.Patient.NationalId != null)
+                                                    {
+                                                        <input type="text" readonly class="form-control" value="@Model.Patient.NationalId" placeholder="@Localizer["NationalId"]">
+                                                    }
+                                                    else
+                                                    {
+                                                        <input type="text" class="form-control" placeholder="@Localizer["NationalId"]">
+                                                    }                                                        <i class="fa fa-globe"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                                <div id="settings" class="tab-pane active">
+                                    @if (Model.Patient.PopulationCovered != null && Model.Patient.PopulationCovered.Any())
+                                    {
+
+                                        @foreach (var item in Model.Patient.PopulationCovered)
+                                        {
+                                            <div class="form-title">
+                                                @Localizer["Patient population Covered"]
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group col-md-3 col-sm-12">
+                                                    <label>@Localizer["First Name"]</label>
+                                                    <input type="text" class="form-control" readonly value="@item.PatientName">
+                                                </div>
+
+                                                <div class="form-group col-md-3 col-sm-12">
+                                                    <label>@Localizer["Last Name"]</label>
+                                                    <input type="text" class="form-control" readonly value="@item.PatientLastName">
+                                                </div>
+
+                                                <div class="form-group col-md-3 col-sm-12">
+                                                    <label>@Localizer["Age"]</label>
+                                                    <input type="text" class="form-control" readonly value="@item.Age">
+                                                </div>
+
+                                                <div class="form-group col-md-3 col-sm-12">
+                                                    <label>@Localizer["National Id"]</label>
+                                                    <input type="text" class="form-control" readonly value="@item.NationalId">
+                                                </div>
+
+                                                <div class="form-group col-md-3 col-sm-12">
+                                                    <label>@Localizer["BirthDay"]</label>
+                                                    <input type="text" class="form-control" readonly value="@item.BirthDay.ToShamsi()">
+                                                </div>
+
+                                                <div class="form-group col-md-3 col-sm-12">
+                                                    <label>@Localizer["Gender"]</label>
+                                                    @if (item.Gender == DoctorFAM.Domain.Enums.Gender.Gender.Female)
+                                                    {
+                                                        <input type="text" class="form-control" readonly value="@SharedLocalizer["Female"]">
+                                                    }
+                                                    @if (item.Gender == DoctorFAM.Domain.Enums.Gender.Gender.Male)
+                                                    {
+                                                        <input type="text" class="form-control" readonly value="@SharedLocalizer["Male"]">
+                                                    }
+                                                </div>
+
+                                                <div class="form-group col-md-3 col-sm-12">
+                                                    <label>@Localizer["Insurance Type"]</label>
+                                                    @if (item.InsuranceType == DoctorFAM.Domain.Enums.InsuranceType.InsuranceType.Iranian)
+                                                    {
+                                                        <input type="text" class="form-control" readonly value="@SharedLocalizer["Iranian"]">
+                                                    }
+                                                    @if (item.InsuranceType == DoctorFAM.Domain.Enums.InsuranceType.InsuranceType.Tamin)
+                                                    {
+                                                        <input type="text" class="form-control" readonly value="@SharedLocalizer["Tamin"]">
+                                                    }
+                                                    @if (item.InsuranceType == DoctorFAM.Domain.Enums.InsuranceType.InsuranceType.Salamat)
+                                                    {
+                                                        <input type="text" class="form-control" readonly value="@SharedLocalizer["Salamat"]">
+                                                    }
+                                                    @if (item.InsuranceType == DoctorFAM.Domain.Enums.InsuranceType.InsuranceType.FreeJobs)
+                                                    {
+                                                        <input type="text" class="form-control" readonly value="@SharedLocalizer["FreeJobs"]">
+                                                    }
+                                                    @if (item.InsuranceType == DoctorFAM.Domain.Enums.InsuranceType.InsuranceType.Free)
+                                                    {
+                                                        <input type="text" class="form-control" readonly value="@SharedLocalizer["Free"]">
+                                                    }
+                                                </div>
+
+                                                <div class="form-group col-md-3 col-sm-12">
+                                                    <label>@Localizer["Ratio"]</label>
+                                                    @if (item.Ratio == DoctorFAM.Domain.Enums.Population_Covered.Ratio.Brother)
+                                                    {
+                                                        <input type="text" class="form-control" readonly value="@SharedLocalizer["Brother"]">
+                                                    }
+                                                    @if (item.Ratio == DoctorFAM.Domain.Enums.Population_Covered.Ratio.Child)
+                                                    {
+                                                        <input type="text" class="form-control" readonly value="@SharedLocalizer["Child"]">
+                                                    }
+                                                    @if (item.Ratio == DoctorFAM.Domain.Enums.Population_Covered.Ratio.Father)
+                                                    {
+                                                        <input type="text" class="form-control" readonly value="@SharedLocalizer["Father"]">
+                                                    }
+                                                    @if (item.Ratio == DoctorFAM.Domain.Enums.Population_Covered.Ratio.Mother)
+                                                    {
+                                                        <input type="text" class="form-control" readonly value="@SharedLocalizer["Mother"]">
+                                                    }
+                                                    @if (item.Ratio == DoctorFAM.Domain.Enums.Population_Covered.Ratio.Sister)
+                                                    {
+                                                        <input type="text" class="form-control" readonly value="@SharedLocalizer["Sister"]">
+                                                    }
+                                                    @if (item.Ratio == DoctorFAM.Domain.Enums.Population_Covered.Ratio.Partner)
+                                                    {
+                                                        <input type="text" class="form-control" readonly value="@SharedLocalizer["Partner"]">
+                                                    }
+                                                </div>
+
+                                            </div>
+
+                                        }
+
+                                    }
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </dsiv>
+        </div>
+
+    </div>
+
+</div>
+

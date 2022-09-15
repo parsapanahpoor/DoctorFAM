@@ -11,6 +11,7 @@ using DoctorFAM.Web.Hubs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Build.Framework;
 using System.Runtime.CompilerServices;
 
 namespace DoctorFAM.Web.Areas.UserPanel.Controllers
@@ -240,6 +241,27 @@ namespace DoctorFAM.Web.Areas.UserPanel.Controllers
             #endregion
 
             return View(model);
+        }
+
+        #endregion
+
+        #region Cancel User Selected Family Doctor From User 
+
+        public async Task<IActionResult> CancelUserSelectedFamilyDoctorFromUserPanel()
+        {
+            #region Delete User Selected Family Doctor 
+
+            var res = await _familyDoctorService.CancelUserSelectedFamilyDoctorFromUserPanel(User.GetUserId());
+            if (res)
+            {
+                TempData[SuccessMessage] = "درخواست شما برای لغو پزشک خانواده ی خود با موفقیت ثبت شده.";
+                return RedirectToAction("Index" , "Home" , new { area = "UserPanel" });
+            }
+
+            #endregion
+
+            TempData[ErrorMessage] = "عملیات با شکست مواجه شده است .";
+            return RedirectToAction("Index", "Home", new { area = "UserPanel" });
         }
 
         #endregion

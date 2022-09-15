@@ -1,0 +1,52 @@
+﻿@model List<DoctorFAM.Domain.Entities.PopulationCovered.PopulationCovered>
+    
+<div class="row">
+    <div class="col-lg-12">
+
+        @if (Model != null && Model.Any())
+        {
+            <table class="table table-hover table-bordered tc vm">
+                <thead class="tc vm">
+                        <tr class="tc vm">
+                            <th class="tc vm">
+                                @SharedLocalizer["First Name"]
+                            </th>
+                            <th class="tc vm">
+                                @SharedLocalizer["Last Name"]
+                            </th>
+                             <th class="tc vm">
+                                @SharedLocalizer["National Id"]
+                            </th>
+                              <th class="tc vm">
+                            @SharedLocalizer["Age"]
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="tc vm">
+                        @foreach (var population in Model)
+                        {
+                            <tr class="tc vm" remove-ajax-item="@population.Id">
+                                <td class="tc vm" style="max-width: 200px">
+                                    <p> @population.PatientName </p>
+                                </td>
+                                <td class="tc vm" style="max-width: 200px">
+                                    <p> @population.PatientLastName </p>
+                                </td>
+                                   <td class="tc vm" style="max-width: 200px">
+                                    <p> @population.NationalId </p>
+                                </td>
+                                    <td class="tc vm" style="max-width: 200px">
+                                    <p> @population.Age </p>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+            </table>
+        }
+        else
+        {
+            <partial name="_AdminNotFoundPartial" />
+        }
+
+    </div>
+</div>

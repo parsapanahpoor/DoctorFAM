@@ -1,4 +1,5 @@
 ﻿using DoctorFAM.Domain.Entities.FamilyDoctor;
+using DoctorFAM.Domain.ViewModels.Admin.FamilyDoctor;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.PopulationCovered;
 using DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor;
 using DoctorFAM.Domain.ViewModels.UserPanel.Reservation;
@@ -32,6 +33,9 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Filter Family Doctor Reservation Date Time
         Task<FilterFamilyDoctorReservationDateTimeUserPanelViewModel?> FilterFamilyDoctorReservationDateTimeUserPanel(FilterFamilyDoctorReservationDateTimeUserPanelViewModel filter);
 
+        //Cancel User Selected Family Doctor From User Panel 
+        Task<bool> CancelUserSelectedFamilyDoctorFromUserPanel(ulong patientId);
+
         #endregion
 
         #region Doctor Panel 
@@ -50,6 +54,16 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //List Of Doctor Population Covered Users
         Task<ListOfDoctorPopulationCoveredViewModel> FilterDoctorPopulationCovered(ListOfDoctorPopulationCoveredViewModel filter);
+
+        #endregion
+
+        #region Admin And Supporter Side 
+
+        //List Of Family Doctor Request Admin Side 
+        Task<FilterFamilyDoctorViewModel> FilterFamilyDoctorRequestAdminAndSupporterSide(FilterFamilyDoctorViewModel filter);
+
+        //Get User Selected Family Doctor By Request Id With Doctor And Patient Information
+        Task<UserSelectedFamilyDoctor?> GetUserSelectedFamilyDoctorByRequestIdWithDoctorAndPatientInformation(ulong requestId);
 
         #endregion
     }

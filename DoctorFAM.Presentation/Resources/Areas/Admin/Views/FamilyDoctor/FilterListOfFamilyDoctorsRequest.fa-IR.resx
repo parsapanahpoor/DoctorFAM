@@ -117,22 +117,76 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Age" xml:space="preserve">
-    <value>سن</value>
+  <data name="Accepted" xml:space="preserve">
+    <value>تایید شده</value>
   </data>
-  <data name="Email Not Found" xml:space="preserve">
-    <value>ایمیل وارد نشده است</value>
+  <data name="Active" xml:space="preserve">
+    <value>فعال</value>
   </data>
-  <data name="First Name" xml:space="preserve">
+  <data name="Create Date" xml:space="preserve">
+    <value>تاریخ ثبت</value>
+  </data>
+  <data name="Decline" xml:space="preserve">
+    <value>پذیرفته نشده</value>
+  </data>
+  <data name="Delete Filter" xml:space="preserve">
+    <value>حذف فیلتر</value>
+  </data>
+  <data name="Deleted" xml:space="preserve">
+    <value>حذف شده</value>
+  </data>
+  <data name="Doctor Information" xml:space="preserve">
+    <value>اطلاعات پزشک</value>
+  </data>
+  <data name="Doctor Mobile" xml:space="preserve">
+    <value>موبایل پزشک</value>
+  </data>
+  <data name="Doctor Name" xml:space="preserve">
+    <value>نام پزشک</value>
+  </data>
+  <data name="Doctor NationalId" xml:space="preserve">
+    <value>کدملی پزشک</value>
+  </data>
+  <data name="Filter" xml:space="preserve">
+    <value>فیلتر</value>
+  </data>
+  <data name="List Of Family Doctor Requests" xml:space="preserve">
+    <value>لیست درخواست های پزشک خانواده</value>
+  </data>
+  <data name="Manage Family Doctor Requests" xml:space="preserve">
+    <value>مدیریت درخواست پزشک خانواده</value>
+  </data>
+  <data name="Mobile" xml:space="preserve">
+    <value>موبایل</value>
+  </data>
+  <data name="Order By State" xml:space="preserve">
+    <value>مرتب سازی براساس نوع</value>
+  </data>
+  <data name="Order By Type" xml:space="preserve">
+    <value>مرتب سازی براساس وضعیت</value>
+  </data>
+  <data name="Patient Mobile" xml:space="preserve">
+    <value>موبایل کاربر</value>
+  </data>
+  <data name="Patient Name" xml:space="preserve">
+    <value>نام کاربر</value>
+  </data>
+  <data name="Patient NationalId" xml:space="preserve">
+    <value>کدملی کاربر</value>
+  </data>
+  <data name="Possibilities" xml:space="preserve">
+    <value>امکانات</value>
+  </data>
+  <data name="States" xml:space="preserve">
+    <value>وضعیت</value>
+  </data>
+  <data name="User Information" xml:space="preserve">
+    <value>اطلاعات کاربر</value>
+  </data>
+  <data name="Username" xml:space="preserve">
     <value>نام</value>
   </data>
-  <data name="Last Name" xml:space="preserve">
-    <value>نام خانوادگی</value>
-  </data>
-  <data name="National Id" xml:space="preserve">
-    <value>کدملی</value>
-  </data>
-  <data name="Page Title" xml:space="preserve">
-    <value>جزئیات کاربر</value>
+  <data name="Waiting For Confirm" xml:space="preserve">
+    <value>درانتظار برسی</value>
   </data>
 </root>

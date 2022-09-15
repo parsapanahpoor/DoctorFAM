@@ -200,7 +200,8 @@
                                 </td>
                              
                                 <td class="tc vm">
-                                    <a asp-action="DoctorsInfoDetail" asp-controller="Doctors" asp-area="Admin" asp-route-userId="@info.OwnerId" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+                                    <a asp-action="DoctorsInfoDetail" asp-controller="Doctors" asp-area="Admin" asp-route-userId="@info.OwnerId" class="btn btn-warning btn-circle btn-xs"><i class="glyphicon glyphicon-edit"></i></a>
+                                    <a asp-action="ShowDoctorInfoDetail" asp-controller="Doctors" asp-area="Admin" asp-route-userId="@info.OwnerId" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
                                 </td>
                             </tr>
                         }

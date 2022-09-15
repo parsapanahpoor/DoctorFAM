@@ -132,6 +132,9 @@
   <data name="Add Reservation Date" xml:space="preserve">
     <value>Yeni tarih ekle</value>
   </data>
+  <data name="Age" xml:space="preserve">
+    <value>Yaş</value>
+  </data>
   <data name="An error occurred in the change password process" xml:space="preserve">
     <value>Şifre değiştirme işleminde bir hata oluştu</value>
   </data>
@@ -216,6 +219,9 @@
   <data name="Favorite activities" xml:space="preserve">
     <value>Faaliyetleriniz</value>
   </data>
+  <data name="First Name" xml:space="preserve">
+    <value>isim</value>
+  </data>
   <data name="From" xml:space="preserve">
     <value>İtibaren</value>
   </data>
@@ -252,6 +258,9 @@
   <data name="Laboratory At Home" xml:space="preserve">
     <value>evde laboratuvar</value>
   </data>
+  <data name="Last Name" xml:space="preserve">
+    <value>Soyadı</value>
+  </data>
   <data name="List Of BMI History" xml:space="preserve">
     <value>Kullanıcının BMI'lerinin geçmişi</value>
   </data>
@@ -266,6 +275,9 @@
   </data>
   <data name="List Of Employees" xml:space="preserve">
     <value>çalışanların listesi</value>
+  </data>
+  <data name="List Of Family Doctors" xml:space="preserve">
+    <value>aile hekimleri listesi</value>
   </data>
   <data name="List Of Futur Reservation" xml:space="preserve">
     <value>Alınan randevuların listesi</value>
@@ -309,6 +321,9 @@
   <data name="Manage Employees" xml:space="preserve">
     <value>Çalışan yönetimi</value>
   </data>
+  <data name="Manage Family Doctors" xml:space="preserve">
+    <value>Aile hekimlerinin yönetimi</value>
+  </data>
   <data name="Manage Locations" xml:space="preserve">
     <value>Konumları Yönet</value>
   </data>
@@ -347,6 +362,9 @@
   </data>
   <data name="Mother" xml:space="preserve">
     <value>Anne</value>
+  </data>
+  <data name="National Id" xml:space="preserve">
+    <value>Ulusal Kod</value>
   </data>
   <data name="Not Found" xml:space="preserve">
     <value>Bulunamadı</value>

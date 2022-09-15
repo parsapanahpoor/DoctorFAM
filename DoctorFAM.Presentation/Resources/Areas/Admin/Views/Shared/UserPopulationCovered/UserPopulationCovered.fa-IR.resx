@@ -120,9 +120,6 @@
   <data name="Age" xml:space="preserve">
     <value>سن</value>
   </data>
-  <data name="Email Not Found" xml:space="preserve">
-    <value>ایمیل وارد نشده است</value>
-  </data>
   <data name="First Name" xml:space="preserve">
     <value>نام</value>
   </data>
@@ -131,8 +128,5 @@
   </data>
   <data name="National Id" xml:space="preserve">
     <value>کدملی</value>
-  </data>
-  <data name="Page Title" xml:space="preserve">
-    <value>جزئیات کاربر</value>
   </data>
 </root>

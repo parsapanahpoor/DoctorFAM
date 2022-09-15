@@ -117,22 +117,157 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="accepted" xml:space="preserve">
+    <value>پذیرفته شده</value>
+  </data>
+  <data name="Active" xml:space="preserve">
+    <value>فعال</value>
+  </data>
   <data name="Age" xml:space="preserve">
     <value>سن</value>
   </data>
-  <data name="Email Not Found" xml:space="preserve">
-    <value>ایمیل وارد نشده است</value>
+  <data name="BirthDay" xml:space="preserve">
+    <value>تاریخ تولد</value>
+  </data>
+  <data name="Brother" xml:space="preserve">
+    <value>برادر</value>
+  </data>
+  <data name="Child" xml:space="preserve">
+    <value>فرزند</value>
+  </data>
+  <data name="Contact Information" xml:space="preserve">
+    <value>اطلاعات تماس</value>
+  </data>
+  <data name="Create Date" xml:space="preserve">
+    <value>تاریخ ایحاد</value>
+  </data>
+  <data name="Decline" xml:space="preserve">
+    <value>پذیرفته نشده</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>حذف شده</value>
+  </data>
+  <data name="Doctor" xml:space="preserve">
+    <value>پزشک</value>
+  </data>
+  <data name="Doctor Personal Info" xml:space="preserve">
+    <value>اطلاعات پزشک</value>
+  </data>
+  <data name="Doctor Personal Informations" xml:space="preserve">
+    <value>اطلاعات پزشک شما</value>
+  </data>
+  <data name="End Time" xml:space="preserve">
+    <value>زمان پایان</value>
+  </data>
+  <data name="Extra Phone" xml:space="preserve">
+    <value>موبایل 2 </value>
+  </data>
+  <data name="Father" xml:space="preserve">
+    <value>پدر</value>
+  </data>
+  <data name="Female" xml:space="preserve">
+    <value>زن</value>
   </data>
   <data name="First Name" xml:space="preserve">
-    <value>نام</value>
+    <value>نام </value>
+  </data>
+  <data name="Free" xml:space="preserve">
+    <value>آزاد</value>
+  </data>
+  <data name="FreeJobs" xml:space="preserve">
+    <value>مشاغل آزاد</value>
+  </data>
+  <data name="FullName" xml:space="preserve">
+    <value>نام و نام خانوادگی</value>
+  </data>
+  <data name="Gender" xml:space="preserve">
+    <value>جنسیت</value>
+  </data>
+  <data name="In Persone" xml:space="preserve">
+    <value>حضوری</value>
+  </data>
+  <data name="Insurance Type" xml:space="preserve">
+    <value>بیمه</value>
+  </data>
+  <data name="Iranian" xml:space="preserve">
+    <value>ایرانیان</value>
   </data>
   <data name="Last Name" xml:space="preserve">
     <value>نام خانوادگی</value>
   </data>
+  <data name="Male" xml:space="preserve">
+    <value>مرد</value>
+  </data>
+  <data name="Mobile" xml:space="preserve">
+    <value>موبایل</value>
+  </data>
+  <data name="Mother" xml:space="preserve">
+    <value>مادر</value>
+  </data>
   <data name="National Id" xml:space="preserve">
     <value>کدملی</value>
   </data>
-  <data name="Page Title" xml:space="preserve">
-    <value>جزئیات کاربر</value>
+  <data name="not determined" xml:space="preserve">
+    <value>تعیین نشده</value>
+  </data>
+  <data name="Not Reserved" xml:space="preserve">
+    <value>رزرو نشده</value>
+  </data>
+  <data name="Online" xml:space="preserve">
+    <value>آنلاین</value>
+  </data>
+  <data name="Partner" xml:space="preserve">
+    <value>همسر</value>
+  </data>
+  <data name="Patient" xml:space="preserve">
+    <value>بیمار</value>
+  </data>
+  <data name="Patient Personal Informations" xml:space="preserve">
+    <value>اطلاعات بیمار</value>
+  </data>
+  <data name="Patient population Covered" xml:space="preserve">
+    <value>جمعیت تحت پوشش کاربر </value>
+  </data>
+  <data name="Ratio" xml:space="preserve">
+    <value>نسبت</value>
+  </data>
+  <data name="Reserve Date" xml:space="preserve">
+    <value>تاریخ نوبت</value>
+  </data>
+  <data name="Reserved" xml:space="preserve">
+    <value>رزرو شده</value>
+  </data>
+  <data name="Salamat" xml:space="preserve">
+    <value>بیمه ی سلامت</value>
+  </data>
+  <data name="Show Family doctor Detail" xml:space="preserve">
+    <value>نمایش اطلاعات </value>
+  </data>
+  <data name="Show Reservation Details" xml:space="preserve">
+    <value>نمایش اطلاعات نوبت شما</value>
+  </data>
+  <data name="Sister" xml:space="preserve">
+    <value>خواهر</value>
+  </data>
+  <data name="Start Time" xml:space="preserve">
+    <value>زمان شروع</value>
+  </data>
+  <data name="State" xml:space="preserve">
+    <value>وضعیت</value>
+  </data>
+  <data name="Tamin" xml:space="preserve">
+    <value>بیمه ی تامین اجتماعی</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>نوع</value>
+  </data>
+  <data name="Username" xml:space="preserve">
+    <value>نام کاربری سامانه</value>
+  </data>
+  <data name="Waiting" xml:space="preserve">
+    <value>در انتظار</value>
+  </data>
+  <data name="Waiting For Confirm" xml:space="preserve">
+    <value>در انتظار برسی</value>
   </data>
 </root>

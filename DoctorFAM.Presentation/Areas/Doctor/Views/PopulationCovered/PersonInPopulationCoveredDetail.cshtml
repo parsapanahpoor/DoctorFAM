@@ -152,6 +152,9 @@
 
                                 <div id="timeline" class="tab-pane">
 
+                                    @if (Model.PopulationCovered != null && Model.PopulationCovered.Any())
+                                    { 
+
                                     @foreach (var item in Model.PopulationCovered)
                                     {
                                         <div class="form-title">
@@ -251,6 +254,7 @@
 
                                     }
 
+                                    }
                                 </div>
                                 <div id="settings" class="tab-pane active">
                                     <div class="form-title">

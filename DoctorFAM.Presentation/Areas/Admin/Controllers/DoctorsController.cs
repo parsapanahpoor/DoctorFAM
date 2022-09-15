@@ -9,14 +9,16 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
     {
         #region Ctor
 
-        public IDoctorsService _doctorsService;
+        private readonly IDoctorsService _doctorsService;
+        private readonly IStringLocalizer<SharedLocalizer.SharedLocalizer> _sharedLocalizer;
+        private readonly IUserService _userService;
 
-        public IStringLocalizer<SharedLocalizer.SharedLocalizer> _sharedLocalizer;
-
-        public DoctorsController(IDoctorsService doctorsService , IStringLocalizer<SharedLocalizer.SharedLocalizer> sharedLocalizer)
+        public DoctorsController(IDoctorsService doctorsService , IStringLocalizer<SharedLocalizer.SharedLocalizer> sharedLocalizer
+                                    , IUserService userService)
         {
             _doctorsService = doctorsService;
             _sharedLocalizer = sharedLocalizer;
+            _userService = userService;
         }
 
         #endregion
@@ -131,6 +133,22 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
 
             TempData[ErrorMessage] = _sharedLocalizer["The operation has failed"].Value;
             return RedirectToAction(nameof(DoctorsInfoDetail) , new { userId = doctor.UserId });
+        }
+
+        #endregion
+
+        #region Show Doctor Info Detail
+
+        public async Task<IActionResult> ShowDoctorInfoDetail(ulong userId)
+        {
+            #region Get User By Id 
+
+            var user = await _userService.GetUserById(userId);
+            if (user == null) return NotFound(); 
+
+            #endregion
+
+            return View(user);
         }
 
         #endregion

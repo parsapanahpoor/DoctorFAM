@@ -2,6 +2,7 @@
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.FamilyDoctor;
 using DoctorFAM.Domain.Interfaces;
+using DoctorFAM.Domain.ViewModels.Admin.FamilyDoctor;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.PopulationCovered;
 using DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor;
 using DoctorFAM.Domain.ViewModels.UserPanel.Reservation;
@@ -41,6 +42,27 @@ namespace DoctorFAM.Application.Services.Implementation
         #endregion
 
         #region User Panel 
+
+        //Cancel User Selected Family Doctor From User Panel 
+        public async Task<bool> CancelUserSelectedFamilyDoctorFromUserPanel(ulong patientId)
+        {
+            #region Get User Selected Family Doctor By patientId
+
+            var userSelectedFAmilyDoctor = await _familyDoctor.GetUserSelectedFamilyDoctorByUserId(patientId);
+            if (userSelectedFAmilyDoctor == null) return false;
+
+            #endregion
+
+            #region Delete Recorde
+
+            userSelectedFAmilyDoctor.IsDelete = true;
+
+            await _familyDoctor.UpdateUserSelectedFamilyDoctor(userSelectedFAmilyDoctor);
+
+            #endregion
+
+            return true;
+        }
 
         //Is Exist Any Family Doctor For Patient
         public async Task<bool> IsExistAnyFamilyDoctorForPatient(ulong userId)
@@ -313,6 +335,22 @@ namespace DoctorFAM.Application.Services.Implementation
         public async Task<ListOfDoctorPopulationCoveredViewModel> FilterDoctorPopulationCovered(ListOfDoctorPopulationCoveredViewModel filter)
         {
             return await _familyDoctor.FilterDoctorPopulationCovered(filter);
+        }
+
+        #endregion
+
+        #region Admin And Supporter Side 
+
+        //List Of Family Doctor Request Admin Side 
+        public async Task<FilterFamilyDoctorViewModel> FilterFamilyDoctorRequestAdminAndSupporterSide(FilterFamilyDoctorViewModel filter)
+        {
+            return await _familyDoctor.FilterFamilyDoctorRequestAdminAndSupporterSide(filter);
+        }
+
+        //Get User Selected Family Doctor By Request Id With Doctor And Patient Information
+        public async Task<UserSelectedFamilyDoctor?> GetUserSelectedFamilyDoctorByRequestIdWithDoctorAndPatientInformation(ulong requestId)
+        {
+            return await _familyDoctor.GetUserSelectedFamilyDoctorByRequestIdWithDoctorAndPatientInformation(requestId);
         }
 
         #endregion
