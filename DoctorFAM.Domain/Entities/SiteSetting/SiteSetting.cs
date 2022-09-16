@@ -32,5 +32,7 @@ namespace Academy.Domain.Entities.SiteSetting
 
         [Display(Name = "تایم  ارسال اس ام اس ")]
         public int SendSMSTimer { get; set; }
+
+        public string SiteDomain { get; set; }
     }
 }

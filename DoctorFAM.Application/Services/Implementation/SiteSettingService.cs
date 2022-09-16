@@ -50,7 +50,8 @@ namespace DoctorFAM.Application.Services.Implementation
                     DeathCertificateTariff = setting.DeathCertificateTariff,
                     HomePharmacyTariff = setting.HomePharmacyTariff,
                     ReservationTariff = setting.ReservationTarrif,
-                    SendSMSTime = setting.SendSMSTimer
+                    SendSMSTime = setting.SendSMSTimer,
+                    SiteDomain = setting.SiteDomain
                 };
             }
 
@@ -114,6 +115,11 @@ namespace DoctorFAM.Application.Services.Implementation
                 return EditSiteSettingResult.Fail;
             }
 
+            if (editSiteSettingViewModel.SiteDomain == null)
+            {
+                return EditSiteSettingResult.Fail;
+            }
+
             #endregion
 
             if (setting == null)
@@ -132,6 +138,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 setting.HomePatientTransportTariff = editSiteSettingViewModel.HomePatientTransportTariff.Value; 
                 setting.ReservationTarrif = editSiteSettingViewModel.ReservationTariff.Value;
                 setting.SendSMSTimer = editSiteSettingViewModel.SendSMSTime.Value;
+                setting.SiteDomain = editSiteSettingViewModel.SiteDomain;
             }
 
             await _siteSettingRepository.UpdateSiteSetting(setting);
@@ -188,6 +195,11 @@ namespace DoctorFAM.Application.Services.Implementation
                 return EditSiteSettingResult.Fail;
             }
 
+            if (editSiteSettingViewModel.SiteDomain == null)
+            {
+                return EditSiteSettingResult.Fail;
+            }
+
             #endregion
 
             var newSetting = new SiteSetting()
@@ -201,6 +213,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 DeathCertificateTariff = editSiteSettingViewModel.DeathCertificateTariff.Value,
                 ReservationTarrif = editSiteSettingViewModel.ReservationTariff.Value,
                 SendSMSTimer = editSiteSettingViewModel.SendSMSTime.Value,
+                SiteDomain = editSiteSettingViewModel.SiteDomain
             };
 
             await _siteSettingRepository.AddSiteSetting(newSetting);
@@ -255,6 +268,11 @@ namespace DoctorFAM.Application.Services.Implementation
         public async Task<int> GetSMSTimer()
         {
             return await _siteSettingRepository.GetSMSTimer();
+        }
+
+        public async Task<string?> GetSiteAddressDomain()
+        {
+            return await  _siteSettingRepository.GetSiteAddressDomain();
         }
 
         #endregion

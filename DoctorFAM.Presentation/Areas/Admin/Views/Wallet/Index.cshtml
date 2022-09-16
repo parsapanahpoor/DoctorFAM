@@ -84,18 +84,18 @@
                                         {
                                             @if (Context.Request.Query.Any(q => q.Key != "UserId" && q.Key != "UserFilter"))
                                             {
-                                                <a class="btn btn-labeled w-100 btn-darkorange mr-10px" asp-action="Index" asp-route-UserId="@Model.UserId" asp-route-UserFilter="@Model.UserFilter" class="margin-top-10">
+                                                <a class="btn btn-labeled w-100 btn-darkorange" asp-action="Index" asp-route-UserId="@Model.UserId" asp-route-UserFilter="@Model.UserFilter" class="margin-top-10">
                                                     <i class="btn-label glyphicon glyphicon-remove"></i>@Localizer["Clear Filter"]
                                                 </a>
                                             }
 
-                                            <a class="btn btn-labeled w-100 btn-darkorange mr-10px" asp-action="Index" class="margin-top-10">
+                                            <a class="btn btn-labeled w-100 btn-darkorange" asp-action="Index" class="margin-top-10">
                                                 <i class="btn-label glyphicon glyphicon-remove"></i>@Localizer["Clear User Filter"]
                                             </a>
                                         }
                                         else
                                         {
-                                            <a class="btn btn-labeled w-100 btn-darkorange mr-10px" asp-action="Index" class="margin-top-10">
+                                            <a class="btn btn-labeled w-100 btn-darkorange" asp-action="Index" class="margin-top-10">
                                                 <i class="btn-label glyphicon glyphicon-remove"></i>@Localizer["Clear Filter"]
                                             </a>
                                         }

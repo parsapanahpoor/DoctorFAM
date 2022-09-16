@@ -149,11 +149,22 @@ namespace DoctorFAM.Web.Controllers
 
             #endregion
 
+            #region Get Site Address Domain For Redirect To Bank Portal\
+
+            var siteAddressDomain = await _siteSettingService.GetSiteAddressDomain();
+            if (string.IsNullOrEmpty(siteAddressDomain))
+            {
+                TempData[ErrorMessage] = "امکان اتصال به درگاه بانکی وجود ندارد";
+                return RedirectToAction("Index", "Home");
+            }
+
+            #endregion
+
             #region Online Payment
 
             var payment = new ZarinpalSandbox.Payment(reservationTariff);
 
-            var res = payment.PaymentRequest("پرداخت  ", "https://localhost:44322/DoctorReservationPayment/" + model.ReservationDateTimeId, "Parsapanahpoor@yahoo.com", "09117878804");
+            var res = payment.PaymentRequest("پرداخت  ", $"{siteAddressDomain}DoctorReservationPayment/" + model.ReservationDateTimeId, "Parsapanahpoor@yahoo.com", "09117878804");
 
             if (res.Result.Status == 100)
             {
@@ -207,10 +218,10 @@ namespace DoctorFAM.Web.Controllers
                     await _reservationService.ReserveDoctorReservationDateTimeAfterSuccessPayment(reservationDateTime.Id);
 
                     //Charge User Wallet
-                    await _homeVisitService.ChargeUserWallet(User.GetUserId(), reservationTariff);
+                    await _reservationService.ChargeUserWallet(User.GetUserId(), reservationTariff);
 
                     //Pay Home Visit Tariff
-                    await _homeVisitService.PayHomeVisitTariff(User.GetUserId(), reservationTariff);
+                    await _reservationService.PayReservationTariff(User.GetUserId(), reservationTariff);
 
                     #region Send Notification In SignalR
 
@@ -245,7 +256,6 @@ namespace DoctorFAM.Web.Controllers
                     }
 
                     #endregion
-
 
                     return View();
                 }

@@ -30,6 +30,12 @@
                     <div>
                          <div class="row">
 
+                                <div class="form-group col-md-12">
+                                    <label asp-for="SiteDomain"></label>
+                                    <input type="text" class="form-control" asp-for="SiteDomain" />
+                                    <span class="text-danger" asp-validation-for="SiteDomain"></span>
+                                </div>
+
                                <div class="form-group col-md-12">
                                 <label asp-for="HomeVisitTariff"></label>
                                 <input type="text" class="form-control" asp-for="HomeVisitTariff"/>

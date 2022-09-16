@@ -39,6 +39,8 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         Task<int> GetSMSTimer();
 
+        Task<string?> GetSiteAddressDomain();
+
         #endregion
     }
 }

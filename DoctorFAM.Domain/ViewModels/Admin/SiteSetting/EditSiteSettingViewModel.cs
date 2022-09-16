@@ -35,6 +35,9 @@ namespace DoctorFAM.Domain.ViewModels.Admin.SiteSetting
 
         [Display(Name = "Send SMS Time")]
         public int? SendSMSTime { get; set; }
+
+        [Display(Name = "Site Domain Address")]
+        public string? SiteDomain { get; set; }
     }
 
     public enum EditSiteSettingResult

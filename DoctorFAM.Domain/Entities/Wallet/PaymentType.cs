@@ -27,4 +27,7 @@ public enum PaymentType
 
     [Display(Name = "HomePharmacy")]
     HomePharmacy = 7,
+
+    [Display(Name = "Reservation")]
+    Reservation = 8,
 }

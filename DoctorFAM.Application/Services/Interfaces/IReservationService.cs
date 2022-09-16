@@ -1,4 +1,6 @@
-﻿using DoctorFAM.Domain.Entities.DoctorReservation;
+﻿using DoctorFAM.Application.Services.Implementation;
+using DoctorFAM.Domain.Entities.DoctorReservation;
+using DoctorFAM.Domain.Entities.Wallet;
 using DoctorFAM.Domain.ViewModels.Admin.Reservation;
 using DoctorFAM.Domain.ViewModels.Common;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment;
@@ -30,7 +32,7 @@ namespace DoctorFAM.Application.Services.Interfaces
         Task<List<SelectListViewModel>> GetReservationDateTimeByReservationDateIdSelectList(ulong reservationDateId, ulong userId);
 
         //Get Doctor Reservation Date By Date 
-        Task<DoctorReservationDate?> GetDoctorReservationDateByDate(DateTime date , ulong userId);
+        Task<DoctorReservationDate?> GetDoctorReservationDateByDate(DateTime date, ulong userId);
 
         //Get Future Doctor Reservation For Cancel Reservation Request 
         Task<List<SelectListViewModel>> GetReservationsForAddCancelRequest(ulong userId);
@@ -105,6 +107,10 @@ namespace DoctorFAM.Application.Services.Interfaces
         #endregion
 
         #region Site Side 
+
+        Task<bool> ChargeUserWallet(ulong userId, int price);
+
+        Task<bool> PayReservationTariff(ulong userId, int price);
 
         //Get Reservation Date By Reservation Date And User Id
         Task<DoctorReservationDate?> GetDoctorReservationDateByReservationDateAndUserId(DateTime reservationDate, ulong userId);

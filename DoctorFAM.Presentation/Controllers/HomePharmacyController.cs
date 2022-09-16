@@ -415,11 +415,22 @@ namespace DoctorFAM.Web.Controllers
 
             #endregion
 
+            #region Get Site Address Domain For Redirect To Bank Portal\
+
+            var siteAddressDomain = await _siteSettingService.GetSiteAddressDomain();
+            if (string.IsNullOrEmpty(siteAddressDomain))
+            {
+                TempData[ErrorMessage] = "امکان اتصال به درگاه بانکی وجود ندارد";
+                return RedirectToAction("Index", "Home");
+            }
+
+            #endregion
+
             #region Online Payment
 
             var payment = new ZarinpalSandbox.Payment(homePharmacyTariff);
 
-            var res = payment.PaymentRequest("پرداخت  ", "https://localhost:44322/HomePharmacyPayment/" + requestId, "Parsapanahpoor@yahoo.com", "09117878804");
+            var res = payment.PaymentRequest("پرداخت  ", $"{siteAddressDomain}HomePharmacyPayment/" + requestId, "Parsapanahpoor@yahoo.com", "09117878804");
 
             if (res.Result.Status == 100)
             {

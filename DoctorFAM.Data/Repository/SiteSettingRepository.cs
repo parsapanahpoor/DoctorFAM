@@ -121,7 +121,7 @@ namespace DoctorFAM.Data.Repository
             return siteSetting.HomePharmacyTariff;
         }
 
-        public async Task<int >GetReservationTariff()
+        public async Task<int>GetReservationTariff()
                 {
             var siteSetting = await GetSiteSetting();
             if (siteSetting == null) return 0;
@@ -145,7 +145,12 @@ namespace DoctorFAM.Data.Repository
 
         public async Task<int> GetSMSTimer()
         {
-            return await _context.SiteSettings.Select(p => p.SendSMSTimer).FirstAsync();
+            return await _context.SiteSettings.Select(p => p.SendSMSTimer).FirstOrDefaultAsync();
+        }
+
+        public async Task<string?> GetSiteAddressDomain()
+        {
+            return await _context.SiteSettings.Select(p => p.SiteDomain).FirstOrDefaultAsync();
         }
 
         #endregion

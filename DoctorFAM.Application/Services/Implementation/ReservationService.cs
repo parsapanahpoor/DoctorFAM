@@ -1,9 +1,11 @@
 ﻿using DoctorFAM.Application.Convertors;
 using DoctorFAM.Application.Services.Interfaces;
+using DoctorFAM.Data.Repository;
 using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.Patient;
+using DoctorFAM.Domain.Entities.Wallet;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.Reservation;
 using DoctorFAM.Domain.ViewModels.Admin.Wallet;
@@ -40,7 +42,11 @@ namespace DoctorFAM.Application.Services.Implementation
 
         private readonly IWalletService _walletService;
 
-        public ReservationService(IReservationRepository reservation, IOrganizationService organizationService, IWorkAddressService workAddress, IDoctorsRepository doctorsRepository, IUserService userService, ISiteSettingService siteSettingService, IWalletService walletService)
+        private readonly IWalletRepository _walletRepository;
+
+        public ReservationService(IReservationRepository reservation, IOrganizationService organizationService, IWorkAddressService workAddress
+                                 , IDoctorsRepository doctorsRepository, IUserService userService, ISiteSettingService siteSettingService
+                                    , IWalletService walletService, IWalletRepository walletRepository)
         {
             _reservation = reservation;
             _organizationService = organizationService;
@@ -49,6 +55,7 @@ namespace DoctorFAM.Application.Services.Implementation
             _userService = userService;
             _siteSettingService = siteSettingService;
             _walletService = walletService;
+            _walletRepository = walletRepository;
         }
 
         #endregion
@@ -972,6 +979,50 @@ namespace DoctorFAM.Application.Services.Implementation
         #endregion
 
         #region Site Side
+
+        public async Task<bool> ChargeUserWallet(ulong userId, int price)
+        {
+            if (!await _userService.IsExistUserById(userId))
+            {
+                return false;
+            }
+
+            var wallet = new Wallet
+            {
+                UserId = userId,
+                TransactionType = TransactionType.Deposit,
+                GatewayType = GatewayType.Zarinpal,
+                PaymentType = PaymentType.ChargeWallet,
+                Price = price,
+                Description = "شارژ حساب کاربری برای پرداخت هزینه ی دریافت نوبت",
+                IsFinally = true
+            };
+
+            await _walletRepository.CreateWalletAsync(wallet);
+            return true;
+        }
+
+        public async Task<bool> PayReservationTariff(ulong userId, int price)
+        {
+            if (!await _userService.IsExistUserById(userId))
+            {
+                return false;
+            }
+
+            var wallet = new Wallet
+            {
+                UserId = userId,
+                TransactionType = TransactionType.Withdraw,
+                GatewayType = GatewayType.Zarinpal,
+                PaymentType = PaymentType.Reservation,
+                Price = price,
+                Description = "پرداخت مبلغ دریافت نوبت",
+                IsFinally = true
+            };
+
+            await _walletRepository.CreateWalletAsync(wallet);
+            return true;
+        }
 
         //Get Reservation Date By Reservation Date And User Id
         public async Task<DoctorReservationDate?> GetDoctorReservationDateByReservationDateAndUserId(DateTime reservationDate, ulong userId)

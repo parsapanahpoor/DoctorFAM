@@ -590,5 +590,30 @@ $(function () {
 
 //#endregion
 
+//#region Replace Persion Number to English In Input
 
+$(function () {
+    $('input').keyup(function (e) {
+        var ctrlKey = 67, vKey = 86;
+        if (e.keyCode != ctrlKey && e.keyCode != vKey) {
+            $(this).val(persianToEnglish($(this).val()));
+        }
+    });
+    $('textarea').keyup(function (e) {
+        var ctrlKey = 67, vKey = 86;
+        if (e.keyCode != ctrlKey && e.keyCode != vKey) {
+            $(this).val(persianToEnglish($(this).val()));
+        }
+    });
+});
+function persianToEnglish(input) {
+    var inputstring = input;
+    var persian = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"]
+    var english = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+    for (var i = 0; i < 10; i++) {
+        inputstring = inputstring.toString().replace(persian[i], english[i]);
+    }
+    return inputstring;
+}
 
+//#endregion
