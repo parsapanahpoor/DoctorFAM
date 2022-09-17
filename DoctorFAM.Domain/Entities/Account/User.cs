@@ -1,5 +1,6 @@
 ﻿using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Common;
+using DoctorFAM.Domain.Entities.Contact;
 using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.FamilyDoctor;
@@ -137,6 +138,12 @@ namespace DoctorFAM.Domain.Entities.Account
 
         [InverseProperty("Patient")]
         public ICollection<UserSelectedFamilyDoctor> PatientForFamilyDoctor { get; set; }
+
+        public ICollection<Ticket> Tickets { get; set; }
+
+        public ICollection<Ticket> TicketTargetUser { get; set; }
+
+        public ICollection<TicketMessage> TicketMessages { get; set; }
 
         #endregion
     }

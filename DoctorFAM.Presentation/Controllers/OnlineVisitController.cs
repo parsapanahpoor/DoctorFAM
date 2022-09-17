@@ -4,10 +4,12 @@ using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.Entities.PopulationCovered;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
 using DoctorFAM.Domain.ViewModels.Site.Request;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DoctorFAM.Web.Controllers
 {
+    [Authorize]
     public class OnlineVisitController : SiteBaseController
     {
         #region ctor
@@ -15,12 +17,15 @@ namespace DoctorFAM.Web.Controllers
         private readonly IOnlineVisitService _onlineVisitService;
         private readonly IRequestService _requestService;
         private readonly IUserService _userService;
+        private readonly IPatientService _patientService;
 
-        public OnlineVisitController(IOnlineVisitService onlineVisitService, IRequestService requestService, IUserService userService)
+        public OnlineVisitController(IOnlineVisitService onlineVisitService, IRequestService requestService,
+                                        IUserService userService, IPatientService patientService)
         {
             _onlineVisitService = onlineVisitService;
             _requestService = requestService;
             _userService = userService;
+            _patientService = patientService;
         }
 
         #endregion
@@ -49,10 +54,10 @@ namespace DoctorFAM.Web.Controllers
 
         #endregion
 
-        #region Online Visit Request Detail
+        #region Patient Details
 
         [HttpGet]
-        public async Task<IActionResult> OnlineVisitRequestDetail(ulong requestId)
+        public async Task<IActionResult> PatientDetails(ulong requestId)
         {
             #region Data Validation
 
@@ -79,7 +84,7 @@ namespace DoctorFAM.Web.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> OnlineVisitRequestDetail(PatientViewModel patient)
+        public async Task<IActionResult> PatientDetails(PatientViewModel patient)
         {
             #region Data Validation
 
@@ -89,9 +94,12 @@ namespace DoctorFAM.Web.Controllers
 
             #region Model State
 
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid )
             {
-                return NotFound();
+                if (!string.IsNullOrEmpty(patient.RequestDescription))
+                {
+                    return NotFound();
+                }
             }
 
             #endregion
@@ -116,12 +124,36 @@ namespace DoctorFAM.Web.Controllers
                     //Add PatientId To The Request
                     await _requestService.AddPatientIdToRequest(patient.RequestId, patientId);
 
-                    return RedirectToAction("BankPay", "OnlineVisit", new { requestId = patient.RequestId, patientId = patientId });
+                    return RedirectToAction("OnlineVisitRequestDetail", "OnlineVisit", new { requestId = patient.RequestId, patientId = patientId });
             }
 
             #endregion
 
             return View(patient);
+        }
+
+        #endregion
+
+        #region Online Visit Request Detail
+
+        [HttpGet]
+        public async Task<IActionResult> OnlineVisitRequestDetail(ulong requestId, ulong patientId)
+        {
+            #region Is Exist Request & Patient
+
+            if (!await _requestService.IsExistRequestByRequestId(requestId))
+            {
+                return NotFound();
+            }
+
+            if (!await _patientService.IsExistPatientById(patientId))
+            {
+                return NotFound();
+            }
+
+            #endregion
+
+            return View();
         }
 
         #endregion

@@ -2,6 +2,7 @@
 using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.BMI;
+using DoctorFAM.Domain.Entities.Contact;
 using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.FamilyDoctor;
@@ -210,6 +211,14 @@ namespace DoctorFAM.Data.DbContext
         #region BMI
 
         public DbSet<BMI> BMI { get; set; }
+
+        #endregion
+
+        #region Ticket 
+
+        public DbSet<Ticket> Tickets { get; set; }
+
+        public DbSet<TicketMessage> TicketMessages { get; set; }
 
         #endregion
 

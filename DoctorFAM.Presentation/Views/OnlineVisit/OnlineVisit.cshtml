@@ -1,0 +1,41 @@
+﻿@model DoctorFAM.Domain.ViewModels.Site.Request.RequestViewModel
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.StaticTools
+@{
+    ViewData["Title"] = "ویزیت آنلاین";
+}
+
+@section Styles
+    {
+
+}
+
+    @section Scripts
+    {
+    <partial name="_JqueryValidation" />
+}
+    <form asp-action="OnlineVisit" asp-controller="OnlineVisit" asp-area="">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="page-content formHealth text-center text-align-justify">
+            <div class="row HomeVisitTitle text-center  text-align-justify ">
+                <div class="col-md-12   text-center  text-align-justify ">
+                    <h2 class="text-center  text-align-justify ">  درخواست ویزیت آنلاین</h2>
+                    <p class="text-center  text-align-justify">
+                        جهت ثبت درخواست ویزیت آنلاین، دکمه تایید را فشار دهید:
+                    </p>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-12 mt-3 text-center mb-2">
+                    <div class="form-group">
+                        <input type="submit" value="تایید و ادامه" class="btn-Accept" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </form>

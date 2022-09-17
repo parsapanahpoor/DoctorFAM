@@ -135,6 +135,9 @@
   <data name="All" xml:space="preserve">
     <value>همه</value>
   </data>
+  <data name="Answered" xml:space="preserve">
+    <value>پاسخ داده شده</value>
+  </data>
   <data name="Appropriate" xml:space="preserve">
     <value>مناسب</value>
   </data>
@@ -173,6 +176,9 @@
   </data>
   <data name="City" xml:space="preserve">
     <value>شهر</value>
+  </data>
+  <data name="Closed" xml:space="preserve">
+    <value>بسته شده</value>
   </data>
   <data name="computerized" xml:space="preserve">
     <value>افزودن کامپیوتری</value>
@@ -405,6 +411,9 @@
   </data>
   <data name="PayPal" xml:space="preserve">
     <value>پی پال</value>
+  </data>
+  <data name="Pending" xml:space="preserve">
+    <value>درحال برسی</value>
   </data>
   <data name="Permission Name" xml:space="preserve">
     <value>نام دسترسی</value>

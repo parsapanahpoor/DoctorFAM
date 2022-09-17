@@ -1,0 +1,115 @@
+﻿@model DoctorFAM.Domain.ViewModels.Site.OnlineVisit.OnlineVisitRquestDetailViewModel
+@using DoctorFAM.Domain.ViewModels.Site.HomePharmacy
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.StaticTools
+
+@{
+    ViewData["Title"] = "ثبت دارو";
+}
+
+
+@section Styles
+    {
+    <style>
+
+        .d-none {
+            display: none;
+        }
+
+        #DrugRequestMethod {
+            display: initial !important;
+        }
+
+        .nice-select {
+            display: none !important;
+        }
+
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+
+    </style>
+}
+
+    @section Scripts
+    {
+    <partial name="_JqueryValidation" />
+
+    <script>
+
+        $(document).ready(function () {
+            $("#DrugTrakingCode").val('');
+            $("#DrugPrescriptionImage").val('');
+            $("#DrugName").val('');
+            $("#DrugCount").val('');
+            $("#DrugImage").val('');
+        });
+
+    </script>
+
+}
+
+    <div class="page-content  formHealth">
+        <div class="row HomePharmacyTitle text-center  text-align-justify ">
+            <div class="col-md-12   text-center  text-align-justify M-5 P-5">
+                <h2 class="text-center  text-align-justify ">  درخواست ویزیت آنلاین</h2>
+                <p class="text-center  text-align-justify">
+                    کاربر گرامی, توجه داشته باشید شما میتوانید از هریک از روش های پیام متنی یا ارسال فایل برای بیان علت دریافت این خدمت خود استفاده کنید.:
+                </p>
+            </div>
+        </div>
+        <div class="container  p-2">
+
+            <div class="row">
+                <div class="col-md-12  col-sm-12 ">
+                    <form asp-action="RequestedDrogs" asp-controller="HomePharmacy" asp-area="" enctype="multipart/form-data">
+                        <input asp-for="RequestId" type="hidden" />
+                        <input asp-for="PatientId" type="hidden" />
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label asp-for="OnlineVisitRequestDescription" class="control-label">توضیحات</label>
+                                        <input asp-for="OnlineVisitRequestDescription" class="form-control" />
+                                        <span asp-validation-for="OnlineVisitRequestDescription" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="OnlineVisitRequestFile" class="control-label">فایل</label>
+                                        <input type="file" id="DrugPrescriptionImage" asp-for="OnlineVisitRequestFile" class="form-control" />
+                                        <span asp-validation-for="OnlineVisitRequestDescription" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4  text-center mt-1 ">
+                                    <label class="control-label"></label>
+                                    <div class="form-group">
+                                        <input type="submit" value="ثبت درخواست " class="btn-Accept" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+        </div>
+
+
+    </div>
+</div>

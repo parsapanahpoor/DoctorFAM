@@ -135,6 +135,9 @@
   <data name="All" xml:space="preserve">
     <value>Herşey</value>
   </data>
+  <data name="Answered" xml:space="preserve">
+    <value>cevaplandı</value>
+  </data>
   <data name="Appropriate" xml:space="preserve">
     <value>Uygun</value>
   </data>
@@ -164,6 +167,9 @@
   </data>
   <data name="City" xml:space="preserve">
     <value>Şehir</value>
+  </data>
+  <data name="Closed" xml:space="preserve">
+    <value>kapalı</value>
   </data>
   <data name="computerized" xml:space="preserve">
     <value>Bilgisayar ekle</value>
@@ -348,6 +354,9 @@ meta etiket</value>
   </data>
   <data name="Patient transfer fee in Rials" xml:space="preserve">
     <value>transfer</value>
+  </data>
+  <data name="Pending" xml:space="preserve">
+    <value>Askıda olması</value>
   </data>
   <data name="Permission Name" xml:space="preserve">
     <value>Erişim adı</value>
