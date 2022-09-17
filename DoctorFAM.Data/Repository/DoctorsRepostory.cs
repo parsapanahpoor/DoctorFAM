@@ -116,13 +116,16 @@ namespace DoctorFAM.Data.Repository
             if (doctorInterest != null && doctorInterest.Any())
             {
                 //Doctor Has HomeVisit Interest
-                if (doctorInterest.Any(p => p.InterestId == 1)) model.HomeVisit = true;
+                if (doctorInterest.Any(p => p.InterestId == 2)) model.HomeVisit = true;
 
                 //Doctor Has Death Certificate Interest
                 if (doctorInterest.Any(p => p.InterestId == 4)) model.DeathCertificate = true;
 
                 //Doctor Has Family Doctor Interests
                 if (doctorInterest.Any(p => p.InterestId == 3)) model.DoctorFamily = true;
+
+                //Doctor Has Online Visit Interest
+                if (doctorInterest.Any(p => p.InterestId == 1)) model.OnlineVisit = true;
             }
 
             #endregion

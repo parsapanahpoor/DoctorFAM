@@ -48,6 +48,7 @@ namespace DoctorFAM.IoC
             services.AddScoped<INotificationService , NotificationService>();
             services.AddScoped<IBMIService , BMIService>();
             services.AddScoped<IFamilyDoctorService , FamilyDoctorService>();
+            services.AddScoped<IOnlineVisitService , OnlineVisitService>();
 
             #endregion
 
@@ -77,6 +78,7 @@ namespace DoctorFAM.IoC
             services.AddScoped<INotificationRepository, NotificationRepository>();
             services.AddScoped<IBMIRepository , BMIRepository>();
             services.AddScoped<IFamilyDoctorRepository , FamilyDoctorRepository>();
+            services.AddScoped<IOnlineVisitRepository , OnlineVisitRepository>();
 
             #endregion
         }
