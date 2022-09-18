@@ -38,6 +38,9 @@ namespace DoctorFAM.Domain.ViewModels.Admin.SiteSetting
 
         [Display(Name = "Site Domain Address")]
         public string? SiteDomain { get; set; }
+
+        [Display(Name = "Online Visit tariff in Rials")]
+        public int? OnlineVisitTariff { get; set; }
     }
 
     public enum EditSiteSettingResult

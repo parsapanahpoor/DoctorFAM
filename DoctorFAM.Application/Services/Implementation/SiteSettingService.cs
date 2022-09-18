@@ -51,7 +51,8 @@ namespace DoctorFAM.Application.Services.Implementation
                     HomePharmacyTariff = setting.HomePharmacyTariff,
                     ReservationTariff = setting.ReservationTarrif,
                     SendSMSTime = setting.SendSMSTimer,
-                    SiteDomain = setting.SiteDomain
+                    SiteDomain = setting.SiteDomain,
+                    OnlineVisitTariff = setting.OnlineVisitTariff
                 };
             }
 
@@ -120,6 +121,11 @@ namespace DoctorFAM.Application.Services.Implementation
                 return EditSiteSettingResult.Fail;
             }
 
+            if (editSiteSettingViewModel.OnlineVisitTariff == null)
+            {
+                return EditSiteSettingResult.Fail;
+            }
+
             #endregion
 
             if (setting == null)
@@ -135,10 +141,11 @@ namespace DoctorFAM.Application.Services.Implementation
                 setting.HomePharmacyTariff = editSiteSettingViewModel.HomePharmacyTariff.Value;
                 setting.HomeLaboratoryTariff = editSiteSettingViewModel.HomeLaboratoryTariff.Value;
                 setting.DeathCertificateTariff = editSiteSettingViewModel.DeathCertificateTariff.Value;
-                setting.HomePatientTransportTariff = editSiteSettingViewModel.HomePatientTransportTariff.Value; 
+                setting.HomePatientTransportTariff = editSiteSettingViewModel.HomePatientTransportTariff.Value;
                 setting.ReservationTarrif = editSiteSettingViewModel.ReservationTariff.Value;
                 setting.SendSMSTimer = editSiteSettingViewModel.SendSMSTime.Value;
                 setting.SiteDomain = editSiteSettingViewModel.SiteDomain;
+                setting.OnlineVisitTariff = editSiteSettingViewModel.HomeVisitTariff.Value;
             }
 
             await _siteSettingRepository.UpdateSiteSetting(setting);
@@ -200,6 +207,11 @@ namespace DoctorFAM.Application.Services.Implementation
                 return EditSiteSettingResult.Fail;
             }
 
+            if (editSiteSettingViewModel.OnlineVisitTariff == null)
+            {
+                return EditSiteSettingResult.Fail;
+            }
+
             #endregion
 
             var newSetting = new SiteSetting()
@@ -213,7 +225,8 @@ namespace DoctorFAM.Application.Services.Implementation
                 DeathCertificateTariff = editSiteSettingViewModel.DeathCertificateTariff.Value,
                 ReservationTarrif = editSiteSettingViewModel.ReservationTariff.Value,
                 SendSMSTimer = editSiteSettingViewModel.SendSMSTime.Value,
-                SiteDomain = editSiteSettingViewModel.SiteDomain
+                SiteDomain = editSiteSettingViewModel.SiteDomain,
+                OnlineVisitTariff = editSiteSettingViewModel.OnlineVisitTariff.Value,
             };
 
             await _siteSettingRepository.AddSiteSetting(newSetting);
@@ -256,6 +269,11 @@ namespace DoctorFAM.Application.Services.Implementation
             return await _siteSettingRepository.GetReservationTariff();
         }
 
+        public async Task<int> GetOnlineVisitTariff()
+        {
+            return await _siteSettingRepository.GetOnlineVisitTariff();
+        }
+
         #endregion
 
         #region Site Side
@@ -272,7 +290,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
         public async Task<string?> GetSiteAddressDomain()
         {
-            return await  _siteSettingRepository.GetSiteAddressDomain();
+            return await _siteSettingRepository.GetSiteAddressDomain();
         }
 
         #endregion

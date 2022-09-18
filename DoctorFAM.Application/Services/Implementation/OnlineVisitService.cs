@@ -1,13 +1,17 @@
 ﻿using DoctorFAM.Application.Convertors;
 using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Generators;
+using DoctorFAM.Application.Interfaces;
 using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Application.StaticTools;
+using DoctorFAM.Data.Repository;
 using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.OnlineVisit;
 using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.Requests;
+using DoctorFAM.Domain.Entities.Wallet;
+using DoctorFAM.Domain.Enums.Request;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Site.Common;
 using DoctorFAM.Domain.ViewModels.Site.OnlineVisit;
@@ -19,6 +23,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Request = DoctorFAM.DataLayer.Entities.Request;
 
 namespace DoctorFAM.Application.Services.Implementation
 {
@@ -30,13 +35,18 @@ namespace DoctorFAM.Application.Services.Implementation
         private readonly IUserService _userService;
         private readonly IRequestService _requestService;
         private readonly IPatientService _patientService;
+        private readonly ILocationService _locationService;
+        private readonly IWalletRepository _walletRepository;
 
-        public OnlineVisitService(IOnlineVisitRepository onlineVisitRepository, IUserService userService, IRequestService requestService, IPatientService patientService)
+        public OnlineVisitService(IOnlineVisitRepository onlineVisitRepository, IUserService userService, IRequestService requestService
+                                    , IPatientService patientService, ILocationService locationService, IWalletRepository walletRepository)
         {
             _onlineVisitRepository = onlineVisitRepository;
             _userService = userService;
             _requestService = requestService;
             _patientService = patientService;
+            _locationService = locationService;
+            _walletRepository = walletRepository;
         }
 
         #endregion
@@ -93,6 +103,31 @@ namespace DoctorFAM.Application.Services.Implementation
         //Create Patient Detail For Online Visit Request
         public async Task<ulong> CreatePatientDetail(PatientDetailForOnlineVisitViewModel patient)
         {
+            #region Validate Model State 
+
+            //If Country Not Found
+            if (!await _locationService.IsExistAnyLocationByLocationid(patient.CountryId)) return 0;
+
+            //If State Not Found
+            if (!await _locationService.IsExistAnyLocationByLocationid(patient.StateId)) return 0;
+
+            //If City Not Found
+            if (!await _locationService.IsExistAnyLocationByLocationid(patient.CountryId)) return 0;
+
+
+            #endregion
+
+            #region Get Request 
+
+            var requestState = await _requestService.GetRequestById(patient.RequestId);
+
+            if (requestState == null || requestState.RequestState != RequestState.WaitingForCompleteInformationFromUser)
+            {
+                return 0;
+            }
+
+            #endregion
+
             #region Get User By User Id
 
             var user = await _userService.GetUserById(patient.UserId);
@@ -125,7 +160,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #region Fill Paitient Request Detail
 
-            PatienAddressViewModel request = new PatienAddressViewModel()
+            PaitientRequestDetail request = new PaitientRequestDetail()
             {
                 RequestId = patient.RequestId,
                 PatientId = model.Id,
@@ -141,14 +176,9 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #endregion
 
-            #region Add Patient Request Detail 
+            #region Add Method
 
-            var res = await _requestService.CreatePatientRequestDetail(request);
-            if (res == CreatePatientAddressResult.Failed || res == CreatePatientAddressResult.LocationNotFound
-                || res == CreatePatientAddressResult.RquestNotFound || res == CreatePatientAddressResult.PatientNotFound)
-            {
-                return 0;
-            }
+            await _requestService.AddPatientRequestDetail(request);
 
             #endregion
 
@@ -171,7 +201,7 @@ namespace DoctorFAM.Application.Services.Implementation
             #region Get Patient By Id
 
             var patient = await _patientService.GetPatientById(onlineVisitRquest.PatientId);
-            if (patient == null || patient.Id != request.PatientId)
+            if (patient == null || patient.RequestId != request.Id)
             {
                 return false;
             }
@@ -227,7 +257,71 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #endregion
 
+            #region Update request
+
+            request.RequestState = Domain.Enums.Request.RequestState.TramsferringToTheBankingPortal;
+
+            await _requestService.UpdateRequest(request);
+
+            #endregion
+
             return true;
+        }
+
+        public async Task<bool> ChargeUserWallet(ulong userId, int price)
+        {
+            if (!await _userService.IsExistUserById(userId))
+            {
+                return false;
+            }
+
+            var wallet = new Wallet
+            {
+                UserId = userId,
+                TransactionType = TransactionType.Deposit,
+                GatewayType = GatewayType.Zarinpal,
+                PaymentType = PaymentType.ChargeWallet,
+                Price = price,
+                Description = "شارژ حساب کاربری برای پرداخت هزینه ی ویزیت آنلاین",
+                IsFinally = true
+            };
+
+            await _walletRepository.CreateWalletAsync(wallet);
+            return true;
+        }
+
+        public async Task<bool> PayOnlineVisitTariff(ulong userId, int price)
+        {
+            if (!await _userService.IsExistUserById(userId))
+            {
+                return false;
+            }
+
+            var wallet = new Wallet
+            {
+                UserId = userId,
+                TransactionType = TransactionType.Withdraw,
+                GatewayType = GatewayType.Zarinpal,
+                PaymentType = PaymentType.OnlineVisit,
+                Price = price,
+                Description = "پرداخت مبلغ ویزیت آنلاین",
+                IsFinally = true
+            };
+
+            await _walletRepository.CreateWalletAsync(wallet);
+            return true;
+        }
+
+        //Get List Of Online Visit For Send Notification For Online Visit Notification 
+        public async Task<List<string?>> GetListOfDoctorsForArrivalsOnlineVisitRequests()
+        {
+            #region Get Activated Doctors By Online Visit Interests 
+
+            var returnValue = await _onlineVisitRepository.GetActivatedAndDoctorsInterestOnlineVisit();
+
+            #endregion
+
+            return returnValue;
         }
 
         #endregion

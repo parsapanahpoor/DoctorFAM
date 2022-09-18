@@ -1,4 +1,6 @@
-﻿using DoctorFAM.Domain.ViewModels.Site.OnlineVisit;
+﻿using DoctorFAM.Application.Services.Implementation;
+using DoctorFAM.Domain.Entities.Wallet;
+using DoctorFAM.Domain.ViewModels.Site.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
 using System;
 using System.Collections.Generic;
@@ -22,6 +24,13 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Add Online Vist Request 
         Task<bool> AddOnlineVisitRequest(OnlineVisitRquestDetailViewModel onlineVisitRquest, ulong userId);
+
+        Task<bool> ChargeUserWallet(ulong userId, int price);
+
+        Task<bool> PayOnlineVisitTariff(ulong userId, int price);
+
+        //Get List Of Online Visit For Send Notification For Online Visit Notification 
+        Task<List<string?>> GetListOfDoctorsForArrivalsOnlineVisitRequests();
 
         #endregion
     }

@@ -18,6 +18,8 @@ namespace Academy.Domain.Entities.SiteSetting
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         public int HomeVisitTariff { get; set; }
 
+        public int OnlineVisitTariff { get; set; }
+
         public int DeathCertificateTariff { get; set; }
 
         public int HomeLaboratoryTariff { get; set; }

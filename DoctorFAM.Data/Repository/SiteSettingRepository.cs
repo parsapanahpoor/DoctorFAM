@@ -56,6 +56,19 @@ namespace DoctorFAM.Data.Repository
             return siteSetting.HomeVisitTariff;
         }
 
+        public async Task<int> GetOnlineVisitTariff()
+        {
+            var siteSetting = await GetSiteSetting();
+            if (siteSetting == null) return 0;
+
+            if (siteSetting.OnlineVisitTariff == null || siteSetting.OnlineVisitTariff == 0)
+            {
+                return 0;
+            }
+
+            return siteSetting.OnlineVisitTariff;
+        }
+
         public async Task<int> GetHomeNurseTariff()
         {
             var siteSetting = await GetSiteSetting();

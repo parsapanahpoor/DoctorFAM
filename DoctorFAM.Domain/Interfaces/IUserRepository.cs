@@ -30,8 +30,14 @@ namespace DoctorFAM.Domain.Interfaces
 
         #region Admin Side 
 
+        //Get Online Visit Supporters
+        Task<List<User>?> GetOnlineVisitSupporters();
+
         //Get List Of Admins and Supporters User Id For Send Notification For Home Pharmacy
         Task<List<string>?> GetAdminsAndSupportersNotificationForSendNotificationInHomePharmacy();
+
+        //Get List Of Admins and Supporters User Id For Send Notification For Online Request
+        Task<List<string>?> GetAdminsAndSupportersNotificationForSendNotificationInOnlineVisit();
 
         //Get List Of Admins 
         Task<List<User>?> GetListOfAdmins();

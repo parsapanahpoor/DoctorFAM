@@ -41,6 +41,8 @@ namespace DoctorFAM.Domain.Interfaces
 
         Task<string?> GetSiteAddressDomain();
 
+        Task<int> GetOnlineVisitTariff();
+
         #endregion
     }
 }

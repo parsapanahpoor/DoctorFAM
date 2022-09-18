@@ -337,6 +337,12 @@ meta etiket</value>
   <data name="Online" xml:space="preserve">
     <value>Çevrimiçi</value>
   </data>
+  <data name="Online Visit" xml:space="preserve">
+    <value>Çevrimiçi Ziyaret</value>
+  </data>
+  <data name="OnlineVisitTariff" xml:space="preserve">
+    <value>ÇevrimiçiZiyaretTarifesi</value>
+  </data>
   <data name="Overweight" xml:space="preserve">
     <value>Kilolu</value>
   </data>

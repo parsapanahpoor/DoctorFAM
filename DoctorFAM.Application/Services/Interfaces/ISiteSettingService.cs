@@ -11,6 +11,8 @@ namespace DoctorFAM.Application.Services.Interfaces
     {
         #region Site Setting
 
+        Task<int> GetOnlineVisitTariff();
+
         Task<EditSiteSettingViewModel> FillEditSiteSettingViewModel();
 
         Task<EditSiteSettingResult> EditSiteSetting(EditSiteSettingViewModel editSiteSettingViewModel);

@@ -376,6 +376,12 @@
   <data name="Online" xml:space="preserve">
     <value>متصل</value>
   </data>
+  <data name="Online Visit" xml:space="preserve">
+    <value>زيارة عبر الإنترنت</value>
+  </data>
+  <data name="OnlineVisitTariff" xml:space="preserve">
+    <value>عبر الإنترنت</value>
+  </data>
   <data name="Overweight" xml:space="preserve">
     <value>سمين</value>
   </data>

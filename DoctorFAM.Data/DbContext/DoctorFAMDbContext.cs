@@ -406,6 +406,16 @@ namespace DoctorFAM.Data.DbContext
                 ParentId = 3
             });
 
+            modelBuilder.Entity<Role>().HasData(new Role
+            {
+                Id = 13,
+                Title = "OnlineVisit",
+                RoleUniqueName = "OnlineVisit",
+                CreateDate = DateTime.Now,
+                IsDelete = false,
+                ParentId = 3
+            });
+
             #endregion
 
             #region query filter

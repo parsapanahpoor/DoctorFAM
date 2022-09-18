@@ -30,4 +30,7 @@ public enum PaymentType
 
     [Display(Name = "Reservation")]
     Reservation = 8,
+
+    [Display(Name = "OnlineVisit")]
+    OnlineVisit = 8,
 }

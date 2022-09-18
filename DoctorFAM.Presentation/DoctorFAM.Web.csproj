@@ -6,6 +6,11 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <Content Remove="Views\OnlineVisit\BankPay.cshtml" />
+	  <Content Remove="Views\OnlineVisit\OnlineVisitPayment.cshtml" />
+	</ItemGroup>
+
 
 	<ItemGroup>
 		<PackageReference Include="AspNet.Security.OAuth.GitHub" Version="6.0.0" />
@@ -85,6 +90,8 @@
 		<None Include="Views\Home\SecPage.cshtml" />
 		<None Include="Views\Home\TeleFamItems.cshtml" />
 		<None Include="Views\Lab\Index.cshtml" />
+		<None Include="Views\OnlineVisit\BankPay.cshtml" />
+		<None Include="Views\OnlineVisit\OnlineVisitPayment.cshtml" />
 		<None Include="Views\ScienceMag\Index.cshtml" />
 		<None Include="Views\Shared\Components\SiteSideBar\SiteSideBar.cshtml" />
 		<None Include="Views\Shared\Components\TestDoctorForReservation\TestDoctorForReservation.cshtml" />

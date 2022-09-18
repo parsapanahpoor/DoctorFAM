@@ -388,6 +388,12 @@
   <data name="Online" xml:space="preserve">
     <value>آنلاین</value>
   </data>
+  <data name="Online Visit" xml:space="preserve">
+    <value>ویزیت آنلاین</value>
+  </data>
+  <data name="Online Visit tariff in Rials" xml:space="preserve">
+    <value>تعرفه ی ویزیت آنلاین</value>
+  </data>
   <data name="Overweight" xml:space="preserve">
     <value>اضافه وزن</value>
   </data>

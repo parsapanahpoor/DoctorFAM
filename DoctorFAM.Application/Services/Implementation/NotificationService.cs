@@ -17,23 +17,22 @@ namespace DoctorFAM.Application.Services.Implementation
         #region Ctor
 
         private readonly INotificationRepository _notificationService;
-
         private readonly IUserService _userService;
-
         private readonly IRequestService _requestService;
-
         private readonly IHomePharmacyServicec _homePharmacyService;
-
         private readonly IReservationService _reservationService;
+        private readonly IOnlineVisitService _onlineVisitService;
 
         public NotificationService(INotificationRepository notificationService, IUserService userService,
-                                    IRequestService requestService, IHomePharmacyServicec homePharmacyService, IReservationService reservationService)
+                                    IRequestService requestService, IHomePharmacyServicec homePharmacyService, IReservationService reservationService
+                                        , IOnlineVisitService onlineVisitService)
         {
             _notificationService = notificationService;
             _userService = userService;
             _requestService = requestService;
             _homePharmacyService = homePharmacyService;
             _reservationService = reservationService;
+            _onlineVisitService = onlineVisitService;
         }
 
         #endregion
@@ -206,6 +205,13 @@ namespace DoctorFAM.Application.Services.Implementation
                 user.AddRange(supporters);
             }
 
+            if (SupporterNotificationText == SupporterNotificationText.OnlineVisitRequest)
+            {
+                //Get Home Pharmacy Supporters
+                var supporters = await _userService.GetOnlineVisitSupporters();
+                user.AddRange(supporters);
+            }
+
             #endregion
 
             #endregion
@@ -344,6 +350,57 @@ namespace DoctorFAM.Application.Services.Implementation
                     TargetId = targetId,
                     UserId = senderId,
                     ReciverId = item.Id,
+                };
+
+                model.Add(notif);
+            };
+
+            await _notificationService.CreateRangeSupporter(model);
+
+            #endregion
+
+            return true;
+        }
+
+        //Create Notification For Online Visit Doctors 
+        public async Task<bool> CreateNotificationForOnlineVisitDoctors(ulong targetId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId)
+        {
+            #region Get Admins And Supporters 
+
+            List<string> user = new List<string>();
+
+            //Get Doctors That In Online Visit Interests
+            var doctor = await _onlineVisitService.GetListOfDoctorsForArrivalsOnlineVisitRequests();
+            user.AddRange(doctor);
+
+            #endregion
+
+            #region Check target 
+
+            //If Target is Request
+            if (notification == NotificationTarget.request)
+            {
+                var request = await _requestService.GetRequestById(targetId);
+                if (request == null) return false;
+            }
+
+            #endregion
+
+            #region Fill Notification Entity
+
+            List<SupporterNotification> model = new List<SupporterNotification>();
+
+            foreach (var item in user)
+            {
+                SupporterNotification notif = new SupporterNotification()
+                {
+                    CreateDate = DateTime.Now,
+                    IsDelete = false,
+                    IsSeen = false,
+                    SupporterNotificationText = SupporterNotificationText,
+                    TargetId = targetId,
+                    UserId = senderId,
+                    ReciverId = (ulong)Convert.ToInt64(item),
                 };
 
                 model.Add(notif);
