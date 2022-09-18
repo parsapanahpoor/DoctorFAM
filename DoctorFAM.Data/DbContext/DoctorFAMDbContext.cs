@@ -11,6 +11,7 @@ using DoctorFAM.Domain.Entities.Laboratory;
 using DoctorFAM.Domain.Entities.Languages;
 using DoctorFAM.Domain.Entities.MarketCategory;
 using DoctorFAM.Domain.Entities.Notification;
+using DoctorFAM.Domain.Entities.OnlineVisit;
 using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.Pharmacy;
@@ -211,6 +212,12 @@ namespace DoctorFAM.Data.DbContext
         #region BMI
 
         public DbSet<BMI> BMI { get; set; }
+
+        #endregion
+
+        #region Online Visit Request Detail
+
+        public DbSet<OnlineVisitRequestDetail> OnlineVisitRequestDetails { get; set; }
 
         #endregion
 

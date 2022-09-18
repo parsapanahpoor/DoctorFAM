@@ -38,6 +38,13 @@ namespace DoctorFAM.Application.StaticTools
 
         #endregion
 
+        #region Online Visit Request File
+
+        public static readonly string OnlineVisitRequestFilePath = "/content/images/OnlineVisitRequestFile/main/";
+        public static readonly string OnlineVisitRequestFilePathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/OnlineVisitRequestFile/main/");
+
+        #endregion
+
         #region UserAvatar
 
         public static readonly string UserAvatarPath = "/content/images/user/main/";

@@ -13,6 +13,7 @@ using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Enums.Request;
 using DoctorFAM.Domain.Entities.Pharmacy;
 using DoctorFAM.Domain.Entities.PopulationCovered;
+using DoctorFAM.Domain.Entities.OnlineVisit;
 
 namespace DoctorFAM.DataLayer.Entities
 {
@@ -52,6 +53,8 @@ namespace DoctorFAM.DataLayer.Entities
         public PatientRequestDateTimeDetail PatientRequestDateTimeDetails { get; set; }
 
         public ICollection<RequestTransferingPriceFromOperator> RequestTransferingPriceFromOperators { get; set; }
+
+        public OnlineVisitRequestDetail OnlineVisitRequestDetail { get; set; }
 
         #endregion
     }

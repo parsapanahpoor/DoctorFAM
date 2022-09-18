@@ -34,8 +34,6 @@ namespace DoctorFAM.Domain.Entities.Contact
 
         public bool IsReadByAdmin { get; set; }
 
-        public bool IsReadByBranch { get; set; }
-
         public bool IsReadByOwner { get; set; }
 
         public bool OnWorking { get; set; }

@@ -1,11 +1,14 @@
 ﻿using DoctorFAM.Application.Extensions;
+using DoctorFAM.Application.Interfaces;
 using DoctorFAM.Application.Services.Implementation;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.Entities.PopulationCovered;
+using DoctorFAM.Domain.ViewModels.Site.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
 using DoctorFAM.Domain.ViewModels.Site.Request;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace DoctorFAM.Web.Controllers
 {
@@ -18,14 +21,16 @@ namespace DoctorFAM.Web.Controllers
         private readonly IRequestService _requestService;
         private readonly IUserService _userService;
         private readonly IPatientService _patientService;
+        private readonly ILocationService _locationService;
 
         public OnlineVisitController(IOnlineVisitService onlineVisitService, IRequestService requestService,
-                                        IUserService userService, IPatientService patientService)
+                                        IUserService userService, IPatientService patientService , ILocationService locationService)
         {
             _onlineVisitService = onlineVisitService;
             _requestService = requestService;
             _userService = userService;
             _patientService = patientService;
+            _locationService = locationService;
         }
 
         #endregion
@@ -73,7 +78,13 @@ namespace DoctorFAM.Web.Controllers
 
             #endregion
 
-            return View(new PatientViewModel()
+            #region Page Data
+
+            ViewData["Countries"] = await _locationService.GetAllCountries();
+
+            #endregion
+
+            return View(new PatientDetailForOnlineVisitViewModel()
             {
                 RequestId = requestId,
                 UserId = User.GetUserId(),
@@ -84,8 +95,14 @@ namespace DoctorFAM.Web.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> PatientDetails(PatientViewModel patient)
+        public async Task<IActionResult> PatientDetails(PatientDetailForOnlineVisitViewModel patient)
         {
+            #region Page Data
+
+            ViewData["Countries"] = await _locationService.GetAllCountries();
+
+            #endregion
+
             #region Data Validation
 
             if (!await _userService.IsExistUserById(User.GetUserId())) return NotFound();
@@ -119,7 +136,12 @@ namespace DoctorFAM.Web.Controllers
                 case CreatePatientResult.Success:
 
                     //Add Patient Detail
-                    var patientId = await _onlineVisitService.CreatePatientDetail(patient);
+                     var patientId = await _onlineVisitService.CreatePatientDetail(patient);
+                    if (patientId == 0)
+                    {
+                        TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+                        return RedirectToAction("Index" , "Home");
+                    }
 
                     //Add PatientId To The Request
                     await _requestService.AddPatientIdToRequest(patient.RequestId, patientId);
@@ -155,6 +177,45 @@ namespace DoctorFAM.Web.Controllers
 
             return View();
         }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> OnlineVisitRequestDetail(OnlineVisitRquestDetailViewModel onlineVisitRquestDetail)
+        {
+            #region Model State Validation
+
+            if (!ModelState.IsValid)
+            {
+                TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+                return View(onlineVisitRquestDetail);
+            }
+
+            if (string.IsNullOrEmpty(onlineVisitRquestDetail.OnlineVisitRequestDescription) && onlineVisitRquestDetail.OnlineVisitRequestFile == null)
+            {
+                TempData[ErrorMessage] = "وارد کردن حداقل یکی از اطلاعات الزامی می باشد.";
+                return View(onlineVisitRquestDetail);
+            }
+
+            #endregion
+
+            #region Add Online Visit Request Detail
+
+            var res = await _onlineVisitService.AddOnlineVisitRequest(onlineVisitRquestDetail , User.GetUserId());
+            if (res)
+            {
+                TempData[SuccessMessage] = "عملیات با موفقیت انجام شده است ";
+                return RedirectToAction("BankPay", "OnlineVisit", new { requestId = onlineVisitRquestDetail.RequestId });
+            }
+
+            #endregion
+
+            return View(onlineVisitRquestDetail);
+        }
+
+        #endregion
+
+        #region Bank Payment
+
+
 
         #endregion
     }
