@@ -1,0 +1,319 @@
+﻿@model DoctorFAM.Domain.ViewModels.DoctorPanel.OnlineVisit.FilterOnlineVisitViewModel
+@using DoctorFAM.Domain.ViewModels.DoctorPanel.OnlineVisit
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Domain.ViewModels.Common
+@using DoctorFAM.Domain.Enums.Request
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
+
+
+@{
+    ViewData["Title"] = @Localizer["Online Visit Requests"];
+}
+
+@{
+    var countries = ViewData["Countries"] != null ? ViewData["Countries"] as List<SelectListViewModel> : null;
+    var states = ViewData["States"] != null ? ViewData["States"] as List<SelectListViewModel> : null;
+    var cities = ViewData["Cities"] != null ? ViewData["Cities"] as List<SelectListViewModel> : null;
+}
+
+@section Styles
+    {
+
+}
+
+    @section Scripts
+    {
+    <partial name="_JqueryValidation" />
+    <script>
+        $("#CountryId").change(function () {
+            if ($("#CountryId :selected").val() !== '') {
+                $('#CityId option:not(:first)').remove();
+                $('#StateId option:not(:first)').remove();
+                $.get("/Home/LoadCities", { stateId: $("#CountryId :selected").val() }).then(res => {
+                    if (res.data !== null) {
+                        $("#StateId").append(
+                            '<option>' + "لطفا یک استان را انتخاب کنید" + '</option>'
+                        );
+                        $.each(res.data, function () {
+                            $("#StateId").append(
+                                '<option value=' + this.id + '>' + this.title + '</option>'
+                            );
+                        });
+                        $("#StateId").removeAttr("disabled");
+                    }
+                });
+            } else {
+                $('#StateId option:not(:first)').remove();
+                $('#CityId option:not(:first)').remove();
+            }
+        });
+
+        $("#StateId").change(function () {
+            if ($("#StateId :selected").val() !== '') {
+                $('#CityId option:not(:first)').remove();
+                $.get("/Home/LoadCities", { stateId: $("#StateId :selected").val() }).then(res => {
+                    if (res.data !== null) {
+                        $.each(res.data, function () {
+                            $("#CityId").append(
+                                '<option value=' + this.id + '>' + this.title + '</option>'
+                            );
+                        });
+                        $("#CityId").removeAttr("disabled");
+                    }
+                });
+            } else {
+                $('#CityId option:not(:first)').remove();
+            }
+        });
+
+    </script>
+
+}
+
+    @section Breadcrumb
+    {
+    <li>
+        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+    </li>
+}
+
+    <div class="row">
+        <div class="col-lg-3 col-sm-12">
+            <div class="widget">
+                <div class="widget-header bordered-bottom bordered-green">
+                    <span class="widget-caption"> @ViewData["Title"] </span>
+                </div>
+                <div class="widget-body">
+                    <div>
+                        <form asp-action="FilterOnlineVisitRequests" asp-controller="OnlineVisit" asp-area="Doctor" id="filter-search" method="get">
+
+                            <input type="hidden" asp-for="Page" />
+
+                            <div class="form-group">
+                                <label asp-for="CountryId">@Localizer["Country"]</label>
+                                <select class="form-control" asp-for="CountryId">
+                                    <option value=""> @Localizer["Please Select Country"] </option>
+                                @if (countries != null && countries.Any())
+                                {
+                                    foreach (var country in countries)
+                                    {
+                                        if (Model != null && Model.CountryId == country.Id)
+                                        {
+                                            <option value="@country.Id" selected="selected"> @country.Title </option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@country.Id"> @country.Title </option>
+                                        }
+                                    }
+                                }
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="StateId">@Localizer["State"]</label>
+                            <select class="form-control" asp-for="StateId">
+                                <option value=""> @Localizer["Please Select State"] </option>
+                                @if (states != null && states.Any())
+                                {
+                                    foreach (var state in states)
+                                    {
+                                        if (Model != null && Model.StateId == state.Id)
+                                        {
+                                            <option value="@state.Id" selected="selected"> @state.Title </option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@state.Id"> @state.Title </option>
+                                        }
+                                    }
+                                }
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="CityId">@Localizer["City"]</label>
+                            <select asp-for="CityId" class="form-control">
+                                <option value=""> @Localizer["Please Select City"] </option>
+                                @if (cities != null && cities.Any())
+                                {
+                                    foreach (var city in cities)
+                                    {
+                                        if (Model != null && Model.CityId == city.Id)
+                                        {
+                                            <option value="@city.Id" selected="selected"> @city.Title </option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@city.Id"> @city.Title </option>
+                                        }
+                                    }
+                                }
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Username"> @Localizer["Username"] </label>
+                            <input type="text" class="form-control" asp-for="Username">
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="UserMobile"> @Localizer["Mobile"] </label>
+                            <input type="text" class="form-control" asp-for="UserMobile">
+                        </div>
+
+                          <div class="form-group">
+                            <label asp-for="OnlineVisitRequestTypeForFilter"> @Localizer["Online Visit Request Type"] </label>
+                            <select asp-for="OnlineVisitRequestTypeForFilter" class="form-control" asp-items="Html.GetEnumSelectList(typeof(OnlineVisitRequestTypeForFilter))"></select>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="FilterRequestAdminSideOrder"> @Localizer["Order By"] </label>
+                            <select asp-for="FilterRequestAdminSideOrder" class="form-control" asp-items="Html.GetEnumSelectList(typeof(FilterRequestAdminSideOrder))"></select>
+                        </div>
+
+                        <hr />
+
+                        <div class="row">
+                            <div class="col-md-12 flex-style">
+                                <button type="submit" class="btn btn-labeled w-100 btn-palegreen">
+                                    <i class="btn-label glyphicon glyphicon-filter"></i>@Localizer["Filter"]
+                                </button>
+
+                                @if (Context.Request.QueryString.HasValue)
+                                {
+                                    <a asp-action="FilterOnlineVisitRequests" asp-controller="OnlineVisit" asp-area="Doctor" class="btn btn-labeled w-100 btn-darkorange ">
+                                        <i class="btn-label glyphicon glyphicon-remove"></i>@Localizer["Delete Filter"]
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-9 col-sm-12">
+        <div class="well with-header with-footer table-responsive">
+            <div class="header bordered-azure">
+                <div class="flex-style">
+                    <span> @ViewData["Title"]</span>
+                    <span>@Model.GetShownEntitiesPagesTitle()</span>
+                </div>
+            </div>
+
+            @if (Model.Entities != null && Model.Entities.Any())
+            {
+                <table class="table table-hover table-bordered tc vm">
+                    <thead class="tc vm">
+                        <tr class="tc vm">
+                            <th class="tc vm">
+                                @Localizer["User Avatar"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["Country"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["State"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["City"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["Request State"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["Date Time"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["Options"]
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="tc vm">
+                        @foreach (var request in Model.Entities)
+                        {
+                            <tr class="tc vm">
+                                <td class="vm">
+                                    <div class="flex-style-center">
+                                        <img src="@request.User.GetUserAvatar()" class="avatar-style" style="border-radius:50px;" />
+                                        <div class="mr-10px">
+                                            <span> @request.User.Username </span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="tc vm">
+                                    <p class="label label-warning">
+                                        @request.PaitientRequestDetails.Country.UniqueName
+                                    </p>
+
+                                </td>
+                                <td class="tc vm">
+
+                                    <p class="label label-warning">
+                                        @request.PaitientRequestDetails.State.UniqueName
+                                    </p>
+
+                                </td>
+                                <td class="tc vm">
+
+                                    <p class="label label-warning">
+                                        @request.PaitientRequestDetails.City.UniqueName
+                                    </p>
+                                </td>
+                                <td class="tc vm">
+
+                                    @if (request.OnlineVisitRequestDetail.OnlineVisitRequestType == DoctorFAM.Domain.Enums.OnlineVisitRequest.OnlineVisitRequestType.EmergencyConsultation)
+                                    {
+                                        <p class="label label-primary">@Localizer["Emergency Consultation"]</p>
+                                    }
+                                    @if (request.OnlineVisitRequestDetail.OnlineVisitRequestType == DoctorFAM.Domain.Enums.OnlineVisitRequest.OnlineVisitRequestType.DiseaseCounseling)
+                                    {
+                                        <p class="label label-primary">@Localizer["Disease Counseling"]</p>
+                                    }
+                                    @if (request.OnlineVisitRequestDetail.OnlineVisitRequestType == DoctorFAM.Domain.Enums.OnlineVisitRequest.OnlineVisitRequestType.PsychologicalCounseling)
+                                    {
+                                        <p class="label label-primary">@Localizer["Psychological Counseling"]</p>
+                                    }
+                                    @if (request.OnlineVisitRequestDetail.OnlineVisitRequestType == DoctorFAM.Domain.Enums.OnlineVisitRequest.OnlineVisitRequestType.ParaclinicalCounseling)
+                                    {
+                                        <p class="label label-primary">@Localizer["Paraclinical Counseling"]</p>
+                                    }
+                                    @if (request.OnlineVisitRequestDetail.OnlineVisitRequestType == DoctorFAM.Domain.Enums.OnlineVisitRequest.OnlineVisitRequestType.DrugCounseling)
+                                    {
+                                        <p class="label label-primary">@Localizer["Drug Counseling"]</p>
+                                    }
+
+                                </td>
+                                <td class="tc vm">
+                                    <p>  @request.CreateDate.ToStringShamsiDate() </p>
+                                    <p> @request.CreateDate.Hour:@request.CreateDate.Minute:@request.CreateDate.Second</p>
+                                </td>
+
+                                <td class="tc vm">
+                                    <a asp-action="OnlineVisitRequestDetail" asp-controller="OnlineVisit" asp-area="Doctor" asp-route-requestId="@request.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <div class="footer tc">
+
+                    <partial name="_DoctorPanelPaging" model="@Model.GetCurrentPaging()" />
+
+                </div>
+            }
+            else
+            {
+                <partial name="_DoctorPanelNotFoundPartial" />
+            }
+        </div>
+    </div>
+</div>
+
+
+

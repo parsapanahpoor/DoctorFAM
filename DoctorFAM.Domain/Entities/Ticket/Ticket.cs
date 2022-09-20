@@ -36,7 +36,11 @@ namespace DoctorFAM.Domain.Entities.Contact
 
         public bool IsReadByOwner { get; set; }
 
+        public bool IsReadByTargetUser { get; set; }
+
         public bool OnWorking { get; set; }
+
+        public ulong? RequestId { get; set; }
 
         #endregion
 

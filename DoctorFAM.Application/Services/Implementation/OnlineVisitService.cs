@@ -7,20 +7,25 @@ using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Application.StaticTools;
 using DoctorFAM.Data.Repository;
 using DoctorFAM.DataLayer.Entities;
+using DoctorFAM.Domain.Entities.Account;
+using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.OnlineVisit;
 using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Entities.Wallet;
 using DoctorFAM.Domain.Enums.Request;
 using DoctorFAM.Domain.Interfaces;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.Site.Common;
 using DoctorFAM.Domain.ViewModels.Site.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Request = DoctorFAM.DataLayer.Entities.Request;
@@ -37,9 +42,12 @@ namespace DoctorFAM.Application.Services.Implementation
         private readonly IPatientService _patientService;
         private readonly ILocationService _locationService;
         private readonly IWalletRepository _walletRepository;
+        private readonly IHomePharmacyServicec _homePharmacyService;
+        private readonly IOrganizationService _organizationService;
 
         public OnlineVisitService(IOnlineVisitRepository onlineVisitRepository, IUserService userService, IRequestService requestService
-                                    , IPatientService patientService, ILocationService locationService, IWalletRepository walletRepository)
+                                    , IPatientService patientService, ILocationService locationService, IWalletRepository walletRepository
+                                            , IHomePharmacyServicec homePharmacyService, IOrganizationService organizationService)
         {
             _onlineVisitRepository = onlineVisitRepository;
             _userService = userService;
@@ -47,6 +55,8 @@ namespace DoctorFAM.Application.Services.Implementation
             _patientService = patientService;
             _locationService = locationService;
             _walletRepository = walletRepository;
+            _homePharmacyService = homePharmacyService;
+            _organizationService = organizationService;
         }
 
         #endregion
@@ -322,6 +332,87 @@ namespace DoctorFAM.Application.Services.Implementation
             #endregion
 
             return returnValue;
+        }
+
+        #endregion
+
+        #region Doctor Side
+
+        //Filter Online Visit Requests 
+        public async Task<FilterOnlineVisitViewModel> FilterOnlineVisitRequests(FilterOnlineVisitViewModel filter)
+        {
+            return await _onlineVisitRepository.FilterOnlineVisitRequests(filter);
+        }
+
+        //Show Online Visit Request Detail Doctor Panel Side View Model 
+        public async Task<OnlineVisitRequestDetailViewModel?> FillOnlineVisitRequestDetailDoctorPanelViewModel(ulong requestId)
+        {
+            #region Get Request By Request Id
+
+            var request = await _requestService.GetRequestById(requestId);
+
+            if (request == null) return null;
+            if (request.RequestType != Domain.Enums.RequestType.RequestType.OnlineVisit) return null;
+            if (!request.PatientId.HasValue) return null;
+            if(request.RequestState != RequestState.Paid) return null;
+               
+            #endregion
+
+            #region Fill Model 
+
+            OnlineVisitRequestDetailViewModel model = new OnlineVisitRequestDetailViewModel()
+            {
+                Patient = await _patientService.GetPatientById(request.PatientId.Value),
+                User = await _userService.GetUserById(request.UserId),
+                PatientRequestDetail = await _homePharmacyService.GetRequestPatientDetailByRequestId(request.Id),
+                Request = request,
+                OnlineVisitRequestDetail = await _onlineVisitRepository.GetOnlineVisitRequestDetail(request.Id)
+            };
+
+            #endregion
+
+            return model;
+        }
+
+        //Confirm Online Visit Request From Doctor 
+        public async Task<bool> ConfirmOnlineVisitRequestFromDoctor(ulong requestId , ulong userId)
+        {
+            #region Get Doctor Organization
+
+            var organization = await _organizationService.GetDoctorOrganizationByUserId(userId);
+            if (organization == null) return false;
+            if (organization.OrganizationInfoState != OrganizationInfoState.Accepted) return false;
+
+            #endregion
+
+            #region Get Request By Request Id
+
+            var request = await _requestService.GetRequestById(requestId);
+
+            if (request == null) return false;
+            if (request.RequestType != Domain.Enums.RequestType.RequestType.OnlineVisit) return false;
+            if (!request.PatientId.HasValue) return false;
+            if (request.OperationId.HasValue) return false;
+            if (request.RequestState != RequestState.Paid) return false;
+
+            #endregion
+
+            #region Get Request By Doctor 
+
+            request.OperationId = organization.OwnerId;
+            request.RequestState = RequestState.SelectedFromDoctor;
+
+            await _requestService.UpdateRequest(request);
+
+            #endregion
+
+            return true;
+        }
+
+        //Filter Your Online Visit Request 
+        public async Task<FilterOnlineVisitViewModel?> FilterYourOnlineVisitRequest(FilterOnlineVisitViewModel filter)
+        {
+            return await _onlineVisitRepository.FilterYourOnlineVisitRequest(filter);
         }
 
         #endregion

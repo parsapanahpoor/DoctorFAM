@@ -225,11 +225,17 @@
   <data name="Description" xml:space="preserve">
     <value>وصف</value>
   </data>
+  <data name="DiseaseCounseling" xml:space="preserve">
+    <value>الاستشارة المرضية</value>
+  </data>
   <data name="Display Name" xml:space="preserve">
     <value>أظهر الاسم</value>
   </data>
   <data name="DoctorOffice" xml:space="preserve">
     <value>عيادة</value>
+  </data>
+  <data name="DrugCounseling" xml:space="preserve">
+    <value>استشارات المخدرات</value>
   </data>
   <data name="DynamicPage ShortDescription" xml:space="preserve">
     <value>وصف موجز للصفحة</value>
@@ -245,6 +251,9 @@
   </data>
   <data name="Email" xml:space="preserve">
     <value>البريد الإلكتروني</value>
+  </data>
+  <data name="EmergencyConsultation" xml:space="preserve">
+    <value>استشارة طارئة</value>
   </data>
   <data name="Enable SSL" xml:space="preserve">
     <value>تفعيل SSL</value>
@@ -388,6 +397,9 @@
   <data name="Paid and waiting to choose a doctor" xml:space="preserve">
     <value>تدفع وتنتظر اختيار الطبيب</value>
   </data>
+  <data name="ParaclinicalCounseling" xml:space="preserve">
+    <value>استشارة سريرية</value>
+  </data>
   <data name="Partner" xml:space="preserve">
     <value>شريك</value>
   </data>
@@ -441,6 +453,9 @@
   </data>
   <data name="ProvidingAnInvoiceFromThePharmacy" xml:space="preserve">
     <value>إحضار فاتورة من الصيدلية</value>
+  </data>
+  <data name="PsychologicalCounseling" xml:space="preserve">
+    <value>الإرشاد النفسي</value>
   </data>
   <data name="Ratio" xml:space="preserve">
     <value>نسبة</value>

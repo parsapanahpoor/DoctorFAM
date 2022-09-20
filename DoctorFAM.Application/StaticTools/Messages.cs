@@ -60,4 +60,11 @@ public static class Messages
         return
             $"باعرض سلام . {Environment.NewLine} درخواست پزشک خانواده ی شما توسط پزشک موردنطر رد شده است . {Environment.NewLine} {PathTools.SiteFarsiName}";
     }
+
+    //Send SMS For Accept Online Visit Request From Doctor  
+    public static string SendSMSForAcceptOnlineVisitRequestFromDoctor()
+    {
+        return
+            $"باعرض سلام . {Environment.NewLine} درخواست ویزیت آنلاین شما توسط پزشک تایید شده است . {Environment.NewLine} {PathTools.SiteFarsiName}";
+    }
 }

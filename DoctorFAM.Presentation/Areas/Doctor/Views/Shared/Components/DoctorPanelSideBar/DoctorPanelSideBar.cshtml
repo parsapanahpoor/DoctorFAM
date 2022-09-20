@@ -102,11 +102,27 @@
             @if (Model.OnlineVisit == true)
             {
                 <li>
-                    <a asp-action="ListOfDeathCertificateRequests" asp-area="Doctor" asp-controller="DeathCertificate">
+                    <a href="#" class="menu-dropdown">
                         <i class="menu-icon glyphicon glyphicon-thumbs-up"></i>
-                                <span class="menu-text">@SharedLocalizer["Online Visit"]</span>
+                        <span class="menu-text">@SharedLocalizer["Online Visit"]</span>
                         <i class="menu-expand"></i>
                     </a>
+
+                    <ul class="submenu">
+
+                        <li>
+                            <a asp-action="FilterOnlineVisitRequests" asp-area="Doctor" asp-controller="OnlineVisit">
+                                <span class="menu-text">@SharedLocalizer["List Of Lastest Home Visit"]</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a asp-action="FilterYourOnlineVisitRequest" asp-area="Doctor" asp-controller="OnlineVisit">
+                                <span class="menu-text">@SharedLocalizer["List Of Your Online Visit"]</span>
+                            </a>
+                        </li>
+
+                    </ul>
                 </li>
             }
 

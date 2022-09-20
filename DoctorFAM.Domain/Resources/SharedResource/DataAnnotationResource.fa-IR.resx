@@ -231,11 +231,17 @@
   <data name="Description" xml:space="preserve">
     <value>توضیحات</value>
   </data>
+  <data name="DiseaseCounseling" xml:space="preserve">
+    <value>مشاوره ی بیماری</value>
+  </data>
   <data name="Display Name" xml:space="preserve">
     <value>نام نمایشی</value>
   </data>
   <data name="DoctorOffice" xml:space="preserve">
     <value>مطب پزشک</value>
+  </data>
+  <data name="DrugCounseling" xml:space="preserve">
+    <value>مشاوره ی دارویی</value>
   </data>
   <data name="DynamicPage ShortDescription" xml:space="preserve">
     <value>توضیح مختصر صفحه </value>
@@ -251,6 +257,9 @@
   </data>
   <data name="Email" xml:space="preserve">
     <value>ایمیل</value>
+  </data>
+  <data name="EmergencyConsultation" xml:space="preserve">
+    <value>مشاوره ی اورژانسی</value>
   </data>
   <data name="Enable SSL" xml:space="preserve">
     <value>فعال سازی SSL</value>
@@ -400,6 +409,9 @@
   <data name="Paid and waiting to choose a doctor" xml:space="preserve">
     <value>پرداخت شده و در انتظار انتخاب پزشک</value>
   </data>
+  <data name="ParaclinicalCounseling" xml:space="preserve">
+    <value>مشاوره ی پاراکلینیک</value>
+  </data>
   <data name="Partner" xml:space="preserve">
     <value>همسر </value>
   </data>
@@ -453,6 +465,9 @@
   </data>
   <data name="ProvidingAnInvoiceFromThePharmacy" xml:space="preserve">
     <value>ارائه ی فاکتور از داروخانه</value>
+  </data>
+  <data name="PsychologicalCounseling" xml:space="preserve">
+    <value>مشاوره ی روان</value>
   </data>
   <data name="Ratio" xml:space="preserve">
     <value>نسبت</value>

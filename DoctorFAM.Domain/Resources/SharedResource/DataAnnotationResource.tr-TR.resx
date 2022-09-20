@@ -198,11 +198,17 @@
   <data name="Delivery To Courier And Sending" xml:space="preserve">
     <value>Kuryeye teslim ve gönderim</value>
   </data>
+  <data name="DiseaseCounseling" xml:space="preserve">
+    <value>Hastalık danışmanlığı</value>
+  </data>
   <data name="Display Name" xml:space="preserve">
     <value>İsim göster</value>
   </data>
   <data name="DoctorOffice" xml:space="preserve">
     <value>klinik</value>
+  </data>
+  <data name="DrugCounseling" xml:space="preserve">
+    <value>İlaç danışmanlığı</value>
   </data>
   <data name="DynamicPage ShortDescription" xml:space="preserve">
     <value>Sayfanın kısa açıklaması</value>
@@ -218,6 +224,9 @@
   </data>
   <data name="Email" xml:space="preserve">
     <value>e-posta</value>
+  </data>
+  <data name="EmergencyConsultation" xml:space="preserve">
+    <value>Acil danışma</value>
   </data>
   <data name="Enable SSL" xml:space="preserve">
     <value>SSL aktivasyonu</value>
@@ -349,6 +358,9 @@ meta etiket</value>
   <data name="Paid and waiting to choose a doctor" xml:space="preserve">
     <value>Ücretli ve doktor seçmeyi bekliyor</value>
   </data>
+  <data name="ParaclinicalCounseling" xml:space="preserve">
+    <value>paraklinik danışma</value>
+  </data>
   <data name="Partner" xml:space="preserve">
     <value>Eş</value>
   </data>
@@ -396,6 +408,9 @@ meta etiket</value>
   </data>
   <data name="ProvidingAnInvoiceFromThePharmacy" xml:space="preserve">
     <value>Eczaneden fatura temin etmek</value>
+  </data>
+  <data name="PsychologicalCounseling" xml:space="preserve">
+    <value>psikolojik danışmanlık</value>
   </data>
   <data name="Ratio" xml:space="preserve">
     <value>Oran</value>

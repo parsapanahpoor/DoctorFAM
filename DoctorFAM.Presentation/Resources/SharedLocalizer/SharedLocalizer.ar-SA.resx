@@ -291,6 +291,9 @@
   <data name="List Of Futur Reservation" xml:space="preserve">
     <value>قائمة التعيينات المتخذة</value>
   </data>
+  <data name="List Of Lastest Home Visit" xml:space="preserve">
+    <value>قائمة بأحدث الطلبات</value>
+  </data>
   <data name="List of products" xml:space="preserve">
     <value>قائمة المنتجات</value>
   </data>
@@ -305,6 +308,9 @@
   </data>
   <data name="List Of Roles" xml:space="preserve">
     <value>قائمة الأدوار</value>
+  </data>
+  <data name="List Of Your Online Visit" xml:space="preserve">
+    <value>قائمة طلباتك</value>
   </data>
   <data name="List Of Yours Requests" xml:space="preserve">
     <value>طلباتك المستلمة</value>

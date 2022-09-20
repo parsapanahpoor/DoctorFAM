@@ -546,4 +546,10 @@
   <data name="Wallet Balance" xml:space="preserve">
     <value>موجودی کیف پول</value>
   </data>
+  <data name="List Of Lastest Home Visit" xml:space="preserve">
+    <value>لیست آخرین درخواست ها</value>
+  </data>
+  <data name="List Of Your Online Visit" xml:space="preserve">
+    <value>لیست درخواست های شما</value>
+  </data>
 </root>

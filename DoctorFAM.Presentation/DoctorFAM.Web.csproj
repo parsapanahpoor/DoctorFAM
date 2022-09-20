@@ -8,7 +8,6 @@
 
 	<ItemGroup>
 	  <Content Remove="Views\OnlineVisit\BankPay.cshtml" />
-	  <Content Remove="Views\OnlineVisit\OnlineVisitPayment.cshtml" />
 	</ItemGroup>
 
 
@@ -91,7 +90,6 @@
 		<None Include="Views\Home\TeleFamItems.cshtml" />
 		<None Include="Views\Lab\Index.cshtml" />
 		<None Include="Views\OnlineVisit\BankPay.cshtml" />
-		<None Include="Views\OnlineVisit\OnlineVisitPayment.cshtml" />
 		<None Include="Views\ScienceMag\Index.cshtml" />
 		<None Include="Views\Shared\Components\SiteSideBar\SiteSideBar.cshtml" />
 		<None Include="Views\Shared\Components\TestDoctorForReservation\TestDoctorForReservation.cshtml" />
