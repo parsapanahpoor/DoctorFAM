@@ -3,6 +3,7 @@ using DoctorFAM.Domain.Entities.Wallet;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.Site.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
+using DoctorFAM.Domain.ViewModels.UserPanel.OnlineVisit;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,6 +49,13 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Filter Your Online Visit Request 
         Task<FilterOnlineVisitViewModel?> FilterYourOnlineVisitRequest(FilterOnlineVisitViewModel filter);
+
+        #endregion
+
+        #region User Panel 
+
+        //Filter User Onlien Visit Requests 
+        Task<FilterOnlineVisitRequestUserPanelViewModel> FilterOnlineVisitRequestUserPanel(FilterOnlineVisitRequestUserPanelViewModel filter);
 
         #endregion
     }

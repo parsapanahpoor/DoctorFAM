@@ -19,6 +19,7 @@ using DoctorFAM.Domain.ViewModels.DoctorPanel.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.Site.Common;
 using DoctorFAM.Domain.ViewModels.Site.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
+using DoctorFAM.Domain.ViewModels.UserPanel.OnlineVisit;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -413,6 +414,16 @@ namespace DoctorFAM.Application.Services.Implementation
         public async Task<FilterOnlineVisitViewModel?> FilterYourOnlineVisitRequest(FilterOnlineVisitViewModel filter)
         {
             return await _onlineVisitRepository.FilterYourOnlineVisitRequest(filter);
+        }
+
+        #endregion
+
+        #region User Panel Side 
+
+        //Filter User Onlien Visit Requests 
+        public async Task<FilterOnlineVisitRequestUserPanelViewModel> FilterOnlineVisitRequestUserPanel(FilterOnlineVisitRequestUserPanelViewModel filter)
+        {
+            return await _onlineVisitRepository.FilterOnlineVisitRequestUserPanel(filter); 
         }
 
         #endregion

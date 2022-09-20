@@ -3,8 +3,11 @@ using DoctorFAM.Application.Interfaces;
 using DoctorFAM.Application.Services.Implementation;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Application.StaticTools;
+using DoctorFAM.Data.Migrations;
 using DoctorFAM.Domain.Entities.Patient;
+using DoctorFAM.Domain.ViewModels.Admin.Reservation;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.OnlineVisit;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.Tikcet;
 using DoctorFAM.Web.Doctor.Controllers;
 using DoctorFAM.Web.Hubs;
 using Microsoft.AspNetCore.Mvc;
@@ -122,6 +125,90 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
         {
             filter.UserId = User.GetUserId();
             return View(await _onlineVisitService.FilterYourOnlineVisitRequest(filter));
+        }
+
+        #endregion
+
+        #region Online Visit Request Message Detail
+
+        [HttpGet]
+        public async Task<IActionResult> OnlineVisitRequestMessageDetail(ulong requestId)
+        {
+            #region Get Request By Id
+
+            var request = await _requestService.GetRequestById(requestId);
+            if(request == null) return NotFound();
+
+            #endregion
+
+            #region Get Ticket By Request Id
+
+            var ticket = await _ticketService.GetTicketByOnlineVisitRequestId(requestId);
+            if(ticket == null) return NotFound();
+            if (ticket.OwnerId != request.OperationId.Value) return NotFound();
+            if (ticket.TargetUserId != request.UserId) return NotFound();
+
+            #endregion
+
+            #region Read Ticket
+
+            await _ticketService.ReadTicketByDoctor(ticket);
+
+            #endregion
+
+            #region Get Ticket Messages
+
+            var messages = await _ticketService.GetTikcetMessagesByTicketId(ticket.Id);
+
+            ViewData["Ticket"] = ticket;
+            ViewData["TicketMessages"] = messages;
+
+            #endregion
+
+            return View(new AnswerTikcetDoctorViewModel
+            {
+                TicketId = ticket.Id
+            });
+        }
+
+        [HttpPost , ValidateAntiForgeryToken]
+        public async Task<IActionResult> OnlineVisitRequestMessageDetail(AnswerTikcetDoctorViewModel answer)
+        {
+            #region Get Ticket By Id
+
+            var ticket =  await _ticketService.GetTicketById(answer.TicketId);
+            if (ticket == null) return NotFound();
+
+            #endregion
+
+            #region Model State Validation 
+
+            if (!ModelState.IsValid)
+            {
+                ViewData["Ticket"] = ticket;
+                ViewData["TicketMessages"] = await _ticketService.GetTikcetMessagesByTicketId(answer.TicketId);
+                return View(answer);
+            }
+
+            #endregion
+
+            #region Create Answer For Ticket
+
+            var result = await _ticketService.CreateAnswerTikcetFromDoctorPanel(answer, User.GetUserId());
+
+            if (result)
+            {
+                TempData[SuccessMessage] = "عملیات با موفقیت انجام شد .";
+                return RedirectToAction("OnlineVisitRequestMessageDetail", "OnlineVisit", new { area = "Doctor", requestId = ticket.RequestId });
+            }
+
+            TempData[ErrorMessage] = "خطایی رخ داده است لطفا مجدد تلاش کنید .";
+            ViewData["Ticket"] = ticket;
+            ViewData["TicketMessages"] = await _ticketService.GetTikcetMessagesByTicketId(answer.TicketId);
+
+            #endregion
+
+            return View(answer);
         }
 
         #endregion

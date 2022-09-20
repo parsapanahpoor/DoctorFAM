@@ -7,6 +7,7 @@ using DoctorFAM.Domain.Enums.Request;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.HomeVisit;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.OnlineVisit;
+using DoctorFAM.Domain.ViewModels.UserPanel.OnlineVisit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
@@ -166,7 +167,7 @@ namespace DoctorFAM.Data.Repository
         //Get Online Visit Request Detail 
         public async Task<OnlineVisitRequestDetail?> GetOnlineVisitRequestDetail(ulong requestId)
         {
-            return await _context.OnlineVisitRequestDetails.FirstOrDefaultAsync(p=> !p.IsDelete && p.RequestId == requestId);
+            return await _context.OnlineVisitRequestDetails.FirstOrDefaultAsync(p => !p.IsDelete && p.RequestId == requestId);
         }
 
         //Filter Your Online Visit Request 
@@ -195,7 +196,7 @@ namespace DoctorFAM.Data.Repository
              .ThenInclude(p => p.City)
              .Include(p => p.User)
              .Include(p => p.OnlineVisitRequestDetail)
-             .Where(s => !s.IsDelete && s.RequestType == Domain.Enums.RequestType.RequestType.OnlineVisit && s.RequestState == RequestState.Paid
+             .Where(s => !s.IsDelete && s.RequestType == Domain.Enums.RequestType.RequestType.OnlineVisit
                         && s.OperationId == organization.OwnerId && (s.RequestState == RequestState.SelectedFromDoctor || s.RequestState == RequestState.Finalized))
              .OrderByDescending(s => s.CreateDate)
              .AsQueryable();
@@ -245,6 +246,63 @@ namespace DoctorFAM.Data.Repository
             {
                 query = query.Where(s => EF.Functions.Like(s.User.Username, $"%{filter.Username}%"));
             }
+
+            #endregion
+
+            await filter.Paging(query);
+
+            return filter;
+        }
+
+        #endregion
+
+        #region User Panel side 
+
+        //Filter User Onlien Visit Requests 
+        public async Task<FilterOnlineVisitRequestUserPanelViewModel> FilterOnlineVisitRequestUserPanel(FilterOnlineVisitRequestUserPanelViewModel filter)
+        {
+            var query = _context.Requests
+                .Include(p => p.OnlineVisitRequestDetail)
+                .Include(p => p.Operation)
+             .Where(s => !s.IsDelete && s.UserId == filter.UserId && s.RequestType == Domain.Enums.RequestType.RequestType.OnlineVisit)
+             .OrderByDescending(s => s.CreateDate)
+             .AsQueryable();
+
+            #region Status
+
+            switch (filter.FilterRequestAdminSideOrder)
+            {
+                case FilterRequestAdminSideOrder.CreateDate_Des:
+                    break;
+                case FilterRequestAdminSideOrder.CreateDate_Asc:
+                    query = query.OrderBy(p => p.CreateDate);
+                    break;
+            }
+
+            switch (filter.OnlineVisitRequestTypeForFilter)
+            {
+                case OnlineVisitRequestTypeForFilter.All:
+                    break;
+                case OnlineVisitRequestTypeForFilter.DiseaseCounseling:
+                    query = query.Where(p => p.OnlineVisitRequestDetail.OnlineVisitRequestType == Domain.Enums.OnlineVisitRequest.OnlineVisitRequestType.DiseaseCounseling);
+                    break;
+                case OnlineVisitRequestTypeForFilter.DrugCounseling:
+                    query = query.Where(p => p.OnlineVisitRequestDetail.OnlineVisitRequestType == Domain.Enums.OnlineVisitRequest.OnlineVisitRequestType.DrugCounseling);
+                    break;
+                case OnlineVisitRequestTypeForFilter.ParaclinicalCounseling:
+                    query = query.Where(p => p.OnlineVisitRequestDetail.OnlineVisitRequestType == Domain.Enums.OnlineVisitRequest.OnlineVisitRequestType.ParaclinicalCounseling);
+                    break;
+                case OnlineVisitRequestTypeForFilter.PsychologicalCounseling:
+                    query = query.Where(p => p.OnlineVisitRequestDetail.OnlineVisitRequestType == Domain.Enums.OnlineVisitRequest.OnlineVisitRequestType.PsychologicalCounseling);
+                    break;
+                case OnlineVisitRequestTypeForFilter.EmergencyConsultation:
+                    query = query.Where(p => p.OnlineVisitRequestDetail.OnlineVisitRequestType == Domain.Enums.OnlineVisitRequest.OnlineVisitRequestType.EmergencyConsultation);
+                    break;
+            }
+
+            #endregion
+
+            #region Filter
 
             #endregion
 

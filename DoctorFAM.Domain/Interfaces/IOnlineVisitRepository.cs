@@ -1,5 +1,6 @@
 ﻿using DoctorFAM.Domain.Entities.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.OnlineVisit;
+using DoctorFAM.Domain.ViewModels.UserPanel.OnlineVisit;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,6 +31,13 @@ namespace DoctorFAM.Domain.Interfaces
 
         //Filter Your Online Visit Request 
         Task<FilterOnlineVisitViewModel?> FilterYourOnlineVisitRequest(FilterOnlineVisitViewModel filter);
+
+        #endregion
+
+        #region User Panel Side 
+
+        //Filter User Onlien Visit Requests 
+        Task<FilterOnlineVisitRequestUserPanelViewModel> FilterOnlineVisitRequestUserPanel(FilterOnlineVisitRequestUserPanelViewModel filter);
 
         #endregion
     }

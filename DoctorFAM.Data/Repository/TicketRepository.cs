@@ -1,6 +1,8 @@
 ﻿using DoctorFAM.Data.DbContext;
+using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Contact;
 using DoctorFAM.Domain.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -38,6 +40,59 @@ namespace DoctorFAM.Data.Repository
             await _context.TicketMessages.AddAsync(ticketMessage);
             await _context.SaveChangesAsync();
         }
+
+        //Get Ticket By Online Visit Request Id
+        public async Task<Ticket?> GetTicketByOnlineVisitRequestId(ulong requestId)
+        {
+            return await _context.Tickets.Include(p => p.Owner)
+                            .Include(p => p.TargetUser)
+                            .FirstOrDefaultAsync(p=> !p.IsDelete && p.RequestId == requestId);
+        }
+
+        //Update Request 
+        public async Task UpdateRequest(Ticket ticket)
+        {
+            _context.Update(ticket);
+            await _context.SaveChangesAsync();
+        }
+
+        //Get Tikcet By Id
+        public async Task<Ticket?> GetTicketById(ulong ticketId)
+        {
+            return await _context.Tickets
+                .Include(s => s.Owner)
+                .Include(s => s.TargetUser)
+                .FirstOrDefaultAsync(s => !s.IsDelete && s.Id == ticketId);
+        }
+
+        //Get Tikcet Messages By Ticket Id
+        public async Task<List<TicketMessage>?> GetTikcetMessagesByTicketId(ulong ticketId)
+        {
+            return await _context.TicketMessages
+                .Include(s => s.Ticket)
+                .Include(s => s.Sender)
+                .Where(s => s.TicketId == ticketId && !s.IsDelete)
+                .OrderByDescending(s => s.CreateDate)
+                .ToListAsync();
+        }
+
+        //Update Request Without Save Changes
+        public async Task UpdateRequestWithoutSaveChanges(Ticket ticket)
+        {
+            _context.Update(ticket);
+        }
+
+        //Save Changes
+        public async Task SaveChanges()
+        {
+            await _context.SaveChangesAsync();
+        }
+            
+        #endregion
+
+        #region Doctor Panel 
+
+
 
         #endregion
     }

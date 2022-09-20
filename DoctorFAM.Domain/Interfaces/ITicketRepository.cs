@@ -18,6 +18,24 @@ namespace DoctorFAM.Domain.Interfaces
         //Add Ticekt Message
         Task AddTicketMessage(TicketMessage ticketMessage);
 
+        //Get Ticket By Online Visit Request Id
+        Task<Ticket?> GetTicketByOnlineVisitRequestId(ulong requestId);
+
+        //Update Request 
+        Task UpdateRequest(Ticket ticket);
+
+        //Get Tikcet By Tikcet Id
+        Task<Ticket?> GetTicketById(ulong ticketId);
+
+        //Get Tikcet Messages By Ticket Id
+        Task<List<TicketMessage>?> GetTikcetMessagesByTicketId(ulong ticketId);
+
+        //Update Request Without Save Changes
+        Task UpdateRequestWithoutSaveChanges(Ticket ticket);
+
+        //Save Changes
+        Task SaveChanges();
+
         #endregion
     }
 }
