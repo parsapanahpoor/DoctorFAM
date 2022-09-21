@@ -552,4 +552,13 @@
   <data name="List Of Your Online Visit" xml:space="preserve">
     <value>لیست درخواست های شما</value>
   </data>
+  <data name="Create Ticket" xml:space="preserve">
+    <value>ایجاد تیکت ها </value>
+  </data>
+  <data name="List Of Tickets" xml:space="preserve">
+    <value>لیست تیکت ها</value>
+  </data>
+  <data name="Manage Tickets" xml:space="preserve">
+    <value>مدیریت تیکت ها</value>
+  </data>
 </root>

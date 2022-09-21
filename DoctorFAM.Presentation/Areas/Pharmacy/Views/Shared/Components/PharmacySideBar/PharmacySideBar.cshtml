@@ -80,6 +80,28 @@
             @await Component.InvokeAsync("PharmacyInfosBadge")
         }
 
+        <li>
+            <a href="#" class="menu-dropdown">
+                <i class="menu-icon fa fa-ticket"></i>
+                <span class="menu-text"> @SharedLocalizer["Manage Tickets"]</span>
+
+                <i class="menu-expand"></i>
+            </a>
+
+            <ul class="submenu">
+                <li>
+                    <a asp-area="Pharmacy" asp-controller="Ticket" asp-action="FilterTickets">
+                        <span class="menu-text">@SharedLocalizer["List Of Tickets"]</span>
+                    </a>
+                </li>
+                <li>
+                    <a asp-area="Pharmacy" asp-controller="Ticket" asp-action="CreateTicket">
+                        <span class="menu-text">@SharedLocalizer["Create Ticket"]</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
 
     </ul>
     <!-- /Sidebar Menu -->

@@ -1,0 +1,148 @@
+﻿@using DoctorFAM.Domain.ViewModels.UserPanel.Ticket
+@using DoctorFAM.Domain.Enums
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.StaticTools
+@model DoctorFAM.Domain.ViewModels.UserPanel.Ticket.AnswerTicketViewModel
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
+
+@{
+    ViewData["Title"] = @Localizer["PageTitle"];
+}
+
+@{
+    var ticketDetail = ViewData["TicketDetailViewModel"] as UserPanelTicketDetailViewModel;
+}
+
+@section Scripts
+    {
+    <partial name="_JqueryValidation" />
+}
+
+    @section Breadcrumb
+    {
+    <li>
+        <a asp-action="FilterTickets" asp-controller="Ticket" asp-area="Pharmacy"> @Localizer["List Of Tickets"] </a>
+    </li>
+    <li>
+        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+    </li>
+}
+
+    <div class="row">
+
+        <div class="col-lg-12 col-sm-12">
+            <div class="row">
+
+            @if (ticketDetail.TicketStatus == TicketStatus.Answered)
+            {
+                <div class="col-md-12">
+                    <div class="widget">
+                        <div class="widget-header">
+                            <span class="widget-caption"> <strong> @Localizer["Send Message"] </strong> </span>
+                        </div>
+
+                        <div class="widget-body">
+                            <div class="row">
+                                <form asp-action="TicketDetail" asp-controller="Ticket" asp-area="Pharmacy" method="post">
+
+                                    <input type="hidden" asp-for="TicketId" />
+
+                                    <div class="form-group col-md-12">
+                                        <label asp-for="Message"></label>
+                                        <textarea class="form-control" ckeditor="1" asp-for="Message"></textarea>
+                                        <span class="text-danger" asp-validation-for="Message"></span>
+                                    </div>
+
+                                    <div class="col-md-12 flex-style">
+                                        <button type="submit" class="btn btn-labeled btn-palegreen">
+                                            <i class="btn-label glyphicon glyphicon-ok"></i>@Localizer["Submit"]
+                                        </button>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <div class="col-md-12">
+                <div class="widget">
+                    <div class="widget-header">
+                        <span class="widget-caption"> <strong> @Localizer["List Of Messages"] </strong> </span>
+                    </div>
+
+                    <div class="widget-body">
+                        <div class="row">
+
+                            @if (ticketDetail.TicketMessages != null && ticketDetail.TicketMessages.Any())
+                            {
+                                foreach (var message in ticketDetail.TicketMessages)
+                                {
+                                    if (message.SenderId == ticketDetail.OwnerId)
+                                    {
+                                          <div class="col-lg-12 col-sm-12 col-xs-12" remove-ajax-item="@message.Id">
+                                            <div class="well bordered-right bordered-maroon" style="margin: 10px 0 !important">
+                                                <div class="flex-style">
+
+                                                    <div class="flex-style-center" style="direction: ltr;">
+                                                        <img src="@message.Sender.GetUserAvatar()" style="border-radius:50px;height:50px;width:50px;" class="ticket-img-style" />
+                                                        <span class="ml-10px"> <strong> @message.Sender.Username </strong> </span>
+                                                    </div>
+                                                    <div class="flex-style-center" style="direction: ltr;">
+                                                        <span style="border-right: 1px solid gray; padding-right: 10px">@Localizer["ساعت"] @message.CreateDate.ToShortTimeString() @message.CreateDate.ToStringShamsiDate()  </span>
+                                                        <span onclick="DeleteAjax(@message.Id, '@Url.Action("DeleteTicketMessage", "OnlineVisit", new { area = "Pharmacy", messageId = message.Id })')" class="mr-10px" style="color: darkred;cursor:pointer; border-left: 1px solid gray; padding-left: 10px"> <i class="glyphicon glyphicon-trash"></i> </span>
+                                                        @if (!string.IsNullOrEmpty(message.MessageFile))
+                                                        {
+                                                            <a class="mr-10px" target="_blank" style="color: gold;cursor:pointer; padding-left: 10px" href="@PathTools.TicketFilePath/@message.MessageFile"> <i class="glyphicon glyphicon-folder-open"></i> </a>
+                                                        }
+                                                    </div>
+                                                </div>
+
+                                                <hr style="margin: 10px 0 !important" />
+
+                                                @Html.Raw(message.Message)
+                                            </div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                            <div class="col-lg-12 col-sm-12 col-xs-12" remove-ajax-item="@message.Id">
+                                            <div class="well bordered-left bordered-sky" style="margin: 10px 0 !important">
+                                                <div class="flex-style databox-graded">
+                                                    <div class="flex-style-center">
+                                                        <img src="@message.Sender.GetUserAvatar()" style="border-radius:50px;height:50px;width:50px;" class="ticket-img-style" />
+                                                        <span class="mr-10px"> <strong> @message.Sender.Username </strong> </span>
+                                                    </div>
+                                                    <div class="flex-style-center">
+                                                        <span> @message.CreateDate.ToStringShamsiDate() ساعت @message.CreateDate.ToShortTimeString() </span>
+                                                        @if (!string.IsNullOrEmpty(message.MessageFile))
+                                                        {
+                                                            <a class="mr-10px" target="_blank" style="color: gold;cursor:pointer;" href="@PathTools.TicketFilePath/@message.MessageFile"> <i class="glyphicon glyphicon-folder-open"></i> </a>
+                                                        }
+                                                    </div>
+                                                </div>
+
+                                                <hr style="margin: 10px 0 !important" />
+
+                                                @Html.Raw(message.Message)
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+

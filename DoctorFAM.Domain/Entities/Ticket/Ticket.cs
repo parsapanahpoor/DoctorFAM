@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Common;
 using DoctorFAM.Domain.Enums;
+using DoctorFAM.Domain.Enums.Ticket;
 
 namespace DoctorFAM.Domain.Entities.Contact
 {
@@ -42,7 +43,11 @@ namespace DoctorFAM.Domain.Entities.Contact
 
         public bool OnlineVisitRequest { get; set; }
 
+        public bool TicketForAdminAndSupporters { get; set; }
+
         public ulong? RequestId { get; set; }
+
+        public TicketSenderType TicketSenderType { get; set; }
 
         #endregion
 
@@ -54,7 +59,7 @@ namespace DoctorFAM.Domain.Entities.Contact
 
         [ForeignKey("TargetUserId")]
         [InverseProperty("TicketTargetUser")]
-        public User TargetUser { get; set; }
+        public User? TargetUser { get; set; }
 
         public ICollection<TicketMessage> TicketMessages { get; set; }
 

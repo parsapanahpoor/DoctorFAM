@@ -1,0 +1,73 @@
+﻿@using DoctorFAM.Domain.ViewModels.Common
+@model DoctorFAM.Domain.ViewModels.Admin.Ticket.AddTicketViewModel
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
+
+@{
+    ViewData["Title"] = @Localizer["Page Title"];
+}
+
+@section Scripts
+{
+<partial name="_JqueryValidation" />
+<script src="/admin/js/adminCustom.js"></script>
+}
+
+@section breadcrumb
+{
+<li>
+    <a href="javascript:void(0)"> @ViewData["Title"] </a>
+</li>
+}
+
+<form method="post" asp-action="CreateTicket" asp-controller="Ticket" asp-area="Admin">
+    <div class="row">
+        <div class="col-lg-12 col-sm-12">
+            <div class="widget">
+                <div class="widget-header bordered-bottom bordered-green">
+                    <span class="widget-caption"> @ViewData["Title"] </span>
+                </div>
+                <div class="widget-body">
+                    <div>
+
+                        <div class="row">
+                            <div class="form-group col-md-6 col-sm-12">
+                                <label asp-for="Title"></label>
+                                <input type="text" class="form-control" asp-for="Title">
+                                <span class="text-danger" asp-validation-for="Title"></span>
+                            </div>
+
+                            <div class="form-group col-md-6 col-sm-12">
+                                <label asp-for="userId">@Localizer["Target User"] </label>
+                                <input type="hidden" asp-for="userId" id="Owner-Input">
+                                <input type="text" class="form-control" asp-for="userName" id="Owner-Display" readonly="readonly" />
+                                <span onclick="ShowSearchUserModal('Owner')" class="search-btn"><i class="glyphicon glyphicon-search"></i></span>
+                            </div>
+
+                            <div class="clearfix"></div>
+
+                            <div class="form-group col-md-12">
+                                <label asp-for="Message"></label>
+                                <textarea class="form-control" ck-lang="@ApplicationCultures.GetLanguageCode()" ckeditor="1" asp-for="Message"></textarea>
+                                <span class="text-danger" asp-validation-for="Message"></span>
+                            </div>
+
+                        </div>
+
+                        <hr class="margin-bottom-10 margin-top-10" />
+
+                        <div class="row">
+                            <div class="col-md-12 flex-style">
+                                <button type="submit" class="btn btn-labeled btn-palegreen">
+                                    <i class="btn-label glyphicon glyphicon-ok"></i>@Localizer["Submit"]
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</form>

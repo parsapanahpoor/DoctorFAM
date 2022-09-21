@@ -1,0 +1,66 @@
+﻿@inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
+
+
+<script>
+
+        $("#TicketStatus").change(function () {
+        var state = $("#TicketStatus").val();
+        var ticketId = $("#TicketStatus").attr("ticketId");
+
+        $.ajax({
+            url: "/Admin/Ticket/ChangeTicketStatus",
+            type: "post",
+            data: {
+                status: state,
+                ticketId: ticketId
+            },
+            beforeSend: function() {
+                open_waiting();
+            },
+            success: function(response) {
+                close_waiting();
+                if (response.status === "Success") {
+                    $("#TicketStatusName").html(response.data);
+                            ShowMessage("@SharedHtmlLocalizer["Sweet Alert Announcement"]", "@SharedHtmlLocalizer["Sweet Alert Success Message"]", "success");
+                } else {
+                            ShowMessage("@SharedHtmlLocalizer["Sweet Alert Announcement"]", "@SharedHtmlLocalizer["Sweet Alert Failed Message"]", "error");
+                }
+            },
+            error: function() {
+                close_waiting();
+                            ShowMessage("@SharedHtmlLocalizer["Sweet Alert Announcement"]", "@SharedHtmlLocalizer["Sweet Alert Failed Message"]", "error");
+            }
+        });
+
+    });
+
+    $("#WorkingOn").click(function () {
+        var ticketId = $("#WorkingOn").attr("ticketId");
+
+        $.ajax({
+            url: "/Admin/Ticket/ChangeTicketOnWorkingStatus",
+            type: "post",
+            data: {
+                ticketId: ticketId
+            },
+            beforeSend: function () {
+                open_waiting();
+            },
+            success: function (response) {
+                close_waiting();
+                if (response.status === "Success") {
+                            ShowMessage("@SharedHtmlLocalizer["Sweet Alert Announcement"]", "@SharedHtmlLocalizer["Sweet Alert Success Message"]", "success");
+                } else {
+                            ShowMessage("@SharedHtmlLocalizer["Sweet Alert Announcement"]", "@SharedHtmlLocalizer["Sweet Alert Failed Message"]", "error");
+                }
+            },
+            error: function () {
+                close_waiting();
+                            ShowMessage("@SharedHtmlLocalizer["Sweet Alert Announcement"]", "@SharedHtmlLocalizer["Sweet Alert Failed Message"]", "error");
+            }
+        });
+
+    });
+
+</script>
+

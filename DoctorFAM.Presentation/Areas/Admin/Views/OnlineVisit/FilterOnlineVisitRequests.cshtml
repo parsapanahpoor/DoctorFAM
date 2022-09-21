@@ -233,7 +233,7 @@
                             <th class="tc vm">
                                 @Localizer["User Avatar"]
                             </th>
-                                <th class="tc vm">
+                            <th class="tc vm">
                                 @Localizer["Doctor Avatar"]
                             </th>
                             <th class="tc vm">
@@ -302,21 +302,21 @@
                                     }
                                     else
                                     {
-                                    <p class="label label-warning">
-                                        @request.PaitientRequestDetails.State.UniqueName
-                                    </p>
+                                        <p class="label label-warning">
+                                            @request.PaitientRequestDetails.State.UniqueName
+                                        </p>
                                     }
                                 </td>
                                 <td class="tc vm">
-                                      @if (request.PaitientRequestDetails == null)
+                                    @if (request.PaitientRequestDetails == null)
                                     {
                                         <p class="label label-warning">@Localizer["Empty"]</p>
                                     }
                                     else
                                     {
-                                    <p class="label label-warning">
-                                        @request.PaitientRequestDetails.City.UniqueName
-                                    </p>
+                                        <p class="label label-warning">
+                                            @request.PaitientRequestDetails.City.UniqueName
+                                        </p>
                                     }
                                 </td>
                                 <td class="tc vm">
@@ -356,7 +356,10 @@
 
                                 <td class="tc vm">
                                     <a asp-action="OnlineVisitRequestDetail" asp-controller="OnlineVisit" asp-area="Admin" asp-route-requestId="@request.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
-                                                                        <a asp-action="OnlineVisitRequestMessageDetail" asp-controller="OnlineVisit" asp-area="Admin" asp-route-requestId="@request.Id" class="btn btn-warning btn-circle btn-xs"><i class="glyphicon glyphicon-envelope"></i></a>
+                                    @if (request.OperationId.HasValue)
+                                    {
+                                        <a asp-action="OnlineVisitRequestMessageDetail" asp-controller="OnlineVisit" asp-area="Admin" asp-route-requestId="@request.Id" class="btn btn-warning btn-circle btn-xs"><i class="glyphicon glyphicon-envelope"></i></a>
+                                    }
                                 </td>
                             </tr>
                         }

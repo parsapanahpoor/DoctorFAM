@@ -1,0 +1,183 @@
+﻿@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Domain.ViewModels.Admin.Ticket
+@model DoctorFAM.Domain.ViewModels.Admin.Ticket.AdminFilterTicketViewModel
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
+
+@{
+    ViewData["Title"] = @Localizer["Page Title"];
+}
+
+@section Styles
+{
+<link rel="stylesheet" type="text/css" href="/common/custom/TicketAdmin.css">
+}
+
+@section Scripts
+{
+<partial name="_JqueryValidation" />
+}
+
+@section breadcrumb
+{
+<li>
+    <a href="javascript:void(0)"> @ViewData["Title"] </a>
+</li>
+}
+
+<div class="row">
+    <div class="col-lg-3 col-sm-12">
+        <div class="widget">
+            <div class="widget-header bordered-bottom bordered-green">
+                <span class="widget-caption"> @ViewData["Title"] </span>
+            </div>
+            <div class="widget-body">
+                <div>
+                    <form asp-action="FilterTickets" asp-controller="Ticket" asp-area="Admin" id="filter-search" method="get">
+
+                        <input type="hidden" asp-for="Page" />
+
+                        <div class="form-group">
+                            <label asp-for="UserEmail"> @Localizer["Sender Email"] </label>
+                            <input type="text" class="form-control" asp-for="UserEmail">
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="OwnerName"> @Localizer["Sender Username"] </label>
+                            <input type="text" class="form-control" asp-for="OwnerName">
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="TicketTitle"> @Localizer["Ticket Title"] </label>
+                            <input type="text" class="form-control" asp-for="TicketTitle">
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="AdminTicketFilterSeenByAdminStatus"> @Localizer["Admin See State"] </label>
+                            <select asp-for="AdminTicketFilterSeenByAdminStatus" class="form-control" asp-items="Html.GetEnumSelectList(typeof(AdminTicketFilterSeenByAdminStatus))"></select>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="AdminTicketFilterSeenByUserStatus"> @Localizer["Sender Seen State"] </label>
+                            <select asp-for="AdminTicketFilterSeenByUserStatus" class="form-control" asp-items="Html.GetEnumSelectList(typeof(AdminTicketFilterSeenByUserStatus))"></select>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="AdminTicketFilterStatus"> @Localizer["Ticket State"] </label>
+                            <select asp-for="AdminTicketFilterStatus" class="form-control" asp-items="Html.GetEnumSelectList(typeof(AdminTicketFilterStatus))"></select>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="AdminTicketFilterOnWorkingStatus"> @Localizer["On Working State"] </label>
+                            <select asp-for="AdminTicketFilterOnWorkingStatus" class="form-control" asp-items="Html.GetEnumSelectList(typeof(AdminTicketFilterOnWorkingStatus))"></select>
+                        </div>
+
+                        <hr />
+
+                        <div class="row">
+                            <div class="col-md-12 flex-style">
+                                <button type="submit" class="btn btn-labeled w-100 btn-palegreen">
+                                    <i class="btn-label glyphicon glyphicon-filter"></i>@Localizer["Filter"]
+                                </button>
+
+                                @if (Context.Request.QueryString.HasValue)
+                                {
+                                    <a asp-action="FilterTickets" asp-controller="Ticket" asp-area="Admin" class="btn btn-labeled w-100 btn-darkorange">
+                                        <i class="btn-label glyphicon glyphicon-remove"></i>@Localizer["Delete Filter"]
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-9 col-sm-12">
+        <div class="well with-header with-footer table-responsive">
+            <div class="header bordered-azure">
+                <div class="flex-style">
+                    <span> @ViewData["Title"] </span>
+                    <span>@Model.GetShownEntitiesPagesTitle()</span>
+                </div>
+            </div>
+
+            @if (Model.Entities != null && Model.Entities.Any())
+            {
+                <table class="table table-hover table-bordered tc vm margin-bottom-30">
+                    <thead class="tc vm">
+                        <tr class="tc vm">
+                            <th class="tc vm">
+                                @Localizer["User Information"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["Ticket Title"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["Ticket State"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["Options"]
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="tc vm">
+                        @foreach (var ticket in Model.Entities)
+                        {
+                            <tr class="tc vm">
+                                <td class="vm">
+                                    <div class="flex-style-center">
+                                        <img src="@ticket.Owner.GetUserAvatar()" class="avatar-style" />
+                                        <div class="mr-10px">
+                                            <span> @ticket.Owner.Username </span>
+                                            <hr class="margin-7" />
+                                            <span> @Localizer["Send Date Time"] : @ticket.CreateDate</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td id="CommentDetail" class="tc vm">
+
+                                    <p class="ellipsis-style">
+                                        @ticket.Title
+                                    </p>
+                                    <hr class="margin-7" />
+                                    <p class="flex-style-center">
+                                        <span> @Localizer["On Working"] </span>
+                                        <span class="mr-8px label @((ticket.OnWorking) ? "label-success" : "label-orange")">@((ticket.OnWorking) ? @Localizer["Yes"] : @Localizer["No"])</span>
+                                    </p>
+                                </td>
+                                <td class="tc vm">
+                                    <p class="flex-style-center">
+                                        <span> @Localizer["Seen By Admin"] </span>
+                                        <span class="mr-8px label @((ticket.IsReadByAdmin) ? "label-success" : "label-orange")">@((ticket.IsReadByAdmin) ? @Localizer["Yes"] : @Localizer["No"])</span>
+                                    </p>
+                                    <hr class="margin-7" />
+                                    <p class="flex-style-center">
+                                        <span> @Localizer["Seen By User"] </span>
+                                        <span class="mr-8px label @((ticket.IsReadByOwner) ? "label-success" : "label-orange")">@((ticket.IsReadByOwner) ? @Localizer["Yes"] : @Localizer["No"])</span>
+                                    </p>
+                                </td>
+                                <td class="tc vm">
+                                    <a asp-action="TicketDetail" asp-controller="Ticket" asp-area="Admin" asp-route-id="@ticket.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <div class="footer tc">
+
+                    <partial name="_AdminPaging" model="@Model.GetCurrentPaging()" />
+
+                </div>
+            }
+            else
+            {
+                <partial name="_AdminNotFoundPartial" />
+            }
+        </div>
+    </div>
+</div>
+

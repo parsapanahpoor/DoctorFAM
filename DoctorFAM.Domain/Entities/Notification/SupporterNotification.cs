@@ -23,6 +23,10 @@ namespace DoctorFAM.Domain.Entities.Notification
 
         public bool IsSeen { get; set; }
 
+        public bool IsHealthHouseRequest { get; set; }
+
+        public bool IsTicket { get; set; }
+
         public SupporterNotificationText SupporterNotificationText { get; set; }
 
         #endregion
@@ -30,7 +34,6 @@ namespace DoctorFAM.Domain.Entities.Notification
         #region realtions 
 
         public User User { get; set; }
-
 
         #endregion
     }

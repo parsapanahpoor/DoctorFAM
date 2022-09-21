@@ -1,0 +1,137 @@
+﻿@model DoctorFAM.Domain.ViewModels.UserPanel.Ticket.FilterSiteTicketViewModel
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
+@using DoctorFAM.Domain.ViewModels.UserPanel.Ticket
+
+@{
+    ViewData["Title"] = @Localizer["PageTitle"];
+}
+
+@section Scripts
+    {
+}
+
+    @section breadcrumb
+    {
+    <li>
+        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+    </li>
+}
+
+    <div class="row">
+
+        <div class="col-lg-3 col-sm-12">
+            <div class="widget">
+                <div class="widget-header bordered-bottom bordered-green">
+                    <span class="widget-caption"> @ViewData["Title"] </span>
+                </div>
+                <div class="widget-body">
+                    <div>
+                        <form asp-action="FilterTickets" asp-controller="Ticket" asp-area="Pharmacy" id="filter-search" method="get">
+
+                            <input type="hidden" asp-for="Page" />
+
+                            <div class="form-group">
+                                <label asp-for="TicketTitle"> @Localizer["Ticket Title"] </label>
+                                <input type="text" class="form-control" asp-for="TicketTitle">
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="UserTicketFilterStatus"> @Localizer["Ticket State"] </label>
+                                <select asp-for="UserTicketFilterStatus" class="form-control" asp-items="Html.GetEnumSelectList(typeof(UserTicketFilterStatus))"></select>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="UserTicketFilterOnWorkingStatus"> @Localizer["Ticket OnWorking State"] </label>
+                                <select asp-for="UserTicketFilterOnWorkingStatus" class="form-control" asp-items="Html.GetEnumSelectList(typeof(UserTicketFilterOnWorkingStatus))"></select>
+                            </div>
+
+                            <hr />
+
+                            <div class="row">
+                                <div class="col-md-12 flex-style">
+                                    <button type="submit" class="btn btn-labeled w-100 btn-palegreen">
+                                        <i class="btn-label glyphicon glyphicon-filter"></i>@Localizer["Filter"]
+                                    </button>
+
+                                @if (Context.Request.QueryString.HasValue)
+                                {
+                                    <a asp-action="FilterTickets" asp-controller="Ticket" asp-area="Pharmacy" class="btn btn-labeled w-100 btn-darkorange">
+                                        <i class="btn-label glyphicon glyphicon-remove"></i>@Localizer["Delete Filter"]
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-9 col-sm-12">
+        <div class="well with-header with-footer table-responsive">
+            <div class="header bordered-azure">
+                <div class="flex-style">
+
+                    <span> @Localizer["List Of User Tickets"] </span>
+
+                    <span>@Model.GetShownEntitiesPagesTitle()</span>
+                </div>
+            </div>
+
+            @if (Model.Entities != null && Model.Entities.Any())
+            {
+                <table class="table table-hover table-bordered tc vm margin-bottom-30">
+                    <thead class="tc vm">
+                        <tr class="tc vm">
+                            <th class="tc vm">
+                                @Localizer["Ticket Title"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["Ticket State"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["Create Date"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["Options"]
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="tc vm">
+                        @foreach (var ticket in Model.Entities)
+                        {
+                            <tr class="tc vm" remove-ajax-item="@ticket.Id">
+                                <td class="tc vm ellipsis-style" style="max-width: 200px">
+                                    <p> @ticket.Title </p>
+                                </td>
+                                <td id="CommentDetail" class="tc vm">
+                                    <p class="flex-style-center">
+                                        <span> @Localizer["OnWorking"] </span>
+                                        <span class="mr-8px label @((ticket.OnWorking) ? "label-success" : "label-orange")">@((ticket.OnWorking) ? @Localizer["Yes"] : @Localizer["No"])</span>
+                                    </p>
+                                </td>
+                                <td class="tc vm">
+                                    <p> @ticket.CreateDate.ToShortDateString() </p>
+                                </td>
+                                <td class="tc vm">
+                                    <a asp-action="TicketDetail" asp-controller="Ticket" asp-area="Pharmacy" asp-route-id="@ticket.Id" class="btn btn-primary btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <div class="footer tc">
+
+                    <partial name="_PharmacyPaging" model="@Model.GetCurrentPaging()" />
+
+                </div>
+            }
+            else
+            {
+                <partial name="_PharmacyNotFoundPartial" />
+            }
+        </div>
+    </div>
+</div>

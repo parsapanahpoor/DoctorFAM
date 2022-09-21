@@ -1,4 +1,5 @@
 ﻿using BusinessPortal.Application.Services.Implementation;
+using DoctorFAM.Application.Convertors;
 using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Generators;
 using DoctorFAM.Application.Security;
@@ -8,10 +9,13 @@ using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Contact;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Enums;
+using DoctorFAM.Domain.Enums.Ticket;
 using DoctorFAM.Domain.Interfaces;
+using DoctorFAM.Domain.ViewModels.Admin.Ticket;
 using DoctorFAM.Domain.ViewModels.Common;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Tikcet;
 using DoctorFAM.Domain.ViewModels.UserPanel.OnlineVisit;
+using DoctorFAM.Domain.ViewModels.UserPanel.Ticket;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -40,6 +44,153 @@ namespace DoctorFAM.Application.Services.Implementation
         #endregion
 
         #region General Methods
+
+        //Answer Ticket By User 
+        public async Task<bool> AnswerTicketByUser(AnswerTicketViewModel answer, ulong userId)
+        {
+            #region Get Ticket
+
+            var ticket = await _ticketRepository.GetTicketById(answer.TicketId);
+            if (ticket == null || ticket.OwnerId != userId || ticket.TicketStatus != TicketStatus.Answered) return false;
+
+            #endregion
+
+            #region Fill Ticket Message Entity
+
+            var message = new TicketMessage
+            {
+                Message = answer.Message.SanitizeText(),
+                SenderId = userId,
+                TicketId = ticket.Id,
+                CreateDate = DateTime.Now
+            };
+
+            #endregion
+
+            #region Add Ticket Message Method
+
+            await _ticketRepository.UpdateTicketMessage(message);
+
+            #endregion
+
+            #region Read Ticket & Update Ticket
+
+            ticket.IsReadByOwner = true;
+            ticket.IsReadByAdmin = false;
+            ticket.TicketStatus = TicketStatus.Pending;
+
+            await _ticketRepository.UpdateRequest(ticket);
+
+            #endregion
+
+            return true;
+        }
+
+        //Get User Ticket For Show Ticket Detail 
+        public async Task<UserPanelTicketDetailViewModel?> GetUserPanelTicketDetailViewModel(ulong ticketId, ulong userId)
+        {
+            #region Get Ticket
+
+            var ticket = await _ticketRepository.GetTicketById(ticketId);
+            if (ticket == null || ticket.OwnerId != userId) return null;
+
+            #endregion
+
+            #region Get Ticket Messages
+
+            var messages = await _ticketRepository.GetTikcetMessagesByTicketId(ticketId);
+
+            #endregion
+
+            #region Read Ticket
+
+            if (!ticket.IsReadByOwner)
+            {
+                ticket.IsReadByOwner = true;
+
+                await _ticketRepository.UpdateRequest(ticket);
+            }
+
+            #endregion
+
+            #region Fill View Model
+
+            var result = new UserPanelTicketDetailViewModel
+            {
+                CreateDate = ticket.CreateDate.ToShamsi(),
+                Status = ticket.TicketStatus.GetEnumName(),
+                MessagesCount = messages.Count(),
+                TicketTitle = ticket.Title,
+                TicketMessages = messages,
+                OwnerId = ticket.OwnerId,
+                TicketStatus = ticket.TicketStatus
+            };
+
+            #endregion
+
+            return result;
+        }
+
+        //Create Ticket For Each Panels
+        public async Task<ulong> CreateTicket(CreateTicketViewModel create, ulong userId, TicketSenderType ticketSenderType)
+        {
+            #region Get user By Id
+
+            var user = await _userService.GetUserById(userId);
+            if (user == null) return 0;
+
+            #endregion
+
+            #region Fill Ticket Entity
+
+            var ticket = new Ticket
+            {
+                Title = create.Title.SanitizeText(),
+                IsReadByAdmin = false,
+                IsReadByOwner = true,
+                OnWorking = false,
+                TicketStatus = TicketStatus.Pending,
+                OwnerId = userId,
+                TargetUserId = userId,
+                CreateDate = DateTime.Now,
+                TicketForAdminAndSupporters = true,
+                TicketSenderType = ticketSenderType
+            };
+
+            #endregion
+
+            #region Add Ticket Method
+
+            await _ticketRepository.AddTicket(ticket);
+
+            #endregion
+
+            #region Fill Ticket Message Entity
+
+            var message = new TicketMessage
+            {
+                Message = create.Message.SanitizeText(),
+                SenderId = userId,
+                TicketId = ticket.Id,
+                CreateDate = DateTime.Now
+            };
+
+            #endregion
+
+            #region Add Ticket Message Method 
+
+            await _ticketRepository.AddTicketMessage(message);
+
+            #endregion
+
+            return ticket.Id;
+        }
+
+        //Filter Tickets In Each Panels Side
+        public async Task<FilterSiteTicketViewModel> FilterSiteTicket(FilterSiteTicketViewModel filter, ulong userId)
+        {
+            return await _ticketRepository.FilterSiteTicket(filter, userId);
+        }
 
         //Change Ticket Status
         public async Task<string> ChangeTicketStatus(int state, ulong ticketId)
@@ -97,7 +248,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 IsReadByAdmin = false,
                 IsReadByOwner = true,
                 IsReadByTargetUser = false,
-                OnWorking = true,
+                OnWorking = false,
                 TicketStatus = TicketStatus.Pending,
                 OwnerId = request.OperationId.Value,
                 TargetUserId = request.UserId,
@@ -335,6 +486,193 @@ namespace DoctorFAM.Application.Services.Implementation
             #region Save Changes
 
             await _ticketRepository.SaveChanges();
+
+            #endregion
+
+            return true;
+        }
+
+        #endregion
+
+        #region Admin Side 
+
+        //Filter Admin side Ticketes
+        public async Task<AdminFilterTicketViewModel> FilterAdminTicketViewModel(AdminFilterTicketViewModel filter)
+        {
+            return await _ticketRepository.FilterAdminTicketViewModel(filter);
+        }
+
+        //Add Ticket From Admin Panel 
+        public async Task<bool> AddTicketFromAdminPanel(AddTicketViewModel addTicket, ulong adminId)
+        {
+            #region Check Is Exist User
+
+            if (await _userService.GetUserById(addTicket.userId.Value) == null)
+            {
+                return false;
+            }
+
+            #endregion
+
+            #region Fill Ticket Entity
+
+            var ticket = new Ticket
+            {
+                Title = addTicket.Title.SanitizeText(),
+                IsReadByAdmin = true,
+                IsReadByOwner = false,
+                OnWorking = false,
+                TicketStatus = TicketStatus.Answered,
+                OwnerId = addTicket.userId.Value,
+                CreateDate = DateTime.Now,
+                TargetUserId = addTicket.userId.Value,
+                TicketSenderType = TicketSenderType.FromAdmin
+            };
+
+            #endregion
+
+            #region Add Ticket Method
+
+            await _ticketRepository.AddTicket(ticket);
+
+            #endregion
+
+            #region Fill Message Entity
+
+            var message = new TicketMessage
+            {
+                Message = addTicket.Message.SanitizeText(),
+                SenderId = adminId,
+                TicketId = ticket.Id,
+                CreateDate = DateTime.Now
+            };
+
+            #endregion
+
+            #region Add Message Method
+
+            await _ticketRepository.AddTicketMessage(message);
+
+            #endregion
+
+            return true;
+        }
+
+        //Read Ticket By Admin 
+        public async Task ReadTicketByAdmin(Ticket ticket)
+        {
+            ticket.IsReadByAdmin = true;
+
+            await _ticketRepository.ReadTicketByAdmin(ticket);
+        }
+
+        //Get Ticket Messages For Admin 
+        public async Task<List<TicketMessage>> GetTicketMessages(ulong ticketId)
+        {
+            #region Get Ticket By Id 
+
+            var ticket = await GetTicketById(ticketId);
+            if (ticket == null) return null;
+
+            #endregion
+
+            #region Get Ticket Messages By Ticket Id
+
+            var messages = await _ticketRepository.GetTikcetMessagesByTicketId(ticketId);
+
+            #endregion
+
+            return messages;
+        }
+
+        //Create Answer Ticket From Admin 
+        public async Task<bool> CreateAnswerTicketAdmin(AnswerTicketAdminViewModel answer, ulong userId)
+        {
+            #region Ticket Validation
+
+            var ticket = await GetTicketById(answer.TicketId);
+            if (ticket == null) return false;
+
+            #endregion
+
+            #region Create Message Answer
+
+            #region Fill Entity 
+
+            var message = new TicketMessage
+            {
+                Message = answer.Message,
+                SenderId = userId,
+                TicketId = ticket.Id,
+                CreateDate = DateTime.Now,
+            };
+
+            #endregion
+
+            #region Add Ticket Message Method
+
+            await _ticketRepository.AddTicketMessage(message);
+
+            #endregion
+
+            #endregion
+
+            #region Change Ticket State
+
+            ticket.TicketStatus = TicketStatus.Answered;
+
+            await _ticketRepository.UpdateRequest(ticket);
+
+            #endregion
+
+            #region Read Ticket
+
+            ticket.IsReadByOwner = false;
+            ticket.IsReadByAdmin = true;
+
+            await _ticketRepository.UpdateRequest(ticket);
+
+            #endregion
+
+            return true;
+        }
+
+        //Change On Working Ticket Status
+        public async Task<bool> ChangeOnWorkingTicketStatus(ulong ticketId)
+        {
+            #region Get Ticket By Ticket Id 
+
+            var ticket = await GetTicketById(ticketId);
+            if (ticket == null) return false;
+
+            #endregion
+
+            #region Chanmge Ticket On Working Status
+
+            ticket.OnWorking = !ticket.OnWorking;
+
+            await _ticketRepository.UpdateRequest(ticket);
+
+            #endregion
+
+            return true;
+        }
+
+        //Delete Ticket Message 
+        public async Task<bool> DeleteTicketMessage(ulong messageId)
+        {
+            #region Get Message Ticket By Id
+
+            var message = await _ticketRepository.GetMessageById(messageId);
+            if (message == null) return false;
+
+            #endregion
+
+            #region Delete Ticket Message 
+
+            message.IsDelete = true;
+
+            await _ticketRepository.UpdateTicketMessage(message);
 
             #endregion
 

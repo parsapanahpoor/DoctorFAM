@@ -152,7 +152,7 @@ namespace DoctorFAM.Data.Migrations
                         new
                         {
                             Id = 1m,
-                            CreateDate = new DateTime(2022, 9, 21, 11, 4, 43, 23, DateTimeKind.Local).AddTicks(3129),
+                            CreateDate = new DateTime(2022, 9, 21, 15, 7, 46, 775, DateTimeKind.Local).AddTicks(5486),
                             IsDelete = false,
                             RoleUniqueName = "Admin",
                             Title = "Admin"
@@ -160,7 +160,7 @@ namespace DoctorFAM.Data.Migrations
                         new
                         {
                             Id = 2m,
-                            CreateDate = new DateTime(2022, 9, 21, 11, 4, 43, 23, DateTimeKind.Local).AddTicks(3162),
+                            CreateDate = new DateTime(2022, 9, 21, 15, 7, 46, 775, DateTimeKind.Local).AddTicks(5501),
                             IsDelete = false,
                             RoleUniqueName = "Doctor",
                             Title = "Doctor"
@@ -168,7 +168,7 @@ namespace DoctorFAM.Data.Migrations
                         new
                         {
                             Id = 3m,
-                            CreateDate = new DateTime(2022, 9, 21, 11, 4, 43, 23, DateTimeKind.Local).AddTicks(3198),
+                            CreateDate = new DateTime(2022, 9, 21, 15, 7, 46, 775, DateTimeKind.Local).AddTicks(5511),
                             IsDelete = false,
                             RoleUniqueName = "Support",
                             Title = "Support"
@@ -176,7 +176,7 @@ namespace DoctorFAM.Data.Migrations
                         new
                         {
                             Id = 4m,
-                            CreateDate = new DateTime(2022, 9, 21, 11, 4, 43, 23, DateTimeKind.Local).AddTicks(3236),
+                            CreateDate = new DateTime(2022, 9, 21, 15, 7, 46, 775, DateTimeKind.Local).AddTicks(5522),
                             IsDelete = false,
                             RoleUniqueName = "Seller",
                             Title = "Seller"
@@ -184,7 +184,7 @@ namespace DoctorFAM.Data.Migrations
                         new
                         {
                             Id = 5m,
-                            CreateDate = new DateTime(2022, 9, 21, 11, 4, 43, 23, DateTimeKind.Local).AddTicks(3258),
+                            CreateDate = new DateTime(2022, 9, 21, 15, 7, 46, 775, DateTimeKind.Local).AddTicks(5532),
                             IsDelete = false,
                             RoleUniqueName = "DoctorOfficeEmployee",
                             Title = "DoctorOfficeEmployee"
@@ -192,7 +192,7 @@ namespace DoctorFAM.Data.Migrations
                         new
                         {
                             Id = 6m,
-                            CreateDate = new DateTime(2022, 9, 21, 11, 4, 43, 23, DateTimeKind.Local).AddTicks(3294),
+                            CreateDate = new DateTime(2022, 9, 21, 15, 7, 46, 775, DateTimeKind.Local).AddTicks(5544),
                             IsDelete = false,
                             RoleUniqueName = "Pharmacy",
                             Title = "Pharmacy"
@@ -200,7 +200,7 @@ namespace DoctorFAM.Data.Migrations
                         new
                         {
                             Id = 7m,
-                            CreateDate = new DateTime(2022, 9, 21, 11, 4, 43, 23, DateTimeKind.Local).AddTicks(3316),
+                            CreateDate = new DateTime(2022, 9, 21, 15, 7, 46, 775, DateTimeKind.Local).AddTicks(5554),
                             IsDelete = false,
                             ParentId = 3m,
                             RoleUniqueName = "HomeVisit",
@@ -209,7 +209,7 @@ namespace DoctorFAM.Data.Migrations
                         new
                         {
                             Id = 8m,
-                            CreateDate = new DateTime(2022, 9, 21, 11, 4, 43, 23, DateTimeKind.Local).AddTicks(3373),
+                            CreateDate = new DateTime(2022, 9, 21, 15, 7, 46, 775, DateTimeKind.Local).AddTicks(5565),
                             IsDelete = false,
                             ParentId = 3m,
                             RoleUniqueName = "HomeNurse",
@@ -218,7 +218,7 @@ namespace DoctorFAM.Data.Migrations
                         new
                         {
                             Id = 9m,
-                            CreateDate = new DateTime(2022, 9, 21, 11, 4, 43, 23, DateTimeKind.Local).AddTicks(3398),
+                            CreateDate = new DateTime(2022, 9, 21, 15, 7, 46, 775, DateTimeKind.Local).AddTicks(5574),
                             IsDelete = false,
                             ParentId = 3m,
                             RoleUniqueName = "HomePharmacy",
@@ -227,7 +227,7 @@ namespace DoctorFAM.Data.Migrations
                         new
                         {
                             Id = 10m,
-                            CreateDate = new DateTime(2022, 9, 21, 11, 4, 43, 23, DateTimeKind.Local).AddTicks(3489),
+                            CreateDate = new DateTime(2022, 9, 21, 15, 7, 46, 775, DateTimeKind.Local).AddTicks(5623),
                             IsDelete = false,
                             ParentId = 3m,
                             RoleUniqueName = "HomeLabratory",
@@ -236,7 +236,7 @@ namespace DoctorFAM.Data.Migrations
                         new
                         {
                             Id = 11m,
-                            CreateDate = new DateTime(2022, 9, 21, 11, 4, 43, 23, DateTimeKind.Local).AddTicks(3512),
+                            CreateDate = new DateTime(2022, 9, 21, 15, 7, 46, 775, DateTimeKind.Local).AddTicks(5633),
                             IsDelete = false,
                             ParentId = 3m,
                             RoleUniqueName = "HomePatientTransport",
@@ -245,7 +245,7 @@ namespace DoctorFAM.Data.Migrations
                         new
                         {
                             Id = 12m,
-                            CreateDate = new DateTime(2022, 9, 21, 11, 4, 43, 23, DateTimeKind.Local).AddTicks(3542),
+                            CreateDate = new DateTime(2022, 9, 21, 15, 7, 46, 775, DateTimeKind.Local).AddTicks(5643),
                             IsDelete = false,
                             ParentId = 3m,
                             RoleUniqueName = "DeathCertificate",
@@ -254,7 +254,7 @@ namespace DoctorFAM.Data.Migrations
                         new
                         {
                             Id = 13m,
-                            CreateDate = new DateTime(2022, 9, 21, 11, 4, 43, 23, DateTimeKind.Local).AddTicks(3564),
+                            CreateDate = new DateTime(2022, 9, 21, 15, 7, 46, 775, DateTimeKind.Local).AddTicks(5653),
                             IsDelete = false,
                             ParentId = 3m,
                             RoleUniqueName = "OnlineVisit",
@@ -492,6 +492,12 @@ namespace DoctorFAM.Data.Migrations
 
                     b.Property<decimal>("TargetUserId")
                         .HasColumnType("decimal(20,0)");
+
+                    b.Property<bool>("TicketForAdminAndSupporters")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("TicketSenderType")
+                        .HasColumnType("int");
 
                     b.Property<int>("TicketStatus")
                         .HasColumnType("int");
@@ -857,25 +863,25 @@ namespace DoctorFAM.Data.Migrations
                         new
                         {
                             Id = 1m,
-                            CreateDate = new DateTime(2022, 9, 21, 11, 4, 43, 23, DateTimeKind.Local).AddTicks(5402),
+                            CreateDate = new DateTime(2022, 9, 21, 15, 7, 46, 775, DateTimeKind.Local).AddTicks(6493),
                             IsDelete = false
                         },
                         new
                         {
                             Id = 2m,
-                            CreateDate = new DateTime(2022, 9, 21, 11, 4, 43, 23, DateTimeKind.Local).AddTicks(5508),
+                            CreateDate = new DateTime(2022, 9, 21, 15, 7, 46, 775, DateTimeKind.Local).AddTicks(6503),
                             IsDelete = false
                         },
                         new
                         {
                             Id = 3m,
-                            CreateDate = new DateTime(2022, 9, 21, 11, 4, 43, 23, DateTimeKind.Local).AddTicks(5537),
+                            CreateDate = new DateTime(2022, 9, 21, 15, 7, 46, 775, DateTimeKind.Local).AddTicks(6513),
                             IsDelete = false
                         },
                         new
                         {
                             Id = 4m,
-                            CreateDate = new DateTime(2022, 9, 21, 11, 4, 43, 23, DateTimeKind.Local).AddTicks(5561),
+                            CreateDate = new DateTime(2022, 9, 21, 15, 7, 46, 775, DateTimeKind.Local).AddTicks(6522),
                             IsDelete = false
                         });
                 });
@@ -918,7 +924,7 @@ namespace DoctorFAM.Data.Migrations
                         new
                         {
                             Id = 1m,
-                            CreateDate = new DateTime(2022, 9, 21, 11, 4, 43, 23, DateTimeKind.Local).AddTicks(5587),
+                            CreateDate = new DateTime(2022, 9, 21, 15, 7, 46, 775, DateTimeKind.Local).AddTicks(6576),
                             InterestId = 1m,
                             IsDelete = false,
                             LanguageId = "fa-IR",
@@ -927,7 +933,7 @@ namespace DoctorFAM.Data.Migrations
                         new
                         {
                             Id = 2m,
-                            CreateDate = new DateTime(2022, 9, 21, 11, 4, 43, 23, DateTimeKind.Local).AddTicks(5614),
+                            CreateDate = new DateTime(2022, 9, 21, 15, 7, 46, 775, DateTimeKind.Local).AddTicks(6589),
                             InterestId = 1m,
                             IsDelete = false,
                             LanguageId = "en-US",
@@ -936,7 +942,7 @@ namespace DoctorFAM.Data.Migrations
                         new
                         {
                             Id = 3m,
-                            CreateDate = new DateTime(2022, 9, 21, 11, 4, 43, 23, DateTimeKind.Local).AddTicks(5645),
+                            CreateDate = new DateTime(2022, 9, 21, 15, 7, 46, 775, DateTimeKind.Local).AddTicks(6598),
                             InterestId = 1m,
                             IsDelete = false,
                             LanguageId = "tr-TR",
@@ -945,7 +951,7 @@ namespace DoctorFAM.Data.Migrations
                         new
                         {
                             Id = 4m,
-                            CreateDate = new DateTime(2022, 9, 21, 11, 4, 43, 23, DateTimeKind.Local).AddTicks(5684),
+                            CreateDate = new DateTime(2022, 9, 21, 15, 7, 46, 775, DateTimeKind.Local).AddTicks(6608),
                             InterestId = 1m,
                             IsDelete = false,
                             LanguageId = "ar-SA",
@@ -954,7 +960,7 @@ namespace DoctorFAM.Data.Migrations
                         new
                         {
                             Id = 5m,
-                            CreateDate = new DateTime(2022, 9, 21, 11, 4, 43, 23, DateTimeKind.Local).AddTicks(5709),
+                            CreateDate = new DateTime(2022, 9, 21, 15, 7, 46, 775, DateTimeKind.Local).AddTicks(6617),
                             InterestId = 2m,
                             IsDelete = false,
                             LanguageId = "ar-SA",
@@ -963,7 +969,7 @@ namespace DoctorFAM.Data.Migrations
                         new
                         {
                             Id = 6m,
-                            CreateDate = new DateTime(2022, 9, 21, 11, 4, 43, 23, DateTimeKind.Local).AddTicks(5734),
+                            CreateDate = new DateTime(2022, 9, 21, 15, 7, 46, 775, DateTimeKind.Local).AddTicks(6628),
                             InterestId = 2m,
                             IsDelete = false,
                             LanguageId = "tr-TR",
@@ -972,7 +978,7 @@ namespace DoctorFAM.Data.Migrations
                         new
                         {
                             Id = 7m,
-                            CreateDate = new DateTime(2022, 9, 21, 11, 4, 43, 23, DateTimeKind.Local).AddTicks(5756),
+                            CreateDate = new DateTime(2022, 9, 21, 15, 7, 46, 775, DateTimeKind.Local).AddTicks(6637),
                             InterestId = 2m,
                             IsDelete = false,
                             LanguageId = "fa-IR",
@@ -981,7 +987,7 @@ namespace DoctorFAM.Data.Migrations
                         new
                         {
                             Id = 8m,
-                            CreateDate = new DateTime(2022, 9, 21, 11, 4, 43, 23, DateTimeKind.Local).AddTicks(5777),
+                            CreateDate = new DateTime(2022, 9, 21, 15, 7, 46, 775, DateTimeKind.Local).AddTicks(6647),
                             InterestId = 2m,
                             IsDelete = false,
                             LanguageId = "en-US",
@@ -990,7 +996,7 @@ namespace DoctorFAM.Data.Migrations
                         new
                         {
                             Id = 9m,
-                            CreateDate = new DateTime(2022, 9, 21, 11, 4, 43, 23, DateTimeKind.Local).AddTicks(5820),
+                            CreateDate = new DateTime(2022, 9, 21, 15, 7, 46, 775, DateTimeKind.Local).AddTicks(6657),
                             InterestId = 3m,
                             IsDelete = false,
                             LanguageId = "en-US",
@@ -999,7 +1005,7 @@ namespace DoctorFAM.Data.Migrations
                         new
                         {
                             Id = 10m,
-                            CreateDate = new DateTime(2022, 9, 21, 11, 4, 43, 23, DateTimeKind.Local).AddTicks(5845),
+                            CreateDate = new DateTime(2022, 9, 21, 15, 7, 46, 775, DateTimeKind.Local).AddTicks(6668),
                             InterestId = 3m,
                             IsDelete = false,
                             LanguageId = "tr-TR",
@@ -1008,7 +1014,7 @@ namespace DoctorFAM.Data.Migrations
                         new
                         {
                             Id = 11m,
-                            CreateDate = new DateTime(2022, 9, 21, 11, 4, 43, 23, DateTimeKind.Local).AddTicks(5866),
+                            CreateDate = new DateTime(2022, 9, 21, 15, 7, 46, 775, DateTimeKind.Local).AddTicks(6677),
                             InterestId = 3m,
                             IsDelete = false,
                             LanguageId = "ar-SA",
@@ -1017,7 +1023,7 @@ namespace DoctorFAM.Data.Migrations
                         new
                         {
                             Id = 12m,
-                            CreateDate = new DateTime(2022, 9, 21, 11, 4, 43, 23, DateTimeKind.Local).AddTicks(5887),
+                            CreateDate = new DateTime(2022, 9, 21, 15, 7, 46, 775, DateTimeKind.Local).AddTicks(6687),
                             InterestId = 3m,
                             IsDelete = false,
                             LanguageId = "fa-IR",
@@ -1026,7 +1032,7 @@ namespace DoctorFAM.Data.Migrations
                         new
                         {
                             Id = 13m,
-                            CreateDate = new DateTime(2022, 9, 21, 11, 4, 43, 23, DateTimeKind.Local).AddTicks(5908),
+                            CreateDate = new DateTime(2022, 9, 21, 15, 7, 46, 775, DateTimeKind.Local).AddTicks(6697),
                             InterestId = 4m,
                             IsDelete = false,
                             LanguageId = "fa-IR",
@@ -1035,7 +1041,7 @@ namespace DoctorFAM.Data.Migrations
                         new
                         {
                             Id = 14m,
-                            CreateDate = new DateTime(2022, 9, 21, 11, 4, 43, 23, DateTimeKind.Local).AddTicks(5933),
+                            CreateDate = new DateTime(2022, 9, 21, 15, 7, 46, 775, DateTimeKind.Local).AddTicks(6706),
                             InterestId = 4m,
                             IsDelete = false,
                             LanguageId = "en-US",
@@ -1044,7 +1050,7 @@ namespace DoctorFAM.Data.Migrations
                         new
                         {
                             Id = 15m,
-                            CreateDate = new DateTime(2022, 9, 21, 11, 4, 43, 23, DateTimeKind.Local).AddTicks(5954),
+                            CreateDate = new DateTime(2022, 9, 21, 15, 7, 46, 775, DateTimeKind.Local).AddTicks(6716),
                             InterestId = 4m,
                             IsDelete = false,
                             LanguageId = "tr-TR",
@@ -1053,7 +1059,7 @@ namespace DoctorFAM.Data.Migrations
                         new
                         {
                             Id = 16m,
-                            CreateDate = new DateTime(2022, 9, 21, 11, 4, 43, 23, DateTimeKind.Local).AddTicks(5976),
+                            CreateDate = new DateTime(2022, 9, 21, 15, 7, 46, 775, DateTimeKind.Local).AddTicks(6725),
                             InterestId = 4m,
                             IsDelete = false,
                             LanguageId = "ar-SA",
@@ -1099,7 +1105,7 @@ namespace DoctorFAM.Data.Migrations
                         new
                         {
                             Id = 1m,
-                            CreateDate = new DateTime(2022, 9, 21, 11, 4, 43, 23, DateTimeKind.Local).AddTicks(6039),
+                            CreateDate = new DateTime(2022, 9, 21, 15, 7, 46, 775, DateTimeKind.Local).AddTicks(6755),
                             InterestId = 1m,
                             IsDelete = false,
                             LanguageId = "fa-IR",
@@ -1108,7 +1114,7 @@ namespace DoctorFAM.Data.Migrations
                         new
                         {
                             Id = 2m,
-                            CreateDate = new DateTime(2022, 9, 21, 11, 4, 43, 23, DateTimeKind.Local).AddTicks(6068),
+                            CreateDate = new DateTime(2022, 9, 21, 15, 7, 46, 775, DateTimeKind.Local).AddTicks(6768),
                             InterestId = 1m,
                             IsDelete = false,
                             LanguageId = "tr-TR",
@@ -1117,7 +1123,7 @@ namespace DoctorFAM.Data.Migrations
                         new
                         {
                             Id = 3m,
-                            CreateDate = new DateTime(2022, 9, 21, 11, 4, 43, 23, DateTimeKind.Local).AddTicks(6092),
+                            CreateDate = new DateTime(2022, 9, 21, 15, 7, 46, 775, DateTimeKind.Local).AddTicks(6778),
                             InterestId = 1m,
                             IsDelete = false,
                             LanguageId = "ar-SA",
@@ -1126,7 +1132,7 @@ namespace DoctorFAM.Data.Migrations
                         new
                         {
                             Id = 4m,
-                            CreateDate = new DateTime(2022, 9, 21, 11, 4, 43, 23, DateTimeKind.Local).AddTicks(6116),
+                            CreateDate = new DateTime(2022, 9, 21, 15, 7, 46, 775, DateTimeKind.Local).AddTicks(6787),
                             InterestId = 1m,
                             IsDelete = false,
                             LanguageId = "en-US",
@@ -1156,7 +1162,7 @@ namespace DoctorFAM.Data.Migrations
                         new
                         {
                             Id = 1m,
-                            CreateDate = new DateTime(2022, 9, 21, 11, 4, 43, 23, DateTimeKind.Local).AddTicks(6009),
+                            CreateDate = new DateTime(2022, 9, 21, 15, 7, 46, 775, DateTimeKind.Local).AddTicks(6741),
                             IsDelete = false
                         });
                 });
@@ -1279,14 +1285,14 @@ namespace DoctorFAM.Data.Migrations
                         new
                         {
                             Id = 1m,
-                            CreateDate = new DateTime(2022, 9, 21, 11, 4, 43, 23, DateTimeKind.Local).AddTicks(6147),
+                            CreateDate = new DateTime(2022, 9, 21, 15, 7, 46, 775, DateTimeKind.Local).AddTicks(6802),
                             IsDelete = false,
                             UniqueName = "Cosmetics"
                         },
                         new
                         {
                             Id = 2m,
-                            CreateDate = new DateTime(2022, 9, 21, 11, 4, 43, 23, DateTimeKind.Local).AddTicks(6174),
+                            CreateDate = new DateTime(2022, 9, 21, 15, 7, 46, 775, DateTimeKind.Local).AddTicks(6814),
                             IsDelete = false,
                             UniqueName = "Medical Equipment"
                         });
@@ -1331,7 +1337,7 @@ namespace DoctorFAM.Data.Migrations
                         {
                             Id = 1m,
                             CategoryId = 1m,
-                            CreateDate = new DateTime(2022, 9, 21, 11, 4, 43, 23, DateTimeKind.Local).AddTicks(6279),
+                            CreateDate = new DateTime(2022, 9, 21, 15, 7, 46, 775, DateTimeKind.Local).AddTicks(6827),
                             IsDelete = false,
                             LanguageId = "fa-IR",
                             Title = "لوازم آرایشی بهداشتی"
@@ -1340,7 +1346,7 @@ namespace DoctorFAM.Data.Migrations
                         {
                             Id = 2m,
                             CategoryId = 1m,
-                            CreateDate = new DateTime(2022, 9, 21, 11, 4, 43, 23, DateTimeKind.Local).AddTicks(6308),
+                            CreateDate = new DateTime(2022, 9, 21, 15, 7, 46, 775, DateTimeKind.Local).AddTicks(6840),
                             IsDelete = false,
                             LanguageId = "en-US",
                             Title = "Cosmetics"
@@ -1349,7 +1355,7 @@ namespace DoctorFAM.Data.Migrations
                         {
                             Id = 3m,
                             CategoryId = 1m,
-                            CreateDate = new DateTime(2022, 9, 21, 11, 4, 43, 23, DateTimeKind.Local).AddTicks(6332),
+                            CreateDate = new DateTime(2022, 9, 21, 15, 7, 46, 775, DateTimeKind.Local).AddTicks(6850),
                             IsDelete = false,
                             LanguageId = "tr-TR",
                             Title = "Makyaj malzemeleri"
@@ -1358,7 +1364,7 @@ namespace DoctorFAM.Data.Migrations
                         {
                             Id = 4m,
                             CategoryId = 1m,
-                            CreateDate = new DateTime(2022, 9, 21, 11, 4, 43, 23, DateTimeKind.Local).AddTicks(6354),
+                            CreateDate = new DateTime(2022, 9, 21, 15, 7, 46, 775, DateTimeKind.Local).AddTicks(6859),
                             IsDelete = false,
                             LanguageId = "ar-SA",
                             Title = "مستحضرات التجميل"
@@ -1367,7 +1373,7 @@ namespace DoctorFAM.Data.Migrations
                         {
                             Id = 5m,
                             CategoryId = 2m,
-                            CreateDate = new DateTime(2022, 9, 21, 11, 4, 43, 23, DateTimeKind.Local).AddTicks(6376),
+                            CreateDate = new DateTime(2022, 9, 21, 15, 7, 46, 775, DateTimeKind.Local).AddTicks(6907),
                             IsDelete = false,
                             LanguageId = "ar-SA",
                             Title = "معدات طبية"
@@ -1376,7 +1382,7 @@ namespace DoctorFAM.Data.Migrations
                         {
                             Id = 6m,
                             CategoryId = 2m,
-                            CreateDate = new DateTime(2022, 9, 21, 11, 4, 43, 23, DateTimeKind.Local).AddTicks(6402),
+                            CreateDate = new DateTime(2022, 9, 21, 15, 7, 46, 775, DateTimeKind.Local).AddTicks(6919),
                             IsDelete = false,
                             LanguageId = "tr-TR",
                             Title = "Tıbbi malzeme"
@@ -1385,7 +1391,7 @@ namespace DoctorFAM.Data.Migrations
                         {
                             Id = 7m,
                             CategoryId = 2m,
-                            CreateDate = new DateTime(2022, 9, 21, 11, 4, 43, 23, DateTimeKind.Local).AddTicks(6425),
+                            CreateDate = new DateTime(2022, 9, 21, 15, 7, 46, 775, DateTimeKind.Local).AddTicks(6930),
                             IsDelete = false,
                             LanguageId = "en-US",
                             Title = "Medical Equipment"
@@ -1394,7 +1400,7 @@ namespace DoctorFAM.Data.Migrations
                         {
                             Id = 8m,
                             CategoryId = 2m,
-                            CreateDate = new DateTime(2022, 9, 21, 11, 4, 43, 23, DateTimeKind.Local).AddTicks(6447),
+                            CreateDate = new DateTime(2022, 9, 21, 15, 7, 46, 775, DateTimeKind.Local).AddTicks(6942),
                             IsDelete = false,
                             LanguageId = "fa-IR",
                             Title = "تجهیزات پزشکی"
@@ -1415,7 +1421,13 @@ namespace DoctorFAM.Data.Migrations
                     b.Property<bool>("IsDelete")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsHealthHouseRequest")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsSeen")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsTicket")
                         .HasColumnType("bit");
 
                     b.Property<decimal>("ReciverId")

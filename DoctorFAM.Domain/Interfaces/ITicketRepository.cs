@@ -1,4 +1,6 @@
 ﻿using DoctorFAM.Domain.Entities.Contact;
+using DoctorFAM.Domain.ViewModels.Admin.Ticket;
+using DoctorFAM.Domain.ViewModels.UserPanel.Ticket;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,6 +13,9 @@ namespace DoctorFAM.Domain.Interfaces
     public interface ITicketRepository
     {
         #region General Methods 
+
+        //Filter Tickets In Each Panels Side
+        Task<FilterSiteTicketViewModel> FilterSiteTicket(FilterSiteTicketViewModel filter, ulong userId);
 
         //Update Ticket Message 
         Task UpdateTicketMessage(TicketMessage ticketMessage);
@@ -41,6 +46,16 @@ namespace DoctorFAM.Domain.Interfaces
 
         //Save Changes
         Task SaveChanges();
+
+        #endregion
+
+        #region Admin Side 
+
+        //Filter Admin side Ticketes
+        Task<AdminFilterTicketViewModel> FilterAdminTicketViewModel(AdminFilterTicketViewModel filter);
+
+        //Read Ticket By Admin
+        Task ReadTicketByAdmin(Ticket ticket);
 
         #endregion
     }
