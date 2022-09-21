@@ -12,6 +12,12 @@ namespace DoctorFAM.Domain.Interfaces
     {
         #region General Methods 
 
+        //Update Ticket Message 
+        Task UpdateTicketMessage(TicketMessage ticketMessage);
+
+        //Get Message By Message Id 
+        Task<TicketMessage?> GetMessageById(ulong ticketMessageId);
+
         //Add Ticket Method
         Task AddTicket(Ticket ticket);
 

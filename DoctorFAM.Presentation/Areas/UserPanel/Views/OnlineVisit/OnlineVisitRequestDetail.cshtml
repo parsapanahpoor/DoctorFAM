@@ -2,7 +2,7 @@
 @using DoctorFAM.Application.Extensions
 @using DoctorFAM.Application.Convertors
 @using DoctorFAM.Domain.Enums
-@model DoctorFAM.Domain.ViewModels.DoctorPanel.Tikcet.AnswerTikcetDoctorViewModel
+@model DoctorFAM.Domain.ViewModels.UserPanel.OnlineVisit.AnswerTikcetUserPanelViewModel
 @using DoctorFAM.Application.StaticTools
 
 @{
@@ -13,52 +13,14 @@
 
 @section Scripts
     {
+    <script src="/admin/js/ticket.js"></script>
     <partial name="_JqueryValidation" />
-
-    <script>
-
-        $("#TicketStatus").change(function () {
-
-            console.log("hello");
-
-            var state = $("#TicketStatus").val();
-            var ticketId = $("#TicketStatus").attr("ticketId");
-
-            $.ajax({
-                url: "/Doctor/OnlineVisit/ChangeTicketStatus",
-                type: "post",
-                data: {
-                    status: state,
-                    ticketId: ticketId
-                },
-                beforeSend: function () {
-                    open_waiting();
-                },
-                success: function (response) {
-                    close_waiting();
-                    if (response.status === "Success") {
-                        $("#TicketStatusName").html(response.data);
-                        ShowMessage("اعلان", "وضعیت تیکت با موفقیت تغییر کرد .", "success");
-                    } else {
-                        ShowMessage("خطا", "عملیات با خطا مواجه شد لطفا مجدد تلاش کنید .", "error");
-                    }
-                },
-                error: function () {
-                    close_waiting();
-                    ShowMessage("خطا", "عملیات با خطا مواجه شد لطفا مجدد تلاش کنید .", "error");
-                }
-            });
-
-        });
-
-
-    </script>
 }
 
     @section Breadcrumb
     {
     <li>
-        <a asp-action="FilterYourOnlineVisitRequest" asp-controller="OnlineVisit" asp-area="Doctor"> @Localizer["List Of Online Requests"] </a>
+        <a asp-action="ListOfCurrentUserOnlineVisitRequests" asp-controller="OnlineVisit" asp-area="UserPanel"> @Localizer["List Of Online Requests"] </a>
     </li>
     <li>
         <a href="javascript:void(0)"> @ViewData["Title"] </a>
@@ -74,10 +36,10 @@
                     <div class="databox databox-xlg databox-halved databox-shadowed databox-vertical no-margin-bottom">
                         <div class="databox-top bg-white padding-10">
                             <div class="col-lg-4 col-sm-4 col-xs-4">
-                                <img src="@ticket.TargetUser.GetUserAvatar()" style="width: 75px; height: 75px;" class="image-circular bordered-3 bordered-palegreen">
+                                <img src="@ticket.Owner.GetUserAvatar()" style="width: 75px; height: 75px;" class="image-circular bordered-3 bordered-palegreen">
                             </div>
                             <div class="col-lg-8 col-sm-8 col-xs-8 text-align-left padding-30">
-                                <span class="databox-header carbon no-margin"> @ticket.TargetUser.Username</span>
+                                <span class="databox-header carbon no-margin"> @ticket.Owner.Username</span>
                             </div>
                         </div>
 
@@ -100,8 +62,8 @@
                                     }
                                 </div>
                                 <div class="databox-cell cell-6 no-padding text-align-center">
-                                    <span class="databox-text sonic-silver no-margin"> @Localizer["Seen By User"] </span>
-                                    <span class="databox-number lightcarbon no-margin @((ticket.IsReadByTargetUser) ? "success" : "danger")"> @((ticket.IsReadByTargetUser) ? Localizer["Yes"] : Localizer["No"]) </span>
+                                    <span class="databox-text sonic-silver no-margin"> @Localizer["Seen By Doctor"] </span>
+                                    <span class="databox-number lightcarbon no-margin @((ticket.IsReadByTargetUser) ? "success" : "danger")"> @((ticket.IsReadByOwner) ? Localizer["Yes"] : Localizer["No"]) </span>
                                 </div>
                             </div>
                         </div>
@@ -140,76 +102,47 @@
                 </div>
             </div>
 
-            <div class="col-md-12">
-                <div class="widget">
-                    <div class="widget-header">
-                        <span class="widget-caption"> <strong>@Localizer["Manage Ticket"]</strong> </span>
-                    </div>
-
-                    <div class="widget-body">
-                        <div class="row">
-
-                            <div class="form-group col-md-12">
-                                <label> @Localizer["Ticket State"] </label>
-                                <select class="form-control" ticketId="@ticket.Id" name="TicketStatus" id="TicketStatus">
-                                    @foreach (var item in Enum.GetValues(typeof(TicketStatus)).Cast<TicketStatus>())
-                                    {
-                                        if (item == ticket.TicketStatus)
-                                        {
-                                            <option selected="selected" value="@((int)item)"> @item.GetEnumName() </option>
-                                        }
-                                        else
-                                        {
-                                            <option value="@((int)item)"> @item.GetEnumName() </option>
-                                        }
-                                    }
-                                </select>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-
         </div>
     </div>
 
     <div class="col-lg-9 col-sm-12">
         <div class="row">
 
-            <div class="col-md-12">
-                <div class="widget">
-                    <div class="widget-header">
-                        <span class="widget-caption"> <strong> @Localizer["Send Message"] </strong> </span>
-                    </div>
+            @if (ticket.TicketStatus != TicketStatus.Closed)
+            {
+                <div class="col-md-12">
+                    <div class="widget">
+                        <div class="widget-header">
+                            <span class="widget-caption"> <strong> @Localizer["Send Message"] </strong> </span>
+                        </div>
 
-                    <div class="widget-body">
-                        <div class="row">
-                            <form asp-action="OnlineVisitRequestMessageDetail" asp-controller="OnlineVisit" asp-area="Doctor" method="post" enctype="multipart/form-data">
-                                <input type="hidden" asp-for="TicketId" />
+                        <div class="widget-body">
+                            <div class="row">
+                                <form asp-action="OnlineVisitRequestDetail" asp-controller="OnlineVisit" asp-area="UserPanel" method="post" enctype="multipart/form-data">
+                                    <input type="hidden" asp-for="TicketId" />
 
-                                <div class="form-group col-md-12">
-                                    <label asp-for="Message">@Localizer["Message Text"]</label>
-                                    <textarea class="form-control" ckeditor="1" asp-for="Message"></textarea>
-                                    <span class="text-danger" asp-validation-for="Message"></span>
-                                </div>
+                                    <div class="form-group col-md-12">
+                                        <label asp-for="Message">@Localizer["Message Text"]</label>
+                                        <textarea class="form-control" ckeditor="1" asp-for="Message"></textarea>
+                                        <span class="text-danger" asp-validation-for="Message"></span>
+                                    </div>
 
+                                    <div class="form-group col-md-12">
+                                        <input class="btn btn-blue" asp-for="MessageFile" type="file">
+                                    </div>
 
-                                <div class="form-group col-md-12">
-                                    <input class="btn btn-blue" asp-for="MessageFile" type="file">
-                                </div>
+                                    <div class="col-md-12 flex-style">
+                                        <button type="submit" class="btn btn-labeled btn-palegreen">
+                                            <i class="btn-label glyphicon glyphicon-ok"></i>@Localizer["Submit"]
+                                        </button>
+                                    </div>
 
-                                <div class="col-md-12 flex-style">
-                                    <button type="submit" class="btn btn-labeled btn-palegreen">
-                                        <i class="btn-label glyphicon glyphicon-ok"></i>@Localizer["Submit"]
-                                    </button>
-                                </div>
-
-                            </form>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            }
 
             <div class="col-md-12">
                 <div class="widget">
@@ -236,10 +169,9 @@
                                                     </div>
                                                     <div class="flex-style-center" style="direction: ltr;">
                                                         <span style="border-right: 1px solid gray; padding-right: 10px">@Localizer["Hour"] @message.CreateDate.ToShortTimeString() @message.CreateDate.ToStringShamsiDate()  </span>
-                                                        <span onclick="DeleteAjax(@message.Id, '@Url.Action("DeleteTicketMessage", "OnlineVisit", new { area = "Doctor", messageId = message.Id })')" class="ml-10px" style="color: darkred;cursor:pointer;border-right: 1px solid gray; padding-right: 10px"> <i class="glyphicon glyphicon-trash"></i> </span>
                                                         @if (!string.IsNullOrEmpty(message.MessageFile))
                                                         {
-                                                            <a class="mr-10px" target="_blank" style="color: gold;cursor:pointer; padding-left: 10px" href="@PathTools.TicketFilePath/@message.MessageFile"> <i class="glyphicon glyphicon-folder-open"></i> </a>
+                                                            <a class="mr-10px" target="_blank" style="color: gold;cursor:pointer;" href="@PathTools.TicketFilePath/@message.MessageFile"> <i class="glyphicon glyphicon-folder-open"></i> </a>
                                                         }
                                                     </div>
                                                 </div>
@@ -260,7 +192,8 @@
                                                         <span class="mr-10px"> <strong> @message.Sender.Username </strong> </span>
                                                     </div>
                                                     <div class="flex-style-center">
-                                                        <span> @message.CreateDate.ToStringShamsiDate() ساعت @message.CreateDate.ToShortTimeString() </span>
+                                                        <span style="border-left: 1px solid gray; padding-left: 10px"> @message.CreateDate.ToStringShamsiDate() ساعت @message.CreateDate.ToShortTimeString() </span>
+                                                        <span onclick="DeleteAjax(@message.Id, '@Url.Action("DeleteTicketMessage", "OnlineVisit", new { area = "UserPanel", messageId = message.Id })')" class="mr-10px" style="color: darkred;cursor:pointer; border-left: 1px solid gray; padding-left: 10px"> <i class="glyphicon glyphicon-trash"></i> </span>
                                                         @if (!string.IsNullOrEmpty(message.MessageFile))
                                                         {
                                                             <a class="mr-10px" target="_blank" style="color: gold;cursor:pointer;" href="@PathTools.TicketFilePath/@message.MessageFile"> <i class="glyphicon glyphicon-folder-open"></i> </a>

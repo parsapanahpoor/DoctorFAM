@@ -8,6 +8,7 @@ using DoctorFAM.Application.StaticTools;
 using DoctorFAM.Data.Repository;
 using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Account;
+using DoctorFAM.Domain.Entities.Contact;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.OnlineVisit;
 using DoctorFAM.Domain.Entities.Patient;
@@ -15,6 +16,7 @@ using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Entities.Wallet;
 using DoctorFAM.Domain.Enums.Request;
 using DoctorFAM.Domain.Interfaces;
+using DoctorFAM.Domain.ViewModels.Admin.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.Site.Common;
 using DoctorFAM.Domain.ViewModels.Site.OnlineVisit;
@@ -424,6 +426,45 @@ namespace DoctorFAM.Application.Services.Implementation
         public async Task<FilterOnlineVisitRequestUserPanelViewModel> FilterOnlineVisitRequestUserPanel(FilterOnlineVisitRequestUserPanelViewModel filter)
         {
             return await _onlineVisitRepository.FilterOnlineVisitRequestUserPanel(filter); 
+        }
+
+        #endregion
+
+        #region Admin And Supporter Side 
+
+        //Filter Online Visit Requests Admin Side 
+        public async Task<FilterOnlineVisitAdminSideViewModel> FilterOnlineVisitRequestsAdminSide(FilterOnlineVisitAdminSideViewModel filter)
+        {
+            return await _onlineVisitRepository.FilterOnlineVisitRequestsAdminSide(filter);
+        }
+
+        //Show Online Visit Request Detail Admin Panel Side View Model 
+        public async Task<OnlineVisitRequestDetailAdminSideViewModel?> FillOnlineVisitRequestDetailAdminPanelViewModel(ulong requestId)
+        {
+            #region Get Request By Request Id
+
+            var request = await _requestService.GetRequestById(requestId);
+
+            if (request == null) return null;
+            if (request.RequestType != Domain.Enums.RequestType.RequestType.OnlineVisit) return null;
+            if (!request.PatientId.HasValue) return null;
+
+            #endregion
+
+            #region Fill Model 
+
+            OnlineVisitRequestDetailAdminSideViewModel model = new OnlineVisitRequestDetailAdminSideViewModel()
+            {
+                Patient = await _patientService.GetPatientById(request.PatientId.Value),
+                User = await _userService.GetUserById(request.UserId),
+                PatientRequestDetail = await _homePharmacyService.GetRequestPatientDetailByRequestId(request.Id),
+                Request = request,
+                OnlineVisitRequestDetail = await _onlineVisitRepository.GetOnlineVisitRequestDetail(request.Id)
+            };
+
+            #endregion
+
+            return model;
         }
 
         #endregion

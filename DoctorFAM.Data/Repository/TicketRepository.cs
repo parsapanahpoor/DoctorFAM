@@ -27,6 +27,12 @@ namespace DoctorFAM.Data.Repository
 
         #region General Methods 
 
+        //Get Message By Message Id 
+        public async Task<TicketMessage?> GetMessageById(ulong ticketMessageId)
+        {
+            return await _context.TicketMessages.FirstOrDefaultAsync(p => !p.IsDelete && p.Id == ticketMessageId);
+        }
+
         //Add Ticket Method
         public async Task AddTicket(Ticket ticket)
         {
@@ -53,6 +59,13 @@ namespace DoctorFAM.Data.Repository
         public async Task UpdateRequest(Ticket ticket)
         {
             _context.Update(ticket);
+            await _context.SaveChangesAsync();
+        }
+
+        //Update Ticket Message 
+        public async Task UpdateTicketMessage(TicketMessage ticketMessage)
+        {
+            _context.TicketMessages.Update(ticketMessage);
             await _context.SaveChangesAsync();
         }
 

@@ -40,6 +40,8 @@ namespace DoctorFAM.Domain.Entities.Contact
 
         public bool OnWorking { get; set; }
 
+        public bool OnlineVisitRequest { get; set; }
+
         public ulong? RequestId { get; set; }
 
         #endregion

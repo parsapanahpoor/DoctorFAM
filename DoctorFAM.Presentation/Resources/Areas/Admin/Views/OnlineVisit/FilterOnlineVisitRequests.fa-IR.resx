@@ -142,7 +142,16 @@
     <value>مشاوره ی بیماری</value>
   </data>
   <data name="Doctor Avatar" xml:space="preserve">
-    <value>اطلاعات پزشک</value>
+    <value>پزشک</value>
+  </data>
+  <data name="Doctor Mobile" xml:space="preserve">
+    <value>موبایل پزشک</value>
+  </data>
+  <data name="Doctor National Id" xml:space="preserve">
+    <value>کدملی پزشک</value>
+  </data>
+  <data name="Doctor Username" xml:space="preserve">
+    <value>نام کاربری پزشک</value>
   </data>
   <data name="Drug Counseling" xml:space="preserve">
     <value>مشاوره ی دارو</value>
@@ -195,9 +204,6 @@
   <data name="Request State" xml:space="preserve">
     <value>نوع درخواست</value>
   </data>
-  <data name="Request Status" xml:space="preserve">
-    <value>نوع درخواست</value>
-  </data>
   <data name="Seen By Doctor" xml:space="preserve">
     <value>دیده شده توسط پزشک</value>
   </data>
@@ -206,6 +212,15 @@
   </data>
   <data name="User Avatar" xml:space="preserve">
     <value>آواتار</value>
+  </data>
+  <data name="User Mobile" xml:space="preserve">
+    <value>موبایل کاربر</value>
+  </data>
+  <data name="User National Id" xml:space="preserve">
+    <value>کدملی کاربر</value>
+  </data>
+  <data name="User Username" xml:space="preserve">
+    <value>نام کاربر</value>
   </data>
   <data name="Username" xml:space="preserve">
     <value>نام کاربری</value>

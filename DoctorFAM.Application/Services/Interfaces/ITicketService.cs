@@ -1,6 +1,7 @@
 ﻿using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Contact;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Tikcet;
+using DoctorFAM.Domain.ViewModels.UserPanel.OnlineVisit;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,12 @@ namespace DoctorFAM.Application.Services.Interfaces
     public interface ITicketService
     {
         #region Geneal Methods 
+
+        //Change Ticket Status
+        Task<string> ChangeTicketStatus(int state, ulong ticketId);
+
+        //Delete Ticket Message
+        Task<bool> DeleteTicketMessage(ulong messageId, ulong UserId);
 
         //Create Tikcet For First Time After Accept Online Visit Request From Doctor 
         Task<bool> AddTicketForFirstTimeInOnlineVisitInDoctorPanel(Request request);
@@ -30,6 +37,16 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Create Answer Tikcet From Doctor Panel 
         Task<bool> CreateAnswerTikcetFromDoctorPanel(AnswerTikcetDoctorViewModel answer, ulong userId);
+
+        #endregion
+
+        #region User Panel Side 
+
+        //Read Tikcet By User 
+        Task ReadTicketByUser(Ticket ticket);
+
+        //Create Answer Tikcet From User Panel 
+        Task<bool> CreateAnswerTikcetFromUserPanel(AnswerTikcetUserPanelViewModel answer, ulong userId);
 
         #endregion
     }

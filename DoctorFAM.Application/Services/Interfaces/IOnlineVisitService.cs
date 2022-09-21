@@ -1,5 +1,7 @@
 ﻿using DoctorFAM.Application.Services.Implementation;
+using DoctorFAM.Domain.Entities.Contact;
 using DoctorFAM.Domain.Entities.Wallet;
+using DoctorFAM.Domain.ViewModels.Admin.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.Site.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
@@ -56,6 +58,16 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Filter User Onlien Visit Requests 
         Task<FilterOnlineVisitRequestUserPanelViewModel> FilterOnlineVisitRequestUserPanel(FilterOnlineVisitRequestUserPanelViewModel filter);
+
+        #endregion
+
+        #region Admin And Supporter Side 
+
+        //Filter Online Visit Requests Admin Side 
+        Task<FilterOnlineVisitAdminSideViewModel> FilterOnlineVisitRequestsAdminSide(FilterOnlineVisitAdminSideViewModel filter);
+
+        //Show Online Visit Request Detail Admin Panel Side View Model 
+        Task<OnlineVisitRequestDetailAdminSideViewModel?> FillOnlineVisitRequestDetailAdminPanelViewModel(ulong requestId);
 
         #endregion
     }

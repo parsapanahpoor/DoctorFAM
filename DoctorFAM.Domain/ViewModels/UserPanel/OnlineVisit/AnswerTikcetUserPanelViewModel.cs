@@ -7,9 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace DoctorFAM.Domain.ViewModels.DoctorPanel.Tikcet
+namespace DoctorFAM.Domain.ViewModels.UserPanel.OnlineVisit
 {
-    public class AnswerTikcetDoctorViewModel
+    public class AnswerTikcetUserPanelViewModel
     {
         #region properties
 

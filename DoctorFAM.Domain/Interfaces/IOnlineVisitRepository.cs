@@ -1,4 +1,6 @@
-﻿using DoctorFAM.Domain.Entities.OnlineVisit;
+﻿using DoctorFAM.Domain.Entities.Contact;
+using DoctorFAM.Domain.Entities.OnlineVisit;
+using DoctorFAM.Domain.ViewModels.Admin.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.UserPanel.OnlineVisit;
 using System;
@@ -38,6 +40,13 @@ namespace DoctorFAM.Domain.Interfaces
 
         //Filter User Onlien Visit Requests 
         Task<FilterOnlineVisitRequestUserPanelViewModel> FilterOnlineVisitRequestUserPanel(FilterOnlineVisitRequestUserPanelViewModel filter);
+
+        #endregion
+
+        #region Admin And Supporter Side 
+
+        //Filter Online Visit Requests Admin Side 
+        Task<FilterOnlineVisitAdminSideViewModel> FilterOnlineVisitRequestsAdminSide(FilterOnlineVisitAdminSideViewModel filter);
 
         #endregion
     }

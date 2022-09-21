@@ -1,5 +1,7 @@
-﻿using DoctorFAM.Application.Extensions;
+﻿using CRM.Web.Areas.Admin.Controllers;
+using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Interfaces;
+using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Implementation;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Application.StaticTools;
@@ -9,9 +11,11 @@ using DoctorFAM.Domain.ViewModels.Admin.Reservation;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Tikcet;
 using DoctorFAM.Web.Doctor.Controllers;
+using DoctorFAM.Web.HttpManager;
 using DoctorFAM.Web.Hubs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Localization;
 
 namespace DoctorFAM.Web.Areas.Doctor.Controllers
 {
@@ -26,9 +30,12 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
         private readonly ISMSService _smsservice;
         private readonly IRequestService _requestService;
         private readonly ITicketService _ticketService;
+        public IStringLocalizer<LocationController> _localizer;
+
 
         public OnlineVisitController(IOnlineVisitService onlineVisitService, ILocationService locationService, IHubContext<NotificationHub> notificationHub
-                                                , INotificationService notificationService, ISMSService smsservice, IRequestService requestService , ITicketService ticketService)
+                                                , INotificationService notificationService, ISMSService smsservice, IRequestService requestService , ITicketService ticketService
+                                                    , IStringLocalizer<LocationController> localizer)
         {
             _onlineVisitService = onlineVisitService;
             _locationService = locationService;
@@ -37,6 +44,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
             _smsservice = smsservice;
             _requestService = requestService;
             _ticketService = ticketService;
+            _localizer = localizer;
         }
 
         #endregion
@@ -212,5 +220,38 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
         }
 
         #endregion
+
+        #region Delete Ticket Message
+
+        public async Task<IActionResult> DeleteTicketMessage(ulong messageId)
+        {
+            var result = await _ticketService.DeleteTicketMessage(messageId , User.GetUserId());
+
+            if (result)
+            {
+                return ApiResponse.SetResponse(ApiResponseStatus.Success, null, _localizer["Mission Accomplished"].Value);
+            }
+
+            return ApiResponse.SetResponse(ApiResponseStatus.Danger, null, _localizer["The operation failed"].Value);
+        }
+
+        #endregion
+
+        #region Chaneg Ticket Status
+
+        public async Task<IActionResult> ChangeTicketStatus(int status, ulong ticketId)
+        {
+            var result = await _ticketService.ChangeTicketStatus(status, ticketId);
+
+            if (result != string.Empty)
+            {
+                return JsonResponseStatus.Success(result);
+            }
+
+            return JsonResponseStatus.Error();
+        }
+
+        #endregion
+
     }
 }

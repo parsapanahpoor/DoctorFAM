@@ -1,4 +1,7 @@
 ﻿using BusinessPortal.Application.Services.Implementation;
+using DoctorFAM.Application.Extensions;
+using DoctorFAM.Application.Generators;
+using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Application.StaticTools;
 using DoctorFAM.DataLayer.Entities;
@@ -8,6 +11,7 @@ using DoctorFAM.Domain.Enums;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Common;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Tikcet;
+using DoctorFAM.Domain.ViewModels.UserPanel.OnlineVisit;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -37,6 +41,51 @@ namespace DoctorFAM.Application.Services.Implementation
 
         #region General Methods
 
+        //Change Ticket Status
+        public async Task<string> ChangeTicketStatus(int state, ulong ticketId)
+        {
+            #region Get Ticket By Id 
+
+            var ticket = await GetTicketById(ticketId);
+
+            if (ticket == null) return string.Empty;
+
+            #endregion
+
+            #region Update Ticket Status
+
+            ticket.TicketStatus = (TicketStatus)state;
+
+            await _ticketRepository.UpdateRequest(ticket);
+
+            #endregion
+
+            return ticket.TicketStatus.GetEnumName();
+        }
+
+        //Delete Ticket Message
+        public async Task<bool> DeleteTicketMessage(ulong messageId , ulong UserId)
+        {
+            #region Get Message By Id
+
+            var message = await _ticketRepository.GetMessageById(messageId);
+
+            if (message == null) return false;
+            if (message.SenderId != UserId) return false;
+
+            #endregion
+
+            #region Delete Message
+
+            message.IsDelete = true;
+
+            await _ticketRepository.UpdateTicketMessage(message) ;
+
+            #endregion
+
+            return true;
+        }
+
         //Create Tikcet For First Time After Accept Online Visit Request From Doctor 
         public async Task<bool> AddTicketForFirstTimeInOnlineVisitInDoctorPanel(Request request)
         {
@@ -53,7 +102,8 @@ namespace DoctorFAM.Application.Services.Implementation
                 OwnerId = request.OperationId.Value,
                 TargetUserId = request.UserId,
                 CreateDate = DateTime.Now,
-                RequestId = request.Id
+                RequestId = request.Id,
+                OnlineVisitRequest = true,
             };
 
             await _ticketRepository.AddTicket(ticket);
@@ -121,6 +171,39 @@ namespace DoctorFAM.Application.Services.Implementation
                 TicketId = ticket.Id
             };
 
+            #region Add File
+
+            if (answer.MessageFile != null)
+            {
+                if (Path.GetExtension(answer.MessageFile.FileName).ToLower() == ".jpg"
+                        && Path.GetExtension(answer.MessageFile.FileName).ToLower() == ".png"
+                        && Path.GetExtension(answer.MessageFile.FileName).ToLower() == ".jpeg")
+                {
+                    var res = answer.MessageFile.IsImage();
+                    if (!res)
+                    {
+                        return false;
+                    }
+                }
+
+                var imageName = CodeGenerator.GenerateUniqCode() + Path.GetExtension(answer.MessageFile.FileName);
+
+                if (!Directory.Exists(PathTools.TicketFilePathServer))
+                    Directory.CreateDirectory(PathTools.TicketFilePathServer);
+
+                string OriginPath = PathTools.TicketFilePathServer + imageName;
+
+                using (var stream = new FileStream(OriginPath, FileMode.Create))
+                {
+                    if (!Directory.Exists(OriginPath)) answer.MessageFile.CopyTo(stream);
+                }
+
+                message.MessageFile = imageName;
+            }
+
+            #endregion
+
+
             #endregion
 
             #region Add Ticket Message Method
@@ -157,6 +240,106 @@ namespace DoctorFAM.Application.Services.Implementation
             return true;
         }
 
+        #endregion
+
+        #region User Panel Side 
+
+        //Read Tikcet By User 
+        public async Task ReadTicketByUser(Ticket ticket)
+        {
+            ticket.IsReadByTargetUser = true;
+
+            await _ticketRepository.UpdateRequest(ticket);
+        }
+
+        //Create Answer Tikcet From User Panel 
+        public async Task<bool> CreateAnswerTikcetFromUserPanel(AnswerTikcetUserPanelViewModel answer, ulong userId)
+        {
+            #region Get Ticket By Id 
+
+            var ticket = await GetTicketById(answer.TicketId);
+
+            if (ticket == null) return false;
+            if (ticket.TicketStatus == TicketStatus.Closed) return false;
+
+            #endregion
+
+            #region Fill Ticket Message 
+
+            var message = new TicketMessage
+            {
+                Message = answer.Message,
+                SenderId = userId,
+                TicketId = ticket.Id
+            };
+
+            #region Add File
+
+            if (answer.MessageFile != null)
+            {
+                if (Path.GetExtension(answer.MessageFile.FileName).ToLower() == ".jpg"
+                        && Path.GetExtension(answer.MessageFile.FileName).ToLower() == ".png"
+                        && Path.GetExtension(answer.MessageFile.FileName).ToLower() == ".jpeg")
+                {
+                    var res = answer.MessageFile.IsImage();
+                    if (!res)
+                    {
+                        return false;
+                    }
+                }
+
+                var imageName = CodeGenerator.GenerateUniqCode() + Path.GetExtension(answer.MessageFile.FileName);
+
+                if (!Directory.Exists(PathTools.TicketFilePathServer))
+                    Directory.CreateDirectory(PathTools.TicketFilePathServer);
+
+                string OriginPath = PathTools.TicketFilePathServer + imageName;
+
+                using (var stream = new FileStream(OriginPath, FileMode.Create))
+                {
+                    if (!Directory.Exists(OriginPath)) answer.MessageFile.CopyTo(stream);
+                }
+
+                message.MessageFile = imageName;
+            }
+
+            #endregion
+
+            #endregion
+
+            #region Add Ticket Message Method
+
+            await _ticketRepository.AddTicketMessage(message);
+
+            #endregion
+
+            #region Change Ticket State
+
+            ticket.TicketStatus = TicketStatus.Pending;
+            ticket.OnWorking = true;
+
+            await _ticketRepository.UpdateRequest(ticket);
+
+            #endregion
+
+            #region Read Ticket
+
+            ticket.IsReadByOwner = false;
+            ticket.IsReadByAdmin = false;
+            ticket.IsReadByTargetUser = true;
+
+            await _ticketRepository.UpdateRequest(ticket);
+
+            #endregion
+
+            #region Save Changes
+
+            await _ticketRepository.SaveChanges();
+
+            #endregion
+
+            return true;
+        }
 
         #endregion
     }

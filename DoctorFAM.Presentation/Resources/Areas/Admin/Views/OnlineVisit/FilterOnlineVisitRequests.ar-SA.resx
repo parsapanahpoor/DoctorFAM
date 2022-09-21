@@ -118,96 +118,69 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="City" xml:space="preserve">
-    <value>شهر</value>
-  </data>
-  <data name="Closed" xml:space="preserve">
-    <value>بسته شده</value>
-  </data>
-  <data name="Code" xml:space="preserve">
-    <value>کد رهگیری</value>
-  </data>
-  <data name="Confirm From Destanation Doctor" xml:space="preserve">
-    <value>تایید شده توسط پزشک</value>
+    <value>مدينة</value>
   </data>
   <data name="Country" xml:space="preserve">
-    <value>کشور</value>
+    <value>دولة</value>
   </data>
   <data name="Date Time" xml:space="preserve">
-    <value>تاریخ ثبت</value>
+    <value>تاريخ التسجيل</value>
   </data>
   <data name="Delete Filter" xml:space="preserve">
-    <value>حذف فیلتر</value>
+    <value>قم بإزالة الفلتر</value>
   </data>
   <data name="Disease Counseling" xml:space="preserve">
-    <value>مشاوره ی بیماری</value>
-  </data>
-  <data name="Doctor Avatar" xml:space="preserve">
-    <value>اطلاعات پزشک</value>
+    <value>الاستشارة المرضية</value>
   </data>
   <data name="Drug Counseling" xml:space="preserve">
-    <value>مشاوره ی دارو</value>
+    <value>استشارات المخدرات</value>
   </data>
   <data name="Emergency Consultation" xml:space="preserve">
-    <value>مشاوره ی اورژانسی </value>
-  </data>
-  <data name="Empty" xml:space="preserve">
-    <value>خالی</value>
+    <value>استشارة طارئة</value>
   </data>
   <data name="Filter" xml:space="preserve">
-    <value>فیلتر</value>
-  </data>
-  <data name="Information has not been entered" xml:space="preserve">
-    <value>اطلاعات وارد نشده است</value>
+    <value>منقي</value>
   </data>
   <data name="Mobile" xml:space="preserve">
-    <value>موبایل</value>
+    <value>التليفون المحمول</value>
   </data>
   <data name="Online Visit Request Type" xml:space="preserve">
-    <value>نوع درخواست ویزیت آنلاین</value>
+    <value>نوع طلب الزيارة عبر الإنترنت</value>
   </data>
   <data name="Online Visit Requests" xml:space="preserve">
-    <value>درخواست ویزیت آنلاین</value>
+    <value>طلب زيارة عبر الإنترنت</value>
   </data>
   <data name="Options" xml:space="preserve">
-    <value>امکانات </value>
+    <value>الاحتمالات</value>
   </data>
   <data name="Order By" xml:space="preserve">
-    <value>مرتب سازی بر اساس</value>
-  </data>
-  <data name="Paid &amp; Waiting For Confirm" xml:space="preserve">
-    <value>پرداخت شده و درانتظار تایید</value>
+    <value>ترتيب حسب</value>
   </data>
   <data name="Paraclinical Counseling" xml:space="preserve">
-    <value>مشاوره ی پاراکلینیک</value>
+    <value>استشارة سريرية</value>
   </data>
   <data name="Please Select City" xml:space="preserve">
-    <value>لطفا یک شهر را انتخاب کنید</value>
+    <value>الرجاء تحديد مدينة</value>
   </data>
   <data name="Please Select Country" xml:space="preserve">
-    <value>لطفا یک کشور را انتخاب کنید</value>
+    <value>رجاء قم بإختيار دوله</value>
   </data>
   <data name="Please Select State" xml:space="preserve">
-    <value>لطفا یک استان را انتخاب کنید</value>
+    <value>الرجاء تحديد مقاطعة</value>
   </data>
   <data name="Psychological Counseling" xml:space="preserve">
-    <value>مشاوره ی روانشناسی</value>
+    <value>الإرشاد النفسي</value>
   </data>
   <data name="Request State" xml:space="preserve">
-    <value>نوع درخواست</value>
-  </data>
-  <data name="Request Status" xml:space="preserve">
-    <value>نوع درخواست</value>
-  </data>
-  <data name="Seen By Doctor" xml:space="preserve">
-    <value>دیده شده توسط پزشک</value>
+    <value>نوع الطلب</value>
   </data>
   <data name="State" xml:space="preserve">
-    <value>استان</value>
+    <value>حالة</value>
   </data>
   <data name="User Avatar" xml:space="preserve">
-    <value>آواتار</value>
+    <value>الصورة الرمزية</value>
   </data>
   <data name="Username" xml:space="preserve">
-    <value>نام کاربری</value>
+    <value>اسم االمستخدم</value>
   </data>
 </root>

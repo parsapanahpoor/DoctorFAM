@@ -117,97 +117,169 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="City" xml:space="preserve">
-    <value>شهر</value>
+  <data name="Accept Request" xml:space="preserve">
+    <value>قبول طلبات</value>
   </data>
-  <data name="Closed" xml:space="preserve">
-    <value>بسته شده</value>
+  <data name="Address" xml:space="preserve">
+    <value>العنوان الكامل</value>
   </data>
-  <data name="Code" xml:space="preserve">
-    <value>کد رهگیری</value>
+  <data name="Age" xml:space="preserve">
+    <value>سن</value>
   </data>
-  <data name="Confirm From Destanation Doctor" xml:space="preserve">
-    <value>تایید شده توسط پزشک</value>
+  <data name="Client" xml:space="preserve">
+    <value>عميل</value>
   </data>
-  <data name="Country" xml:space="preserve">
-    <value>کشور</value>
+  <data name="Client First Name" xml:space="preserve">
+    <value>اسم الأمر</value>
   </data>
-  <data name="Date Time" xml:space="preserve">
-    <value>تاریخ ثبت</value>
+  <data name="Client Information" xml:space="preserve">
+    <value>معلومات العميل</value>
   </data>
-  <data name="Delete Filter" xml:space="preserve">
-    <value>حذف فیلتر</value>
+  <data name="Client Last Name" xml:space="preserve">
+    <value>الاسم الأخير للطلب</value>
+  </data>
+  <data name="Client Mobile" xml:space="preserve">
+    <value>الهاتف المحمول الخاص بالطلب</value>
+  </data>
+  <data name="Client Username" xml:space="preserve">
+    <value>اسم المستخدم الخاص بالعميل</value>
+  </data>
+  <data name="Confirm Request" xml:space="preserve">
+    <value>تأكيد الطلب</value>
+  </data>
+  <data name="Count" xml:space="preserve">
+    <value>رقم</value>
   </data>
   <data name="Disease Counseling" xml:space="preserve">
-    <value>مشاوره ی بیماری</value>
+    <value>الاستشارة المرضية</value>
   </data>
-  <data name="Doctor Avatar" xml:space="preserve">
-    <value>اطلاعات پزشک</value>
+  <data name="Distance from the city" xml:space="preserve">
+    <value>المسافة من المدينة</value>
+  </data>
+  <data name="Download Description File" xml:space="preserve">
+    <value>قم بتنزيل الملف المرفق</value>
+  </data>
+  <data name="Drogs Informations" xml:space="preserve">
+    <value>معلومات المخدرات</value>
   </data>
   <data name="Drug Counseling" xml:space="preserve">
-    <value>مشاوره ی دارو</value>
+    <value>استشارات المخدرات</value>
+  </data>
+  <data name="drug picture" xml:space="preserve">
+    <value>صورة المخدرات</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>البريد الإلكتروني</value>
   </data>
   <data name="Emergency Consultation" xml:space="preserve">
-    <value>مشاوره ی اورژانسی </value>
+    <value>استشارة طارئة</value>
   </data>
   <data name="Empty" xml:space="preserve">
-    <value>خالی</value>
+    <value>شاغر</value>
   </data>
-  <data name="Filter" xml:space="preserve">
-    <value>فیلتر</value>
+  <data name="End Time" xml:space="preserve">
+    <value>وقت انتهاء الإرسال</value>
   </data>
-  <data name="Information has not been entered" xml:space="preserve">
-    <value>اطلاعات وارد نشده است</value>
+  <data name="Extra Mobile" xml:space="preserve">
+    <value>هاتف خارجي</value>
+  </data>
+  <data name="Female" xml:space="preserve">
+    <value>أنثى</value>
+  </data>
+  <data name="Free" xml:space="preserve">
+    <value>تأمين مجاني</value>
+  </data>
+  <data name="Gender" xml:space="preserve">
+    <value>جنس المريض</value>
+  </data>
+  <data name="Health Insurance" xml:space="preserve">
+    <value>تأمين صحي</value>
+  </data>
+  <data name="Insurance Type" xml:space="preserve">
+    <value>نوع التأمين</value>
+  </data>
+  <data name="Iranian health" xml:space="preserve">
+    <value>التأمين الصحي في إيران</value>
+  </data>
+  <data name="Male" xml:space="preserve">
+    <value>رجل</value>
   </data>
   <data name="Mobile" xml:space="preserve">
-    <value>موبایل</value>
+    <value>التليفون المحمول</value>
   </data>
-  <data name="Online Visit Request Type" xml:space="preserve">
-    <value>نوع درخواست ویزیت آنلاین</value>
-  </data>
-  <data name="Online Visit Requests" xml:space="preserve">
-    <value>درخواست ویزیت آنلاین</value>
-  </data>
-  <data name="Options" xml:space="preserve">
-    <value>امکانات </value>
-  </data>
-  <data name="Order By" xml:space="preserve">
-    <value>مرتب سازی بر اساس</value>
-  </data>
-  <data name="Paid &amp; Waiting For Confirm" xml:space="preserve">
-    <value>پرداخت شده و درانتظار تایید</value>
+  <data name="Online Visit Request Detail" xml:space="preserve">
+    <value>معلومات طلب الزيارة عبر الإنترنت</value>
   </data>
   <data name="Paraclinical Counseling" xml:space="preserve">
-    <value>مشاوره ی پاراکلینیک</value>
+    <value>استشارة سريرية</value>
   </data>
-  <data name="Please Select City" xml:space="preserve">
-    <value>لطفا یک شهر را انتخاب کنید</value>
+  <data name="Patient Date Time" xml:space="preserve">
+    <value>وقت الاستلام الذي يرغب فيه المريض</value>
   </data>
-  <data name="Please Select Country" xml:space="preserve">
-    <value>لطفا یک کشور را انتخاب کنید</value>
+  <data name="Patient First Name" xml:space="preserve">
+    <value>اسم المريض</value>
   </data>
-  <data name="Please Select State" xml:space="preserve">
-    <value>لطفا یک استان را انتخاب کنید</value>
+  <data name="Patient Information" xml:space="preserve">
+    <value>معلومات المريض</value>
+  </data>
+  <data name="Patient Last Name" xml:space="preserve">
+    <value>الاسم الأخير للمريض</value>
+  </data>
+  <data name="Patient Mobile" xml:space="preserve">
+    <value>الهاتف المحمول للمريض</value>
+  </data>
+  <data name="Patient National Code" xml:space="preserve">
+    <value>ما هي جنسية المريض؟</value>
+  </data>
+  <data name="Patient Phone Number" xml:space="preserve">
+    <value>الخط الأرضي للمريض</value>
+  </data>
+  <data name="Prescription tracking code/applicant's national code" xml:space="preserve">
+    <value>كود تتبع الوصفة الطبية / الرمز الوطني لمقدم الطلب</value>
   </data>
   <data name="Psychological Counseling" xml:space="preserve">
-    <value>مشاوره ی روانشناسی</value>
+    <value>الإرشاد النفسي</value>
   </data>
-  <data name="Request State" xml:space="preserve">
-    <value>نوع درخواست</value>
+  <data name="Request Code" xml:space="preserve">
+    <value>طلب رمز التتبع</value>
   </data>
-  <data name="Request Status" xml:space="preserve">
-    <value>نوع درخواست</value>
+  <data name="Request Create Date" xml:space="preserve">
+    <value>تاريخ إنشاء الطلب</value>
   </data>
-  <data name="Seen By Doctor" xml:space="preserve">
-    <value>دیده شده توسط پزشک</value>
+  <data name="Request Description" xml:space="preserve">
+    <value>وصف الطلب</value>
   </data>
-  <data name="State" xml:space="preserve">
-    <value>استان</value>
+  <data name="Request Detail" xml:space="preserve">
+    <value>معلومات التطبيق</value>
   </data>
-  <data name="User Avatar" xml:space="preserve">
-    <value>آواتار</value>
+  <data name="Request Text" xml:space="preserve">
+    <value>طلب نص</value>
   </data>
-  <data name="Username" xml:space="preserve">
-    <value>نام کاربری</value>
+  <data name="Request Type" xml:space="preserve">
+    <value>نوع الطلب</value>
+  </data>
+  <data name="Self-employed" xml:space="preserve">
+    <value>تأمين العمل الحر</value>
+  </data>
+  <data name="Show Details" xml:space="preserve">
+    <value>مزيد من المعلومات</value>
+  </data>
+  <data name="Social Security" xml:space="preserve">
+    <value>تأمين الضمان الاجتماعي</value>
+  </data>
+  <data name="Start Time" xml:space="preserve">
+    <value>وقت بدء الإرسال</value>
+  </data>
+  <data name="String" xml:space="preserve">
+    <value>Iranian health</value>
+  </data>
+  <data name="User Personal Information" xml:space="preserve">
+    <value>معلومات المستخدم</value>
+  </data>
+  <data name="Version image" xml:space="preserve">
+    <value>صورة الإصدار</value>
+  </data>
+  <data name="Vilage Name" xml:space="preserve">
+    <value>اسم القرية</value>
   </data>
 </root>

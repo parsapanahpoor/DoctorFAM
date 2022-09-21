@@ -45,6 +45,13 @@ namespace DoctorFAM.Application.StaticTools
 
         #endregion
 
+        #region Ticket File
+
+        public static readonly string TicketFilePath = "/content/images/Ticket/main/";
+        public static readonly string TicketFilePathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/Ticket/main/");
+
+        #endregion
+
         #region UserAvatar
 
         public static readonly string UserAvatarPath = "/content/images/user/main/";
