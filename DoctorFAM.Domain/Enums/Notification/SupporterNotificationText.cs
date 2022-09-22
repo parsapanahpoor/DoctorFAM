@@ -27,5 +27,7 @@ namespace DoctorFAM.Domain.Enums.Notification
         FamilyHomeRequest,
         [Display(Name = "Online Visit")]
         OnlineVisitRequest,
+        [Display(Name = "New Arrival Online Visit Message")]
+        NewArrivalOnlineVisitMessage
     }
 }

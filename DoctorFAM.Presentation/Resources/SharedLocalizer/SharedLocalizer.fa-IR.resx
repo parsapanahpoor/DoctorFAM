@@ -561,4 +561,7 @@
   <data name="Manage Tickets" xml:space="preserve">
     <value>مدیریت تیکت ها</value>
   </data>
+  <data name="Notofications" xml:space="preserve">
+    <value>اعلان ها</value>
+  </data>
 </root>

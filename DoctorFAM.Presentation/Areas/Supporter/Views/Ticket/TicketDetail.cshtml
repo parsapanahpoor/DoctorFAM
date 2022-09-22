@@ -20,7 +20,7 @@
 {
 <script src="/admin/js/adminCustom.js"></script>
 <partial name="_JqueryValidation" />
-<partial name="_AdminSweetAlertLocalizer" />
+<partial name="_SupporterSweetAlertLocalizer" />
 <partial name="_TicketJSLocalizer" />
 }
 
@@ -208,7 +208,7 @@
                                                     </div>
                                                     <div class="flex-style-center" style="direction: ltr;">
                                                         <span style="border-right: 1px solid gray; padding-right: 10px">@Localizer["ساعت"] @message.CreateDate.ToShortTimeString() @message.CreateDate.ToStringShamsiDate()  </span>
-                                                        <span onclick="DeleteAjax(@message.Id, '@Url.Action("DeleteTicketMessage", "OnlineVisit", new { area = "Supporter", messageId = message.Id })')" class="mr-10px" style="color: darkred;cursor:pointer; border-left: 1px solid gray; padding-left: 10px"> <i class="glyphicon glyphicon-trash"></i> </span>
+                                                        <span onclick="DeleteAjax(@message.Id, '@Url.Action("DeleteTicketMessage", "Ticket", new { area = "Supporter", messageId = message.Id })')" class="mr-10px" style="color: darkred;cursor:pointer; border-left: 1px solid gray; padding-left: 10px"> <i class="glyphicon glyphicon-trash"></i> </span>
                                                         @if (!string.IsNullOrEmpty(message.MessageFile))
                                                         {
                                                             <a class="mr-10px" target="_blank" style="color: gold;cursor:pointer; padding-left: 10px" href="@PathTools.TicketFilePath/@message.MessageFile"> <i class="glyphicon glyphicon-folder-open"></i> </a>
@@ -233,7 +233,7 @@
                                                     </div>
                                                     <div class="flex-style-center">
                                                         <span> @message.CreateDate.ToStringShamsiDate() ساعت @message.CreateDate.ToShortTimeString() </span>
-                                                        <span onclick="DeleteAjax(@message.Id, '@Url.Action("DeleteTicketMessage", "OnlineVisit", new { area = "Supporter", messageId = message.Id })')" class="mr-10px" style="color: darkred;cursor:pointer; border-left: 1px solid gray; padding-left: 10px"> <i class="glyphicon glyphicon-trash"></i> </span>
+                                                        <span onclick="DeleteAjax(@message.Id, '@Url.Action("DeleteTicketMessage", "Ticket", new { area = "Supporter", messageId = message.Id })')" class="mr-10px" style="color: darkred;cursor:pointer; border-left: 1px solid gray; padding-left: 10px"> <i class="glyphicon glyphicon-trash"></i> </span>
                                                         @if (!string.IsNullOrEmpty(message.MessageFile))
                                                         {
                                                             <a class="mr-10px" target="_blank" style="color: gold;cursor:pointer;" href="@PathTools.TicketFilePath/@message.MessageFile"> <i class="glyphicon glyphicon-folder-open"></i> </a>

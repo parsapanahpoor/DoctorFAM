@@ -91,7 +91,8 @@ tags.tagify {
 }
 
 .databox.databox-vertical.databox-xlg {
-    height: 155px !important;
+    height: 181px !important;
+    background-color: white !important;
 }
 
 .ml-10px {

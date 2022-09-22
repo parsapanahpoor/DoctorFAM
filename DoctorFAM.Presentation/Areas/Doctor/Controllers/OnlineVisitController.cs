@@ -1,4 +1,5 @@
 ﻿using CRM.Web.Areas.Admin.Controllers;
+using DoctorFAM.Application.Convertors;
 using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Interfaces;
 using DoctorFAM.Application.Security;
@@ -10,6 +11,7 @@ using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.ViewModels.Admin.Reservation;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Tikcet;
+using DoctorFAM.Domain.ViewModels.Site.Notification;
 using DoctorFAM.Web.Doctor.Controllers;
 using DoctorFAM.Web.HttpManager;
 using DoctorFAM.Web.Hubs;
@@ -31,11 +33,12 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
         private readonly IRequestService _requestService;
         private readonly ITicketService _ticketService;
         public IStringLocalizer<LocationController> _localizer;
+        private readonly IUserService _userService;
 
 
         public OnlineVisitController(IOnlineVisitService onlineVisitService, ILocationService locationService, IHubContext<NotificationHub> notificationHub
                                                 , INotificationService notificationService, ISMSService smsservice, IRequestService requestService , ITicketService ticketService
-                                                    , IStringLocalizer<LocationController> localizer)
+                                                    , IStringLocalizer<LocationController> localizer, IUserService userService)
         {
             _onlineVisitService = onlineVisitService;
             _locationService = locationService;
@@ -45,6 +48,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
             _requestService = requestService;
             _ticketService = ticketService;
             _localizer = localizer;
+            _userService = userService;
         }
 
         #endregion
@@ -189,6 +193,13 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
             #endregion
 
+            #region Get Request By Id
+
+            var request = await _requestService.GetRequestById(ticket.RequestId.Value);
+            if(request == null) return NotFound();
+
+            #endregion
+
             #region Model State Validation 
 
             if (!ModelState.IsValid)
@@ -206,6 +217,28 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
             if (result)
             {
+                #region Send Notification In SignalR
+
+                //Send Notification For Doctor 
+                await _notificationService.CreateNotificationForSendMessageOfOnlineVisitFromDoctorPanel(ticket.RequestId.Value, Domain.Enums.Notification.SupporterNotificationText.NewArrivalOnlineVisitMessage, Domain.Enums.Notification.NotificationTarget.request, User.GetUserId());
+
+                //Get Current User
+                var currentUser = await _userService.GetUserById(User.GetUserId());
+
+                //Fill Send Supporter Notification ViewModel For Send Notification
+                SendSupporterNotificationViewModel viewModel = new SendSupporterNotificationViewModel()
+                {
+                    CreateNotificationDate = $"{DateTime.Now.ToShamsi()} - {DateTime.Now.Hour}:{DateTime.Now.Minute}",
+                    NotificationText = "پیام جدید از درخواست ویزیت آنلاین",
+                    RequestId = request.Id,
+                    Username = User.Identity.Name,
+                    UserImage = currentUser.Avatar
+                };
+
+                await _notificationHub.Clients.Users(request.UserId.ToString()).SendAsync("SendSupporterNotification", viewModel);
+
+                #endregion
+
                 TempData[SuccessMessage] = "عملیات با موفقیت انجام شد .";
                 return RedirectToAction("OnlineVisitRequestMessageDetail", "OnlineVisit", new { area = "Doctor", requestId = ticket.RequestId });
             }

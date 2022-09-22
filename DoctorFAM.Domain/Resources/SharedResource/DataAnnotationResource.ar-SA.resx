@@ -367,6 +367,9 @@
   <data name="NationalId" xml:space="preserve">
     <value>رمز دولي</value>
   </data>
+  <data name="New Arrival Online Visit Message" xml:space="preserve">
+    <value>رسالة زيارة وصول جديدة عبر الإنترنت</value>
+  </data>
   <data name="New Password" xml:space="preserve">
     <value>كلمة السر الجديدة</value>
   </data>

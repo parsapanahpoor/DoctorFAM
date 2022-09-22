@@ -1,0 +1,98 @@
+﻿@model List<DoctorFAM.Domain.Entities.Contact.Ticket>
+@using DoctorFAM.Domain.ViewModels.Admin.Ticket
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.Extensions
+
+
+<div class="col-lg-12 col-md-12 col-xl-12 col-sm-12 col-xs-12">
+
+    <div class="widget">
+        <div class="widget-header">
+            <i class="widget-icon fa fa-comment"></i>
+            <span class="widget-caption"> آخرین تیکت ها   </span>
+            <div class="widget-buttons">
+                <div class="row">
+
+                    @if (Model != null && Model.Any())
+                    {
+                        <a id="ShowUserCommentInAdminPanel" asp-action="FilterTickets" asp-controller="Ticket" asp-area="Admin" asp-route-UserEmail="@ViewBag.userEmail" class="badge badge-info">نمایش همه</a>
+                    }
+
+                    <a id="ShowUserCommentInAdminPanelMinus" href="#" data-toggle="collapse">
+                        <i class="fa fa-minus"></i>
+                    </a>
+
+                </div>
+            </div><!--Widget Buttons-->
+        </div><!--Widget Header-->
+        <div class="widget-body">
+            @if (Model != null && Model.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered tc vm">
+                        <thead class="tc vm">
+                            <tr class="tc vm">
+                                <th class="tc vm">
+                                    عنوان تیکیت
+                                </th>
+                                <th class="tc vm">
+                                    وضعیت
+                                </th>
+                                <th class="tc vm">
+                                    تاریخ درج
+                                </th>
+                                <th class="tc vm">
+                                    امکانات
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="tc vm">
+                            @foreach (var ticket in Model)
+                            {
+                                <tr class="tc vm" remove-ajax-item="@ticket.Id">
+
+                                    <td class="tc vm" style="max-width: 200px">
+                                        <p class="ellipsis-style"> @ticket.Title </p>
+                                    </td>
+
+                                    <td class="tc vm">
+                                        <p class="flex-style-center">
+                                        <p class="mr-8px label @ticket.TicketStatus.GetTicketStatusClassName()">
+                                                @ticket.TicketStatus.GetEnumName()
+                                        </p>
+                                        </p>
+                                    </td>
+
+                                    <td class="tc vm">
+                                        <div class="tc vm">
+                                            <p id="ArticleTitle">@ticket.CreateDate.ToShamsi()</p>
+                                        </div>
+                                    </td>
+
+                                    <td class="tc vm">
+
+                                        <a asp-action="TicketDetail" asp-controller="Ticket" asp-area="Admin" asp-route-id="@ticket.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+
+
+                <!--Widget Body-->
+            }
+            else
+            {
+                <partial name="_AdminNotFoundPartial" />
+            }
+
+
+        </div>
+    </div>
+</div>
+
+
+

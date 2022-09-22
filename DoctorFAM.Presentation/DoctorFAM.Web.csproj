@@ -7,9 +7,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Content Remove="Areas\Supporter\Views\Ticket\CreateTicket.cshtml" />
-	  <Content Remove="Areas\Supporter\Views\Ticket\FilterTickets.cshtml" />
-	  <Content Remove="Areas\Supporter\Views\Ticket\TicketDetail.cshtml" />
 	  <Content Remove="Views\OnlineVisit\BankPay.cshtml" />
 	</ItemGroup>
 
@@ -47,9 +44,6 @@
 		<None Include="Areas\Admin\Views\Ticket\CreateTicket.cshtml" />
 		<None Include="Areas\Admin\Views\Ticket\FilterTickets.cshtml" />
 		<None Include="Areas\Admin\Views\Ticket\TicketDetail.cshtml" />
-		<None Include="Areas\Supporter\Views\Ticket\CreateTicket.cshtml" />
-		<None Include="Areas\Supporter\Views\Ticket\FilterTickets.cshtml" />
-		<None Include="Areas\Supporter\Views\Ticket\TicketDetail.cshtml" />
 		<None Include="Views\Account\ActiveUserByMobileActivationCode.cshtml" />
 		<None Include="Views\Account\ForgotPassword.cshtml" />
 		<None Include="Views\Account\Login.cshtml" />

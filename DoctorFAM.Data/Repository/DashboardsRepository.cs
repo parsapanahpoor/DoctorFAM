@@ -200,6 +200,13 @@ namespace DoctorFAM.Data.Repository
 
             #endregion
 
+            #region List Of Lastest Tickets 
+
+            model.ListOfLastestTickets = await _context.Tickets.Where(p => !p.IsDelete && !p.IsReadByAdmin && p.TicketForAdminAndSupporters
+                                                                        && !p.OnlineVisitRequest).Take(5).ToListAsync();
+
+            #endregion
+
             return model;
         }
 

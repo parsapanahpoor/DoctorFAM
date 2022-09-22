@@ -9,17 +9,25 @@ namespace CRM.Web.Areas.DoctorPanel.ViewComponents
         #region Ctor
 
         private readonly INotificationService _notificationService;
+        private readonly IOrganizationService _organizationService;
 
-        public DoctorPanelChatBarViewComponent(INotificationService notificationService)
+        public DoctorPanelChatBarViewComponent(INotificationService notificationService, IOrganizationService organizationService)
         {
             _notificationService = notificationService;
+            _organizationService = organizationService;
         }
 
         #endregion
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var model = await _notificationService.GetListOfSupporterNotificationByUserId(User.GetUserId());
+            #region Get Organziation 
+
+            var organization = await _organizationService.GetOrganizationByUserId(User.GetUserId());
+
+            #endregion
+
+            var model = await _notificationService.GetListOfSupporterNotificationByUserId(organization.OwnerId);
             return View("DoctorPanelChatBar", model);
         }
     }

@@ -328,6 +328,9 @@ meta etiket</value>
   <data name="NationalId" xml:space="preserve">
     <value>Ulusal Kod</value>
   </data>
+  <data name="New Arrival Online Visit Message" xml:space="preserve">
+    <value>Yeni Gelen Çevrimiçi Ziyaret Mesajı</value>
+  </data>
   <data name="New Password" xml:space="preserve">
     <value>Yeni Şifre</value>
   </data>

@@ -379,6 +379,9 @@
   <data name="NationalId" xml:space="preserve">
     <value>کد ملی</value>
   </data>
+  <data name="New Arrival Online Visit Message" xml:space="preserve">
+    <value>پیام جدید از درخواست ویزیت آنلاین</value>
+  </data>
   <data name="New Password" xml:space="preserve">
     <value>رمز عبور جدید</value>
   </data>

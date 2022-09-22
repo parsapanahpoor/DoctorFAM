@@ -34,9 +34,37 @@
                 <div class="navbar-account">
                     <ul class="account-area">
 
-                             <li class="marli" >
-                            
-                            <a class="dropdown-toggle btn btn-blue " data-toggle="dropdown" title="انتخاب زبان" href="#"><i class="fa fa-angle-down"></i>
+                        <!--Notification-->
+                        <li class="marli margin-left-10">
+
+                            <a class="btn btn-success wave in" id="chat-link" title="Chat" href="#">
+                                @SharedLocalizer["Notofications"]
+                            </a>
+
+                        </li>
+
+                        <!--Online-->
+                        <li class="marli margin-left-10" id="Online">
+
+                            <a class="dropdown-toggle btn btn-success" href="#">
+                                آنلاین
+                            </a>
+
+                        </li>
+
+                        <!--Offline-->
+                        <li class="marli margin-left-10 " id="disConnect">
+
+                            <a class="dropdown-toggle btn btn-danger" href="#">
+                                آفلاین
+                            </a>
+
+                        </li>
+
+                        <li class="marli margin-left-10">
+
+                            <a class="dropdown-toggle btn btn-blue " data-toggle="dropdown" title="انتخاب زبان" href="#">
+                                <i class="fa fa-angle-down"></i>
                                 انتخاب زبان
                             </a>
                             <!--Tasks Dropdown-->
@@ -54,16 +82,9 @@
                                     </li>
                                 }
                             </ul>
-                           
-                        </li>
 
-                    
-                     
-                        <li>
-                            <a class="wave in" id="chat-link" title="Chat" href="#">
-                                <i class="icon glyphicon glyphicon-comment"></i>
-                            </a>
                         </li>
+                     
                         <li>
                             <a class="login-area dropdown-toggle" data-toggle="dropdown">
                                 <div class="avatar" title="View your public profile">

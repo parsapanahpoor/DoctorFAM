@@ -5,48 +5,51 @@
 }
 
 @section Breadcrumb {
-<li class="active">@SharedHtmlLocalizer["Home"]</li>
+    <li class="active">@SharedHtmlLocalizer["Home"]</li>
 }
 
-@section Styles
-{
-<style>
+    @section Styles
+    {
+    <style>
 
-    .databox-bottom {
-        height: 100% !important;
-    }
+        .databox-bottom {
+            height: 100% !important;
+        }
 
-    .databox.databox-vertical.databox-lg {
-        height: 100%;
-        width: 100%;
-    }
+        .databox.databox-vertical.databox-lg {
+            height: 100%;
+            width: 100%;
+        }
 
-    .databox.databox-vertical.databox-halved .databox-top {
-        height: 60px;
-    }
+        .databox.databox-vertical.databox-halved .databox-top {
+            height: 60px;
+        }
 
-    .databox-icon {
-        margin-top: 10px !important;
-    }
+        .databox-icon {
+            margin-top: 10px !important;
+        }
 
-    .dropdown-menu {
-        left: 0;
-        right: auto;
-    }
+        .dropdown-menu {
+            left: 0;
+            right: auto;
+        }
 
-</style>
+    </style>
 }
 
-<div class="page-body">
+    <div class="page-body">
 
-    <div class="row">
+        <div class="row">
 
-        @*Box Of Lastest Requests*@
-        <partial name="_LastestRequestsPartial" model="@Model.AllRecords" />  
-        
-        @*Box Of Lastest Requests*@
-        <partial name="_TodayReservationReserved" model="@Model.DoctorReservationDateTimes" />
+            @*Box Of Lastest Requests*@
+            <partial name="_LastestRequestsPartial" model="@Model.AllRecords" />
+
+            @*Box Of Lastest Requests*@
+            <partial name="_TodayReservationReserved" model="@Model.DoctorReservationDateTimes" />
+
+            @*Box Of  Tickets List*@
+            <partial name="_LastestTicketsPartial" model="@Model.ListOfLastestTickets" />
+
+        </div>
 
     </div>
-
-</div>

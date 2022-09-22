@@ -53,6 +53,16 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Create Notification For Family Doctor
         Task<bool> CreateNotificationForFamilyDoctor(ulong doctorUserId, ulong targetId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId);
 
+        //Create Notification For Send Message Of Online Visit
+        Task<bool> CreateNotificationForSendMessageOfOnlineVisit(ulong targetId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId);
+
+        #endregion
+
+        #region Doctor Panel
+
+        //Create Notification For Send Message Of Online Visit
+        Task<bool> CreateNotificationForSendMessageOfOnlineVisitFromDoctorPanel(ulong targetId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId);
+
         #endregion
     }
 }

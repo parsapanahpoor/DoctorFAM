@@ -29,6 +29,8 @@ namespace DoctorFAM.Domain.ViewModels.Admin.Dashboard
 
         public List<DoctorReservationDateTime> DoctorReservationDateTimes { get; set; }
 
+        public List<Domain.Entities.Contact.Ticket> ListOfLastestTickets { get; set; }
+
         #endregion
     }
 }
