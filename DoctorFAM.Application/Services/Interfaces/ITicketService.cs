@@ -89,5 +89,12 @@ namespace DoctorFAM.Application.Services.Interfaces
         Task<bool> DeleteTicketMessage(ulong messageId);
 
         #endregion
+
+        #region Supporter
+
+        //Add Ticket From Admin Panel 
+        Task<bool> AddTicketFromSupporterPanel(AddTicketViewModel addTicket, ulong adminId);
+
+        #endregion
     }
 }

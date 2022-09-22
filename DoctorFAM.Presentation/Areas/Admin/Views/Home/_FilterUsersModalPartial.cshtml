@@ -1,0 +1,149 @@
+﻿@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@model DoctorFAM.Domain.ViewModels.UserPanel.FilterUserViewModel
+
+<div id="SearchUserModalBox">
+    <div class="row">
+        <form asp-action="SearchUserModal" asp-controller="Home" asp-area="Admin" asp-route-baseName="@(ViewBag.BaseName)" id="@(ViewBag.BaseName)-Form"
+              data-ajax="true" data-method="post" data-ajax-begin="open_waiting('#SearchUserModalBox')" data-ajax-success="close_wating('#SearchUserModalBox')"
+              data-ajax-mode="replace" data-ajax-update="#SearchUserModalBox">
+
+            <input type="hidden" asp-for="Page" id="PartialPageId" />
+
+            <div class="form-group col-md-3 col-xs-12">
+                <label asp-for="Username"> نام و نام خانوادگی </label>
+                <input type="text" class="form-control" asp-for="Username">
+            </div>
+
+            <div class="form-group col-md-3 col-xs-12">
+                <label asp-for="Email"> ایمیل </label>
+                <input type="text" class="form-control" asp-for="Email">
+            </div>
+
+            <div class="form-group col-md-3 col-xs-12">
+                <label asp-for="Mobile"> شماره تماس </label>
+                <input type="text" class="form-control" asp-for="Mobile">
+            </div>
+
+            <div class="form-group col-md-3 col-xs-12">
+                <button type="submit" class="btn btn-labeled w-100 btn-palegreen mt-24">
+                    <i class="btn-label glyphicon glyphicon-filter"></i>اعمال فیلتر
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <hr style="margin-top: 5px; margin-bottom: 20px" />
+
+    <div class="row">
+        <div class="col-lg-12 table-responsive">
+
+            @if (Model.Entities != null && Model.Entities.Any())
+            {
+                <table class="table table-hover table-bordered tc vm">
+                    <thead class="tc vm">
+                        <tr class="tc vm">
+                            <th class="tc vm">
+                                آواتار
+                            </th>
+                            <th class="tc vm">
+                                اطلاعات هویتی
+                            </th>
+                            <th class="tc vm">
+                                وضعیت
+                            </th>
+                            <th class="tc vm">
+                                دسترسی
+                            </th>
+                            <th class="tc vm">
+                                امکانات
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="tc vm">
+                        @foreach (var user in Model.Entities)
+                        {
+                            <tr class="tc vm">
+                                <td class="vm">
+                                    <div class="flex-style-center">
+                                        <img src="@user.GetUserAvatar()" class="avatar-style" />
+                                        <div class="mr-10px">
+                                            <span> @user.Username </span>
+                                            <hr class="margin-7" />
+                                            <span>تاریخ ثبت نام : @user.CreateDate.ToShamsi()</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="tc vm">
+                                    <p>ایمیل : @user.Email</p>
+                                    @if (!string.IsNullOrEmpty(user.Mobile))
+                                    {
+                                        <hr class="margin-7" />
+                                        <p>موبایل : @user.Mobile</p>
+                                    }
+                             
+                                </td>
+                                <td class="tc vm">
+                                    <p class="flex-style-center">
+                                        <span> وضعیت ایمیل </span>
+                                        <span class="mr-8px label @((user.IsEmailConfirm) ? "label-success" : "label-orange")">@((user.IsEmailConfirm) ? "تایید شده" : "تایید نشده")</span>
+                                    </p>
+                                    <hr class="margin-7" />
+                                    <p class="flex-style-center">
+                                        <span> وضعیت موبایل </span>
+                                        <span class="mr-8px label @((user.IsMobileConfirm) ? "label-success" : "label-orange")">@((user.IsMobileConfirm) ? "تایید شده" : "تایید نشده")</span>
+                                    </p>
+                                
+                                </td>
+                                <td class="tc vm">
+                                    <p class="flex-style-center">
+                                        <span> دسترسی به سایت </span>
+                                        <span class="mr-8px label @((!user.IsBan) ? "label-success" : "label-orange")">@((!user.IsBan) ? "دارد" : "ندارد")</span>
+                                    </p>
+                                    <hr class="margin-7" />
+                                    <p class="flex-style-center">
+                                        <span> دسترسی به کامنت </span>
+                                        <span class="mr-8px label @((!user.BanForComment) ? "label-success" : "label-orange")">@((!user.BanForComment) ? "دارد" : "ندارد")</span>
+                                    </p>
+                                   
+                                </td>
+                                <td class="tc vm">
+                                    <a onclick="SelectUser('@user.Id', '@user.Username', '@ViewBag.BaseName')" class="btn btn-success btn-circle btn-xs"><i class="glyphicon glyphicon-ok"></i></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <div class="tc">
+                    <ul class="pagination mt-5px">
+                        @if (Model.StartPage < Model.Page)
+                        {
+                            <li><a class="cursor-pointer" onclick="FillPartialPageId(@(Model.Page - 1), '@(ViewBag.BaseName)')">«</a></li>
+                        }
+                        @for (int i = Model.StartPage; i <= Model.EndPage; i++)
+                        {
+                            if (Model.Page == i)
+                            {
+                                <li class="active"><a class="cursor-pointer">@i</a></li>
+                            }
+                            else
+                            {
+                                <li><a class="cursor-pointer" onclick="FillPartialPageId(@i, '@(ViewBag.BaseName)')">@i</a></li>
+                            }
+                        }
+                        @if (Model.EndPage > Model.Page)
+                        {
+                            <li><a class="cursor-pointer" onclick="FillPartialPageId(@(Model.Page + 1), '@(ViewBag.BaseName)')">»</a></li>
+                        }
+                    </ul>
+                </div>
+            }
+            else
+            {
+                <partial name="_AdminNotFoundPartial" />
+            }
+
+        </div>
+    </div>
+</div>

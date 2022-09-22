@@ -117,88 +117,58 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Awaiting Payment" xml:space="preserve">
-    <value>درانتظار پرداخت</value>
-  </data>
-  <data name="Date Time" xml:space="preserve">
-    <value>تاریخ</value>
-  </data>
-  <data name="Death Certificate" xml:space="preserve">
-    <value>صدور گواهی فوت</value>
+  <data name="Admin See State" xml:space="preserve">
+    <value>وضعیت مشاهده توسط ادمین</value>
   </data>
   <data name="Delete Filter" xml:space="preserve">
     <value>حذف فیلتر</value>
   </data>
-  <data name="Email" xml:space="preserve">
-    <value>ایمیل</value>
-  </data>
-  <data name="Empty" xml:space="preserve">
-    <value>پرنشده</value>
-  </data>
   <data name="Filter" xml:space="preserve">
-    <value>فیلتر</value>
+    <value>اعمال فیلتر</value>
   </data>
-  <data name="Home Drog" xml:space="preserve">
-    <value>داروخانه در منزل</value>
+  <data name="No" xml:space="preserve">
+    <value>خیر</value>
   </data>
-  <data name="Home Lab" xml:space="preserve">
-    <value>آزمایشگاه در منزل</value>
+  <data name="On Working" xml:space="preserve">
+    <value>در حال پیگیری</value>
   </data>
-  <data name="Home Nurse" xml:space="preserve">
-    <value>پرستار در منزل</value>
-  </data>
-  <data name="Home Visit" xml:space="preserve">
-    <value>ویزیت در منزل</value>
-  </data>
-  <data name="Home Visit Records" xml:space="preserve">
-    <value>لیست ویزیت در منزل</value>
-  </data>
-  <data name="List Of Lastest Home Visit Requests" xml:space="preserve">
-    <value>لیست آخرین درخواست های ویزیت در منزل</value>
-  </data>
-  <data name="Mobile" xml:space="preserve">
-    <value>موبایل</value>
-  </data>
-  <data name="Online Visit" xml:space="preserve">
-    <value>ویزیت آنلاین</value>
+  <data name="On Working State" xml:space="preserve">
+    <value>وضعیت پیگیری</value>
   </data>
   <data name="Options" xml:space="preserve">
-    <value>امکانات</value>
+    <value>تنظیمات </value>
   </data>
-  <data name="Order By" xml:space="preserve">
-    <value>مرتب سازی براساس</value>
+  <data name="Page Title" xml:space="preserve">
+    <value>لیست تیکت ها</value>
   </data>
-  <data name="Paid" xml:space="preserve">
-    <value>پرداخت شده و منتظر پزشک</value>
+  <data name="Seen By Admin" xml:space="preserve">
+    <value>دیده شده توسط ادمین</value>
   </data>
-  <data name="Patient Transfer" xml:space="preserve">
-    <value>انتقال بیمار</value>
+  <data name="Seen By User" xml:space="preserve">
+    <value>دیده شده توسط کاربر</value>
   </data>
-  <data name="Paying" xml:space="preserve">
-    <value>درحال پرداخت</value>
+  <data name="Send Date Time" xml:space="preserve">
+    <value>تاریخ ارسال</value>
   </data>
-  <data name="Register Date" xml:space="preserve">
-    <value>تاریخ ثبت نام </value>
+  <data name="Sender Email" xml:space="preserve">
+    <value>ایمیل فرستنده</value>
   </data>
-  <data name="State" xml:space="preserve">
-    <value>وضعیت</value>
+  <data name="Sender Seen State" xml:space="preserve">
+    <value>وضعیت مشاهده توسط فرستنده</value>
   </data>
-  <data name="Type" xml:space="preserve">
-    <value>نوع</value>
+  <data name="Sender Username" xml:space="preserve">
+    <value>نام و نام خانوادگی فرستنده</value>
   </data>
-  <data name="unpaid" xml:space="preserve">
-    <value>پرداخت نشده</value>
+  <data name="Ticket State" xml:space="preserve">
+    <value>وضعیت تیکت</value>
   </data>
-  <data name="User Avatar" xml:space="preserve">
-    <value>تصویر کاربر</value>
+  <data name="Ticket Title" xml:space="preserve">
+    <value>عنوان تیکت</value>
   </data>
-  <data name="User Email" xml:space="preserve">
-    <value>ایمیل کاربری </value>
+  <data name="User Information" xml:space="preserve">
+    <value>مشخصات کاربر</value>
   </data>
-  <data name="User Mobile" xml:space="preserve">
-    <value>موبایل کاربر</value>
-  </data>
-  <data name="Username" xml:space="preserve">
-    <value>نام کاربری</value>
+  <data name="Yes" xml:space="preserve">
+    <value>بله</value>
   </data>
 </root>

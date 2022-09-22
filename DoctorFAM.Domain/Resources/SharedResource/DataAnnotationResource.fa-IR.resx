@@ -391,8 +391,14 @@
   <data name="NotDeleted" xml:space="preserve">
     <value>حذف نشده</value>
   </data>
+  <data name="NotWorking" xml:space="preserve">
+    <value>خارج از دسترسی</value>
+  </data>
   <data name="Office address" xml:space="preserve">
     <value>آدرس مطب</value>
+  </data>
+  <data name="On Working" xml:space="preserve">
+    <value>درانتظار برسی</value>
   </data>
   <data name="Online" xml:space="preserve">
     <value>آنلاین</value>

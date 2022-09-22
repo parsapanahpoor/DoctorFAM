@@ -159,6 +159,9 @@
   <data name="Mobile" xml:space="preserve">
     <value>موبایل</value>
   </data>
+  <data name="Online Visit" xml:space="preserve">
+    <value>ویزیت آنلاین</value>
+  </data>
   <data name="Options" xml:space="preserve">
     <value>امکانات</value>
   </data>

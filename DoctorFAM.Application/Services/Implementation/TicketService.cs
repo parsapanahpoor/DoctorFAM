@@ -680,5 +680,65 @@ namespace DoctorFAM.Application.Services.Implementation
         }
 
         #endregion
+
+        #region Supporter Panel 
+
+        //Add Ticket From Admin Panel 
+        public async Task<bool> AddTicketFromSupporterPanel(AddTicketViewModel addTicket, ulong adminId)
+        {
+            #region Check Is Exist User
+
+            if (await _userService.GetUserById(addTicket.userId.Value) == null)
+            {
+                return false;
+            }
+
+            #endregion
+
+            #region Fill Ticket Entity
+
+            var ticket = new Ticket
+            {
+                Title = addTicket.Title.SanitizeText(),
+                IsReadByAdmin = true,
+                IsReadByOwner = false,
+                OnWorking = false,
+                TicketStatus = TicketStatus.Answered,
+                OwnerId = addTicket.userId.Value,
+                CreateDate = DateTime.Now,
+                TargetUserId = addTicket.userId.Value,
+                TicketSenderType = TicketSenderType.FromSupporter
+            };
+
+            #endregion
+
+            #region Add Ticket Method
+
+            await _ticketRepository.AddTicket(ticket);
+
+            #endregion
+
+            #region Fill Message Entity
+
+            var message = new TicketMessage
+            {
+                Message = addTicket.Message.SanitizeText(),
+                SenderId = adminId,
+                TicketId = ticket.Id,
+                CreateDate = DateTime.Now
+            };
+
+            #endregion
+
+            #region Add Message Method
+
+            await _ticketRepository.AddTicketMessage(message);
+
+            #endregion
+
+            return true;
+        }
+
+        #endregion
     }
 }

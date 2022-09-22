@@ -1,85 +1,247 @@
-﻿
+﻿//#region Paging Function
 
-//change avatar preview
-
-var loadAvatar = function (event) {
-    var image = document.getElementById('avatarPreview');
-    image.src = URL.createObjectURL(event.target.files[0]);
-};
-
-
-//#region Document Ready
-
-$(function () {
-    if ($("input[name=Permissions]").length === $("input[name=Permissions]:checked").length) {
-        $("#SelectAll").prop("checked", true);
-    }
-});
+function FillPartialPageId(pageId, baseName) {
+    console.log("hello");
+    var formId = GetFormIdForSearchModal(baseName);
+    $("#PartialPageId").val(pageId);
+    $(`#${formId}`).submit();
+}
 
 //#endregion
 
-//#region Select All Button
+//#region Get Ids Functions
 
-$("#SelectAll").click(function (e) {
-    if (this.checked) {
-        $(".accordion-toggle").each(function (index, value) {
-            if ($(value).hasClass("collapsed")) {
-                $(value).removeClass("collapsed");
-            }
-        });
-        $(".panel-collapse").each(function (index, value) {
-            if (!$(value).hasClass("in")) {
-                $(value).addClass("in");
-            }
-        });
-        $(".accordion-toggle").attr("aria-expanded", true);
-        $(".panel-collapse").attr("aria-expanded", true);
-        $(".panel-collapse").css("height", "auto");
-        $("input[name=Permissions]").prop("checked", true);
-    } else {
-        $(".accordion-toggle").each(function (index, value) {
-            if (!$(value).hasClass("collapsed")) {
-                $(value).addClass("collapsed");
-            }
-        });
-        $(".panel-collapse").each(function (index, value) {
-            if ($(value).hasClass("in")) {
-                $(value).removeClass("in");
-            }
-        });
-        $(".accordion-toggle").attr("aria-expanded", false);
-        $(".panel-collapse").attr("aria-expanded", false);
-        $(".panel-collapse").css("height", "0");
-        $("input[name=Permissions]").prop("checked", false);
-    }
-});
+function GetInputIdForSearchModal(baseName) {
+    return `${baseName}-Input`;
+}
+
+function GetDisplayIdForSearchModal(baseName) {
+    return `${baseName}-Display`;
+}
+
+function GetFormIdForSearchModal(baseName) {
+    return `${baseName}-Form`;
+}
 
 //#endregion
 
-//#region Check Box Click
+//#region Search User Modal
 
-$("input[name=Permissions]").click(function (e) {
-    var id = $(this).attr("data-id");
-    var parentId = $(this).attr("data-parentId");
-    if (this.checked) {
-        if (parentId === undefined) {
-            $(`input[data-parentId=${id}]`).each(function (index, value) {
-                $(this).prop("checked", true);
-            });
-        } else {
-            $(`input[data-id=${parentId}]`).prop("checked", true);
+function ShowSearchUserModal(baseName) {
+    $.ajax({
+        url: "/Admin/Home/SearchUserModal",
+        type: "post",
+        data: {
+            baseName: baseName
+        },
+        beforeSend: function () {
+            open_waiting();
+        },
+        success: function (response) {
+            close_waiting();
+            $("#LargeModalTitle").html("لیست کاربران");
+            $("#LargeModalBody").html(response);
+            $("#LargeModal").modal("show");
+        },
+        error: function () {
+            close_waiting();
+            ShowMessage("خطا", "عملیات با خطا مواجه شد لطفا مجدد تلاش کنید .", "error");
         }
-    } else {
-        if (parentId === undefined) {
-            $(`input[data-parentId=${id}]`).each(function (index, value) {
-                $(this).prop("checked", false);
-            });
-        } else {
-            if ($(`input[data-parentId=${parentId}]:checked`).length < 1) {
-                $(`input[data-id=${parentId}]`).prop("checked", false);
+    });
+}
+
+function SelectUser(userId, userName, baseName) {
+    var inputId = GetInputIdForSearchModal(baseName);
+    var displayId = GetDisplayIdForSearchModal(baseName);
+
+    $(`#${inputId}`).val(userId).trigger("change");
+    $(`#${displayId}`).val(userName).trigger("change");
+
+    $("#LargeModal").modal("hide");
+}
+
+//#endregion
+
+//#region Search Branch Modal
+
+function ShowSearchBranchModal(baseName) {
+    $.ajax({
+        url: "/Admin/Home/SearchBranchModal",
+        type: "post",
+        data: {
+            baseName: baseName
+        },
+        beforeSend: function () {
+            open_waiting();
+        },
+        success: function (response) {
+            close_waiting();
+            $("#LargeModalTitle").html("لیست شعبه ها");
+            $("#LargeModalBody").html(response);
+            $("#LargeModal").modal("show");
+        },
+        error: function () {
+            close_waiting();
+            ShowMessage("خطا", "عملیات با خطا مواجه شد لطفا مجدد تلاش کنید .", "error");
+        }
+    });
+}
+
+function SelectBranch(branchId, branchName, baseName, branchPercent) {
+    var inputId = GetInputIdForSearchModal(baseName);
+    var displayId = GetDisplayIdForSearchModal(baseName);
+
+    $(`#${inputId}`).val(branchId).trigger("change");
+    $(`#${displayId}`).val(branchName).trigger("change");
+
+    if ($("#BranchPercentage").length) {
+        $("#BranchPercentage").val(branchPercent);
+    }
+
+    $("#LargeModal").modal("hide");
+}
+
+//#endregion
+
+//#region Search Master Modal
+
+function ShowSearchMasterModal(baseName) {
+    var branchId = $("#Branch-Input").val();
+
+    if (branchId === "" || !branchId.length) {
+        ShowMessage("اعلان", "برای انتخاب مدرس ابتدا باید شعبه را انتخاب کنید .", "info");
+        return;
+    }
+
+    $.ajax({
+        url: "/Admin/Home/SearchMasterModal",
+        type: "post",
+        data: {
+            baseName: baseName,
+            branchId: branchId
+        },
+        beforeSend: function () {
+            open_waiting();
+        },
+        success: function (response) {
+            close_waiting();
+            $("#LargeModalTitle").html("لیست مدرسین");
+            $("#LargeModalBody").html(response);
+            $("#LargeModal").modal("show");
+        },
+        error: function () {
+            close_waiting();
+            ShowMessage("خطا", "عملیات با خطا مواجه شد لطفا مجدد تلاش کنید .", "error");
+        }
+    });
+}
+
+function SelectMaster(masterId, masterName, baseName, masterPercent) {
+    var inputId = GetInputIdForSearchModal(baseName);
+    var displayId = GetDisplayIdForSearchModal(baseName);
+
+    $(`#${inputId}`).val(masterId).trigger("change");
+    $(`#${displayId}`).val(masterName).trigger("change");
+
+    if ($("#MasterPercentage").length) {
+        $("#MasterPercentage").val(masterPercent);
+    }
+
+    $("#LargeModal").modal("hide");
+}
+
+//#endregion
+
+//#region Search Course Modal
+
+function ShowSearchCourseModal(baseName) {
+    $.ajax({
+        url: "/Admin/Home/SearchCourseModal",
+        type: "post",
+        data: {
+            baseName: baseName
+        },
+        beforeSend: function () {
+            open_waiting();
+        },
+        success: function (response) {
+            close_waiting();
+            $("#LargeModalTitle").html("لیست دوره ها");
+            $("#LargeModalBody").html(response);
+            $("#LargeModal").modal("show");
+        },
+        error: function () {
+            close_waiting();
+            ShowMessage("خطا", "عملیات با خطا مواجه شد لطفا مجدد تلاش کنید .", "error");
+        }
+    });
+}
+
+function SelectCourse(courseId, courseTitle, baseName) {
+    var inputId = GetInputIdForSearchModal(baseName);
+    var displayId = GetDisplayIdForSearchModal(baseName);
+
+    $(`#${inputId}`).val(courseId).trigger("change");
+    $(`#${displayId}`).val(courseTitle).trigger("change");
+
+    $("#LargeModal").modal("hide");
+}
+
+//#endregion
+
+//#region Search Active Course Course Modal
+
+function ShowSearchActiveCourseModal(baseName) {
+    $.ajax({
+        url: "/Admin/Home/SearchActiveCourseModal",
+        type: "post",
+        data: {
+            baseName: baseName
+        },
+        beforeSend: function () {
+            open_waiting();
+        },
+        success: function (response) {
+            close_waiting();
+            $("#LargeModalTitle").html("لیست دوره های فعال");
+            $("#LargeModalBody").html(response);
+            $("#LargeModal").modal("show");
+        },
+        error: function () {
+            close_waiting();
+            ShowMessage("خطا", "عملیات با خطا مواجه شد لطفا مجدد تلاش کنید .", "error");
+        }
+    });
+}
+
+function SelectActiveCourse(activeCourseId, activeCourseTitle, baseName) {
+    var inputId = GetInputIdForSearchModal(baseName);
+    var displayId = GetDisplayIdForSearchModal(baseName);
+
+    $(`#${inputId}`).val(activeCourseId).trigger("change");
+    $(`#${displayId}`).val(activeCourseTitle).trigger("change");
+
+    $("#LargeModal").modal("hide");
+}
+
+//#endregion
+
+//#region Load Course Categories
+
+$("#MainCategoryId").change(function () {
+    if ($("#MainCategoryId :selected").val() !== '') {
+        $('#SubCategoryId option:not(:first)').remove();
+        $.get("/Admin/Home/LoadCourseCategories", { categoryId: $("#MainCategoryId :selected").val() }).then(res => {
+            if (res.data !== null) {
+                $.each(res.data, function () {
+                    $("#SubCategoryId").append(
+                        '<option value=' + this.id + '>' + this.title + '</option>'
+                    );
+                });
             }
-        }
-        $("#SelectAll").prop("checked", false);
+        });
+    } else {
+        $('#SubCategoryId option:not(:first)').remove();
     }
 });
 
@@ -99,5 +261,89 @@ $(function () {
         $.getScript("/common/admindatapicker/kamadatepicker.min.js", function (script, textStatus, jqXHR) { });
     }
 });
+
+//#endregion
+
+//#region Change User Info State
+
+function ChangeUserInfoState(userId, stateId) {
+    $.ajax({
+        url: "/Admin/Account/ChangePersonalInfoState",
+        type: "post",
+        data: {
+            userId: userId,
+            stateId: stateId
+        },
+        beforeSend: function () {
+            open_waiting();
+        },
+        success: function (response) {
+            close_waiting();
+            if (response.status === "Success") {
+                ShowMessage("اعلان", "عملیات با موفقیت انجام شد", "success");
+            } else {
+                ShowMessage("خطا", "عملیات با خطا مواجه شد لطفا مجدد تلاش کنید .", "error");
+            }
+        },
+        error: function () {
+            close_waiting();
+            ShowMessage("خطا", "عملیات با خطا مواجه شد لطفا مجدد تلاش کنید .", "error");
+        }
+    });
+}
+
+//#endregion
+
+//#region Change Request Certificate State
+
+function ChangeRequestCertificateState(requestId, stateId) {
+    $.ajax({
+        url: "/Admin/Certificate/ChangeRequestCertificateState",
+        type: "post",
+        data: {
+            requestId: requestId,
+            stateId: stateId
+        },
+        beforeSend: function () {
+            open_waiting();
+        },
+        success: function (response) {
+            close_waiting();
+            if (response.status === "Success") {
+                ShowMessage("اعلان", "عملیات با موفقیت انجام شد", "success");
+            } else {
+                ShowMessage("خطا", "عملیات با خطا مواجه شد لطفا مجدد تلاش کنید .", "error");
+            }
+        },
+        error: function () {
+            close_waiting();
+            ShowMessage("خطا", "عملیات با خطا مواجه شد لطفا مجدد تلاش کنید .", "error");
+        }
+    });
+}
+
+//#endregion
+
+//#region Change Request Certificate Final State
+
+function ChangeRequestCertificateFinalState(id) {
+    console.log('do ajax');
+    $.ajax({
+        url: "/Admin/Certificate/ChangeFinalStateRequestCertificate",
+        data: {
+            "id": id
+        },
+        success: function (data) {
+            if (data.status === 'Success') {
+                ShowMessage('اعلان', 'عملیات با موفقیت انجام شد', 'success');
+            } else {
+                ShowMessage('اعلان', 'عملیات با شکست مواجه شد', 'error');
+            }
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            ShowMessage('اعلان', 'عملیات با شکست مواجه شد', 'error');
+        }
+    });
+}
 
 //#endregion

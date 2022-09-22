@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static DoctorFAM.Domain.ViewModels.UserPanel.FilterUserViewModel;
 
 namespace DoctorFAM.Application.Services.Implementation
 {
@@ -447,6 +448,54 @@ namespace DoctorFAM.Application.Services.Implementation
         {
             _context.Users.Update(user);
             await _context.SaveChangesAsync();  
+        }
+        
+        //Filter User In Modal
+        public async Task<Domain.ViewModels.UserPanel.FilterUserViewModel> FilterUsersInModal(Domain.ViewModels.UserPanel.FilterUserViewModel filter)
+        {
+            var query = _context.Users
+                .Include(u => u.UserRoles)
+                .OrderByDescending(p => p.CreateDate)
+                .AsQueryable();
+
+            #region order
+
+            switch (filter.OrderType)
+            {
+                case FilterUserOrderType.CreateDate_ASC:
+                    query = query.OrderBy(u => u.CreateDate);
+                    break;
+                case FilterUserOrderType.CreateDate_DES:
+                    query = query.OrderByDescending(u => u.CreateDate);
+                    break;
+            }
+
+            #endregion
+
+            #region filter
+
+            if ((!string.IsNullOrEmpty(filter.Email)))
+            {
+                query = query.Where(u => u.Email.Contains(filter.Email));
+            }
+            if ((!string.IsNullOrEmpty(filter.Mobile)))
+            {
+                query = query.Where(u => u.Mobile.Contains(filter.Mobile));
+            }
+            if ((!string.IsNullOrEmpty(filter.Username)))
+            {
+                query = query.Where(u => u.Username.Contains(filter.Username));
+            }
+
+            #endregion
+
+            #region paging
+
+            await filter.Paging(query);
+
+            #endregion
+
+            return filter;
         }
 
         public async Task<FilterUserViewModel> FilterUsers(FilterUserViewModel filter)

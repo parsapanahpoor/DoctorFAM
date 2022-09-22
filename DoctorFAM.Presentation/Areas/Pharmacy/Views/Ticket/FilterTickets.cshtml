@@ -2,6 +2,7 @@
 @inject IViewLocalizer Localizer
 @inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
 @using DoctorFAM.Domain.ViewModels.UserPanel.Ticket
+@using DoctorFAM.Application.Convertors
 
 @{
     ViewData["Title"] = @Localizer["PageTitle"];
@@ -112,7 +113,7 @@
                                     </p>
                                 </td>
                                 <td class="tc vm">
-                                    <p> @ticket.CreateDate.ToShortDateString() </p>
+                                    <p> @ticket.CreateDate.ToShamsi() </p>
                                 </td>
                                 <td class="tc vm">
                                     <a asp-action="TicketDetail" asp-controller="Ticket" asp-area="Pharmacy" asp-route-id="@ticket.Id" class="btn btn-primary btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>

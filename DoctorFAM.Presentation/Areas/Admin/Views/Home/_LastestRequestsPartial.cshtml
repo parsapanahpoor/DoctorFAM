@@ -105,6 +105,11 @@
                                                 <span class="mr-8px label label-info"> @Localizer["Home Nurse"] </span>
                                             }
 
+                                            @if (request.RequestType == DoctorFAM.Domain.Enums.RequestType.RequestType.OnlineVisit)
+                                            {
+                                                <span class="mr-8px label label-info"> @Localizer["Online Visit"] </span>
+                                            }
+
                                             @if (request.RequestType == DoctorFAM.Domain.Enums.RequestType.RequestType.PatientTransfer)
                                             {
                                                 <span class="mr-8px label label-info"> @Localizer["Patient Transfer"] </span>

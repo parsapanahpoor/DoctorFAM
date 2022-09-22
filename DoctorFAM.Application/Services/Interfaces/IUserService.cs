@@ -18,6 +18,9 @@ namespace DoctorFAM.Application.Services.Interfaces
     {
         #region Authorize
 
+        //Filter User In Modal
+        Task<Domain.ViewModels.UserPanel.FilterUserViewModel> FilterUsersInModal(Domain.ViewModels.UserPanel.FilterUserViewModel filter);
+
         Task ResendActivationCodeSMS(string Mobile);
 
         Task<bool> IsExistUserById(ulong userId);

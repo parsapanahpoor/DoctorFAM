@@ -1,4 +1,6 @@
-﻿using DoctorFAM.Application.Services.Interfaces;
+﻿using DoctorFAM.Application.Services.Implementation;
+using DoctorFAM.Application.Services.Interfaces;
+using DoctorFAM.Domain.ViewModels.UserPanel;
 using DoctorFAM.Web.HttpManager;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,13 +11,14 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
         #region Ctor
 
         private readonly IProductService _productService;
-
+        private readonly IUserService _userService;
         private readonly IDashboardsService _boardsService;
 
-        public HomeController(IProductService productService , IDashboardsService boardsService)
+        public HomeController(IProductService productService , IDashboardsService boardsService, IUserService userService)
         {
             _productService = productService;
             _boardsService = boardsService;
+            _userService = userService;
         }
 
         #endregion
@@ -39,5 +42,21 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
         }
 
         #endregion
+
+        #region SearchUserModal
+
+        public async Task<IActionResult> SearchUserModal(FilterUserViewModel filter, string baseName)
+        {
+            filter.TakeEntity = 5;
+
+            var result = await _userService.FilterUsersInModal(filter);
+
+            ViewBag.BaseName = baseName;
+
+            return PartialView("_FilterUsersModalPartial", result);
+        }
+
+        #endregion
+
     }
 }

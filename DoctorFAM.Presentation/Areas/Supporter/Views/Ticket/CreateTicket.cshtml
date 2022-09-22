@@ -15,7 +15,6 @@
     <script>
 
         function FillPartialPageId(pageId, baseName) {
-            console.log("hello");
             var formId = GetFormIdForSearchModal(baseName);
             $("#PartialPageId").val(pageId);
             $(`#${formId}`).submit();
@@ -36,7 +35,7 @@
     </li>
 }
 
-    <form method="post" asp-action="CreateTicket" asp-controller="Ticket" asp-area="Admin">
+    <form method="post" asp-action="CreateTicket" asp-controller="Ticket" asp-area="Supporter">
         <div class="row">
             <div class="col-lg-12 col-sm-12">
                 <div class="widget">
