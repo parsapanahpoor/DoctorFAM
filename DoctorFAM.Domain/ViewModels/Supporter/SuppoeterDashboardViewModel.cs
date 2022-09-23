@@ -28,6 +28,8 @@ namespace DoctorFAM.Domain.ViewModels.Supporter
 
         public List<DoctorReservationDateTime> DoctorReservationDateTimes { get; set; }
 
+        public List<Domain.Entities.Contact.Ticket> ListOfLastestTickets { get; set; }
+
         #endregion
     }
 }

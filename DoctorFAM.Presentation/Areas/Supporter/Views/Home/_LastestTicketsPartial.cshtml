@@ -15,7 +15,7 @@
 
                     @if (Model != null && Model.Any())
                     {
-                        <a id="ShowUserCommentInAdminPanel" asp-action="FilterTickets" asp-controller="Ticket" asp-area="Admin" asp-route-UserEmail="@ViewBag.userEmail" class="badge badge-info">نمایش همه</a>
+                        <a id="ShowUserCommentInAdminPanel" asp-action="FilterTickets" asp-controller="Ticket" asp-area="Supporter" asp-route-UserEmail="@ViewBag.userEmail" class="badge badge-info">نمایش همه</a>
                     }
 
                     <a id="ShowUserCommentInAdminPanelMinus" href="#" data-toggle="collapse">
@@ -82,7 +82,7 @@
 
                                     <td class="tc vm">
 
-                                        <a asp-action="TicketDetail" asp-controller="Ticket" asp-area="Admin" asp-route-id="@ticket.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+                                        <a asp-action="TicketDetail" asp-controller="Ticket" asp-area="Supporter" asp-route-id="@ticket.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
 
                                     </td>
                                 </tr>
@@ -97,7 +97,7 @@
             }
             else
             {
-                <partial name="_AdminNotFoundPartial" />
+                <partial name="_SupporterNotFoundPartial" />
             }
 
 

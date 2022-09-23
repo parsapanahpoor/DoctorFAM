@@ -112,6 +112,13 @@ namespace DoctorFAM.Data.Repository
 
             #endregion
 
+            #region List Of Lastest Tickets 
+
+            model.ListOfLastestTickets = await _context.Tickets.Include(p => p.Owner).Where(p => !p.IsDelete && !p.IsReadByAdmin && p.TicketForAdminAndSupporters
+                                                                        && !p.OnlineVisitRequest).Take(5).OrderByDescending(p => p.CreateDate).ToListAsync();
+
+            #endregion
+
             return model;
         }
 
@@ -202,8 +209,8 @@ namespace DoctorFAM.Data.Repository
 
             #region List Of Lastest Tickets 
 
-            model.ListOfLastestTickets = await _context.Tickets.Where(p => !p.IsDelete && !p.IsReadByAdmin && p.TicketForAdminAndSupporters
-                                                                        && !p.OnlineVisitRequest).Take(5).ToListAsync();
+            model.ListOfLastestTickets = await _context.Tickets.Include(p=> p.Owner).Where(p => !p.IsDelete && !p.IsReadByAdmin && p.TicketForAdminAndSupporters
+                                                                        && !p.OnlineVisitRequest).Take(5).OrderByDescending(p=> p.CreateDate).ToListAsync();
 
             #endregion
 

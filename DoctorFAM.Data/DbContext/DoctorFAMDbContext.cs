@@ -11,6 +11,7 @@ using DoctorFAM.Domain.Entities.Laboratory;
 using DoctorFAM.Domain.Entities.Languages;
 using DoctorFAM.Domain.Entities.MarketCategory;
 using DoctorFAM.Domain.Entities.Notification;
+using DoctorFAM.Domain.Entities.Nurse;
 using DoctorFAM.Domain.Entities.OnlineVisit;
 using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.Entities.Patient;
@@ -235,6 +236,14 @@ namespace DoctorFAM.Data.DbContext
 
         #endregion
 
+        #region Nurse 
+
+        public DbSet<Nurse> Nurses { get; set; }
+
+        public DbSet<NurseInfo> NurseInfo { get; set; }
+
+        #endregion
+
         #endregion
 
         #region On Model Creating
@@ -414,6 +423,16 @@ namespace DoctorFAM.Data.DbContext
                 CreateDate = DateTime.Now,
                 IsDelete = false,
                 ParentId = 3
+            });
+
+            modelBuilder.Entity<Role>().HasData(new Role
+            {
+                Id = 14,
+                Title = "Nurse",
+                RoleUniqueName = "Nurse",
+                CreateDate = DateTime.Now,
+                IsDelete = false,
+                ParentId = null
             });
 
             #endregion

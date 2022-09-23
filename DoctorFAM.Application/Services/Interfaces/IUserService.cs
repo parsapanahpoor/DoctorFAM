@@ -18,6 +18,9 @@ namespace DoctorFAM.Application.Services.Interfaces
     {
         #region Authorize
 
+        //Register Nurse
+        Task RegisterNurse(string mobile);
+
         //Filter User In Modal
         Task<Domain.ViewModels.UserPanel.FilterUserViewModel> FilterUsersInModal(Domain.ViewModels.UserPanel.FilterUserViewModel filter);
 
