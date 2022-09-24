@@ -382,6 +382,9 @@
   <data name="New Arrival Online Visit Message" xml:space="preserve">
     <value>پیام جدید از درخواست ویزیت آنلاین</value>
   </data>
+  <data name="New Home Nurse Request" xml:space="preserve">
+    <value>درخواست جدید برای پرستار در منزل</value>
+  </data>
   <data name="New Password" xml:space="preserve">
     <value>رمز عبور جدید</value>
   </data>

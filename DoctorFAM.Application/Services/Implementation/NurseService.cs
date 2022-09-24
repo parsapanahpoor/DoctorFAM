@@ -30,14 +30,16 @@ namespace DoctorFAM.Application.Services.Implementation
         private readonly IOrganizationRepository _organizationRepository;
         private readonly IWorkAddressRepository _workAddressRepository;
         private readonly IUserService _userService;
+        private readonly IRequestService _requestService;
 
         public NurseService(INurseRepository nurseRepository, IOrganizationRepository organizationRepository,
-                                IWorkAddressRepository workAddressRepository, IUserService userService)
+                                IWorkAddressRepository workAddressRepository, IUserService userService , IRequestService requestService)
         {
             _nurseRepository = nurseRepository;
             _organizationRepository = organizationRepository;
             _workAddressRepository = workAddressRepository;
             _userService = userService;
+            _requestService = requestService;
         }
 
         #endregion
@@ -631,6 +633,36 @@ namespace DoctorFAM.Application.Services.Implementation
             return EditNurseInfoResult.success;
         }
 
+
+        #endregion
+
+        #region Site Side 
+
+        //Get List Of Nurse For Send Notification For Home Nurse Notification 
+        public async Task<List<string?>> GetListOfNursesForArrivalsHomeNurseRequests(ulong requestId)
+        {
+            #region Get Request By Id 
+
+            var request = await _requestService.GetRequestById(requestId);
+            if (request == null) return null;
+
+            #endregion
+
+            #region Get Request Detail 
+
+            var requetsDetail = await _requestService.GetPatientRequestDetailByRequestId(requestId);
+            if (requetsDetail == null) return null;
+
+            #endregion
+
+            #region Get Activated Pharmacy By Home Pharmacy Interests And Location Address
+
+            var returnValue = await _nurseRepository.GetActivatedNurses(requetsDetail.CountryId, requetsDetail.StateId, requetsDetail.CityId);
+
+            #endregion
+
+            return returnValue;
+        }
 
         #endregion
     }

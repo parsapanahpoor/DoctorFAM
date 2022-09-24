@@ -54,5 +54,12 @@ namespace DoctorFAM.Domain.Interfaces
         Task<Nurse?> GetNurseById(ulong nurseId);
 
         #endregion
+
+        #region Site Side 
+
+        //Get Activated Nurses For Send Correct Notification For Arrival Home Nurse Request 
+        Task<List<string?>> GetActivatedNurses(ulong countryId, ulong stateId, ulong cityId);
+
+        #endregion
     }
 }

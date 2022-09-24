@@ -1,4 +1,5 @@
 ﻿
+using DoctorFAM.Application.Convertors;
 using DoctorFAM.Application.Interfaces;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.DataLayer.Entities;
@@ -310,6 +311,24 @@ namespace DoctorFAM.Application.Services.Implementation
             #endregion
 
             #endregion
+
+            #region Patient Request DateTime Detail
+
+            var time = model.SendDate.ToMiladiDateTime();
+
+            PatientRequestDateTimeDetail datetimeRequest = new PatientRequestDateTimeDetail()
+            {
+                SendDate = time,
+                RequestId = model.RequestId,
+                CreateDate = DateTime.Now,
+                StartTime = model.StartTime,
+                EndTime = 0,
+            };
+
+            await _request.AddPatientRequestDateTimeDetail(datetimeRequest);
+
+            #endregion
+
 
             return CreatePatientAddressResult.Success;
         }

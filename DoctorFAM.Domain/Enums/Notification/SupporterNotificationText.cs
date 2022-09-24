@@ -15,21 +15,23 @@ namespace DoctorFAM.Domain.Enums.Notification
         ApprovalOfTheRequestFromThePharmacy,
         [Display(Name = "Providing an invoice from the pharmacy")]
         ProvidingAnInvoiceFromThePharmacy,
-        [Display(Name ="Accept Invoice From Customer")]
+        [Display(Name = "Accept Invoice From Customer")]
         AcceptInvoiceFromCustomer,
         [Display(Name = "Delivery by courier")]
         DeliveryByCourier,
         [Display(Name = "Received by the customer")]
         ReceivedByTheCustomer,
-        [Display(Name ="Take Reservation")]
+        [Display(Name = "Take Reservation")]
         TakeReservation,
-        [Display(Name ="Family Home Request")]
+        [Display(Name = "Family Home Request")]
         FamilyHomeRequest,
         [Display(Name = "Online Visit")]
         OnlineVisitRequest,
         [Display(Name = "New Arrival Online Visit Message")]
         NewArrivalOnlineVisitMessage,
-        [Display(Name ="Nurse Information Insert")]
-        NurseInformationInsert
+        [Display(Name = "Nurse Information Insert")]
+        NurseInformationInsert,
+        [Display(Name = "New Home Nurse Request")]
+        NewHomeNurseRequest,
     }
 }

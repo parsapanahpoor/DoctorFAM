@@ -61,5 +61,12 @@ namespace DoctorFAM.Application.Services.Interfaces
         Task<EditNurseInfoResult> EditNurseInfoAdminSide(NurseInfoDetailViewModel model);
 
         #endregion
+
+        #region Site Side 
+
+        //Get List Of Nurse For Send Notification For Home Nurse Notification 
+        Task<List<string?>> GetListOfNursesForArrivalsHomeNurseRequests(ulong requestId);
+
+        #endregion
     }
 }

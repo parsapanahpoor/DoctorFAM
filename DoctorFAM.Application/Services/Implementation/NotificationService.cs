@@ -22,10 +22,11 @@ namespace DoctorFAM.Application.Services.Implementation
         private readonly IHomePharmacyServicec _homePharmacyService;
         private readonly IReservationService _reservationService;
         private readonly IOnlineVisitService _onlineVisitService;
+        private readonly INurseService _nurseService;
 
         public NotificationService(INotificationRepository notificationService, IUserService userService,
                                     IRequestService requestService, IHomePharmacyServicec homePharmacyService, IReservationService reservationService
-                                        , IOnlineVisitService onlineVisitService)
+                                        , IOnlineVisitService onlineVisitService, INurseService nurseService)
         {
             _notificationService = notificationService;
             _userService = userService;
@@ -33,6 +34,7 @@ namespace DoctorFAM.Application.Services.Implementation
             _homePharmacyService = homePharmacyService;
             _reservationService = reservationService;
             _onlineVisitService = onlineVisitService;
+            _nurseService = nurseService;
         }
 
         #endregion
@@ -45,6 +47,40 @@ namespace DoctorFAM.Application.Services.Implementation
             #region Get Validated Pharmacyes
 
             var usersId = await _homePharmacyService.GetListOfPharmacysForArrivalsHomePharmacyRequests(requestId);
+
+            #endregion
+
+            #region Fill Notification Entity
+
+            List<SupporterNotification> model = new List<SupporterNotification>();
+
+            foreach (var item in usersId)
+            {
+                SupporterNotification notif = new SupporterNotification()
+                {
+                    CreateDate = DateTime.Now,
+                    IsDelete = false,
+                    IsSeen = false,
+                    SupporterNotificationText = SupporterNotificationText,
+                    TargetId = requestId,
+                    UserId = senderId,
+                    ReciverId = Convert.ToUInt64(Int64.Parse(item)),
+                };
+
+                model.Add(notif);
+            };
+
+            await _notificationService.CreateRangeSupporter(model);
+
+            #endregion
+        }
+
+        //Create Notification For Nurse From Home Nurse Request 
+        public async Task CreateNotificationForNurseFromHomeNurseRequest(ulong requestId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId)
+        {
+            #region Get Validated Nurses
+
+            var usersId = await _nurseService.GetListOfNursesForArrivalsHomeNurseRequests(requestId);
 
             #endregion
 
@@ -252,6 +288,13 @@ namespace DoctorFAM.Application.Services.Implementation
                 user.AddRange(supporters);
             }
 
+            if (SupporterNotificationText == SupporterNotificationText.NewHomeNurseRequest)
+            {
+                //Get Home Nurse Supporters
+                var supporters = await _userService.GetHomeNurseSupporters();
+                user.AddRange(supporters);
+            }
+
             #endregion
 
             #endregion
@@ -405,7 +448,7 @@ namespace DoctorFAM.Application.Services.Implementation
         //Create Notification For Online Visit Doctors 
         public async Task<bool> CreateNotificationForOnlineVisitDoctors(ulong targetId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId)
         {
-            #region Get Admins And Supporters 
+            #region Get Doctors 
 
             List<string> user = new List<string>();
 

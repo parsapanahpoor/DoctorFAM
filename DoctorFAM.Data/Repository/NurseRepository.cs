@@ -187,5 +187,48 @@ namespace DoctorFAM.Data.Repository
         }
 
         #endregion
+
+        #region Site Side 
+
+        //Get Activated Nurses For Send Correct Notification For Arrival Home Nurse Request 
+        public async Task<List<string?>> GetActivatedNurses(ulong countryId, ulong stateId, ulong cityId)
+        {
+            #region Get Home Pharmacy Interests Pharmacys  
+
+            var users = await _context.Nurses.Include(p => p.User).Where(p => !p.IsDelete).Select(p=> p.UserId).ToListAsync();
+            if (users == null) return null;
+
+            #endregion
+
+            #region Check User Work Addresses 
+
+            //Initial Model Of String 
+            List<string?> returnValue = new List<string?>();
+
+            foreach (var item in users)
+            {
+                //Check Nurses Location By Country Id && State Id && CityId
+                var checkLocation = await _context.WorkAddresses.FirstOrDefaultAsync(p => !p.IsDelete && p.CityId == cityId && p.CountryId == countryId && p.StateId == stateId
+                                                              && p.UserId == item);
+
+                if (checkLocation != null)
+                {
+                    //Check Nurse Is Activated
+                    var activated = await _context.Organizations.FirstOrDefaultAsync(p => !p.IsDelete && p.OwnerId == checkLocation.UserId
+                                            && p.OrganizationType == Domain.Enums.Organization.OrganizationType.Nurse && p.OrganizationInfoState == Domain.Entities.Doctors.OrganizationInfoState.Accepted);
+
+                    if (activated != null)
+                    {
+                        returnValue.Add(activated.OwnerId.ToString());
+                    }
+                }
+            }
+
+            #endregion
+
+            return returnValue;
+        }
+
+        #endregion
     }
 }

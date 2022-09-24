@@ -1,13 +1,18 @@
-﻿using DoctorFAM.Application.Extensions;
+﻿using DoctorFAM.Application.Convertors;
+using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Interfaces;
+using DoctorFAM.Application.Services.Implementation;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Data.DbContext;
 using DoctorFAM.Domain.Enums.RequestType;
 using DoctorFAM.Domain.ViewModels.Site.Common;
+using DoctorFAM.Domain.ViewModels.Site.Notification;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
 using DoctorFAM.Domain.ViewModels.Site.Request;
+using DoctorFAM.Web.Hubs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace DoctorFAM.Web.Controllers
 {
@@ -16,23 +21,21 @@ namespace DoctorFAM.Web.Controllers
     {
         #region Ctor
 
-        public IHomeNurseService _homeNurseService;
-
-        public ILocationService _locationService;
-
-        public IPatientService _patientService;
-
-        public IRequestService _requestService;
-
-        public IUserService _userService;
-
+        private readonly IHomeNurseService _homeNurseService;
+        private readonly ILocationService _locationService;
+        private readonly IPatientService _patientService;
+        private readonly IRequestService _requestService;
+        private readonly IUserService _userService;
         private readonly IPopulationCoveredService _populationCovered;
-
         private readonly ISiteSettingService _siteSettingService;
+        private readonly IHubContext<NotificationHub> _notificationHub;
+        private readonly INotificationService _notificationService;
+        private readonly INurseService _nurseService;
 
         public HomeNurseController(IHomeNurseService homeNurseService, ILocationService locationService, IPatientService patientService
                                     , IRequestService requestService, IUserService userService , ISiteSettingService siteSettingService ,
-                                      IPopulationCoveredService populationCovered)
+                                      IPopulationCoveredService populationCovered, IHubContext<NotificationHub> notificationHub, INotificationService notificationService
+                                            , INurseService nurseService)
         {
             _homeNurseService = homeNurseService;
             _locationService = locationService;
@@ -41,6 +44,9 @@ namespace DoctorFAM.Web.Controllers
             _userService = userService;
             _siteSettingService = siteSettingService;
             _populationCovered = populationCovered;
+            _notificationHub = notificationHub;
+            _notificationService = notificationService;
+            _nurseService = nurseService;
         }
 
         #endregion
@@ -377,6 +383,42 @@ namespace DoctorFAM.Web.Controllers
 
                     //Pay Home Nurse Tariff
                     await _homeNurseService.PayHomeNurseTariff(User.GetUserId(), homeNurseTariff);
+
+                    #region Send Notification In SignalR
+
+                    //Create Notification For Supporters And Admins
+                    var notifyResult = await _notificationService.CreateSupporterNotification(request.Id, Domain.Enums.Notification.SupporterNotificationText.NewHomeNurseRequest, Domain.Enums.Notification.NotificationTarget.request, User.GetUserId());
+
+                    //Create Notification For Nurses 
+                    await _notificationService.CreateNotificationForNurseFromHomeNurseRequest(request.Id, Domain.Enums.Notification.SupporterNotificationText.NewHomeNurseRequest, Domain.Enums.Notification.NotificationTarget.request, User.GetUserId());
+
+                    //Get Current User
+                    var currentUser = await _userService.GetUserById(User.GetUserId());
+
+                    if (notifyResult)
+                    {
+                        //Get List Of Admins And Supporter To Send Notification Into Them
+                        var users = await _userService.GetAdminsAndSupportersNotificationForSendNotificationInHomePharmacy();
+
+                        //Get List Of Validated Nurses For Send Notification To Them 
+                        users.AddRange(await _nurseService.GetListOfNursesForArrivalsHomeNurseRequests(request.Id));
+
+                        //Fill Send Supporter Notification ViewModel For Send Notification
+                        SendSupporterNotificationViewModel viewModel = new SendSupporterNotificationViewModel()
+                        {
+                            CreateNotificationDate = $"{DateTime.Now.ToShamsi()} - {DateTime.Now.Hour}:{DateTime.Now.Minute}",
+                            NotificationText = "درخواست جدید برای پرستار در منزل",
+                            RequestId = request.Id,
+                            Username = currentUser.Username,
+                            UserImage = currentUser.Avatar
+                        };
+
+                        await _notificationHub.Clients.Users(users).SendAsync("SendSupporterNotification", viewModel);
+                    }
+
+                    #endregion
+
+                    TempData[SuccessMessage] = "لطفا تا تایید پرستار صبور باشید.";
 
                     return View();
                 }

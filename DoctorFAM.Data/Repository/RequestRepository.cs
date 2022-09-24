@@ -51,6 +51,13 @@ namespace DoctorFAM.Data.Repository
             await _context.SaveChangesAsync();
         }
 
+        //Add Patient Request Date Time Detail 
+        public async Task AddPatientRequestDateTimeDetail(PatientRequestDateTimeDetail request)
+        {
+            await _context.PatientRequestDateTimeDetails.AddAsync(request);
+            await _context.SaveChangesAsync();
+        }
+
         //Get Request Transfering Price From Operator 
         public async Task<RequestTransferingPriceFromOperator?> GetRequestTransferingPriceFromOperator(ulong sellerId , ulong requestId)
         {

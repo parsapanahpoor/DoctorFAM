@@ -68,6 +68,12 @@ namespace DoctorFAM.Data.Repository
             return await _context.UserRoles.Include(p => p.User).Where(p => !p.IsDelete && p.RoleId == 13).Select(p => p.User).ToListAsync();
         }
 
+        //Get Home Nurse Supporters
+        public async Task<List<User>?> GetHomeNurseSupporters()
+        {
+            return await _context.UserRoles.Include(p => p.User).Where(p => !p.IsDelete && p.RoleId == 8).Select(p => p.User).ToListAsync();
+        }
+
         //Get List Of Admins and Supporters User Id For Send Notification For Home Pharmacy
         public async Task<List<string>?> GetAdminsAndSupportersNotificationForSendNotificationInHomePharmacy()
         {

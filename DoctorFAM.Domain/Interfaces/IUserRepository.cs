@@ -30,6 +30,9 @@ namespace DoctorFAM.Domain.Interfaces
 
         #region Admin Side 
 
+        //Get Home Nurse Supporters
+        Task<List<User>?> GetHomeNurseSupporters();
+
         //Get Online Visit Supporters
         Task<List<User>?> GetOnlineVisitSupporters();
 

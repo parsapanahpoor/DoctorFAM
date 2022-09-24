@@ -473,6 +473,12 @@ namespace DoctorFAM.Application.Services.Implementation
             return await _userRepository.GetOnlineVisitSupporters();
         }
 
+        //Get Home Nurse Supporters
+        public async Task<List<User>?> GetHomeNurseSupporters()
+        {
+            return await _userRepository.GetHomeNurseSupporters();
+        }
+
         //Update User 
         public async Task UpdateUser(User user)
         {

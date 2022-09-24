@@ -12,6 +12,9 @@ namespace DoctorFAM.Application.Services.Interfaces
     {
         #region Site Side 
 
+        //Create Notification For Nurse From Home Nurse Request 
+        Task CreateNotificationForNurseFromHomeNurseRequest(ulong requestId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId);
+
         //Create Notification For Pharmacy From Home Pharmacy Request 
         Task CreateNotificationForPharmacyFromHomePharmacyRequest(ulong requestId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId);
 

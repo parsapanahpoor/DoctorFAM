@@ -28,6 +28,9 @@ namespace DoctorFAM.Domain.Interfaces
 
         #region Patient Request Detail
 
+        //Add Patient Request Date Time Detail 
+        Task AddPatientRequestDateTimeDetail(PatientRequestDateTimeDetail request);
+
         Task AddPatientRequestDetail(PaitientRequestDetail request);
 
         //Get Request Detail By Request Id

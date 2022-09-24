@@ -70,6 +70,9 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Get Online Visit Supporters
         Task<List<User>?> GetOnlineVisitSupporters();
 
+        //Get Home Nurse Supporters
+        Task<List<User>?> GetHomeNurseSupporters();
+
         //Get List Of Admins and Supporters User Id For Send Notification For Online Request
         Task<List<string>?> GetAdminsAndSupportersNotificationForSendNotificationInOnlineVisit();
 
