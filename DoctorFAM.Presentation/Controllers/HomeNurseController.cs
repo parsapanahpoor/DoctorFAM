@@ -2,6 +2,7 @@
 using DoctorFAM.Application.Interfaces;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Data.DbContext;
+using DoctorFAM.Domain.Enums.RequestType;
 using DoctorFAM.Domain.ViewModels.Site.Common;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
 using DoctorFAM.Domain.ViewModels.Site.Request;
@@ -81,6 +82,12 @@ namespace DoctorFAM.Web.Controllers
 
             #endregion
 
+            #region Request Validation 
+
+            if (!await _requestService.RequestValidatorWhileCompeleteSteps(requestId, User.GetUserId(), null, RequestType.HomeNurse)) return NotFound();
+
+            #endregion
+
             #region Get User Population Covered
 
             ViewBag.PopulationCovered = await _populationCovered.GetUserPopulation(User.GetUserId());
@@ -100,10 +107,19 @@ namespace DoctorFAM.Web.Controllers
 
             #endregion
 
+            #region Get User By Id 
+
+            var user = await _userService.GetUserById(User.GetUserId());
+
+            #endregion
+
             return View(new PatientViewModel()
             {
                 RequestId = requestId,
                 UserId = User.GetUserId(),
+                NationalId = !string.IsNullOrEmpty(user.NationalId) ? user.NationalId : null,
+                PatientName = !string.IsNullOrEmpty(user.FirstName) ? user.FirstName : null,
+                PatientLastName = !string.IsNullOrEmpty(user.LastName) ? user.LastName : null,
             });
         }
 
@@ -113,21 +129,19 @@ namespace DoctorFAM.Web.Controllers
             #region Data Validation
 
             if (!await _userService.IsExistUserById(User.GetUserId())) return NotFound();
+            if (User.GetUserId() != patient.UserId) return NotFound();
+
+            #endregion
+
+            #region Request Validation 
+
+            if (!await _requestService.RequestValidatorWhileCompeleteSteps(patient.RequestId, User.GetUserId(), null, RequestType.HomeNurse)) return NotFound();
 
             #endregion
 
             #region Model State
 
-            if (!ModelState.IsValid)
-            {
-                #region Get User Population Covered
-
-                ViewBag.PopulationCovered = await _populationCovered.GetUserPopulation(User.GetUserId());
-
-                #endregion
-
-                return NotFound();
-            }
+            if (!ModelState.IsValid) return View(patient);
 
             #endregion
 
@@ -172,14 +186,17 @@ namespace DoctorFAM.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> PatientRequestDetail(ulong requestId, ulong patientId)
         {
+            #region Request Validation 
+
+            if (!await _requestService.RequestValidatorWhileCompeleteSteps(requestId, User.GetUserId(), null, RequestType.HomeNurse)) return NotFound();
+
+            #endregion
+
             #region Is Exist Request & Patient
 
-            if (!await _requestService.IsExistRequestByRequestId(requestId))
-            {
-                return NotFound();
-            }
+            var request = await _requestService.GetRequestById(requestId);
 
-            if (!await _patientService.IsExistPatientById(patientId))
+            if (!await _patientService.IsExistPatientById(request.PatientId.Value))
             {
                 return NotFound();
             }
@@ -188,7 +205,7 @@ namespace DoctorFAM.Web.Controllers
 
             #region Page Data
 
-            ViewData["Countries"] = await _locationService.GetAllCountries();
+            ViewData["Countries"] = await _locationService.GetAllCountriesForHomeNurse();
 
             #endregion
 
@@ -202,6 +219,18 @@ namespace DoctorFAM.Web.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> PatientRequestDetail(PatienAddressViewModel patientRequest)
         {
+            #region Page Data
+
+            ViewData["Countries"] = await _locationService.GetAllCountriesForHomeNurse();
+
+            #endregion
+
+            #region Request Validation 
+
+            if (!await _requestService.RequestValidatorWhileCompeleteSteps(patientRequest.RequestId, User.GetUserId(), null, RequestType.HomeNurse)) return NotFound();
+
+            #endregion
+
             #region Model State Validation
 
             if (!ModelState.IsValid)

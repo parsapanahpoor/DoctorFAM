@@ -84,6 +84,18 @@ namespace DoctorFAM.Data.Repository
             return model;
         }
 
+        //Get List Of Admins About Send Notification For Arrival New Nurses Inormations
+        public async Task<List<string>?> GetListOfAdminsAboutSendNotificationForArrivalNewNursesInormations()
+        {
+            List<string> model = new List<string>();
+
+            //Get Admins User Id
+            var admins = await _context.Users.Where(p => !p.IsDelete && p.IsAdmin).Select(p => p.Id.ToString()).ToListAsync();
+            model.AddRange(admins);
+
+            return model;
+        }
+
         //Get List Of Admins and Supporters User Id For Send Notification For Online Request
         public async Task<List<string>?> GetAdminsAndSupportersNotificationForSendNotificationInOnlineVisit()
         {

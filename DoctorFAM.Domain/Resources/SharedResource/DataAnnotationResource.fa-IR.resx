@@ -397,6 +397,9 @@
   <data name="NotWorking" xml:space="preserve">
     <value>خارج از دسترسی</value>
   </data>
+  <data name="Nurse Information Insert" xml:space="preserve">
+    <value>ثبت اطلاعت چدید از پرستار</value>
+  </data>
   <data name="Office address" xml:space="preserve">
     <value>آدرس مطب</value>
   </data>

@@ -1,4 +1,5 @@
-﻿using DoctorFAM.Application.Generators;
+﻿using DoctorFAM.Application.Extensions;
+using DoctorFAM.Application.Generators;
 using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Application.StaticTools;
@@ -7,6 +8,8 @@ using DoctorFAM.Domain.Entities.Nurse;
 using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.Entities.WorkAddress;
 using DoctorFAM.Domain.Interfaces;
+using DoctorFAM.Domain.ViewModels.Admin.Doctor;
+using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo;
 using DoctorFAM.Domain.ViewModels.Nurse.NurseInfo;
 using DoctorFAM.Domain.ViewModels.Nurse.NurseSideBarInfo;
@@ -166,7 +169,6 @@ namespace DoctorFAM.Application.Services.Implementation
             {
                 //Get Current Nurse Information
                 var nurseInfo = await GetNurseInformationByUserId(userId);
-                if(nurseInfo == null) return null;
 
                 //Fill Model For return Value
                 ManageNurseInfoViewModel model = new ManageNurseInfoViewModel()
@@ -175,8 +177,8 @@ namespace DoctorFAM.Application.Services.Implementation
                     FirstName = user.FirstName,
                     LastName = user.LastName,
                     NurseInfosType = nurseOffice.OrganizationInfoState,
-                    Education = nurseInfo.Education,
-                    NationalCode = nurseInfo.NationalCode,
+                    Education = ((nurseInfo != null) ? nurseInfo.Education : null),
+                    NationalCode = ((nurseInfo != null) ? nurseInfo.NationalCode : 0),
                     RejectDescription = nurseOffice.RejectDescription
                 };
 
@@ -331,6 +333,8 @@ namespace DoctorFAM.Application.Services.Implementation
                         NurseId = nurse.Id,
                         Education = model.Education.SanitizeText(),
                         NationalCode = model.NationalCode,
+                        FirstName = model.FirstName,
+                        LastName = model.LastName
                     };
 
                     #endregion
@@ -487,6 +491,144 @@ namespace DoctorFAM.Application.Services.Implementation
             #endregion
 
             return AddOrEditNurseInfoResult.Success;
+        }
+
+        //Filter Nurse Info Admin Side
+        public async Task<ListOfNurseInfoViewModel> FilterNurseInfoAdminSide(ListOfNurseInfoViewModel filter)
+        {
+            return await _nurseRepository.FilterNurseInfoAdminSide(filter);
+        }
+
+        #endregion
+
+        #region Admin Side 
+
+        //Get Nurse Info By Nurse Id
+        public async Task<NurseInfo?> GetNurseInfoByNurseId(ulong NurseId)
+        {
+            return await _nurseRepository.GetNurseInfoByNurseId(NurseId);
+        }
+
+        //Get Nurse By Nurse Id
+        public async Task<Nurse?> GetNurseById(ulong nurseId)
+        {
+            return await _nurseRepository.GetNurseById(nurseId);
+        }
+
+        //Fill Nurse Info Detail ViewModel
+        public async Task<NurseInfoDetailViewModel?> FillNurseInfoDetailViewModel(ulong NurseId)
+        {
+            #region Get Nurse Info
+
+            //Get Nurse Info By Id
+            var info = await _nurseRepository.GetNurseInfoByNurseId(NurseId);
+            if (info == null) return null;
+
+            #endregion
+
+            #region Get Nurse Info
+
+            var nurse = await GetNurseById(info.NurseId);
+            if (nurse == null) return null;
+
+            #endregion
+
+            #region Get Current Nurse Office
+
+            var nurseOffice = await _organizationRepository.GetNurseOrganizationByUserId(nurse.UserId);
+            if (nurseOffice == null) return null;
+            if (nurseOffice.OrganizationType != Domain.Enums.Organization.OrganizationType.Nurse) return null;
+
+            #endregion
+
+            #region Fill View Model
+
+            NurseInfoDetailViewModel model = new NurseInfoDetailViewModel()
+            {
+                UserId = nurse.UserId,
+                NationalCode = info.NationalCode,
+                Education = info.Education,
+                RejectDescription = nurseOffice.RejectDescription,
+                DoctorsInfosType = nurseOffice.OrganizationInfoState,
+                Id = info.Id,
+                NurseId = nurse.Id,
+            };
+
+            #endregion
+
+            #region Get Nurse Work Addresses
+
+            model.WorkAddresses = await _workAddressRepository.GetUserWorkAddressesByUserId(nurse.UserId);
+
+            #endregion
+
+            return model;
+        }
+
+        //Get Nurse Info By Nurse Id
+        public async Task<NurseInfo?> GetNurseInfoById(ulong nurseId)
+        {
+            return await _nurseRepository.GetNurseInfoById(nurseId);
+        }
+
+        //Edit Nurse Info From Admin Panel
+        public async Task<EditNurseInfoResult> EditNurseInfoAdminSide(NurseInfoDetailViewModel model)
+        {
+            #region Get Nurse Info By Id
+
+            //Get Nurse Info By Id
+            var info = await _nurseRepository.GetNurseInfoById(model.Id);
+            if (info == null) return EditNurseInfoResult.faild;
+
+            #endregion
+
+            #region Get Nurse By Id 
+
+            var nurse = await GetNurseById(model.NurseId);
+            if (nurse == null) return EditNurseInfoResult.faild;
+
+            #endregion
+
+            #region Get Current Nurse Office
+
+            var nurseOffice = await _organizationRepository.GetNurseOrganizationByUserId(nurse.UserId);
+            if (nurseOffice == null) return EditNurseInfoResult.faild;
+            if (nurseOffice.OrganizationType != Domain.Enums.Organization.OrganizationType.Nurse) return EditNurseInfoResult.faild;
+
+            #endregion
+
+            #region Update Nurse 
+
+            nurseOffice.OrganizationInfoState = model.DoctorsInfosType;
+            nurseOffice.RejectDescription = model.RejectDescription;
+
+            if (model.DoctorsInfosType == OrganizationInfoState.Accepted)
+            {
+                nurseOffice.RejectDescription = null;
+            }
+
+            await _organizationRepository.UpdateOrganization(nurseOffice);
+
+            #endregion
+
+            #region Edit Nurse Info 
+
+            #region Edit Properties
+
+            info.Education = model.Education;
+            info.NationalCode = model.NationalCode;
+
+            #endregion
+
+            #region Update Method
+
+            await _nurseRepository.UpdateNurseInfo(info);
+
+            #endregion
+
+            #endregion
+
+            return EditNurseInfoResult.success;
         }
 
 

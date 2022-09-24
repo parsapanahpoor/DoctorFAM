@@ -1,4 +1,5 @@
 ﻿using DoctorFAM.Domain.Entities.Nurse;
+using DoctorFAM.Domain.ViewModels.Admin.Doctor;
 using DoctorFAM.Domain.ViewModels.Nurse.NurseSideBarInfo;
 using System;
 using System.Collections.Generic;
@@ -35,6 +36,22 @@ namespace DoctorFAM.Domain.Interfaces
 
         //Add Nurse Info
         Task AddNurseInfo(NurseInfo nurseInfo);
+
+        #endregion
+
+        #region Admin Side 
+
+        //Get Nurse Info By Nurse Info Id
+        Task<NurseInfo?> GetNurseInfoById(ulong nurseInfoId);
+
+        //Filter Nurse Info Admin Side
+        Task<ListOfNurseInfoViewModel> FilterNurseInfoAdminSide(ListOfNurseInfoViewModel filter);
+
+        //Get Nurse Info By Nurse Id
+        Task<NurseInfo?> GetNurseInfoByNurseId(ulong NurseId);
+
+        //Get Nurse By Nurse Id
+        Task<Nurse?> GetNurseById(ulong nurseId);
 
         #endregion
     }

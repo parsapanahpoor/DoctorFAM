@@ -2,6 +2,8 @@
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.Nurse;
 using DoctorFAM.Domain.Interfaces;
+using DoctorFAM.Domain.ViewModels.Admin.Doctor;
+using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo;
 using DoctorFAM.Domain.ViewModels.Nurse.NurseSideBarInfo;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -103,6 +105,85 @@ namespace DoctorFAM.Data.Repository
         {
             await _context.NurseInfo.AddAsync(nurseInfo);
             await _context.SaveChangesAsync();
+        }
+
+        #endregion
+
+        #region Admin Side 
+
+        //Get Nurse Info By Nurse Id
+        public async Task<NurseInfo?> GetNurseInfoByNurseId(ulong NurseId)
+        {
+            return await _context.NurseInfo.Include(p => p.Nurse).FirstOrDefaultAsync(p => !p.IsDelete && p.NurseId == NurseId);
+        }
+
+        //Filter Nurse Info Admin Side
+        public async Task<ListOfNurseInfoViewModel> FilterNurseInfoAdminSide(ListOfNurseInfoViewModel filter)
+        {
+            var query = _context.Organizations
+                .Where(s => !s.IsDelete && s.OrganizationType == Domain.Enums.Organization.OrganizationType.Nurse)
+                .Include(p => p.User)
+                .OrderByDescending(s => s.CreateDate)
+                .AsQueryable();
+
+            #region State
+
+            switch (filter.NurseState)
+            {
+                case NurseState.All:
+                    break;
+                case NurseState.Accepted:
+                    query = query.Where(p => p.OrganizationInfoState == OrganizationInfoState.Accepted);
+                    break;
+                case NurseState.WaitingForConfirm:
+                    query = query.Where(p => p.OrganizationInfoState == OrganizationInfoState.WatingForConfirm);
+                    break;
+                case NurseState.Rejected:
+                    query = query.Where(p => p.OrganizationInfoState == OrganizationInfoState.Rejected);
+                    break;
+            }
+
+            #endregion
+
+            #region Filter
+
+            if (!string.IsNullOrEmpty(filter.Email))
+            {
+                query = query.Where(s => EF.Functions.Like(s.User.Email, $"%{filter.Email}%"));
+            }
+
+            if (!string.IsNullOrEmpty(filter.Mobile))
+            {
+                query = query.Where(s => s.User.Mobile != null && EF.Functions.Like(s.User.Mobile, $"%{filter.Mobile}%"));
+            }
+
+            if (!string.IsNullOrEmpty(filter.FullName))
+            {
+                query = query.Where(s => s.User.Username.Contains(filter.FullName));
+            }
+
+            if (!string.IsNullOrEmpty(filter.NationalCode))
+            {
+                query = query.Where(s => s.User.NationalId.Contains(filter.NationalCode));
+            }
+
+            #endregion
+
+            await filter.Paging(query);
+
+            return filter;
+        }
+
+        //Get Nurse By Nurse Id
+        public async Task<Nurse?> GetNurseById(ulong nurseId)
+        {
+            return await _context.Nurses.Include(p => p.User).FirstOrDefaultAsync(p => !p.IsDelete && p.Id == nurseId);
+        }
+            
+        //Get Nurse Info By Nurse Info Id
+        public async Task<NurseInfo?> GetNurseInfoById(ulong nurseInfoId)
+        {
+            return await _context.NurseInfo.Include(p => p.Nurse).FirstOrDefaultAsync(p => !p.IsDelete && p.Id == nurseInfoId);
         }
 
         #endregion

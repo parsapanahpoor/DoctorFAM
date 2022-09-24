@@ -425,6 +425,12 @@ namespace DoctorFAM.Application.Services.Implementation
 
         #region Admin
 
+        //Get List Of Admins About Send Notification For Arrival New Nurses Inormations
+        public async Task<List<string>?> GetListOfAdminsAboutSendNotificationForArrivalNewNursesInormations()
+        {
+            return await _userRepository.GetListOfAdminsAboutSendNotificationForArrivalNewNursesInormations();
+        }
+
         //Get List Of Admins and Supporters User Id For Send Notification  For Home Pharmacy
         public async Task<List<string>?> GetAdminsAndSupportersNotificationForSendNotificationInHomePharmacy()
         {
@@ -471,9 +477,9 @@ namespace DoctorFAM.Application.Services.Implementation
         public async Task UpdateUser(User user)
         {
             _context.Users.Update(user);
-            await _context.SaveChangesAsync();  
+            await _context.SaveChangesAsync();
         }
-        
+
         //Filter User In Modal
         public async Task<Domain.ViewModels.UserPanel.FilterUserViewModel> FilterUsersInModal(Domain.ViewModels.UserPanel.FilterUserViewModel filter)
         {

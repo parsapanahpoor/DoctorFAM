@@ -1,13 +1,16 @@
-﻿using DoctorFAM.Application.Extensions;
+﻿using DoctorFAM.Application.Convertors;
+using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Interfaces;
 using DoctorFAM.Application.Services.Interfaces;
-using DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo;
 using DoctorFAM.Domain.ViewModels.Nurse.NurseInfo;
+using DoctorFAM.Domain.ViewModels.Site.Notification;
+using DoctorFAM.Web.Hubs;
 using DoctorFAM.Web.Nurse.Controllers;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Localization;
 
-namespace DoctorFAM.Web.Areas.Doctor.Controllers
+namespace DoctorFAM.Web.Areas.Nurse.Controllers
 {
     public class NurseInfoController : NurseBaseController
     {
@@ -17,14 +20,22 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
         private readonly IOrganizationService _organization;
         private readonly ILocationService _locationService;
         private readonly INurseService _nurseService;
+        private readonly IHubContext<NotificationHub> _notificationHub;
+        private readonly INotificationService _notificationService;
+        private readonly IUserService _userService;
 
         public NurseInfoController(IStringLocalizer<SharedLocalizer.SharedLocalizer> sharedLocalizer
-                                    , IOrganizationService organization, ILocationService locationService , INurseService nurseService)
+                                    , IOrganizationService organization, ILocationService locationService
+                                        , INurseService nurseService, IHubContext<NotificationHub> notificationHub, INotificationService notificationService
+                                            , IUserService userService)
         {
             _sharedLocalizer = sharedLocalizer;
             _organization = organization;
             _locationService = locationService;
             _nurseService = nurseService;
+            _notificationHub = notificationHub;
+            _notificationService = notificationService;
+            _userService = userService;     
         }
 
         #endregion
@@ -34,7 +45,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
         public async Task<IActionResult> PageOfManageNurseInfo()
         {
             //Get Nurse Organization By Current User Id 
-            ViewBag.DoctorOffice = await _organization.GetDoctorOrganizationByUserId(User.GetUserId());
+            ViewBag.NurseOffice = await _organization.GetNurseOrganizationByUserId(User.GetUserId());
 
             return View(await _nurseService.GetNurseByUserId(User.GetUserId()));
         }
@@ -127,6 +138,36 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
                     return RedirectToAction("ManageNurseInfo", "NurseInfo", new { area = "Nurse" });
 
                 case AddOrEditNurseInfoResult.Success:
+
+                    #region Send Notification In SignalR
+
+                    //Create Notification For Admins
+                    var notifyResult = await _notificationService.CreateNotificationForAdminAboutInsertInformationFromNurse(User.GetUserId(), Domain.Enums.Notification.SupporterNotificationText.NurseInformationInsert, Domain.Enums.Notification.NotificationTarget.NurseInfoInsert, User.GetUserId());
+
+                    //Get Current User
+                    var currentUser = await _userService.GetUserById(User.GetUserId());
+
+                    if (notifyResult)
+                    {
+                        //Get List Of Admins To Send Notification Into Them
+                        var users = await _userService.GetListOfAdminsAboutSendNotificationForArrivalNewNursesInormations();
+
+                        //Fill Send Supporter Notification ViewModel For Send Notification
+                        SendSupporterNotificationViewModel viewModel = new SendSupporterNotificationViewModel()
+                        {
+                            CreateNotificationDate = $"{DateTime.Now.ToShamsi()} - {DateTime.Now.Hour}:{DateTime.Now.Minute}",
+                            NotificationText = "ارسال اطلاعات توسط پرستار",
+                            RequestId = User.GetUserId(),
+                            Username = User.Identity.Name,
+                            UserImage = currentUser.Avatar
+                        };
+
+                        await _notificationHub.Clients.Users(users).SendAsync("SendSupporterNotification", viewModel);
+                    }
+
+                    #endregion
+
+
                     TempData[SuccessMessage] = _sharedLocalizer["Operation Successfully"].Value;
                     return RedirectToAction("Index", "Home", new { area = "Nurse" });
             }

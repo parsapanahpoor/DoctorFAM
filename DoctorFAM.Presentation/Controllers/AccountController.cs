@@ -282,9 +282,9 @@ namespace DoctorFAM.Web.Controllers
 
                     #region Send Wellcome SMS
 
-                    var message = Messages.SendSMSForLogin();
+                    //var message = Messages.SendSMSForLogin();
 
-                    await _smsservice.SendSimpleSMS(login.Mobile, message);
+                    //await _smsservice.SendSimpleSMS(login.Mobile, message);
 
                     #endregion
 

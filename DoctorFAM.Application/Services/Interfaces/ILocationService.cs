@@ -54,6 +54,9 @@ namespace DoctorFAM.Application.Interfaces
 
         Task<List<SelectListViewModel>> GetAllCountries();
 
+        //Get All Countries For Home Nurse Service
+        Task<List<SelectListViewModel>> GetAllCountriesForHomeNurse();
+
         #endregion
     }
 }

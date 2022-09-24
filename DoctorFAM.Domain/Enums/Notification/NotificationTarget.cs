@@ -10,6 +10,7 @@ namespace DoctorFAM.Domain.Enums.Notification
     {
         request,
         reservation,
-        HomeFamilyRequest
+        HomeFamilyRequest,
+        NurseInfoInsert
     }
 }

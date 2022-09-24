@@ -64,6 +64,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         #region Admin
 
+        //Get List Of Admins About Send Notification For Arrival New Nurses Inormations
+        Task<List<string>?> GetListOfAdminsAboutSendNotificationForArrivalNewNursesInormations();
+
         //Get Online Visit Supporters
         Task<List<User>?> GetOnlineVisitSupporters();
 

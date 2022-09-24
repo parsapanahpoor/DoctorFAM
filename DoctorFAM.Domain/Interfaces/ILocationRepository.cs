@@ -2,6 +2,7 @@
 using DoctorFAM.Domain.Entities.States;
 using DoctorFAM.Domain.ViewModels.Admin.Location;
 using DoctorFAM.Domain.ViewModels.Common;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -64,6 +65,9 @@ namespace DoctorFAM.Domain.Interfaces
 
         //Get All Countries For Home Pharmacy Service
         Task<List<SelectListViewModel>> GetAllCountriesForHomePharmacy();
+
+        //Get All Countries For Home Nurse Service
+        Task<List<SelectListViewModel>> GetAllCountriesForHomeNurse();
 
         #endregion
     }

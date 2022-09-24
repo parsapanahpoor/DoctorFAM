@@ -49,6 +49,16 @@ namespace DoctorFAM.Domain.ViewModels.Site.Common
         [RegularExpression(@"^[0-9]*$", ErrorMessage = "The information entered is not valid.")]
         public int Distance { get; set; }
 
+        [Required(ErrorMessage = "لطفا{0} را وارد نمایید...")]
+        [Display(Name = "تاریخ مراجعه ی پرستار ")]
+        [RegularExpression(@"^\d{4}\/(0?[1-9]|1[012])\/(0?[1-9]|[12][0-9]|3[01])$", ErrorMessage = "تاریخ وارد شده معتبر نمی باشد")]
+        public string SendDate { get; set; }
+
+        [Display(Name = "ساعت مراجعه ی پرستار")]
+        [Required(ErrorMessage = "لطفا{0} را وارد نمایید...")]
+        [RegularExpression(@"2[0-4]|1[0-9]|[1-9]", ErrorMessage = "ساعت وارد شده معتبر نمی باشد ")]
+        public int StartTime { get; set; }
+
         #endregion
     }
 

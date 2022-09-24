@@ -24,11 +24,11 @@ namespace DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo
 
         [Display(Name = "First Name")]
         [Required(ErrorMessage = "Please Enter {0}")]
-        public string FirstName { get; set; }
+        public string? FirstName { get; set; }
 
         [Display(Name = "Last Name")]
         [Required(ErrorMessage = "Please Enter {0}")]
-        public string LastName { get; set; }
+        public string? LastName { get; set; }
 
         [Display(Name = "education")]
         [Required(ErrorMessage = "Please Enter {0}")]

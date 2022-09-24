@@ -93,6 +93,23 @@
         </li>
 
         <li>
+            <a href="#" class="menu-dropdown">
+                <i class="menu-icon glyphicon glyphicon-user"></i>
+                <span class="menu-text"> @SharedLocalizer["Manage Nurses"]  </span>
+                <i class="menu-expand"></i>
+            </a>
+
+            <ul class="submenu">
+                <li>
+                    <a asp-controller="Nurse" asp-action="ListOfNurseInfo">
+                        <span class="menu-text"> @SharedLocalizer["Manage Nurses Info"]  </span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+
+        <li>
             <a asp-controller="Wallet" asp-action="Index">
                 <i class="menu-icon glyphicon glyphicon-usd"></i>
                 <span class="menu-text"> @SharedLocalizer["Wallet list"]  </span>

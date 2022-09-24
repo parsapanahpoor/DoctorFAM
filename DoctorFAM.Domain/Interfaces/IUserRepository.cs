@@ -48,6 +48,9 @@ namespace DoctorFAM.Domain.Interfaces
         //Get Home Pharmacy Supporters
         Task<List<User>?> GetHomePharmacySupporters();
 
+        //Get List Of Admins About Send Notification For Arrival New Nurses Inormations
+        Task<List<string>?> GetListOfAdminsAboutSendNotificationForArrivalNewNursesInormations();
+
         #endregion
     }
 }

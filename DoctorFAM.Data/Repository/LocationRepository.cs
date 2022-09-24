@@ -288,6 +288,17 @@ namespace DoctorFAM.Data.Repository
                 }).ToListAsync();
         }
 
+        //Get All Countries For Home Nurse Service
+        public async Task<List<SelectListViewModel>> GetAllCountriesForHomeNurse()
+        {
+            return await _context.LocationInfoes.Include(p => p.Location).Where(s => s.Location.ParentId == null && !s.Location.IsDelete && s.Location.HomeNurse)
+                .Select(s => new SelectListViewModel
+                {
+                    Id = s.Location.Id,
+                    Title = s.Title
+                }).ToListAsync();
+        }
+
         #endregion
     }
 }

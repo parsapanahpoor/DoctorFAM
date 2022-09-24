@@ -1,4 +1,5 @@
 ﻿using DoctorFAM.Domain.Entities.Nurse;
+using DoctorFAM.Domain.ViewModels.Admin.Doctor;
 using DoctorFAM.Domain.ViewModels.Nurse.NurseInfo;
 using DoctorFAM.Domain.ViewModels.Nurse.NurseSideBarInfo;
 using System;
@@ -36,6 +37,28 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Add Or Edit Nurse Info From Nurse Panel
         Task<AddOrEditNurseInfoResult> AddOrEditNurseInfoNursePanel(ManageNurseInfoViewModel model);
+
+        //Filter Nurse Info Admin Side
+        Task<ListOfNurseInfoViewModel> FilterNurseInfoAdminSide(ListOfNurseInfoViewModel filter);
+
+        //Get Nurse Info By Nurse Id
+        Task<NurseInfo?> GetNurseInfoByNurseId(ulong NurseId);
+
+        //Get Nurse By Nurse Id
+        Task<Nurse?> GetNurseById(ulong nurseId);
+
+        #endregion
+
+        #region Admin Side 
+
+        //Fill Nurse Info Detail ViewModel
+        Task<NurseInfoDetailViewModel?> FillNurseInfoDetailViewModel(ulong NurseId);
+
+        //Get Nurse Info By Nurse Id
+        Task<NurseInfo?> GetNurseInfoById(ulong nurseId);
+
+        //Edit Nurse Info From Admin Panel
+        Task<EditNurseInfoResult> EditNurseInfoAdminSide(NurseInfoDetailViewModel model);
 
         #endregion
     }

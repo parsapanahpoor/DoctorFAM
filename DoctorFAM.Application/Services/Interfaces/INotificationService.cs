@@ -31,6 +31,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         #region Supporter And Admin 
 
+        //Create Notification For Admin About Insert Information From Nurse
+        Task<bool> CreateNotificationForAdminAboutInsertInformationFromNurse(ulong targetId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId);
+
         //Create Notification For Admin And Supporters
         Task<bool> CreateSupporterNotification(ulong targetId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId);
 

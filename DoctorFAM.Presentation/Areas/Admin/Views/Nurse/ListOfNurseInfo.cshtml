@@ -1,0 +1,219 @@
+﻿@model DoctorFAM.Domain.ViewModels.Admin.Doctor.ListOfNurseInfoViewModel
+@using DoctorFAM.Domain.ViewModels.Admin.Doctor
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Domain.ViewModels.Common
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
+
+
+@{
+    ViewData["Title"] = @Localizer["List Of Nurse Infos"];
+}
+
+@{
+    var roles = ViewData["Roles"] != null ? ViewData["Roles"] as List<SelectListViewModel> : null;
+}
+
+@section Styles
+    {
+
+}
+
+    @section Scripts
+    {
+    <partial name="_JqueryValidation" />
+}
+
+    @section Breadcrumb
+    {
+    <li>
+        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+    </li>
+}
+
+    <div class="row">
+        <div class="col-lg-3 col-sm-12">
+            <div class="widget">
+                <div class="widget-header bordered-bottom bordered-green">
+                    <span class="widget-caption"> @Localizer["Manage Nurse Infos"] </span>
+                </div>
+                <div class="widget-body">
+                    <div>
+                        <form asp-action="ListOfNurseInfo" asp-controller="Nurse" asp-area="Admin" id="filter-search" method="get">
+
+                            <input type="hidden" asp-for="Page" />
+
+                            <div class="form-group">
+                                <label asp-for="FullName"> @Localizer["Username"] </label>
+                                <input type="text" class="form-control" asp-for="FullName">
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="Email"> @Localizer["Email"] </label>
+                                <input type="text" class="form-control" asp-for="Email">
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="Mobile"> @Localizer["Mobile"] </label>
+                                <input type="text" class="form-control" asp-for="Mobile">
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="NationalCode"> @Localizer["NationalCode"] </label>
+                                <input type="text" class="form-control" asp-for="NationalCode">
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="NurseState"> @Localizer["State"] </label>
+                                <select asp-for="NurseState" class="form-control" asp-items="Html.GetEnumSelectList(typeof(NurseState))"></select>
+                            </div>
+
+                            <hr />
+
+                            <div class="row">
+                                <div class="col-md-12 flex-style">
+                                    <button type="submit" class="btn btn-labeled w-100 btn-palegreen">
+                                        <i class="btn-label glyphicon glyphicon-filter"></i>@Localizer["Filter"]
+                                    </button>
+
+                                @if (Context.Request.QueryString.HasValue)
+                                {
+                                    <a asp-action="ListOfNurseInfo" asp-controller="Nurse" asp-area="Admin" class="btn btn-labeled w-100 btn-darkorange">
+                                        <i class="btn-label glyphicon glyphicon-remove"></i>@Localizer["Delete Filter"]
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-9 col-sm-12">
+        <div class="well with-header with-footer table-responsive">
+            <div class="header bordered-azure">
+                <div class="flex-style">
+                    <span>@ViewData["Title"]</span>
+                    <span>@Model.GetShownEntitiesPagesTitle()</span>
+                </div>
+            </div>
+
+            @if (Model.Entities != null && Model.Entities.Any())
+            {
+                <table class="table table-hover table-bordered tc vm">
+                    <thead class="tc vm">
+                        <tr class="tc vm">
+                            <th class="tc vm">
+                                @Localizer["Avatar"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["Personal Info"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["State"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["Access"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["Possibilities"]
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="tc vm">
+                        @foreach (var info in Model.Entities)
+                        {
+                            <tr class="tc vm">
+                                <td class="vm">
+                                    <div class="flex-style-center">
+                                        <img src="@info.User.GetUserAvatar()" class="avatar-style" style="border-radius:50px" />
+                                        <div class="mr-10px">
+                                            <span> @info.User.Username </span>
+                                            <hr class="margin-7" />
+                                            <span>@Localizer["Register Date"] : @info.User.CreateDate.ToShamsi()</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="tc vm">
+                                    <p>
+                                        @Localizer["Email"] :
+                                        @if (info.User.Email == null)
+                                        {
+                                            <span class="mr-8px label label-orange">@Localizer["Empty"] </span>
+                                        }
+                                        else
+                                        {
+                                            @info.User.Email
+                                        }
+                                    </p>
+                                    @if (!string.IsNullOrEmpty(info.User.Mobile))
+                                    {
+                                        <hr class="margin-7" />
+                                        <p>@Localizer["Mobile"] : @info.User.Mobile</p>
+                                    }
+                                </td>
+                                <td class="tc vm">
+                                    <p class="flex-style-center">
+                                        <span> @Localizer["Email State"] </span>
+                                        <span class="mr-8px label @((info.User.IsEmailConfirm) ? "label-success" : "label-orange")">@((info.User.IsEmailConfirm) ? @Localizer["Approved"] : @Localizer["Not Approved"])</span>
+                                    </p>
+                                    <hr class="margin-7" />
+                                    <p class="flex-style-center">
+                                        <span> @Localizer["Mobile State"] </span>
+                                        <span class="mr-8px label @((info.User.IsMobileConfirm) ? "label-success" : "label-orange")">@((info.User.IsMobileConfirm) ? @Localizer["Approved"] : @Localizer["Not Approved"])</span>
+                                    </p>
+                                </td>
+                                <td class="tc vm">
+                                    <p class="flex-style-center">
+                                        <span> @Localizer["Nurse State"] </span>
+                                        @if (info.OrganizationInfoState == DoctorFAM.Domain.Entities.Doctors.OrganizationInfoState.Accepted)
+                                        {
+                                            <span class="mr-8px label label-success"> @Localizer["Accepted"] </span>
+                                        }
+                                        @if (info.OrganizationInfoState == DoctorFAM.Domain.Entities.Doctors.OrganizationInfoState.Rejected)
+                                        {
+                                            <span class="mr-8px label label-danger"> @Localizer["Rejected"] </span>
+                                        }
+                                        @if (info.OrganizationInfoState == DoctorFAM.Domain.Entities.Doctors.OrganizationInfoState.WatingForConfirm)
+                                        {
+                                            <span class="mr-8px label label-warning"> @Localizer["WaitingForConfirm"] </span>
+                                        }
+                                        @if (info.OrganizationInfoState == DoctorFAM.Domain.Entities.Doctors.OrganizationInfoState.JustRegister)
+                                        {
+                                            <span class="mr-8px label label-warning"> @Localizer["Register yet"] </span>
+                                        }
+                                    </p>
+                                    <hr class="margin-7" />
+
+                                    <p class="flex-style-center">
+                                        <span> @Localizer["Site Access"] </span>
+                                        <span class="mr-8px label @((!info.User.IsBan) ? "label-success" : "label-orange")">@((!info.User.IsBan) ? @Localizer["Has It"] : @Localizer["Does Not Have"])</span>
+                                    </p>
+
+                                </td>
+
+                                <td class="tc vm">
+                                    <a asp-action="NurseInfoDetail" asp-controller="Nurse" asp-area="Admin" asp-route-userId="@info.OwnerId" class="btn btn-warning btn-circle btn-xs"><i class="glyphicon glyphicon-edit"></i></a>
+                                    <a asp-action="ShowNurseInfoDetail" asp-controller="Nurse" asp-area="Admin" asp-route-userId="@info.OwnerId" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <div class="footer tc">
+
+                    <partial name="_AdminPaging" model="@Model.GetCurrentPaging()" />
+
+                </div>
+            }
+            else
+            {
+                <partial name="_AdminNotFoundPartial" />
+            }
+        </div>
+    </div>
+</div>
+
