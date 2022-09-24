@@ -38,6 +38,8 @@
 		<Folder Include="Resources\Controllers\" />
 		<Folder Include="Resources\Views\" />
 		<Folder Include="wwwroot\Content\Radio\vendor\" />
+		<Folder Include="Areas\Nurse\Data\" />
+		<Folder Include="Areas\Nurse\Models\" />
 	</ItemGroup>
 
 	<ItemGroup>

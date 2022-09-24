@@ -16,6 +16,9 @@ namespace DoctorFAM.Domain.Enums.Organization
         Labratory,
 
         [Display(Name = "Pharmacy")]
-        Pharmacy
+        Pharmacy,
+
+        [Display(Name = "Nurse")]
+        Nurse
     }
 }

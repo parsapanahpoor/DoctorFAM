@@ -340,6 +340,8 @@ namespace BusinessPortal.Application.Services.Implementation
 
             if (userRoles.Any() && userRoles.Contains("Pharmacy")) return GetUserRoles.Pharmacy;
 
+            if (userRoles.Any() && userRoles.Contains("Nurse")) return GetUserRoles.Nurse;
+
             if (userRoles.Any() && userRoles.Contains("DoctorOfficeEmployee")) return GetUserRoles.DoctorOfficeEmployee;
 
             if (!userRoles.Any()) return GetUserRoles.User;
@@ -378,6 +380,18 @@ namespace BusinessPortal.Application.Services.Implementation
             if (result == GetUserRoles.Doctor) return true;
 
             if (result == GetUserRoles.DoctorOfficeEmployee) return true;
+
+            return false;
+        }
+
+        //Check Is User Has Permission To Nurse Panel 
+        public async Task<bool> IsUserNurse(ulong userId)
+        {
+            var result = await GetUserRole(userId);
+
+            if (result == GetUserRoles.Admin) return true;
+
+            if (result == GetUserRoles.Nurse) return true;
 
             return false;
         }

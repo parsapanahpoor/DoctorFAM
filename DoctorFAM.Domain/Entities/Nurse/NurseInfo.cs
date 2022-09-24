@@ -16,7 +16,7 @@ namespace DoctorFAM.Domain.Entities.Nurse
 
         public int NationalCode { get; set; }
 
-        public string? Specialty { get; set; }
+        public string? Education { get; set; }
 
         public string FirstName { get; set; }
 

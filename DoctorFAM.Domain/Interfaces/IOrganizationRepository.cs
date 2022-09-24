@@ -28,10 +28,16 @@ namespace DoctorFAM.Domain.Interfaces
 
         Task<bool> IsExistAnyDoctorOfficeEmployeeByUserId(ulong userId);
 
+        //Check Is Exist Any Nurse By This User Id
+        Task<bool> IsExistAnyNurseByUserId(ulong userId);
+
         Task<bool> IsExistAnyPharmacyOfficeEmployeeByUserId(ulong userId);
 
         //Get Organization Members By Organization Id
         Task<List<User>?> GetOrganizationMembersByOrganizationId(ulong organizationId);
+
+        //Get Nurse Organization by User Id
+        Task<Organization?> GetNurseOrganizationByUserId(ulong userId);
 
         #endregion
     }

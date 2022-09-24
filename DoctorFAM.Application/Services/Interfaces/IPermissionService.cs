@@ -12,7 +12,6 @@ namespace DoctorFAM.Application.Services.Interfaces
 {
     public interface IPermissionService
     {
-
         #region Check Permission
 
         Task<bool> HasUserPermission(ulong userId, string permissionName);
@@ -52,6 +51,9 @@ namespace DoctorFAM.Application.Services.Interfaces
         Task<bool> IsUserPharmacy(ulong userId);
 
         Task<bool> IsUserSupporter(ulong userId);
+
+        //Check Is User Has Permission To Nurse Panel 
+        Task<bool> IsUserNurse(ulong userId);
 
         #endregion
     }

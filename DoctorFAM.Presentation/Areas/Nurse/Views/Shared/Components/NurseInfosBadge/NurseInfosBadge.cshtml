@@ -1,0 +1,54 @@
+﻿
+@model string
+
+@if (Model == "NewUser")
+{
+    <li>
+        <a asp-area="Nurse" asp-controller="NurseInfo" asp-action="PageOfManageNurseInfo">
+            <i class="menu-icon glyphicon glyphicon-education"></i>
+            <span class="menu-text">@SharedLocalizer["Nurse Info"]</span>
+            <div class="badge badge-warning" id="DoctorInfoState">
+                @SharedLocalizer["Waiting"]
+            </div>
+        </a>
+    </li>
+}
+
+@if (Model == "WatingForConfirm")
+{
+    <li>
+        <a asp-area="Nurse" asp-controller="NurseInfo" asp-action="PageOfManageNurseInfo">
+            <i class="menu-icon glyphicon glyphicon-education"></i>
+            <span class="menu-text">@SharedLocalizer["Nurse Info"]</span>
+            <div class="badge badge-warning" id="DoctorInfoState">
+                @SharedLocalizer["Waiting"]
+            </div>
+        </a>
+    </li>
+}
+
+@if (Model == "Rejected")
+{
+    <li>
+        <a asp-area="Nurse" asp-controller="NurseInfo" asp-action="PageOfManageNurseInfo">
+            <i class="menu-icon glyphicon glyphicon-education"></i>
+            <span class="menu-text">@SharedLocalizer["Nurse Info"]</span>
+            <div class="badge badge-danger" id="DoctorInfoState">
+                @SharedLocalizer["Decline"]
+            </div>
+        </a>
+    </li>
+}
+
+@if (Model == "Accepted")
+{
+    <li>
+        <a asp-area="Nurse" asp-controller="NurseInfo" asp-action="PageOfManageNurseInfo">
+            <i class="menu-icon glyphicon glyphicon-education"></i>
+            <span class="menu-text">@SharedLocalizer["Nurse Info"]</span>
+            <div class="badge badge-success" id="DoctorInfoState">
+                @SharedLocalizer["Accepted"]
+            </div>
+        </a>
+    </li>
+    }

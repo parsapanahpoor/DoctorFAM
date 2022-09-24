@@ -1,0 +1,81 @@
+﻿@model DoctorFAM.Domain.ViewModels.Nurse.NurseSideBarInfo.NurseSideBarViewModel
+
+<!-- Page Sidebar -->
+<div class="page-sidebar" id="sidebar">
+    <!-- Page Sidebar Header-->
+    <div class="sidebar-header-wrapper">
+        <input type="text" class="searchinput" />
+        <i class="searchicon fa fa-search"></i>
+        <div class="searchhelper">به جستجوی صفحات، گزارشات، پیام ها و ایمیل خود بپردازید</div>
+    </div>
+    <!-- /Page Sidebar Header -->
+    <!-- Sidebar Menu -->
+    <ul class="nav sidebar-menu">
+        <!--Dashboard-->
+
+        <li>
+            <a asp-area="Nurse" asp-controller="Home" asp-action="Index">
+                <i class="menu-icon glyphicon glyphicon-home"></i>
+                <span class="menu-text"> @SharedLocalizer["Dashboard"] </span>
+            </a>
+        </li>
+
+        @if (Model.NurseInfoState == "Accepted")
+        {
+            <li>
+                <a href="#" class="menu-dropdown">
+                    <i class="menu-icon fa fa-user"></i>
+                    <span class="menu-text"> @SharedLocalizer["Profile"] </span>
+                    <i class="menu-expand"></i>
+                </a>
+
+                <ul class="submenu">
+
+                    <li>
+                        <a asp-area="Nurse" asp-controller="Account" asp-action="EditProfile">
+                            <span class="menu-text">@SharedLocalizer["Edit Profile"]</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a asp-area="Nurse" asp-controller="Account" asp-action="ChangePassword">
+                            <span class="menu-text">@SharedLocalizer["Change Password"]</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            @await Component.InvokeAsync("NurseInfosBadge")
+        }
+
+        @if (Model.NurseInfoState != "Accepted")
+        {
+            @await Component.InvokeAsync("NurseInfosBadge")
+        }
+
+         <li>
+            <a href="#" class="menu-dropdown">
+                <i class="menu-icon fa fa-ticket"></i>
+                <span class="menu-text"> @SharedLocalizer["Manage Tickets"]</span>
+
+                <i class="menu-expand"></i>
+            </a>
+
+            <ul class="submenu">
+                <li>
+                    <a asp-area="Nurse" asp-controller="Ticket" asp-action="FilterTickets">
+                        <span class="menu-text">@SharedLocalizer["List Of Tickets"]</span>
+                    </a>
+                </li>
+                <li>
+                    <a asp-area="Nurse" asp-controller="Ticket" asp-action="CreateTicket">
+                        <span class="menu-text">@SharedLocalizer["Create Ticket"]</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+    </ul>
+    <!-- /Sidebar Menu -->
+</div>
+<!-- /Page Sidebar -->

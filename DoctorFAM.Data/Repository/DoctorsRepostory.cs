@@ -87,8 +87,8 @@ namespace DoctorFAM.Data.Repository
             var OrganitionMember = await _context.OrganizationMembers.Include(p => p.Organization)
                                                 .FirstOrDefaultAsync(p => !p.IsDelete && p.UserId == userId && p.Organization.OrganizationType == Domain.Enums.Organization.OrganizationType.DoctorOffice);
 
-            #endregion
 
+            #endregion
             DoctorSideBarViewModel model = new DoctorSideBarViewModel();
 
             #region Doctor State 

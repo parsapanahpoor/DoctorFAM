@@ -12,6 +12,9 @@ namespace DoctorFAM.Application.Services.Interfaces
     {
         #region General
 
+        //Check Is Exist Any Nurse By This User Id
+        Task<bool> IsExistAnyNurseByUserId(ulong userId);
+
         Task<ulong> AddOrganizationWithReturnId(Organization organization);
 
         Task AddOrganizationMember(OrganizationMember member);

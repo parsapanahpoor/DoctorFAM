@@ -1,0 +1,29 @@
+﻿@inject IViewLocalizer Localizer
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <script>
+        ShowMessage("@Localizer["Announcement"]", "@TempData["SuccessMessage"]", "success");
+    </script>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <script>
+        ShowMessage("@Localizer["Error"]", "@TempData["ErrorMessage"]", "error");
+    </script>
+}
+
+@if (TempData["InfoMessage"] != null)
+{
+    <script>
+        ShowMessage("@Localizer["Announcement"]", "@TempData["InfoMessage"]", "info");
+    </script>
+}
+
+@if (TempData["WarningMessage"] != null)
+{
+    <script>
+        ShowMessage("@Localizer["Warning"]", "@TempData["WarningMessage"]", "warning");
+    </script>
+}
