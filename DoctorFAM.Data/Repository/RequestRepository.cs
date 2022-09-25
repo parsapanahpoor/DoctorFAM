@@ -90,6 +90,16 @@ namespace DoctorFAM.Data.Repository
 
         #endregion
 
+        #region Request Time Detail
+
+        //Get Request DateTime Detail By Request Detai lId 
+        public async Task<PatientRequestDateTimeDetail?> GetRequestDateTimeDetailByRequestDetailId(ulong requestId)
+        {
+            return await _context.PatientRequestDateTimeDetails.FirstOrDefaultAsync(p => !p.IsDelete && p.RequestId == requestId);
+        }
+
+        #endregion
+
         #endregion
 
         #region Admin

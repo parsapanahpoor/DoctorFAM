@@ -60,6 +60,9 @@ namespace DoctorFAM.Data.Repository
                 case RequestStateForFilterAdminSide.unpaid:
                     query = query.Where(s => s.RequestState == Domain.Enums.Request.RequestState.unpaid);
                     break;
+                case RequestStateForFilterAdminSide.Finalized:
+                    query = query.Where(s => s.RequestState == Domain.Enums.Request.RequestState.Finalized);
+                    break;
             }
 
             switch (filter.FilterRequestAdminSideOrder)

@@ -33,5 +33,7 @@ namespace DoctorFAM.Domain.Enums.Notification
         NurseInformationInsert,
         [Display(Name = "New Home Nurse Request")]
         NewHomeNurseRequest,
+        [Display(Name = "Accept Home Nurse Request")]
+        AcceptHomeNurseRequest
     }
 }

@@ -1,7 +1,9 @@
 ﻿using DoctorFAM.Data.DbContext;
+using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.Dashboard;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Dashbaord;
+using DoctorFAM.Domain.ViewModels.Nurse.NurseDashboard;
 using DoctorFAM.Domain.ViewModels.Supporter;
 using DoctorFAM.Domain.ViewModels.UserPanel.Home;
 using Microsoft.EntityFrameworkCore;
@@ -209,8 +211,8 @@ namespace DoctorFAM.Data.Repository
 
             #region List Of Lastest Tickets 
 
-            model.ListOfLastestTickets = await _context.Tickets.Include(p=> p.Owner).Where(p => !p.IsDelete && !p.IsReadByAdmin && p.TicketForAdminAndSupporters
-                                                                        && !p.OnlineVisitRequest).Take(5).OrderByDescending(p=> p.CreateDate).ToListAsync();
+            model.ListOfLastestTickets = await _context.Tickets.Include(p => p.Owner).Where(p => !p.IsDelete && !p.IsReadByAdmin && p.TicketForAdminAndSupporters
+                                                                        && !p.OnlineVisitRequest).Take(5).OrderByDescending(p => p.CreateDate).ToListAsync();
 
             #endregion
 
@@ -264,7 +266,7 @@ namespace DoctorFAM.Data.Repository
 
             #region Count Of Pupolation Covered
 
-            model.CountOfPupolationCovered = await _context.UserSelectedFamilyDoctor.CountAsync(p=> !p.IsDelete 
+            model.CountOfPupolationCovered = await _context.UserSelectedFamilyDoctor.CountAsync(p => !p.IsDelete
                                                         && p.DoctorId == organization.OwnerId &&
                                                             p.FamilyDoctorRequestState == Domain.Enums.FamilyDoctor.FamilyDoctorRequestState.Accepted);
 
@@ -275,8 +277,34 @@ namespace DoctorFAM.Data.Repository
             model.ListOfRequestForFamilyDoctor = await _context.UserSelectedFamilyDoctor.Include(p => p.Patient)
                                                     .Where(p => !p.IsDelete && p.DoctorId == organization.OwnerId
                                                         && p.FamilyDoctorRequestState == Domain.Enums.FamilyDoctor.FamilyDoctorRequestState.WaitingForConfirm)
-                                                            .OrderByDescending(p=> p.CreateDate)
-                                                                .Select(p=> p.Patient).ToListAsync();
+                                                            .OrderByDescending(p => p.CreateDate)
+                                                                .Select(p => p.Patient).ToListAsync();
+
+            #endregion
+
+            return model;
+        }
+
+        #endregion
+
+        #region Nurse Panel Dashboard
+
+        //Fill Nurse Panel Dashboard
+        public async Task<NurseDashboardViewModel> FillNurseDashboardViewModel(ulong nurseId)
+        {
+            NurseDashboardViewModel model = new NurseDashboardViewModel();
+
+            #region List OF Home Nurse Requests
+
+            model.ListOfHomeNurseRequest = await _context.Requests
+                                                     .Include(p => p.PatientRequestDateTimeDetails)
+                                                     .Include(p => p.Patient)
+                                                     .Include(p => p.User)
+                                                     .Include(p => p.PaitientRequestDetails)
+                                                     .Where(s => !s.IsDelete && s.RequestType == Domain.Enums.RequestType.RequestType.HomeNurse
+                                                            && s.RequestState == Domain.Enums.Request.RequestState.Finalized && s.OperationId == nurseId && s.PatientRequestDateTimeDetails.SendDate >= DateTime.Now)
+                                                     .OrderByDescending(s => s.CreateDate)
+                                                     .ToListAsync();
 
             #endregion
 

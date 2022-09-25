@@ -5,6 +5,7 @@ using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Application.StaticTools;
 using DoctorFAM.Domain.ViewModels.Site.Notification;
 using DoctorFAM.Domain.ViewModels.UserPanel.HealthHouse;
+using DoctorFAM.Domain.ViewModels.UserPanel.HealthHouse.HomeNurse;
 using DoctorFAM.Web.Hubs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -20,15 +21,17 @@ namespace DoctorFAM.Web.Areas.UserPanel.Controllers
         private readonly INotificationService _notificationService;
         private readonly IHubContext<NotificationHub> _notificationHub;
         private readonly IUserService _userService;
+        private readonly INurseService _nurseService;
 
-        public HealthHouseController(IRequestService requestService, IPharmacyService pharmacyService 
-            , IHubContext<NotificationHub> notificationHub, INotificationService notificationService, IUserService userService)
+        public HealthHouseController(IRequestService requestService, IPharmacyService pharmacyService
+            , IHubContext<NotificationHub> notificationHub, INotificationService notificationService, IUserService userService, INurseService nurseService)
         {
             _requestService = requestService;
             _pharmacyService = pharmacyService;
             _notificationService = notificationService;
             _notificationHub = notificationHub;
             _userService = userService;
+            _nurseService = nurseService;
         }
 
         #endregion
@@ -51,7 +54,7 @@ namespace DoctorFAM.Web.Areas.UserPanel.Controllers
 
             if (request.RequestType == Domain.Enums.RequestType.RequestType.HomeDrog)
             {
-                
+
             }
 
             #endregion
@@ -80,7 +83,7 @@ namespace DoctorFAM.Web.Areas.UserPanel.Controllers
         {
             #region Fill Model
 
-            var model = await _pharmacyService.FillHomePharmacyRequestInUserPanelViewModel(requestId , User.GetUserId());
+            var model = await _pharmacyService.FillHomePharmacyRequestInUserPanelViewModel(requestId, User.GetUserId());
             if (model == null) return NotFound();
 
             #endregion
@@ -134,7 +137,7 @@ namespace DoctorFAM.Web.Areas.UserPanel.Controllers
         {
             #region Accept Request From User
 
-            var res = await _pharmacyService.AcceptRequestFromUser(requestId , User.GetUserId());
+            var res = await _pharmacyService.AcceptRequestFromUser(requestId, User.GetUserId());
             if (res)
             {
                 #region Get Request By Request Id
@@ -178,7 +181,7 @@ namespace DoctorFAM.Web.Areas.UserPanel.Controllers
                 #endregion
 
                 TempData[SuccessMessage] = "فاکتور صادر شده با موفقیت صادر شده است.";
-                return RedirectToAction("Index" , "Home" , new { area = "UserPanel" });
+                return RedirectToAction("Index", "Home", new { area = "UserPanel" });
             }
 
             #endregion
@@ -240,6 +243,37 @@ namespace DoctorFAM.Web.Areas.UserPanel.Controllers
 
             TempData[ErrorMessage] = "عملیات باشکست مواجه شده است .";
             return RedirectToAction("Index", "Home", new { area = "UserPanel" });
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Nurse Requests
+
+        #region Home Nurse Requests
+
+        public async Task<IActionResult> FilterHomeNurseFromUserPanel(FilterHomeNurseViewModel filter)
+        {
+            filter.UserId = User.GetUserId();
+            var model = await _pharmacyService.FilterListOfUserHomeNurseRequest(filter);
+            return View(model);
+        }
+
+        #endregion
+
+        #region Home Nurse Request Detail 
+
+        public async Task<IActionResult> HomeNurseRequestDetail(ulong requestId)
+        {
+            #region Fill View Model 
+
+            var model = await _nurseService.FillShowNurseInformationDetailViewModel(requestId , User.GetUserId());
+            if (model == null) return NotFound();
+
+            #endregion
+
+            return View(model);
         }
 
         #endregion

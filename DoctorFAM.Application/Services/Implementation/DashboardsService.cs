@@ -2,6 +2,7 @@
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.Dashboard;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Dashbaord;
+using DoctorFAM.Domain.ViewModels.Nurse.NurseDashboard;
 using DoctorFAM.Domain.ViewModels.Supporter;
 using DoctorFAM.Domain.ViewModels.UserPanel.Home;
 using System;
@@ -17,10 +18,12 @@ namespace DoctorFAM.Application.Services.Implementation
         #region ctor
 
         private readonly IDashboardsRepository _dashboardRepostory;
+        private readonly IOrganizationService _organizationService;
 
-        public DashboardsService(IDashboardsRepository dashboardRepostory)
+        public DashboardsService(IDashboardsRepository dashboardRepostory, IOrganizationService organizationService)
         {
             _dashboardRepostory = dashboardRepostory;
+            _organizationService = organizationService;
         }
 
         #endregion
@@ -57,6 +60,23 @@ namespace DoctorFAM.Application.Services.Implementation
         public async Task<DoctorPanelDashboardViewModel?> FillDoctorPanelDashboardViewModel(ulong userId)
         {
             return await _dashboardRepostory.FillDoctorPanelDashboardViewModel(userId);
+        }
+
+        #endregion
+
+        #region Nurse Panel Dashboard
+
+        //Fill Nurse Panel Dashboard
+        public async Task<NurseDashboardViewModel> FillNurseDashboardViewModel(ulong nurseId)
+        {
+            #region Get ORganization 
+
+            var organization = await _organizationService.GetNurseOrganizationByUserId(nurseId);
+            if (organization == null) return null;
+
+            #endregion
+
+            return await _dashboardRepostory.FillNurseDashboardViewModel(organization.OwnerId);
         }
 
         #endregion

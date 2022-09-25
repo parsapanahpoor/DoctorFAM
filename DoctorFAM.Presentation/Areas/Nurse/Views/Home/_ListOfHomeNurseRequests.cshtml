@@ -1,0 +1,55 @@
+﻿@model List<DoctorFAM.DataLayer.Entities.Request>
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Domain.ViewModels.Common
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
+@using DoctorFAM.Application.StaticTools
+
+<div class="col-lg-12">
+    <div class="widget">
+        <div class="widget-header bordered-bottom bordered-themesecondary">
+            <i class="widget-icon fa fa-tags themesecondary"></i>
+            <span class="widget-caption themesecondary">@SharedLocalizer["List Of Home Nurse Requests"]</span>
+        </div><!--Widget Header-->
+        <div class="widget-body  no-padding">
+
+            <div class="tickets-container">
+                @if (Model != null && Model.Any())
+                {
+                    <ul class="tickets-list">
+                        @foreach (var request in Model)
+                        {
+                            <li class="ticket-item">
+                                <div class="row">
+                                    <div class="ticket-user col-lg-6 col-sm-12">
+                                        <img src="@request.User.GetUserAvatar()" class="user-avatar">
+                                        <span class="user-name">@request.User.Username</span>
+                                    </div>
+                                    <div class="ticket-time  col-lg-4 col-sm-6 col-xs-12">
+                                        <div class="divider hidden-md hidden-sm hidden-xs"></div>
+                                        <i class="fa fa-clock-o"></i>
+                                        <span class="time">@request.PatientRequestDateTimeDetails.SendDate.ToStringShamsiDate()</span>
+                                    </div>
+                                    <div class="ticket-type  col-lg-2 col-sm-6 col-xs-12">
+                                        <span class="divider hidden-xs"></span>
+                                        <span class="type">@request.PatientRequestDateTimeDetails.StartTime.ToString("00")  @SharedLocalizer["Houre"]</span>
+                                    </div>
+                                    <div class="ticket-state bg-blue">
+                                        <i class="fa fa-info"></i>
+                                    </div>
+                                </div>
+                            </li>
+
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <partial name="_NursePanelNotFoundPartial" />
+                }
+            </div>
+        </div>
+    </div>
+
+</div>

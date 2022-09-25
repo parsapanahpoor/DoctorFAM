@@ -1,4 +1,4 @@
-﻿
+﻿@model DoctorFAM.Domain.ViewModels.Nurse.NurseDashboard.NurseDashboardViewModel
 @{
     ViewData["Title"] = Localizer["Nurse Panel Dashboard"];
 }
@@ -42,7 +42,8 @@
 
         <div class="row">
 
-
+            @*Box Of Home Nurse Requests*@
+            <partial name="_ListOfHomeNurseRequests" model="@Model.ListOfHomeNurseRequest" />
 
         </div>
 

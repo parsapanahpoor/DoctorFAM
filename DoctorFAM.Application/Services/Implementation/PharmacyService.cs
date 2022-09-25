@@ -1358,6 +1358,12 @@ namespace DoctorFAM.Application.Services.Implementation
 
         #region User Panel 
 
+        //Filter User Home Nurse Requests
+        public async Task<Domain.ViewModels.UserPanel.HealthHouse.HomeNurse.FilterHomeNurseViewModel> FilterListOfUserHomeNurseRequest(Domain.ViewModels.UserPanel.HealthHouse.HomeNurse.FilterHomeNurseViewModel filter)
+        {
+            return await _pharmacy.FilterListOfUserHomeNurseRequest(filter);
+        }
+
         //Filter User Home Pharmacy Requests
         public async Task<Domain.ViewModels.UserPanel.HealthHouse.FilterHomePharmacyViewModel> FilterListOfUserHomePhamracyRequest(Domain.ViewModels.UserPanel.HealthHouse.FilterHomePharmacyViewModel filter)
         {

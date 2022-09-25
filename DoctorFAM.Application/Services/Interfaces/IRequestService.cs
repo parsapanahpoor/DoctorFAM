@@ -63,6 +63,13 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         #endregion
 
+        #region Request Time Detail
+
+        //Get Request DateTime Detail By Request Detai lId 
+        Task<PatientRequestDateTimeDetail?> GetRequestDateTimeDetailByRequestDetailId(ulong requestId);
+
+        #endregion
+
         #endregion
 
         #region Admin

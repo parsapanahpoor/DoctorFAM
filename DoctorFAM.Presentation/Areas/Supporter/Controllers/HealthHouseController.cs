@@ -17,20 +17,17 @@ namespace DoctorFAM.Web.Areas.Supporter.Controllers
         #region Ctor
 
         private readonly IHomeVisitService _homeVisit;
-
         private readonly IHomeNurseService _homeNurse;
-
         private readonly IDeathCertificateService _deathCertificate;
-
         private readonly IHomePatientTransportService _homePatientTransportService;
-
         private readonly IHomePharmacyServicec _homePharmacyService;
-
         private readonly IHomeLaboratoryServices _homeLaboratoryServices;
-
         private readonly IPharmacyService _pharmacyService;
+        private readonly INurseService _nurserService;
 
-        public HealthHouseController(IHomeVisitService homeVisit, IHomeNurseService homeNurse, IDeathCertificateService deathCertificate, IHomePatientTransportService homePatientTransportService, IHomePharmacyServicec homePharmacyService, IHomeLaboratoryServices homeLaboratoryServices, IPharmacyService pharmacyService)
+        public HealthHouseController(IHomeVisitService homeVisit, IHomeNurseService homeNurse, IDeathCertificateService deathCertificate, IHomePatientTransportService homePatientTransportService,
+                                        IHomePharmacyServicec homePharmacyService, IHomeLaboratoryServices homeLaboratoryServices, 
+                                                IPharmacyService pharmacyService, INurseService nurserService)
         {
             _homeVisit = homeVisit;
             _homeNurse = homeNurse;
@@ -39,6 +36,7 @@ namespace DoctorFAM.Web.Areas.Supporter.Controllers
             _homePharmacyService = homePharmacyService;
             _homeLaboratoryServices = homeLaboratoryServices;
             _pharmacyService = pharmacyService;
+            _nurserService = nurserService;
         }
 
         #endregion
@@ -92,10 +90,9 @@ namespace DoctorFAM.Web.Areas.Supporter.Controllers
         [PermissionChecker("HomeNurse")]
         public async Task<IActionResult> HomeNurseRequestDetail(ulong requestId)
         {
-            #region Get Request
+            #region Get Request Detail
 
-            var model = await _homeNurse.ShowHomeNurseDetail(requestId);
-
+            var model = await _nurserService.FillHomeNurseRequestAdminPanelViewModel(requestId);
             if (model == null) return NotFound();
 
             #endregion

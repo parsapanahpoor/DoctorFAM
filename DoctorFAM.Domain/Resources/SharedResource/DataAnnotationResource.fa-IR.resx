@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Accept Home Nurse Request" xml:space="preserve">
+    <value>تایید درخواست داروخانه در منزل</value>
+  </data>
   <data name="Accept Invoice From Customer" xml:space="preserve">
     <value>تایید فاکتور از سفارش دهنده</value>
   </data>

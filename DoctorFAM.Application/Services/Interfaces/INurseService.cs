@@ -1,7 +1,10 @@
-﻿using DoctorFAM.Domain.Entities.Nurse;
+﻿using DoctorFAM.DataLayer.Entities;
+using DoctorFAM.Domain.Entities.Nurse;
 using DoctorFAM.Domain.ViewModels.Admin.Doctor;
+using DoctorFAM.Domain.ViewModels.Nurse.HomeNurse;
 using DoctorFAM.Domain.ViewModels.Nurse.NurseInfo;
 using DoctorFAM.Domain.ViewModels.Nurse.NurseSideBarInfo;
+using DoctorFAM.Domain.ViewModels.UserPanel.HealthHouse.HomeNurse;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +16,12 @@ namespace DoctorFAM.Application.Services.Interfaces
     public interface INurseService
     {
         #region Nurse Side
+
+        //Accept Home Nurse Request By Nurse
+        Task AcceptHomeNurseRequestByNurse(ulong userId, Request request);
+
+        //Filter List Of Home Nurse Request ViewModel From Nurse Panel 
+        Task<FilterListOfHomeNurseRequestViewModel> FilterFilterListOfHomeNurseRequestViewModel(FilterListOfHomeNurseRequestViewModel filter);
 
         //Fill Nurse Side Bar Panel
         Task<NurseSideBarViewModel> GetNurseSideBarInfo(ulong userId);
@@ -47,6 +56,9 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Get Nurse By Nurse Id
         Task<Nurse?> GetNurseById(ulong nurseId);
 
+        //Show Home Nurse Request Detail In Nurse Panel
+        Task<HomeNurseRequestViewModel?> FillHomeNurseRequestViewModel(ulong requestId, ulong userId);
+
         #endregion
 
         #region Admin Side 
@@ -60,12 +72,25 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Edit Nurse Info From Admin Panel
         Task<EditNurseInfoResult> EditNurseInfoAdminSide(NurseInfoDetailViewModel model);
 
+        //Filter List Of Your Home Nurse Request ViewModel From Nurse Panel 
+        Task<FilterListOfHomeNurseRequestViewModel> FilterYourListOfHomeNurseRequestViewModel(FilterListOfHomeNurseRequestViewModel filter);
+
+        //Show Home Nurse Request Detail In Admin And Supporter Panel 
+        Task<Domain.ViewModels.Admin.HealthHouse.HomeNurse.HomeNurseRequestViewModel?> FillHomeNurseRequestAdminPanelViewModel(ulong requestId);
+
         #endregion
 
         #region Site Side 
 
         //Get List Of Nurse For Send Notification For Home Nurse Notification 
         Task<List<string?>> GetListOfNursesForArrivalsHomeNurseRequests(ulong requestId);
+
+        #endregion
+
+        #region User Panel 
+
+        //Fill Nurse Information Detail View Model
+        Task<ShowNurseInformationDetailViewModel?> FillShowNurseInformationDetailViewModel(ulong requestId, ulong userId);
 
         #endregion
     }

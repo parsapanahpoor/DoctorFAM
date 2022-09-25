@@ -36,10 +36,10 @@
                                 <div class="row">
                                     <div class="col-md-12">@item.User.Username</div>
                                     @* <div class="col-md-6">
-                                        <div class=" palegreen" style="margin-right:75px;">
-                                        <i class="stat-icon icon-xlg fa fa-phone"></i>
-                                        </div>
-                                        </div>*@
+                            <div class=" palegreen" style="margin-right:75px;">
+                            <i class="stat-icon icon-xlg fa fa-phone"></i>
+                            </div>
+                            </div>*@
                                 </div>
                             </div>
 
@@ -58,7 +58,7 @@
                                 @if (item.SupporterNotificationText == DoctorFAM.Domain.Enums.Notification.SupporterNotificationText.ProvidingAnInvoiceFromThePharmacy)
                                 {
                                     <div>ارائه ی فاکتور از داروخانه</div>
-                                }    
+                                }
                                 @if (item.SupporterNotificationText == DoctorFAM.Domain.Enums.Notification.SupporterNotificationText.AcceptInvoiceFromCustomer)
                                 {
                                     <div>تایید فاکتور از فروشنده</div>
@@ -87,9 +87,13 @@
                                 {
                                     <div>ارسال اطلاعات توسط پرستار</div>
                                 }
-                                 @if (item.SupporterNotificationText == DoctorFAM.Domain.Enums.Notification.SupporterNotificationText.NewHomeNurseRequest)
+                                @if (item.SupporterNotificationText == DoctorFAM.Domain.Enums.Notification.SupporterNotificationText.NewHomeNurseRequest)
                                 {
                                     <div>درخواست جدید برای پرستار در منزل</div>
+                                }
+                                @if (item.SupporterNotificationText == DoctorFAM.Domain.Enums.Notification.SupporterNotificationText.AcceptHomeNurseRequest)
+                                {
+                                    <div>تایید درخواست پرستار در منزل</div>
                                 }
                             </div>
                         </div>

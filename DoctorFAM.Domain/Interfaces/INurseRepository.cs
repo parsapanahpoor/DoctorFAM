@@ -1,5 +1,8 @@
-﻿using DoctorFAM.Domain.Entities.Nurse;
+﻿using DoctorFAM.DataLayer.Entities;
+using DoctorFAM.Domain.Entities.Nurse;
+using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.ViewModels.Admin.Doctor;
+using DoctorFAM.Domain.ViewModels.Nurse.HomeNurse;
 using DoctorFAM.Domain.ViewModels.Nurse.NurseSideBarInfo;
 using System;
 using System.Collections.Generic;
@@ -12,6 +15,9 @@ namespace DoctorFAM.Domain.Interfaces
     public interface INurseRepository
     {
         #region Nurse Panel 
+
+        //Accept Home Nurse Request By Nurse
+        Task AcceptHomeNurseRequestByNurse(ulong userId, Request request);
 
         //Fill Nurse Side Bar Panel
         Task<NurseSideBarViewModel> GetNurseSideBarInfo(ulong userId);
@@ -37,6 +43,9 @@ namespace DoctorFAM.Domain.Interfaces
         //Add Nurse Info
         Task AddNurseInfo(NurseInfo nurseInfo);
 
+        //Filter List Of Home Nurse Request ViewModel From Nurse Panel 
+        Task<FilterListOfHomeNurseRequestViewModel> FilterFilterListOfHomeNurseRequestViewModel(FilterListOfHomeNurseRequestViewModel filter);
+
         #endregion
 
         #region Admin Side 
@@ -53,12 +62,18 @@ namespace DoctorFAM.Domain.Interfaces
         //Get Nurse By Nurse Id
         Task<Nurse?> GetNurseById(ulong nurseId);
 
+        //Filter List Of Your Home Nurse Request ViewModel From Nurse Panel 
+        Task<FilterListOfHomeNurseRequestViewModel> FilterYourListOfHomeNurseRequestViewModel(FilterListOfHomeNurseRequestViewModel filter);
+
         #endregion
 
         #region Site Side 
 
         //Get Activated Nurses For Send Correct Notification For Arrival Home Nurse Request 
         Task<List<string?>> GetActivatedNurses(ulong countryId, ulong stateId, ulong cityId);
+
+        //Get Patient Request Detail About Patient Details
+        Task<PaitientRequestDetail?> GetRequestPatientDetailByRequestId(ulong requestId);
 
         #endregion
     }

@@ -341,6 +341,16 @@ namespace DoctorFAM.Application.Services.Implementation
 
         #endregion
 
+        #region Request Time Detail
+
+        //Get Request DateTime Detail By Request Detai lId 
+        public async Task<PatientRequestDateTimeDetail?> GetRequestDateTimeDetailByRequestDetailId(ulong requestId)
+        {
+            return await _request.GetRequestDateTimeDetailByRequestDetailId(requestId);
+        }
+
+        #endregion
+
         #endregion
 
         #region Admin

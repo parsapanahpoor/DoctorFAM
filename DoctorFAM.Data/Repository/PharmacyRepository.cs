@@ -483,6 +483,21 @@ namespace DoctorFAM.Data.Repository
             return filter;
         }
 
+        //Filter User Home Nurse Requests
+        public async Task<Domain.ViewModels.UserPanel.HealthHouse.HomeNurse.FilterHomeNurseViewModel> FilterListOfUserHomeNurseRequest(Domain.ViewModels.UserPanel.HealthHouse.HomeNurse.FilterHomeNurseViewModel filter)
+        {
+            var query = _context.Requests
+             .Include(p => p.Operation)
+             .Include(p => p.PatientRequestDateTimeDetails)
+             .Where(s => !s.IsDelete && s.RequestType == Domain.Enums.RequestType.RequestType.HomeNurse && s.UserId == filter.UserId
+              && s.RequestState != RequestState.WaitingForCompleteInformationFromUser)
+             .OrderByDescending(s => s.CreateDate)
+             .AsQueryable();
+
+            await filter.Paging(query);
+
+            return filter;
+        }
 
         #endregion
 

@@ -25,6 +25,29 @@
             <li>
                 <a href="#" class="menu-dropdown">
                     <i class="menu-icon fa fa-user"></i>
+                    <span class="menu-text"> @SharedLocalizer["Home Nurse"] </span>
+                    <i class="menu-expand"></i>
+                </a>
+
+                <ul class="submenu">
+
+                    <li>
+                        <a asp-area="Nurse" asp-controller="HomeNurse" asp-action="FilterHomeNurseRequests">
+                            <span class="menu-text">@SharedLocalizer["Home Nurse Requests"]</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a asp-area="Nurse" asp-controller="HomeNurse" asp-action="FilterYourHomeNurseRequests">
+                            <span class="menu-text">@SharedLocalizer["Your Home Nurse Requests"]</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li>
+                <a href="#" class="menu-dropdown">
+                    <i class="menu-icon fa fa-user"></i>
                     <span class="menu-text"> @SharedLocalizer["Profile"] </span>
                     <i class="menu-expand"></i>
                 </a>

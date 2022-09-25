@@ -1,5 +1,6 @@
 ﻿using DoctorFAM.Domain.ViewModels.Admin.Dashboard;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Dashbaord;
+using DoctorFAM.Domain.ViewModels.Nurse.NurseDashboard;
 using DoctorFAM.Domain.ViewModels.Supporter;
 using DoctorFAM.Domain.ViewModels.UserPanel.Home;
 using System;
@@ -33,6 +34,13 @@ namespace DoctorFAM.Application.Services.Interfaces
         #region Doctor Panel Dashboard
 
         Task<DoctorPanelDashboardViewModel?> FillDoctorPanelDashboardViewModel(ulong userId);
+
+        #endregion
+
+        #region Nurse Panel Dashboard
+
+        //Fill Nurse Panel Dashboard
+        Task<NurseDashboardViewModel> FillNurseDashboardViewModel(ulong nurseId);
 
         #endregion
     }

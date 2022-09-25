@@ -78,10 +78,10 @@ namespace DoctorFAM.Web.Areas.Nurse.Controllers
                     break;
                 case UserPanelEditUserInfoResult.UserNotFound:
                     TempData[ErrorMessage] = _sharedLocalizer["User Not Found"].Value;
-                    return RedirectToAction("EditProfile", "Account", new { area = "Doctor" });
+                    return RedirectToAction("EditProfile", "Account", new { area = "Nurse" });
                 case UserPanelEditUserInfoResult.Success:
                     TempData[SuccessMessage] = _sharedLocalizer["Operation Successfully"].Value;
-                    return RedirectToAction("Index", "Home", new { area = "Doctor" });
+                    return RedirectToAction("Index", "Home", new { area = "Nurse" });
                 case UserPanelEditUserInfoResult.NotValidEmail:
                     TempData[ErrorMessage] = _sharedLocalizer["The entered email is already available on the site"].Value;
                     break;

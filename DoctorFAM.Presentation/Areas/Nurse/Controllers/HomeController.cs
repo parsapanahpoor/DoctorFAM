@@ -43,7 +43,7 @@ namespace DoctorFAM.Web.Areas.Nurse.Controllers
 
             #endregion
 
-            return View();
+            return View(await _dashboardService.FillNurseDashboardViewModel(User.GetUserId()));
         }
 
         #endregion

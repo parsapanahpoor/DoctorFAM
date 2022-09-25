@@ -573,4 +573,16 @@
   <data name="Manage Nurses Info" xml:space="preserve">
     <value>مدیریت اطلاعات پرستاران</value>
   </data>
+  <data name="Home Nurse Requests" xml:space="preserve">
+    <value>درخواست های پرستار درمنزل</value>
+  </data>
+  <data name="Your Home Nurse Requests" xml:space="preserve">
+    <value>تاریخجه ی درخواست های شما</value>
+  </data>
+  <data name="Houre" xml:space="preserve">
+    <value>ساعت</value>
+  </data>
+  <data name="List Of Home Nurse Requests" xml:space="preserve">
+    <value>لیست درخواست های پرستار در منزل شما </value>
+  </data>
 </root>

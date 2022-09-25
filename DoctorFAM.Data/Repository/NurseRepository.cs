@@ -1,10 +1,15 @@
 ﻿using DoctorFAM.Data.DbContext;
+using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.Nurse;
+using DoctorFAM.Domain.Entities.Requests;
+using DoctorFAM.Domain.Enums.Request;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.Doctor;
 using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo;
+using DoctorFAM.Domain.ViewModels.Nurse.HomeNurse;
 using DoctorFAM.Domain.ViewModels.Nurse.NurseSideBarInfo;
+using DoctorFAM.Domain.ViewModels.Pharmacy.HomePharmacy;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -19,15 +24,27 @@ namespace DoctorFAM.Data.Repository
         #region Ctor
 
         private readonly DoctorFAMDbContext _context;
+        private readonly IOrganizationRepository _organizationRepository;
 
-        public NurseRepository(DoctorFAMDbContext context)
+        public NurseRepository(DoctorFAMDbContext context, IOrganizationRepository organizationRepository)
         {
             _context = context;
+            _organizationRepository = organizationRepository;
         }
 
         #endregion
 
         #region Nurse Side
+
+        //Accept Home Nurse Request By Nurse
+        public async Task AcceptHomeNurseRequestByNurse(ulong userId , Request request)
+        {
+            request.OperationId = userId;
+            request.RequestState = RequestState.Finalized;
+
+            _context.Requests.Update(request);
+            await _context.SaveChangesAsync();
+        }
 
         //Fill Nurse Side Bar Panel
         public async Task<NurseSideBarViewModel> GetNurseSideBarInfo(ulong userId)
@@ -105,6 +122,141 @@ namespace DoctorFAM.Data.Repository
         {
             await _context.NurseInfo.AddAsync(nurseInfo);
             await _context.SaveChangesAsync();
+        }
+
+        //Filter List Of Home Nurse Request ViewModel From Nurse Panel 
+        public async Task<FilterListOfHomeNurseRequestViewModel> FilterFilterListOfHomeNurseRequestViewModel(FilterListOfHomeNurseRequestViewModel filter)
+        {
+            #region Get Organization 
+
+            var organization = await _organizationRepository.GetNurseOrganizationByUserId(filter.NurseId);
+            if (organization == null) return null;
+
+            #endregion
+
+            #region Get Nurse Work Address
+
+            var workAddress = await _context.WorkAddresses.FirstOrDefaultAsync(p => !p.IsDelete && p.UserId == organization.OwnerId);
+            if (workAddress == null) return null;
+
+            #endregion
+
+            var query = _context.Requests
+             .Include(p => p.PatientRequestDateTimeDetails)
+             .Include(p => p.Patient)
+             .Include(p => p.User)
+             .Include(p => p.PaitientRequestDetails)
+             .Where(s => !s.IsDelete && s.RequestType == Domain.Enums.RequestType.RequestType.HomeNurse && s.PaitientRequestDetails.CountryId == workAddress.CountryId
+                    && s.PaitientRequestDetails.StateId == workAddress.StateId && s.PaitientRequestDetails.CityId == workAddress.CityId
+                    && s.RequestState == Domain.Enums.Request.RequestState.Paid)
+             .OrderByDescending(s => s.CreateDate)
+             .AsQueryable();
+
+            #region Status
+
+            switch (filter.FilterRequestNurseSideOrder)
+            {
+                case FilterRequestAdminSideOrder.CreateDate_Des:
+                    break;
+                case FilterRequestAdminSideOrder.CreateDate_Asc:
+                    query = query.OrderBy(p => p.CreateDate);
+                    break;
+            }
+
+            #endregion
+
+            #region Filter
+
+            if (!string.IsNullOrEmpty(filter.Username))
+            {
+                query = query.Where(s => EF.Functions.Like(s.User.Username, $"%{filter.Username}%"));
+            }
+
+            if (!string.IsNullOrEmpty(filter.FirstName))
+            {
+                query = query.Where(s => EF.Functions.Like(s.User.FirstName, $"%{filter.FirstName}%"));
+            }
+
+            if (!string.IsNullOrEmpty(filter.LastName))
+            {
+                query = query.Where(s => EF.Functions.Like(s.User.LastName, $"%{filter.LastName}%"));
+            }
+
+            #endregion
+
+            await filter.Paging(query);
+
+            return filter;
+        }
+
+        //Get Patient Request Detail About Patient Details
+        public async Task<PaitientRequestDetail?> GetRequestPatientDetailByRequestId(ulong requestId)
+        {
+            return await _context.PaitientRequestDetails.FirstOrDefaultAsync(p => p.RequestId == requestId && !p.IsDelete);
+        }
+
+        //Filter List Of Your Home Nurse Request ViewModel From Nurse Panel 
+        public async Task<FilterListOfHomeNurseRequestViewModel> FilterYourListOfHomeNurseRequestViewModel(FilterListOfHomeNurseRequestViewModel filter)
+        {
+            #region Get Organization 
+
+            var organization = await _organizationRepository.GetNurseOrganizationByUserId(filter.NurseId);
+            if (organization == null) return null;
+
+            #endregion
+
+            #region Get Nurse Work Address
+
+            var workAddress = await _context.WorkAddresses.FirstOrDefaultAsync(p => !p.IsDelete && p.UserId == organization.OwnerId);
+            if (workAddress == null) return null;
+
+            #endregion
+
+            var query = _context.Requests
+             .Include(p => p.PatientRequestDateTimeDetails)
+             .Include(p => p.Patient)
+             .Include(p => p.User)
+             .Include(p => p.PaitientRequestDetails)
+             .Where(s => !s.IsDelete && s.RequestType == Domain.Enums.RequestType.RequestType.HomeNurse 
+                    && s.RequestState == Domain.Enums.Request.RequestState.Finalized && s.OperationId == organization.OwnerId)
+             .OrderByDescending(s => s.CreateDate)
+             .AsQueryable();
+
+            #region Status
+
+            switch (filter.FilterRequestNurseSideOrder)
+            {
+                case FilterRequestAdminSideOrder.CreateDate_Des:
+                    break;
+                case FilterRequestAdminSideOrder.CreateDate_Asc:
+                    query = query.OrderBy(p => p.CreateDate);
+                    break;
+            }
+
+            #endregion
+
+            #region Filter
+
+            if (!string.IsNullOrEmpty(filter.Username))
+            {
+                query = query.Where(s => EF.Functions.Like(s.User.Username, $"%{filter.Username}%"));
+            }
+
+            if (!string.IsNullOrEmpty(filter.FirstName))
+            {
+                query = query.Where(s => EF.Functions.Like(s.User.FirstName, $"%{filter.FirstName}%"));
+            }
+
+            if (!string.IsNullOrEmpty(filter.LastName))
+            {
+                query = query.Where(s => EF.Functions.Like(s.User.LastName, $"%{filter.LastName}%"));
+            }
+
+            #endregion
+
+            await filter.Paging(query);
+
+            return filter;
         }
 
         #endregion

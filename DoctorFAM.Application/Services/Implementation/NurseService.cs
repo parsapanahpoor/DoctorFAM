@@ -3,6 +3,7 @@ using DoctorFAM.Application.Generators;
 using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Application.StaticTools;
+using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.Nurse;
 using DoctorFAM.Domain.Entities.Organization;
@@ -11,8 +12,11 @@ using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.Doctor;
 using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo;
+using DoctorFAM.Domain.ViewModels.Nurse.HomeNurse;
 using DoctorFAM.Domain.ViewModels.Nurse.NurseInfo;
 using DoctorFAM.Domain.ViewModels.Nurse.NurseSideBarInfo;
+using DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor;
+using DoctorFAM.Domain.ViewModels.UserPanel.HealthHouse.HomeNurse;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -31,20 +35,29 @@ namespace DoctorFAM.Application.Services.Implementation
         private readonly IWorkAddressRepository _workAddressRepository;
         private readonly IUserService _userService;
         private readonly IRequestService _requestService;
+        private readonly IPatientService _patientService;
 
         public NurseService(INurseRepository nurseRepository, IOrganizationRepository organizationRepository,
-                                IWorkAddressRepository workAddressRepository, IUserService userService , IRequestService requestService)
+                                IWorkAddressRepository workAddressRepository, IUserService userService , IRequestService requestService
+                                    , IPatientService patientService)
         {
             _nurseRepository = nurseRepository;
             _organizationRepository = organizationRepository;
             _workAddressRepository = workAddressRepository;
             _userService = userService;
             _requestService = requestService;
+            _patientService = patientService;
         }
 
         #endregion
 
         #region Nurse Side 
+
+        //Accept Home Nurse Request By Nurse
+        public async Task AcceptHomeNurseRequestByNurse(ulong userId, Request request)
+        {
+            await _nurseRepository.AcceptHomeNurseRequestByNurse(userId, request);
+        }
 
         //Fill Nurse Side Bar Panel
         public async Task<NurseSideBarViewModel> GetNurseSideBarInfo(ulong userId)
@@ -501,6 +514,49 @@ namespace DoctorFAM.Application.Services.Implementation
             return await _nurseRepository.FilterNurseInfoAdminSide(filter);
         }
 
+        //Filter List Of Home Nurse Request ViewModel From Nurse Panel 
+        public async Task<FilterListOfHomeNurseRequestViewModel> FilterFilterListOfHomeNurseRequestViewModel(FilterListOfHomeNurseRequestViewModel filter)
+        {
+            return await _nurseRepository.FilterFilterListOfHomeNurseRequestViewModel(filter);
+        }
+
+        //Show Home Nurse Request Detail In Nurse Panel
+        public async Task<HomeNurseRequestViewModel?> FillHomeNurseRequestViewModel(ulong requestId, ulong userId)
+        {
+            #region Get Organization By User Id
+
+            var organization = await _organizationRepository.GetOrganizationByUserId(userId);
+            if (organization == null) return null;
+
+            #endregion
+
+            #region Get Request By Request Id
+
+            var request = await _requestService.GetRequestById(requestId);
+
+            if (request == null) return null;
+            if (request.RequestType != Domain.Enums.RequestType.RequestType.HomeNurse) return null;
+            if (request.OperationId.HasValue && request.OperationId.Value != organization.OwnerId) return null;
+            if (!request.PatientId.HasValue) return null;
+
+            #endregion
+
+            #region Fill Model 
+
+            HomeNurseRequestViewModel model = new HomeNurseRequestViewModel()
+            {
+                Patient = await _patientService.GetPatientById(request.PatientId.Value),
+                User = await _userService.GetUserById(request.UserId),
+                PatientRequestDetail = await _nurseRepository.GetRequestPatientDetailByRequestId(request.Id),
+                PatientRequestDateTimeDetail = await _requestService.GetRequestDateTimeDetailByRequestDetailId(request.Id),
+                Request = request
+            };
+
+            #endregion
+
+            return model;
+        }
+
         #endregion
 
         #region Admin Side 
@@ -633,6 +689,45 @@ namespace DoctorFAM.Application.Services.Implementation
             return EditNurseInfoResult.success;
         }
 
+        //Filter List Of Your Home Nurse Request ViewModel From Nurse Panel 
+        public async Task<FilterListOfHomeNurseRequestViewModel> FilterYourListOfHomeNurseRequestViewModel(FilterListOfHomeNurseRequestViewModel filter)
+        {
+            return await _nurseRepository.FilterYourListOfHomeNurseRequestViewModel(filter);
+        }
+
+        //Show Home Nurse Request Detail In Admin And Supporter Panel 
+        public async Task<Domain.ViewModels.Admin.HealthHouse.HomeNurse.HomeNurseRequestViewModel?> FillHomeNurseRequestAdminPanelViewModel(ulong requestId)
+        {
+            #region Get Request By Request Id
+
+            var request = await _requestService.GetRequestById(requestId);
+
+            if (request == null) return null;
+            if (request.RequestType != Domain.Enums.RequestType.RequestType.HomeNurse) return null;
+            if (!request.PatientId.HasValue) return null;
+
+            #endregion
+
+            #region Fill Model 
+
+            Domain.ViewModels.Admin.HealthHouse.HomeNurse.HomeNurseRequestViewModel model = new Domain.ViewModels.Admin.HealthHouse.HomeNurse.HomeNurseRequestViewModel()
+            {
+                Patient = await _patientService.GetPatientById(request.PatientId.Value),
+                User = await _userService.GetUserById(request.UserId),
+                PatientRequestDetail = await _nurseRepository.GetRequestPatientDetailByRequestId(request.Id),
+                PatientRequestDateTimeDetail = await _requestService.GetRequestDateTimeDetailByRequestDetailId(request.Id),
+                Request = request
+            };
+
+            if (request.OperationId.HasValue)
+            {
+                model.Nurse = await _userService.GetUserById(request.OperationId.Value);
+            }
+
+            #endregion
+
+            return model;
+        }
 
         #endregion
 
@@ -655,13 +750,73 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #endregion
 
-            #region Get Activated Pharmacy By Home Pharmacy Interests And Location Address
+            #region Get Activated Nurse By Home Nurse Interests And Location Address
 
             var returnValue = await _nurseRepository.GetActivatedNurses(requetsDetail.CountryId, requetsDetail.StateId, requetsDetail.CityId);
 
             #endregion
 
             return returnValue;
+        }
+
+        //Fill Nurse Information Detail View Model
+        public async Task<ShowNurseInformationDetailViewModel?> FillShowNurseInformationDetailViewModel(ulong requestId , ulong userId)
+        {
+            #region Get Request By Id 
+
+            var request = await _requestService.GetRequestById(requestId);
+            if(request == null) return null;
+            if(request.UserId != userId) return null;
+            if (request.OperationId.HasValue == false) return null;
+            if (request.RequestState == Domain.Enums.Request.RequestState.Paid) return null;
+
+            #endregion
+
+            #region Get Nurse By User Id
+
+            var nurse = await GetNurseByUserId(request.OperationId.Value);
+            if (nurse == null) return null;
+
+            #endregion
+
+            #region Check Nurse Validation 
+
+            #region Organization Validation 
+
+            var organization = await _organizationRepository.GetNurseOrganizationByUserId(nurse.UserId);
+            if (organization == null) return null;
+            if (organization.OrganizationInfoState != OrganizationInfoState.Accepted) return null;
+
+            #endregion
+
+            #endregion
+
+            #region Get Nurse Work Address 
+
+            var workAddress = await _workAddressRepository.GetLastWorkAddressByUserId(nurse.UserId);
+
+            #endregion
+
+            #region Get Nurse Personal Information 
+
+            var NurseInfo = await _nurseRepository.GetNurseInfoByNurseId(nurse.Id);
+            if (NurseInfo == null) return null;
+
+            #endregion
+
+            #region Fill View Model 
+
+            ShowNurseInformationDetailViewModel model = new ShowNurseInformationDetailViewModel()
+            {
+                NurseInfo = NurseInfo,
+                User = nurse.User,
+                WorkAddress = workAddress,
+                WorkLocation = nurse.User.WorkAddress
+            };
+
+            #endregion
+
+            return model;
         }
 
         #endregion

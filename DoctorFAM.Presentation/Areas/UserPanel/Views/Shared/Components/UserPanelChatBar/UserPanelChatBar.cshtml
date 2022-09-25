@@ -50,6 +50,10 @@
                                 {
                                     <div>پیام جدید از درخواست ویزیت آنلاین</div>
                                 }
+                                @if (item.SupporterNotificationText == DoctorFAM.Domain.Enums.Notification.SupporterNotificationText.AcceptHomeNurseRequest)
+                                {
+                                    <div>تایید درخواست پرستار در منزل</div>
+                                }
                             </div>
                         </div>
                     </li>

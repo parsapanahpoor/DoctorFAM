@@ -118,6 +118,9 @@ namespace DoctorFAM.Domain.Interfaces
         //Filter User Home Pharmacy Requests
         Task<Domain.ViewModels.UserPanel.HealthHouse.FilterHomePharmacyViewModel> FilterListOfUserHomePhamracyRequest(Domain.ViewModels.UserPanel.HealthHouse.FilterHomePharmacyViewModel filter);
 
+        //Filter User Home Nurse Requests
+        Task<Domain.ViewModels.UserPanel.HealthHouse.HomeNurse.FilterHomeNurseViewModel> FilterListOfUserHomeNurseRequest(Domain.ViewModels.UserPanel.HealthHouse.HomeNurse.FilterHomeNurseViewModel filter);
+
         #endregion
     }
 }

@@ -135,6 +135,9 @@
   <data name="Filter" xml:space="preserve">
     <value>فیلتر</value>
   </data>
+  <data name="Finalized" xml:space="preserve">
+    <value>نهایی شده</value>
+  </data>
   <data name="Home Nurse Records" xml:space="preserve">
     <value>لیست درخواست های پرستار در منزل</value>
   </data>
@@ -154,7 +157,7 @@
     <value>مرتب سازی براساس</value>
   </data>
   <data name="Paid" xml:space="preserve">
-    <value>پرداخت شده و منتظر پزشک</value>
+    <value>پرداخت شده و منتظر پرستار</value>
   </data>
   <data name="Paying" xml:space="preserve">
     <value>درحال پرداخت</value>

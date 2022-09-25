@@ -2,6 +2,7 @@
 using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.Notification;
+using DoctorFAM.Domain.Entities.Nurse;
 using DoctorFAM.Domain.Enums.Notification;
 using DoctorFAM.Domain.Interfaces;
 using System;
@@ -288,7 +289,8 @@ namespace DoctorFAM.Application.Services.Implementation
                 user.AddRange(supporters);
             }
 
-            if (SupporterNotificationText == SupporterNotificationText.NewHomeNurseRequest)
+            if (SupporterNotificationText == SupporterNotificationText.NewHomeNurseRequest
+                || SupporterNotificationText == SupporterNotificationText.AcceptHomeNurseRequest)
             {
                 //Get Home Nurse Supporters
                 var supporters = await _userService.GetHomeNurseSupporters();
@@ -538,6 +540,46 @@ namespace DoctorFAM.Application.Services.Implementation
 
         //Create Notification For Send Message Of Online Visit
         public async Task<bool> CreateNotificationForSendMessageOfOnlineVisitFromDoctorPanel(ulong targetId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId)
+        {
+            #region Get request 
+
+            //Get request
+            var request = await _requestService.GetRequestById(targetId);
+            if (request == null) return false;
+            if (request.OperationId == null) return false;
+
+            #endregion
+
+            #region Fill Notification Entity
+
+            List<SupporterNotification> model = new List<SupporterNotification>();
+
+            SupporterNotification notif = new SupporterNotification()
+            {
+                CreateDate = DateTime.Now,
+                IsDelete = false,
+                IsSeen = false,
+                SupporterNotificationText = SupporterNotificationText,
+                TargetId = targetId,
+                UserId = senderId,
+                ReciverId = request.UserId,
+            };
+
+            model.Add(notif);
+
+            await _notificationService.CreateRangeSupporter(model);
+
+            #endregion
+
+            return true;
+        }
+
+        #endregion
+
+        #region Nurse Panel Side 
+
+        //Create Notification For Accept Home Nurse Request
+        public async Task<bool> CreateNotificationForAcceptHomeNurseRequest(ulong targetId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId)
         {
             #region Get request 
 
