@@ -12,6 +12,7 @@ namespace DoctorFAM.Domain.Enums.Notification
         reservation,
         HomeFamilyRequest,
         NurseInfoInsert,
-        ConsultantInfoInsert
+        ConsultantInfoInsert,
+        ConsultantRequest
     }
 }

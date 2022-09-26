@@ -24,6 +24,30 @@
         {
             <li>
                 <a href="#" class="menu-dropdown">
+                    <i class="menu-icon glyphicon glyphicon-thumbs-up"></i>
+                    <span class="menu-text">@SharedLocalizer["List of covered people"]</span>
+                    <i class="menu-expand"></i>
+                </a>
+
+                <ul class="submenu">
+
+                    <li>
+                        <a asp-area="Consultant" asp-controller="Consultant" asp-action="FilterPopulationCovered">
+                            <span class="menu-text">@SharedLocalizer["List of covered people"]</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a asp-area="Consultant" asp-controller="Consultant" asp-action="PersonInPopulationCoveredDetail">
+                            <span class="menu-text">@SharedLocalizer["List of Your covered people"]</span>
+                        </a>
+                    </li>
+
+                </ul>
+            </li>
+
+            <li>
+                <a href="#" class="menu-dropdown">
                     <i class="menu-icon fa fa-user"></i>
                     <span class="menu-text"> @SharedLocalizer["Profile"] </span>
                     <i class="menu-expand"></i>

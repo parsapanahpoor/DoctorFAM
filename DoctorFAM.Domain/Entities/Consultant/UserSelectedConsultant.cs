@@ -19,7 +19,7 @@ namespace DoctorFAM.Domain.Entities.Consultant
 
         public string? RejectDescription { get; set; }
 
-        public FamilyDoctorRequestState FamilyDoctorRequestState { get; set; }
+        public FamilyDoctorRequestState ConsultantRequestState { get; set; }
 
         #endregion
 

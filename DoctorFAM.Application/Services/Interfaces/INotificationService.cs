@@ -59,6 +59,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         #region User Panel Side 
 
+        //Create Notification For Consultant 
+        Task<bool> CreateNotificationForConsultant(ulong consultantUserId, ulong targetId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId);
+
         //Create Notification For Family Doctor
         Task<bool> CreateNotificationForFamilyDoctor(ulong doctorUserId, ulong targetId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId);
 

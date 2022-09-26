@@ -1,0 +1,294 @@
+﻿@model Tuple<List<DoctorFAM.Domain.Entities.Consultant.Consultant>, DoctorFAM.Domain.ViewModels.Admin.Consultant.FilterConsultantUserPanelSideViewModel>
+@using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Domain.ViewModels.Common
+@using DoctorFAM.Application.StaticTools
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
+
+
+@{
+    ViewData["Title"] = @Localizer["List Of Consultant Infos"];
+}
+@{
+    var countries = ViewData["Countries"] != null ? ViewData["Countries"] as List<SelectListViewModel> : null;
+    var states = ViewData["States"] != null ? ViewData["States"] as List<SelectListViewModel> : null;
+    var cities = ViewData["Cities"] != null ? ViewData["Cities"] as List<SelectListViewModel> : null;
+}
+
+@section Styles
+    {
+    <script>
+
+        $("#MainBrandId").change(function () {
+            $("#pageid").val(1);
+            $("#formFilter").submit();
+        });
+
+        function changePage(pageid) {
+            $("#pageid").val(pageid);
+            $("#formFilter").submit();
+        }
+
+    </script>
+
+    <script>
+        $("#CountryId").change(function () {
+            if ($("#CountryId :selected").val() !== '') {
+                $('#CityId option:not(:first)').remove();
+                $('#StateId option:not(:first)').remove();
+                $.get("/Home/LoadCities", { stateId: $("#CountryId :selected").val() }).then(res => {
+                    if (res.data !== null) {
+                        $("#StateId").append(
+                            '<option>' + "لطفا یک استان را انتخاب کنید" + '</option>'
+                        );
+                        $.each(res.data, function () {
+                            $("#StateId").append(
+                                '<option value=' + this.id + '>' + this.title + '</option>'
+                            );
+                        });
+                        $("#StateId").removeAttr("disabled");
+                    }
+                });
+            } else {
+                $('#StateId option:not(:first)').remove();
+                $('#CityId option:not(:first)').remove();
+            }
+        });
+
+        $("#StateId").change(function () {
+            if ($("#StateId :selected").val() !== '') {
+                $('#CityId option:not(:first)').remove();
+                $.get("/Home/LoadCities", { stateId: $("#StateId :selected").val() }).then(res => {
+                    if (res.data !== null) {
+                        $.each(res.data, function () {
+                            $("#CityId").append(
+                                '<option value=' + this.id + '>' + this.title + '</option>'
+                            );
+                        });
+                        $("#CityId").removeAttr("disabled");
+                    }
+                });
+            } else {
+                $('#CityId option:not(:first)').remove();
+            }
+        });
+
+    </script>
+}
+
+    @section Scripts
+    {
+    <partial name="_JqueryValidation" />
+}
+
+    @section Breadcrumb
+    {
+    <li>
+        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+    </li>
+}
+
+    <div class="row">
+        <div class="col-lg-3 col-sm-12">
+            <div class="widget">
+                <div class="widget-header bordered-bottom bordered-green">
+                    <span class="widget-caption"> @Localizer["Manage Consultant Infos"] </span>
+                </div>
+                <div class="widget-body">
+                    <div>
+                        <form asp-action="FilterConsultant" asp-controller="Consultant" asp-area="UserPanel" id="formFilter" method="get">
+
+                            <input type="hidden" id="pageid" name="pageId" value="@Model.Item2.PageId.ToString()" />
+
+                            <div class="form-group">
+                                <label name="Username"> @Localizer["Consultant Name"] </label>
+                                <input type="text" class="form-control" name="Username" value="@Model.Item2.Username" placeholder="@Localizer["Please Insert Consultant Name"]">
+                            </div>
+
+                            <div class="form-group">
+                                <label>@Localizer["Country"]</label>
+                                <select class="form-control" id="CountryId" name="CountryId">
+                                    <option value="">@Localizer["Please select a Country"] </option>
+                                @if (countries != null && countries.Any())
+                                {
+                                    foreach (var country in countries)
+                                    {
+                                        if (Model != null && Model.Item2.CountryId == country.Id)
+                                        {
+                                            <option value="@country.Id" selected="selected"> @country.Title </option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@country.Id"> @country.Title </option>
+                                        }
+                                    }
+                                }
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>@Localizer["state"]</label>
+                            <select class="form-control" id="StateId" name="StateId">
+                                <option value=""> @Localizer["Please select a province"] </option>
+                                @if (states != null && states.Any())
+                                {
+                                    foreach (var state in states)
+                                    {
+                                        if (Model != null && Model.Item2.StateId == state.Id)
+                                        {
+                                            <option value="@state.Id" selected="selected"> @state.Title </option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@state.Id"> @state.Title </option>
+                                        }
+                                    }
+                                }
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>@Localizer["City"]</label>
+                            <select name="CityId" id="CityId" class="form-control">
+                                <option value=""> @Localizer["Please select a City"] </option>
+                                @if (cities != null && cities.Any())
+                                {
+                                    foreach (var city in cities)
+                                    {
+                                        if (Model != null && Model.Item2.CityId == city.Id)
+                                        {
+                                            <option value="@city.Id" selected="selected"> @city.Title </option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@city.Id"> @city.Title </option>
+
+                                        }
+                                    }
+                                }
+                            </select>
+                        </div>
+
+                        <hr />
+
+                        <div class="row">
+                            <div class="col-md-12 flex-style">
+                                <button type="submit" class="btn btn-labeled w-100 btn-palegreen">
+                                    <i class="btn-label glyphicon glyphicon-filter"></i>@Localizer["Filter"]
+                                </button>
+
+                                @if (Context.Request.QueryString.HasValue)
+                                {
+                                    <a asp-action="FilterConsultant" asp-controller="Consultant" asp-area="UserPanel" class="btn btn-labeled w-100 btn-darkorange">
+                                        <i class="btn-label glyphicon glyphicon-remove"></i>@Localizer["Delete Filter"]
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-9 col-sm-12">
+        <div class="well with-header with-footer table-responsive">
+            <div class="header bordered-azure">
+                <div class="flex-style">
+                    <span>@ViewData["Title"]</span>
+                </div>
+            </div>
+
+            @if (Model.Item1 != null && Model.Item1.Any())
+            {
+                <table class="table table-hover table-bordered tc vm">
+                    <thead class="tc vm">
+                        <tr class="tc vm">
+                            <th class="tc vm">
+                                @Localizer["Avatar"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["Country"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["state"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["City"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["Education"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["Possibilities"]
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="tc vm">
+                        @foreach (var info in Model.Item1)
+                        {
+                            <tr class="tc vm">
+                                <td class="vm">
+                                    <div class="flex-style-center">
+                                        <img src="@info.User.GetUserAvatar()" style="border-radius:50px;" class="avatar-style" />
+                                        <div class="mr-10px">
+                                            <span> @info.User.Username </span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="vm">
+                                    <div class="flex-style-center">
+                                        <p class="label label-primary"> @((info.User.WorkAddresses.FirstOrDefault(p => !p.IsDelete).Country != null) ? info.User.WorkAddresses.FirstOrDefault(p => !p.IsDelete).Country.UniqueName : "Empty" ) </p>
+                                    </div>
+                                </td>
+                                    <td class="vm">
+                                    <div class="flex-style-center">
+                                        <p class="label label-primary"> @((info.User.WorkAddresses.FirstOrDefault(p => !p.IsDelete).State != null) ? info.User.WorkAddresses.FirstOrDefault(p => !p.IsDelete).State.UniqueName : "Empty" ) </p>
+                                    </div>
+                                </td>
+                                    <td class="vm">
+                                    <div class="flex-style-center">
+                                        <p class="label label-primary"> @((info.User.WorkAddresses.FirstOrDefault(p => !p.IsDelete).City != null) ? info.User.WorkAddresses.FirstOrDefault(p => !p.IsDelete).City.UniqueName : "Empty" ) </p>
+                                    </div>
+                                </td>
+                                <td class="vm">
+                                    <div class="flex-style-center">
+                                        <p> @((!string.IsNullOrEmpty(info.CounsultantInfo.Education)) ? info.CounsultantInfo.Education : "Empty") </p>
+                                    </div>
+                                </td>
+                                <td class="tc vm">
+                                    <a asp-action="ConsultantInformationDetails" asp-controller="Consultant" asp-area="UserPanel" asp-route-consultantId="@info.Id" class="btn btn-warning btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                @if (Model.Item2.PageCount > 1)
+                {
+                    int pageCount = ViewBag.pageId;
+                    int next = pageCount + 1;
+                    int last = pageCount - 1;
+
+                    <div class="footer tc">
+                        <ul class="pagination mt-5px pagingInInIndex">
+
+                            @for (int i = 1; i <= (int)Model.Item2.PageCount; i++)
+                            {
+                                <li class="@((Model.Item2.PageId == i ?"active":"")) "><a class="cursor-pointer " onclick="changePage(@i)" href="#">@i</a></li>
+                            }
+
+                        </ul>
+                    </div>
+                }
+            }
+            else
+            {
+                <partial name="_UserPanelNotFoundPartial" />
+            }
+        </div>
+    </div>
+</div>
+

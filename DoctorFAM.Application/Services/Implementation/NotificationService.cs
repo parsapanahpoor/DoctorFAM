@@ -337,6 +337,14 @@ namespace DoctorFAM.Application.Services.Implementation
                 user.AddRange(supporters);
             }
 
+            if (SupporterNotificationText == SupporterNotificationText.ConsultantRequest)
+            {
+                //Get Supporters
+                var supporters = await _userService.GetListOfSupporters();
+                user.AddRange(supporters);
+            }
+
+
             #endregion
 
             #endregion
@@ -566,6 +574,64 @@ namespace DoctorFAM.Application.Services.Implementation
             };
 
             model.Add(notif);
+
+            await _notificationService.CreateRangeSupporter(model);
+
+            #endregion
+
+            return true;
+        }
+
+        //Create Notification For Consultant 
+        public async Task<bool> CreateNotificationForConsultant(ulong consultantUserId, ulong targetId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId)
+        {
+            #region Get Admins And Supporters 
+
+            List<User> user = new List<User>();
+
+            //Get Consultant
+            var consultant = await _userService.GetUserById(consultantUserId);
+            user.Add(consultant);
+
+            #endregion
+
+            #region Check target 
+
+            //If Target is Request
+            if (notification == NotificationTarget.request)
+            {
+                var request = await _requestService.GetRequestById(targetId);
+                if (request == null) return false;
+            }
+
+            //If Target Is Reservation
+            if (notification == NotificationTarget.reservation)
+            {
+                var reservation = await _reservationService.GetDoctorReservationDateTimeById(targetId);
+                if (reservation == null) return false;
+            }
+
+            #endregion
+
+            #region Fill Notification Entity
+
+            List<SupporterNotification> model = new List<SupporterNotification>();
+
+            foreach (var item in user)
+            {
+                SupporterNotification notif = new SupporterNotification()
+                {
+                    CreateDate = DateTime.Now,
+                    IsDelete = false,
+                    IsSeen = false,
+                    SupporterNotificationText = SupporterNotificationText,
+                    TargetId = targetId,
+                    UserId = senderId,
+                    ReciverId = item.Id,
+                };
+
+                model.Add(notif);
+            };
 
             await _notificationService.CreateRangeSupporter(model);
 

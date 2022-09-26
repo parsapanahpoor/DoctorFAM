@@ -1,5 +1,6 @@
 ﻿using DoctorFAM.Domain.Entities.Consultant;
 using DoctorFAM.Domain.ViewModels.Admin.Consultant;
+using DoctorFAM.Domain.ViewModels.Consultant.ConsultantRequest;
 using DoctorFAM.Domain.ViewModels.Consultant.ConsultantSideBar;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,12 @@ namespace DoctorFAM.Domain.Interfaces
     public interface IConsultantRepository
     {
         #region Consultant Panel
+
+        //Get User Selected Consultant By Request Id
+        Task<UserSelectedConsultant?> GetUserSelectedConsultantByRequestId(ulong requestId);
+
+        //List Of Consultant Population Covered Users
+        Task<ListOfConsultantPopulationCoveredViewModel> FilterListOfConsultantPopulationCoveredViewModel(ListOfConsultantPopulationCoveredViewModel filter);
 
         //Fill Consultant Side Bar Panel
         Task<ConsultantSideBarViewModel> GetConsultantSideBarInfo(ulong userId);
@@ -40,6 +47,9 @@ namespace DoctorFAM.Domain.Interfaces
         //Filter Consultant Info Admin Side
         Task<ListOfConsultantInfoViewModel> FilterConsultantInfoAdminSide(ListOfConsultantInfoViewModel filter);
 
+        //Get User Selected Consultant By Patient Id And Consultant Id With Accepted And Waiting State
+        Task<UserSelectedConsultant?> GetUserSelectedConsultantByPatientIdAndConsultantWithAcceptedAndWaitingState(ulong userId, ulong consultantId);
+
         #endregion
 
         #region Admin Side 
@@ -52,6 +62,25 @@ namespace DoctorFAM.Domain.Interfaces
 
         //Get Consultant Info By Nurse Info Id
         Task<ConsultantInfo?> GetConsultantInfoById(ulong consultantInfoId);
+
+        #endregion
+
+        #region User Panel 
+
+        //Get User Selected Consultant 
+        Task<UserSelectedConsultant?> GetUserSelectedConsultantByUserId(ulong userId);
+
+        //Get List Of Consultant
+        Task<List<Consultant>?> FilterConsultantUserPanelSide(FilterConsultantUserPanelSideViewModel filter);
+
+        //Remove Consultant For This Patient 
+        Task RemoveConsultantForThisPatient(UserSelectedConsultant consultant);
+
+        //Add Consultant For This Patient 
+        Task AddConsultantForThisPatient(UserSelectedConsultant consultant);
+
+        //Update User Selected Consultant 
+        Task UpdateUserSelectedConsultant(UserSelectedConsultant userSelectedConsultant);
 
         #endregion
     }

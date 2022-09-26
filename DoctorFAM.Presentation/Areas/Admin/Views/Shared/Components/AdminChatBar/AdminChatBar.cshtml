@@ -98,6 +98,10 @@
                                 @if (item.SupporterNotificationText == DoctorFAM.Domain.Enums.Notification.SupporterNotificationText.ConsultantInformationInsert)
                                 {
                                     <div>ارسال اطلاعات توسط مشاور روان</div>
+                                } 
+                                @if (item.SupporterNotificationText == DoctorFAM.Domain.Enums.Notification.SupporterNotificationText.ConsultantRequest)
+                                {
+                                    <div>درخواست برای مشاور روان</div>
                                 }
                             </div>
                         </div>

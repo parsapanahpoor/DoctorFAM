@@ -67,4 +67,18 @@ public static class Messages
         return
             $"باعرض سلام . {Environment.NewLine} درخواست ویزیت آنلاین شما توسط پزشک تایید شده است . {Environment.NewLine} {PathTools.SiteFarsiName}";
     }
+
+    //Send SMS For Accept Consultant Request 
+    public static string SendSMSForAcceptConsultantRequest()
+    {
+        return
+            $"باعرض سلام . {Environment.NewLine} درخواست مشاوره ی شما توسط مشاور موردنطر تایید شده است . {Environment.NewLine} {PathTools.SiteFarsiName}";
+    }
+
+    //Send SMS For Decline Consultant Request 
+    public static string SendSMSForDeclineConsultantRequest()
+    {
+        return
+            $"باعرض سلام . {Environment.NewLine} درخواست مشاوره ی شما توسط مشاور موردنطر رد شده است . {Environment.NewLine} {PathTools.SiteFarsiName}";
+    }
 }

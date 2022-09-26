@@ -1,4 +1,4 @@
-﻿@model DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor.ShowDoctorInformationDetailViewModel
+﻿@model DoctorFAM.Domain.ViewModels.UserPanel.Consultant.ShowConsultantInformationDetailViewModel
 @using DoctorFAM.Application.Extensions
 @using DoctorFAM.Application.Convertors
 @using DoctorFAM.Domain.ViewModels.Common
@@ -7,7 +7,7 @@
 
 
 @{
-    ViewData["Title"] = @Localizer["Show Family Doctor Detail"];
+    ViewData["Title"] = @Localizer["Show Consultant Detail"];
 }
 
 @section Styles
@@ -42,10 +42,10 @@
             <div class="col-md-12">
                 <div class="profile-container">
                     <div class="profile-header row">
-                        <div class="col-lg-2 col-md-4 col-sm-12 text-center">
+                        <div class="col-lg-4 col-md-4 col-sm-12 text-center">
                             <img src="@Model.User.GetUserAvatar()" alt="" class="header-avatar">
                         </div>
-                        <div class="col-lg-2 col-md-8 col-sm-12 profile-info">
+                        <div class="col-lg-4 col-md-8 col-sm-12 profile-info">
                         @if (Model.User.FirstName != null && Model.User.LastName != null)
                         {
                             <div class="header-fullname">@Model.User.FirstName @Model.User.LastName</div>
@@ -55,14 +55,10 @@
                             @Localizer["Mobile"] : @Model.User.Mobile
                         </div>
                     </div>
-                    <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 profile-stats">
+                    <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12 profile-stats">
                         <div class="row">
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 stats-col">
-                                <div class="stats-value blue">@((string.IsNullOrEmpty(Model.DoctorsInfo.Specialty)) ? "" : Model.DoctorsInfo.Specialty)</div>
-                                <div class="stats-title">@Localizer["Speciality"]</div>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 stats-col">
-                                <div class="stats-value blue">@Model.DoctorsInfo.Education</div>
+                            <div class="col-lg-12 col-md-6 col-sm-6 col-xs-12 stats-col">
+                                <div class="stats-value blue">@Model.ConsultantInfo.Education</div>
                                 <div class="stats-title">@Localizer["Education"]</div>
                             </div>
                         </div>
@@ -77,7 +73,7 @@
 
                                 <div id="settings" class="tab-pane active">
                                     <div class="form-title">
-                                        @Localizer["Doctor Personal Informations"]
+                                        @Localizer["Consultant Personal Informations"]
                                     </div>
                                     <div class="row">
                                         <div class="col-sm-12">
@@ -168,7 +164,7 @@
                                      
                                     </div>
 
-                                    <a asp-action="ChoosingFamilyDoctor" asp-area="UserPanel" asp-controller="FamilyDoctor" asp-route-doctorUserId="@Model.User.Id" class="btn btn-primary">@Localizer["Choose Doctor"]</a>
+                                    <a asp-action="ChoosingConsultant" asp-area="UserPanel" asp-controller="Consultant" asp-route-consultantUserId="@Model.User.Id" class="btn btn-primary">@Localizer["Choose Consultant"]</a>
 
                                 </div>
 

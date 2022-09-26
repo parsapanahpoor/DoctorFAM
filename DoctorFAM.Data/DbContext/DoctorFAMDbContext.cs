@@ -251,6 +251,8 @@ namespace DoctorFAM.Data.DbContext
 
         public DbSet<ConsultantInfo> ConsultantInfos { get; set; }
 
+        public DbSet<UserSelectedConsultant> UserSelectedConsultants { get; set; }
+
         #endregion
 
         #endregion

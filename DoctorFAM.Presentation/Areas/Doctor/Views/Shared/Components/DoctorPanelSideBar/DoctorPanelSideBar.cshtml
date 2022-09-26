@@ -24,12 +24,29 @@
         {
             @if (Model.DoctorFamily == true)
             {
+
                 <li>
-                    <a asp-area="Doctor" asp-controller="PopulationCovered" asp-action="FilterPopulationCovered">
-                        <i class="menu-icon glyphicon glyphicon-file"></i>
-                        <span class="menu-text"> @SharedLocalizer["List of covered people"] </span>
+                    <a href="#" class="menu-dropdown">
+                        <i class="menu-icon glyphicon glyphicon-thumbs-up"></i>
+                        <span class="menu-text">@SharedLocalizer["List of covered people"]</span>
                         <i class="menu-expand"></i>
                     </a>
+
+                    <ul class="submenu">
+
+                        <li>
+                            <a asp-area="Doctor" asp-controller="PopulationCovered" asp-action="FilterPopulationCovered">
+                                <span class="menu-text">@SharedLocalizer["List of covered people"]</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a asp-area="Doctor" asp-controller="PopulationCovered" asp-action="PersonInPopulationCoveredDetail">
+                                <span class="menu-text">@SharedLocalizer["List of Your covered people"]</span>
+                            </a>
+                        </li>
+
+                    </ul>
                 </li>
             }
 
@@ -93,7 +110,7 @@
                 <li>
                     <a asp-action="ListOfDeathCertificateRequests" asp-area="Doctor" asp-controller="DeathCertificate">
                         <i class="menu-icon glyphicon glyphicon-thumbs-up"></i>
-                                <span class="menu-text">@SharedLocalizer["Death Certificate"]</span>
+                        <span class="menu-text">@SharedLocalizer["Death Certificate"]</span>
                         <i class="menu-expand"></i>
                     </a>
                 </li>
@@ -180,7 +197,7 @@
             @await Component.InvokeAsync("DoctorsInfosBadge")
         }
 
-         <li>
+        <li>
             <a href="#" class="menu-dropdown">
                 <i class="menu-icon fa fa-ticket"></i>
                 <span class="menu-text"> @SharedLocalizer["Manage Tickets"]</span>

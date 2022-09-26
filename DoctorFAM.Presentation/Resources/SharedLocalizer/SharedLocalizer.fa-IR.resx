@@ -597,4 +597,7 @@
   <data name="Consultant" xml:space="preserve">
     <value>مشاور روان</value>
   </data>
+  <data name="List of Your covered people" xml:space="preserve">
+    <value>لیست افراد تحت پوشش شما</value>
+  </data>
 </root>
