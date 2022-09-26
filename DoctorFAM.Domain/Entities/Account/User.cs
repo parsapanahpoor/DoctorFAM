@@ -1,5 +1,6 @@
 ﻿using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Common;
+using DoctorFAM.Domain.Entities.Consultant;
 using DoctorFAM.Domain.Entities.Contact;
 using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.Entities.Doctors;
@@ -115,6 +116,8 @@ namespace DoctorFAM.Domain.Entities.Account
         public Doctor Doctors { get; set; }
 
         public Nurse.Nurse Nurse { get; set; }
+
+        public Consultant.Consultant Consultant { get; set; }
 
         public Pharmacy.Pharmacy Pharmacy { get; set; }
 

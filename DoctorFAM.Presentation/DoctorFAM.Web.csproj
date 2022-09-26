@@ -30,6 +30,8 @@
 		<Folder Include="Areas\Admin\Models\" />
 		<Folder Include="Areas\Market\Data\" />
 		<Folder Include="Areas\Market\Models\" />
+		<Folder Include="Areas\Consultant\Data\" />
+		<Folder Include="Areas\Consultant\Models\" />
 		<Folder Include="Areas\Pharmacy\Data\" />
 		<Folder Include="Areas\Pharmacy\Models\" />
 		<Folder Include="Areas\Supporter\Data\" />

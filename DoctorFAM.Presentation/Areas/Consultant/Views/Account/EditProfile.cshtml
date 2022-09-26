@@ -1,0 +1,162 @@
+﻿@using DoctorFAM.Domain.Enums
+@using DoctorFAM.Application.StaticTools
+@using DoctorFAM.Domain.ViewModels.Common
+@model DoctorFAM.Domain.ViewModels.UserPanel.Account.UserPanelEditUserInfoViewModel
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
+
+@{
+    ViewData["Title"] = @Localizer["Edit Profile Title"];
+}
+
+@section Scripts
+{
+<partial name="_JqueryValidation" />
+}
+
+@section Breadcrumb
+{
+<li>
+    <a asp-action="EditProfile" asp-controller="Account" asp-area="Doctor"> @Localizer["Edit User"] </a>
+</li>
+}
+
+<form method="post" asp-action="EditProfile" asp-controller="Account" asp-area="Nurse" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-lg-9 col-sm-12">
+            <div class="row">
+
+                <input type="hidden" asp-for="UserId" />
+                <input type="hidden" asp-for="AvatarName" />
+
+                <div class="col-lg-12">
+                    <div class="widget">
+                        <div class="widget-header bordered-bottom bordered-green">
+                            <span class="widget-caption"> @Localizer["User Information"] </span>
+                        </div>
+                        <div class="widget-body">
+                            <div class="row">
+
+                                <div class="form-group col-md-6 col-sm-12">
+                                    <label asp-for="username"></label>
+                                    <input type="text" class="form-control" asp-for="username">
+                                    <span class="text-danger" asp-validation-for="username"></span>
+                                </div>
+
+                                <div class="form-group col-md-6 col-sm-12">
+                                    <label asp-for="Email"></label>
+                                    <input type="text" class="form-control" asp-for="Email">
+                                    <span class="text-danger" asp-validation-for="Email"></span>
+                                </div>
+
+                                <div class="form-group col-md-6 col-sm-12">
+                                    <label asp-for="Mobile"></label>
+                                    <div type="text" readonly class="form-control" asp-for="Mobile">@Model.Mobile</div>
+                                    <span class="text-danger" asp-validation-for="Mobile"></span>
+                                </div>
+
+                                <div class="form-group col-md-6 col-sm-12">
+                                    <label asp-for="FirstName"></label>
+                                    <input type="text" class="form-control" asp-for="FirstName">
+                                    <span class="text-danger" asp-validation-for="FirstName"></span>
+                                </div>
+
+                                <div class="form-group col-md-6 col-sm-12">
+                                    <label asp-for="LastName"></label>
+                                    <input type="text" class="form-control" asp-for="LastName">
+                                    <span class="text-danger" asp-validation-for="LastName"></span>
+                                </div>
+
+                                <div class="form-group col-md-6 col-sm-12">
+                                    <label asp-for="BithDay"></label>
+                                <input asp-for="BithDay" class="form-control" autocomplete="off" AdminDatePicker="1"/>
+                                    <span class="text-danger" asp-validation-for="BithDay"></span>
+                                </div>
+
+                                <div class="form-group col-md-6 col-sm-12">
+                                    <label asp-for="FatherName"></label>
+                                    <input type="text" class="form-control" asp-for="FatherName">
+                                    <span class="text-danger" asp-validation-for="FatherName"></span>
+                                </div>
+
+                                <div class="form-group col-md-6 col-sm-12">
+                                    <label asp-for="NationalId"></label>
+                                    <input type="text" class="form-control" asp-for="NationalId">
+                                    <span class="text-danger" asp-validation-for="NationalId"></span>
+                                </div>
+
+                                 <div class="form-group col-md-6 col-sm-12">
+                                    <label asp-for="ExtraPhoneNumber"></label>
+                                    <input type="text" class="form-control" asp-for="ExtraPhoneNumber">
+                                    <span class="text-danger" asp-validation-for="ExtraPhoneNumber"></span>
+                                </div>
+
+                                 <div class="form-group col-md-6 col-sm-12">
+                                    <label asp-for="HomePhoneNumber"></label>
+                                    <input type="text" class="form-control" asp-for="HomePhoneNumber">
+                                    <span class="text-danger" asp-validation-for="HomePhoneNumber"></span>
+                                </div>
+
+                                 <div class="form-group col-md-12 col-sm-12">
+                                    <label asp-for="WorkAddress"></label>
+                                    <textarea type="text" class="form-control" asp-for="WorkAddress">@Model.WorkAddress</textarea>
+                                    <span class="text-danger" asp-validation-for="WorkAddress"></span>
+                                </div>
+
+                                <hr class="margin-bottom-10 margin-top-10" />
+
+                                <div class="col-md-12 flex-style">
+                                    <button type="submit" class="btn btn-labeled btn-palegreen">
+                                        <i class="btn-label glyphicon glyphicon-ok"></i>@Localizer["Submit"]
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-sm-12">
+            <div class="row">
+
+                <div class="col-lg-12">
+                    <div class="widget">
+                        <div class="widget-header bordered-bottom bordered-green">
+                            <span class="widget-caption"> @Localizer["User Avatar"] </span>
+                        </div>
+                        <div class="widget-body">
+                            <div class="row">
+
+                                <input type="file" class="display-none" name="UserAvatar" id="UserAvatar" ImageInput="1" accept=".jpg,.jpeg,.png" />
+
+                                <div class="col-md-12">
+                                    <label for="UserAvatar" class="file-input-style">
+                                        <i class="glyphicon glyphicon-upload"></i>
+                                        <span class="mr-8px"> @Localizer["Please Select User Avatar"]</span>
+                                    </label>
+                                </div>
+
+                                @{
+                                    var avatarUrl = PathTools.DefaultUserAvatar;
+
+                                    if (Model != null && !string.IsNullOrEmpty(Model.AvatarName))
+                                    {
+                                        avatarUrl = $"{PathTools.UserAvatarPathThumb}{Model.AvatarName}";
+                                    }
+                                }
+
+                                <div class="col-md-12 tc mt-10px">
+                                    <img src="@avatarUrl" class="image-style" ImageFile="1" />
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

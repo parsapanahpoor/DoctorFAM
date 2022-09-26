@@ -342,6 +342,8 @@ namespace BusinessPortal.Application.Services.Implementation
 
             if (userRoles.Any() && userRoles.Contains("Nurse")) return GetUserRoles.Nurse;
 
+            if (userRoles.Any() && userRoles.Contains("Consultant")) return GetUserRoles.Consultant;
+
             if (userRoles.Any() && userRoles.Contains("DoctorOfficeEmployee")) return GetUserRoles.DoctorOfficeEmployee;
 
             if (!userRoles.Any()) return GetUserRoles.User;
@@ -392,6 +394,18 @@ namespace BusinessPortal.Application.Services.Implementation
             if (result == GetUserRoles.Admin) return true;
 
             if (result == GetUserRoles.Nurse) return true;
+
+            return false;
+        }
+
+        //Check Is User Has Permission To Consultant Panel 
+        public async Task<bool> IsUserConsultant(ulong userId)
+        {
+            var result = await GetUserRole(userId);
+
+            if (result == GetUserRoles.Admin) return true;
+
+            if (result == GetUserRoles.Consultant) return true;
 
             return false;
         }

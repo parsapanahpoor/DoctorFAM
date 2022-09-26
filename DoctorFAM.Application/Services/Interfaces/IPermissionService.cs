@@ -20,6 +20,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         #region Role
 
+        //Check Is User Has Permission To Consultant Panel 
+        Task<bool> IsUserConsultant(ulong userId);
+
         Task<List<Role>> GetListOfRoles();
 
         Task<DoctorSideBarViewModel> GetDoctorsInfosState(ulong userId);

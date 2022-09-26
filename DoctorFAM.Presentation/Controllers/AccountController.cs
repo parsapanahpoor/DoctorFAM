@@ -31,7 +31,7 @@ namespace DoctorFAM.Web.Controllers
 
         [HttpGet("Register")]
         [RedirectHomeIfLoggedInActionFilter]
-        public IActionResult Register(bool? doctors, bool? seller , bool? pharmacy , bool? nurse)
+        public IActionResult Register(bool? doctors, bool? seller , bool? pharmacy , bool? nurse , bool? consultant)
         {
             #region About Doctors & Seller & Pharmacy
 
@@ -42,6 +42,8 @@ namespace DoctorFAM.Web.Controllers
             ViewBag.PharmacyRegister = pharmacy;
 
             ViewBag.NurseRegister = nurse;
+
+            ViewBag.ConsultantRegister = consultant;
 
             #endregion
 
@@ -113,6 +115,15 @@ namespace DoctorFAM.Web.Controllers
                     if (register.NurseRegister == true)
                     {
                         await _userService.RegisterNurse(register.Mobile);
+                    }
+
+                    #endregion
+
+                    #region Consultant Register
+
+                    if (register.ConsultantRegister == true)
+                    {
+                        await _userService.RegisterConsultant(register.Mobile);
                     }
 
                     #endregion

@@ -1,0 +1,23 @@
+﻿@model DoctorFAM.Domain.ViewModels.Common.PagingViewModel
+
+<ul class="pagination mt-5px pagingInInIndex" >
+    @if (Model.StartPage < Model.Page)
+    {
+        <li><a class="cursor-pointer "  onclick="FillPageId(@(Model.Page - 1))">«</a></li>
+    }
+    @for (int i = Model.StartPage; i <= Model.EndPage; i++)
+    {
+        if (Model.Page == i)
+        {
+            <li class="active"><a class="cursor-pointer "  >@i</a></li>
+        }
+        else
+        {
+            <li><a class="cursor-pointer "   onclick="FillPageId(@i)">@i</a></li>
+        }
+    }
+    @if (Model.EndPage > Model.Page)
+    {
+        <li><a class="cursor-pointer "  onclick="FillPageId(@(Model.Page + 1))">»</a></li>
+    }
+</ul>

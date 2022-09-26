@@ -1,0 +1,50 @@
+﻿@{
+    var currentCulture = ApplicationCultures.GetCurrentCulture();
+}
+
+
+<link rel="shortcut icon" href="~/Content/images/Logo/doctorfamTes.png" type="image/x-icon">
+<!--Basic Styles-->
+<link href="/admin/css/bootstrap.min.css" rel="stylesheet" />
+@if (currentCulture.IsRtl)
+{
+    <link href="/admin/css/bootstrap-rtl.min.css" rel="stylesheet" />
+}
+<link href="/admin/css/font-awesome.min.css" rel="stylesheet" />
+<link href="/admin/css/weather-icons.min.css" rel="stylesheet" />
+
+<!--Fonts-->
+<style>
+    @@font-face {
+        font-family: 'WYekan';
+        src: url('/admin/fonts/BYekan.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;
+    }
+</style>
+<link href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300" rel="stylesheet" type="text/css">
+
+<!--Beyond styles-->
+@if (currentCulture.IsRtl)
+{
+    <link href="/admin/css/beyond-rtl.min.css" rel="stylesheet" />
+    <link href="/admin/css/4095-rtl.min.css" rel="stylesheet" type="text/css" />
+}
+else
+{
+    <link href="/admin/css/beyond.min.css" rel="stylesheet" />
+    <link href="/admin/css/4095.min.css" rel="stylesheet" type="text/css" />
+}
+
+<link href="/admin/css/demo.min.css" rel="stylesheet" />
+<link href="/admin/css/typicons.min.css" rel="stylesheet" />
+<link href="/admin/css/animate.min.css" rel="stylesheet" />
+
+<!--Add By Developers-->
+<link href="/common/notification/notifications.css" rel="stylesheet" />
+<link href="/admin/css/AdminCustom.css" rel="stylesheet" />
+<link href="/common/Custom/custom.css" rel="stylesheet" />
+<link href="/common/Custom/NotificationBar.css" rel="stylesheet" />
+<link id="skin-link" href="" rel="stylesheet" type="text/css" />
+
+

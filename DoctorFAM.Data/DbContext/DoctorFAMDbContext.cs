@@ -2,6 +2,7 @@
 using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.BMI;
+using DoctorFAM.Domain.Entities.Consultant;
 using DoctorFAM.Domain.Entities.Contact;
 using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.Entities.Doctors;
@@ -244,6 +245,14 @@ namespace DoctorFAM.Data.DbContext
 
         #endregion
 
+        #region Consultant
+
+        public DbSet<Consultant> consultant { get; set; }
+
+        public DbSet<ConsultantInfo> ConsultantInfos { get; set; }
+
+        #endregion
+
         #endregion
 
         #region On Model Creating
@@ -430,6 +439,16 @@ namespace DoctorFAM.Data.DbContext
                 Id = 14,
                 Title = "Nurse",
                 RoleUniqueName = "Nurse",
+                CreateDate = DateTime.Now,
+                IsDelete = false,
+                ParentId = null
+            });
+
+            modelBuilder.Entity<Role>().HasData(new Role
+            {
+                Id = 15,
+                Title = "Consultant",
+                RoleUniqueName = "Consultant",
                 CreateDate = DateTime.Now,
                 IsDelete = false,
                 ParentId = null

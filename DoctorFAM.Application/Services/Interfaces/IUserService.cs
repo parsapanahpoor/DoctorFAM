@@ -103,6 +103,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         Task<AdminEditUserInfoResult> EditUserInfo(AdminEditUserInfoViewModel edit, IFormFile? UserAvatar);
 
+        //Register Consultant
+        Task RegisterConsultant(string mobile);
+
         #endregion
 
         #region User Panel
