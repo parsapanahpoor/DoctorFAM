@@ -51,6 +51,12 @@ namespace DoctorFAM.Application.Services.Implementation
             return await _organization.GetNurseOrganizationByUserId(userId);
         }
 
+        //Get Consultant Organization by User Id
+        public async Task<Organization?> GetConsultantOrganizationByUserId(ulong userId)
+        {
+            return await _organization.GetConsultantOrganizationByUserId(userId);
+        }
+
         public async Task<Organization?> GetPharmacyOrganizationByUserId(ulong userId)
         {
             return await _organization.GetPharmacyOrganizationByUserId(userId);
@@ -92,6 +98,12 @@ namespace DoctorFAM.Application.Services.Implementation
         public async Task<bool> IsExistAnyNurseByUserId(ulong userId)
         {
             return await _organization.IsExistAnyNurseByUserId(userId);
+        }
+
+        //Check Is Exist Any Consultant By This User Id
+        public async Task<bool> IsExistAnyConsultantByUserId(ulong userId)
+        {
+            return await _organization.IsExistAnyConsultantByUserId(userId);
         }
 
         public async Task<bool> IsExistAnyPharmacyOfficeEmployeeByUserId(ulong userId)

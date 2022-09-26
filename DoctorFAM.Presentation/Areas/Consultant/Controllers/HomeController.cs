@@ -12,14 +12,14 @@ namespace DoctorFAM.Web.Areas.Consultant.Controllers
 
         private readonly IDashboardsService _dashboardService;
         private readonly IOrganizationService _organizationService;
-        private readonly INurseService _nurseService;
+        private readonly IConsultantService _consultantService;
 
         public HomeController(IOrganizationService organizationService , IDashboardsService dashboardService
-                                , INurseService nurseService)
+                                , IConsultantService consultantService)
         {
             _organizationService = organizationService;
             _dashboardService = dashboardService;
-            _nurseService = nurseService;
+            _consultantService = consultantService;
         }
 
         #endregion
@@ -30,13 +30,13 @@ namespace DoctorFAM.Web.Areas.Consultant.Controllers
         {
             #region Check Consultant Login
 
-            if (!await _organizationService.IsExistAnyNurseByUserId(User.GetUserId()))
+            if (!await _organizationService.IsExistAnyConsultantByUserId(User.GetUserId()))
             {
-                #region If Doctor Is Not Found In Doctor Table 
+                #region If Consultant Is Not Found In Consultant Table 
 
-                if (!await _nurseService.IsExistAnyNurseByUserId(User.GetUserId()))
+                if (!await _consultantService.IsExistAnyConsultantByUserId(User.GetUserId()))
                 {
-                    await _nurseService.AddNurseForFirstTime(User.GetUserId());
+                    await _consultantService.AddConsultantForFirstTime(User.GetUserId());
                 }
 
                 #endregion

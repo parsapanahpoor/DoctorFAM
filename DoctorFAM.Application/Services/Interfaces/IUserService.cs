@@ -106,6 +106,9 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Register Consultant
         Task RegisterConsultant(string mobile);
 
+        //Get List Of Admins About Send Notification For Arrival New Consultant Inormations
+        Task<List<string>?> GetListOfAdminsAboutSendNotificationForArrivalNewConsultantInormations();
+
         #endregion
 
         #region User Panel

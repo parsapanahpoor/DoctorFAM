@@ -340,6 +340,12 @@ namespace DoctorFAM.Application.Services.Implementation
             #endregion
         }
 
+        //Get List Of Admins About Send Notification For Arrival New Consultant Inormations
+        public async Task<List<string>?> GetListOfAdminsAboutSendNotificationForArrivalNewConsultantInormations()
+        {
+            return await _userRepository.GetListOfAdminsAboutSendNotificationForArrivalNewConsultantInormations();
+        }
+
         //Register Consultant
         public async Task RegisterConsultant(string mobile)
         {

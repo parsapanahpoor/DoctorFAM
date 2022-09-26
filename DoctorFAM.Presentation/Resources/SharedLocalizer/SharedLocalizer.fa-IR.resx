@@ -585,4 +585,16 @@
   <data name="List Of Home Nurse Requests" xml:space="preserve">
     <value>لیست درخواست های پرستار در منزل شما </value>
   </data>
+  <data name="Consultant Info" xml:space="preserve">
+    <value>اطلاعات کاربری</value>
+  </data>
+  <data name="Manage Consultant" xml:space="preserve">
+    <value>مدیریت مشاوران روان</value>
+  </data>
+  <data name="Manage Consultant Info" xml:space="preserve">
+    <value>مدیریت اطلاعات مشاوران</value>
+  </data>
+  <data name="Consultant" xml:space="preserve">
+    <value>مشاور روان</value>
+  </data>
 </root>

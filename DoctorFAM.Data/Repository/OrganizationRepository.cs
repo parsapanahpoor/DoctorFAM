@@ -72,6 +72,15 @@ namespace DoctorFAM.Data.Repository
             return await _context.Organizations.FirstOrDefaultAsync(p => p.Id == member.OrganizationId && !p.IsDelete && p.OrganizationType == Domain.Enums.Organization.OrganizationType.Nurse);
         }
 
+        //Get Consultant Organization by User Id
+        public async Task<Organization?> GetConsultantOrganizationByUserId(ulong userId)
+        {
+            var member = await _context.OrganizationMembers.Include(p => p.Organization)
+                                .FirstOrDefaultAsync(p => !p.IsDelete && p.UserId == userId && p.Organization.OrganizationType == Domain.Enums.Organization.OrganizationType.Consultant);
+
+            return await _context.Organizations.FirstOrDefaultAsync(p => p.Id == member.OrganizationId && !p.IsDelete && p.OrganizationType == Domain.Enums.Organization.OrganizationType.Consultant);
+        }
+
         public async Task UpdateOrganization(Organization organization)
         {
             _context.Organizations.Update(organization);
@@ -100,6 +109,13 @@ namespace DoctorFAM.Data.Repository
         {
             return await _context.OrganizationMembers.Include(p => p.Organization)
                                     .AnyAsync(p => p.UserId == userId && !p.IsDelete && p.Organization.OrganizationType == Domain.Enums.Organization.OrganizationType.Nurse);
+        }
+
+        //Check Is Exist Any Consultant By This User Id
+        public async Task<bool> IsExistAnyConsultantByUserId(ulong userId)
+        {
+            return await _context.OrganizationMembers.Include(p => p.Organization)
+                                    .AnyAsync(p => p.UserId == userId && !p.IsDelete && p.Organization.OrganizationType == Domain.Enums.Organization.OrganizationType.Consultant);
         }
 
         public async Task<bool> IsExistAnyPharmacyOfficeEmployeeByUserId(ulong userId)

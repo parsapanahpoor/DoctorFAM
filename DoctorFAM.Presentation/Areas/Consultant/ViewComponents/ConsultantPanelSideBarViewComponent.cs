@@ -8,18 +8,18 @@ namespace DoctorFAM.Web.Areas.Consultant.ViewComponents
     {
         #region Ctor
 
-        private readonly INurseService _nurseService;
+        private readonly IConsultantService _consultantService;
 
-        public ConsultantPanelSideBarViewComponent(INurseService nurseService)
+        public ConsultantPanelSideBarViewComponent(IConsultantService consultantService)
         {
-            _nurseService = nurseService;
+            _consultantService = consultantService;
         }
 
         #endregion
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            return View("ConsultantPanelSideBar", await _nurseService.GetNurseSideBarInfo(User.GetUserId()));
+            return View("ConsultantPanelSideBar", await _consultantService.GetConsultantSideBarInfo(User.GetUserId()));
         }
     }
 }

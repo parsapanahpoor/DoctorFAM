@@ -15,28 +15,28 @@ Purchase: https://wrapbootstrap.com/theme/beyondadmin-adminapp-angularjs-mvc-WB0
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-    <partial name="_NursePanelHeaderReferences" />
+    <partial name="_ConsultantPanelHeaderReferences" />
 
     @await RenderSectionAsync("Styles", false)
 
 </head>
 <body>
-    @await Component.InvokeAsync("NursePanelNavbar")
+    @await Component.InvokeAsync("ConsultantPanelNavbar")
     <div class="main-container container-fluid">
         <div class="page-container">
-            @await Component.InvokeAsync("NursePanelSideBar")
-            @await Component.InvokeAsync("NursePanelChatBar")
+            @await Component.InvokeAsync("ConsultantPanelSideBar")
+            @await Component.InvokeAsync("ConsultantPanelChatBar")
             <div class="page-content">
                 <div class="page-breadcrumbs">
                     <ul class="breadcrumb">
                         <li>
                             <i class="fa fa-home"></i>
-                            <a asp-area="Nurse" asp-controller="Home" asp-action="Index">@SharedLocalizer["Home"]</a>
+                            <a asp-area="Consultant" asp-controller="Home" asp-action="Index">@SharedLocalizer["Home"]</a>
                         </li>
                         @RenderSection("Breadcrumb", true)
                     </ul>
                 </div>
-                <partial name="_NursePanelPageHeader" />
+                <partial name="_ConsultantPanelPageHeader" />
                 <div class="page-body">
                     @RenderBody()
                 </div>
@@ -44,7 +44,7 @@ Purchase: https://wrapbootstrap.com/theme/beyondadmin-adminapp-angularjs-mvc-WB0
         </div>
     </div>
 
-    <partial name="_NursePanelFooterReferences" />
+    <partial name="_ConsultantPanelFooterReferences" />
 
     <partial name="_Notification" />
 

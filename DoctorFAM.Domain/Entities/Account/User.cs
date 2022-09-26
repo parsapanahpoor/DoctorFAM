@@ -151,6 +151,12 @@ namespace DoctorFAM.Domain.Entities.Account
 
         public ICollection<TicketMessage> TicketMessages { get; set; }
 
+        [InverseProperty("Consultant")]
+        public ICollection<UserSelectedConsultant> UserConsultant { get; set; }
+
+        [InverseProperty("Patient")]
+        public ICollection<UserSelectedConsultant> PatientForConsultant { get; set; }
+
         #endregion
     }
 }

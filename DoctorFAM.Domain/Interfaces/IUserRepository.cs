@@ -54,6 +54,9 @@ namespace DoctorFAM.Domain.Interfaces
         //Get List Of Admins About Send Notification For Arrival New Nurses Inormations
         Task<List<string>?> GetListOfAdminsAboutSendNotificationForArrivalNewNursesInormations();
 
+        //Get List Of Admins About Send Notification For Arrival New Consultant Inormations
+        Task<List<string>?> GetListOfAdminsAboutSendNotificationForArrivalNewConsultantInormations();
+
         #endregion
     }
 }

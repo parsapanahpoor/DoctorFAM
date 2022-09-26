@@ -42,6 +42,12 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Get All Of organization Member By Organization Member User Id
         Task<List<User>?> GetAllOfOrganizationMemberByOrganizationMemberUserId(ulong userId);
 
+        //Check Is Exist Any Consultant By This User Id
+        Task<bool> IsExistAnyConsultantByUserId(ulong userId);
+
+        //Get Consultant Organization by User Id
+        Task<Organization?> GetConsultantOrganizationByUserId(ulong userId);
+
         #endregion
     }
 }
