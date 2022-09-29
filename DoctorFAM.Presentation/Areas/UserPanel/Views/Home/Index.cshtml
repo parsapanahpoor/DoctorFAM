@@ -14,6 +14,9 @@
             @*Check User Decline Family Doctor Request*@
             @await Component.InvokeAsync("CheckUserDeclineFamilyDoctorRequest")
 
+            @*Check User Decline Consultant Request*@
+            @await Component.InvokeAsync("CheckUserDeclineConsultantRequest")
+
             @*Box Of Lastest Requests*@
             <partial name="_ListOfInProgressRequests" model="@Model.ListOfInProgressRequests" />
 

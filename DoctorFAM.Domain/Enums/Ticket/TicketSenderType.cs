@@ -13,6 +13,7 @@ namespace DoctorFAM.Domain.Enums.Ticket
         FromDoctor,
         FromSeller,
         FromAdmin,
-        FromSupporter
+        FromSupporter,
+        FromConsultant
     }
 }

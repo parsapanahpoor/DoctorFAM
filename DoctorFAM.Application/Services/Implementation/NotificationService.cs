@@ -24,10 +24,11 @@ namespace DoctorFAM.Application.Services.Implementation
         private readonly IReservationService _reservationService;
         private readonly IOnlineVisitService _onlineVisitService;
         private readonly INurseService _nurseService;
+        private readonly IConsultantService _consultantService;
 
         public NotificationService(INotificationRepository notificationService, IUserService userService,
                                     IRequestService requestService, IHomePharmacyServicec homePharmacyService, IReservationService reservationService
-                                        , IOnlineVisitService onlineVisitService, INurseService nurseService)
+                                        , IOnlineVisitService onlineVisitService, INurseService nurseService, IConsultantService consultantService)
         {
             _notificationService = notificationService;
             _userService = userService;
@@ -36,6 +37,7 @@ namespace DoctorFAM.Application.Services.Implementation
             _reservationService = reservationService;
             _onlineVisitService = onlineVisitService;
             _nurseService = nurseService;
+            _consultantService = consultantService;
         }
 
         #endregion
@@ -437,6 +439,41 @@ namespace DoctorFAM.Application.Services.Implementation
 
         #region User Panel Side 
 
+        //Create Notification For Send Message Of Consultant
+        public async Task<bool> CreateNotificationForSendMessageOfConsultant(ulong targetId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId)
+        {
+            #region Get request 
+
+            //Get request
+            var request = await _consultantService.GetUserSelectedConsultantByRequestId(targetId);
+            if (request == null) return false;
+
+            #endregion
+
+            #region Fill Notification Entity
+
+            List<SupporterNotification> model = new List<SupporterNotification>();
+
+            SupporterNotification notif = new SupporterNotification()
+            {
+                CreateDate = DateTime.Now,
+                IsDelete = false,
+                IsSeen = false,
+                SupporterNotificationText = SupporterNotificationText,
+                TargetId = targetId,
+                UserId = senderId,
+                ReciverId = request.ConsultantId,
+            };
+
+            model.Add(notif);
+
+            await _notificationService.CreateRangeSupporter(model);
+
+            #endregion
+
+            return true;
+        }
+
         //Create Notification For Family Doctor 
         public async Task<bool> CreateNotificationForFamilyDoctor(ulong doctorUserId, ulong targetId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId)
         {
@@ -709,6 +746,45 @@ namespace DoctorFAM.Application.Services.Implementation
                 TargetId = targetId,
                 UserId = senderId,
                 ReciverId = request.UserId,
+            };
+
+            model.Add(notif);
+
+            await _notificationService.CreateRangeSupporter(model);
+
+            #endregion
+
+            return true;
+        }
+
+        #endregion
+
+        #region Consultant
+
+        //Create Notification For Send Message Of Consultant
+        public async Task<bool> CreateNotificationForSendMessageOfConsultantFromConsultantPanel(ulong targetId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId)
+        {
+            #region Get request 
+
+            //Get request
+            var request = await _consultantService.GetUserSelectedConsultantByRequestId(targetId);
+            if (request == null) return false;
+
+            #endregion
+
+            #region Fill Notification Entity
+
+            List<SupporterNotification> model = new List<SupporterNotification>();
+
+            SupporterNotification notif = new SupporterNotification()
+            {
+                CreateDate = DateTime.Now,
+                IsDelete = false,
+                IsSeen = false,
+                SupporterNotificationText = SupporterNotificationText,
+                TargetId = targetId,
+                UserId = senderId,
+                ReciverId = request.PatientId,
             };
 
             model.Add(notif);

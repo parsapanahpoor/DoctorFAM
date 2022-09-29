@@ -1,4 +1,6 @@
-﻿@{
+﻿@model DoctorFAM.Domain.ViewModels.Consultant.Dashboard.ConsultantPanelDashboardViewModel
+
+@{
     ViewData["Title"] = Localizer["Consultant Panel Dashboard"];
 }
 
@@ -41,6 +43,20 @@
 
         <div class="row">
 
+            @*Count Of Population Covered*@
+            <partial name="_CountOfPopulationCovered" model="@Model" />
+
+            @*Count Of Population Covered*@
+            <partial name="_CountOfPopulationCovered" model="@Model" />
+
+            @*Count Of Population Covered*@
+            <partial name="_CountOfPopulationCovered" model="@Model" />
+
+            @*Count Of Population Covered*@
+            <partial name="_CountOfPopulationCovered" model="@Model" />
+
+            @*Box Of Lastest Family Doctor Requests*@
+            <partial name="_LastestConsultantRequests" model="@Model.ListOfRequestForConsultant" />
 
         </div>
 

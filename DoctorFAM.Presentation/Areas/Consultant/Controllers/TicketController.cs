@@ -72,7 +72,7 @@ namespace DoctorFAM.Web.Areas.Consultant.Controllers
 
             #region Add Ticket Method 
 
-            var result = await _ticketService.CreateTicket(create, organization.OwnerId, Domain.Enums.Ticket.TicketSenderType.FromDoctor);
+            var result = await _ticketService.CreateTicket(create, organization.OwnerId, Domain.Enums.Ticket.TicketSenderType.FromConsultant);
 
             if (result != 0)
             {
@@ -135,7 +135,7 @@ namespace DoctorFAM.Web.Areas.Consultant.Controllers
                 if (result)
                 {
                     TempData[SuccessMessage] = _localizer["mission accomplished"].Value;
-                    return RedirectToAction("TicketDetail", "Ticket", new { area = "Nurse", id = answer.TicketId });
+                    return RedirectToAction("TicketDetail", "Ticket", new { area = "Cosnultant", id = answer.TicketId });
                 }
             }
 

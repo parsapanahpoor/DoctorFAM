@@ -6,9 +6,11 @@ using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.Consultant;
 using DoctorFAM.Domain.ViewModels.Site.Notification;
 using DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor;
+using DoctorFAM.Domain.ViewModels.UserPanel.OnlineVisit;
 using DoctorFAM.Web.Hubs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using System.Runtime.CompilerServices;
 
 namespace DoctorFAM.Web.Areas.UserPanel.Controllers
 {
@@ -22,9 +24,11 @@ namespace DoctorFAM.Web.Areas.UserPanel.Controllers
         private readonly IHubContext<NotificationHub> _notificationHub;
         private readonly INotificationService _notificationService;
         private readonly IOrganizationService _organizationService;
+        private readonly ITicketService _ticketService;
 
         public ConsultantController(IConsultantService consultantService, IUserService userService,ILocationService locationService
-                                     , IHubContext<NotificationHub> notificationHub, INotificationService notificationService, IOrganizationService organizationService)
+                                     , IHubContext<NotificationHub> notificationHub, INotificationService notificationService
+                                        , IOrganizationService organizationService , ITicketService tikcetService)
         {
             _consultantService = consultantService;
             _userService = userService;
@@ -32,6 +36,7 @@ namespace DoctorFAM.Web.Areas.UserPanel.Controllers
             _organizationService = organizationService;
             _notificationHub = notificationHub;
             _notificationService = notificationService;
+            _ticketService = tikcetService;
         }
 
         #endregion
@@ -256,6 +261,119 @@ namespace DoctorFAM.Web.Areas.UserPanel.Controllers
 
             TempData[ErrorMessage] = "عملیات با شکست مواجه شده است .";
             return RedirectToAction("Index", "Home", new { area = "UserPanel" });
+        }
+
+        #endregion
+
+        #region List Of Consultant Masseges
+
+        [HttpGet]
+        public async Task<IActionResult> ListOfConsultantMasseges(ulong UserId)
+        {
+            #region Get Request By Id
+
+            var request = await _consultantService.GetUserSelectedConsultantByPatientAndConsultantId(User.GetUserId() , UserId);
+            if (request == null) return NotFound();
+
+            #endregion
+
+            #region Get Ticket By Request Id
+
+            var ticket = await _ticketService.GetTicketByConsultantRequestId(request.Id);
+            if (ticket == null) return NotFound();
+            if (ticket.OwnerId != request.ConsultantId) return NotFound();
+            if (ticket.TargetUserId != User.GetUserId()) return NotFound();
+
+            #endregion
+
+            #region Read Ticket
+
+            await _ticketService.ReadTicketByUser(ticket);
+
+            #endregion
+
+            #region Get Ticket Messages
+
+            var messages = await _ticketService.GetTikcetMessagesByTicketId(ticket.Id);
+
+            ViewData["Ticket"] = ticket;
+            ViewData["TicketMessages"] = messages;
+
+            #endregion
+
+            return View(new AnswerTikcetUserPanelViewModel
+            {
+                TicketId = ticket.Id
+            });
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> ListOfConsultantMasseges(AnswerTikcetUserPanelViewModel answer)
+        {
+            #region Get Ticket By Id
+
+            var ticket = await _ticketService.GetTicketById(answer.TicketId);
+            if (ticket == null) return NotFound();
+
+            #endregion
+
+            #region Get User Selected Consultant Id 
+
+            var request = await _consultantService.GetUserSelectedConsultantByRequestId(ticket.RequesConsultanttId.Value);
+            if (request == null) return NotFound();
+
+            #endregion
+
+            #region Model State Validation 
+
+            if (!ModelState.IsValid)
+            {
+                ViewData["Ticket"] = ticket;
+                ViewData["TicketMessages"] = await _ticketService.GetTikcetMessagesByTicketId(answer.TicketId);
+                return View(answer);
+            }
+
+            #endregion
+
+            #region Create Answer For Ticket
+
+            var result = await _ticketService.CreateAnswerTikcetFromUserPanel(answer, User.GetUserId());
+
+            if (result)
+            {
+                #region Send Notification In SignalR
+
+                //Send Notification For Consultant 
+                await _notificationService.CreateNotificationForSendMessageOfConsultant(ticket.RequesConsultanttId.Value, Domain.Enums.Notification.SupporterNotificationText.NewArrivalConsultantMessage, Domain.Enums.Notification.NotificationTarget.ConsultantRequest, User.GetUserId());
+
+                //Get Current User
+                var currentUser = await _userService.GetUserById(User.GetUserId());
+
+                //Fill Send Supporter Notification ViewModel For Send Notification
+                SendSupporterNotificationViewModel viewModel = new SendSupporterNotificationViewModel()
+                {
+                    CreateNotificationDate = $"{DateTime.Now.ToShamsi()} - {DateTime.Now.Hour}:{DateTime.Now.Minute}",
+                    NotificationText = "پیام جدید از درخواست مشاوره",
+                    RequestId = request.Id,
+                    Username = User.Identity.Name,
+                    UserImage = currentUser.Avatar
+                };
+
+                await _notificationHub.Clients.Users(request.ConsultantId.ToString()).SendAsync("SendSupporterNotification", viewModel);
+
+                #endregion
+
+                TempData[SuccessMessage] = "عملیات با موفقیت انجام شد .";
+                return RedirectToAction("ListOfConsultantMasseges", "Consultant", new { area = "UserPanel", UserId = request.ConsultantId });
+            }
+
+            TempData[ErrorMessage] = "خطایی رخ داده است لطفا مجدد تلاش کنید .";
+            ViewData["Ticket"] = ticket;
+            ViewData["TicketMessages"] = await _ticketService.GetTikcetMessagesByTicketId(answer.TicketId);
+
+            #endregion
+
+            return View(answer);
         }
 
         #endregion

@@ -14,8 +14,14 @@ namespace DoctorFAM.Domain.Interfaces
     {
         #region Consultant Panel
 
+        //Get User Selected Consultant By Patient And Consultant Id
+        Task<UserSelectedConsultant?> GetUserSelectedConsultantByPatientAndConsultantId(ulong patientId, ulong consultantId);
+
         //Get User Selected Consultant By Request Id
         Task<UserSelectedConsultant?> GetUserSelectedConsultantByRequestId(ulong requestId);
+
+        //List Of Your Consultant Population Covered Users
+        Task<ListOfConsultantPopulationCoveredViewModel> FilterYourListOfConsultantPopulationCoveredViewModel(ListOfConsultantPopulationCoveredViewModel filter);
 
         //List Of Consultant Population Covered Users
         Task<ListOfConsultantPopulationCoveredViewModel> FilterListOfConsultantPopulationCoveredViewModel(ListOfConsultantPopulationCoveredViewModel filter);
@@ -53,6 +59,9 @@ namespace DoctorFAM.Domain.Interfaces
         #endregion
 
         #region Admin Side 
+
+        //Filter Consultant Requests Admin Side 
+        Task<FilterConsultantAdminSideViewModel> FilterConsultantAdminSideViewModel(FilterConsultantAdminSideViewModel filter);
 
         //Get Consultant Info By Nurse Id
         Task<ConsultantInfo?> GetConsultantInfoByConsultantId(ulong consultantId);

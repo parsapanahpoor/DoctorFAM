@@ -2,6 +2,7 @@
 using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.Dashboard;
+using DoctorFAM.Domain.ViewModels.Consultant.Dashboard;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Dashbaord;
 using DoctorFAM.Domain.ViewModels.Nurse.NurseDashboard;
 using DoctorFAM.Domain.ViewModels.Supporter;
@@ -305,6 +306,45 @@ namespace DoctorFAM.Data.Repository
                                                             && s.RequestState == Domain.Enums.Request.RequestState.Finalized && s.OperationId == nurseId && s.PatientRequestDateTimeDetails.SendDate >= DateTime.Now)
                                                      .OrderByDescending(s => s.CreateDate)
                                                      .ToListAsync();
+
+            #endregion
+
+            return model;
+        }
+
+        #endregion
+
+        #region Consultant Panel 
+
+        public async Task<ConsultantPanelDashboardViewModel?> FillConsultantPanelDashboardViewModel(ulong userId)
+        {
+            ConsultantPanelDashboardViewModel model = new ConsultantPanelDashboardViewModel();
+
+            #region Get Organization
+
+            var organization = await _organizationRepository.GetConsultantOrganizationByUserId(userId);
+            if (organization == null)
+            {
+                return null;
+            }
+
+            #endregion
+
+            #region Count Of Pupolation Covered
+
+            model.CountOfPupolationCovered = await _context.UserSelectedConsultants.CountAsync(p => !p.IsDelete
+                                                        && p.ConsultantId == organization.OwnerId &&
+                                                            p.ConsultantRequestState == Domain.Enums.FamilyDoctor.FamilyDoctorRequestState.Accepted);
+
+            #endregion
+
+            #region List Of Newest Request For Consultant
+
+            model.ListOfRequestForConsultant = await _context.UserSelectedConsultants.Include(p => p.Patient)
+                                                    .Where(p => !p.IsDelete && p.ConsultantId == organization.OwnerId
+                                                        && p.ConsultantRequestState == Domain.Enums.FamilyDoctor.FamilyDoctorRequestState.WaitingForConfirm)
+                                                            .OrderByDescending(p => p.CreateDate)
+                                                                .Select(p => p.Patient).ToListAsync();
 
             #endregion
 

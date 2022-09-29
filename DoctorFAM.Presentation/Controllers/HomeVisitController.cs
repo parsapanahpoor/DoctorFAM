@@ -2,6 +2,7 @@
 using DoctorFAM.Application.Interfaces;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Data.DbContext;
+using DoctorFAM.Domain.Enums.RequestType;
 using DoctorFAM.Domain.ViewModels.Site.Common;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
 using DoctorFAM.Domain.ViewModels.Site.Request;
@@ -82,6 +83,12 @@ namespace DoctorFAM.Web.Controllers
 
             #endregion
 
+            #region Request Validation 
+
+            if (!await _requestService.RequestValidatorWhileCompeleteSteps(requestId, User.GetUserId(), null, RequestType.HomeVisit)) return NotFound();
+
+            #endregion
+
             #region Get User Population Covered
 
             ViewBag.PopulationCovered = await _populationCovered.GetUserPopulation(User.GetUserId());
@@ -123,6 +130,13 @@ namespace DoctorFAM.Web.Controllers
             #region Data Validation
 
             if (!await _userService.IsExistUserById(User.GetUserId())) return NotFound();
+            if (User.GetUserId() != patient.UserId) return NotFound();
+
+            #endregion
+
+            #region Request Validation 
+
+            if (!await _requestService.RequestValidatorWhileCompeleteSteps(patient.RequestId, User.GetUserId(), null, RequestType.HomeVisit)) return NotFound();
 
             #endregion
 
@@ -136,7 +150,7 @@ namespace DoctorFAM.Web.Controllers
 
                 #endregion
 
-                return NotFound();
+                return View(patient);
             }
 
             #endregion

@@ -44,7 +44,7 @@ namespace DoctorFAM.Web.Areas.Consultant.Controllers
 
             #endregion
 
-            return View();
+            return View(await _dashboardService.FillConsultantPanelDashboardViewModel(User.GetUserId()));
         }
 
         #endregion

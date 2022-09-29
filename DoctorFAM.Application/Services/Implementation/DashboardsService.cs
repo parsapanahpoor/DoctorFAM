@@ -1,6 +1,7 @@
 ﻿using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.Dashboard;
+using DoctorFAM.Domain.ViewModels.Consultant.Dashboard;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Dashbaord;
 using DoctorFAM.Domain.ViewModels.Nurse.NurseDashboard;
 using DoctorFAM.Domain.ViewModels.Supporter;
@@ -77,6 +78,15 @@ namespace DoctorFAM.Application.Services.Implementation
             #endregion
 
             return await _dashboardRepostory.FillNurseDashboardViewModel(organization.OwnerId);
+        }
+
+        #endregion
+
+        #region Consultant Panel 
+
+        public async Task<ConsultantPanelDashboardViewModel?> FillConsultantPanelDashboardViewModel(ulong userId)
+        {
+            return await _dashboardRepostory.FillConsultantPanelDashboardViewModel(userId);
         }
 
         #endregion

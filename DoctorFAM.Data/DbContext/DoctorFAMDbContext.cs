@@ -91,6 +91,8 @@ namespace DoctorFAM.Data.DbContext
 
         public DbSet<RequestTransferingPriceFromOperator> TransferingPriceFromOperators{ get; set; }
 
+        public DbSet<HomeVisitRequestDetail> HomeVisitRequestDetails { get; set; }
+
         #endregion
 
         #region Language

@@ -56,6 +56,8 @@ namespace DoctorFAM.DataLayer.Entities
 
         public OnlineVisitRequestDetail OnlineVisitRequestDetail { get; set; }
 
+        public HomeVisitRequestDetail HomeVisitRequestDetail { get; set; }
+
         #endregion
     }
 }
