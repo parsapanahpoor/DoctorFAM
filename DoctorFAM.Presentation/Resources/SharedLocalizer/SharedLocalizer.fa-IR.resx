@@ -609,4 +609,10 @@
   <data name="List Of Consultant Request" xml:space="preserve">
     <value>لیست درخواست های مشاوره</value>
   </data>
+  <data name="List Of Home Visit Request" xml:space="preserve">
+    <value>لیست درخواست ها</value>
+  </data>
+  <data name="List Of Your Home Visit" xml:space="preserve">
+    <value>درخواست های تایید شده شما</value>
+  </data>
 </root>

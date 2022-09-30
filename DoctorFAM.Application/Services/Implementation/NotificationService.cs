@@ -1,4 +1,5 @@
 ﻿using DoctorFAM.Application.Services.Interfaces;
+using DoctorFAM.Data.Repository;
 using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.Notification;
@@ -25,10 +26,11 @@ namespace DoctorFAM.Application.Services.Implementation
         private readonly IOnlineVisitService _onlineVisitService;
         private readonly INurseService _nurseService;
         private readonly IConsultantService _consultantService;
+        private readonly IHomeVisitService _homeVisitService;
 
         public NotificationService(INotificationRepository notificationService, IUserService userService,
                                     IRequestService requestService, IHomePharmacyServicec homePharmacyService, IReservationService reservationService
-                                        , IOnlineVisitService onlineVisitService, INurseService nurseService, IConsultantService consultantService)
+                                        , IOnlineVisitService onlineVisitService, INurseService nurseService, IConsultantService consultantService, IHomeVisitService homeVisitService)
         {
             _notificationService = notificationService;
             _userService = userService;
@@ -38,6 +40,7 @@ namespace DoctorFAM.Application.Services.Implementation
             _onlineVisitService = onlineVisitService;
             _nurseService = nurseService;
             _consultantService = consultantService;
+            _homeVisitService = homeVisitService;
         }
 
         #endregion
@@ -346,6 +349,12 @@ namespace DoctorFAM.Application.Services.Implementation
                 user.AddRange(supporters);
             }
 
+            if (SupporterNotificationText == SupporterNotificationText.HomeVisitRequest)
+            {
+                //Get Supporters
+                var supporters = await _userService.GetHomeVisitSupporters();
+                user.AddRange(supporters);
+            }
 
             #endregion
 
@@ -715,6 +724,72 @@ namespace DoctorFAM.Application.Services.Implementation
             #endregion
 
             return true;
+        }
+
+        //Create Notification For Home Visit Doctors 
+        public async Task<bool> CreateNotificationForHomeVisitDoctors(ulong targetId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId)
+        {
+            #region Get Doctors 
+
+            List<string> user = new List<string>();
+
+            //Get Doctors That In Home Visit Interests
+            var doctor = await _homeVisitService.GetActivatedAndDoctorsInterestHomeVisit(targetId);
+            user.AddRange(doctor);
+
+            #endregion
+
+            #region Fill Notification Entity
+
+            List<SupporterNotification> model = new List<SupporterNotification>();
+
+            foreach (var item in user)
+            {
+                SupporterNotification notif = new SupporterNotification()
+                {
+                    CreateDate = DateTime.Now,
+                    IsDelete = false,
+                    IsSeen = false,
+                    SupporterNotificationText = SupporterNotificationText,
+                    TargetId = targetId,
+                    UserId = senderId,
+                    ReciverId = (ulong)Convert.ToInt64(item),
+                };
+
+                model.Add(notif);
+            };
+
+            await _notificationService.CreateRangeSupporter(model);
+
+            #endregion
+
+            return true;
+        }
+
+        //Get List Of Doctors For Send Notification For Home Visit Notification 
+        public async Task<List<string?>> GetListOfDoctorsForArrivalsHomeVisitRequests(ulong requestId)
+        {
+            #region Get Request By Id 
+
+            var request = await _requestService.GetRequestById(requestId);
+            if (request == null) return null;
+
+            #endregion
+
+            #region Get Request Detail 
+
+            var requetsDetail = await _requestService.GetPatientRequestDetailByRequestId(requestId);
+            if (requetsDetail == null) return null;
+
+            #endregion
+
+            #region Get Activated Doctor By Home Visit Interests And Location Address
+
+            var doctor = await _homeVisitService.GetActivatedAndDoctorsInterestHomeVisit(requestId);
+
+            #endregion
+
+            return doctor;
         }
 
         #endregion

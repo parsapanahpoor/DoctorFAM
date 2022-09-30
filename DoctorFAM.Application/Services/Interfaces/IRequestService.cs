@@ -5,6 +5,7 @@ using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Enums.Request;
 using DoctorFAM.Domain.Enums.RequestType;
 using DoctorFAM.Domain.ViewModels.Site.Common;
+using DoctorFAM.Domain.ViewModels.Site.Request;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,6 +54,9 @@ namespace DoctorFAM.Application.Services.Interfaces
         #endregion
 
         #region Patient Request Detail
+
+        //Create Patient Request Detail Home Visit 
+        Task<CreatePatientAddressResult> CreatePatientRequestDetailHomeVisit(PatienAddressForHomeVistiViewModel model);
 
         Task<CreatePatientAddressResult> CreatePatientRequestDetail(PatienAddressViewModel model);
 

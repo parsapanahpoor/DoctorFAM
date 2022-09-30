@@ -41,6 +41,48 @@ namespace DoctorFAM.Domain.ViewModels.Admin.SiteSetting
 
         [Display(Name = "Online Visit tariff in Rials")]
         public int? OnlineVisitTariff { get; set; }
+
+        [Display(Name = "تزریق عضلانی")]
+        public int IntramuscularInjection { get; set; }
+
+        [Display(Name = "تزریق جلدی یا زیر جلدی")]
+        public int DermalOrSubcutaneousInjection { get; set; }
+
+        [Display(Name = "تزریق ریدی")]
+        public int ReedyInjection { get; set; }
+
+        [Display(Name = "سرم تراپی")]
+        public int SerumTherapy { get; set; }
+
+        [Display(Name = "اندازه گیری فشار خون")]
+        public int BloodPressureMeasurement { get; set; }
+
+        [Display(Name = "گلوکومتری")]
+        public int Glucometry { get; set; }
+
+        [Display(Name = "پالس اکسیمتری")]
+        public int PulseOximetry { get; set; }
+
+        [Display(Name = "پانسمان کوچک")]
+        public int SmallDressing { get; set; }
+
+        [Display(Name = "پانسمان بزرگ")]
+        public int GreatDressing { get; set; }
+
+        [Display(Name = "لوله گذاری معده")]
+        public int GastricIntubation { get; set; }
+
+        [Display(Name = "سونگذاری مثانه")]
+        public int UrinaryBladder { get; set; }
+
+        [Display(Name = "اکسیژن تراپی")]
+        public int OxygenTherapy { get; set; }
+
+        [Display(Name = "نوار قلب")]
+        public int ECG { get; set; }
+
+        [Display(Name = "تعرفه به ازای فاصله از شهر")]
+        public int DistanceFromCityTarriff { get; set; }
     }
 
     public enum EditSiteSettingResult

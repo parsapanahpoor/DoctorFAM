@@ -35,6 +35,8 @@ namespace DoctorFAM.Domain.Interfaces
 
         #region Site Side
 
+        Task<int> GetDistanceFromCityTarriffCost();
+
         Task<bool> IsExistSiteSetting();
 
         Task<int> GetSMSTimer();
@@ -42,6 +44,32 @@ namespace DoctorFAM.Domain.Interfaces
         Task<string?> GetSiteAddressDomain();
 
         Task<int> GetOnlineVisitTariff();
+
+        Task<int> GetIntramuscularInjectionCost();
+
+        Task<int> GetDermalOrSubcutaneousInjectionCost();
+
+        Task<int> GetReedyInjectionCost();
+
+        Task<int> GetSerumTherapyCost();
+
+        Task<int> GetBloodPressureMeasurementCost();
+
+        Task<int> GetGlucometrytCost();
+
+        Task<int> GetPulseOximetryCost();
+
+        Task<int> GetSmallDressingCost();
+
+        Task<int> GetGreatDressingCost();
+
+        Task<int> GetGastricIntubationCost();
+
+        Task<int> GetUrinaryBladderCost();
+
+        Task<int> GetOxygenTherapyCost();
+
+        Task<int> GetECGCost();
 
         #endregion
     }

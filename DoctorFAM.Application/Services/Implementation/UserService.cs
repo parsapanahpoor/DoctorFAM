@@ -473,6 +473,12 @@ namespace DoctorFAM.Application.Services.Implementation
             return await _userRepository.GetAdminsAndSupportersNotificationForSendNotificationInOnlineVisit();
         }
 
+        //Get List Of Admins and Supporters User Id For Send Notification For Home Visit
+        public async Task<List<string>?> GetAdminsAndSupportersNotificationForSendNotificationInHomeVisit()
+        {
+            return await _userRepository.GetAdminsAndSupportersNotificationForSendNotificationInHomeVisit();
+        }
+
         //Get List Of Admins and Supporters 
         public async Task<List<string>?> GetAllAdminsAndSupportersNotification()
         {
@@ -495,6 +501,12 @@ namespace DoctorFAM.Application.Services.Implementation
         public async Task<List<User>?> GetHomePharmacySupporters()
         {
             return await _userRepository.GetHomePharmacySupporters();
+        }
+
+        //Get Home Visit Supporters
+        public async Task<List<User>?> GetHomeVisitSupporters()
+        {
+            return await _userRepository.GetHomeVisitSupporters();
         }
 
         //Get Online Visit Supporters

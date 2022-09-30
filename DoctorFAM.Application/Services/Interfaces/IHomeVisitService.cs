@@ -1,4 +1,4 @@
-﻿using AngleSharp.Io;
+﻿using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.ViewModels.Admin.HealthHouse;
@@ -18,6 +18,9 @@ namespace DoctorFAM.Application.Services.Interfaces
     {
         #region Site Side
 
+        //Get Activated And Home Visit Interests Home Visit For Send Correct Notification For Arrival Home Visit Request 
+        Task<List<string?>> GetActivatedAndDoctorsInterestHomeVisit(ulong requestId);
+
         Task<bool> ChargeUserWallet(ulong userId, int price);
 
         Task<bool> PayHomeVisitTariff(ulong userId, int price);
@@ -26,14 +29,25 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         Task<PatientViewModel> FillPatientViewModelFromSelectedPopulationCoveredData(ulong populationId, ulong requestId, ulong userId);
 
+        //Get Home Visit Request Detail By Request Id
+        Task<HomeVisitRequestDetail?> GetHomeVisitRequestDetailByRequestId(ulong requestId);
+
+        //Proccess Home Visit Request Cost 
+        Task<int> ProccessHomeVisitRequestCost(Request request);
+
         #endregion
 
         #region Doctor Panel Side
+
+        //Fill Home Visit Request Detail View Model
+        Task<Domain.ViewModels.DoctorPanel.HomeVisit.HomeVisitRequestDetailViewModel?> FillHomeVisitRequestDetailViewModel(ulong requestId, ulong userId);
 
         Task<ListOfPayedHomeVisitsRequestsDoctorPanelSideViewModel> ListOfPayedHomeVisitsRequestsDoctorPanelSide(ListOfPayedHomeVisitsRequestsDoctorPanelSideViewModel filter);
 
         Task<ListOfPayedDeathCertificateRequestDoctorSideViewModel> ListOfPayedDeathCertificateRequestsDoctorPanelSide(ListOfPayedDeathCertificateRequestDoctorSideViewModel filter);
 
+        //List Of Your Home Visits Requests Doctor Panel Side
+        Task<ListOfPayedHomeVisitsRequestsDoctorPanelSideViewModel> ListOfYourHomeVisitsRequestsDoctorPanelSide(ListOfPayedHomeVisitsRequestsDoctorPanelSideViewModel filter);
 
         #endregion
 
@@ -41,7 +55,7 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         Task<FilterHomeVisistViewModel> FilterHomeVisit(FilterHomeVisistViewModel filter);
 
-        Task<HomeVisitRequestDetailViewModel> ShowHomeVisitDetail(ulong requestId);
+        Task<Domain.ViewModels.Admin.HealthHouse.HomeVisit.HomeVisitRequestDetailViewModel> ShowHomeVisitDetail(ulong requestId);
 
         Task<Patient?> GetPatientByRequestId(ulong requestId);
 

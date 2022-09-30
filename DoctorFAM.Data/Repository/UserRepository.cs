@@ -62,6 +62,12 @@ namespace DoctorFAM.Data.Repository
             return await _context.UserRoles.Include(p => p.User).Where(p => !p.IsDelete && p.RoleId == 9).Select(p => p.User).ToListAsync();
         }
 
+        //Get Home Visit Supporters
+        public async Task<List<User>?> GetHomeVisitSupporters()
+        {
+            return await _context.UserRoles.Include(p => p.User).Where(p => !p.IsDelete && p.RoleId == 7).Select(p => p.User).ToListAsync();
+        }
+
         //Get Online Visit Supporters
         public async Task<List<User>?> GetOnlineVisitSupporters()
         {
@@ -125,6 +131,22 @@ namespace DoctorFAM.Data.Repository
 
             //Get Supporters User Id
             var supporters = await _context.UserRoles.Where(p => !p.IsDelete && p.RoleId == 13).Select(p => p.UserId.ToString()).ToListAsync();
+            model.AddRange(supporters);
+
+            return model;
+        }
+
+        //Get List Of Admins and Supporters User Id For Send Notification For Home Visit
+        public async Task<List<string>?> GetAdminsAndSupportersNotificationForSendNotificationInHomeVisit()
+        {
+            List<string> model = new List<string>();
+
+            //Get Admins User Id
+            var admins = await _context.Users.Where(p => !p.IsDelete && p.IsAdmin).Select(p => p.Id.ToString()).ToListAsync();
+            model.AddRange(admins);
+
+            //Get Supporters User Id
+            var supporters = await _context.UserRoles.Where(p => !p.IsDelete && p.RoleId == 7).Select(p => p.UserId.ToString()).ToListAsync();
             model.AddRange(supporters);
 
             return model;

@@ -10,6 +10,7 @@ using DoctorFAM.Domain.Enums.Request;
 using DoctorFAM.Domain.Enums.RequestType;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Site.Common;
+using DoctorFAM.Domain.ViewModels.Site.Request;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -248,6 +249,121 @@ namespace DoctorFAM.Application.Services.Implementation
 
         #region Patient Request Detail
 
+        //Create Patient Request Detail Home Visit 
+        public async Task<CreatePatientAddressResult> CreatePatientRequestDetailHomeVisit(PatienAddressForHomeVistiViewModel model)
+        {
+            #region Data Validation
+
+            //If Patient Not Found
+            if (!await _patientService.IsExistPatientById(model.PatientId)) return CreatePatientAddressResult.PatientNotFound;
+
+            //If Request Not Found
+            if (!await IsExistRequestByRequestId(model.RequestId)) return CreatePatientAddressResult.RquestNotFound;
+
+            //If Country Not Found
+            if (!await _locationService.IsExistAnyLocationByLocationid(model.CountryId)) return CreatePatientAddressResult.LocationNotFound;
+
+            //If State Not Found
+            if (!await _locationService.IsExistAnyLocationByLocationid(model.StateId)) return CreatePatientAddressResult.LocationNotFound;
+
+            //If City Not Found
+            if (!await _locationService.IsExistAnyLocationByLocationid(model.CountryId)) return CreatePatientAddressResult.LocationNotFound;
+
+            #endregion
+
+            #region Patient Request Address Detail 
+
+            #region Fill Entity For Patient Request Detail
+
+            PaitientRequestDetail request = new PaitientRequestDetail()
+            {
+                RequestId = model.RequestId,
+                PatientId = model.PatientId,
+                CountryId = model.CountryId,
+                StateId = model.StateId,
+                CityId = model.CityId,
+                Mobile = model.Mobile,
+                Vilage = model.Vilage,
+                Distance = model.Distance,
+                Phone = model.Phone,
+                CreateDate = DateTime.Now,
+                FullAddress = model.FullAddress,
+            };
+
+            #endregion
+
+            #region Add Method
+
+            await _request.AddPatientRequestDetail(request);
+
+            #endregion
+
+            #endregion
+
+            #region Patient Request DateTime Detail
+
+            var time = model.SendDate.ToMiladiDateTime();
+
+            PatientRequestDateTimeDetail datetimeRequest = new PatientRequestDateTimeDetail()
+            {
+                SendDate = time,
+                RequestId = model.RequestId,
+                CreateDate = DateTime.Now,
+                StartTime = model.StartTime,
+                EndTime = model.EndTime,
+            };
+
+            await _request.AddPatientRequestDateTimeDetail(datetimeRequest);
+
+            #endregion
+
+            #region Add Patient Home Visit Request Detail 
+
+            HomeVisitRequestDetail visitRequestDetail = new HomeVisitRequestDetail()
+            {
+                BloodPressureMeasurement = model.BloodPressureMeasurement,
+                DermalOrSubcutaneousInjection = model.DermalOrSubcutaneousInjection,
+                ECG = model.ECG,
+                EmergencyVisit = model.EmergencyVisit,
+                FemalePhysician = model.FemalePhysician,
+                GastricIntubation = model.GastricIntubation,
+                Glucometry = model.Glucometry,
+                GreatDressing = model.GreatDressing,
+                IntramuscularInjection = model.IntramuscularInjection,
+                OxygenTherapy = model.OxygenTherapy,
+                PulseOximetry = model.PulseOximetry,
+                ReedyInjection = model.ReedyInjection,
+                RequestId = model.RequestId,
+                SerumTherapy = model.SerumTherapy,
+                SmallDressing = model.SmallDressing,
+                UrinaryBladder = model.UrinaryBladder,
+            };
+
+            await _request.AddHomeVisitRequestDetail(visitRequestDetail);
+
+            #endregion
+
+            #region Update Reuqest State
+
+            #region Get Request 
+
+            var requestState = await _request.GetRequestById(model.RequestId);
+
+            #endregion
+
+            #region Update request
+
+            requestState.RequestState = Domain.Enums.Request.RequestState.TramsferringToTheBankingPortal;
+
+            await _request.UpdateRequest(requestState);
+
+            #endregion
+
+            #endregion
+
+            return CreatePatientAddressResult.Success;
+        }
+
         public async Task<CreatePatientAddressResult> CreatePatientRequestDetail(PatienAddressViewModel model)
         {
             #region Data Validation
@@ -314,21 +430,26 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #region Patient Request DateTime Detail
 
-            var time = model.SendDate.ToMiladiDateTime();
 
-            PatientRequestDateTimeDetail datetimeRequest = new PatientRequestDateTimeDetail()
+            if (model.SendDate != null)
             {
-                SendDate = time,
-                RequestId = model.RequestId,
-                CreateDate = DateTime.Now,
-                StartTime = model.StartTime,
-                EndTime = 0,
-            };
 
-            await _request.AddPatientRequestDateTimeDetail(datetimeRequest);
+                var time = model.SendDate.ToMiladiDateTime();
+
+                PatientRequestDateTimeDetail datetimeRequest = new PatientRequestDateTimeDetail()
+                {
+                    SendDate = time,
+                    RequestId = model.RequestId,
+                    CreateDate = DateTime.Now,
+                    StartTime = model.StartTime,
+                    EndTime = 0,
+                };
+
+                await _request.AddPatientRequestDateTimeDetail(datetimeRequest);
+
+            }
 
             #endregion
-
 
             return CreatePatientAddressResult.Success;
         }

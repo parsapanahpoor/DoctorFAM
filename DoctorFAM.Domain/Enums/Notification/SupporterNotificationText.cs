@@ -41,5 +41,7 @@ namespace DoctorFAM.Domain.Enums.Notification
         ConsultantInformationInsert,
         [Display(Name = "Consultant Request")]
         ConsultantRequest,
+        [Display(Name = "HomeVisitRequest")]
+        HomeVisitRequest
     }
 }

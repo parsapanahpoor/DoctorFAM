@@ -16,6 +16,12 @@ namespace DoctorFAM.Domain.Interfaces
     {
         #region Site Side
 
+        //Get Home Visit Request Detail By Request Id
+        Task<HomeVisitRequestDetail?> GetHomeVisitRequestDetailByRequestId(ulong requestId);
+
+        //Get Activated And Home Visit Interests Home Visit For Send Correct Notification For Arrival Home Visit Request 
+        Task<List<string?>> GetActivatedAndDoctorsInterestHomeVisit(ulong countryId, ulong stateId, ulong cityId);
+
         #endregion
 
         #region Doctor Panel Side
@@ -24,6 +30,8 @@ namespace DoctorFAM.Domain.Interfaces
 
         Task<ListOfPayedDeathCertificateRequestDoctorSideViewModel> ListOfPayedDeathCertificateRequestsDoctorPanelSide(ListOfPayedDeathCertificateRequestDoctorSideViewModel filter);
 
+        //List Of Your Home Visits Requests Doctor Panel Side
+        Task<ListOfPayedHomeVisitsRequestsDoctorPanelSideViewModel> ListOfYourHomeVisitsRequestsDoctorPanelSide(ListOfPayedHomeVisitsRequestsDoctorPanelSideViewModel filter);
 
         #endregion
 

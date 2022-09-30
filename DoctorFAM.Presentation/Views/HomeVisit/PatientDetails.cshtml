@@ -132,7 +132,7 @@
                     <div class="form-group">
                         <span style="color:red;">*</span>
                         <label asp-for="Age" class="control-label"></label>
-                        <input id="DrugTrakingCode" asp-for="Age" class="form-control" />
+                        <input id="DrugTrakingCode" min="1" asp-for="Age" class="form-control" />
                         <span asp-validation-for="Age" class="text-danger"></span>
                     </div>
                 </div>

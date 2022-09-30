@@ -1,4 +1,5 @@
 ﻿using DoctorFAM.Domain.Entities.Doctors;
+using DoctorFAM.Domain.Enums.Gender;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -55,6 +56,9 @@ namespace DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo
 
         [Display(Name = "City")]
         public ulong? CityId { get; set; }
+
+        [Display(Name = "Gender")]
+        public Gender Gender { get; set; }
 
         public OrganizationInfoState? DoctorsInfosType { get; set; }
     }

@@ -1,14 +1,19 @@
-﻿using DoctorFAM.Application.Extensions;
+﻿using DoctorFAM.Application.Convertors;
+using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Interfaces;
+using DoctorFAM.Application.Services.Implementation;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Data.DbContext;
 using DoctorFAM.Domain.Enums.RequestType;
 using DoctorFAM.Domain.ViewModels.Site.Common;
+using DoctorFAM.Domain.ViewModels.Site.Notification;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
 using DoctorFAM.Domain.ViewModels.Site.Request;
+using DoctorFAM.Web.Hubs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.SignalR;
 
 namespace DoctorFAM.Web.Controllers
 {
@@ -18,22 +23,19 @@ namespace DoctorFAM.Web.Controllers
         #region Ctor
 
         public IHomeVisitService _homeVisitService;
-
         public ILocationService _locationService;
-
         public IPatientService _patientService;
-
         public IRequestService _requestService;
-
         public IUserService _userService;
-
         private readonly IPopulationCoveredService _populationCovered;
-
         private readonly ISiteSettingService _siteSettingService;
+        private readonly IHubContext<NotificationHub> _notificationHub;
+        private readonly INotificationService _notificationService;
 
         public HomeVisitController(IHomeVisitService homeVisitService, ILocationService locationService, IPatientService patientService
                                     , IRequestService requestService, IUserService userService, ISiteSettingService siteSettingService ,
-                                        IPopulationCoveredService populationCovered)
+                                        IPopulationCoveredService populationCovered, IHubContext<NotificationHub> notificationHub
+                                                , INotificationService notificationService)
         {
             _homeVisitService = homeVisitService;
             _locationService = locationService;
@@ -42,6 +44,8 @@ namespace DoctorFAM.Web.Controllers
             _userService = userService;
             _siteSettingService = siteSettingService;
             _populationCovered = populationCovered;
+            _notificationHub = notificationHub;
+            _notificationService = notificationService;
         }
 
         #endregion
@@ -196,14 +200,17 @@ namespace DoctorFAM.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> PatientRequestDetail(ulong requestId, ulong patientId)
         {
+            #region Request Validation 
+
+            if (!await _requestService.RequestValidatorWhileCompeleteSteps(requestId, User.GetUserId(), null, RequestType.HomeVisit)) return NotFound();
+
+            #endregion
+
             #region Is Exist Request & Patient
 
-            if (!await _requestService.IsExistRequestByRequestId(requestId))
-            {
-                return NotFound();
-            }
+            var request = await _requestService.GetRequestById(requestId);
 
-            if (!await _patientService.IsExistPatientById(patientId))
+            if (!await _patientService.IsExistPatientById(request.PatientId.Value))
             {
                 return NotFound();
             }
@@ -212,11 +219,11 @@ namespace DoctorFAM.Web.Controllers
 
             #region Page Data
 
-            ViewData["Countries"] = await _locationService.GetAllCountries();
+            ViewData["Countries"] = await _locationService.GetAllCountriesForHomeVisit();
 
             #endregion
 
-            return View(new PatienAddressViewModel()
+            return View(new PatienAddressForHomeVistiViewModel()
             {
                 RequestId = requestId,
                 PatientId = patientId
@@ -224,8 +231,20 @@ namespace DoctorFAM.Web.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> PatientRequestDetail(PatienAddressViewModel patientRequest)
+        public async Task<IActionResult> PatientRequestDetail(PatienAddressForHomeVistiViewModel patientRequest)
         {
+            #region Page Data
+
+            ViewData["Countries"] = await _locationService.GetAllCountriesForHomeVisit();
+
+            #endregion
+
+            #region Request Validation 
+
+            if (!await _requestService.RequestValidatorWhileCompeleteSteps(patientRequest.RequestId, User.GetUserId(), null, RequestType.HomeVisit)) return NotFound();
+
+            #endregion
+
             #region Model State Validation
 
             if (!ModelState.IsValid)
@@ -237,7 +256,7 @@ namespace DoctorFAM.Web.Controllers
 
             #region Create Patient Request Method
 
-            var result = await _requestService.CreatePatientRequestDetail(patientRequest);
+            var result = await _requestService.CreatePatientRequestDetailHomeVisit(patientRequest);
 
             switch (result)
             {
@@ -278,12 +297,16 @@ namespace DoctorFAM.Web.Controllers
 
             var request = await _requestService.GetRequestById(requestId);
             if (request == null) return NotFound();
+            if (!await _patientService.IsExistPatientById(request.PatientId.Value) || request.UserId != User.GetUserId())
+            {
+                return NotFound();
+            }
 
             #endregion
 
             #region Get Home Visit Tarif 
 
-            var homeVisitTarif = await _siteSettingService.GetHomeVisitTariff();
+            var homeVisitTarif = await _homeVisitService.ProccessHomeVisitRequestCost(request);
             if (homeVisitTarif == 0)
             {
                 TempData[ErrorMessage] = "لطفا با پشتیبانی تماس بگیرید";
@@ -344,10 +367,10 @@ namespace DoctorFAM.Web.Controllers
                 && HttpContext.Request.Query["Authority"] != "")
             {
                 string authority = HttpContext.Request.Query["Authority"];
-                
+
                 #region Get Home Visit Tarif 
 
-                var homeVisitTarif = await _siteSettingService.GetHomeVisitTariff();
+                var homeVisitTarif = await _homeVisitService.ProccessHomeVisitRequestCost(request);
                 if (homeVisitTarif == 0)
                 {
                     TempData[ErrorMessage] = "لطفا با پشتیبانی تماس بگیرید";
@@ -372,6 +395,42 @@ namespace DoctorFAM.Web.Controllers
 
                     //Pay Home Visit Tariff
                     await _homeVisitService.PayHomeVisitTariff(User.GetUserId(), homeVisitTarif);
+
+                    #region Send Notification In SignalR
+
+                    //Create Notification For Supporters And Admins
+                    var notifyResult = await _notificationService.CreateSupporterNotification(request.Id, Domain.Enums.Notification.SupporterNotificationText.HomeVisitRequest, Domain.Enums.Notification.NotificationTarget.request, User.GetUserId());
+
+                    //Create Notification For Home Visit Doctors 
+                    var HomeVisitResult = await _notificationService.CreateNotificationForHomeVisitDoctors(request.Id, Domain.Enums.Notification.SupporterNotificationText.HomeVisitRequest, Domain.Enums.Notification.NotificationTarget.request, User.GetUserId());
+
+                    //Get Current User
+                    var currentUser = await _userService.GetUserById(User.GetUserId());
+
+                    if (notifyResult && HomeVisitResult)
+                    {
+                        //Get List Of Admins And Supporter To Send Notification Into Them
+                        var users = await _userService.GetAdminsAndSupportersNotificationForSendNotificationInHomeVisit();
+
+                        //Get Doctor For Send Notification  
+                        users.AddRange(await _notificationService.GetListOfDoctorsForArrivalsHomeVisitRequests(request.Id));
+
+                        //Fill Send Supporter Notification ViewModel For Send Notification
+                        SendSupporterNotificationViewModel viewModel = new SendSupporterNotificationViewModel()
+                        {
+                            CreateNotificationDate = $"{DateTime.Now.ToShamsi()} - {DateTime.Now.Hour}:{DateTime.Now.Minute}",
+                            NotificationText = "درخواست برای ویزیت درمنزل",
+                            RequestId = request.Id,
+                            Username = User.Identity.Name,
+                            UserImage = currentUser.Avatar
+                        };
+
+                        await _notificationHub.Clients.Users(users).SendAsync("SendSupporterNotification", viewModel);
+                    }
+
+                    #endregion
+
+                    TempData[SuccessMessage] = "لطفا تا تایید پزشک صبور باشید.این فرایند حداکثر تا 30دقیقه زمان خواهد برد.";
 
                     return View();
                 }

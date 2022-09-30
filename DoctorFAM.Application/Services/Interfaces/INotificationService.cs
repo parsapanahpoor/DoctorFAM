@@ -78,6 +78,12 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Create Notification For Send Message Of Online Visit
         Task<bool> CreateNotificationForSendMessageOfOnlineVisitFromDoctorPanel(ulong targetId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId);
 
+        //Create Notification For Home Visit Doctors 
+        Task<bool> CreateNotificationForHomeVisitDoctors(ulong targetId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId);
+
+        //Get List Of Doctors For Send Notification For Home Visit Notification 
+        Task<List<string?>> GetListOfDoctorsForArrivalsHomeVisitRequests(ulong requestId);
+
         #endregion
 
         #region Nurse Panel Side

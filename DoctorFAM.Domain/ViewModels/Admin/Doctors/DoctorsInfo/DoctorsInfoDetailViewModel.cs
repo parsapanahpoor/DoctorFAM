@@ -1,6 +1,7 @@
 ﻿using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.Interest;
 using DoctorFAM.Domain.Entities.WorkAddress;
+using DoctorFAM.Domain.Enums.Gender;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -46,6 +47,9 @@ namespace DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo
 
         [Display(Name = "The reason for the rejection of the information ")]
         public string? RejectDescription { get; set; }
+
+        [Display(Name = "Gender")]
+        public Gender Gender { get; set; }
 
         public OrganizationInfoState DoctorsInfosType { get; set; }
 

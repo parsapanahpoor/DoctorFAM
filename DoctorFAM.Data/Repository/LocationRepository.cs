@@ -299,6 +299,17 @@ namespace DoctorFAM.Data.Repository
                 }).ToListAsync();
         }
 
+        //Get All Countries For Home Visit Service
+        public async Task<List<SelectListViewModel>> GetAllCountriesForHomeVisit()
+        {
+            return await _context.LocationInfoes.Include(p => p.Location).Where(s => s.Location.ParentId == null && !s.Location.IsDelete && s.Location.HomeVisit)
+                .Select(s => new SelectListViewModel
+                {
+                    Id = s.Location.Id,
+                    Title = s.Title
+                }).ToListAsync();
+        }
+
         #endregion
     }
 }

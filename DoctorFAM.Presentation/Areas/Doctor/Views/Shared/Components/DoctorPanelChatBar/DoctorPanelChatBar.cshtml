@@ -62,6 +62,10 @@
                                 {
                                     <div>پیام جدید از درخواست ویزیت آنلاین</div>
                                 }
+                                @if (item.SupporterNotificationText == DoctorFAM.Domain.Enums.Notification.SupporterNotificationText.HomeVisitRequest)
+                                {
+                                    <div>درخواست برای ویزیت درمنزل</div>
+                                }
                             </div>
                         </div>
                     </li>

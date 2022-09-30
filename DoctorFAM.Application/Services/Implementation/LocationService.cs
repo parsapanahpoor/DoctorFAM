@@ -258,6 +258,12 @@ namespace DoctorFAM.Application.Services
             return await _location.GetAllCountriesForHomeNurse();
         }
 
+        //Get All Countries For Home Visit Service
+        public async Task<List<SelectListViewModel>> GetAllCountriesForHomeVisit()
+        {
+            return await _location.GetAllCountriesForHomeVisit();
+        }
+
         #endregion
     }
 }
