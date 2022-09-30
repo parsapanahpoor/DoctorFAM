@@ -7,6 +7,7 @@ using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.HealthHouse;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DeathCertificate;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.HomeVisit;
+using DoctorFAM.Domain.ViewModels.Pharmacy.HomePharmacy;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -351,6 +352,26 @@ namespace DoctorFAM.Data.Repository
         public async Task<PaitientRequestDetail?> GetRequestPatientDetailByRequestId(ulong requestId)
         {
             return await _context.PaitientRequestDetails.FirstOrDefaultAsync(p => p.RequestId == requestId && !p.IsDelete);
+        }
+
+        #endregion
+
+        #region User Panel 
+
+        //Filter User Home Visit Requests
+        public async Task<Domain.ViewModels.UserPanel.HealthHouse.HomeVisit.FilterHomeVisitViewModel> FilterListOfUserHomeVisitRequest(Domain.ViewModels.UserPanel.HealthHouse.HomeVisit.FilterHomeVisitViewModel filter)
+        {
+            var query = _context.Requests
+             .Include(p => p.Operation)
+             .Include(p => p.PatientRequestDateTimeDetails)
+             .Where(s => !s.IsDelete && s.RequestType == Domain.Enums.RequestType.RequestType.HomeVisit && s.UserId == filter.UserId
+              && s.RequestState != RequestState.WaitingForCompleteInformationFromUser)
+             .OrderByDescending(s => s.CreateDate)
+             .AsQueryable();
+
+            await filter.Paging(query);
+
+            return filter;
         }
 
         #endregion

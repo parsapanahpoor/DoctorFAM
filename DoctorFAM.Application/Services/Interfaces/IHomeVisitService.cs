@@ -6,6 +6,7 @@ using DoctorFAM.Domain.ViewModels.Admin.HealthHouse.HomeVisit;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DeathCertificate;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.HomeVisit;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
+using DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,6 +40,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         #region Doctor Panel Side
 
+        //Confirm Home Visit Request From Doctor 
+        Task<bool> ConfirmHomeVisitRequestFromDoctor(ulong requestId, ulong userId);
+
         //Fill Home Visit Request Detail View Model
         Task<Domain.ViewModels.DoctorPanel.HomeVisit.HomeVisitRequestDetailViewModel?> FillHomeVisitRequestDetailViewModel(ulong requestId, ulong userId);
 
@@ -63,10 +67,23 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         #endregion
 
+        #region User Panel 
+
+        //Filter User Home Visit Requests
+        Task<Domain.ViewModels.UserPanel.HealthHouse.HomeVisit.FilterHomeVisitViewModel> FilterListOfUserHomeVisitRequest(Domain.ViewModels.UserPanel.HealthHouse.HomeVisit.FilterHomeVisitViewModel filter);
+
         Task<ulong?> CreateHomeVisitRequest(ulong userId);
 
         Task<CreatePatientResult> ValidateCreatePatient(PatientViewModel model);
 
-        Task<ulong> CreatePatientDetail(PatientViewModel patient);        
+        Task<ulong> CreatePatientDetail(PatientViewModel patient);
+
+        //Fill Doctor Information Detail View Model
+        Task<ShowDoctorInformationDetailViewModel?> FillShowDoctorInformationDetailViewModel(ulong doctorId);
+
+        //Accept Doctor Request From Home Visit Request
+        Task<bool> AcceptDoctorRequestFromHomeVisitRequest(Request request);
+
+        #endregion
     }
 }

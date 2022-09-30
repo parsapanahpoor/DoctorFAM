@@ -4,9 +4,11 @@ using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Data.DbContext;
 using DoctorFAM.Data.Repository;
 using DoctorFAM.DataLayer.Entities;
+using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Entities.Wallet;
+using DoctorFAM.Domain.Entities.WorkAddress;
 using DoctorFAM.Domain.Enums.Request;
 using DoctorFAM.Domain.Enums.RequestType;
 using DoctorFAM.Domain.Interfaces;
@@ -16,10 +18,12 @@ using DoctorFAM.Domain.ViewModels.DoctorPanel.DeathCertificate;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.HomeVisit;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
+using DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,7 +34,6 @@ namespace DoctorFAM.Application.Services.Implementation
     {
         #region Ctor
 
-        private readonly DoctorFAMDbContext _context;
         private readonly IHomeVisitRepository _homeVisit;
         private readonly IRequestService _requestService;
         private readonly IUserService _userService;
@@ -41,13 +44,16 @@ namespace DoctorFAM.Application.Services.Implementation
         private readonly ISiteSettingService _siteSettingService;
         private readonly IOrganizationService _organziationService;
         private readonly IHomePharmacyRepository _pharmacyService;
+        private readonly IDoctorsService _doctorsService;
+        private readonly IDoctorsRepository _doctorsRepository;
+        private readonly IWorkAddressService _workAddressService;
 
-        public HomeVisitService(DoctorFAMDbContext context, IHomeVisitRepository homeVisit, IRequestService requestService,
+        public HomeVisitService( IHomeVisitRepository homeVisit, IRequestService requestService,
                                 IUserService userService, IPatientService patientService, ILocationService locationServoce
-                                , IWalletRepository walletRepository, IPopulationCoveredRepository populationCovered, ISiteSettingService siteSettingService ,
-                                    IOrganizationService organizationService, IHomePharmacyRepository pharmacyService)
+                                , IWalletRepository walletRepository, IPopulationCoveredRepository populationCovered, ISiteSettingService siteSettingService,
+                                    IOrganizationService organizationService, IHomePharmacyRepository pharmacyService, IDoctorsService doctorsService, IDoctorsRepository doctorsRepository
+                                        , IWorkAddressService workAddressService)
         {
-            _context = context;
             _homeVisit = homeVisit;
             _requestService = requestService;
             _userService = userService;
@@ -58,6 +64,9 @@ namespace DoctorFAM.Application.Services.Implementation
             _siteSettingService = siteSettingService;
             _organziationService = organizationService;
             _pharmacyService = pharmacyService;
+            _doctorsService = doctorsService;
+            _doctorsRepository = doctorsRepository;
+            _workAddressService = workAddressService;
         }
 
         #endregion
@@ -477,7 +486,7 @@ namespace DoctorFAM.Application.Services.Implementation
         #region Doctor Panel Side
 
         //Fill Home Visit Request Detail View Model
-        public async Task<Domain.ViewModels.DoctorPanel.HomeVisit.HomeVisitRequestDetailViewModel?> FillHomeVisitRequestDetailViewModel(ulong requestId , ulong userId)
+        public async Task<Domain.ViewModels.DoctorPanel.HomeVisit.HomeVisitRequestDetailViewModel?> FillHomeVisitRequestDetailViewModel(ulong requestId, ulong userId)
         {
             #region Get Organization
 
@@ -535,6 +544,41 @@ namespace DoctorFAM.Application.Services.Implementation
         public async Task<ListOfPayedDeathCertificateRequestDoctorSideViewModel> ListOfPayedDeathCertificateRequestsDoctorPanelSide(ListOfPayedDeathCertificateRequestDoctorSideViewModel filter)
         {
             return await _homeVisit.ListOfPayedDeathCertificateRequestsDoctorPanelSide(filter);
+        }
+
+        //Confirm Home Visit Request From Doctor 
+        public async Task<bool> ConfirmHomeVisitRequestFromDoctor(ulong requestId, ulong userId)
+        {
+            #region Get Doctor Organization
+
+            var organization = await _organziationService.GetDoctorOrganizationByUserId(userId);
+            if (organization == null) return false;
+            if (organization.OrganizationInfoState != OrganizationInfoState.Accepted) return false;
+
+            #endregion
+
+            #region Get Request By Request Id
+
+            var request = await _requestService.GetRequestById(requestId);
+
+            if (request == null) return false;
+            if (request.RequestType != RequestType.HomeVisit) return false;
+            if (!request.PatientId.HasValue) return false;
+            if (request.OperationId.HasValue) return false;
+            if (request.RequestState != RequestState.Paid) return false;
+
+            #endregion
+
+            #region Get Request By Doctor 
+
+            request.OperationId = organization.OwnerId;
+            request.RequestState = RequestState.SelectedFromDoctor;
+
+            await _requestService.UpdateRequest(request);
+
+            #endregion
+
+            return true;
         }
 
         #endregion
@@ -627,6 +671,68 @@ namespace DoctorFAM.Application.Services.Implementation
         public async Task<PaitientRequestDetail?> GetRequestPatientDetailByRequestId(ulong requestId)
         {
             return await _homeVisit.GetRequestPatientDetailByRequestId(requestId);
+        }
+
+        #endregion
+
+        #region User Panel
+
+        //Filter User Home Visit Requests
+        public async Task<Domain.ViewModels.UserPanel.HealthHouse.HomeVisit.FilterHomeVisitViewModel> FilterListOfUserHomeVisitRequest(Domain.ViewModels.UserPanel.HealthHouse.HomeVisit.FilterHomeVisitViewModel filter)
+        {
+            return await _homeVisit.FilterListOfUserHomeVisitRequest(filter);
+        }
+
+        //Fill Doctor Information Detail View Model
+        public async Task<ShowDoctorInformationDetailViewModel?> FillShowDoctorInformationDetailViewModel(ulong doctorId)
+        {
+            #region Get Doctor By Doctor Id
+
+            var doctor = await _doctorsService.GetDoctorByUserId(doctorId);
+            if (doctor == null) return null;
+
+            #endregion
+
+            #region Get Doctor Work Address 
+
+            var workAddress = await _workAddressService.GetLastWorkAddressByUserId(doctor.UserId);
+
+            #endregion
+
+            #region Get Doctor Personal Information 
+
+            var doctorInfo = await _doctorsRepository.GetDoctorsInfoByDoctorId(doctorId);
+            if (doctorInfo == null) return null;
+
+            #endregion
+
+            #region Fill View Model 
+
+            ShowDoctorInformationDetailViewModel model = new ShowDoctorInformationDetailViewModel()
+            {
+                DoctorsInfo = doctorInfo,
+                User = doctor.User,
+                WorkAddress = workAddress,
+                WorkLocation = doctor.User.WorkAddress
+            };
+
+            #endregion
+
+            return model;
+        }
+
+        //Accept Doctor Request From Home Visit Request
+        public async Task<bool> AcceptDoctorRequestFromHomeVisitRequest(Request request)
+        {
+            #region Update Request State
+
+            request.RequestState = RequestState.Finalized;
+
+            await _requestService.UpdateRequest(request);
+
+            #endregion
+
+            return true;
         }
 
         #endregion

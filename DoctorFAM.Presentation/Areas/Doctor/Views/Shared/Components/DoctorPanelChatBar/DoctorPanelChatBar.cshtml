@@ -65,6 +65,10 @@
                                 @if (item.SupporterNotificationText == DoctorFAM.Domain.Enums.Notification.SupporterNotificationText.HomeVisitRequest)
                                 {
                                     <div>درخواست برای ویزیت درمنزل</div>
+                                }  
+                                @if (item.SupporterNotificationText == DoctorFAM.Domain.Enums.Notification.SupporterNotificationText.AcceptHomeVisitRequestFromUser)
+                                {
+                                    <div>تایید درخواست ویزیت درمنزل از طرف کاربر</div>
                                 }
                             </div>
                         </div>

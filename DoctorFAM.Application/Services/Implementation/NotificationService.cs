@@ -448,6 +448,42 @@ namespace DoctorFAM.Application.Services.Implementation
 
         #region User Panel Side 
 
+        //Create Notification For Send Accept Home Visit Request From User 
+        public async Task<bool> CreateNotificationForSendAcceptHomeVisitRequestFromUserPanel(ulong targetId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId)
+        {
+            #region Get request 
+
+            //Get request
+            var request = await _requestService.GetRequestById(targetId);
+            if (request == null) return false;
+            if (request.OperationId == null) return false;
+
+            #endregion
+
+            #region Fill Notification Entity
+
+            List<SupporterNotification> model = new List<SupporterNotification>();
+
+            SupporterNotification notif = new SupporterNotification()
+            {
+                CreateDate = DateTime.Now,
+                IsDelete = false,
+                IsSeen = false,
+                SupporterNotificationText = SupporterNotificationText,
+                TargetId = targetId,
+                UserId = senderId,
+                ReciverId = request.OperationId.Value,
+            };
+
+            model.Add(notif);
+
+            await _notificationService.CreateRangeSupporter(model);
+
+            #endregion
+
+            return true;
+        }
+
         //Create Notification For Send Message Of Consultant
         public async Task<bool> CreateNotificationForSendMessageOfConsultant(ulong targetId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId)
         {
@@ -689,6 +725,42 @@ namespace DoctorFAM.Application.Services.Implementation
         #endregion
 
         #region Doctor User Panel 
+
+        //Create Notification For Send Accept Home Visit Request
+        public async Task<bool> CreateNotificationForSendAcceptHomeVisitRequest(ulong targetId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId)
+        {
+            #region Get request 
+
+            //Get request
+            var request = await _requestService.GetRequestById(targetId);
+            if (request == null) return false;
+            if (request.OperationId == null) return false;
+
+            #endregion
+
+            #region Fill Notification Entity
+
+            List<SupporterNotification> model = new List<SupporterNotification>();
+
+            SupporterNotification notif = new SupporterNotification()
+            {
+                CreateDate = DateTime.Now,
+                IsDelete = false,
+                IsSeen = false,
+                SupporterNotificationText = SupporterNotificationText,
+                TargetId = targetId,
+                UserId = senderId,
+                ReciverId = request.UserId,
+            };
+
+            model.Add(notif);
+
+            await _notificationService.CreateRangeSupporter(model);
+
+            #endregion
+
+            return true;
+        }
 
         //Create Notification For Send Message Of Online Visit
         public async Task<bool> CreateNotificationForSendMessageOfOnlineVisitFromDoctorPanel(ulong targetId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId)

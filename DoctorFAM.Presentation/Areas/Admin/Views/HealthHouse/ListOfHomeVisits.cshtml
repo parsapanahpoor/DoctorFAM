@@ -178,6 +178,11 @@
                                             <span class="mr-8px label label-danger"> @Localizer["Awaiting Payment"]   </span>
                                         }
 
+                                        @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.SelectedFromDoctor)
+                                        {
+                                            <span class="mr-8px label label-primary"> @Localizer["Accepted From Doctor"]   </span>
+                                        }
+
                                     </p>
                                 </td>
 

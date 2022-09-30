@@ -93,6 +93,8 @@ namespace DoctorFAM.Data.DbContext
 
         public DbSet<HomeVisitRequestDetail> HomeVisitRequestDetails { get; set; }
 
+        public DbSet<LogForDeclineHomeVisitRequestFromUser> LogForDeclineHomeVisitRequestFromUser { get; set; }
+
         #endregion
 
         #region Language

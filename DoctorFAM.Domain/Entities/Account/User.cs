@@ -9,6 +9,7 @@ using DoctorFAM.Domain.Entities.Notification;
 using DoctorFAM.Domain.Entities.Nurse;
 using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.Entities.Pharmacy;
+using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Entities.WorkAddress;
 using System;
 using System.Collections.Generic;
@@ -156,6 +157,8 @@ namespace DoctorFAM.Domain.Entities.Account
 
         [InverseProperty("Patient")]
         public ICollection<UserSelectedConsultant> PatientForConsultant { get; set; }
+
+        public ICollection<LogForDeclineHomeVisitRequestFromUser> LogForDeclineHomeVisitRequestFromUsers { get; set; }
 
         #endregion
     }

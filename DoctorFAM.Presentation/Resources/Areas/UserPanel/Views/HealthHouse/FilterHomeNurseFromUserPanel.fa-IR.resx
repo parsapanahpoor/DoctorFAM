@@ -142,7 +142,7 @@
     <value>نهایی شده</value>
   </data>
   <data name="List Of Your Home Nurse Requests" xml:space="preserve">
-    <value>لیست درخواست های داروخانه در منزل شما</value>
+    <value>لیست درخواست های پرستار در منزل شما</value>
   </data>
   <data name="Options" xml:space="preserve">
     <value>امکانات</value>
@@ -154,7 +154,7 @@
     <value>وضعیت درخواست</value>
   </data>
   <data name="SelectedFromDoctor" xml:space="preserve">
-    <value>انتخاب شده توسط پزشک</value>
+    <value>انتخاب شده توسط پرستار</value>
   </data>
   <data name="Start Date" xml:space="preserve">
     <value>زمان شروع</value>

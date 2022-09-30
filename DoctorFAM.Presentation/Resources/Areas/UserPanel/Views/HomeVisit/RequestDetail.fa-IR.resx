@@ -117,64 +117,49 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Accepted From Doctor" xml:space="preserve">
-    <value>دریافت تایید پزشک</value>
+  <data name="Accept" xml:space="preserve">
+    <value>تایید پزشک</value>
   </data>
-  <data name="Awaiting Payment" xml:space="preserve">
-    <value>درانتظار پرداخت</value>
+  <data name="City Name" xml:space="preserve">
+    <value>نام شهر</value>
   </data>
-  <data name="Date Time" xml:space="preserve">
-    <value>تاریخ</value>
+  <data name="Country Name" xml:space="preserve">
+    <value>نام کشور</value>
   </data>
-  <data name="Delete Filter" xml:space="preserve">
-    <value>حذف فیلتر</value>
+  <data name="Decline" xml:space="preserve">
+    <value>رد پزشک</value>
   </data>
-  <data name="Email" xml:space="preserve">
-    <value>ایمیل</value>
+  <data name="Doctor Personal Informations" xml:space="preserve">
+    <value>اطلاعات پزشک</value>
   </data>
-  <data name="Empty" xml:space="preserve">
-    <value>پرنشده</value>
+  <data name="Education" xml:space="preserve">
+    <value>تحصیلات</value>
   </data>
-  <data name="Filter" xml:space="preserve">
-    <value>فیلتر</value>
+  <data name="Extra Phone" xml:space="preserve">
+    <value>موبایل</value>
   </data>
-  <data name="Home Visit Records" xml:space="preserve">
-    <value>لیست ویزیت در منزل</value>
+  <data name="Female" xml:space="preserve">
+    <value>مرد</value>
+  </data>
+  <data name="FullName" xml:space="preserve">
+    <value>نام و نام خانوادگی</value>
+  </data>
+  <data name="Male" xml:space="preserve">
+    <value>خانم</value>
   </data>
   <data name="Mobile" xml:space="preserve">
     <value>موبایل</value>
   </data>
-  <data name="Options" xml:space="preserve">
-    <value>امکانات</value>
+  <data name="Show Doctor Detail" xml:space="preserve">
+    <value>نمایش اطلاعات پزشک</value>
   </data>
-  <data name="Order By" xml:space="preserve">
-    <value>مرتب سازی براساس</value>
+  <data name="Speciality" xml:space="preserve">
+    <value>تخصص</value>
   </data>
-  <data name="Paid" xml:space="preserve">
-    <value>پرداخت شده و منتظر پزشک</value>
+  <data name="State Name" xml:space="preserve">
+    <value>نام استان</value>
   </data>
-  <data name="Paying" xml:space="preserve">
-    <value>درحال پرداخت</value>
-  </data>
-  <data name="Register Date" xml:space="preserve">
-    <value>تاریخ ثبت نام </value>
-  </data>
-  <data name="State" xml:space="preserve">
-    <value>وضعیت</value>
-  </data>
-  <data name="unpaid" xml:space="preserve">
-    <value>پرداخت نشده</value>
-  </data>
-  <data name="User Avatar" xml:space="preserve">
-    <value>تصویر کاربر</value>
-  </data>
-  <data name="User Email" xml:space="preserve">
-    <value>ایمیل کاربری </value>
-  </data>
-  <data name="User Mobile" xml:space="preserve">
-    <value>موبایل کاربر</value>
-  </data>
-  <data name="Username" xml:space="preserve">
-    <value>نام کاربری</value>
+  <data name="Work Address" xml:space="preserve">
+    <value>آدرس محل کار </value>
   </data>
 </root>

@@ -46,5 +46,12 @@ namespace DoctorFAM.Domain.Interfaces
         Task<PaitientRequestDetail?> GetRequestPatientDetailByRequestId(ulong requestId);
 
         #endregion
+
+        #region User Panel 
+
+        //Filter User Home Visit Requests
+        Task<Domain.ViewModels.UserPanel.HealthHouse.HomeVisit.FilterHomeVisitViewModel> FilterListOfUserHomeVisitRequest(Domain.ViewModels.UserPanel.HealthHouse.HomeVisit.FilterHomeVisitViewModel filter);
+
+        #endregion
     }
 }
