@@ -116,4 +116,18 @@ public static class Messages
         return
             $"باعرض سلام . {Environment.NewLine} درخواست ویزیت درمنزل توسط کاربر لغو شده است . {Environment.NewLine} از همکاری شما متشکریم. {Environment.NewLine} {PathTools.SiteFarsiName}";
     }
+
+    //Send SMS For Death Certificate Request From Doctor  
+    public static string SendSMSForAcceptDeathCertificateRequestFromDoctor()
+    {
+        return
+            $"باعرض سلام . {Environment.NewLine} درخواست صدورگواهی فوت شما توسط پزشک تایید شده است . {Environment.NewLine} {PathTools.SiteFarsiName}";
+    }
+
+    //Send Show Doctor Details 
+    public static string SendSMSForLinkOfDeathCertificateRequestFromDoctor(string link)
+    {
+        return
+            $"شما میتوانید از طریق لینک زیر اطلاعات پزشک را مشاهده فرمایید : {link} . {Environment.NewLine} {PathTools.SiteFarsiName}";
+    }
 }

@@ -479,6 +479,12 @@ namespace DoctorFAM.Application.Services.Implementation
             return await _userRepository.GetAdminsAndSupportersNotificationForSendNotificationInHomeVisit();
         }
 
+        //Get List Of Admins and Supporters User Id For Send Notification For Death Certificate
+        public async Task<List<string>?> GetAdminsAndSupportersNotificationForSendNotificationInDeathCertificate()
+        {
+            return await _userRepository.GetAdminsAndSupportersNotificationForSendNotificationInDeathCertificate();
+        }
+
         //Get List Of Admins and Supporters 
         public async Task<List<string>?> GetAllAdminsAndSupportersNotification()
         {
@@ -507,6 +513,12 @@ namespace DoctorFAM.Application.Services.Implementation
         public async Task<List<User>?> GetHomeVisitSupporters()
         {
             return await _userRepository.GetHomeVisitSupporters();
+        }
+
+        //Get Death Certificate Supporters
+        public async Task<List<User>?> GetDeathCertificateSupporters()
+        {
+            return await _userRepository.GetDeathCertificateSupporters();
         }
 
         //Get Online Visit Supporters

@@ -1,14 +1,21 @@
-﻿using DoctorFAM.Application.Extensions;
+﻿using DoctorFAM.Application.Convertors;
+using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Interfaces;
+using DoctorFAM.Application.Services.Implementation;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Data.DbContext;
+using DoctorFAM.Domain.Entities.PopulationCovered;
+using DoctorFAM.Domain.Enums.RequestType;
 using DoctorFAM.Domain.ViewModels.Site.Common;
+using DoctorFAM.Domain.ViewModels.Site.DeathCertificate;
+using DoctorFAM.Domain.ViewModels.Site.Notification;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
 using DoctorFAM.Domain.ViewModels.Site.Request;
+using DoctorFAM.Web.Hubs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-
+using Microsoft.AspNetCore.SignalR;
 
 namespace DoctorFAM.Web.Controllers
 {
@@ -18,19 +25,18 @@ namespace DoctorFAM.Web.Controllers
         #region Ctor
 
         private readonly IDeathCertificateService _deathCertificateService;
-
         private readonly ILocationService _locationService;
-
         private readonly IPatientService _patientService;
-
         private readonly IRequestService _requestService;
-
         private readonly IUserService _userService;
-
         private readonly ISiteSettingService _siteSettingService;
+        private readonly IPopulationCoveredService _populationCoveredService;
+        private readonly IHubContext<NotificationHub> _notificationHub;
+        private readonly INotificationService _notificationService;
 
         public DeathCertificatController(IDeathCertificateService deathCertificateService, ILocationService locationService, IPatientService patientService
-                                    , IRequestService requestService, IUserService userService , ISiteSettingService siteSettingService)
+                                    , IRequestService requestService, IUserService userService , ISiteSettingService siteSettingService, IPopulationCoveredService populationCoveredService
+                                        , IHubContext<NotificationHub> notificationHub , INotificationService notificationService)
         {
             _deathCertificateService = deathCertificateService;
             _locationService = locationService;
@@ -38,6 +44,9 @@ namespace DoctorFAM.Web.Controllers
             _requestService = requestService;
             _userService = userService;
             _siteSettingService = siteSettingService;
+            _populationCoveredService = populationCoveredService;
+            _notificationHub = notificationHub;
+            _notificationService = notificationService;
         }
 
         #endregion
@@ -56,7 +65,6 @@ namespace DoctorFAM.Web.Controllers
             #region Create New Request
 
             var requestId = await _deathCertificateService.CreateDeathCertificateRequest(User.GetUserId());
-
             if (requestId == null) return NotFound();
 
             #endregion
@@ -69,7 +77,7 @@ namespace DoctorFAM.Web.Controllers
         #region Patient Detail
 
         [HttpGet]
-        public async Task<IActionResult> PatientDetails(ulong requestId)
+        public async Task<IActionResult> PatientDetails(ulong requestId, ulong? populationCoveredId)
         {
             #region Data Validation
 
@@ -79,10 +87,44 @@ namespace DoctorFAM.Web.Controllers
 
             #endregion
 
+            #region Request Validation 
+
+            if (!await _requestService.RequestValidatorWhileCompeleteSteps(requestId, User.GetUserId(), null, RequestType.DeathCertificate)) return NotFound();
+
+            #endregion
+
+            #region Get User Population Covered
+
+            ViewBag.PopulationCovered = await _populationCoveredService.GetUserPopulation(User.GetUserId());
+
+            #endregion
+
+            #region Fill Data From Selected Population Covered
+
+            if (populationCoveredId != null && populationCoveredId.HasValue)
+            {
+                //Fill Page Model From Selected Population Covered Data
+                var mode = await _deathCertificateService.FillPatientViewModelFromSelectedPopulationCoveredData(populationCoveredId.Value, requestId, User.GetUserId());
+                if (mode == null) return NotFound();
+
+                return View(mode);
+            }
+
+            #endregion
+
+            #region Get User By Id 
+
+            var user = await _userService.GetUserById(User.GetUserId());
+
+            #endregion
+
             return View(new PatientViewModel()
             {
                 RequestId = requestId,
                 UserId = User.GetUserId(),
+                NationalId = !string.IsNullOrEmpty(user.NationalId) ? user.NationalId : null,
+                PatientName = !string.IsNullOrEmpty(user.FirstName) ? user.FirstName : null,
+                PatientLastName = !string.IsNullOrEmpty(user.LastName) ? user.LastName : null,
             });
         }
 
@@ -92,6 +134,13 @@ namespace DoctorFAM.Web.Controllers
             #region Data Validation
 
             if (!await _userService.IsExistUserById(User.GetUserId())) return NotFound();
+            if (User.GetUserId() != patient.UserId) return NotFound();
+
+            #endregion
+
+            #region Request Validation 
+
+            if (!await _requestService.RequestValidatorWhileCompeleteSteps(patient.RequestId, User.GetUserId(), null, RequestType.DeathCertificate)) return NotFound();
 
             #endregion
 
@@ -126,6 +175,12 @@ namespace DoctorFAM.Web.Controllers
 
             #endregion
 
+            #region Get User Population Covered
+
+            ViewBag.PopulationCovered = await _populationCoveredService.GetUserPopulation(User.GetUserId());
+
+            #endregion
+
             return View(patient);
         }
 
@@ -136,14 +191,17 @@ namespace DoctorFAM.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> PatientRequestDetail(ulong requestId, ulong patientId)
         {
+            #region Request Validation 
+
+            if (!await _requestService.RequestValidatorWhileCompeleteSteps(requestId, User.GetUserId(), null, RequestType.DeathCertificate)) return NotFound();
+
+            #endregion
+
             #region Is Exist Request & Patient
 
-            if (!await _requestService.IsExistRequestByRequestId(requestId))
-            {
-                return NotFound();
-            }
+            var request = await _requestService.GetRequestById(requestId);
 
-            if (!await _patientService.IsExistPatientById(patientId))
+            if (!await _patientService.IsExistPatientById(request.PatientId.Value))
             {
                 return NotFound();
             }
@@ -152,11 +210,11 @@ namespace DoctorFAM.Web.Controllers
 
             #region Page Data
 
-            ViewData["Countries"] = await _locationService.GetAllCountries();
+            ViewData["Countries"] = await _locationService.GetAllCountriesForHomeNurse();
 
             #endregion
 
-            return View(new PatienAddressViewModel()
+            return View(new PatienAddressForDeathCertificateViewModel()
             {
                 RequestId = requestId,
                 PatientId = patientId
@@ -164,8 +222,20 @@ namespace DoctorFAM.Web.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> PatientRequestDetail(PatienAddressViewModel patientRequest)
+        public async Task<IActionResult> PatientRequestDetail(PatienAddressForDeathCertificateViewModel patientRequest)
         {
+            #region Page Data
+
+            ViewData["Countries"] = await _locationService.GetAllCountriesForHomeNurse();
+
+            #endregion
+
+            #region Request Validation 
+
+            if (!await _requestService.RequestValidatorWhileCompeleteSteps(patientRequest.RequestId, User.GetUserId(), null, RequestType.DeathCertificate)) return NotFound();
+
+            #endregion
+
             #region Model State Validation
 
             if (!ModelState.IsValid)
@@ -175,9 +245,27 @@ namespace DoctorFAM.Web.Controllers
 
             #endregion
 
+            #region Fill Model
+
+            PatienAddressViewModel model = new PatienAddressViewModel()
+            {
+                CityId = patientRequest.CityId,
+                CountryId = patientRequest.CountryId,
+                StateId = patientRequest.StateId,
+                Distance = patientRequest.Distance,
+                FullAddress = patientRequest.FullAddress,
+                Mobile = patientRequest.Mobile,
+                PatientId = patientRequest.PatientId,
+                Phone = patientRequest.Phone,
+                RequestId = patientRequest.RequestId ,
+                Vilage = patientRequest.Vilage,
+            };
+
+            #endregion
+
             #region Create Patient Request Method
 
-            var result = await _requestService.CreatePatientRequestDetail(patientRequest);
+            var result = await _requestService.CreatePatientRequestDetail(model);
 
             switch (result)
             {
@@ -218,6 +306,8 @@ namespace DoctorFAM.Web.Controllers
 
             var request = await _requestService.GetRequestById(requestId);
             if (request == null) return NotFound();
+            if (request.RequestType != RequestType.DeathCertificate) return NotFound();
+            if (request.UserId != User.GetUserId()) return NotFound();
 
             #endregion
 
@@ -232,7 +322,7 @@ namespace DoctorFAM.Web.Controllers
 
             #endregion
 
-            #region Get Site Address Domain For Redirect To Bank Portal\
+            #region Get Site Address Domain For Redirect To Bank Portal
             
             var siteAddressDomain = await _siteSettingService.GetSiteAddressDomain();
             if (string.IsNullOrEmpty(siteAddressDomain))
@@ -308,14 +398,48 @@ namespace DoctorFAM.Web.Controllers
                     await _requestService.UpdateRequestStateForPayed(request);
 
                     //Charge User Wallet
-                    await _deathCertificateService.ChargeUserWallet(User.GetUserId(), deathCertificate);
+                    await _deathCertificateService.ChargeUserWallet(User.GetUserId(), deathCertificate , request.Id);
 
                     //Pay Death Certificate Tariff
-                    await _deathCertificateService.PayDeathCertificateTariff(User.GetUserId(), deathCertificate);
+                    await _deathCertificateService.PayDeathCertificateTariff(User.GetUserId(), deathCertificate , request.Id);
 
+                    #region Send Notification In SignalR
+
+                    //Create Notification For Supporters And Admins
+                    var notifyResult = await _notificationService.CreateSupporterNotification(request.Id, Domain.Enums.Notification.SupporterNotificationText.NewArrivalDeathCertificateRequest, Domain.Enums.Notification.NotificationTarget.request, User.GetUserId());
+
+                    //Create Notification For Online Visit Doctors 
+                    var DeathCertificatetResult = await _notificationService.CreateNotificationForDeathCertificateDoctors(request.Id, Domain.Enums.Notification.SupporterNotificationText.NewArrivalDeathCertificateRequest, Domain.Enums.Notification.NotificationTarget.request, User.GetUserId());
+
+                    //Get Current User
+                    var currentUser = await _userService.GetUserById(User.GetUserId());
+
+                    if (notifyResult && DeathCertificatetResult)
+                    {
+                        //Get List Of Admins And Supporter To Send Notification Into Them
+                        var users = await _userService.GetAdminsAndSupportersNotificationForSendNotificationInOnlineVisit();
+
+                        //Get Doctor For Send Notification  
+                        users.AddRange(await _deathCertificateService.GetActivatedAndDoctorsInterestDeathCertificate(request.Id));
+
+                        //Fill Send Supporter Notification ViewModel For Send Notification
+                        SendSupporterNotificationViewModel viewModel = new SendSupporterNotificationViewModel()
+                        {
+                            CreateNotificationDate = $"{DateTime.Now.ToShamsi()} - {DateTime.Now.Hour}:{DateTime.Now.Minute}",
+                            NotificationText = "درخواست جدید صدور گواهی فوت",
+                            RequestId = request.Id,
+                            Username = User.Identity.Name,
+                            UserImage = currentUser.Avatar
+                        };
+
+                        await _notificationHub.Clients.Users(users).SendAsync("SendSupporterNotification", viewModel);
+                    }
+
+                    #endregion
+
+                    TempData[SuccessMessage] = "درخواست صدور گواهی فوت شما با موفقیت ثبت گردید. ";
                     return View();
                 }
-
             }
             else
             {

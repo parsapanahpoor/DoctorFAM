@@ -2,6 +2,7 @@
 using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.ViewModels.Admin.HealthHouse.DeathCertificate;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.DeathCertificate;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,9 @@ namespace DoctorFAM.Domain.Interfaces
     public interface IDeathCertificateRepository
     {
         #region Site Side
+
+        //Get Activated And Death Certificate Interests Death Certificate For Send Correct Notification For Arrival Death Certificate Request 
+        Task<List<string?>> GetActivatedAndDoctorsInterestDeathCertificate(ulong countryId, ulong stateId, ulong cityId);
 
         #endregion
 
@@ -26,7 +30,9 @@ namespace DoctorFAM.Domain.Interfaces
 
         Task<PaitientRequestDetail?> GetRequestPatientDetailByRequestId(ulong requestId);
 
-        #endregion
+        //List Of Your Death Certificate Request 
+        Task<ListOfPayedDeathCertificateRequestDoctorSideViewModel> ListOfYourDeathCertificateRequestsDoctorPanelSide(ListOfPayedDeathCertificateRequestDoctorSideViewModel filter, ulong userId);
 
+        #endregion
     }
 }

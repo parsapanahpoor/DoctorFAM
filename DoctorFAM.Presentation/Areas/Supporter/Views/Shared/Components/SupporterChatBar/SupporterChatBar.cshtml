@@ -111,6 +111,14 @@
                                 {
                                     <div>لغو درخواست ویزیت در منزل از طرف کاربر</div>
                                 }
+                                @if (item.SupporterNotificationText == DoctorFAM.Domain.Enums.Notification.SupporterNotificationText.NewArrivalDeathCertificateRequest)
+                                {
+                                    <div>درخواست برای صدور گواهی فوت</div>
+                                }
+                                @if (item.SupporterNotificationText == DoctorFAM.Domain.Enums.Notification.SupporterNotificationText.AcceptDeathCertificateRequestFromDoctor)
+                                {
+                                        <div>تایید درخواست گواهی فوت از طرف پزشک</div>
+                                }
                             </div>
                         </div>
                     </li>

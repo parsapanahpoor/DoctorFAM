@@ -1,4 +1,5 @@
 ﻿using DoctorFAM.Domain.Entities.Account;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,8 +31,14 @@ namespace DoctorFAM.Domain.Interfaces
 
         #region Admin Side 
 
+        //Get List Of Admins and Supporters User Id For Send Notification For Death Certificate
+        Task<List<string>?> GetAdminsAndSupportersNotificationForSendNotificationInDeathCertificate();
+
         //Get Home Visit Supporters
         Task<List<User>?> GetHomeVisitSupporters();
+
+        //Get Death Certificate Supporters
+        Task<List<User>?> GetDeathCertificateSupporters();
 
         //Get List Of Admins and Supporters User Id For Send Notification For Home Visit
         Task<List<string>?> GetAdminsAndSupportersNotificationForSendNotificationInHomeVisit();

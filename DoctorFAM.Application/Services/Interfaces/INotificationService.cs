@@ -30,6 +30,9 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Create Notification For Online Visit Doctors 
         Task<bool> CreateNotificationForOnlineVisitDoctors(ulong targetId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId);
 
+        //Create Notification For Death Certificate Doctors 
+        Task<bool> CreateNotificationForDeathCertificateDoctors(ulong targetId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId);
+
         #endregion
 
         #region Supporter And Admin 

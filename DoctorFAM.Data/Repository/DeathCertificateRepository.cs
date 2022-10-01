@@ -5,6 +5,7 @@ using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Enums.Request;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.HealthHouse.DeathCertificate;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.DeathCertificate;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -19,15 +20,57 @@ namespace DoctorFAM.Data.Repository
         #region Ctor
 
         public DoctorFAMDbContext _context;
+        private readonly IOrganizationRepository _organiozationService;
 
-        public DeathCertificateRepository(DoctorFAMDbContext context)
+        public DeathCertificateRepository(DoctorFAMDbContext context, IOrganizationRepository organiozationService)
         {
             _context = context;
+            _organiozationService = organiozationService;
         }
 
         #endregion
 
         #region Site Side
+
+        //Get Activated And Death Certificate Interests Death Certificate For Send Correct Notification For Arrival Death Certificate Request 
+        public async Task<List<string?>> GetActivatedAndDoctorsInterestDeathCertificate(ulong countryId, ulong stateId, ulong cityId)
+        {
+            #region Get Death Certificate Interests Death Certificate  
+
+            var users = await _context.DoctorsSelectedInterests.Include(p => p.Doctor)
+                                .Where(p => !p.IsDelete && p.InterestId == 4).Select(p => p.Doctor.UserId).ToListAsync();
+            if (users == null) return null;
+
+            #endregion
+
+            #region Check User Work Addresses 
+
+            //Initial Model Of String 
+            List<string?> returnValue = new List<string?>();
+
+            foreach (var item in users)
+            {
+                //Check Home Visit Is Activated
+                var activated = await _context.Organizations.FirstOrDefaultAsync(p => !p.IsDelete && p.OwnerId == item
+                                        && p.OrganizationType == Domain.Enums.Organization.OrganizationType.DoctorOffice && p.OrganizationInfoState == Domain.Entities.Doctors.OrganizationInfoState.Accepted);
+
+                if (activated != null)
+                {
+                    //Check Doctor Location By Country Id && State Id && CityId
+                    var checkLocation = await _context.WorkAddresses.FirstOrDefaultAsync(p => !p.IsDelete && p.CityId == cityId && p.CountryId == countryId && p.StateId == stateId
+                                                                  && p.UserId == item);
+                    if (checkLocation != null)
+                    {
+                        returnValue.Add(checkLocation.UserId.ToString());
+                    }
+                }
+
+            }
+
+            #endregion
+
+            return returnValue;
+        }
 
         #endregion
 
@@ -111,6 +154,61 @@ namespace DoctorFAM.Data.Repository
         public async Task<PaitientRequestDetail?> GetRequestPatientDetailByRequestId(ulong requestId)
         {
             return await _context.PaitientRequestDetails.FirstOrDefaultAsync(p => p.RequestId == requestId && !p.IsDelete);
+        }
+
+        //List Of Your Death Certificate Request 
+        public async Task<ListOfPayedDeathCertificateRequestDoctorSideViewModel> ListOfYourDeathCertificateRequestsDoctorPanelSide(ListOfPayedDeathCertificateRequestDoctorSideViewModel filter , ulong userId)
+        {
+            #region Get Organization 
+
+            var organization = await _organiozationService.GetDoctorOrganizationByUserId(userId);
+            if (organization == null) return null;
+
+            #endregion
+
+            var query = _context.Requests
+             .Include(p => p.Patient)
+             .Include(p => p.User)
+             .Where(s => !s.IsDelete && s.RequestType == Domain.Enums.RequestType.RequestType.DeathCertificate && s.RequestState == RequestState.Finalized
+                        && s.OperationId == organization.OwnerId)
+             .OrderByDescending(s => s.CreateDate)
+             .AsQueryable();
+
+            #region Status
+
+            switch (filter.FilterRequestAdminSideOrder)
+            {
+                case FilterRequestAdminSideOrder.CreateDate_Des:
+                    break;
+                case FilterRequestAdminSideOrder.CreateDate_Asc:
+                    query = query.OrderBy(p => p.CreateDate);
+                    break;
+            }
+
+            #endregion
+
+            #region Filter
+
+            if (!string.IsNullOrEmpty(filter.UserEmail))
+            {
+                query = query.Where(s => EF.Functions.Like(s.User.Email, $"%{filter.UserEmail}%"));
+            }
+
+            if (!string.IsNullOrEmpty(filter.UserMobile))
+            {
+                query = query.Where(s => s.User.Mobile != null && EF.Functions.Like(s.User.Mobile, $"%{filter.UserMobile}%"));
+            }
+
+            if (!string.IsNullOrEmpty(filter.Username))
+            {
+                query = query.Where(s => EF.Functions.Like(s.User.Username, $"%{filter.Username}%"));
+            }
+
+            #endregion
+
+            await filter.Paging(query);
+
+            return filter;
         }
 
         #endregion

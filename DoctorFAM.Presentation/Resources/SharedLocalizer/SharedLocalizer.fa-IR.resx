@@ -615,4 +615,10 @@
   <data name="List Of Your Home Visit" xml:space="preserve">
     <value>درخواست های تایید شده شما</value>
   </data>
+  <data name="List Of Death Certificate" xml:space="preserve">
+    <value>درخواست های صدورگواهی فوت</value>
+  </data>
+  <data name="List Of Your Death Certificate" xml:space="preserve">
+    <value>درخواست های تاییدی شما </value>
+  </data>
 </root>

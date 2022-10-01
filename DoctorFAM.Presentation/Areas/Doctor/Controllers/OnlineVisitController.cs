@@ -125,7 +125,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
             #endregion
 
-            TempData[ErrorMessage] = "قبول درخواست باموفقیت شکست مواجه شده است .";
+            TempData[ErrorMessage] = "قبول درخواست باشکست مواجه شده است .";
             return RedirectToAction("Index", "Home", new { area = "Doctor" });
         }
 

@@ -2,13 +2,19 @@
 using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Data.DbContext;
+using DoctorFAM.Data.Repository;
 using DoctorFAM.DataLayer.Entities;
+using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.Patient;
+using DoctorFAM.Domain.Entities.PopulationCovered;
 using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Entities.Wallet;
+using DoctorFAM.Domain.Enums.Request;
 using DoctorFAM.Domain.Enums.RequestType;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.HealthHouse.DeathCertificate;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.DeathCertificate;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -23,30 +29,29 @@ namespace DoctorFAM.Application.Services.Implementation
     {
         #region Ctor
 
-        private readonly DoctorFAMDbContext _context;
-
         private readonly IDeathCertificateRepository _deathCertificate;
-
         private readonly IRequestService _requestService;
-
         private readonly IUserService _userService;
-
         private readonly IPatientService _patientService;
-
         private readonly ILocationService _locationService;
-
         private readonly IWalletRepository _walletRepository;
+        private readonly IPopulationCoveredRepository _populationCovered;
+        private readonly IHomePharmacyRepository _homePharmacyRepository;
+        private readonly IOrganizationService _organizationService;
 
-        public DeathCertificateService(DoctorFAMDbContext context, IDeathCertificateRepository deathCertificate, IRequestService requestService,
-                                IUserService userService, IPatientService patientService, ILocationService locationservice, IWalletRepository walletRepository)
+        public DeathCertificateService(IDeathCertificateRepository deathCertificate, IRequestService requestService,
+                                IUserService userService, IPatientService patientService, ILocationService locationservice, IWalletRepository walletRepository
+                                    , IPopulationCoveredRepository populationCovered, IHomePharmacyRepository homePharmacyRepository, IOrganizationService organizationService)
         {
-            _context = context;
             _deathCertificate = deathCertificate;
             _requestService = requestService;
             _userService = userService;
             _patientService = patientService;
             _locationService = locationservice;
             _walletRepository = walletRepository;
+            _populationCovered = populationCovered;
+            _homePharmacyRepository = homePharmacyRepository;
+            _organizationService = organizationService;
         }
 
         #endregion
@@ -126,12 +131,59 @@ namespace DoctorFAM.Application.Services.Implementation
             return model.Id;
         }
 
+        //Fill Patient View Model From Selected Population Covered Data
+        public async Task<PatientViewModel> FillPatientViewModelFromSelectedPopulationCoveredData(ulong populationId, ulong requestId, ulong userId)
+        {
+            #region Get User
+
+            var user = await _userService.GetUserById(userId);
+            if (user == null) return null;
+
+            #endregion
+
+            #region Get Request 
+
+            var request = await _requestService.GetRequestById(requestId);
+            if (request == null) return null;
+            if (request.RequestType != RequestType.HomeNurse) return null;
+
+            #endregion
+
+            #region Get Population Coverd
+
+            var population = await _populationCovered.GetPopulationCoveredById(populationId);
+
+            if (population == null) return null;
+
+            //When popluation Covered Is not For Current User 
+            if (population.UserId != userId) return null;
+
+            #endregion
+
+            #region Fill Entity
+
+            PatientViewModel model = new PatientViewModel
+            {
+                RequestId = requestId,
+                Age = population.Age,
+                Gender = population.Gender,
+                InsuranceType = population.InsuranceType,
+                NationalId = population.NationalId,
+                PatientName = population.PatientName.SanitizeText(),
+                PatientLastName = population.PatientLastName.SanitizeText(),
+                UserId = userId
+            };
+
+            #endregion
+
+            return model;
+        }
 
         #endregion
 
         #region Site Side
 
-        public async Task<bool> ChargeUserWallet(ulong userId, int price)
+        public async Task<bool> ChargeUserWallet(ulong userId, int price , ulong requestId)
         {
             if (!await _userService.IsExistUserById(userId))
             {
@@ -146,14 +198,15 @@ namespace DoctorFAM.Application.Services.Implementation
                 PaymentType = PaymentType.ChargeWallet,
                 Price = price,
                 Description = "شارژ حساب کاربری برای پرداخت هزینه ی صدور گواهی فوت",
-                IsFinally = true
+                IsFinally = true,
+                RequestId = requestId
             };
 
             await _walletRepository.CreateWalletAsync(wallet);
             return true;
         }
 
-        public async Task<bool> PayDeathCertificateTariff(ulong userId, int price)
+        public async Task<bool> PayDeathCertificateTariff(ulong userId, int price , ulong requestId)
         {
             if (!await _userService.IsExistUserById(userId))
             {
@@ -168,13 +221,39 @@ namespace DoctorFAM.Application.Services.Implementation
                 PaymentType = PaymentType.DeathCertificate,
                 Price = price,
                 Description = "پرداخت مبلغ صدور گواهی فوت",
-                IsFinally = true
+                IsFinally = true,
+                RequestId = requestId
             };
 
             await _walletRepository.CreateWalletAsync(wallet);
             return true;
         }
 
+        //Get Activated And Death Certificate Interests Death Certificate For Send Correct Notification For Arrival Death Certificate Request 
+        public async Task<List<string?>> GetActivatedAndDoctorsInterestDeathCertificate(ulong requestId)
+        {
+            #region Get Request By Id 
+
+            var request = await _requestService.GetRequestById(requestId);
+            if (request == null) return null;
+
+            #endregion
+
+            #region Get Request Detail 
+
+            var requetsDetail = await _requestService.GetPatientRequestDetailByRequestId(requestId);
+            if (requetsDetail == null) return null;
+
+            #endregion
+
+            #region Get Activated Doctors By Death Certificate Interests 
+
+            var returnValue = await _deathCertificate.GetActivatedAndDoctorsInterestDeathCertificate(requetsDetail.CountryId, requetsDetail.StateId, requetsDetail.CityId);
+
+            #endregion
+
+            return returnValue;
+        }
 
         #endregion
 
@@ -200,7 +279,7 @@ namespace DoctorFAM.Application.Services.Implementation
             return await _deathCertificate.GetRequestPatientDetailByRequestId(requestId);
         }
 
-        public async Task<DeathCertificateRequestDetailViewModel> ShowDeathCertificateDetail(ulong requestId)
+        public async Task<Domain.ViewModels.Admin.HealthHouse.DeathCertificate.DeathCertificateRequestDetailViewModel> ShowDeathCertificateDetail(ulong requestId)
         {
             #region Get request By Id
 
@@ -224,7 +303,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #region Fill View Model
 
-            DeathCertificateRequestDetailViewModel model = new DeathCertificateRequestDetailViewModel()
+            Domain.ViewModels.Admin.HealthHouse.DeathCertificate.DeathCertificateRequestDetailViewModel model = new Domain.ViewModels.Admin.HealthHouse.DeathCertificate.DeathCertificateRequestDetailViewModel()
             {
                 Email = request.User.Email,
                 Username = request.User.Username,
@@ -268,7 +347,76 @@ namespace DoctorFAM.Application.Services.Implementation
             return model;
         }
 
-        #endregion
+        //List Of Your Death Certificate Request 
+        public async Task<ListOfPayedDeathCertificateRequestDoctorSideViewModel> ListOfYourDeathCertificateRequestsDoctorPanelSide(ListOfPayedDeathCertificateRequestDoctorSideViewModel filter, ulong userId)
+        {
+            return await _deathCertificate.ListOfYourDeathCertificateRequestsDoctorPanelSide(filter , userId);
+        }
 
+        //Show Death Certificate Request Detail Doctor Panel Side View Model 
+        public async Task<DoctorFAM.Domain.ViewModels.DoctorPanel.DeathCertificate.DeathCertificateRequestDetailViewModel?> FillDeathCertificateRequestDetailDoctorPanelViewModel(ulong requestId)
+        {
+            #region Get Request By Request Id
+
+            var request = await _requestService.GetRequestById(requestId);
+
+            if (request == null) return null;
+            if (request.RequestType != Domain.Enums.RequestType.RequestType.DeathCertificate) return null;
+            if (!request.PatientId.HasValue) return null;
+            if (request.RequestState != RequestState.Paid) return null;
+
+            #endregion
+
+            #region Fill Model 
+
+            DoctorFAM.Domain.ViewModels.DoctorPanel.DeathCertificate.DeathCertificateRequestDetailViewModel model = new DoctorFAM.Domain.ViewModels.DoctorPanel.DeathCertificate.DeathCertificateRequestDetailViewModel()
+            {
+                Patient = await _patientService.GetPatientById(request.PatientId.Value),
+                User = await _userService.GetUserById(request.UserId),
+                PatientRequestDetail = await _homePharmacyRepository.GetRequestPatientDetailByRequestId(request.Id),
+                Request = request,
+            };
+
+            #endregion
+
+            return model;
+        }
+
+        //Confirm Death Certificate Request From Doctor 
+        public async Task<bool> ConfirmDeathCertificateRequestFromDoctor(ulong requestId, ulong userId)
+        {
+            #region Get Doctor Organization
+
+            var organization = await _organizationService.GetDoctorOrganizationByUserId(userId);
+            if (organization == null) return false;
+            if (organization.OrganizationInfoState != OrganizationInfoState.Accepted) return false;
+
+            #endregion
+
+            #region Get Request By Request Id
+
+            var request = await _requestService.GetRequestById(requestId);
+
+            if (request == null) return false;
+            if (request.RequestType != RequestType.DeathCertificate) return false;
+            if (!request.PatientId.HasValue) return false;
+            if (request.OperationId.HasValue) return false;
+            if (request.RequestState != RequestState.Paid) return false;
+
+            #endregion
+
+            #region Get Request By Doctor 
+
+            request.OperationId = organization.OwnerId;
+            request.RequestState = RequestState.Finalized;
+
+            await _requestService.UpdateRequest(request);
+
+            #endregion
+
+            return true;
+        }
+
+        #endregion
     }
 }

@@ -27,10 +27,11 @@ namespace DoctorFAM.Application.Services.Implementation
         private readonly INurseService _nurseService;
         private readonly IConsultantService _consultantService;
         private readonly IHomeVisitService _homeVisitService;
+        private readonly IDeathCertificateService _deathCertificteService;
 
         public NotificationService(INotificationRepository notificationService, IUserService userService,
                                     IRequestService requestService, IHomePharmacyServicec homePharmacyService, IReservationService reservationService
-                                        , IOnlineVisitService onlineVisitService, INurseService nurseService, IConsultantService consultantService, IHomeVisitService homeVisitService)
+                                        , IOnlineVisitService onlineVisitService, INurseService nurseService, IConsultantService consultantService, IHomeVisitService homeVisitService, IDeathCertificateService deathCertificteService)
         {
             _notificationService = notificationService;
             _userService = userService;
@@ -41,6 +42,7 @@ namespace DoctorFAM.Application.Services.Implementation
             _nurseService = nurseService;
             _consultantService = consultantService;
             _homeVisitService = homeVisitService;
+            _deathCertificteService = deathCertificteService;
         }
 
         #endregion
@@ -349,12 +351,25 @@ namespace DoctorFAM.Application.Services.Implementation
                 user.AddRange(supporters);
             }
 
-            if (SupporterNotificationText == SupporterNotificationText.HomeVisitRequest)
+            if (SupporterNotificationText == SupporterNotificationText.HomeVisitRequest
+                || SupporterNotificationText == SupporterNotificationText.AcceptHomeVisitRequestFromDoctor 
+                || SupporterNotificationText == SupporterNotificationText.AcceptHomeVisitRequestFromUser
+                || SupporterNotificationText == SupporterNotificationText.CancelHomeVisitRequest
+                || SupporterNotificationText == SupporterNotificationText.DeclineHomeVisitRequestFromUser)
             {
                 //Get Supporters
                 var supporters = await _userService.GetHomeVisitSupporters();
                 user.AddRange(supporters);
             }
+
+            if (SupporterNotificationText == SupporterNotificationText.AcceptDeathCertificateRequestFromDoctor
+                || SupporterNotificationText == SupporterNotificationText.NewArrivalDeathCertificateRequest)
+            {
+                //Get Supporters
+                var supporters = await _userService.GetDeathCertificateSupporters();
+                user.AddRange(supporters);
+            }
+
 
             #endregion
 
@@ -710,6 +725,57 @@ namespace DoctorFAM.Application.Services.Implementation
                     TargetId = targetId,
                     UserId = senderId,
                     ReciverId = item.Id,
+                };
+
+                model.Add(notif);
+            };
+
+            await _notificationService.CreateRangeSupporter(model);
+
+            #endregion
+
+            return true;
+        }
+
+        //Create Notification For Death Certificate Doctors 
+        public async Task<bool> CreateNotificationForDeathCertificateDoctors(ulong targetId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId)
+        {
+            #region Get Doctors 
+
+            List<string> user = new List<string>();
+
+            //Get Doctors That In Death Certificate Interests
+            var doctor = await _deathCertificteService.GetActivatedAndDoctorsInterestDeathCertificate(targetId);
+            user.AddRange(doctor);
+
+            #endregion
+
+            #region Check target 
+
+            //If Target is Request
+            if (notification == NotificationTarget.request)
+            {
+                var request = await _requestService.GetRequestById(targetId);
+                if (request == null) return false;
+            }
+
+            #endregion
+
+            #region Fill Notification Entity
+
+            List<SupporterNotification> model = new List<SupporterNotification>();
+
+            foreach (var item in user)
+            {
+                SupporterNotification notif = new SupporterNotification()
+                {
+                    CreateDate = DateTime.Now,
+                    IsDelete = false,
+                    IsSeen = false,
+                    SupporterNotificationText = SupporterNotificationText,
+                    TargetId = targetId,
+                    UserId = senderId,
+                    ReciverId = (ulong)Convert.ToInt64(item),
                 };
 
                 model.Add(notif);
