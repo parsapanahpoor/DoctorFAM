@@ -33,8 +33,10 @@ namespace DoctorFAM.Domain.Enums.Request
         DeliveryToCourierAndSending,
         [Display(Name = "Accept From Customer")]
         AcceptFromCustomer,
-        [Display(Name ="Waiting For Accept From Customer")]
-        WaitingForAcceptFromCustomer
+        [Display(Name = "Waiting For Accept From Customer")]
+        WaitingForAcceptFromCustomer,
+        [Display(Name = "Canceled Request")]
+        Canceled
     }
 
     public enum RequestStateForFilterAdminSide

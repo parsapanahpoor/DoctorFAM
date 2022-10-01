@@ -59,7 +59,15 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
             #endregion
 
-            return View(await _homeVisitService.ListOfPayedHomeVisitsRequestsDoctorPanelSide(filter));
+            var model = await _homeVisitService.ListOfPayedHomeVisitsRequestsDoctorPanelSide(filter);
+
+            #region Log For Decline 
+
+            ViewBag.declineRequest = await _homeVisitService.CheckLogForDeclineHomeVisitRequest(User.GetUserId());
+
+            #endregion
+
+            return View(model);
         }
 
         #endregion

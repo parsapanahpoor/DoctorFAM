@@ -11,6 +11,7 @@ using DoctorFAM.Domain.ViewModels.Pharmacy.HomePharmacy;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -85,6 +86,21 @@ namespace DoctorFAM.Data.Repository
         #endregion
 
         #region Doctor Panel Side
+
+        //Check Log For Decline Home Visit Request 
+        public async Task<List<LogForDeclineHomeVisitRequestFromUser>?> CheckLogForDeclineHomeVisitRequest(ulong userId)
+        {
+            #region Get Organization 
+
+            var organization = await _organizationRepository.GetDoctorOrganizationByUserId(userId);
+            if (organization == null) return null;
+
+            #endregion
+
+            return await _context.LogForDeclineHomeVisitRequestFromUser.Include(p=> p.Request)
+                                        .Where(p => !p.IsDelete && p.DoctorId == organization.OwnerId).ToListAsync();
+
+        }
 
         //List Of Payed Home Visits Requests Doctor Panel Side
         public async Task<ListOfPayedHomeVisitsRequestsDoctorPanelSideViewModel> ListOfPayedHomeVisitsRequestsDoctorPanelSide(ListOfPayedHomeVisitsRequestsDoctorPanelSideViewModel filter)
@@ -372,6 +388,13 @@ namespace DoctorFAM.Data.Repository
             await filter.Paging(query);
 
             return filter;
+        }
+
+        //Add Log For Decline Home Visit Request 
+        public async Task AddLogForDeclineHomeVisitRequest(LogForDeclineHomeVisitRequestFromUser logForDecline)
+        {
+            await _context.LogForDeclineHomeVisitRequestFromUser.AddAsync(logForDecline);
+            await _context.SaveChangesAsync();
         }
 
         #endregion

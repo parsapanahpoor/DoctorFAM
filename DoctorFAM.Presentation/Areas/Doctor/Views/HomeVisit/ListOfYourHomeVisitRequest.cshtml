@@ -153,7 +153,16 @@
                                 </td>
 
                                 <td class="tc vm">
-                                    <a asp-action="HomeVisitRequestDetail" asp-controller="HomeVisit" asp-area="Doctor" asp-route-requestId="@request.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+                                    @if (request.RequestState == RequestState.Canceled)
+                                    {
+                                        <span class="mr-8px label label-orange">
+                                            @Localizer["Canceled"]
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <a asp-action="HomeVisitRequestDetail" asp-controller="HomeVisit" asp-area="Doctor" asp-route-requestId="@request.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+                                    }
                                 </td>
                             </tr>
                         }

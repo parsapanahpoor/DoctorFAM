@@ -490,10 +490,10 @@ namespace DoctorFAM.Web.Controllers
                     await _requestService.UpdateRequestStateForPayed(request);
 
                     //Charge User Wallet
-                    await _homePharmacy.ChargeUserWallet(User.GetUserId(), homePharmacyTariff);
+                    await _homePharmacy.ChargeUserWallet(User.GetUserId(), homePharmacyTariff , request.Id);
 
                     //Pay Home Pharmacy Tariff
-                    await _homePharmacy.PayHomePharmacyTariff(User.GetUserId(), homePharmacyTariff);
+                    await _homePharmacy.PayHomePharmacyTariff(User.GetUserId(), homePharmacyTariff , request.Id);
 
                     #region Send Notification In SignalR
 

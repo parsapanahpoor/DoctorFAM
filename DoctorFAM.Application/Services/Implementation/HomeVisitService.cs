@@ -282,7 +282,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
         #region Site Side
 
-        public async Task<bool> ChargeUserWallet(ulong userId, int price)
+        public async Task<bool> ChargeUserWallet(ulong userId, int price, ulong? requestId)
         {
             if (!await _userService.IsExistUserById(userId))
             {
@@ -297,14 +297,15 @@ namespace DoctorFAM.Application.Services.Implementation
                 PaymentType = PaymentType.ChargeWallet,
                 Price = price,
                 Description = "شارژ حساب کاربری برای پرداخت هزینه ی ویزیت در منزل",
-                IsFinally = true
+                IsFinally = true,
+                RequestId = requestId.Value
             };
 
             await _walletRepository.CreateWalletAsync(wallet);
             return true;
         }
 
-        public async Task<bool> PayHomeVisitTariff(ulong userId, int price)
+        public async Task<bool> PayHomeVisitTariff(ulong userId, int price , ulong? requestId)
         {
             if (!await _userService.IsExistUserById(userId))
             {
@@ -319,7 +320,8 @@ namespace DoctorFAM.Application.Services.Implementation
                 PaymentType = PaymentType.HomeVisit,
                 Price = price,
                 Description = "پرداخت مبلغ ویزیت در منزل",
-                IsFinally = true
+                IsFinally = true,
+                RequestId = requestId.Value
             };
 
             await _walletRepository.CreateWalletAsync(wallet);
@@ -485,6 +487,12 @@ namespace DoctorFAM.Application.Services.Implementation
 
         #region Doctor Panel Side
 
+        //Check Log For Decline Home Visit Request 
+        public async Task<List<LogForDeclineHomeVisitRequestFromUser>?> CheckLogForDeclineHomeVisitRequest(ulong userId)
+        {
+            return await _homeVisit.CheckLogForDeclineHomeVisitRequest(userId);
+        }
+
         //Fill Home Visit Request Detail View Model
         public async Task<Domain.ViewModels.DoctorPanel.HomeVisit.HomeVisitRequestDetailViewModel?> FillHomeVisitRequestDetailViewModel(ulong requestId, ulong userId)
         {
@@ -582,7 +590,7 @@ namespace DoctorFAM.Application.Services.Implementation
         }
 
         #endregion
-
+         
         #region Admin Side
 
         public async Task<FilterHomeVisistViewModel> FilterHomeVisit(FilterHomeVisistViewModel filter)
@@ -592,65 +600,31 @@ namespace DoctorFAM.Application.Services.Implementation
 
         public async Task<Domain.ViewModels.Admin.HealthHouse.HomeVisit.HomeVisitRequestDetailViewModel> ShowHomeVisitDetail(ulong requestId)
         {
-            #region Get request By Id
+            #region Get Request By Request Id
 
-            var request = await GetRquestForHomeVisitById(requestId);
+            var request = await _requestService.GetRequestById(requestId);
 
             if (request == null) return null;
+            if (request.RequestType != Domain.Enums.RequestType.RequestType.HomeVisit) return null;
+            if (!request.PatientId.HasValue) return null;
 
             #endregion
 
-            #region Get Patient By Id 
-
-            var patient = await GetPatientByRequestId(requestId);
-
-            #endregion
-
-            #region Get Patient Request Detail 
-
-            var requestDetail = await GetRequestPatientDetailByRequestId(requestId);
-
-            #endregion
-
-            #region Fill View Model
+            #region Fill Model 
 
             Domain.ViewModels.Admin.HealthHouse.HomeVisit.HomeVisitRequestDetailViewModel model = new Domain.ViewModels.Admin.HealthHouse.HomeVisit.HomeVisitRequestDetailViewModel()
             {
-                Email = request.User.Email,
-                Username = request.User.Username,
-                Mobile = request.User.Mobile,
-                RequestState = request.RequestState,
-                PatientName = patient?.PatientName,
-                PatientLastName = patient?.PatientLastName,
-                NationalId = patient?.NationalId,
-                Gender = patient?.Gender,
-                Age = patient?.Age,
-                InsuranceType = patient?.InsuranceType,
-                RequestDescription = patient?.RequestDescription,
-                Vilage = requestDetail?.Vilage,
-                FullAddress = requestDetail?.FullAddress,
-                Phone = requestDetail?.Phone,
-                RequestDetailMobile = requestDetail?.Mobile,
-                Distance = requestDetail?.Distance
+                Patient = await _patientService.GetPatientById(request.PatientId.Value),
+                User = await _userService.GetUserById(request.UserId),
+                PatientRequestDetail = await _homeVisit.GetRequestPatientDetailByRequestId(request.Id),
+                PatientRequestDateTimeDetail = await _requestService.GetRequestDateTimeDetailByRequestDetailId(request.Id),
+                Request = request,
+                HomeVisitRequestDetail = await GetHomeVisitRequestDetailByRequestId(request.Id),
             };
 
-            #endregion
-
-            #region Get Location
-
-            if (requestDetail != null)
+            if (request.OperationId.HasValue)
             {
-                var country = await _locationServoce.GetLocationById(requestDetail.CountryId);
-
-                var state = await _locationServoce.GetLocationById(requestDetail.StateId);
-
-                var city = await _locationServoce.GetLocationById(requestDetail.CityId);
-
-                model.Country = country.UniqueName;
-
-                model.State = state.UniqueName;
-
-                model.City = city.UniqueName;
+                model.Doctor = await _userService.GetUserById(request.OperationId.Value);
             }
 
             #endregion
@@ -729,6 +703,105 @@ namespace DoctorFAM.Application.Services.Implementation
             request.RequestState = RequestState.Finalized;
 
             await _requestService.UpdateRequest(request);
+
+            #endregion
+
+            return true;
+        }
+
+        //Decline Doctor Request From Home Visit Request
+        public async Task<bool> DeclinetDoctorRequestFromHomeVisitRequest(Request request)
+        {
+            #region Log For Decline Home Visit Request
+
+            LogForDeclineHomeVisitRequestFromUser model = new LogForDeclineHomeVisitRequestFromUser()
+            {
+                CreateDate = DateTime.Now,
+                DoctorId = request.OperationId.Value,
+                RequestId = request.Id
+            };
+
+            await _homeVisit.AddLogForDeclineHomeVisitRequest(model);
+
+            #endregion
+
+            #region Update Request State
+
+            request.RequestState = RequestState.Paid;
+            request.OperationId = null;
+
+            await _requestService.UpdateRequest(request);
+
+            #endregion
+
+            return true;
+        }
+
+        //Remove Home Visit Request From User
+        public async Task<bool> RemoveHomeVisitRequestFromUser(Request request , ulong userId)
+        {           
+            #region Get Request Date Time Detail 
+
+            var dateTimeDetail = await _pharmacyService.GetRequestDateTimeDetailByRequestDetailId(request.Id);
+            if (dateTimeDetail == null) return false;
+            if ((dateTimeDetail.SendDate.Year == DateTime.Now.Year && DateTime.Now.DayOfYear > dateTimeDetail.SendDate.DayOfYear)
+                || dateTimeDetail.SendDate.Year < DateTime.Now.Year) return false;
+
+            #endregion
+
+            #region Update Request
+
+            request.RequestState = RequestState.Canceled;
+
+            await _requestService.UpdateRequest(request);
+
+            #endregion
+
+            #region Add Transaction For Cancelation
+
+            #region Get Last Transaction For This Request 
+
+            var tranaction = await _walletRepository.GetHomeVisitTransactionForCancelationHomeVisitRequest(request.Id);
+            if (tranaction == null) return false;
+
+            #endregion
+
+            #region Pay Cancelation Price For User 
+
+            if (dateTimeDetail.SendDate == DateTime.Now)
+            {
+                var wallet = new Wallet
+                {
+                    UserId = userId,
+                    TransactionType = TransactionType.Deposit,
+                    GatewayType = GatewayType.Zarinpal,
+                    PaymentType = PaymentType.HomeVisit,
+                    Price = (int)(((double)tranaction.Price * (double)30) / (double)100 ),
+                    Description = "عودت وجه برای لغو ویزیت در منزل",
+                    IsFinally = true,
+                    RequestId = request.Id
+                };
+
+                await _walletRepository.CreateWalletAsync(wallet);
+            }
+            else
+            {
+                var wallet = new Wallet
+                {
+                    UserId = userId,
+                    TransactionType = TransactionType.Deposit,
+                    GatewayType = GatewayType.Zarinpal,
+                    PaymentType = PaymentType.HomeVisit,
+                    Price = (int)(((double)tranaction.Price * (double)70) / (double)100),
+                    Description = "عودت وجه برای لغو ویزیت در منزل",
+                    IsFinally = true,
+                    RequestId = request.Id
+                };
+
+                await _walletRepository.CreateWalletAsync(wallet);
+            }
+
+            #endregion
 
             #endregion
 

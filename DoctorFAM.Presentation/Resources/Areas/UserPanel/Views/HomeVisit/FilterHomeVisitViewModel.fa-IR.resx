@@ -123,6 +123,9 @@
   <data name="AwaitingThePaymentOfTheInvoiceAmount" xml:space="preserve">
     <value>در انتظار پرداخت مبلغ فاکتور</value>
   </data>
+  <data name="Canceled" xml:space="preserve">
+    <value>لغو شده</value>
+  </data>
   <data name="ConfirmFromDestinationAndWaitingForIssuanceOfDraftInvoice" xml:space="preserve">
     <value>تایید شده و در انتظار صدور پیش فاکتور</value>
   </data>
@@ -152,6 +155,9 @@
   </data>
   <data name="Paid" xml:space="preserve">
     <value>پرداخت شده و در انتظار تایید پزشک</value>
+  </data>
+  <data name="Remove Request" xml:space="preserve">
+    <value>لغو درخواست</value>
   </data>
   <data name="Request State" xml:space="preserve">
     <value>وضعیت درخواست</value>

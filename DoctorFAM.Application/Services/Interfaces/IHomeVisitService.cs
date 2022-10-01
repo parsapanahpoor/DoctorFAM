@@ -22,9 +22,9 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Get Activated And Home Visit Interests Home Visit For Send Correct Notification For Arrival Home Visit Request 
         Task<List<string?>> GetActivatedAndDoctorsInterestHomeVisit(ulong requestId);
 
-        Task<bool> ChargeUserWallet(ulong userId, int price);
+        Task<bool> ChargeUserWallet(ulong userId, int price , ulong? requestId);
 
-        Task<bool> PayHomeVisitTariff(ulong userId, int price);
+        Task<bool> PayHomeVisitTariff(ulong userId, int price , ulong? requestId);
 
         Task<ulong> CreatePatientDetailByPopulationCovered(ulong populationId, ulong requestId, ulong userId);
 
@@ -39,6 +39,9 @@ namespace DoctorFAM.Application.Services.Interfaces
         #endregion
 
         #region Doctor Panel Side
+
+        //Check Log For Decline Home Visit Request 
+        Task<List<LogForDeclineHomeVisitRequestFromUser>?> CheckLogForDeclineHomeVisitRequest(ulong userId);
 
         //Confirm Home Visit Request From Doctor 
         Task<bool> ConfirmHomeVisitRequestFromDoctor(ulong requestId, ulong userId);
@@ -83,6 +86,12 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Accept Doctor Request From Home Visit Request
         Task<bool> AcceptDoctorRequestFromHomeVisitRequest(Request request);
+
+        //Decline Doctor Request From Home Visit Request
+        Task<bool> DeclinetDoctorRequestFromHomeVisitRequest(Request request);
+
+        //Remove Home Visit Request From User
+        Task<bool> RemoveHomeVisitRequestFromUser(Request request, ulong userId);
 
         #endregion
     }

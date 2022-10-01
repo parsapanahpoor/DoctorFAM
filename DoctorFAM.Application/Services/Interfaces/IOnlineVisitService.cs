@@ -29,9 +29,9 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Add Online Vist Request 
         Task<bool> AddOnlineVisitRequest(OnlineVisitRquestDetailViewModel onlineVisitRquest, ulong userId);
 
-        Task<bool> ChargeUserWallet(ulong userId, int price);
+        Task<bool> ChargeUserWallet(ulong userId, int price , ulong requestId);
 
-        Task<bool> PayOnlineVisitTariff(ulong userId, int price);
+        Task<bool> PayOnlineVisitTariff(ulong userId, int price , ulong requestId);
 
         //Get List Of Online Visit For Send Notification For Online Visit Notification 
         Task<List<string?>> GetListOfDoctorsForArrivalsOnlineVisitRequests();

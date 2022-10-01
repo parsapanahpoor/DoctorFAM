@@ -102,4 +102,18 @@ public static class Messages
         return
             $"باعرض سلام . {Environment.NewLine} درخواست ویزیت درمنزل همراه با اطلاعات شما توسط کاربر تایید گردید . {Environment.NewLine} لطفا در زمان اعلام شده نسبت به اعزام به محل درخواست اقدام فرمایید. {Environment.NewLine} {PathTools.SiteFarsiName}";
     }
+
+    //Send SMS For Decline Home Visit Request From User   
+    public static string SendSMSForDeclineHomeVisitRequestFromUser()
+    {
+        return
+            $"باعرض سلام . {Environment.NewLine} درخواست ویزیت درمنزل همراه با اطلاعات شما توسط کاربر تایید نگردید . {Environment.NewLine} از همکاری شما متشکریم. {Environment.NewLine} {PathTools.SiteFarsiName}";
+    }
+
+    //Send SMS For Cancelation Home Visit Request From User   
+    public static string SendSMSForCancelationHomeVisitRequestFromUser()
+    {
+        return
+            $"باعرض سلام . {Environment.NewLine} درخواست ویزیت درمنزل توسط کاربر لغو شده است . {Environment.NewLine} از همکاری شما متشکریم. {Environment.NewLine} {PathTools.SiteFarsiName}";
+    }
 }

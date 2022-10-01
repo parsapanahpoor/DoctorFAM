@@ -42,6 +42,8 @@ public class Wallet : BaseEntity
 
     public bool IsFinally { get; set; }
 
+    public ulong? RequestId { get; set; }
+
     #endregion
 
     #region Relations

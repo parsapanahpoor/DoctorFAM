@@ -1,4 +1,6 @@
-﻿using DoctorFAM.Domain.Entities.Patient;
+﻿using DoctorFAM.DataLayer.Entities;
+using DoctorFAM.Domain.Entities.Account;
+using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Enums.Gender;
 using DoctorFAM.Domain.Enums.InsuranceType;
@@ -15,45 +17,19 @@ namespace DoctorFAM.Domain.ViewModels.Admin.HealthHouse.HomeVisit
     {
         #region properties
 
-        public ulong RequestId { get; set; }
+        public Request Request { get; set; }
 
-        public string Username { get; set; }
+        public PaitientRequestDetail? PatientRequestDetail { get; set; }
 
-        public string Mobile { get; set; }
+        public PatientRequestDateTimeDetail? PatientRequestDateTimeDetail { get; set; }
 
-        public string? Email { get; set; }
+        public Patient? Patient { get; set; }
 
-        public string? Country { get; set; }
+        public User User { get; set; }
 
-        public string? State { get; set; }
+        public User? Doctor { get; set; }
 
-        public string? City{ get; set; }
-
-        public string? Vilage { get; set; }
-
-        public string? FullAddress { get; set; }
-
-        public string? Phone { get; set; }
-
-        public string? RequestDetailMobile { get; set; }
-
-        public int? Distance { get; set; }
-
-        public RequestState RequestState { get; set; }
-
-        public string? PatientName { get; set; }
-
-        public string? PatientLastName { get; set; }
-
-        public string? NationalId { get; set; }
-
-        public Gender? Gender { get; set; }
-
-        public int? Age { get; set; }
-
-        public InsuranceType? InsuranceType { get; set; }
-
-        public string? RequestDescription { get; set; }
+        public HomeVisitRequestDetail? HomeVisitRequestDetail { get; set; }
 
         #endregion
     }

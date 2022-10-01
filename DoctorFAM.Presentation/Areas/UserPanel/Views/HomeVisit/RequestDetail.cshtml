@@ -183,7 +183,7 @@
 
                                         <div class="col-sm-2">
                                             <div class="form-group">
-                                                <a asp-action="ChoosingFamilyDoctor" asp-area="UserPanel" asp-controller="FamilyDoctor" asp-route-doctorUserId="@Model.User.Id" class="btn btn-danger">@Localizer["Decline"]</a>
+                                                <a asp-action="DeclineDoctor" asp-area="UserPanel" asp-controller="HomeVisit" asp-route-requestId="@requestId" class="btn btn-danger">@Localizer["Decline"]</a>
                                             </div>
                                         </div>
                                     </div>

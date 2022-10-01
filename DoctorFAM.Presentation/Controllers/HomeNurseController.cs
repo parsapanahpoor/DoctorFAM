@@ -379,10 +379,10 @@ namespace DoctorFAM.Web.Controllers
                     await _requestService.UpdateRequestStateForPayed(request);
 
                     //Charge User Wallet
-                    await _homeNurseService.ChargeUserWallet(User.GetUserId(), homeNurseTariff);
+                    await _homeNurseService.ChargeUserWallet(User.GetUserId(), homeNurseTariff , request.Id);
 
                     //Pay Home Nurse Tariff
-                    await _homeNurseService.PayHomeNurseTariff(User.GetUserId(), homeNurseTariff);
+                    await _homeNurseService.PayHomeNurseTariff(User.GetUserId(), homeNurseTariff , request.Id);
 
                     #region Send Notification In SignalR
 

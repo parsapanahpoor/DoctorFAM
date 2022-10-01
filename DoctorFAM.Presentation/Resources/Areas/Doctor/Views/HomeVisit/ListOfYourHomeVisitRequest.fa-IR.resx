@@ -120,6 +120,9 @@
   <data name="Awaiting Payment" xml:space="preserve">
     <value>درانتظار پرداخت</value>
   </data>
+  <data name="Canceled" xml:space="preserve">
+    <value>لغو شده </value>
+  </data>
   <data name="Date Time" xml:space="preserve">
     <value>تاریخ</value>
   </data>

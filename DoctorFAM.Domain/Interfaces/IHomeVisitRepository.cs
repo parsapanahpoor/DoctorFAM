@@ -26,6 +26,9 @@ namespace DoctorFAM.Domain.Interfaces
 
         #region Doctor Panel Side
 
+        //Check Log For Decline Home Visit Request 
+        Task<List<LogForDeclineHomeVisitRequestFromUser>?> CheckLogForDeclineHomeVisitRequest(ulong userId);
+
         Task<ListOfPayedHomeVisitsRequestsDoctorPanelSideViewModel> ListOfPayedHomeVisitsRequestsDoctorPanelSide(ListOfPayedHomeVisitsRequestsDoctorPanelSideViewModel filter);
 
         Task<ListOfPayedDeathCertificateRequestDoctorSideViewModel> ListOfPayedDeathCertificateRequestsDoctorPanelSide(ListOfPayedDeathCertificateRequestDoctorSideViewModel filter);
@@ -51,6 +54,9 @@ namespace DoctorFAM.Domain.Interfaces
 
         //Filter User Home Visit Requests
         Task<Domain.ViewModels.UserPanel.HealthHouse.HomeVisit.FilterHomeVisitViewModel> FilterListOfUserHomeVisitRequest(Domain.ViewModels.UserPanel.HealthHouse.HomeVisit.FilterHomeVisitViewModel filter);
+
+        //Add Log For Decline Home Visit Request 
+        Task AddLogForDeclineHomeVisitRequest(LogForDeclineHomeVisitRequestFromUser logForDecline);
 
         #endregion
     }

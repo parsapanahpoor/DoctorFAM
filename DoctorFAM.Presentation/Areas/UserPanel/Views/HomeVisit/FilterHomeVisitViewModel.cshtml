@@ -55,7 +55,7 @@
                             <th class="tc vm">
                                 @Localizer["Start Date"]
                             </th>
-                             <th class="tc vm">
+                            <th class="tc vm">
                                 @Localizer["End Date"]
                             </th>
                             <th class="tc vm">
@@ -129,13 +129,18 @@
                                         {
                                             <span class="mr-8px label label-warning"> @Localizer["Waiting For Accept From Customer"] </span>
                                         }
+                                          @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.Canceled)
+                                        {
+                                            <span class="mr-8px label label-danger"> @Localizer["Canceled"] </span>
+                                        }
                                     </p>
                                 </td>
                                 <td class="tc vm">
                                     @if (request.PatientRequestDateTimeDetails != null)
                                     {
-                                       <p>  @request.PatientRequestDateTimeDetails.StartTime.ToString("00")</p>
-                                    }else
+                                        <p>  @request.PatientRequestDateTimeDetails.StartTime.ToString("00")</p>
+                                    }
+                                    else
                                     {
                                         <p class="label label-danger"> @Localizer["Not Insert"] </p>
                                     }
@@ -165,6 +170,15 @@
                                     {
                                         <a asp-action="RequestDetail" asp-controller="HomeVisit" asp-area="UserPanel" asp-route-requestId="@request.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
                                     }
+                                    @if (request.PatientRequestDateTimeDetails != null && request.RequestState == RequestState.Finalized)
+                                    {
+                                        @if ((request.PatientRequestDateTimeDetails.SendDate.Year == DateTime.Now.Year && DateTime.Now.DayOfYear <= request.PatientRequestDateTimeDetails.SendDate.DayOfYear)
+                                       || request.PatientRequestDateTimeDetails.SendDate.Year > DateTime.Now.Year)
+                                        {
+                                            <button onclick="DeleteAjax(@request.Id, '@Url.Action("RemoveRequest", "HomeVisit", new {area = "UserPanel", requestId = request.Id})')" class="btn btn-danger  btn-xs">@Localizer["Remove Request"]</button>
+                                        }
+                                    }
+
                                 </td>
                             </tr>
                         }
