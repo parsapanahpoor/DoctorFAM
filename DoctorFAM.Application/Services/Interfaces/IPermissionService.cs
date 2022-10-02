@@ -58,6 +58,9 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Check Is User Has Permission To Nurse Panel 
         Task<bool> IsUserNurse(ulong userId);
 
+        //Check Is User Has Permission To Laboratory Panel 
+        Task<bool> IsUserLaboratory(ulong userId);
+
         #endregion
     }
 }

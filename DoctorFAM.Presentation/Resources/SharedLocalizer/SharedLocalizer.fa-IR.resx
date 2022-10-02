@@ -627,4 +627,7 @@
   <data name="Your GFR" xml:space="preserve">
     <value>GFR شما</value>
   </data>
+  <data name="List Of GFR History" xml:space="preserve">
+    <value>تاریخچه ی GFR های کاربر</value>
+  </data>
 </root>

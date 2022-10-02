@@ -5,6 +5,7 @@ using DoctorFAM.Domain.Entities.Contact;
 using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.FamilyDoctor;
+using DoctorFAM.Domain.Entities.Laboratory;
 using DoctorFAM.Domain.Entities.Notification;
 using DoctorFAM.Domain.Entities.Nurse;
 using DoctorFAM.Domain.Entities.Organization;
@@ -119,6 +120,8 @@ namespace DoctorFAM.Domain.Entities.Account
         public Nurse.Nurse Nurse { get; set; }
 
         public Consultant.Consultant Consultant { get; set; }
+
+        public Laboratory.Laboratory Laboratory { get; set; }
 
         public Pharmacy.Pharmacy Pharmacy { get; set; }
 

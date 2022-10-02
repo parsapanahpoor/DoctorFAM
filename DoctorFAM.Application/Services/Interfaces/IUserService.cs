@@ -50,6 +50,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         #region Site Side
 
+        //Register Labratory
+        Task LabratoryConsultant(string mobile);
+
         Task RegisterDoctors(string mobile);
 
         Task RegisterPharmacy(string mobile);

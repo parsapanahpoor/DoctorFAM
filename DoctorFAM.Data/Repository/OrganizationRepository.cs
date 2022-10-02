@@ -118,6 +118,13 @@ namespace DoctorFAM.Data.Repository
                                     .AnyAsync(p => p.UserId == userId && !p.IsDelete && p.Organization.OrganizationType == Domain.Enums.Organization.OrganizationType.Consultant);
         }
 
+        //Check Is Exist Any Laboratory By This User Id
+        public async Task<bool> IsExistAnyLaboratoryByUserId(ulong userId)
+        {
+            return await _context.OrganizationMembers.Include(p => p.Organization)
+                                    .AnyAsync(p => p.UserId == userId && !p.IsDelete && p.Organization.OrganizationType == Domain.Enums.Organization.OrganizationType.Labratory);
+        }
+
         public async Task<bool> IsExistAnyPharmacyOfficeEmployeeByUserId(ulong userId)
         {
             return await _context.OrganizationMembers.Include(p=> p.Organization)

@@ -261,6 +261,14 @@ namespace DoctorFAM.Data.DbContext
 
         #endregion
 
+        #region Laboratory 
+
+        public DbSet<Laboratory> Laboratory { get; set; }
+
+        public DbSet<LaboratoryInfo> LaboratoryInfos { get; set; }
+
+        #endregion
+
         #endregion
 
         #region On Model Creating
@@ -457,6 +465,16 @@ namespace DoctorFAM.Data.DbContext
                 Id = 15,
                 Title = "Consultant",
                 RoleUniqueName = "Consultant",
+                CreateDate = DateTime.Now,
+                IsDelete = false,
+                ParentId = null
+            });
+
+            modelBuilder.Entity<Role>().HasData(new Role
+            {
+                Id = 16,
+                Title = "Labratory",
+                RoleUniqueName = "Labratory",
                 CreateDate = DateTime.Now,
                 IsDelete = false,
                 ParentId = null

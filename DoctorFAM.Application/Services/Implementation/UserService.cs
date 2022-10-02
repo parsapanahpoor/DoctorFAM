@@ -370,6 +370,30 @@ namespace DoctorFAM.Application.Services.Implementation
             #endregion
         }
 
+        //Register Labratory
+        public async Task LabratoryConsultant(string mobile)
+        {
+            #region Get User By Mobile
+
+            var user = await GetUserByMobile(mobile);
+
+            #endregion
+
+            #region Add Labratory Role To User
+
+            var userRole = new UserRole()
+            {
+                RoleId = 16,
+                UserId = user.Id
+            };
+
+            await _context.UserRoles.AddAsync(userRole);
+
+            await _context.SaveChangesAsync();
+
+            #endregion
+        }
+
         public async Task RegisterPharmacy(string mobile)
         {
             #region Get User By Mobile

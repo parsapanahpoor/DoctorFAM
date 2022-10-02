@@ -35,6 +35,8 @@ namespace DoctorFAM.Domain.ViewModels.Account
         public bool? NurseRegister { get; set; }
 
         public bool? ConsultantRegister { get; set; }
+        
+        public bool? LabratoryRegister { get; set; }
 
         public bool SiteRoles { get; set; }
     }

@@ -346,6 +346,8 @@ namespace BusinessPortal.Application.Services.Implementation
 
             if (userRoles.Any() && userRoles.Contains("DoctorOfficeEmployee")) return GetUserRoles.DoctorOfficeEmployee;
 
+            if (userRoles.Any() && userRoles.Contains("Labratory")) return GetUserRoles.Laboratory;
+
             if (!userRoles.Any()) return GetUserRoles.User;
 
             #endregion
@@ -406,6 +408,18 @@ namespace BusinessPortal.Application.Services.Implementation
             if (result == GetUserRoles.Admin) return true;
 
             if (result == GetUserRoles.Consultant) return true;
+
+            return false;
+        }
+
+        //Check Is User Has Permission To Laboratory Panel 
+        public async Task<bool> IsUserLaboratory(ulong userId)
+        {
+            var result = await GetUserRole(userId);
+
+            if (result == GetUserRoles.Admin) return true;
+
+            if (result == GetUserRoles.Laboratory) return true;
 
             return false;
         }

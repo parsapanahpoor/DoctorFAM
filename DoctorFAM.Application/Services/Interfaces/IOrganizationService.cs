@@ -34,6 +34,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         Task<bool> IsExistAnyDoctorOfficeEmployeeByUserId(ulong userId);
 
+        //Check Is Exist Any Laboratory By This User Id
+        Task<bool> IsExistAnyLaboratoryByUserId(ulong userId);
+
         Task<bool> IsExistAnyPharmacyOfficeEmployeeByUserId(ulong userId);
 
         //Get Organization Members By Organization Id
