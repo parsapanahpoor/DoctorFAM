@@ -21,13 +21,18 @@ namespace DoctorFAM.Web.Controllers
 
         #region Index Page
 
-        public IActionResult Index(int? bmiResult)
+        public IActionResult Index(int? bmiResult , int? gfrResult)
         {
-            #region Send BMI Result To View 
+            #region Send BMI && GFR Result To View 
 
             if (bmiResult != null)
             {
                 ViewBag.bmiResult = bmiResult;
+            }
+
+            if (gfrResult != null)
+            {
+                ViewBag.gfrResult = gfrResult;
             }
 
             #endregion
@@ -74,6 +79,43 @@ namespace DoctorFAM.Web.Controllers
                 var res = await _bmiService.ProcessBMI(bmi , null);
 
                 return RedirectToAction(nameof(Index), new { bmiResult = res.BMIResult });
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        #endregion
+
+        #endregion
+
+        #region GFR
+
+        #region Show GFR Modal
+
+        [HttpGet("/Show-GFR-Modal")]
+        public async Task<IActionResult> ShowGFRModal()
+        {
+            return PartialView("_GFRModal");
+        }
+
+        #endregion
+
+        #region Add Process GFR Result
+
+        public async Task<IActionResult> ProcessGFR(GFRViewModel gfr)
+        {
+            //IF User Is Loged In 
+            if (User.Identity.IsAuthenticated)
+            {
+                var res = await _bmiService.ProcessGFR(gfr, User.GetUserId());
+
+                return RedirectToAction(nameof(Index), new { gfrResult = res.GFRResult });
+            }
+            else
+            {
+                var res = await _bmiService.ProcessGFR(gfr, null);
+
+                return RedirectToAction(nameof(Index), new { gfrResult = res.GFRResult });
             }
 
             return RedirectToAction(nameof(Index));

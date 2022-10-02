@@ -219,6 +219,8 @@ namespace DoctorFAM.Data.DbContext
 
         public DbSet<BMI> BMI { get; set; }
 
+        public DbSet<GFR> GFR { get; set; }
+
         #endregion
 
         #region Online Visit Request Detail

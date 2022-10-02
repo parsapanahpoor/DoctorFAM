@@ -34,5 +34,12 @@ namespace DoctorFAM.Domain.Interfaces
         Task<ListOfPayedDeathCertificateRequestDoctorSideViewModel> ListOfYourDeathCertificateRequestsDoctorPanelSide(ListOfPayedDeathCertificateRequestDoctorSideViewModel filter, ulong userId);
 
         #endregion
+
+        #region User Panel Side 
+
+        //Filter User Death Certificate Requests
+        Task<Domain.ViewModels.UserPanel.HealthHouse.DeathCertificate.FilterUserDeathCertificateRequestViewModel> FilterUserDeathCertificateRequestViewModel(Domain.ViewModels.UserPanel.HealthHouse.DeathCertificate.FilterUserDeathCertificateRequestViewModel filter);
+
+        #endregion
     }
 }

@@ -32,15 +32,29 @@ namespace DoctorFAM.Data.Repository
             await _context.SaveChangesAsync();
         }
 
+        //Add GFR To Data Base 
+        public async Task CreateGFR(GFR gfr)
+        {
+            await _context.GFR.AddAsync(gfr);
+            await _context.SaveChangesAsync();
+        }
+
         #endregion
 
         #region User Panel 
-        
+
         //Get List Of User BMI History
         public async Task<List<BMI>?> GetUserBMIHistory(ulong userId)
         {
             return await _context.BMI.Where(p => !p.IsDelete && p.UserId == userId)
                         .OrderByDescending(p=> p.CreateDate).ToListAsync(); 
+        }
+
+        //Get List Of User GFR History
+        public async Task<List<GFR>?> GetUserGFRHistory(ulong userId)
+        {
+            return await _context.GFR.Where(p => !p.IsDelete && p.UserId == userId)
+                        .OrderByDescending(p => p.CreateDate).ToListAsync();
         }
 
         #endregion

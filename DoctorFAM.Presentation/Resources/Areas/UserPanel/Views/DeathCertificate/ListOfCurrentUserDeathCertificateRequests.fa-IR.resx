@@ -117,70 +117,64 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Awaiting Payment" xml:space="preserve">
-    <value>درانتظار پرداخت</value>
+  <data name="Accepted From Customer" xml:space="preserve">
+    <value>تایید شده توسط درخواست دهنده</value>
   </data>
-  <data name="Date Time" xml:space="preserve">
-    <value>تاریخ</value>
+  <data name="AwaitingThePaymentOfTheInvoiceAmount" xml:space="preserve">
+    <value>در انتظار پرداخت مبلغ فاکتور</value>
   </data>
-  <data name="Death Certificate" xml:space="preserve">
-    <value>صدور گواهی فوت</value>
+  <data name="ConfirmFromDestinationAndWaitingForIssuanceOfDraftInvoice" xml:space="preserve">
+    <value>تایید شده و در انتظار صدور پیش فاکتور</value>
   </data>
-  <data name="Delete Filter" xml:space="preserve">
-    <value>حذف فیلتر</value>
+  <data name="Delivery To Courier And Sending" xml:space="preserve">
+    <value>تحویل داده شده به پیک</value>
   </data>
-  <data name="Email" xml:space="preserve">
-    <value>ایمیل</value>
+  <data name="DeliveryToCourierAndSending" xml:space="preserve">
+    <value>تحویل داده شده به پیک </value>
   </data>
   <data name="Empty" xml:space="preserve">
-    <value>پرنشده</value>
+    <value>خالی</value>
   </data>
-  <data name="Filter" xml:space="preserve">
-    <value>فیلتر</value>
+  <data name="End Date" xml:space="preserve">
+    <value>زمان پایان</value>
   </data>
   <data name="Finalized" xml:space="preserve">
     <value>نهایی شده</value>
   </data>
-  <data name="Home Visit Records" xml:space="preserve">
-    <value>لیست ویزیت در منزل</value>
+  <data name="List Of Your Death Certificate Requests" xml:space="preserve">
+    <value>لیست درخواست های صدور گواهی فوت شما</value>
   </data>
-  <data name="List Of Death Certificate Request" xml:space="preserve">
-    <value>لیست درخواست های صدور گواهی فوت</value>
-  </data>
-  <data name="Mobile" xml:space="preserve">
-    <value>موبایل</value>
+  <data name="List Of Your Home Nurse Requests" xml:space="preserve">
+    <value>لیست درخواست های پرستار در منزل شما</value>
   </data>
   <data name="Options" xml:space="preserve">
     <value>امکانات</value>
   </data>
-  <data name="Order By" xml:space="preserve">
-    <value>مرتب سازی براساس</value>
-  </data>
   <data name="Paid" xml:space="preserve">
-    <value>پرداخت شده و منتظر پزشک</value>
+    <value>پرداخت شده و در انتظار تایید پرستار</value>
   </data>
-  <data name="Paying" xml:space="preserve">
-    <value>درحال پرداخت</value>
+  <data name="Request State" xml:space="preserve">
+    <value>وضعیت درخواست</value>
   </data>
-  <data name="Register Date" xml:space="preserve">
-    <value>تاریخ ثبت نام </value>
+  <data name="SelectedFromDoctor" xml:space="preserve">
+    <value>انتخاب شده توسط پرستار</value>
   </data>
-  <data name="State" xml:space="preserve">
-    <value>وضعیت</value>
+  <data name="Start Date" xml:space="preserve">
+    <value>زمان شروع</value>
   </data>
-  <data name="unpaid" xml:space="preserve">
-    <value>پرداخت نشده</value>
+  <data name="The Time your choice" xml:space="preserve">
+    <value>زمان انتخابی شما</value>
   </data>
   <data name="User Avatar" xml:space="preserve">
-    <value>تصویر کاربر</value>
+    <value>آواتار</value>
   </data>
-  <data name="User Email" xml:space="preserve">
-    <value>ایمیل کاربری </value>
+  <data name="Waiting For Accept From Customer" xml:space="preserve">
+    <value>در انتظار تایید شما </value>
   </data>
-  <data name="User Mobile" xml:space="preserve">
-    <value>موبایل کاربر</value>
+  <data name="WaitingForConfirmFromDestination" xml:space="preserve">
+    <value>در انتظار تایید از مقصد</value>
   </data>
-  <data name="Username" xml:space="preserve">
-    <value>نام کاربری</value>
+  <data name="Your chosen date" xml:space="preserve">
+    <value>تاریخ انتخابی شما</value>
   </data>
 </root>

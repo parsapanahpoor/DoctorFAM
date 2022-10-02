@@ -14,12 +14,18 @@ namespace DoctorFAM.Domain.Interfaces
         //Add BMI To Data Base 
         Task CreateBMI(BMI bmi);
 
+        //Add GFR To Data Base 
+        Task CreateGFR(GFR gfr);
+
         #endregion
 
         #region User Panel 
 
         //Get List Of User BMI History
         Task<List<BMI>?> GetUserBMIHistory(ulong userId);
+
+        //Get List Of User GFR History
+        Task<List<GFR>?> GetUserGFRHistory(ulong userId);
 
         #endregion
     }

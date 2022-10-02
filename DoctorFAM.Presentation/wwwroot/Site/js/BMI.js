@@ -20,3 +20,25 @@
     }
 
 //#endregion
+
+//#region Load GFR View Model
+
+function ShowGFRModal() {
+    $.ajax({
+        url: "/Show-GFR-Modal",
+        type: "get",
+        data: {
+
+        },
+        success: function (response) {
+            $("#modal-body").html(response);
+
+            $('#GFRForm').data('validator', null);
+            $.validator.unobtrusive.parse('#GFRForm');
+
+            $("#exampleModal").modal("show");
+        }
+    });
+}
+
+//#endregion

@@ -138,6 +138,8 @@ namespace DoctorFAM.Domain.Entities.Account
 
         public ICollection<BMI.BMI> BMI { get; set; }
 
+        public ICollection<BMI.GFR> GFR { get; set; }
+
         public ICollection<HomePharmacyRequestDetailPrice> HomePharmacyRequestDetailPrices { get; set; }
 
         [InverseProperty("Doctor")]

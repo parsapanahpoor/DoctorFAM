@@ -4,6 +4,7 @@ using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.ViewModels.Admin.HealthHouse.DeathCertificate;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DeathCertificate;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
+using DoctorFAM.Domain.ViewModels.UserPanel.HealthHouse.DeathCertificate;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,7 +49,7 @@ namespace DoctorFAM.Application.Services.Interfaces
         #region Doctor Panel Side 
 
         //Show Death Certificate Request Detail Doctor Panel Side View Model 
-        Task<DoctorFAM.Domain.ViewModels.DoctorPanel.DeathCertificate.DeathCertificateRequestDetailViewModel?> FillDeathCertificateRequestDetailDoctorPanelViewModel(ulong requestId);
+        Task<DoctorFAM.Domain.ViewModels.DoctorPanel.DeathCertificate.DeathCertificateRequestDetailViewModel?> FillDeathCertificateRequestDetailDoctorPanelViewModel(ulong requestId , ulong userId);
 
         Task<ulong?> CreateDeathCertificateRequest(ulong userId);
 
@@ -58,6 +59,16 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Confirm Death Certificate Request From Doctor 
         Task<bool> ConfirmDeathCertificateRequestFromDoctor(ulong requestId, ulong userId);
+
+        #endregion
+
+        #region User Panel Side 
+
+        //Filter User Death Certificate Requests
+        Task<Domain.ViewModels.UserPanel.HealthHouse.DeathCertificate.FilterUserDeathCertificateRequestViewModel> FilterUserDeathCertificateRequestViewModel(Domain.ViewModels.UserPanel.HealthHouse.DeathCertificate.FilterUserDeathCertificateRequestViewModel filter);
+
+        //Fill Doctor Information Detail View Model
+        Task<ShowDeathCertificateDetaiFromUserPanellViewModel?> FillShowDeathCertificateDetaiFromUserPanellViewModel(ulong requestId, ulong userId);
 
         #endregion
     }

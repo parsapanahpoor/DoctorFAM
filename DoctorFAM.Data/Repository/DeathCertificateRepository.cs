@@ -1,5 +1,7 @@
 ﻿using DoctorFAM.Data.DbContext;
 using DoctorFAM.DataLayer.Entities;
+using DoctorFAM.Domain.Entities.Account;
+using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Enums.Request;
@@ -20,12 +22,12 @@ namespace DoctorFAM.Data.Repository
         #region Ctor
 
         public DoctorFAMDbContext _context;
-        private readonly IOrganizationRepository _organiozationService;
+        private readonly IOrganizationRepository _organizationRepository;
 
-        public DeathCertificateRepository(DoctorFAMDbContext context, IOrganizationRepository organiozationService)
+        public DeathCertificateRepository(DoctorFAMDbContext context, IOrganizationRepository organizationRepository)
         {
             _context = context;
-            _organiozationService = organiozationService;
+            _organizationRepository = organizationRepository;
         }
 
         #endregion
@@ -161,7 +163,7 @@ namespace DoctorFAM.Data.Repository
         {
             #region Get Organization 
 
-            var organization = await _organiozationService.GetDoctorOrganizationByUserId(userId);
+            var organization = await _organizationRepository.GetDoctorOrganizationByUserId(userId);
             if (organization == null) return null;
 
             #endregion
@@ -205,6 +207,25 @@ namespace DoctorFAM.Data.Repository
             }
 
             #endregion
+
+            await filter.Paging(query);
+
+            return filter;
+        }
+
+        #endregion
+
+        #region User Panel 
+
+        //Filter User Death Certificate Requests
+        public async Task<Domain.ViewModels.UserPanel.HealthHouse.DeathCertificate.FilterUserDeathCertificateRequestViewModel> FilterUserDeathCertificateRequestViewModel(Domain.ViewModels.UserPanel.HealthHouse.DeathCertificate.FilterUserDeathCertificateRequestViewModel filter)
+        {
+            var query = _context.Requests
+             .Include(p => p.Operation)
+             .Where(s => !s.IsDelete && s.RequestType == Domain.Enums.RequestType.RequestType.DeathCertificate && s.UserId == filter.UserId
+              && s.RequestState != RequestState.WaitingForCompleteInformationFromUser)
+             .OrderByDescending(s => s.CreateDate)
+             .AsQueryable();
 
             await filter.Paging(query);
 

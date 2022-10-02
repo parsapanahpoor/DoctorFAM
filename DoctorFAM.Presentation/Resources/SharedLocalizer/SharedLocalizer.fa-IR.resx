@@ -621,4 +621,10 @@
   <data name="List Of Your Death Certificate" xml:space="preserve">
     <value>درخواست های تاییدی شما </value>
   </data>
+  <data name="Your Age" xml:space="preserve">
+    <value>سن شما</value>
+  </data>
+  <data name="Your GFR" xml:space="preserve">
+    <value>GFR شما</value>
+  </data>
 </root>

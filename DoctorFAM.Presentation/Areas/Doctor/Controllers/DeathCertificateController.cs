@@ -82,7 +82,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
         {
             #region Fill View Model 
 
-            var model = await _deathCertificateService.FillDeathCertificateRequestDetailDoctorPanelViewModel(requestId);
+            var model = await _deathCertificateService.FillDeathCertificateRequestDetailDoctorPanelViewModel(requestId , User.GetUserId());
             if (model == null) return NotFound();
 
             #endregion

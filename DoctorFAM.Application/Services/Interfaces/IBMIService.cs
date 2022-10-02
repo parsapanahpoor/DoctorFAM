@@ -15,12 +15,18 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Process BMI From Site With User Informations 
         Task<BMI> ProcessBMI(BMIViewModel bmi, ulong? userId);
 
+        //Process GFR From Site With User Informations 
+        Task<GFR> ProcessGFR(GFRViewModel gfr, ulong? userId);
+
         #endregion
 
         #region User Panel 
 
         //Get List Of User BMI History
         Task<List<BMI>?> GetListOfUserBMIHistory(ulong userId);
+
+        //Get List Of User GFR History
+        Task<List<GFR>?> GetListOfUserGFRHistory(ulong userId);
 
         #endregion
     }

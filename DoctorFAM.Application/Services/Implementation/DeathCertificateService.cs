@@ -4,7 +4,9 @@ using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Data.DbContext;
 using DoctorFAM.Data.Repository;
 using DoctorFAM.DataLayer.Entities;
+using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Doctors;
+using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.PopulationCovered;
 using DoctorFAM.Domain.Entities.Requests;
@@ -16,6 +18,8 @@ using DoctorFAM.Domain.ViewModels.Admin.HealthHouse.DeathCertificate;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DeathCertificate;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
+using DoctorFAM.Domain.ViewModels.UserPanel.HealthHouse.DeathCertificate;
+using DoctorFAM.Domain.ViewModels.UserPanel.HealthHouse.HomeNurse;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -38,10 +42,14 @@ namespace DoctorFAM.Application.Services.Implementation
         private readonly IPopulationCoveredRepository _populationCovered;
         private readonly IHomePharmacyRepository _homePharmacyRepository;
         private readonly IOrganizationService _organizationService;
+        private readonly IDoctorsService _doctorsService;
+        private readonly IWorkAddressService _workAddressService;
+        private readonly IHomeVisitService _homeVisitService;
 
         public DeathCertificateService(IDeathCertificateRepository deathCertificate, IRequestService requestService,
                                 IUserService userService, IPatientService patientService, ILocationService locationservice, IWalletRepository walletRepository
-                                    , IPopulationCoveredRepository populationCovered, IHomePharmacyRepository homePharmacyRepository, IOrganizationService organizationService)
+                                    , IPopulationCoveredRepository populationCovered, IHomePharmacyRepository homePharmacyRepository, IOrganizationService organizationService, IDoctorsService doctorsService, IWorkAddressService workAddressService
+                                        , IHomeVisitService homeVisitService)
         {
             _deathCertificate = deathCertificate;
             _requestService = requestService;
@@ -52,6 +60,9 @@ namespace DoctorFAM.Application.Services.Implementation
             _populationCovered = populationCovered;
             _homePharmacyRepository = homePharmacyRepository;
             _organizationService = organizationService;
+            _doctorsService = doctorsService;
+            _workAddressService = workAddressService;
+            _homeVisitService = homeVisitService;
         }
 
         #endregion
@@ -281,65 +292,29 @@ namespace DoctorFAM.Application.Services.Implementation
 
         public async Task<Domain.ViewModels.Admin.HealthHouse.DeathCertificate.DeathCertificateRequestDetailViewModel> ShowDeathCertificateDetail(ulong requestId)
         {
-            #region Get request By Id
+            #region Get Request By Request Id
 
-            var request = await GetRquestForDeathCertificateById(requestId);
+            var request = await _requestService.GetRequestById(requestId);
 
             if (request == null) return null;
+            if (request.RequestType != Domain.Enums.RequestType.RequestType.DeathCertificate) return null;
+            if (!request.PatientId.HasValue) return null;
 
             #endregion
 
-            #region Get Patient By Id 
-
-            var patient = await GetPatientByRequestId(requestId);
-
-            #endregion
-
-            #region Get Patient Request Detail 
-
-            var requestDetail = await GetRequestPatientDetailByRequestId(requestId);
-
-            #endregion
-
-            #region Fill View Model
+            #region Fill Model 
 
             Domain.ViewModels.Admin.HealthHouse.DeathCertificate.DeathCertificateRequestDetailViewModel model = new Domain.ViewModels.Admin.HealthHouse.DeathCertificate.DeathCertificateRequestDetailViewModel()
             {
-                Email = request.User.Email,
-                Username = request.User.Username,
-                Mobile = request.User.Mobile,
-                RequestState = request.RequestState,
-                PatientName = patient?.PatientName,
-                PatientLastName = patient?.PatientLastName,
-                NationalId = patient?.NationalId,
-                Gender = patient?.Gender,
-                Age = patient?.Age,
-                InsuranceType = patient?.InsuranceType,
-                RequestDescription = patient?.RequestDescription,
-                Vilage = requestDetail?.Vilage,
-                FullAddress = requestDetail?.FullAddress,
-                Phone = requestDetail?.Phone,
-                RequestDetailMobile = requestDetail?.Mobile,
-                Distance = requestDetail?.Distance
+                Patient = await _patientService.GetPatientById(request.PatientId.Value),
+                User = await _userService.GetUserById(request.UserId),
+                PatientRequestDetail = await _homeVisitService.GetRequestPatientDetailByRequestId(request.Id),
+                Request = request,
             };
 
-            #endregion
-
-            #region Get Location
-
-            if (requestDetail != null)
+            if (request.OperationId.HasValue)
             {
-                var country = await _locationService.GetLocationById(requestDetail.CountryId);
-
-                var state = await _locationService.GetLocationById(requestDetail.StateId);
-
-                var city = await _locationService.GetLocationById(requestDetail.CityId);
-
-                model.Country = country.UniqueName;
-
-                model.State = state.UniqueName;
-
-                model.City = city.UniqueName;
+                model.Doctor = await _userService.GetUserById(request.OperationId.Value);
             }
 
             #endregion
@@ -354,16 +329,32 @@ namespace DoctorFAM.Application.Services.Implementation
         }
 
         //Show Death Certificate Request Detail Doctor Panel Side View Model 
-        public async Task<DoctorFAM.Domain.ViewModels.DoctorPanel.DeathCertificate.DeathCertificateRequestDetailViewModel?> FillDeathCertificateRequestDetailDoctorPanelViewModel(ulong requestId)
+        public async Task<DoctorFAM.Domain.ViewModels.DoctorPanel.DeathCertificate.DeathCertificateRequestDetailViewModel?> FillDeathCertificateRequestDetailDoctorPanelViewModel(ulong requestId, ulong userId)
         {
+            #region Get Doctor Organization
+
+            var organization = await _organizationService.GetDoctorOrganizationByUserId(userId);
+            if (organization == null) return null;
+            if (organization.OrganizationInfoState != OrganizationInfoState.Accepted) return null;
+
+            #endregion
+
             #region Get Request By Request Id
 
             var request = await _requestService.GetRequestById(requestId);
 
             if (request == null) return null;
-            if (request.RequestType != Domain.Enums.RequestType.RequestType.DeathCertificate) return null;
+            if (request.RequestType != RequestType.DeathCertificate) return null;
             if (!request.PatientId.HasValue) return null;
-            if (request.RequestState != RequestState.Paid) return null;
+            if (request.RequestState == RequestState.Finalized)
+            {
+                if(request.OperationId.Value != organization.OwnerId) return null;
+            }
+            else
+            {
+                if (request.OperationId.HasValue) return null;
+                if (request.RequestState != RequestState.Paid) return null;
+            }
 
             #endregion
 
@@ -415,6 +406,64 @@ namespace DoctorFAM.Application.Services.Implementation
             #endregion
 
             return true;
+        }
+
+        #endregion
+
+        #region User Panel Side 
+
+        //Filter User Death Certificate Requests
+        public async Task<Domain.ViewModels.UserPanel.HealthHouse.DeathCertificate.FilterUserDeathCertificateRequestViewModel> FilterUserDeathCertificateRequestViewModel(Domain.ViewModels.UserPanel.HealthHouse.DeathCertificate.FilterUserDeathCertificateRequestViewModel filter)
+        {
+            return await _deathCertificate.FilterUserDeathCertificateRequestViewModel(filter);
+        }
+
+        //Fill Doctor Information Detail View Model
+        public async Task<ShowDeathCertificateDetaiFromUserPanellViewModel?> FillShowDeathCertificateDetaiFromUserPanellViewModel(ulong requestId, ulong userId)
+        {
+            #region Get Request By Id 
+
+            var request = await _requestService.GetRequestById(requestId);
+            if (request == null) return null;
+            if (request.UserId != userId) return null;
+            if (request.OperationId.HasValue == false) return null;
+            if (request.RequestState != Domain.Enums.Request.RequestState.Finalized) return null;
+
+            #endregion
+
+            #region Get Doctor By User Id
+
+            var doctor = await _doctorsService.GetDoctorByUserId(request.OperationId.Value);
+            if (doctor == null) return null;
+
+            #endregion
+
+            #region Get Doctor Work Address 
+
+            var workAddress = await _workAddressService.GetLastWorkAddressByUserId(doctor.UserId);
+
+            #endregion
+
+            #region Get Doctor Personal Information 
+
+            var doctorInfo = await _doctorsService.GetDoctorsInformationByUserId(doctor.UserId);
+            if (doctorInfo == null) return null;
+
+            #endregion
+
+            #region Fill View Model 
+
+            ShowDeathCertificateDetaiFromUserPanellViewModel model = new ShowDeathCertificateDetaiFromUserPanellViewModel()
+            {
+                DoctorsInfo = doctorInfo,
+                User = doctor.User,
+                WorkAddress = workAddress,
+                WorkLocation = doctor.User.WorkAddress
+            };
+
+            #endregion
+
+            return model;
         }
 
         #endregion
