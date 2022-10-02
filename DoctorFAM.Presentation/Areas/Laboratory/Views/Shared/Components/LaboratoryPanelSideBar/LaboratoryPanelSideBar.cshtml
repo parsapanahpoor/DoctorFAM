@@ -1,4 +1,4 @@
-﻿@model DoctorFAM.Domain.ViewModels.Consultant.ConsultantSideBar.ConsultantSideBarViewModel
+﻿@model DoctorFAM.Domain.ViewModels.Laboratory.LaboratorySideBar.LaboratorySideBarViewModel
 
 <!-- Page Sidebar -->
 <div class="page-sidebar" id="sidebar">
@@ -14,38 +14,14 @@
         <!--Dashboard-->
 
         <li>
-            <a asp-area="Consultant" asp-controller="Home" asp-action="Index">
+            <a asp-area="Laboratory" asp-controller="Home" asp-action="Index">
                 <i class="menu-icon glyphicon glyphicon-home"></i>
                 <span class="menu-text"> @SharedLocalizer["Dashboard"] </span>
             </a>
         </li>
 
-        @if (Model.ConsultantInfoState == "Accepted")
+        @if (Model.LaboratoryInfoState == "Accepted")
         {
-            <li>
-                <a href="#" class="menu-dropdown">
-                    <i class="menu-icon glyphicon glyphicon-thumbs-up"></i>
-                    <span class="menu-text">@SharedLocalizer["List of covered people"]</span>
-                    <i class="menu-expand"></i>
-                </a>
-
-                <ul class="submenu">
-
-                    <li>
-                        <a asp-area="Consultant" asp-controller="Consultant" asp-action="FilterPopulationCovered">
-                            <span class="menu-text">@SharedLocalizer["List of covered people"]</span>
-                        </a>
-                    </li>
-
-                    <li>
-                        <a asp-area="Consultant" asp-controller="Consultant" asp-action="FilterYourPopulationCovered">
-                            <span class="menu-text">@SharedLocalizer["List of Your covered people"]</span>
-                        </a>
-                    </li>
-
-                </ul>
-            </li>
-
             <li>
                 <a href="#" class="menu-dropdown">
                     <i class="menu-icon fa fa-user"></i>
@@ -56,26 +32,49 @@
                 <ul class="submenu">
 
                     <li>
-                        <a asp-area="Consultant" asp-controller="Account" asp-action="EditProfile">
+                        <a asp-area="Laboratory" asp-controller="Account" asp-action="EditProfile">
                             <span class="menu-text">@SharedLocalizer["Edit Profile"]</span>
                         </a>
                     </li>
 
                     <li>
-                        <a asp-area="Consultant" asp-controller="Account" asp-action="ChangePassword">
+                        <a asp-area="Laboratory" asp-controller="Account" asp-action="ChangePassword">
                             <span class="menu-text">@SharedLocalizer["Change Password"]</span>
                         </a>
                     </li>
                 </ul>
             </li>
 
-            @await Component.InvokeAsync("ConsultantInfosBadge")
+            @await Component.InvokeAsync("LaboratoryInfosBadge")
         }
 
-        @if (Model.ConsultantInfoState != "Accepted")
+        @if (Model.LaboratoryInfoState != "Accepted")
         {
-            @await Component.InvokeAsync("ConsultantInfosBadge")
+            @await Component.InvokeAsync("LaboratoryInfosBadge")
         }
+
+        <li>
+            <a href="#" class="menu-dropdown">
+                <i class="menu-icon fa fa-users"></i>
+                <span class="menu-text"> @SharedLocalizer["Manage Employees"] </span>
+                <i class="menu-expand"></i>
+            </a>
+
+            <ul class="submenu">
+
+                <li>
+                    <a asp-area="Laboratory" asp-controller="Account" asp-action="FilterEmployees">
+                        <span class="menu-text">@SharedLocalizer["List Of Employees"]</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a asp-area="Laboratory" asp-controller="Account" asp-action="AddNewUser">
+                        <span class="menu-text">@SharedLocalizer["Add New Employee"]</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
 
          <li>
             <a href="#" class="menu-dropdown">
@@ -87,12 +86,12 @@
 
             <ul class="submenu">
                 <li>
-                    <a asp-area="Consultant" asp-controller="Ticket" asp-action="FilterTickets">
+                    <a asp-area="Laboratory" asp-controller="Ticket" asp-action="FilterTickets">
                         <span class="menu-text">@SharedLocalizer["List Of Tickets"]</span>
                     </a>
                 </li>
                 <li>
-                    <a asp-area="Consultant" asp-controller="Ticket" asp-action="CreateTicket">
+                    <a asp-area="Laboratory" asp-controller="Ticket" asp-action="CreateTicket">
                         <span class="menu-text">@SharedLocalizer["Create Ticket"]</span>
                     </a>
                 </li>

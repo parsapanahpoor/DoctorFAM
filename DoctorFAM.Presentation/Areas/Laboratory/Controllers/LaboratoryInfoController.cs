@@ -3,10 +3,10 @@ using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Interfaces;
 using DoctorFAM.Application.Services.Implementation;
 using DoctorFAM.Application.Services.Interfaces;
-using DoctorFAM.Domain.ViewModels.Consultant.ConsultantInfo;
+using DoctorFAM.Domain.ViewModels.Laboratory.LaboratoryInfo;
 using DoctorFAM.Domain.ViewModels.Nurse.NurseInfo;
 using DoctorFAM.Domain.ViewModels.Site.Notification;
-using DoctorFAM.Web.Consultant.Controllers;
+using DoctorFAM.Web.Laboratory.Controllers;
 using DoctorFAM.Web.Hubs;
 using DoctorFAM.Web.Laboratory.Controllers;
 using Microsoft.AspNetCore.Mvc;
@@ -22,20 +22,20 @@ namespace DoctorFAM.Web.Areas.Laboratory.Controllers
         public IStringLocalizer<SharedLocalizer.SharedLocalizer> _sharedLocalizer;
         private readonly IOrganizationService _organization;
         private readonly ILocationService _locationService;
-        private readonly IConsultantService _consultantService;
+        private readonly ILaboratoryService _LaboratoryService;
         private readonly IHubContext<NotificationHub> _notificationHub;
         private readonly INotificationService _notificationService;
         private readonly IUserService _userService;
 
         public LaboratoryInfoController(IStringLocalizer<SharedLocalizer.SharedLocalizer> sharedLocalizer
                                     , IOrganizationService organization, ILocationService locationService
-                                        , IConsultantService consultantService, IHubContext<NotificationHub> notificationHub, INotificationService notificationService
+                                        , ILaboratoryService LaboratoryService, IHubContext<NotificationHub> notificationHub, INotificationService notificationService
                                             , IUserService userService)
         {
             _sharedLocalizer = sharedLocalizer;
             _organization = organization;
             _locationService = locationService;
-            _consultantService = consultantService;
+            _LaboratoryService = LaboratoryService;
             _notificationHub = notificationHub;
             _notificationService = notificationService;
             _userService = userService;
@@ -43,26 +43,26 @@ namespace DoctorFAM.Web.Areas.Laboratory.Controllers
 
         #endregion
 
-        #region Page Of Manage Consultant Info
+        #region Page Of Manage Laboratory Info
 
-        public async Task<IActionResult> PageOfManageConsultantInfo()
+        public async Task<IActionResult> PageOfManageLaboratoryInfo()
         {
-            //Get Consultant Organization By Current User Id 
-            ViewBag.ConsultantOffice = await _organization.GetConsultantOrganizationByUserId(User.GetUserId());
+            //Get Laboratory Organization By Current User Id 
+            ViewBag.LaboratoryOffice = await _organization.GetLaboratoryOrganizationByUserId(User.GetUserId());
 
-            return View(await _consultantService.GetConsultantByUserId(User.GetUserId()));
+            return View(await _LaboratoryService.GetLaboratoryByUserId(User.GetUserId()));
         }
 
         #endregion
 
-        #region Manage Consultant Personal Info
+        #region Manage Laboratory Personal Info
 
         [HttpGet]
-        public async Task<IActionResult> ManageConsultantInfo()
+        public async Task<IActionResult> ManageLaboratoryInfo()
         {
             #region Fill Model 
 
-            var model = await _consultantService.FillManageConsultantInfoViewModel(User.GetUserId());
+            var model = await _LaboratoryService.FillManageLaboratoryInfoViewModel(User.GetUserId());
             if (model == null) return NotFound();
 
             //Send View Bag For List Of Countries And Cities And States
@@ -79,11 +79,11 @@ namespace DoctorFAM.Web.Areas.Laboratory.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> ManageConsultantInfo(ManageConsultantInfoViewModel model)
+        public async Task<IActionResult> ManageLaboratoryInfo(ManageLaboratoryInfoViewModel model)
         {
             #region Fill Model 
 
-            var returnModel = await _consultantService.FillManageConsultantInfoViewModel(User.GetUserId());
+            var returnModel = await _LaboratoryService.FillManageLaboratoryInfoViewModel(User.GetUserId());
 
             ViewData["Countries"] = await _locationService.GetAllCountries();
 
@@ -130,22 +130,22 @@ namespace DoctorFAM.Web.Areas.Laboratory.Controllers
 
             #endregion
 
-            #region Add Or Edit Consultant Information
+            #region Add Or Edit Laboratory Information
 
-            var result = await _consultantService.AddOrEditConsultantInfoNursePanel(model);
+            var result = await _LaboratoryService.AddOrEditLaboratoryInfoNursePanel(model);
 
             switch (result)
             {
-                case AddOrEditConsultantInfoResult.Faild:
+                case AddOrEditLaboratoryInfoResult.Faild:
                     TempData[ErrorMessage] = _sharedLocalizer["The operation has failed"].Value;
-                    return RedirectToAction("ManageConsultantInfo", "ConsultantInfo", new { area = "Consultant" });
+                    return RedirectToAction("ManageLaboratoryInfo", "LaboratoryInfo", new { area = "Laboratory" });
 
-                case AddOrEditConsultantInfoResult.Success:
+                case AddOrEditLaboratoryInfoResult.Success:
 
                     #region Send Notification In SignalR
 
                     //Create Notification For Admins
-                    var notifyResult = await _notificationService.CreateNotificationForAdminAboutInsertInformationFromConsultant(User.GetUserId(), Domain.Enums.Notification.SupporterNotificationText.ConsultantInformationInsert, Domain.Enums.Notification.NotificationTarget.ConsultantInfoInsert, User.GetUserId());
+                    var notifyResult = await _notificationService.CreateNotificationForAdminAboutInsertInformationFromLaboratory(User.GetUserId(), Domain.Enums.Notification.SupporterNotificationText.LaboratoryInformationInsert, Domain.Enums.Notification.NotificationTarget.LaboratoryInfoInsert, User.GetUserId());
 
                     //Get Current User
                     var currentUser = await _userService.GetUserById(User.GetUserId());
@@ -159,7 +159,7 @@ namespace DoctorFAM.Web.Areas.Laboratory.Controllers
                         SendSupporterNotificationViewModel viewModel = new SendSupporterNotificationViewModel()
                         {
                             CreateNotificationDate = $"{DateTime.Now.ToShamsi()} - {DateTime.Now.Hour}:{DateTime.Now.Minute}",
-                            NotificationText = "ارسال اطلاعات توسط مشاور روان",
+                            NotificationText = "ارسال اطلاعات توسط داروخانه",
                             RequestId = User.GetUserId(),
                             Username = User.Identity.Name,
                             UserImage = currentUser.Avatar
@@ -172,7 +172,7 @@ namespace DoctorFAM.Web.Areas.Laboratory.Controllers
 
 
                     TempData[SuccessMessage] = _sharedLocalizer["Operation Successfully"].Value;
-                    return RedirectToAction("Index", "Home", new { area = "Consultant" });
+                    return RedirectToAction("Index", "Home", new { area = "Laboratory" });
             }
 
             #endregion

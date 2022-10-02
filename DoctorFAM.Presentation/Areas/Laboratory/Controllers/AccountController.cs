@@ -1,6 +1,7 @@
 ﻿using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Employees;
+using DoctorFAM.Domain.ViewModels.Laboratory.Employee;
 using DoctorFAM.Domain.ViewModels.UserPanel.Account;
 using DoctorFAM.Web.Consultant.Controllers;
 using DoctorFAM.Web.HttpManager;
@@ -20,19 +21,23 @@ namespace DoctorFAM.Web.Areas.Laboratory.Controllers
         private readonly IStringLocalizer<AccountController> _localizer;
         private readonly IStringLocalizer<SharedLocalizer.SharedLocalizer> _sharedLocalizer;
         private readonly IOrganizationService _organizationService;
+        private readonly ILaboratoryService _laboratoryService;
 
         public AccountController(IUserService userService, IStringLocalizer<AccountController> localizer
                                 , IStringLocalizer<SharedLocalizer.SharedLocalizer> sharedLocalizer , IDoctorsService doctorService ,
-                                    IOrganizationService organizationService)
+                                    IOrganizationService organizationService , ILaboratoryService laboratoryService)
         {
             _userService = userService;
             _localizer = localizer;
             _sharedLocalizer = sharedLocalizer;
             _doctorService = doctorService;
             _organizationService = organizationService;
+            _laboratoryService = laboratoryService;
         }
 
         #endregion
+
+        #region Account And Profile Manager
 
         #region Edit User
 
@@ -150,5 +155,64 @@ namespace DoctorFAM.Web.Areas.Laboratory.Controllers
 
         #endregion
 
+        #endregion
+
+        #region Manage Employees
+
+        #region List Of Current Laboratory Office Employeesadd
+
+        public async Task<IActionResult> FilterEmployees(FilterLaboratoryOfficeEmployeesViewmodel filter)
+        {
+            filter.userId = User.GetUserId();
+            return View(await _laboratoryService.FilterLaboratoryOfficeEmployees(filter));
+        }
+
+        #endregion
+
+        #region create new user
+
+        public async Task<IActionResult> AddNewUser()
+        {
+            return View();
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddNewUser(AddLaboratoryEmployeeViewModel user, IFormFile? UserAvatar)
+        {
+            AddNewUserResult result = await _userService.CreateUserFromLaboratoryPanel(user, UserAvatar, User.GetUserId());
+
+            switch (result)
+            {
+                case AddNewUserResult.DuplicateMobileNumber:
+                    TempData[ErrorMessage] = _sharedLocalizer["Mobile Number is Duplicated"].Value;
+                    break;
+
+                case AddNewUserResult.Success:
+                    TempData[SuccessMessage] = _sharedLocalizer["Operation Successfully"].Value;
+                    return RedirectToAction("FilterEmployees");
+            }
+
+            return View(user);
+        }
+
+        #endregion
+
+        #region Delete Employee From Your Organization 
+
+        public async Task<IActionResult> DeleteEmployeeFromYourOrganization(ulong id)
+        {
+            var result = await _organizationService.DeleteEmployeeFromLaboratoryOfficeOrganization(id, User.GetUserId());
+
+            if (result)
+            {
+                return ApiResponse.SetResponse(ApiResponseStatus.Success, null, _sharedLocalizer["Operation Successfully"].Value);
+            }
+
+            return ApiResponse.SetResponse(ApiResponseStatus.Danger, null, _sharedLocalizer["The operation has failed"].Value);
+        }
+
+        #endregion
+
+        #endregion
     }
 }

@@ -630,4 +630,13 @@
   <data name="List Of GFR History" xml:space="preserve">
     <value>تاریخچه ی GFR های کاربر</value>
   </data>
+  <data name="Laboratory Info" xml:space="preserve">
+    <value>اطلاعات آزمایشگاه</value>
+  </data>
+  <data name="Manage Laboratory" xml:space="preserve">
+    <value>مدیریت آزمایشگاه ها</value>
+  </data>
+  <data name="Manage Laboratory Info" xml:space="preserve">
+    <value>مدیریت اطلاعات </value>
+  </data>
 </root>

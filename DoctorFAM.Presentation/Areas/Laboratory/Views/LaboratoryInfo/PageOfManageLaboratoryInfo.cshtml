@@ -1,4 +1,4 @@
-﻿@model DoctorFAM.Domain.Entities.Consultant.Consultant
+﻿@model DoctorFAM.Domain.Entities.Laboratory.Laboratory
 @using DoctorFAM.Domain.Enums
 @using DoctorFAM.Application.StaticTools
 @using DoctorFAM.Domain.ViewModels.Common
@@ -8,9 +8,9 @@
 @using Microsoft.AspNetCore.Mvc.Localization
 
 @{
-    ViewData["Title"] = @Localizer["Manage Consultant Informations"];
+    ViewData["Title"] = @Localizer["Manage Laboratory Informations"];
 
-    var ConsultantOffice = ViewBag.ConsultantOffice as DoctorFAM.Domain.Entities.Organization.Organization;
+    var LaboratoryOffice = ViewBag.LaboratoryOffice as DoctorFAM.Domain.Entities.Organization.Organization;
 }
 
 @section Scripts
@@ -21,7 +21,7 @@
     @section Breadcrumb
     {
     <li>
-        <a asp-action="Index" asp-controller="Home" asp-area="Consultant"> @Localizer["Consultant Panel"] </a>
+        <a asp-action="Index" asp-controller="Home" asp-area="Laboratory"> @Localizer["Laboratory Panel"] </a>
     </li>
     <li>
         <a href="javascript:void(0)"> @ViewData["Title"] </a>
@@ -29,7 +29,7 @@
 }
     <div class="row">
 
-    @if (!string.IsNullOrEmpty(ConsultantOffice.RejectDescription) && ConsultantOffice.OrganizationInfoState == DoctorFAM.Domain.Entities.Doctors.OrganizationInfoState.Rejected)
+    @if (!string.IsNullOrEmpty(LaboratoryOffice.RejectDescription) && LaboratoryOffice.OrganizationInfoState == DoctorFAM.Domain.Entities.Doctors.OrganizationInfoState.Rejected)
     {
         <div class="col-lg-12 col-sm-12 col-xs-12">
             <div class="widget">
@@ -51,7 +51,7 @@
                     </div><!--Widget Buttons-->
                 </div><!--Widget Header-->
                 <div class="widget-body bg-red">
-                    <p> @ConsultantOffice.RejectDescription </p>
+                    <p> @LaboratoryOffice.RejectDescription </p>
                 </div><!--Widget Body-->
             </div><!--Widget-->
         </div>
@@ -90,7 +90,7 @@
                             <span class="databox-number green">@Localizer["personal information"] </span>
                             <div class="databox-text darkgray">@Localizer["including national ID and ID of the medical and..."] </div>
                             <div class="databox-stat bg-green radius-bordered">
-                                <a style="color:white;" asp-action="ManageConsultantInfo" asp-area="Consultant" asp-controller="ConsultantInfo" class="stat-text">@Localizer["Edit"]</a>
+                                <a style="color:white;" asp-action="ManageLaboratoryInfo" asp-area="Laboratory" asp-controller="LaboratoryInfo" class="stat-text">@Localizer["Edit"]</a>
                             </div>
                         </div>
                     </div>
@@ -112,7 +112,7 @@
                             <span class="databox-number green">@Localizer["personal information"] </span>
                             <div class="databox-text darkgray">@Localizer["including national ID and ID of the medical and..."] </div>
                             <div class="databox-stat bg-green radius-bordered">
-                                <a style="color:white;" asp-action="ManageConsultantInfo" asp-area="Consultant" asp-controller="ConsultantInfo" class="stat-text">@Localizer["Edit"]</a>
+                                <a style="color:white;" asp-action="ManageLaboratoryInfo" asp-area="Laboratory" asp-controller="LaboratoryInfo" class="stat-text">@Localizer["Edit"]</a>
                             </div>
                         </div>
                     </div>

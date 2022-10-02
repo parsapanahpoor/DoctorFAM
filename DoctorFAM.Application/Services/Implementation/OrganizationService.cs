@@ -57,6 +57,12 @@ namespace DoctorFAM.Application.Services.Implementation
             return await _organization.GetConsultantOrganizationByUserId(userId);
         }
 
+        //Get Laboratory Organization by User Id
+        public async Task<Organization?> GetLaboratoryOrganizationByUserId(ulong userId)
+        {
+            return await _organization.GetLaboratoryOrganizationByUserId(userId);
+        }
+
         public async Task<Organization?> GetPharmacyOrganizationByUserId(ulong userId)
         {
             return await _organization.GetPharmacyOrganizationByUserId(userId);
@@ -82,6 +88,29 @@ namespace DoctorFAM.Application.Services.Implementation
             #region Delete Employee From Organization 
 
             var res = await _organization.DeleteEmployeeFromOrganization(employeeId , organization.Id);
+            if (res == false) return false;
+
+            #endregion
+
+            return true;
+        }
+
+        //Delete Employee From Laboratory Office Organization
+        public async Task<bool> DeleteEmployeeFromLaboratoryOfficeOrganization(ulong employeeId, ulong userId)
+        {
+            #region Get Organization
+
+            var organization = await GetLaboratoryOrganizationByUserId(userId);
+            if (organization == null) return false;
+
+            //Owner Can Not Be Deleted
+            if (organization.OwnerId == employeeId) return false;
+
+            #endregion
+
+            #region Delete Employee From Organization 
+
+            var res = await _organization.DeleteEmployeeFromOrganization(employeeId, organization.Id);
             if (res == false) return false;
 
             #endregion

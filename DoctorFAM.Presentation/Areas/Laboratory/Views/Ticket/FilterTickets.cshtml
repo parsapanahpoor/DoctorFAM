@@ -28,7 +28,7 @@
                 </div>
                 <div class="widget-body">
                     <div>
-                        <form asp-action="FilterTickets" asp-controller="Ticket" asp-area="Consultant" id="filter-search" method="get">
+                        <form asp-action="FilterTickets" asp-controller="Ticket" asp-area="Laboratory" id="filter-search" method="get">
 
                             <input type="hidden" asp-for="Page" />
 
@@ -57,7 +57,7 @@
 
                                 @if (Context.Request.QueryString.HasValue)
                                 {
-                                    <a asp-action="FilterTickets" asp-controller="Ticket" asp-area="Consultant" class="btn btn-labeled w-100 btn-darkorange">
+                                    <a asp-action="FilterTickets" asp-controller="Ticket" asp-area="Laboratory" class="btn btn-labeled w-100 btn-darkorange">
                                         <i class="btn-label glyphicon glyphicon-remove"></i>@Localizer["Delete Filter"]
                                     </a>
                                 }
@@ -116,7 +116,7 @@
                                     <p> @ticket.CreateDate.ToShamsi() </p>
                                 </td>
                                 <td class="tc vm">
-                                    <a asp-action="TicketDetail" asp-controller="Ticket" asp-area="Consultant" asp-route-id="@ticket.Id" class="btn btn-primary btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+                                    <a asp-action="TicketDetail" asp-controller="Ticket" asp-area="Laboratory" asp-route-id="@ticket.Id" class="btn btn-primary btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
                                 </td>
                             </tr>
                         }
@@ -125,13 +125,13 @@
 
                 <div class="footer tc">
 
-                    <partial name="_ConsultantPanelPaging" model="@Model.GetCurrentPaging()" />
+                    <partial name="_LaboratoryPanelPaging" model="@Model.GetCurrentPaging()" />
 
                 </div>
             }
             else
             {
-                <partial name="_ConsultantPanelNotFoundPartial" />
+                <partial name="_LaboratoryPanelNotFoundPartial" />
             }
         </div>
     </div>

@@ -48,6 +48,9 @@ namespace DoctorFAM.Domain.Interfaces
         //Check Is Exist Any Laboratory By This User Id
         Task<bool> IsExistAnyLaboratoryByUserId(ulong userId);
 
+        //Get Laboratory Organization by User Id
+        Task<Organization?> GetLaboratoryOrganizationByUserId(ulong userId);
+
         #endregion
     }
 }

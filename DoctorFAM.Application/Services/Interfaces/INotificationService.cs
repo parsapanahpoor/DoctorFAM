@@ -58,6 +58,9 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Seen All Of Un Seen Notification For Current Notifications
         Task<bool> SeenAllOfUnSeenCurrentUserNotification(ulong userId);
 
+        //Create Notification For Admin About Insert Information From Laboratory
+        Task<bool> CreateNotificationForAdminAboutInsertInformationFromLaboratory(ulong targetId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId);
+
         #endregion
 
         #region User Panel Side 

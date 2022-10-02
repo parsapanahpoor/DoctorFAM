@@ -131,6 +131,10 @@
                                 {
                                     <div>تایید درخواست گواهی فوت از طرف پزشک</div>
                                 }
+                                @if (item.SupporterNotificationText == DoctorFAM.Domain.Enums.Notification.SupporterNotificationText.LaboratoryInformationInsert)
+                                {
+                                    <div>ارسال اطلاعات توسط داروخانه</div>
+                                }
                             </div>
                         </div>
                     </li>

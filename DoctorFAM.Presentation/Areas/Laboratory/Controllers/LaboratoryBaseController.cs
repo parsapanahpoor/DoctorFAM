@@ -1,4 +1,4 @@
-﻿using DoctorFAM.Web.Areas.Consultant.ActionFilterAttributes;
+﻿using DoctorFAM.Web.Areas.Laboratory.ActionFilterAttributes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

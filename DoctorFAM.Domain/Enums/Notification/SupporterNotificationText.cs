@@ -55,5 +55,7 @@ namespace DoctorFAM.Domain.Enums.Notification
         NewArrivalDeathCertificateRequest,
         [Display(Name = "AcceptDeathCertificateRequestFromDoctor")]
         AcceptDeathCertificateRequestFromDoctor,
+        [Display(Name = "Laboratory Information Insert")]
+        LaboratoryInformationInsert,
     }
 }

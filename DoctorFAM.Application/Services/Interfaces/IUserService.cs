@@ -3,6 +3,7 @@ using DoctorFAM.Domain.ViewModels.Account;
 using DoctorFAM.Domain.ViewModels.Admin;
 using DoctorFAM.Domain.ViewModels.Admin.Account;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Employees;
+using DoctorFAM.Domain.ViewModels.Laboratory.Employee;
 using DoctorFAM.Domain.ViewModels.Site.Account;
 using DoctorFAM.Domain.ViewModels.UserPanel.Account;
 using Microsoft.AspNetCore.Http;
@@ -123,6 +124,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Get List Of Admins About Send Notification For Arrival New Consultant Inormations
         Task<List<string>?> GetListOfAdminsAboutSendNotificationForArrivalNewConsultantInormations();
+
+        //Create User From Laboratory Panel
+        Task<AddNewUserResult> CreateUserFromLaboratoryPanel(AddLaboratoryEmployeeViewModel user, IFormFile? avatar, ulong MasterId);
 
         #endregion
 

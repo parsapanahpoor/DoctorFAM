@@ -1,7 +1,7 @@
 ﻿using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.ViewModels.UserPanel.Ticket;
-using DoctorFAM.Web.Consultant.Controllers;
+using DoctorFAM.Web.Laboratory.Controllers;
 using DoctorFAM.Web.Laboratory.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
@@ -73,12 +73,12 @@ namespace DoctorFAM.Web.Areas.Laboratory.Controllers
 
             #region Add Ticket Method 
 
-            var result = await _ticketService.CreateTicket(create, organization.OwnerId, Domain.Enums.Ticket.TicketSenderType.FromConsultant);
+            var result = await _ticketService.CreateTicket(create, organization.OwnerId, Domain.Enums.Ticket.TicketSenderType.FromLaboratory);
 
             if (result != 0)
             {
                 TempData[SuccessMessage] = _localizer["mission accomplished"].Value;
-                return RedirectToAction("TicketDetail", "Ticket", new { area = "Consultant", id = result });
+                return RedirectToAction("TicketDetail", "Ticket", new { area = "Laboratory", id = result });
             }
 
             #endregion
@@ -136,7 +136,7 @@ namespace DoctorFAM.Web.Areas.Laboratory.Controllers
                 if (result)
                 {
                     TempData[SuccessMessage] = _localizer["mission accomplished"].Value;
-                    return RedirectToAction("TicketDetail", "Ticket", new { area = "Cosnultant", id = answer.TicketId });
+                    return RedirectToAction("TicketDetail", "Ticket", new { area = "Laboratory", id = answer.TicketId });
                 }
             }
 
