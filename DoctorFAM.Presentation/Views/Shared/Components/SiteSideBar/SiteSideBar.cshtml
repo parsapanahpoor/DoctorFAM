@@ -4,7 +4,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12 d-flex align-items-center justify-content-between">
-                    <a class="navbar-brand logo" href="/Home/Secpage">
+                    <a class="navbar-brand logo" href="/Home">
                         <img id="logo-img" class="img-center" src="~/Content/images/Logo/doctorfamTes.png" alt="">
                     </a>
                 </div>
@@ -83,7 +83,7 @@
                                 </li>
                                 <li class="nav-item " data-toggle="hover">
 
-                                    <a class="nav-link " href="/Home/SecPage/#News"> اخبار </a>
+                                    <a class="nav-link " href="/Home/Index/#News"> اخبار </a>
                                 </li>
                                 <li class="nav-item dropdown" data-toggle="hover">
                                     <a class="nav-link  dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">معرفی مراکز</a>
@@ -114,7 +114,7 @@
                         </div>
 
                         <div class="right-nav align-items-center d-flex justify-content-end">
-                            <div class="text-center text-align-justify ml-1 ml-sm-1 mr-1 mr-sm-1">
+                           @* <div class="text-center text-align-justify ml-1 ml-sm-1 mr-1 mr-sm-1">
                                 <div class="cart">
                                     <a href="#" id="header-cart-btn"><span class="cart-badge">0</span> <i class="flaticon-shopping-cart" title="سبد خرید"></i></a>
                                     <!-- Cart List Area Start -->
@@ -152,7 +152,7 @@
                                         </li>
                                     </ul>
                                 </div>
-                            </div>
+                            </div>*@
 
                             <div class="search-icon ml-1 ml-sm-1 mr-1 mr-sm-1">
                                 <a id="search" href="javascript:void(0)"><i class="flaticon-search" title="جستجو"></i></a>
@@ -160,9 +160,9 @@
 
                             <div class=" mr-1 mr-sm-1 text-center align-items-center">
                                 <div class="row">
-                                    <div class="col-4">
+                                    <div class="col-4 ml-1">
                                         <div class="d-flex align-items-center">
-                                            <div class="language-selection ml-2">
+                                            <div class="language-selection ">
                                                 <div class="dropdown btn-Accept">
                                                     <button class=" dropdown-toggle" id="dropdownlanguage" data-toggle="dropdown"> فارسی </button>
                                                     <div class="dropdown-menu" aria-labelledby="dropdownlanguage">
@@ -177,7 +177,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-5">
+                                    <div class="col-4 mr-2">
 
                                         @if (User.Identity.IsAuthenticated)
                                         {
@@ -187,11 +187,14 @@
                                                 <div class="d-flex align-items-center">
                                                     <div class="language-selection ">
                                                         <div class="dropdown btn-Accept">
-                                                            <button class=" dropdown-toggle " id="dropdownlanguage" data-toggle="dropdown"> @User.Identity.Name </button>
+                                                            <button class=" dropdown-toggle " id="dropdownlanguage" data-toggle="dropdown"> <img class="DefaultAvatar" src="~/Content/images/user/thumb/DefaultAvatar.png"> </button>
                                                             <div class="dropdown-menu" aria-labelledby="dropdownlanguage">
 
+                                                                <a class="dropdown-item "> @User.Identity.Name خوش آمدید </a>
                                                                 <a asp-action="Index" asp-area="Admin" asp-controller="Home" class="dropdown-item "> پنل ادمین </a>
                                                                 <a asp-action="Index" asp-area="Doctor" asp-controller="Home" class="dropdown-item ">  پنل پزشک</a>
+                                                                  <a asp-action="Index" asp-area="Nurse" asp-controller="Home" class="dropdown-item "> پنل پرستار</a>
+                                                                  <a asp-action="Index" asp-area="Consultant" asp-controller="Home" class="dropdown-item "> پنل مشاور</a>
                                                                 <a asp-action="Index" asp-area="Pharmacy" asp-controller="Home" class="dropdown-item ">  پنل داروخانه</a>
                                                                 <a asp-action="Index" asp-area="Supporter" asp-controller="Home" class="dropdown-item "> پنل پشتیبان</a>
                                                                 <a asp-action="Index" asp-area="Market" asp-controller="Home" class="dropdown-item "> پنل فروشنده  </a>
@@ -209,8 +212,10 @@
                                                 <div class="d-flex align-items-center">
                                                     <div class="language-selection ">
                                                         <div class="dropdown btn-Accept">
-                                                            <button class=" dropdown-toggle " id="dropdownlanguage" data-toggle="dropdown"> @User.Identity.Name </button>
+                                                            <button class=" dropdown-toggle " id="dropdownlanguage" data-toggle="dropdown"> <img class="DefaultAvatar" src="~/Content/images/user/thumb/DefaultAvatar.png"> </button>
                                                             <div class="dropdown-menu" aria-labelledby="dropdownlanguage">
+
+                                                                <a class="dropdown-item "> @User.Identity.Name خوش آمدید </a>
                                                                 <a asp-action="Index" asp-area="Doctor" asp-controller="Home" class="dropdown-item ">  پنل پزشک</a>
 
                                                                 <a asp-action="Index" asp-area="UserPanel" asp-controller="Home" class="dropdown-item "> پنل کاربر</a>
@@ -222,13 +227,15 @@
                                                 </div>
                                             }
 
-                                             @if (ViewBag.Pharmacy == true)
+                                            @if (ViewBag.Pharmacy == true)
                                             {
                                                 <div class="d-flex align-items-center">
                                                     <div class="language-selection ">
                                                         <div class="dropdown btn-Accept">
-                                                            <button class=" dropdown-toggle " id="dropdownlanguage" data-toggle="dropdown"> @User.Identity.Name </button>
+                                                           <button class=" dropdown-toggle " id="dropdownlanguage" data-toggle="dropdown"> <img class="DefaultAvatar" src="~/Content/images/user/thumb/DefaultAvatar.png"> </button>
                                                             <div class="dropdown-menu" aria-labelledby="dropdownlanguage">
+
+                                                                <a class="dropdown-item "> @User.Identity.Name خوش آمدید </a>
                                                                 <a asp-action="Index" asp-area="Pharmacy" asp-controller="Home" class="dropdown-item ">  پنل داروخانه</a>
 
                                                                 <a asp-action="Index" asp-area="UserPanel" asp-controller="Home" class="dropdown-item "> پنل کاربر</a>
@@ -245,8 +252,10 @@
                                                 <div class="d-flex align-items-center">
                                                     <div class="language-selection ">
                                                         <div class="dropdown btn-Accept">
-                                                            <button class=" dropdown-toggle " id="dropdownlanguage" data-toggle="dropdown"> @User.Identity.Name </button>
+                                                            <button class=" dropdown-toggle " id="dropdownlanguage" data-toggle="dropdown"> <img class="DefaultAvatar" src="~/Content/images/user/thumb/DefaultAvatar.png"> </button>
                                                             <div class="dropdown-menu" aria-labelledby="dropdownlanguage">
+
+                                                                <a class="dropdown-item "> @User.Identity.Name خوش آمدید </a>
                                                                 <a asp-action="Index" asp-area="Market" asp-controller="Home" class="dropdown-item "> پنل فروشنده  </a>
 
                                                                 <a asp-action="Index" asp-area="UserPanel" asp-controller="Home" class="dropdown-item "> پنل کاربر</a>
@@ -263,8 +272,10 @@
                                                 <div class="d-flex align-items-center">
                                                     <div class="language-selection ">
                                                         <div class="dropdown btn-Accept">
-                                                            <button class=" dropdown-toggle " id="dropdownlanguage" data-toggle="dropdown"> @User.Identity.Name </button>
+                                                           <button class=" dropdown-toggle " id="dropdownlanguage" data-toggle="dropdown"> <img class="DefaultAvatar" src="~/Content/images/user/thumb/DefaultAvatar.png"> </button>
                                                             <div class="dropdown-menu" aria-labelledby="dropdownlanguage">
+
+                                                                <a class="dropdown-item "> @User.Identity.Name خوش آمدید </a>
                                                                 <a asp-action="Index" asp-area="Doctor" asp-controller="Home" class="dropdown-item ">  پنل پزشک</a>
 
                                                                 <a asp-action="Index" asp-area="UserPanel" asp-controller="Home" class="dropdown-item "> پنل کاربر</a>
@@ -281,8 +292,10 @@
                                                 <div class="d-flex align-items-center">
                                                     <div class="language-selection ">
                                                         <div class="dropdown btn-Accept">
-                                                            <button class=" dropdown-toggle " id="dropdownlanguage" data-toggle="dropdown"> @User.Identity.Name </button>
+                                                            <button class=" dropdown-toggle " id="dropdownlanguage" data-toggle="dropdown"> <img class="DefaultAvatar" src="~/Content/images/user/thumb/DefaultAvatar.png"> </button>
                                                             <div class="dropdown-menu" aria-labelledby="dropdownlanguage">
+
+                                                                <a class="dropdown-item "> @User.Identity.Name خوش آمدید </a>
                                                                 <a asp-action="Index" asp-area="Supporter" asp-controller="Home" class="dropdown-item "> پنل پشتیبان</a>
 
                                                                 <a asp-action="Index" asp-area="UserPanel" asp-controller="Home" class="dropdown-item "> پنل کاربر</a>
@@ -294,13 +307,15 @@
                                                 </div>
                                             }
 
-                                                     @if (ViewBag.Nurse == true)
+                                            @if (ViewBag.Nurse == true)
                                             {
                                                 <div class="d-flex align-items-center">
                                                     <div class="language-selection ">
                                                         <div class="dropdown btn-Accept">
-                                                            <button class=" dropdown-toggle " id="dropdownlanguage" data-toggle="dropdown"> @User.Identity.Name </button>
+                                                           <button class=" dropdown-toggle " id="dropdownlanguage" data-toggle="dropdown"> <img class="DefaultAvatar" src="~/Content/images/user/thumb/DefaultAvatar.png"> </button>
                                                             <div class="dropdown-menu" aria-labelledby="dropdownlanguage">
+
+                                                                <a class="dropdown-item "> @User.Identity.Name خوش آمدید </a>
                                                                 <a asp-action="Index" asp-area="Nurse" asp-controller="Home" class="dropdown-item "> پنل پرستار</a>
 
                                                                 <a asp-action="Index" asp-area="UserPanel" asp-controller="Home" class="dropdown-item "> پنل کاربر</a>
@@ -317,8 +332,10 @@
                                                 <div class="d-flex align-items-center">
                                                     <div class="language-selection ">
                                                         <div class="dropdown btn-Accept">
-                                                            <button class=" dropdown-toggle " id="dropdownlanguage" data-toggle="dropdown"> @User.Identity.Name </button>
+                                                          <button class=" dropdown-toggle " id="dropdownlanguage" data-toggle="dropdown"> <img class="DefaultAvatar" src="~/Content/images/user/thumb/DefaultAvatar.png"> </button>
                                                             <div class="dropdown-menu" aria-labelledby="dropdownlanguage">
+
+                                                                <a class="dropdown-item "> @User.Identity.Name خوش آمدید </a>
                                                                 <a asp-action="Index" asp-area="Consultant" asp-controller="Home" class="dropdown-item "> پنل مشاور</a>
 
                                                                 <a asp-action="Index" asp-area="UserPanel" asp-controller="Home" class="dropdown-item "> پنل کاربر</a>
@@ -335,8 +352,9 @@
                                                 <div class="d-flex align-items-center">
                                                     <div class="language-selection ">
                                                         <div class="dropdown btn-Accept">
-                                                            <button class=" dropdown-toggle " id="dropdownlanguage" data-toggle="dropdown"> @User.Identity.Name </button>
+                                                            <button class=" dropdown-toggle " id="dropdownlanguage" data-toggle="dropdown"> <img class="DefaultAvatar" src="~/Content/images/user/thumb/DefaultAvatar.png"> </button>
                                                             <div class="dropdown-menu" aria-labelledby="dropdownlanguage">
+                                                                <a class="dropdown-item "> @User.Identity.Name </a>
                                                                 <a asp-action="Index" asp-area="UserPanel" asp-controller="Home" class="dropdown-item "> پنل کاربر</a>
 
                                                                 <a asp-action="Logout" asp-controller="Account" class="dropdown-item"> خروج</a>
@@ -350,7 +368,7 @@
                                         else
                                         {
 
-                                            <a asp-action="Login" asp-controller="Account" class="btn-Accept "><span> ورود </span></a>
+                                            <a asp-action="Login" asp-controller="Account" class="btn-Accept mr-2"><span> ورود </span></a>
 
                                         }
                                     </div>

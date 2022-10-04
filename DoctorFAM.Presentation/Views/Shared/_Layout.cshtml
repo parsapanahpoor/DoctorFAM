@@ -2,7 +2,9 @@
 <html lang="en">
 
 <head>
-    <title>  دکتر فام-@ViewData["Title"] </title>
+   @* <title>  دکتر فام-@ViewData["Title"] </title>*@
+
+   <title>  250660 </title>
 
     <partial name="_MetaTags" />
 
@@ -11,19 +13,15 @@
     <partial name="_HeaderReferences" />
 
     @await RenderSectionAsync("Styles", false)
+
+    <script type="text/javascript"> window.RAYCHAT_TOKEN = "7235eebc-4420-4af7-9d3b-8cd3a769ce2a"; (function () { d = document; s = d.createElement("script"); s.src = "https://widget-react.raychat.io/install/widget.js"; s.async = 1; d.getElementsByTagName("head")[0].appendChild(s); })();</script>
 </head>
 
 
 <body>
     <!-- page wrapper start -->
     <div class="page-wrapper">
-        <!-- preloader start -->
-        <div id="ht-preloader">
-            <div class="clear-loader">
-                <div class="loader"></div>
-            </div>
-        </div>
-        <!-- preloader end -->
+       
         @await Component.InvokeAsync("SiteSideBar")
 
         <div>
@@ -91,7 +89,7 @@
                                                 <a asp-action="Register" asp-controller="Account" asp-area="" asp-route-Nurse="true"> ثبت نام پرستار </a>
                                             </li>
                                             <li>
-                                                <a asp-action="Register" asp-controller="Account" asp-area="" asp-route-consultant="true"> ثبت نام مشاور و روان پزشک </a>
+                                                <a asp-action="Register" asp-controller="Account" asp-area="" asp-route-consultant="true"> ثبت نام مشاور روان  </a>
                                             </li>
                                         </ul>
                                     </div>
@@ -146,7 +144,7 @@
                                         <i class="flaticon-email"></i> <a dir="ltr" href="mailto:doctorfam2022@yahoo.com">doctorfam2022@yahoo.com</a>
                                     </li>
                                     <li>
-                                        <i class="flaticon-email"></i> <a dir="ltr" href="mailto:doctorfam2022@gmail.com">doctorfam2022@gmail.com</a>
+                                        <i class="flaticon-email"></i> <a dir="ltr" href="mailto:info@Doctorfam.com">info@Doctorfam.com</a>
                                     </li>
                                     <li>
                                         <i class="flaticon-phone"></i> <a dir="ltr" href="tel:+981133304030">+98-113-330-4030</a>

@@ -185,7 +185,7 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
 
             await HttpContext.SignInAsync(principal, properties);
 
-            return RedirectToAction("SecPage", "Home", new { area = "" });
+            return RedirectToAction("Index", "Home", new { area = "" });
         }
 
         #endregion

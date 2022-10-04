@@ -1,5 +1,6 @@
 ﻿using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
+using DoctorFAM.Data.Migrations;
 using DoctorFAM.Data.Repository;
 using DoctorFAM.Domain.Entities.Consultant;
 using DoctorFAM.Domain.Entities.Doctors;
@@ -11,6 +12,7 @@ using DoctorFAM.Domain.Entities.WorkAddress;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.Consultant;
 using DoctorFAM.Domain.ViewModels.Admin.Doctor;
+using DoctorFAM.Domain.ViewModels.Admin.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.Consultant.ConsultantInfo;
 using DoctorFAM.Domain.ViewModels.Consultant.ConsultantRequest;
 using DoctorFAM.Domain.ViewModels.Consultant.ConsultantSideBar;
@@ -44,6 +46,12 @@ namespace DoctorFAM.Application.Services.Implementation
         #endregion
 
         #region Consultant Panel Side
+
+        //List Of Your Consultant Population Covered Users
+        public async Task<ListOfConsultantPopulationCoveredViewModel> FilterYourListOfConsultantPopulationCoveredViewModel(ListOfConsultantPopulationCoveredViewModel filter)
+        {
+            return await _consultantRepository.FilterYourListOfConsultantPopulationCoveredViewModel(filter);
+        }
 
         //Change User Selected Consultant Request From Consultant
         public async Task<bool> ChangeUserSeletedConsultantRequestFromConsultant(UserSelectedConsultant userSelectedRequest, ulong doctorId)
@@ -605,9 +613,39 @@ namespace DoctorFAM.Application.Services.Implementation
             return await _consultantRepository.FilterConsultantInfoAdminSide(filter);
         }
 
+        //Get User Selected Consultant By Patient And Consultant Id
+        public async Task<UserSelectedConsultant?> GetUserSelectedConsultantByPatientAndConsultantId(ulong patientId, ulong consultantId)
+        {
+            return await _consultantRepository.GetUserSelectedConsultantByPatientAndConsultantId(patientId , consultantId);
+        }
+
         #endregion
 
         #region Admin Side 
+
+        //Show Consultant Request Detail Admin Side View Model 
+        public async Task<ConsultantRequestDetailAdminSideViewModel?> FillConsultantRequestDetailAdminSideViewModel(ulong requestId)
+        {
+            #region Get User Selected Consultant By Request Id
+
+            var request = await _consultantRepository.GetUserSelectedConsultantByRequestId(requestId);
+            if (request == null) return null;
+
+            #endregion
+
+            #region Fill Model 
+
+            ConsultantRequestDetailAdminSideViewModel model = new ConsultantRequestDetailAdminSideViewModel()
+            {
+                Patient = await _userService.GetUserById(request.PatientId),
+                Consultant = await _userService.GetUserById(request.ConsultantId),
+                UserSelectedConsultant = request,
+            };
+
+            #endregion
+
+            return model;
+        }
 
         //Get Consultant Info By Nurse Id
         public async Task<ConsultantInfo?> GetConsultantInfoByConsultantId(ulong consultantId)
@@ -729,6 +767,12 @@ namespace DoctorFAM.Application.Services.Implementation
             #endregion
 
             return EditConsultantInfoResult.success;
+        }
+
+        //Filter Consultant Requests Admin Side 
+        public async Task<FilterConsultantAdminSideViewModel> FilterConsultantAdminSideViewModel(FilterConsultantAdminSideViewModel filter)
+        {
+            return await _consultantRepository.FilterConsultantAdminSideViewModel(filter);
         }
 
         #endregion

@@ -23,7 +23,7 @@
     @section Breadcrumb
     {
     <li>
-        <a asp-action="FilterTickets" asp-controller="Ticket" asp-area="Nurse"> @Localizer["List Of Tickets"] </a>
+        <a asp-action="FilterTickets" asp-controller="Ticket" asp-area="Consultant"> @Localizer["List Of Tickets"] </a>
     </li>
     <li>
         <a href="javascript:void(0)"> @ViewData["Title"] </a>
@@ -45,7 +45,7 @@
 
                         <div class="widget-body">
                             <div class="row">
-                                <form asp-action="TicketDetail" asp-controller="Ticket" asp-area="Nurse" method="post">
+                                <form asp-action="TicketDetail" asp-controller="Ticket" asp-area="Consultant" method="post">
 
                                     <input type="hidden" asp-for="TicketId" />
 

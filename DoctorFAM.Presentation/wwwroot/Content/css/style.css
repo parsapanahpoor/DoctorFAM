@@ -1879,16 +1879,22 @@ Pricing Area CSS
 
 .single-pricing-box {
     background-color: #f9fafb;
-    border: 1px solid #ebebeb;
+    /*border: 1px solid #ebebeb;*/
     padding: 45px 35px;
     -webkit-transition: .6s;
     transition: .6s;
 }
-
-.single-pricing_Div {
-    border: 1px solid #cac5c5;
-    border-radius:8px ;
+.hColorFontt {
+    color:white;
 }
+    .hColorFontt:hover {
+        color: #fd5b03;
+        
+    }
+    .single-pricing_Div {
+        border: 1px solid #cac5c5;
+        border-radius: 8px;
+    }
 
 .single-pricing-box .pricing-header {
     text-align: center;
@@ -1985,12 +1991,12 @@ Pricing Area CSS
         }
 
     .single-pricing-box:hover {
-        background-color: #2264c5;        
-        border: 1px solid #2264c5;
+      /*  background-color: #2264c5;        
+        border: 1px solid #2264c5;*/
     }
 
         .single-pricing-box:hover .pricing-header {
-            border-bottom: 1px solid #619fe3;
+           /* border-bottom: 1px solid #619fe3;*/
         }
 
             .single-pricing-box:hover .pricing-header h5 {
@@ -2042,21 +2048,18 @@ Pricing Area CSS
 
 .single-pricing-box.bg-image {
     position: relative;
-    z-index: 1;
-    border: 2px solid #d1cece;
-    border-radius:8px;
-    background-image: linear-gradient(rgba(255,255,255,.7),rgba(255,255,255,.7)),url(/Content/images/bg/slider-2.jpg);
+    z-index: 1;  
+    background-image: linear-gradient(rgba(255,255,255,.4),rgba(25,25,255,.4)),url(/Content/images/bg/Banner0100.jpg);
     /*background-image: url(/Content/images/bg/slider-2.jpg);*/
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
-    /*background-color: white;*/
+    background-color: white;
     -webkit-box-shadow: 0 0 1.25rem rgba(108, 118, 134, 0.1);
     box-shadow: 0 0 1.25rem rgba(108, 118, 134, 0.1);
     margin-bottom: 25px;
 }
-
-    .single-pricing-box.bg-image::before {
+   /* .single-pricing-box.bg-image::before {
         content: '';
         position: absolute;
         z-index: -1;
@@ -2066,16 +2069,13 @@ Pricing Area CSS
         width: 100%;
         height: 0%;
         background-image: url(/Content/images/bg/slider-1.jpg);
-        background-size: cover;
+        background-size: 125%;
         background-position: center center;
         background-repeat: no-repeat;
         -webkit-transition: .6s;
         transition: .6s;
         opacity: 0;
-        border: 2px solid #d1cece;
-        border-radius: 8px;
-    }
-
+    }*/
     .single-pricing-box.bg-image::after {
         content: '';
         position: absolute;
@@ -2089,21 +2089,25 @@ Pricing Area CSS
         -webkit-transition: .6s;
         transition: .6s;
         opacity: 0;
-        border-radius: 8px;
-        
+       
+      
     }
 
     .single-pricing-box.bg-image:hover::before {
         height: 100%;
-        opacity: 1;
-        border-radius: 12px;
+        opacity: 0;
+     
+       
     }
-
+    .single-pricing-box.bg-image:hover {
+        background-size: 125%;
+        transition: background-size .9s ease;
+    }
     .single-pricing-box.bg-image:hover::after {
         height: 100%;
-        opacity: 0.9;
-        border-radius: 8px;
-        border: 2px solid #fd5b03;
+        opacity: 0.0;
+     
+      
     }
 
 .pricing-slides.owl-theme .owl-nav {
@@ -2392,12 +2396,12 @@ Pricing Area CSS
 .btnDoc {
     background: transparent;
     color: #000;
-    padding: 12px ;
+    padding: 8px 10px;
     position: relative;
     display: inline-block;
     cursor: pointer;
     outline: none;
-    border: 1px solid #ccc;
+    border: 2px solid #ccc;
     vertical-align: middle;
     text-decoration: none;
 }
@@ -3114,6 +3118,101 @@ Pricing Area CSS
             }
 
 
+
+
+
+.doctor-widget {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+.doc-info-left {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+.doc-info-right {
+    margin-right: auto;
+    -ms-flex: 0 0 200px;
+    flex: 0 0 200px;
+    max-width: 200px;
+}
+
+.doctor-img {
+    -ms-flex: 0 0 150px;
+    flex: 0 0 150px;
+    margin-left: 20px;
+    width: 150px;
+}
+
+    .doctor-img img {
+        border-radius: 5px;
+    }
+
+.doc-department {
+    color: #20c0f3;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+    .doc-department img {
+        width: 19px;
+        display: inline-block;
+        margin-left: 10px;
+    }
+
+.doc-location {
+    color: #757575;
+    font-size: 14px;
+    margin-bottom: 25px;
+}
+
+.pharmacy-location,
+.pharmacy-title {
+    color: #2E3842;
+}
+
+.doc-location a {
+    color: #09e5ab;
+    font-weight: 500;
+}
+
+.doctor-widget .doc-name {
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 3px;
+}
+
+.doc-speciality {
+    font-size: 14px;
+    color: #757575;
+    margin-bottom: 15px;
+}
+
+.doctor-widget .rating i {
+    font-size: 14px;
+}
+
+.doctor-widget .average-rating {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /***************************************************
 ***************************************************/
 
@@ -3290,4 +3389,108 @@ doctors intrud*/
 .bootstrap-datetimepicker-widget table td.today::before {
     border-bottom-color: #20c0f3;
 }
+
+
+.DefaultAvatar {
+    width:25px;
+    height:25px;
+}
+
+
+
+
+/**********************************************************************/
+/**********************************************************************/
+/**********************************************************************/
+/*Site Banner*/
+
+.Banner-select {
+    background: linear-gradient(rgba(189,251,249,.8),rgba(159,231,249,.9)),url(/Content/images/bg/Banner0100.jpg);
+    padding: 30px 0;
+    background-size: cover;
+}
+    
+    .select-Banner {
+        background: url(/Content/images/bg/Banner0100.jpg);
+        padding: 20px;
+        position: relative;
+        z-index: 1;
+        background-size: 100%;
+        transition: background-size .9s ease;
+        border-bottom : 1px solid white;
+    }
+
+        .select-Banner:hover {
+            background: url(/Content/images/bg/Banner0100.jpg);
+            background-size: 125%;
+            border-bottom: 1px solid #fd5b03;
+        }
+
+    .select-Banner::before {
+        content: "";
+        position: absolute;
+        background: rgba(16, 222, 253, 0.6);
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        z-index: -1;
+       
+    }
+
+
+
+    .select-Banner .pricing-btn .default-btn {
+        background: #2264c5;
+        color: #ffffff;
+        padding: 12px 20px;
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+        outline: none;
+        border: 2px solid #2264c5;
+        vertical-align: middle;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+    .select-Banner:hover .pricing-btn .default-btn {
+        background: #2264c5;
+        color: #ffffff;
+        padding: 12px 20px;
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+        outline: none;
+        border: 2px solid #2264c5;
+        vertical-align: middle;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+
+    .select-Banner:hover .pricing-btn .default-btn::before {
+    background-color: #2264c5;
+}
+
+     .pricing-btn:hover .default-btn:hover {
+    background: #fd5b03;
+    color: #ffffff;
+    border: 2px solid #fd5b03;
+    /* color: white !important;*/
+}
+    
+
+        
+
+          
+
+
+  
+
+   
+
+      
+
+        
+
+
 

@@ -57,6 +57,14 @@ namespace DoctorFAM.Data.Repository
                             .FirstOrDefaultAsync(p=> !p.IsDelete && p.RequestId == requestId);
         }
 
+        //Get Ticket By Consultant Request Id
+        public async Task<Ticket?> GetTicketByConsultantRequestId(ulong requestId)
+        {
+            return await _context.Tickets.Include(p => p.Owner)
+                            .Include(p => p.TargetUser)
+                            .FirstOrDefaultAsync(p => !p.IsDelete && p.RequesConsultanttId == requestId);
+        }
+
         //Update Request 
         public async Task UpdateRequest(Ticket ticket)
         {
@@ -108,7 +116,7 @@ namespace DoctorFAM.Data.Repository
         {
             var query = _context.Tickets
                 .Include(s => s.Owner)
-                .Where(s => s.OwnerId == userId && !s.IsDelete && s.OnlineVisitRequest == false)
+                .Where(s => s.OwnerId == userId && !s.IsDelete && s.OnlineVisitRequest == false && !s.ConsultantRequest && !s.RequesConsultanttId.HasValue)
                 .OrderByDescending(s => s.CreateDate)
                 .AsQueryable();
 
@@ -184,7 +192,7 @@ namespace DoctorFAM.Data.Repository
         {
             var query = _context.Tickets
                 .Include(s => s.Owner)
-                .Where(s => !s.IsDelete && !s.OnlineVisitRequest)
+                .Where(s => !s.IsDelete && !s.OnlineVisitRequest && !s.ConsultantRequest && !s.RequesConsultanttId.HasValue)
                 .OrderByDescending(s => s.CreateDate )
                 .AsQueryable();
 

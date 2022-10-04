@@ -43,9 +43,13 @@ namespace DoctorFAM.Domain.Entities.Contact
 
         public bool OnlineVisitRequest { get; set; }
 
+        public bool ConsultantRequest { get; set; }
+
         public bool TicketForAdminAndSupporters { get; set; }
 
         public ulong? RequestId { get; set; }
+
+        public ulong? RequesConsultanttId { get; set; }
 
         public TicketSenderType TicketSenderType { get; set; }
 

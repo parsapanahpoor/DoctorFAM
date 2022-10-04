@@ -58,5 +58,12 @@ namespace DoctorFAM.Domain.Interfaces
         Task ReadTicketByAdmin(Ticket ticket);
 
         #endregion
+
+        #region Consultant
+
+        //Get Ticket By Consultant Request Id
+        Task<Ticket?> GetTicketByConsultantRequestId(ulong requestId);
+
+        #endregion
     }
 }

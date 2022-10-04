@@ -1,6 +1,9 @@
-﻿using DoctorFAM.Application.Services.Interfaces;
+﻿using DoctorFAM.Application.Interfaces;
+using DoctorFAM.Application.Services.Implementation;
+using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.Consultant;
 using DoctorFAM.Domain.ViewModels.Admin.Doctor;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.Tikcet;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 
@@ -13,13 +16,17 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
         private readonly IConsultantService _consultantService;
         private readonly IStringLocalizer<SharedLocalizer.SharedLocalizer> _sharedLocalizer;
         private readonly IUserService _userService;
+        private readonly ILocationService _locationService;
+        private readonly ITicketService _ticketService;
 
         public ConsultantController(IConsultantService consultantService, IStringLocalizer<SharedLocalizer.SharedLocalizer> sharedLocalizer
-                                    , IUserService userService)
+                                    , IUserService userService , ILocationService locationService, ITicketService ticketService)
         {
             _consultantService = consultantService;
             _sharedLocalizer = sharedLocalizer;
             _userService = userService;
+            _locationService = locationService;
+            _ticketService = ticketService;
         }
 
         #endregion
@@ -122,5 +129,68 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
         #endregion
 
         #endregion
+
+        #region Consultant Request Detail
+
+        public async Task<IActionResult> FilterConsultantAdminSideViewModel(FilterConsultantAdminSideViewModel filter)
+        {
+            return View(await _consultantService.FilterConsultantAdminSideViewModel(filter));
+        }
+
+        #endregion
+
+        #region Consultant Request Detail
+
+        [HttpGet]
+        public async Task<IActionResult> ConsultantRequestDetail(ulong requestId)
+        {
+            #region Fill View Model 
+
+            var model = await _consultantService.FillConsultantRequestDetailAdminSideViewModel(requestId);
+            if (model == null) return NotFound();
+
+            #endregion
+
+            return View(model);
+        }
+
+        #endregion
+
+        #region Consultant Request Message Detail
+
+        [HttpGet]
+        public async Task<IActionResult> ConsultantRequestMessageDetail(ulong requestId)
+        {
+            #region Get Request By Id
+
+            var request = await _consultantService.GetUserSelectedConsultantByRequestId(requestId);
+            if (request == null) return NotFound();
+
+            #endregion
+
+            #region Get Ticket By Request Id
+
+            var ticket = await _ticketService.GetTicketByConsultantRequestId(requestId);
+            if (ticket == null) return NotFound();
+
+            #endregion
+
+            #region Get Ticket Messages
+
+            var messages = await _ticketService.GetTikcetMessagesByTicketId(ticket.Id);
+
+            ViewData["Ticket"] = ticket;
+            ViewData["TicketMessages"] = messages;
+
+            #endregion
+
+            return View(new AnswerTikcetDoctorViewModel
+            {
+                TicketId = ticket.Id
+            });
+        }
+
+        #endregion
+
     }
 }

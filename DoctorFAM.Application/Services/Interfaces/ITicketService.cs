@@ -1,4 +1,5 @@
 ﻿using DoctorFAM.DataLayer.Entities;
+using DoctorFAM.Domain.Entities.Consultant;
 using DoctorFAM.Domain.Entities.Contact;
 using DoctorFAM.Domain.Enums.Ticket;
 using DoctorFAM.Domain.ViewModels.Admin.Ticket;
@@ -94,6 +95,19 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Add Ticket From Admin Panel 
         Task<bool> AddTicketFromSupporterPanel(AddTicketViewModel addTicket, ulong adminId);
+
+        #endregion
+
+        #region Consultant Panel Side 
+
+        //Create Tikcet For First Time After Accept Consultant Request From Consultant 
+        Task<bool> AddTicketForFirstTimeInConsultantInConsultantPanel(UserSelectedConsultant userSelectedConsultant);
+
+        //Get Ticket By Consultant Request Id
+        Task<Ticket?> GetTicketByConsultantRequestId(ulong requestId);
+
+        //Create Answer Tikcet From Consultant 
+        Task<bool> CreateAnswerTikcetFromConsultantPanel(AnswerTikcetDoctorViewModel answer, ulong userId);
 
         #endregion
     }

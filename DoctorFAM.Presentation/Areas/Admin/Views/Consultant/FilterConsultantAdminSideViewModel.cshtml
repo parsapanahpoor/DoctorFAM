@@ -1,0 +1,202 @@
+﻿@model DoctorFAM.Domain.ViewModels.Admin.Consultant.FilterConsultantAdminSideViewModel
+@using DoctorFAM.Domain.ViewModels.DoctorPanel.OnlineVisit
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Domain.ViewModels.Common
+@using DoctorFAM.Domain.Enums.Request
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
+
+
+@{
+    ViewData["Title"] = @Localizer["Consultant Requests"];
+}
+
+
+@section Styles
+    {
+
+}
+
+    @section Scripts
+    {
+    <partial name="_JqueryValidation" />
+}
+
+    @section Breadcrumb
+    {
+    <li>
+        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+    </li>
+}
+
+    <div class="row">
+        <div class="col-lg-3 col-sm-12">
+            <div class="widget">
+                <div class="widget-header bordered-bottom bordered-green">
+                    <span class="widget-caption"> @ViewData["Title"] </span>
+                </div>
+                <div class="widget-body">
+                    <div>
+                        <form asp-action="FilterConsultantAdminSideViewModel" asp-controller="Consultant" asp-area="Admin" id="filter-search" method="get">
+                            <input type="hidden" asp-for="Page" />
+
+                            <div class="form-group">
+                                <label asp-for="Username"> @Localizer["User Username"] </label>
+                                <input type="text" class="form-control" asp-for="Username">
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="UserMobile"> @Localizer["User Mobile"] </label>
+                                <input type="text" class="form-control" asp-for="UserMobile">
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="NationalId"> @Localizer["User National Id"] </label>
+                                <input type="text" class="form-control" asp-for="NationalId">
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="ConsultantUsername"> @Localizer["Consultant Username"] </label>
+                                <input type="text" class="form-control" asp-for="ConsultantUsername">
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="ConsultantUserMobile"> @Localizer["Consultant Mobile"] </label>
+                                <input type="text" class="form-control" asp-for="ConsultantUserMobile">
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="ConsultantNatinalId"> @Localizer["Consultant National Id"] </label>
+                                <input type="text" class="form-control" asp-for="ConsultantNatinalId">
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="FilterRequestAdminSideOrder"> @Localizer["Order By"] </label>
+                                <select asp-for="FilterRequestAdminSideOrder" class="form-control" asp-items="Html.GetEnumSelectList(typeof(FilterRequestAdminSideOrder))"></select>
+                            </div>
+
+                            <hr />
+
+                            <div class="row">
+                                <div class="col-md-12 flex-style">
+                                    <button type="submit" class="btn btn-labeled w-100 btn-palegreen">
+                                        <i class="btn-label glyphicon glyphicon-filter"></i>@Localizer["Filter"]
+                                    </button>
+
+                                @if (Context.Request.QueryString.HasValue)
+                                {
+                                    <a asp-action="FilterConsultantAdminSideViewModel" asp-controller="Consultant" asp-area="Admin" class="btn btn-labeled w-100 btn-darkorange ">
+                                        <i class="btn-label glyphicon glyphicon-remove"></i>@Localizer["Delete Filter"]
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-9 col-sm-12">
+        <div class="well with-header with-footer table-responsive">
+            <div class="header bordered-azure">
+                <div class="flex-style">
+                    <span> @ViewData["Title"]</span>
+                    <span>@Model.GetShownEntitiesPagesTitle()</span>
+                </div>
+            </div>
+
+            @if (Model.Entities != null && Model.Entities.Any())
+            {
+                <table class="table table-hover table-bordered tc vm">
+                    <thead class="tc vm">
+                        <tr class="tc vm">
+                            <th class="tc vm">
+                                @Localizer["User Avatar"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["Doctor Avatar"]
+                            </th>
+
+                            <th class="tc vm">
+                                @Localizer["Request State"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["Date Time"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["Options"]
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="tc vm">
+                        @foreach (var request in Model.Entities)
+                        {
+                            <tr class="tc vm">
+                                <td class="vm">
+                                    <div class="flex-style-center">
+                                        <img src="@request.Patient.GetUserAvatar()" class="avatar-style" style="border-radius:50px;" />
+                                        <div class="mr-10px">
+                                            <span> @request.Patient.Username </span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="vm">
+                                    <div class="flex-style-center">
+                                        <img src="@request.Consultant.GetUserAvatar()" class="avatar-style" style="border-radius:50px;" />
+                                        <div class="mr-10px">
+                                            <span> @request.Consultant.Username </span>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <td class="tc vm">
+
+                                    @if (request.ConsultantRequestState == DoctorFAM.Domain.Enums.FamilyDoctor.FamilyDoctorRequestState.WaitingForConfirm)
+                                    {
+                                        <p class="label label-warning">@Localizer["Waiting For Confirm"]</p>
+                                    }
+                                    @if (request.ConsultantRequestState == DoctorFAM.Domain.Enums.FamilyDoctor.FamilyDoctorRequestState.Decline)
+                                    {
+                                        <p class="label label-danger">@Localizer["Decline"]</p>
+                                    }
+                                    @if (request.ConsultantRequestState == DoctorFAM.Domain.Enums.FamilyDoctor.FamilyDoctorRequestState.Accepted)
+                                    {
+                                        <p class="label label-success">@Localizer["Accepted"]</p>
+                                    }
+
+                                </td>
+                                <td class="tc vm">
+                                    <p>  @request.CreateDate.ToStringShamsiDate() </p>
+                                    <p> @request.CreateDate.Hour:@request.CreateDate.Minute:@request.CreateDate.Second</p>
+                                </td>
+
+                                <td class="tc vm">
+                                    <a asp-action="ConsultantRequestDetail" asp-controller="Consultant" asp-area="Admin" asp-route-requestId="@request.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+                                    @if (request.ConsultantRequestState == DoctorFAM.Domain.Enums.FamilyDoctor.FamilyDoctorRequestState.Accepted)
+                                    {
+                                        <a asp-action="ConsultantRequestMessageDetail" asp-controller="Consultant" asp-area="Admin" asp-route-requestId="@request.Id" class="btn btn-warning btn-circle btn-xs"><i class="glyphicon glyphicon-envelope"></i></a>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <div class="footer tc">
+
+                    <partial name="_AdminPaging" model="@Model.GetCurrentPaging()" />
+
+                </div>
+            }
+            else
+            {
+                <partial name="_AdminNotFoundPartial" />
+            }
+        </div>
+    </div>
+</div>
+
+
+

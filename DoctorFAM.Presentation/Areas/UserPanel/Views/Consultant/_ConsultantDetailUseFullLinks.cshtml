@@ -1,0 +1,26 @@
+﻿@model DoctorFAM.Domain.ViewModels.UserPanel.Consultant.ShowUserConsultantInfo
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
+
+<div class="widget">
+    <div class="widget-header">
+        <i class="widget-icon fa fa-link"></i>
+        <span class="widget-caption"> @Localizer["Best Links"] </span>
+        <div class="widget-buttons">
+            <a href="#" data-toggle="collapse">
+                <i class="fa fa-minus"></i>
+            </a>
+        </div><!--Widget Buttons-->
+    </div><!--Widget Header-->
+    <div class="widget-body">
+        <div class="row"> 
+            
+            <a style="width:80%;margin-right: 20px;" asp-controller="Consultant" asp-area="UserPanel" asp-action="ListOfConsultantMasseges" asp-route-UserId="@Model.User.Id" class="btn btn-success btn-sm mt-10px col-md-12 ml-10px"> @Localizer["Message"] </a>
+
+            <a style="width:80%;margin-right: 20px;" asp-action="CancelUserSelectedConsultantFromUserPanel" asp-controller="Consultant" asp-area="UserPanel" class="btn btn-warning btn-sm mt-10px col-md-12 ml-10px"> @Localizer["Cancel of cooperation with the Consultant"] </a>
+
+@*            <a style="width:80%;margin-right: 20px;" asp-action="FilterPopulationCoveredAdminViewModel" asp-controller="PopulationCovered" asp-route-UserId="@Model.User.Id" class="btn btn-blue btn-sm col-md-12  mt-10px ml-10px"> @Localizer["Population Covered"] </a>
+*@
+        </div>
+    </div><!--Widget Body-->
+</div>

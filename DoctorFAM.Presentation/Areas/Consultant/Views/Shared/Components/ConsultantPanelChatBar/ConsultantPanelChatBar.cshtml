@@ -70,6 +70,10 @@
                                 {
                                     <div>درخواست برای مشاور روان</div>
                                 }
+                                @if (item.SupporterNotificationText == DoctorFAM.Domain.Enums.Notification.SupporterNotificationText.NewArrivalConsultantMessage)
+                                {
+                                    <div>پیام جدید از درخواست مشاوره</div>
+                                }
                             </div>
                         </div>
                     </li>

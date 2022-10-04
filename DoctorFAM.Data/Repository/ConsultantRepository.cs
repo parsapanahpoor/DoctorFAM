@@ -3,11 +3,14 @@ using DoctorFAM.Domain.Entities.Consultant;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.FamilyDoctor;
 using DoctorFAM.Domain.Entities.Nurse;
+using DoctorFAM.Domain.Enums.Request;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.Consultant;
 using DoctorFAM.Domain.ViewModels.Admin.Doctor;
+using DoctorFAM.Domain.ViewModels.Admin.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.Consultant.ConsultantRequest;
 using DoctorFAM.Domain.ViewModels.Consultant.ConsultantSideBar;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.PopulationCovered;
 using DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor;
 using Microsoft.EntityFrameworkCore;
@@ -41,6 +44,14 @@ namespace DoctorFAM.Data.Repository
                             .FirstOrDefaultAsync(p => !p.IsDelete && p.Id == requestId);
         }
 
+        //Get User Selected Consultant By Patient And Consultant Id
+        public async Task<UserSelectedConsultant?> GetUserSelectedConsultantByPatientAndConsultantId(ulong patientId , ulong consultantId)
+        {
+            return await _context.UserSelectedConsultants
+                            .FirstOrDefaultAsync(p => !p.IsDelete && p.PatientId == patientId && p.ConsultantId == consultantId
+                                                    && p.ConsultantRequestState == Domain.Enums.FamilyDoctor.FamilyDoctorRequestState.Accepted);
+        }
+
         //List Of Consultant Population Covered Users
         public async Task<ListOfConsultantPopulationCoveredViewModel> FilterListOfConsultantPopulationCoveredViewModel(ListOfConsultantPopulationCoveredViewModel filter)
         {
@@ -55,7 +66,51 @@ namespace DoctorFAM.Data.Repository
             var query = _context.UserSelectedConsultants
                 .Include(p => p.Patient)
                 .ThenInclude(p => p.PopulationCovered)
-                .Where(s => !s.IsDelete && s.ConsultantId == consultantOffice.Organization.OwnerId && s.ConsultantRequestState != Domain.Enums.FamilyDoctor.FamilyDoctorRequestState.Decline)
+                .Where(s => !s.IsDelete && s.ConsultantId == consultantOffice.Organization.OwnerId && s.ConsultantRequestState == Domain.Enums.FamilyDoctor.FamilyDoctorRequestState.WaitingForConfirm)
+                .OrderByDescending(s => s.CreateDate)
+                .Select(p => p.Patient)
+                .AsQueryable();
+
+
+            #region Filter
+
+            if (!string.IsNullOrEmpty(filter.Mobile))
+            {
+                query = query.Where(s => s.Mobile != null && EF.Functions.Like(s.Mobile, $"%{filter.Mobile}%"));
+            }
+
+            if (!string.IsNullOrEmpty(filter.Username))
+            {
+                query = query.Where(s => s.Username.Contains(filter.Username));
+            }
+
+            if (!string.IsNullOrEmpty(filter.NationalId))
+            {
+                query = query.Where(s => s.NationalId.Contains(filter.NationalId));
+            }
+
+            #endregion
+
+            await filter.Paging(query);
+
+            return filter;
+        }
+
+        //List Of Your Consultant Population Covered Users
+        public async Task<ListOfConsultantPopulationCoveredViewModel> FilterYourListOfConsultantPopulationCoveredViewModel(ListOfConsultantPopulationCoveredViewModel filter)
+        {
+            #region Get organization 
+
+            var consultantOffice = await _context.OrganizationMembers.Include(p => p.Organization)
+                                .FirstOrDefaultAsync(p => !p.IsDelete && p.UserId == filter.UserId);
+            if (consultantOffice == null) return null;
+
+            #endregion
+
+            var query = _context.UserSelectedConsultants
+                .Include(p => p.Patient)
+                .ThenInclude(p => p.PopulationCovered)
+                .Where(s => !s.IsDelete && s.ConsultantId == consultantOffice.Organization.OwnerId && s.ConsultantRequestState == Domain.Enums.FamilyDoctor.FamilyDoctorRequestState.Accepted)
                 .OrderByDescending(s => s.CreateDate)
                 .Select(p => p.Patient)
                 .AsQueryable();
@@ -173,6 +228,68 @@ namespace DoctorFAM.Data.Repository
         #endregion
 
         #region Admin Side 
+
+        //Filter Consultant Requests Admin Side 
+        public async Task<FilterConsultantAdminSideViewModel> FilterConsultantAdminSideViewModel(FilterConsultantAdminSideViewModel filter)
+        {
+            var query = _context.UserSelectedConsultants
+             .Include(p=> p.Patient)
+             .Include(p=> p.Consultant)
+             .Where(s => !s.IsDelete)
+             .OrderByDescending(s => s.CreateDate)
+             .AsQueryable();
+
+            #region Status
+
+            switch (filter.FilterRequestAdminSideOrder)
+            {
+                case FilterRequestAdminSideOrder.CreateDate_Des:
+                    break;
+                case FilterRequestAdminSideOrder.CreateDate_Asc:
+                    query = query.OrderBy(p => p.CreateDate);
+                    break;
+            }
+
+            #endregion
+
+            #region Filter
+
+            if (!string.IsNullOrEmpty(filter.UserMobile))
+            {
+                query = query.Where(s => s.Patient.Mobile != null && EF.Functions.Like(s.Patient.Mobile, $"%{filter.UserMobile}%"));
+            }
+
+            if (!string.IsNullOrEmpty(filter.Username))
+            {
+                query = query.Where(s => EF.Functions.Like(s.Patient.Username, $"%{filter.Username}%"));
+            }
+
+            if (!string.IsNullOrEmpty(filter.NationalId))
+            {
+                query = query.Where(s => EF.Functions.Like(s.Patient.NationalId, $"%{filter.NationalId}%"));
+            }
+
+            if (!string.IsNullOrEmpty(filter.ConsultantUserMobile))
+            {
+                query = query.Where(s => s.Consultant.Mobile != null && EF.Functions.Like(s.Consultant.Mobile, $"%{filter.ConsultantUserMobile}%"));
+            }
+
+            if (!string.IsNullOrEmpty(filter.ConsultantUsername))
+            {
+                query = query.Where(s => EF.Functions.Like(s.Consultant.Username, $"%{filter.ConsultantUsername}%"));
+            }
+
+            if (!string.IsNullOrEmpty(filter.ConsultantNatinalId))
+            {
+                query = query.Where(s => EF.Functions.Like(s.Consultant.NationalId, $"%{filter.ConsultantNatinalId}%"));
+            }
+
+            #endregion
+
+            await filter.Paging(query);
+
+            return filter;
+        }
 
         //Filter Consultant Info Admin Side
         public async Task<ListOfConsultantInfoViewModel> FilterConsultantInfoAdminSide(ListOfConsultantInfoViewModel filter)

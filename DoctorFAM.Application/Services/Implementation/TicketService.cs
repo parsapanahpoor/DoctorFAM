@@ -6,6 +6,7 @@ using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Application.StaticTools;
 using DoctorFAM.DataLayer.Entities;
+using DoctorFAM.Domain.Entities.Consultant;
 using DoctorFAM.Domain.Entities.Contact;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Enums;
@@ -255,6 +256,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 CreateDate = DateTime.Now,
                 RequestId = request.Id,
                 OnlineVisitRequest = true,
+                TicketSenderType = TicketSenderType.FromDoctor
             };
 
             await _ticketRepository.AddTicket(ticket);
@@ -353,7 +355,6 @@ namespace DoctorFAM.Application.Services.Implementation
             }
 
             #endregion
-
 
             #endregion
 
@@ -733,6 +734,140 @@ namespace DoctorFAM.Application.Services.Implementation
             #region Add Message Method
 
             await _ticketRepository.AddTicketMessage(message);
+
+            #endregion
+
+            return true;
+        }
+
+        #endregion
+
+        #region Consultant Panel Side 
+
+        //Create Tikcet For First Time After Accept Consultant Request From Consultant 
+        public async Task<bool> AddTicketForFirstTimeInConsultantInConsultantPanel(UserSelectedConsultant userSelectedConsultant)
+        {
+            #region Create Ticket
+
+            var ticket = new Ticket
+            {
+                Title = "Consultant Request",
+                IsReadByAdmin = false,
+                IsReadByOwner = true,
+                IsReadByTargetUser = false,
+                OnWorking = false,
+                TicketStatus = TicketStatus.Pending,
+                OwnerId = userSelectedConsultant.ConsultantId,
+                TargetUserId = userSelectedConsultant.PatientId,
+                CreateDate = DateTime.Now,
+                ConsultantRequest = true,
+                TicketSenderType=TicketSenderType.FromConsultant,
+                RequesConsultanttId = userSelectedConsultant.Id
+            };
+
+            await _ticketRepository.AddTicket(ticket);
+
+            #endregion
+
+            return true;
+        }
+
+        //Get Ticket By Consultant Request Id
+        public async Task<Ticket?> GetTicketByConsultantRequestId(ulong requestId)
+        {
+            return await _ticketRepository.GetTicketByConsultantRequestId(requestId);
+        }
+
+        //Create Answer Tikcet From Consultant 
+        public async Task<bool> CreateAnswerTikcetFromConsultantPanel(AnswerTikcetDoctorViewModel answer, ulong userId)
+        {
+            #region Get Consultant Organization
+
+            var organization = await _organizationService.GetConsultantOrganizationByUserId(userId);
+            if (organization == null) return false;
+            if (organization.OrganizationInfoState != OrganizationInfoState.Accepted) return false;
+
+            #endregion
+
+            #region Get Ticket By Id 
+
+            var ticket = await GetTicketById(answer.TicketId);
+
+            if (ticket == null) return false;
+
+            #endregion
+
+            #region Fill Ticket Message 
+
+            var message = new TicketMessage
+            {
+                Message = answer.Message,
+                SenderId = organization.OwnerId,
+                TicketId = ticket.Id
+            };
+
+            #region Add File
+
+            if (answer.MessageFile != null)
+            {
+                if (Path.GetExtension(answer.MessageFile.FileName).ToLower() == ".jpg"
+                        && Path.GetExtension(answer.MessageFile.FileName).ToLower() == ".png"
+                        && Path.GetExtension(answer.MessageFile.FileName).ToLower() == ".jpeg")
+                {
+                    var res = answer.MessageFile.IsImage();
+                    if (!res)
+                    {
+                        return false;
+                    }
+                }
+
+                var imageName = CodeGenerator.GenerateUniqCode() + Path.GetExtension(answer.MessageFile.FileName);
+
+                if (!Directory.Exists(PathTools.TicketFilePathServer))
+                    Directory.CreateDirectory(PathTools.TicketFilePathServer);
+
+                string OriginPath = PathTools.TicketFilePathServer + imageName;
+
+                using (var stream = new FileStream(OriginPath, FileMode.Create))
+                {
+                    if (!Directory.Exists(OriginPath)) answer.MessageFile.CopyTo(stream);
+                }
+
+                message.MessageFile = imageName;
+            }
+
+            #endregion
+
+            #endregion
+
+            #region Add Ticket Message Method
+
+            await _ticketRepository.AddTicketMessage(message);
+
+            #endregion
+
+            #region Change Ticket State
+
+            ticket.TicketStatus = TicketStatus.Answered;
+            ticket.OnWorking = true;
+
+            await _ticketRepository.UpdateRequest(ticket);
+
+            #endregion
+
+            #region Read Ticket
+
+            ticket.IsReadByOwner = true;
+            ticket.IsReadByAdmin = false;
+            ticket.IsReadByTargetUser = false;
+
+            await _ticketRepository.UpdateRequest(ticket);
+
+            #endregion
+
+            #region Save Changes
+
+            await _ticketRepository.SaveChanges();
 
             #endregion
 
