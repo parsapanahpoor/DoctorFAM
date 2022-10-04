@@ -26,6 +26,9 @@ namespace DoctorFAM.Domain.ViewModels.Laboratory.Employee
         [DisplayName("Avatar")]
         public string? Avatar { get; set; }
 
+        [Display(Name = "انتخاب نقش های کاربر")]
+        public List<ulong>? UserRoles { get; set; }
+
         #endregion
     }
 

@@ -480,6 +480,26 @@ namespace DoctorFAM.Data.DbContext
                 ParentId = null
             });
 
+            modelBuilder.Entity<Role>().HasData(new Role
+            {
+                Id = 17,
+                Title = "LaboratoryOfficeEmployee",
+                RoleUniqueName = "LaboratoryOfficeEmployee",
+                CreateDate = DateTime.Now,
+                IsDelete = false,
+                ParentId = null
+            });
+
+            modelBuilder.Entity<Role>().HasData(new Role
+            {
+                Id = 18,
+                Title = "نمونه گیر",
+                RoleUniqueName = "LaboratorySampler",
+                CreateDate = DateTime.Now,
+                IsDelete = false,
+                ParentId = 17
+            });
+
             #endregion
 
             #region query filter

@@ -12,9 +12,11 @@ using DoctorFAM.Web.Laboratory.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Localization;
+using DoctorFAM.Web.Areas.Laboratory.ActionFilterAttributes;
 
 namespace DoctorFAM.Web.Areas.Laboratory.Controllers
 {
+    [IsUserLaboratory]
     public class LaboratoryInfoController : LaboratoryBaseController
     {
         #region ctor

@@ -9,6 +9,7 @@ using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Entities.Wallet;
 using DoctorFAM.Domain.Entities.WorkAddress;
+using DoctorFAM.Domain.Enums.Gender;
 using DoctorFAM.Domain.Enums.Request;
 using DoctorFAM.Domain.Enums.RequestType;
 using DoctorFAM.Domain.Interfaces;
@@ -269,9 +270,27 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #endregion
 
+            #region Get Home Visit Request Detail By Request Id
+
+            var detail = await _homeVisit.GetHomeVisitRequestDetailByRequestId(requestId);
+            if (detail == null) return null;
+
+            #endregion
+
             #region Get Activated Doctors By Home Visit Interests 
 
-            var returnValue = await _homeVisit.GetActivatedAndDoctorsInterestHomeVisit(requetsDetail.CountryId, requetsDetail.StateId, requetsDetail.CityId);
+            var gender = new Gender();
+
+            if (detail.FemalePhysician == true)
+            {
+                gender = Gender.Female;
+            }
+            else
+            {
+                gender = Gender.Male;
+            }
+
+            var returnValue = await _homeVisit.GetActivatedAndDoctorsInterestHomeVisit(requetsDetail.CountryId, requetsDetail.StateId, requetsDetail.CityId , gender);
 
             #endregion
 

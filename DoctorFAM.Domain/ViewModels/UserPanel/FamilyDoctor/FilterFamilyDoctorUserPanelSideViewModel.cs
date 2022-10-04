@@ -1,5 +1,6 @@
 ﻿using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Doctors;
+using DoctorFAM.Domain.Enums.Gender;
 using DoctorFAM.Domain.ViewModels.Common;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,8 @@ namespace DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor
         public int? PageId { get; set; } = 1;
 
         public int? PageCount { get; set; }
+
+        public int? Gender { get; set; }
 
         #endregion
     }

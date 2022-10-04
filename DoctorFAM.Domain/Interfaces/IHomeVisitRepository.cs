@@ -1,6 +1,7 @@
 ﻿using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.Requests;
+using DoctorFAM.Domain.Enums.Gender;
 using DoctorFAM.Domain.ViewModels.Admin.HealthHouse;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DeathCertificate;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.HomeVisit;
@@ -20,7 +21,7 @@ namespace DoctorFAM.Domain.Interfaces
         Task<HomeVisitRequestDetail?> GetHomeVisitRequestDetailByRequestId(ulong requestId);
 
         //Get Activated And Home Visit Interests Home Visit For Send Correct Notification For Arrival Home Visit Request 
-        Task<List<string?>> GetActivatedAndDoctorsInterestHomeVisit(ulong countryId, ulong stateId, ulong cityId);
+        Task<List<string?>> GetActivatedAndDoctorsInterestHomeVisit(ulong countryId, ulong stateId, ulong cityId, Gender gender);
 
         #endregion
 

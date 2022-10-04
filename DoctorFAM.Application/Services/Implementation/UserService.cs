@@ -1024,16 +1024,29 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #endregion
 
-            #region Add User Role
+            #region Add User Roles
 
-            UserRole userRole = new UserRole()
+            var userRole1 = new UserRole()
             {
-                RoleId = 5,
-                UserId = newUser.Id,
+                RoleId = 17,
+                UserId = newUser.Id
             };
+            await _context.AddAsync(userRole1);
 
-            await _context.UserRoles.AddAsync(userRole);
-            await _context.SaveChangesAsync();
+            if (user.UserRoles != null && user.UserRoles.Any())
+            {
+                foreach (var roleId in user.UserRoles)
+                {
+                    var userRole = new UserRole()
+                    {
+                        RoleId = roleId,
+                        UserId = newUser.Id
+                    };
+                    await _context.AddAsync(userRole);
+                }
+
+                await _context.SaveChangesAsync();
+            }
 
             #endregion
 

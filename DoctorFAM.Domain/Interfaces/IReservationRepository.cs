@@ -16,6 +16,9 @@ namespace DoctorFAM.Domain.Interfaces
     {
         #region Doctor Panel 
 
+        //List Of Doctor Reservation Date After Date Time Now
+        Task<List<DoctorReservationDate>> ListOfDoctorReservationDateAfterDateTimeNow(ulong userId);
+
         //Cancel Reservation Date Time State 
         Task CancelReservationDateTime(DoctorReservationDateTime reservationDateTime);
 

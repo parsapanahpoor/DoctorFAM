@@ -20,6 +20,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         #region Role
 
+        //Check Is User Master Of Laboratory 
+        Task<bool> CheckIsUserMasterOfLaboratory(ulong userId);
+
         //Check Is User Has Permission To Consultant Panel 
         Task<bool> IsUserConsultant(ulong userId);
 
@@ -60,6 +63,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Check Is User Has Permission To Laboratory Panel 
         Task<bool> IsUserLaboratory(ulong userId);
+
+        //Get List Of Laboratory Roles
+        Task<List<Role>> GetListOfLaboratoryRoles();
 
         #endregion
     }

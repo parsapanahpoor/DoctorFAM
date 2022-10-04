@@ -27,7 +27,7 @@ namespace DoctorFAM.Web.Areas.Laboratory.Controllers
 
         #region Index Page 
 
-        public  async Task<IActionResult> Index()
+        public  async Task<IActionResult> Index(bool employeeHasNotPermission = false)
         {
             #region Check Laboratory Login
 
@@ -41,6 +41,15 @@ namespace DoctorFAM.Web.Areas.Laboratory.Controllers
                 }
 
                 #endregion
+            }
+
+            #endregion
+
+            #region Employee Permission
+
+            if (employeeHasNotPermission == true)
+            {
+                TempData[WarningMessage] = "شما دسترسی ورود به این بخش را ندارید .";
             }
 
             #endregion

@@ -1,8 +1,12 @@
 ﻿@using DoctorFAM.Application.StaticTools
-@model DoctorFAM.Domain.ViewModels.DoctorPanel.Employees.AddEmployeeViewModel
+@model DoctorFAM.Domain.ViewModels.Laboratory.Employee.AddLaboratoryEmployeeViewModel
 
 @{
     ViewData["Title"] = @Localizer["Add New Employee"];
+}
+
+@{
+    var roles = ViewData["Roles"] != null ? ViewData["Roles"] as List<DoctorFAM.Domain.Entities.Account.Role> : null;
 }
 
 @section Breadcrumb
@@ -83,6 +87,40 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="col-lg-12">
+                    <div class="widget">
+                        <div class="widget-header bordered-bottom bordered-green">
+                            <span class="widget-caption"> نقش های کاربر </span>
+                        </div>
+                        <div class="widget-body">
+                            <div class="row">
+                                <div class="col-md-12">
+
+                                @if (roles != null && roles.Any())
+                                {
+                                    foreach (var role in roles)
+                                    {
+                                        <div class="form-group">
+                                            <div class="checkbox">
+                                                <label>
+
+                                                    <input type="checkbox"  name="UserRoles" value="@role.Id">
+                                                    <span class="text"> @role.Title </span>
+
+                                                </label>
+                                            </div>
+                                        </div>
+                                    
+                                    }
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             </div>
         </div>
 

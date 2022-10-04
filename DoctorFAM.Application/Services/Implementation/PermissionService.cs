@@ -2,12 +2,15 @@
 using DoctorFAM.Application.StaticTools;
 using DoctorFAM.Data.DbContext;
 using DoctorFAM.Domain.Entities.Account;
+using DoctorFAM.Domain.Entities.Laboratory;
 using DoctorFAM.Domain.ViewModels.Access;
 using DoctorFAM.Domain.ViewModels.Common;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DosctorSideBarInfo;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -50,7 +53,7 @@ namespace BusinessPortal.Application.Services.Implementation
             if (user.IsAdmin) return true;
 
             // check user access not limited
-            if (!user.IsEmailConfirm || user.IsBan)
+            if (!user.IsMobileConfirm || user.IsBan)
             {
                 return false;
             }
@@ -96,6 +99,12 @@ namespace BusinessPortal.Application.Services.Implementation
         public async Task<List<Role>> GetListOfRoles()
         {
             return await _context.Roles.Where(s => !s.IsDelete).ToListAsync();
+        }
+
+        //Get List Of Laboratory Roles
+        public async Task<List<Role>> GetListOfLaboratoryRoles()
+        {
+            return await _context.Roles.Where(p => !p.IsDelete && p.ParentId == 17).ToListAsync();
         }
 
         public async Task<bool> IsRoleNameValid(string name, ulong roleId)
@@ -346,6 +355,8 @@ namespace BusinessPortal.Application.Services.Implementation
 
             if (userRoles.Any() && userRoles.Contains("DoctorOfficeEmployee")) return GetUserRoles.DoctorOfficeEmployee;
 
+            if (userRoles.Any() && userRoles.Contains("LaboratoryOfficeEmployee")) return GetUserRoles.LaboratoryOfficeEmployee;
+
             if (userRoles.Any() && userRoles.Contains("Labratory")) return GetUserRoles.Laboratory;
 
             if (!userRoles.Any()) return GetUserRoles.User;
@@ -374,6 +385,7 @@ namespace BusinessPortal.Application.Services.Implementation
 
             return false;
         }
+
 
         public async Task<bool> IsUserDoctorOrDoctorEmployee(ulong userId)
         {
@@ -414,6 +426,20 @@ namespace BusinessPortal.Application.Services.Implementation
 
         //Check Is User Has Permission To Laboratory Panel 
         public async Task<bool> IsUserLaboratory(ulong userId)
+        {
+            var result = await GetUserRole(userId);
+
+            if (result == GetUserRoles.Admin) return true;
+
+            if (result == GetUserRoles.Laboratory) return true;
+
+            if (result == GetUserRoles.LaboratoryOfficeEmployee) return true;
+
+            return false;
+        }
+
+        //Check Is User Master Of Laboratory 
+        public async Task<bool> CheckIsUserMasterOfLaboratory(ulong userId)
         {
             var result = await GetUserRole(userId);
 

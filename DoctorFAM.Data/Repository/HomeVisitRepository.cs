@@ -2,6 +2,7 @@
 using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.Requests;
+using DoctorFAM.Domain.Enums.Gender;
 using DoctorFAM.Domain.Enums.Request;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.HealthHouse;
@@ -38,11 +39,50 @@ namespace DoctorFAM.Data.Repository
         #region Site Side
 
         //Get Activated And Home Visit Interests Home Visit For Send Correct Notification For Arrival Home Visit Request 
-        public async Task<List<string?>> GetActivatedAndDoctorsInterestHomeVisit(ulong countryId, ulong stateId, ulong cityId)
+        public async Task<List<string?>> GetActivatedAndDoctorsInterestHomeVisit(ulong countryId, ulong stateId, ulong cityId , Gender gender)
         {
+            if (gender == Gender.Female)
+            {
+                #region Get Home Visit Interests Home Visit  
+
+                var maleUsers = await _context.DoctorsSelectedInterests.Include(p => p.Doctor).ThenInclude(p => p.DoctorsInfos)
+                                    .Where(p => !p.IsDelete && p.InterestId == 2 && p.Doctor.DoctorsInfos.Gender == gender).Select(p => p.Doctor.UserId).ToListAsync();
+                if (maleUsers == null) return null;
+
+                #endregion
+
+                #region Check User Work Addresses 
+
+                //Initial Model Of String 
+                List<string?> returnMaleValue = new List<string?>();
+
+                foreach (var item in maleUsers)
+                {
+                    //Check Home Visit Is Activated
+                    var activated = await _context.Organizations.FirstOrDefaultAsync(p => !p.IsDelete && p.OwnerId == item
+                                            && p.OrganizationType == Domain.Enums.Organization.OrganizationType.DoctorOffice && p.OrganizationInfoState == Domain.Entities.Doctors.OrganizationInfoState.Accepted);
+
+                    if (activated != null)
+                    {
+                        //Check Doctor Location By Country Id && State Id && CityId
+                        var checkLocation = await _context.WorkAddresses.FirstOrDefaultAsync(p => !p.IsDelete && p.CityId == cityId && p.CountryId == countryId && p.StateId == stateId
+                                                                      && p.UserId == item);
+                        if (checkLocation != null)
+                        {
+                            returnMaleValue.Add(checkLocation.UserId.ToString());
+                        }
+                    }
+
+                }
+
+                #endregion
+
+                return returnMaleValue;
+            }
+
             #region Get Home Visit Interests Home Visit  
 
-            var users = await _context.DoctorsSelectedInterests.Include(p => p.Doctor)
+            var users = await _context.DoctorsSelectedInterests.Include(p => p.Doctor).ThenInclude(p=> p.DoctorsInfos)
                                 .Where(p => !p.IsDelete && p.InterestId == 2).Select(p => p.Doctor.UserId).ToListAsync();
             if (users == null) return null;
 

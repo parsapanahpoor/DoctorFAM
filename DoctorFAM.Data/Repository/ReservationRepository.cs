@@ -42,7 +42,37 @@ namespace DoctorFAM.Data.Repository
 
         #endregion
 
-        #region Doctor Panel
+        #region Doctor
+
+        //List Of Doctor Reservation Date After Date Time Now
+        public async Task<List<DoctorReservationDate>> ListOfDoctorReservationDateAfterDateTimeNow(ulong userId)
+        {
+            #region Get Owner Organization By EmployeeId 
+
+            var organization = await _organizationRepository.GetOrganizationByUserId(userId);
+            if (organization == null) return null;
+
+            #endregion
+
+            #region Check Doctor Is Valid
+
+            var doctor = await _doctorRepository.GetDoctorByUserId(organization.OwnerId);
+            if (doctor == null) return null;
+
+            #endregion
+
+            var query = await _context.DoctorReservationDates
+                .Include(p => p.DoctorReservationDateTimes)
+                .Where(s => !s.IsDelete && s.UserId == organization.OwnerId && ((s.ReservationDate.Year > DateTime.Now.Year)
+                                          || (s.ReservationDate.Year == DateTime.Now.Year
+                                               && s.ReservationDate.DayOfYear >= DateTime.Now.DayOfYear)))
+                .OrderBy(s => s.ReservationDate)
+                .ToListAsync();
+
+            #region Status
+
+            return query;
+        }
 
         //Cancel Reservation Date Time State Whitout Save Changes
         public async Task CancelReservationDateTime(DoctorReservationDateTime reservationDateTime)
@@ -434,7 +464,6 @@ namespace DoctorFAM.Data.Repository
             await _context.DoctorReservationDateTimes.AddAsync(dateTime);
         }
 
-
         public async Task<DoctorReservationDateTime?> GetDoctorReservationDateTimeById(ulong reservationDateTimeId)
         {
             return await _context.DoctorReservationDateTimes.Include(p => p.DoctorReservationDate).FirstOrDefaultAsync(p => !p.IsDelete && p.Id == reservationDateTimeId);
@@ -445,6 +474,8 @@ namespace DoctorFAM.Data.Repository
             _context.DoctorReservationDateTimes.Update(reservationDateTime);
             await _context.SaveChangesAsync();
         }
+
+        #endregion
 
         #endregion
 

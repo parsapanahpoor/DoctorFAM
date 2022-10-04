@@ -1,8 +1,10 @@
-﻿using DoctorFAM.Application.Extensions;
+﻿using BusinessPortal.Application.Services.Implementation;
+using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Employees;
 using DoctorFAM.Domain.ViewModels.Laboratory.Employee;
 using DoctorFAM.Domain.ViewModels.UserPanel.Account;
+using DoctorFAM.Web.Areas.Laboratory.ActionFilterAttributes;
 using DoctorFAM.Web.Consultant.Controllers;
 using DoctorFAM.Web.HttpManager;
 using DoctorFAM.Web.Laboratory.Controllers;
@@ -22,10 +24,11 @@ namespace DoctorFAM.Web.Areas.Laboratory.Controllers
         private readonly IStringLocalizer<SharedLocalizer.SharedLocalizer> _sharedLocalizer;
         private readonly IOrganizationService _organizationService;
         private readonly ILaboratoryService _laboratoryService;
+        private readonly IPermissionService _permissionService;
 
         public AccountController(IUserService userService, IStringLocalizer<AccountController> localizer
-                                , IStringLocalizer<SharedLocalizer.SharedLocalizer> sharedLocalizer , IDoctorsService doctorService ,
-                                    IOrganizationService organizationService , ILaboratoryService laboratoryService)
+                                , IStringLocalizer<SharedLocalizer.SharedLocalizer> sharedLocalizer , IDoctorsService doctorService,
+                                    IOrganizationService organizationService, ILaboratoryService laboratoryService, IPermissionService permissionService)
         {
             _userService = userService;
             _localizer = localizer;
@@ -33,6 +36,7 @@ namespace DoctorFAM.Web.Areas.Laboratory.Controllers
             _doctorService = doctorService;
             _organizationService = organizationService;
             _laboratoryService = laboratoryService;
+            _permissionService = permissionService;
         }
 
         #endregion
@@ -161,6 +165,7 @@ namespace DoctorFAM.Web.Areas.Laboratory.Controllers
 
         #region List Of Current Laboratory Office Employeesadd
 
+        [IsUserLaboratory]
         public async Task<IActionResult> FilterEmployees(FilterLaboratoryOfficeEmployeesViewmodel filter)
         {
             filter.userId = User.GetUserId();
@@ -171,11 +176,19 @@ namespace DoctorFAM.Web.Areas.Laboratory.Controllers
 
         #region create new user
 
+        [IsUserLaboratory]
         public async Task<IActionResult> AddNewUser()
         {
+            #region Page Data
+
+            ViewData["Roles"] = await _permissionService.GetListOfLaboratoryRoles();
+
+            #endregion
+
             return View();
         }
 
+        [IsUserLaboratory]
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> AddNewUser(AddLaboratoryEmployeeViewModel user, IFormFile? UserAvatar)
         {
@@ -192,6 +205,12 @@ namespace DoctorFAM.Web.Areas.Laboratory.Controllers
                     return RedirectToAction("FilterEmployees");
             }
 
+            #region Page Data
+
+            ViewData["Roles"] = await _permissionService.GetListOfLaboratoryRoles();
+
+            #endregion
+
             return View(user);
         }
 
@@ -199,6 +218,7 @@ namespace DoctorFAM.Web.Areas.Laboratory.Controllers
 
         #region Delete Employee From Your Organization 
 
+        [IsUserLaboratory]
         public async Task<IActionResult> DeleteEmployeeFromYourOrganization(ulong id)
         {
             var result = await _organizationService.DeleteEmployeeFromLaboratoryOfficeOrganization(id, User.GetUserId());
