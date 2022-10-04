@@ -1,6 +1,7 @@
 ﻿using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.Requests;
+using DoctorFAM.Domain.Enums.Gender;
 using DoctorFAM.Domain.ViewModels.Admin.HealthHouse;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DeathCertificate;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.HomeVisit;
@@ -16,14 +17,25 @@ namespace DoctorFAM.Domain.Interfaces
     {
         #region Site Side
 
+        //Get Home Visit Request Detail By Request Id
+        Task<HomeVisitRequestDetail?> GetHomeVisitRequestDetailByRequestId(ulong requestId);
+
+        //Get Activated And Home Visit Interests Home Visit For Send Correct Notification For Arrival Home Visit Request 
+        Task<List<string?>> GetActivatedAndDoctorsInterestHomeVisit(ulong countryId, ulong stateId, ulong cityId, Gender gender);
+
         #endregion
 
         #region Doctor Panel Side
+
+        //Check Log For Decline Home Visit Request 
+        Task<List<LogForDeclineHomeVisitRequestFromUser>?> CheckLogForDeclineHomeVisitRequest(ulong userId);
 
         Task<ListOfPayedHomeVisitsRequestsDoctorPanelSideViewModel> ListOfPayedHomeVisitsRequestsDoctorPanelSide(ListOfPayedHomeVisitsRequestsDoctorPanelSideViewModel filter);
 
         Task<ListOfPayedDeathCertificateRequestDoctorSideViewModel> ListOfPayedDeathCertificateRequestsDoctorPanelSide(ListOfPayedDeathCertificateRequestDoctorSideViewModel filter);
 
+        //List Of Your Home Visits Requests Doctor Panel Side
+        Task<ListOfPayedHomeVisitsRequestsDoctorPanelSideViewModel> ListOfYourHomeVisitsRequestsDoctorPanelSide(ListOfPayedHomeVisitsRequestsDoctorPanelSideViewModel filter);
 
         #endregion
 
@@ -36,6 +48,16 @@ namespace DoctorFAM.Domain.Interfaces
         Task<Patient?> GetPatientByRequestId(ulong requestId);
 
         Task<PaitientRequestDetail?> GetRequestPatientDetailByRequestId(ulong requestId);
+
+        #endregion
+
+        #region User Panel 
+
+        //Filter User Home Visit Requests
+        Task<Domain.ViewModels.UserPanel.HealthHouse.HomeVisit.FilterHomeVisitViewModel> FilterListOfUserHomeVisitRequest(Domain.ViewModels.UserPanel.HealthHouse.HomeVisit.FilterHomeVisitViewModel filter);
+
+        //Add Log For Decline Home Visit Request 
+        Task AddLogForDeclineHomeVisitRequest(LogForDeclineHomeVisitRequestFromUser logForDecline);
 
         #endregion
     }

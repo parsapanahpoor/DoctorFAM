@@ -138,6 +138,9 @@
   <data name="Filter" xml:space="preserve">
     <value>فیلتر</value>
   </data>
+  <data name="Finalized" xml:space="preserve">
+    <value>نهایی شده</value>
+  </data>
   <data name="Home Visit Records" xml:space="preserve">
     <value>لیست ویزیت در منزل</value>
   </data>

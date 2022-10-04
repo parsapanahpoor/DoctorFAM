@@ -56,6 +56,10 @@ namespace DoctorFAM.DataLayer.Entities
 
         public OnlineVisitRequestDetail OnlineVisitRequestDetail { get; set; }
 
+        public HomeVisitRequestDetail HomeVisitRequestDetail { get; set; }
+
+        public ICollection<LogForDeclineHomeVisitRequestFromUser> LogForDeclineHomeVisitRequestFromUsers { get; set; }
+
         #endregion
     }
 }

@@ -34,6 +34,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         Task<bool> IsExistAnyDoctorOfficeEmployeeByUserId(ulong userId);
 
+        //Check Is Exist Any Laboratory By This User Id
+        Task<bool> IsExistAnyLaboratoryByUserId(ulong userId);
+
         Task<bool> IsExistAnyPharmacyOfficeEmployeeByUserId(ulong userId);
 
         //Get Organization Members By Organization Id
@@ -47,6 +50,12 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Get Consultant Organization by User Id
         Task<Organization?> GetConsultantOrganizationByUserId(ulong userId);
+
+        //Get Laboratory Organization by User Id
+        Task<Organization?> GetLaboratoryOrganizationByUserId(ulong userId);
+
+        //Delete Employee From Laboratory Office Organization
+        Task<bool> DeleteEmployeeFromLaboratoryOfficeOrganization(ulong employeeId, ulong userId);
 
         #endregion
     }

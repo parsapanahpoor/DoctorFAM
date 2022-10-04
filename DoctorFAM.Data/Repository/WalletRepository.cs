@@ -252,5 +252,15 @@ namespace DoctorFAM.Data.Repository
         }
 
         #endregion
+
+        #region Site Side 
+
+        //Get Home Visit Transaction For Cancelation Home Visit Request 
+        public async Task<Wallet?> GetHomeVisitTransactionForCancelationHomeVisitRequest(ulong requestId)
+        {
+            return await _context.Wallets.Where(p => p.RequestId == requestId).FirstOrDefaultAsync();
+        }
+
+        #endregion
     }
 }

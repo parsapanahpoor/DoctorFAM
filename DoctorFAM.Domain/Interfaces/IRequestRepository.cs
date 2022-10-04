@@ -49,6 +49,9 @@ namespace DoctorFAM.Domain.Interfaces
         //Get Request DateTime Detail By Request Detai lId 
         Task<PatientRequestDateTimeDetail?> GetRequestDateTimeDetailByRequestDetailId(ulong requestId);
 
+        //Add Home Visit Request Detail
+        Task AddHomeVisitRequestDetail(HomeVisitRequestDetail homeVisit);
+
         #endregion
 
         #endregion

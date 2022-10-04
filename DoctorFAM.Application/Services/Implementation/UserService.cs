@@ -14,6 +14,7 @@ using DoctorFAM.Domain.ViewModels.Admin;
 using DoctorFAM.Domain.ViewModels.Admin.Account;
 using DoctorFAM.Domain.ViewModels.Common;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Employees;
+using DoctorFAM.Domain.ViewModels.Laboratory.Employee;
 using DoctorFAM.Domain.ViewModels.Site.Account;
 using DoctorFAM.Domain.ViewModels.UserPanel.Account;
 using Microsoft.AspNetCore.Http;
@@ -32,17 +33,11 @@ namespace DoctorFAM.Application.Services.Implementation
         #region Ctor
 
         private readonly DoctorFAMDbContext _context;
-
         private readonly ISiteSettingService _siteSettingService;
-
         private readonly IViewRenderService _viewRenderService;
-
         private readonly IEmailSender _emailSender;
-
         private readonly IUserRepository _userRepository;
-
         private readonly IOrganizationService _organizationService;
-
         private readonly ISMSService _smsservice;
 
         public UserService(DoctorFAMDbContext context, ISiteSettingService siteSettingService, IViewRenderService viewRenderService,
@@ -370,6 +365,30 @@ namespace DoctorFAM.Application.Services.Implementation
             #endregion
         }
 
+        //Register Labratory
+        public async Task LabratoryConsultant(string mobile)
+        {
+            #region Get User By Mobile
+
+            var user = await GetUserByMobile(mobile);
+
+            #endregion
+
+            #region Add Labratory Role To User
+
+            var userRole = new UserRole()
+            {
+                RoleId = 16,
+                UserId = user.Id
+            };
+
+            await _context.UserRoles.AddAsync(userRole);
+
+            await _context.SaveChangesAsync();
+
+            #endregion
+        }
+
         public async Task RegisterPharmacy(string mobile)
         {
             #region Get User By Mobile
@@ -473,6 +492,18 @@ namespace DoctorFAM.Application.Services.Implementation
             return await _userRepository.GetAdminsAndSupportersNotificationForSendNotificationInOnlineVisit();
         }
 
+        //Get List Of Admins and Supporters User Id For Send Notification For Home Visit
+        public async Task<List<string>?> GetAdminsAndSupportersNotificationForSendNotificationInHomeVisit()
+        {
+            return await _userRepository.GetAdminsAndSupportersNotificationForSendNotificationInHomeVisit();
+        }
+
+        //Get List Of Admins and Supporters User Id For Send Notification For Death Certificate
+        public async Task<List<string>?> GetAdminsAndSupportersNotificationForSendNotificationInDeathCertificate()
+        {
+            return await _userRepository.GetAdminsAndSupportersNotificationForSendNotificationInDeathCertificate();
+        }
+
         //Get List Of Admins and Supporters 
         public async Task<List<string>?> GetAllAdminsAndSupportersNotification()
         {
@@ -495,6 +526,18 @@ namespace DoctorFAM.Application.Services.Implementation
         public async Task<List<User>?> GetHomePharmacySupporters()
         {
             return await _userRepository.GetHomePharmacySupporters();
+        }
+
+        //Get Home Visit Supporters
+        public async Task<List<User>?> GetHomeVisitSupporters()
+        {
+            return await _userRepository.GetHomeVisitSupporters();
+        }
+
+        //Get Death Certificate Supporters
+        public async Task<List<User>?> GetDeathCertificateSupporters()
+        {
+            return await _userRepository.GetDeathCertificateSupporters();
         }
 
         //Get Online Visit Supporters
@@ -922,6 +965,93 @@ namespace DoctorFAM.Application.Services.Implementation
             return AddNewUserResult.Success;
         }
 
+        //Create User From Laboratory Panel
+        public async Task<AddNewUserResult> CreateUserFromLaboratoryPanel(AddLaboratoryEmployeeViewModel user, IFormFile? avatar, ulong MasterId)
+        {
+            #region Model State Validation 
+
+            if (await IsExistUserByMobile(user.Mobile))
+            {
+                return AddNewUserResult.DuplicateMobileNumber;
+            }
+
+            #endregion
+
+            #region Add New User
+
+            var newUser = new User()
+            {
+                CreateDate = DateTime.Now,
+                Mobile = user.Mobile.SanitizeText(),
+                Password = PasswordHasher.EncodePasswordMd5(user.Password.SanitizeText()),
+                IsAdmin = false,
+                EmailActivationCode = CodeGenerator.GenerateUniqCode(),
+                MobileActivationCode = CodeGenerator.GenerateUniqCode(),
+                IsEmailConfirm = true,
+                IsMobileConfirm = true,
+                Username = user.Mobile.SanitizeText(),
+            };
+
+            if (avatar != null && avatar.IsImage())
+            {
+                var imageName = CodeGenerator.GenerateUniqCode() + Path.GetExtension(avatar.FileName);
+                avatar.AddImageToServer(imageName, PathTools.UserAvatarPathServer, 270, 270, PathTools.UserAvatarPathThumbServer);
+                newUser.Avatar = imageName;
+            }
+
+            await _context.Users.AddAsync(newUser);
+            await _context.SaveChangesAsync();
+
+            #endregion
+
+            #region Get Organization By User Id 
+
+            var organization = await _organizationService.GetLaboratoryOrganizationByUserId(MasterId);
+            if (organization == null) return AddNewUserResult.DuplicateMobileNumber;
+
+            #endregion
+
+            #region Add New Organization Member
+
+            OrganizationMember member = new OrganizationMember()
+            {
+                UserId = newUser.Id,
+                OrganizationId = organization.Id
+            };
+
+            await _context.OrganizationMembers.AddAsync(member);
+            await _context.SaveChangesAsync();
+
+            #endregion
+
+            #region Add User Roles
+
+            var userRole1 = new UserRole()
+            {
+                RoleId = 17,
+                UserId = newUser.Id
+            };
+            await _context.AddAsync(userRole1);
+
+            if (user.UserRoles != null && user.UserRoles.Any())
+            {
+                foreach (var roleId in user.UserRoles)
+                {
+                    var userRole = new UserRole()
+                    {
+                        RoleId = roleId,
+                        UserId = newUser.Id
+                    };
+                    await _context.AddAsync(userRole);
+                }
+
+                await _context.SaveChangesAsync();
+            }
+
+            #endregion
+
+            return AddNewUserResult.Success;
+        }
 
         public async Task<UserPanelEditUserInfoViewModel> FillUserPanelEditUserInfoViewModel(ulong userId)
         {

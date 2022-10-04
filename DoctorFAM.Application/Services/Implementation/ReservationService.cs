@@ -207,6 +207,12 @@ namespace DoctorFAM.Application.Services.Implementation
             return await _reservation.FilterDoctorReservationDateSide(filter);
         }
 
+        //List Of Doctor Reservation Date After Date Time Now
+        public async Task<List<DoctorReservationDate>> ListOfDoctorReservationDateAfterDateTimeNow(ulong userId)
+        {
+            return await _reservation.ListOfDoctorReservationDateAfterDateTimeNow(userId);
+        }
+
         public async Task<FilterAppointmentViewModel> FiltrDoctorReservationDateHistory(FilterAppointmentViewModel filter)
         {
             return await _reservation.FiltrDoctorReservationDateHistory(filter);

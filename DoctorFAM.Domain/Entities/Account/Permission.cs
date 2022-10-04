@@ -1,4 +1,5 @@
 ﻿using DoctorFAM.Domain.Entities.Common;
+using DoctorFAM.Domain.Enums.Permission;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -21,6 +22,8 @@ namespace DoctorFAM.Domain.Entities.Account
         public string PermissionUniqueName { get; set; }
 
         public ulong? ParentId { get; set; }
+
+        public PermissionType PermissionType { get; set; }
 
         #endregion
     }

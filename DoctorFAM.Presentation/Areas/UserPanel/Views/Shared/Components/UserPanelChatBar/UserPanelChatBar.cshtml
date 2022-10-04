@@ -58,6 +58,18 @@
                                 {
                                     <div>پیام جدید از درخواست مشاوره</div>
                                 }
+                                @if (item.SupporterNotificationText == DoctorFAM.Domain.Enums.Notification.SupporterNotificationText.HomeVisitRequest)
+                                {
+                                    <div>درخواست برای ویزیت درمنزل</div>
+                                }
+                                @if (item.SupporterNotificationText == DoctorFAM.Domain.Enums.Notification.SupporterNotificationText.AcceptHomeVisitRequestFromDoctor)
+                                {
+                                    <div>تایید درخواست ویزیت درمنزل از طرف پزشک</div>
+                                }
+                                @if (item.SupporterNotificationText == DoctorFAM.Domain.Enums.Notification.SupporterNotificationText.AcceptDeathCertificateRequestFromDoctor)
+                                {
+                                    <div>تایید درخواست گواهی فوت از طرف پزشک</div>
+                                }
                             </div>
                         </div>
                     </li>

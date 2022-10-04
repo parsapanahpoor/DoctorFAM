@@ -1,5 +1,6 @@
 ﻿using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Common;
+using DoctorFAM.Domain.Enums.Gender;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -24,6 +25,8 @@ namespace DoctorFAM.Domain.Entities.Doctors
         public string? Specialty { get; set; }
 
         public string MediacalFile { get; set; }
+
+        public Gender Gender { get; set; }
 
         #endregion
 

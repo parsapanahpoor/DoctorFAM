@@ -19,6 +19,9 @@ namespace DoctorFAM.Application.Services.Interfaces
     {
         #region Doctor Panel
 
+        //List Of Doctor Reservation Date After Date Time Now
+        Task<List<DoctorReservationDate>> ListOfDoctorReservationDateAfterDateTimeNow(ulong userId);
+
         //Add Reservation Date Time With Coputer   
         Task<bool> AddReservationDateTimeWithCoputer(AddReservationDateTimeWithComputerViewModel model, ulong userId);
 

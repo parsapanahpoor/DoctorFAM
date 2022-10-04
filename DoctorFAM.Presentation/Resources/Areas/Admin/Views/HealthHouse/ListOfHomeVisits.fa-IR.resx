@@ -117,8 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Accepted From Doctor" xml:space="preserve">
+    <value>دریافت تایید پزشک</value>
+  </data>
   <data name="Awaiting Payment" xml:space="preserve">
     <value>درانتظار پرداخت</value>
+  </data>
+  <data name="Canceled" xml:space="preserve">
+    <value>لغو شده</value>
   </data>
   <data name="Date Time" xml:space="preserve">
     <value>تاریخ</value>
@@ -134,6 +140,9 @@
   </data>
   <data name="Filter" xml:space="preserve">
     <value>فیلتر</value>
+  </data>
+  <data name="Finalized" xml:space="preserve">
+    <value>نهایی شده</value>
   </data>
   <data name="Home Visit Records" xml:space="preserve">
     <value>لیست ویزیت در منزل</value>

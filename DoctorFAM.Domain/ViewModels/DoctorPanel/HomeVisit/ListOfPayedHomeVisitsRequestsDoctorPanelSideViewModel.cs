@@ -28,6 +28,8 @@ namespace DoctorFAM.Domain.ViewModels.DoctorPanel.HomeVisit
 
         public string? UserEmail { get; set; }
 
+        public ulong DoctorId { get; set; }
+
         public FilterRequestAdminSideOrder FilterRequestAdminSideOrder { get; set; }
 
         #endregion

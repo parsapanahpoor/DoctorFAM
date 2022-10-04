@@ -58,6 +58,13 @@ namespace DoctorFAM.Data.Repository
             await _context.SaveChangesAsync();
         }
 
+        //Add Home Visit Request Detail
+        public async Task AddHomeVisitRequestDetail(HomeVisitRequestDetail homeVisit)
+        {
+            await _context.HomeVisitRequestDetails.AddAsync(homeVisit);
+            await _context.SaveChangesAsync();
+        }
+
         //Get Request Transfering Price From Operator 
         public async Task<RequestTransferingPriceFromOperator?> GetRequestTransferingPriceFromOperator(ulong sellerId , ulong requestId)
         {

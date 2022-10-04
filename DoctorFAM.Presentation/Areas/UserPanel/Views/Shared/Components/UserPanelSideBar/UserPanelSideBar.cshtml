@@ -68,7 +68,7 @@
 
             <ul class="submenu">
                 <li>
-                    <a asp-action="ListOfHomeVisits" asp-controller="HealthHouse" asp-area="UserPanel">
+                    <a asp-action="FilterHomeVisitViewModel" asp-controller="HomeVisit" asp-area="UserPanel">
                         <span class="menu-text"> @SharedLocalizer["Home Visit"] </span>
                     </a>
                 </li>
@@ -103,7 +103,7 @@
             </ul>
             <ul class="submenu">
                 <li>
-                    <a asp-action="ListOfDeathCertificate" asp-area="UserPanel" asp-controller="HealthHouse">
+                    <a asp-action="ListOfCurrentUserDeathCertificateRequests" asp-area="UserPanel" asp-controller="DeathCertificate">
                         <span class="menu-text"> @SharedLocalizer["Death Certificate"] </span>
                     </a>
                 </li>

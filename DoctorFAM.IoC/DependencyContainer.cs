@@ -52,6 +52,7 @@ namespace DoctorFAM.IoC
             services.AddScoped<ITicketService , TicketService>();
             services.AddScoped<INurseService , NurseService>();
             services.AddScoped<IConsultantService , ConsultantService>();
+            services.AddScoped<ILaboratoryService , LaboratoryService>();
 
             #endregion
 
@@ -85,6 +86,7 @@ namespace DoctorFAM.IoC
             services.AddScoped<ITicketRepository , TicketRepository>();
             services.AddScoped<INurseRepository , NurseRepository>();
             services.AddScoped<IConsultantRepository , ConsultantRepository>();
+            services.AddScoped<ILaboratoryRepository , LaboratoryRepository>();
 
             #endregion
         }

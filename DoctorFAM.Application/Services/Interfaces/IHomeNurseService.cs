@@ -12,9 +12,9 @@ namespace DoctorFAM.Application.Services.Interfaces
     {
         #region Site Side
 
-        Task<bool> ChargeUserWallet(ulong userId, int price);
+        Task<bool> ChargeUserWallet(ulong userId, int price, ulong requestId);
 
-        Task<bool> PayHomeNurseTariff(ulong userId, int price);
+        Task<bool> PayHomeNurseTariff(ulong userId, int price , ulong requestId);
 
         Task<ulong> CreatePatientDetailByPopulationCovered(ulong populationId, ulong requestId, ulong userId);
 

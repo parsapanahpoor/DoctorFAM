@@ -129,8 +129,14 @@
   <data name="Email" xml:space="preserve">
     <value>ایمیل</value>
   </data>
+  <data name="Emergency Request" xml:space="preserve">
+    <value>اورژانسی</value>
+  </data>
   <data name="Empty" xml:space="preserve">
     <value>پرنشده</value>
+  </data>
+  <data name="Female Doctor" xml:space="preserve">
+    <value>پزشک خانم</value>
   </data>
   <data name="Filter" xml:space="preserve">
     <value>فیلتر</value>
@@ -140,6 +146,12 @@
   </data>
   <data name="Mobile" xml:space="preserve">
     <value>موبایل</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>خیر</value>
+  </data>
+  <data name="Option" xml:space="preserve">
+    <value>ویژگی</value>
   </data>
   <data name="Options" xml:space="preserve">
     <value>امکانات</value>
@@ -173,5 +185,8 @@
   </data>
   <data name="Username" xml:space="preserve">
     <value>نام کاربری</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>بله</value>
   </data>
 </root>

@@ -79,17 +79,23 @@
                         <div class="widget-body">
                             <div class="row">
 
-                                <div class="form-group col-md-6 col-sm-12">
+                                <div class="form-group col-md-4 col-sm-12">
                                     <label asp-for="NationalCode"></label>
                                     <input type="text" class="form-control" asp-for="NationalCode">
                                     <span class="text-danger" asp-validation-for="NationalCode"></span>
                                 </div>
 
-                                <div class="form-group col-md-6 col-sm-12">
+                                <div class="form-group col-md-4 col-sm-12">
                                     <label asp-for="MedicalSystemCode"></label>
                                     <input type="text" class="form-control" asp-for="MedicalSystemCode">
                                     <span class="text-danger" asp-validation-for="MedicalSystemCode"></span>
                                 </div>
+
+                                   <div class="form-group col-md-4 col-sm-12">
+                                <label asp-for="Gender"></label>
+                                <select asp-for="Gender" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.Gender.Gender))"></select>
+                                <span class="text-danger" asp-validation-for="Gender"></span>
+                            </div>
 
                                  <div class="form-group col-md-6 col-sm-12">
                                     <label asp-for="FirstName"></label>

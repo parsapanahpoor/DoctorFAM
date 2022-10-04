@@ -128,8 +128,6 @@
                                         <img src="@request.User.GetUserAvatar()" class="avatar-style" style="border-radius:50px;" />
                                         <div class="mr-10px">
                                             <span> @request.User.Username </span>
-                                            <hr class="margin-7" />
-                                            <span>@Localizer["Register Date"] : @request.User.CreateDate.ToShamsi()</span>
                                         </div>
                                     </div>
                                 </td>
@@ -178,6 +176,20 @@
                                             <span class="mr-8px label label-danger"> @Localizer["Awaiting Payment"]   </span>
                                         }
 
+                                        @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.SelectedFromDoctor)
+                                        {
+                                            <span class="mr-8px label label-primary"> @Localizer["Accepted From Doctor"]   </span>
+                                        }
+
+                                        @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.Finalized)
+                                        {
+                                            <span class="mr-8px label label-primary" style="    background-image: linear-gradient(#ff00cc, #333399) !important;"> @Localizer["Finalized"]   </span>
+                                        }
+
+                                        @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.Canceled)
+                                        {
+                                            <span class="mr-8px label label-danger"> @Localizer["Canceled"] </span>
+                                        }
                                     </p>
                                 </td>
 

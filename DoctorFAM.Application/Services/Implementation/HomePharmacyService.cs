@@ -59,7 +59,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
         #region Site Side
 
-        public async Task<bool> ChargeUserWallet(ulong userId, int price)
+        public async Task<bool> ChargeUserWallet(ulong userId, int price , ulong requestId)
         {
             if (!await _userService.IsExistUserById(userId))
             {
@@ -74,14 +74,15 @@ namespace DoctorFAM.Application.Services.Implementation
                 PaymentType = PaymentType.ChargeWallet,
                 Price = price,
                 Description = "شارژ حساب کاربری برای پرداخت هزینه ی ویزیت در منزل",
-                IsFinally = true
+                IsFinally = true ,
+                RequestId = requestId
             };
 
             await _walletRepository.CreateWalletAsync(wallet);
             return true;
         }
 
-        public async Task<bool> PayHomePharmacyTariff(ulong userId, int price)
+        public async Task<bool> PayHomePharmacyTariff(ulong userId, int price , ulong requestId)
         {
             if (!await _userService.IsExistUserById(userId))
             {
@@ -96,7 +97,8 @@ namespace DoctorFAM.Application.Services.Implementation
                 PaymentType = PaymentType.HomePharmacy,
                 Price = price,
                 Description = "پرداخت مبلغ آزمایشگاه در منزل",
-                IsFinally = true
+                IsFinally = true,
+                RequestId = requestId
             };
 
             await _walletRepository.CreateWalletAsync(wallet);

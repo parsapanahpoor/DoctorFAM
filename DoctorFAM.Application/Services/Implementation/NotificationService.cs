@@ -1,4 +1,5 @@
 ﻿using DoctorFAM.Application.Services.Interfaces;
+using DoctorFAM.Data.Repository;
 using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.Notification;
@@ -25,10 +26,12 @@ namespace DoctorFAM.Application.Services.Implementation
         private readonly IOnlineVisitService _onlineVisitService;
         private readonly INurseService _nurseService;
         private readonly IConsultantService _consultantService;
+        private readonly IHomeVisitService _homeVisitService;
+        private readonly IDeathCertificateService _deathCertificteService;
 
         public NotificationService(INotificationRepository notificationService, IUserService userService,
                                     IRequestService requestService, IHomePharmacyServicec homePharmacyService, IReservationService reservationService
-                                        , IOnlineVisitService onlineVisitService, INurseService nurseService, IConsultantService consultantService)
+                                        , IOnlineVisitService onlineVisitService, INurseService nurseService, IConsultantService consultantService, IHomeVisitService homeVisitService, IDeathCertificateService deathCertificteService)
         {
             _notificationService = notificationService;
             _userService = userService;
@@ -38,6 +41,8 @@ namespace DoctorFAM.Application.Services.Implementation
             _onlineVisitService = onlineVisitService;
             _nurseService = nurseService;
             _consultantService = consultantService;
+            _homeVisitService = homeVisitService;
+            _deathCertificteService = deathCertificteService;
         }
 
         #endregion
@@ -285,6 +290,46 @@ namespace DoctorFAM.Application.Services.Implementation
             return true;
         }
 
+        //Create Notification For Admin About Insert Information From Laboratory
+        public async Task<bool> CreateNotificationForAdminAboutInsertInformationFromLaboratory(ulong targetId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId)
+        {
+            #region Get Admins  
+
+            List<User> user = new List<User>();
+
+            //Get Admins
+            var admins = await _userService.GetListOfAdmins();
+            user.AddRange(admins);
+
+            #endregion
+
+            #region Fill Notification Entity
+
+            List<SupporterNotification> model = new List<SupporterNotification>();
+
+            foreach (var item in user)
+            {
+                SupporterNotification notif = new SupporterNotification()
+                {
+                    CreateDate = DateTime.Now,
+                    IsDelete = false,
+                    IsSeen = false,
+                    SupporterNotificationText = SupporterNotificationText,
+                    TargetId = targetId,
+                    UserId = senderId,
+                    ReciverId = item.Id,
+                };
+
+                model.Add(notif);
+            };
+
+            await _notificationService.CreateRangeSupporter(model);
+
+            #endregion
+
+            return true;
+        }
+
         //Create Notification For Admin And Supporters
         public async Task<bool> CreateSupporterNotification(ulong targetId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId)
         {
@@ -343,6 +388,25 @@ namespace DoctorFAM.Application.Services.Implementation
             {
                 //Get Supporters
                 var supporters = await _userService.GetListOfSupporters();
+                user.AddRange(supporters);
+            }
+
+            if (SupporterNotificationText == SupporterNotificationText.HomeVisitRequest
+                || SupporterNotificationText == SupporterNotificationText.AcceptHomeVisitRequestFromDoctor 
+                || SupporterNotificationText == SupporterNotificationText.AcceptHomeVisitRequestFromUser
+                || SupporterNotificationText == SupporterNotificationText.CancelHomeVisitRequest
+                || SupporterNotificationText == SupporterNotificationText.DeclineHomeVisitRequestFromUser)
+            {
+                //Get Supporters
+                var supporters = await _userService.GetHomeVisitSupporters();
+                user.AddRange(supporters);
+            }
+
+            if (SupporterNotificationText == SupporterNotificationText.AcceptDeathCertificateRequestFromDoctor
+                || SupporterNotificationText == SupporterNotificationText.NewArrivalDeathCertificateRequest)
+            {
+                //Get Supporters
+                var supporters = await _userService.GetDeathCertificateSupporters();
                 user.AddRange(supporters);
             }
 
@@ -438,6 +502,42 @@ namespace DoctorFAM.Application.Services.Implementation
         #endregion
 
         #region User Panel Side 
+
+        //Create Notification For Send Accept Home Visit Request From User 
+        public async Task<bool> CreateNotificationForSendAcceptHomeVisitRequestFromUserPanel(ulong targetId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId)
+        {
+            #region Get request 
+
+            //Get request
+            var request = await _requestService.GetRequestById(targetId);
+            if (request == null) return false;
+            if (request.OperationId == null) return false;
+
+            #endregion
+
+            #region Fill Notification Entity
+
+            List<SupporterNotification> model = new List<SupporterNotification>();
+
+            SupporterNotification notif = new SupporterNotification()
+            {
+                CreateDate = DateTime.Now,
+                IsDelete = false,
+                IsSeen = false,
+                SupporterNotificationText = SupporterNotificationText,
+                TargetId = targetId,
+                UserId = senderId,
+                ReciverId = request.OperationId.Value,
+            };
+
+            model.Add(notif);
+
+            await _notificationService.CreateRangeSupporter(model);
+
+            #endregion
+
+            return true;
+        }
 
         //Create Notification For Send Message Of Consultant
         public async Task<bool> CreateNotificationForSendMessageOfConsultant(ulong targetId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId)
@@ -677,9 +777,96 @@ namespace DoctorFAM.Application.Services.Implementation
             return true;
         }
 
+        //Create Notification For Death Certificate Doctors 
+        public async Task<bool> CreateNotificationForDeathCertificateDoctors(ulong targetId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId)
+        {
+            #region Get Doctors 
+
+            List<string> user = new List<string>();
+
+            //Get Doctors That In Death Certificate Interests
+            var doctor = await _deathCertificteService.GetActivatedAndDoctorsInterestDeathCertificate(targetId);
+            user.AddRange(doctor);
+
+            #endregion
+
+            #region Check target 
+
+            //If Target is Request
+            if (notification == NotificationTarget.request)
+            {
+                var request = await _requestService.GetRequestById(targetId);
+                if (request == null) return false;
+            }
+
+            #endregion
+
+            #region Fill Notification Entity
+
+            List<SupporterNotification> model = new List<SupporterNotification>();
+
+            foreach (var item in user)
+            {
+                SupporterNotification notif = new SupporterNotification()
+                {
+                    CreateDate = DateTime.Now,
+                    IsDelete = false,
+                    IsSeen = false,
+                    SupporterNotificationText = SupporterNotificationText,
+                    TargetId = targetId,
+                    UserId = senderId,
+                    ReciverId = (ulong)Convert.ToInt64(item),
+                };
+
+                model.Add(notif);
+            };
+
+            await _notificationService.CreateRangeSupporter(model);
+
+            #endregion
+
+            return true;
+        }
+
         #endregion
 
         #region Doctor User Panel 
+
+        //Create Notification For Send Accept Home Visit Request
+        public async Task<bool> CreateNotificationForSendAcceptHomeVisitRequest(ulong targetId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId)
+        {
+            #region Get request 
+
+            //Get request
+            var request = await _requestService.GetRequestById(targetId);
+            if (request == null) return false;
+            if (request.OperationId == null) return false;
+
+            #endregion
+
+            #region Fill Notification Entity
+
+            List<SupporterNotification> model = new List<SupporterNotification>();
+
+            SupporterNotification notif = new SupporterNotification()
+            {
+                CreateDate = DateTime.Now,
+                IsDelete = false,
+                IsSeen = false,
+                SupporterNotificationText = SupporterNotificationText,
+                TargetId = targetId,
+                UserId = senderId,
+                ReciverId = request.UserId,
+            };
+
+            model.Add(notif);
+
+            await _notificationService.CreateRangeSupporter(model);
+
+            #endregion
+
+            return true;
+        }
 
         //Create Notification For Send Message Of Online Visit
         public async Task<bool> CreateNotificationForSendMessageOfOnlineVisitFromDoctorPanel(ulong targetId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId)
@@ -715,6 +902,72 @@ namespace DoctorFAM.Application.Services.Implementation
             #endregion
 
             return true;
+        }
+
+        //Create Notification For Home Visit Doctors 
+        public async Task<bool> CreateNotificationForHomeVisitDoctors(ulong targetId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId)
+        {
+            #region Get Doctors 
+
+            List<string> user = new List<string>();
+
+            //Get Doctors That In Home Visit Interests
+            var doctor = await _homeVisitService.GetActivatedAndDoctorsInterestHomeVisit(targetId);
+            user.AddRange(doctor);
+
+            #endregion
+
+            #region Fill Notification Entity
+
+            List<SupporterNotification> model = new List<SupporterNotification>();
+
+            foreach (var item in user)
+            {
+                SupporterNotification notif = new SupporterNotification()
+                {
+                    CreateDate = DateTime.Now,
+                    IsDelete = false,
+                    IsSeen = false,
+                    SupporterNotificationText = SupporterNotificationText,
+                    TargetId = targetId,
+                    UserId = senderId,
+                    ReciverId = (ulong)Convert.ToInt64(item),
+                };
+
+                model.Add(notif);
+            };
+
+            await _notificationService.CreateRangeSupporter(model);
+
+            #endregion
+
+            return true;
+        }
+
+        //Get List Of Doctors For Send Notification For Home Visit Notification 
+        public async Task<List<string?>> GetListOfDoctorsForArrivalsHomeVisitRequests(ulong requestId)
+        {
+            #region Get Request By Id 
+
+            var request = await _requestService.GetRequestById(requestId);
+            if (request == null) return null;
+
+            #endregion
+
+            #region Get Request Detail 
+
+            var requetsDetail = await _requestService.GetPatientRequestDetailByRequestId(requestId);
+            if (requetsDetail == null) return null;
+
+            #endregion
+
+            #region Get Activated Doctor By Home Visit Interests And Location Address
+
+            var doctor = await _homeVisitService.GetActivatedAndDoctorsInterestHomeVisit(requestId);
+
+            #endregion
+
+            return doctor;
         }
 
         #endregion

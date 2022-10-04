@@ -50,7 +50,7 @@ namespace DoctorFAM.Domain.ViewModels.Site.Common
         public int Distance { get; set; }
 
         [Required(ErrorMessage = "لطفا{0} را وارد نمایید...")]
-        [Display(Name = "تاریخ مراجعه ی پرستار ")]
+        [Display(Name = "تاریخ مراجعه   ")]
         [RegularExpression(@"^\d{4}\/(0?[1-9]|1[012])\/(0?[1-9]|[12][0-9]|3[01])$", ErrorMessage = "تاریخ وارد شده معتبر نمی باشد")]
         public string SendDate { get; set; }
 

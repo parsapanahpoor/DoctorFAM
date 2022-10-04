@@ -178,6 +178,11 @@
                                             <span class="mr-8px label label-danger"> @Localizer["Awaiting Payment"]   </span>
                                         }
 
+                                        @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.Finalized)
+                                        {
+                                            <span class="mr-8px label label-primary" style="  background-image: linear-gradient(#ff00cc, #333399) !important;"> @Localizer["Finalized"]   </span>
+                                        }
+
                                     </p>
                                 </td>
                                

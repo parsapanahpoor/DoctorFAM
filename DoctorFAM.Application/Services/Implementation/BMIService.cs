@@ -88,6 +88,72 @@ namespace DoctorFAM.Application.Services.Implementation
             return model;
         }
 
+        //Process GFR From Site With User Informations 
+        public async Task<GFR> ProcessGFR(GFRViewModel gfr, ulong? userId)
+        {
+            #region Proccess GFR Result 
+
+            var header = ((140 - gfr.Age) * gfr.Weight);
+
+            var footer = (72 * gfr.Keratenin);
+
+            var res = header / footer;
+
+            if (gfr.Gender == Domain.Enums.Gender.Gender.Female)
+            {
+                res = (res * 85) / 100;
+            }
+
+            #endregion
+
+            #region Fill Entity
+
+            GFR model = new GFR()
+            {
+                CreateDate = DateTime.Now,
+                Weight = gfr.Weight,
+                Keratenin = gfr.Keratenin,
+                Gender = gfr.Gender,
+                GFRResult = res,
+                Age = gfr.Age ,
+            };
+
+            #endregion
+
+            #region GFR Result State 
+
+            if (res < 15) model.GFRtResultState = Domain.Enums.Diabet_Results.GFRResult.DarkRed;
+            if (15 < res && res <= 30) model.GFRtResultState = Domain.Enums.Diabet_Results.GFRResult.Red;
+            if (30 < res && res <= 45) model.GFRtResultState = Domain.Enums.Diabet_Results.GFRResult.Orange;
+            if (45 < res && res <= 60) model.GFRtResultState = Domain.Enums.Diabet_Results.GFRResult.Yellow;
+            if (60 < res && res <= 90) model.GFRtResultState = Domain.Enums.Diabet_Results.GFRResult.Green;
+            if (90 < res && res <= 120) model.GFRtResultState = Domain.Enums.Diabet_Results.GFRResult.DarkGreen;
+
+            #endregion
+
+            #region If User is Loged In 
+
+            if (userId != null)
+            {
+                if (await _userService.IsExistUserById(userId.Value))
+                {
+                    var user = await _userService.GetUserById(userId.Value);
+
+                    model.UserId = userId;
+                }
+            }
+
+            #endregion
+
+            #region Add Method
+
+            await _bmiRepository.CreateGFR(model);
+
+            #endregion
+
+            return model;
+        }
+
         #endregion
 
         #region User Panel 
@@ -105,6 +171,25 @@ namespace DoctorFAM.Application.Services.Implementation
             #region Get User BMI History
 
             var model = await _bmiRepository.GetUserBMIHistory(userId);
+
+            #endregion
+
+            return model;
+        }
+
+        //Get List Of User GFR History
+        public async Task<List<GFR>?> GetListOfUserGFRHistory(ulong userId)
+        {
+            #region Get User By Id 
+
+            var user = await _userService.GetUserById(userId);
+            if (user == null) return null;
+
+            #endregion
+
+            #region Get User GFR History
+
+            var model = await _bmiRepository.GetUserGFRHistory(userId);
 
             #endregion
 

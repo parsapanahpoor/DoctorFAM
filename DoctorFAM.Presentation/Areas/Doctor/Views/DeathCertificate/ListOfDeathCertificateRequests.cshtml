@@ -117,8 +117,6 @@
                                         <img src="@request.User.GetUserAvatar()" class="avatar-style" style="border-radius:50px;" />
                                         <div class="mr-10px">
                                             <span> @request.User.Username </span>
-                                            <hr class="margin-7" />
-                                            <span>@Localizer["Register Date"] : @request.User.CreateDate.ToShamsi()</span>
                                         </div>
                                     </div>
                                 </td>
@@ -129,8 +127,8 @@
                                 </td>
 
                                 <td class="tc vm">
-@*                                    <a asp-action="HomeVisitRequestDetail" asp-controller="HomeVisit" asp-area="Doctor" asp-route-requestId="@request.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
-*@                                </td>
+                                    <a asp-action="DeathCertificateRequestDetail" asp-controller="DeathCertificate" asp-area="Doctor" asp-route-requestId="@request.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+                                </td>
                             </tr>
                         }
                     </tbody>

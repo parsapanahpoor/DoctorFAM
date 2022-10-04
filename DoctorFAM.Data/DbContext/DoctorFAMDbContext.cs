@@ -91,6 +91,10 @@ namespace DoctorFAM.Data.DbContext
 
         public DbSet<RequestTransferingPriceFromOperator> TransferingPriceFromOperators{ get; set; }
 
+        public DbSet<HomeVisitRequestDetail> HomeVisitRequestDetails { get; set; }
+
+        public DbSet<LogForDeclineHomeVisitRequestFromUser> LogForDeclineHomeVisitRequestFromUser { get; set; }
+
         #endregion
 
         #region Language
@@ -215,6 +219,8 @@ namespace DoctorFAM.Data.DbContext
 
         public DbSet<BMI> BMI { get; set; }
 
+        public DbSet<GFR> GFR { get; set; }
+
         #endregion
 
         #region Online Visit Request Detail
@@ -252,6 +258,14 @@ namespace DoctorFAM.Data.DbContext
         public DbSet<ConsultantInfo> ConsultantInfos { get; set; }
 
         public DbSet<UserSelectedConsultant> UserSelectedConsultants { get; set; }
+
+        #endregion
+
+        #region Laboratory 
+
+        public DbSet<Laboratory> Laboratory { get; set; }
+
+        public DbSet<LaboratoryInfo> LaboratoryInfos { get; set; }
 
         #endregion
 
@@ -454,6 +468,36 @@ namespace DoctorFAM.Data.DbContext
                 CreateDate = DateTime.Now,
                 IsDelete = false,
                 ParentId = null
+            });
+
+            modelBuilder.Entity<Role>().HasData(new Role
+            {
+                Id = 16,
+                Title = "Labratory",
+                RoleUniqueName = "Labratory",
+                CreateDate = DateTime.Now,
+                IsDelete = false,
+                ParentId = null
+            });
+
+            modelBuilder.Entity<Role>().HasData(new Role
+            {
+                Id = 17,
+                Title = "LaboratoryOfficeEmployee",
+                RoleUniqueName = "LaboratoryOfficeEmployee",
+                CreateDate = DateTime.Now,
+                IsDelete = false,
+                ParentId = null
+            });
+
+            modelBuilder.Entity<Role>().HasData(new Role
+            {
+                Id = 18,
+                Title = "نمونه گیر",
+                RoleUniqueName = "LaboratorySampler",
+                CreateDate = DateTime.Now,
+                IsDelete = false,
+                ParentId = 17
             });
 
             #endregion

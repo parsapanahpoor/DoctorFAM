@@ -1,0 +1,35 @@
+﻿@inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
+
+
+    <script>
+     function DeleteAjax(removeElementId, url) {
+        Swal.fire({
+            title: '@SharedHtmlLocalizer["Sweet Alert Announcement"]',
+            text: "@SharedHtmlLocalizer["Sweet Alert Question"]",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '@SharedHtmlLocalizer["Sweet Alert Yes Answer"]',
+            cancelButtonText: '@SharedHtmlLocalizer["Sweet Alert No Answer"]',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.get(url).then(res => {
+                    if (removeElementId !== null &&
+                        removeElementId !== undefined &&
+                        removeElementId !== '' &&
+                        res.status === "Success") {
+                        ShowMessage("@SharedHtmlLocalizer["Sweet Alert Announcement"]", "@SharedHtmlLocalizer["Sweet Alert Success Message"]", "success");
+                        $('[remove-ajax-item=' + removeElementId + ']').fadeOut(1000);
+                    } else if (removeElementId !== null &&
+                        removeElementId !== undefined &&
+                        removeElementId !== '' &&
+                        res.status === "Error") {
+                        ShowMessage("@SharedHtmlLocalizer["Sweet Alert Announcement"]", "@SharedHtmlLocalizer["Sweet Alert Failed Message"]", "error");
+                    }
+                });
+            }
+        });
+    }
+</script>
+

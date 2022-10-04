@@ -5,10 +5,12 @@ using DoctorFAM.Domain.Entities.Contact;
 using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.FamilyDoctor;
+using DoctorFAM.Domain.Entities.Laboratory;
 using DoctorFAM.Domain.Entities.Notification;
 using DoctorFAM.Domain.Entities.Nurse;
 using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.Entities.Pharmacy;
+using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Entities.WorkAddress;
 using System;
 using System.Collections.Generic;
@@ -119,6 +121,8 @@ namespace DoctorFAM.Domain.Entities.Account
 
         public Consultant.Consultant Consultant { get; set; }
 
+        public Laboratory.Laboratory Laboratory { get; set; }
+
         public Pharmacy.Pharmacy Pharmacy { get; set; }
 
         public ICollection<Organization.Organization> Organization { get; set; }
@@ -136,6 +140,8 @@ namespace DoctorFAM.Domain.Entities.Account
         public ICollection<SupporterNotification> SupporterNotifications { get; set; }
 
         public ICollection<BMI.BMI> BMI { get; set; }
+
+        public ICollection<BMI.GFR> GFR { get; set; }
 
         public ICollection<HomePharmacyRequestDetailPrice> HomePharmacyRequestDetailPrices { get; set; }
 
@@ -156,6 +162,8 @@ namespace DoctorFAM.Domain.Entities.Account
 
         [InverseProperty("Patient")]
         public ICollection<UserSelectedConsultant> PatientForConsultant { get; set; }
+
+        public ICollection<LogForDeclineHomeVisitRequestFromUser> LogForDeclineHomeVisitRequestFromUsers { get; set; }
 
         #endregion
     }

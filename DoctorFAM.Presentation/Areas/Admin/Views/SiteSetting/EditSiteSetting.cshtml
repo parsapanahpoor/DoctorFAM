@@ -1,34 +1,34 @@
 ﻿@using DoctorFAM.Application.StaticTools
 @model DoctorFAM.Domain.ViewModels.Admin.SiteSetting.EditSiteSettingViewModel
 @{
-    ViewData["Title"] =@Localizer["Site Setting"];
+    ViewData["Title"] = @Localizer["Site Setting"];
 }
 
 @section Scripts
-{
-<partial name="_JqueryValidation" />
+    {
+    <partial name="_JqueryValidation" />
 }
 
-@section breadcrumb
-{
-<li>
-    <a asp-action="EditSiteSetting" asp-controller="SiteSetting" asp-area="Admin"> @Localizer["Site Setting"] </a>
-</li>
-<li>
-    <a href="javascript:void(0)"> @ViewData["Title"] </a>
-</li>
+    @section breadcrumb
+    {
+    <li>
+        <a asp-action="EditSiteSetting" asp-controller="SiteSetting" asp-area="Admin"> @Localizer["Site Setting"] </a>
+    </li>
+    <li>
+        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+    </li>
 }
 
-<form method="post" asp-action="EditSiteSetting" asp-controller="SiteSetting" asp-area="Admin" enctype="multipart/form-data">
-    <div class="row">
-        <div class="col-lg-12 col-sm-12">
-            <div class="widget">
-                <div class="widget-header bordered-bottom bordered-green">
-                    <span class="widget-caption"> @ViewData["Title"] </span>
-                </div>
-                <div class="widget-body">
-                    <div>
-                         <div class="row">
+    <form method="post" asp-action="EditSiteSetting" asp-controller="SiteSetting" asp-area="Admin" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col-lg-12 col-sm-12">
+                <div class="widget">
+                    <div class="widget-header bordered-bottom bordered-green">
+                        <span class="widget-caption"> @ViewData["Title"] </span>
+                    </div>
+                    <div class="widget-body">
+                        <div>
+                            <div class="row">
 
                                 <div class="form-group col-md-12">
                                     <label asp-for="SiteDomain"></label>
@@ -36,82 +36,166 @@
                                     <span class="text-danger" asp-validation-for="SiteDomain"></span>
                                 </div>
 
-                               <div class="form-group col-md-12">
-                                <label asp-for="HomeVisitTariff"></label>
-                                <input type="text" class="form-control" asp-for="HomeVisitTariff"/>
-                                <span class="text-danger" asp-validation-for="HomeVisitTariff"></span>
-                            </div>
+                                <div class="form-group col-md-3">
+                                    <label asp-for="HomeVisitTariff"></label>
+                                    <input type="text" class="form-control" asp-for="HomeVisitTariff" />
+                                    <span class="text-danger" asp-validation-for="HomeVisitTariff"></span>
+                                </div>
 
-                                <div class="form-group col-md-12">
+                                <div class="form-group col-md-3">
                                     <label asp-for="OnlineVisitTariff"></label>
                                     <input type="text" class="form-control" asp-for="OnlineVisitTariff" />
                                     <span class="text-danger" asp-validation-for="OnlineVisitTariff"></span>
                                 </div>
-                       
-                              <div class="form-group col-md-12">
-                                <label asp-for="HomeNurseTariff"></label>
-                                <input type="text" class="form-control" asp-for="HomeNurseTariff"/>
-                                <span class="text-danger" asp-validation-for="HomeNurseTariff"></span>
+
+                                <div class="form-group col-md-3">
+                                    <label asp-for="HomeNurseTariff"></label>
+                                    <input type="text" class="form-control" asp-for="HomeNurseTariff" />
+                                    <span class="text-danger" asp-validation-for="HomeNurseTariff"></span>
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <label asp-for="HomeLaboratoryTariff"></label>
+                                    <input type="text" class="form-control" asp-for="HomeLaboratoryTariff" />
+                                    <span class="text-danger" asp-validation-for="HomeLaboratoryTariff"></span>
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <label asp-for="HomePharmacyTariff"></label>
+                                    <input type="text" class="form-control" asp-for="HomePharmacyTariff" />
+                                    <span class="text-danger" asp-validation-for="HomePharmacyTariff"></span>
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <label asp-for="DeathCertificateTariff"></label>
+                                    <input type="text" class="form-control" asp-for="DeathCertificateTariff" />
+                                    <span class="text-danger" asp-validation-for="DeathCertificateTariff"></span>
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <label asp-for="HomePatientTransportTariff"></label>
+                                    <input type="text" class="form-control" asp-for="HomePatientTransportTariff" />
+                                    <span class="text-danger" asp-validation-for="HomePatientTransportTariff"></span>
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <label asp-for="ReservationTariff"></label>
+                                    <input type="text" class="form-control" asp-for="ReservationTariff" />
+                                    <span class="text-danger" asp-validation-for="ReservationTariff"></span>
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <label asp-for="SendSMSTime"></label>
+                                    <input type="text" class="form-control" asp-for="SendSMSTime" />
+                                    <span class="text-danger" asp-validation-for="SendSMSTime"></span>
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <label asp-for="IntramuscularInjection"></label>
+                                    <input type="text" class="form-control" asp-for="IntramuscularInjection" />
+                                    <span class="text-danger" asp-validation-for="IntramuscularInjection"></span>
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <label asp-for="DermalOrSubcutaneousInjection"></label>
+                                    <input type="text" class="form-control" asp-for="DermalOrSubcutaneousInjection" />
+                                    <span class="text-danger" asp-validation-for="DermalOrSubcutaneousInjection"></span>
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <label asp-for="ReedyInjection"></label>
+                                    <input type="text" class="form-control" asp-for="ReedyInjection" />
+                                    <span class="text-danger" asp-validation-for="ReedyInjection"></span>
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <label asp-for="SerumTherapy"></label>
+                                    <input type="text" class="form-control" asp-for="SerumTherapy" />
+                                    <span class="text-danger" asp-validation-for="SerumTherapy"></span>
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <label asp-for="BloodPressureMeasurement"></label>
+                                    <input type="text" class="form-control" asp-for="BloodPressureMeasurement" />
+                                    <span class="text-danger" asp-validation-for="BloodPressureMeasurement"></span>
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <label asp-for="Glucometry"></label>
+                                    <input type="text" class="form-control" asp-for="Glucometry" />
+                                    <span class="text-danger" asp-validation-for="Glucometry"></span>
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <label asp-for="PulseOximetry"></label>
+                                    <input type="text" class="form-control" asp-for="PulseOximetry" />
+                                    <span class="text-danger" asp-validation-for="PulseOximetry"></span>
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <label asp-for="SmallDressing"></label>
+                                    <input type="text" class="form-control" asp-for="SmallDressing" />
+                                    <span class="text-danger" asp-validation-for="SmallDressing"></span>
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <label asp-for="GreatDressing"></label>
+                                    <input type="text" class="form-control" asp-for="GreatDressing" />
+                                    <span class="text-danger" asp-validation-for="GreatDressing"></span>
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <label asp-for="GastricIntubation"></label>
+                                    <input type="text" class="form-control" asp-for="GastricIntubation" />
+                                    <span class="text-danger" asp-validation-for="GastricIntubation"></span>
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <label asp-for="UrinaryBladder"></label>
+                                    <input type="text" class="form-control" asp-for="UrinaryBladder" />
+                                    <span class="text-danger" asp-validation-for="UrinaryBladder"></span>
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <label asp-for="OxygenTherapy"></label>
+                                    <input type="text" class="form-control" asp-for="OxygenTherapy" />
+                                    <span class="text-danger" asp-validation-for="OxygenTherapy"></span>
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <label asp-for="ECG"></label>
+                                    <input type="text" class="form-control" asp-for="ECG" />
+                                    <span class="text-danger" asp-validation-for="ECG"></span>
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <label asp-for="DistanceFromCityTarriff">تعرفه به ازای هر 10 کیلومتر فاصله از شهر</label>
+                                    <input type="text" class="form-control" asp-for="DistanceFromCityTarriff" />
+                                    <span class="text-danger" asp-validation-for="DistanceFromCityTarriff"></span>
+                                </div>
+
+                                <div class="form-group col-md-12">
+                                    <label asp-for="CopyRightText"></label>
+                                    <textarea class="form-control" ckeditor="1" asp-for="CopyRightText"></textarea>
+                                    <span class="text-danger" asp-validation-for="CopyRightText"></span>
+                                </div>
+
                             </div>
 
-                            <div class="form-group col-md-12">
-                                <label asp-for="HomeLaboratoryTariff"></label>
-                                <input type="text" class="form-control" asp-for="HomeLaboratoryTariff"/>
-                                <span class="text-danger" asp-validation-for="HomeLaboratoryTariff"></span>
+                            <hr class="margin-bottom-10 margin-top-10" />
+
+                            <div class="row">
+                                <div class="col-md-12 flex-style">
+                                    <button type="submit" class="btn btn-labeled btn-palegreen">
+                                        <i class="btn-label glyphicon glyphicon-ok"></i>@Localizer["Edit"]
+                                    </button>
+                                </div>
                             </div>
 
-                               <div class="form-group col-md-12">
-                                <label asp-for="HomePharmacyTariff"></label>
-                                <input type="text" class="form-control" asp-for="HomePharmacyTariff"/>
-                                <span class="text-danger" asp-validation-for="HomePharmacyTariff"></span>
-                            </div>
-
-                             <div class="form-group col-md-12">
-                                <label asp-for="DeathCertificateTariff"></label>
-                                <input type="text" class="form-control" asp-for="DeathCertificateTariff"/>
-                                <span class="text-danger" asp-validation-for="DeathCertificateTariff"></span>
-                            </div>
-
-                                 <div class="form-group col-md-12">
-                                <label asp-for="HomePatientTransportTariff"></label>
-                                <input type="text" class="form-control" asp-for="HomePatientTransportTariff"/>
-                                <span class="text-danger" asp-validation-for="HomePatientTransportTariff"></span>
-                            </div>
-
-                                 <div class="form-group col-md-12">
-                                <label asp-for="ReservationTariff"></label>
-                                <input type="text" class="form-control" asp-for="ReservationTariff"/>
-                                <span class="text-danger" asp-validation-for="ReservationTariff"></span>
-                            </div>
-
-                               <div class="form-group col-md-12">
-                                <label asp-for="SendSMSTime"></label>
-                                <input type="text" class="form-control" asp-for="SendSMSTime"/>
-                                <span class="text-danger" asp-validation-for="SendSMSTime"></span>
-                            </div>
-
-                            <div class="form-group col-md-12">
-                                <label asp-for="CopyRightText"></label>
-                                <textarea class="form-control" ckeditor="1" asp-for="CopyRightText"></textarea>
-                                <span class="text-danger" asp-validation-for="CopyRightText"></span>
-                            </div>
-                        
                         </div>
-
-                        <hr class="margin-bottom-10 margin-top-10" />
-
-                        <div class="row">
-                            <div class="col-md-12 flex-style">
-                                <button type="submit" class="btn btn-labeled btn-palegreen">
-                                    <i class="btn-label glyphicon glyphicon-ok"></i>@Localizer["Edit"]
-                                </button>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</form>
+    </form>
 

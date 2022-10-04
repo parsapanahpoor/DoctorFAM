@@ -41,5 +41,21 @@ namespace DoctorFAM.Domain.Enums.Notification
         ConsultantInformationInsert,
         [Display(Name = "Consultant Request")]
         ConsultantRequest,
+        [Display(Name = "HomeVisitRequest")]
+        HomeVisitRequest,
+        [Display(Name = "AcceptHomeVisitRequestFromDoctor")]
+        AcceptHomeVisitRequestFromDoctor,
+        [Display(Name = "AcceptHomeVisitRequestFromUser")]
+        AcceptHomeVisitRequestFromUser,
+        [Display(Name = "DeclineHomeVisitRequestFromUser")]
+        DeclineHomeVisitRequestFromUser,
+        [Display(Name = "Cancel Home Visit Request")]
+        CancelHomeVisitRequest,
+        [Display(Name = "New Arrival Death Certificate Request")]
+        NewArrivalDeathCertificateRequest,
+        [Display(Name = "AcceptDeathCertificateRequestFromDoctor")]
+        AcceptDeathCertificateRequestFromDoctor,
+        [Display(Name = "Laboratory Information Insert")]
+        LaboratoryInformationInsert,
     }
 }

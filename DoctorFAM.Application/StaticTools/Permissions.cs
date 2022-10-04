@@ -30,7 +30,8 @@ namespace DoctorFAM.Application.StaticTools
                     IsDelete = false,
                     ParentId = null,
                     PermissionUniqueName = "Dashboard",
-                    Title = "داشبورد"
+                    Title = "داشبورد",
+                    PermissionType = Domain.Enums.Permission.PermissionType.AdminPanel
                 });
 
                 #endregion
@@ -44,7 +45,8 @@ namespace DoctorFAM.Application.StaticTools
                     IsDelete = false,
                     ParentId = null,
                     PermissionUniqueName = "ManageAccess",
-                    Title = "مدیریت دسترسی ها"
+                    Title = "مدیریت دسترسی ها",
+                    PermissionType = Domain.Enums.Permission.PermissionType.AdminPanel
                 });
 
                 list.Add(new Permission
@@ -54,7 +56,8 @@ namespace DoctorFAM.Application.StaticTools
                     IsDelete = false,
                     ParentId = 2,
                     PermissionUniqueName = "CreateRole",
-                    Title = "ایجاد نقش جدید"
+                    Title = "ایجاد نقش جدید",
+                    PermissionType = Domain.Enums.Permission.PermissionType.AdminPanel
                 });
 
                 list.Add(new Permission
@@ -64,7 +67,8 @@ namespace DoctorFAM.Application.StaticTools
                     IsDelete = false,
                     ParentId = 2,
                     PermissionUniqueName = "FilterRoles",
-                    Title = "لیست نقش ها"
+                    Title = "لیست نقش ها",
+                    PermissionType = Domain.Enums.Permission.PermissionType.AdminPanel
                 });
 
                 list.Add(new Permission
@@ -74,7 +78,8 @@ namespace DoctorFAM.Application.StaticTools
                     IsDelete = false,
                     ParentId = 2,
                     PermissionUniqueName = "EditRole",
-                    Title = "ویرایش نقش"
+                    Title = "ویرایش نقش",
+                    PermissionType = Domain.Enums.Permission.PermissionType.AdminPanel
                 });
 
                 list.Add(new Permission
@@ -84,7 +89,8 @@ namespace DoctorFAM.Application.StaticTools
                     IsDelete = false,
                     ParentId = 2,
                     PermissionUniqueName = "DeleteRole",
-                    Title = "حذف نقش"
+                    Title = "حذف نقش",
+                    PermissionType = Domain.Enums.Permission.PermissionType.AdminPanel
                 });
 
                 #endregion
@@ -98,7 +104,8 @@ namespace DoctorFAM.Application.StaticTools
                     IsDelete = false,
                     ParentId = null,
                     PermissionUniqueName = "ManageAccount",
-                    Title = "مدیریت کاربران"
+                    Title = "مدیریت کاربران",
+                    PermissionType = Domain.Enums.Permission.PermissionType.AdminPanel
                 });
 
                 list.Add(new Permission
@@ -108,7 +115,8 @@ namespace DoctorFAM.Application.StaticTools
                     IsDelete = false,
                     ParentId = 7,
                     PermissionUniqueName = "UsersList",
-                    Title = "لیست کاربران"
+                    Title = "لیست کاربران",
+                    PermissionType = Domain.Enums.Permission.PermissionType.AdminPanel
                 });
 
                 #endregion
@@ -124,7 +132,8 @@ namespace DoctorFAM.Application.StaticTools
                     IsDelete = false,
                     ParentId = null,
                     PermissionUniqueName = "SupporterPanel",
-                    Title = "پنل پشتیبان"
+                    Title = "پنل پشتیبان",
+                    PermissionType = Domain.Enums.Permission.PermissionType.SupporterPanel
                 });
 
                 list.Add(new Permission
@@ -134,7 +143,8 @@ namespace DoctorFAM.Application.StaticTools
                     IsDelete = false,
                     ParentId = 8,
                     PermissionUniqueName = "HomeVisit",
-                    Title = "ویزیت در منزل"
+                    Title = "ویزیت در منزل",
+                    PermissionType = Domain.Enums.Permission.PermissionType.SupporterPanel
                 });
 
                 list.Add(new Permission
@@ -144,7 +154,8 @@ namespace DoctorFAM.Application.StaticTools
                     IsDelete = false,
                     ParentId = 8,
                     PermissionUniqueName = "HomeNurse",
-                    Title = "پرستار در منزل"
+                    Title = "پرستار در منزل",
+                    PermissionType = Domain.Enums.Permission.PermissionType.SupporterPanel
                 });
 
                 list.Add(new Permission
@@ -154,7 +165,8 @@ namespace DoctorFAM.Application.StaticTools
                     IsDelete = false,
                     ParentId = 8,
                     PermissionUniqueName = "HomePharmacy",
-                    Title = "داروخانه در منزل"
+                    Title = "داروخانه در منزل",
+                    PermissionType = Domain.Enums.Permission.PermissionType.SupporterPanel
                 });
 
                 list.Add(new Permission
@@ -164,7 +176,8 @@ namespace DoctorFAM.Application.StaticTools
                     IsDelete = false,
                     ParentId = 8,
                     PermissionUniqueName = "HomeLaboratory",
-                    Title = "آزمایشگاه در منزل"
+                    Title = "آزمایشگاه در منزل",
+                    PermissionType = Domain.Enums.Permission.PermissionType.SupporterPanel
                 });
 
                 list.Add(new Permission
@@ -174,7 +187,8 @@ namespace DoctorFAM.Application.StaticTools
                     IsDelete = false,
                     ParentId = 8,
                     PermissionUniqueName = "PetientTransport",
-                    Title = "انتقال بیمار"
+                    Title = "انتقال بیمار",
+                    PermissionType = Domain.Enums.Permission.PermissionType.SupporterPanel
                 });
 
                 list.Add(new Permission
@@ -184,14 +198,79 @@ namespace DoctorFAM.Application.StaticTools
                     IsDelete = false,
                     ParentId = 8,
                     PermissionUniqueName = "DeathCertificate",
-                    Title = "صدور گواهی فوت"
+                    Title = "صدور گواهی فوت",
+                    PermissionType = Domain.Enums.Permission.PermissionType.SupporterPanel
+                });
+
+                #endregion
+
+                #region Laboratory Panel 
+
+                list.Add(new Permission
+                {
+                    Id = 15,
+                    CreateDate = date,
+                    IsDelete = false,
+                    ParentId = null,
+                    PermissionUniqueName = "LaboratoryDashboard",
+                    Title = "داشبورد داروخانه",
+                    PermissionType= Domain.Enums.Permission.PermissionType.LaboratoryPanel
+                });
+
+
+                #region Tickets
+
+                list.Add(new Permission
+                {
+                    Id = 16,
+                    CreateDate = date,
+                    IsDelete = false,
+                    ParentId = null,
+                    PermissionUniqueName = "ManageTickets",
+                    Title = "مدیریت تیکت ها",
+                    PermissionType = Domain.Enums.Permission.PermissionType.LaboratoryPanel
+                });
+
+                list.Add(new Permission
+                {
+                    Id = 17,
+                    CreateDate = date,
+                    IsDelete = false,
+                    ParentId = 16,
+                    PermissionUniqueName = "ListOfTickets",
+                    Title = "لیست تیکت ها",
+                    PermissionType = Domain.Enums.Permission.PermissionType.LaboratoryPanel
+                });
+
+                list.Add(new Permission
+                {
+                    Id = 18,
+                    CreateDate = date,
+                    IsDelete = false,
+                    ParentId = 16,
+                    PermissionUniqueName = "CreateNowTiceket",
+                    Title = "افزودن تیکت جدید",
+                    PermissionType = Domain.Enums.Permission.PermissionType.LaboratoryPanel
+                });
+
+                list.Add(new Permission
+                {
+                    Id = 19,
+                    CreateDate = date,
+                    IsDelete = false,
+                    ParentId = 16,
+                    PermissionUniqueName = "TicketDetail",
+                    Title = "مشاهده ی جزییات تیکت",
+                    PermissionType = Domain.Enums.Permission.PermissionType.LaboratoryPanel
                 });
 
                 #endregion
 
                 #endregion
 
-                // Last Id Use is : 14
+                #endregion
+
+                // Last Id Use is : 19
 
                 return list;
             }

@@ -323,10 +323,10 @@ namespace DoctorFAM.Web.Controllers
                     await _requestService.UpdateRequestStateForPayed(request);
 
                     //Charge User Wallet
-                    await _onlineVisitService.ChargeUserWallet(User.GetUserId(), onlineVisitTarif);
+                    await _onlineVisitService.ChargeUserWallet(User.GetUserId(), onlineVisitTarif , request.Id);
 
                     //Pay Home Visit Tariff
-                    await _onlineVisitService.PayOnlineVisitTariff(User.GetUserId(), onlineVisitTarif);
+                    await _onlineVisitService.PayOnlineVisitTariff(User.GetUserId(), onlineVisitTarif , request.Id);
 
                     #region Send Notification In SignalR
 

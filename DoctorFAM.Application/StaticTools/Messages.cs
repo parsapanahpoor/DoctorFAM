@@ -81,4 +81,53 @@ public static class Messages
         return
             $"باعرض سلام . {Environment.NewLine} درخواست مشاوره ی شما توسط مشاور موردنطر رد شده است . {Environment.NewLine} {PathTools.SiteFarsiName}";
     }
+
+    //Send SMS For Accept Home Visit Request From Doctor  
+    public static string SendSMSForAcceptHomeVisitRequestFromDoctor()
+    {
+        return
+            $"باعرض سلام . {Environment.NewLine} درخواست ویزیت درمنزل شما توسط پزشک تایید شده است . {Environment.NewLine} {PathTools.SiteFarsiName}";
+    }
+
+    //Send Activation Register Code 
+    public static string SendSMSForLinkOfHomeVisitRequestFromDoctor(string link)
+    {
+        return
+            $"لطفا از طریق لینک زیر درخواست ویزیت در منزل خود را تایید کنید : {link} . {Environment.NewLine} {PathTools.SiteFarsiName}";
+    }
+
+    //Send SMS For Accept Home Visit Request From User   
+    public static string SendSMSForAcceptHomeVisitRequestFromUser()
+    {
+        return
+            $"باعرض سلام . {Environment.NewLine} درخواست ویزیت درمنزل همراه با اطلاعات شما توسط کاربر تایید گردید . {Environment.NewLine} لطفا در زمان اعلام شده نسبت به اعزام به محل درخواست اقدام فرمایید. {Environment.NewLine} {PathTools.SiteFarsiName}";
+    }
+
+    //Send SMS For Decline Home Visit Request From User   
+    public static string SendSMSForDeclineHomeVisitRequestFromUser()
+    {
+        return
+            $"باعرض سلام . {Environment.NewLine} درخواست ویزیت درمنزل همراه با اطلاعات شما توسط کاربر تایید نگردید . {Environment.NewLine} از همکاری شما متشکریم. {Environment.NewLine} {PathTools.SiteFarsiName}";
+    }
+
+    //Send SMS For Cancelation Home Visit Request From User   
+    public static string SendSMSForCancelationHomeVisitRequestFromUser()
+    {
+        return
+            $"باعرض سلام . {Environment.NewLine} درخواست ویزیت درمنزل توسط کاربر لغو شده است . {Environment.NewLine} از همکاری شما متشکریم. {Environment.NewLine} {PathTools.SiteFarsiName}";
+    }
+
+    //Send SMS For Death Certificate Request From Doctor  
+    public static string SendSMSForAcceptDeathCertificateRequestFromDoctor()
+    {
+        return
+            $"باعرض سلام . {Environment.NewLine} درخواست صدورگواهی فوت شما توسط پزشک تایید شده است . {Environment.NewLine} {PathTools.SiteFarsiName}";
+    }
+
+    //Send Show Doctor Details 
+    public static string SendSMSForLinkOfDeathCertificateRequestFromDoctor(string link)
+    {
+        return
+            $"شما میتوانید از طریق لینک زیر اطلاعات پزشک را مشاهده فرمایید : {link} . {Environment.NewLine} {PathTools.SiteFarsiName}";
+    }
 }

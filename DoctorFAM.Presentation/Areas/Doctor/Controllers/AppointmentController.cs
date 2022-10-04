@@ -68,6 +68,12 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
         [HttpGet]
         public async Task<IActionResult> AddReservationDateView()
         {
+            #region Page Data 
+
+            ViewBag.DoctorReservationDate = await _reservatioService.ListOfDoctorReservationDateAfterDateTimeNow(User.GetUserId());
+
+            #endregion
+
             return View();
         }
 
@@ -78,6 +84,12 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
             if (model.AddReservationDateState == AddReservationDateState.computerized && (!model.StartTime.HasValue || !model.EndTime.HasValue || !model.PeriodNumber.HasValue))
             {
+                #region Page Data 
+
+                ViewBag.DoctorReservationDate = await _reservatioService.ListOfDoctorReservationDateAfterDateTimeNow(User.GetUserId());
+
+                #endregion
+
                 TempData[ErrorMessage] = _sharedLocalizer["The operation has failed"].Value;
                 return View(model);
             }
@@ -110,6 +122,12 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
                     return RedirectToAction(nameof(ListOfReservationDate));
                 }
             }
+
+            #region Page Data 
+
+            ViewBag.DoctorReservationDate = await _reservatioService.ListOfDoctorReservationDateAfterDateTimeNow(User.GetUserId());
+
+            #endregion
 
             TempData[ErrorMessage] = _sharedLocalizer["The operation has failed"].Value;
             return View(model);

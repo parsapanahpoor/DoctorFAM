@@ -366,6 +366,18 @@ namespace DoctorFAM.Data.Repository
 
             #region Filter
 
+            if (filter.Gender.HasValue)
+            {
+                if (filter.Gender.Value == 0)
+                {
+                    model = model.Where(p => !p.IsDelete && p.DoctorsInfos.Gender == Domain.Enums.Gender.Gender.Male).ToList();
+                }
+                if (filter.Gender.Value == 1)
+                {
+                    model = model.Where(p => !p.IsDelete && p.DoctorsInfos.Gender == Domain.Enums.Gender.Gender.Female).ToList();
+                }
+            }
+
             if (!string.IsNullOrEmpty(filter.Username))
             {
                 model = model.Where(s => s.User.Username.Contains(filter.Username)).ToList();

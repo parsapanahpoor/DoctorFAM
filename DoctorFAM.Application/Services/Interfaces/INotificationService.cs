@@ -30,6 +30,9 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Create Notification For Online Visit Doctors 
         Task<bool> CreateNotificationForOnlineVisitDoctors(ulong targetId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId);
 
+        //Create Notification For Death Certificate Doctors 
+        Task<bool> CreateNotificationForDeathCertificateDoctors(ulong targetId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId);
+
         #endregion
 
         #region Supporter And Admin 
@@ -55,9 +58,15 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Seen All Of Un Seen Notification For Current Notifications
         Task<bool> SeenAllOfUnSeenCurrentUserNotification(ulong userId);
 
+        //Create Notification For Admin About Insert Information From Laboratory
+        Task<bool> CreateNotificationForAdminAboutInsertInformationFromLaboratory(ulong targetId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId);
+
         #endregion
 
         #region User Panel Side 
+
+        //Create Notification For Send Accept Home Visit Request From User 
+        Task<bool> CreateNotificationForSendAcceptHomeVisitRequestFromUserPanel(ulong targetId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId);
 
         //Create Notification For Send Message Of Consultant
         Task<bool> CreateNotificationForSendMessageOfConsultant(ulong targetId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId);
@@ -75,8 +84,17 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         #region Doctor Panel
 
+        //Create Notification For Send Accept Home Visit Request
+        Task<bool> CreateNotificationForSendAcceptHomeVisitRequest(ulong targetId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId);
+
         //Create Notification For Send Message Of Online Visit
         Task<bool> CreateNotificationForSendMessageOfOnlineVisitFromDoctorPanel(ulong targetId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId);
+
+        //Create Notification For Home Visit Doctors 
+        Task<bool> CreateNotificationForHomeVisitDoctors(ulong targetId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId);
+
+        //Get List Of Doctors For Send Notification For Home Visit Notification 
+        Task<List<string?>> GetListOfDoctorsForArrivalsHomeVisitRequests(ulong requestId);
 
         #endregion
 

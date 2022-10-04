@@ -58,7 +58,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
         #region Home Nurse Methods 
 
-        public async Task<bool> ChargeUserWallet(ulong userId, int price)
+        public async Task<bool> ChargeUserWallet(ulong userId, int price , ulong requestId)
         {
             if (!await _userService.IsExistUserById(userId))
             {
@@ -73,14 +73,15 @@ namespace DoctorFAM.Application.Services.Implementation
                 PaymentType = PaymentType.ChargeWallet,
                 Price = price,
                 Description = "شارژ حساب کاربری برای پرداخت هزینه ی پرستار در منزل ",
-                IsFinally = true
+                IsFinally = true,
+                RequestId = requestId
             };
 
             await _walletRepository.CreateWalletAsync(wallet);
             return true;
         }
 
-        public async Task<bool> PayHomeNurseTariff(ulong userId, int price)
+        public async Task<bool> PayHomeNurseTariff(ulong userId, int price , ulong requestId)
         {
             if (!await _userService.IsExistUserById(userId))
             {
@@ -95,7 +96,8 @@ namespace DoctorFAM.Application.Services.Implementation
                 PaymentType = PaymentType.HomeNurse,
                 Price = price,
                 Description = "پرداخت مبلغ پرستار در منزل ",
-                IsFinally = true
+                IsFinally = true,
+                RequestId = requestId
             };
 
             await _walletRepository.CreateWalletAsync(wallet);

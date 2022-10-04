@@ -1,0 +1,313 @@
+﻿@model DoctorFAM.Domain.ViewModels.DoctorPanel.HomeVisit.HomeVisitRequestDetailViewModel
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Domain.ViewModels.Common
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
+@using DoctorFAM.Application.StaticTools
+
+@{
+    ViewData["Title"] = @Localizer["Show Details"];
+}
+
+@section Styles
+    {
+    <style>
+
+        .header-fullname {
+            font: 21px 'YekanBakh-FaNum';
+            margin-top: 27px;
+            display: inline-block;
+        }
+
+    </style>
+}
+
+    @section Scripts
+    {
+    <partial name="_JqueryValidation" />
+}
+
+    @section Breadcrumb
+    {
+    <li>
+        <a href="javascript:void(0)"> @Localizer["Request Code"] : @Model.Request.Id </a>
+    </li>
+}
+
+    <div class="row">
+
+        <div class="col-md-12">
+
+            <div class="col-md-12">
+                <div class="profile-container" style="margin-bottom: 30px;">
+                    <div class="profile-header row">
+                        <div class="col-lg-2 col-md-4 col-sm-12 text-center">
+                            <img src="@Model.User.GetUserAvatar()" alt="" class="header-avatar">
+                        </div>
+                        <div class="col-lg-3 col-md-8 col-sm-12 profile-info">
+                            <div class="header-fullname">@Model.User.Username</div>
+
+                            <div class="header-information">
+                                @Localizer["Mobile"] : @Model.User.Mobile
+                            </div>
+                        </div>
+                        <div class="col-lg-7 col-md-12 col-sm-12 col-xs-12 profile-stats">
+                            <div class="row">
+                                <div class="col-lg-4 col-md-3 col-sm-3 col-xs-12 stats-col">
+                                    <div class="stats-value blue">@(Model.Request.CreateDate != null ? Model.Request.CreateDate.ToStringShamsiDate() : Localizer["Empty"])</div>
+                                <div class="stats-title">@Localizer["Request Create Date"]</div>
+                            </div>
+                            <div class="col-lg-2 col-md-3 col-sm-3 col-xs-12 stats-col">
+                                <div class="stats-value blue">@(Model.PatientRequestDateTimeDetail != null ? Model.PatientRequestDateTimeDetail.StartTime.ToString("00") : Localizer["Empty"])</div>
+                                <div class="stats-title">@Localizer["Start Time"]</div>
+                            </div>
+                            <div class="col-lg-2 col-md-3 col-sm-3 col-xs-12 stats-col">
+                                <div class="stats-value blue">
+                                    @(Model.PatientRequestDateTimeDetail != null ? Model.PatientRequestDateTimeDetail.EndTime.ToString("00") : Localizer["Empty"])
+                                </div>
+                                <div class="stats-title">@Localizer["End Time"]</div>
+                            </div>
+                            <div class="col-lg-4 col-md-3 col-sm-3 col-xs-12 stats-col">
+                                <div class="stats-value blue">
+                                    @(Model.PatientRequestDateTimeDetail != null ? Model.PatientRequestDateTimeDetail.SendDate.ToStringShamsiDate() : Localizer["Empty"])
+                                </div>
+                                <div class="stats-title">@Localizer["Patient Date Time"]</div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="profile-body">
+                <div class="col-lg-12">
+                    <div class="tabbable">
+                        <ul class="nav nav-tabs tabs-flat  nav-justified" id="myTab11">
+
+                            <li class="tab-palegreen">
+                                <a data-toggle="tab" id="contacttab" href="#contacts" aria-expanded="false">
+                                    @Localizer["Online Visit Request Detail"]
+                                </a>
+                            </li>
+                            <li class="tab-yellow active">
+                                <a data-toggle="tab" href="#settings" aria-expanded="true">
+                                    @Localizer["User Personal Information"]
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="tab-content tabs-flat">
+                            <div id="contacts" class="tab-pane">
+                                <div class="form-title">
+                                    @Localizer["Request Detail"]
+                                </div>
+                                <div class="row">
+
+                                    <div class="form-group col-md-4 col-sm-12">
+                                        <p class="flex-style-center">
+                                            <span> @Localizer["Emergency Request"] </span>
+                                            <span class="mr-8px label @((Model.HomeVisitRequestDetail.EmergencyVisit) ? "label-success" : "label-orange")"> @((Model.HomeVisitRequestDetail.EmergencyVisit) ? @Localizer["Yes"] : @Localizer["No"])</span>
+                                        </p>
+                                    </div>
+
+                                    <div class="form-group col-md-4 col-sm-12">
+                                        <p class="flex-style-center">
+                                            <span> @Localizer["Femail Doctor"] </span>
+                                            <span class="mr-8px label @((Model.HomeVisitRequestDetail.FemalePhysician) ? "label-success" : "label-orange")"> @((Model.HomeVisitRequestDetail.FemalePhysician) ? @Localizer["Yes"] : @Localizer["No"])</span>
+                                        </p>
+                                    </div>
+
+                                    <div class="form-group col-md-4 col-sm-12">
+                                        <p class="flex-style-center">
+                                            <span> @Localizer["Intramuscular Injection"] </span>
+                                            <span class="mr-8px label @((Model.HomeVisitRequestDetail.IntramuscularInjection) ? "label-success" : "label-orange")"> @((Model.HomeVisitRequestDetail.IntramuscularInjection) ? @Localizer["Yes"] : @Localizer["No"])</span>
+                                        </p>
+                                    </div>
+
+                                    <div class="form-group col-md-4 col-sm-12">
+                                        <p class="flex-style-center">
+                                            <span> @Localizer["Reedy Injection"] </span>
+                                            <span class="mr-8px label @((Model.HomeVisitRequestDetail.ReedyInjection) ? "label-success" : "label-orange")"> @((Model.HomeVisitRequestDetail.ReedyInjection) ? @Localizer["Yes"] : @Localizer["No"])</span>
+                                        </p>
+                                    </div>
+
+                                    <div class="form-group col-md-4 col-sm-12">
+                                        <p class="flex-style-center">
+                                            <span> @Localizer["Dermal Or Subcutaneous Injection"] </span>
+                                            <span class="mr-8px label @((Model.HomeVisitRequestDetail.DermalOrSubcutaneousInjection) ? "label-success" : "label-orange")"> @((Model.HomeVisitRequestDetail.DermalOrSubcutaneousInjection) ? @Localizer["Yes"] : @Localizer["No"])</span>
+                                        </p>
+                                    </div>
+
+                                    <div class="form-group col-md-4 col-sm-12">
+                                        <p class="flex-style-center">
+                                            <span> @Localizer["Serum Therapy"] </span>
+                                            <span class="mr-8px label @((Model.HomeVisitRequestDetail.SerumTherapy) ? "label-success" : "label-orange")"> @((Model.HomeVisitRequestDetail.SerumTherapy) ? @Localizer["Yes"] : @Localizer["No"])</span>
+                                        </p>
+                                    </div>
+
+                                    <div class="form-group col-md-4 col-sm-12">
+                                        <p class="flex-style-center">
+                                            <span> @Localizer["Blood Pressure Measurement"] </span>
+                                            <span class="mr-8px label @((Model.HomeVisitRequestDetail.BloodPressureMeasurement) ? "label-success" : "label-orange")"> @((Model.HomeVisitRequestDetail.BloodPressureMeasurement) ? @Localizer["Yes"] : @Localizer["No"])</span>
+                                        </p>
+                                    </div>
+
+                                    <div class="form-group col-md-4 col-sm-12">
+                                        <p class="flex-style-center">
+                                            <span> @Localizer["Glucometry"] </span>
+                                            <span class="mr-8px label @((Model.HomeVisitRequestDetail.Glucometry) ? "label-success" : "label-orange")"> @((Model.HomeVisitRequestDetail.Glucometry) ? @Localizer["Yes"] : @Localizer["No"])</span>
+                                        </p>
+                                    </div>
+
+                                    <div class="form-group col-md-4 col-sm-12">
+                                        <p class="flex-style-center">
+                                            <span> @Localizer["Pulse Oximetry"] </span>
+                                            <span class="mr-8px label @((Model.HomeVisitRequestDetail.PulseOximetry) ? "label-success" : "label-orange")"> @((Model.HomeVisitRequestDetail.PulseOximetry) ? @Localizer["Yes"] : @Localizer["No"])</span>
+                                        </p>
+                                    </div>
+
+                                    <div class="form-group col-md-4 col-sm-12">
+                                        <p class="flex-style-center">
+                                            <span> @Localizer["Small Dressing"] </span>
+                                            <span class="mr-8px label @((Model.HomeVisitRequestDetail.SmallDressing) ? "label-success" : "label-orange")"> @((Model.HomeVisitRequestDetail.SmallDressing) ? @Localizer["Yes"] : @Localizer["No"])</span>
+                                        </p>
+                                    </div>
+
+                                    <div class="form-group col-md-4 col-sm-12">
+                                        <p class="flex-style-center">
+                                            <span> @Localizer["Great Dressing"] </span>
+                                            <span class="mr-8px label @((Model.HomeVisitRequestDetail.GreatDressing) ? "label-success" : "label-orange")"> @((Model.HomeVisitRequestDetail.GreatDressing) ? @Localizer["Yes"] : @Localizer["No"])</span>
+                                        </p>
+                                    </div>
+
+                                    <div class="form-group col-md-4 col-sm-12">
+                                        <p class="flex-style-center">
+                                            <span> @Localizer["Gastric Intubation"] </span>
+                                            <span class="mr-8px label @((Model.HomeVisitRequestDetail.GastricIntubation) ? "label-success" : "label-orange")"> @((Model.HomeVisitRequestDetail.GastricIntubation) ? @Localizer["Yes"] : @Localizer["No"])</span>
+                                        </p>
+                                    </div>
+
+                                    <div class="form-group col-md-4 col-sm-12">
+                                        <p class="flex-style-center">
+                                            <span> @Localizer["Urinary Bladder"] </span>
+                                            <span class="mr-8px label @((Model.HomeVisitRequestDetail.UrinaryBladder) ? "label-success" : "label-orange")"> @((Model.HomeVisitRequestDetail.UrinaryBladder) ? @Localizer["Yes"] : @Localizer["No"])</span>
+                                        </p>
+                                    </div>
+
+                                    <div class="form-group col-md-4 col-sm-12">
+                                        <p class="flex-style-center">
+                                            <span> @Localizer["Oxygen Therapy"] </span>
+                                            <span class="mr-8px label @((Model.HomeVisitRequestDetail.OxygenTherapy) ? "label-success" : "label-orange")"> @((Model.HomeVisitRequestDetail.OxygenTherapy) ? @Localizer["Yes"] : @Localizer["No"])</span>
+                                        </p>
+                                    </div>
+
+                                    <div class="form-group col-md-4 col-sm-12">
+                                        <p class="flex-style-center">
+                                            <span> @Localizer["ECG"] </span>
+                                            <span class="mr-8px label @((Model.HomeVisitRequestDetail.ECG) ? "label-success" : "label-orange")"> @((Model.HomeVisitRequestDetail.ECG) ? @Localizer["Yes"] : @Localizer["No"])</span>
+                                        </p>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div id="settings" class="tab-pane active">
+                                <div class="form-title">
+                                    @Localizer["Patient Information"]
+                                </div>
+                                <div class="row">
+
+                                    <div class="form-group col-md-6 col-sm-12">
+                                        <label>@Localizer["Patient First Name"]</label>
+                                        <input type="text" class="form-control" readonly value="@Model.Patient.PatientName">
+                                    </div>
+
+                                    <div class="form-group col-md-6 col-sm-12">
+                                        <label>@Localizer["Patient Last Name"]</label>
+                                        <input type="text" class="form-control" readonly value="@Model.Patient.PatientLastName">
+                                    </div>
+
+                                    <div class="form-group col-md-6 col-sm-12">
+                                        <label>@Localizer["Patient National Code"]</label>
+                                        <input type="text" class="form-control" readonly value="@Model.Patient.NationalId">
+                                    </div>
+
+                                    <div class="form-group col-md-6 col-sm-12">
+                                        <label>@Localizer["Gender"]</label>
+                                        @if (Model.Patient.Gender == DoctorFAM.Domain.Enums.Gender.Gender.Male)
+                                        {
+                                            <input type="text" class="form-control" readonly value="@Localizer["Male"]">
+                                        }
+                                        @if (Model.Patient.Gender == DoctorFAM.Domain.Enums.Gender.Gender.Female)
+                                        {
+                                            <input type="text" class="form-control" readonly value="@Localizer["Female"]">
+                                        }
+                                    </div>
+
+                                    <div class="form-group col-md-6 col-sm-12">
+                                        <label>@Localizer["Age"]</label>
+                                        <input type="text" class="form-control" readonly value="@Model.Patient.Age">
+                                    </div>
+
+                                    <div class="form-group col-md-6 col-sm-12">
+                                        <label>@Localizer["Insurance Type"]</label>
+                                        @if (Model.Patient.InsuranceType == DoctorFAM.Domain.Enums.InsuranceType.InsuranceType.Free)
+                                        {
+                                            <input type="text" class="form-control" readonly value="@Localizer["Free"]">
+                                        }
+                                        @if (Model.Patient.InsuranceType == DoctorFAM.Domain.Enums.InsuranceType.InsuranceType.Salamat)
+                                        {
+                                            <input type="text" class="form-control" readonly value="@Localizer["Health Insurance"]">
+                                        }
+                                        @if (Model.Patient.InsuranceType == DoctorFAM.Domain.Enums.InsuranceType.InsuranceType.FreeJobs)
+                                        {
+                                            <input type="text" class="form-control" readonly value="@Localizer["بیمه ی آزاد"]">
+                                        }
+                                        @if (Model.Patient.InsuranceType == DoctorFAM.Domain.Enums.InsuranceType.InsuranceType.Iranian)
+                                        {
+                                            <input type="text" class="form-control" readonly value="@Localizer["Iranian health"]">
+                                        }
+                                        @if (Model.Patient.InsuranceType == DoctorFAM.Domain.Enums.InsuranceType.InsuranceType.Tamin)
+                                        {
+                                            <input type="text" class="form-control" readonly value="@Localizer["Social Security"]">
+                                        }
+                                    </div>
+
+                                    <div class="form-group col-md-12 col-sm-12">
+                                        <label>@Localizer["Request Description"]</label>
+                                        <textarea type="text" style="max-width:100%;" class="form-control" readonly>@Model.Patient.RequestDescription</textarea>
+                                    </div>
+
+                                    <div class="form-group col-md-6 col-sm-12">
+                                        <label>@Localizer["Patient Phone Number"]</label>
+                                        <input type="text" class="form-control" readonly value="@(string.IsNullOrEmpty(Model.PatientRequestDetail.Phone) ? @Localizer["Empty"] : @Model.PatientRequestDetail.Phone )">
+                                    </div>
+
+                                    <div class="form-group col-md-6 col-sm-12">
+                                        <label>@Localizer["Patient Mobile"]</label>
+                                        <input type="text" class="form-control" readonly value="@(string.IsNullOrEmpty(Model.PatientRequestDetail.Mobile) ? @Localizer["Empty"] : @Model.PatientRequestDetail.Mobile )">
+                                    </div>
+
+                                </div>
+
+                                @if ((Model.Request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.Paid
+                                || Model.Request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.WaitingForConfirmFromDestination)
+                                && Model.Request.OperationId == null)
+                                {
+                                    <a asp-action="ConfirmHomeVisitRequest" asp-area="Doctor" asp-controller="HomeVisit" asp-route-requestId="@Model.Request.Id" class="btn btn-primary">@Localizer["Confirm Request"]</a>
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+</div>
+
+</div>
+

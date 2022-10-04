@@ -14,8 +14,10 @@ namespace DoctorFAM.Domain.ViewModels.Common
         Supporter,
         Seller,
         DoctorOfficeEmployee,
+        LaboratoryOfficeEmployee,
         Pharmacy,
         Nurse,
-        Consultant
+        Consultant,
+        Laboratory
     }
 }

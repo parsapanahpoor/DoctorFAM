@@ -3,6 +3,7 @@ using DoctorFAM.Domain.ViewModels.Account;
 using DoctorFAM.Domain.ViewModels.Admin;
 using DoctorFAM.Domain.ViewModels.Admin.Account;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Employees;
+using DoctorFAM.Domain.ViewModels.Laboratory.Employee;
 using DoctorFAM.Domain.ViewModels.Site.Account;
 using DoctorFAM.Domain.ViewModels.UserPanel.Account;
 using Microsoft.AspNetCore.Http;
@@ -50,6 +51,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         #region Site Side
 
+        //Register Labratory
+        Task LabratoryConsultant(string mobile);
+
         Task RegisterDoctors(string mobile);
 
         Task RegisterPharmacy(string mobile);
@@ -64,6 +68,15 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         #region Admin
 
+        //Get List Of Admins and Supporters User Id For Send Notification For Death Certificate
+        Task<List<string>?> GetAdminsAndSupportersNotificationForSendNotificationInDeathCertificate();
+
+        //Get Death Certificate Supporters
+        Task<List<User>?> GetDeathCertificateSupporters();
+
+        //Get Home Visit Supporters
+        Task<List<User>?> GetHomeVisitSupporters();
+
         //Get List Of Admins About Send Notification For Arrival New Nurses Inormations
         Task<List<string>?> GetListOfAdminsAboutSendNotificationForArrivalNewNursesInormations();
 
@@ -75,6 +88,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Get List Of Admins and Supporters User Id For Send Notification For Online Request
         Task<List<string>?> GetAdminsAndSupportersNotificationForSendNotificationInOnlineVisit();
+
+        //Get List Of Admins and Supporters User Id For Send Notification For Home Visit
+        Task<List<string>?> GetAdminsAndSupportersNotificationForSendNotificationInHomeVisit();
 
         //Get List Of Admins and Supporters User Id For Send Notification For Home Pharmacy
         Task<List<string>?> GetAdminsAndSupportersNotificationForSendNotificationInHomePharmacy();
@@ -108,6 +124,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Get List Of Admins About Send Notification For Arrival New Consultant Inormations
         Task<List<string>?> GetListOfAdminsAboutSendNotificationForArrivalNewConsultantInormations();
+
+        //Create User From Laboratory Panel
+        Task<AddNewUserResult> CreateUserFromLaboratoryPanel(AddLaboratoryEmployeeViewModel user, IFormFile? avatar, ulong MasterId);
 
         #endregion
 

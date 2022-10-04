@@ -36,6 +36,9 @@ namespace DoctorFAM.Domain.Interfaces
 
         Task<int> GetUserWalletBalance(ulong userId);
 
+        //Get Home Visit Transaction For Cancelation Home Visit Request 
+        Task<Wallet?> GetHomeVisitTransactionForCancelationHomeVisitRequest(ulong requestId);
+
         #endregion
 
         #region Save Changes

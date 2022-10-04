@@ -497,7 +497,7 @@ $(function () {
             });
     }
 
-//#endregion
+    //#endregion
 
     var timePickers = $("[TimePicker]");
     if (timePickers.length > 0) {
@@ -611,12 +611,6 @@ $(function () {
 
 $(function () {
     $('input').keyup(function (e) {
-        var ctrlKey = 67, vKey = 86;
-        if (e.keyCode != ctrlKey && e.keyCode != vKey) {
-            $(this).val(persianToEnglish($(this).val()));
-        }
-    });
-    $('textarea').keyup(function (e) {
         var ctrlKey = 67, vKey = 86;
         if (e.keyCode != ctrlKey && e.keyCode != vKey) {
             $(this).val(persianToEnglish($(this).val()));

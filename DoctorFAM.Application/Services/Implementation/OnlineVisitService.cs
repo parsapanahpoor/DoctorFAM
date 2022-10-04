@@ -281,7 +281,7 @@ namespace DoctorFAM.Application.Services.Implementation
             return true;
         }
 
-        public async Task<bool> ChargeUserWallet(ulong userId, int price)
+        public async Task<bool> ChargeUserWallet(ulong userId, int price , ulong requestId)
         {
             if (!await _userService.IsExistUserById(userId))
             {
@@ -296,14 +296,15 @@ namespace DoctorFAM.Application.Services.Implementation
                 PaymentType = PaymentType.ChargeWallet,
                 Price = price,
                 Description = "شارژ حساب کاربری برای پرداخت هزینه ی ویزیت آنلاین",
-                IsFinally = true
+                IsFinally = true,
+                RequestId = requestId
             };
 
             await _walletRepository.CreateWalletAsync(wallet);
             return true;
         }
 
-        public async Task<bool> PayOnlineVisitTariff(ulong userId, int price)
+        public async Task<bool> PayOnlineVisitTariff(ulong userId, int price , ulong requestId)
         {
             if (!await _userService.IsExistUserById(userId))
             {
@@ -318,7 +319,8 @@ namespace DoctorFAM.Application.Services.Implementation
                 PaymentType = PaymentType.OnlineVisit,
                 Price = price,
                 Description = "پرداخت مبلغ ویزیت آنلاین",
-                IsFinally = true
+                IsFinally = true,
+                RequestId = requestId
             };
 
             await _walletRepository.CreateWalletAsync(wallet);

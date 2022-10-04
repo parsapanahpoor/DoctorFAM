@@ -192,6 +192,7 @@ namespace DoctorFAM.Application.Services.Implementation
                     MediacalFile = doctorInfo.MediacalFile,
                     MedicalSystemCode = doctorInfo.MedicalSystemCode,
                     NationalCode = doctorInfo.NationalCode,
+                    Gender = doctorInfo.Gender,
                     RejectDescription = doctorOffice.RejectDescription,
                     Specialty = doctorInfo.Specialty
                 };
@@ -281,6 +282,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 info.Education = model.Education.SanitizeText();
                 info.NationalCode = model.NationalCode;
                 info.MedicalSystemCode = model.MedicalSystemCode;
+                info.Gender = model.Gender;
 
                 //Update Doctor Office State 
                 doctorOffice.OrganizationInfoState = OrganizationInfoState.WatingForConfirm;
@@ -369,6 +371,7 @@ namespace DoctorFAM.Application.Services.Implementation
                         MedicalSystemCode = model.MedicalSystemCode,
                         NationalCode = model.NationalCode,
                         Specialty = model.Specialty.SanitizeText(),
+                        Gender = model.Gender,
                     };
 
                     #endregion
@@ -757,6 +760,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 DoctorsInfosType = doctorOffice.OrganizationInfoState,
                 Id = info.Id,
                 DoctorId = doctor.Id,
+                Gender = info.Gender,
                 DoctorsInterests = await _doctorRepository.GetDoctorSelectedInterests(doctor.Id),
             };
 
@@ -818,6 +822,7 @@ namespace DoctorFAM.Application.Services.Implementation
             info.Specialty = model.Specialty;
             info.Education = model.Education;
             info.NationalCode = model.NationalCode;
+            info.Gender = model.Gender;
 
             #endregion
 

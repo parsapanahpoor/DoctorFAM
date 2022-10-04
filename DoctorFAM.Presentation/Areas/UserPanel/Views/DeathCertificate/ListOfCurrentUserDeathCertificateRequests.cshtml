@@ -1,0 +1,156 @@
+﻿@model DoctorFAM.Domain.ViewModels.UserPanel.HealthHouse.DeathCertificate.FilterUserDeathCertificateRequestViewModel
+@using DoctorFAM.Domain.ViewModels.Admin.HealthHouse
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Domain.ViewModels.Common
+@using DoctorFAM.Domain.Enums.Request
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
+
+@{
+    ViewData["Title"] = @Localizer["List Of Your Death Certificate Requests"];
+}
+
+@section Styles
+    {
+
+}
+
+    @section Scripts
+    {
+    <partial name="_JqueryValidation" />
+}
+
+    @section Breadcrumb
+    {
+    <li>
+        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+    </li>
+}
+    <form asp-action="ListOfCurrentUserDeathCertificateRequests" asp-controller="HealthHouse" asp-area="UserPanel" id="filter-search" method="get">
+        <input type="hidden" asp-for="Page" />
+    </form>
+
+    <div class="row">
+        <div class="col-lg-12 col-sm-12">
+            <div class="well with-header with-footer table-responsive">
+                <div class="header bordered-azure">
+                    <div class="flex-style">
+                        <span>@ViewData["Title"]</span>
+                        <span>@Model.GetShownEntitiesPagesTitle()</span>
+                    </div>
+                </div>
+
+            @if (Model.Entities != null && Model.Entities.Any())
+            {
+                <table class="table table-hover table-bordered tc vm">
+                    <thead class="tc vm">
+                        <tr class="tc vm">
+                            <th class="tc vm">
+                                @Localizer["User Avatar"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["Request State"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["Your chosen date"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["Options"]
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="tc vm">
+                        @foreach (var request in Model.Entities)
+                        {
+                            <tr class="tc vm">
+                                <td class="vm">
+                                    @if (request.OperationId.HasValue)
+                                    {
+                                        <div class="flex-style-center">
+                                            <img src="@request.Operation.GetUserAvatar()" class="avatar-style" style="border-radius:50px;" />
+                                            <div class="mr-10px">
+                                                <span> @request.Operation.Username </span>
+                                            </div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <span class="mr-8px label label-warning"> @Localizer["Empty"] </span>
+                                    }
+
+                                </td>
+                                <td class="tc vm">
+                                    <p class="flex-style-center">
+
+                                        @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.Paid)
+                                        {
+                                            <span class="mr-8px label label-info"> @Localizer["Paid"] </span>
+                                        }
+                                        @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.ConfirmFromDestinationAndWaitingForIssuanceOfDraftInvoice)
+                                        {
+                                            <span class="mr-8px label label-info"> @Localizer["ConfirmFromDestinationAndWaitingForIssuanceOfDraftInvoice"] </span>
+                                        }
+                                        @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.AwaitingThePaymentOfTheInvoiceAmount)
+                                        {
+                                            <span class="mr-8px label label-warning"> @Localizer["AwaitingThePaymentOfTheInvoiceAmount"] </span>
+                                        }
+                                        @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.DeliveryToCourierAndSending)
+                                        {
+                                            <span class="mr-8px label label-info"> @Localizer["DeliveryToCourierAndSending"] </span>
+                                        }
+                                        @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.PreparingTheOrder)
+                                        {
+                                            <span class="mr-8px label label-info"> @Localizer["DeliveryToCourierAndSending"] </span>
+                                        }
+                                        @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.SelectedFromDoctor)
+                                        {
+                                            <span class="mr-8px label label-info"> @Localizer["SelectedFromDoctor"] </span>
+                                        }
+                                        @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.WaitingForConfirmFromDestination)
+                                        {
+                                            <span class="mr-8px label label-warning"> @Localizer["WaitingForConfirmFromDestination"] </span>
+                                        }
+                                        @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.AcceptFromCustomer)
+                                        {
+                                            <span class="mr-8px label label-info"> @Localizer["Accepted From Customer"] </span>
+                                        }
+                                        @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.Finalized)
+                                        {
+                                            <span class="mr-8px label label-success" style="    background-image: linear-gradient(#ff00cc, #333399) !important;"> @Localizer["Finalized"] </span>
+                                        }
+                                        @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.WaitingForAcceptFromCustomer)
+                                        {
+                                            <span class="mr-8px label label-warning"> @Localizer["Waiting For Accept From Customer"] </span>
+                                        }
+                                    </p>
+                                </td>
+
+                                <td class="tc vm">
+                                    <p>  @request.CreateDate.ToStringShamsiDate() </p>
+                                </td>
+                                <td class="tc vm">
+                                    @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.Finalized)
+                                    {
+                                        <a asp-action="DeathCertificateRequestDetail" asp-controller="DeathCertificate" asp-area="UserPanel" asp-route-requestId="@request.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <div class="footer tc">
+
+                    <partial name="_UserPanelPaging" model="@Model.GetCurrentPaging()" />
+
+                </div>
+            }
+            else
+            {
+                <partial name="_UserPanelNotFoundPartial" />
+            }
+        </div>
+    </div>
+</div>
+

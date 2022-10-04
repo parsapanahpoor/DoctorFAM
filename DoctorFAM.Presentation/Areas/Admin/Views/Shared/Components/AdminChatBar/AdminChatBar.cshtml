@@ -103,6 +103,38 @@
                                 {
                                     <div>درخواست برای مشاور روان</div>
                                 }
+                                @if (item.SupporterNotificationText == DoctorFAM.Domain.Enums.Notification.SupporterNotificationText.HomeVisitRequest)
+                                {
+                                    <div>درخواست برای ویزیت درمنزل</div>
+                                }
+                                @if (item.SupporterNotificationText == DoctorFAM.Domain.Enums.Notification.SupporterNotificationText.AcceptHomeVisitRequestFromDoctor)
+                                {
+                                    <div>تایید درخواست ویزیت درمنزل از طرف پزشک</div>
+                                }
+                                @if (item.SupporterNotificationText == DoctorFAM.Domain.Enums.Notification.SupporterNotificationText.AcceptHomeVisitRequestFromUser)
+                                {
+                                    <div>تایید درخواست ویزیت درمنزل از طرف کاربر</div>
+                                } 
+                                @if (item.SupporterNotificationText == DoctorFAM.Domain.Enums.Notification.SupporterNotificationText.DeclineHomeVisitRequestFromUser)
+                                {
+                                    <div>رد پزشک متقاضی ویزیت در منزل توسط کاربر</div>
+                                }
+                                @if (item.SupporterNotificationText == DoctorFAM.Domain.Enums.Notification.SupporterNotificationText.CancelHomeVisitRequest)
+                                {
+                                    <div>لغو درخواست ویزیت در منزل از طرف کاربر</div>
+                                }
+                                @if (item.SupporterNotificationText == DoctorFAM.Domain.Enums.Notification.SupporterNotificationText.NewArrivalDeathCertificateRequest)
+                                {
+                                    <div>درخواست برای صدور گواهی فوت</div>
+                                }
+                                @if (item.SupporterNotificationText == DoctorFAM.Domain.Enums.Notification.SupporterNotificationText.AcceptDeathCertificateRequestFromDoctor)
+                                {
+                                    <div>تایید درخواست گواهی فوت از طرف پزشک</div>
+                                }
+                                @if (item.SupporterNotificationText == DoctorFAM.Domain.Enums.Notification.SupporterNotificationText.LaboratoryInformationInsert)
+                                {
+                                    <div>ارسال اطلاعات توسط داروخانه</div>
+                                }
                             </div>
                         </div>
                     </li>

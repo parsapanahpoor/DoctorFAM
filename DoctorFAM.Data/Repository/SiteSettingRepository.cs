@@ -166,6 +166,188 @@ namespace DoctorFAM.Data.Repository
             return await _context.SiteSettings.Select(p => p.SiteDomain).FirstOrDefaultAsync();
         }
 
+        public async Task<int> GetDistanceFromCityTarriffCost()
+        {
+            var siteSetting = await GetSiteSetting();
+            if (siteSetting == null) return 0;
+
+            if (siteSetting.DistanceFromCityTarriff == null || siteSetting.DistanceFromCityTarriff == 0)
+            {
+                return 0;
+            }
+
+            return siteSetting.DistanceFromCityTarriff;
+        }
+
+        public async Task<int> GetIntramuscularInjectionCost()
+        {
+            var siteSetting = await GetSiteSetting();
+            if (siteSetting == null) return 0;
+
+            if (siteSetting.IntramuscularInjection == null || siteSetting.IntramuscularInjection == 0)
+            {
+                return 0;
+            }
+
+            return siteSetting.IntramuscularInjection;
+        }
+
+        public async Task<int> GetDermalOrSubcutaneousInjectionCost()
+        {
+            var siteSetting = await GetSiteSetting();
+            if (siteSetting == null) return 0;
+
+            if (siteSetting.DermalOrSubcutaneousInjection == null || siteSetting.DermalOrSubcutaneousInjection == 0)
+            {
+                return 0;
+            }
+
+            return siteSetting.DermalOrSubcutaneousInjection;
+        }
+
+        public async Task<int> GetReedyInjectionCost()
+        {
+            var siteSetting = await GetSiteSetting();
+            if (siteSetting == null) return 0;
+
+            if (siteSetting.ReedyInjection == null || siteSetting.ReedyInjection == 0)
+            {
+                return 0;
+            }
+
+            return siteSetting.ReedyInjection;
+        }
+
+        public async Task<int> GetSerumTherapyCost()
+        {
+            var siteSetting = await GetSiteSetting();
+            if (siteSetting == null) return 0;
+
+            if (siteSetting.SerumTherapy == null || siteSetting.SerumTherapy == 0)
+            {
+                return 0;
+            }
+
+            return siteSetting.SerumTherapy;
+        }
+
+        public async Task<int> GetBloodPressureMeasurementCost()
+        {
+            var siteSetting = await GetSiteSetting();
+            if (siteSetting == null) return 0;
+
+            if (siteSetting.BloodPressureMeasurement == null || siteSetting.BloodPressureMeasurement == 0)
+            {
+                return 0;
+            }
+
+            return siteSetting.BloodPressureMeasurement;
+        }
+
+        public async Task<int> GetGlucometrytCost()
+        {
+            var siteSetting = await GetSiteSetting();
+            if (siteSetting == null) return 0;
+
+            if (siteSetting.Glucometry == null || siteSetting.Glucometry == 0)
+            {
+                return 0;
+            }
+
+            return siteSetting.Glucometry;
+        }
+
+        public async Task<int> GetPulseOximetryCost()
+        {
+            var siteSetting = await GetSiteSetting();
+            if (siteSetting == null) return 0;
+
+            if (siteSetting.PulseOximetry == null || siteSetting.PulseOximetry == 0)
+            {
+                return 0;
+            }
+
+            return siteSetting.PulseOximetry;
+        }
+
+        public async Task<int> GetSmallDressingCost()
+        {
+            var siteSetting = await GetSiteSetting();
+            if (siteSetting == null) return 0;
+
+            if (siteSetting.SmallDressing == null || siteSetting.SmallDressing == 0)
+            {
+                return 0;
+            }
+
+            return siteSetting.SmallDressing;
+        }
+
+        public async Task<int> GetGreatDressingCost()
+        {
+            var siteSetting = await GetSiteSetting();
+            if (siteSetting == null) return 0;
+
+            if (siteSetting.GreatDressing == null || siteSetting.GreatDressing == 0)
+            {
+                return 0;
+            }
+
+            return siteSetting.GreatDressing;
+        }
+
+        public async Task<int> GetGastricIntubationCost()
+        {
+            var siteSetting = await GetSiteSetting();
+            if (siteSetting == null) return 0;
+
+            if (siteSetting.GastricIntubation == null || siteSetting.GastricIntubation == 0)
+            {
+                return 0;
+            }
+
+            return siteSetting.GastricIntubation;
+        }
+
+        public async Task<int> GetUrinaryBladderCost()
+        {
+            var siteSetting = await GetSiteSetting();
+            if (siteSetting == null) return 0;
+
+            if (siteSetting.UrinaryBladder == null || siteSetting.UrinaryBladder == 0)
+            {
+                return 0;
+            }
+
+            return siteSetting.UrinaryBladder;
+        }
+
+        public async Task<int> GetOxygenTherapyCost()
+        {
+            var siteSetting = await GetSiteSetting();
+            if (siteSetting == null) return 0;
+
+            if (siteSetting.OxygenTherapy == null || siteSetting.OxygenTherapy == 0)
+            {
+                return 0;
+            }
+
+            return siteSetting.OxygenTherapy;
+        }
+
+        public async Task<int> GetECGCost()
+        {
+            var siteSetting = await GetSiteSetting();
+            if (siteSetting == null) return 0;
+
+            if (siteSetting.ECG == null || siteSetting.ECG == 0)
+            {
+                return 0;
+            }
+
+            return siteSetting.ECG;
+        }
+
         #endregion
     }
 }

@@ -12,62 +12,66 @@
     ViewData["Title"] = @Localizer["Home Visit Records"];
 }
 
+@{
+    var declineRequest = ViewBag.declineRequest as List<DoctorFAM.Domain.Entities.Requests.LogForDeclineHomeVisitRequestFromUser>;
+}
+
 @section Styles
-{
+    {
 
-}
+    }
 
-@section Scripts
-{
-<partial name="_JqueryValidation" />
-}
+    @section Scripts
+    {
+    <partial name="_JqueryValidation" />
+    }
 
-@section Breadcrumb
-{
-<li>
-    <a href="javascript:void(0)"> @ViewData["Title"] </a>
-</li>
-}
+    @section Breadcrumb
+    {
+    <li>
+        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+    </li>
+    }
 
-<div class="row">
-    <div class="col-lg-3 col-sm-12">
-        <div class="widget">
-            <div class="widget-header bordered-bottom bordered-green">
-                <span class="widget-caption"> @ViewData["Title"] </span>
-            </div>
-            <div class="widget-body">
-                <div>
-                    <form asp-action="ListOfHomeVisitRequest" asp-controller="HomeVisit" asp-area="Doctor" id="filter-search" method="get">
+    <div class="row">
+        <div class="col-lg-3 col-sm-12">
+            <div class="widget">
+                <div class="widget-header bordered-bottom bordered-green">
+                    <span class="widget-caption"> @ViewData["Title"] </span>
+                </div>
+                <div class="widget-body">
+                    <div>
+                        <form asp-action="ListOfHomeVisitRequest" asp-controller="HomeVisit" asp-area="Doctor" id="filter-search" method="get">
 
-                        <input type="hidden" asp-for="Page" />
+                            <input type="hidden" asp-for="Page" />
 
-                        <div class="form-group">
-                            <label asp-for="Username"> @Localizer["Username"] </label>
-                            <input type="text" class="form-control" asp-for="Username">
-                        </div>
+                            <div class="form-group">
+                                <label asp-for="Username"> @Localizer["Username"] </label>
+                                <input type="text" class="form-control" asp-for="Username">
+                            </div>
 
-                        <div class="form-group">
-                            <label asp-for="UserEmail"> @Localizer["Email"] </label>
-                            <input type="text" class="form-control" asp-for="UserEmail">
-                        </div>
+                            <div class="form-group">
+                                <label asp-for="UserEmail"> @Localizer["Email"] </label>
+                                <input type="text" class="form-control" asp-for="UserEmail">
+                            </div>
 
-                        <div class="form-group">
-                            <label asp-for="UserMobile"> @Localizer["Mobile"] </label>
-                            <input type="text" class="form-control" asp-for="UserMobile">
-                        </div>
+                            <div class="form-group">
+                                <label asp-for="UserMobile"> @Localizer["Mobile"] </label>
+                                <input type="text" class="form-control" asp-for="UserMobile">
+                            </div>
 
-                        <div class="form-group">
-                            <label asp-for="FilterRequestAdminSideOrder"> @Localizer["Order By"] </label>
-                            <select asp-for="FilterRequestAdminSideOrder" class="form-control" asp-items="Html.GetEnumSelectList(typeof(FilterRequestAdminSideOrder))"></select>
-                        </div>
+                            <div class="form-group">
+                                <label asp-for="FilterRequestAdminSideOrder"> @Localizer["Order By"] </label>
+                                <select asp-for="FilterRequestAdminSideOrder" class="form-control" asp-items="Html.GetEnumSelectList(typeof(FilterRequestAdminSideOrder))"></select>
+                            </div>
 
-                        <hr />
+                            <hr />
 
-                        <div class="row">
-                            <div class="col-md-12 flex-style">
-                                <button type="submit" class="btn btn-labeled w-100 btn-palegreen">
-                                    <i class="btn-label glyphicon glyphicon-filter"></i>@Localizer["Filter"]
-                                </button>
+                            <div class="row">
+                                <div class="col-md-12 flex-style">
+                                    <button type="submit" class="btn btn-labeled w-100 btn-palegreen">
+                                        <i class="btn-label glyphicon glyphicon-filter"></i>@Localizer["Filter"]
+                                    </button>
 
                                 @if (Context.Request.QueryString.HasValue)
                                 {
@@ -101,6 +105,12 @@
                                 @Localizer["User Avatar"]
                             </th>
                             <th class="tc vm">
+                                @Localizer["Mobile"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["Option"]
+                            </th>
+                            <th class="tc vm">
                                 @Localizer["Date Time"]
                             </th>
                             <th class="tc vm">
@@ -111,27 +121,57 @@
                     <tbody class="tc vm">
                         @foreach (var request in Model.Entities)
                         {
-                            <tr class="tc vm">
-                                <td class="vm">
-                                    <div class="flex-style-center">
-                                        <img src="@request.User.GetUserAvatar()" class="avatar-style" style="border-radius:50px;" />
-                                        <div class="mr-10px">
-                                            <span> @request.User.Username </span>
-                                            <hr class="margin-7" />
-                                            <span>@Localizer["Register Date"] : @request.User.CreateDate.ToShamsi()</span>
+                            if (!declineRequest.Any(p=> !p.IsDelete && p.RequestId == request.Id))
+                            {
+                                                                <tr class="tc vm">
+                                    <td class="vm">
+                                        <div class="flex-style-center">
+                                            <img src="@request.User.GetUserAvatar()" class="avatar-style" style="border-radius:50px;" />
+                                            <div class="mr-10px">
+                                                <span> @request.User.Username </span>
+                                            </div>
                                         </div>
-                                    </div>
-                                </td>
+                                    </td>
+                                    <td class="tc vm">
+                                        <p class="label label-primary">  @request.User.Mobile </p>
+                                    </td>
+                                    <td class="tc vm">
+                                        @if (request.HomeVisitRequestDetail == null)
+                                        {
+                                            <p class="label label-orange">  @Localizer["Empty"] </p>
+                                        }
+                                        else
+                                        {
+                                            <p class="flex-style-center">
+                                                <span> @Localizer["Emergency Request"] </span>
+                                                <span class="mr-8px label @((request.HomeVisitRequestDetail.EmergencyVisit) ? "label-success" : "label-orange")">
+                                                    @(
+                                                        (request.HomeVisitRequestDetail.EmergencyVisit) ? @Localizer["Yes"] : @Localizer["No"]
+                                                        )
+                                                </span>
+                                            </p>
+                                            <hr class="margin-7" />
+                                            <p class="flex-style-center">
+                                                <span> @Localizer["Female Doctor"] </span>
+                                                <span class="mr-8px label @((request.HomeVisitRequestDetail.FemalePhysician) ? "label-success" : "label-orange")">
+                                                    @(
+                                                        (request.HomeVisitRequestDetail.FemalePhysician) ? @Localizer["Yes"] : @Localizer["No"]
+                                                        )
+                                                </span>
+                                            </p>
+                                        }
+                                    </td>
+                                    <td class="tc vm">
+                                        <p>  @request.CreateDate.ToStringShamsiDate() </p>
+                                        <p> @request.CreateDate.Hour:@request.CreateDate.Minute:@request.CreateDate.Second</p>
+                                    </td>
 
-                                <td class="tc vm">
-                                    <p>  @request.CreateDate.ToStringShamsiDate() </p>
-                                    <p> @request.CreateDate.Hour:@request.CreateDate.Minute:@request.CreateDate.Second</p>
-                                </td>
+                                    <td class="tc vm">
+                                        <a asp-action="HomeVisitRequestDetail" asp-controller="HomeVisit" asp-area="Doctor" asp-route-requestId="@request.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+                                    </td>
+                                </tr>
 
-                                <td class="tc vm">
-@*                                    <a asp-action="HomeVisitRequestDetail" asp-controller="HomeVisit" asp-area="Doctor" asp-route-requestId="@request.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
-*@                                </td>
-                            </tr>
+                            }
                         }
                     </tbody>
                 </table>
