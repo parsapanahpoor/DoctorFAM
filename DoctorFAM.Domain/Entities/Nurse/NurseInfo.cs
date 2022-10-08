@@ -14,7 +14,7 @@ namespace DoctorFAM.Domain.Entities.Nurse
 
         public ulong NurseId { get; set; }
 
-        public int NationalCode { get; set; }
+        public string NationalCode { get; set; }
 
         public string? Education { get; set; }
 

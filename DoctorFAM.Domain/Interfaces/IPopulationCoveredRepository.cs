@@ -31,6 +31,9 @@ namespace DoctorFAM.Domain.Interfaces
 
         #region Site Side
 
+        //Check Is Exist National Id 
+        Task<bool> CheckIsExistNationalId(string nationalId, ulong userId);
+
         Task<List<PopulationCovered>> GetUserPopulation(ulong userId);
 
         #endregion

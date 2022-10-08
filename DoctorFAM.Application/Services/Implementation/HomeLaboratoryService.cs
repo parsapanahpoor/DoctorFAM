@@ -52,6 +52,7 @@ namespace DoctorFAM.Application.Services.Implementation
             _patientService = patientService;
             _locationService = locationService;
             _walletRepository = walletRepository;
+            _populationCovered = populationCovered;
         }
 
         #endregion

@@ -9,54 +9,54 @@
 
 @section Scripts
     {
-    <partial name="_JqueryValidation" />
+<partial name="_JqueryValidation" />
 
-    <script>
+<script>
 
-        //#region Choose Reservation Type
+    //#region Choose Reservation Type
 
-        function ChooseReservationType(reservationDateTimeId,doctorId) {
-            $.ajax({
-                url: "/Choose-Type-Of-Reservation",
-                type: "get",
-                data: {
-                    reservationDateTimeId: reservationDateTimeId,
-                    doctorId : doctorId
-                },
-                success: function (response) {
-                    $("#modal-body").html(response);
+    function ChooseReservationType(reservationDateTimeId,doctorId) {
+        $.ajax({
+            url: "/Choose-Type-Of-Reservation",
+            type: "get",
+            data: {
+                reservationDateTimeId: reservationDateTimeId,
+                doctorId : doctorId
+            },
+            success: function (response) {
+                $("#modal-body").html(response);
 
-                    $('#ChooseReservationType').data('validator', null);
-                    $.validator.unobtrusive.parse('#ChooseReservationType');
+                $('#ChooseReservationType').data('validator', null);
+                $.validator.unobtrusive.parse('#ChooseReservationType');
 
-                    $("#exampleModal").modal("show");
-                }
-            });
-        }
+                $("#exampleModal").modal("show");
+            }
+        });
+    }
 
-        //#endregion
+    //#endregion
 
-    </script>
+</script>
 
 }
 
 
-    <div class="content">
-        <div class="container">
+<div class="content">
+    <div class="container">
 
-            <div class="card m-3 p-3">
-                <div class="card-body">
-                    <div class="doctor-widget">
-                        <div class="row">
-                            <div class=" doc-info-left">
-                                <div class="doctor-img">
-                                    <img src="/content/images/user/@((string.IsNullOrEmpty(Model.DoctorPageInReservationViewModel.UserAvatar)) ? "DefaultAvatar.png" : $"thumb/{Model.DoctorPageInReservationViewModel.UserAvatar}")" class="img-fluid" alt="User Image">
-                                </div>
-                                <div class="doc-info-cont">
-                                    <h4 class="doc-name">پزشک: @Model.DoctorPageInReservationViewModel.Username</h4>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <p class="doc-speciality">  @((!string.IsNullOrEmpty(Model.DoctorPageInReservationViewModel.Education)) ? Model.DoctorPageInReservationViewModel.Education : null) </p>
+        <div class="card m-3 p-3">
+            <div class="card-body">
+                <div class="doctor-widget">
+                    <div class="row">
+                        <div class=" doc-info-left">
+                            <div class="doctor-img">
+                                <img src="/content/images/user/@((string.IsNullOrEmpty(Model.DoctorPageInReservationViewModel.UserAvatar)) ? "DefaultAvatar.png" : $"thumb/{Model.DoctorPageInReservationViewModel.UserAvatar}")" class="img-fluid" alt="User Image">
+                            </div>
+                            <div class="doc-info-cont">
+                                <h4 class="doc-name">پزشک: @Model.DoctorPageInReservationViewModel.Username</h4>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <p class="doc-speciality">  @((!string.IsNullOrEmpty(Model.DoctorPageInReservationViewModel.Education)) ? Model.DoctorPageInReservationViewModel.Education : null) </p>
                                         <span class="doc-speciality"> @((!string.IsNullOrEmpty(Model.DoctorPageInReservationViewModel.Specialist)) ? Model.DoctorPageInReservationViewModel.Specialist : null) </span>
                                         <div class="rating">
                                             <i class="fas fa-star filled"></i>
@@ -81,25 +81,29 @@
             <input type="hidden" asp-for="UserId" />
 
             <div class="row">
-                <div class="col-12 col-sm-4 col-md-4">
-                    <h4 class="mb-1"> @((Model.DoctorReservationDate != null) ? Model.DoctorReservationDate.ReservationDate.ToStringShamsiDate() : "تاریخ وارد نشده است")</h4>
+                <div class="col-12 col-sm-12 col-md-12 text-center ">
+                    <h5 class="mb-1"> @((Model.DoctorReservationDate != null) ? Model.DoctorReservationDate.ReservationDate.ToStringShamsiDate() : "کاربر گرامی برای اخذ نوبت ابتدا یک تاریخ را از قسمت زیر انتخاب نمایید:")</h5>
                     @*                        <p class="text-muted">دوشنبه</p>
                     *@
                 </div>
-                <div class="col-12 col-sm-8 col-md-8 ">
+            </div>
+            <div class="row mt-2">
+                <div class=" col-md-3  text-center"></div>
+                <div class="col-md-6  text-center">
                     <div class="bookingrange btn btn-white btn-sm mb-3" style="width: 100%;">
                         <div class="row">
                             <div class="form-group col-md-6 col-sm-12" style="margin-bottom:0px;">
                                 <input type="text" class="form-control" DatePicker="1" asp-for="LoggedDateTime" style="z-index:9999!important;">
                             </div>
 
-                            <div class="col-md-6 col-sm-12 submit-section proceed-btn text-left mt-2" style="margin-bottom:0px;margin-top: 0px !important;">
+                            <div class="col-md-4 col-sm-12 submit-section proceed-btn text-left mt-2" style="margin-bottom:0px;margin-top: 0px !important;">
                                 <input type="submit" class="btn btn-primary btn-Accept" value="استعلام" placeholder="ثبت نوبت" />
                             </div>
                         </div>
 
                     </div>
                 </div>
+                <div class="col-md-3  text-center"></div>
             </div>
 
         </form>
@@ -116,20 +120,22 @@
 
                                     @foreach (var item in Model.DoctorReservationDateTimes)
                                     {
+
                                         @if (item.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.Reserved
                                        || item.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.WaitingForComplete)
                                         {
-                                            <li style="margin-top:10px;">
-                                                <div class="timing" style="background-color: #ff0c00;border: 1px solid #f00;color: #fff;" href="#">
-                                                    <span> @item.StartTime</span> تا <span> @item.EndTime</span>
+                                            <li class="form-group col-md-2 col-sm-12" style="margin-top:10px;">
+                                                <div class="timing" style="background-color: #ff1d19;border: 1px solid #dfdcdc;color: #fff;" href="#">
+                                                    ساعت <span> @string.Concat(item.StartTime.Reverse().Skip(3).Reverse()) </span>
                                                 </div>
                                             </li>
                                         }
                                         @if (item.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.NotReserved)
                                         {
-                                            <li style="margin-top:10px;">
-                                                <button onclick="ChooseReservationType(@item.Id,@Model.UserId)" type="button" class="timing" data-toggle="modal" data-target="#exampleModal" style="background-color: #11e802;border: 1px solid #11e802;color: #fff;">
-                                                    <span> @item.StartTime</span> تا <span> @item.EndTime</span>
+                                            <li class="form-group col-md-2 col-sm-12" style="margin-top:10px;">
+                                                <button onclick="ChooseReservationType(@item.Id,@Model.UserId)" type="button" class="timing" data-toggle="modal" data-target="#exampleModal" style="background-color: #197c66;border: 1px solid #fccf9a;color: #fff;">
+                                                    @* <span> @item.StartTime</span> تا <span> @item.EndTime</span>*@
+                                                    ساعت <span> @string.Concat(item.StartTime.Reverse().Skip(3).Reverse()) </span>
                                                 </button>
                                             </li>
                                         }

@@ -76,6 +76,7 @@ namespace DoctorFAM.Domain.ViewModels.UserPanel.Account
         UserNotFound,
         Success,
         NotValidEmail,
-        NationalId
+        NationalId,
+        NotValidNationalId
     }
 }

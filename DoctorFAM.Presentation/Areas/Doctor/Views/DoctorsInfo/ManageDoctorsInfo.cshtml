@@ -16,23 +16,24 @@
 }
 
 @section Scripts
-{
-<partial name="_JqueryValidation" />
+    {
+    <partial name="_JqueryValidation" />
+
 }
 
-@section Breadcrumb
-{
-<li>
-    <a asp-action="Index" asp-controller="Home" asp-area="Doctor"> @Localizer["Docotr Panel"] </a>
-</li>
-<li>
-    <a href="javascript:void(0)"> @ViewData["Title"] </a>
-</li>
+    @section Breadcrumb
+    {
+    <li>
+        <a asp-action="Index" asp-controller="Home" asp-area="Doctor"> @Localizer["Docotr Panel"] </a>
+    </li>
+    <li>
+        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+    </li>
 }
 
-<form method="post" asp-action="ManageDoctorsInfo" asp-controller="DoctorsInfo" asp-area="Doctor" enctype="multipart/form-data">
+    <form method="post" asp-action="ManageDoctorsInfo" asp-controller="DoctorsInfo" asp-area="Doctor" enctype="multipart/form-data">
 
-    <div class="row">
+        <div class="row">
 
         @if (!string.IsNullOrEmpty(Model.RejectDescription) && Model.DoctorsInfosType == DoctorFAM.Domain.Entities.Doctors.OrganizationInfoState.Rejected)
         {
@@ -54,12 +55,12 @@
                                 <i class="fa fa-times"></i>
                             </a>
                         </div><!--Widget Buttons-->
-                </div><!--Widget Header-->
-                <div class="widget-body bg-red">
+                    </div><!--Widget Header-->
+                    <div class="widget-body bg-red">
                         <p> @Model.RejectDescription </p>
                     </div><!--Widget Body-->
-            </div><!--Widget-->
-        </div>
+                </div><!--Widget-->
+            </div>
         }
 
     </div>
@@ -91,19 +92,19 @@
                                     <span class="text-danger" asp-validation-for="MedicalSystemCode"></span>
                                 </div>
 
-                                   <div class="form-group col-md-4 col-sm-12">
-                                <label asp-for="Gender"></label>
-                                <select asp-for="Gender" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.Gender.Gender))"></select>
-                                <span class="text-danger" asp-validation-for="Gender"></span>
-                            </div>
+                                <div class="form-group col-md-4 col-sm-12">
+                                    <label asp-for="Gender"></label>
+                                    <select asp-for="Gender" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.Gender.Gender))"></select>
+                                    <span class="text-danger" asp-validation-for="Gender"></span>
+                                </div>
 
-                                 <div class="form-group col-md-6 col-sm-12">
+                                <div class="form-group col-md-6 col-sm-12">
                                     <label asp-for="FirstName"></label>
                                     <input type="text" class="form-control" asp-for="FirstName">
                                     <span class="text-danger" asp-validation-for="FirstName"></span>
                                 </div>
 
-                                     <div class="form-group col-md-6 col-sm-12">
+                                <div class="form-group col-md-6 col-sm-12">
                                     <label asp-for="LastName"></label>
                                     <input type="text" class="form-control" asp-for="LastName">
                                     <span class="text-danger" asp-validation-for="LastName"></span>

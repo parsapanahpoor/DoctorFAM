@@ -51,6 +51,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         #region Site Side
 
+        //Validate For NAtional Id 
+        Task<bool> IsValidNationalIdForUserEditByAdmin(string mobile, ulong userId);
+
         //Register Labratory
         Task LabratoryConsultant(string mobile);
 

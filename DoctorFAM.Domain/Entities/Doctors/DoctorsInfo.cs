@@ -16,9 +16,9 @@ namespace DoctorFAM.Domain.Entities.Doctors
 
         public ulong DoctorId { get; set; }
 
-        public int NationalCode { get; set; }
+        public string NationalCode { get; set; }
 
-        public int  MedicalSystemCode { get; set; }
+        public string MedicalSystemCode { get; set; }
 
         public string Education { get; set; }
 

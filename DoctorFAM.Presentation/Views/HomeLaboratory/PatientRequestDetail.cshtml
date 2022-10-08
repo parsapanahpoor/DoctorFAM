@@ -35,46 +35,6 @@
 @section Scripts
 {
 <partial name="_JqueryValidation" />
-
-<script>
-    $("#CountryId").change(function () {
-        if ($("#CountryId :selected").val() !== '') {
-            $('#CityId option:not(:first)').remove();
-            $('#StateId option:not(:first)').remove();
-            $.get("/Home/LoadCities", { stateId: $("#CountryId :selected").val() }).then(res => {
-                if (res.data !== null) {
-                    $.each(res.data, function () {
-                        $("#StateId").append(
-                            '<option value=' + this.id + '>' + this.title + '</option>'
-                        );
-                    });
-                }
-            });
-        } else {
-            $('#StateId option:not(:first)').remove();
-            $('#CityId option:not(:first)').remove();
-        }
-    });
-
-    $("#StateId").change(function () {
-        if ($("#StateId :selected").val() !== '') {
-            $('#CityId option:not(:first)').remove();
-            $.get("/Home/LoadCities", { stateId: $("#StateId :selected").val() }).then(res => {
-                if (res.data !== null) {
-                    $.each(res.data, function () {
-                        $("#CityId").append(
-                            '<option value=' + this.id + '>' + this.title + '</option>'
-                        );
-                    });
-                }
-            });
-        } else {
-            $('#CityId option:not(:first)').remove();
-        }
-    });
-
-</script>
-
 }
 
 <div class="page-content  formHealth">

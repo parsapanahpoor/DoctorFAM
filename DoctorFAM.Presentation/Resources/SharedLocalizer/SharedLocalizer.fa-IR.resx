@@ -639,4 +639,7 @@
   <data name="Manage Laboratory Info" xml:space="preserve">
     <value>مدیریت اطلاعات </value>
   </data>
+  <data name="The entered National is already available on the site" xml:space="preserve">
+    <value>کدملی وارد شده در سایت موجود است.</value>
+  </data>
 </root>

@@ -14,56 +14,6 @@ function GetFormIdForSearchModal(baseName) {
 
 //#endregion
 
-//select state and city by country id
-
-const countryEl = document.getElementById('CountryId');
-const stateEl = document.getElementById('StateId');
-const cityEl = document.getElementById('CityId');
-
-$(countryEl).on('change',
-    function (event) {
-        stateEl.innerHTML = "";
-        cityEl.innerHTML = "";
-        stateEl.setAttribute('disabled', '');
-        cityEl.setAttribute('disabled', '');
-
-        const countryId = event.currentTarget.value;
-
-        if (!countryId) {
-            return;
-        }
-
-        $.ajax({
-            method: 'get',
-            url: '/Admin/Location/GetLocationsByParentId/' + countryId,
-            success: function (response) {
-                stateEl.removeAttribute('disabled');
-                createLocationsElement(response.data, stateEl);
-            }
-        });
-    });
-
-$(stateEl).on('change',
-    function (event) {
-        cityEl.innerHTML = "";
-        cityEl.setAttribute('disabled', '');
-
-        const stateId = event.currentTarget.value;
-
-        if (!stateId) {
-            return;
-        }
-
-        $.ajax({
-            method: 'get',
-            url: '/Admin/Location/GetLocationsByParentId/' + stateId,
-            success: function (response) {
-                cityEl.removeAttribute('disabled');
-                createLocationsElement(response.data, cityEl);
-            }
-        });
-    });
-
 function createLocationsElement(data, insertEl) {
     for (let location of data) {
         let optionEl = document.createElement('option');

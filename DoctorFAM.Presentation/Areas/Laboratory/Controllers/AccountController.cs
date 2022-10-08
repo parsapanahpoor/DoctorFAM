@@ -1,6 +1,7 @@
 ﻿using BusinessPortal.Application.Services.Implementation;
 using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Services.Interfaces;
+using DoctorFAM.Domain.ViewModels.Admin.Account;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Employees;
 using DoctorFAM.Domain.ViewModels.Laboratory.Employee;
 using DoctorFAM.Domain.ViewModels.UserPanel.Account;
@@ -98,6 +99,9 @@ namespace DoctorFAM.Web.Areas.Laboratory.Controllers
                     break;
                 case UserPanelEditUserInfoResult.NationalId:
                     TempData[ErrorMessage] = _sharedLocalizer["National Id Is Not Valid"].Value;
+                    break;
+                case UserPanelEditUserInfoResult.NotValidNationalId:
+                    TempData[ErrorMessage] = _sharedLocalizer["The entered National is already available on the site"].Value;
                     break;
             }
 

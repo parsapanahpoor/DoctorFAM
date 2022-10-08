@@ -255,7 +255,10 @@
                                 </td>
                                 <td class="vm">
                                     <div class="flex-style-center">
-                                        <p> @((!string.IsNullOrEmpty(info.CounsultantInfo.Education)) ? info.CounsultantInfo.Education : "Empty") </p>
+                                        @if (info.CounsultantInfo != null)
+                                       {
+                                        <p> @((!string.IsNullOrEmpty(info.CounsultantInfo.Education)) ? info.CounsultantInfo.Education : "Empty") </p>   
+                                       }
                                     </div>
                                 </td>
                                 <td class="tc vm">

@@ -161,7 +161,7 @@ namespace DoctorFAM.Data.Repository
 
             #region Get Doctor 
 
-            var doctor = await _doctorsRepository.GetDoctorByUserId(filter.DoctorId);
+            var doctor = await _doctorsRepository.GetDoctorByUserId(organization.OwnerId);
             if (doctor == null) return null;
 
             #endregion

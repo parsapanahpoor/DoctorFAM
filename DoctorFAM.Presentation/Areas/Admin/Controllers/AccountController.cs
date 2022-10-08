@@ -120,6 +120,9 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
                 case AdminEditUserInfoResult.NotValidMobile:
                     TempData[ErrorMessage] = "The entered Mobile is already available on the site";
                     break;
+                case AdminEditUserInfoResult.NotValidNationalId:
+                    TempData[ErrorMessage] = _sharedLocalizer["The entered National is already available on the site"].Value;
+                    break;
             }
 
 

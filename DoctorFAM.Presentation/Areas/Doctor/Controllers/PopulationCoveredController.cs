@@ -56,6 +56,16 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
         #endregion
 
+        #region Filter Current Doctor Population Covered
+
+        public async Task<IActionResult> FilterCurrentDoctorPopulationCovered(ListOfDoctorPopulationCoveredViewModel filter)
+        {
+            filter.UserId = User.GetUserId();
+            return View(await _familyDoctorService.FilterCurrentDoctorPopulationCovered(filter));
+        }
+
+        #endregion
+
         #region Person In Your Population Covered Detail
 
         public async Task<IActionResult> PersonInPopulationCoveredDetail(ulong patientId)

@@ -130,7 +130,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
             if (ModelState.IsValid)
             {
-                var result = await _ticketService.AnswerTicketByUser(answer, User.GetUserId());
+                var result = await _ticketService.AnswerTicketByUser(answer, organization.OwnerId);
 
                 if (result)
                 {

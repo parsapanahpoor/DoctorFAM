@@ -193,7 +193,7 @@ namespace DoctorFAM.Application.Services.Implementation
                     LastName = user.LastName,
                     NurseInfosType = nurseOffice.OrganizationInfoState,
                     Education = ((nurseInfo != null) ? nurseInfo.Education : null),
-                    NationalCode = ((nurseInfo != null) ? nurseInfo.NationalCode : 0),
+                    NationalCode = ((nurseInfo != null) ? nurseInfo.NationalCode : "0"),
                     RejectDescription = nurseOffice.RejectDescription
                 };
 

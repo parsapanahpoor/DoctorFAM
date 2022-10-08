@@ -58,6 +58,7 @@ namespace DoctorFAM.Domain.ViewModels.UserPanel.PopulationCovered
     public enum EditPopulationCoveredUserPanelResult
     {
         Success,
-        Faild
+        Faild,
+        NationalIdIsExist
     }
 }

@@ -120,6 +120,9 @@
   <data name="Mission Accomplished" xml:space="preserve">
     <value>عملیات با موفقیت انجام شد</value>
   </data>
+  <data name="National Id Is Exist" xml:space="preserve">
+    <value>کدملی وارد شده درسایت موجود است.</value>
+  </data>
   <data name="The operation failed" xml:space="preserve">
     <value>عملیات با شکست مواجه شد</value>
   </data>

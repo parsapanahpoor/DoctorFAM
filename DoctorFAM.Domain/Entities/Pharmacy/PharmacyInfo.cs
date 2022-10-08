@@ -13,7 +13,7 @@ namespace DoctorFAM.Domain.Entities.Pharmacy
 
         public ulong PharmacyId { get; set; }
 
-        public int NationalCode { get; set; }
+        public string NationalCode { get; set; }
 
         #endregion
 

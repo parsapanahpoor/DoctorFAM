@@ -21,7 +21,7 @@ namespace DoctorFAM.Web.Controllers
 
         #region Index Page
 
-        public IActionResult Index(int? bmiResult , int? gfrResult)
+        public IActionResult Index(int? bmiResult , decimal? gfrResult)
         {
             #region Send BMI && GFR Result To View 
 
@@ -107,15 +107,15 @@ namespace DoctorFAM.Web.Controllers
             //IF User Is Loged In 
             if (User.Identity.IsAuthenticated)
             {
-                var res = await _bmiService.ProcessGFR(gfr, User.GetUserId());
+                decimal res = await _bmiService.ProcessGFR(gfr, User.GetUserId());
 
-                return RedirectToAction(nameof(Index), new { gfrResult = res.GFRResult });
+                return RedirectToAction(nameof(Index), new { gfrResult = (res / 100) });
             }
             else
             {
                 var res = await _bmiService.ProcessGFR(gfr, null);
 
-                return RedirectToAction(nameof(Index), new { gfrResult = res.GFRResult });
+                return RedirectToAction(nameof(Index), new { gfrResult = (res / 100 )});
             }
 
             return RedirectToAction(nameof(Index));

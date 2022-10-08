@@ -805,6 +805,11 @@ namespace DoctorFAM.Application.Services.Implementation
                 return AdminEditUserInfoResult.NotValidMobile;
             }
 
+            if (!string.IsNullOrEmpty(edit.NationalId) && !await IsValidNationalIdForUserEditByAdmin(edit.NationalId, user.Id))
+            {
+                return AdminEditUserInfoResult.NotValidNationalId;
+            }
+
             #endregion
 
             #region Update User Field
@@ -869,6 +874,17 @@ namespace DoctorFAM.Application.Services.Implementation
         public async Task<bool> IsValidMobileForUserEditByAdmin(string mobile, ulong userId)
         {
             var user = await _context.Users.FirstOrDefaultAsync(s => !s.IsDelete && s.Mobile == mobile.Trim());
+
+            if (user == null) return true;
+            if (user.Id == userId) return true;
+
+            return false;
+        }
+
+        //Validate For NAtional Id 
+        public async Task<bool> IsValidNationalIdForUserEditByAdmin(string nationalId, ulong userId)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(s => !s.IsDelete && s.NationalId == nationalId.Trim());
 
             if (user == null) return true;
             if (user.Id == userId) return true;
@@ -1134,6 +1150,11 @@ namespace DoctorFAM.Application.Services.Implementation
             if (string.IsNullOrEmpty(edit.NationalId))
             {
                 return UserPanelEditUserInfoResult.NationalId;
+            }
+
+            if (!string.IsNullOrEmpty(edit.NationalId) && !await IsValidNationalIdForUserEditByAdmin(edit.NationalId, user.Id))
+            {
+                return UserPanelEditUserInfoResult.NotValidNationalId;
             }
 
             #endregion

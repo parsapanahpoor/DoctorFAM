@@ -78,6 +78,9 @@ namespace DoctorFAM.Web.Areas.Market.Controllers
                 case UserPanelEditUserInfoResult.NotValidEmail:
                     TempData[ErrorMessage] = "ایمیل وارد شده از قبل در سایت موجود است";
                     break;
+                case UserPanelEditUserInfoResult.NotValidNationalId:
+                    TempData[ErrorMessage] = _sharedLocalizer["The entered National is already available on the site"].Value;
+                    break;
             }
 
             #endregion

@@ -186,7 +186,7 @@ namespace DoctorFAM.Application.Services.Implementation
                     LastName = user.LastName,
                     LaboratoryInfosType = laboartoryOffice.OrganizationInfoState,
                     Education = ((consultantInfo != null) ? consultantInfo.Education : null),
-                    NationalCode = ((consultantInfo != null) ? consultantInfo.NationalCode : 0),
+                    NationalCode = ((consultantInfo != null) ? consultantInfo.NationalCode : "0"),
                     RejectDescription = laboartoryOffice.RejectDescription
                 };
 

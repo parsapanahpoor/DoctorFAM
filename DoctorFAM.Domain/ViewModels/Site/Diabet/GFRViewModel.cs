@@ -17,7 +17,7 @@ namespace DoctorFAM.Domain.ViewModels.Site.Diabet
 
         public int Weight { get; set; }
 
-        public int Keratenin { get; set; }
+        public decimal Keratenin { get; set; }
 
         #endregion
     }

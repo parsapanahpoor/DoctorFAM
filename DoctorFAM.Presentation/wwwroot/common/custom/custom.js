@@ -614,6 +614,7 @@ $(function () {
         var ctrlKey = 67, vKey = 86;
         if (e.keyCode != ctrlKey && e.keyCode != vKey) {
             $(this).val(persianToEnglish($(this).val()));
+        //            console.log($(this).val());
         }
     });
 });

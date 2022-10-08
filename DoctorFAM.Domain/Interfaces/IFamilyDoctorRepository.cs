@@ -42,6 +42,9 @@ namespace DoctorFAM.Domain.Interfaces
         //List Of Doctor Population Covered Users
         Task<ListOfDoctorPopulationCoveredViewModel> FilterDoctorPopulationCovered(ListOfDoctorPopulationCoveredViewModel filter);
 
+        //List Of Current Doctor Population Covered Users
+        Task<ListOfDoctorPopulationCoveredViewModel> FilterCurrentDoctorPopulationCovered(ListOfDoctorPopulationCoveredViewModel filter);
+
         #endregion
 
         #region Admin And Supporter Side 

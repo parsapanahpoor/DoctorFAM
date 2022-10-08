@@ -1,8 +1,10 @@
 ﻿using DoctorFAM.Application.Convertors;
 using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
+using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.PopulationCovered;
 using DoctorFAM.Domain.Interfaces;
+using DoctorFAM.Domain.ViewModels.Admin.Account;
 using DoctorFAM.Domain.ViewModels.Admin.PopulationCovered;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
 using DoctorFAM.Domain.ViewModels.UserPanel.PopulationCovered;
@@ -143,6 +145,11 @@ namespace DoctorFAM.Application.Services.Implementation
 
             if (!await _userService.IsExistUserById(model.UserId.Value)) return CreatePopulationCoveredUserPanelResult.Faild;
 
+            if (!string.IsNullOrEmpty(model.NationalId) && !await _populationCovered.CheckIsExistNationalId(model.NationalId, model.UserId.Value))
+            {
+                return CreatePopulationCoveredUserPanelResult.NationalIdIsExist;
+            }
+
             #endregion
 
             #region Fill Entity
@@ -224,6 +231,11 @@ namespace DoctorFAM.Application.Services.Implementation
             if (population == null) return EditPopulationCoveredUserPanelResult.Faild;
 
             if (population.UserId != model.UserId) return EditPopulationCoveredUserPanelResult.Faild;
+
+            if (!string.IsNullOrEmpty(model.NationalId) && !await _populationCovered.CheckIsExistNationalId(model.NationalId, model.UserId.Value))
+            {
+                return EditPopulationCoveredUserPanelResult.NationalIdIsExist;
+            }
 
             #endregion
 

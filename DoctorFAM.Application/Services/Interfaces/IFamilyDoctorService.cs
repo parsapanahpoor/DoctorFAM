@@ -40,6 +40,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         #region Doctor Panel 
 
+        //List Of Current Doctor Population Covered Users
+        Task<ListOfDoctorPopulationCoveredViewModel> FilterCurrentDoctorPopulationCovered(ListOfDoctorPopulationCoveredViewModel filter);
+
         //Get Persone Information Detail In Doctor Population Covered
         Task<ShowPopulationCoveredDetailViewModel?> GetPersoneInformationDetailInDoctorPopulationCovered(ulong requestId, ulong doctorId);
 

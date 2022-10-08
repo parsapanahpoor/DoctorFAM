@@ -16,7 +16,7 @@ namespace DoctorFAM.Application.Services.Interfaces
         Task<BMI> ProcessBMI(BMIViewModel bmi, ulong? userId);
 
         //Process GFR From Site With User Informations 
-        Task<GFR> ProcessGFR(GFRViewModel gfr, ulong? userId);
+        Task<decimal> ProcessGFR(GFRViewModel gfr, ulong? userId);
 
         #endregion
 

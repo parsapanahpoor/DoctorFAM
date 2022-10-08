@@ -16,12 +16,12 @@ namespace DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo
         [Display(Name = "NationalId")]
         [Required(ErrorMessage = "Please Enter {0}")]
         [RegularExpression(@"^[0-9]*$", ErrorMessage = "The entered national code is not valid")]
-        public int NationalCode { get; set; }
+        public string NationalCode { get; set; }
 
         [Display(Name = "Medical system code")]
         [Required(ErrorMessage = "Please Enter {0}")]
-        [RegularExpression(@"^[0-9]*$", ErrorMessage = "The medical system code entered is not valid")]
-        public int MedicalSystemCode { get; set; }
+        [RegularExpression(@"^[0-9]*$", ErrorMessage = "The entered national code is not valid")]
+        public string MedicalSystemCode { get; set; }
 
         [Display(Name = "First Name")]
         [Required(ErrorMessage = "Please Enter {0}")]

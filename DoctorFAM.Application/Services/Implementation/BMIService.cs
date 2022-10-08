@@ -89,15 +89,15 @@ namespace DoctorFAM.Application.Services.Implementation
         }
 
         //Process GFR From Site With User Informations 
-        public async Task<GFR> ProcessGFR(GFRViewModel gfr, ulong? userId)
+        public async Task<decimal> ProcessGFR(GFRViewModel gfr, ulong? userId)
         {
             #region Proccess GFR Result 
 
-            var header = ((140 - gfr.Age) * gfr.Weight);
+            var header = ((140 - gfr.Age) * gfr.Weight) * 10;
 
-            var footer = (72 * gfr.Keratenin);
+            var footer = (72 * (gfr.Keratenin * 10));
 
-            var res = header / footer;
+            var res = (header / footer) * 100;
 
             if (gfr.Gender == Domain.Enums.Gender.Gender.Female)
             {
@@ -112,9 +112,9 @@ namespace DoctorFAM.Application.Services.Implementation
             {
                 CreateDate = DateTime.Now,
                 Weight = gfr.Weight,
-                Keratenin = gfr.Keratenin,
+                Keratenin = (int)gfr.Keratenin,
                 Gender = gfr.Gender,
-                GFRResult = res,
+                GFRResult = (int)res,
                 Age = gfr.Age ,
             };
 
@@ -122,12 +122,12 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #region GFR Result State 
 
-            if (res < 15) model.GFRtResultState = Domain.Enums.Diabet_Results.GFRResult.DarkRed;
-            if (15 < res && res <= 30) model.GFRtResultState = Domain.Enums.Diabet_Results.GFRResult.Red;
-            if (30 < res && res <= 45) model.GFRtResultState = Domain.Enums.Diabet_Results.GFRResult.Orange;
-            if (45 < res && res <= 60) model.GFRtResultState = Domain.Enums.Diabet_Results.GFRResult.Yellow;
-            if (60 < res && res <= 90) model.GFRtResultState = Domain.Enums.Diabet_Results.GFRResult.Green;
-            if (90 < res && res <= 120) model.GFRtResultState = Domain.Enums.Diabet_Results.GFRResult.DarkGreen;
+            if (res < 1500) model.GFRtResultState = Domain.Enums.Diabet_Results.GFRResult.DarkRed;
+            if (1500 < res && res <= 3000) model.GFRtResultState = Domain.Enums.Diabet_Results.GFRResult.Red;
+            if (3000 < res && res <= 4500) model.GFRtResultState = Domain.Enums.Diabet_Results.GFRResult.Orange;
+            if (4500 < res && res <= 6000) model.GFRtResultState = Domain.Enums.Diabet_Results.GFRResult.Yellow;
+            if (6000 < res && res <= 9000) model.GFRtResultState = Domain.Enums.Diabet_Results.GFRResult.Green;
+            if (9000 < res && res <= 12000) model.GFRtResultState = Domain.Enums.Diabet_Results.GFRResult.DarkGreen;
 
             #endregion
 
@@ -151,7 +151,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #endregion
 
-            return model;
+            return res;
         }
 
         #endregion

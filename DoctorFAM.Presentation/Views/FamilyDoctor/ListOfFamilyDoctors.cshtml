@@ -1,4 +1,5 @@
 ﻿@model Tuple<List<DoctorFAM.Domain.Entities.Doctors.Doctor>, DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor.FilterFamilyDoctorUserPanelSideViewModel>
+
 @using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo
 @using DoctorFAM.Application.Extensions
 @using DoctorFAM.Application.Convertors
@@ -19,76 +20,76 @@
 
 @section Scripts
     {
-    <script>
+<script>
 
-        $("#MainBrandId").change(function () {
-            $("#pageid").val(1);
-            $("#formFilter").submit();
-        });
+    $("#MainBrandId").change(function () {
+        $("#pageid").val(1);
+        $("#formFilter").submit();
+    });
 
-        function changePage(pageid) {
-            $("#pageid").val(pageid);
-            $("#formFilter").submit();
-        }
+    function changePage(pageid) {
+        $("#pageid").val(pageid);
+        $("#formFilter").submit();
+    }
 
-    </script>
+</script>
 }
 
-    @section Styles
+@section Styles
     {
-    <style>
+<style>
 
-        #StateId {
-            display: initial !important;
-        }
+    #StateId {
+        display: initial !important;
+    }
 
-        #CountryId {
-            display: initial !important;
-        }
+    #CountryId {
+        display: initial !important;
+    }
 
-        #CityId {
-            display: initial !important;
-        }
+    #CityId {
+        display: initial !important;
+    }
 
-         #Gender {
-            display: initial !important;
-        }
+    #Gender {
+        display: initial !important;
+    }
 
-        .nice-select {
-            display: none !important;
-        }
+    .nice-select {
+        display: none !important;
+    }
 
-    </style>
+</style>
 }
 
-    <div class="container">
+<div class="container">
 
-        <div class="content mt-3">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-12 col-lg-4 col-xl-3 theiaStickySidebar">
+    <div class="content mt-3">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-4  theiaStickySidebar">
 
-                        <form asp-action="ListOfFamilyDoctors" asp-controller="FamilyDoctor" asp-area="" id="formFilter" method="get">
-                            <input type="hidden" id="pageid" name="pageId" value="@Model.Item2.PageId.ToString()" />
+                    <form asp-action="ListOfFamilyDoctors" asp-controller="FamilyDoctor" asp-area="" id="formFilter" method="get">
+                        <input type="hidden" id="pageid" name="pageId" value="@Model.Item2.PageId.ToString()" />
 
-                            <div class="card search-filter">
-                                <div class="card-header">
-                                    <h4 class="card-title mb-0">فیلتر جستجو</h4>
-                                </div>
-                                <div class="card-body">
+                        <div class="card search-filter">
+                            <div class="card-header">
+                                <h4 class="card-title mb-0">فیلتر جستجو</h4>
+                            </div>
+                            <div class="card-body">
 
-                                    <div class="filter-widget">
+                                <div class="filter-widget">
 
-                                        <div class="form-group">
-                                            <h6>نام پزشک</h6>
-                                            <input type="text" class="form-control" name="Username" value="@Model.Item2.Username" placeholder="لطفا نام پزشک را وارد کنید">
-                                        </div>
+                                    <div class="form-group">
+                                        <h6>نام پزشک</h6>
+                                        <input type="text" class="form-control" name="Username" value="@Model.Item2.Username" placeholder="لطفا نام پزشک را وارد کنید">
+                                    </div>
 
-                                        <div class="form-group">
-                                            <h6>جنسیت پزشک</h6>
-                                            <select class="form-control" name="Gender" id="Gender">
+                                    <div class="form-group">
+                                        <h6>جنسیت پزشک</h6>
+                                        <select class="form-control" name="Gender" id="Gender">
 
-                                                <option value="">لطفا جنسیت پزشک را انتخاب کنید </option>
+                                            <option value="">لطفا جنسیت پزشک را انتخاب کنید </option>
 
                                             @if (Model.Item2.Gender == 0)
                                             {
@@ -196,40 +197,100 @@
 
                 @if (Model.Item1 != null && Model.Item1.Any())
                 {
-                    <div class="col-md-12 col-lg-8 col-xl-9">
+                    <div class="col-md-8  ">
 
                         @foreach (var doctor in Model.Item1)
                         {
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="doctor-widget">
-                                        <div class="doc-info-left">
-                                            <div class="doctor-img">
-                                                <a asp-action="DocPage" asp-area="" asp-controller="FocalPoint" asp-route-userId="@doctor.User.Id">
-                                                    <img src="/content/images/user/@((string.IsNullOrEmpty(doctor.User.Avatar)) ? "DefaultAvatar.png" : $"thumb/{doctor.User.Avatar}")" class="img-fluid" alt="User Image">
-                                                </a>
-                                            </div>
-                                            <div class="doc-info-cont">
-                                                <h4 class="doc-name"><a asp-action="DocPage" asp-area="" asp-controller="FocalPoint" asp-route-userId="@doctor.User.Id">پزشک: @doctor.User.Username</a></h4>
-                                                <p class="doc-speciality">@((!string.IsNullOrEmpty(doctor.DoctorsInfos.Education)) ? doctor.DoctorsInfos.Education : null)</p>
-                                                @if (doctor.DoctorsInfos.Specialty != null)
-                                                {
-                                                    <h5 class="doc-department"><img src="~/Content/img/specialities/specialities-05.png" class="img-fluid" alt="Speciality">تخصص : @((!string.IsNullOrEmpty(doctor.DoctorsInfos.Specialty)) ? doctor.DoctorsInfos.Specialty : null)</h5>
-                                                }
+                                    <div class="card">
 
-                                            </div>
-                                        </div>
-                                        <div class="doc-info-right">
+                                        <div class="card-body">
+                                            <div class="doctor-widget">
+                                                <div class="doc-info-left">
+                                                    <div class="doctor-img">
+                                                        <a asp-action="DocPage" asp-area="" asp-controller="FocalPoint" asp-route-userId="@doctor.User.Id">
+                                                            <img src="/content/images/user/@((string.IsNullOrEmpty(doctor.User.Avatar)) ? "DefaultAvatar.png" : $"thumb/{doctor.User.Avatar}")" class="img-fluid" alt="User Image">
+                                                        </a>
+                                                    </div>
+                                                    <div class="doc-info-cont">
+                                                        <h4 class="doc-name"><a asp-action="DocPage" asp-area="" asp-controller="FocalPoint" asp-route-userId="@doctor.User.Id">پزشک: @doctor.User.Username</a></h4>
+                                                        <p class="doc-speciality">@((!string.IsNullOrEmpty(doctor.DoctorsInfos.Education)) ? doctor.DoctorsInfos.Education : null)</p>
+                                                        @if (doctor.DoctorsInfos.Specialty != null)
+                                                        {
+                                                            <h5 class="doc-department"><img src="~/Content/img/specialities/specialities-0511.png" class="img-fluid" alt="">تخصص : @((!string.IsNullOrEmpty(doctor.DoctorsInfos.Specialty)) ? doctor.DoctorsInfos.Specialty : null)</h5>
+                                                        }
+                                                        <div class="rating">
+                                                            <i class="fas fa-star filled"></i>
+                                                            <i class="fas fa-star filled"></i>
+                                                            <i class="fas fa-star filled"></i>
+                                                            <i class="fas fa-star filled"></i>
+                                                            <i class="fas fa-star"></i>
+                                                            <span class="d-inline-block average-rating">(35)</span>
+                                                        </div>
+                                                        <div class="clinic-details">
 
-                                            <div class="clinic-booking">
-                                                <a class="view-pro-btn" asp-action="DocPage" asp-area="" asp-controller="FocalPoint" asp-route-userId="@doctor.User.Id">مشاهده پروفایل</a>
-                                                <a class="apt-btn" asp-action="DocBooking" asp-controller="FocalPoint" asp-area="" asp-route-userId="@doctor.UserId">رزرو نوبت</a>
+                                                            <ul class="clinic-gallery">
+                                                                <li>
+                                                                    <a href="~/Content/Doctor/assets/img/features/feature-01.jpg" data-fancybox="gallery">
+                                                                        <img src="~/Content/Doctor/assets/img/features/feature-01.jpg" alt="Feature">
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a href="~/Content/Doctor/assets/img/features/feature-02.jpg" data-fancybox="gallery">
+                                                                        <img src="~/Content/Doctor/assets/img/features/feature-02.jpg" alt="Feature Image">
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a href="assets/img/features/feature-03.jpg" data-fancybox="gallery">
+                                                                        <img src="~/Content/Doctor/assets/img/features/feature-03.jpg" alt="Feature">
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a href="assets/img/features/feature-04.jpg" data-fancybox="gallery">
+                                                                        <img src="~/Content/Doctor/assets/img/features/feature-04.jpg" alt="Feature">
+                                                                    </a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                        <div class="clinic-services">
+                                                            <span>آنلاین</span>
+                                                            <span>حضوری</span>
+                                                        </div>
+
+
+
+                                                    </div>
+                                                </div>
+                                                <div class="doc-info-right">
+                                                    <div class="clini-infos">
+                                                        <ul>
+                                                            <li><i class="far fa-thumbs-up"></i> 99%</li>
+                                                            <li><i class="far fa-comment"></i> 35 فیدبک </li>
+
+                                                            <li><i class="far fa-money-bill-alt"></i> حق ویزیت: سامانه </li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="doctor-action">
+                                                        <a href="javascript:void(0)" class="btnDoc btn-white fav-btn">
+                                                            <i class="far fa-bookmark"></i>
+                                                        </a>
+                                                        <a href="chat.html" class="btnDoc btn-white msg-btn">
+                                                            <i class="far fa-comment-alt"></i>
+                                                        </a>
+                                                        <a href="javascript:void(0)" class="btnDoc btn-white call-btn" data-bs-toggle="modal" data-bs-target="#voice_call">
+                                                            <i class="fas fa-phone"></i>
+                                                        </a>
+                                                        <a href="javascript:void(0)" class="btnDoc btn-white call-btn" data-bs-toggle="modal" data-bs-target="#video_call">
+                                                            <i class="fas fa-video"></i>
+                                                        </a>
+                                                    </div>
+                                                    <div class="clinic-booking">
+                                                        <a class="view-pro-btn" asp-action="DocPage" asp-area="" asp-controller="FocalPoint" asp-route-userId="@doctor.User.Id">مشاهده پروفایل</a>
+                                                        <a class="apt-btn" asp-action="DocBooking" asp-controller="FocalPoint" asp-area="" asp-route-userId="@doctor.UserId">رزرو نوبت</a>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-
                         }
 
                         @if (Model.Item2.PageCount > 1)
