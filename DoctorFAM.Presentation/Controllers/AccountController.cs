@@ -162,7 +162,6 @@ namespace DoctorFAM.Web.Controllers
 
                     #endregion
 
-
                     return RedirectToAction("ActiveUserByMobileActivationCode", new { Mobile = register.Mobile });
             }
 
@@ -212,7 +211,6 @@ namespace DoctorFAM.Web.Controllers
             #endregion
 
             #region Time Counter Initilize
-
 
 
             if (await _siteSettingService.IsExistSiteSetting())

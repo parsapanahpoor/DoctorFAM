@@ -25,6 +25,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static DoctorFAM.Domain.ViewModels.UserPanel.FilterUserViewModel;
+using static System.Net.WebRequestMethods;
 
 namespace DoctorFAM.Application.Services.Implementation
 {
@@ -39,6 +40,7 @@ namespace DoctorFAM.Application.Services.Implementation
         private readonly IUserRepository _userRepository;
         private readonly IOrganizationService _organizationService;
         private readonly ISMSService _smsservice;
+        private static readonly HttpClient client = new HttpClient();
 
         public UserService(DoctorFAMDbContext context, ISiteSettingService siteSettingService, IViewRenderService viewRenderService,
                                 IEmailSender emailSender, IUserRepository userRepository, IOrganizationService organizationService, ISMSService smsservice)
@@ -66,6 +68,9 @@ namespace DoctorFAM.Application.Services.Implementation
             await _context.SaveChangesAsync();
 
             #region Send Verification Code SMS
+
+            var result = $"https://api.kavenegar.com/v1/564672526D58694D3477685571796F7372574F576C476B6366785462356D3164683370395A2B61356D6E383D/verify/lookup.json?receptor={user.Mobile}&token={user.MobileActivationCode}&template=Register";
+            var results = client.GetStringAsync(result);
 
             var message = Messages.SendActivationRegisterSms(user.MobileActivationCode);
 
@@ -184,10 +189,13 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #region Send Verification Code SMS
 
+            var result = $"https://api.kavenegar.com/v1/564672526D58694D3477685571796F7372574F576C476B6366785462356D3164683370395A2B61356D6E383D/verify/lookup.json?receptor={User.Mobile}&token={User.MobileActivationCode}&template=Register";
+            var results = client.GetStringAsync(result);
+
             var message = Messages.SendActivationRegisterSms(User.MobileActivationCode);
 
             await _smsservice.SendSimpleSMS(User.Mobile, message);
-
+   
             #endregion
 
             return RegisterUserResult.Success;
