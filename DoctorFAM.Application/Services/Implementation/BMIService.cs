@@ -1,6 +1,7 @@
 ﻿using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.Entities.BMI;
 using DoctorFAM.Domain.Interfaces;
+using DoctorFAM.Domain.Interfaces.Dapper;
 using DoctorFAM.Domain.ViewModels.Site.Diabet;
 using System;
 using System.Collections.Generic;
@@ -15,13 +16,14 @@ namespace DoctorFAM.Application.Services.Implementation
         #region Ctor
 
         private readonly IBMIRepository _bmiRepository;
-
+        private readonly IBMIRepositoryDapper _bmiDapper;
         private readonly IUserService _userService;
 
-        public BMIService(IBMIRepository bmiRepository, IUserService userService)
+        public BMIService(IBMIRepository bmiRepository, IUserService userService , IBMIRepositoryDapper bmiDapper)
         {
             _bmiRepository = bmiRepository;
             _userService = userService;
+            _bmiDapper = bmiDapper;
         }
 
         #endregion
@@ -81,7 +83,11 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #region Add Method
 
-            await _bmiRepository.CreateBMI(model);
+            //Add Method By EF Core
+            //await _bmiRepository.CreateBMI(model);
+
+            //Add Method By Dapper
+            _bmiDapper.CreateBMI(model);
 
             #endregion
 
