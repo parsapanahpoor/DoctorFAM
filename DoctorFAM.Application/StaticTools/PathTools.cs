@@ -11,7 +11,7 @@ namespace DoctorFAM.Application.StaticTools
         #region Site
 
         public static string SiteFarsiName = "داکتر فم";
-        public static string SiteAddress = "http://doctorfam.com";
+        public static string SiteAddress = "https://localhost:44322";
 
         public static readonly string SiteLogo = "/content/images/site/logo/main/";
         public static readonly string SiteLogoServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/site/logo/main/");

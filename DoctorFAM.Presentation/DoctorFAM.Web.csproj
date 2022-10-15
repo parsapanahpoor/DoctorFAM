@@ -21,6 +21,7 @@
 		</PackageReference>
 		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.9" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
+		<PackageReference Include="ZarinPal-SDK" Version="0.0.8" />
 		<PackageReference Include="ZarinpalSandbox" Version="2.0.4" />
 		<PackageReference Include="ZNetCS.AspNetCore.ResumingFileResults" Version="2.2.0" />
 	</ItemGroup>
