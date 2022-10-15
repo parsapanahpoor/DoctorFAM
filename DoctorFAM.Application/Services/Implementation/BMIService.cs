@@ -153,7 +153,11 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #region Add Method
 
-            await _bmiRepository.CreateGFR(model);
+            //Add EF Core Method
+            //await _bmiRepository.CreateGFR(model);
+
+            //Add Dapper Method 
+            await _bmiDapper.CreateGFR(model);
 
             #endregion
 
@@ -176,7 +180,11 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #region Get User BMI History
 
-            var model = await _bmiRepository.GetUserBMIHistory(userId);
+            //EF Core
+            //var model = await _bmiRepository.GetUserBMIHistory(userId);
+
+            //Dapper
+            var model = await _bmiDapper.GetUserBMIHistory(userId);
 
             #endregion
 
@@ -195,7 +203,11 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #region Get User GFR History
 
-            var model = await _bmiRepository.GetUserGFRHistory(userId);
+            //EF Core
+            //var model = await _bmiRepository.GetUserGFRHistory(userId);
+
+            //Dapper
+            var model = await _bmiDapper.GetUserGFRHistory(userId);
 
             #endregion
 

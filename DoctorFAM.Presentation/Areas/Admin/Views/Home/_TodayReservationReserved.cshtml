@@ -48,93 +48,97 @@
                         <tbody class="tc vm">
                             @foreach (var date in Model)
                             {
-                                <tr class="tc vm" remove-ajax-item="@date.Id">
-                                    <td class="vm">
-                                        <div class="flex-style-center">
-                                            <img src="@date.DoctorReservationDate.User.GetUserAvatar()" class="avatar-style" style="border-radius:50px;" />
-                                            <div class="mr-10px">
-                                                <span>@Localizer["Username"] : @date.DoctorReservationDate.User.Username</span>
-                                                <hr class="margin-7" />
-                                                <span>@Localizer["Mobile"] : @date.DoctorReservationDate.User.Mobile</span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="vm">
-                                        <div class="flex-style-center">
-                                            @if (date.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.NotReserved)
-                                            {
-                                                <p style="margin-top:50px;" class="label label-danger">@Localizer["Not Reserved"]</p>
-                                            }
-                                            else
-                                            {
-                                                <img src="@date.User.GetUserAvatar()" class="avatar-style" style="border-radius:50px;" />
+                                if (date.User != null)
+                                {
+                                    <tr class="tc vm" remove-ajax-item="@date.Id">
+                                        <td class="vm">
+                                            <div class="flex-style-center">
+                                                <img src="@date.DoctorReservationDate.User.GetUserAvatar()" class="avatar-style" style="border-radius:50px;" />
                                                 <div class="mr-10px">
-                                                    <span>@Localizer["Username"] : @date.User.Username</span>
+                                                    <span>@Localizer["Username"] : @date.DoctorReservationDate.User.Username</span>
                                                     <hr class="margin-7" />
-                                                    <span>@Localizer["Mobile"] : @date.User.Mobile</span>
+                                                    <span>@Localizer["Mobile"] : @date.DoctorReservationDate.User.Mobile</span>
                                                 </div>
-                                            }
-                                        </div>
-                                    </td>
-                                    <td class="vm">
-                                        <div class="flex-style-center">
-                                            <p> @date.DoctorReservationDate.ReservationDate.ToShamsi() </p>
-                                        </div>
-                                    </td>
-
-                                    <td class="tc vm">
-                                        <div class="flex-style-center">
-                                            <div class="mr-10px">
-                                                <p> @Localizer["Start"] : @date.StartTime </p>
-                                                <hr class="margin-7" />
-                                                <p> @Localizer["End"] : @date.EndTime </p>
                                             </div>
-                                        </div>
-                                    </td>
+                                        </td>
+                                        <td class="vm">
 
-                                    <td class="vm">
-                                        <div class="flex-style-center">
-                                            <div class="mr-10px">
-                                                @if (date.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.Reserved)
-                                                {
-                                                    <p class="label label-success">@Localizer["Reserved"]</p>
-                                                }
-
-                                                @if (date.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.WaitingForComplete)
-                                                {
-                                                    <p class="label label-danger">@Localizer["Waiting"]</p>
-                                                }
-
+                                            <div class="flex-style-center">
                                                 @if (date.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.NotReserved)
                                                 {
-                                                    <p class="label label-danger">@Localizer["Not Reserved"]</p>
+                                                    <p style="margin-top:50px;" class="label label-danger">@Localizer["Not Reserved"]</p>
                                                 }
-
-                                                <hr class="margin-7" />
-
-                                                @if (date.DoctorReservationType == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationType.Onile)
+                                                else
                                                 {
-                                                    <p class="label label-success">@Localizer["Online"]</p>
+                                                    <img src="@date.User.GetUserAvatar()" class="avatar-style" style="border-radius:50px;" />
+                                                    <div class="mr-10px">
+                                                        <span>@Localizer["Username"] : @date.User.Username</span>
+                                                        <hr class="margin-7" />
+                                                        <span>@Localizer["Mobile"] : @date.User.Mobile</span>
+                                                    </div>
                                                 }
-
-                                                @if (date.DoctorReservationType == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationType.Reserved)
-                                                {
-                                                    <p class="label label-info">@Localizer["In Persone"]</p>
-                                                }
-
-                                                @if (date.DoctorReservationType == null)
-                                                {
-                                                    <p class="label label-info">@Localizer["not determined"]</p>
-                                                }
-
                                             </div>
-                                        </div>
-                                    </td>
+                                        </td>
+                                        <td class="vm">
+                                            <div class="flex-style-center">
+                                                <p> @date.DoctorReservationDate.ReservationDate.ToShamsi() </p>
+                                            </div>
+                                        </td>
 
-                                    <td class="tc vm">
-                                        <a asp-action="ReservationDetail" asp-controller="Reservation" asp-area="Admin" asp-route-ReservationId="@date.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
-                                    </td>
-                                </tr>
+                                        <td class="tc vm">
+                                            <div class="flex-style-center">
+                                                <div class="mr-10px">
+                                                    <p> @Localizer["Start"] : @date.StartTime </p>
+                                                    <hr class="margin-7" />
+                                                    <p> @Localizer["End"] : @date.EndTime </p>
+                                                </div>
+                                            </div>
+                                        </td>
+
+                                        <td class="vm">
+                                            <div class="flex-style-center">
+                                                <div class="mr-10px">
+                                                    @if (date.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.Reserved)
+                                                    {
+                                                        <p class="label label-success">@Localizer["Reserved"]</p>
+                                                    }
+
+                                                    @if (date.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.WaitingForComplete)
+                                                    {
+                                                        <p class="label label-danger">@Localizer["Waiting"]</p>
+                                                    }
+
+                                                    @if (date.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.NotReserved)
+                                                    {
+                                                        <p class="label label-danger">@Localizer["Not Reserved"]</p>
+                                                    }
+
+                                                    <hr class="margin-7" />
+
+                                                    @if (date.DoctorReservationType == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationType.Onile)
+                                                    {
+                                                        <p class="label label-success">@Localizer["Online"]</p>
+                                                    }
+
+                                                    @if (date.DoctorReservationType == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationType.Reserved)
+                                                    {
+                                                        <p class="label label-info">@Localizer["In Persone"]</p>
+                                                    }
+
+                                                    @if (date.DoctorReservationType == null)
+                                                    {
+                                                        <p class="label label-info">@Localizer["not determined"]</p>
+                                                    }
+
+                                                </div>
+                                            </div>
+                                        </td>
+
+                                        <td class="tc vm">
+                                            <a asp-action="ReservationDetail" asp-controller="Reservation" asp-area="Admin" asp-route-ReservationId="@date.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+                                        </td>
+                                    </tr>
+                                }
                             }
                         </tbody>
                     </table>
@@ -144,7 +148,7 @@
         }
         else
         {
-            <div class="widget-body" >
+            <div class="widget-body">
 
                 <partial name="_AdminNotFoundPartial" />
 

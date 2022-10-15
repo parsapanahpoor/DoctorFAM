@@ -204,7 +204,10 @@ namespace DoctorFAM.Data.Repository
 
             #region List Of Reservation Date Time 
 
-            model.DoctorReservationDateTimes = await _context.DoctorReservationDateTimes.Include(p => p.User).Include(p => p.DoctorReservationDate).ThenInclude(p => p.User)
+            model.DoctorReservationDateTimes = await _context.DoctorReservationDateTimes
+                                                    .Include(p => p.User)
+                                                    .Include(p => p.DoctorReservationDate)
+                                                    .ThenInclude(p => p.User)
                                                     .Where(p => !p.IsDelete && p.DoctorReservationDate.ReservationDate.DayOfYear == DateTime.Now.DayOfYear
                                                     && p.DoctorReservationDate.ReservationDate.Year == DateTime.Now.Year).ToListAsync();
 
