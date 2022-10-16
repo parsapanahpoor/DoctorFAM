@@ -131,9 +131,6 @@
                                         @Localizer["User"]
                                     </th>
                                     <th>
-                                        @Localizer["Email"]
-                                    </th>
-                                    <th>
                                         @Localizer["Price"]
                                     </th>
                                     <th>
@@ -161,9 +158,6 @@
                                                 <a asp-action="Index" asp-route-UserId="@item.UserId" asp-route-UserFilter="@item.User.Username">
                                                     @item.User.Username @(item.IsDelete ? " - " + Localizer["Deleted"].Value : "")
                                                 </a>
-                                            </td>
-                                            <td>
-                                                @item.User.Email
                                             </td>
                                             <td>
                                                 @item.Price @Localizer["Rial"]

@@ -149,6 +149,36 @@ namespace DoctorFAM.Data.Repository
             var walletBalance = await GetUserWalletBalance(wallet.UserId);
         }
 
+        //Update Wallet With Calculate Balance
+        public async Task UpdateWalletWithCalculateBalance(Wallet wallet)
+        {
+            _context.Wallets.Update(wallet);
+            await SaveChangesAsync();
+
+            //CalCulate User Wallet Balance
+            var walletBalance = await GetUserWalletBalance(wallet.UserId);
+        }
+
+        //Find Wallet Transaction For Redirect To The Bank Portal 
+        public async Task<Wallet?> FindWalletTransactionForRedirectToTheBankPortal(ulong userId , GatewayType gateway , ulong? requestId , string authority , int amount)
+        {
+            return await _context.Wallets.Include(p => p.WalletData).FirstOrDefaultAsync(p => !p.IsDelete && !p.IsFinally && p.UserId == userId && p.GatewayType == gateway && p.WalletData.TrackingCode == authority && p.RequestId == requestId && p.Price == amount);
+        }
+
+        //Create Wallet Without Calculate
+        public async Task CreateWalletWithoutCalculate(Wallet wallet)
+        {
+            await _context.Wallets.AddAsync(wallet);
+            await SaveChangesAsync();
+        }
+
+        //Create Wallet Data
+        public async Task CreateWalletData(WalletData walletData)
+        {
+            await _context.WalletData.AddAsync(walletData);
+            await SaveChangesAsync();
+        }
+
         public async Task ConfirmPayment(ulong payId, string authority, string refId)
         {
             var payment = await _context.Wallets.FirstOrDefaultAsync(w => w.Id == payId);
@@ -216,12 +246,12 @@ namespace DoctorFAM.Data.Repository
 
         public async Task<int> GetUserTotalDepositTransactions(ulong userId)
         {
-            return _context.Wallets.Where(p => p.UserId == userId && !p.IsDelete && p.TransactionType == TransactionType.Deposit).Sum(p => p.Price);
+            return _context.Wallets.Where(p => p.UserId == userId && p.IsFinally && !p.IsDelete && p.TransactionType == TransactionType.Deposit).Sum(p => p.Price);
         }
 
         public async Task<int> GetUserTotalWithdrawTransactions(ulong userId)
         {
-            return _context.Wallets.Where(p => p.UserId == userId && !p.IsDelete && p.TransactionType == TransactionType.Withdraw).Sum(p => p.Price);
+            return _context.Wallets.Where(p => p.UserId == userId && p.IsFinally && !p.IsDelete && p.TransactionType == TransactionType.Withdraw).Sum(p => p.Price);
         }
 
         public async Task<int> GetUserWalletBalance(ulong userId)
