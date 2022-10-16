@@ -133,6 +133,8 @@ namespace DoctorFAM.Data.DbContext
 
         public DbSet<DoctorsSelectedInterests> DoctorsSelectedInterests { get; set; }
 
+        public DbSet<DoctorsSkils> DoctorSkill { get; set; }
+
         #endregion
 
         #region Pharmacy

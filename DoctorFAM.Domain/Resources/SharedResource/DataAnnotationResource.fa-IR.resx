@@ -180,6 +180,9 @@
   <data name="City" xml:space="preserve">
     <value>شهر</value>
   </data>
+  <data name="Clinic Phone" xml:space="preserve">
+    <value>تلفن مطب </value>
+  </data>
   <data name="Closed" xml:space="preserve">
     <value>بسته شده</value>
   </data>
@@ -239,6 +242,9 @@
   </data>
   <data name="Display Name" xml:space="preserve">
     <value>نام نمایشی</value>
+  </data>
+  <data name="Doctor Skills" xml:space="preserve">
+    <value>مهارت های پزشک</value>
   </data>
   <data name="DoctorOffice" xml:space="preserve">
     <value>مطب پزشک</value>
@@ -317,6 +323,9 @@
   </data>
   <data name="Gender" xml:space="preserve">
     <value>جنسیت</value>
+  </data>
+  <data name="General Phone" xml:space="preserve">
+    <value>تلفن در اختیار بیمار</value>
   </data>
   <data name="Health Insurance" xml:space="preserve">
     <value>بیمه سلامت</value>

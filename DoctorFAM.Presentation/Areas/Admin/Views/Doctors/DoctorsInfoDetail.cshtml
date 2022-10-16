@@ -87,6 +87,24 @@
                                         <span class="text-danger" asp-validation-for="Specialty"></span>
                                     </div>
 
+                                     <div class="form-group col-md-6 col-sm-12">
+                                        <label asp-for="GeneralPhone"></label>
+                                        <input type="text" class="form-control" asp-for="GeneralPhone">
+                                        <span class="text-danger" asp-validation-for="GeneralPhone"></span>
+                                    </div>
+
+                                    <div class="form-group col-md-6 col-sm-12">
+                                        <label asp-for="ClinicPhone"></label>
+                                        <input type="text" class="form-control" asp-for="ClinicPhone">
+                                        <span class="text-danger" asp-validation-for="ClinicPhone"></span>
+                                    </div>
+
+                                      <div class="form-group col-md-12 col-sm-12">
+                                    <label asp-for="DoctorSkills"></label>
+                                    <input type="text" tagify="1" class="form-control" asp-for="DoctorSkills">
+                                    <span class="text-danger" asp-validation-for="DoctorSkills"></span>
+                                </div>
+
                                 @if (Model.WorkAddresses != null && Model.WorkAddresses.Any())
                                 {
                                     @foreach (var item in Model.WorkAddresses)

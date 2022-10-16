@@ -28,6 +28,10 @@ namespace DoctorFAM.Domain.Entities.Doctors
 
         public Gender Gender { get; set; }
 
+        public string? GeneralPhone  { get; set; }
+
+        public string? ClinicPhone { get; set; }
+
         #endregion
 
         #region Relations

@@ -16,6 +16,16 @@ namespace DoctorFAM.Domain.Interfaces
     public interface IDoctorsRepository
     {
         #region Doctors Panel Side
+
+        //Remove Doctor Skills
+        Task RemoveDoctorSkills(List<DoctorsSkils> doctorSkill);
+
+        //Get List Of Doctor Skills By Doctor Id
+        Task<List<DoctorsSkils>> GetListOfDoctorSkillsByDoctorId(ulong doctorId);
+
+        //Add Doctor Selected Skils Without Save Changes
+        Task AddDoctorSelectedSkilsWithoutSaveChanges(DoctorsSkils doctorsSkils);
+
         Task<DoctorSideBarViewModel> GetDoctorsSideBarInfo(ulong userId);
 
         Task<DoctorsInfo?> GetDoctorsInformationByUserId(ulong userId);

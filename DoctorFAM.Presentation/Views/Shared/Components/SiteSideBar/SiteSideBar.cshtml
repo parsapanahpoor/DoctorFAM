@@ -425,25 +425,3 @@
     </div>
 
 </header>
-
-
-
-
-<div class="search-input" id="search-input-box">
-    <div class="container ">
-        <form class="d-flex justify-content-between search-inner" style="color:white !important;">
-            <input type="text" class="form-control" id="search-input" placeholder="جستجو ">
-            <button type="submit" class="btn"></button> <span class="flaticon-close" id="close-search" title="Close Search"></span>
-        </form>
-    </div>
-</div>
-<!--header end-->
-@if (User.Identity.IsAuthenticated)
-                {
-                    <div class=" row ">
-                        <div class=" col-md-9"></div>
-                        <div class=" col-md-3  align-items-center text-center justify-content-center">
-                            <a asp-action="Index" asp-area="UserPanel" asp-controller="Home" class="btn-AcceptX">ورود به صفحه شخصی</a>
-                        </div>
-                    </div>
-                }

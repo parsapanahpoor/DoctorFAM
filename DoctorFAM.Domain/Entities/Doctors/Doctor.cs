@@ -22,6 +22,8 @@ namespace DoctorFAM.Domain.Entities.Doctors
 
         public DoctorsInfo DoctorsInfos { get; set; }
 
+        public ICollection<DoctorsSkils> DoctorsSkils { get; set; }
+
         #endregion
     }
 }

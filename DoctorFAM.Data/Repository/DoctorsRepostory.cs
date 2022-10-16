@@ -144,6 +144,25 @@ namespace DoctorFAM.Data.Repository
             await _context.SaveChangesAsync();
         }
 
+        //Get List Of Doctor Skills By Doctor Id
+        public async Task<List<DoctorsSkils>> GetListOfDoctorSkillsByDoctorId(ulong doctorId)
+        {
+            return await _context.DoctorSkill.Where(p => p.DoctorId == doctorId && !p.IsDelete).ToListAsync();
+        }
+
+        //Add Doctor Selected Skils Without Save Changes
+        public async Task AddDoctorSelectedSkilsWithoutSaveChanges(DoctorsSkils doctorsSkils)
+        {
+            await _context.DoctorSkill.AddAsync(doctorsSkils);
+        }
+
+        //Remove Doctor Skills
+        public async Task RemoveDoctorSkills(List<DoctorsSkils> doctorSkill)
+        {
+            _context.DoctorSkill.RemoveRange(doctorSkill);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task UpdateDoctorState(Doctor doctor)
         {
             _context.Doctors.Update(doctor);
