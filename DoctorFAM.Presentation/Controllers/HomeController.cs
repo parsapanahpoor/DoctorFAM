@@ -138,7 +138,21 @@ namespace DoctorFAM.Web.Controllers
 
         #endregion
 
-      
+        #region Error
+
+        [HttpGet("/404")]
+        public async Task<IActionResult> NotFoundError()
+        {
+            return View();
+        }
+
+        [HttpGet("/500")]
+        public async Task<IActionResult> ServerNotFound()
+        {
+            return View();
+        }
+
+        #endregion
 
         #region ChangeLanguage
 

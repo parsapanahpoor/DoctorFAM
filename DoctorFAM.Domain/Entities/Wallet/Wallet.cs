@@ -49,6 +49,7 @@ public class Wallet : BaseEntity
     #region Relations
 
     public User User { get; set; }
+
     public WalletData WalletData { get; set; }
 
     #endregion

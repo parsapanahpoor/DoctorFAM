@@ -1,4 +1,5 @@
-﻿using DoctorFAM.Domain.ViewModels.Admin.Wallet;
+﻿using DoctorFAM.Domain.Entities.Wallet;
+using DoctorFAM.Domain.ViewModels.Admin.Wallet;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +29,15 @@ namespace DoctorFAM.Application.Services.Interfaces
         Task<ulong> ChargeUserWallet(AdminCreateWalletViewModel wallet);
 
         Task<WalletViewModel> GetWalletById(ulong id);
+
+        //Create New Wallet Transaction For Redirext To The Bank Portal
+        Task CreateNewWalletTransactionForRedirextToTheBankPortal(ulong userId, int price, GatewayType gateway, string authority, string description, ulong? requestId);
+
+        //Find Wallet Transaction For Redirect To The Bank Portal 
+        Task<Wallet?> FindWalletTransactionForRedirectToTheBankPortal(ulong userId, GatewayType gateway, ulong? requestId, string authority, int amount);
+
+        //Update Wallet And Calculate User Balance After Banking Payment
+        Task UpdateWalletAndCalculateUserBalanceAfterBankingPayment(Wallet wallet);
 
         #endregion
     }

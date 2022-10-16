@@ -8,6 +8,16 @@ using DoctorFAM.Web.Hubs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using NuGet.Configuration;
+using System.Text;
+using DoctorFAM.Domain.DTOs.ZarinPal;
+using Microsoft.CodeAnalysis;
+using Microsoft.DiaSymReader;
+using DoctorFAM.Domain.Entities.Wallet;
+using DoctorFAM.Application.StaticTools;
+using DoctorFAM.Domain.Entities.Account;
 
 namespace DoctorFAM.Web.Controllers
 {
@@ -22,10 +32,11 @@ namespace DoctorFAM.Web.Controllers
         private readonly IHubContext<NotificationHub> _notificationHub;
         private readonly INotificationService _notificationService;
         private readonly IUserService _userService;
+        private readonly IWalletService _walletService;
 
         public FocalPointController(IDoctorsService doctorsService, ISiteSettingService siteSettingService
                             , IReservationService reservationService, IHomeVisitService homeVisitService,
-                                IHubContext<NotificationHub> notificationHub, INotificationService notificationService , IUserService userService)
+                                IHubContext<NotificationHub> notificationHub, INotificationService notificationService, IUserService userService, IWalletService walletService)
         {
             _doctorService = doctorsService;
             _siteSettingService = siteSettingService;
@@ -34,6 +45,7 @@ namespace DoctorFAM.Web.Controllers
             _notificationHub = notificationHub;
             _notificationService = notificationService;
             _userService = userService;
+            _walletService = walletService;
         }
 
         #endregion
@@ -117,12 +129,13 @@ namespace DoctorFAM.Web.Controllers
         [Authorize]
         public async Task<IActionResult> ChooseTypeOfReservation(ChooseTypeOfReservationViewModel model)
         {
-            #region Check Is User Authenticated
+            #region Get Reservation Date Time 
 
-            if (!User.Identity.IsAuthenticated)
+            var reservationDateTime = await _reservationService.GetDoctorReservationDateTimeById(model.ReservationDateTimeId);
+            if (reservationDateTime == null || reservationDateTime.DoctorReservationState != Domain.Enums.DoctorReservation.DoctorReservationState.NotReserved)
             {
-                TempData[ErrorMessage] = "لطفا برای انجام عملیات وارد سایت شوید.";
-                return RedirectToAction("Index" , "Home");
+                TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+                return RedirectToAction("Index", "Home");
             }
 
             #endregion
@@ -144,17 +157,6 @@ namespace DoctorFAM.Web.Controllers
             if (reservationTariff == 0)
             {
                 TempData[ErrorMessage] = "لطفا با پشتیبانی تماس بگیرید";
-                return View();
-            }
-
-            #endregion
-
-            #region Get Site Address Domain For Redirect To Bank Portal\
-
-            var siteAddressDomain = await _siteSettingService.GetSiteAddressDomain();
-            if (string.IsNullOrEmpty(siteAddressDomain))
-            {
-                TempData[ErrorMessage] = "امکان اتصال به درگاه بانکی وجود ندارد";
                 return RedirectToAction("Index", "Home");
             }
 
@@ -162,107 +164,171 @@ namespace DoctorFAM.Web.Controllers
 
             #region Online Payment
 
-            var payment = new ZarinpalSandbox.Payment(reservationTariff);
-
-            var res = payment.PaymentRequest("پرداخت  ", $"{siteAddressDomain}DoctorReservationPayment/" + model.ReservationDateTimeId, "Parsapanahpoor@yahoo.com", "09117878804");
-
-            if (res.Result.Status == 100)
-            {
-                return Redirect("https://sandbox.zarinpal.com/pg/StartPay/" + res.Result.Authority);
-            }
+            return RedirectToAction("PaymentMethod", "Payment", new {
+                gatewayType = GatewayType.Zarinpal,
+                amount = reservationTariff,
+                description = "شارژ حساب کاربری برای پرداخت هزینه ی دریافت نوبت",
+                returURL = $"{PathTools.SiteAddress}/DoctorReservationPayment/" + model.ReservationDateTimeId,
+                requestId = model.ReservationDateTimeId
+            });
 
             #endregion
-
-            return View();
         }
 
         #endregion
 
         #region Home Visit Payment
 
-        [Route("DoctorReservationPayment/{id}")]
+        [HttpGet("DoctorReservationPayment/{id}", Name = "DoctorReservationPayment")]
         public async Task<IActionResult> DoctorReservationPayment(ulong id)
         {
+            #region Get User By User Id
+
+            var user = await _userService.GetUserById(User.GetUserId());
+            if (user == null) NotFound();
+
+            #endregion
+
             #region Get Reservation Date Time 
 
             var reservationDateTime = await _reservationService.GetDoctorReservationDateTimeById(id);
 
+            if (reservationDateTime == null || reservationDateTime.DoctorReservationState == Domain.Enums.DoctorReservation.DoctorReservationState.Canceled) return NotFound(); 
+
+            if (reservationDateTime.DoctorReservationState == Domain.Enums.DoctorReservation.DoctorReservationState.Reserved)
+            {
+                if (reservationDateTime.PatientId != user.Id)
+                {
+                    TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد";
+                    return RedirectToAction("PaymentResult", "Payment", new { IsSuccess = false });
+                }
+            }
+
             #endregion
 
-            if (HttpContext.Request.Query["Status"] != "" &&
-                HttpContext.Request.Query["Status"].ToString().ToLower() == "ok"
-                && HttpContext.Request.Query["Authority"] != "")
+            #region Get Reservation Tariff 
+
+            var reservationTariff = await _siteSettingService.GetReservationTariff();
+            if (reservationTariff == 0)
             {
-                string authority = HttpContext.Request.Query["Authority"];
+                TempData[ErrorMessage] = "لطفا با پشتیبانی تماس بگیرید";
+                return RedirectToAction("PaymentResult", "Payment", new { IsSuccess = false });
+            }
 
-                #region Get Reservation Tariff 
+            #endregion
 
-                var reservationTariff = await _siteSettingService.GetReservationTariff();
-                if (reservationTariff == 0)
+            try
+            {
+                #region Fill Parametrs
+
+                VerifyParameters parameters = new VerifyParameters();
+
+                if (HttpContext.Request.Query["Authority"] != "")
                 {
-                    TempData[ErrorMessage] = "لطفا با پشتیبانی تماس بگیرید";
-                    return View();
+                    parameters.authority = HttpContext.Request.Query["Authority"];
                 }
+
+                parameters.amount = reservationTariff.ToString();
+                parameters.merchant_id = PathTools.merchant;
 
                 #endregion
 
-                var payment = new ZarinpalSandbox.Payment(reservationTariff);
-                var res = payment.Verification(authority).Result;
-
-                if (res.Status == 100)
+                using (HttpClient client = new HttpClient())
                 {
-                    ViewBag.code = res.RefId;
-                    ViewBag.IsSuccess = true;
+                    #region Verify Payment
 
-                    //Update Reservation State 
-                    await _reservationService.ReserveDoctorReservationDateTimeAfterSuccessPayment(reservationDateTime.Id);
+                    var json = JsonConvert.SerializeObject(parameters);
 
-                    //Charge User Wallet
-                    await _reservationService.ChargeUserWallet(User.GetUserId(), reservationTariff);
+                    HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
 
-                    //Pay Home Visit Tariff
-                    await _reservationService.PayReservationTariff(User.GetUserId(), reservationTariff);
+                    HttpResponseMessage response = await client.PostAsync(URLs.verifyUrl, content);
 
-                    #region Send Notification In SignalR
+                    string responseBody = await response.Content.ReadAsStringAsync();
 
-                    //Create Notification For Supporters And Admins
-                    var notifyResult = await _notificationService.CreateSupporterNotification(reservationDateTime.Id, Domain.Enums.Notification.SupporterNotificationText.TakeReservation, Domain.Enums.Notification.NotificationTarget.reservation, User.GetUserId());
+                    JObject jodata = JObject.Parse(responseBody);
 
-                    //Send Notification For Doctor 
-                    await _notificationService.CreateNotificationForDoctorThatReserveHerReservation(reservationDateTime.Id, Domain.Enums.Notification.SupporterNotificationText.TakeReservation, Domain.Enums.Notification.NotificationTarget.reservation, User.GetUserId());
+                    string data = jodata["data"].ToString();
 
-                    //Get Current User
-                    var currentUser = await _userService.GetUserById(User.GetUserId());
+                    JObject jo = JObject.Parse(responseBody);
 
-                    if (notifyResult)
-                    {
-                        //Get List Of Admins And Supporter To Send Notification Into Them
-                        var users = await _userService.GetAdminsAndSupportersNotificationForSendNotificationInHomePharmacy();
-
-                        //Get Doctor For Send Notification  
-                        users.Add(await _doctorService.GetDoctroForSendNotificationForTakeReservationNotification(reservationDateTime.Id));
-
-                        //Fill Send Supporter Notification ViewModel For Send Notification
-                        SendSupporterNotificationViewModel viewModel = new SendSupporterNotificationViewModel()
-                        {
-                            CreateNotificationDate = $"{DateTime.Now.ToShamsi()} - {DateTime.Now.Hour}:{DateTime.Now.Minute}",
-                            NotificationText = "دریافت نوبت",
-                            RequestId = reservationDateTime.Id,
-                            Username = User.Identity.Name,
-                            UserImage = currentUser.Avatar
-                        };
-
-                        await _notificationHub.Clients.Users(users).SendAsync("SendSupporterNotification", viewModel);
-                    }
+                    string errors = jo["errors"].ToString();
 
                     #endregion
 
-                    return View();
-                }
+                    if (data != "[]")
+                    {
+                        //Authority Code
+                        string refid = jodata["data"]["ref_id"].ToString();
 
+                        //Get Wallet Transaction For Validation 
+                        var wallet = await _walletService.FindWalletTransactionForRedirectToTheBankPortal(user.Id , GatewayType.Zarinpal , reservationDateTime.Id , parameters.authority , reservationTariff);
+
+                        if (wallet != null)
+                        {
+                            //Update Reservation State 
+                            await _reservationService.ReserveDoctorReservationDateTimeAfterSuccessPayment(reservationDateTime.Id);
+
+                            //Charge User Wallet
+                            //await _reservationService.ChargeUserWallet(User.GetUserId(), reservationTariff);
+
+                            await _walletService.UpdateWalletAndCalculateUserBalanceAfterBankingPayment(wallet);
+
+                            //Pay Home Visit Tariff
+                            await _reservationService.PayReservationTariff(User.GetUserId(), reservationTariff);
+
+                            #region Send Notification In SignalR
+
+                            //Create Notification For Supporters And Admins
+                            var notifyResult = await _notificationService.CreateSupporterNotification(reservationDateTime.Id, Domain.Enums.Notification.SupporterNotificationText.TakeReservation, Domain.Enums.Notification.NotificationTarget.reservation, User.GetUserId());
+
+                            //Send Notification For Doctor 
+                            await _notificationService.CreateNotificationForDoctorThatReserveHerReservation(reservationDateTime.Id, Domain.Enums.Notification.SupporterNotificationText.TakeReservation, Domain.Enums.Notification.NotificationTarget.reservation, User.GetUserId());
+
+                            //Get Current User
+                            var currentUser = await _userService.GetUserById(User.GetUserId());
+
+                            if (notifyResult)
+                            {
+                                //Get List Of Admins And Supporter To Send Notification Into Them
+                                var users = await _userService.GetAdminsAndSupportersNotificationForSendNotificationInHomePharmacy();
+
+                                //Get Doctor For Send Notification  
+                                users.Add(await _doctorService.GetDoctroForSendNotificationForTakeReservationNotification(reservationDateTime.Id));
+
+                                //Fill Send Supporter Notification ViewModel For Send Notification
+                                SendSupporterNotificationViewModel viewModel = new SendSupporterNotificationViewModel()
+                                {
+                                    CreateNotificationDate = $"{DateTime.Now.ToShamsi()} - {DateTime.Now.Hour}:{DateTime.Now.Minute}",
+                                    NotificationText = "دریافت نوبت",
+                                    RequestId = reservationDateTime.Id,
+                                    Username = User.Identity.Name,
+                                    UserImage = currentUser.Avatar
+                                };
+
+                                await _notificationHub.Clients.Users(users).SendAsync("SendSupporterNotification", viewModel);
+                            }
+
+                            #endregion
+
+                            return RedirectToAction("PaymentResult", "Payment", new { IsSuccess = true, refId = refid });
+                        }
+                    }
+                    else if (errors != "[]")
+                    {
+                        string errorscode = jo["errors"]["code"].ToString();
+
+                        return BadRequest($"error code {errorscode}");
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
             }
 
-            return View();
+            return NotFound();
         }
 
         #endregion
