@@ -161,6 +161,12 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
         public async Task<IActionResult> ReservationDateDetail(FilterReservationDateTimeDoctorPAnel filter)
         {
+            #region Page Date 
+
+            ViewBag.reservationDate = await _reservatioService.GetReservationDateById(filter.ReservationDateId);
+
+            #endregion
+
             filter.UserId = User.GetUserId();
             return View(await _reservatioService.FilterReservationDateTimeDoctorSide(filter));
         }

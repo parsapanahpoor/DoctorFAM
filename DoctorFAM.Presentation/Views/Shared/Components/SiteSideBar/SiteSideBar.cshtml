@@ -8,6 +8,7 @@
                         <img id="logo-img" class="img-center" src="~/Content/images/Logo/doctorfamTes.png" alt="">
                     </a>
                 </div>
+
             </div>
         </div>
     </div>
@@ -28,39 +29,39 @@
                             <ul class="navbar-nav ml-auto">
                                 <!-- Home -->
                                 <li class="nav-item ">
-                                    <a class="nav-link active" href="/Home"> خانه </a>
+                                    <a class="nav-link " href="/Home"> خانه </a>
                                 </li>
-                                <li class="nav-item dropdown" data-toggle="hover">
+                                @*   <li class="nav-item dropdown" data-toggle="hover">
                                     <a class="nav-link  dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">خدمات ما</a>
                                     <div class="dropdown-menu">
-                                        <ul class="list-unstyled">
-                                            <li>
-                                                <a href="/Home/HealthHouseItems"> خانه سلامت</a>
-                                            </li>
-                                            <li>
-                                                <a href="/Home/HealthServicesItems"> کلینیک سلامت</a>
-                                            </li>
-                                            <li>
-                                                <a href="/Home/HealthProductsItems"> بازار سلامت</a>
-                                            </li>
-                                            <li>
-                                                <a href="index-3.html"> پزشک آنلاین</a>
-                                            </li>
-                                            <li>
-                                                <a href="index-3.html"> پزشک خانواده من</a>
-                                            </li>
-                                            <li>
-                                                <a href="index-3.html"> پزشکان متخصص</a>
-                                            </li>
-                                            <li>
-                                                <a href="index-4.html"> نوبت گیری</a>
-                                            </li>
-                                            <li>
-                                                <a href="index-5.html"> مددکاری</a>
-                                            </li>
-                                        </ul>
+                                    <ul class="list-unstyled">
+                                    <li>
+                                    <a href="/Home/HealthHouseItems"> خانه سلامت</a>
+                                    </li>
+                                    <li>
+                                    <a href="/Home/HealthServicesItems"> کلینیک سلامت</a>
+                                    </li>
+                                    <li>
+                                    <a href="/Home/HealthProductsItems"> بازار سلامت</a>
+                                    </li>
+                                    <li>
+                                    <a href="index-3.html"> پزشک آنلاین</a>
+                                    </li>
+                                    <li>
+                                    <a href="index-3.html"> پزشک خانواده من</a>
+                                    </li>
+                                    <li>
+                                    <a href="index-3.html"> پزشکان متخصص</a>
+                                    </li>
+                                    <li>
+                                    <a href="index-4.html"> نوبت گیری</a>
+                                    </li>
+                                    <li>
+                                    <a href="index-5.html"> مددکاری</a>
+                                    </li>
+                                    </ul>
                                     </div>
-                                </li>
+                                    </li>*@
                                 <li class="nav-item dropdown" data-toggle="hover">
                                     <a class="nav-link  dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">دانستنیهای سلامت</a>
                                     <div class="dropdown-menu">
@@ -71,9 +72,9 @@
                                             <li>
                                                 <a href="/Home/TeleFamItems"> تی وی فم</a>
                                             </li>
-                                            <li>
+                                            @* <li>
                                                 <a href="/Home/TeleFamItems"> دانستنیهای عمومی</a>
-                                            </li>
+                                                </li>*@
                                         </ul>
                                     </div>
                                 </li>
@@ -110,49 +111,71 @@
                                 <li class="nav-item " data-toggle="hover">
                                     <a class="nav-link " href="/Home/ContactUs"> تماس با ما </a>
                                 </li>
+                                <li class="nav-item dropdown" data-toggle="hover">
+                                    <a class="nav-link  dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color:yellow; ">همکاری با ما</a>
+                                    <div class="dropdown-menu">
+                                        <ul class="list-unstyled">
+                                            <li>
+                                                <a asp-action="Register" asp-controller="Account" asp-area="" asp-route-doctors="true">  ثبت نام پزشک</a>
+                                            </li>
+                                            <li>
+                                                <a asp-action="Register" asp-controller="Account" asp-area="" asp-route-Nurse="true">  ثبت نام پرستار</a>
+                                            </li>
+                                            <li>
+                                                <a asp-action="Register" asp-controller="Account" asp-area="" asp-route-pharmacy="true">  ثبت نام داروخانه </a>
+                                            </li>
+                                            <li>
+                                                <a asp-action="Register" asp-controller="Account" asp-area="" asp-route-Labratory="true">  ثبت نام آزمایشگاه</a>
+                                            </li>
+                                            <li>
+                                                <a asp-action="Register" asp-controller="Account" asp-area="" asp-route-consultant="true">  ثبت نام مشاور روان</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
                             </ul>
                         </div>
 
                         <div class="right-nav align-items-center d-flex justify-content-end">
-                           @* <div class="text-center text-align-justify ml-1 ml-sm-1 mr-1 mr-sm-1">
+                            @* <div class="text-center text-align-justify ml-1 ml-sm-1 mr-1 mr-sm-1">
                                 <div class="cart">
-                                    <a href="#" id="header-cart-btn"><span class="cart-badge">0</span> <i class="flaticon-shopping-cart" title="سبد خرید"></i></a>
-                                    <!-- Cart List Area Start -->
-                                    <ul class="cart-list">
-                                        <li>
-                                            <a href="#" class="image">
-                                                <img src="~/Content/images/product-thumb/01.jpg" class="img-fluid cart-thumb" alt="">
-                                            </a>
-                                            <div class="cart-item-desc">
-                                                <h6><a href="#"> ضد آفتاب </a></h6>
-                                                <p>
-                                                    <span class="price d-inline-block">132.000 تومان</span> -
-                                                    <span dir="ltr"> 1 x</span>
-                                                </p>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <a href="#" class="image">
-                                                <img src="~/Content/images/product-thumb/02.jpg" class="img-fluid cart-thumb" alt="">
-                                            </a>
-                                            <div class="cart-item-desc">
-                                                <h6><a href="#"> عینک محافظ </a></h6>
-                                                <p>
-                                                    <span class="price d-inline-block">28.000 تومان</span> -
-                                                    <span dir="ltr"> 10 x</span>
-                                                </p>
-                                            </div>
-                                        </li>
-                                        <li class="total text-left">
-                                            <span class="d-block"> کل: 160.00 تومان </span>
-                                        </li>
-                                        <li>
-                                            <a href="product-cart.html" class="btn"> سبد خرید </a>
-                                            <a href="product-checkout.html" class="btn btn-border"> پرداخت </a>
-                                        </li>
-                                    </ul>
+                                <a href="#" id="header-cart-btn"><span class="cart-badge">0</span> <i class="flaticon-shopping-cart" title="سبد خرید"></i></a>
+                                <!-- Cart List Area Start -->
+                                <ul class="cart-list">
+                                <li>
+                                <a href="#" class="image">
+                                <img src="~/Content/images/product-thumb/01.jpg" class="img-fluid cart-thumb" alt="">
+                                </a>
+                                <div class="cart-item-desc">
+                                <h6><a href="#"> ضد آفتاب </a></h6>
+                                <p>
+                                <span class="price d-inline-block">132.000 تومان</span> -
+                                <span dir="ltr"> 1 x</span>
+                                </p>
                                 </div>
-                            </div>*@
+                                </li>
+                                <li>
+                                <a href="#" class="image">
+                                <img src="~/Content/images/product-thumb/02.jpg" class="img-fluid cart-thumb" alt="">
+                                </a>
+                                <div class="cart-item-desc">
+                                <h6><a href="#"> عینک محافظ </a></h6>
+                                <p>
+                                <span class="price d-inline-block">28.000 تومان</span> -
+                                <span dir="ltr"> 10 x</span>
+                                </p>
+                                </div>
+                                </li>
+                                <li class="total text-left">
+                                <span class="d-block"> کل: 160.00 تومان </span>
+                                </li>
+                                <li>
+                                <a href="product-cart.html" class="btn"> سبد خرید </a>
+                                <a href="product-checkout.html" class="btn btn-border"> پرداخت </a>
+                                </li>
+                                </ul>
+                                </div>
+                                </div>*@
 
                             <div class="search-icon ml-1 ml-sm-1 mr-1 mr-sm-1">
                                 <a id="search" href="javascript:void(0)"><i class="flaticon-search" title="جستجو"></i></a>
@@ -189,19 +212,17 @@
                                                         <div class="dropdown btn-Accept">
                                                             <button class=" dropdown-toggle " id="dropdownlanguage" data-toggle="dropdown"> <img class="DefaultAvatar" src="~/Content/images/user/thumb/DefaultAvatar.png"> </button>
                                                             <div class="dropdown-menu" aria-labelledby="dropdownlanguage">
-
                                                                 <a class="dropdown-item "> @User.Identity.Name خوش آمدید </a>
-                                                                <a asp-action="Index" asp-area="Admin" asp-controller="Home" class="dropdown-item "> پنل ادمین </a>
+                                                                <a asp-action="Index" asp-area="UserPanel" asp-controller="Home" class="dropdown-item dropdown-itemuserpanel">ورود به صفحه شخصی</a>
+
                                                                 <a asp-action="Index" asp-area="Doctor" asp-controller="Home" class="dropdown-item ">  پنل پزشک</a>
-                                                                  <a asp-action="Index" asp-area="Nurse" asp-controller="Home" class="dropdown-item "> پنل پرستار</a>
-                                                                  <a asp-action="Index" asp-area="Consultant" asp-controller="Home" class="dropdown-item "> پنل مشاور</a>
-                                                                <a asp-action="Index" asp-area="Pharmacy" asp-controller="Home" class="dropdown-item ">  پنل داروخانه</a>
-                                                                <a asp-action="Index" asp-area="Supporter" asp-controller="Home" class="dropdown-item "> پنل پشتیبان</a>
-                                                                <a asp-action="Index" asp-area="Market" asp-controller="Home" class="dropdown-item "> پنل فروشنده  </a>
-                                                                <a asp-action="Index" asp-area="Laboratory" asp-controller="Home" class="dropdown-item ">  پنل داروخانه</a>
                                                                 <a asp-action="Index" asp-area="Nurse" asp-controller="Home" class="dropdown-item "> پنل پرستار</a>
-                                                                <a asp-action="Index" asp-area="UserPanel" asp-controller="Home" class="dropdown-item "> پنل کاربر</a>
+                                                                <a asp-action="Index" asp-area="Laboratory" asp-controller="Home" class="dropdown-item ">  پنل آزمایشگاه</a>
+                                                                <a asp-action="Index" asp-area="Pharmacy" asp-controller="Home" class="dropdown-item ">  پنل داروخانه</a>
                                                                 <a asp-action="Index" asp-area="Consultant" asp-controller="Home" class="dropdown-item "> پنل مشاور</a>
+                                                                <a asp-action="Index" asp-area="Market" asp-controller="Home" class="dropdown-item "> پنل فروشنده  </a>
+                                                                <a asp-action="Index" asp-area="Supporter" asp-controller="Home" class="dropdown-item "> پنل پشتیبان</a>
+                                                                <a asp-action="Index" asp-area="Admin" asp-controller="Home" class="dropdown-item dropdown-itemuserpanel"> پنل ادمین </a>
                                                                 <a asp-action="Logout" asp-controller="Account" class="dropdown-item"> خروج</a>
                                                             </div>
                                                         </div>
@@ -219,10 +240,8 @@
                                                             <div class="dropdown-menu" aria-labelledby="dropdownlanguage">
 
                                                                 <a class="dropdown-item "> @User.Identity.Name خوش آمدید </a>
+                                                                <a asp-action="Index" asp-area="UserPanel" asp-controller="Home" class="dropdown-item dropdown-itemuserpanel">ورود به صفحه شخصی</a>
                                                                 <a asp-action="Index" asp-area="Doctor" asp-controller="Home" class="dropdown-item ">  پنل پزشک</a>
-
-                                                                <a asp-action="Index" asp-area="UserPanel" asp-controller="Home" class="dropdown-item "> پنل کاربر</a>
-
                                                                 <a asp-action="Logout" asp-controller="Account" class="dropdown-item"> خروج</a>
                                                             </div>
                                                         </div>
@@ -237,10 +256,8 @@
                                                         <div class="dropdown btn-Accept">
                                                             <button class=" dropdown-toggle " id="dropdownlanguage" data-toggle="dropdown"> @User.Identity.Name </button>
                                                             <div class="dropdown-menu" aria-labelledby="dropdownlanguage">
+                                                                <a asp-action="Index" asp-area="UserPanel" asp-controller="Home" class="dropdown-item dropdown-itemuserpanel">ورود به صفحه شخصی</a>
                                                                 <a asp-action="Index" asp-area="Laboratory" asp-controller="Home" class="dropdown-item ">  پنل آزمایشگاه</a>
-
-                                                                <a asp-action="Index" asp-area="UserPanel" asp-controller="Home" class="dropdown-item "> پنل کاربر</a>
-
                                                                 <a asp-action="Logout" asp-controller="Account" class="dropdown-item"> خروج</a>
                                                             </div>
                                                         </div>
@@ -255,10 +272,8 @@
                                                         <div class="dropdown btn-Accept">
                                                             <button class=" dropdown-toggle " id="dropdownlanguage" data-toggle="dropdown"> @User.Identity.Name </button>
                                                             <div class="dropdown-menu" aria-labelledby="dropdownlanguage">
+                                                                <a asp-action="Index" asp-area="UserPanel" asp-controller="Home" class="dropdown-item dropdown-itemuserpanel">ورود به صفحه شخصی</a>
                                                                 <a asp-action="Index" asp-area="Laboratory" asp-controller="Home" class="dropdown-item ">  پنل آزمایشگاه</a>
-
-                                                                <a asp-action="Index" asp-area="UserPanel" asp-controller="Home" class="dropdown-item "> پنل کاربر</a>
-
                                                                 <a asp-action="Logout" asp-controller="Account" class="dropdown-item"> خروج</a>
                                                             </div>
                                                         </div>
@@ -271,14 +286,12 @@
                                                 <div class="d-flex align-items-center">
                                                     <div class="language-selection ">
                                                         <div class="dropdown btn-Accept">
-                                                           <button class=" dropdown-toggle " id="dropdownlanguage" data-toggle="dropdown"> <img class="DefaultAvatar" src="~/Content/images/user/thumb/DefaultAvatar.png"> </button>
+                                                            <button class=" dropdown-toggle " id="dropdownlanguage" data-toggle="dropdown"> <img class="DefaultAvatar" src="~/Content/images/user/thumb/DefaultAvatar.png"> </button>
                                                             <div class="dropdown-menu" aria-labelledby="dropdownlanguage">
 
                                                                 <a class="dropdown-item "> @User.Identity.Name خوش آمدید </a>
+                                                                <a asp-action="Index" asp-area="UserPanel" asp-controller="Home" class="dropdown-item dropdown-itemuserpanel">ورود به صفحه شخصی</a>
                                                                 <a asp-action="Index" asp-area="Pharmacy" asp-controller="Home" class="dropdown-item ">  پنل داروخانه</a>
-
-                                                                <a asp-action="Index" asp-area="UserPanel" asp-controller="Home" class="dropdown-item "> پنل کاربر</a>
-
                                                                 <a asp-action="Logout" asp-controller="Account" class="dropdown-item"> خروج</a>
                                                             </div>
                                                         </div>
@@ -295,10 +308,8 @@
                                                             <div class="dropdown-menu" aria-labelledby="dropdownlanguage">
 
                                                                 <a class="dropdown-item "> @User.Identity.Name خوش آمدید </a>
+                                                                <a asp-action="Index" asp-area="UserPanel" asp-controller="Home" class="dropdown-item dropdown-itemuserpanel">ورود به صفحه شخصی</a>
                                                                 <a asp-action="Index" asp-area="Market" asp-controller="Home" class="dropdown-item "> پنل فروشنده  </a>
-
-                                                                <a asp-action="Index" asp-area="UserPanel" asp-controller="Home" class="dropdown-item "> پنل کاربر</a>
-
                                                                 <a asp-action="Logout" asp-controller="Account" class="dropdown-item"> خروج</a>
                                                             </div>
                                                         </div>
@@ -311,14 +322,12 @@
                                                 <div class="d-flex align-items-center">
                                                     <div class="language-selection ">
                                                         <div class="dropdown btn-Accept">
-                                                           <button class=" dropdown-toggle " id="dropdownlanguage" data-toggle="dropdown"> <img class="DefaultAvatar" src="~/Content/images/user/thumb/DefaultAvatar.png"> </button>
+                                                            <button class=" dropdown-toggle " id="dropdownlanguage" data-toggle="dropdown"> <img class="DefaultAvatar" src="~/Content/images/user/thumb/DefaultAvatar.png"> </button>
                                                             <div class="dropdown-menu" aria-labelledby="dropdownlanguage">
 
                                                                 <a class="dropdown-item "> @User.Identity.Name خوش آمدید </a>
+                                                                <a asp-action="Index" asp-area="UserPanel" asp-controller="Home" class="dropdown-item dropdown-itemuserpanel">ورود به صفحه شخصی</a>
                                                                 <a asp-action="Index" asp-area="Doctor" asp-controller="Home" class="dropdown-item ">  پنل پزشک</a>
-
-                                                                <a asp-action="Index" asp-area="UserPanel" asp-controller="Home" class="dropdown-item "> پنل کاربر</a>
-
                                                                 <a asp-action="Logout" asp-controller="Account" class="dropdown-item"> خروج</a>
                                                             </div>
                                                         </div>
@@ -335,10 +344,8 @@
                                                             <div class="dropdown-menu" aria-labelledby="dropdownlanguage">
 
                                                                 <a class="dropdown-item "> @User.Identity.Name خوش آمدید </a>
+                                                                <a asp-action="Index" asp-area="UserPanel" asp-controller="Home" class="dropdown-item dropdown-itemuserpanel">ورود به صفحه شخصی</a>
                                                                 <a asp-action="Index" asp-area="Supporter" asp-controller="Home" class="dropdown-item "> پنل پشتیبان</a>
-
-                                                                <a asp-action="Index" asp-area="UserPanel" asp-controller="Home" class="dropdown-item "> پنل کاربر</a>
-
                                                                 <a asp-action="Logout" asp-controller="Account" class="dropdown-item"> خروج</a>
                                                             </div>
                                                         </div>
@@ -351,14 +358,12 @@
                                                 <div class="d-flex align-items-center">
                                                     <div class="language-selection ">
                                                         <div class="dropdown btn-Accept">
-                                                           <button class=" dropdown-toggle " id="dropdownlanguage" data-toggle="dropdown"> <img class="DefaultAvatar" src="~/Content/images/user/thumb/DefaultAvatar.png"> </button>
+                                                            <button class=" dropdown-toggle " id="dropdownlanguage" data-toggle="dropdown"> <img class="DefaultAvatar" src="~/Content/images/user/thumb/DefaultAvatar.png"> </button>
                                                             <div class="dropdown-menu" aria-labelledby="dropdownlanguage">
 
                                                                 <a class="dropdown-item "> @User.Identity.Name خوش آمدید </a>
+                                                                <a asp-action="Index" asp-area="UserPanel" asp-controller="Home" class="dropdown-item dropdown-itemuserpanel">ورود به صفحه شخصی</a>
                                                                 <a asp-action="Index" asp-area="Nurse" asp-controller="Home" class="dropdown-item "> پنل پرستار</a>
-
-                                                                <a asp-action="Index" asp-area="UserPanel" asp-controller="Home" class="dropdown-item "> پنل کاربر</a>
-
                                                                 <a asp-action="Logout" asp-controller="Account" class="dropdown-item"> خروج</a>
                                                             </div>
                                                         </div>
@@ -371,14 +376,12 @@
                                                 <div class="d-flex align-items-center">
                                                     <div class="language-selection ">
                                                         <div class="dropdown btn-Accept">
-                                                          <button class=" dropdown-toggle " id="dropdownlanguage" data-toggle="dropdown"> <img class="DefaultAvatar" src="~/Content/images/user/thumb/DefaultAvatar.png"> </button>
+                                                            <button class=" dropdown-toggle " id="dropdownlanguage" data-toggle="dropdown"> <img class="DefaultAvatar" src="~/Content/images/user/thumb/DefaultAvatar.png"> </button>
                                                             <div class="dropdown-menu" aria-labelledby="dropdownlanguage">
 
                                                                 <a class="dropdown-item "> @User.Identity.Name خوش آمدید </a>
+                                                                <a asp-action="Index" asp-area="UserPanel" asp-controller="Home" class="dropdown-item dropdown-itemuserpanel">ورود به صفحه شخصی</a>
                                                                 <a asp-action="Index" asp-area="Consultant" asp-controller="Home" class="dropdown-item "> پنل مشاور</a>
-
-                                                                <a asp-action="Index" asp-area="UserPanel" asp-controller="Home" class="dropdown-item "> پنل کاربر</a>
-
                                                                 <a asp-action="Logout" asp-controller="Account" class="dropdown-item"> خروج</a>
                                                             </div>
                                                         </div>
@@ -394,8 +397,7 @@
                                                             <button class=" dropdown-toggle " id="dropdownlanguage" data-toggle="dropdown"> <img class="DefaultAvatar" src="~/Content/images/user/thumb/DefaultAvatar.png"> </button>
                                                             <div class="dropdown-menu" aria-labelledby="dropdownlanguage">
                                                                 <a class="dropdown-item "> @User.Identity.Name </a>
-                                                                <a asp-action="Index" asp-area="UserPanel" asp-controller="Home" class="dropdown-item "> پنل کاربر</a>
-
+                                                                <a asp-action="Index" asp-area="UserPanel" asp-controller="Home" class="dropdown-item dropdown-itemuserpanel">ورود به صفحه شخصی</a>
                                                                 <a asp-action="Logout" asp-controller="Account" class="dropdown-item"> خروج</a>
                                                             </div>
                                                         </div>
@@ -417,6 +419,7 @@
                         </div>
                     </nav>
                 </div>
+                
             </div>
         </div>
     </div>
@@ -435,3 +438,12 @@
     </div>
 </div>
 <!--header end-->
+@if (User.Identity.IsAuthenticated)
+                {
+                    <div class=" row ">
+                        <div class=" col-md-9"></div>
+                        <div class=" col-md-3  align-items-center text-center justify-content-center">
+                            <a asp-action="Index" asp-area="UserPanel" asp-controller="Home" class="btn-AcceptX">ورود به صفحه شخصی</a>
+                        </div>
+                    </div>
+                }

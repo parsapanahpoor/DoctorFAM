@@ -123,6 +123,12 @@
   <data name="Country Name" xml:space="preserve">
     <value>اسم الدولة</value>
   </data>
+  <data name="Describtion" xml:space="preserve">
+    <value>وصف</value>
+  </data>
+  <data name="Doctor" xml:space="preserve">
+    <value>طبيب</value>
+  </data>
   <data name="Doctor Personal Informations" xml:space="preserve">
     <value>معلومات الطبيب</value>
   </data>
@@ -135,8 +141,17 @@
   <data name="FullName" xml:space="preserve">
     <value>الاسم الأول واسم العائلة</value>
   </data>
+  <data name="Medical System Code" xml:space="preserve">
+    <value>كود النظام الطبي</value>
+  </data>
   <data name="Mobile" xml:space="preserve">
     <value>التليفون المحمول</value>
+  </data>
+  <data name="Office Phone" xml:space="preserve">
+    <value>هاتف المكتب</value>
+  </data>
+  <data name="Patients can call directly with this number" xml:space="preserve">
+    <value>يمكن للمرضى الاتصال بالطبيب مباشرة بهذا الرقم</value>
   </data>
   <data name="Show Family Doctor Detail" xml:space="preserve">
     <value>اعرض معلومات الطبيب</value>

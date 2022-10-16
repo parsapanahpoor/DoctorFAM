@@ -310,6 +310,8 @@ namespace DoctorFAM.Application.Services.Implementation
                     hours = endTime.Hour;
                     minute = endTime.Minute;
                 }
+
+                await _reservation.Savechanges();   
             }
 
             #endregion

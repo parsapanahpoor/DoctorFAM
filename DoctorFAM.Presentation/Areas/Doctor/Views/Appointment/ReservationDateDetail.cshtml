@@ -7,6 +7,8 @@
 
 
 @{
+    var reservation = ViewBag.reservationDate as DoctorFAM.Domain.Entities.DoctorReservation.DoctorReservationDate;
+
     ViewData["Title"] = @Localizer["Reservation Date Time Detail"];
 }
 
@@ -22,7 +24,10 @@
 @section Breadcrumb
 {
 <li>
-    <a href="javascript:void(0)"> @ViewData["Title"] </a>
+    @if (reservation != null)
+    {
+    <a href="javascript:void(0)"> @reservation.ReservationDate.ToShamsi() </a>
+    }
 </li>
 }
 
@@ -83,16 +88,21 @@
 
     <div class="col-lg-9 col-sm-12">
         <div class="well with-header with-footer table-responsive">
-            <div class="header bordered-azure">
-                <div class="flex-style">
+            <div class="header bordered-azure ">
+                <div class="col-md-5 flex-style">
                     <span>@ViewData["Title"]</span>
                     <span>@Model.GetShownEntitiesPagesTitle()</span>
+
+                </div>
+                <div class="col-md-4 flex-style text-left">
+                    <span class="text-center">@reservation.ReservationDate.ToStringShamsiDate()</span>
                 </div>
             </div>
 
             @if (Model.Entities != null && Model.Entities.Any())
             {
                 <table class="table table-hover table-bordered tc vm">
+
                     <thead class="tc vm">
                         <tr class="tc vm">
                             <th class="tc vm">
@@ -118,12 +128,15 @@
                             <tr class="tc vm" remove-ajax-item="@date.Id">
                                 <td class="vm">
                                     <div class="flex-style-center">
-                                        <p> @date.StartTime </p>
+                                       
+                                        <p> @string.Concat(date.StartTime.Reverse().Skip(3).Reverse()) </p>
+                                        
                                     </div>
                                 </td>
                                 <td class="vm">
                                     <div class="flex-style-center">
-                                        <p> @date.EndTime </p>
+                                        <p> @string.Concat(date.EndTime.Reverse().Skip(3).Reverse()) </p>
+                                        
                                     </div>
                                 </td>
                                 <td class="tc vm">

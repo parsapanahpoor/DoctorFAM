@@ -1,4 +1,5 @@
 ﻿using DoctorFAM.Data.DbContext;
+using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.PopulationCovered;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.PopulationCovered;
@@ -57,6 +58,17 @@ namespace DoctorFAM.Data.Repository
         #endregion
 
         #region User Panel Side
+
+        //Check Is Exist National Id 
+        public async Task<bool> CheckIsExistNationalId(string nationalId, ulong userId)
+        {
+            var user = await _context.PopulationCovered.FirstOrDefaultAsync(s => !s.IsDelete && s.NationalId == nationalId.Trim());
+
+            if (user == null) return true;
+            if (user.UserId == userId) return true;
+
+            return false;
+        }
 
         public async Task AddPopulationCovered(PopulationCovered population)
         {

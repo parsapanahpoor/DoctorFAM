@@ -16227,7 +16227,8 @@ div[data-role="editor-toolbar"] {
                 display: block;
                 margin: 0 auto;
                 text-align: center;
-                font-size: 30px;
+                font-size: 20px;
+                font-weight: 600;
                 font-family: 'YekanBakh-FaNum';
             }
 

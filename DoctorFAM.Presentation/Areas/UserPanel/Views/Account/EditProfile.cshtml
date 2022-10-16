@@ -38,42 +38,38 @@
                             <div class="row">
 
                                 <div class="form-group col-md-6 col-sm-12">
-                                    <label asp-for="username"></label>
+                                    <span>@Localizer["usernameInSite"]</span>
                                     <input type="text" class="form-control" asp-for="username">
                                     <span class="text-danger" asp-validation-for="username"></span>
                                 </div>
 
                                 <div class="form-group col-md-6 col-sm-12">
+                                    <span>@Localizer["username"]</span>
+                                    <div type="text" readonly class="form-control" asp-for="Mobile">@Model.Mobile</div>
+                                    <span class="text-danger" asp-validation-for="Mobile"></span>
+                                </div>
+
+                                <div class="form-group col-md-12 col-sm-12">
                                     <label asp-for="Email"></label>
                                     <input type="text" class="form-control" asp-for="Email">
                                     <span class="text-danger" asp-validation-for="Email"></span>
                                 </div>
 
-                                <div class="form-group col-md-6 col-sm-12">
-                                    <label asp-for="Mobile"></label>
-                                    <div type="text" readonly class="form-control" asp-for="Mobile">@Model.Mobile</div>
-                                    <span class="text-danger" asp-validation-for="Mobile"></span>
-                                </div>
+                                
 
-                                <div class="form-group col-md-6 col-sm-12">
+                                <div class="form-group col-md-4 col-sm-12">
                                     <label asp-for="FirstName"></label>
                                     <input type="text" class="form-control" asp-for="FirstName">
                                     <span class="text-danger" asp-validation-for="FirstName"></span>
                                 </div>
 
-                                <div class="form-group col-md-6 col-sm-12">
+                                <div class="form-group col-md-4 col-sm-12">
                                     <label asp-for="LastName"></label>
                                     <input type="text" class="form-control" asp-for="LastName">
                                     <span class="text-danger" asp-validation-for="LastName"></span>
                                 </div>
 
-                                <div class="form-group col-md-6 col-sm-12">
-                                    <label asp-for="BithDay"></label>
-                                <input asp-for="BithDay" class="form-control" autocomplete="off" AdminDatePicker="1"/>
-                                    <span class="text-danger" asp-validation-for="BithDay"></span>
-                                </div>
-
-                                <div class="form-group col-md-6 col-sm-12">
+                                <div class="form-group col-md-4 col-sm-12">
                                     <label asp-for="FatherName"></label>
                                     <input type="text" class="form-control" asp-for="FatherName">
                                     <span class="text-danger" asp-validation-for="FatherName"></span>
@@ -85,8 +81,14 @@
                                     <span class="text-danger" asp-validation-for="NationalId"></span>
                                 </div>
 
+                                <div class="form-group col-md-6 col-sm-12">
+                                    <label asp-for="BithDay"></label>
+                                <input asp-for="BithDay" class="form-control" autocomplete="off" AdminDatePicker="1"/>
+                                    <span class="text-danger" asp-validation-for="BithDay"></span>
+                                </div>
+                                
                                  <div class="form-group col-md-6 col-sm-12">
-                                    <label asp-for="ExtraPhoneNumber"></label>
+                                  <span> @Localizer["ExtraPhoneNumber"]</span>
                                     <input type="text" class="form-control" asp-for="ExtraPhoneNumber">
                                     <span class="text-danger" asp-validation-for="ExtraPhoneNumber"></span>
                                 </div>
@@ -96,9 +98,9 @@
                                     <input type="text" class="form-control" asp-for="HomePhoneNumber">
                                     <span class="text-danger" asp-validation-for="HomePhoneNumber"></span>
                                 </div>
-
+                                
                                  <div class="form-group col-md-12 col-sm-12">
-                                    <label asp-for="WorkAddress"></label>
+                                    <span></span>@Localizer["Address"]
                                     <textarea type="text" class="form-control" asp-for="WorkAddress">@Model.WorkAddress</textarea>
                                     <span class="text-danger" asp-validation-for="WorkAddress"></span>
                                 </div>

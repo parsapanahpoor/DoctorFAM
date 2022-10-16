@@ -186,6 +186,9 @@
   <data name="Not Found" xml:space="preserve">
     <value>Not Found</value>
   </data>
+  <data name="Notofications" xml:space="preserve">
+    <value>Show/Hide Notfications</value>
+  </data>
   <data name="Options" xml:space="preserve">
     <value>Options</value>
   </data>

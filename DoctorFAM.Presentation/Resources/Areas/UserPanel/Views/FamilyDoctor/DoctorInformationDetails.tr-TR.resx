@@ -123,6 +123,12 @@
   <data name="Country Name" xml:space="preserve">
     <value>ülke adı</value>
   </data>
+  <data name="Describtion" xml:space="preserve">
+    <value>Açıklama</value>
+  </data>
+  <data name="Doctor" xml:space="preserve">
+    <value>Doktor</value>
+  </data>
   <data name="Doctor Personal Informations" xml:space="preserve">
     <value>Doktor bilgileri</value>
   </data>
@@ -135,8 +141,17 @@
   <data name="FullName" xml:space="preserve">
     <value>Ad ve soyad</value>
   </data>
+  <data name="Medical System Code" xml:space="preserve">
+    <value>Tıbbi Sistem Kodu</value>
+  </data>
   <data name="Mobile" xml:space="preserve">
     <value>Mobil</value>
+  </data>
+  <data name="Office Phone" xml:space="preserve">
+    <value>Ofis Telefonu</value>
+  </data>
+  <data name="Patients can call directly with this number" xml:space="preserve">
+    <value>Hastalar doğrudan bu numaradan arayabilir</value>
   </data>
   <data name="Show Family Doctor Detail" xml:space="preserve">
     <value>Doktor bilgilerini göster</value>

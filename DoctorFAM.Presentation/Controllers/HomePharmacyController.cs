@@ -137,6 +137,12 @@ namespace DoctorFAM.Web.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> PatientDetails(PatientViewModel patient)
         {
+            #region Get User Population Covered
+
+            ViewBag.PopulationCovered = await _populationCovered.GetUserPopulation(User.GetUserId());
+
+            #endregion
+
             #region Data Validation
 
             if (!await _userService.IsExistUserById(User.GetUserId())) return NotFound();
@@ -178,12 +184,6 @@ namespace DoctorFAM.Web.Controllers
 
                     return RedirectToAction("RequestedDrogs", "HomePharmacy", new { requestId = patient.RequestId, patientId = patientId });
             }
-
-            #endregion
-
-            #region Get User Population Covered
-
-            ViewBag.PopulationCovered = await _populationCovered.GetUserPopulation(User.GetUserId());
 
             #endregion
 

@@ -1,11 +1,17 @@
 ﻿using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Application.StaticTools;
+using DoctorFAM.Domain.Entities.Consultant;
+using DoctorFAM.Domain.Entities.Doctors;
+using DoctorFAM.Domain.Entities.Laboratory;
+using DoctorFAM.Domain.Entities.Nurse;
+using DoctorFAM.Domain.Entities.Pharmacy;
 using DoctorFAM.Domain.ViewModels.Account;
 using DoctorFAM.Domain.ViewModels.Site.Account;
 using DoctorFAM.Web.HttpManager;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using NuGet.Protocol.Plugins;
 using System.Security.Claims;
 
 namespace DoctorFAM.Web.Controllers
@@ -56,6 +62,23 @@ namespace DoctorFAM.Web.Controllers
         public async Task<IActionResult> Register(RegisterUserViewModel register)
         {
             #region Model State Validations
+
+            #region Page Data 
+
+            ViewBag.DoctorsRegister = register.DoctorsRegister;
+
+            ViewBag.SellerRegister = register.SellerRegister;
+
+            ViewBag.PharmacyRegister = register.PharmacyRegister;
+
+            ViewBag.NurseRegister = register.NurseRegister;
+
+            ViewBag.ConsultantRegister = register.ConsultantRegister;
+
+            ViewBag.LabratoryRegister = register.LabratoryRegister;
+
+            #endregion
+
 
             if (!ModelState.IsValid)
             {
@@ -139,7 +162,6 @@ namespace DoctorFAM.Web.Controllers
 
                     #endregion
 
-
                     return RedirectToAction("ActiveUserByMobileActivationCode", new { Mobile = register.Mobile });
             }
 
@@ -189,7 +211,6 @@ namespace DoctorFAM.Web.Controllers
             #endregion
 
             #region Time Counter Initilize
-
 
 
             if (await _siteSettingService.IsExistSiteSetting())

@@ -136,7 +136,7 @@
     <value>ما هي جنسية الطبيب؟</value>
   </data>
   <data name="End" xml:space="preserve">
-    <value>صبور</value>
+    <value>نهاية</value>
   </data>
   <data name="End Time" xml:space="preserve">
     <value>وقت النهاية</value>
@@ -200,6 +200,9 @@
   </data>
   <data name="State" xml:space="preserve">
     <value>حالة</value>
+  </data>
+  <data name="Time" xml:space="preserve">
+    <value>زمن</value>
   </data>
   <data name="To Date" xml:space="preserve">
     <value>حتى الآن</value>

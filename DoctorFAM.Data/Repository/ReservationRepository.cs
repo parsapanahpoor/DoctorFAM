@@ -388,12 +388,11 @@ namespace DoctorFAM.Data.Repository
 
             #endregion
 
-
             var query = _context.DoctorReservationDateTimes
                 .Include(p => p.DoctorReservationDate)
                 .Where(s => !s.IsDelete && s.DoctorReservationDate.UserId == organization.OwnerId
                                 && s.DoctorReservationDateId == filter.ReservationDateId && s.DoctorReservationState != DoctorReservationState.Canceled)
-                .OrderByDescending(s => s.CreateDate)
+                .OrderBy(s => s.StartTime)
                 .AsQueryable();
 
             #region Status
@@ -435,7 +434,6 @@ namespace DoctorFAM.Data.Repository
             }
 
             #endregion
-
 
             #region Filter
 
@@ -1021,6 +1019,7 @@ namespace DoctorFAM.Data.Repository
         {
             var query = _context.ReservationDateTimeCancelations
                 .Include(p => p.DoctorReservationDateTime)
+                .ThenInclude(p=> p.User)
                 .Where(s => !s.IsDelete && s.ReservationDateCancelationId == filter.ReservationDateId && s.DoctorReservationDateTime.DoctorReservationState != DoctorReservationState.Canceled)
                 .OrderByDescending(s => s.CreateDate)
                 .AsQueryable();
@@ -1163,7 +1162,7 @@ namespace DoctorFAM.Data.Repository
         public async Task<List<DoctorReservationDateTime>?> GetListOfDoctorReservationDateTimeByReservationDateId(ulong reservationDateId)
         {
             return await _context.DoctorReservationDateTimes.Where(p => !p.IsDelete && p.DoctorReservationDateId == reservationDateId
-                                                                    && p.DoctorReservationState != DoctorReservationState.Canceled).ToListAsync();
+                                                                    && p.DoctorReservationState != DoctorReservationState.Canceled).OrderBy(p=> p.StartTime).ToListAsync();
         }
 
         #endregion

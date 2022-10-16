@@ -109,9 +109,53 @@ namespace DoctorFAM.Data.Repository
             var query = _context.UserSelectedFamilyDoctor
                 .Include(p => p.Patient)
                 .ThenInclude(p=> p.PopulationCovered)
-                .Where(s => !s.IsDelete && s.DoctorId == doctorOffice.Organization.OwnerId && s.FamilyDoctorRequestState != Domain.Enums.FamilyDoctor.FamilyDoctorRequestState.Decline)
+                .Where(s => !s.IsDelete && s.DoctorId == doctorOffice.Organization.OwnerId && s.FamilyDoctorRequestState == Domain.Enums.FamilyDoctor.FamilyDoctorRequestState.WaitingForConfirm)
                 .OrderByDescending(s => s.CreateDate)
                 .Select(p=> p.Patient)
+                .AsQueryable();
+
+
+            #region Filter
+
+            if (!string.IsNullOrEmpty(filter.Mobile))
+            {
+                query = query.Where(s => s.Mobile != null && EF.Functions.Like(s.Mobile, $"%{filter.Mobile}%"));
+            }
+
+            if (!string.IsNullOrEmpty(filter.Username))
+            {
+                query = query.Where(s => s.Username.Contains(filter.Username));
+            }
+
+            if (!string.IsNullOrEmpty(filter.NationalId))
+            {
+                query = query.Where(s => s.NationalId.Contains(filter.NationalId));
+            }
+
+            #endregion
+
+            await filter.Paging(query);
+
+            return filter;
+        }
+
+        //List Of Current Doctor Population Covered Users
+        public async Task<ListOfDoctorPopulationCoveredViewModel> FilterCurrentDoctorPopulationCovered(ListOfDoctorPopulationCoveredViewModel filter)
+        {
+            #region Get organization 
+
+            var doctorOffice = await _context.OrganizationMembers.Include(p => p.Organization)
+                                .FirstOrDefaultAsync(p => !p.IsDelete && p.UserId == filter.UserId);
+            if (doctorOffice == null) return null;
+
+            #endregion
+
+            var query = _context.UserSelectedFamilyDoctor
+                .Include(p => p.Patient)
+                .ThenInclude(p => p.PopulationCovered)
+                .Where(s => !s.IsDelete && s.DoctorId == doctorOffice.Organization.OwnerId && s.FamilyDoctorRequestState == Domain.Enums.FamilyDoctor.FamilyDoctorRequestState.Accepted)
+                .OrderByDescending(s => s.CreateDate)
+                .Select(p => p.Patient)
                 .AsQueryable();
 
 

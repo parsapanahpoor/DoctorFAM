@@ -136,7 +136,7 @@
     <value>از</value>
   </data>
   <data name="Home" xml:space="preserve">
-    <value>خانه ی اصلی</value>
+    <value>خانه </value>
   </data>
   <data name="Items" xml:space="preserve">
     <value>آیتم</value>
@@ -343,13 +343,13 @@
     <value>داروخانه در منزل</value>
   </data>
   <data name="Doctor Family" xml:space="preserve">
-    <value>پزشک خانواده </value>
+    <value>پزشک خانواده من </value>
   </data>
   <data name="Favorite activities" xml:space="preserve">
     <value>فعالیت های انتخابی شما</value>
   </data>
   <data name="Online Visit" xml:space="preserve">
-    <value>ویزیت آنلاین </value>
+    <value>ویزیتهای آنلاین من </value>
   </data>
   <data name="An error occurred in the change password process" xml:space="preserve">
     <value>خطایی در فرآیند تغییر رمز عبور رخ داد</value>
@@ -424,7 +424,7 @@
     <value>لیست نوبت دهی </value>
   </data>
   <data name="Manage Reservation" xml:space="preserve">
-    <value>مدیریت نوبت دهی </value>
+    <value>نوبتهای اخذ شده</value>
   </data>
   <data name="List Of Futur Reservation" xml:space="preserve">
     <value>لیست نوبت های گرفته شده</value>
@@ -562,7 +562,7 @@
     <value>مدیریت تیکت ها</value>
   </data>
   <data name="Notofications" xml:space="preserve">
-    <value>اعلان ها</value>
+    <value> اعلان ها</value>
   </data>
   <data name="Nurse Info" xml:space="preserve">
     <value> اطلاعات پرستار</value>
@@ -595,7 +595,7 @@
     <value>مدیریت اطلاعات مشاوران</value>
   </data>
   <data name="Consultant" xml:space="preserve">
-    <value>مشاور روان</value>
+    <value>مشاور روان من</value>
   </data>
   <data name="List of Your covered people" xml:space="preserve">
     <value>لیست افراد تحت پوشش شما</value>
@@ -638,5 +638,8 @@
   </data>
   <data name="Manage Laboratory Info" xml:space="preserve">
     <value>مدیریت اطلاعات </value>
+  </data>
+  <data name="The entered National is already available on the site" xml:space="preserve">
+    <value>کدملی وارد شده در سایت موجود است.</value>
   </data>
 </root>

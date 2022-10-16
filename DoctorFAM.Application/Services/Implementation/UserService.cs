@@ -25,6 +25,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static DoctorFAM.Domain.ViewModels.UserPanel.FilterUserViewModel;
+using static System.Net.WebRequestMethods;
 
 namespace DoctorFAM.Application.Services.Implementation
 {
@@ -39,6 +40,7 @@ namespace DoctorFAM.Application.Services.Implementation
         private readonly IUserRepository _userRepository;
         private readonly IOrganizationService _organizationService;
         private readonly ISMSService _smsservice;
+        private static readonly HttpClient client = new HttpClient();
 
         public UserService(DoctorFAMDbContext context, ISiteSettingService siteSettingService, IViewRenderService viewRenderService,
                                 IEmailSender emailSender, IUserRepository userRepository, IOrganizationService organizationService, ISMSService smsservice)
@@ -66,6 +68,9 @@ namespace DoctorFAM.Application.Services.Implementation
             await _context.SaveChangesAsync();
 
             #region Send Verification Code SMS
+
+            var result = $"https://api.kavenegar.com/v1/564672526D58694D3477685571796F7372574F576C476B6366785462356D3164683370395A2B61356D6E383D/verify/lookup.json?receptor={user.Mobile}&token={user.MobileActivationCode}&template=Register";
+            var results = client.GetStringAsync(result);
 
             var message = Messages.SendActivationRegisterSms(user.MobileActivationCode);
 
@@ -184,10 +189,13 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #region Send Verification Code SMS
 
+            var result = $"https://api.kavenegar.com/v1/564672526D58694D3477685571796F7372574F576C476B6366785462356D3164683370395A2B61356D6E383D/verify/lookup.json?receptor={User.Mobile}&token={User.MobileActivationCode}&template=Register";
+            var results = client.GetStringAsync(result);
+
             var message = Messages.SendActivationRegisterSms(User.MobileActivationCode);
 
             await _smsservice.SendSimpleSMS(User.Mobile, message);
-
+   
             #endregion
 
             return RegisterUserResult.Success;
@@ -805,6 +813,11 @@ namespace DoctorFAM.Application.Services.Implementation
                 return AdminEditUserInfoResult.NotValidMobile;
             }
 
+            if (!string.IsNullOrEmpty(edit.NationalId) && !await IsValidNationalIdForUserEditByAdmin(edit.NationalId, user.Id))
+            {
+                return AdminEditUserInfoResult.NotValidNationalId;
+            }
+
             #endregion
 
             #region Update User Field
@@ -869,6 +882,17 @@ namespace DoctorFAM.Application.Services.Implementation
         public async Task<bool> IsValidMobileForUserEditByAdmin(string mobile, ulong userId)
         {
             var user = await _context.Users.FirstOrDefaultAsync(s => !s.IsDelete && s.Mobile == mobile.Trim());
+
+            if (user == null) return true;
+            if (user.Id == userId) return true;
+
+            return false;
+        }
+
+        //Validate For NAtional Id 
+        public async Task<bool> IsValidNationalIdForUserEditByAdmin(string nationalId, ulong userId)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(s => !s.IsDelete && s.NationalId == nationalId.Trim());
 
             if (user == null) return true;
             if (user.Id == userId) return true;
@@ -1134,6 +1158,11 @@ namespace DoctorFAM.Application.Services.Implementation
             if (string.IsNullOrEmpty(edit.NationalId))
             {
                 return UserPanelEditUserInfoResult.NationalId;
+            }
+
+            if (!string.IsNullOrEmpty(edit.NationalId) && !await IsValidNationalIdForUserEditByAdmin(edit.NationalId, user.Id))
+            {
+                return UserPanelEditUserInfoResult.NotValidNationalId;
             }
 
             #endregion

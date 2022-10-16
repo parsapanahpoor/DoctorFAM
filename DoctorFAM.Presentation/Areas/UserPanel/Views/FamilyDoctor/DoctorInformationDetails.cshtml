@@ -12,167 +12,161 @@
 
 @section Styles
     {
-    <style>
+<style>
 
-        .header-fullname {
-            font: 21px 'YekanBakh-FaNum';
-            margin-top: 27px;
-            display: inline-block;
-        }
+    .header-fullname {
+        font: 21px 'YekanBakh-FaNum';
+        margin-top: 27px;
+        display: inline-block;
+    }
 
-    </style>
+</style>
 }
 
-    @section Scripts
+@section Scripts
     {
-    <partial name="_JqueryValidation" />
+<partial name="_JqueryValidation" />
 }
 
-    @section Breadcrumb
+@section Breadcrumb
     {
-    <li>
-        <a href="javascript:void(0)"> @ViewData["Title"] </a>
-    </li>
+<li>
+    <a href="javascript:void(0)"> @ViewData["Title"] </a>
+</li>
 }
 
-    <div class="row">
+<div class="row">
 
-        <div class="col-md-12">
+    <div class="col-md-12">
+        <div class="profile-container">
+            <div class="profile-header row">
+               
+                
+                
+                
+                
+                
+                <div class="col-lg-2 col-md-4 col-sm-12 text-center ">
+                    <img src="@Model.User.GetUserAvatar()" alt="" class="header-avatar">
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-12 profile-info">
+                    @if (Model.User.FirstName != null && Model.User.LastName != null)
+                    {
+                        <div class="header-fullname">@Localizer["Doctor"]:@Model.User.FirstName @Model.User.LastName</div>
+                    }
 
-            <div class="col-md-12">
-                <div class="profile-container">
-                    <div class="profile-header row">
-                        <div class="col-lg-2 col-md-4 col-sm-12 text-center">
-                            <img src="@Model.User.GetUserAvatar()" alt="" class="header-avatar">
-                        </div>
-                        <div class="col-lg-2 col-md-8 col-sm-12 profile-info">
-                        @if (Model.User.FirstName != null && Model.User.LastName != null)
-                        {
-                            <div class="header-fullname">@Model.User.FirstName @Model.User.LastName</div>
-                        }
-
-                        <div class="header-information">
-                            @Localizer["Mobile"] : @Model.User.Mobile
-                        </div>
-                    </div>
-                    <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 profile-stats">
-                        <div class="row">
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 stats-col">
-                                <div class="stats-value blue">@((string.IsNullOrEmpty(Model.DoctorsInfo.Specialty)) ? "" : Model.DoctorsInfo.Specialty)</div>
-                                <div class="stats-title">@Localizer["Speciality"]</div>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 stats-col">
-                                <div class="stats-value blue">@Model.DoctorsInfo.Education</div>
-                                <div class="stats-title">@Localizer["Education"]</div>
-                            </div>
-                        </div>
-
+                    <div class="header-information">
+                        @Localizer["Medical System Code"] : @Model.DoctorsInfo.MedicalSystemCode
                     </div>
                 </div>
-                <div class="profile-body">
-                    <div class="col-lg-12">
-                        <div class="tabbable">
+                <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 profile-stats">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 stats-col">
+                            <span class="stats-title">@Localizer["Speciality"]:</span>
+                            <div class="stats-value blue">@((string.IsNullOrEmpty(Model.DoctorsInfo.Specialty)) ? "" : Model.DoctorsInfo.Specialty)</div>
+                            
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 stats-col">
+                            <span class="stats-title">@Localizer["Education"]:</span>
+                            <div class="stats-value blue">@Model.DoctorsInfo.Education</div>
+                            
+                        </div>
+                    </div>
 
-                            <div class="tab-content tabs-flat">
+                </div>
+            </div>
+            <div class="profile-body">
+                <div class="col-lg-12">
+                    <div class="tabbable">
 
-                                <div id="settings" class="tab-pane active">
-                                    <div class="form-title">
-                                        @Localizer["Doctor Personal Informations"]
+                        <div class="tab-content tabs-flat">
+
+                            <div id="settings" class="tab-pane active">
+                                
+                                
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                           @Localizer["Mobile"]
+                                          <span style="font-size:12px; color:red;"> (@Localizer["Patients can call directly with this number"])</span>
+                                            <span class="input-icon icon-right">
+                                                @if (Model.User.ExtraPhoneNumber != null)
+                                                {
+                                                   
+                                                    <input type="text" readonly class="form-control" value="@Model.User.ExtraPhoneNumber" placeholder="@Localizer["Extra Phone"]">
+                                                    
+                                                }
+                                                else
+                                                {
+                                                     
+                                                    <input type="text" class="form-control" placeholder="@Localizer["Extra Phone"]">
+                                                    
+                                                }
+                                                <i class="glyphicon glyphicon-phone palegreen"></i>
+                                            </span>
+                                        </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-sm-12">
+
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            @Localizer["Office Phone"]
+                                            <span class="input-icon icon-right">                                                
+                                                <input type="text" readonly class="form-control" value="@Model.User.Mobile" placeholder="@Localizer["Extra Phone"]">
+                                                <i class="glyphicon glyphicon-earphone yellow"></i>
+                                                
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    @if (Model.WorkAddress != null)
+                                    {
+                                        <div class="col-sm-4">
                                             <div class="form-group">
                                                 <span class="input-icon icon-right">
-                                                    @if (Model.User.LastName != null && Model.User.FirstName != null)
-                                                    {
-                                                        <input type="text" readonly class="form-control" value="@Model.User.FirstName @Model.User.LastName" placeholder="@Localizer["FullName"]">
-                                                    }
-                                                    else
-                                                    {
-                                                        <input type="text" class="form-control" placeholder="@Localizer["FullName"]">
-                                                    }
-                                                    <i class="fa fa-user orange"></i>
+                                                    <input type="text" readonly class="form-control" value="@((string.IsNullOrEmpty(Model.WorkAddress.Country.UniqueName)) ? " "  : Model.WorkAddress.Country.UniqueName)" placeholder="@Localizer["Country Name"]">
                                                 </span>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <span class="input-icon icon-right">
+                                                    <input type="text" readonly class="form-control" value="@((string.IsNullOrEmpty(Model.WorkAddress.State.UniqueName)) ? " "  : Model.WorkAddress.State.UniqueName)" placeholder="@Localizer["State Name"]">
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <span class="input-icon icon-right">
+                                                    <input type="text" readonly class="form-control" value="@((string.IsNullOrEmpty(Model.WorkAddress.City.UniqueName)) ? " "  : Model.WorkAddress.City.UniqueName)" placeholder="@Localizer["City Name"]">
+                                                </span>
+                                            </div>
+                                        </div>
+
                                         <div class="col-sm-6">
                                             <div class="form-group">
                                                 <span class="input-icon icon-right">
-                                                    @if (Model.User.ExtraPhoneNumber != null)
-                                                    {
-                                                        <input type="text" readonly class="form-control" value="@Model.User.ExtraPhoneNumber" placeholder="@Localizer["Extra Phone"]">
-                                                    }
-                                                    else
-                                                    {
-                                                        <input type="text" class="form-control" placeholder="@Localizer["Extra Phone"]">
-                                                    }
-                                                    <i class="glyphicon glyphicon-earphone yellow"></i>
+                                                    <textarea type="text" readonly class="form-control" placeholder="@Localizer["Work Address"]">@Model.WorkAddress.Address</textarea>
                                                 </span>
                                             </div>
                                         </div>
+                                    }
 
+                                    
                                         <div class="col-sm-6">
                                             <div class="form-group">
                                                 <span class="input-icon icon-right">
-                                                    <input type="text" readonly class="form-control" value="@Model.User.Mobile" placeholder="@Localizer["Extra Phone"]">
-                                                    <i class="glyphicon glyphicon-phone palegreen"></i>
+                                                    <textarea type="text" readonly class="form-control" placeholder="@Localizer["Describtion"]"></textarea>
                                                 </span>
                                             </div>
                                         </div>
-
-                                        @if (Model.WorkAddress != null)
-                                        {
-                                            <div class="col-sm-4">
-                                                <div class="form-group">
-                                                    <span class="input-icon icon-right">
-                                                        <input type="text" readonly class="form-control" value="@((string.IsNullOrEmpty(Model.WorkAddress.Country.UniqueName)) ? " "  : Model.WorkAddress.Country.UniqueName)" placeholder="@Localizer["Country Name"]">
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-4">
-                                                <div class="form-group">
-                                                    <span class="input-icon icon-right">
-                                                        <input type="text" readonly class="form-control" value="@((string.IsNullOrEmpty(Model.WorkAddress.State.UniqueName)) ? " "  : Model.WorkAddress.State.UniqueName)" placeholder="@Localizer["State Name"]">
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-4">
-                                                <div class="form-group">
-                                                    <span class="input-icon icon-right">
-                                                        <input type="text" readonly class="form-control" value="@((string.IsNullOrEmpty(Model.WorkAddress.City.UniqueName)) ? " "  : Model.WorkAddress.City.UniqueName)" placeholder="@Localizer["City Name"]">
-                                                    </span>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-sm-12">
-                                                <div class="form-group">
-                                                    <span class="input-icon icon-right">
-                                                        <textarea type="text" readonly class="form-control" placeholder="@Localizer["Work Address"]">@Model.WorkAddress.Address</textarea>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        }
-
-                                        @if (!string.IsNullOrEmpty(Model.User.WorkAddress))
-                                        {
-                                            <div class="col-sm-12">
-                                                <div class="form-group">
-                                                    <span class="input-icon icon-right">
-                                                        <textarea type="text" readonly class="form-control" placeholder="@Localizer["Work Address"]">@Model.User.WorkAddress</textarea>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        }
-                                     
-                                    </div>
-
-                                    <a asp-action="ChoosingFamilyDoctor" asp-area="UserPanel" asp-controller="FamilyDoctor" asp-route-doctorUserId="@Model.User.Id" class="btn btn-primary">@Localizer["Choose Doctor"]</a>
+                                    
 
                                 </div>
 
+                                <a asp-action="ChoosingFamilyDoctor" asp-area="UserPanel" asp-controller="FamilyDoctor" asp-route-doctorUserId="@Model.User.Id" class="btn btn-primary">@Localizer["Choose Doctor"]</a>
+
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -182,4 +176,5 @@
     </div>
 
 </div>
+
 

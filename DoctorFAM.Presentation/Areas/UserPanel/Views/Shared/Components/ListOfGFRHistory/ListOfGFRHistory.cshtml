@@ -25,7 +25,7 @@
                                     <div class="ticket-time  col-lg-4 col-sm-6 col-xs-12">
                                         <div class="divider hidden-md hidden-sm hidden-xs"></div>
                                         <i class="fa fa-heart"></i>
-                                        <span class="time"> @SharedHtmlLocalizer["Your GFR"] : @gfr.GFRResult</span>
+                                        <span class="time"> @SharedHtmlLocalizer["Your GFR"] : @((decimal)gfr.GFRResult / (decimal)100) </span>
                                     </div>
                                     <div class="ticket-time  col-lg-4 col-sm-6 col-xs-12">
                                         <div class="divider hidden-md hidden-sm hidden-xs"></div>

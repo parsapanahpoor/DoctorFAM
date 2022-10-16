@@ -13,7 +13,7 @@ namespace DoctorFAM.Domain.Entities.Laboratory
 
         public ulong LaboratoryId { get; set; }
 
-        public int NationalCode { get; set; }
+        public string NationalCode { get; set; }
 
         public string? Education { get; set; }
 

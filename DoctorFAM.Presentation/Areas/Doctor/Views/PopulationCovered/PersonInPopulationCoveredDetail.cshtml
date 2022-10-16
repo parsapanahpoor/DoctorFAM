@@ -66,10 +66,16 @@
                         </div>
                     </div>
                     <div class="col-lg-7 col-md-12 col-sm-12 col-xs-12 profile-stats">
-                        <div class="row">
+                        <div class="row "><br />
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 stats-col">
-                                <div class="stats-value blue">@(Model.UserSelectedFamilyDoctorRequest.CreateDate != null ? Model.UserSelectedFamilyDoctorRequest.CreateDate.ToStringShamsiDate() : Localizer["Empty"])</div>
-                                <div class="stats-title">@Localizer["Request Create Date"]</div>
+                                <span class="stats-title">
+                                        @Localizer["Request Create Date"]:
+                                    </span>
+                                <div class="stats-value blue">
+                                    
+                                    @(Model.UserSelectedFamilyDoctorRequest.CreateDate != null ? Model.UserSelectedFamilyDoctorRequest.CreateDate.ToStringShamsiDate() : Localizer["Empty"])
+                                </div>
+                                
                             </div>
                         </div>
 

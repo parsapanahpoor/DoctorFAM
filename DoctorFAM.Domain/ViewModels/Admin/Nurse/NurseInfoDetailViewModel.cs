@@ -24,10 +24,9 @@ namespace DoctorFAM.Domain.ViewModels.Admin.Doctor
         [Display(Name = "NationalId")]
         [Required(ErrorMessage = "Please Enter {0}")]
         [RegularExpression(@"^[0-9]*$", ErrorMessage = "The entered national code is not valid")]
-        public int NationalCode { get; set; }
+        public string NationalCode { get; set; }
 
         [Display(Name = "education")]
-        [Required(ErrorMessage = "Please Enter {0}")]
         public string? Education { get; set; }
 
         [Display(Name = "Work Address")]

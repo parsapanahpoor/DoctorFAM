@@ -78,6 +78,12 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
             ViewData["Countries"] = await _locationService.GetAllCountries();
 
+            if (returnModel.CityId.HasValue && returnModel.StateId.HasValue && returnModel.CountryId.HasValue)
+            {
+                ViewData["States"] = await _locationService.GetStateChildren(returnModel.CountryId.Value);
+                ViewData["Cities"] = await _locationService.GetStateChildren(returnModel.StateId.Value);
+            }
+
             if (returnModel == null) return NotFound();
 
             #endregion
@@ -141,12 +147,6 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
             }
 
             #endregion
-
-            if (returnModel.CityId.HasValue && returnModel.StateId.HasValue && returnModel.CountryId.HasValue)
-            {
-                ViewData["States"] = await _locationService.GetStateChildren(returnModel.CountryId.Value);
-                ViewData["Cities"] = await _locationService.GetStateChildren(returnModel.StateId.Value);
-            }
 
             return View(returnModel);
         }

@@ -86,6 +86,7 @@ namespace DoctorFAM.Domain.ViewModels.Admin.Account
         Success,
         NotValidEmail,
         NotValidMobile,
-        NotValidBirthDate
+        NotValidBirthDate,
+        NotValidNationalId
     }
 }

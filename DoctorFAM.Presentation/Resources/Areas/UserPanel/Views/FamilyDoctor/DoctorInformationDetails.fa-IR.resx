@@ -126,6 +126,12 @@
   <data name="Country Name" xml:space="preserve">
     <value>نام کشور</value>
   </data>
+  <data name="Describtion" xml:space="preserve">
+    <value>توضیحات</value>
+  </data>
+  <data name="Doctor" xml:space="preserve">
+    <value>دکتر</value>
+  </data>
   <data name="Doctor Personal Informations" xml:space="preserve">
     <value>اطلاعات پزشک</value>
   </data>
@@ -138,8 +144,17 @@
   <data name="FullName" xml:space="preserve">
     <value>نام و نام خانوادگی</value>
   </data>
+  <data name="Medical System Code" xml:space="preserve">
+    <value>شماره نظام پزشکی</value>
+  </data>
   <data name="Mobile" xml:space="preserve">
     <value>موبایل</value>
+  </data>
+  <data name="Office Phone" xml:space="preserve">
+    <value>تلفن مطب</value>
+  </data>
+  <data name="Patients can call directly with this number" xml:space="preserve">
+    <value>بیماران با این شماره می توانند مستقیما با پزشک تماس بگیرند</value>
   </data>
   <data name="Show Family Doctor Detail" xml:space="preserve">
     <value>نمایش اطلاعات پزشک</value>

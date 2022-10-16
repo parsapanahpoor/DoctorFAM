@@ -196,9 +196,11 @@
                                 <td class="tc vm">
                                     <div class="flex-style-center">
                                         <div class="mr-10px">
-                                            <p> @Localizer["Start"] : @date.StartTime </p>
+                                            
+                                            <p> @Localizer["Start"] : @string.Concat(date.StartTime.Reverse().Skip(3).Reverse()) </p>
+                                            
                                             <hr class="margin-7" />
-                                            <p> @Localizer["End"] : @date.EndTime </p>
+                                            <p> @Localizer["End"] : @string.Concat(date.EndTime.Reverse().Skip(3).Reverse())  </p>
                                         </div>
                                     </div>
                                 </td>

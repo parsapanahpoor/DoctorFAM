@@ -529,9 +529,12 @@ namespace DoctorFAM.Application.Services.Implementation
             if (request == null) return null;
             if (request.RequestType != RequestType.HomeVisit) return null;
             if (!request.PatientId.HasValue) return null;
-            if (request.OperationId.HasValue && request.OperationId.Value != organization.OwnerId)
+            if (request.OperationId.HasValue)
             {
-                return null;
+                if (request.OperationId.Value != organization.OwnerId)
+                {
+                    return null;
+                }
             }
             else
             {
@@ -694,7 +697,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #region Get Doctor Personal Information 
 
-            var doctorInfo = await _doctorsRepository.GetDoctorsInfoByDoctorId(doctorId);
+            var doctorInfo = await _doctorsRepository.GetDoctorsInfoByDoctorId(doctor.Id);
             if (doctorInfo == null) return null;
 
             #endregion
@@ -765,6 +768,10 @@ namespace DoctorFAM.Application.Services.Implementation
             if (dateTimeDetail == null) return false;
             if ((dateTimeDetail.SendDate.Year == DateTime.Now.Year && DateTime.Now.DayOfYear > dateTimeDetail.SendDate.DayOfYear)
                 || dateTimeDetail.SendDate.Year < DateTime.Now.Year) return false;
+            if (dateTimeDetail.SendDate == DateTime.Now && dateTimeDetail.SendDate.Hour <= DateTime.Now.Hour )
+            {
+                return false;
+            }
 
             #endregion
 

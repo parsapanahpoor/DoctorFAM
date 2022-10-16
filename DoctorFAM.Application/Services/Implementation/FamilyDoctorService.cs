@@ -337,6 +337,12 @@ namespace DoctorFAM.Application.Services.Implementation
             return await _familyDoctor.FilterDoctorPopulationCovered(filter);
         }
 
+        //List Of Current Doctor Population Covered Users
+        public async Task<ListOfDoctorPopulationCoveredViewModel> FilterCurrentDoctorPopulationCovered(ListOfDoctorPopulationCoveredViewModel filter)
+        {
+            return await _familyDoctor.FilterCurrentDoctorPopulationCovered(filter);
+        }
+
         #endregion
 
         #region Admin And Supporter Side 

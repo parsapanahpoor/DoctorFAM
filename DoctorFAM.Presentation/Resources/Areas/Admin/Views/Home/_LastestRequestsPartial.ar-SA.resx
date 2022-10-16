@@ -156,6 +156,9 @@
   <data name="List Of Lastest Home Visit Requests" xml:space="preserve">
     <value>قائمة بأحدث طلبات الزيارة المنزلية</value>
   </data>
+  <data name="List of Latest Requests of Health House" xml:space="preserve">
+    <value>قائمة بأحدث طلبات دار الصحة</value>
+  </data>
   <data name="Mobile" xml:space="preserve">
     <value>التليفون المحمول</value>
   </data>

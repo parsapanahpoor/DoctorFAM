@@ -153,6 +153,9 @@
   <data name="Home Visit Records" xml:space="preserve">
     <value>Ev ziyareti listesi</value>
   </data>
+  <data name="List of Latest Requests of Health House" xml:space="preserve">
+    <value>Sağlık Evinin Son Talep Listesi</value>
+  </data>
   <data name="Mobile" xml:space="preserve">
     <value>Mobil</value>
   </data>

@@ -82,6 +82,9 @@ namespace DoctorFAM.Web.Areas.Pharmacy.Controllers
                 case UserPanelEditUserInfoResult.NationalId:
                     TempData[ErrorMessage] = _sharedLocalizer["National Id Is Not Valid"].Value;
                     break;
+                case UserPanelEditUserInfoResult.NotValidNationalId:
+                    TempData[ErrorMessage] = _sharedLocalizer["The entered National is already available on the site"].Value;
+                    break;
             }
 
             #endregion

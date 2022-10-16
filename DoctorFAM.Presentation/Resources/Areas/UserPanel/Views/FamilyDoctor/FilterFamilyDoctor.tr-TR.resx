@@ -117,8 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Avatar" xml:space="preserve">
-    <value>resim</value>
+  <data name="Choose" xml:space="preserve">
+    <value>Seç</value>
   </data>
   <data name="City" xml:space="preserve">
     <value>Şehir</value>
@@ -129,6 +129,9 @@
   <data name="Delete Filter" xml:space="preserve">
     <value>Filtreyi kaldır</value>
   </data>
+  <data name="Doctor" xml:space="preserve">
+    <value>Doktor</value>
+  </data>
   <data name="Doctro Name" xml:space="preserve">
     <value>Doktorun adı</value>
   </data>
@@ -138,11 +141,17 @@
   <data name="Filter" xml:space="preserve">
     <value>Filtre</value>
   </data>
+  <data name="I Choose" xml:space="preserve">
+    <value>Seçerim</value>
+  </data>
   <data name="List Of Family Doctors Infos" xml:space="preserve">
     <value>aile hekimleri listesi</value>
   </data>
   <data name="Manage Family Doctors Infos" xml:space="preserve">
     <value>Doktor bilgi yönetimi</value>
+  </data>
+  <data name="Name and Avatar" xml:space="preserve">
+    <value>Isim ve Avatar</value>
   </data>
   <data name="Please Insert Doctor Name" xml:space="preserve">
     <value>Lütfen doktorun adını giriniz.</value>

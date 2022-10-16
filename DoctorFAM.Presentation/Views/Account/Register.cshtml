@@ -15,17 +15,13 @@
             <div class="col-12">
                 <div class="white-bg box-shadow rounded o-hidden">
                     <div class="row align-items-center">
-                        <div class="col-lg-7 col-md-12 p-5">
+                        @*<div class="col-lg-7 col-md-12 p-5">
                             <img class="img-fluid" src="~/Site/images/login.png" alt="">
-                        </div>
-                        <div class="col-lg-5 col-md-12 ">
+                        </div>*@
+                        <div class="col-lg-4 col-md-4 "></div>
+                        <div class="col-lg-4 col-md-4 ">
                             <div class="login-form text-center">
-                                <a href="/Home" class="text-center">
-                                    <span class="" style="color:#3143ef; font-weight:900 !important; font-size:30px !important;"><b>DOCTOR</b></span>
-                                    <span class="" style="color:#fd5b03; font-weight:900 !important; font-size:32px !important;"><b>F</b></span>
-                                    <span class="" style="color:#fd5b03; font-weight:900 !important; font-size:32px !important;"><b>A</b></span>
-                                    <span class="" style="color:#fd5b03; font-weight:900 !important; font-size:32px !important;"><b>M</b></span>
-                                </a>
+                              
                                
                                 @if (User.Identity.IsAuthenticated && Context.Request.Query["ReturnUrl"] != "")
                                 {
@@ -36,7 +32,7 @@
                                 }
                                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-                                <div class="login-form">
+                                <div class="login-form  mt-2">
 
                                     <form asp-action="Register" asp-controller="Account" method="post">
 
@@ -76,9 +72,19 @@
                                         </div>
 
                                         <div class="row  text-center  align-items-center justify-content-center ">
-                                            <button type="submit" class="btn-Accept m-2">ثبت نام</button>
+                                            @*<button type="submit" class="btn-Accept m-2">ثبت نام</button>
                                              <span></span> <a asp-action="Login" asp-controller="Account" class="btn-Accept"><span> حساب کاربری دارید؟   از اینجا وارد شوید  </span></a>
-                                        </div>
+                                        *@
+                                         <div class="col-md-12 ">
+                                               <button type="submit" class="btn-Accept col-md-4 m-2 logfon">ثبت نام</button>
+                                           </div>
+                                           <div class="col-md-12 mt-2 ">
+                                               <span class="dropdown-itemuserpanel">در صورتیکه قبلا ثبت نام کرده و عضو سامانه شده اید  بر روی دکمه زیر کلیک کرده و وارد شوید</span>
+                                           </div>
+                                           <div class="col-md-12 mt-2 mb-2">
+                                               <a  asp-action="Login" asp-controller="Account" class="btn-AcceptXX col-md-6 ">ورود</a>    
+                                           </div>
+                                         </div>
                                        
 
                                     </form>
@@ -87,6 +93,7 @@
 
                             </div>
                         </div>
+                        <div class="col-lg-4 col-md-4 "></div>
                     </div>
                 </div>
             </div>

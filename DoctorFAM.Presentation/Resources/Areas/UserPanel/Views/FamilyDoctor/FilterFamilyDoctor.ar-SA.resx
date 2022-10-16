@@ -117,8 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Avatar" xml:space="preserve">
-    <value>صورة</value>
+  <data name="Choose" xml:space="preserve">
+    <value>يختار</value>
   </data>
   <data name="City" xml:space="preserve">
     <value>مدينة</value>
@@ -129,6 +129,9 @@
   <data name="Delete Filter" xml:space="preserve">
     <value>قم بإزالة الفلتر</value>
   </data>
+  <data name="Doctor" xml:space="preserve">
+    <value>طبيب</value>
+  </data>
   <data name="Doctro Name" xml:space="preserve">
     <value>اسم الطبيب</value>
   </data>
@@ -138,11 +141,17 @@
   <data name="Filter" xml:space="preserve">
     <value>منقي</value>
   </data>
+  <data name="I Choose" xml:space="preserve">
+    <value>اخترت</value>
+  </data>
   <data name="List Of Family Doctors Infos" xml:space="preserve">
     <value>قائمة أطباء الأسرة</value>
   </data>
   <data name="Manage Family Doctors Infos" xml:space="preserve">
     <value>إدارة معلومات الطبيب</value>
+  </data>
+  <data name="Name and Avatar" xml:space="preserve">
+    <value>الاسم والصورة الرمزية</value>
   </data>
   <data name="Please Insert Doctor Name" xml:space="preserve">
     <value>الرجاء إدخال اسم الطبيب.</value>

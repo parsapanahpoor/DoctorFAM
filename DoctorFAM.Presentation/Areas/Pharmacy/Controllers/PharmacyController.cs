@@ -82,7 +82,7 @@ namespace DoctorFAM.Web.Areas.Pharmacy.Controllers
             #region Erorr
 
             //If National Id Is 0
-            if (model.NationalCode == 0)
+            if (model.NationalCode == null)
             {
                 TempData[ErrorMessage] = _sharedLocalizer["The input values ​​are not valid"].Value;
                 return View(returnModel);

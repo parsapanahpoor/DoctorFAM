@@ -552,6 +552,14 @@
 		<None Include="wwwroot\Content\scss\_base.scss" />
 		<None Include="wwwroot\Content\scss\_components.scss" />
 		<None Include="wwwroot\Content\scss\_layouts.scss" />
+		<None Include="wwwroot\Site\404\fonts\Vazir.woff2" />
+		<None Include="wwwroot\Site\404\js\jquery-3.1.1.min.js" />
+		<None Include="wwwroot\Site\404\pics\astronaut.svg" />
+		<None Include="wwwroot\Site\404\pics\earth.svg" />
+		<None Include="wwwroot\Site\404\pics\logo.svg" />
+		<None Include="wwwroot\Site\404\pics\moon.svg" />
+		<None Include="wwwroot\Site\404\pics\overlay_stars.svg" />
+		<None Include="wwwroot\Site\404\pics\rocket.svg" />
 	</ItemGroup>
 
 	<ItemGroup>
