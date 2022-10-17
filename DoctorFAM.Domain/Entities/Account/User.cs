@@ -5,6 +5,7 @@ using DoctorFAM.Domain.Entities.Contact;
 using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.FamilyDoctor;
+using DoctorFAM.Domain.Entities.FamilyDoctor.ParsaSystem;
 using DoctorFAM.Domain.Entities.Laboratory;
 using DoctorFAM.Domain.Entities.Notification;
 using DoctorFAM.Domain.Entities.Nurse;
@@ -164,6 +165,8 @@ namespace DoctorFAM.Domain.Entities.Account
         public ICollection<UserSelectedConsultant> PatientForConsultant { get; set; }
 
         public ICollection<LogForDeclineHomeVisitRequestFromUser> LogForDeclineHomeVisitRequestFromUsers { get; set; }
+
+        public ICollection<UserInsertedFromParsaSystem> UserInsertedFromParsaSystems { get; set; }
 
         #endregion
     }

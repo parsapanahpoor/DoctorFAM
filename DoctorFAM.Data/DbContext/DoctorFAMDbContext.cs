@@ -7,6 +7,7 @@ using DoctorFAM.Domain.Entities.Contact;
 using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.FamilyDoctor;
+using DoctorFAM.Domain.Entities.FamilyDoctor.ParsaSystem;
 using DoctorFAM.Domain.Entities.Interest;
 using DoctorFAM.Domain.Entities.Laboratory;
 using DoctorFAM.Domain.Entities.Languages;
@@ -242,6 +243,8 @@ namespace DoctorFAM.Data.DbContext
         #region Family Doctor 
 
         public DbSet<UserSelectedFamilyDoctor> UserSelectedFamilyDoctor{ get; set; }
+
+        public DbSet<UserInsertedFromParsaSystem> UserInsertedFromParsaSystems { get; set; }
 
         #endregion
 
