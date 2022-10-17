@@ -138,9 +138,79 @@ namespace DoctorFAM.Application.Services.Implementation
             };
             return newWallet;
         }
+
         public async Task ConfirmPayment(ulong payId, string authority, string refId)
         {
             await _walletRepository.ConfirmPayment(payId, authority, refId);
+        }
+
+        //Create New Wallet Transaction For Redirext To The Bank Portal
+        public async Task CreateNewWalletTransactionForRedirextToTheBankPortal(ulong userId , int price , GatewayType gateway , string authority , string description , ulong? requestId)
+        {
+            #region Fill Wallet 
+
+            var wallet = new Wallet
+            {
+                UserId = userId,
+                TransactionType = TransactionType.Deposit,
+                GatewayType = gateway,
+                PaymentType = PaymentType.ChargeWallet,
+                Price = price,
+                Description = description,
+                IsFinally = false,
+            };
+
+            if (requestId.HasValue)
+            {
+                wallet.RequestId = requestId;
+            }
+
+            #endregion
+
+            #region Add Wallet Method 
+
+            await _walletRepository.CreateWalletWithoutCalculate(wallet);
+
+            #endregion
+
+            #region Fill Wallet Data 
+
+            var walletData = new WalletData
+            {
+                GatewayType = gateway,
+                TrackingCode = authority,
+                WalletId = wallet.Id
+            };
+
+            #endregion
+
+            #region Add Wallet Data Method
+
+            await _walletRepository.CreateWalletData(walletData);
+
+            #endregion
+        }
+
+        //Find Wallet Transaction For Redirect To The Bank Portal 
+        public async Task<Wallet?> FindWalletTransactionForRedirectToTheBankPortal(ulong userId, GatewayType gateway, ulong? requestId, string authority, int amount)
+        {
+            return await _walletRepository.FindWalletTransactionForRedirectToTheBankPortal(userId , gateway , requestId , authority , amount);
+        }
+
+        //Update Wallet And Calculate User Balance After Banking Payment
+        public async Task UpdateWalletAndCalculateUserBalanceAfterBankingPayment(Wallet wallet)
+        {
+            #region Update Wallet Fields
+
+            wallet.IsFinally = true;
+
+            #endregion
+
+            #region Update Wallet 
+
+            await _walletRepository.UpdateWalletWithCalculateBalance(wallet);
+
+            #endregion
         }
 
         #endregion

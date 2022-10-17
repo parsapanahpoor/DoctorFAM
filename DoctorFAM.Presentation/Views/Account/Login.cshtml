@@ -16,18 +16,10 @@
             <div class="col-12">
                 <div class="white-bg box-shadow rounded o-hidden">
                     <div class="row align-items-center">
-                        <div class="col-lg-7 col-md-12 ">
-                            <img class="img-fluid" src="~/Content/images/login.png" alt="">
-                        </div>
-                        <div class="col-lg-5 col-md-12 ">
+                        <div class="col-lg-4 col-md-4 "></div>
+                        <div class="col-lg-4 col-md-4 ">
                             <div class="login-form text-center">
-                                <div class="container login-header  text-center">
-                                    <a href="/Home" class="text-center align-items-center">
-
-                                        <img class="logoImage text-center align-items-center" src="~/Content/images/Logo/doctorfam-Header-Logo.png" alt="دکترفام" />
-
-                                    </a>
-                                </div>
+                               
 
                                 @if (User.Identity.IsAuthenticated && Context.Request.Query["ReturnUrl"] != "")
                                 {
@@ -38,7 +30,7 @@
                                 }
                                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-                                <div class="login-form">
+                                <div class="login-form mt-2">
                                     <form asp-action="Login" asp-controller="Account" method="post">
                                         <input type="hidden" asp-for="ReturnUrl" />
 
@@ -71,7 +63,7 @@
 
                                             </div>
 
-                                            <div class="col-lg-6 col-md-6 col-sm-6 mt-2 lost-your-password-wrap">
+                                            <div class="col-lg-6 col-md-6 col-sm-6  lost-your-password-wrap">
                                                 <div class="form-group">
                                                     <a asp-action="ForgotPassword" asp-controller="Account">فراموشی رمز عبور  </a>
                                                 </div>
@@ -81,14 +73,29 @@
 
 
                                         <div class="row  text-center  align-items-center justify-content-center ">
-                                            <button type="submit" class="btn-Accept m-2">ورود</button>
-                                            <span></span> <a asp-action="Register" asp-controller="Account" class="btn-Accept"><span> حساب کاربری ندارید؟   از اینجا ثبت نام کنید  </span></a>
+                                           <div class="col-md-12 ">
+                                               <button type="submit" class="btn-Accept col-md-4 m-2 logfon">ورود</button>
+                                           </div>
+                                           <div class="col-md-12 mt-2 ">
+                                               <span class="dropdown-itemuserpanel">اگر حساب کاربری ندارید  بر روی دکمه ثبت نام کلیک نموده و در صفحه مربوطه، ثبت نام کنید</span>
+                                           </div>
+                                           <div class="col-md-12 mt-2 mb-2">
+                                               <a  asp-action="Register" asp-controller="Account" class="btn-AcceptXX col-md-6 ">ثبت نام</a>    
+                                           </div>
+                                            
+                                            
+                                            
+                                             
                                         </div>
 
                                     </form>
                                 </div>
                             </div>
                         </div>
+                        <div class="col-lg-4 col-md-4 "></div>
+                        @*<div class="col-lg-7 col-md-12 ">
+                            <img class="img-fluid" src="~/Content/images/login.png" alt="">
+                        </div>*@                        
                     </div>
                 </div>
             </div>

@@ -1,5 +1,7 @@
 ﻿@using DoctorFAM.Application.Extensions
 @model DoctorFAM.Domain.Entities.Account.User
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
 
 @{
     var currentCulture = ApplicationCultures.GetCurrentCulture();
@@ -33,6 +35,23 @@
             <div class="navbar-header pull-left">
                 <div class="navbar-account">
                     <ul class="account-area">
+                        
+                       @* <!--Online-->                       
+                         <li class="marli margin-left-10" id="Online">
+
+                            <a class="dropdown-toggle btn btn-success" href="#">
+                                آنلاین
+                            </a>
+
+                        </li>
+                        <!--Offline-->
+                        <li class="marli margin-left-10 " id="disConnect">
+
+                            <a class="dropdown-toggle btn btn-danger" href="#">
+                                آفلاین
+                            </a>
+
+                        </li>*@
 
                         <!--Notification-->
                         <li class="marli margin-left-10">
@@ -43,23 +62,9 @@
 
                         </li>
 
-                        <!--Online-->
-                        <li class="marli margin-left-10" id="Online">
+                       
 
-                            <a class="dropdown-toggle btn btn-success" href="#">
-                                آنلاین
-                            </a>
-
-                        </li>
-
-                        <!--Offline-->
-                        <li class="marli margin-left-10 " id="disConnect">
-
-                            <a class="dropdown-toggle btn btn-danger" href="#">
-                                آفلاین
-                            </a>
-
-                        </li>
+                        
 
                         <li class="marli margin-left-10">
 
@@ -85,31 +90,31 @@
 
                         </li>
                      
-                        <li>
+                        <li class=" ">
                             <a class="login-area dropdown-toggle" data-toggle="dropdown">
                                 <div class="avatar" title="View your public profile">
                                     <img src="@Model.GetUserAvatar()">
                                 </div>
                                 <section>
-                                    <h2><span class="profile"><span>@Model.Username </span></span></h2>
+                                    <h2><span class="profile"><span>@User.Identity.Name </span></span></h2>
                                 </section>
                             </a>
                             <!--Login Area Dropdown-->
                             <ul class="pull-right dropdown-menu dropdown-arrow dropdown-login-area">
-                                <li class="username"><a>@Model.Username</a></li>
-                                <li class="email"><a>@Model.Email</a></li>
+                                <li class="username "><a>@Model.Mobile</a></li>
+                                <li class="email p-2"><a>@Model.Email</a></li>
                                 <!--Avatar Area-->
                                 <li>
                                     <a asp-action="EditProfile" asp-controller="Account">
                                         <div class="avatar-area">
                                             <img src="@Model.GetUserAvatar()" class="avatar">
-                                            <span class="caption">@Localizer["Edit profile"]</span>
+                                            @*<span class="caption">@Localizer["Edit profile"]</span>*@
                                         </div>
                                     </a>
                                 </li>
                                 <!--Avatar Area-->
                                 <li class="edit">
-                                    <a asp-controller="Account" asp-action="EditProfile">@Localizer["Edit profile"]</a>
+                                    <a asp-controller="Account" asp-action="EditProfile">@SharedLocalizer["Edit Profile"]</a>
                                 </li>
                                 <!--Theme Selector Area-->
                                 <li class="theme-area">

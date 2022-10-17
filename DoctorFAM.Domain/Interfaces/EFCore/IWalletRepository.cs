@@ -39,6 +39,18 @@ namespace DoctorFAM.Domain.Interfaces
         //Get Home Visit Transaction For Cancelation Home Visit Request 
         Task<Wallet?> GetHomeVisitTransactionForCancelationHomeVisitRequest(ulong requestId);
 
+        //Create Wallet Without Calculate
+        Task CreateWalletWithoutCalculate(Wallet wallet);
+
+        //Create Wallet Data
+        Task CreateWalletData(WalletData walletData);
+
+        //Find Wallet Transaction For Redirect To The Bank Portal 
+        Task<Wallet?> FindWalletTransactionForRedirectToTheBankPortal(ulong userId, GatewayType gateway, ulong? requestId, string authority, int amount);
+
+        //Update Wallet With Calculate Balance
+        Task UpdateWalletWithCalculateBalance(Wallet wallet);
+
         #endregion
 
         #region Save Changes

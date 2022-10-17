@@ -4,7 +4,7 @@
 @inject IViewLocalizer Localizer
 @inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
 
-<div class="col-lg-12 col-md-12 col-xl-12 col-sm-12 col-xs-12 boxForDashboard">
+<div class="col-lg-6 col-md-6 col-xl-6 col-sm-12 col-xs-12 boxForDashboard">
     <div class="widget">
         <div class="widget-header">
             <i class="widget-icon  glyphicon glyphicon-home"></i>
@@ -28,13 +28,7 @@
                                     @Localizer["User Avatar"]
                                 </th>
                                 <th class="tc vm">
-                                    @Localizer["Email"]
-                                </th>
-                                <th class="tc vm">
                                     @Localizer["Mobile"]
-                                </th>
-                                <th class="tc vm">
-                                    @Localizer["Date Time"]
                                 </th>
                                 <th class="tc vm">
 
@@ -54,26 +48,10 @@
                                         </div>
                                     </td>
                                     <td class="tc vm">
-                                        <p>
-                                            @if (request.Email == null)
-                                            {
-                                                <span class="mr-8px label label-orange">@Localizer["Empty"] </span>
-                                            }
-                                            else
-                                            {
-                                                @request.Email
-                                            }
-                                        </p>
-                                    </td>
-                                    <td class="tc vm">
                                         @if (!string.IsNullOrEmpty(request.Mobile))
                                         {
                                             <p> @request.Mobile</p>
                                         }
-                                    </td>
-                                    <td class="tc vm">
-                                        <p>  @request.CreateDate.ToStringShamsiDate() </p>
-                                        <p> @request.CreateDate.Hour:@request.CreateDate.Minute:@request.CreateDate.Second</p>
                                     </td>
                                     <td class="tc vm">
                                         <a asp-action="PersonInPopulationCoveredDetail" asp-controller="PopulationCovered" asp-area="Doctor" asp-route-patientId="@request.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>

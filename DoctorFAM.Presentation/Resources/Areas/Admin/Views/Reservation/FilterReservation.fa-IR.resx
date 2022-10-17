@@ -136,7 +136,7 @@
     <value>کدملی پزشک</value>
   </data>
   <data name="End" xml:space="preserve">
-    <value>بیمار</value>
+    <value>پایان</value>
   </data>
   <data name="End Time" xml:space="preserve">
     <value>زمان پایان</value>
@@ -200,6 +200,9 @@
   </data>
   <data name="State" xml:space="preserve">
     <value>وضعیت</value>
+  </data>
+  <data name="Time" xml:space="preserve">
+    <value>زمان</value>
   </data>
   <data name="To Date" xml:space="preserve">
     <value>تا تاریخ</value>

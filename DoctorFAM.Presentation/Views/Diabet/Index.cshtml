@@ -61,17 +61,17 @@
             <div class="col-lg-10 col-md-10 col-sm-12 justify-content-center text-center">
                 <div class="tab  grey-bg ">
 
-                    <div class="row">
-                        <div class="col-md-12">
-                            <!-- Tab panes -->
-                            <div class="tab-content section-title" id="nav-tabContent">
-                                <div role="tabpanel" class=" col-md-12 fade show active" id="tab1-1">
-                                    <h4 class="title">نمایه های سلامت </h4>
-                                    <h6> با استفاده از سرویسهای جانبی سامانه, بدون نیاز به مراجعه به پزشک, پیوسته وضعیت سلامت خود را بررسی نمایید. </h6>
-                                    <div class="row">
-                                        <div class="col-xl-4  ">
-                                            <div class="gauge">
-                                                <canvas data-type="radial-gauge" data-width="280" data-height="280" data-units="ASCVD"
+                <div class="row">
+                    <div class="col-md-12">
+                        <!-- Tab panes -->
+                        <div class="tab-content section-title" id="nav-tabContent">
+                            <div role="tabpanel" class=" col-md-12 fade show active" id="tab1-1">
+                                <h4 class="title">نمایه های سلامت </h4>
+                                <h6> با استفاده از سرویسهای جانبی سامانه, بدون نیاز به مراجعه به پزشک, پیوسته وضعیت سلامت خود را بررسی نمایید. </h6>
+                                <div class="row">
+                                    <div class="col-xl-4  ">
+                                        <div class="gauge">
+                                            <canvas data-type="radial-gauge" data-width="280" data-height="280" data-units="ASCVD"
                                                     data-title="false" data-value="0" data-animate-on-init="true" data-animated-value="true"
                                                     data-min-value="0" data-max-value="120" data-major-ticks="0,20,40,60,80,100,120"
                                                     data-minor-ticks="5" data-stroke-ticks="false" data-highlights='[
@@ -86,20 +86,20 @@
                                                     data-border-middle-width="0" data-border-inner-width="0"></canvas>
 
 
-                                            </div>
-                                            <div>
+                                        </div>
+                                        <div>
 
-                                                <span>
-                                                    خطرسنجی قلبی عروقی
-                                                </span>
-                                            </div>
-
-                                               <button onclick="ShowBMIModal()" type="button" class="btn-SelfTest" data-toggle="modal" data-target="#exampleModal">
-                                                محاسبه ASCVD
-                                            </button>
-
+                                            <span>
+                                                خطرسنجی قلبی عروقی
+                                            </span>
                                         </div>
 
+                                        <button class="btn-SelfTest">
+                                            محاسبه ASCVD
+                                            <span style="font-size: 12px; ">(به زودی)</span>
+                                        </button>
+
+                                    </div>
 
 
 
@@ -107,9 +107,10 @@
 
 
 
-                                        <div class="col-xl-4  ">
-                                            <div class="gauge">
-                                                <canvas data-type="radial-gauge" data-width="280" data-height="280" data-units="Km/h"
+
+                                    <div class="col-xl-4  ">
+                                        <div class="gauge">
+                                            <canvas data-type="radial-gauge" data-width="280" data-height="280" data-units="Km/h"
                                                     data-title="false" data-value="@GFRResult" data-animate-on-init="true" data-animated-value="true"
                                                     data-min-value="0" data-max-value="120" data-major-ticks="0,20,40,60,80,100,120"
                                                     data-minor-ticks="5" data-stroke-ticks="false" data-highlights='[
@@ -125,30 +126,30 @@
                                                     data-color-needle-start="red" data-color-needle-end="red" data-value-box="true"
                                                     data-animation-rule="bounce" data-animation-duration="500" data-border-outer-width="0"
                                                     data-border-middle-width="0" data-border-inner-width="0"></canvas>
-                                            </div>
-
-
-                                            <div>
-
-                                                <span>
-                                                    عملکرد کلیه
-                                                </span>
-                                            </div>
-                                            <button onclick="ShowGFRModal()" type="button" class="btn-SelfTest" data-toggle="modal" data-target="#exampleModal">
-                                                محاسبه GFR
-                                            </button>
-
                                         </div>
 
 
+                                        <div>
+
+                                            <span>
+                                                عملکرد کلیه
+                                            </span>
+                                        </div>
+                                        <button onclick="ShowGFRModal()" type="button" class="btn-SelfTest" data-toggle="modal" data-target="#exampleModal">
+                                            محاسبه GFR
+                                        </button>
+
+                                    </div>
 
 
 
 
 
-                                        <div class="col-xl-4  ">
-                                            <div class="gauge">
-                                                <canvas data-type="radial-gauge" data-width="280" data-height="280" data-units="BMI"
+
+
+                                    <div class="col-xl-4  ">
+                                        <div class="gauge">
+                                            <canvas data-type="radial-gauge" data-width="280" data-height="280" data-units="BMI"
                                                     data-title="false" data-value="@bmiResult" data-animate-on-init="true" data-animated-value="true"
                                                     data-min-value="0" data-max-value="60" data-major-ticks="0,20,30,40,50,60"
                                                     data-minor-ticks="5" data-stroke-ticks="false" data-highlights='[
@@ -167,65 +168,65 @@
                                                     data-color-needle-start="red" data-color-needle-end="red" data-value-box="true"
                                                     data-animation-rule="bounce" data-animation-duration="500" data-border-outer-width="0"
                                                     data-border-middle-width="0" data-border-inner-width="0"></canvas>
-                                            </div>
-                                            <div>
-
-                                                <span>
-                                                    شاخص توده بدنی
-                                                </span>
-                                            </div>
-                                            <button onclick="ShowBMIModal()" type="button" class="btn-SelfTest" data-toggle="modal" data-target="#exampleModal">
-                                                محاسبه BMI
-                                            </button>
                                         </div>
+                                        <div>
 
-
-
+                                            <span>
+                                                شاخص توده بدنی
+                                            </span>
+                                        </div>
+                                        <button onclick="ShowBMIModal()" type="button" class="btn-SelfTest" data-toggle="modal" data-target="#exampleModal">
+                                            محاسبه BMI
+                                        </button>
                                     </div>
+
+
+
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div role="tabpanel " class="mt-2 col-md-12 fade show active section-title" id="tab1-2">
-                            <h4 class="title">یادآوری های دیابت </h4>
-                            <h6>
-                                با استفاده از سیستم یادآوری این سامانه برخی از امور مربوط به پیشگیری, مراقبت, کنترل و یا درمان بیماری دیابت را برای خود فعال نمایید.
-                            </h6>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="cases-item text-center">
-                                <a class=" hover-icon" asp-action="HomeVisit" asp-controller="HomeVisit">
-                                    <div class="cases-images">
-                                        <img class="img-fluid rounded box-shadow" src="~/Content/images/case-studies/PeriodicCheck.jpg" alt="">
-                                    </div>
-                                    <div class="cases-desc">
-                                        <h5>معاینات دوره ای (به زودی ...) </h5>
+                </div>
+                <div class="row">
+                    <div role="tabpanel " class="mt-2 col-md-12 fade show active section-title" id="tab1-2">
+                        <h4 class="title">یادآوری های دیابت </h4>
+                        <h6>
+                            با استفاده از سیستم یادآوری این سامانه برخی از امور مربوط به پیشگیری, مراقبت, کنترل و یا درمان بیماری دیابت را برای خود فعال نمایید.
+                        </h6>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="cases-item text-center">
+                            <a class=" hover-icon" asp-action="HomeVisit" asp-controller="HomeVisit">
+                                <div class="cases-images">
+                                    <img class="img-fluid rounded box-shadow" src="~/Content/images/case-studies/PeriodicCheck.jpg" alt="">
+                                </div>
+                                <div class="cases-desc">
+                                    <h5>معاینات دوره ای (به زودی ...) </h5>
 
-                                    </div>
-                                </a>
-                            </div>
+                                </div>
+                            </a>
                         </div>
-                        <div class="col-md-4">
-                            <div class="cases-item text-center">
-                                <a class=" hover-icon" asp-action="HomeNurse" asp-controller="HomeNurse">
-                                    <div class="cases-images">
-                                        <img class="img-fluid rounded box-shadow" src="~/Content/images/case-studies/Lab.jpg" alt="">
-                                    </div>
-                                    <div class="cases-desc">
-                                        <h5>آزمایشها (به زودی ...) </h5>
-                                    </div>
-                                </a>
-                            </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="cases-item text-center">
+                            <a class=" hover-icon" asp-action="HomeNurse" asp-controller="HomeNurse">
+                                <div class="cases-images">
+                                    <img class="img-fluid rounded box-shadow" src="~/Content/images/case-studies/Lab.jpg" alt="">
+                                </div>
+                                <div class="cases-desc">
+                                    <h5>آزمایشها (به زودی ...) </h5>
+                                </div>
+                            </a>
                         </div>
-                        <div class="col-md-4">
-                            <div class="cases-item text-center">
-                                <a class=" hover-icon" asp-action="HomePharmacy" asp-controller="HomePharmacy">
-                                    <div class="cases-images">
-                                        <img class="img-fluid rounded box-shadow" src="~/Content/images/case-studies/PharmAlarm.jpg" alt="">
-                                    </div>
-                                    <div class="cases-desc">
-                                        <h5>مصرف دارو (به زودی ...) </h5>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="cases-item text-center">
+                            <a class=" hover-icon" asp-action="HomePharmacy" asp-controller="HomePharmacy">
+                                <div class="cases-images">
+                                    <img class="img-fluid rounded box-shadow" src="~/Content/images/case-studies/PharmAlarm.jpg" alt="">
+                                </div>
+                                <div class="cases-desc">
+                                    <h5>مصرف دارو (به زودی ...) </h5>
 
                                     </div>
                                 </a>

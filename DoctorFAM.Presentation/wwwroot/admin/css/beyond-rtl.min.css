@@ -2274,23 +2274,23 @@ a:focus, a:active {
                             }
 
                             .navbar .navbar-inner .navbar-header .navbar-account .account-area > li .dropdown-menu.dropdown-login-area > li.username {
-                                display: none;
+                                /*display: none;*/
                                 text-align: center
                             }
 
                                 .navbar .navbar-inner .navbar-header .navbar-account .account-area > li .dropdown-menu.dropdown-login-area > li.username, .navbar .navbar-inner .navbar-header .navbar-account .account-area > li .dropdown-menu.dropdown-login-area > li.username a {
-                                    color: #d0d0d0;
+                                    color: #fb6e52;
                                     font-size: 14px;
                                     font-weight: 300
                                 }
 
                             .navbar .navbar-inner .navbar-header .navbar-account .account-area > li .dropdown-menu.dropdown-login-area > li.email {
                                 text-align: center;
-                                font-size: 12px
+                                font-size: 10px
                             }
 
                                 .navbar .navbar-inner .navbar-header .navbar-account .account-area > li .dropdown-menu.dropdown-login-area > li.email, .navbar .navbar-inner .navbar-header .navbar-account .account-area > li .dropdown-menu.dropdown-login-area > li.email a {
-                                    color: #d0d0d0
+                                    color: #fb6e52
                                 }
 
                             .navbar .navbar-inner .navbar-header .navbar-account .account-area > li .dropdown-menu.dropdown-login-area > li .avatar-area {
@@ -16170,8 +16170,8 @@ div[data-role="editor-toolbar"] {
 }
 
     .profile-container .profile-header .header-avatar {
-        width: 125px;
-        height: 125px;
+        width: 95px;
+        height: 95px;
         -webkit-border-radius: 50%;
         -webkit-background-clip: padding-box;
         -moz-border-radius: 50%;
@@ -16182,13 +16182,14 @@ div[data-role="editor-toolbar"] {
         -webkit-box-shadow: 0 0 10px rgba(0,0,0,.15);
         -moz-box-shadow: 0 0 10px rgba(0,0,0,.15);
         box-shadow: 0 0 10px rgba(0,0,0,.15);
-        margin: 25px auto
+        margin-top : 10px;
+        margin-right:10px;
     }
 
     .profile-container .profile-header .profile-info {
-        min-height: 175px;
-        border-left: 1px solid #eee;
-        padding: 15px 0 35px 40px
+        /*min-height: 175px;*/
+       /* border-left: 1px solid #eee;*/
+       /* padding: 15px 0 35px 40px*/
     }
 
         .profile-container .profile-header .profile-info .header-fullname {
@@ -16204,33 +16205,44 @@ div[data-role="editor-toolbar"] {
         }
 
         .profile-container .profile-header .profile-info .header-information {
-            line-height: 23px;
-            margin-top: 15px;
+           /* line-height: 23px;
+            margin-top: 15px;*/
             text-align: justify
         }
 
     .profile-container .profile-header .profile-stats {
-        min-height: 175px;
-        border-left: 1px solid #eee
+       /* min-height: 175px;*/
+        /*border-left: 1px solid #eee*/
     }
 
         .profile-container .profile-header .profile-stats .stats-col {
-            margin: 30px 0;
+            margin: 10px 0;
             text-align: center
         }
-
+.rowmt {
+    margin-top:30px;
+}
             .profile-container .profile-header .profile-stats .stats-col:not(:last-child) {
-                border-left: 1px solid #eee
+                /*border-left: 1px solid #eee*/
             }
 
             .profile-container .profile-header .profile-stats .stats-col .stats-value {
                 display: block;
                 margin: 0 auto;
                 text-align: center;
-                font-size: 30px;
+                font-size: 14px;
+                font-weight:500;
                 font-family: 'YekanBakh-FaNum';
             }
-
+            .profile-container .profile-header .profile-stats .stats-col .stats-value2 {
+                display: block;
+                margin: 0 auto;
+                text-align: center;
+                font-size: 18px;
+                font-weight: 500;
+                font-family: 'YekanBakh-FaNum';
+                color:darkslateblue
+            }
             .profile-container .profile-header .profile-stats .stats-col .stats-title {
                 display: block;
                 margin: 0 auto;
@@ -16238,15 +16250,15 @@ div[data-role="editor-toolbar"] {
             }
 
         .profile-container .profile-header .profile-stats .inlinestats-col {
-            padding-top: 15px;
+            /*padding-top: 15px;
             text-align: center;
-            font-family: 'YekanBakh-FaNum';
-            border-top: 1px solid #eee;
-            min-height: 55px
+            font-family: 'YekanBakh-FaNum';*/
+            /*border-top: 1px solid #eee;*/
+            /*min-height: 55px*/
         }
 
             .profile-container .profile-header .profile-stats .inlinestats-col:not(:last-child) {
-                border-left: 1px solid #eee
+                /*border-left: 1px solid #eee*/
             }
 
             .profile-container .profile-header .profile-stats .inlinestats-col i {

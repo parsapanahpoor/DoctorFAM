@@ -90,6 +90,89 @@
     </li>
 }
 
+    
+
+    <div class="col-lg-9 col-sm-12">
+        <div class="well with-header with-footer table-responsive">
+            <div class="header bordered-azure">
+                <div class="flex-style">
+                    <span>@ViewData["Title"]</span>
+                </div>
+            </div>
+
+            @if (Model.Item1 != null && Model.Item1.Any())
+            {
+                <table class="table table-hover table-bordered tc vm">
+                    <thead class="tc vm">
+                        <tr class="tc vm">
+                            <th class="tc vm">
+                                @Localizer["Name and Avatar"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["Specialty"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["Education"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["Choose"]
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="tc vm">
+                        @foreach (var info in Model.Item1)
+                        {
+                            <tr class="tc vm">
+                                <td class="vm">
+                                    <div class="flex-style-center">
+                                        <img src="@info.User.GetUserAvatar()" style="border-radius:50px;" class="avatar-style" />
+                                        <div class="mr-10px">
+                                            <span>@Localizer["Doctor"]  @info.User.Username </span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="vm">
+                                    <div class="flex-style-center">
+                                        <p> @info.DoctorsInfos.Specialty </p>
+                                    </div>
+                                </td>
+                                <td class="vm">
+                                    <div class="flex-style-center">
+                                        <p> @info.DoctorsInfos.Education </p>
+                                    </div>
+                                </td>
+                                <td class="tc vm">
+                                    <a asp-action="DoctorInformationDetails" asp-controller="FamilyDoctor" asp-area="UserPanel" asp-route-doctorId="@info.Id" class="btn btn-warning ">@Localizer["I Choose"]</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                @if (Model.Item2.PageCount > 1)
+                {
+                    int pageCount = ViewBag.pageId;
+                    int next = pageCount + 1;
+                    int last = pageCount - 1;
+
+                    <div class="footer tc">
+                        <ul class="pagination mt-5px pagingInInIndex">
+
+                            @for (int i = 1; i <= (int)Model.Item2.PageCount; i++)
+                            {
+                                <li class="@((Model.Item2.PageId == i ?"active":"")) "><a class="cursor-pointer " onclick="changePage(@i)" href="#">@i</a></li>
+                            }
+
+                        </ul>
+                    </div>
+                }
+            }
+            else
+            {
+                <partial name="_UserPanelNotFoundPartial" />
+            }
+        </div>
+    </div>
     <div class="row">
         <div class="col-lg-3 col-sm-12">
             <div class="widget">
@@ -190,88 +273,6 @@
                     </form>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <div class="col-lg-9 col-sm-12">
-        <div class="well with-header with-footer table-responsive">
-            <div class="header bordered-azure">
-                <div class="flex-style">
-                    <span>@ViewData["Title"]</span>
-                </div>
-            </div>
-
-            @if (Model.Item1 != null && Model.Item1.Any())
-            {
-                <table class="table table-hover table-bordered tc vm">
-                    <thead class="tc vm">
-                        <tr class="tc vm">
-                            <th class="tc vm">
-                                @Localizer["Avatar"]
-                            </th>
-                            <th class="tc vm">
-                                @Localizer["Specialty"]
-                            </th>
-                            <th class="tc vm">
-                                @Localizer["Education"]
-                            </th>
-                            <th class="tc vm">
-                                @Localizer["Possibilities"]
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody class="tc vm">
-                        @foreach (var info in Model.Item1)
-                        {
-                            <tr class="tc vm">
-                                <td class="vm">
-                                    <div class="flex-style-center">
-                                        <img src="@info.User.GetUserAvatar()" style="border-radius:50px;" class="avatar-style" />
-                                        <div class="mr-10px">
-                                            <span> @info.User.Username </span>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="vm">
-                                    <div class="flex-style-center">
-                                        <p> @info.DoctorsInfos.Specialty </p>
-                                    </div>
-                                </td>
-                                <td class="vm">
-                                    <div class="flex-style-center">
-                                        <p> @info.DoctorsInfos.Education </p>
-                                    </div>
-                                </td>
-                                <td class="tc vm">
-                                    <a asp-action="DoctorInformationDetails" asp-controller="FamilyDoctor" asp-area="UserPanel" asp-route-doctorId="@info.Id" class="btn btn-warning btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-
-                @if (Model.Item2.PageCount > 1)
-                {
-                    int pageCount = ViewBag.pageId;
-                    int next = pageCount + 1;
-                    int last = pageCount - 1;
-
-                    <div class="footer tc">
-                        <ul class="pagination mt-5px pagingInInIndex">
-
-                            @for (int i = 1; i <= (int)Model.Item2.PageCount; i++)
-                            {
-                                <li class="@((Model.Item2.PageId == i ?"active":"")) "><a class="cursor-pointer " onclick="changePage(@i)" href="#">@i</a></li>
-                            }
-
-                        </ul>
-                    </div>
-                }
-            }
-            else
-            {
-                <partial name="_UserPanelNotFoundPartial" />
-            }
         </div>
     </div>
 </div>

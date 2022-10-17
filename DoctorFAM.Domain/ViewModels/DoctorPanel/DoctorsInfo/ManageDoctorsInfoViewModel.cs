@@ -60,6 +60,17 @@ namespace DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo
         [Display(Name = "Gender")]
         public Gender Gender { get; set; }
 
+        [Display(Name = "Clinic Phone")]
+        [RegularExpression(@"^[0-9]*$", ErrorMessage = "The entered national code is not valid")]
+        public string? ClinicPhone { get; set; }
+
+        [Display(Name = "General Phone")]
+        [RegularExpression(@"^[0-9]*$", ErrorMessage = "The entered national code is not valid")]
+        public string? GeneralPhone { get; set; }
+
+        [Display(Name = "Doctor Skills")]
+        public string? DoctorSkills { get; set; }
+
         public OrganizationInfoState? DoctorsInfosType { get; set; }
     }
 

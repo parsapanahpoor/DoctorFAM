@@ -1,7 +1,9 @@
 ﻿@model DoctorFAM.Domain.ViewModels.UserPanel.Home.HomeDashboardViewModel
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = @Localizer["Index"];
 }
 
 @section Breadcrumb{

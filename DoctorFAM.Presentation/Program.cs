@@ -263,7 +263,7 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-app.UseStatusCodePagesWithRedirects("/{0}");
+
 
 app.Run();
 

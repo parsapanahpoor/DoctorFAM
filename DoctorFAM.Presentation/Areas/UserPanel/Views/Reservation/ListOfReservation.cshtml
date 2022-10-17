@@ -147,11 +147,12 @@
                                 </td>
 
                                 <td class="tc vm">
-                                    <p> @date.StartTime </p>
+                                    <p>@string.Concat(date.StartTime.Reverse().Skip(3).Reverse())   </p>
+
                                 </td>
 
                                 <td class="tc vm">
-                                    <p> @date.EndTime </p>
+                                    <p>@string.Concat(date.EndTime.Reverse().Skip(3).Reverse())  </p>
                                 </td>
 
                                 <td class="vm">

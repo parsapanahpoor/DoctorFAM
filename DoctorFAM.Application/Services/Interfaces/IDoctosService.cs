@@ -20,6 +20,9 @@ namespace DoctorFAM.Application.Services.Interfaces
     {
         #region Doctors Panel Side
 
+        //Get List Of Doctor Skills By Doctor Id
+        Task<List<DoctorsSkils>> GetListOfDoctorSkillsByDoctorId(ulong doctorId);
+
         Task<List<DoctorsInterestInfo>> GetDoctorSelectedInterests(ulong doctorId);
 
         Task<FilterDoctorOfficeEmployeesViewmodel> FilterDoctorOfficeEmployees(FilterDoctorOfficeEmployeesViewmodel filter);

@@ -16,6 +16,7 @@ using DoctorFAM.Domain.ViewModels.Site.Doctor;
 using DoctorFAM.Domain.ViewModels.Site.Reservation;
 using DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 
 namespace DoctorFAM.Application.Services.Implementation
 {
@@ -36,7 +37,7 @@ namespace DoctorFAM.Application.Services.Implementation
         private readonly IReservationService _reservationService;
 
         public DoctorsService(IDoctorsRepository doctorRepository, IUserService userService, IOrganizationService organizationService,
-                                IWorkAddressService workAddress, ILocationRepository locationRepository , IReservationService reservationService)
+                                IWorkAddressService workAddress, ILocationRepository locationRepository, IReservationService reservationService)
         {
             _doctorRepository = doctorRepository;
             _userService = userService;
@@ -194,8 +195,24 @@ namespace DoctorFAM.Application.Services.Implementation
                     NationalCode = doctorInfo.NationalCode,
                     Gender = doctorInfo.Gender,
                     RejectDescription = doctorOffice.RejectDescription,
-                    Specialty = doctorInfo.Specialty
+                    Specialty = doctorInfo.Specialty,
+                    ClinicPhone = doctorInfo.ClinicPhone,
+                    GeneralPhone = doctorInfo.GeneralPhone,
                 };
+
+                #region Get Doctor Skill By Doctor Id
+
+                if (doctorInfo != null)
+                {
+                    var doctorSkills = await _doctorRepository.GetListOfDoctorSkillsByDoctorId(doctorInfo.DoctorId);
+
+                    if (doctorSkills != null)
+                    {
+                        model.DoctorSkills = string.Join(",", doctorSkills.Select(p => p.DoctorSkil).ToList());
+                    }
+                }
+
+                #endregion
 
                 //Fill Doctor Cilinic Address
                 if (workAddress != null)
@@ -227,6 +244,12 @@ namespace DoctorFAM.Application.Services.Implementation
             #endregion
 
             return null;
+        }
+
+        //Get List Of Doctor Skills By Doctor Id
+        public async Task<List<DoctorsSkils>> GetListOfDoctorSkillsByDoctorId(ulong doctorId)
+        {
+            return await _doctorRepository.GetListOfDoctorSkillsByDoctorId(doctorId);
         }
 
         public async Task<AddOrEditDoctorInfoResult> AddOrEditDoctorInfoDoctorsPanel(ManageDoctorsInfoViewModel model, IFormFile? MediacalFile)
@@ -283,6 +306,8 @@ namespace DoctorFAM.Application.Services.Implementation
                 info.NationalCode = model.NationalCode;
                 info.MedicalSystemCode = model.MedicalSystemCode;
                 info.Gender = model.Gender;
+                info.GeneralPhone = model.GeneralPhone;
+                info.ClinicPhone = model.ClinicPhone;
 
                 //Update Doctor Office State 
                 doctorOffice.OrganizationInfoState = OrganizationInfoState.WatingForConfirm;
@@ -345,6 +370,32 @@ namespace DoctorFAM.Application.Services.Implementation
 
                 #endregion
 
+                #region Doctor Selected Skils
+
+                var doctorSkills = await GetListOfDoctorSkillsByDoctorId(doctor.Id);
+
+                if (doctorSkills.Any())
+                {
+                    await _doctorRepository.RemoveDoctorSkills(doctorSkills);
+                }
+
+                if (!string.IsNullOrEmpty(model.DoctorSkills))
+                {
+                    var skills = model.DoctorSkills.Split(',').ToList();
+
+                    foreach (var item in skills)
+                    {
+                        var skill = new DoctorsSkils
+                        {
+                            DoctorId = doctor.Id,
+                            DoctorSkil = item
+                        };
+                        await _doctorRepository.AddDoctorSelectedSkilsWithoutSaveChanges(skill);
+                    }
+                }
+
+                #endregion
+
                 #region Update Methods
 
                 await _doctorRepository.UpdateDoctorsInfo(info);
@@ -372,6 +423,8 @@ namespace DoctorFAM.Application.Services.Implementation
                         NationalCode = model.NationalCode,
                         Specialty = model.Specialty.SanitizeText(),
                         Gender = model.Gender,
+                        GeneralPhone = model.GeneralPhone,
+                        ClinicPhone = model.ClinicPhone
                     };
 
                     #endregion
@@ -384,7 +437,6 @@ namespace DoctorFAM.Application.Services.Implementation
                     await _userService.UpdateUser(user);
 
                     #endregion
-
 
                     #region Medical File 
 
@@ -419,6 +471,25 @@ namespace DoctorFAM.Application.Services.Implementation
                     #region Update Doctor Office
 
                     doctorOffice.OrganizationInfoState = OrganizationInfoState.WatingForConfirm;
+
+                    #endregion
+
+                    #region Doctor Selected Skils
+
+                    if (!string.IsNullOrEmpty(model.DoctorSkills))
+                    {
+                        var skills = model.DoctorSkills.Split(',').ToList();
+
+                        foreach (var item in skills)
+                        {
+                            var skill = new DoctorsSkils
+                            {
+                                DoctorId = doctor.Id,
+                                DoctorSkil = item
+                            };
+                            await _doctorRepository.AddDoctorSelectedSkilsWithoutSaveChanges(skill);
+                        }
+                    }
 
                     #endregion
 
@@ -518,6 +589,8 @@ namespace DoctorFAM.Application.Services.Implementation
                         MedicalSystemCode = model.MedicalSystemCode,
                         NationalCode = model.NationalCode,
                         Specialty = model.Specialty.SanitizeText(),
+                        GeneralPhone = model.GeneralPhone,
+                        ClinicPhone = model.ClinicPhone
                     };
 
                     #endregion
@@ -531,7 +604,6 @@ namespace DoctorFAM.Application.Services.Implementation
 
                     #endregion
 
-
                     #region Medical File 
 
                     if (MediacalFile != null)
@@ -539,6 +611,25 @@ namespace DoctorFAM.Application.Services.Implementation
                         var imageName = CodeGenerator.GenerateUniqCode() + Path.GetExtension(MediacalFile.FileName);
                         MediacalFile.AddImageToServer(imageName, PathTools.MediacalFilePathServer, 270, 270, PathTools.MediacalFilePathThumbServer);
                         manageDoctorsInfoViewModel.MediacalFile = imageName;
+                    }
+
+                    #endregion
+
+                    #region Doctor Selected Skils
+
+                    if (!string.IsNullOrEmpty(model.DoctorSkills))
+                    {
+                        var skills = model.DoctorSkills.Split(',').ToList();
+
+                        foreach (var item in skills)
+                        {
+                            var skill = new DoctorsSkils
+                            {
+                                DoctorId = newDoctor.Id,
+                                DoctorSkil = item
+                            };
+                            await _doctorRepository.AddDoctorSelectedSkilsWithoutSaveChanges(skill);
+                        }
                     }
 
                     #endregion
@@ -746,6 +837,12 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #endregion
 
+            #region Get Doctor Skill By Doctor Id
+
+            var doctorSkills = await _doctorRepository.GetListOfDoctorSkillsByDoctorId(info.DoctorId);
+
+            #endregion
+
             #region Fill View Model
 
             DoctorsInfoDetailViewModel model = new DoctorsInfoDetailViewModel()
@@ -762,6 +859,9 @@ namespace DoctorFAM.Application.Services.Implementation
                 DoctorId = doctor.Id,
                 Gender = info.Gender,
                 DoctorsInterests = await _doctorRepository.GetDoctorSelectedInterests(doctor.Id),
+                GeneralPhone = info.GeneralPhone,
+                ClinicPhone = info.ClinicPhone,
+                DoctorSkills = string.Join(",", doctorSkills.Select(p => p.DoctorSkil).ToList())
             };
 
             #endregion
@@ -823,6 +923,34 @@ namespace DoctorFAM.Application.Services.Implementation
             info.Education = model.Education;
             info.NationalCode = model.NationalCode;
             info.Gender = model.Gender;
+            info.GeneralPhone = model.GeneralPhone;
+            info.ClinicPhone = model.ClinicPhone;
+
+            #endregion
+
+            #region Doctor Selected Skils
+
+            var doctorSkills = await GetListOfDoctorSkillsByDoctorId(doctor.Id);
+
+            if (doctorSkills.Any())
+            {
+                await _doctorRepository.RemoveDoctorSkills(doctorSkills);
+            }
+
+            if (!string.IsNullOrEmpty(model.DoctorSkills))
+            {
+                var skills = model.DoctorSkills.Split(',').ToList();
+
+                foreach (var item in skills)
+                {
+                    var skill = new DoctorsSkils
+                    {
+                        DoctorId = doctor.Id,
+                        DoctorSkil = item
+                    };
+                    await _doctorRepository.AddDoctorSelectedSkilsWithoutSaveChanges(skill);
+                }
+            }
 
             #endregion
 
@@ -929,7 +1057,7 @@ namespace DoctorFAM.Application.Services.Implementation
         }
 
         //Fill Doctor Reservation Detail For Show Site Side View Model
-        public async Task<ShowDoctorReservationDetailViewModel?> FillDoctorReservationDetailForShowSiteSide(ulong userId , string? loggedDateTime)
+        public async Task<ShowDoctorReservationDetailViewModel?> FillDoctorReservationDetailForShowSiteSide(ulong userId, string? loggedDateTime)
         {
             #region Get Doctor By User Id
 
@@ -960,7 +1088,7 @@ namespace DoctorFAM.Application.Services.Implementation
             {
                 UserId = userId,
                 LoggedDateTime = loggedDateTime,
-                DoctorReservationDate = ((!string.IsNullOrEmpty(loggedDateTime) ? await _reservationService.GetDoctorReservationDateByReservationDateAndUserId(loggedDateTime , userId) : null)),
+                DoctorReservationDate = ((!string.IsNullOrEmpty(loggedDateTime) ? await _reservationService.GetDoctorReservationDateByReservationDateAndUserId(loggedDateTime, userId) : null)),
                 DoctorReservationDateTimes = ((!string.IsNullOrEmpty(loggedDateTime) ? await _reservationService.GetDoctorReservationDateByReservationDateTimeAndUserId(loggedDateTime, userId) : null))
             };
 
@@ -1009,7 +1137,7 @@ namespace DoctorFAM.Application.Services.Implementation
             #region Get Doctor By Doctor Id
 
             var doctor = await GetDoctorById(doctorId);
-            if(doctor == null) return null;
+            if (doctor == null) return null;
 
             #endregion
 
@@ -1018,7 +1146,7 @@ namespace DoctorFAM.Application.Services.Implementation
             #region Organization Validation 
 
             var organization = await _organizationService.GetDoctorOrganizationByUserId(doctor.UserId);
-            if(organization == null) return null;
+            if (organization == null) return null;
             if (organization.OrganizationInfoState != OrganizationInfoState.Accepted) return null;
 
             #endregion

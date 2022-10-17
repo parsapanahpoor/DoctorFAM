@@ -90,7 +90,14 @@ span,
 /* ------------------------
     Transform translate
 ------------------------*/
-
+.dropdown-itemuserpanel {
+    color:red;
+    font-weight:500;
+}
+.usepa {
+    margin-top:-30px !important;
+    z-index:1;
+}
 
 /*--translate-X--*/
 

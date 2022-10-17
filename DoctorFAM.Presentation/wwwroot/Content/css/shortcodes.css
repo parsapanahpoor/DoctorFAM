@@ -136,6 +136,50 @@
         border: 2px solid #fd5b03;
     }
 
+.btn-AcceptX {
+    background: #fd5b03;
+    color: #ffffff;
+    padding: 4px 6px;
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    outline: none;
+    border: 1px solid #fd5b03;
+    vertical-align: middle;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+    .btn-AcceptX:hover {
+        background: #2264c5;
+        color: #ffffff;
+        border: 1px solid #2264c5 ;
+    }
+.btn-AcceptXX {
+    background: #fd5b03;
+    color: #ffffff;
+    padding: 12px 20px;
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    outline: none;
+    border: 1px solid #fd5b03;
+    vertical-align: middle;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size:22px; 
+    font-weight:500;
+}
+.logfon {
+    font-size:22px;
+    font-weight:500;
+}
+    .btn-AcceptXX:hover {
+        background: #2264c5;
+        color: #ffffff;
+        border: 1px solid #2264c5;
+    }
+
 .btn-Accept-Danger {
     background: red;
     color: #ffffff;

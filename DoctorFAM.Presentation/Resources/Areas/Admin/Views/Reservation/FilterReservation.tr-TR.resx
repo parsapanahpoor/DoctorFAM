@@ -136,7 +136,7 @@
     <value>Doktorun milliyeti nedir?</value>
   </data>
   <data name="End" xml:space="preserve">
-    <value>Hasta</value>
+    <value>Son</value>
   </data>
   <data name="End Time" xml:space="preserve">
     <value>bitiş zamanı</value>
@@ -203,6 +203,9 @@
   </data>
   <data name="String22" xml:space="preserve">
     <value>String1</value>
+  </data>
+  <data name="Time" xml:space="preserve">
+    <value>zaman</value>
   </data>
   <data name="To Date" xml:space="preserve">
     <value>Güncel</value>

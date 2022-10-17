@@ -128,12 +128,15 @@
                             <tr class="tc vm" remove-ajax-item="@date.Id">
                                 <td class="vm">
                                     <div class="flex-style-center">
-                                        <p> @date.StartTime </p>
+                                       
+                                        <p> @string.Concat(date.StartTime.Reverse().Skip(3).Reverse()) </p>
+                                        
                                     </div>
                                 </td>
                                 <td class="vm">
                                     <div class="flex-style-center">
-                                        <p> @date.EndTime </p>
+                                        <p> @string.Concat(date.EndTime.Reverse().Skip(3).Reverse()) </p>
+                                        
                                     </div>
                                 </td>
                                 <td class="tc vm">
