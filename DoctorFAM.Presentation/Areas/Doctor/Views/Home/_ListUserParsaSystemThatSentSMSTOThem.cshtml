@@ -1,0 +1,130 @@
+﻿@model List<DoctorFAM.Domain.Entities.FamilyDoctor.ParsaSystem.UserInsertedFromParsaSystem>
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
+
+<div class="col-lg-12 col-md-12 col-xl-126 col-sm-12 col-xs-12 boxForDashboard">
+    <div class="widget">
+        <div class="widget-header">
+            <i class="widget-icon  glyphicon glyphicon-home"></i>
+            <span class="widget-caption"> @Localizer["List Of Users That Come From Parsa System And You Sent SMS To Them"] </span>
+         <div class="widget-buttons" style="margin-left: 20px;">
+                <div class="row" >
+                    <a  asp-action="RefreshParsaSystemRecords" asp-area="Doctor" asp-controller="ParsaSystem" asp-route-doctorDashboard="@true"  style="margin-left: 10px;">
+                        <span class="badge badge-warning"> بروز رسانی اطلاعات <i class="fa fa-refresh"></i> </span>
+                    </a>
+                    <a id="ShowUserCommentInAdminPanelMinus" href="#" data-toggle="collapse">
+                        <i class="fa fa-minus"></i>
+                    </a>
+                </div>
+            </div><!--Widget Buttons-->
+        </div>
+        <div class="widget-body" style="max-height: 230px !important; overflow-y: scroll; height:auto;">
+            @if (Model != null && Model.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered tc vm">
+                        <thead class="tc vm">
+                            <tr class="tc vm">
+                                <th class="tc vm">
+                                    @Localizer["User Name"]
+                                </th>
+                                <th class="tc vm">
+                                    @Localizer["National Id"]
+                                </th>
+                                <th class="tc vm">
+                                    @Localizer["Mobile"]
+                                </th>
+                                <th class="tc vm">
+                                    @Localizer["Is Exist In site"]
+                                </th>
+                                <th class="tc vm">
+                                    @Localizer["Last SMS Date"]
+                                </th>
+                                     <th class="tc vm">
+                                    @Localizer["Create Date"]
+                                </th>
+                                <th class="tc vm">
+
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="tc vm">
+                            @foreach (var user in Model)
+                            {
+                                <tr class="tc vm">
+                                    <td class="vm">
+                                        <div class="flex-style-center">
+                                            <img src="/Content/Doctor/assets/img/User.png" class="avatar-style" style="border-radius:50px;" />
+                                            <div class="mr-10px">
+                                                <span> @user.PatientFirstName @user.PatientLastName</span>
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <td class="vm">
+                                        <div class="flex-style-center">
+                                            <div class="mr-10px">
+                                                <span> @user.PatientNationalId </span>
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <td class="vm">
+                                        <div class="flex-style-center">
+                                            <div class="mr-10px">
+                                                <span> @user.PatientMobile </span>
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <td class="vm">
+                                        <div class="flex-style-center">
+                                            <div class="mr-10px">
+                                                @if (user.IsRegisteredUser)
+                                                {
+                                                    <span class="label label-success">@Localizer["Registered"]</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="label label-orange">@Localizer["Not Registered"]</span>
+                                                }
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <td class="vm">
+                                        <div class="flex-style-center">
+                                            <div class="mr-10px">
+                                                @user.SMSSentDate.ToShamsiDateTime()
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <td class="vm">
+                                        <div class="flex-style-center">
+                                            <div class="mr-10px">
+                                                @user.CreateDate.ToShamsi()
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <td class="tc vm">
+                                        <a class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <!--Widget Body-->
+            }
+            else
+            {
+                <partial name="_DoctorPanelNotFoundPartial" />
+            }
+        </div>
+    </div>
+</div>

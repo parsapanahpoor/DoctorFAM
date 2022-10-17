@@ -642,4 +642,10 @@
   <data name="The entered National is already available on the site" xml:space="preserve">
     <value>کدملی وارد شده در سایت موجود است.</value>
   </data>
+  <data name="Sample Of Excel File" xml:space="preserve">
+    <value>نمونه ی فایل اکسل</value>
+  </data>
+  <data name="Upload Excel File" xml:space="preserve">
+    <value>آپلود فایل اکسل</value>
+  </data>
 </root>

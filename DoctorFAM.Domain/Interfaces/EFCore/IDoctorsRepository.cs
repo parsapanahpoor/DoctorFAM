@@ -1,4 +1,5 @@
 ﻿using DoctorFAM.Domain.Entities.Doctors;
+using DoctorFAM.Domain.Entities.FamilyDoctor.ParsaSystem;
 using DoctorFAM.Domain.Entities.Interest;
 using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DosctorSideBarInfo;
@@ -16,6 +17,21 @@ namespace DoctorFAM.Domain.Interfaces
     public interface IDoctorsRepository
     {
         #region Doctors Panel Side
+
+        //Save Changes
+        Task SaveChanges();
+
+        //Refres Patient From User Inserts Parsa System
+        Task RefresPatientFromUserInsertsParsaSystemWithoutSaveChanges(UserInsertedFromParsaSystem user);
+
+        //Get List Of User That Comes From Parsa That Not Register To Doctor FAM
+        Task<List<UserInsertedFromParsaSystem>> GetListOfUserThatComesFromParsaThatNotRegisterToDoctorFAM(ulong doctorId);
+
+        //Get List Of User That Comes From Parsa
+        Task<List<UserInsertedFromParsaSystem>> GetListOfUserThatComesFromParsa(ulong doctorId);
+
+        //Add Range Of User From Parsa System To The Data Base
+        Task AddRangeOfUserFromParsaSystemToTheDataBase(List<UserInsertedFromParsaSystem> list);
 
         //Remove Doctor Skills
         Task RemoveDoctorSkills(List<DoctorsSkils> doctorSkill);

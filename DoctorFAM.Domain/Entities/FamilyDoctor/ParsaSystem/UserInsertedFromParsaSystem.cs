@@ -31,6 +31,8 @@ namespace DoctorFAM.Domain.Entities.FamilyDoctor.ParsaSystem
 
         public string? PatientNationalId { get; set; }
 
+        public bool IsRegisteredUser { get; set; }
+
         #endregion
 
         #region relation

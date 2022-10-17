@@ -1,4 +1,5 @@
 ﻿using DoctorFAM.Domain.Entities.Doctors;
+using DoctorFAM.Domain.Entities.FamilyDoctor.ParsaSystem;
 using DoctorFAM.Domain.Entities.Interest;
 using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo;
@@ -18,7 +19,19 @@ namespace DoctorFAM.Application.Services.Interfaces
 {
     public interface IDoctorsService
     {
-        #region Doctors Panel Side
+        #region Doctors Panel Side    
+
+        //Refresh List Of Users That Come From Parsa System 
+        Task<bool> RefreshListOfUsersThatComeFromParsaSystem(ulong userId);
+
+        //Get List Of User That Comes From Parsa That Not Register To Doctor FAM
+        Task<List<UserInsertedFromParsaSystem>> GetListOfUserThatComesFromParsaThatNotRegisterToDoctorFAM(ulong doctorId);
+
+        //Get List Of User That Comes From Parsa
+        Task<List<UserInsertedFromParsaSystem>> GetListOfUserThatComesFromParsa(ulong doctorId);
+
+        //Upload Excel File That Get From Parsa System
+        Task<bool> UploadExcelFileThatGetFromParsaSystem(ulong userId, IFormFile excelFile);
 
         //Get List Of Doctor Skills By Doctor Id
         Task<List<DoctorsSkils>> GetListOfDoctorSkillsByDoctorId(ulong doctorId);

@@ -1,6 +1,9 @@
 ﻿using DoctorFAM.Data.DbContext;
+using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Doctors;
+using DoctorFAM.Domain.Entities.FamilyDoctor.ParsaSystem;
 using DoctorFAM.Domain.Entities.Interest;
+using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.WorkAddress;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo;
@@ -14,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -33,6 +37,37 @@ namespace DoctorFAM.Data.Repository
         #endregion
 
         #region Doctors Panel Side
+
+        //Save Changes
+        public async Task SaveChanges()
+        {
+            await _context.SaveChangesAsync();
+        }
+
+        //Refres Patient From User Inserts Parsa System
+        public async Task RefresPatientFromUserInsertsParsaSystemWithoutSaveChanges(UserInsertedFromParsaSystem user)
+        {
+            _context.UserInsertedFromParsaSystems.Update(user);
+        }
+
+        //Get List Of User That Comes From Parsa That Not Register To Doctor FAM
+        public async Task<List<UserInsertedFromParsaSystem>> GetListOfUserThatComesFromParsaThatNotRegisterToDoctorFAM(ulong doctorId)
+        {
+            return await _context.UserInsertedFromParsaSystems.Where(p => !p.IsDelete && p.DoctorUserId == doctorId && !p.IsRegisteredUser).ToListAsync();
+        }
+
+        //Get List Of User That Comes From Parsa
+        public async Task<List<UserInsertedFromParsaSystem>> GetListOfUserThatComesFromParsa(ulong doctorId)
+        {
+            return await _context.UserInsertedFromParsaSystems.Where(p => !p.IsDelete && p.DoctorUserId == doctorId).ToListAsync();
+        }
+
+        //Add Range Of User From Parsa System To The Data Base
+        public async Task AddRangeOfUserFromParsaSystemToTheDataBase(List<UserInsertedFromParsaSystem> list)
+        {
+            await _context.UserInsertedFromParsaSystems.AddRangeAsync(list);
+            await _context.SaveChangesAsync();
+        }
 
         public async Task<FilterDoctorOfficeEmployeesViewmodel> FilterDoctorOfficeEmployees(FilterDoctorOfficeEmployeesViewmodel filter)
         {
