@@ -33,6 +33,8 @@ namespace DoctorFAM.Domain.Entities.FamilyDoctor.ParsaSystem
 
         public bool IsRegisteredUser { get; set; }
 
+        public bool HasAnyFamilyDoctor { get; set; }
+
         #endregion
 
         #region relation

@@ -18,6 +18,36 @@ namespace DoctorFAM.Domain.Interfaces
     {
         #region Doctors Panel Side
 
+        //Show List Of SMS That Send From Doctor To Patient Incomes From Parsa System
+        Task<List<LogForSendSMSToUsersIncomeFromParsa>?> ShowListOfSMSThatSendFromDoctorToPatientIncomesFromParsaSystem(ulong id, ulong doctorUserId);
+
+        //Add Log For Send SMS From Doctor To Users That Income From Parsa System Without SaveChanges
+        Task AddLogForSendSMSFromDoctorToUsersThatIncomeFromParsaSystemWithoutSaveChanges(List<LogForSendSMSToUsersIncomeFromParsa> log);
+
+        //Is Exist Any User From Parsa System In Doctor Parsa System List
+        Task<bool> IsExistAnyUserFromParsaSystemInDoctorParsaSystemList(ulong parsaSystemUserId, ulong doctorUserId);
+
+        //List Of DOctor Parsa System Users
+        Task<List<UserInsertedFromParsaSystem>?> ListOfDoctorParsaSystemUsers(ulong DoctorUserId);
+
+        //Get List Of User That Comes From Parsa That Registered To Doctor FAM
+        Task<List<UserInsertedFromParsaSystem>> GetListOfUserThatComesFromParsaThatRegisteredToDoctorFAM(ulong doctorId);
+
+        //Update Parsa System Record 
+        Task UpdateParsaSystemRecord(UserInsertedFromParsaSystem parsa);
+
+        //Get User From Parsa Incoming List By User Id And Doctor User Id
+        Task<UserInsertedFromParsaSystem?> GetUserFromParsaIncomingListByUserIdAndDoctorUserId(ulong doctorId, ulong parsaUserId);
+
+        //Is Exist Any User By This Mobile Number In Current Doctor Parsa System File 
+        Task<bool> IsExistAnyUserByThisMobileNumberInCurrentDoctorParsaSystemFile(ulong doctorUserId, string mobileNumber);
+
+        //Check That Is User Has Any Active Family Doctor 
+        Task<bool> CheckThatIsUserHasAnyActiveFamilyDoctor(string userMobile);
+
+        //Check That Is Exist User By Mobile In User Population Covered
+        Task<bool> CheckThatIsExistUserByMobileInUserPopulationCovered(ulong doctorUserId, string userMobile);
+
         //Save Changes
         Task SaveChanges();
 

@@ -120,6 +120,15 @@
   <data name="Create Date" xml:space="preserve">
     <value>تاریخ درج</value>
   </data>
+  <data name="Dont Have" xml:space="preserve">
+    <value>ندارد</value>
+  </data>
+  <data name="Family Doctor State" xml:space="preserve">
+    <value>در سایت پزشک خانواده دارد؟</value>
+  </data>
+  <data name="Has" xml:space="preserve">
+    <value>دارد</value>
+  </data>
   <data name="Is Exist In site" xml:space="preserve">
     <value>وضعیت در داکتر فام </value>
   </data>

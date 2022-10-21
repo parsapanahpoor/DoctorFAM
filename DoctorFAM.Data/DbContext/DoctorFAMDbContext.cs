@@ -246,6 +246,8 @@ namespace DoctorFAM.Data.DbContext
 
         public DbSet<UserInsertedFromParsaSystem> UserInsertedFromParsaSystems { get; set; }
 
+        public DbSet<LogForSendSMSToUsersIncomeFromParsa> LogForSendSMSToUsersIncomeFromParsa { get; set; }
+
         #endregion
 
         #region Nurse 

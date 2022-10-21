@@ -46,6 +46,24 @@
                             </a>
                         </li>
 
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="#" class="menu-dropdown">
+                        <i class="menu-icon glyphicon glyphicon-thumbs-up"></i>
+                        <span class="menu-text">@SharedLocalizer["Parsa System"]</span>
+                        <i class="menu-expand"></i>
+                    </a>
+
+                    <ul class="submenu">
+
+                        <li>
+                            <a asp-action="ListOfYourUsers" asp-area="Doctor" asp-controller="ParsaSystem">
+                                <span class="menu-text">@SharedLocalizer["List Of Your Users"]</span>
+                            </a>
+                        </li>
+
                         <li>
                             <a asp-action="IncomingExcelFile" asp-area="Doctor" asp-controller="ParsaSystem">
                                 <span class="menu-text">@SharedLocalizer["Upload Excel File"]</span>
@@ -53,7 +71,7 @@
                         </li>
 
                         <li>
-                            <a target="_blank" href="/Content/ExcelSampleFile/PopulationCoveredSmple.xltx">
+                            <a target="_blank" href="/Content/ExcelSampleFile/PopulationCoveredSmple.xlsx">
                                 <span class="menu-text">@SharedLocalizer["Sample Of Excel File"]</span>
                             </a>
                         </li>

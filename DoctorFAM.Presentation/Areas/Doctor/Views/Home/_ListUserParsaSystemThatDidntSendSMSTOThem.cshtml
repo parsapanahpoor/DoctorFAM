@@ -40,6 +40,9 @@
                                     @Localizer["Is Exist In site"]
                                 </th>
                                 <th class="tc vm">
+                                    @Localizer["Family Doctor State"]
+                                </th>
+                                <th class="tc vm">
                                     @Localizer["Create Date"]
                                 </th>
                                 <th class="tc vm">
@@ -50,8 +53,8 @@
                         <tbody class="tc vm">
                             @foreach (var user in Model)
                             {
-                                <tr class="tc vm">
-                                   <td class="vm">
+                                <tr class="tc vm" remove-ajax-item="@user.Id">
+                                    <td class="vm">
                                             <div class="flex-style-center">
                                                 <img src="/Content/Doctor/assets/img/User.png" class="avatar-style" style="border-radius:50px;" />
                                                 <div class="mr-10px">
@@ -94,13 +97,28 @@
                                     <td class="vm">
                                         <div class="flex-style-center">
                                             <div class="mr-10px">
+                                                @if (!user.HasAnyFamilyDoctor)
+                                                {
+                                                    <span class="label label-success">@Localizer["Dont Have"]</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="label label-orange">@Localizer["Has"]</span>
+                                                }
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <td class="vm">
+                                        <div class="flex-style-center">
+                                            <div class="mr-10px">
                                                 @user.CreateDate.ToShamsi()
                                             </div>
                                         </div>
                                     </td>
                                    
                                     <td class="tc vm">
-                                        <a  class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+                                        <button onclick="DeleteAjax(@user.Id, '@Url.Action("RemoveFromDoctorDashboard", "ParsaSystem", new {area = "Doctor", userId = user.Id})')" class="btn btn-danger btn-circle btn-xs"><i class="glyphicon glyphicon-remove"></i></button>
                                     </td>
                                 </tr>
                             }

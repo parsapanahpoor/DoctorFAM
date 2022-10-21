@@ -117,37 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Create Date" xml:space="preserve">
-    <value>تاریخ درج</value>
-  </data>
-  <data name="Dont Have" xml:space="preserve">
-    <value>ندارد</value>
-  </data>
-  <data name="Family Doctor State" xml:space="preserve">
-    <value>در سایت پزشک خانواده دارد؟</value>
-  </data>
-  <data name="Has" xml:space="preserve">
-    <value>دارد</value>
-  </data>
-  <data name="Is Exist In site" xml:space="preserve">
-    <value>وضعیت در داکتر فام </value>
-  </data>
-  <data name="List Of Users That Come From Parsa System And You Dont Send SMS To Them" xml:space="preserve">
-    <value>لیست کاربران اضافه شده ی شما که برای آن ها پبام نفرستاده اید </value>
-  </data>
-  <data name="Mobile" xml:space="preserve">
-    <value>موبایل</value>
-  </data>
-  <data name="National Id" xml:space="preserve">
-    <value>کدملی</value>
-  </data>
-  <data name="Not Registered" xml:space="preserve">
-    <value>ثبت نام نکرده</value>
-  </data>
-  <data name="Registered" xml:space="preserve">
-    <value>ثبت نام کرده</value>
-  </data>
-  <data name="User Name" xml:space="preserve">
-    <value>نام و نام خانوادگی</value>
+  <data name="List Of SMSs" xml:space="preserve">
+    <value>لیست پیامکهای ارسالی شما </value>
   </data>
 </root>
