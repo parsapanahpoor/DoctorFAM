@@ -3,7 +3,9 @@ using DoctorFAM.Application.Generators;
 using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Application.StaticTools;
+using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Doctors;
+using DoctorFAM.Domain.Entities.FamilyDoctor.ParsaSystem;
 using DoctorFAM.Domain.Entities.Interest;
 using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.Entities.WorkAddress;
@@ -12,11 +14,16 @@ using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DosctorSideBarInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Employees;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.ParsaSystem;
 using DoctorFAM.Domain.ViewModels.Site.Doctor;
 using DoctorFAM.Domain.ViewModels.Site.Reservation;
 using DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
+using SixLabors.ImageSharp.ColorSpaces;
+using System.Collections.Generic;
 
 namespace DoctorFAM.Application.Services.Implementation
 {
@@ -25,19 +32,16 @@ namespace DoctorFAM.Application.Services.Implementation
         #region Ctor
 
         private readonly IDoctorsRepository _doctorRepository;
-
         private readonly IUserService _userService;
-
         private readonly IOrganizationService _organizationService;
-
         private readonly IWorkAddressService _workAddress;
-
         private readonly ILocationRepository _locationRepository;
-
         private readonly IReservationService _reservationService;
+        private readonly ISMSService _smsservice;
+
 
         public DoctorsService(IDoctorsRepository doctorRepository, IUserService userService, IOrganizationService organizationService,
-                                IWorkAddressService workAddress, ILocationRepository locationRepository, IReservationService reservationService)
+                                IWorkAddressService workAddress, ILocationRepository locationRepository, IReservationService reservationService , ISMSService smsservice)
         {
             _doctorRepository = doctorRepository;
             _userService = userService;
@@ -45,11 +49,387 @@ namespace DoctorFAM.Application.Services.Implementation
             _workAddress = workAddress;
             _locationRepository = locationRepository;
             _reservationService = reservationService;
+            _smsservice = smsservice;
         }
 
         #endregion
 
         #region Doctors Panel Side
+
+        //Show List Of SMS That Send From Doctor To Patient Incomes From Parsa System
+        public async Task<List<LogForSendSMSToUsersIncomeFromParsa>?> ShowListOfSMSThatSendFromDoctorToPatientIncomesFromParsaSystem(ulong id, ulong doctorUserId)
+        {
+            #region Get Organization
+
+            var organization = await _organizationService.GetDoctorOrganizationByUserId(doctorUserId);
+            if (organization == null || organization.OrganizationInfoState != OrganizationInfoState.Accepted || organization.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice)
+            {
+                return null;
+            }
+
+            #endregion
+
+            #region Initial List 
+
+            return await _doctorRepository.ShowListOfSMSThatSendFromDoctorToPatientIncomesFromParsaSystem(id , organization.OwnerId);
+
+            #endregion
+        }
+
+        //Is Exist Any User From Parsa System In Doctor Parsa System List
+        public async Task<bool> IsExistAnyUserFromParsaSystemInDoctorParsaSystemList(ulong parsaSystemUserId, ulong doctorUserId)
+        {
+            return await _doctorRepository.IsExistAnyUserFromParsaSystemInDoctorParsaSystemList(parsaSystemUserId, doctorUserId);
+        }
+
+        //Send SMS From Doctor To The Users That Income From Parsa Sysem 
+        public async Task<bool> SendSMSFromDoctorToTheUsersThatIncomeFromParsaSysem(SendSMSToPatientViewModel model)
+        {
+            #region Get Organization
+
+            var organization = await _organizationService.GetDoctorOrganizationByUserId(model.DoctorUserId);
+            if (organization == null || organization.OrganizationInfoState != OrganizationInfoState.Accepted || organization.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice)
+            {
+                return false;
+            }
+
+            #endregion
+
+            #region Model State Validation 
+
+            if (model == null || model.PatientId.Count() == 0 || !model.PatientId.Any())
+            {
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(model.SMSBody))
+            {
+                return false;
+            }
+
+            //Check Patients Id That Exist In Doctor Population
+            foreach (var item in model.PatientId)
+            {
+                if (!await IsExistAnyUserFromParsaSystemInDoctorParsaSystemList(item, organization.OwnerId))
+                {
+                    return false;
+                }
+            }
+
+            #endregion
+
+            #region Send SMS Method 
+
+            #region Log For Send SMS
+
+            List<LogForSendSMSToUsersIncomeFromParsa> logsForSMS = new List<LogForSendSMSToUsersIncomeFromParsa>();
+
+            foreach (var item in model.PatientId)
+            {
+                logsForSMS.Add(new LogForSendSMSToUsersIncomeFromParsa()
+                {
+                    CreateDate = DateTime.Now,
+                    DoctorUserId = organization.OwnerId,
+                    IsDelete = false,
+                    ParsaUserId = item,
+                    SMSBody = model.SMSBody,
+                });
+            }
+
+            await _doctorRepository.AddLogForSendSMSFromDoctorToUsersThatIncomeFromParsaSystemWithoutSaveChanges(logsForSMS);
+
+            #endregion
+
+            #region Send SMS
+
+            foreach (var item in model.PatientId)
+            {
+                //Get The Current Patient With Validation 
+                var patient = await _doctorRepository.GetUserFromParsaIncomingListByUserIdAndDoctorUserId(organization.OwnerId, item);
+
+                if (patient != null)
+                {
+                    //Initial SMS Body With Algorithm
+                    var message = Messages.SendSMSFromDoctorToTheUsersThatIncomeFromParsaSystem(model.SMSBody);
+
+                    if (!string.IsNullOrEmpty(patient.PatientMobile))
+                    {
+                        //Send SMS
+                        //await _smsservice.SendSimpleSMS(patient.PatientMobile, message);
+
+                        //Update Patient Info In Users That Income From Parsa System List 
+                        patient.SMSSent = true;
+                        patient.SMSSentDate = DateTime.Now;
+                        
+
+                        //Update Method 
+                        await _doctorRepository.UpdateParsaSystemRecord(patient);
+                    }
+                }
+            }
+
+            #endregion
+
+            #endregion
+
+            return true;
+        }
+
+        //List Of DOctor Parsa System Users
+        public async Task<List<UserInsertedFromParsaSystem>?> ListOfDoctorParsaSystemUsers(ulong DoctorUserId)
+        {
+            #region Get Organization
+
+            var organization = await _organizationService.GetDoctorOrganizationByUserId(DoctorUserId);
+            if (organization.OrganizationInfoState != OrganizationInfoState.Accepted || organization.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice)
+            {
+                return null;
+            }
+
+            #endregion
+
+            return await _doctorRepository.ListOfDoctorParsaSystemUsers(organization.OwnerId);
+        }
+
+        //Get User From Parsa Incoming List By User Id And Doctor User Id
+        public async Task<UserInsertedFromParsaSystem?> GetUserFromParsaIncomingListByUserIdAndDoctorUserId(ulong doctorId, ulong parsaUserId)
+        {
+            return await _doctorRepository.GetUserFromParsaIncomingListByUserIdAndDoctorUserId(doctorId, parsaUserId);
+        }
+
+        //Remove User From Parsa System From Doctor Dashboard 
+        public async Task<bool> RemoveUserFromParsaSystemFromDoctorDashboard(ulong doctorUserId, ulong userId)
+        {
+            #region Get Organization
+
+            var organization = await _organizationService.GetDoctorOrganizationByUserId(doctorUserId);
+            if (organization.OrganizationInfoState != OrganizationInfoState.Accepted || organization.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice)
+            {
+                return false;
+            }
+
+            #endregion
+
+            #region Get User By Parsa System Id And Doctor User Id
+
+            var parsaUser = await GetUserFromParsaIncomingListByUserIdAndDoctorUserId(organization.OwnerId, userId);
+            if (parsaUser == null) return false;
+            if (!parsaUser.ShowInDashboard) return false;
+
+            #endregion
+
+            #region Update Show In DashBoard State
+
+            parsaUser.ShowInDashboard = false;
+
+            //update Method 
+            await _doctorRepository.UpdateParsaSystemRecord(parsaUser);
+
+            #endregion
+
+            return true;
+        }
+
+        //Is Exist Any User By This Mobile Number In Current Doctor Parsa System File 
+        public async Task<bool> IsExistAnyUserByThisMobileNumberInCurrentDoctorParsaSystemFile(ulong doctorUserId, string mobileNumber)
+        {
+            return await _doctorRepository.IsExistAnyUserByThisMobileNumberInCurrentDoctorParsaSystemFile(doctorUserId, mobileNumber);
+        }
+
+        //Check That Is User Has Any Active Family Doctor 
+        public async Task<bool> CheckThatIsUserHasAnyActiveFamilyDoctor(string userMobile)
+        {
+            return await _doctorRepository.CheckThatIsUserHasAnyActiveFamilyDoctor(userMobile);
+        }
+
+        //Check That Is Exist User By Mobile In User Population Covered
+        public async Task<bool> CheckThatIsExistUserByMobileInUserPopulationCovered(ulong doctorUserId, string userMobile)
+        {
+            return await _doctorRepository.CheckThatIsExistUserByMobileInUserPopulationCovered(doctorUserId, userMobile);
+        }
+
+        //Get List Of User That Comes From Parsa That Not Register To Doctor FAM
+        public async Task<List<UserInsertedFromParsaSystem>> GetListOfUserThatComesFromParsaThatNotRegisterToDoctorFAM(ulong doctorId)
+        {
+            return await _doctorRepository.GetListOfUserThatComesFromParsaThatNotRegisterToDoctorFAM(doctorId);
+        }
+
+        //Get List Of User That Comes From Parsa That Registered To Doctor FAM
+        public async Task<List<UserInsertedFromParsaSystem>> GetListOfUserThatComesFromParsaThatRegisteredToDoctorFAM(ulong doctorId)
+        {
+            return await _doctorRepository.GetListOfUserThatComesFromParsaThatRegisteredToDoctorFAM(doctorId);
+        }
+
+        //Get List Of User That Comes From Parsa
+        public async Task<List<UserInsertedFromParsaSystem>> GetListOfUserThatComesFromParsa(ulong doctorId)
+        {
+            return await _doctorRepository.GetListOfUserThatComesFromParsa(doctorId);
+        }
+
+        //Refresh List Of Users That Come From Parsa System 
+        public async Task<bool> RefreshListOfUsersThatComeFromParsaSystem(ulong userId)
+        {
+            #region Get Organization
+
+            var organization = await _organizationService.GetDoctorOrganizationByUserId(userId);
+            if (organization.OrganizationInfoState != OrganizationInfoState.Accepted || organization.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice)
+            {
+                return false;
+            }
+
+            #endregion
+
+            #region Get List Of User That Come From Parsa
+
+            //Not Regisetered Users In Site
+            var users = await GetListOfUserThatComesFromParsaThatNotRegisterToDoctorFAM(organization.OwnerId);
+            if (users == null) return false;
+
+            foreach (var item in users)
+            {
+                //Validate Mobile Number
+                if (item.PatientMobile == null) return false;
+
+                if (await _userService.IsExistUserByMobile(item.PatientMobile.Trim()))
+                {
+                    item.IsRegisteredUser = true;
+
+                    await _doctorRepository.RefresPatientFromUserInsertsParsaSystemWithoutSaveChanges(item);
+                }
+
+                if (await CheckThatIsUserHasAnyActiveFamilyDoctor(item.PatientMobile.Trim()))
+                {
+                    item.HasAnyFamilyDoctor = true;
+
+                    await _doctorRepository.RefresPatientFromUserInsertsParsaSystemWithoutSaveChanges(item);
+                }
+
+                if (await CheckThatIsExistUserByMobileInUserPopulationCovered(organization.OwnerId, item.PatientMobile.Trim()))
+                {
+                    item.IsDelete = true;
+
+                    await _doctorRepository.RefresPatientFromUserInsertsParsaSystemWithoutSaveChanges(item);
+                }
+            }
+
+            //Regisetered Users In Site
+            var registeredUser = await GetListOfUserThatComesFromParsaThatRegisteredToDoctorFAM(organization.OwnerId);
+
+            foreach (var item in registeredUser)
+            {
+                //Validate Mobile Number
+                if (item.PatientMobile == null) return false;
+
+                if (await CheckThatIsUserHasAnyActiveFamilyDoctor(item.PatientMobile.Trim()))
+                {
+                    item.HasAnyFamilyDoctor = true;
+
+                    await _doctorRepository.RefresPatientFromUserInsertsParsaSystemWithoutSaveChanges(item);
+                }
+                else
+                {
+                    if (item.HasAnyFamilyDoctor)
+                    {
+                        item.HasAnyFamilyDoctor = false;
+
+                        await _doctorRepository.RefresPatientFromUserInsertsParsaSystemWithoutSaveChanges(item);
+                    }
+                }
+
+                if (await CheckThatIsExistUserByMobileInUserPopulationCovered(organization.OwnerId, item.PatientMobile.Trim()))
+                {
+                    item.IsDelete = true;
+
+                    await _doctorRepository.RefresPatientFromUserInsertsParsaSystemWithoutSaveChanges(item);
+                }
+            }
+
+            await _doctorRepository.SaveChanges();
+
+            #endregion
+
+            return true;
+        }
+
+        //Upload Excel File That Get From Parsa System
+        public async Task<bool> UploadExcelFileThatGetFromParsaSystem(ulong userId, IFormFile excelFile)
+        {
+            #region File Validation 
+
+            if (!excelFile.IsExcelFile())
+            {
+                return false;
+            }
+
+            #endregion
+
+            #region Get Doctor Organization 
+
+            var organization = await _organizationService.GetDoctorOrganizationByUserId(userId);
+            if (organization.OrganizationInfoState != OrganizationInfoState.Accepted || organization.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice)
+            {
+                return false;
+            }
+
+            #endregion
+
+            #region Work On Excel File 
+
+            List<UserInsertedFromParsaSystem> list = new List<UserInsertedFromParsaSystem>();
+
+            using (var stream = new MemoryStream())
+            {
+                await excelFile.CopyToAsync(stream);
+                using (var package = new ExcelPackage(stream))
+                {
+                    ExcelWorksheet workSheet = package.Workbook.Worksheets[0];
+                    var rowCount = workSheet.Dimension.Rows;
+
+                    if (rowCount >= 1)
+                    {
+                        for (int row = 1; row <= rowCount; row++)
+                        {
+                            if (!string.IsNullOrEmpty(workSheet.Cells[row, 4].Value.ToString()))
+                            {
+                                //Check Is Exist Any User With This Specification In User Population Covered
+                                if (!await CheckThatIsExistUserByMobileInUserPopulationCovered(organization.OwnerId, workSheet.Cells[row, 4].Value.ToString())
+                                    && !await IsExistAnyUserByThisMobileNumberInCurrentDoctorParsaSystemFile(organization.OwnerId, workSheet.Cells[row, 4].Value.ToString()))
+                                {
+                                    list.Add(new UserInsertedFromParsaSystem()
+                                    {
+                                        CreateDate = DateTime.Now,
+                                        IsDelete = false,
+                                        DoctorUserId = organization.OwnerId,
+                                        PatientFirstName = workSheet.Cells[row, 1].Value.ToString(),
+                                        PatientLastName = workSheet.Cells[row, 2].Value.ToString(),
+                                        PatientNationalId = workSheet.Cells[row, 3].Value.ToString(),
+                                        PatientMobile = workSheet.Cells[row, 4].Value.ToString(),
+                                        ShowInDashboard = true,
+                                        SMSSent = false,
+                                        IsRegisteredUser = ((await _userService.IsExistUserByMobile(workSheet.Cells[row, 4].Value.ToString().Trim())) ? true : false),
+                                        HasAnyFamilyDoctor = ((await CheckThatIsUserHasAnyActiveFamilyDoctor(workSheet.Cells[row, 4].Value.ToString().Trim()) ? true : false))
+                                    });
+                                }
+                            }
+                        }
+
+                        #region Add List To the Data Base
+
+                        await _doctorRepository.AddRangeOfUserFromParsaSystemToTheDataBase(list);
+
+                        #endregion
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            #endregion
+
+            return true;
+        }
 
         public async Task<List<DoctorsInterestInfo>> GetDoctorSelectedInterests(ulong doctorId)
         {
@@ -791,7 +1171,7 @@ namespace DoctorFAM.Application.Services.Implementation
             return DoctorSelectedInterestResult.Success;
         }
 
-        #endregion
+#endregion
 
         #region Admin Side
 

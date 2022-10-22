@@ -73,7 +73,7 @@
                                     </span>
                                 <div class="stats-value blue">
                                     
-                                    @(Model.UserSelectedFamilyDoctorRequest.CreateDate != null ? Model.UserSelectedFamilyDoctorRequest.CreateDate.ToStringShamsiDate() : Localizer["Empty"])
+                                    @((Model.UserSelectedFamilyDoctorRequest.CreateDate != null) ? Model.UserSelectedFamilyDoctorRequest.CreateDate.ToStringShamsiDate() : Localizer["Empty"])
                                 </div>
                                 
                             </div>

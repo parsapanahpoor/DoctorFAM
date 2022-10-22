@@ -1,5 +1,7 @@
 ﻿using DoctorFAM.Data.DbContext;
 using DoctorFAM.Domain.Entities.DoctorReservation;
+using DoctorFAM.Domain.Entities.Doctors;
+using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.Enums.DoctorReservation;
 using DoctorFAM.Domain.Enums.Request;
 using DoctorFAM.Domain.Interfaces;
@@ -1019,7 +1021,7 @@ namespace DoctorFAM.Data.Repository
         {
             var query = _context.ReservationDateTimeCancelations
                 .Include(p => p.DoctorReservationDateTime)
-                .ThenInclude(p=> p.User)
+                .ThenInclude(p => p.User)
                 .Where(s => !s.IsDelete && s.ReservationDateCancelationId == filter.ReservationDateId && s.DoctorReservationDateTime.DoctorReservationState != DoctorReservationState.Canceled)
                 .OrderByDescending(s => s.CreateDate)
                 .AsQueryable();
@@ -1150,6 +1152,16 @@ namespace DoctorFAM.Data.Repository
 
         #region Site Side 
 
+        //List Of Future Days Of Doctor Reservation 
+        public async Task<List<DoctorReservationDate>> ListOfFutureDaysOfDoctorReservation(ulong doctorUserId)
+        {
+            return await _context.DoctorReservationDates.Where(s => !s.IsDelete && s.UserId == doctorUserId && ((s.ReservationDate.Year > DateTime.Now.Year)
+                                        || (s.ReservationDate.Year == DateTime.Now.Year
+                                             && s.ReservationDate.DayOfYear >= DateTime.Now.DayOfYear)))
+                                                  .OrderBy(s => s.ReservationDate)
+                                                      .ToListAsync();
+        }
+
         //Get Reservation Date By Reservation Date And User Id
         public async Task<DoctorReservationDate?> GetDoctorReservationDateByReservationDateAndUserId(DateTime reservationDate, ulong userId)
         {
@@ -1162,7 +1174,7 @@ namespace DoctorFAM.Data.Repository
         public async Task<List<DoctorReservationDateTime>?> GetListOfDoctorReservationDateTimeByReservationDateId(ulong reservationDateId)
         {
             return await _context.DoctorReservationDateTimes.Where(p => !p.IsDelete && p.DoctorReservationDateId == reservationDateId
-                                                                    && p.DoctorReservationState != DoctorReservationState.Canceled).OrderBy(p=> p.StartTime).ToListAsync();
+                                                                    && p.DoctorReservationState != DoctorReservationState.Canceled).OrderBy(p => p.StartTime).ToListAsync();
         }
 
         #endregion

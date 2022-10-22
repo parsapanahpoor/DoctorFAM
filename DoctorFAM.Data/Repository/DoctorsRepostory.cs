@@ -1,6 +1,10 @@
 ﻿using DoctorFAM.Data.DbContext;
+using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Doctors;
+using DoctorFAM.Domain.Entities.FamilyDoctor.ParsaSystem;
 using DoctorFAM.Domain.Entities.Interest;
+using DoctorFAM.Domain.Entities.Organization;
+using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.WorkAddress;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo;
@@ -11,9 +15,11 @@ using DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -33,6 +39,103 @@ namespace DoctorFAM.Data.Repository
         #endregion
 
         #region Doctors Panel Side
+
+        //Show List Of SMS That Send From Doctor To Patient Incomes From Parsa System
+        public async Task<List<LogForSendSMSToUsersIncomeFromParsa>?> ShowListOfSMSThatSendFromDoctorToPatientIncomesFromParsaSystem(ulong id , ulong doctorUserId)
+        {
+            return await _context.LogForSendSMSToUsersIncomeFromParsa.Where(p=> !p.IsDelete && p.ParsaUserId == id && p.DoctorUserId == doctorUserId).ToListAsync();
+        }
+
+        //Add Log For Send SMS From Doctor To Users That Income From Parsa System Without SaveChanges
+        public async Task AddLogForSendSMSFromDoctorToUsersThatIncomeFromParsaSystemWithoutSaveChanges(List<LogForSendSMSToUsersIncomeFromParsa> log)
+        {
+            await _context.LogForSendSMSToUsersIncomeFromParsa.AddRangeAsync(log);
+        }
+
+        //Is Exist Any User From Parsa System In Doctor Parsa System List
+        public async Task<bool> IsExistAnyUserFromParsaSystemInDoctorParsaSystemList(ulong parsaSystemUserId , ulong doctorUserId)
+        {
+            return await _context.UserInsertedFromParsaSystems.AnyAsync(p => !p.IsDelete && p.DoctorUserId == doctorUserId && p.Id == parsaSystemUserId);
+        }
+
+        //List Of DOctor Parsa System Users
+        public async Task<List<UserInsertedFromParsaSystem>?> ListOfDoctorParsaSystemUsers(ulong DoctorUserId)
+        {
+           return  await _context.UserInsertedFromParsaSystems.Where(p => !p.IsDelete && p.DoctorUserId == DoctorUserId)
+                                                .OrderByDescending(p => p.CreateDate).ToListAsync();
+        }
+
+        //Update Parsa System Record 
+        public async Task UpdateParsaSystemRecord(UserInsertedFromParsaSystem parsa)
+        {
+            _context.UserInsertedFromParsaSystems.Update(parsa);
+            await _context.SaveChangesAsync();
+        }
+
+        //Get User From Parsa Incoming List By User Id And Doctor User Id
+        public async Task<UserInsertedFromParsaSystem?> GetUserFromParsaIncomingListByUserIdAndDoctorUserId(ulong doctorId, ulong parsaUserId)
+        {
+            return await _context.UserInsertedFromParsaSystems.FirstOrDefaultAsync(p=> !p.IsDelete && p.Id == parsaUserId && p.DoctorUserId == doctorId);
+        }
+
+        //Is Exist Any User By This Mobile Number In Current Doctor Parsa System File 
+        public async Task<bool> IsExistAnyUserByThisMobileNumberInCurrentDoctorParsaSystemFile(ulong doctorUserId , string mobileNumber)
+        {
+            return await _context.UserInsertedFromParsaSystems.AnyAsync(p => !p.IsDelete && p.DoctorUserId == doctorUserId && p.PatientMobile == mobileNumber); 
+        }
+
+        //Check That Is Exist User By Mobile In User Population Covered
+        public async Task<bool> CheckThatIsExistUserByMobileInUserPopulationCovered(ulong doctorUserId , string userMobile)
+        {
+            return await _context.UserSelectedFamilyDoctor.Include(p=> p.Patient)
+                                    .AnyAsync(p => p.Patient.Mobile == userMobile && !p.IsDelete && p.DoctorId == doctorUserId
+                                                && p.FamilyDoctorRequestState == Domain.Enums.FamilyDoctor.FamilyDoctorRequestState.Accepted);
+        }
+
+        //Check That Is User Has Any Active Family Doctor 
+        public async Task<bool> CheckThatIsUserHasAnyActiveFamilyDoctor(string userMobile)
+        {
+            return await _context.UserSelectedFamilyDoctor.Include(p => p.Patient)
+                                    .AnyAsync(p => p.Patient.Mobile == userMobile && !p.IsDelete
+                                                && p.FamilyDoctorRequestState == Domain.Enums.FamilyDoctor.FamilyDoctorRequestState.Accepted);
+        }
+
+        //Save Changes
+        public async Task SaveChanges()
+        {
+            await _context.SaveChangesAsync();
+        }
+
+        //Refres Patient From User Inserts Parsa System
+        public async Task RefresPatientFromUserInsertsParsaSystemWithoutSaveChanges(UserInsertedFromParsaSystem user)
+        {
+            _context.UserInsertedFromParsaSystems.Update(user);
+        }
+
+        //Get List Of User That Comes From Parsa That Not Register To Doctor FAM
+        public async Task<List<UserInsertedFromParsaSystem>> GetListOfUserThatComesFromParsaThatNotRegisterToDoctorFAM(ulong doctorId)
+        {
+            return await _context.UserInsertedFromParsaSystems.Where(p => !p.IsDelete && p.DoctorUserId == doctorId && !p.IsRegisteredUser).ToListAsync();
+        }
+
+        //Get List Of User That Comes From Parsa That Registered To Doctor FAM
+        public async Task<List<UserInsertedFromParsaSystem>> GetListOfUserThatComesFromParsaThatRegisteredToDoctorFAM(ulong doctorId)
+        {
+            return await _context.UserInsertedFromParsaSystems.Where(p => !p.IsDelete && p.DoctorUserId == doctorId && p.IsRegisteredUser).ToListAsync();
+        }
+
+        //Get List Of User That Comes From Parsa
+        public async Task<List<UserInsertedFromParsaSystem>> GetListOfUserThatComesFromParsa(ulong doctorId)
+        {
+            return await _context.UserInsertedFromParsaSystems.Where(p => !p.IsDelete && p.DoctorUserId == doctorId).ToListAsync();
+        }
+
+        //Add Range Of User From Parsa System To The Data Base
+        public async Task AddRangeOfUserFromParsaSystemToTheDataBase(List<UserInsertedFromParsaSystem> list)
+        {
+            await _context.UserInsertedFromParsaSystems.AddRangeAsync(list);
+            await _context.SaveChangesAsync();
+        }
 
         public async Task<FilterDoctorOfficeEmployeesViewmodel> FilterDoctorOfficeEmployees(FilterDoctorOfficeEmployeesViewmodel filter)
         {

@@ -28,6 +28,19 @@ namespace DoctorFAM.Application.Security
             return true;
         }
 
+        public static bool IsExcelFile(this IFormFile postedFile)
+        {
+            if (Path.GetExtension(postedFile.FileName)?.ToLower() != ".xlsx" &&
+                Path.GetExtension(postedFile.FileName)?.ToLower() != ".xlsm" &&
+                Path.GetExtension(postedFile.FileName)?.ToLower() != ".xltx" &&
+                Path.GetExtension(postedFile.FileName)?.ToLower() != ".xlsb")
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         public static bool HasLength(this IFormFile postedFile, int length)
         {
             if (postedFile.Length > length)

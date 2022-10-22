@@ -1,0 +1,181 @@
+﻿@model List<DoctorFAM.Domain.Entities.FamilyDoctor.ParsaSystem.UserInsertedFromParsaSystem>
+@using DoctorFAM.Application.Convertors
+
+@{
+    ViewData["Title"] = @Localizer["List OF Your Parsa System Users"];
+}
+
+@section Breadcrumb
+    {
+    <li>
+        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+    </li>
+}
+
+    @section Styles
+    {
+    <link href="/admin/css/dataTables.bootstrap.rtl.css" rel="stylesheet" />
+}
+
+    @section Scripts
+    {
+    <script src="~/admin/js/datatable/jquery.dataTables.min.js"></script>
+    <script src="~/admin/js/datatable/ZeroClipboard.js"></script>
+    <script src="~/admin/js/datatable/dataTables.tableTools.min.js"></script>
+    <script src="~/admin/js/datatable/dataTables.bootstrap.min.js"></script>
+    <script src="~/admin/js/datatable/datatables-init.js"></script>
+    <script>
+        InitiateSimpleDataTable.init();
+        InitiateEditableDataTable.init();
+        InitiateExpandableDataTable.init();
+        InitiateSearchableDataTable.init();
+    </script>
+
+    <script>
+
+        function ShowListOfSMS(id) {
+            $.ajax({
+                url: "/Show-List-Of-SMS/" + id,
+                type: "get",
+                data: {
+
+                },
+                success: function (response) {
+                    $("#LargeModalBody").html(response);
+
+                    $("#LargeModal").modal("show");
+                }
+            });
+        }
+
+    </script>
+
+    }
+
+    <div class="page-body">
+
+        <div class="row">
+            <div class="col-xs-12 col-md-12">
+                <div class="widget">
+                    <div class="widget-header bordered-bottom bordered-yellow">
+                        <span class="widget-caption">@Localizer["Search on All Columns"]</span>
+                        <div class="widget-buttons">
+                            <a href="#" data-toggle="maximize">
+                                <i class="fa fa-expand"></i>
+                            </a>
+                            <a href="#" data-toggle="collapse">
+                                <i class="fa fa-minus"></i>
+                            </a>
+                            <a href="#" data-toggle="dispose">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                @if (Model != null && Model.Any())
+                {
+                    <form asp-action="SendSMSToSelectedUsers" asp-controller="ParsaSystem" asp-area="Doctor" id="filter-search" method="get">
+
+                        <div class="widget-body no-padding">
+                            <div id="searchable_wrapper" class="dataTables_wrapper form-inline">
+
+                                <table class="table table-bordered table-hover table-striped dataTable" id="searchable" role="grid" aria-describedby="searchable_info">
+                                    <thead class="bordered-darkorange">
+                                        <tr role="row">
+
+                                            <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" style="width: 283.4px;" aria-label="Rendering engine: activate to sort column ascending">@Localizer["Username"]</th>
+                                            <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" style="width: 283.4px;" aria-label="Browser: activate to sort column ascending" aria-sort="ascending">@Localizer["Info"]</th>
+                                            <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" style="width: 283.4px;" aria-label="Platform(s): activate to sort column ascending">@Localizer["States"]</th>
+                                            <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" style="width: 283.4px;" aria-label="Engine version: activate to sort column ascending">@Localizer["SMS States"]</th>
+                                            <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" style="width: 283.4px;" aria-label="Engine version: activate to sort column ascending"></th>
+
+                                        </tr>
+                                    </thead>
+
+                                    <tfoot>
+                                        <tr>
+                                            <th rowspan="1" colspan="1"><input type="text" name="search_engine" placeholder="@Localizer["Search Usermane"]" class="form-control input-sm"></th>
+                                            <th rowspan="1" colspan="1"><input type="text" name="search_browser" placeholder="@Localizer["Search"]" class="form-control input-sm"></th>
+                                            <th rowspan="1" colspan="1"></th>
+                                            <th rowspan="1" colspan="1"></th>
+                                            <th rowspan="1" colspan="1">
+                                                <button type="submit" class="btn btn-labeled w-100 btn-palegreen">
+                                                    <i class=" btn-label glyphicon glyphicon-ok"></i>@Localizer["Send SMS"]
+                                                </button>
+                                            </th>
+
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+
+                                        @foreach (var user in Model)
+                                        {
+                                            <tr role="row" class="even">
+
+                                                <td class=" sorting_1">@user.PatientFirstName @user.PatientLastName</td>
+                                                <td class="sorting_1">
+                                                    <span>@Localizer["Mobile"] : @user.PatientMobile</span>
+                                                    <hr>
+                                                    <span>@Localizer["National Code"] : @user.PatientNationalId</span>
+                                                </td>
+                                                <td class="sorting_1">
+
+                                                    @if (user.HasAnyFamilyDoctor)
+                                                    {
+                                                        <span class="label label-danger">@Localizer["Has Family Doctor"]</span>
+                                                        <hr>
+                                                    }
+                                                    @if (!user.HasAnyFamilyDoctor)
+                                                    {
+                                                        <span class="label label-success">@Localizer["Doesnt Have Family Doctor"]</span>
+                                                        <hr>
+                                                    }
+
+                                                    @if (!user.IsRegisteredUser)
+                                                    {
+                                                        <span class="label label-danger">@Localizer["Doesnt Have register"]</span>
+                                                    }
+                                                    @if (user.IsRegisteredUser)
+                                                    {
+                                                        <span class="label label-success">@Localizer["User Has Registered"]</span>
+                                                    }
+
+                                                </td>
+                                                <td class="center ">
+
+                                                    @if (user.SMSSent)
+                                                    {
+                                                            <p style="cursor: pointer;" onclick="ShowListOfSMS(@user.Id)" class="label label-success"> @Localizer["List Of SMS"] </p>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="label label-danger">@Localizer["Didnt Send SMS Yet"]</span>
+                                                    }
+
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        <input type="checkbox" name="personsNumber" value="@user.Id">
+                                                        <span class="text"></span>
+                                                    </label>
+                                                </td>
+
+                                            </tr>
+
+                                        }
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </form>
+                }
+                else
+                {
+                    <partial name="_DoctorPanelNotFoundPartial" />
+                }
+            </div>
+        </div>
+    </div>
+
+</div>

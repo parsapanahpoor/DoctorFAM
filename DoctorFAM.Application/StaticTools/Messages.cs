@@ -130,4 +130,11 @@ public static class Messages
         return
             $"شما میتوانید از طریق لینک زیر اطلاعات پزشک را مشاهده فرمایید : {link} . {Environment.NewLine} {PathTools.SiteFarsiName}";
     }
+
+    //Send SMS From Doctor To The Users That Income From Parsa System
+    public static string SendSMSFromDoctorToTheUsersThatIncomeFromParsaSystem(string smsBody)
+    {
+        return
+            $"{smsBody} {Environment.NewLine} {PathTools.SiteFarsiName}";
+    }
 }

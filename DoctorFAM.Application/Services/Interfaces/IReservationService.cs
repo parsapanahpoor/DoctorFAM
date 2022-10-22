@@ -111,6 +111,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         #region Site Side 
 
+        //List Of Future Doctor Days For Reservation 
+        Task<List<DoctorReservationDate>> ListOfFutureDaysOfDoctorReservation(ulong doctorUserId);
+
         Task<bool> ChargeUserWallet(ulong userId, int price);
 
         Task<bool> PayReservationTariff(ulong userId, int price);

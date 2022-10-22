@@ -204,7 +204,10 @@ namespace DoctorFAM.Data.Repository
 
             #region List Of Reservation Date Time 
 
-            model.DoctorReservationDateTimes = await _context.DoctorReservationDateTimes.Include(p => p.User).Include(p => p.DoctorReservationDate).ThenInclude(p => p.User)
+            model.DoctorReservationDateTimes = await _context.DoctorReservationDateTimes
+                                                    .Include(p => p.User)
+                                                    .Include(p => p.DoctorReservationDate)
+                                                    .ThenInclude(p => p.User)
                                                     .Where(p => !p.IsDelete && p.DoctorReservationDate.ReservationDate.DayOfYear == DateTime.Now.DayOfYear
                                                     && p.DoctorReservationDate.ReservationDate.Year == DateTime.Now.Year).ToListAsync();
 
@@ -280,6 +283,22 @@ namespace DoctorFAM.Data.Repository
                                                         && p.FamilyDoctorRequestState == Domain.Enums.FamilyDoctor.FamilyDoctorRequestState.WaitingForConfirm)
                                                             .OrderByDescending(p => p.CreateDate)
                                                                 .Select(p => p.Patient).ToListAsync();
+
+            #endregion
+
+            #region List Of User Inserts From Parsa System That Not Sent SMS To Them
+
+            model.UserNotSendSMS = await _context.UserInsertedFromParsaSystems.Where(p => !p.IsDelete && p.DoctorUserId == organization.OwnerId
+                                                && p.ShowInDashboard && !p.SMSSent)
+                                                .OrderByDescending(p=> p.CreateDate).ToListAsync();
+
+            #endregion
+
+            #region List Of User Inserts From Parsa System That Sent SMS To Them
+
+            model.UserSendSMS = await _context.UserInsertedFromParsaSystems.Where(p => !p.IsDelete && p.DoctorUserId == organization.OwnerId
+                                                && p.ShowInDashboard && p.SMSSent)
+                                                .OrderByDescending(p=> p.CreateDate).ToListAsync();
 
             #endregion
 

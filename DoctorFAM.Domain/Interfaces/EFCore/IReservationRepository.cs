@@ -103,6 +103,9 @@ namespace DoctorFAM.Domain.Interfaces
 
         #region Site Side
 
+        //List Of Future Days Of Doctor Reservation 
+        Task<List<DoctorReservationDate>> ListOfFutureDaysOfDoctorReservation(ulong doctorUserId);
+
         //Get Reservation Date By Reservation Date And User Id
         Task<DoctorReservationDate?> GetDoctorReservationDateByReservationDateAndUserId(DateTime reservationDate, ulong userId);
 

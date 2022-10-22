@@ -311,7 +311,7 @@ namespace DoctorFAM.Application.Services.Implementation
                     minute = endTime.Minute;
                 }
 
-                await _reservation.Savechanges();   
+                await _reservation.Savechanges();
             }
 
             #endregion
@@ -987,6 +987,12 @@ namespace DoctorFAM.Application.Services.Implementation
         #endregion
 
         #region Site Side
+
+        //List Of Future Doctor Days For Reservation 
+        public async Task<List<DoctorReservationDate>> ListOfFutureDaysOfDoctorReservation(ulong doctorUserId)
+        {
+            return await _reservation.ListOfFutureDaysOfDoctorReservation(doctorUserId);
+        }
 
         public async Task<bool> ChargeUserWallet(ulong userId, int price)
         {

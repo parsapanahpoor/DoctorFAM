@@ -1,0 +1,36 @@
+﻿@model List<DoctorFAM.Domain.Entities.FamilyDoctor.ParsaSystem.LogForSendSMSToUsersIncomeFromParsa>
+@using DoctorFAM.Application.Convertors
+
+<div class="row">
+
+    <div class="col-lg-12 col-sm-12 col-xs-12">
+        <div class="widget">
+            <div class="widget-header bordered-bottom bordered-themeprimary">
+                <i class="widget-icon fa fa-tasks themeprimary"></i>
+                <span class="widget-caption themeprimary">@Localizer["لیست پیامکهای ارسالی شما "]</span>
+            </div><!--Widget Header-->
+            <div class="widget-body no-padding">
+                <div class="task-container">
+                    <ul class="tasks-list">
+
+                        @foreach (var item in Model)
+                        {
+                            <li class="task-item">
+                                <div class="task-state">
+                                    <span class="label label-palegreen">
+                                        @item.CreateDate.ToShamsi()
+                                    </span>
+                                </div>
+                                <div class="task-body">@item.SMSBody</div>
+                            </li>
+                        }
+
+                    </ul>
+                </div>
+            </div><!--Widget Body-->
+        </div>
+
+    </div>
+
+</div>
+

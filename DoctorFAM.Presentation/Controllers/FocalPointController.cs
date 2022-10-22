@@ -82,6 +82,15 @@ namespace DoctorFAM.Web.Controllers
 
             #endregion
 
+            #region List Of Reservation Days 
+
+            if (loggedDateTime == null)
+            {
+                ViewBag.FutureDates = await _reservationService.ListOfFutureDaysOfDoctorReservation(userId);
+            }
+
+            #endregion
+
             return View(model);
         }
 

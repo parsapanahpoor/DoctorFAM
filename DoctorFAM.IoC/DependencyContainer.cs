@@ -3,8 +3,10 @@ using DoctorFAM.Application.Interfaces;
 using DoctorFAM.Application.Services;
 using DoctorFAM.Application.Services.Implementation;
 using DoctorFAM.Application.Services.Interfaces;
+using DoctorFAM.Data.Dapper.Repository;
 using DoctorFAM.Data.Repository;
 using DoctorFAM.Domain.Interfaces;
+using DoctorFAM.Domain.Interfaces.Dapper;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -44,19 +46,19 @@ namespace DoctorFAM.IoC
             services.AddScoped<ISMSService, SMSService>();
             services.AddScoped<IWorkAddressService, WorkAddressService>();
             services.AddScoped<IReservationService, ReservationService>();
-            services.AddScoped<IPharmacyService , PharmacyService>();
-            services.AddScoped<INotificationService , NotificationService>();
-            services.AddScoped<IBMIService , BMIService>();
-            services.AddScoped<IFamilyDoctorService , FamilyDoctorService>();
-            services.AddScoped<IOnlineVisitService , OnlineVisitService>();
-            services.AddScoped<ITicketService , TicketService>();
-            services.AddScoped<INurseService , NurseService>();
-            services.AddScoped<IConsultantService , ConsultantService>();
-            services.AddScoped<ILaboratoryService , LaboratoryService>();
+            services.AddScoped<IPharmacyService, PharmacyService>();
+            services.AddScoped<INotificationService, NotificationService>();
+            services.AddScoped<IBMIService, BMIService>();
+            services.AddScoped<IFamilyDoctorService, FamilyDoctorService>();
+            services.AddScoped<IOnlineVisitService, OnlineVisitService>();
+            services.AddScoped<ITicketService, TicketService>();
+            services.AddScoped<INurseService, NurseService>();
+            services.AddScoped<IConsultantService, ConsultantService>();
+            services.AddScoped<ILaboratoryService, LaboratoryService>();
 
             #endregion
 
-            #region Repository
+            #region EF Core Repository
 
             services.AddScoped<ILocationRepository, LocationRepository>();
             services.AddScoped<IHomeVisitRepository, HomeVisitRepository>();
@@ -78,15 +80,21 @@ namespace DoctorFAM.IoC
             services.AddScoped<IOrganizationRepository, OrganizationRepository>();
             services.AddScoped<IWorkAddressRepository, WorkAddressRepository>();
             services.AddScoped<IReservationRepository, ReservationRepository>();
-            services.AddScoped<IPharmacyRepository , PharmacyRepository>();
+            services.AddScoped<IPharmacyRepository, PharmacyRepository>();
             services.AddScoped<INotificationRepository, NotificationRepository>();
-            services.AddScoped<IBMIRepository , BMIRepository>();
-            services.AddScoped<IFamilyDoctorRepository , FamilyDoctorRepository>();
-            services.AddScoped<IOnlineVisitRepository , OnlineVisitRepository>();
-            services.AddScoped<ITicketRepository , TicketRepository>();
-            services.AddScoped<INurseRepository , NurseRepository>();
-            services.AddScoped<IConsultantRepository , ConsultantRepository>();
-            services.AddScoped<ILaboratoryRepository , LaboratoryRepository>();
+            services.AddScoped<IBMIRepository, BMIRepository>();
+            services.AddScoped<IFamilyDoctorRepository, FamilyDoctorRepository>();
+            services.AddScoped<IOnlineVisitRepository, OnlineVisitRepository>();
+            services.AddScoped<ITicketRepository, TicketRepository>();
+            services.AddScoped<INurseRepository, NurseRepository>();
+            services.AddScoped<IConsultantRepository, ConsultantRepository>();
+            services.AddScoped<ILaboratoryRepository, LaboratoryRepository>();
+
+            #endregion
+
+            #region Dapper Repository
+
+            services.AddScoped<IBMIRepositoryDapper, BMIRepositoryDapper>();
 
             #endregion
         }

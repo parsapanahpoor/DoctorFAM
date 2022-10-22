@@ -1,6 +1,7 @@
 ﻿using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.Entities.BMI;
 using DoctorFAM.Domain.Interfaces;
+using DoctorFAM.Domain.Interfaces.Dapper;
 using DoctorFAM.Domain.ViewModels.Site.Diabet;
 using System;
 using System.Collections.Generic;
@@ -15,13 +16,14 @@ namespace DoctorFAM.Application.Services.Implementation
         #region Ctor
 
         private readonly IBMIRepository _bmiRepository;
-
+        private readonly IBMIRepositoryDapper _bmiDapper;
         private readonly IUserService _userService;
 
-        public BMIService(IBMIRepository bmiRepository, IUserService userService)
+        public BMIService(IBMIRepository bmiRepository, IUserService userService , IBMIRepositoryDapper bmiDapper)
         {
             _bmiRepository = bmiRepository;
             _userService = userService;
+            _bmiDapper = bmiDapper;
         }
 
         #endregion
@@ -81,7 +83,11 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #region Add Method
 
-            await _bmiRepository.CreateBMI(model);
+            //Add Method By EF Core
+            //await _bmiRepository.CreateBMI(model);
+
+            //Add Method By Dapper
+            _bmiDapper.CreateBMI(model);
 
             #endregion
 
@@ -147,7 +153,11 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #region Add Method
 
-            await _bmiRepository.CreateGFR(model);
+            //Add EF Core Method
+            //await _bmiRepository.CreateGFR(model);
+
+            //Add Dapper Method 
+            await _bmiDapper.CreateGFR(model);
 
             #endregion
 
@@ -170,7 +180,11 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #region Get User BMI History
 
-            var model = await _bmiRepository.GetUserBMIHistory(userId);
+            //EF Core
+            //var model = await _bmiRepository.GetUserBMIHistory(userId);
+
+            //Dapper
+            var model = await _bmiDapper.GetUserBMIHistory(userId);
 
             #endregion
 
@@ -189,7 +203,11 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #region Get User GFR History
 
-            var model = await _bmiRepository.GetUserGFRHistory(userId);
+            //EF Core
+            //var model = await _bmiRepository.GetUserGFRHistory(userId);
+
+            //Dapper
+            var model = await _bmiDapper.GetUserGFRHistory(userId);
 
             #endregion
 
