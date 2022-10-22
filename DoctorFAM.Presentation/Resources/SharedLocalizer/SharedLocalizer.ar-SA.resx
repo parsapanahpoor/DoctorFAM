@@ -120,6 +120,9 @@
   <data name="Accepted" xml:space="preserve">
     <value>وافقت</value>
   </data>
+  <data name="Add Household" xml:space="preserve">
+    <value>أضف الأسرة</value>
+  </data>
   <data name="Add New Employee" xml:space="preserve">
     <value>أضف موظف جديد</value>
   </data>
@@ -168,9 +171,6 @@
   <data name="Create New Role" xml:space="preserve">
     <value>إنشاء دور جديد</value>
   </data>
-  <data name="Create Population Covered" xml:space="preserve">
-    <value>أضف مجتمعًا مغطى</value>
-  </data>
   <data name="CreateDynamicPage" xml:space="preserve">
     <value>إنشاء صفحة جديدة</value>
   </data>
@@ -207,6 +207,12 @@
   <data name="ExcessiveObesity" xml:space="preserve">
     <value>السمنة المفرطة</value>
   </data>
+  <data name="Family Members" xml:space="preserve">
+    <value>أفراد الأسرة</value>
+  </data>
+  <data name="Family Members List" xml:space="preserve">
+    <value>قائمة أفراد الأسرة</value>
+  </data>
   <data name="fat" xml:space="preserve">
     <value>سمين</value>
   </data>
@@ -234,8 +240,8 @@
   <data name="Health House" xml:space="preserve">
     <value>المنزل الصحي</value>
   </data>
-  <data name="Health Test" xml:space="preserve">
-    <value>اختبار الصحة</value>
+  <data name="Health profiles" xml:space="preserve">
+    <value>ملامح الصحة</value>
   </data>
   <data name="Home" xml:space="preserve">
     <value>الصفحة الرئيسية</value>
@@ -410,12 +416,6 @@
   </data>
   <data name="Pharmacy Info" xml:space="preserve">
     <value>معلومات الصيدلية</value>
-  </data>
-  <data name="Population Covered" xml:space="preserve">
-    <value>تغطية السكان</value>
-  </data>
-  <data name="Population Covered List" xml:space="preserve">
-    <value>قائمة الأشخاص المغطاة</value>
   </data>
   <data name="Profile" xml:space="preserve">
     <value>حساب تعريفي</value>

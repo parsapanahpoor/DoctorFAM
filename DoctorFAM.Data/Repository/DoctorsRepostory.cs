@@ -346,7 +346,9 @@ namespace DoctorFAM.Data.Repository
                         Username = item.User.Username,
                         UserAvatar = item.User.Avatar,
                         Education = item.DoctorsInfos.Education,
-                        Specialist = item.DoctorsInfos.Specialty
+                        Specialist = item.DoctorsInfos.Specialty,
+                        ClinicPhone=item.DoctorsInfos.ClinicPhone,
+                        GeneralPhone=item.DoctorsInfos.GeneralPhone
                     };
 
                     model.Add(modelChild);

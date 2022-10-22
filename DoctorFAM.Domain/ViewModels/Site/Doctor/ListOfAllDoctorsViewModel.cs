@@ -20,6 +20,11 @@ namespace DoctorFAM.Domain.ViewModels.Site.Doctor
 
         public string? Specialist { get; set; }
 
+        public string? ClinicPhone { get; set; }
+
+        public string? GeneralPhone { get; set; }
+
+
         #endregion
     }
 }

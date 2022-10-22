@@ -120,6 +120,9 @@
   <data name="Accepted" xml:space="preserve">
     <value>Kabul edilmiş</value>
   </data>
+  <data name="Add Household" xml:space="preserve">
+    <value>Hane Ekle</value>
+  </data>
   <data name="Add New Employee" xml:space="preserve">
     <value>Yeni bir çalışan ekle</value>
   </data>
@@ -171,9 +174,6 @@
   <data name="Create New Role" xml:space="preserve">
     <value>Yeni Rol Oluştur</value>
   </data>
-  <data name="Create Population Covered" xml:space="preserve">
-    <value>nüfus yönetimini ekleyin</value>
-  </data>
   <data name="CreateDynamicPage" xml:space="preserve">
     <value>Yeni sayfa oluştur</value>
   </data>
@@ -210,6 +210,12 @@
   <data name="ExcessiveObesity" xml:space="preserve">
     <value>aşırı obezite</value>
   </data>
+  <data name="Family Members" xml:space="preserve">
+    <value>Aile üyeleri</value>
+  </data>
+  <data name="Family Members List" xml:space="preserve">
+    <value>Aile üyeleri listesi</value>
+  </data>
   <data name="fat" xml:space="preserve">
     <value>yağ</value>
   </data>
@@ -228,8 +234,8 @@
   <data name="Health House" xml:space="preserve">
     <value>sağlık evi</value>
   </data>
-  <data name="Health Test" xml:space="preserve">
-    <value>sağlık testi</value>
+  <data name="Health profiles" xml:space="preserve">
+    <value>Sağlık profilleri</value>
   </data>
   <data name="Home" xml:space="preserve">
     <value>Ana Sayfa</value>
@@ -398,12 +404,6 @@
   </data>
   <data name="Pharmacy Info" xml:space="preserve">
     <value>Eczane bilgileri</value>
-  </data>
-  <data name="Population Covered" xml:space="preserve">
-    <value>Kapsanan nüfus</value>
-  </data>
-  <data name="Population Covered List" xml:space="preserve">
-    <value>Kapsanan kişilerin listesi</value>
   </data>
   <data name="Profile" xml:space="preserve">
     <value>Profil</value>

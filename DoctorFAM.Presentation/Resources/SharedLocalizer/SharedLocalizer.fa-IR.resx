@@ -255,17 +255,17 @@
   <data name="Edit Profile" xml:space="preserve">
     <value>ویرایش اطلاعات کاربری</value>
   </data>
-  <data name="Create Population Covered" xml:space="preserve">
-    <value>افزودن جمعیت تحت پوشش</value>
+  <data name="Add Household" xml:space="preserve">
+    <value>افزودن خانوار</value>
   </data>
   <data name="Manage Population Covered" xml:space="preserve">
     <value>مدیریت جمعیت تحت پوشش</value>
   </data>
-  <data name="Population Covered" xml:space="preserve">
-    <value>جمعیت تحت پوشش</value>
+  <data name="Family Members" xml:space="preserve">
+    <value>اعضای خانوار</value>
   </data>
-  <data name="Population Covered List" xml:space="preserve">
-    <value>لیست افراد تحت پوشش</value>
+  <data name="Family Members List" xml:space="preserve">
+    <value>لیست اعضای خانوار</value>
   </data>
   <data name="Doctor Info" xml:space="preserve">
     <value>اطلاعات پزشک</value>
@@ -385,7 +385,7 @@
     <value>لیست کارمندان</value>
   </data>
   <data name="Manage Employees" xml:space="preserve">
-    <value>مدیریت کارمندان </value>
+    <value>مدیریت کارکنان</value>
   </data>
   <data name="Mobile Number is Duplicated" xml:space="preserve">
     <value>شماره موبایل وارد شده پذیرفته نمی باشد.</value>
@@ -489,8 +489,8 @@
   <data name="Your Weight" xml:space="preserve">
     <value>وزن شما</value>
   </data>
-  <data name="Health Test" xml:space="preserve">
-    <value>تست سلامت</value>
+  <data name="Health profiles" xml:space="preserve">
+    <value>نمایه های سلامت</value>
   </data>
   <data name="List Of Yours Requests" xml:space="preserve">
     <value>درخواست های دریافتی شما</value>

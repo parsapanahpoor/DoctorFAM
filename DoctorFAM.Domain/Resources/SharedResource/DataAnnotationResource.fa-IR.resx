@@ -325,7 +325,7 @@
     <value>جنسیت</value>
   </data>
   <data name="General Phone" xml:space="preserve">
-    <value>تلفن در اختیار بیمار</value>
+    <value>تلفن همراه(برای ارتباط با بیماران)</value>
   </data>
   <data name="Health Insurance" xml:space="preserve">
     <value>بیمه سلامت</value>

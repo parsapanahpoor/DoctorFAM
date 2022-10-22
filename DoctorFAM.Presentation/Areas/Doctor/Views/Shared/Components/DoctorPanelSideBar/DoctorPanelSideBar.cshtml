@@ -34,11 +34,11 @@
 
                     <ul class="submenu">
 
-                        <li>
+                       @* <li>
                             <a asp-area="Doctor" asp-controller="PopulationCovered" asp-action="FilterPopulationCovered">
                                 <span class="menu-text">@SharedLocalizer["List of covered people"]</span>
                             </a>
-                        </li>
+                        </li>*@
 
                         <li>
                             <a asp-area="Doctor" asp-controller="PopulationCovered" asp-action="FilterCurrentDoctorPopulationCovered">
@@ -106,7 +106,7 @@
                     <ul class="submenu">
 
                         <li>
-                    <a asp-action="ListOfHomeVisitRequest" asp-area="Doctor" asp-controller="HomeVisit">
+                            <a asp-action="ListOfHomeVisitRequest" asp-area="Doctor" asp-controller="HomeVisit">
                                 <span class="menu-text">@SharedLocalizer["List Of Home Visit Request"]</span>
                             </a>
                         </li>
@@ -134,7 +134,7 @@
 
                         <li>
                             <a asp-action="ListOfDeathCertificateRequests" asp-area="Doctor" asp-controller="DeathCertificate">
-                        <span class="menu-text">@SharedLocalizer["List Of Death Certificate"]</span>
+                                <span class="menu-text">@SharedLocalizer["List Of Death Certificate"]</span>
                             </a>
                         </li>
 
@@ -186,7 +186,8 @@
                 <ul class="submenu">
 
                     <li>
-                        <a asp-area="Doctor" asp-controller="Account" asp-action="EditProfile">
+                        @*<a asp-area="Doctor" asp-controller="Account" asp-action="EditProfile">*@
+                        <a>
                             <span class="menu-text">@SharedLocalizer["Edit Profile"]</span>
                         </a>
                     </li>

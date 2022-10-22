@@ -17,7 +17,7 @@
                             <img src="/content/images/user/@((string.IsNullOrEmpty(Model.UserAvatar)) ? "DefaultAvatar.png" : $"thumb/{Model.UserAvatar}")" class="img-fluid" alt="User Image">
                         </div>
                         <div class="doc-info-cont">
-                            <h4 class="doc-name">پزشک: @Model.Username</h4>
+                            <h4 class="doc-name">پزشک:دکتر @Model.Username</h4>
                             <p class="doc-speciality"> @((!string.IsNullOrEmpty(Model.Education)) ? Model.Education : null) - @((!string.IsNullOrEmpty(Model.Specialist)) ? Model.Specialist : null) </p>
 
                             <div class="rating">
@@ -28,6 +28,7 @@
                                 <i class="fas fa-star"></i>
                                 <span class="d-inline-block average-rating">(35)</span>
                             </div>
+                            <hr />
                             <div class="clinic-details">
                                 <p class="doc-location">
                                     @if (!string.IsNullOrEmpty(Model.CountryName) || !string.IsNullOrEmpty(Model.StateName) || !string.IsNullOrEmpty(Model.CityName))
@@ -38,8 +39,25 @@
                                     @((!string.IsNullOrEmpty(Model.CountryName)) ? Model.CountryName + "-" : null)
                                     @((!string.IsNullOrEmpty(Model.StateName)) ? Model.StateName + "-" : null)
                                     @((!string.IsNullOrEmpty(Model.CityName)) ? Model.CityName : null)
+                                    
+                                    <br />
+                                     @if (!string.IsNullOrEmpty(Model.WorkAddress))
+                                    {
+                                        <i class="fas fa-map-marker-alt"></i>
+                                    }
+                                    @((string.IsNullOrEmpty(Model.WorkAddress)) ? null : Model.WorkAddress)
+
+
+
+
+                                    <br />
+                                   @((!string.IsNullOrEmpty(Model.ClinicPhone)) ? Model.ClinicPhone : null)
+
+                                     <br />
+                                  @((!string.IsNullOrEmpty(Model.GeneralPhone)) ? Model.GeneralPhone : null)
 
                                 </p>
+                               
                                 <ul class="clinic-gallery">
                                     <li>
                                         <a href="~/Content/Doctor/assets/img/features/feature-01.jpg" data-fancybox="gallery">
@@ -78,13 +96,7 @@
                             <ul>
                                 <li><i class="far fa-thumbs-up"></i> 99%</li>
                                 <li><i class="far fa-comment"></i> 35 فیدبک </li>
-                                <li>
-                                    @if (!string.IsNullOrEmpty(Model.WorkAddress))
-                                    {
-                                        <i class="fas fa-map-marker-alt"></i>
-                                    }
-                                    @((string.IsNullOrEmpty(Model.WorkAddress)) ? null : Model.WorkAddress)
-                                </li>
+                                
                                 <li><i class="far fa-money-bill-alt"></i> حق ویزیت: سامانه </li>
                             </ul>
                         </div>

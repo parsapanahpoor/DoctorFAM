@@ -113,7 +113,7 @@
         <li>
             <a href="#" class="menu-dropdown">
                 <i class="menu-icon fa fa-heart"></i>
-                <span class="menu-text"> @SharedLocalizer["Health Test"] </span>
+                <span class="menu-text"> @SharedLocalizer["Health profiles"] </span>
 
                 <i class="menu-expand"></i>
             </a>
@@ -121,18 +121,27 @@
             <ul class="submenu">
 
                 <li>
-                    <a asp-area="" asp-controller="Diabet" asp-action="Index">
+                    <a asp-area="UserPanel" asp-controller="Home" asp-action="Index">
                         <span class="menu-text">@SharedLocalizer["BMI"]</span>
                     </a>
                 </li>
-
+                <li>
+                    <a asp-area="UserPanel" asp-controller="Home" asp-action="Index">
+                        <span class="menu-text">@SharedLocalizer["GFR"]</span>
+                    </a>
+                </li>
+                <li>
+                    <a asp-area="UserPanel" asp-controller="Home" asp-action="Index">
+                        <span class="menu-text">@SharedLocalizer["ASCVD"]</span>
+                    </a>
+                </li>
             </ul>
         </li>
 
         <li>
             <a href="#" class="menu-dropdown">
                 <i class="menu-icon fa fa-user"></i>
-                <span class="menu-text"> @SharedLocalizer["Population Covered"] </span>
+                <span class="menu-text"> @SharedLocalizer["Family Members"] </span>
 
                 <i class="menu-expand"></i>
             </a>
@@ -140,13 +149,13 @@
             <ul class="submenu">
                 <li>
                     <a asp-area="UserPanel" asp-controller="PopulationCovered" asp-action="ListOfPopulationCovered">
-                        <span class="menu-text">@SharedLocalizer["Population Covered"]</span>
+                        <span class="menu-text">@SharedLocalizer["Family Members List"]</span>
                     </a>
                 </li>
 
                 <li>
                     <a asp-area="UserPanel" asp-controller="PopulationCovered" asp-action="CreatePopulationCovered">
-                        <span class="menu-text">@SharedLocalizer["Create Population Covered"]</span>
+                        <span class="menu-text">@SharedLocalizer["Add Household"]</span>
                     </a>
                 </li>
             </ul>
@@ -178,7 +187,7 @@
         <li>
             <a href="#" class="menu-dropdown">
                 <i class="menu-icon fa fa-user"></i>
-                <span class="menu-text"> @SharedLocalizer["Profile"] </span>
+                <span class="menu-text red"> @SharedLocalizer["Profile"] </span>
 
                 <i class="menu-expand"></i>
             </a>

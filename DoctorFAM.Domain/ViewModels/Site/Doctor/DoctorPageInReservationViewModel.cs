@@ -27,6 +27,10 @@ namespace DoctorFAM.Domain.ViewModels.Site.Doctor
         public string? StateName { get; set; }
 
         public string? WorkAddress { get; set; }
+       
+        public string? ClinicPhone { get; set; }
+       
+        public string? GeneralPhone { get; set; }
 
         #endregion
     }
