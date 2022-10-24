@@ -148,7 +148,7 @@
     <value>لیست مکان ها </value>
   </data>
   <data name="LogOut" xml:space="preserve">
-    <value>خروج از سیستم</value>
+    <value>خروج از سامانه</value>
   </data>
   <data name="Manage Locations" xml:space="preserve">
     <value>مدیریت مکان ها </value>
@@ -292,7 +292,7 @@
     <value>مدیریت اطلاعات پزشکان</value>
   </data>
   <data name="List of covered people" xml:space="preserve">
-    <value>لیست افراد تحت پوشش</value>
+    <value>چمعیت پزشک خانواده</value>
   </data>
   <data name="Queuing settings" xml:space="preserve">
     <value>تنظیمات نوبت دهی</value>
@@ -598,7 +598,7 @@
     <value>مشاور روان من</value>
   </data>
   <data name="List of Your covered people" xml:space="preserve">
-    <value>لیست افراد تحت پوشش شما</value>
+    <value>جمعیت پزشک خانواده من</value>
   </data>
   <data name="Decline Request From Consultant" xml:space="preserve">
     <value>رد درخواست توسط مشاور روان</value>
@@ -656,5 +656,32 @@
   </data>
   <data name="Access" xml:space="preserve">
     <value>دسترسی ها</value>
+  </data>
+  <data name="dlw Sample Of Excel File" xml:space="preserve">
+    <value>دانلود نمونه فایل اکسل</value>
+  </data>
+  <data name="Lastest Population Covered" xml:space="preserve">
+    <value> درخواست های پزشک خانواده</value>
+  </data>
+  <data name="List Of Insert From System" xml:space="preserve">
+    <value>لیست ورودی سامانه</value>
+  </data>
+  <data name="List OF Insert User" xml:space="preserve">
+    <value>اطلاعات ورودی به سامانه</value>
+  </data>
+  <data name="Upload Compelete Excel File" xml:space="preserve">
+    <value>آپلود فایل اکسل تکمیل شده</value>
+  </data>
+  <data name="My Family Doctor Population" xml:space="preserve">
+    <value>جمعیت پزشک خانواده من</value>
+  </data>
+  <data name="Family Doctor Settings" xml:space="preserve">
+    <value>تنظیمات پزشک خانواده</value>
+  </data>
+  <data name="Accepted Requests" xml:space="preserve">
+    <value>درخواستهای پذیرفته شده</value>
+  </data>
+  <data name="Requests" xml:space="preserve">
+    <value>درخواستها</value>
   </data>
 </root>

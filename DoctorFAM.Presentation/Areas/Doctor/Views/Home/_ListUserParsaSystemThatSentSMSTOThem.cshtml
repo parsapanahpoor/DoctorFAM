@@ -11,7 +11,7 @@
             <span class="widget-caption"> @Localizer["List Of Users That Come From Parsa System And You Sent SMS To Them"] </span>
          <div class="widget-buttons" style="margin-left: 20px;">
                 <div class="row" >
-                    <a  asp-action="RefreshParsaSystemRecords" asp-area="Doctor" asp-controller="ParsaSystem" asp-route-doctorDashboard="@true"  style="margin-left: 10px;">
+                    <a asp-action="RefreshParsaSystemRecords" asp-area="Doctor" asp-controller="IncomeSystem" asp-route-doctorDashboard="@true" style="margin-left: 10px;">
                         <span class="badge badge-warning"> بروز رسانی اطلاعات <i class="fa fa-refresh"></i> </span>
                     </a>
                     <a id="ShowUserCommentInAdminPanelMinus" href="#" data-toggle="collapse">
@@ -129,7 +129,7 @@
                                     </td>
 
                                     <td class="tc vm">
-                                        <button onclick="DeleteAjax(@user.Id, '@Url.Action("RemoveFromDoctorDashboard", "ParsaSystem", new {area = "Doctor", userId = user.Id})')" class="btn btn-danger btn-circle btn-xs"><i class="glyphicon glyphicon-remove"></i></button>
+                                        <button onclick="DeleteAjax(@user.Id, '@Url.Action("RemoveFromDoctorDashboard", "IncomeSystem", new {area = "Doctor", userId = user.Id})')" class="btn btn-danger btn-circle btn-xs"><i class="glyphicon glyphicon-remove"></i></button>
                                     </td>
                                 </tr>
                             }

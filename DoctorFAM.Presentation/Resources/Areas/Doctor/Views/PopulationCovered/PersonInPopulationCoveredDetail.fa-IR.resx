@@ -126,8 +126,8 @@
   <data name="BirthDay" xml:space="preserve">
     <value>تاریخ تولد</value>
   </data>
-  <data name="Change Population Covered State" xml:space="preserve">
-    <value>تغییر وضعیت کاربر در جمعیت تحت پوشش شما</value>
+  <data name="By choosing one of the options below, respond to the user's request to be added to the population covered by your family doctor." xml:space="preserve">
+    <value>با انتخاب یکی از گزینه های زیر، به درخواست کاربر، برای اضافه شدن به جمعیت تحت پوشش پزشک خانواده خود پاسخ دهید.</value>
   </data>
   <data name="Change User Population Covered State" xml:space="preserve">
     <value>تغییر وضعیت کاربر در جمعیت تحت پوشش شما</value>
@@ -177,6 +177,9 @@
   <data name="Request Create Date" xml:space="preserve">
     <value>تاریخ درج درخواست </value>
   </data>
+  <data name="Response to the Request of the user's Family Doctor" xml:space="preserve">
+    <value>پاسخ به درخواست پزشک خانواده کاربر</value>
+  </data>
   <data name="Show Person Detail Details" xml:space="preserve">
     <value>نمایش اطلاعات کاربر</value>
   </data>
@@ -186,10 +189,16 @@
   <data name="Submit" xml:space="preserve">
     <value>ثبت</value>
   </data>
+  <data name="Submit State" xml:space="preserve">
+    <value>ثبت تغییرات</value>
+  </data>
   <data name="User name" xml:space="preserve">
     <value>نام کاربری در سامانه</value>
   </data>
   <data name="User Selected Famili Doctor Request Id" xml:space="preserve">
     <value>شماره ی پیگیری درخواست</value>
+  </data>
+  <data name="Waiting" xml:space="preserve">
+    <value>در انتظار</value>
   </data>
 </root>
