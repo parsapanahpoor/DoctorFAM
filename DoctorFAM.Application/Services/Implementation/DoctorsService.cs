@@ -155,7 +155,7 @@ namespace DoctorFAM.Application.Services.Implementation
                     if (!string.IsNullOrEmpty(patient.PatientMobile))
                     {
                         //Send SMS
-                        //await _smsservice.SendSimpleSMS(patient.PatientMobile, message);
+                        await _smsservice.SendSimpleSMS(patient.PatientMobile, message);
 
                         //Update Patient Info In Users That Income From Parsa System List 
                         patient.SMSSent = true;

@@ -34,11 +34,11 @@
 
                     <ul class="submenu">
 
-                       @* <li>
+                        <li>
                             <a asp-area="Doctor" asp-controller="PopulationCovered" asp-action="FilterPopulationCovered">
-                                <span class="menu-text">@SharedLocalizer["List of covered people"]</span>
+                                <span class="menu-text">@SharedLocalizer["Lastest Population Covered"]</span>
                             </a>
-                        </li>*@
+                        </li>
 
                         <li>
                             <a asp-area="Doctor" asp-controller="PopulationCovered" asp-action="FilterCurrentDoctorPopulationCovered">
@@ -52,27 +52,27 @@
                 <li>
                     <a href="#" class="menu-dropdown">
                         <i class="menu-icon glyphicon glyphicon-thumbs-up"></i>
-                        <span class="menu-text">@SharedLocalizer["Parsa System"]</span>
+                        <span class="menu-text">@SharedLocalizer["List Of Insert From System"]</span>
                         <i class="menu-expand"></i>
                     </a>
 
                     <ul class="submenu">
 
                         <li>
-                            <a asp-action="ListOfYourUsers" asp-area="Doctor" asp-controller="ParsaSystem">
-                                <span class="menu-text">@SharedLocalizer["List Of Your Users"]</span>
+                            <a asp-action="ListOfYourUsers" asp-area="Doctor" asp-controller="IncomeSystem">
+                                <span class="menu-text">@SharedLocalizer["List OF Insert User"]</span>
                             </a>
                         </li>
 
                         <li>
-                            <a asp-action="IncomingExcelFile" asp-area="Doctor" asp-controller="ParsaSystem">
-                                <span class="menu-text">@SharedLocalizer["Upload Excel File"]</span>
+                            <a asp-action="IncomingExcelFile" asp-area="Doctor" asp-controller="IncomeSystem">
+                                <span class="menu-text">@SharedLocalizer["Upload Compelete Excel File"]</span>
                             </a>
                         </li>
 
                         <li>
                             <a target="_blank" href="/Content/ExcelSampleFile/PopulationCoveredSmple.xlsx">
-                                <span class="menu-text">@SharedLocalizer["Sample Of Excel File"]</span>
+                                <span class="menu-text">@SharedLocalizer["dlw Sample Of Excel File"]</span>
                             </a>
                         </li>
 

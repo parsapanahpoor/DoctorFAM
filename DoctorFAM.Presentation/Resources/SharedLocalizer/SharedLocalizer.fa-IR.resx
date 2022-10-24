@@ -657,4 +657,19 @@
   <data name="Access" xml:space="preserve">
     <value>دسترسی ها</value>
   </data>
+  <data name="dlw Sample Of Excel File" xml:space="preserve">
+    <value>دانلود نمونه فایل اکسل</value>
+  </data>
+  <data name="Lastest Population Covered" xml:space="preserve">
+    <value>درخواست های جدید پزشک خانواده</value>
+  </data>
+  <data name="List Of Insert From System" xml:space="preserve">
+    <value>لیست ورودی سامانه</value>
+  </data>
+  <data name="List OF Insert User" xml:space="preserve">
+    <value>اطلاعات ورودی به سامانه</value>
+  </data>
+  <data name="Upload Compelete Excel File" xml:space="preserve">
+    <value>آپلود فایل اکسل تکمیل شده</value>
+  </data>
 </root>

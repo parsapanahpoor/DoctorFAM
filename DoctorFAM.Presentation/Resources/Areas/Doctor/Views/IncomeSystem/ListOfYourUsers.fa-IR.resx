@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Didnt Send SMS Yet" xml:space="preserve">
-    <value>یات نشده</value>
+    <value>اس ام اس ارسال نشده</value>
   </data>
   <data name="Doesnt Have Family Doctor" xml:space="preserve">
     <value>پزشک خانواده ندارد</value>
@@ -136,7 +136,7 @@
     <value>تاریخچه ی پیام ها</value>
   </data>
   <data name="List OF Your Parsa System Users" xml:space="preserve">
-    <value>لیست کاربران سامانه ی پارسای شما </value>
+    <value>لیست کاربران سامانه  </value>
   </data>
   <data name="Mobile" xml:space="preserve">
     <value>موبایل</value>
