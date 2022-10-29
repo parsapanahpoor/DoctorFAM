@@ -42,6 +42,9 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Filter Laboratory Office Employees
         Task<FilterLaboratoryOfficeEmployeesViewmodel> FilterLaboratoryOfficeEmployees(FilterLaboratoryOfficeEmployeesViewmodel filter);
 
+        //Add Exist User To The Laboratory Organization 
+        Task<bool> AddExistUserToTheLaboratoryOrganization(ulong userId, List<ulong> UserRoles, ulong laboratoryId);
+
         #endregion
 
         #region Admin Side 

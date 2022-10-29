@@ -19,6 +19,30 @@
     @section Scripts
     {
     <partial name="_JqueryValidation" />
+
+    <script>
+
+        function CheckEmployeeIsExist(mobile) {
+
+            $.ajax({
+                url: "/CheckEmployeeIsExistInLaboratory/" + mobile,
+                type: "get",
+                data: {
+
+                },
+                success: function (response) {
+                    if (response.status === "Danger") {
+                        ShowMessage("اعلان", "کاربری با این موبایل در سامانه یافت نشده است.", "warning");
+                    } else {
+                        $("#NormalModalBody").html(response);
+
+                        $("#NormalModal").modal("show");
+                    }
+                }
+            });
+        }
+
+    </script>
 }
 
     <form asp-action="AddNewUser" enctype="multipart/form-data" method="post">
@@ -34,7 +58,7 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label asp-for="Mobile"></label>
-                                <input asp-for="Mobile" class="form-control" placeholder="@Localizer["Mobile"]" />
+                                <input asp-for="Mobile" class="form-control" placeholder="@Localizer["Mobile"]"  onblur="CheckEmployeeIsExist(this.value)"/>
                                 <span class="text-danger" asp-validation-for="Mobile"></span>
                             </div>
                         </div>
