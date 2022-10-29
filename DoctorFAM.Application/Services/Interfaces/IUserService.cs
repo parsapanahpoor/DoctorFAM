@@ -19,6 +19,10 @@ namespace DoctorFAM.Application.Services.Interfaces
     {
         #region Authorize
 
+
+        //Check That Has User Fill Personal Information 
+        Task<bool> CheckThatHasUserFillPersonalInformation(ulong userId);
+
         //Add User Role 
         Task AddUserRole(UserRole userRole);
 

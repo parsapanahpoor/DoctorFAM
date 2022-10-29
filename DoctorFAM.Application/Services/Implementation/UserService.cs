@@ -58,6 +58,32 @@ namespace DoctorFAM.Application.Services.Implementation
 
         #region Authorize
 
+        //Check That Has User Fill Personal Information 
+        public async Task<bool> CheckThatHasUserFillPersonalInformation(ulong userId)
+        {
+            #region Get User By User Id
+
+            var user = await GetUserById(userId);
+            if (user == null) return false;
+
+            #endregion
+
+            #region Check User Info
+
+            if (string.IsNullOrEmpty(user.NationalId)
+                || string.IsNullOrEmpty(user.Mobile)
+                || string.IsNullOrEmpty(user.FirstName)
+                || string.IsNullOrEmpty(user.LastName)
+                || string.IsNullOrEmpty(user.Username))
+            {
+                return false;
+            }
+
+            #endregion
+
+            return true;
+        }
+
         //Add User Role 
         public async Task AddUserRole(UserRole userRole)
         {
