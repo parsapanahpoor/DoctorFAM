@@ -40,6 +40,13 @@ namespace DoctorFAM.Data.Repository
             await _context.SaveChangesAsync();
         }
 
+        //Add User Role 
+        public async Task AddUserRole(UserRole userRole)
+        {
+            await _context.UserRoles.AddAsync(userRole);
+            await _context.SaveChangesAsync();
+        }
+
         #endregion
 
         #region Admin Side

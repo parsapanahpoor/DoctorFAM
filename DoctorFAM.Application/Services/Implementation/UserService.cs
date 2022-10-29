@@ -58,6 +58,12 @@ namespace DoctorFAM.Application.Services.Implementation
 
         #region Authorize
 
+        //Add User Role 
+        public async Task AddUserRole(UserRole userRole)
+        {
+            await _userRepository.AddUserRole(userRole);
+        }
+
         public async Task ResendActivationCodeSMS(string Mobile)
         {
             var user = await _userRepository.GetUserByMobile(Mobile);

@@ -94,6 +94,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         Task<DoctorSelectedInterestResult> DeleteDoctorSelectedInterestDoctorPanel(ulong interestId, ulong userId);
 
+        //Add Exist User To The Doctor Organization 
+        Task<bool> AddExistUserToTheDoctorOrganization(ulong userId, ulong doctorId);
+
         #endregion
 
         #region Admin Side 

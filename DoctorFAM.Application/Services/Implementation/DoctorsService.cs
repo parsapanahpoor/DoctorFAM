@@ -1171,7 +1171,62 @@ namespace DoctorFAM.Application.Services.Implementation
             return DoctorSelectedInterestResult.Success;
         }
 
-#endregion
+        //Add Exist User To The Doctor Organization 
+        public async Task<bool> AddExistUserToTheDoctorOrganization(ulong userId , ulong doctorId)
+        {
+            #region Check Is Exist Any User By This User Id
+
+            var user = await _userService.GetUserById(userId);
+            if (user == null) return false;
+
+            #endregion
+
+            #region Check That Has User Any Organization 
+
+            var userOrganization = await _organizationService.GetOrganizationByUserId(userId);
+            if (userOrganization != null) return false;
+
+            #endregion
+
+            #region Get Current Doctor Organization
+
+            var organization = await _organizationService.GetDoctorOrganizationByUserId(doctorId);
+            if (organization == null) return false;
+
+            #endregion
+
+            #region Add User To The Doctor Organization 
+
+            #region Add New Organization Member
+
+            OrganizationMember member = new OrganizationMember()
+            {
+                UserId = user.Id,
+                OrganizationId = organization.Id
+            };
+
+            await _organizationService.AddOrganizationMember(member);
+
+            #endregion
+
+            #region Add User Role
+
+            UserRole userRole = new UserRole()
+            {
+                RoleId = 5,
+                UserId = user.Id,
+            };
+
+            await _userService.AddUserRole(userRole);
+
+            #endregion
+
+            #endregion
+
+            return true;
+        }
+
+        #endregion
 
         #region Admin Side
 

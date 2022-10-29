@@ -19,6 +19,9 @@ namespace DoctorFAM.Application.Services.Interfaces
     {
         #region Authorize
 
+        //Add User Role 
+        Task AddUserRole(UserRole userRole);
+
         //Register Nurse
         Task RegisterNurse(string mobile);
 
