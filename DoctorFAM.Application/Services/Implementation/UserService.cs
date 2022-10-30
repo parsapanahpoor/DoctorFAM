@@ -1,4 +1,5 @@
-﻿using DoctorFAM.Application.Convertors;
+﻿using AngleSharp.Css;
+using DoctorFAM.Application.Convertors;
 using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Generators;
 using DoctorFAM.Application.Security;
@@ -7,12 +8,14 @@ using DoctorFAM.Application.StaticTools;
 using DoctorFAM.Application.Utils;
 using DoctorFAM.Data.DbContext;
 using DoctorFAM.Domain.Entities.Account;
+using DoctorFAM.Domain.Entities.CooperationRequest;
 using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Account;
 using DoctorFAM.Domain.ViewModels.Admin;
 using DoctorFAM.Domain.ViewModels.Admin.Account;
 using DoctorFAM.Domain.ViewModels.Common;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Employees;
 using DoctorFAM.Domain.ViewModels.Laboratory.Employee;
 using DoctorFAM.Domain.ViewModels.Site.Account;
@@ -41,9 +44,11 @@ namespace DoctorFAM.Application.Services.Implementation
         private readonly IOrganizationService _organizationService;
         private readonly ISMSService _smsservice;
         private static readonly HttpClient client = new HttpClient();
+        private readonly IDoctorsRepository _doctorService;
 
         public UserService(DoctorFAMDbContext context, ISiteSettingService siteSettingService, IViewRenderService viewRenderService,
-                                IEmailSender emailSender, IUserRepository userRepository, IOrganizationService organizationService, ISMSService smsservice)
+                                IEmailSender emailSender, IUserRepository userRepository, IOrganizationService organizationService, ISMSService smsservice
+                                    , IDoctorsRepository doctorService)
         {
             _context = context;
             _siteSettingService = siteSettingService;
@@ -52,11 +57,18 @@ namespace DoctorFAM.Application.Services.Implementation
             _userRepository = userRepository;
             _organizationService = organizationService;
             _smsservice = smsservice;
+            _doctorService = doctorService;
         }
 
         #endregion
 
         #region Authorize
+
+        //Get User Roles 
+        public async Task<List<string>?> GetUserRoles(ulong userId)
+        {
+            return await _userRepository.GetUserRoles(userId);
+        }
 
         //Check That Has User Fill Personal Information 
         public async Task<bool> CheckThatHasUserFillPersonalInformation(ulong userId)
@@ -227,7 +239,7 @@ namespace DoctorFAM.Application.Services.Implementation
             var message = Messages.SendActivationRegisterSms(User.MobileActivationCode);
 
             await _smsservice.SendSimpleSMS(User.Mobile, message);
-   
+
             #endregion
 
             return RegisterUserResult.Success;
@@ -280,6 +292,137 @@ namespace DoctorFAM.Application.Services.Implementation
             #endregion
 
             return ResetPasswordResult.Success;
+        }
+
+        //Add Cooperation Request
+        public async Task AddCooperationRequest(string mobile, string RoleTitle, string UserName)
+        {
+            #region Send Cooperation Requestt 
+
+            CooperationRequest cooperation = new CooperationRequest()
+            {
+                FollowedUp = false,
+                Mobile = mobile.SanitizeText(),
+                RoleTitle = RoleTitle.SanitizeText(),
+                UserName = UserName.SanitizeText(),
+            };
+
+            await _userRepository.AddCooperationRequest(cooperation);
+
+            #endregion
+        }
+
+        //Send Cooperation Request For Exist User
+        public async Task<bool> SendCooperationRequestForExistUser(User user, string roleName)
+        {
+            #region Get User Roles
+
+            var userRoles = await _userRepository.GetUserRolesByUserId(user.Id);
+
+            //Check That User Has This Role Or Not 
+            if (userRoles != null)
+            {
+                //If User Select Doctor Role While User Has Doctor Role
+                if (roleName == "doctor" && userRoles.Contains(2)) return false;
+                if (roleName == "doctor" && userRoles.Contains(5)) return false;
+
+                //If User Select Seller Role While User Has Seller Role
+                if (roleName == "seller" && userRoles.Contains(4)) return false;
+
+                //If User Select Consultant Role While User Has Consultant Role
+                if (roleName == "Consultant" && userRoles.Contains(15)) return false;
+
+                //If User Select Nurse Role While User Has Nurse Role
+                if (roleName == "Nurse" && userRoles.Contains(14)) return false;
+
+                //If User Select Labratory Role While User Has Labratory Role
+                if (roleName == "Labratory" && userRoles.Contains(16)) return false;
+                if (roleName == "Labratory" && userRoles.Contains(17)) return false;
+                if (roleName == "Labratory" && userRoles.Contains(18)) return false;
+
+                //If User Select pharmacy Role While User Has pharmacy Role
+                if (roleName == "pharmacy" && userRoles.Contains(6)) return false;
+            }
+
+            #endregion
+
+            #region Add Role To The User
+
+            //Add Doctor Role To The User
+            if (roleName == "doctor")
+            {
+                var userRole = new UserRole()
+                {
+                    RoleId = 2,
+                    UserId = user.Id
+                };
+
+                await _userRepository.AddUserRole(userRole);
+            }
+
+            //Add seller Role To The User
+            if (roleName == "seller")
+            {
+                var userRole = new UserRole()
+                {
+                    RoleId = 4,
+                    UserId = user.Id
+                };
+
+                await _userRepository.AddUserRole(userRole);
+            }
+
+            //Add Consultant Role To The User
+            if (roleName == "Consultant")
+            {
+                var userRole = new UserRole()
+                {
+                    RoleId = 15,
+                    UserId = user.Id
+                };
+
+                await _userRepository.AddUserRole(userRole);
+            }
+
+            //Add Nurse Role To The User
+            if (roleName == "Nurse")
+            {
+                var userRole = new UserRole()
+                {
+                    RoleId = 14,
+                    UserId = user.Id
+                };
+
+                await _userRepository.AddUserRole(userRole);
+            }
+
+            //Add Labratory Role To The User
+            if (roleName == "Labratory")
+            {
+                var userRole = new UserRole()
+                {
+                    RoleId = 16,
+                    UserId = user.Id
+                };
+
+                await _userRepository.AddUserRole(userRole);
+            }
+
+            //Add pharmacy Role To The User
+            if (roleName == "pharmacy")
+            {
+                var userRole = new UserRole()
+                {
+                    RoleId = 6,
+                    UserId = user.Id
+                };
+
+                await _userRepository.AddUserRole(userRole);
+            }
+
+            #endregion
+
+            return true;
         }
 
         #endregion
@@ -968,8 +1111,8 @@ namespace DoctorFAM.Application.Services.Implementation
                 IsAdmin = false,
                 EmailActivationCode = CodeGenerator.GenerateUniqCode(),
                 MobileActivationCode = CodeGenerator.GenerateUniqCode(),
-                IsEmailConfirm = true,
-                IsMobileConfirm = true,
+                IsEmailConfirm = false,
+                IsMobileConfirm = false,
                 Username = user.Mobile.SanitizeText(),
             };
 
@@ -1043,8 +1186,8 @@ namespace DoctorFAM.Application.Services.Implementation
                 IsAdmin = false,
                 EmailActivationCode = CodeGenerator.GenerateUniqCode(),
                 MobileActivationCode = CodeGenerator.GenerateUniqCode(),
-                IsEmailConfirm = true,
-                IsMobileConfirm = true,
+                IsEmailConfirm = false,
+                IsMobileConfirm = false,
                 Username = user.Mobile.SanitizeText(),
             };
 
@@ -1214,6 +1357,43 @@ namespace DoctorFAM.Application.Services.Implementation
 
             _context.Update(user);
             await _context.SaveChangesAsync();
+
+            #endregion
+
+            #region Check That If User Has Role Then Update other Information That Related By Role Informations 
+
+            var userRoles = await _userRepository.GetUserRoles(user.Id);
+
+            if (userRoles != null && userRoles.Any())
+            {
+                //If User Is Doctor
+                if (userRoles.Contains("Doctor"))
+                {
+                    //Validation Of Doctor Organization 
+                    var doctorOffice = await _organizationService.GetDoctorOrganizationByUserId(user.Id);
+
+                    if (doctorOffice != null && doctorOffice.OrganizationType == Domain.Enums.Organization.OrganizationType.DoctorOffice)
+                    {
+                        //Get Doctor By UserId
+                        var doctor = await _doctorService.GetDoctorByUserId(user.Id);
+
+                        if (doctor != null)
+                        {
+                            //Get Doctors Informations By Doctor Id
+                            var info = await _doctorService.GetDoctorsInformationByUserId(user.Id);
+
+                            if (info != null)
+                            {
+                                info.NationalCode = user.NationalId;
+                                info.GeneralPhone = user.ExtraPhoneNumber;
+
+                                //Update Doctror Personal Information 
+                                await _doctorService.UpdateDoctorsInfo(info);
+                            }
+                        }
+                    }
+                }
+            }
 
             #endregion
 

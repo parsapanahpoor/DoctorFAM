@@ -126,6 +126,9 @@
   <data name="Doctor Personal Informations" xml:space="preserve">
     <value>اطلاعات پزشک</value>
   </data>
+  <data name="Please Select User Avatar" xml:space="preserve">
+    <value>لطفا تصویر مورد نظر خود را انتخاب کنید</value>
+  </data>
   <data name="Please upload your educational certificate or license." xml:space="preserve">
     <value>لطفا مدرک تحصیلی  یا پروانه ی مطب خود را بارگذاری (آپلود) کنید .</value>
   </data>
@@ -134,5 +137,8 @@
   </data>
   <data name="Supporter Message" xml:space="preserve">
     <value>پیام پشتیبانی</value>
+  </data>
+  <data name="User Avatar" xml:space="preserve">
+    <value>آواتار کاربری</value>
   </data>
 </root>

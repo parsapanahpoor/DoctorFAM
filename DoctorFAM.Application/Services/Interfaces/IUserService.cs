@@ -19,6 +19,11 @@ namespace DoctorFAM.Application.Services.Interfaces
     {
         #region Authorize
 
+        //Get User Roles 
+        Task<List<string>?> GetUserRoles(ulong userId);
+
+        //Add Cooperation Request
+        Task AddCooperationRequest(string mobile, string RoleTitle, string UserName);
 
         //Check That Has User Fill Personal Information 
         Task<bool> CheckThatHasUserFillPersonalInformation(ulong userId);
@@ -53,6 +58,9 @@ namespace DoctorFAM.Application.Services.Interfaces
         Task<User> GetUserByEmailActivationCode(string emailActivationCode);
 
         Task<ResetPasswordResult> ResetUserPassword(ResetPasswordViewModel pass, string mobile);
+
+        //Send Cooperation Request For Exist User
+        Task<bool> SendCooperationRequestForExistUser(User user, string roleName);
 
         #endregion
 

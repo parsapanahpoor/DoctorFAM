@@ -12,11 +12,20 @@ namespace DoctorFAM.Domain.Interfaces
     {
         #region Site Side
 
+        //Get User Roles 
+        Task<List<string>?> GetUserRoles(ulong userId);
+
+        //Add Cooperation Request
+        Task AddCooperationRequest(DoctorFAM.Domain.Entities.CooperationRequest.CooperationRequest request);
+
         Task<bool> IsExistUserById(ulong userId);
 
         Task<User?> GetUserByMobile(string Mobile);
 
         Task SaveChangesAsync();
+
+        //Get User Roles By User Id 
+        Task<List<ulong>?> GetUserRolesByUserId(ulong userId);
 
         #endregion
 

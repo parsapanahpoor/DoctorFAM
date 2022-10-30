@@ -684,4 +684,16 @@
   <data name="Requests" xml:space="preserve">
     <value>درخواستها</value>
   </data>
+  <data name="Image Is Not Valid ." xml:space="preserve">
+    <value>تصویر وارد شده معتبر نمی باشد.</value>
+  </data>
+  <data name="National Id Is Not Valid" xml:space="preserve">
+    <value>کدملی وارد شده معتبر نمی باشد.</value>
+  </data>
+  <data name="The entered email is already available on the site" xml:space="preserve">
+    <value>ایمیل وارد شده معتبر نمی باشد.</value>
+  </data>
+  <data name="User Not Found" xml:space="preserve">
+    <value>کاربر یافت نشده است.</value>
+  </data>
 </root>

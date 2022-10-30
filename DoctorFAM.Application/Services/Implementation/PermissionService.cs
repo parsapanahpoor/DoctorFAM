@@ -320,6 +320,85 @@ namespace BusinessPortal.Application.Services.Implementation
             return true;
         }
 
+        public async Task<List<string>?> GetUserRoleses(ulong userId)
+        {
+            List<string> returnModel = new List<string>();
+
+            #region Get User 
+
+            var user = await _userService.GetUserById(userId);
+
+            if (user.IsAdmin)
+            {
+                returnModel.Add("Admin");
+            }
+
+            #endregion
+
+            #region Get All Of User Roles
+
+            var userRoles = await _context.UserRoles.Include(p => p.Role).Where(p => p.UserId == userId && !p.IsDelete)
+                                                                .Select(p => p.Role.RoleUniqueName).ToListAsync();
+
+            #endregion
+
+            #region check user Role
+
+            if (userRoles.Any() && userRoles.Contains("Admin"))
+            {
+                returnModel.Add("Admin");
+            }
+
+            if (userRoles.Any() && userRoles.Contains("Doctor"))
+            {
+                returnModel.Add("Doctor");
+            }
+
+            if (userRoles.Any() && userRoles.Contains("Support"))
+            {
+                returnModel.Add("Support");
+            }
+
+            if (userRoles.Any() && userRoles.Contains("Seller"))
+            {
+                returnModel.Add("Seller");
+            }
+
+            if (userRoles.Any() && userRoles.Contains("Pharmacy"))
+            {
+                returnModel.Add("Pharmacy");
+            }
+
+            if (userRoles.Any() && userRoles.Contains("Nurse"))
+            {
+                returnModel.Add("Nurse");
+            }
+
+            if (userRoles.Any() && userRoles.Contains("Consultant"))
+            {
+                returnModel.Add("Consultant");
+            }
+
+            if (userRoles.Any() && userRoles.Contains("DoctorOfficeEmployee"))
+            {
+                returnModel.Add("DoctorOfficeEmployee");
+            }
+
+            if (userRoles.Any() && userRoles.Contains("LaboratoryOfficeEmployee"))
+            {
+                returnModel.Add("LaboratoryOfficeEmployee");
+            }
+
+            if (userRoles.Any() && userRoles.Contains("Labratory"))
+            {
+                returnModel.Add("Labratory");
+            }
+
+            #endregion
+
+            return returnModel;
+        }
+
         public async Task<GetUserRoles> GetUserRole(ulong userId)
         {
             #region Get User 
@@ -368,20 +447,24 @@ namespace BusinessPortal.Application.Services.Implementation
 
         public async Task<bool> IsUserAdmin(ulong userId)
         {
-            var result = await GetUserRole(userId);
+            var result = await GetUserRoleses(userId);
 
-            if (result == GetUserRoles.Admin) return true;
+            if (result == null || !result.Any()) return false;
+
+            if (result.Contains("Admin")) return true;
 
             return false;
         }
 
         public async Task<bool> IsUserDoctor(ulong userId)
         {
-            var result = await GetUserRole(userId);
+            var result = await GetUserRoleses(userId);
 
-            if (result == GetUserRoles.Admin) return true;
+            if (result == null || !result.Any()) return false;
 
-            if (result == GetUserRoles.Doctor) return true;
+            if (result.Contains("Admin")) return true;
+
+            if (result.Contains("Doctor")) return true;
 
             return false;
         }
@@ -389,13 +472,15 @@ namespace BusinessPortal.Application.Services.Implementation
 
         public async Task<bool> IsUserDoctorOrDoctorEmployee(ulong userId)
         {
-            var result = await GetUserRole(userId);
+            var result = await GetUserRoleses(userId);
 
-            if (result == GetUserRoles.Admin) return true;
+            if (result == null || !result.Any()) return false;
 
-            if (result == GetUserRoles.Doctor) return true;
+            if (result.Contains("Admin")) return true;
 
-            if (result == GetUserRoles.DoctorOfficeEmployee) return true;
+            if (result.Contains("Doctor")) return true;
+
+            if (result.Contains("DoctorOfficeEmployee")) return true;
 
             return false;
         }
@@ -403,11 +488,13 @@ namespace BusinessPortal.Application.Services.Implementation
         //Check Is User Has Permission To Nurse Panel 
         public async Task<bool> IsUserNurse(ulong userId)
         {
-            var result = await GetUserRole(userId);
+            var result = await GetUserRoleses(userId);
 
-            if (result == GetUserRoles.Admin) return true;
+            if (result == null || !result.Any()) return false;
 
-            if (result == GetUserRoles.Nurse) return true;
+            if (result.Contains("Admin")) return true;
+
+            if (result.Contains("Nurse")) return true;
 
             return false;
         }
@@ -415,11 +502,13 @@ namespace BusinessPortal.Application.Services.Implementation
         //Check Is User Has Permission To Consultant Panel 
         public async Task<bool> IsUserConsultant(ulong userId)
         {
-            var result = await GetUserRole(userId);
+            var result = await GetUserRoleses(userId);
 
-            if (result == GetUserRoles.Admin) return true;
+            if (result == null || !result.Any()) return false;
 
-            if (result == GetUserRoles.Consultant) return true;
+            if (result.Contains("Admin")) return true;
+
+            if (result.Contains("Consultant")) return true;
 
             return false;
         }
@@ -427,13 +516,15 @@ namespace BusinessPortal.Application.Services.Implementation
         //Check Is User Has Permission To Laboratory Panel 
         public async Task<bool> IsUserLaboratory(ulong userId)
         {
-            var result = await GetUserRole(userId);
+            var result = await GetUserRoleses(userId);
 
-            if (result == GetUserRoles.Admin) return true;
+            if (result == null || !result.Any()) return false;
 
-            if (result == GetUserRoles.Laboratory) return true;
+            if (result.Contains("Admin")) return true;
 
-            if (result == GetUserRoles.LaboratoryOfficeEmployee) return true;
+            if (result.Contains("Labratory")) return true;
+
+            if (result.Contains("LaboratoryOfficeEmployee")) return true;
 
             return false;
         }
@@ -441,11 +532,13 @@ namespace BusinessPortal.Application.Services.Implementation
         //Check Is User Master Of Laboratory 
         public async Task<bool> CheckIsUserMasterOfLaboratory(ulong userId)
         {
-            var result = await GetUserRole(userId);
+            var result = await GetUserRoleses(userId);
 
-            if (result == GetUserRoles.Admin) return true;
+            if (result == null || !result.Any()) return false;
 
-            if (result == GetUserRoles.Laboratory) return true;
+            if (result.Contains("Admin")) return true;
+
+            if (result.Contains("Labratory")) return true;
 
             return false;
         }
@@ -453,22 +546,26 @@ namespace BusinessPortal.Application.Services.Implementation
         public async Task<bool> IsUserPharmacy(ulong userId)
         {
             //Get User By User ID
-            var result = await GetUserRole(userId);
+            var result = await GetUserRoleses(userId);
 
-            if (result == GetUserRoles.Admin) return true;
+            if (result == null || !result.Any()) return false;
 
-            if (result == GetUserRoles.Pharmacy) return true;
+            if (result.Contains("Admin")) return true;
+
+            if (result.Contains("Pharmacy")) return true;
 
             return false;
         }
 
         public async Task<bool> IsUserSupporter(ulong userId)
         {
-            var result = await GetUserRole(userId);
+            var result = await GetUserRoleses(userId);
 
-            if (result == GetUserRoles.Admin) return true;
+            if (result == null || !result.Any()) return false;
 
-            if (result == GetUserRoles.Supporter) return true;
+            if (result.Contains("Admin")) return true;
+
+            if (result.Contains("Support")) return true;
 
             return false;
         }

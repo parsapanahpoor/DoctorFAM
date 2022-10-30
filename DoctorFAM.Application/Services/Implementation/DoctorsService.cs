@@ -1,4 +1,5 @@
-﻿using DoctorFAM.Application.Extensions;
+﻿using DoctorFAM.Application.Convertors;
+using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Generators;
 using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
@@ -17,6 +18,7 @@ using DoctorFAM.Domain.ViewModels.DoctorPanel.Employees;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.ParsaSystem;
 using DoctorFAM.Domain.ViewModels.Site.Doctor;
 using DoctorFAM.Domain.ViewModels.Site.Reservation;
+using DoctorFAM.Domain.ViewModels.UserPanel.Account;
 using DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -578,7 +580,18 @@ namespace DoctorFAM.Application.Services.Implementation
                     Specialty = doctorInfo.Specialty,
                     ClinicPhone = doctorInfo.ClinicPhone,
                     GeneralPhone = doctorInfo.GeneralPhone,
+                    FatherName = user.FatherName,
+                    username = user.Username,
+                    Mobile = user.Mobile,
+                    Email = user.Email,
+                    HomePhoneNumber = user.HomePhoneNumber,
+                    AvatarName = user.Avatar
                 };
+
+                if (user.BithDay != null && user.BithDay.HasValue)
+                {
+                    model.BithDay = user.BithDay.Value.ToShamsi();
+                }
 
                 #region Get Doctor Skill By Doctor Id
 
@@ -626,19 +639,60 @@ namespace DoctorFAM.Application.Services.Implementation
             return null;
         }
 
+        //Update Doctor Personal Info With Save Changes 
+        public async Task UpdateDoctorPersonalInfoWithSaveChanges(DoctorsInfo doctorsInfo)
+        {
+            await _doctorRepository.UpdateDoctorsInfo(doctorsInfo);
+        }
+
         //Get List Of Doctor Skills By Doctor Id
         public async Task<List<DoctorsSkils>> GetListOfDoctorSkillsByDoctorId(ulong doctorId)
         {
             return await _doctorRepository.GetListOfDoctorSkillsByDoctorId(doctorId);
         }
 
-        public async Task<AddOrEditDoctorInfoResult> AddOrEditDoctorInfoDoctorsPanel(ManageDoctorsInfoViewModel model, IFormFile? MediacalFile)
+        public async Task<AddOrEditDoctorInfoResult> AddOrEditDoctorInfoDoctorsPanel(ManageDoctorsInfoViewModel model, IFormFile? MediacalFile, IFormFile? UserAvatar)
         {
             #region Get User By User Id
 
             var user = await _userService.GetUserById(model.UserId);
 
             if (user == null) return AddOrEditDoctorInfoResult.Faild;
+
+            if (UserAvatar != null && !UserAvatar.IsImage())
+            {
+                return AddOrEditDoctorInfoResult.NotValidImage;
+            }
+
+            if (UserAvatar != null)
+            {
+                if (!string.IsNullOrEmpty(user.Avatar))
+                {
+                    user.Avatar.DeleteImage(PathTools.UserAvatarPathServer, PathTools.UserAvatarPathThumbServer);
+                }
+
+                var imageName = CodeGenerator.GenerateUniqCode() + Path.GetExtension(UserAvatar.FileName);
+                UserAvatar.AddImageToServer(imageName, PathTools.UserAvatarPathServer, 270, 270, PathTools.UserAvatarPathThumbServer);
+                user.Avatar = imageName;
+            }
+
+            if (!string.IsNullOrEmpty(model.Email))
+            {
+                if (!await _userService.IsValidEmailForUserEditByAdmin(model.Email, user.Id))
+                {
+                    return AddOrEditDoctorInfoResult.NotValidEmail;
+                }
+            }
+
+            if (string.IsNullOrEmpty(model.NationalCode))
+            {
+                return AddOrEditDoctorInfoResult.NationalId;
+            }
+
+            if (!string.IsNullOrEmpty(model.NationalCode) && !await _userService.IsValidNationalIdForUserEditByAdmin(model.NationalCode, user.Id))
+            {
+                return AddOrEditDoctorInfoResult.NotValidNationalId;
+            }
 
             #endregion
 
@@ -692,10 +746,17 @@ namespace DoctorFAM.Application.Services.Implementation
                 //Update Doctor Office State 
                 doctorOffice.OrganizationInfoState = OrganizationInfoState.WatingForConfirm;
 
-                #region Update First Name And Last Name 
+                #region Update User
 
-                user.FirstName = model.FirstName;
-                user.LastName = model.LastName;
+                user.FirstName = model.FirstName.SanitizeText();
+                user.LastName = model.LastName.SanitizeText();
+                user.FatherName = model.FatherName.SanitizeText();
+                user.Email = model.Email.SanitizeText();
+                user.BithDay = model.BithDay.ToMiladiDateTime();
+                user.NationalId = model.NationalCode.SanitizeText();
+                user.ExtraPhoneNumber = model.GeneralPhone.SanitizeText();
+                user.Username = model.username;
+                user.HomePhoneNumber = model.HomePhoneNumber;
 
                 await _userService.UpdateUser(user);
 
@@ -809,10 +870,15 @@ namespace DoctorFAM.Application.Services.Implementation
 
                     #endregion
 
-                    #region Update First Name And Last Name 
+                    #region Update User Infos 
 
-                    user.FirstName = model.FirstName;
-                    user.LastName = model.LastName;
+                    user.FatherName = model.FatherName.SanitizeText();
+                    user.Email = model.Email.SanitizeText();
+                    user.BithDay = model.BithDay.ToMiladiDateTime();
+                    user.NationalId = model.NationalCode.SanitizeText();
+                    user.ExtraPhoneNumber = model.GeneralPhone.SanitizeText();
+                    user.Username = model.username;
+                    user.HomePhoneNumber = model.HomePhoneNumber;
 
                     await _userService.UpdateUser(user);
 
@@ -975,10 +1041,17 @@ namespace DoctorFAM.Application.Services.Implementation
 
                     #endregion
 
-                    #region Update First Name And Last Name 
+                    #region Update User Info 
 
                     user.FirstName = model.FirstName;
                     user.LastName = model.LastName;
+                    user.FatherName = model.FatherName.SanitizeText();
+                    user.Email = model.Email.SanitizeText();
+                    user.BithDay = model.BithDay.ToMiladiDateTime();
+                    user.NationalId = model.NationalCode.SanitizeText();
+                    user.ExtraPhoneNumber = model.GeneralPhone.SanitizeText();
+                    user.Username = model.username;
+                    user.HomePhoneNumber = model.HomePhoneNumber;
 
                     await _userService.UpdateUser(user);
 

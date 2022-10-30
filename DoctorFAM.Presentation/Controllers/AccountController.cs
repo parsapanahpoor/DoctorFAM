@@ -1,16 +1,24 @@
-﻿using DoctorFAM.Application.Services.Interfaces;
+﻿using AngleSharp.Css;
+using DoctorFAM.Application.Extensions;
+using DoctorFAM.Application.Security;
+using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Application.StaticTools;
+using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Consultant;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.Laboratory;
 using DoctorFAM.Domain.Entities.Nurse;
 using DoctorFAM.Domain.Entities.Pharmacy;
 using DoctorFAM.Domain.ViewModels.Account;
+using DoctorFAM.Domain.ViewModels.Common;
 using DoctorFAM.Domain.ViewModels.Site.Account;
+using DoctorFAM.Domain.ViewModels.Site.CooperationRequest;
+using DoctorFAM.Web.ActionFilterAttributes;
 using DoctorFAM.Web.HttpManager;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Win32;
 using NuGet.Protocol.Plugins;
 using System.Security.Claims;
 
@@ -37,7 +45,7 @@ namespace DoctorFAM.Web.Controllers
 
         [HttpGet("Register")]
         [RedirectHomeIfLoggedInActionFilter]
-        public IActionResult Register(bool? doctors, bool? seller , bool? pharmacy , bool? nurse , bool? consultant , bool? Labratory)
+        public IActionResult Register(bool? doctors, bool? seller , bool? pharmacy , bool? nurse , bool? consultant , bool? Labratory , string? mobile)
         {
             #region About Doctors & Seller & Pharmacy
 
@@ -52,6 +60,20 @@ namespace DoctorFAM.Web.Controllers
             ViewBag.ConsultantRegister = consultant;
 
             ViewBag.LabratoryRegister = Labratory;
+
+            #endregion
+
+            #region Redirect Mobile 
+
+            if (!string.IsNullOrEmpty(mobile))
+            {
+                TempData[SuccessMessage] = "لطفا اطلاعات خواسته شده را جهت ادامه ی مراحل ثبت نام وارد نمایید.";
+
+                return View(new RegisterUserViewModel()
+                {
+                    Mobile = mobile
+                });
+            }
 
             #endregion
 
@@ -343,11 +365,52 @@ namespace DoctorFAM.Web.Controllers
 
                     #endregion
 
+                    #region Redirect To The Panel By Role
+
+                    var userRole = await _userService.GetUserRoles(user.Id);
+
+                    //Check That User Has Role Or Not 
+                    if (userRole != null && userRole.Any())
+                    {
+                        //If User Is Admin
+                        if (userRole.Contains("Admin")) return RedirectToAction("Index", "Home", new { area = "Admin" });
+
+                        //If User Is Supporter
+                        if (userRole.Contains("Support")) return RedirectToAction("Index", "Home", new { area = "Supporter" });
+
+                        //If User Is Doctor Or Doctor Employee
+                        if (userRole.Contains("Doctor")) return RedirectToAction("Index", "Home", new { area = "Doctor" });
+                        if (userRole.Contains("DoctorOfficeEmployee")) return RedirectToAction("Index", "Home", new { area = "Doctor" });
+
+                        //If User Is Nurse
+                        if (userRole.Contains("Nurse")) return RedirectToAction("Index", "Home", new { area = "Nurse" });
+
+                        //If User Is Concultant
+                        if (userRole.Contains("Consultant")) return RedirectToAction("Index", "Home", new { area = "Consultant" });
+
+                        //If User Is Pharmacy
+                        if (userRole.Contains("Pharmacy")) return RedirectToAction("Index", "Home", new { area = "Pharmacy" });
+
+                        //If User Is Laborotary Or Laboratory Employee
+                        if (userRole.Contains("Labratory")) return RedirectToAction("Index", "Home", new { area = "Laboratory" });
+                        if (userRole.Contains("LaboratoryOfficeEmployee")) return RedirectToAction("Index", "Home", new { area = "Laboratory" });
+                        if (userRole.Contains("LaboratorySampler")) return RedirectToAction("Index", "Home", new { area = "Laboratory" });
+
+                        //If User Is Seller
+                        if (userRole.Contains("Seller")) return RedirectToAction("Index", "Home", new { area = "Market" });
+                    }
+                    else
+                    {
+                        //User Is A Simple User 
+                        return RedirectToAction("Index", "Home", new { area = "UserPanel" });
+                    }
+
+                    #endregion
+
                     return Redirect("/");
             }
 
             return View(login);
-
         }
 
         #endregion
@@ -497,6 +560,134 @@ namespace DoctorFAM.Web.Controllers
 
             TempData[SuccessMessage] = "عملیات با موفقیت انجام شده است ";
             return Redirect("/");
+        }
+
+        #endregion
+
+        #region Send Cooperation Request
+
+        public async Task<IActionResult> SendCooperationRequest(SendCooperationRequestViewModel model)
+        {
+            #region Model State Validation 
+
+            if (!ModelState.IsValid)
+            {
+                TempData[ErrorMessage] = "مقادیر وارد شده معتبر نمی باشد . ";
+                return RedirectToAction("Index" , "Home");
+            }
+
+            if (string.IsNullOrEmpty(model.RoleName) || string.IsNullOrEmpty(model.Mobile))
+            {
+                TempData[ErrorMessage] = "لطفا عنوان نقش خود را انتخاب کنید.";
+                return RedirectToAction("Index", "Home");
+            }
+
+            #endregion
+
+            #region Send Cooperation Request
+
+            //Check Is Exist User In The System  
+            var user = await _userService.GetUserByMobile(model.Mobile.SanitizeText());
+
+            //When User Is Exist In System
+            if (user != null)
+            {
+                //If User Is Not Login
+                if (!User.Identity.IsAuthenticated)
+                {
+                    TempData[WarningMessage] = "برای انجام عملیات ابتدا باید وارد وب سایت شوید.";
+                    return RedirectToAction(nameof(Login));
+                }
+                else
+                {
+                    //If Current User Information In Not The Same As Incomming Information
+                    var currentUser = await _userService.GetUserById(User.GetUserId());
+                    if (currentUser == null)
+                    {
+                        TempData[ErrorMessage] = "عملیات باشکست مواجه شده است.";
+                        return RedirectToAction("Index", "Home");
+                    }
+
+                    if (user.Mobile != currentUser.Mobile)
+                    {
+                        TempData[ErrorMessage] = "شماره موبایل وارد شده متعلق به شما نمی باشد.";
+                        return RedirectToAction("Index", "Home");
+                    }
+                }
+
+                //If User Not Insert His Personal Informations
+                if (!await _userService.CheckThatHasUserFillPersonalInformation(user.Id) && User.Identity.IsAuthenticated)
+                {
+                    return Redirect("/UserPanel/Account/EditProfile?FillInfo=true");
+                }
+
+                var res = await _userService.SendCooperationRequestForExistUser(user , model.RoleName);
+
+                if (res)
+                {
+                    //Send Cooperation Request To The Data Base 
+                    await _userService.AddCooperationRequest(model.Mobile, model.RoleName, model.Username);
+
+                    TempData[SuccessMessage] = "درخواست ارتقای سطح شما باموفقیت ثبت شده است.";
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+
+            //When User Is Exist In The System
+            if (user == null)
+            {
+                //Send Cooperation Request To The Data Base 
+                await _userService.AddCooperationRequest(model.Mobile, model.RoleName, model.Username);
+
+                //If User Select Doctor Role 
+                if (model.RoleName == "doctor") return RedirectToAction("Register", "Account", new { doctors = true , mobile = model.Mobile });
+
+                //If User Select seller Role 
+                if (model.RoleName == "seller") return RedirectToAction("Register", "Account", new { seller = true, mobile = model.Mobile });
+
+                //If User Select Consultant Role 
+                if (model.RoleName == "Consultant") return RedirectToAction("Register", "Account", new { consultant = true, mobile = model.Mobile });
+
+                //If User Select Nurse Role 
+                if (model.RoleName == "Nurse") return RedirectToAction("Register", "Account", new { Nurse = true, mobile = model.Mobile });
+
+                //If User Select Labratory Role 
+                if (model.RoleName == "Labratory") return RedirectToAction("Register", "Account", new { Labratory = true, mobile = model.Mobile });
+
+                //If User Select pharmacy Role 
+                if (model.RoleName == "pharmacy") return RedirectToAction("Register", "Account", new { pharmacy = true, mobile = model.Mobile });
+            }
+
+            #endregion
+
+            TempData[ErrorMessage] = "لطفا عنوان نقش خود را انتخاب کنید.";
+            return RedirectToAction("Index", "Home");
+        }
+
+        #endregion
+
+        #region Show Cooperation Request Modal
+
+        [HttpGet("/Show-Cooperation-Request-Modal")]
+        public async Task<IActionResult> ShowCooperationRequestModal()
+        {
+            #region Render Model 
+
+            var user = await _userService.GetUserById(User.GetUserId());
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            SendCooperationRequestViewModel model = new SendCooperationRequestViewModel()
+            {
+                Mobile = user.Mobile,
+                Username = user.Username
+            };
+
+            #endregion
+
+            return PartialView("_ShowCooperationRequestModal" , model);
         }
 
         #endregion

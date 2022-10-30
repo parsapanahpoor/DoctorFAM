@@ -20,7 +20,10 @@ namespace DoctorFAM.Application.Services.Interfaces
 {
     public interface IDoctorsService
     {
-        #region Doctors Panel Side    
+        #region Doctors Panel Side   
+
+        //Update Doctor Personal Info With Save Changes 
+        Task UpdateDoctorPersonalInfoWithSaveChanges(DoctorsInfo doctorsInfo);
 
         //Show List Of SMS That Send From Doctor To Patient Incomes From Parsa System
         Task<List<LogForSendSMSToUsersIncomeFromParsa>?> ShowListOfSMSThatSendFromDoctorToPatientIncomesFromParsaSystem(ulong id, ulong doctorUserId);
@@ -76,7 +79,7 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         Task<ManageDoctorsInfoViewModel?> FillManageDoctorsInfoViewModel(ulong userId);
 
-        Task<AddOrEditDoctorInfoResult> AddOrEditDoctorInfoDoctorsPanel(ManageDoctorsInfoViewModel model, IFormFile? MediacalFile);
+        Task<AddOrEditDoctorInfoResult> AddOrEditDoctorInfoDoctorsPanel(ManageDoctorsInfoViewModel model, IFormFile? MediacalFile, IFormFile? UserAvatar);
 
         Task<Doctor?> GetDoctorByUserId(ulong userId);
 

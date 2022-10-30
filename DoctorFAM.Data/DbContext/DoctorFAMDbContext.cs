@@ -4,6 +4,7 @@ using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.BMI;
 using DoctorFAM.Domain.Entities.Consultant;
 using DoctorFAM.Domain.Entities.Contact;
+using DoctorFAM.Domain.Entities.CooperationRequest;
 using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.FamilyDoctor;
@@ -51,9 +52,14 @@ namespace DoctorFAM.Data.DbContext
         #region Account 
 
         public DbSet<User> Users { get; set; }
+
         public DbSet<Role> Roles { get; set; }
+
         public DbSet<RolePermission> RolePermissions { get; set; }
+
         public DbSet<UserRole> UserRoles { get; set; }
+
+        public DbSet<CooperationRequest> CooperationRequests { get; set; }
 
         #endregion
 

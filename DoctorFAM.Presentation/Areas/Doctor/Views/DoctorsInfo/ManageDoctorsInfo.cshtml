@@ -80,25 +80,31 @@
                         <div class="widget-body">
                             <div class="row">
 
-                                <div class="form-group col-md-4 col-sm-12">
+                                <div class="form-group col-md-6 col-sm-12">
                                     <label asp-for="NationalCode"></label>
                                     <input type="text" class="form-control" asp-for="NationalCode">
                                     <span class="text-danger" asp-validation-for="NationalCode"></span>
                                 </div>
 
-                                <div class="form-group col-md-4 col-sm-12">
+                                <div class="form-group col-md-6 col-sm-12">
                                     <label asp-for="MedicalSystemCode"></label>
                                     <input type="text" class="form-control" asp-for="MedicalSystemCode">
                                     <span class="text-danger" asp-validation-for="MedicalSystemCode"></span>
                                 </div>
 
-                                <div class="form-group col-md-4 col-sm-12">
-                                    <label asp-for="Gender"></label>
-                                    <select asp-for="Gender" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.Gender.Gender))"></select>
-                                    <span class="text-danger" asp-validation-for="Gender"></span>
+                             
+                                      <div class="form-group col-md-6 col-sm-12">
+                                    <label asp-for="username"></label>
+                                    <input type="text" class="form-control" asp-for="username">
+                                    <span class="text-danger" asp-validation-for="username"></span>
                                 </div>
 
-                                <div class="form-group col-md-6 col-sm-12">
+                                      <div class="form-group col-md-6 col-sm-12">
+                                    <label asp-for="Mobile"></label>
+                                    <div  class="form-control"> @Model.Mobile </div>
+                                </div>
+
+                                   <div class="form-group col-md-6 col-sm-12">
                                     <label asp-for="FirstName"></label>
                                     <input type="text" class="form-control" asp-for="FirstName">
                                     <span class="text-danger" asp-validation-for="FirstName"></span>
@@ -108,6 +114,31 @@
                                     <label asp-for="LastName"></label>
                                     <input type="text" class="form-control" asp-for="LastName">
                                     <span class="text-danger" asp-validation-for="LastName"></span>
+                                </div>
+
+                                <div class="form-group col-md-6 col-sm-12">
+                                    <label asp-for="FatherName"></label>
+                                    <input type="text" class="form-control" asp-for="FatherName">
+                                    <span class="text-danger" asp-validation-for="FatherName"></span>
+                                </div>
+
+                                   <div class="form-group col-md-6 col-sm-12">
+                                    <label asp-for="Email"></label>
+                                    <input type="text" class="form-control" asp-for="Email">
+                                    <span class="text-danger" asp-validation-for="Email"></span>
+                                </div>
+
+
+                                    <div class="form-group col-md-6 col-sm-12">
+                                    <label asp-for="BithDay"></label>
+                                <input asp-for="BithDay" class="form-control" autocomplete="off" AdminDatePicker="1"/>
+                                    <span class="text-danger" asp-validation-for="BithDay"></span>
+                                </div>
+
+                                <div class="form-group col-md-6 col-sm-12">
+                                    <label asp-for="Gender"></label>
+                                    <select asp-for="Gender" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.Gender.Gender))"></select>
+                                    <span class="text-danger" asp-validation-for="Gender"></span>
                                 </div>
 
                                 <div class="form-group col-md-6 col-sm-12">
@@ -122,22 +153,28 @@
                                     <span class="text-danger" asp-validation-for="Specialty"></span>
                                 </div>
 
-                                <div class="form-group col-md-6 col-sm-12">
+                                     <div class="form-group col-md-12 col-sm-12">
+                                    <label asp-for="DoctorSkills"></label>
+                                    <input type="text" tagify="1" class="form-control" asp-for="DoctorSkills">
+                                    <span class="text-danger" asp-validation-for="DoctorSkills"></span>
+                                </div>
+
+                                <div class="form-group col-md-4 col-sm-12">
                                     <label asp-for="GeneralPhone"></label>
                                     <input type="text" class="form-control" asp-for="GeneralPhone">
                                     <span class="text-danger" asp-validation-for="GeneralPhone"></span>
                                 </div>
+                                
+                                   <div class="form-group col-md-4 col-sm-12">
+                                    <label asp-for="HomePhoneNumber"></label>
+                                    <input type="text" class="form-control" asp-for="HomePhoneNumber">
+                                    <span class="text-danger" asp-validation-for="HomePhoneNumber"></span>
+                                </div>
 
-                                <div class="form-group col-md-6 col-sm-12">
+                                <div class="form-group col-md-4 col-sm-12">
                                     <label asp-for="ClinicPhone"></label>
                                     <input type="text" class="form-control" asp-for="ClinicPhone">
                                     <span class="text-danger" asp-validation-for="ClinicPhone"></span>
-                                </div>
-
-                                <div class="form-group col-md-12 col-sm-12">
-                                    <label asp-for="DoctorSkills"></label>
-                                    <input type="text" tagify="1" class="form-control" asp-for="DoctorSkills">
-                                    <span class="text-danger" asp-validation-for="DoctorSkills"></span>
                                 </div>
 
                                 <div class="form-group col-md-4 col-sm-12">
@@ -239,10 +276,10 @@
                         <div class="widget-body">
                             <div class="row">
 
-                                <input type="file" class="display-none" name="MediacalFile" id="UserAvatar" ImageInput="1" accept=".jpg,.jpeg,.png" />
+                                <input type="file" class="display-none" name="MediacalFile" id="UserAvatar1" ImageInput="1" accept=".jpg,.jpeg,.png" />
 
                                 <div class="col-md-12">
-                                    <label for="UserAvatar" class="file-input-style">
+                                    <label for="UserAvatar1" class="file-input-style">
                                         <i class="glyphicon glyphicon-upload"></i>
                                         <span class="mr-8px"> @Localizer["Please upload your educational certificate or license."]</span>
                                     </label>
@@ -265,7 +302,45 @@
                         </div>
                     </div>
                 </div>
+
+                                <div class="col-lg-12 col-sm-12">
+            <div class="widget">
+                <div class="widget-header bordered-bottom bordered-green">
+                    <span class="widget-caption"> @Localizer["User Avatar"] </span>
+                </div>
+                <div class="widget-body">
+                    <div class="row">
+
+                        <input type="file" class="display-none" name="UserAvatar" id="UserAvatar2" ImageInput="2" accept=".jpg,.jpeg,.png" />
+
+                        <div class="col-md-12">
+                                    <label for="UserAvatar2" class="file-input-style">
+                                <i class="glyphicon glyphicon-upload"></i>
+                                <span class="mr-8px"> @Localizer["Please Select User Avatar"]</span>
+                            </label>
+                        </div>
+
+                        @{
+                            var avatarUrl = PathTools.DefaultUserAvatar;
+
+                            if (Model != null && !string.IsNullOrEmpty(Model.AvatarName))
+                            {
+                                avatarUrl = $"{PathTools.UserAvatarPathThumb}{Model.AvatarName}";
+                            }
+                        }
+
+                        <div class="col-md-12 tc mt-10px">
+                            <img src="@avatarUrl" class="image-style" ImageFile="2" />
+                        </div>
+
+                    </div>
+                </div>
             </div>
         </div>
+
+
+            </div>
+        </div>
+
     </div>
 </form>

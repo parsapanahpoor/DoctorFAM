@@ -1,6 +1,8 @@
 ﻿using DoctorFAM.Data.DbContext;
+using DoctorFAM.Data.Migrations;
 using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Interfaces;
+using DoctorFAM.Domain.ViewModels.Common;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -25,6 +27,13 @@ namespace DoctorFAM.Data.Repository
 
         #region Site Side
 
+        //Add Cooperation Request
+        public async Task AddCooperationRequest(DoctorFAM.Domain.Entities.CooperationRequest.CooperationRequest request)
+        {
+            await _context.CooperationRequests.AddAsync(request);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<User?> GetUserByMobile(string Mobile)
         {
             return await _context.Users.FirstOrDefaultAsync(p => !p.IsDelete && p.Mobile == Mobile);
@@ -45,6 +54,20 @@ namespace DoctorFAM.Data.Repository
         {
             await _context.UserRoles.AddAsync(userRole);
             await _context.SaveChangesAsync();
+        }
+
+        //Get User Roles By User Id 
+        public async Task<List<ulong>?> GetUserRolesByUserId(ulong userId)
+        {
+            return await _context.UserRoles.Include(p => p.Role).Where(p => !p.IsDelete && p.UserId == userId)
+                                        .Select(p=> p.RoleId).ToListAsync();
+        }
+
+        //Get User Roles 
+        public async Task<List<string>?> GetUserRoles(ulong userId)
+        {
+            return await _context.UserRoles.Include(p => p.Role).Where(p => p.UserId == userId && !p.IsDelete)
+                                                     .Select(p => p.Role.RoleUniqueName).ToListAsync();
         }
 
         #endregion

@@ -23,6 +23,23 @@ namespace DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo
         [RegularExpression(@"^[0-9]*$", ErrorMessage = "The entered national code is not valid")]
         public string MedicalSystemCode { get; set; }
 
+        [Display(Name = "User Name")]
+        [Required(ErrorMessage = "Please Enter {0}")]
+        [MaxLength(150, ErrorMessage = "Please Enter {0} Less Than {1} Character")]
+        public string username { get; set; }
+
+        public string? AvatarName { get; set; }
+
+        [Display(Name = "Email")]
+        [MaxLength(150, ErrorMessage = "Please Enter {0} Less Than {1} Character")]
+        [EmailAddress(ErrorMessage = "Please Enter Valid Email Address")]
+        public string? Email { get; set; }
+
+        [Display(Name = "Mobile")]
+        [MaxLength(20, ErrorMessage = "Please Enter {0} Less Than {1} Character")]
+        [RegularExpression(@"^[0-9]*$", ErrorMessage = "The information entered is not valid.")]
+        public string? Mobile { get; set; }
+
         [Display(Name = "First Name")]
         [Required(ErrorMessage = "Please Enter {0}")]
         public string? FirstName { get; set; }
@@ -71,6 +88,22 @@ namespace DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo
         [Display(Name = "Doctor Skills")]
         public string? DoctorSkills { get; set; }
 
+        [Display(Name = "BirthDay")]
+        [Required(ErrorMessage = "Please Enter {0}")]
+        [RegularExpression(@"^\d{4}\/(0?[1-9]|1[012])\/(0?[1-9]|[12][0-9]|3[01])$", ErrorMessage = "The information entered is not valid.")]
+        public string BithDay { get; set; }
+
+        [Display(Name = "Father Name")]
+        [Required(ErrorMessage = "Please Enter {0}")]
+        [MaxLength(150, ErrorMessage = "Please Enter {0} Less Than {1} Character")]
+        public string FatherName { get; set; }
+
+        [Display(Name = "Home Phone Number")]
+        [Required(ErrorMessage = "Please Enter {0}")]
+        [MaxLength(150, ErrorMessage = "Please Enter {0} Less Than {1} Character")]
+        [RegularExpression(@"^[0-9]*$", ErrorMessage = "The information entered is not valid.")]
+        public string HomePhoneNumber { get; set; }
+
         public OrganizationInfoState? DoctorsInfosType { get; set; }
     }
 
@@ -78,6 +111,10 @@ namespace DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo
     {
         Success,
         Faild,
-        FileNotUploaded
+        FileNotUploaded,
+        NotValidImage,
+        NotValidNationalId,
+        NationalId,
+        NotValidEmail
     }
 }
