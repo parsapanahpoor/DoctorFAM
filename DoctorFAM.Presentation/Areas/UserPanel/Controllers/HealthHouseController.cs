@@ -6,12 +6,14 @@ using DoctorFAM.Application.StaticTools;
 using DoctorFAM.Domain.ViewModels.Site.Notification;
 using DoctorFAM.Domain.ViewModels.UserPanel.HealthHouse;
 using DoctorFAM.Domain.ViewModels.UserPanel.HealthHouse.HomeNurse;
+using DoctorFAM.Web.ActionFilterAttributes;
 using DoctorFAM.Web.Hubs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 
 namespace DoctorFAM.Web.Areas.UserPanel.Controllers
 {
+    [CheckUserFillPersonalInformation]
     public class HealthHouseController : UserBaseController
     {
         #region Ctor 

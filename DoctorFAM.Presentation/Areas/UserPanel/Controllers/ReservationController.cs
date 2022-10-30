@@ -4,10 +4,12 @@ using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment;
 using DoctorFAM.Domain.ViewModels.Site.Reservation;
 using DoctorFAM.Domain.ViewModels.UserPanel.Reservation;
+using DoctorFAM.Web.ActionFilterAttributes;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DoctorFAM.Web.Areas.UserPanel.Controllers
 {
+    [CheckUserFillPersonalInformation]
     public class ReservationController : UserBaseController
     {
         #region Ctor

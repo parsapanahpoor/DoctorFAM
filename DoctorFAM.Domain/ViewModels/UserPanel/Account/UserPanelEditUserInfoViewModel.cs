@@ -54,10 +54,9 @@ namespace DoctorFAM.Domain.ViewModels.UserPanel.Account
         public string NationalId { get; set; }
 
         [Display(Name = "Extra Phone Number")]
-        [Required(ErrorMessage = "Please Enter {0}")]
         [MaxLength(150, ErrorMessage = "Please Enter {0} Less Than {1} Character")]
         [RegularExpression(@"^[0-9]*$", ErrorMessage = "The information entered is not valid.")]
-        public string ExtraPhoneNumber { get; set; }
+        public string? ExtraPhoneNumber { get; set; }
 
         [Display(Name = "Home Phone Number")]
         [Required(ErrorMessage = "Please Enter {0}")]

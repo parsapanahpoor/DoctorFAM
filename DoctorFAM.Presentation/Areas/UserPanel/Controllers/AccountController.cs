@@ -28,13 +28,22 @@ namespace DoctorFAM.Web.Areas.UserPanel.Controllers
         #region Edit User
 
         [HttpGet]
-        public async Task<IActionResult> EditProfile()
+        public async Task<IActionResult> EditProfile(bool FillInfo)
         {
             #region Fill View Model
 
             var result = await _userService.FillUserPanelEditUserInfoViewModel(User.GetUserId());
 
             if (result == null) return NotFound();
+
+            #endregion
+
+            #region Fill Personal Information
+
+            if (FillInfo == true)
+            {
+                ViewBag.FillInfo = true;
+            }
 
             #endregion
 

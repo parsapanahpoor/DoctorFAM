@@ -18,6 +18,7 @@ using Microsoft.DiaSymReader;
 using DoctorFAM.Domain.Entities.Wallet;
 using DoctorFAM.Application.StaticTools;
 using DoctorFAM.Domain.Entities.Account;
+using DoctorFAM.Web.ActionFilterAttributes;
 
 namespace DoctorFAM.Web.Controllers
 {
@@ -69,6 +70,7 @@ namespace DoctorFAM.Web.Controllers
         #region Doctor Reservation Detail 
 
         [HttpGet]
+        [CheckUserFillPersonalInformation]
         public async Task<IActionResult> DocBooking(ulong userId , string? loggedDateTime)
         {
             #region Fill Model
@@ -95,6 +97,7 @@ namespace DoctorFAM.Web.Controllers
         }
 
         [HttpPost , ValidateAntiForgeryToken]
+        [CheckUserFillPersonalInformation]
         public async Task<IActionResult> DocBooking(ShowDoctorReservationDetailViewModel reservationDetail)
         {
             #region Fill Model
@@ -136,6 +139,7 @@ namespace DoctorFAM.Web.Controllers
         #region Choose Type Of Reservation
 
         [Authorize]
+        [CheckUserFillPersonalInformation]
         public async Task<IActionResult> ChooseTypeOfReservation(ChooseTypeOfReservationViewModel model)
         {
             #region Get Reservation Date Time 

@@ -1,0 +1,56 @@
+﻿@model DoctorFAM.Domain.ViewModels.Site.CooperationRequest.SendCooperationRequestViewModel
+
+<section class="pos-r pt-0 ">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row no-gutters box-shadow">
+                    <div class="col-md-12 theme-bg p-5">
+                        <div class="section-title mb-4">
+                            <h2 class="title"> درخواست همکاری </h2>
+                        </div>
+                        <p class="line-h-3 text-rgba">
+                            برای پیوستن به همکاران ما در استارت آپ <span style="font-size:22px; color:#fd5b03;">دکترفم</span> فرم زیر را تکمیل نموده و منتظر تماس ما باشید:
+                        </p>
+
+                        <form id="CooperationRequestForm" asp-action="SendCooperationRequest" asp-controller="Account" method="post">
+                            <div id="formmessage"></div>
+
+                            <div class="form-group">
+                                <input id="form_number" type="text" asp-for="Username" class="form-control" placeholder="نام و نام خانوادگی" required="required" value="@((!string.IsNullOrEmpty(Model.Username)) ? Model.Username : " ")">
+
+                                <div class="help-block with-errors"></div>
+                            </div>
+
+                            <div class="form-group">
+
+                                <input id="form_number" type="text" asp-for="Mobile" class="form-control" placeholder="شماره همراه" required="required" value="@((!string.IsNullOrEmpty(Model.Mobile)) ? Model.Mobile : " ")">
+                             
+                                <div class="help-block with-errors"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <select asp-for="RoleName" class="form-control">
+
+                                    <option value=" ">- زمینه همکاری خود را انتخاب کنید </option>
+                                    <option value="doctor"> پزشکی </option>
+                                    <option value="Consultant"> مشاور روان </option>
+                                    <option value="Nurse">  پرستار </option>
+                                    <option value="Labratory">   آزمایشگاه </option>
+                                    <option value="pharmacy">   داروخانه </option>
+                                    <option value="seller">  فروشنده </option>
+
+                                </select>
+                            </div>
+                            <button class="btn btn-2 btn-border white mt-5">
+                                <span class="btn-icon btn-arrow"></span>
+                                <span class="btn-text"> ارسال </span>
+                            </button>
+                        </form>
+                    </div>
+  
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

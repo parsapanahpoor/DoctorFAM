@@ -11,6 +11,7 @@ using DoctorFAM.Domain.ViewModels.Site.DeathCertificate;
 using DoctorFAM.Domain.ViewModels.Site.Notification;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
 using DoctorFAM.Domain.ViewModels.Site.Request;
+using DoctorFAM.Web.ActionFilterAttributes;
 using DoctorFAM.Web.Hubs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -20,6 +21,7 @@ using Microsoft.AspNetCore.SignalR;
 namespace DoctorFAM.Web.Controllers
 {
     [Authorize]
+    [CheckUserFillPersonalInformation]
     public class DeathCertificatController : SiteBaseController
     {
         #region Ctor

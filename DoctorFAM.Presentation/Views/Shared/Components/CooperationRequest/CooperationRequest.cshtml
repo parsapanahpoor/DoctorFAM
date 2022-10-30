@@ -1,0 +1,117 @@
+﻿@model DoctorFAM.Domain.ViewModels.Site.CooperationRequest.SendCooperationRequestViewModel
+
+<section class="pos-r pt-0 mt-8 mb-3 custom-mt-10 sm-mt-0">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row no-gutters box-shadow">
+                    <div class="col-md-5 theme-bg p-5">
+                        <div class="section-title mb-4">
+                            <h2 class="title"> درخواست همکاری </h2>
+                        </div>
+                        <p class="line-h-3 text-rgba">
+                            برای پیوستن به همکاران ما در استارت آپ <span style="font-size:22px; color:#fd5b03;">دکترفم</span> فرم زیر را تکمیل نموده و منتظر تماس ما باشید:
+                        </p>
+
+                        <form asp-action="SendCooperationRequest" asp-controller="Account" method="post">
+                            <div id="formmessage"></div>
+
+                            <div class="form-group">
+
+                                @if (Model != null && !string.IsNullOrEmpty(Model.Username))
+                                {
+                                    <input id="form_number" type="text" asp-for="Username" class="form-control" placeholder="نام و نام خانوادگی" required="required" value="@Model.Username">
+                                }
+                                else
+                                {
+                                    <input id="form_number" type="text" asp-for="Username" class="form-control" placeholder="نام و نام خانوادگی" required="required">
+                                }
+
+                                <div class="help-block with-errors"></div>
+                            </div>
+
+                            <div class="form-group">
+
+                                @if (Model != null && !string.IsNullOrEmpty(Model.Mobile))
+                                {
+                                    <input id="form_number" type="text" asp-for="Mobile" class="form-control" placeholder="شماره همراه" required="required" value="@Model.Mobile">
+                                }
+                                else
+                                {
+                                    <input id="form_number" type="text" asp-for="Mobile" class="form-control" placeholder="شماره همراه" required="required">
+                                }
+
+                                <div class="help-block with-errors"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <select asp-for="RoleName" class="form-control">
+
+                                    <option value=" ">- زمینه همکاری خود را انتخاب کنید </option>
+                                    <option value="doctor"> پزشکی </option>
+                                    <option value="Consultant"> مشاور روان </option>
+                                    <option value="Nurse">  پرستار </option>
+                                    <option value="Labratory">   آزمایشگاه </option>
+                                    <option value="pharmacy">   داروخانه </option>
+                                    <option value="seller">  فروشنده </option>
+
+                                </select>
+                            </div>
+                            <button class="btn btn-2 btn-border white mt-5">
+                                <span class="btn-icon btn-arrow"></span>
+                                <span class="btn-text"> ارسال </span>
+                            </button>
+                        </form>
+                    </div>
+                    <div class="col-md-1"></div>
+                    <div class="col-lg-6 col-md-12 mt-5">
+                        <div class="owl-carousel no-pb" data-items="1" data-margin="30" data-dots="false" data-autoplay="true">
+                            <div class="item">
+                                <div class="post">
+                                    <div class="post-image">
+                                        <img class="img-fluid rounded w-100" src="~/Content/images/case-studies/HomeVisit.jpg" alt="">
+                                    </div>
+                                    <div class="post-desc">
+                                        <div class="post-meta">
+                                            <ul class="list-inline">
+                                                <li>
+                                                    پزشکان، متخصصین، داروخانه ها و آزمایشگاهها
+                                                </li>
+
+                                            </ul>
+                                        </div>
+                                        <div class="post-title">
+                                            <h4><a href="blog-single.html"> پذیرش کادر محترم درمان در سراسر کشور </a></h4>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="post">
+                                    <div class="post-image">
+                                        <img class="img-fluid rounded w-100" src="~/Content/images/case-studies/Equipment.jpg" alt="">
+                                    </div>
+                                    <div class="post-desc">
+                                        <div class="post-meta">
+                                            <ul class="list-inline">
+                                                <li>
+                                                    عرضه کنندگان محصولات و تجهیزات پزشکی
+                                                </li>
+
+                                            </ul>
+                                        </div>
+                                        <div class="post-title">
+                                            <h4><a href="blog-single.html"> با عرضه محصولات خود در بازار سلامت عضو خدمت دهندگان دکترفم شوید </a></h4>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,7 +1,9 @@
-﻿using DoctorFAM.Domain.Entities.Laboratory;
+﻿using DoctorFAM.Domain.Entities.Account;
+using DoctorFAM.Domain.Entities.Laboratory;
 using DoctorFAM.Domain.ViewModels.Admin.Laboratory;
 using DoctorFAM.Domain.ViewModels.Laboratory.Employee;
 using DoctorFAM.Domain.ViewModels.Laboratory.LaboratorySideBar;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,6 +42,12 @@ namespace DoctorFAM.Domain.Interfaces
 
         //Filter Laboratory Office Employees
         Task<FilterLaboratoryOfficeEmployeesViewmodel> FilterLaboratoryOfficeEmployees(FilterLaboratoryOfficeEmployeesViewmodel filter);
+
+        //Add User Laboratory Member Role Without Save Changes
+        Task AddUserLaboratoryMemberRoleWithoutSaveChanges(UserRole userRole);
+
+        //Save Changes
+        Task Savechanges();
 
         #endregion
 

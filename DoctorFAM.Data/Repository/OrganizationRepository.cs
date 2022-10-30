@@ -43,6 +43,7 @@ namespace DoctorFAM.Data.Repository
         public async Task<Organization?> GetOrganizationByUserId(ulong userId)
         {
             var member = await _context.OrganizationMembers.FirstOrDefaultAsync(p => !p.IsDelete && p.UserId == userId);
+            if (member == null) return null;
 
             return await _context.Organizations.FirstOrDefaultAsync(p => p.Id == member.OrganizationId && !p.IsDelete);
         }

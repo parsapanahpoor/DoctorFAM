@@ -1,5 +1,6 @@
 ﻿using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Services.Interfaces;
+using DoctorFAM.Web.ActionFilterAttributes;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DoctorFAM.Web.Areas.UserPanel.Controllers

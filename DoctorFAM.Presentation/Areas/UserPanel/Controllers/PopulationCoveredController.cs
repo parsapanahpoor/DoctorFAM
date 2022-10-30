@@ -1,12 +1,14 @@
 ﻿using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.ViewModels.UserPanel.PopulationCovered;
+using DoctorFAM.Web.ActionFilterAttributes;
 using DoctorFAM.Web.HttpManager;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 
 namespace DoctorFAM.Web.Areas.UserPanel.Controllers
 {
+    [CheckUserFillPersonalInformation]
     public class PopulationCoveredController : UserBaseController
     {
         #region Ctor

@@ -2,6 +2,7 @@
 using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Application.StaticTools;
+using DoctorFAM.Data.DbContext;
 using DoctorFAM.Data.Repository;
 using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Doctors;
@@ -16,6 +17,7 @@ using DoctorFAM.Domain.ViewModels.Laboratory.Employee;
 using DoctorFAM.Domain.ViewModels.Laboratory.LaboratoryInfo;
 using DoctorFAM.Domain.ViewModels.Laboratory.LaboratorySideBar;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -33,13 +35,15 @@ namespace DoctorFAM.Application.Services.Implementation
         private readonly IOrganizationService _organizationService;
         private readonly IUserService _userService;
         private readonly IWorkAddressService _workAddressService;
+        private readonly DoctorFAMDbContext _context;
 
-        public LaboratoryService(ILaboratoryRepository laboratoryRepository, IOrganizationService organizationService, IUserService userService, IWorkAddressService workAddressService)
+        public LaboratoryService(ILaboratoryRepository laboratoryRepository, IOrganizationService organizationService, IUserService userService, IWorkAddressService workAddressService , DoctorFAMDbContext context)
         {
             _laboratoryRepository = laboratoryRepository;
             _organizationService = organizationService;
             _userService = userService;
             _workAddressService = workAddressService;
+            _context = context;
         }
 
         #endregion
@@ -499,6 +503,76 @@ namespace DoctorFAM.Application.Services.Implementation
         public async Task<FilterLaboratoryOfficeEmployeesViewmodel> FilterLaboratoryOfficeEmployees(FilterLaboratoryOfficeEmployeesViewmodel filter)
         {
             return await _laboratoryRepository.FilterLaboratoryOfficeEmployees(filter);
+        }
+
+        //Add Exist User To The Laboratory Organization 
+        public async Task<bool> AddExistUserToTheLaboratoryOrganization(ulong userId, List<ulong> UserRoles, ulong laboratoryId)
+        {
+            #region Check Is Exist Any User By This User Id
+
+            var user = await _userService.GetUserById(userId);
+            if (user == null) return false;
+
+            #endregion
+
+            #region Check That Has User Any Organization 
+
+            var userOrganization = await _organizationService.GetOrganizationByUserId(userId);
+            if (userOrganization != null) return false;
+
+            #endregion
+
+            #region Get Current Laboratory Organization
+
+            var organization = await _organizationService.GetLaboratoryOrganizationByUserId(laboratoryId);
+            if (organization == null) return false;
+
+            #endregion
+
+            #region Add User To The Laboratory Organization 
+
+            #region Add New Organization Member
+
+            OrganizationMember member = new OrganizationMember()
+            {
+                UserId = user.Id,
+                OrganizationId = organization.Id
+            };
+
+            await _organizationService.AddOrganizationMember(member);
+
+            #endregion
+
+            #region Add User Role
+
+            var userRole1 = new UserRole()
+            {
+                RoleId = 17,
+                UserId = user.Id
+            };
+
+            await _laboratoryRepository.AddUserLaboratoryMemberRoleWithoutSaveChanges(userRole1);
+
+            if (UserRoles != null && UserRoles.Any())
+            {
+                foreach (var roleId in UserRoles)
+                {
+                    var userRole = new UserRole()
+                    {
+                        RoleId = roleId,
+                        UserId = user.Id
+                    };
+                    await _laboratoryRepository.AddUserLaboratoryMemberRoleWithoutSaveChanges(userRole);
+                }
+
+                await _laboratoryRepository.Savechanges();
+            }
+
+            #endregion
+
+            #endregion
+
+            return true;
         }
 
         #endregion
