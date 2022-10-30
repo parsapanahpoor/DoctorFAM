@@ -67,6 +67,8 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Get List Of Laboratory Roles
         Task<List<Role>> GetListOfLaboratoryRoles();
 
+        Task<List<string>?> GetUserRoleses(ulong userId);
+
         #endregion
     }
 }

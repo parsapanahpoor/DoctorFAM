@@ -5,6 +5,7 @@ using DoctorFAM.Data.DbContext;
 using DoctorFAM.Domain.ViewModels.Site.Common;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
 using DoctorFAM.Domain.ViewModels.Site.Request;
+using DoctorFAM.Web.ActionFilterAttributes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -12,6 +13,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 namespace DoctorFAM.Web.Controllers
 {
     [Authorize]
+    [CheckUserFillPersonalInformation]
     public class HomePatientTransportController : SiteBaseController
     {
         #region Ctor

@@ -7,12 +7,14 @@ using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Enums.Request;
 using DoctorFAM.Domain.ViewModels.Site.Notification;
 using DoctorFAM.Domain.ViewModels.UserPanel.HealthHouse.HomeVisit;
+using DoctorFAM.Web.ActionFilterAttributes;
 using DoctorFAM.Web.Hubs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 
 namespace DoctorFAM.Web.Areas.UserPanel.Controllers
 {
+    [CheckUserFillPersonalInformation]
     public class HomeVisitController : UserBaseController
     {
         #region Ctor 

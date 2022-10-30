@@ -1,4 +1,5 @@
 ﻿using DoctorFAM.Data.DbContext;
+using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Consultant;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.Laboratory;
@@ -32,6 +33,18 @@ namespace DoctorFAM.Data.Repository
         #endregion
 
         #region Laboratory Side 
+
+        //Add User Laboratory Member Role Without Save Changes
+        public async Task AddUserLaboratoryMemberRoleWithoutSaveChanges(UserRole userRole)
+        {
+            await _context.AddAsync(userRole);
+        }
+
+        //Save Changes
+        public async Task Savechanges()
+        {
+            await _context.SaveChangesAsync();
+        }
 
         //Check Is Exist Laboratory Info By User ID
         public async Task<bool> IsExistAnyLaboratoryInfoByUserId(ulong userId)

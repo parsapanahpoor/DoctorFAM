@@ -2,10 +2,12 @@
 using DoctorFAM.Application.Services.Implementation;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.ViewModels.UserPanel.HealthHouse.DeathCertificate;
+using DoctorFAM.Web.ActionFilterAttributes;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DoctorFAM.Web.Areas.UserPanel.Controllers
 {
+    [CheckUserFillPersonalInformation]
     public class DeathCertificateController : UserBaseController
     {
         #region Ctor

@@ -237,6 +237,47 @@ namespace DoctorFAM.Web.Areas.Laboratory.Controllers
 
         #endregion
 
+        #region Check Is Exist Any User By This Mobile Number In Modal
+
+        [HttpGet("/CheckEmployeeIsExistInLaboratory/{mobile}")]
+        public async Task<IActionResult> CheckEmployeeIsExist(string mobile)
+        {
+            var res = await _userService.IsExistUserByMobile(mobile);
+
+            if (res)
+            {
+                ViewData["Roles"] = await _permissionService.GetListOfLaboratoryRoles();
+
+                return PartialView("_CheckEmployeeIsExist", await _userService.GetUserByMobile(mobile));
+            }
+
+            return ApiResponse.SetResponse(ApiResponseStatus.Danger, null, "کاربر یافت شده است.");
+        }
+
+        #endregion
+
+        #region Select Exist User For This Organization Or Any Organization 
+
+        [HttpPost , ValidateAntiForgeryToken]
+        public async Task<IActionResult> SelectExistUserForThisOrganization(ulong userId , List<ulong> UserRoles)
+        {
+            #region Check The User State 
+
+            var res = await _laboratoryService.AddExistUserToTheLaboratoryOrganization(userId, UserRoles ,User.GetUserId());
+            if (res)
+            {
+                TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+                return RedirectToAction(nameof(FilterEmployees));
+            }
+
+            #endregion
+
+            TempData[ErrorMessage] = ".اطلاعات وارد شده صحیح نمی باشد";
+            return RedirectToAction(nameof(FilterEmployees));
+        }
+
+        #endregion
+
         #endregion
     }
 }

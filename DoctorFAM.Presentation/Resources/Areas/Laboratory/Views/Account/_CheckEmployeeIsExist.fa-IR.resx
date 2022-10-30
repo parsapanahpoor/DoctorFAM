@@ -117,28 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Academic degree or medical license" xml:space="preserve">
-    <value>مدرک تحصیلی یا پروانه ی مطب</value>
+  <data name="First Name" xml:space="preserve">
+    <value>نام</value>
   </data>
-  <data name="Docotr Panel" xml:space="preserve">
-    <value>پنل پزشک</value>
+  <data name="Found A User" xml:space="preserve">
+    <value>کاربر یافت شده</value>
   </data>
-  <data name="Doctor Personal Informations" xml:space="preserve">
-    <value>اطلاعات پزشک</value>
+  <data name="Last Name" xml:space="preserve">
+    <value>نام خانوادگی</value>
   </data>
-  <data name="Please Select User Avatar" xml:space="preserve">
-    <value>لطفا تصویر مورد نظر خود را انتخاب کنید</value>
-  </data>
-  <data name="Please upload your educational certificate or license." xml:space="preserve">
-    <value>لطفا مدرک تحصیلی  یا پروانه ی مطب خود را بارگذاری (آپلود) کنید .</value>
+  <data name="NationalId" xml:space="preserve">
+    <value>کدملی</value>
   </data>
   <data name="Submit" xml:space="preserve">
-    <value>ثبت</value>
-  </data>
-  <data name="Supporter Message" xml:space="preserve">
-    <value>پیام پشتیبانی</value>
+    <value>انتخاب این کاربر</value>
   </data>
   <data name="User Avatar" xml:space="preserve">
-    <value>آواتار کاربری</value>
+    <value>تصویر کاربر</value>
   </data>
 </root>

@@ -2,6 +2,7 @@
 using DoctorFAM.Application.Interfaces;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo;
+using DoctorFAM.Domain.ViewModels.UserPanel.Account;
 using DoctorFAM.Web.Areas.Doctor.ActionFilterAttributes;
 using DoctorFAM.Web.Doctor.Controllers;
 using DoctorFAM.Web.HttpManager;
@@ -70,7 +71,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> ManageDoctorsInfo(ManageDoctorsInfoViewModel model, IFormFile? MediacalFile)
+        public async Task<IActionResult> ManageDoctorsInfo(ManageDoctorsInfoViewModel model, IFormFile? MediacalFile, IFormFile? UserAvatar)
         {
             #region Fill Model 
 
@@ -129,7 +130,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
             #region Add Or Edit Doctors Information
 
-            var result = await _doctorService.AddOrEditDoctorInfoDoctorsPanel(model, MediacalFile);
+            var result = await _doctorService.AddOrEditDoctorInfoDoctorsPanel(model, MediacalFile , UserAvatar);
 
             switch (result)
             {
@@ -144,6 +145,22 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
                 case AddOrEditDoctorInfoResult.Success:
                     TempData[SuccessMessage] = _sharedLocalizer["Operation Successfully"].Value;
                     return RedirectToAction("Index", "Home", new { area = "Doctor" });
+
+                case AddOrEditDoctorInfoResult.NotValidImage:
+                    TempData[ErrorMessage] = _sharedLocalizer["Image Is Not Valid ."].Value;
+                    break;
+
+                case AddOrEditDoctorInfoResult.NationalId:
+                    TempData[ErrorMessage] = _sharedLocalizer["National Id Is Not Valid"].Value;
+                    break;
+
+                case AddOrEditDoctorInfoResult.NotValidNationalId:
+                    TempData[ErrorMessage] = _sharedLocalizer["The entered National is already available on the site"].Value;
+                    break;
+
+                case AddOrEditDoctorInfoResult.NotValidEmail:
+                    TempData[ErrorMessage] = _sharedLocalizer["The entered email is already available on the site"].Value;
+                    break;
             }
 
             #endregion

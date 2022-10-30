@@ -12,11 +12,20 @@ namespace DoctorFAM.Domain.Interfaces
     {
         #region Site Side
 
+        //Get User Roles 
+        Task<List<string>?> GetUserRoles(ulong userId);
+
+        //Add Cooperation Request
+        Task AddCooperationRequest(DoctorFAM.Domain.Entities.CooperationRequest.CooperationRequest request);
+
         Task<bool> IsExistUserById(ulong userId);
 
         Task<User?> GetUserByMobile(string Mobile);
 
         Task SaveChangesAsync();
+
+        //Get User Roles By User Id 
+        Task<List<ulong>?> GetUserRolesByUserId(ulong userId);
 
         #endregion
 
@@ -69,6 +78,9 @@ namespace DoctorFAM.Domain.Interfaces
 
         //Get List Of Admins About Send Notification For Arrival New Consultant Inormations
         Task<List<string>?> GetListOfAdminsAboutSendNotificationForArrivalNewConsultantInormations();
+
+        //Add User Role 
+        Task AddUserRole(UserRole userRole);
 
         #endregion
     }

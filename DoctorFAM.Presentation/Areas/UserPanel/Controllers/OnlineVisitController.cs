@@ -7,6 +7,7 @@ using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Tikcet;
 using DoctorFAM.Domain.ViewModels.Site.Notification;
 using DoctorFAM.Domain.ViewModels.UserPanel.OnlineVisit;
+using DoctorFAM.Web.ActionFilterAttributes;
 using DoctorFAM.Web.HttpManager;
 using DoctorFAM.Web.Hubs;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +17,7 @@ using System.Diagnostics.Contracts;
 
 namespace DoctorFAM.Web.Areas.UserPanel.Controllers
 {
+    [CheckUserFillPersonalInformation]
     public class OnlineVisitController : UserBaseController
     {
         #region Ctor 

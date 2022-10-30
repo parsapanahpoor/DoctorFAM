@@ -7,6 +7,7 @@ using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Site.Notification;
 using DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor;
+using DoctorFAM.Web.ActionFilterAttributes;
 using DoctorFAM.Web.Hubs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -16,6 +17,7 @@ using System.Runtime.CompilerServices;
 
 namespace DoctorFAM.Web.Areas.UserPanel.Controllers
 {
+    [CheckUserFillPersonalInformation]
     public class FamilyDoctorController : UserBaseController
     {
         #region Ctor

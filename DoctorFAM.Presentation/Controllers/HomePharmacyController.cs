@@ -8,6 +8,7 @@ using DoctorFAM.Domain.ViewModels.Site.HomePharmacy;
 using DoctorFAM.Domain.ViewModels.Site.Notification;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
 using DoctorFAM.Domain.ViewModels.Site.Request;
+using DoctorFAM.Web.ActionFilterAttributes;
 using DoctorFAM.Web.HttpManager;
 using DoctorFAM.Web.Hubs;
 using Microsoft.AspNetCore.Authorization;
@@ -17,6 +18,7 @@ using Microsoft.AspNetCore.SignalR;
 namespace DoctorFAM.Web.Controllers
 {
     [Authorize]
+    [CheckUserFillPersonalInformation]
     public class HomePharmacyController : SiteBaseController
     {
         #region Ctor
