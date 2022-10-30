@@ -19599,3 +19599,43 @@ a.fc-more {
                 border-left: 6px solid transparent;
                 border-bottom: 6px solid #d73d32
             }
+
+.exlStyle {
+    margin : 20px;
+    padding: 14px;
+    border:2px solid #5ff1b7;
+    border-radius:8px;
+
+}
+.titFdoc {
+    font-size:18px;
+    font-weight:600;
+    color:#0f0a82
+}
+.mt-1 {
+    margin-top: 5px;
+}
+.mt-2 {
+    margin-top: 10px;
+}
+.mt-3 {
+    margin-top: 15px;
+}
+.mt-4 {
+    margin-top: 20px;
+}
+.mt-5 {
+    margin-top:25px;
+}
+.rowboxspec {
+    border:1px solid #c3a4ff;
+    background-color:rgba(200, 215, 246,.6);
+    border-radius:8px;
+    padding:10px;
+}
+.rowboxspec2 {
+    border: 1px solid #c2f3f5;
+    background-color: rgba(166, 248, 159,.6);
+    border-radius: 8px;
+    padding: 10px;
+}

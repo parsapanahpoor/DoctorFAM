@@ -117,29 +117,26 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Didnt Send SMS Yet" xml:space="preserve">
-    <value>یات نشده</value>
+  <data name="Didn't Send SMS Yet" xml:space="preserve">
+    <value>پیامک ارسال نشده</value>
   </data>
-  <data name="Doesnt Have Family Doctor" xml:space="preserve">
-    <value>پزشک خانواده ندارد</value>
-  </data>
-  <data name="Doesnt Have register" xml:space="preserve">
-    <value>ثبت نام نکرده </value>
+  <data name="Full Name" xml:space="preserve">
+    <value>نام و نام خانوادگی</value>
   </data>
   <data name="Has Family Doctor" xml:space="preserve">
     <value>پزشک خانواده دارد</value>
   </data>
-  <data name="Info" xml:space="preserve">
-    <value>اطلاعات بیمار</value>
+  <data name="Input list of family physician population" xml:space="preserve">
+    <value>لیست ورودی جمعیت پزشک خانواده</value>
   </data>
   <data name="List Of SMS" xml:space="preserve">
     <value>تاریخچه ی پیام ها</value>
   </data>
-  <data name="List OF Your Parsa System Users" xml:space="preserve">
-    <value>لیست کاربران سامانه ی پارسای شما </value>
-  </data>
   <data name="Mobile" xml:space="preserve">
     <value>موبایل</value>
+  </data>
+  <data name="Mobile-NationalCode" xml:space="preserve">
+    <value>تلفن همراه - کد ملی</value>
   </data>
   <data name="National Code" xml:space="preserve">
     <value>کدملی</value>
@@ -147,11 +144,23 @@
   <data name="Natonal Id" xml:space="preserve">
     <value>کدملی</value>
   </data>
+  <data name="NO Family Doctor" xml:space="preserve">
+    <value>پزشک خانواده ندارد</value>
+  </data>
+  <data name="No Register" xml:space="preserve">
+    <value>ثبت نام نکرده </value>
+  </data>
   <data name="Options" xml:space="preserve">
     <value>وضعیت</value>
   </data>
+  <data name="Registered" xml:space="preserve">
+    <value>ثبت نام کرده </value>
+  </data>
   <data name="Search" xml:space="preserve">
     <value>جست و جوی</value>
+  </data>
+  <data name="Search Fullname" xml:space="preserve">
+    <value>جست و جوی نام و نام خانوادگی</value>
   </data>
   <data name="Search Mobile" xml:space="preserve">
     <value>جست و جوی موبایل</value>
@@ -162,22 +171,13 @@
   <data name="Search on All Columns" xml:space="preserve">
     <value>جست و جو بر روی تمامی ستون ها </value>
   </data>
-  <data name="Search Usermane" xml:space="preserve">
-    <value>جست و جوی نام کاربری</value>
-  </data>
   <data name="Send SMS" xml:space="preserve">
-    <value>ارسال SMS</value>
+    <value>ارسال پیامک</value>
   </data>
   <data name="SMS States" xml:space="preserve">
-    <value>وضعیت SMS</value>
+    <value>پیامک</value>
   </data>
   <data name="States" xml:space="preserve">
-    <value>وضعیت</value>
-  </data>
-  <data name="User Has Registered" xml:space="preserve">
-    <value>ثبت نام کرده </value>
-  </data>
-  <data name="Username" xml:space="preserve">
-    <value>نام کاربری</value>
+    <value>وضعیت در دکترفم</value>
   </data>
 </root>

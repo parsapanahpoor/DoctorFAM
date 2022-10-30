@@ -124,13 +124,13 @@
     <value>ندارد</value>
   </data>
   <data name="Family Doctor State" xml:space="preserve">
-    <value>در سایت پزشک خانواده دارد؟</value>
+    <value>در دکترفم، پزشک خانواده دارد؟</value>
   </data>
   <data name="Has" xml:space="preserve">
     <value>دارد</value>
   </data>
   <data name="Is Exist In site" xml:space="preserve">
-    <value>وضعیت در داکتر فام </value>
+    <value>عضویت در دکتر فم </value>
   </data>
   <data name="List Of Users That Come From Parsa System And You Dont Send SMS To Them" xml:space="preserve">
     <value>لیست کاربران اضافه شده ی شما که برای آن ها پبام نفرستاده اید </value>
