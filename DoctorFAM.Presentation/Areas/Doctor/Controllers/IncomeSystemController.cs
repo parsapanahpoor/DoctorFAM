@@ -8,13 +8,13 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace DoctorFAM.Web.Areas.Doctor.Controllers
 {
-    public class ParsaSystemController : DoctorBaseController
+    public class IncomeSystemController : DoctorBaseController
     {
         #region Ctor
 
         private readonly IDoctorsService _doctorService;
 
-        public ParsaSystemController(IDoctorsService doctorService)
+        public IncomeSystemController(IDoctorsService doctorService)
         {
             _doctorService = doctorService;
         }
@@ -60,7 +60,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
         #endregion
 
-        #region Refresh Parsa System Records 
+        #region Refresh Outer System Records 
 
         public async Task<IActionResult> RefreshParsaSystemRecords(bool doctorDashboard)
         {
