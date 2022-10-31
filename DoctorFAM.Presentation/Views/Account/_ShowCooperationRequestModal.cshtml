@@ -16,16 +16,32 @@
                         <form id="CooperationRequestForm" asp-action="SendCooperationRequest" asp-controller="Account" method="post">
                             <div id="formmessage"></div>
 
+                           
                             <div class="form-group">
-                                <input id="form_number" type="text" asp-for="Username" class="form-control" placeholder="نام و نام خانوادگی" required="required" value="@((!string.IsNullOrEmpty(Model.Username)) ? Model.Username : " ")">
+
+                                @if (Model != null && !string.IsNullOrEmpty(Model.Username))
+                                {
+                                    <input id="form_number" type="text" asp-for="Username" class="form-control" placeholder="نام و نام خانوادگی" required="required" value="@Model.Username">
+                                }
+                                else
+                                {
+                                    <input id="form_number" type="text" asp-for="Username" class="form-control" placeholder="نام و نام خانوادگی" required="required">
+                                }
 
                                 <div class="help-block with-errors"></div>
                             </div>
 
                             <div class="form-group">
 
-                                <input id="form_number" type="text" asp-for="Mobile" class="form-control" placeholder="شماره همراه" required="required" value="@((!string.IsNullOrEmpty(Model.Mobile)) ? Model.Mobile : " ")">
-                             
+                                @if (Model != null && !string.IsNullOrEmpty(Model.Mobile))
+                                {
+                                    <input id="form_number" type="text" asp-for="Mobile" class="form-control" placeholder="شماره همراه" required="required" value="@Model.Mobile">
+                                }
+                                else
+                                {
+                                    <input id="form_number" type="text" asp-for="Mobile" class="form-control" placeholder="شماره همراه" required="required">
+                                }
+
                                 <div class="help-block with-errors"></div>
                             </div>
 

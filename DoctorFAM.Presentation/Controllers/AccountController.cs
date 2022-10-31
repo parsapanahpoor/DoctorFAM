@@ -673,17 +673,19 @@ namespace DoctorFAM.Web.Controllers
         {
             #region Render Model 
 
-            var user = await _userService.GetUserById(User.GetUserId());
-            if (user == null)
-            {
-                return NotFound();
-            }
+            SendCooperationRequestViewModel model = new SendCooperationRequestViewModel();
 
-            SendCooperationRequestViewModel model = new SendCooperationRequestViewModel()
+            if (User.Identity.IsAuthenticated)
             {
-                Mobile = user.Mobile,
-                Username = user.Username
-            };
+                var user = await _userService.GetUserById(User.GetUserId());
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                model.Mobile = user.Mobile;
+                model.Username = user.Username;
+            }
 
             #endregion
 
