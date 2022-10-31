@@ -194,5 +194,56 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
         #endregion
 
         #endregion
+
+        #region Cooperation Request 
+
+        #region Seen Cooperation Request
+
+        public async Task<IActionResult> SeenCooperationRequest(ulong cooperationRequestId)
+        {
+            #region Seen Cooperation Request 
+
+            var res = await _userService.SeenCooperationRequests(cooperationRequestId);
+            if (res )
+            {
+                return ApiResponse.SetResponse(ApiResponseStatus.Success, null, "عملیات با موفقیت انجام شده است.");
+            }
+
+            #endregion
+
+            return ApiResponse.SetResponse(ApiResponseStatus.Danger, null, "عملیات با شکست مواجه شده است.");
+        }
+
+        #endregion
+
+        #region List Of Cooperation Requests
+
+        public async Task<IActionResult> ListOfCooperationRequest()
+        {
+            return View(await _userService.ListOfCooperationRequests());
+        }
+
+        #endregion
+
+        #region Delete Cooperation Request
+
+        public async Task<IActionResult> DeleteCooperationRequest(ulong cooperationRequestId)
+        {
+            #region Seen Cooperation Request 
+
+            var res = await _userService.DeleteCooperationRequests(cooperationRequestId);
+            if (res )
+            {
+                return ApiResponse.SetResponse(ApiResponseStatus.Success, null, "عملیات با موفقیت انجام شده است.");
+            }
+
+            #endregion
+
+            return ApiResponse.SetResponse(ApiResponseStatus.Danger, null, "عملیات با شکست مواجه شده است.");
+        }
+
+        #endregion
+
+        #endregion
     }
 }

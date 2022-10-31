@@ -37,13 +37,21 @@ namespace DoctorFAM.Application.Services.Implementation
         #region Ctor
 
         private readonly DoctorFAMDbContext _context;
+
         private readonly ISiteSettingService _siteSettingService;
+
         private readonly IViewRenderService _viewRenderService;
+
         private readonly IEmailSender _emailSender;
+
         private readonly IUserRepository _userRepository;
+
         private readonly IOrganizationService _organizationService;
+
         private readonly ISMSService _smsservice;
+
         private static readonly HttpClient client = new HttpClient();
+
         private readonly IDoctorsRepository _doctorService;
 
         public UserService(DoctorFAMDbContext context, ISiteSettingService siteSettingService, IViewRenderService viewRenderService,
@@ -423,6 +431,72 @@ namespace DoctorFAM.Application.Services.Implementation
             #endregion
 
             return true;
+        }
+
+        #endregion
+
+        #region Cooperation Request 
+
+        //Get Cooperation Request By Id
+        public async Task<DoctorFAM.Domain.Entities.CooperationRequest.CooperationRequest?> GetCooperationRequestById(ulong requestCooperationId)
+        {
+            return await _userRepository.GetCooperationRequestById(requestCooperationId);
+        }
+
+        //Seen Cooperation Requests
+        public async Task<bool> SeenCooperationRequests(ulong cooperationRequestId)
+        {
+            #region Get Request Cooperation Request
+
+            var request = await GetCooperationRequestById(cooperationRequestId);
+            if (request == null || request.FollowedUp)
+            {
+                return false;
+            }
+
+            #endregion
+
+            #region Update Request Cooperation State 
+
+            request.FollowedUp = true;
+
+            //Update Method 
+            await _userRepository.UpdateCooperationRequestToFowloadedUp(request);
+
+            #endregion
+
+            return true;
+        }
+
+        //Delete Cooperation Requests
+        public async Task<bool> DeleteCooperationRequests(ulong cooperationRequestId)
+        {
+            #region Get Request Cooperation Request
+
+            var request = await GetCooperationRequestById(cooperationRequestId);
+            if (request == null)
+            {
+                return false;
+            }
+
+            #endregion
+
+            #region Update Request Cooperation State 
+
+            request.IsDelete = true;
+
+            //Update Method 
+            await _userRepository.UpdateCooperationRequestToFowloadedUp(request);
+
+            #endregion
+
+            return true;
+        }
+
+        //List Of Cooperation Requests
+        public async Task<List<DoctorFAM.Domain.Entities.CooperationRequest.CooperationRequest>> ListOfCooperationRequests()
+        {
+            return await _userRepository.ListOfCooperationRequests();
         }
 
         #endregion

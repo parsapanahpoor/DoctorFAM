@@ -231,5 +231,28 @@ namespace DoctorFAM.Data.Repository
         }
 
         #endregion
+
+        #region Cooperation Request 
+
+        //Get Cooperation Request By Id
+        public async Task<DoctorFAM.Domain.Entities.CooperationRequest.CooperationRequest?> GetCooperationRequestById(ulong requestCooperationId)
+        {
+            return await _context.CooperationRequests.FirstOrDefaultAsync(p=> !p.IsDelete && p.Id == requestCooperationId);
+        }
+
+        //Update Cooperation Request To Fowloaded Up 
+        public async Task UpdateCooperationRequestToFowloadedUp(DoctorFAM.Domain.Entities.CooperationRequest.CooperationRequest cooperationRequest)
+        {
+            _context.CooperationRequests.Update(cooperationRequest);
+            await _context.SaveChangesAsync();
+        }
+
+        //List Of Cooperation Requests
+        public async Task<List<DoctorFAM.Domain.Entities.CooperationRequest.CooperationRequest>> ListOfCooperationRequests()
+        {
+            return await _context.CooperationRequests.Where(p => !p.IsDelete).OrderByDescending(p=> p.CreateDate).ToListAsync();
+        }
+
+        #endregion
     }
 }
