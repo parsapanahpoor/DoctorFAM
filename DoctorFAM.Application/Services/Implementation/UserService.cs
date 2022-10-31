@@ -1032,6 +1032,44 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #endregion
 
+            #region Check That If User Has Role Then Update other Information That Related By Role Informations 
+
+            var userRoles = await _userRepository.GetUserRoles(user.Id);
+
+            if (userRoles != null && userRoles.Any())
+            {
+                //If User Is Doctor
+                if (userRoles.Contains("Doctor"))
+                {
+                    //Validation Of Doctor Organization 
+                    var doctorOffice = await _organizationService.GetDoctorOrganizationByUserId(user.Id);
+
+                    if (doctorOffice != null && doctorOffice.OrganizationType == Domain.Enums.Organization.OrganizationType.DoctorOffice)
+                    {
+                        //Get Doctor By UserId
+                        var doctor = await _doctorService.GetDoctorByUserId(user.Id);
+
+                        if (doctor != null)
+                        {
+                            //Get Doctors Informations By Doctor Id
+                            var info = await _doctorService.GetDoctorsInformationByUserId(user.Id);
+
+                            if (info != null)
+                            {
+                                info.NationalCode = user.NationalId;
+                                info.GeneralPhone = user.ExtraPhoneNumber;
+
+                                //Update Doctror Personal Information 
+                                await _doctorService.UpdateDoctorsInfo(info);
+                            }
+                        }
+                    }
+                }
+            }
+
+            #endregion
+
+
             #region Add User Roles
 
             if (edit.UserRoles != null && edit.UserRoles.Any())

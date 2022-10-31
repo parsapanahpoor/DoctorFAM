@@ -49,7 +49,7 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
 
             var info = await _doctorsService.FillDoctorsInfoDetailViewModel(doctor.Id);
 
-            if (info == null) return NotFound();
+            //if (info == null) return NotFound();
 
             #endregion
 
@@ -69,7 +69,13 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
 
             var info = await _doctorsService.FillDoctorsInfoDetailViewModel(doctor.Id);
 
-            if (info == null) return NotFound();
+            //if (info == null) return NotFound();
+
+            if (info == null && model.DoctorsInfosType == Domain.Entities.Doctors.OrganizationInfoState.Accepted)
+            {
+                TempData[ErrorMessage] = "پزشک جاری فاقد اطلاعاتی برای تایید است.";
+                return View(info);
+            }
 
             #endregion
 
@@ -91,6 +97,10 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
                 case EditDoctorInfoResult.faild:
                     TempData[ErrorMessage] = "عملیات با شکست مواجه شده است ";
                     return RedirectToAction("DoctorsInfoDetail", "Doctors", new { area = "Admin" , userId = model.UserId });
+
+                case EditDoctorInfoResult.NationalId:
+                    TempData[ErrorMessage] = "شماره ملی وارد شده در سامانه موجود است. ";
+                    return RedirectToAction("DoctorsInfoDetail", "Doctors", new { area = "Admin", userId = model.UserId });
 
                 case EditDoctorInfoResult.success:
                     TempData[SuccessMessage] = "عملیات با موفقیت انجام شد .";
@@ -149,6 +159,24 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
             #endregion
 
             return View(user);
+        }
+
+        #endregion
+
+        #region Decline Doctor Informations
+
+        public async Task<IActionResult> DeclineDoctorInformation(ulong userId)
+        {
+            var res = await _doctorsService.DeclineDoctorInformationByOneClick(userId);
+
+            if (res)
+            {
+                TempData[SuccessMessage] = "عملیات باموقفیت انجام شده است.";
+                return RedirectToAction(nameof(ListOfDoctorsInfo));
+            }
+
+            TempData[ErrorMessage] = "اطلاعاتی از پزشک جاری یافت نشده است.";
+            return RedirectToAction(nameof(ListOfDoctorsInfo));
         }
 
         #endregion

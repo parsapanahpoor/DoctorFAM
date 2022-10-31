@@ -100,6 +100,9 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Add Exist User To The Doctor Organization 
         Task<bool> AddExistUserToTheDoctorOrganization(ulong userId, ulong doctorId);
 
+        //Decline Doctor Information By One Click 
+        Task<bool> DeclineDoctorInformationByOneClick(ulong userId);
+
         #endregion
 
         #region Admin Side 

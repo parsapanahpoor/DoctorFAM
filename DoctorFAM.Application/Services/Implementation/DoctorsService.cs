@@ -26,6 +26,7 @@ using OfficeOpenXml;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using SixLabors.ImageSharp.ColorSpaces;
 using System.Collections.Generic;
+using System.Numerics;
 
 namespace DoctorFAM.Application.Services.Implementation
 {
@@ -1318,6 +1319,30 @@ namespace DoctorFAM.Application.Services.Implementation
             return await _doctorRepository.GetDoctorsInfoById(doctorInfoId);
         }
 
+        //Decline Doctor Information By One Click 
+        public async Task<bool> DeclineDoctorInformationByOneClick(ulong userId)
+        {
+            #region Get Current Doctor Office
+
+            var doctorOffice = await _organizationService.GetDoctorOrganizationByUserId(userId);
+            if (doctorOffice == null) return false;
+            if (doctorOffice.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice) return false;
+
+            #endregion
+
+            #region Decline Doctor Office 
+
+            doctorOffice.OrganizationInfoState = OrganizationInfoState.Rejected;
+            doctorOffice.RejectDescription = "اطلاعات پذیرفته نشده است.";
+
+            //Update Method 
+            await _organizationService.UpdateOrganization(doctorOffice);
+
+            #endregion
+
+            return true;
+        }
+
         public async Task<DoctorsInfoDetailViewModel?> FillDoctorsInfoDetailViewModel(ulong doctorInfoId)
         {
             #region Get Doctor Info
@@ -1385,6 +1410,24 @@ namespace DoctorFAM.Application.Services.Implementation
 
         public async Task<EditDoctorInfoResult> EditDoctorInfoAdminSide(DoctorsInfoDetailViewModel model, IFormFile? MediacalFile)
         {
+            #region Get User By User Id
+
+            var user = await _userService.GetUserById(model.UserId);
+
+            if (user == null) return EditDoctorInfoResult.faild;
+
+            if (string.IsNullOrEmpty(model.NationalCode))
+            {
+                return EditDoctorInfoResult.NationalId;
+            }
+
+            if (!string.IsNullOrEmpty(model.NationalCode) && !await _userService.IsValidNationalIdForUserEditByAdmin(model.NationalCode, user.Id))
+            {
+                return EditDoctorInfoResult.NationalId;
+            }
+
+            #endregion
+
             #region Get Doctor Info By Id
 
             //Get Doctor Info By Id
@@ -1433,6 +1476,15 @@ namespace DoctorFAM.Application.Services.Implementation
             info.Gender = model.Gender;
             info.GeneralPhone = model.GeneralPhone;
             info.ClinicPhone = model.ClinicPhone;
+
+            #endregion
+
+            #region Update User
+    
+            user.NationalId = model.NationalCode.SanitizeText();
+            user.ExtraPhoneNumber = model.GeneralPhone.SanitizeText();
+
+            await _userService.UpdateUser(user);
 
             #endregion
 
