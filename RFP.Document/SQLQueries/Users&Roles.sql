@@ -33,4 +33,6 @@ where userRoles.Id IS NULL
 select * 
 from Roles
 
+--Get All Of Users Cooperation Request 
+select * from CooperationRequests
 

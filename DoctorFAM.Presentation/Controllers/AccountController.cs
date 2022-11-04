@@ -101,7 +101,6 @@ namespace DoctorFAM.Web.Controllers
 
             #endregion
 
-
             if (!ModelState.IsValid)
             {
                 TempData[ErrorMessage] = "مقادیر وارد شده معتبر نمی باشد . ";
