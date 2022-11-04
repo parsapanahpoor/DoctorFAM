@@ -89,6 +89,12 @@ builder.Services.AddHttpContextAccessor();
 
 #endregion
 
+#region PWA
+
+builder.Services.AddProgressiveWebApp("/Site/Manifest/manifest.json");
+
+#endregion
+
 #region Add DBContext
 
 builder.Services.AddDbContext<DoctorFAMDbContext>(options =>

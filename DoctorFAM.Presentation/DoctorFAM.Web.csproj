@@ -10,6 +10,10 @@
 	  <Content Remove="Views\OnlineVisit\BankPay.cshtml" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <None Remove="sw.js" />
+	</ItemGroup>
+
 
 	<ItemGroup>
 		<PackageReference Include="AspNet.Security.OAuth.GitHub" Version="6.0.0" />
@@ -22,6 +26,7 @@
 		</PackageReference>
 		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.9" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
+		<PackageReference Include="WebEssentials.AspNetCore.PWA" Version="1.0.65" />
 		<PackageReference Include="ZarinPal-SDK" Version="0.0.8" />
 		<PackageReference Include="ZarinpalSandbox" Version="2.0.4" />
 		<PackageReference Include="ZNetCS.AspNetCore.ResumingFileResults" Version="2.2.0" />

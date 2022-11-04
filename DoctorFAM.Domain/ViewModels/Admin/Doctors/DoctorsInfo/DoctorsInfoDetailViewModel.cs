@@ -72,6 +72,7 @@ namespace DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo
     public enum EditDoctorInfoResult
     {
         success,
-        faild
+        faild,
+        NationalId
     }
 }

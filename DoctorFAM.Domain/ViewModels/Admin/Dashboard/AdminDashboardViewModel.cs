@@ -1,5 +1,6 @@
 ﻿//using DoctorFAM.Domain.Entities.Advertisement;
 using DoctorFAM.DataLayer.Entities;
+using DoctorFAM.Domain.Entities.CooperationRequest;
 using DoctorFAM.Domain.Entities.DoctorReservation;
 using System;
 using System.Collections.Generic;
@@ -30,6 +31,8 @@ namespace DoctorFAM.Domain.ViewModels.Admin.Dashboard
         public List<DoctorReservationDateTime> DoctorReservationDateTimes { get; set; }
 
         public List<Domain.Entities.Contact.Ticket> ListOfLastestTickets { get; set; }
+
+        public List<CooperationRequest> CooperationRequests { get; set; }
 
         #endregion
     }

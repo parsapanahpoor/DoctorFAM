@@ -1,4 +1,4 @@
-﻿@model List<DoctorFAM.Domain.Entities.Contact.Ticket>
+﻿@model List<DoctorFAM.Domain.Entities.CooperationRequest.CooperationRequest>
 @using DoctorFAM.Domain.ViewModels.Admin.Ticket
 @using DoctorFAM.Application.Convertors
 @using DoctorFAM.Application.Extensions
@@ -8,14 +8,11 @@
     <div class="widget">
         <div class="widget-header">
             <i class="widget-icon fa fa-comment"></i>
-            <span class="widget-caption"> آخرین تیکت ها   </span>
+            <span class="widget-caption"> آخرین درخواست های همکاری   </span>
             <div class="widget-buttons">
                 <div class="row" style="margin-right: -84px;">
 
-                    @if (Model != null && Model.Any())
-                    {
-                        <a id="ShowUserCommentInAdminPanel" asp-action="FilterTickets" asp-controller="Ticket" asp-area="Admin" asp-route-UserEmail="@ViewBag.userEmail" class="badge badge-info">نمایش همه</a>
-                    }
+                    <a asp-action="ListOfCooperationRequest" asp-area="Admin" asp-controller="Account" id="ShowUserCommentInAdminPanel" class="badge badge-info">نمایش همه</a>
 
                     <a id="ShowUserCommentInAdminPanelMinus" href="#" data-toggle="collapse">
                         <i class="fa fa-minus"></i>
@@ -35,10 +32,10 @@
                                     اطلاعات ارسال کننده
                                 </th>
                                 <th class="tc vm">
-                                    وضعیت
+                                    موبایل
                                 </th>
                                 <th class="tc vm">
-                                    تاریخ درج
+                                    تاریخ درخواست
                                 </th>
                                 <th class="tc vm">
                                     امکانات
@@ -46,35 +43,59 @@
                             </tr>
                         </thead>
                         <tbody class="tc vm">
-                            @foreach (var ticket in Model)
+                            @foreach (var request in Model)
                             {
-                                <tr class="tc vm" remove-ajax-item="@ticket.Id">
+                                <tr class="tc vm" remove-ajax-item="@request.Id">
                                     <td class="vm">
                                         <div class="flex-style-center">
-                                            <img src="@ticket.Owner.GetUserAvatar()" class="avatar-style" style="border-radius:50px;" />
+                                            @request.UserName
+                                            <hr />
                                             <div class="mr-10px">
-                                                <span> @ticket.Owner.Username </span>
+                                                <span> @request.Mobile </span>
                                             </div>
                                         </div>
                                     </td>
 
                                     <td class="tc vm">
                                         <p class="flex-style-center">
-                                        <p class="mr-8px label label-primary">
-                                                @ticket.TicketStatus.GetEnumName()
-                                        </p>
+
+                                            @if (request.RoleTitle == "doctor")
+                                            {
+                                            <p class="mr-8px label label-orange"> پزشک</p>
+
+                                            }
+                                            @if (request.RoleTitle == "Nurse")
+                                            {
+                                            <p class="mr-8px label label-orange"> پرستار</p>
+                                            }
+                                            @if (request.RoleTitle == "seller")
+                                            {
+                                            <p class="mr-8px label label-orange"> فروشنده</p>
+                                            }
+                                            @if (request.RoleTitle == "Labratory")
+                                            {
+                                            <p class="mr-8px label label-orange"> آزمایشگاه</p>
+                                            }
+                                            @if (request.RoleTitle == "Consultant")
+                                            {
+                                            <p class="mr-8px label label-orange"> مشاور</p>
+                                            }
+                                            @if (request.RoleTitle == "pharmacy")
+                                            {
+                                            <p class="mr-8px label label-orange"> داروخانه</p>
+                                            }
                                         </p>
                                     </td>
 
                                     <td class="tc vm">
                                         <div class="tc vm">
-                                            <p id="ArticleTitle">@ticket.CreateDate.ToShamsi()</p>
+                                            <p id="ArticleTitle">@request.CreateDate.ToShamsi()</p>
                                         </div>
                                     </td>
 
                                     <td class="tc vm">
 
-                                        <a asp-action="TicketDetail" asp-controller="Ticket" asp-area="Admin" asp-route-id="@ticket.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+                                        <button onclick="DeleteAjax(@request.Id, '@Url.Action("SeenCooperationRequest", "Account", new {area = "Admin", cooperationRequestId = request.Id})')" class="btn btn-success btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></button>
 
                                     </td>
                                 </tr>
@@ -83,15 +104,12 @@
                     </table>
                 </div>
 
-
-
                 <!--Widget Body-->
             }
             else
             {
                 <partial name="_AdminNotFoundPartial" />
             }
-
 
         </div>
     </div>

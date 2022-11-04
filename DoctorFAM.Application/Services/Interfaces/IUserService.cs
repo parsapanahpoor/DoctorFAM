@@ -162,5 +162,22 @@ namespace DoctorFAM.Application.Services.Interfaces
         Task<List<string>?> GetAllAdminsAndSupportersNotification();
 
         #endregion
+
+        #region Cooperation Request 
+
+        //Get Cooperation Request By Id
+        Task<DoctorFAM.Domain.Entities.CooperationRequest.CooperationRequest?> GetCooperationRequestById(ulong requestCooperationId);
+
+        //Seen Cooperation Requests
+        Task<bool> SeenCooperationRequests(ulong cooperationRequestId);
+
+        //List Of Cooperation Requests
+        Task<List<DoctorFAM.Domain.Entities.CooperationRequest.CooperationRequest>> ListOfCooperationRequests();
+
+
+        //Delete Cooperation Requests
+        Task<bool> DeleteCooperationRequests(ulong cooperationRequestId);
+
+        #endregion
     }
 }

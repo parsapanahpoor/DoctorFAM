@@ -1,0 +1,147 @@
+﻿@model List<DoctorFAM.Domain.Entities.CooperationRequest.CooperationRequest>
+@using DoctorFAM.Application.Convertors
+
+@{
+    ViewData["Title"] = @Localizer["List Of Cooperation Requests"];
+}
+
+@section Breadcrumb
+    {
+    <li>
+        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+    </li>
+}
+
+    @section Styles
+    {
+    <link href="/admin/css/dataTables.bootstrap.rtl.css" rel="stylesheet" />
+}
+
+    @section Scripts
+    {
+    <script src="~/admin/js/datatable/jquery.dataTables.min.js"></script>
+    <script src="~/admin/js/datatable/ZeroClipboard.js"></script>
+    <script src="~/admin/js/datatable/dataTables.tableTools.min.js"></script>
+    <script src="~/admin/js/datatable/dataTables.bootstrap.min.js"></script>
+    <script src="~/admin/js/datatable/datatables-init.js"></script>
+    <script>
+        InitiateSimpleDataTable.init();
+        InitiateEditableDataTable.init();
+        InitiateExpandableDataTable.init();
+        InitiateSearchableDataTable.init();
+    </script>
+
+    }
+
+    <div class="page-body">
+
+        <div class="row ">
+            <div class="col-xs-12 col-md-12">
+                <div class="widget">
+                    <div class="widget-header bordered-bottom bordered-yellow">
+                        <span class="widget-caption"> @ViewData["Title"]</span>
+                        <div class="widget-buttons">
+                            <a href="#" data-toggle="maximize">
+                                <i class="fa fa-expand"></i>
+                            </a>
+                            <a href="#" data-toggle="collapse">
+                                <i class="fa fa-minus"></i>
+                            </a>
+                            <a href="#" data-toggle="dispose">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                @if (Model != null && Model.Any())
+                {
+                        <div class="widget-body no-padding">
+                            <div id="searchable_wrapper" class="dataTables_wrapper form-inline">
+
+                                <table class="table table-bordered table-hover table-striped dataTable" id="searchable" role="grid" aria-describedby="searchable_info">
+                                    <thead class="bordered-darkorange">
+                                        <tr role="row">
+
+                                            <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">@Localizer["User Name"]</th>
+                                            <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" aria-sort="ascending">@Localizer["Mobile"]</th>
+                                            <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">@Localizer["Request Type"]</th>
+                                            <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending">@Localizer["Create Date"]</th>
+                                            <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending"></th>
+
+                                        </tr>
+                                    </thead>
+
+                                    <tfoot>
+                                        <tr>
+                                            <th rowspan="1" colspan="1"><input type="text" name="search_engine" placeholder="@Localizer["Search Fullname"]" class="form-control input-sm"></th>
+                                            <th rowspan="1" colspan="1"><input type="text" name="search_browser" placeholder="@Localizer["Search"]" class="form-control input-sm"></th>
+                                            <th rowspan="1" colspan="1"></th>
+                                            <th rowspan="1" colspan="1"></th>
+                                            <th rowspan="1" colspan="1"> </th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+
+                                        @foreach (var request in Model)
+                                        {
+                                            <tr role="row" class="even" remove-ajax-item="@request.Id">
+
+                                                <td class=" sorting_1">@request.UserName</td>
+                                                <td class="sorting_1">
+                                                    @request.Mobile
+                                                </td>
+                                                <td class="sorting_1">
+
+                                                    @if (request.RoleTitle == "doctor")
+                                                    {
+                                                        <p class="mr-8px label label-orange"> پزشک</p>
+
+                                                    }
+                                                    @if (request.RoleTitle == "Nurse")
+                                                    {
+                                                        <p class="mr-8px label label-orange"> پرستار</p>
+                                                    }
+                                                    @if (request.RoleTitle == "seller")
+                                                    {
+                                                        <p class="mr-8px label label-orange"> فروشنده</p>
+                                                    }
+                                                    @if (request.RoleTitle == "Labratory")
+                                                    {
+                                                        <p class="mr-8px label label-orange"> آزمایشگاه</p>
+                                                    }
+                                                    @if (request.RoleTitle == "Consultant")
+                                                    {
+                                                        <p class="mr-8px label label-orange"> مشاور</p>
+                                                    }
+                                                    @if (request.RoleTitle == "pharmacy")
+                                                    {
+                                                        <p class="mr-8px label label-orange"> داروخانه</p>
+                                                    }
+
+                                                </td>
+                                                <td class="center ">
+
+                                                    @request.CreateDate.ToShamsi()
+
+                                                </td>
+                                                <td>
+                                                    <button onclick="DeleteAjax(@request.Id, '@Url.Action("DeleteCooperationRequest", "Account", new {area = "Admin", cooperationRequestId = request.Id})')" class="btn btn-danger btn-circle btn-xs"><i class="glyphicon glyphicon-remove"></i></button>
+                                                </td>
+
+                                            </tr>
+                                        }
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                }
+                else
+                {
+                    <partial name="_AdminNotFoundPartial" />
+                }
+            </div>
+        </div>
+    </div>
+
+</div>

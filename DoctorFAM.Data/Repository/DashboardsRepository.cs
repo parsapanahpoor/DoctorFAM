@@ -220,6 +220,12 @@ namespace DoctorFAM.Data.Repository
 
             #endregion
 
+            #region List Of Cooperation Requests
+
+            model.CooperationRequests = await _context.CooperationRequests.Where(p => !p.IsDelete && !p.FollowedUp).OrderByDescending(p=> p.CreateDate).ToListAsync();
+
+            #endregion
+
             return model;
         }
 

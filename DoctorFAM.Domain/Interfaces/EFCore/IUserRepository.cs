@@ -1,4 +1,5 @@
 ﻿using DoctorFAM.Domain.Entities.Account;
+using DoctorFAM.Domain.Entities.CooperationRequest;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -81,6 +82,19 @@ namespace DoctorFAM.Domain.Interfaces
 
         //Add User Role 
         Task AddUserRole(UserRole userRole);
+
+        #endregion
+
+        #region Cooperation Request 
+
+        //Get Cooperation Request By Id
+        Task<DoctorFAM.Domain.Entities.CooperationRequest.CooperationRequest?> GetCooperationRequestById(ulong requestCooperationId);
+
+        //Update Cooperation Request To Fowloaded Up 
+        Task UpdateCooperationRequestToFowloadedUp(DoctorFAM.Domain.Entities.CooperationRequest.CooperationRequest cooperationRequest);
+
+        //List Of Cooperation Requests
+        Task<List<DoctorFAM.Domain.Entities.CooperationRequest.CooperationRequest>> ListOfCooperationRequests();
 
         #endregion
     }

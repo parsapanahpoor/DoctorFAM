@@ -1,0 +1,47 @@
+{
+  "short_name": "Doctor FAM",
+  "name": "Doctor FAM",
+  "description": "This Is Doctor FAM Web Application",
+  "icons": [
+    {
+      "src": "doctorfamLogo.png",
+      "type": "image/png",
+      "sizes": "48x48"
+    },
+    {
+      "src": "doctorfamLogo.png",
+      "type": "image/png",
+      "sizes": "96x96"
+    }, 
+    {
+      "src": "doctorfamLogo.png",
+      "type": "image/png",
+      "sizes": "144x144"
+    },
+    {
+      "src": "doctorfamLogo.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "doctorfamLogo.png",
+      "type": "image/png",
+      "sizes": "256x256"
+    }, 
+    {
+      "src": "doctorfamLogo.png",
+      "type": "image/png",
+      "sizes": "384x384"
+    },
+    {
+      "src": "doctorfamLogo.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "https://localhost:44322/?utm_source=homescreen",
+  "background_color": "#3367D6",
+  "display": "standalone",
+  "theme_color": "#3367D6",
+  "scope": "."
+}

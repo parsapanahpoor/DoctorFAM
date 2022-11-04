@@ -37,13 +37,21 @@ namespace DoctorFAM.Application.Services.Implementation
         #region Ctor
 
         private readonly DoctorFAMDbContext _context;
+
         private readonly ISiteSettingService _siteSettingService;
+
         private readonly IViewRenderService _viewRenderService;
+
         private readonly IEmailSender _emailSender;
+
         private readonly IUserRepository _userRepository;
+
         private readonly IOrganizationService _organizationService;
+
         private readonly ISMSService _smsservice;
+
         private static readonly HttpClient client = new HttpClient();
+
         private readonly IDoctorsRepository _doctorService;
 
         public UserService(DoctorFAMDbContext context, ISiteSettingService siteSettingService, IViewRenderService viewRenderService,
@@ -423,6 +431,72 @@ namespace DoctorFAM.Application.Services.Implementation
             #endregion
 
             return true;
+        }
+
+        #endregion
+
+        #region Cooperation Request 
+
+        //Get Cooperation Request By Id
+        public async Task<DoctorFAM.Domain.Entities.CooperationRequest.CooperationRequest?> GetCooperationRequestById(ulong requestCooperationId)
+        {
+            return await _userRepository.GetCooperationRequestById(requestCooperationId);
+        }
+
+        //Seen Cooperation Requests
+        public async Task<bool> SeenCooperationRequests(ulong cooperationRequestId)
+        {
+            #region Get Request Cooperation Request
+
+            var request = await GetCooperationRequestById(cooperationRequestId);
+            if (request == null || request.FollowedUp)
+            {
+                return false;
+            }
+
+            #endregion
+
+            #region Update Request Cooperation State 
+
+            request.FollowedUp = true;
+
+            //Update Method 
+            await _userRepository.UpdateCooperationRequestToFowloadedUp(request);
+
+            #endregion
+
+            return true;
+        }
+
+        //Delete Cooperation Requests
+        public async Task<bool> DeleteCooperationRequests(ulong cooperationRequestId)
+        {
+            #region Get Request Cooperation Request
+
+            var request = await GetCooperationRequestById(cooperationRequestId);
+            if (request == null)
+            {
+                return false;
+            }
+
+            #endregion
+
+            #region Update Request Cooperation State 
+
+            request.IsDelete = true;
+
+            //Update Method 
+            await _userRepository.UpdateCooperationRequestToFowloadedUp(request);
+
+            #endregion
+
+            return true;
+        }
+
+        //List Of Cooperation Requests
+        public async Task<List<DoctorFAM.Domain.Entities.CooperationRequest.CooperationRequest>> ListOfCooperationRequests()
+        {
+            return await _userRepository.ListOfCooperationRequests();
         }
 
         #endregion
@@ -1031,6 +1105,44 @@ namespace DoctorFAM.Application.Services.Implementation
             _context.RemoveRange(roles);
 
             #endregion
+
+            #region Check That If User Has Role Then Update other Information That Related By Role Informations 
+
+            var userRoles = await _userRepository.GetUserRoles(user.Id);
+
+            if (userRoles != null && userRoles.Any())
+            {
+                //If User Is Doctor
+                if (userRoles.Contains("Doctor"))
+                {
+                    //Validation Of Doctor Organization 
+                    var doctorOffice = await _organizationService.GetDoctorOrganizationByUserId(user.Id);
+
+                    if (doctorOffice != null && doctorOffice.OrganizationType == Domain.Enums.Organization.OrganizationType.DoctorOffice)
+                    {
+                        //Get Doctor By UserId
+                        var doctor = await _doctorService.GetDoctorByUserId(user.Id);
+
+                        if (doctor != null)
+                        {
+                            //Get Doctors Informations By Doctor Id
+                            var info = await _doctorService.GetDoctorsInformationByUserId(user.Id);
+
+                            if (info != null)
+                            {
+                                info.NationalCode = user.NationalId;
+                                info.GeneralPhone = user.ExtraPhoneNumber;
+
+                                //Update Doctror Personal Information 
+                                await _doctorService.UpdateDoctorsInfo(info);
+                            }
+                        }
+                    }
+                }
+            }
+
+            #endregion
+
 
             #region Add User Roles
 

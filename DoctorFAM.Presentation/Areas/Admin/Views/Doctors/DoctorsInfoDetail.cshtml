@@ -57,6 +57,8 @@
                             <div class="widget-body">
                                 <div class="row">
 
+                                @if (Model != null)
+                                {
                                     <div class="form-group col-md-4 col-sm-12">
                                         <label asp-for="NationalCode"></label>
                                         <input type="text" class="form-control" asp-for="NationalCode">
@@ -87,7 +89,7 @@
                                         <span class="text-danger" asp-validation-for="Specialty"></span>
                                     </div>
 
-                                     <div class="form-group col-md-6 col-sm-12">
+                                    <div class="form-group col-md-6 col-sm-12">
                                         <label asp-for="GeneralPhone"></label>
                                         <input type="text" class="form-control" asp-for="GeneralPhone">
                                         <span class="text-danger" asp-validation-for="GeneralPhone"></span>
@@ -99,20 +101,21 @@
                                         <span class="text-danger" asp-validation-for="ClinicPhone"></span>
                                     </div>
 
-                                      <div class="form-group col-md-12 col-sm-12">
-                                    <label asp-for="DoctorSkills"></label>
-                                    <input type="text" tagify="1" class="form-control" asp-for="DoctorSkills">
-                                    <span class="text-danger" asp-validation-for="DoctorSkills"></span>
-                                </div>
+                                    <div class="form-group col-md-12 col-sm-12">
+                                        <label asp-for="DoctorSkills"></label>
+                                        <input type="text" tagify="1" class="form-control" asp-for="DoctorSkills">
+                                        <span class="text-danger" asp-validation-for="DoctorSkills"></span>
+                                    </div>
 
-                                @if (Model.WorkAddresses != null && Model.WorkAddresses.Any())
-                                {
-                                    @foreach (var item in Model.WorkAddresses)
+                                    @if (Model.WorkAddresses != null && Model.WorkAddresses.Any())
                                     {
-                                        <div class="form-group col-md-12 col-sm-12">
-                                            <label asp-for="WorkAddresses"></label>
-                                            <textarea type="text" class="form-control">@item.Address</textarea>
-                                        </div>
+                                        @foreach (var item in Model.WorkAddresses)
+                                        {
+                                            <div class="form-group col-md-12 col-sm-12">
+                                                <label asp-for="WorkAddresses"></label>
+                                                <textarea type="text" class="form-control">@item.Address</textarea>
+                                            </div>
+                                        }
                                     }
                                 }
 
@@ -124,7 +127,7 @@
 
                                 <div class="clearfix"></div>
 
-                                <div class="form-group col-md-12 @(Model.DoctorsInfosType == DoctorFAM.Domain.Entities.Doctors.OrganizationInfoState.Rejected ?"":"d-none")" id="RejectDescription-div">
+                                <div class="form-group col-md-12 @(Model != null && Model.DoctorsInfosType == DoctorFAM.Domain.Entities.Doctors.OrganizationInfoState.Rejected ?"":"d-none")" id="RejectDescription-div">
                                     <label>@Localizer["Enter the reason for not confirming the information"]</label>
                                     <textarea asp-for="RejectDescription" rows="10" class="form-control" placeholder="@Localizer["Enter the reason for not confirming the information"]"></textarea>
                                     <span asp-validation-for="RejectDescription" class="text-danger"></span>
@@ -146,84 +149,92 @@
             </div>
         </div>
 
-        <div class="col-lg-3 col-sm-12">
-            <div class="row">
+        @if (Model != null)
+        {
+            <div class="col-lg-3 col-sm-12">
+                <div class="row">
 
-                <div class="col-lg-12 col-sm-12">
-                    <div class="widget">
-                        <div class="widget-header bordered-bottom bordered-green">
-                            <span class="widget-caption"> @Localizer["Medical file/office file"]</span>
-                        </div>
-                        <div class="widget-body">
-                            <div class="row">
+                    <div class="col-lg-12 col-sm-12">
+                        <div class="widget">
+                            <div class="widget-header bordered-bottom bordered-green">
+                                <span class="widget-caption"> @Localizer["Medical file/office file"]</span>
+                            </div>
+                            <div class="widget-body">
+                                <div class="row">
 
-                                <input type="file" class="display-none" name="MediacalFile" id="UserAvatar" ImageInput="1" accept=".jpg,.jpeg,.png" />
+                                    <input type="file" class="display-none" name="MediacalFile" id="UserAvatar" ImageInput="1" accept=".jpg,.jpeg,.png" />
 
-                                <div class="col-md-12">
-                                    <label for="UserAvatar" class="file-input-style">
-                                        <i class="glyphicon glyphicon-upload"></i>
-                                        <span class="mr-8px"> @Localizer["Please select the medical file / office file"]</span>
-                                    </label>
-                                </div>
+                                    <div class="col-md-12">
+                                        <label for="UserAvatar" class="file-input-style">
+                                            <i class="glyphicon glyphicon-upload"></i>
+                                            <span class="mr-8px"> @Localizer["Please select the medical file / office file"]</span>
+                                        </label>
+                                    </div>
 
-                                @{
-                                    var MediacalFileUrl = PathTools.DefaultMediacalFile;
+                                    @{
+                                        var MediacalFileUrl = PathTools.DefaultMediacalFile;
 
-                                    if (Model != null && !string.IsNullOrEmpty(Model.MediacalFile))
-                                    {
-                                        MediacalFileUrl = $"{PathTools.MediacalFilePathThumb}{Model.MediacalFile}";
+                                        if (Model != null && !string.IsNullOrEmpty(Model.MediacalFile))
+                                        {
+                                            MediacalFileUrl = $"{PathTools.MediacalFilePathThumb}{Model.MediacalFile}";
+                                        }
                                     }
-                                }
 
-                                <div class="col-md-12 tc mt-10px">
-                                    <img src="@MediacalFileUrl" class="image-style" ImageFile="1" />
+                                    <div class="col-md-12 tc mt-10px">
+                                        <img src="@MediacalFileUrl" class="image-style" ImageFile="1" />
+                                    </div>
+
                                 </div>
-
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+
+        }
+
     </div>
 
-    <div class="row">
-        <div class="col-lg-9">
-            <div class="widget">
-                <div class="widget-header bordered-bottom bordered-success">
-                    <i class="widget-icon fa fa-user black"></i>
-                    <span class="widget-caption black">@Localizer["Fields Of Your Interests"]</span>
-                </div><!--Widget Header-->
-                <div class="widget-body  no-padding">
-                    <div class="tickets-container">
-                        <ul class="tickets-list">
+    @if (Model != null)
+    {
+            <div class="row">
+            <div class="col-lg-9">
+                <div class="widget">
+                    <div class="widget-header bordered-bottom bordered-success">
+                        <i class="widget-icon fa fa-user black"></i>
+                        <span class="widget-caption black">@Localizer["Fields Of Your Interests"]</span>
+                    </div><!--Widget Header-->
+                    <div class="widget-body  no-padding">
+                        <div class="tickets-container">
+                            <ul class="tickets-list">
 
-                            @if (Model.DoctorsInterests != null && Model.DoctorsInterests.Any())
-                            {
-                                foreach (var item in Model.DoctorsInterests)
+                                @if (Model.DoctorsInterests != null && Model.DoctorsInterests.Any())
                                 {
-                                    <li class="ticket-item">
-                                        <div class="row">
-                                            <div class="ticket-type  col-lg-12 col-sm-12 col-xs-12">
-                                                <span class="divider hidden-xs"></span>
-                                                <span class="type">@item.Title</span>
+                                    foreach (var item in Model.DoctorsInterests)
+                                    {
+                                        <li class="ticket-item">
+                                            <div class="row">
+                                                <div class="ticket-type  col-lg-12 col-sm-12 col-xs-12">
+                                                    <span class="divider hidden-xs"></span>
+                                                    <span class="type">@item.Title</span>
+                                                </div>
+                                                <div class="ticket-state bg-darkorange">
+                                                    <a asp-action="DeleteDoctorSelectedInfo" asp-area="Admin" asp-controller="Doctors" asp-route-interestId="@item.InterestId" asp-route-doctorId="@Model.DoctorId" asp-route-doctorInfoId="@Model.Id">
+                                                        <i class="fa fa-times"></i>
+                                                    </a>
+                                                </div>
                                             </div>
-                                            <div class="ticket-state bg-darkorange">
-                                                <a asp-action="DeleteDoctorSelectedInfo" asp-area="Admin" asp-controller="Doctors" asp-route-interestId="@item.InterestId" asp-route-doctorId="@Model.DoctorId" asp-route-doctorInfoId="@Model.Id">
-                                                    <i class="fa fa-times"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </li>
+                                        </li>
+                                    }
                                 }
-                            }
 
-                        </ul>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-            </div>
 
+            </div>
         </div>
-    </div>
+    }
 
 </form>
