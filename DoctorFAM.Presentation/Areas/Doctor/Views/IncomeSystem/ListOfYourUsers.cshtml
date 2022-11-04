@@ -7,80 +7,80 @@
 
 @section Breadcrumb
     {
-    <li>
-        <a href="javascript:void(0)"> @ViewData["Title"] </a>
-    </li>
+<li>
+    <a href="javascript:void(0)"> @ViewData["Title"] </a>
+</li>
 }
 
-    @section Styles
+@section Styles
     {
-    <link href="/admin/css/dataTables.bootstrap.rtl.css" rel="stylesheet" />
+<link href="/admin/css/dataTables.bootstrap.rtl.css" rel="stylesheet" />
 }
 
-    @section Scripts
+@section Scripts
     {
-    <script src="~/admin/js/datatable/jquery.dataTables.min.js"></script>
-    <script src="~/admin/js/datatable/ZeroClipboard.js"></script>
-    <script src="~/admin/js/datatable/dataTables.tableTools.min.js"></script>
-    <script src="~/admin/js/datatable/dataTables.bootstrap.min.js"></script>
-    <script src="~/admin/js/datatable/datatables-init.js"></script>
-    <script>
-        InitiateSimpleDataTable.init();
-        InitiateEditableDataTable.init();
-        InitiateExpandableDataTable.init();
-        InitiateSearchableDataTable.init();
-    </script>
+<script src="~/admin/js/datatable/jquery.dataTables.min.js"></script>
+<script src="~/admin/js/datatable/ZeroClipboard.js"></script>
+<script src="~/admin/js/datatable/dataTables.tableTools.min.js"></script>
+<script src="~/admin/js/datatable/dataTables.bootstrap.min.js"></script>
+<script src="~/admin/js/datatable/datatables-init.js"></script>
+<script>
+    InitiateSimpleDataTable.init();
+    InitiateEditableDataTable.init();
+    InitiateExpandableDataTable.init();
+    InitiateSearchableDataTable.init();
+</script>
 
-    <script>
+<script>
 
-        function ShowListOfSMS(id) {
-            $.ajax({
-                url: "/Show-List-Of-SMS/" + id,
-                type: "get",
-                data: {
+    function ShowListOfSMS(id) {
+        $.ajax({
+            url: "/Show-List-Of-SMS/" + id,
+            type: "get",
+            data: {
 
-                },
-                success: function (response) {
-                    $("#LargeModalBody").html(response);
+            },
+            success: function (response) {
+                $("#LargeModalBody").html(response);
 
-                    $("#LargeModal").modal("show");
-                }
-            });
-        }
+                $("#LargeModal").modal("show");
+            }
+        });
+    }
 
-    </script>
+</script>
 
     }
 
-    <div class="page-body">
+<div class="page-body">
 
-        
-        <div class="row text-center ">
-            <div class="col-md-6">                
-                <a target="_blank" href="/Content/ExcelSampleFile/PopulationCoveredSmple.xlsx" title="از اینجا برای دانلود یک نمونه فایل اکسل، برای انتقال اطلاعات از کامپیوتر خود، به این سامانه استفاده کنید."  class="exlStyle btn btn-primary ">@SharedLocalizer["dlw Sample Of Excel File"]</a>
-            </div>
-            <div class="col-md-6">
-                <a asp-action="IncomingExcelFile" asp-controller="IncomeSystem" asp-area="Doctor" title="از اینجا برای آپلود یا بارگذاری فایل اکسلی که آماده کرده اید، استفاده کنید."  class="exlStyle btn btn-primary">@SharedLocalizer["Upload Compelete Excel File"]</a>
-            </div>
+
+    <div class="row text-center ">
+        <div class="col-md-6">
+            <a target="_blank" href="/Content/ExcelSampleFile/PopulationCoveredSmple.xlsx" title="از اینجا برای دانلود یک نمونه فایل اکسل، برای انتقال اطلاعات از کامپیوتر خود، به این سامانه استفاده کنید." class="exlStyle btn btn-primary ">@SharedLocalizer["dlw Sample Of Excel File"]</a>
         </div>
+        <div class="col-md-6">
+            <a asp-action="IncomingExcelFile" asp-controller="IncomeSystem" asp-area="Doctor" title="از اینجا برای آپلود یا بارگذاری فایل اکسلی که آماده کرده اید، استفاده کنید." class="exlStyle btn btn-primary">@SharedLocalizer["Upload Compelete Excel File"]</a>
+        </div>
+    </div>
 
-        <div class="row ">
-            <div class="col-xs-12 col-md-12">
-                <div class="widget">
-                    <div class="widget-header bordered-bottom bordered-yellow">
-                        <span class="widget-caption">@Localizer["Input list of family physician population"]  (@Localizer["Search on All Columns"])</span>
-                        <div class="widget-buttons">
-                            <a href="#" data-toggle="maximize">
-                                <i class="fa fa-expand"></i>
-                            </a>
-                            <a href="#" data-toggle="collapse">
-                                <i class="fa fa-minus"></i>
-                            </a>
-                            <a href="#" data-toggle="dispose">
-                                <i class="fa fa-times"></i>
-                            </a>
-                        </div>
+    <div class="row ">
+        <div class="col-xs-12 col-md-12">
+            <div class="widget">
+                <div class="widget-header bordered-bottom bordered-yellow">
+                    <span class="widget-caption">@Localizer["Input list of family physician population"]  (@Localizer["Search on All Columns"])</span>
+                    <div class="widget-buttons">
+                        <a href="#" data-toggle="maximize">
+                            <i class="fa fa-expand"></i>
+                        </a>
+                        <a href="#" data-toggle="collapse">
+                            <i class="fa fa-minus"></i>
+                        </a>
+                        <a href="#" data-toggle="dispose">
+                            <i class="fa fa-times"></i>
+                        </a>
                     </div>
+                </div>
 
                 @if (Model != null && Model.Any())
                 {
@@ -93,11 +93,13 @@
                                     <thead class="bordered-darkorange">
                                         <tr role="row">
 
-                                            <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1"  aria-label="Rendering engine: activate to sort column ascending">@Localizer["Full Name"]</th>
-                                            <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1"  aria-label="Browser: activate to sort column ascending" aria-sort="ascending">@Localizer["Mobile-NationalCode"]</th>
-                                            <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1"  aria-label="Platform(s): activate to sort column ascending">@Localizer["States"]</th>
-                                            <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1"  aria-label="Engine version: activate to sort column ascending">@Localizer["SMS States"]</th>
-                                            <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1"  aria-label="Engine version: activate to sort column ascending"></th>
+                                            <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">@Localizer["Full Name"]</th>
+                                            <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" aria-sort="ascending">@Localizer["National Code"]</th>
+                                            <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" aria-sort="ascending">@Localizer["Mobile"]</th>
+                                            <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">@Localizer["Register State"]</th>
+                                            <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">@Localizer["Family Doctor State"]</th>
+                                            <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending">@Localizer["SMS States"]</th>
+                                            <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending"></th>
 
                                         </tr>
                                     </thead>
@@ -106,6 +108,8 @@
                                         <tr>
                                             <th rowspan="1" colspan="1"><input type="text" name="search_engine" placeholder="@Localizer["Search Fullname"]" class="form-control input-sm"></th>
                                             <th rowspan="1" colspan="1"><input type="text" name="search_browser" placeholder="@Localizer["Search"]" class="form-control input-sm"></th>
+                                            <th rowspan="1" colspan="1"></th>
+                                            <th rowspan="1" colspan="1"></th>
                                             <th rowspan="1" colspan="1"></th>
                                             <th rowspan="1" colspan="1"></th>
                                             <th rowspan="1" colspan="1">
@@ -120,27 +124,16 @@
 
                                         @foreach (var user in Model)
                                         {
-                                            <tr role="row" class="even">
+                                            <tr role="row" class="even responsive">
 
                                                 <td class=" sorting_1">@user.PatientFirstName @user.PatientLastName</td>
                                                 <td class="sorting_1">
-                                                    <span>@Localizer["Mobile"] : @user.PatientMobile</span>
-                                                    <hr>
-                                                    <span>@Localizer["National Code"] : @user.PatientNationalId</span>
+                                                    @user.PatientNationalId
                                                 </td>
                                                 <td class="sorting_1">
-
-                                                    @if (user.HasAnyFamilyDoctor)
-                                                    {
-                                                        <span class="label label-danger">@Localizer["Has Family Doctor"]</span>
-                                                        <hr>
-                                                    }
-                                                    @if (!user.HasAnyFamilyDoctor)
-                                                    {
-                                                        <span class="label label-success">@Localizer["NO Family Doctor"]</span>
-                                                        <hr>
-                                                    }
-
+                                                    @user.PatientMobile
+                                                </td>
+                                                <td class="sorting_1">
                                                     @if (!user.IsRegisteredUser)
                                                     {
                                                         <span class="label label-danger">@Localizer["No Register"]</span>
@@ -151,11 +144,24 @@
                                                     }
 
                                                 </td>
+                                                <td class="sorting_1">
+
+                                                    @if (user.HasAnyFamilyDoctor)
+                                                    {
+                                                        <span class="label label-success">@Localizer["Has Family Doctor"]</span>
+                                                    }
+                                                    @if (!user.HasAnyFamilyDoctor)
+                                                    {
+                                                        <span class="label label-danger">@Localizer["NO Family Doctor"]</span>
+                                                    }
+
+                                                </td>
+
                                                 <td class="center ">
 
                                                     @if (user.SMSSent)
                                                     {
-                                                            <p style="cursor: pointer;" onclick="ShowListOfSMS(@user.Id)" class="label label-success"> @Localizer["List Of SMS"] </p>
+                                                        <p style="cursor: pointer;" onclick="ShowListOfSMS(@user.Id)" class="label label-success"> @Localizer["List Of SMS"] </p>
                                                     }
                                                     else
                                                     {

@@ -13,10 +13,14 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
         #region Ctor
 
         private readonly IDoctorsService _doctorService;
+        private readonly IDashboardsService _dashboardService;
+        private readonly IOrganizationService _organizationService;
 
-        public IncomeSystemController(IDoctorsService doctorService)
+        public IncomeSystemController(IDoctorsService doctorService, IDashboardsService dashboardService, IOrganizationService organizationService )
         {
             _doctorService = doctorService;
+            _dashboardService = dashboardService;
+            _organizationService = organizationService;
         }
 
         #endregion
@@ -49,7 +53,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
             if (res)
             {
                 TempData[SuccessMessage] = "عملیات باموفقیت انچام شده است .";
-                return RedirectToAction("Index" , "Home" , new{ area = "Doctor" });
+                return RedirectToAction("ListAfterUpload", "IncomeSystem", new{ area = "Doctor" });
             }
 
             #endregion
@@ -111,6 +115,51 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
         public async Task<IActionResult> ListOfYourUsers()
         {
             return View(await _doctorService.ListOfDoctorParsaSystemUsers(User.GetUserId()));
+        }
+
+        #endregion
+
+        #region Upload File
+
+        public async Task<IActionResult> UploadFile()
+        {
+            return View(await _doctorService.ListOfDoctorParsaSystemUsers(User.GetUserId()));
+        }
+
+        #endregion
+
+        #region List After Upload 
+
+        public async Task<IActionResult> ListAfterUpload(bool employeeHasNotPermission = false)
+        {
+            //در این قسمت باید چک شود که آیا پزشک وارد شده است یا منشی 
+
+            #region Check Doctor Login our Employee
+
+            if (!await _organizationService.IsExistAnyDoctorOfficeEmployeeByUserId(User.GetUserId()))
+            {
+                #region If Doctor Is Not Found In Doctor Table 
+
+                if (!await _doctorService.IsExistAnyDoctorByUserId(User.GetUserId()))
+                {
+                    await _doctorService.AddDoctorForFirstTime(User.GetUserId());
+                }
+
+                #endregion
+            }
+
+            #endregion
+
+            #region Employee Permission
+
+            if (employeeHasNotPermission == true)
+            {
+                TempData[WarningMessage] = "شما دسترسی ورود به این بخش را ندارید .";
+            }
+
+            #endregion
+
+            return View(await _dashboardService.FillDoctorPanelDashboardViewModel(User.GetUserId()));
         }
 
         #endregion

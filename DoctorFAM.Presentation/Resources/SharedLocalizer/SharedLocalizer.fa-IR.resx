@@ -687,4 +687,16 @@
   <data name="Population Covered List" xml:space="preserve">
     <value>لیست جمعیت خانوار</value>
   </data>
+  <data name="Send SMS" xml:space="preserve">
+    <value>ارسال پیامک</value>
+  </data>
+  <data name="Send Special SMS" xml:space="preserve">
+    <value>ارسال پیامک ویژه</value>
+  </data>
+  <data name="SMS Management" xml:space="preserve">
+    <value>مدیریت پیامک</value>
+  </data>
+  <data name="UpLoad population list" xml:space="preserve">
+    <value>بارگذاری لیست جمعیت</value>
+  </data>
 </root>

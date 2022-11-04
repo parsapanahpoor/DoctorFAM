@@ -123,4 +123,7 @@
   <data name="Population covered" xml:space="preserve">
     <value>جمعیت تحت پوشش</value>
   </data>
+  <data name="SMS Management" xml:space="preserve">
+    <value>مدیریت پیامک</value>
+  </data>
 </root>

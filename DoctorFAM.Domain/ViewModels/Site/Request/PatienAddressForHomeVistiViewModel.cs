@@ -77,7 +77,7 @@ namespace DoctorFAM.Domain.ViewModels.Site.Request
         [Display(Name = "تزریق جلدی یا زیر جلدی")]
         public bool DermalOrSubcutaneousInjection { get; set; }
 
-        [Display(Name = "تزریق ریدی")]
+        [Display(Name = "تزریق وریدی")]
         public bool ReedyInjection { get; set; }
 
         [Display(Name = "سرم تراپی")]
@@ -101,7 +101,7 @@ namespace DoctorFAM.Domain.ViewModels.Site.Request
         [Display(Name = "لوله گذاری معده")]
         public bool GastricIntubation { get; set; }
 
-        [Display(Name = "سونگذاری مثانه")]
+        [Display(Name = "سوندگذاری مثانه")]
         public bool UrinaryBladder { get; set; }
 
         [Display(Name = "اکسیژن تراپی")]

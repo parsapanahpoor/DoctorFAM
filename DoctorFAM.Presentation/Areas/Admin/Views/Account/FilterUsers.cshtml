@@ -17,7 +17,8 @@
 
 @section Styles
 {
-
+.tableFixHead          { overflow: auto; height: 100px; }
+.tableFixHead thead th { position: sticky; top: 0; z-index: 1; }
 }
 
 @section Scripts
@@ -59,17 +60,17 @@
                             <input type="text" class="form-control" asp-for="Mobile">
                         </div>
 
-                      @*  <div class="form-group">
+                        @*  <div class="form-group">
                             <label for="FromDate"> @Localizer["Register Date From"] </label>
                             <input autocomplete="off" AdminDatePicker="2" type="text" class="form-control" asp-for="FromDate">
                             <span class="text-danger" asp-validation-for="FromDate"></span>
-                        </div>
+                            </div>
 
-                        <div class="form-group">
+                            <div class="form-group">
                             <label for="ToDate"> @Localizer["Register Date Until"] </label>
                             <input type="text" autocomplete="off" AdminDatePicker="3" class="form-control" asp-for="ToDate">
                             <span class="text-danger" asp-validation-for="ToDate"></span>
-                        </div>*@
+                            </div>*@
 
                         <div class="form-group">
                             <label asp-for="RoleId"> @Localizer["Base On Roles"] </label>
@@ -113,7 +114,7 @@
     </div>
 
     <div class="col-lg-9 col-sm-12">
-        <div class="well with-header with-footer table-responsive">
+        <div class="well with-header with-footer table-responsive tableFixHead">
             <div class="header bordered-azure">
                 <div class="flex-style">
                     <span>@Localizer["Page Title"]</span>
@@ -124,41 +125,42 @@
             @if (Model.Entities != null && Model.Entities.Any())
             {
                 <table class="table table-hover table-bordered tc vm">
-                    <thead class="tc vm">
-                    <tr class="tc vm">
-                        <th class="tc vm">
-                            @Localizer["Avatar"]
-                        </th>
-                        <th class="tc vm">
-                            @Localizer["Personal Info"]
-                        </th>
-                        <th class="tc vm">
-                            @Localizer["State"]
-                        </th>
-                        <th class="tc vm">
-                            @Localizer["Access"]
-                        </th>
-                        <th class="tc vm">
-                            @Localizer["Possibilities"]
-                        </th>
-                    </tr>
+                    <thead class="tc vm" >
+                        <tr class="tc vm" >
+                            <th class="tc vm">
+                                @Localizer["Avatar"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["Personal Info"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["State"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["Access"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["Possibilities"]
+                            </th>
+                        </tr>
                     </thead>
                     <tbody class="tc vm">
-                    @foreach (var user in Model.Entities)
-                    {
-                        <tr class="tc vm">
-                            <td class="vm">
-                                <div class="flex-style-center">
-                                    <img src="@user.GetUserAvatar()" class="avatar-style"/>
-                                    <div class="mr-10px">
-                                        <span> @user.Username </span>
-                                        <hr class="margin-7"/>
-                                        <span>@Localizer["Register Date"] : @user.CreateDate.ToShamsi()</span>
+                        @foreach (var user in Model.Entities)
+                        {
+                            <tr class="tc vm">
+                                <td class="vm">
+                                    <div class="flex-style-center">
+                                        <img src="@user.GetUserAvatar()" class="avatar-style" />
+                                        <div class="mr-10px">
+                                            <span> @user.Username </span>
+                                            <hr class="margin-7" />
+                                            <span>@Localizer["Register Date"] : @user.CreateDate.ToShamsi()</span>
+                                        </div>
                                     </div>
-                                </div>
-                            </td>
-                            <td class="tc vm">
-                                <p>@Localizer["Email"] :
+                                </td>
+                                <td class="tc vm">
+                                    <p>
+                                        @Localizer["Email"] :
                                         @if (user.Email == null)
                                         {
                                             <span class="mr-8px label label-orange">@Localizer["Empty"] </span>
@@ -168,51 +170,51 @@
                                             @user.Email
                                         }
                                     </p>
-                                @if (!string.IsNullOrEmpty(user.Mobile))
-                                {
+                                    @if (!string.IsNullOrEmpty(user.Mobile))
+                                    {
+                                        <hr class="margin-7" />
+                                        <p>@Localizer["Mobile"] : @user.Mobile</p>
+                                    }
+                                </td>
+                                <td class="tc vm">
+                                    <p class="flex-style-center">
+                                        <span> @Localizer["Email State"] </span>
+                                        <span class="mr-8px label @((user.IsEmailConfirm) ? "label-success" : "label-orange")">@((user.IsEmailConfirm) ? @Localizer["Approved"] : @Localizer["Not Approved"])</span>
+                                    </p>
                                     <hr class="margin-7" />
-                                    <p>@Localizer["Mobile"] : @user.Mobile</p>
-                                }
-                            </td>
-                            <td class="tc vm">
-                                <p class="flex-style-center">
-                                    <span> @Localizer["Email State"] </span>
-                                    <span class="mr-8px label @((user.IsEmailConfirm) ? "label-success" : "label-orange")">@((user.IsEmailConfirm) ? @Localizer["Approved"] : @Localizer["Not Approved"])</span>
-                                </p>
-                                <hr class="margin-7" />
-                                <p class="flex-style-center">
-                                    <span> @Localizer["Mobile State"] </span>
-                                    <span class="mr-8px label @((user.IsMobileConfirm) ? "label-success" : "label-orange")">@((user.IsMobileConfirm) ? @Localizer["Approved"] : @Localizer["Not Approved"])</span>
-                                </p>
-                            </td>
-                            <td class="tc vm">
-                                <p class="flex-style-center">
-                                    <span> @Localizer["Site Access"] </span>
-                                    <span class="mr-8px label @((!user.IsBan) ? "label-success" : "label-orange")">@((!user.IsBan) ? @Localizer["Has It"] : @Localizer["Does Not Have"])</span>
-                                </p>
-                                <hr class="margin-7" />
-                                <p class="flex-style-center">
-                                    <span> @Localizer["Comment Access"] </span>
-                                    <span class="mr-8px label @((!user.BanForComment) ? "label-success" : "label-orange")">@((!user.BanForComment) ? @Localizer["Has It"] : @Localizer["Does Not Have"])</span>
-                                </p>
-                            </td>
-                            <td class="tc vm">
-                                <a asp-action="AccountDetail" asp-controller="Account" asp-area="Admin" asp-route-id="@user.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
-                            </td>
-                        </tr>
-                    }
+                                    <p class="flex-style-center">
+                                        <span> @Localizer["Mobile State"] </span>
+                                        <span class="mr-8px label @((user.IsMobileConfirm) ? "label-success" : "label-orange")">@((user.IsMobileConfirm) ? @Localizer["Approved"] : @Localizer["Not Approved"])</span>
+                                    </p>
+                                </td>
+                                <td class="tc vm">
+                                    <p class="flex-style-center">
+                                        <span> @Localizer["Site Access"] </span>
+                                        <span class="mr-8px label @((!user.IsBan) ? "label-success" : "label-orange")">@((!user.IsBan) ? @Localizer["Has It"] : @Localizer["Does Not Have"])</span>
+                                    </p>
+                                    <hr class="margin-7" />
+                                    <p class="flex-style-center">
+                                        <span> @Localizer["Comment Access"] </span>
+                                        <span class="mr-8px label @((!user.BanForComment) ? "label-success" : "label-orange")">@((!user.BanForComment) ? @Localizer["Has It"] : @Localizer["Does Not Have"])</span>
+                                    </p>
+                                </td>
+                                <td class="tc vm">
+                                    <a asp-action="AccountDetail" asp-controller="Account" asp-area="Admin" asp-route-id="@user.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+                                </td>
+                            </tr>
+                        }
                     </tbody>
                 </table>
 
                 <div class="footer tc">
-                
-                    <partial name="_AdminPaging" model="@Model.GetCurrentPaging()"/>
+
+                    <partial name="_AdminPaging" model="@Model.GetCurrentPaging()" />
 
                 </div>
             }
             else
             {
-                <partial name="_AdminNotFoundPartial"/>
+                <partial name="_AdminNotFoundPartial" />
             }
         </div>
     </div>

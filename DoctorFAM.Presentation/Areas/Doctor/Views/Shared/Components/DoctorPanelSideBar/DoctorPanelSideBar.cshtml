@@ -46,11 +46,6 @@
                             </a>
                         </li>
 
-                        <li>
-                            <a asp-area="Doctor" asp-controller="IncomeSystem" asp-action="ListOfYourUsers">
-                                <span class="menu-text">@SharedLocalizer["Family Doctor Settings"]</span>
-                            </a>
-                        </li>
 
                     </ul>
                 </li>
@@ -185,6 +180,38 @@
             </li>
 
 
+
+             <li>
+                <a href="#" class="menu-dropdown" style="font-size:16px;font-weight:500; color:#ef2e2e   ">
+                    <i class="menu-icon glyphicon glyphicon-send"></i>                   
+                    <span class="menu-text" > @SharedLocalizer["SMS Management"] </span>
+                    <i class="menu-expand"></i>
+                </a>
+
+                <ul class="submenu">
+
+                    <li>
+                        <a asp-area="Doctor" asp-controller="IncomeSystem" asp-action="UploadFile">
+                            <span class="menu-text">@SharedLocalizer["UpLoad population list"]</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a asp-area="Doctor" asp-controller="IncomeSystem" asp-action="ListOfYourUsers">
+                            <span class="menu-text">@SharedLocalizer["Send SMS"]</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a asp-area="Doctor" asp-controller="IncomeSystem" asp-action="ListOfYourUsers">
+                            <span class="menu-text">@SharedLocalizer["Send Special SMS"]</span>
+                        </a>
+                    </li>
+
+                   
+
+                </ul>
+            </li>
 
 
 

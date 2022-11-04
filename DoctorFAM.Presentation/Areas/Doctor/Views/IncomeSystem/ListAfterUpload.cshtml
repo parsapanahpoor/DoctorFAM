@@ -1,0 +1,26 @@
+﻿@model DoctorFAM.Domain.ViewModels.DoctorPanel.Dashbaord.DoctorPanelDashboardViewModel
+
+@section Breadcrumb {
+    <li class="active">@SharedHtmlLocalizer["Home"]</li>
+}
+
+@await Component.InvokeAsync("DoctorsInfos")
+
+
+    <div class="page-body">
+
+        <div class="row">
+
+         
+
+           
+            <partial name="_ListUserParsaSystemThatDidntSendSMSTOThem" model="@Model.UserNotSendSMS" />
+
+            
+            <partial name="_ListUserParsaSystemThatSentSMSTOThem" model="@Model.UserSendSMS" />
+
+           
+
+        </div>
+
+    </div>

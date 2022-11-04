@@ -1,0 +1,34 @@
+﻿@model List<DoctorFAM.Domain.Entities.FamilyDoctor.ParsaSystem.UserInsertedFromParsaSystem>
+@using DoctorFAM.Application.Convertors
+
+
+
+@{
+    ViewData["Title"] = @Localizer["Input list of family physician population"];
+}
+
+@section Breadcrumb
+    {
+    <li>
+        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+    </li>
+}
+
+   
+    
+
+    <div class="page-body">
+
+        
+        <div class="row text-center ">
+            <div class="col-md-6">                
+                <a target="_blank" href="/Content/ExcelSampleFile/PopulationCoveredSmple.xlsx" title="از اینجا برای دانلود یک نمونه فایل اکسل، برای انتقال اطلاعات از کامپیوتر خود، به این سامانه استفاده کنید."  class="exlStyle btn btn-primary ">@SharedLocalizer["dlw Sample Of Excel File"]</a>
+            </div>
+            <div class="col-md-6">
+                <a asp-action="IncomingExcelFile" asp-controller="IncomeSystem" asp-area="Doctor" title="از اینجا برای آپلود یا بارگذاری فایل اکسلی که آماده کرده اید، استفاده کنید."  class="exlStyle btn btn-primary">@SharedLocalizer["Upload Compelete Excel File"]</a>
+            </div>
+        </div>
+
+      
+    </div>
+

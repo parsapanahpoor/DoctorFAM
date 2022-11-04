@@ -793,7 +793,7 @@ th {
   content: "\e170";
 }
 .glyphicon-send:before {
-  content: "\e171";
+  content: "\e171";  
 }
 .glyphicon-floppy-disk:before {
   content: "\e172";

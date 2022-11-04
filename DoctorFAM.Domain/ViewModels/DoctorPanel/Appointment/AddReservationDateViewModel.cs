@@ -34,5 +34,7 @@ namespace DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment
 
         [Display(Name = "computerized")]
         computerized
+
+        
     }
 }

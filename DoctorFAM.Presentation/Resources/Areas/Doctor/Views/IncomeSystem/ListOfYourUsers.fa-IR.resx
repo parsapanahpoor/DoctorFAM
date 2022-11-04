@@ -118,7 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Didn't Send SMS Yet" xml:space="preserve">
-    <value>پیامک ارسال نشده</value>
+    <value>ارسال نشده</value>
+  </data>
+  <data name="Family Doctor State" xml:space="preserve">
+    <value>پزشک خانواده</value>
   </data>
   <data name="Full Name" xml:space="preserve">
     <value>نام و نام خانوادگی</value>
@@ -135,9 +138,6 @@
   <data name="Mobile" xml:space="preserve">
     <value>موبایل</value>
   </data>
-  <data name="Mobile-NationalCode" xml:space="preserve">
-    <value>تلفن همراه - کد ملی</value>
-  </data>
   <data name="National Code" xml:space="preserve">
     <value>کدملی</value>
   </data>
@@ -152,6 +152,9 @@
   </data>
   <data name="Options" xml:space="preserve">
     <value>وضعیت</value>
+  </data>
+  <data name="Register State" xml:space="preserve">
+    <value>ثبت نام</value>
   </data>
   <data name="Registered" xml:space="preserve">
     <value>ثبت نام کرده </value>
@@ -176,8 +179,5 @@
   </data>
   <data name="SMS States" xml:space="preserve">
     <value>پیامک</value>
-  </data>
-  <data name="States" xml:space="preserve">
-    <value>وضعیت در دکترفم</value>
   </data>
 </root>

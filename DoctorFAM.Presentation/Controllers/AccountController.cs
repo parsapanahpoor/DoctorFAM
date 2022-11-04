@@ -45,7 +45,7 @@ namespace DoctorFAM.Web.Controllers
 
         [HttpGet("Register")]
         [RedirectHomeIfLoggedInActionFilter]
-        public IActionResult Register(bool? doctors, bool? seller , bool? pharmacy , bool? nurse , bool? consultant , bool? Labratory , string? mobile)
+        public IActionResult Register(bool? doctors, bool? seller, bool? pharmacy, bool? nurse, bool? consultant, bool? Labratory, string? mobile)
         {
             #region About Doctors & Seller & Pharmacy
 
@@ -573,7 +573,7 @@ namespace DoctorFAM.Web.Controllers
             if (!ModelState.IsValid)
             {
                 TempData[ErrorMessage] = "مقادیر وارد شده معتبر نمی باشد . ";
-                return RedirectToAction("Index" , "Home");
+                return RedirectToAction("Index", "Home");
             }
 
             if (string.IsNullOrEmpty(model.RoleName) || string.IsNullOrEmpty(model.Mobile))
@@ -621,7 +621,7 @@ namespace DoctorFAM.Web.Controllers
                     return Redirect("/UserPanel/Account/EditProfile?FillInfo=true");
                 }
 
-                var res = await _userService.SendCooperationRequestForExistUser(user , model.RoleName);
+                var res = await _userService.SendCooperationRequestForExistUser(user, model.RoleName);
 
                 if (res)
                 {
@@ -640,7 +640,7 @@ namespace DoctorFAM.Web.Controllers
                 await _userService.AddCooperationRequest(model.Mobile, model.RoleName, model.Username);
 
                 //If User Select Doctor Role 
-                if (model.RoleName == "doctor") return RedirectToAction("Register", "Account", new { doctors = true , mobile = model.Mobile });
+                if (model.RoleName == "doctor") return RedirectToAction("Register", "Account", new { doctors = true, mobile = model.Mobile });
 
                 //If User Select seller Role 
                 if (model.RoleName == "seller") return RedirectToAction("Register", "Account", new { seller = true, mobile = model.Mobile });
@@ -673,21 +673,23 @@ namespace DoctorFAM.Web.Controllers
         {
             #region Render Model 
 
-            var user = await _userService.GetUserById(User.GetUserId());
-            if (user == null)
-            {
-                return NotFound();
-            }
+            SendCooperationRequestViewModel model = new SendCooperationRequestViewModel();
 
-            SendCooperationRequestViewModel model = new SendCooperationRequestViewModel()
+            if (User.Identity.IsAuthenticated)
             {
-                Mobile = user.Mobile,
-                Username = user.Username
-            };
+                var user = await _userService.GetUserById(User.GetUserId());
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                model.Mobile = user.Mobile;
+                model.Username = user.Username;
+            }
 
             #endregion
 
-            return PartialView("_ShowCooperationRequestModal" , model);
+            return PartialView("_ShowCooperationRequestModal", model);
         }
 
         #endregion
