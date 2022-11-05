@@ -1,4 +1,5 @@
-﻿using DoctorFAM.Application.Convertors;
+﻿using AngleSharp.Dom;
+using DoctorFAM.Application.Convertors;
 using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Generators;
 using DoctorFAM.Application.Security;
@@ -7,8 +8,10 @@ using DoctorFAM.Application.StaticTools;
 using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.FamilyDoctor.ParsaSystem;
+using DoctorFAM.Domain.Entities.FamilyDoctor.VIPSystem;
 using DoctorFAM.Domain.Entities.Interest;
 using DoctorFAM.Domain.Entities.Organization;
+using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.WorkAddress;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo;
@@ -16,6 +19,8 @@ using DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DosctorSideBarInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Employees;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.ParsaSystem;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.ParsaSystem.VIPPatient;
+using DoctorFAM.Domain.ViewModels.Nurse.HomeNurse;
 using DoctorFAM.Domain.ViewModels.Site.Doctor;
 using DoctorFAM.Domain.ViewModels.Site.Reservation;
 using DoctorFAM.Domain.ViewModels.UserPanel.Account;
@@ -23,6 +28,7 @@ using DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using SixLabors.ImageSharp.ColorSpaces;
 using System.Collections.Generic;
@@ -44,7 +50,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
 
         public DoctorsService(IDoctorsRepository doctorRepository, IUserService userService, IOrganizationService organizationService,
-                                IWorkAddressService workAddress, ILocationRepository locationRepository, IReservationService reservationService , ISMSService smsservice)
+                                IWorkAddressService workAddress, ILocationRepository locationRepository, IReservationService reservationService, ISMSService smsservice)
         {
             _doctorRepository = doctorRepository;
             _userService = userService;
@@ -74,7 +80,36 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #region Initial List 
 
-            return await _doctorRepository.ShowListOfSMSThatSendFromDoctorToPatientIncomesFromParsaSystem(id , organization.OwnerId);
+            return await _doctorRepository.ShowListOfSMSThatSendFromDoctorToPatientIncomesFromParsaSystem(id, organization.OwnerId);
+
+            #endregion
+        }
+
+        //Show List Of SMS That Send From Doctor To VIP Patient Incomes From Parsa System
+        public async Task<List<LogForSendSMSToVIPUsersIncomeFromDoctorSystem>?> ShowListOfSMSThatSendFromDoctorToVIPPatientIncomesFromParsaSystem(ulong id, ulong doctorUserId)
+        {
+            #region Get Organization
+
+            var organization = await _organizationService.GetDoctorOrganizationByUserId(doctorUserId);
+            if (organization == null || organization.OrganizationInfoState != OrganizationInfoState.Accepted || organization.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice)
+            {
+                return null;
+            }
+
+            #endregion
+
+            #region Check User In Doctor VIP List 
+
+            if (! await _doctorRepository.IsExistAnyUserVIPByThisIdInCurrentDoctorSystemFile(organization.OwnerId , id))
+            {
+                return null;
+            }
+
+            #endregion
+
+            #region Initial List 
+
+            return await _doctorRepository.ShowListOfSMSThatSendFromDoctorToVIPPatientIncomesFromParsaSystem(id);
 
             #endregion
         }
@@ -163,10 +198,108 @@ namespace DoctorFAM.Application.Services.Implementation
                         //Update Patient Info In Users That Income From Parsa System List 
                         patient.SMSSent = true;
                         patient.SMSSentDate = DateTime.Now;
-                        
+
 
                         //Update Method 
                         await _doctorRepository.UpdateParsaSystemRecord(patient);
+                    }
+                }
+            }
+
+            #endregion
+
+            #endregion
+
+            return true;
+        }
+
+        //Get VIP User From Parsa Incoming List By User Id And Doctor User Id
+        public async Task<VIPUserInsertedFromDoctorSystem?> GetVIPUserFromParsaIncomingListByUserIdAndDoctorUserId(ulong doctorId, ulong parsaUserId)
+        {
+            return await _doctorRepository.GetVIPUserFromParsaIncomingListByUserIdAndDoctorUserId(doctorId,parsaUserId);
+        }
+
+        //Send SMS From Doctor To The VIP Users That Income From Parsa Sysem 
+        public async Task<bool> SendSMSFromVIPDoctorToTheUsersThatIncomeFromParsaSysem(SendSMSToPatientViewModel model)
+        {
+            #region Get Organization
+
+            var organization = await _organizationService.GetDoctorOrganizationByUserId(model.DoctorUserId);
+            if (organization == null || organization.OrganizationInfoState != OrganizationInfoState.Accepted || organization.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice)
+            {
+                return false;
+            }
+
+            #endregion
+
+            #region Model State Validation 
+
+            if (model == null || model.PatientId.Count() == 0 || !model.PatientId.Any())
+            {
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(model.SMSBody))
+            {
+                return false;
+            }
+
+            //Check Patients Id That Exist In Doctor Parsa System Population
+            foreach (var item in model.PatientId)
+            {
+                if (!await _doctorRepository.IsExistAnyVIPUserFromParsaSystemInDoctorParsaSystemList(item, organization.OwnerId))
+                {
+                    return false;
+                }
+            }
+
+            #endregion
+
+            #region Send SMS Method 
+
+            #region Log For Send SMS
+
+            List<LogForSendSMSToVIPUsersIncomeFromDoctorSystem> logsForSMS = new List<LogForSendSMSToVIPUsersIncomeFromDoctorSystem>();
+
+            foreach (var item in model.PatientId)
+            {
+                logsForSMS.Add(new LogForSendSMSToVIPUsersIncomeFromDoctorSystem()
+                {
+                    CreateDate = DateTime.Now,
+                    VIPUserInsertedFromDoctorSystemId = item,
+                    IsDelete = false,
+                    SMSBody = model.SMSBody,
+                });
+            }
+
+            await _doctorRepository.AddLogForSendSMSFromDoctorToVIPUsersThatIncomeFromParsaSystemWithoutSaveChanges(logsForSMS);
+
+            #endregion
+
+            #region Send SMS
+
+            foreach (var item in model.PatientId)
+            {
+                //Get The Current VIP Patient With Validation 
+                var patient = await GetVIPUserFromParsaIncomingListByUserIdAndDoctorUserId(organization.OwnerId, item);
+
+                if (patient != null)
+                {
+                    //Initial SMS Body With Algorithm
+                    var message = Messages.SendSMSFromDoctorToTheUsersThatIncomeFromParsaSystem(model.SMSBody);
+
+                    if (!string.IsNullOrEmpty(patient.PatientMobile))
+                    {
+                        //Send SMS
+                        //await _smsservice.SendSimpleSMS(patient.PatientMobile, message);
+
+                        //Update Patient Info In Users That Income From Parsa System List 
+                        patient.SMSSent = true;
+                        patient.SMSSentDate = DateTime.Now;
+
+
+                        //Update Method 
+                        await _doctorRepository.UpdateVIPParsaSystemRecord(patient);
                     }
                 }
             }
@@ -192,6 +325,51 @@ namespace DoctorFAM.Application.Services.Implementation
             #endregion
 
             return await _doctorRepository.ListOfDoctorParsaSystemUsers(organization.OwnerId);
+        }
+
+        //List Of DOctor VIP Parsa System Users
+        public async Task<List<ListOfVIPIncommingUsers>?> ListOfDoctorVIPParsaSystemUsers(ulong DoctorUserId)
+        {
+            #region Get Organization
+
+            var organization = await _organizationService.GetDoctorOrganizationByUserId(DoctorUserId);
+            if (organization.OrganizationInfoState != OrganizationInfoState.Accepted || organization.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice)
+            {
+                return null;
+            }
+
+            #endregion
+
+            #region Get List Of VIP Users
+
+            var users = await _doctorRepository.ListOfDOctorVIPParsaSystemUsers(organization.OwnerId);
+
+            #endregion
+
+            #region Fill View Model
+
+            List<ListOfVIPIncommingUsers> returnModel = new List<ListOfVIPIncommingUsers>();
+
+            foreach (var item in users)
+            {
+                ListOfVIPIncommingUsers model = new ListOfVIPIncommingUsers()
+                {
+                    PatientFirstName = item.PatientFirstName,
+                    PatientLastName = item.PatientLastName,
+                    PatientMobile = item.PatientMobile,
+                    PatientNationalId = item.PatientNationalId,
+                    SMSSent = item.SMSSent,
+                    SMSSentDate = item.SMSSentDate,
+                    LabelOFSickness = await _doctorRepository.GetLabelOfSicknessFromVIPUsers(item.Id),
+                    Id = item.Id
+                };
+
+                returnModel.Add(model);
+            }
+
+            #endregion
+
+            return returnModel;
         }
 
         //Get User From Parsa Incoming List By User Id And Doctor User Id
@@ -237,6 +415,12 @@ namespace DoctorFAM.Application.Services.Implementation
         public async Task<bool> IsExistAnyUserByThisMobileNumberInCurrentDoctorParsaSystemFile(ulong doctorUserId, string mobileNumber)
         {
             return await _doctorRepository.IsExistAnyUserByThisMobileNumberInCurrentDoctorParsaSystemFile(doctorUserId, mobileNumber);
+        }
+
+        //Is Exist Any User VIP By This Mobile Number And NationalId In Current Doctor System File 
+        public async Task<bool> IsExistAnyUserVIPByThisMobileNumberAndNationalIdInCurrentDoctorSystemFile(ulong doctorUserId, string mobileNumber, string NationalId)
+        {
+            return await _doctorRepository.IsExistAnyUserVIPByThisMobileNumberAndNationalIdInCurrentDoctorSystemFile(doctorUserId, mobileNumber, NationalId);
         }
 
         //Check That Is User Has Any Active Family Doctor 
@@ -419,6 +603,103 @@ namespace DoctorFAM.Application.Services.Implementation
                         #region Add List To the Data Base
 
                         await _doctorRepository.AddRangeOfUserFromParsaSystemToTheDataBase(list);
+
+                        #endregion
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            #endregion
+
+            return true;
+        }
+
+        //Upload Excel File For VIP Patient That Income From Doctor System Organization
+        public async Task<bool> UploadExcelFileForVIPPatientThatIncomeFromDoctorSystemOrganization(ulong userId, UploadExcelFileFromDoctorSystemViewModel model)
+        {
+            #region File Validation 
+
+            if (!model.ExcelFile.IsExcelFile())
+            {
+                return false;
+            }
+
+            #endregion
+
+            #region Get Doctor Organization 
+
+            var organization = await _organizationService.GetDoctorOrganizationByUserId(userId);
+            if (organization.OrganizationInfoState != OrganizationInfoState.Accepted || organization.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice)
+            {
+                return false;
+            }
+
+            #endregion
+
+            #region Work On Excel File 
+
+            List<VIPUserInsertedFromDoctorSystem> list = new List<VIPUserInsertedFromDoctorSystem>();
+
+            using (var stream = new MemoryStream())
+            {
+                await model.ExcelFile.CopyToAsync(stream);
+                using (var package = new ExcelPackage(stream))
+                {
+                    ExcelWorksheet workSheet = package.Workbook.Worksheets[0];
+                    var rowCount = workSheet.Dimension.Rows;
+
+                    if (rowCount >= 1)
+                    {
+                        for (int row = 1; row <= rowCount; row++)
+                        {
+                            if (!string.IsNullOrEmpty(workSheet.Cells[row, 4].Value.ToString())
+                                && !string.IsNullOrEmpty(workSheet.Cells[row, 3].Value.ToString()))
+                            {
+                                //Check Is Exist Any VIP User With This Spicification
+                                if (!await IsExistAnyUserVIPByThisMobileNumberAndNationalIdInCurrentDoctorSystemFile(organization.OwnerId, workSheet.Cells[row, 4].Value.ToString(), workSheet.Cells[row, 3].Value.ToString()))
+                                {
+                                    list.Add(new VIPUserInsertedFromDoctorSystem()
+                                    {
+                                        CreateDate = DateTime.Now,
+                                        IsDelete = false,
+                                        DoctorUserId = organization.OwnerId,
+                                        PatientFirstName = workSheet.Cells[row, 1].Value.ToString(),
+                                        PatientLastName = workSheet.Cells[row, 2].Value.ToString(),
+                                        PatientNationalId = workSheet.Cells[row, 3].Value.ToString(),
+                                        PatientMobile = workSheet.Cells[row, 4].Value.ToString(),
+                                        SMSSent = false,
+                                    });
+                                }
+                                else
+                                {
+                                    //Add New Label Of Sickness To The Existing Users
+                                    await _doctorRepository.AddNewLabelOfSicknessToTheExistingUsers(organization.OwnerId, workSheet.Cells[row, 4].Value.ToString(), workSheet.Cells[row, 3].Value.ToString(), model.LableForPatient);
+                                }
+                            }
+                        }
+
+                        #region Add List To the Data Base
+
+                        await _doctorRepository.TaskAddRangeOfVIPUserFromParsaSystemToTheDataBase(list);
+
+                        #endregion
+
+                        #region Add Label To Patient 
+
+                        foreach (var item in list)
+                        {
+                            LabelOfVIPDoctorInsertedPatient label = new LabelOfVIPDoctorInsertedPatient()
+                            {
+                                LabelOfSickness = model.LableForPatient,
+                                VIPUserInsertedFromDoctorSystemId = item.Id
+                            };
+
+                            await _doctorRepository.AddLabelOfSicknessToVipUsersThatIncomeFromDoctorSystem(label);
+                        }
 
                         #endregion
                     }
@@ -1246,7 +1527,7 @@ namespace DoctorFAM.Application.Services.Implementation
         }
 
         //Add Exist User To The Doctor Organization 
-        public async Task<bool> AddExistUserToTheDoctorOrganization(ulong userId , ulong doctorId)
+        public async Task<bool> AddExistUserToTheDoctorOrganization(ulong userId, ulong doctorId)
         {
             #region Check Is Exist Any User By This User Id
 
@@ -1480,7 +1761,7 @@ namespace DoctorFAM.Application.Services.Implementation
             #endregion
 
             #region Update User
-    
+
             user.NationalId = model.NationalCode.SanitizeText();
             user.ExtraPhoneNumber = model.GeneralPhone.SanitizeText();
 
@@ -1586,7 +1867,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 UserAvatar = doctor.User.Avatar,
                 Education = doctorPersonalInfo.Education,
                 Specialist = doctorPersonalInfo.Specialty,
-                
+
             };
 
             #endregion

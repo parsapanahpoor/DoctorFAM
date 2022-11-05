@@ -29,12 +29,10 @@ namespace DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment
 
     public enum AddReservationDateState
     {
+        [Display(Name = "computerized")]
+        computerized,
+
         [Display(Name = "Manual")]
         Manual,
-
-        [Display(Name = "computerized")]
-        computerized
-
-        
     }
 }

@@ -1,4 +1,4 @@
-﻿@model DoctorFAM.Domain.ViewModels.DoctorPanel.Dashbaord.DoctorPanelDashboardViewModel
+﻿@model DoctorFAM.Domain.ViewModels.DoctorPanel.ParsaSystem.VIPPatient.UploadExcelFileFromDoctorSystemViewModel
 
 @{
     ViewData["Title"] = @Localizer["Upload Excel File"];
@@ -21,12 +21,20 @@
                 <div class="widget-body">
                     <div>
 
-                        <form asp-action="IncomingExcelFile" asp-controller="IncomeSystem" asp-area="Doctor" method="post" enctype="multipart/form-data">
+                        <form asp-action="UploadExcelFileFromDoctorSystem" asp-controller="IncomeSystem" asp-area="Doctor" method="post" enctype="multipart/form-data">
                             <div class="modal-body">
                                 <div class="row">
 
                                     <div class="form-group col-md-12 col-sm-12">
-                                        <input type="file" class="form-control" name="excelFile">
+                                        <label asp-for="LableForPatient"></label>
+                                        <input type="text" class="form-control" asp-for="LableForPatient">
+                                        <span class="text-danger" asp-validation-for="LableForPatient"></span>
+                                    </div> 
+                                    
+                                    <div class="form-group col-md-12 col-sm-12">
+                                        <label asp-for="ExcelFile"></label>
+                                        <input type="file" class="form-control" asp-for="ExcelFile">
+                                        <span class="text-danger" asp-validation-for="ExcelFile"></span>
                                     </div>
 
                                     <div class="clearfix"></div>

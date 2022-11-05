@@ -9,6 +9,7 @@ using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.FamilyDoctor;
 using DoctorFAM.Domain.Entities.FamilyDoctor.ParsaSystem;
+using DoctorFAM.Domain.Entities.FamilyDoctor.VIPSystem;
 using DoctorFAM.Domain.Entities.Interest;
 using DoctorFAM.Domain.Entities.Laboratory;
 using DoctorFAM.Domain.Entities.Languages;
@@ -253,6 +254,12 @@ namespace DoctorFAM.Data.DbContext
         public DbSet<UserInsertedFromParsaSystem> UserInsertedFromParsaSystems { get; set; }
 
         public DbSet<LogForSendSMSToUsersIncomeFromParsa> LogForSendSMSToUsersIncomeFromParsa { get; set; }
+
+        public DbSet<VIPUserInsertedFromDoctorSystem> VIPUserInsertedFromDoctorSystem { get; set; }
+
+        public DbSet<LogForSendSMSToVIPUsersIncomeFromDoctorSystem> LogForSendSMSToVIPUsersIncomeFromDoctorSystem { get; set; }
+
+        public DbSet<LabelOfVIPDoctorInsertedPatient> LabelOfVIPDoctorInsertedPatient { get; set; }
 
         #endregion
 
