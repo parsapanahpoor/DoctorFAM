@@ -198,6 +198,9 @@
   <data name="Country" xml:space="preserve">
     <value>کشور</value>
   </data>
+  <data name="Create Date" xml:space="preserve">
+    <value>براساس تاریخ - صعودی</value>
+  </data>
   <data name="Create Date Descending" xml:space="preserve">
     <value>تاریخ ایجاد از جدید به قدیم</value>
   </data>
@@ -279,6 +282,9 @@
   <data name="EndPrice" xml:space="preserve">
     <value>پایان قیمت</value>
   </data>
+  <data name="Excel File" xml:space="preserve">
+    <value>فایل اکسل</value>
+  </data>
   <data name="ExcessiveObesity" xml:space="preserve">
     <value>چاقی مفرط</value>
   </data>
@@ -341,6 +347,9 @@
   </data>
   <data name="Iranian health" xml:space="preserve">
     <value>سلامت ایرانیان</value>
+  </data>
+  <data name="Lable For Patient" xml:space="preserve">
+    <value>دسته بندی بیماران</value>
   </data>
   <data name="Laboratory" xml:space="preserve">
     <value>آزمایشگاه</value>
@@ -490,6 +499,12 @@
   <data name="Preparing The Order" xml:space="preserve">
     <value>درحال آماده سازی سفارش</value>
   </data>
+  <data name="Price" xml:space="preserve">
+    <value>براساس مبلغ - صعودی</value>
+  </data>
+  <data name="Price Descending" xml:space="preserve">
+    <value>براساس مبلغ - نزولی</value>
+  </data>
   <data name="ProvidingAnInvoiceFromThePharmacy" xml:space="preserve">
     <value>ارائه ی فاکتور از داروخانه</value>
   </data>
@@ -552,6 +567,9 @@
   </data>
   <data name="Social Security" xml:space="preserve">
     <value>تامین اجتماعی</value>
+  </data>
+  <data name="Sort By" xml:space="preserve">
+    <value>دسته بندی بر اساس </value>
   </data>
   <data name="Specialty" xml:space="preserve">
     <value>تخصص</value>

@@ -184,6 +184,21 @@
             </ul>
         </li>
 
+           <li>
+            <a href="#" class="menu-dropdown">
+              <i class="menu-icon fa fa-money"></i>
+                <span class="menu-text"> @SharedLocalizer["Manage Wallet"] </span>
+
+                <i class="menu-expand"></i>
+            </a>
+
+            <ul class="submenu">
+                   <a asp-area="UserPanel" asp-controller="Wallet" asp-action="Index">
+                        <span class="menu-text">@SharedLocalizer["List Of Wallet"]</span>
+                    </a>
+            </ul>
+        </li>
+
         <li>
             <a href="#" class="menu-dropdown">
                 <i class="menu-icon fa fa-user"></i>

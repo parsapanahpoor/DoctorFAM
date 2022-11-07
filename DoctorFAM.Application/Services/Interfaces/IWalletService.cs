@@ -1,5 +1,6 @@
 ﻿using DoctorFAM.Domain.Entities.Wallet;
 using DoctorFAM.Domain.ViewModels.Admin.Wallet;
+using DoctorFAM.Domain.ViewModels.UserPanel.Wallet;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,6 +39,12 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Update Wallet And Calculate User Balance After Banking Payment
         Task UpdateWalletAndCalculateUserBalanceAfterBankingPayment(Wallet wallet);
+
+        #endregion
+
+        #region User Panel 
+
+        Task<FilterWalletUserPnelViewModel> FilterWalletsAsyncUserPanel(FilterWalletUserPnelViewModel filter);
 
         #endregion
     }

@@ -1,5 +1,7 @@
 ﻿using DoctorFAM.Domain.Entities.Wallet;
 using DoctorFAM.Domain.ViewModels.Admin.Wallet;
+using DoctorFAM.Domain.ViewModels.UserPanel.Wallet;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,6 +58,12 @@ namespace DoctorFAM.Domain.Interfaces
         #region Save Changes
 
         Task SaveChangesAsync();
+
+        #endregion
+
+        #region User Panel 
+
+        Task<FilterWalletUserPnelViewModel> FilterWalletsAsyncUserPanel(FilterWalletUserPnelViewModel filter);
 
         #endregion
     }

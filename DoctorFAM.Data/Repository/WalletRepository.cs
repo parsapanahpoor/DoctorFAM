@@ -2,6 +2,7 @@
 using DoctorFAM.Domain.Entities.Wallet;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.Wallet;
+using DoctorFAM.Domain.ViewModels.UserPanel.Wallet;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -290,6 +291,102 @@ namespace DoctorFAM.Data.Repository
         {
             return await _context.Wallets.Where(p => p.RequestId == requestId).FirstOrDefaultAsync();
         }
+
+        #endregion
+
+        #region User Panel 
+
+        public async Task<FilterWalletUserPnelViewModel> FilterWalletsAsyncUserPanel(FilterWalletUserPnelViewModel filter)
+        {
+            var query = _context.Wallets
+                .Include(w => w.User).Where(w => w.IsFinally && w.UserId == filter.UserId) 
+                .AsQueryable();
+
+            #region Order
+
+            switch (filter.OrderType)
+            {
+                case FilterWalletUserPnelViewModel.FilterWalletUserPanelOrderType.Price:
+                    query = query.OrderBy(w => w.Price).AsQueryable();
+                    break;
+
+                case FilterWalletUserPnelViewModel.FilterWalletUserPanelOrderType.PriceDesc:
+                    query = query.OrderByDescending(w => w.Price).AsQueryable();
+                    break;
+
+                case FilterWalletUserPnelViewModel.FilterWalletUserPanelOrderType.CreateDate:
+                    query = query.OrderBy(w => w.CreateDate).AsQueryable();
+                    break;
+
+                case FilterWalletUserPnelViewModel.FilterWalletUserPanelOrderType.CreateDateDesc:
+                    query = query.OrderByDescending(w => w.CreateDate).AsQueryable();
+                    break;
+
+                default:
+                    query = query.OrderByDescending(w => w.CreateDate).AsQueryable();
+                    break;
+            }
+
+            #endregion
+
+            #region Filters
+
+            if (filter.TransactionType.HasValue)
+            {
+                query = query.Where(w => w.TransactionType == filter.TransactionType).AsQueryable();
+            }
+
+            if (filter.GatewayType.HasValue)
+            {
+                query = query.Where(w => w.GatewayType == filter.GatewayType).AsQueryable();
+            }
+
+            if (filter.PaymentType.HasValue)
+            {
+                query = query.Where(w => w.PaymentType == filter.PaymentType).AsQueryable();
+            }
+
+            if (filter.MinPrice.HasValue)
+            {
+                query = query.Where(w => w.Price >= filter.MinPrice).AsQueryable();
+            }
+
+            if (filter.MaxPrice.HasValue)
+            {
+                query = query.Where(w => w.Price <= filter.MaxPrice).AsQueryable();
+            }
+
+            if (filter.MinCreateDate.HasValue)
+            {
+                query = query.Where(w => w.CreateDate >= filter.MinCreateDate).AsQueryable();
+            }
+
+            if (filter.MaxCreateDate.HasValue)
+            {
+                query = query.Where(w => w.CreateDate <= filter.MaxCreateDate).AsQueryable();
+            }
+
+            if (!string.IsNullOrEmpty(filter.Description))
+            {
+                query = query.Where(w => w.Description != null && EF.Functions.Like(w.Description, $"%{filter.Description}%"));
+            }
+
+            if (filter.IsDelete.HasValue)
+            {
+                query = query.IgnoreQueryFilters().Where(w => w.IsDelete == filter.IsDelete).AsQueryable();
+            }
+
+            #endregion
+
+            #region Paging
+
+            await filter.Paging(query);
+
+            #endregion
+
+            return filter;
+        }
+
 
         #endregion
     }

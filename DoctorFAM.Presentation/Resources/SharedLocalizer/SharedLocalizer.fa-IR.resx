@@ -699,4 +699,10 @@
   <data name="UpLoad population list" xml:space="preserve">
     <value>بارگذاری لیست جمعیت</value>
   </data>
+  <data name="List Of Wallet" xml:space="preserve">
+    <value>لیست تراکنش ها</value>
+  </data>
+  <data name="Manage Wallet" xml:space="preserve">
+    <value>مدیریت تراکنش های شما</value>
+  </data>
 </root>

@@ -100,9 +100,6 @@
                                     <th>
                                         @Localizer["Payment For"]
                                     </th>
-                                    <th>
-                                        @Localizer["Action"]
-                                    </th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -125,18 +122,6 @@
                                       
                                             <td>
                                                 @Localizer[item.PaymentType.GetEnumName()]
-                                            </td>
-
-                                            <td>
-                                                <div class="d-flex justify-content-center ">
-                                                    @if (!item.IsDelete)
-                                                    {
-                                                        <a title="@Localizer["Edit wallet"]" asp-action="EditWallet" asp-route-id="@item.Id" class="btn btn-warning shadow btn-xs sharp mr-1">
-                                                            <i class="fa fa-pencil"></i>
-                                                        </a>
-                                                        <button title="@Localizer["Delete Wallet"]" onclick="DeleteAjax(@item.Id, '@Url.Action("RemoveWallet", new {area = "Admin", id = @item.Id})')" class="btn btn-danger shadow btn-xs sharp mr-1"><i class="fa fa-trash"></i></button>
-                                                    }
-                                                </div>
                                             </td>
                                         </tr>
                                     }

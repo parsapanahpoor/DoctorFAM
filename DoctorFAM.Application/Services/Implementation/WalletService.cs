@@ -2,6 +2,8 @@
 using DoctorFAM.Domain.Entities.Wallet;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.Wallet;
+using DoctorFAM.Domain.ViewModels.UserPanel.Wallet;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -214,5 +216,15 @@ namespace DoctorFAM.Application.Services.Implementation
         }
 
         #endregion
+
+        #region User Panel 
+
+        public async Task<FilterWalletUserPnelViewModel> FilterWalletsAsyncUserPanel(FilterWalletUserPnelViewModel filter)
+        {
+            return await _walletRepository.FilterWalletsAsyncUserPanel(filter);
+        }
+
+        #endregion
+
     }
 }
