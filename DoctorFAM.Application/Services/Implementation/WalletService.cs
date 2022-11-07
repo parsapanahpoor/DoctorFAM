@@ -34,7 +34,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
         public async Task<int?> GetSumUserWalletAsync(ulong userId)
         {
-            if (! await _userRepository.IsExistUserById(userId))
+            if (!await _userRepository.IsExistUserById(userId))
             {
                 return null;
             }
@@ -145,7 +145,7 @@ namespace DoctorFAM.Application.Services.Implementation
         }
 
         //Create New Wallet Transaction For Redirext To The Bank Portal
-        public async Task CreateNewWalletTransactionForRedirextToTheBankPortal(ulong userId , int price , GatewayType gateway , string authority , string description , ulong? requestId)
+        public async Task CreateNewWalletTransactionForRedirextToTheBankPortal(ulong userId, int price, GatewayType gateway, string authority, string description, ulong? requestId)
         {
             #region Fill Wallet 
 
@@ -194,7 +194,7 @@ namespace DoctorFAM.Application.Services.Implementation
         //Find Wallet Transaction For Redirect To The Bank Portal 
         public async Task<Wallet?> FindWalletTransactionForRedirectToTheBankPortal(ulong userId, GatewayType gateway, ulong? requestId, string authority, int amount)
         {
-            return await _walletRepository.FindWalletTransactionForRedirectToTheBankPortal(userId , gateway , requestId , authority , amount);
+            return await _walletRepository.FindWalletTransactionForRedirectToTheBankPortal(userId, gateway, requestId, authority, amount);
         }
 
         //Update Wallet And Calculate User Balance After Banking Payment

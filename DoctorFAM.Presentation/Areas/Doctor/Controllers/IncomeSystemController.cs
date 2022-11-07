@@ -1,6 +1,7 @@
 ﻿using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.ParsaSystem;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.ParsaSystem.VIPPatient;
 using DoctorFAM.Web.Doctor.Controllers;
 using DoctorFAM.Web.HttpManager;
 using Microsoft.AspNetCore.Mvc;
@@ -16,7 +17,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
         private readonly IDashboardsService _dashboardService;
         private readonly IOrganizationService _organizationService;
 
-        public IncomeSystemController(IDoctorsService doctorService, IDashboardsService dashboardService, IOrganizationService organizationService )
+        public IncomeSystemController(IDoctorsService doctorService, IDashboardsService dashboardService, IOrganizationService organizationService)
         {
             _doctorService = doctorService;
             _dashboardService = dashboardService;
@@ -32,8 +33,8 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
         {
             return View();
         }
-        
-        [HttpPost , ValidateAntiForgeryToken]
+
+        [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> IncomingExcelFile(IFormFile excelFile)
         {
             #region Model State Validation 
@@ -48,12 +49,12 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
             #region Upload Excel File 
 
-            var res = await _doctorService.UploadExcelFileThatGetFromParsaSystem(User.GetUserId() , excelFile);
+            var res = await _doctorService.UploadExcelFileThatGetFromParsaSystem(User.GetUserId(), excelFile);
 
             if (res)
             {
                 TempData[SuccessMessage] = "عملیات باموفقیت انچام شده است .";
-                return RedirectToAction("ListAfterUpload", "IncomeSystem", new{ area = "Doctor" });
+                return RedirectToAction("ListAfterUpload", "IncomeSystem", new { area = "Doctor" });
             }
 
             #endregion
@@ -78,7 +79,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
                 if (res)
                 {
                     TempData[SuccessMessage] = "بروز رسانی باموفقیت انجام شده است.";
-                    return RedirectToAction("Index" , "Home" , new { area = "Doctor" });
+                    return RedirectToAction("Index", "Home", new { area = "Doctor" });
                 }
                 else
                 {
@@ -98,7 +99,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
         public async Task<IActionResult> RemoveFromDoctorDashboard(ulong userId)
         {
-            var result = await _doctorService.RemoveUserFromParsaSystemFromDoctorDashboard(User.GetUserId() , userId);
+            var result = await _doctorService.RemoveUserFromParsaSystemFromDoctorDashboard(User.GetUserId(), userId);
 
             if (result)
             {
@@ -173,7 +174,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
             if (personsNumber.Count() == 0)
             {
-                TempData[ErrorMessage] = "لطفا بیماران خود را انتخاب کنید."; 
+                TempData[ErrorMessage] = "لطفا بیماران خود را انتخاب کنید.";
                 return RedirectToAction(nameof(ListOfYourUsers));
             }
 
@@ -235,8 +236,136 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
             #endregion
 
-            return PartialView("_ShowListOfSMS" , model);
+            return PartialView("_ShowListOfSMS", model);
         }
+
+        #endregion
+
+        #region Vip Patients
+
+        #region Upload Excel File From Doctor System
+
+        [HttpGet]
+        public async Task<IActionResult> UploadExcelFileFromDoctorSystem()
+        {
+            return View();
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> UploadExcelFileFromDoctorSystem(UploadExcelFileFromDoctorSystemViewModel model)
+        {
+            #region Model State Validation 
+
+            if (!ModelState.IsValid)
+            {
+                TempData[ErrorMessage] = "لطفا فایل اکسل مورد نظرتان را انتخاب کنید.";
+                return View();
+            }
+
+            #endregion
+
+            #region Upload Excel File 
+
+            var res = await _doctorService.UploadExcelFileForVIPPatientThatIncomeFromDoctorSystemOrganization(User.GetUserId(), model);
+
+            if (res)
+            {
+                TempData[SuccessMessage] = "عملیات باموفقیت انچام شده است .";
+                return RedirectToAction("ListOfVIPYourUsers", "IncomeSystem", new { area = "Doctor" });
+            }
+
+            #endregion
+
+            TempData[ErrorMessage] = "دیتای وارد شده مورد تایید نمی باشد.";
+            return View();
+        }
+
+        #endregion
+
+        #region List Of VIP Your Users
+
+        public async Task<IActionResult> ListOfVIPYourUsers()
+        {
+            return View(await _doctorService.ListOfDoctorVIPParsaSystemUsers(User.GetUserId()));
+        }
+
+        #endregion
+
+        #region Send SMS To Selected VIP Users
+
+        [HttpGet]
+        public IActionResult SendSMSToVIPSelectedUsers(List<ulong> personsNumber)
+        {
+            #region Validation 
+
+            if (personsNumber.Count() == 0)
+            {
+                TempData[ErrorMessage] = "لطفا بیماران خود را انتخاب کنید.";
+                return RedirectToAction(nameof(ListOfVIPYourUsers));
+            }
+
+            #endregion
+
+            #region Create Model 
+
+            SendSMSToPatientViewModel model = new SendSMSToPatientViewModel()
+            {
+                PatientId = personsNumber
+            };
+
+            #endregion
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SendSMSToVIPSelectedUsers(SendSMSToPatientViewModel model)
+        {
+            #region Model State
+
+            model.DoctorUserId = User.GetUserId();
+
+            if (!ModelState.IsValid)
+            {
+                TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد ";
+                return View(model);
+            }
+
+            #endregion
+
+            #region Send SMS
+
+            var res = await _doctorService.SendSMSFromVIPDoctorToTheUsersThatIncomeFromParsaSysem(model);
+
+            if (res)
+            {
+                TempData[SuccessMessage] = "پیامک ها با موفقیت ارسال شده است .";
+                return RedirectToAction(nameof(ListOfVIPYourUsers));
+            }
+
+            #endregion
+
+            TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد ";
+            return View(model);
+        }
+
+        #endregion
+
+        #region Show List Of SMS
+
+        [HttpGet("/Show-List-Of-SMS-VIP/{userInParsaId}")]
+        public async Task<IActionResult> ShowListOfSMSInModal(ulong userInParsaId)
+        {
+            #region Get Model Body
+
+            var model = await _doctorService.ShowListOfSMSThatSendFromDoctorToVIPPatientIncomesFromParsaSystem(userInParsaId, User.GetUserId());
+
+            #endregion
+
+            return PartialView("_ShowListOfSMSVIP", model);
+        }
+
+        #endregion
 
         #endregion
     }
