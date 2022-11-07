@@ -284,9 +284,16 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
         #region List Of VIP Your Users
 
-        public async Task<IActionResult> ListOfVIPYourUsers()
+        public async Task<IActionResult> ListOfVIPYourUsers(ulong? sicknessLabelId)
         {
-            return View(await _doctorService.ListOfDoctorVIPParsaSystemUsers(User.GetUserId()));
+            #region View Bag
+
+            ViewBag.doctorLabel = await _doctorService.GetDoctorLableOfSicknessByDoctorUserId(User.GetUserId());
+            ViewBag.SelectedSickness = sicknessLabelId;
+
+            #endregion
+
+            return View(await _doctorService.ListOfDoctorVIPParsaSystemUsers(User.GetUserId() , sicknessLabelId));
         }
 
         #endregion

@@ -67,6 +67,22 @@ namespace DoctorFAM.Application.Services.Implementation
 
         #region Doctors Panel Side
 
+        //Get Doctor Lable Of Sickness By Doctor User Id 
+        public async Task<List<DoctorsLabelsForVIPInsertedDoctor>?> GetDoctorLableOfSicknessByDoctorUserId(ulong doctorUserId)
+        {
+            #region Get Organization
+
+            var organization = await _organizationService.GetDoctorOrganizationByUserId(doctorUserId);
+            if (organization == null || organization.OrganizationInfoState != OrganizationInfoState.Accepted || organization.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice)
+            {
+                return null;
+            }
+
+            #endregion
+
+            return await _doctorRepository.GetDoctorLableOfSicknessByDoctorUserId(doctorUserId);
+        }
+
         //Show List Of SMS That Send From Doctor To Patient Incomes From Parsa System
         public async Task<List<LogForSendSMSToUsersIncomeFromParsa>?> ShowListOfSMSThatSendFromDoctorToPatientIncomesFromParsaSystem(ulong id, ulong doctorUserId)
         {
@@ -422,7 +438,7 @@ namespace DoctorFAM.Application.Services.Implementation
         }
 
         //List Of DOctor VIP Parsa System Users
-        public async Task<List<ListOfVIPIncommingUsers>?> ListOfDoctorVIPParsaSystemUsers(ulong DoctorUserId)
+        public async Task<List<ListOfVIPIncommingUsers>?> ListOfDoctorVIPParsaSystemUsers(ulong DoctorUserId, ulong? sicknessLabelId)
         {
             #region Get Organization
 
@@ -436,7 +452,16 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #region Get List Of VIP Users
 
-            var users = await _doctorRepository.ListOfDOctorVIPParsaSystemUsers(organization.OwnerId);
+            var users = new List<VIPUserInsertedFromDoctorSystem>();
+
+            if (sicknessLabelId.HasValue)
+            {
+                users = await _doctorRepository.ListOfDOctorVIPParsaSystemUsers(organization.OwnerId , sicknessLabelId.Value);
+            }
+            else
+            {
+                users = await _doctorRepository.ListOfDOctorVIPParsaSystemUsers(organization.OwnerId);
+            }
 
             #endregion
 

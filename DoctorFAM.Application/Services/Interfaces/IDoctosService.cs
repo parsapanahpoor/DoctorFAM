@@ -24,6 +24,9 @@ namespace DoctorFAM.Application.Services.Interfaces
     {
         #region Doctors Panel Side   
 
+        //Get Doctor Lable Of Sickness By Doctor User Id 
+        Task<List<DoctorsLabelsForVIPInsertedDoctor>?> GetDoctorLableOfSicknessByDoctorUserId(ulong doctorUserId);
+
         //Send SMS From Doctor To The VIP Users That Income From Parsa Sysem 
         Task<bool> SendSMSFromVIPDoctorToTheUsersThatIncomeFromParsaSysem(ulong doctorUserId, List<ulong> patientIds, string SMSBody);
 
@@ -37,7 +40,7 @@ namespace DoctorFAM.Application.Services.Interfaces
         Task<bool> IsExistAnyUserVIPByThisMobileNumberAndNationalIdInCurrentDoctorSystemFile(ulong doctorUserId, string mobileNumber, string NationalId);
 
         //List Of DOctor Parsa System Users
-        Task<List<ListOfVIPIncommingUsers>?> ListOfDoctorVIPParsaSystemUsers(ulong DoctorUserId);
+        Task<List<ListOfVIPIncommingUsers>?> ListOfDoctorVIPParsaSystemUsers(ulong DoctorUserId, ulong? sicknessLabelId);
 
         //Upload Excel File For VIP Patient That Income From Doctor System Organization
         Task<bool> UploadExcelFileForVIPPatientThatIncomeFromDoctorSystemOrganization(ulong userId, UploadExcelFileFromDoctorSystemViewModel model);

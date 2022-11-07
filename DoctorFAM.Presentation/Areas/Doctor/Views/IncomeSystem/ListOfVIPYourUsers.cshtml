@@ -4,6 +4,10 @@
 @{
     ViewData["Title"] = @Localizer["Input list of VIP family physician population"];
 }
+@{
+    List<DoctorFAM.Domain.Entities.FamilyDoctor.VIPSystem.DoctorsLabelsForVIPInsertedDoctor> label = ViewBag.doctorLabel as List<DoctorFAM.Domain.Entities.FamilyDoctor.VIPSystem.DoctorsLabelsForVIPInsertedDoctor>;
+    ulong? SelectedSickness = ViewBag.SelectedSickness as ulong?;
+}
 
 @section Breadcrumb
     {
@@ -64,116 +68,147 @@
             </div>
         </div>
 
-        <div class="row ">
-            <div class="col-xs-12 col-md-12">
+        <div class="row">
+            <div class="col-lg-12 col-sm-6 col-xs-12">
                 <div class="widget">
-                    <div class="widget-header bordered-bottom bordered-yellow">
-                        <span class="widget-caption">@Localizer["Input list of VIP family physician population"]  (@Localizer["Search on All Columns"])</span>
-                        <div class="widget-buttons">
-                            <a href="#" data-toggle="maximize">
-                                <i class="fa fa-expand"></i>
-                            </a>
-                            <a href="#" data-toggle="collapse">
-                                <i class="fa fa-minus"></i>
-                            </a>
-                            <a href="#" data-toggle="dispose">
-                                <i class="fa fa-times"></i>
-                            </a>
-                        </div>
+                    <div class="widget-header bordered-bottom bordered-primary">
+                        <span class="widget-caption">@Localizer["Input list of VIP family physician population"]</span>
                     </div>
+                    <div class="widget-body">
+                        <div id="horizontal-form">
+                        @if (label != null && label.Any())
+                        {
+                            <form asp-action="ListOfVIPYourUsers" asp-controller="IncomeSystem" asp-area="Doctor" id="filter-search" method="get">
 
-                @if (Model != null && Model.Any())
-                {
-                    <form asp-action="SendSMSToVIPSelectedUsers" asp-controller="IncomeSystem" asp-area="Doctor" id="filter-search" method="get">
+                                <div class="row mb-5">
 
-                        <div class="widget-body no-padding">
-                            <div id="searchable_wrapper" class="dataTables_wrapper form-inline">
+                                    <div class="form-group col-md-12 col-sm-12">
+                                        <label>@Localizer["Filter By Label Name"]</label>
+                                        <select name="sicknessLabelId" class="form-control">
 
-                                <table class="table table-bordered table-hover table-striped dataTable" id="searchable" role="grid" aria-describedby="searchable_info">
-                                    <thead class="bordered-darkorange">
-                                        <tr role="row">
+                                            <option> @Localizer["Please Select Label Of Your Categories"] </option>
 
-                                            <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">@Localizer["Full Name"]</th>
-                                            <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" aria-sort="ascending">@Localizer["National Code"]</th>
-                                            <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" aria-sort="ascending">@Localizer["Mobile"]</th>
-                                            <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Platform: activate to sort column ascending">@Localizer["Sickness"]</th>
-                                            <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending">@Localizer["SMS States"]</th>
-                                            <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending"></th>
+                                            @foreach (var item in label)
+                                            {
+                                                if (SelectedSickness.HasValue && item.Id == SelectedSickness)
+                                                {
+                                                    <option value="@item.Id" selected="selected"> @item.LabelName </option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@item.Id"> @item.LabelName </option>
+                                                }
+                                            }
 
-                                        </tr>
-                                    </thead>
+                                        </select>
+                                    </div>
 
-                                    <tfoot>
-                                        <tr>
-                                            <th rowspan="1" colspan="1"><input type="text" name="search_engine" placeholder="@Localizer["Search Fullname"]" class="form-control input-sm"></th>
-                                            <th rowspan="1" colspan="1"><input type="text" name="search_browser" placeholder="@Localizer["Search"]" class="form-control input-sm"></th>
-                                            <th rowspan="1" colspan="1"></th>
-                                            <th rowspan="1" colspan="1"></th>
-                                            <th rowspan="1" colspan="1"></th>
-                                            <th rowspan="1" colspan="1">
-                                                <button type="submit" class="btn btn-success">
-                                                    @Localizer["Send SMS"]
-                                                </button>
-                                            </th>
-                                        </tr>
-                                    </tfoot>
-                                    <tbody>
+                                    <div class="form-group col-md-12 col-sm-12">
+                                        <button type="submit" class="btn btn-success">@Localizer["Filter"]</button>
+                                    </div>
 
-                                        @foreach (var user in Model)
-                                        {
-                                            <tr role="row" class="even responsive">
+                                </div>
 
-                                                <td class=" sorting_1">@user.PatientFirstName @user.PatientLastName</td>
-                                                <td class="sorting_1">
-                                                    @user.PatientNationalId
-                                                </td>
-                                                <td class="sorting_1">
-                                                    @user.PatientMobile
-                                                </td>
-                                                <td class="sorting_1">
-                                                    <div class="row"style="width: 100%;margin: auto;text-aling">
-                                                        @foreach (var item in user.LabelOFSickness)
-                                                        {
-                                                            <p class="col-md-12 label label-warning"> @item </p>
-                                                        }
-                                                    </div>
-                                                </td>
+                            </form>
+                        }
 
-                                                <td class="center ">
+                        @if (Model != null && Model.Any())
+                        {
+                            <form asp-action="SendSMSToVIPSelectedUsers" asp-controller="IncomeSystem" asp-area="Doctor" id="filter-search" method="get">
 
-                                                    @if (user.SMSSent)
-                                                    {
-                                                        <p style="cursor: pointer;" onclick="ShowListOfSMS(@user.Id)" class="label label-success"> @Localizer["List Of SMS"] </p>
-                                                    }
-                                                    else
-                                                    {
-                                                        <span class="label label-danger">@Localizer["Didn't Send SMS Yet"]</span>
-                                                    }
+                                <div class="widget-body no-padding">
+                                    <div id="searchable_wrapper" class="dataTables_wrapper form-inline">
 
-                                                </td>
-                                                <td>
-                                                    <label>
-                                                        <input type="checkbox" name="personsNumber" value="@user.Id">
-                                                        <span class="text"></span>
-                                                    </label>
-                                                </td>
+                                        <table class="table table-bordered table-hover table-striped dataTable" id="searchable" role="grid" aria-describedby="searchable_info">
+                                            <thead class="bordered-darkorange">
+                                                <tr role="row">
 
-                                            </tr>
+                                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">@Localizer["Full Name"]</th>
+                                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" aria-sort="ascending">@Localizer["National Code"]</th>
+                                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" aria-sort="ascending">@Localizer["Mobile"]</th>
+                                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Platform: activate to sort column ascending">@Localizer["Sickness"]</th>
+                                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending">@Localizer["SMS States"]</th>
+                                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending"></th>
 
-                                        }
+                                                </tr>
+                                            </thead>
 
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </form>
-                }
-                else
-                {
-                    <partial name="_DoctorPanelNotFoundPartial" />
-                }
+                                            <tfoot>
+                                                <tr>
+                                                    <th rowspan="1" colspan="1"><input type="text" name="search_engine" placeholder="@Localizer["Search Fullname"]" class="form-control input-sm"></th>
+                                                    <th rowspan="1" colspan="1"><input type="text" name="search_browser" placeholder="@Localizer["Search"]" class="form-control input-sm"></th>
+                                                    <th rowspan="1" colspan="1"></th>
+                                                    <th rowspan="1" colspan="1"></th>
+                                                    <th rowspan="1" colspan="1"></th>
+                                                    <th rowspan="1" colspan="1">
+                                                        <button type="submit" class="btn btn-success">
+                                                            @Localizer["Send SMS"]
+                                                        </button>
+                                                    </th>
+                                                </tr>
+                                            </tfoot>
+                                            <tbody>
+
+                                                @foreach (var user in Model)
+                                                {
+                                                    <tr role="row" class="even responsive">
+
+                                                        <td class=" sorting_1">@user.PatientFirstName @user.PatientLastName</td>
+                                                        <td class="sorting_1">
+                                                            @user.PatientNationalId
+                                                        </td>
+                                                        <td class="sorting_1">
+                                                            @user.PatientMobile
+                                                        </td>
+                                                        <td class="sorting_1">
+                                                            <div class="row" style="width: 100%;margin: auto;text-aling">
+                                                                @foreach (var item in user.LabelOFSickness)
+                                                                {
+                                                                    <p class="col-md-12 label label-warning"> @item </p>
+                                                                }
+                                                            </div>
+                                                        </td>
+
+                                                        <td class="center ">
+
+                                                            @if (user.SMSSent)
+                                                            {
+                                                                <p style="cursor: pointer;" onclick="ShowListOfSMS(@user.Id)" class="label label-success"> @Localizer["List Of SMS"] </p>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span class="label label-danger">@Localizer["Didn't Send SMS Yet"]</span>
+                                                            }
+
+                                                        </td>
+                                                        <td>
+                                                            <label>
+                                                                <input type="checkbox" name="personsNumber" value="@user.Id">
+                                                                <span class="text"></span>
+                                                            </label>
+                                                        </td>
+
+                                                    </tr>
+
+                                                }
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </form>
+                        }
+                        else
+                        {
+                            <partial name="_DoctorPanelNotFoundPartial" />
+                        }
+
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
 </div>
+
+

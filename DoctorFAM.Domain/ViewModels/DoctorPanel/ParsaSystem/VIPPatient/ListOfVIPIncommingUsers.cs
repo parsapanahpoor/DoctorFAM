@@ -29,6 +29,5 @@ namespace DoctorFAM.Domain.ViewModels.DoctorPanel.ParsaSystem.VIPPatient
         public List<string> LabelOFSickness { get; set; }
 
         #endregion
-
     }
 }

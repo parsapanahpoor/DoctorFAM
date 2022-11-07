@@ -42,6 +42,12 @@ namespace DoctorFAM.Data.Repository
 
         #region Doctors Panel Side
 
+        //Get Doctor Lable Of Sickness By Doctor User Id 
+        public async Task<List<DoctorsLabelsForVIPInsertedDoctor>?> GetDoctorLableOfSicknessByDoctorUserId(ulong doctorUserId)
+        {
+            return await _context.DoctorsLabelsForVIPInsertedDoctor.Where(p => !p.IsDelete && p.DoctorUserId == doctorUserId).ToListAsync();
+        }
+
         //Get List Of VIP Inserted PAtient With Label Name
         public async Task<List<VIPUserInsertedFromDoctorSystem>?> GetListOfVIPInsertedPAtientWithLabelName(ulong labelId , ulong doctorUserId)
         {
@@ -113,6 +119,14 @@ namespace DoctorFAM.Data.Repository
         {
             return await _context.VIPUserInsertedFromDoctorSystem.Where(p => !p.IsDelete && p.DoctorUserId == DoctorUserId)
                                                  .OrderByDescending(p => p.CreateDate).ToListAsync();
+        }
+
+        //List Of DOctor VIP Parsa System UsersWith Sickness Label Id
+        public async Task<List<VIPUserInsertedFromDoctorSystem>?> ListOfDOctorVIPParsaSystemUsers(ulong DoctorUserId , ulong sicknessLabelId)
+        {
+            return await _context.LabelOfVIPDoctorInsertedPatient.Include(p=> p.VIPUserInsertedFromDoctorSystem)
+                                .Where(p => !p.IsDelete && p.VIPUserInsertedFromDoctorSystem.DoctorUserId == DoctorUserId && p.DoctorsLabelsForVIPInsertedDoctorId == sicknessLabelId )
+                                                 .OrderByDescending(p => p.VIPUserInsertedFromDoctorSystem.CreateDate).Select(p=>p.VIPUserInsertedFromDoctorSystem).ToListAsync();
         }
 
         //Update Parsa System Record 

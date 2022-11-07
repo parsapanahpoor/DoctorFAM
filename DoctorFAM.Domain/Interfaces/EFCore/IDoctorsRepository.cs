@@ -19,6 +19,12 @@ namespace DoctorFAM.Domain.Interfaces
     {
         #region Doctors Panel Side
 
+        //List Of DOctor VIP Parsa System UsersWith Sickness Label Id
+        Task<List<VIPUserInsertedFromDoctorSystem>?> ListOfDOctorVIPParsaSystemUsers(ulong DoctorUserId, ulong sicknessLabelId);
+
+        //Get Doctor Lable Of Sickness By Doctor User Id 
+        Task<List<DoctorsLabelsForVIPInsertedDoctor>?> GetDoctorLableOfSicknessByDoctorUserId(ulong doctorUserId);
+
         //Get List Of VIP Inserted PAtient With Label Name
         Task<List<VIPUserInsertedFromDoctorSystem>?> GetListOfVIPInsertedPAtientWithLabelName(ulong labelId, ulong doctorUserId);
 

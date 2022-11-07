@@ -123,6 +123,12 @@
   <data name="Family Doctor State" xml:space="preserve">
     <value>پزشک خانواده</value>
   </data>
+  <data name="Filter" xml:space="preserve">
+    <value>فیلتر کردن</value>
+  </data>
+  <data name="Filter By Label Name" xml:space="preserve">
+    <value>فیلتر بر اساس دسته های شما</value>
+  </data>
   <data name="Full Name" xml:space="preserve">
     <value>نام و نام خانوادگی</value>
   </data>
@@ -152,6 +158,9 @@
   </data>
   <data name="Options" xml:space="preserve">
     <value>وضعیت</value>
+  </data>
+  <data name="Please Select Label Of Your Categories" xml:space="preserve">
+    <value>لطفا دسته ی مورد نظر خود را انتخاب کنید</value>
   </data>
   <data name="Register State" xml:space="preserve">
     <value>ثبت نام</value>
