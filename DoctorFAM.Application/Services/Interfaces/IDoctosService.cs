@@ -1,13 +1,11 @@
 ﻿using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.FamilyDoctor.ParsaSystem;
-using DoctorFAM.Domain.Entities.FamilyDoctor.VIPSystem;
 using DoctorFAM.Domain.Entities.Interest;
 using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DosctorSideBarInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Employees;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.ParsaSystem;
-using DoctorFAM.Domain.ViewModels.DoctorPanel.ParsaSystem.VIPPatient;
 using DoctorFAM.Domain.ViewModels.Site.Doctor;
 using DoctorFAM.Domain.ViewModels.Site.Reservation;
 using DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor;
@@ -24,32 +22,14 @@ namespace DoctorFAM.Application.Services.Interfaces
     {
         #region Doctors Panel Side   
 
-        //Send SMS From Doctor To The VIP Users That Income From Parsa Sysem 
-        Task<bool> SendSMSFromVIPDoctorToTheUsersThatIncomeFromParsaSysem(SendSMSToPatientViewModel model);
-
-        //Is Exist Any User VIP By This Mobile Number And NationalId In Current Doctor System File 
-        Task<bool> IsExistAnyUserVIPByThisMobileNumberAndNationalIdInCurrentDoctorSystemFile(ulong doctorUserId, string mobileNumber, string NationalId);
-
-        //List Of DOctor Parsa System Users
-        Task<List<ListOfVIPIncommingUsers>?> ListOfDoctorVIPParsaSystemUsers(ulong DoctorUserId);
-
-        //Upload Excel File For VIP Patient That Income From Doctor System Organization
-        Task<bool> UploadExcelFileForVIPPatientThatIncomeFromDoctorSystemOrganization(ulong userId, UploadExcelFileFromDoctorSystemViewModel model);
-
         //Update Doctor Personal Info With Save Changes 
         Task UpdateDoctorPersonalInfoWithSaveChanges(DoctorsInfo doctorsInfo);
 
         //Show List Of SMS That Send From Doctor To Patient Incomes From Parsa System
         Task<List<LogForSendSMSToUsersIncomeFromParsa>?> ShowListOfSMSThatSendFromDoctorToPatientIncomesFromParsaSystem(ulong id, ulong doctorUserId);
 
-        //Show List Of SMS That Send From Doctor To VIP Patient Incomes From Parsa System
-        Task<List<LogForSendSMSToVIPUsersIncomeFromDoctorSystem>?> ShowListOfSMSThatSendFromDoctorToVIPPatientIncomesFromParsaSystem(ulong id, ulong doctorUserId);
-
         //Send SMS From Doctor To The Users That Income From Parsa Sysem 
         Task<bool> SendSMSFromDoctorToTheUsersThatIncomeFromParsaSysem(SendSMSToPatientViewModel model);
-
-        //Get VIP User From Parsa Incoming List By User Id And Doctor User Id
-        Task<VIPUserInsertedFromDoctorSystem?> GetVIPUserFromParsaIncomingListByUserIdAndDoctorUserId(ulong doctorId, ulong parsaUserId);
 
         //List Of DOctor Parsa System Users
         Task<List<UserInsertedFromParsaSystem>?> ListOfDoctorParsaSystemUsers(ulong DoctorUserId);

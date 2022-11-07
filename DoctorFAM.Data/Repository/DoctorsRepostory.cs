@@ -2,7 +2,6 @@
 using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.FamilyDoctor.ParsaSystem;
-using DoctorFAM.Domain.Entities.FamilyDoctor.VIPSystem;
 using DoctorFAM.Domain.Entities.Interest;
 using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.Entities.Patient;
@@ -41,30 +40,10 @@ namespace DoctorFAM.Data.Repository
 
         #region Doctors Panel Side
 
-        //Add Label Of Sickness To Vip Users That Income From Doctor System  
-        public async Task AddLabelOfSicknessToVipUsersThatIncomeFromDoctorSystem(LabelOfVIPDoctorInsertedPatient label)
-        {
-            await _context.LabelOfVIPDoctorInsertedPatient.AddAsync(label);
-            await _context.SaveChangesAsync();
-        }
-
-        //Get Label Of Sickness From VIP Users
-        public async Task<List<string>> GetLabelOfSicknessFromVIPUsers(ulong incomeUserId)
-        {
-            return await _context.LabelOfVIPDoctorInsertedPatient.Where(p => !p.IsDelete && p.VIPUserInsertedFromDoctorSystemId == incomeUserId)
-                                .Select(p => p.LabelOfSickness).ToListAsync();
-        }
-
         //Show List Of SMS That Send From Doctor To Patient Incomes From Parsa System
         public async Task<List<LogForSendSMSToUsersIncomeFromParsa>?> ShowListOfSMSThatSendFromDoctorToPatientIncomesFromParsaSystem(ulong id , ulong doctorUserId)
         {
             return await _context.LogForSendSMSToUsersIncomeFromParsa.Where(p=> !p.IsDelete && p.ParsaUserId == id && p.DoctorUserId == doctorUserId).ToListAsync();
-        }
-
-        //Show List Of SMS That Send From Doctor To VIP Patient Incomes From Parsa System
-        public async Task<List<LogForSendSMSToVIPUsersIncomeFromDoctorSystem>?> ShowListOfSMSThatSendFromDoctorToVIPPatientIncomesFromParsaSystem(ulong id)
-        {
-            return await _context.LogForSendSMSToVIPUsersIncomeFromDoctorSystem.Where(p => !p.IsDelete && p.VIPUserInsertedFromDoctorSystemId == id).ToListAsync();
         }
 
         //Add Log For Send SMS From Doctor To Users That Income From Parsa System Without SaveChanges
@@ -73,22 +52,10 @@ namespace DoctorFAM.Data.Repository
             await _context.LogForSendSMSToUsersIncomeFromParsa.AddRangeAsync(log);
         }
 
-        //Add Log For Send SMS From Doctor To VIP Users That Income From Parsa System Without SaveChanges
-        public async Task AddLogForSendSMSFromDoctorToVIPUsersThatIncomeFromParsaSystemWithoutSaveChanges(List<LogForSendSMSToVIPUsersIncomeFromDoctorSystem> log)
-        {
-            await _context.LogForSendSMSToVIPUsersIncomeFromDoctorSystem.AddRangeAsync(log);
-        }
-
         //Is Exist Any User From Parsa System In Doctor Parsa System List
         public async Task<bool> IsExistAnyUserFromParsaSystemInDoctorParsaSystemList(ulong parsaSystemUserId , ulong doctorUserId)
         {
             return await _context.UserInsertedFromParsaSystems.AnyAsync(p => !p.IsDelete && p.DoctorUserId == doctorUserId && p.Id == parsaSystemUserId);
-        }
-
-        //Is Exist Any User From VIP Parsa System In Doctor Parsa System List
-        public async Task<bool> IsExistAnyVIPUserFromParsaSystemInDoctorParsaSystemList(ulong parsaSystemUserId, ulong doctorUserId)
-        {
-            return await _context.VIPUserInsertedFromDoctorSystem.AnyAsync(p => !p.IsDelete && p.DoctorUserId == doctorUserId && p.Id == parsaSystemUserId);
         }
 
         //List Of DOctor Parsa System Users
@@ -98,24 +65,10 @@ namespace DoctorFAM.Data.Repository
                                                 .OrderByDescending(p => p.CreateDate).ToListAsync();
         }
 
-        //List Of DOctor VIP Parsa System Users
-        public async Task<List<VIPUserInsertedFromDoctorSystem>?> ListOfDOctorVIPParsaSystemUsers(ulong DoctorUserId)
-        {
-            return await _context.VIPUserInsertedFromDoctorSystem.Where(p => !p.IsDelete && p.DoctorUserId == DoctorUserId)
-                                                 .OrderByDescending(p => p.CreateDate).ToListAsync();
-        }
-
         //Update Parsa System Record 
         public async Task UpdateParsaSystemRecord(UserInsertedFromParsaSystem parsa)
         {
             _context.UserInsertedFromParsaSystems.Update(parsa);
-            await _context.SaveChangesAsync();
-        }
-
-        //Update VIP Parsa System Record 
-        public async Task UpdateVIPParsaSystemRecord(VIPUserInsertedFromDoctorSystem parsaVIP)
-        {
-            _context.VIPUserInsertedFromDoctorSystem.Update(parsaVIP);
             await _context.SaveChangesAsync();
         }
 
@@ -125,47 +78,10 @@ namespace DoctorFAM.Data.Repository
             return await _context.UserInsertedFromParsaSystems.FirstOrDefaultAsync(p=> !p.IsDelete && p.Id == parsaUserId && p.DoctorUserId == doctorId);
         }
 
-        //Get VIP User From Parsa Incoming List By User Id And Doctor User Id
-        public async Task<VIPUserInsertedFromDoctorSystem?> GetVIPUserFromParsaIncomingListByUserIdAndDoctorUserId(ulong doctorId, ulong parsaUserId)
-        {
-            return await _context.VIPUserInsertedFromDoctorSystem.FirstOrDefaultAsync(p => !p.IsDelete && p.Id == parsaUserId && p.DoctorUserId == doctorId);
-        }
-
         //Is Exist Any User By This Mobile Number In Current Doctor Parsa System File 
         public async Task<bool> IsExistAnyUserByThisMobileNumberInCurrentDoctorParsaSystemFile(ulong doctorUserId , string mobileNumber)
         {
             return await _context.UserInsertedFromParsaSystems.AnyAsync(p => !p.IsDelete && p.DoctorUserId == doctorUserId && p.PatientMobile == mobileNumber); 
-        }
-
-        //Is Exist Any User VIP By This Mobile Number And NationalId In Current Doctor System File 
-        public async Task<bool> IsExistAnyUserVIPByThisMobileNumberAndNationalIdInCurrentDoctorSystemFile(ulong doctorUserId, string mobileNumber, string NationalId)
-        {
-            return await _context.VIPUserInsertedFromDoctorSystem.AnyAsync(p => !p.IsDelete && p.DoctorUserId == doctorUserId && p.PatientMobile == mobileNumber && p.PatientNationalId == NationalId);
-        }
-
-        //Is Exist Any User VIP By This Id In Current Doctor System File 
-        public async Task<bool> IsExistAnyUserVIPByThisIdInCurrentDoctorSystemFile(ulong doctorUserId, ulong vipUserId)
-        {
-            return await _context.VIPUserInsertedFromDoctorSystem.AnyAsync(p => !p.IsDelete && p.DoctorUserId == doctorUserId && p.Id == vipUserId);
-        }
-
-        //Add New Label Of Sickness To The Existing Users 
-        public async Task AddNewLabelOfSicknessToTheExistingUsers(ulong doctorUserId, string mobileNumber, string NationalId , string label)
-        {
-            var user = await _context.VIPUserInsertedFromDoctorSystem.FirstOrDefaultAsync(p => !p.IsDelete && p.DoctorUserId == doctorUserId && p.PatientMobile == mobileNumber && p.PatientNationalId == NationalId);
-
-            if (user != null)
-            {
-                //Add Label Of Sickness To The User 
-                LabelOfVIPDoctorInsertedPatient model = new LabelOfVIPDoctorInsertedPatient()
-                {
-                    LabelOfSickness = label,
-                    VIPUserInsertedFromDoctorSystemId = user.Id
-                };
-
-                await _context.LabelOfVIPDoctorInsertedPatient.AddAsync(model);
-                await _context.SaveChangesAsync();
-            }
         }
 
         //Check That Is Exist User By Mobile In User Population Covered
@@ -218,13 +134,6 @@ namespace DoctorFAM.Data.Repository
         public async Task AddRangeOfUserFromParsaSystemToTheDataBase(List<UserInsertedFromParsaSystem> list)
         {
             await _context.UserInsertedFromParsaSystems.AddRangeAsync(list);
-            await _context.SaveChangesAsync();
-        }
-
-        //Add Range Of VIP User From Parsa System To The Data Base
-        public async Task TaskAddRangeOfVIPUserFromParsaSystemToTheDataBase(List<VIPUserInsertedFromDoctorSystem> list)
-        {
-            await _context.VIPUserInsertedFromDoctorSystem.AddRangeAsync(list);
             await _context.SaveChangesAsync();
         }
 

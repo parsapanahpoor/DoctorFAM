@@ -1,6 +1,5 @@
 ﻿using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.FamilyDoctor.ParsaSystem;
-using DoctorFAM.Domain.Entities.FamilyDoctor.VIPSystem;
 using DoctorFAM.Domain.Entities.Interest;
 using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DosctorSideBarInfo;
@@ -19,44 +18,14 @@ namespace DoctorFAM.Domain.Interfaces
     {
         #region Doctors Panel Side
 
-        //Add New Label Of Sickness To The Existing Users 
-        Task AddNewLabelOfSicknessToTheExistingUsers(ulong doctorUserId, string mobileNumber, string NationalId, string label);
-
-        //Is Exist Any User VIP By This Mobile Number And NationalId In Current Doctor System File 
-        Task<bool> IsExistAnyUserVIPByThisMobileNumberAndNationalIdInCurrentDoctorSystemFile(ulong doctorUserId, string mobileNumber, string NationalId);
-
-        //Is Exist Any User VIP By This Id In Current Doctor System File 
-        Task<bool> IsExistAnyUserVIPByThisIdInCurrentDoctorSystemFile(ulong doctorUserId, ulong vipUserId);
-
-        //Add Label Of Sickness To Vip Users That Income From Doctor System  
-        Task AddLabelOfSicknessToVipUsersThatIncomeFromDoctorSystem(LabelOfVIPDoctorInsertedPatient label);
-
-        //Get Label Of Sickness From VIP Users
-        Task<List<string>> GetLabelOfSicknessFromVIPUsers(ulong incomeUserId);
-
-        //List Of DOctor VIP Parsa System Users
-        Task<List<VIPUserInsertedFromDoctorSystem>?> ListOfDOctorVIPParsaSystemUsers(ulong DoctorUserId);
-
-        //Add Range Of VIP User From Parsa System To The Data Base
-        Task TaskAddRangeOfVIPUserFromParsaSystemToTheDataBase(List<VIPUserInsertedFromDoctorSystem> list);
-
         //Show List Of SMS That Send From Doctor To Patient Incomes From Parsa System
         Task<List<LogForSendSMSToUsersIncomeFromParsa>?> ShowListOfSMSThatSendFromDoctorToPatientIncomesFromParsaSystem(ulong id, ulong doctorUserId);
-
-        //Show List Of SMS That Send From Doctor To VIP Patient Incomes From Parsa System
-        Task<List<LogForSendSMSToVIPUsersIncomeFromDoctorSystem>?> ShowListOfSMSThatSendFromDoctorToVIPPatientIncomesFromParsaSystem(ulong id);
 
         //Add Log For Send SMS From Doctor To Users That Income From Parsa System Without SaveChanges
         Task AddLogForSendSMSFromDoctorToUsersThatIncomeFromParsaSystemWithoutSaveChanges(List<LogForSendSMSToUsersIncomeFromParsa> log);
 
-        //Add Log For Send SMS From Doctor To VIP Users That Income From Parsa System Without SaveChanges
-        Task AddLogForSendSMSFromDoctorToVIPUsersThatIncomeFromParsaSystemWithoutSaveChanges(List<LogForSendSMSToVIPUsersIncomeFromDoctorSystem> log);
-
         //Is Exist Any User From Parsa System In Doctor Parsa System List
         Task<bool> IsExistAnyUserFromParsaSystemInDoctorParsaSystemList(ulong parsaSystemUserId, ulong doctorUserId);
-
-        //Is Exist Any User From VIP Parsa System In Doctor Parsa System List
-        Task<bool> IsExistAnyVIPUserFromParsaSystemInDoctorParsaSystemList(ulong parsaSystemUserId, ulong doctorUserId);
 
         //List Of DOctor Parsa System Users
         Task<List<UserInsertedFromParsaSystem>?> ListOfDoctorParsaSystemUsers(ulong DoctorUserId);
@@ -67,14 +36,8 @@ namespace DoctorFAM.Domain.Interfaces
         //Update Parsa System Record 
         Task UpdateParsaSystemRecord(UserInsertedFromParsaSystem parsa);
 
-        //Update VIP Parsa System Record 
-        Task UpdateVIPParsaSystemRecord(VIPUserInsertedFromDoctorSystem parsaVIP);
-
         //Get User From Parsa Incoming List By User Id And Doctor User Id
         Task<UserInsertedFromParsaSystem?> GetUserFromParsaIncomingListByUserIdAndDoctorUserId(ulong doctorId, ulong parsaUserId);
-
-        //Get VIP User From Parsa Incoming List By User Id And Doctor User Id
-        Task<VIPUserInsertedFromDoctorSystem?> GetVIPUserFromParsaIncomingListByUserIdAndDoctorUserId(ulong doctorId, ulong parsaUserId);
 
         //Is Exist Any User By This Mobile Number In Current Doctor Parsa System File 
         Task<bool> IsExistAnyUserByThisMobileNumberInCurrentDoctorParsaSystemFile(ulong doctorUserId, string mobileNumber);

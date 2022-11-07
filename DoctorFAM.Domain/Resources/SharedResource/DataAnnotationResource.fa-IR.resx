@@ -279,9 +279,6 @@
   <data name="EndPrice" xml:space="preserve">
     <value>پایان قیمت</value>
   </data>
-  <data name="Excel File" xml:space="preserve">
-    <value>فایل اکسل</value>
-  </data>
   <data name="ExcessiveObesity" xml:space="preserve">
     <value>چاقی مفرط</value>
   </data>
@@ -344,9 +341,6 @@
   </data>
   <data name="Iranian health" xml:space="preserve">
     <value>سلامت ایرانیان</value>
-  </data>
-  <data name="Lable For Patient" xml:space="preserve">
-    <value>دسته بندی بیماران</value>
   </data>
   <data name="Laboratory" xml:space="preserve">
     <value>آزمایشگاه</value>
