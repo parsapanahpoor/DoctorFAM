@@ -18,7 +18,7 @@
             function () {
 
                 var Value = $("#AddReservationDateState :selected").val();
-                if (Value == 1) {
+                if (Value == 0) {
                     $("#StartDate-div").removeClass("d-none");
                     $("#EndDate-div").removeClass("d-none");
                     $("#PeriodTime-div").removeClass("d-none");
@@ -28,7 +28,6 @@
                     $("#PeriodTime-div").addClass("d-none");
                 }
             });
-            console.log("Value");
     </script>
 
 }
@@ -68,7 +67,7 @@
 
                                     <div class="clearfix"></div>
 
-                                    <div class="form-group col-md-4 col-sm-12 d-none" id="StartDate-div">
+                                    <div class="form-group col-md-4 col-sm-12 " id="StartDate-div">
                                         <label asp-for="StartTime"></label>
                                         <select class="form-control" asp-for="StartTime">
 
@@ -95,7 +94,7 @@
                                         </select>
                                     </div>
 
-                                    <div class="form-group col-md-4 col-sm-12 d-none" id="EndDate-div">
+                                    <div class="form-group col-md-4 col-sm-12 " id="EndDate-div">
                                         <label asp-for="EndTime"></label>
                                         <select class="form-control" asp-for="EndTime">
 
@@ -122,7 +121,7 @@
                                         </select>
                                     </div>
 
-                                    <div class="form-group col-md-4 col-sm-12 d-none" id="PeriodTime-div">
+                                    <div class="form-group col-md-4 col-sm-12 " id="PeriodTime-div">
                                         <label asp-for="PeriodNumber"> @Localizer["Period Number"] </label>
                                         <select class="form-control" asp-for="PeriodNumber">
 
