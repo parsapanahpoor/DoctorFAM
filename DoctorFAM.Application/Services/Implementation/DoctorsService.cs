@@ -26,6 +26,7 @@ using DoctorFAM.Domain.ViewModels.Site.Reservation;
 using DoctorFAM.Domain.ViewModels.UserPanel.Account;
 using DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Data.SqlClient.DataClassification;
 using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
@@ -33,6 +34,7 @@ using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using SixLabors.ImageSharp.ColorSpaces;
 using System.Collections.Generic;
 using System.Numerics;
+using System.Reflection.Emit;
 
 namespace DoctorFAM.Application.Services.Implementation
 {
@@ -287,6 +289,98 @@ namespace DoctorFAM.Application.Services.Implementation
                 {
                     //Initial SMS Body With Algorithm
                     var message = Messages.SendSMSFromDoctorToTheUsersThatIncomeFromParsaSystem(model.SMSBody);
+
+                    if (!string.IsNullOrEmpty(patient.PatientMobile))
+                    {
+                        //Send SMS
+                        //await _smsservice.SendSimpleSMS(patient.PatientMobile, message);
+
+                        //Update Patient Info In Users That Income From Parsa System List 
+                        patient.SMSSent = true;
+                        patient.SMSSentDate = DateTime.Now;
+
+
+                        //Update Method 
+                        await _doctorRepository.UpdateVIPParsaSystemRecord(patient);
+                    }
+                }
+            }
+
+            #endregion
+
+            #endregion
+
+            return true;
+        }
+
+        //Send SMS From Doctor To The VIP Users That Income From Parsa Sysem 
+        public async Task<bool> SendSMSFromVIPDoctorToTheUsersThatIncomeFromParsaSysem(ulong doctorUserId, List<ulong> patientIds, string SMSBody)
+        {
+            #region Get Organization
+
+            var organization = await _organizationService.GetDoctorOrganizationByUserId(doctorUserId);
+            if (organization == null || organization.OrganizationInfoState != OrganizationInfoState.Accepted || organization.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice)
+            {
+                return false;
+            }
+
+            #endregion
+
+            #region Model State Validation 
+
+            if (patientIds == null || patientIds.Count() == 0 || !patientIds.Any())
+            {
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(SMSBody))
+            {
+                return false;
+            }
+
+            //Check Patients Id That Exist In Doctor Parsa System Population
+            foreach (var item in patientIds)
+            {
+                if (!await _doctorRepository.IsExistAnyVIPUserFromParsaSystemInDoctorParsaSystemList(item, organization.OwnerId))
+                {
+                    return false;
+                }
+            }
+
+            #endregion
+
+            #region Send SMS Method 
+
+            #region Log For Send SMS
+
+            List<LogForSendSMSToVIPUsersIncomeFromDoctorSystem> logsForSMS = new List<LogForSendSMSToVIPUsersIncomeFromDoctorSystem>();
+
+            foreach (var item in patientIds)
+            {
+                logsForSMS.Add(new LogForSendSMSToVIPUsersIncomeFromDoctorSystem()
+                {
+                    CreateDate = DateTime.Now,
+                    VIPUserInsertedFromDoctorSystemId = item,
+                    IsDelete = false,
+                    SMSBody = SMSBody,
+                });
+            }
+
+            await _doctorRepository.AddLogForSendSMSFromDoctorToVIPUsersThatIncomeFromParsaSystemWithoutSaveChanges(logsForSMS);
+
+            #endregion
+
+            #region Send SMS
+
+            foreach (var item in patientIds)
+            {
+                //Get The Current VIP Patient With Validation 
+                var patient = await GetVIPUserFromParsaIncomingListByUserIdAndDoctorUserId(organization.OwnerId, item);
+
+                if (patient != null)
+                {
+                    //Initial SMS Body With Algorithm
+                    var message = Messages.SendSMSFromDoctorToTheUsersThatIncomeFromParsaSystem(SMSBody);
 
                     if (!string.IsNullOrEmpty(patient.PatientMobile))
                     {
@@ -618,6 +712,47 @@ namespace DoctorFAM.Application.Services.Implementation
             return true;
         }
 
+        //Fill ViewModel For Send SMS For Range Of VIP Patient
+        public async Task<SendSMSForRangeOfVIPInsertedPatientViewModel?> FillSendSMSForRangeOfVIPInsertedPatientViewModel(string label, ulong doctorUserId)
+        {
+            #region Get Doctor Organization 
+
+            var organization = await _organizationService.GetDoctorOrganizationByUserId(doctorUserId);
+            if (organization.OrganizationInfoState != OrganizationInfoState.Accepted || organization.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice)
+            {
+                return null;
+            }
+
+            #endregion
+
+            #region Check Is Exist Any Label By This Doctor 
+
+            var doctorLabel = await _doctorRepository.GetLabelByDoctorUserIdAndLabelName(label, organization.OwnerId);
+            if (doctorLabel == null) return null;
+
+            #endregion
+
+            #region Get List Of Patient
+
+            var listOfPatient = await _doctorRepository.GetListOfVIPInsertedPAtientWithLabelName(doctorLabel.Id, organization.OwnerId);
+            if (listOfPatient == null) return null;
+
+            #endregion
+
+            #region Fill Return Model
+
+            SendSMSForRangeOfVIPInsertedPatientViewModel model = new SendSMSForRangeOfVIPInsertedPatientViewModel()
+            {
+                DoctorUserId = organization.OwnerId,
+                VIPUserInsertedFromDoctorSystem = listOfPatient,
+                LabelName = label
+            };
+
+            #endregion
+
+            return model;
+        }
+
         //Upload Excel File For VIP Patient That Income From Doctor System Organization
         public async Task<bool> UploadExcelFileForVIPPatientThatIncomeFromDoctorSystemOrganization(ulong userId, UploadExcelFileFromDoctorSystemViewModel model)
         {
@@ -637,6 +772,12 @@ namespace DoctorFAM.Application.Services.Implementation
             {
                 return false;
             }
+
+            #endregion
+
+            #region Check Is Exist Any Label By This Doctor 
+
+            var doctorLabel = await _doctorRepository.GetLabelByDoctorUserIdAndLabelName(model.LableForPatient, organization.OwnerId);
 
             #endregion
 
@@ -690,15 +831,45 @@ namespace DoctorFAM.Application.Services.Implementation
 
                         #region Add Label To Patient 
 
-                        foreach (var item in list)
+                        //Add New Label 
+                        if (doctorLabel == null)
                         {
-                            LabelOfVIPDoctorInsertedPatient label = new LabelOfVIPDoctorInsertedPatient()
+                            //Initial Instance Of Model
+                            DoctorsLabelsForVIPInsertedDoctor label = new DoctorsLabelsForVIPInsertedDoctor()
                             {
-                                LabelOfSickness = model.LableForPatient,
-                                VIPUserInsertedFromDoctorSystemId = item.Id
+                                DoctorUserId = organization.OwnerId,
+                                LabelName = model.LableForPatient
                             };
 
-                            await _doctorRepository.AddLabelOfSicknessToVipUsersThatIncomeFromDoctorSystem(label);
+                            //Add Label 
+                            await _doctorRepository.AddDoctorLabelForInsertedVIPUsers(label);
+
+                            //Add Label To The Inserted Patient
+                            foreach (var item in list)
+                            {
+                                LabelOfVIPDoctorInsertedPatient labelPatient = new LabelOfVIPDoctorInsertedPatient()
+                                {
+                                    DoctorsLabelsForVIPInsertedDoctorId = label.Id,
+                                    VIPUserInsertedFromDoctorSystemId = item.Id
+                                };
+
+                                await _doctorRepository.AddLabelOfSicknessToVipUsersThatIncomeFromDoctorSystem(labelPatient);
+                            }
+                        }
+                        //Exist a Doctor Label Before
+                        else
+                        {
+                            //Add Label To The Inserted Patient
+                            foreach (var item in list)
+                            {
+                                LabelOfVIPDoctorInsertedPatient labelPatient = new LabelOfVIPDoctorInsertedPatient()
+                                {
+                                    DoctorsLabelsForVIPInsertedDoctorId = doctorLabel.Id,
+                                    VIPUserInsertedFromDoctorSystemId = item.Id
+                                };
+
+                                await _doctorRepository.AddLabelOfSicknessToVipUsersThatIncomeFromDoctorSystem(labelPatient);
+                            }
                         }
 
                         #endregion

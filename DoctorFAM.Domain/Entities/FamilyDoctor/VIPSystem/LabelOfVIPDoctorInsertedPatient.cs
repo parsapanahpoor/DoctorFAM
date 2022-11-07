@@ -13,7 +13,15 @@ namespace DoctorFAM.Domain.Entities.FamilyDoctor.VIPSystem
 
         public ulong VIPUserInsertedFromDoctorSystemId { get; set; }
 
-        public string LabelOfSickness { get; set; }
+        public ulong DoctorsLabelsForVIPInsertedDoctorId { get; set; }
+
+        #endregion
+
+        #region relation 
+
+        public DoctorsLabelsForVIPInsertedDoctor DoctorsLabelsForVIPInsertedDoctor { get; set; }
+
+        public VIPUserInsertedFromDoctorSystem VIPUserInsertedFromDoctorSystem { get; set; }
 
         #endregion
     }

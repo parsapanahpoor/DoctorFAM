@@ -261,6 +261,8 @@ namespace DoctorFAM.Data.DbContext
 
         public DbSet<LabelOfVIPDoctorInsertedPatient> LabelOfVIPDoctorInsertedPatient { get; set; }
 
+        public DbSet<DoctorsLabelsForVIPInsertedDoctor> DoctorsLabelsForVIPInsertedDoctor { get; set; }
+
         #endregion
 
         #region Nurse 

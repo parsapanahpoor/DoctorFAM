@@ -1,0 +1,129 @@
+﻿@model DoctorFAM.Domain.ViewModels.DoctorPanel.ParsaSystem.VIPPatient.SendSMSForRangeOfVIPInsertedPatientViewModel
+@using DoctorFAM.Application.Convertors
+
+@{
+    ViewData["Title"] = @Localizer["Send SMS For Range Of Inserted VIP Patient"];
+}
+
+@section Breadcrumb
+    {
+    <li>
+        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+    </li>
+}
+
+    @section Styles
+    {
+    <link href="/admin/css/dataTables.bootstrap.rtl.css" rel="stylesheet" />
+}
+
+    @section Scripts
+    {
+    <script src="~/admin/js/datatable/jquery.dataTables.min.js"></script>
+    <script src="~/admin/js/datatable/ZeroClipboard.js"></script>
+    <script src="~/admin/js/datatable/dataTables.tableTools.min.js"></script>
+    <script src="~/admin/js/datatable/dataTables.bootstrap.min.js"></script>
+    <script src="~/admin/js/datatable/datatables-init.js"></script>
+    <script>
+        InitiateSimpleDataTable.init();
+        InitiateEditableDataTable.init();
+        InitiateExpandableDataTable.init();
+        InitiateSearchableDataTable.init();
+    </script>
+
+    }
+
+    <div class="row">
+        <div class="col-lg-12 col-sm-6 col-xs-12">
+            <div class="widget">
+                <div class="widget-header bordered-bottom bordered-primary">
+                    <span class="widget-caption">@Localizer["SMS Informations"]</span>
+                </div>
+                <div class="widget-body">
+                    <div id="horizontal-form">
+                        <form asp-action="SendSMSToTheRangeOfVIPUsersAfterTaging" asp-controller="IncomeSystem" asp-area="Doctor" id="filter-search" method="post">
+                            <input type="hidden" asp-for="DoctorUserId" />
+                            <input type="hidden" asp-for="LabelName" />
+
+                            <label> @Localizer["SMS Body"]</label>
+                        <textarea class="form-control" asp-for="SMSBody" rows="3" placeholder="@Localizer["SMS Body(Maximum Size Of SMS Body Is 10000 Charecter)"]"></textarea>
+
+                        @if (Model.VIPUserInsertedFromDoctorSystem != null && Model.VIPUserInsertedFromDoctorSystem.Any())
+                        {
+
+                            <div class="widget-body no-padding mt-5">
+                                <div id="searchable_wrapper" class="dataTables_wrapper form-inline">
+
+                                    <table class="table table-bordered table-hover table-striped dataTable" id="searchable" role="grid" aria-describedby="searchable_info">
+                                        <thead class="bordered-darkorange">
+                                            <tr role="row">
+
+                                                <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">@Localizer["Full Name"]</th>
+                                                <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" aria-sort="ascending">@Localizer["National Code"]</th>
+                                                <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" aria-sort="ascending">@Localizer["Mobile"]</th>
+                                                <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Platform: activate to sort column ascending">@Localizer["Sickness"]</th>
+                                                <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending"></th>
+
+                                            </tr>
+                                        </thead>
+
+                                        <tfoot>
+                                            <tr>
+                                                <th rowspan="1" colspan="1"><input type="text" name="search_engine" placeholder="@Localizer["Search Fullname"]" class="form-control input-sm"></th>
+                                                <th rowspan="1" colspan="1"><input type="text" name="search_browser" placeholder="@Localizer["Search"]" class="form-control input-sm"></th>
+                                                <th rowspan="1" colspan="1"></th>
+                                                <th rowspan="1" colspan="1"></th>
+                                                <th rowspan="1" colspan="1">
+                                                </th>
+                                            </tr>
+                                        </tfoot>
+                                        <tbody>
+
+                                            @foreach (var user in Model.VIPUserInsertedFromDoctorSystem)
+                                            {
+                                                <tr role="row" class="even responsive">
+
+                                                    <td class=" sorting_1">@user.PatientFirstName @user.PatientLastName</td>
+                                                    <td class="sorting_1">
+                                                        @user.PatientNationalId
+                                                    </td>
+                                                    <td class="sorting_1">
+                                                        @user.PatientMobile
+                                                    </td>
+                                                    <td class="sorting_1">
+                                                        <div class="row label label-orange" style="width: 100%;margin: auto;">
+                                                            @Model.LabelName
+                                                        </div>
+                                                    </td>
+
+                                                    <td>
+                                                        <label>
+                                                            <input type="checkbox" name="personsNumber" value="@user.Id">
+                                                            <span class="text"></span>
+                                                        </label>
+                                                    </td>
+
+                                                </tr>
+
+                                            }
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <partial name="_DoctorPanelNotFoundPartial" />
+                        }
+
+                        <div class="horizontal-space"></div>
+                        <div>
+                            <button type="submit" class="btn btn-success">@Localizer["Send SMS"]</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

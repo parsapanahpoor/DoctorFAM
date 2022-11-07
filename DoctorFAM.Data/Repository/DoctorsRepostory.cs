@@ -18,6 +18,7 @@ using Microsoft.VisualBasic;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Security.Cryptography;
@@ -41,6 +42,15 @@ namespace DoctorFAM.Data.Repository
 
         #region Doctors Panel Side
 
+        //Get List Of VIP Inserted PAtient With Label Name
+        public async Task<List<VIPUserInsertedFromDoctorSystem>?> GetListOfVIPInsertedPAtientWithLabelName(ulong labelId , ulong doctorUserId)
+        {
+            return await _context.LabelOfVIPDoctorInsertedPatient.Include(p => p.VIPUserInsertedFromDoctorSystem)
+                        .Where(p => !p.IsDelete && p.VIPUserInsertedFromDoctorSystem.DoctorUserId == doctorUserId
+                                    && p.DoctorsLabelsForVIPInsertedDoctorId == labelId)
+                        .Select(p => p.VIPUserInsertedFromDoctorSystem).ToListAsync();
+        }
+
         //Add Label Of Sickness To Vip Users That Income From Doctor System  
         public async Task AddLabelOfSicknessToVipUsersThatIncomeFromDoctorSystem(LabelOfVIPDoctorInsertedPatient label)
         {
@@ -51,8 +61,8 @@ namespace DoctorFAM.Data.Repository
         //Get Label Of Sickness From VIP Users
         public async Task<List<string>> GetLabelOfSicknessFromVIPUsers(ulong incomeUserId)
         {
-            return await _context.LabelOfVIPDoctorInsertedPatient.Where(p => !p.IsDelete && p.VIPUserInsertedFromDoctorSystemId == incomeUserId)
-                                .Select(p => p.LabelOfSickness).ToListAsync();
+            return await _context.LabelOfVIPDoctorInsertedPatient.Include(p=> p.DoctorsLabelsForVIPInsertedDoctor).Where(p => !p.IsDelete && p.VIPUserInsertedFromDoctorSystemId == incomeUserId)
+                                .Select(p => p.DoctorsLabelsForVIPInsertedDoctor.LabelName).ToListAsync();
         }
 
         //Show List Of SMS That Send From Doctor To Patient Incomes From Parsa System
@@ -149,22 +159,59 @@ namespace DoctorFAM.Data.Repository
             return await _context.VIPUserInsertedFromDoctorSystem.AnyAsync(p => !p.IsDelete && p.DoctorUserId == doctorUserId && p.Id == vipUserId);
         }
 
+        //Get Label By Doctor User Id And Label Name 
+        public async Task<DoctorsLabelsForVIPInsertedDoctor?> GetLabelByDoctorUserIdAndLabelName(string labelName , ulong doctorUserId)
+        {
+            return await _context.DoctorsLabelsForVIPInsertedDoctor.FirstOrDefaultAsync(p => !p.IsDelete && p.LabelName == labelName && p.DoctorUserId == doctorUserId);
+        }
+
         //Add New Label Of Sickness To The Existing Users 
         public async Task AddNewLabelOfSicknessToTheExistingUsers(ulong doctorUserId, string mobileNumber, string NationalId, string label)
         {
             var user = await _context.VIPUserInsertedFromDoctorSystem.FirstOrDefaultAsync(p => !p.IsDelete && p.DoctorUserId == doctorUserId && p.PatientMobile == mobileNumber && p.PatientNationalId == NationalId);
 
+            var doctorLabel = await GetLabelByDoctorUserIdAndLabelName(label , doctorUserId);
+
             if (user != null)
             {
-                //Add Label Of Sickness To The User 
-                LabelOfVIPDoctorInsertedPatient model = new LabelOfVIPDoctorInsertedPatient()
+                //Add Label For This Doctor 
+                if (doctorLabel == null)
                 {
-                    LabelOfSickness = label,
-                    VIPUserInsertedFromDoctorSystemId = user.Id
-                };
+                    DoctorsLabelsForVIPInsertedDoctor DoctorsLabelsForVIPInsertedDoctor = new DoctorsLabelsForVIPInsertedDoctor()
+                    {
+                        DoctorUserId = doctorUserId,
+                        LabelName = label
+                    };
 
-                await _context.LabelOfVIPDoctorInsertedPatient.AddAsync(model);
-                await _context.SaveChangesAsync();
+                    await _context.DoctorsLabelsForVIPInsertedDoctor.AddRangeAsync(DoctorsLabelsForVIPInsertedDoctor);
+                    await _context.SaveChangesAsync();
+
+                    //Add Label Of Sickness To The User 
+                    LabelOfVIPDoctorInsertedPatient model = new LabelOfVIPDoctorInsertedPatient()
+                    {
+                        DoctorsLabelsForVIPInsertedDoctorId = DoctorsLabelsForVIPInsertedDoctor.Id,
+                        VIPUserInsertedFromDoctorSystemId = user.Id
+                    };
+
+                    await _context.LabelOfVIPDoctorInsertedPatient.AddAsync(model);
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    //Add Label To The User
+                    if (! await _context.LabelOfVIPDoctorInsertedPatient.AnyAsync(p => !p.IsDelete && p.DoctorsLabelsForVIPInsertedDoctorId == doctorLabel.Id && p.VIPUserInsertedFromDoctorSystemId == user.Id))
+                    {
+                        //Add Label Of Sickness To The User 
+                        LabelOfVIPDoctorInsertedPatient model = new LabelOfVIPDoctorInsertedPatient()
+                        {
+                            DoctorsLabelsForVIPInsertedDoctorId = doctorLabel.Id,
+                            VIPUserInsertedFromDoctorSystemId = user.Id
+                        };
+
+                        await _context.LabelOfVIPDoctorInsertedPatient.AddAsync(model);
+                        await _context.SaveChangesAsync();
+                    }
+                }
             }
         }
 
@@ -218,6 +265,13 @@ namespace DoctorFAM.Data.Repository
         public async Task AddRangeOfUserFromParsaSystemToTheDataBase(List<UserInsertedFromParsaSystem> list)
         {
             await _context.UserInsertedFromParsaSystems.AddRangeAsync(list);
+            await _context.SaveChangesAsync();
+        }
+
+        //Add Doctor Label For Inserted VIP Users
+        public async Task AddDoctorLabelForInsertedVIPUsers(DoctorsLabelsForVIPInsertedDoctor label)
+        {
+            await _context.DoctorsLabelsForVIPInsertedDoctor.AddAsync(label);
             await _context.SaveChangesAsync();
         }
 

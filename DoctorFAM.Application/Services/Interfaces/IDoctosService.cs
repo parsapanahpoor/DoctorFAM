@@ -25,6 +25,12 @@ namespace DoctorFAM.Application.Services.Interfaces
         #region Doctors Panel Side   
 
         //Send SMS From Doctor To The VIP Users That Income From Parsa Sysem 
+        Task<bool> SendSMSFromVIPDoctorToTheUsersThatIncomeFromParsaSysem(ulong doctorUserId, List<ulong> patientIds, string SMSBody);
+
+        //Fill ViewModel For Send SMS For Range Of VIP Patient
+        Task<SendSMSForRangeOfVIPInsertedPatientViewModel?> FillSendSMSForRangeOfVIPInsertedPatientViewModel(string label, ulong doctorUserId);
+
+        //Send SMS From Doctor To The VIP Users That Income From Parsa Sysem 
         Task<bool> SendSMSFromVIPDoctorToTheUsersThatIncomeFromParsaSysem(SendSMSToPatientViewModel model);
 
         //Is Exist Any User VIP By This Mobile Number And NationalId In Current Doctor System File 

@@ -33,6 +33,7 @@ namespace DoctorFAM.Domain.Entities.FamilyDoctor.VIPSystem
 
         #region relation
 
+        public ICollection<LabelOfVIPDoctorInsertedPatient> LabelOfVIPDoctorInsertedPatient { get; set; }
 
         #endregion
     }

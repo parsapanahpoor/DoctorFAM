@@ -19,6 +19,15 @@ namespace DoctorFAM.Domain.Interfaces
     {
         #region Doctors Panel Side
 
+        //Get List Of VIP Inserted PAtient With Label Name
+        Task<List<VIPUserInsertedFromDoctorSystem>?> GetListOfVIPInsertedPAtientWithLabelName(ulong labelId, ulong doctorUserId);
+
+        //Add Doctor Label For Inserted VIP Users
+        Task AddDoctorLabelForInsertedVIPUsers(DoctorsLabelsForVIPInsertedDoctor label);
+
+        //Get Label By Doctor User Id And Label Name 
+        Task<DoctorsLabelsForVIPInsertedDoctor?> GetLabelByDoctorUserIdAndLabelName(string labelName, ulong doctorUserId);
+
         //Add New Label Of Sickness To The Existing Users 
         Task AddNewLabelOfSicknessToTheExistingUsers(ulong doctorUserId, string mobileNumber, string NationalId, string label);
 

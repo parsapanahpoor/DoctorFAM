@@ -271,7 +271,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
             if (res)
             {
                 TempData[SuccessMessage] = "عملیات باموفقیت انچام شده است .";
-                return RedirectToAction("ListOfVIPYourUsers", "IncomeSystem", new { area = "Doctor" });
+                return RedirectToAction("SendSMSToTheRangeOfVIPUsersAfterTaging", "IncomeSystem", new { labelName = model.LableForPatient });
             }
 
             #endregion
@@ -291,10 +291,62 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
         #endregion
 
+        #region Send SMS To The Range Of VIP Users After Taging
+
+        [HttpGet]
+        public async Task<IActionResult> SendSMSToTheRangeOfVIPUsersAfterTaging(string labelName)
+        {
+            #region Fill Model
+
+            var model = await _doctorService.FillSendSMSForRangeOfVIPInsertedPatientViewModel(labelName , User.GetUserId());
+            if (model == null) return NotFound();
+
+            #endregion
+
+            return View(model);
+        } 
+        
+        [HttpPost , ValidateAntiForgeryToken]
+        public async Task<IActionResult> SendSMSToTheRangeOfVIPUsersAfterTaging(SendSMSForRangeOfVIPInsertedPatientViewModel model , List<ulong> personsNumber)
+        {
+            #region Validation 
+
+            if (personsNumber.Count() == 0 || string.IsNullOrEmpty(model.SMSBody))
+            {
+                var returModel = await _doctorService.FillSendSMSForRangeOfVIPInsertedPatientViewModel(model.LabelName, User.GetUserId());
+                if (returModel == null) return NotFound();
+
+                TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+                return View(returModel);
+            }
+
+            #endregion
+
+            #region Send SMS
+
+            var res = await _doctorService.SendSMSFromVIPDoctorToTheUsersThatIncomeFromParsaSysem(User.GetUserId() , personsNumber , model.SMSBody);
+
+            if (res)
+            {
+                TempData[SuccessMessage] = "پیامک ها با موفقیت ارسال شده است .";
+                return RedirectToAction(nameof(ListOfVIPYourUsers));
+            }
+
+            #endregion
+
+            var modelReturned = await _doctorService.FillSendSMSForRangeOfVIPInsertedPatientViewModel(model.LabelName, User.GetUserId());
+            if (modelReturned == null) return NotFound();
+
+            TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+            return View(modelReturned);
+        }
+
+        #endregion
+
         #region Send SMS To Selected VIP Users
 
         [HttpGet]
-        public IActionResult SendSMSToVIPSelectedUsers(List<ulong> personsNumber)
+        public async Task<IActionResult> SendSMSToVIPSelectedUsers(List<ulong> personsNumber)
         {
             #region Validation 
 
