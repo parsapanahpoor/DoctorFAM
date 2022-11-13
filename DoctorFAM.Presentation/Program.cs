@@ -52,14 +52,14 @@ builder.Services.Configure<RequestLocalizationOptions>(
 
         var supportedCultures = new List<CultureInfo>
         {
+             faIR,
              new CultureInfo("en-US"),
              new CultureInfo("en"),
-             faIR,
              trTR,
              arSA
         };
 
-        opts.DefaultRequestCulture = new RequestCulture("en-US");
+        opts.DefaultRequestCulture = new RequestCulture("fa-IR");
         opts.SupportedCultures = supportedCultures;
         opts.SupportedUICultures = supportedCultures;
     });
@@ -234,7 +234,7 @@ var supportedCultures = new List<CultureInfo>() { faIR, trTR , arSA , new Cultur
 
 var options = new RequestLocalizationOptions()
 {
-    DefaultRequestCulture = new RequestCulture("en-US"),
+    DefaultRequestCulture = new RequestCulture("fa-IR"),
     SupportedCultures = supportedCultures,
     SupportedUICultures = supportedCultures,
     RequestCultureProviders = new List<IRequestCultureProvider>()
