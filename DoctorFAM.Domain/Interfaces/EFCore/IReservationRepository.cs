@@ -61,7 +61,16 @@ namespace DoctorFAM.Domain.Interfaces
 
         Task<DoctorReservationDateTime?> GetDoctorReservationDateTimeById(ulong reservationDateTimeId);
 
+        //Get Doctor Reservation Date Time By Include Relation With Doctor Booking
+        Task<DoctorReservationDateTime?> GetDoctorReservationDateTimeByIncludeRelationWithDoctorBooking(ulong reservationDateTimeId);
+
         Task UpdateReservationDateTime(DoctorReservationDateTime reservationDateTime);
+
+        //Add Doctor Personal Booking 
+        Task AddDoctorPersonalBooking(DoctorPersonalBooking booking);
+
+        //Get Doctor Reservation Booking By Doctor Reservation Date Time 
+        Task<DoctorPersonalBooking?> GetDoctorReservationBookingByDoctorReservationDateTime(ulong doctorReservationDateTimeId);
 
         #endregion
 

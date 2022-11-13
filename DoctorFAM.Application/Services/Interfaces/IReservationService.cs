@@ -67,6 +67,21 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         Task<bool> CloseReservation(ulong reservationTimeId);
 
+        //Check Doctor Reservation Date Time Validation For Add Doctor Personal Patient (Doctor Booking)
+        Task<DoctorPersonalBookingViewModel?> FillDoctorPersonalBooking(ulong reservationDateTimeId, ulong userId);
+
+        //Get Doctor Reservation Booking By Doctor Reservation Date Time 
+        Task<DoctorPersonalBooking?> GetDoctorReservationBookingByDoctorReservationDateTime(ulong doctorReservationDateTimeId);
+
+        //Get Doctor Reservation Date Time By Include Relation With Doctor Booking
+        Task<DoctorReservationDateTime?> GetDoctorReservationDateTimeByIncludeRelationWithDoctorBooking(ulong reservationDateTimeId);
+
+        //Add Patient To Doctor Booking 
+        Task<bool> AddPatientToDoctorBooking(DoctorPersonalBookingViewModel model, ulong userId);
+
+        //Check That Is Doctor Reservation Is Doctor Personal Booking 
+        Task<bool> CheckThatIsDoctorReservationIsDoctorPersonalBooking(ulong reservationId, ulong userId);
+
         #endregion
 
         #region User Panel

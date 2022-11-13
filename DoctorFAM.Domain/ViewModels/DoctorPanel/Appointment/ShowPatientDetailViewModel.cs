@@ -18,6 +18,8 @@ namespace DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment
 
         public DoctorReservationDateTime DoctorReservationDateTime { get; set; }
 
+        public bool DoctorBooking { get; set; }
+
         #endregion
     }
 }

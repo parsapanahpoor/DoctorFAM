@@ -13,64 +13,64 @@
 }
 
 @section Styles
-{
-}
-
-@section Scripts
-{
-<partial name="_JqueryValidation" />
-}
-
-@section Breadcrumb
-{
-<li>
-    @if (reservation != null)
     {
-    <a href="javascript:void(0)"> @reservation.ReservationDate.ToShamsi() </a>
-    }
-</li>
 }
 
-<div class="row">
-    <div class="col-lg-3 col-sm-12">
+    @section Scripts
+    {
+    <partial name="_JqueryValidation" />
+}
 
-        <a class="btn btn-sky w-100 margin-bottom-10" asp-action="AddreservationDateTimeWithComputer" asp-route-reservationDateId="@Model.ReservationDateId" asp-controller="Appointment" asp-area="Doctor"> @Localizer["Add Time With System"] </a>
+    @section Breadcrumb
+    {
+    <li>
+        @if (reservation != null)
+        {
+            <a href="javascript:void(0)"> @reservation.ReservationDate.ToShamsi() </a>
+        }
+    </li>
+}
 
-        <a class="btn btn-sky w-100 margin-bottom-10" asp-action="AddReservationDateTime" asp-route-reservationDateId="@Model.ReservationDateId" asp-controller="Appointment" asp-area="Doctor"> @Localizer["Add New Date Time"] </a>
+    <div class="row">
+        <div class="col-lg-3 col-sm-12">
 
-        <div class="widget">
-            <div class="widget-header bordered-bottom bordered-green">
-                <span class="widget-caption"> @Localizer["Manage Reservation Date Time"] </span>
-            </div>
-            <div class="widget-body">
-                <div>
-                    <form asp-action="ReservationDateDetail" asp-controller="Appointment" asp-area="Doctor" id="filter-search" method="get">
+            <a class="btn btn-sky w-100 margin-bottom-10" asp-action="AddreservationDateTimeWithComputer" asp-route-reservationDateId="@Model.ReservationDateId" asp-controller="Appointment" asp-area="Doctor"> @Localizer["Add Time With System"] </a>
 
-                        <input type="hidden" asp-for="Page" />
-                        <input type="hidden" asp-for="ReservationDateId" />
+            <a class="btn btn-sky w-100 margin-bottom-10" asp-action="AddReservationDateTime" asp-route-reservationDateId="@Model.ReservationDateId" asp-controller="Appointment" asp-area="Doctor"> @Localizer["Add New Date Time"] </a>
 
-                        <div class="form-group">
-                            <label asp-for="FilterDoctorReservationState"> @Localizer["Order By State"] </label>
-                            <select asp-for="FilterDoctorReservationState" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.DoctorReservation.FilterDoctorReservationState))"></select>
-                        </div>
+            <div class="widget">
+                <div class="widget-header bordered-bottom bordered-green">
+                    <span class="widget-caption"> @Localizer["Manage Reservation Date Time"] </span>
+                </div>
+                <div class="widget-body">
+                    <div>
+                        <form asp-action="ReservationDateDetail" asp-controller="Appointment" asp-area="Doctor" id="filter-search" method="get">
 
-                        <div class="form-group">
-                            <label asp-for="FilterDoctorReservationType"> @Localizer["Order By Type"] </label>
-                            <select asp-for="FilterDoctorReservationType" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.DoctorReservation.FilterDoctorReservationType))"></select>
-                        </div>
+                            <input type="hidden" asp-for="Page" />
+                            <input type="hidden" asp-for="ReservationDateId" />
 
-                        <div class="form-group">
-                            <label asp-for="FilterRequestOrder"> @Localizer["Order By Create Date"] </label>
-                            <select asp-for="FilterRequestOrder" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.Request.FilterRequestOrder))"></select>
-                        </div>
+                            <div class="form-group">
+                                <label asp-for="FilterDoctorReservationState"> @Localizer["Order By State"] </label>
+                                <select asp-for="FilterDoctorReservationState" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.DoctorReservation.FilterDoctorReservationState))"></select>
+                            </div>
 
-                        <hr />
+                            <div class="form-group">
+                                <label asp-for="FilterDoctorReservationType"> @Localizer["Order By Type"] </label>
+                                <select asp-for="FilterDoctorReservationType" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.DoctorReservation.FilterDoctorReservationType))"></select>
+                            </div>
 
-                        <div class="row">
-                            <div class="col-md-12 flex-style">
-                                <button type="submit" class="btn btn-labeled w-100 btn-palegreen">
-                                    <i class="btn-label glyphicon glyphicon-filter"></i>@Localizer["Filter"]
-                                </button>
+                            <div class="form-group">
+                                <label asp-for="FilterRequestOrder"> @Localizer["Order By Create Date"] </label>
+                                <select asp-for="FilterRequestOrder" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.Request.FilterRequestOrder))"></select>
+                            </div>
+
+                            <hr />
+
+                            <div class="row">
+                                <div class="col-md-12 flex-style">
+                                    <button type="submit" class="btn btn-labeled w-100 btn-palegreen">
+                                        <i class="btn-label glyphicon glyphicon-filter"></i>@Localizer["Filter"]
+                                    </button>
 
                                 @if (Context.Request.QueryString.HasValue)
                                 {
@@ -118,6 +118,9 @@
                                 @Localizer["Type"]
                             </th>
                             <th class="tc vm">
+                                @Localizer["Reservation Portal"]
+                            </th>
+                            <th class="tc vm">
                                 @Localizer["Possibilities"]
                             </th>
                         </tr>
@@ -128,15 +131,15 @@
                             <tr class="tc vm" remove-ajax-item="@date.Id">
                                 <td class="vm">
                                     <div class="flex-style-center">
-                                       
+
                                         <p> @string.Concat(date.StartTime.Reverse().Skip(3).Reverse()) </p>
-                                        
+
                                     </div>
                                 </td>
                                 <td class="vm">
                                     <div class="flex-style-center">
                                         <p> @string.Concat(date.EndTime.Reverse().Skip(3).Reverse()) </p>
-                                        
+
                                     </div>
                                 </td>
                                 <td class="tc vm">
@@ -178,9 +181,32 @@
                                 </td>
 
                                 <td class="tc vm">
+                                    <p>
+                                        @if (date.DoctorBooking)
+                                        {
+                                            <span class="mr-8px label label-info">@Localizer["Doctor Booking"] </span>
+                                        }
+
+                                        @if (!date.DoctorBooking)
+                                        {
+                                            if (date.PatientId != null)
+                                            {
+                                                <span class="mr-8px label label-info">@Localizer["Web Site"] </span>
+                                            }
+                                            else
+                                            {
+                                                <span class="mr-8px label label-orange">@Localizer["Not Reserved Yet"] </span>
+                                            }
+                                        }
+                                    </p>
+                                </td>
+
+                                <td class="tc vm">
 
                                     @if (date.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.NotReserved && date.PatientId == null)
                                     {
+                                        <a asp-action="AddPersonalPatientForDoctorBooking" asp-controller="Appointment" asp-area="Doctor" asp-route-ReservationDateTimeId="@date.Id" class="btn btn-success btn-circle btn-xs"><i class="glyphicon glyphicon-user"></i></a>
+
                                         <button onclick="DeleteAjax(@date.Id, '@Url.Action("DeleteReservationDateTime", "Appointment", new {area = "Doctor", Id = date.Id})')" class="btn btn-danger btn-circle btn-xs"><i class="glyphicon glyphicon-trash"></i></button>
                                     }
                                     @if (date.DoctorReservationState != DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.NotReserved && date.PatientId != null)

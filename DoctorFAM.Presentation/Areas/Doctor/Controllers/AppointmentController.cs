@@ -268,6 +268,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
             }
 
             #endregion
+
             TempData[ErrorMessage] = _sharedLocalizer["The operation has failed"].Value;
             return View(model);
         }
@@ -301,6 +302,71 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
             #endregion
 
+            #region Check Doctor Booking 
+
+            if (await _reservatioService.CheckThatIsDoctorReservationIsDoctorPersonalBooking(ReservationDateTimeId , User.GetUserId()))
+            {
+                ViewBag.DoctorBooking = true;
+            }
+
+            #endregion
+
+            return View(res);
+        }
+
+        #endregion
+
+        #region Add Patient To Doctor Reservation Date Time For Doctor Personal Patient (Doctor Booking)
+
+        [HttpGet]
+        public async Task<IActionResult> AddPersonalPatientForDoctorBooking(ulong ReservationDateTimeId)
+        {
+            #region Check Doctor Reservation Date Time 
+
+            var res = await _reservatioService.FillDoctorPersonalBooking(ReservationDateTimeId , User.GetUserId());
+            if (res == null) return NotFound();
+
+            #endregion
+
+            return View(res);
+        }
+
+        [HttpPost , ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddPersonalPatientForDoctorBooking(DoctorPersonalBookingViewModel model)
+        {
+            #region Check Doctor Reservation Date Time 
+
+            var res = await _reservatioService.FillDoctorPersonalBooking(model.DoctorReservationDateTimeId, User.GetUserId());
+            if (res == null) return NotFound();
+
+            #endregion
+
+            #region Model State Validation 
+
+            if (!ModelState.IsValid)
+            {
+                TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+                return View(res);
+            }
+
+            #endregion
+
+            #region Add Patient To Doctor Booking 
+
+            var result = await _reservatioService.AddPatientToDoctorBooking(model , User.GetUserId());
+            if (result)
+            {
+                //Get Doctor Reservation Date Time By ID 
+                var reservationDateTime = await _reservatioService.GetDoctorReservationDateTimeById(model.DoctorReservationDateTimeId);
+                if (reservationDateTime == null) return NotFound();
+
+                TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+                return RedirectToAction(nameof(ReservationDateDetail) , new { ReservationDateId = reservationDateTime.DoctorReservationDateId });
+            }
+
+            #endregion
+
+            TempData[ErrorMessage] = "عملیات باشکست مواجه شده است.";
             return View(res);
         }
 
