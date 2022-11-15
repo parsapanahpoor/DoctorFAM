@@ -124,13 +124,13 @@
     <value>فیلتر</value>
   </data>
   <data name="Create Population Covered" xml:space="preserve">
-    <value>افزودن فرد تحت پوشش</value>
+    <value>افزودن افراد زیر مجموعه</value>
   </data>
   <data name="Delete Filter" xml:space="preserve">
     <value>حذف فیلتر </value>
   </data>
   <data name="Filter population Covered" xml:space="preserve">
-    <value>فیلتر جمعیت تحت پوشش</value>
+    <value>فیلتر  افراد زیر مجموعه</value>
   </data>
   <data name="First Name" xml:space="preserve">
     <value>نام </value>
@@ -139,7 +139,7 @@
     <value>نام خانوادگی</value>
   </data>
   <data name="List Of Population Covered" xml:space="preserve">
-    <value>لیست افراد تحت پوشش</value>
+    <value>لیست افراد زیر مجموعه</value>
   </data>
   <data name="National Id" xml:space="preserve">
     <value>کد ملی</value>

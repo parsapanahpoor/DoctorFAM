@@ -87,8 +87,17 @@
         <div class="well with-header with-footer table-responsive">
             <div class="header bordered-azure">
                 <div class="flex-style">
-                    <span>@ViewData["Title"]</span>
-                    <span>@Model.GetShownEntitiesPagesTitle()</span>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <span>@ViewData["Title"]</span>
+                        </div>
+                       
+                        <div class="col-md-2">
+                            <span class="red">(@Model.GetShownEntitiesPagesTitle() روز)</span>
+                        </div>
+                    </div>
+                    
+                    
                 </div>
             </div>
 

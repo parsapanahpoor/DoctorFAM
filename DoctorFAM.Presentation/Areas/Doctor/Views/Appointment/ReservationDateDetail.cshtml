@@ -89,13 +89,14 @@
     <div class="col-lg-9 col-sm-12">
         <div class="well with-header with-footer table-responsive">
             <div class="header bordered-azure ">
-                <div class="col-md-5 flex-style">
+                <div class="col-md-8 flex-style">
                     <span>@ViewData["Title"]</span>
-                    <span>@Model.GetShownEntitiesPagesTitle()</span>
+                     <span class="red">(@Model.GetShownEntitiesPagesTitle() نوبت) </span>
 
                 </div>
+                
                 <div class="col-md-4 flex-style text-left">
-                    <span class="text-center">@reservation.ReservationDate.ToStringShamsiDate()</span>
+                    <span class="text-left">@reservation.ReservationDate.ToStringShamsiDate()</span>
                 </div>
             </div>
 
