@@ -114,6 +114,9 @@ namespace DoctorFAM.Application.Services.Interfaces
         //List Of Request For Cancelation Reservatio Date Time 
         Task<FilterCancelationRequestReservationDateTimeViewModel?> FilterCancelationRequestReservationDateTime(FilterCancelationRequestReservationDateTimeViewModel filter);
 
+        //List Of Doctor Personal Booking
+        Task<List<DoctorPersonalBooking>> ListOfDoctorPersonalBooking();
+
         #endregion
 
         #region Supporter Panel 

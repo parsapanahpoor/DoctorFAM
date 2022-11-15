@@ -45,7 +45,7 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
 
             #region Check Doctor Booking 
 
-            if (await _reservationService.CheckThatIsDoctorReservationIsDoctorPersonalBooking(ReservationId, User.GetUserId()))
+            if (await _reservationService.CheckThatIsDoctorReservationIsDoctorPersonalBooking(model.DoctorReservationDateTime.Id, model.Doctor.Id))
             {
                 ViewBag.DoctorBooking = true;
             }
@@ -119,6 +119,15 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
         public async Task<IActionResult> FilterCancelReservationDateTimeRequests(FilterCancelationRequestReservationDateTimeViewModel filter)
         {
             return View(await _reservationService.FilterCancelationRequestReservationDateTime(filter));
+        }
+
+        #endregion
+
+        #region List Of Doctor Personal Bookings
+
+        public async Task<IActionResult> ListOfDoctorPersonalBookings()
+        {
+            return View(await _reservationService.ListOfDoctorPersonalBooking());
         }
 
         #endregion

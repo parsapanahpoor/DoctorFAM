@@ -165,19 +165,75 @@
                                 </td>
                                 <td class="vm">
                                     <div class="flex-style-center">
-                                        @if (date.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.NotReserved)
-                                        {
-                                            <p style="margin-top:50px;" class="label label-danger">@Localizer["Not Reserved"]</p>
-                                        }
-                                        else
-                                        {
-                                            <img src="@date.User.GetUserAvatar()" class="avatar-style" style="border-radius:50px;" />
-                                            <div class="mr-10px">
-                                                <span>@Localizer["Username"] : @date.User.Username</span>
-                                                <hr class="margin-7" />
-                                                <span>@Localizer["Mobile"] : @date.User.Mobile</span>
+                                            <div class="flex-style-center">
+                                                @if (date.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.NotReserved)
+                                                {
+                                                    <p style="margin-top:50px;" class="label label-danger">@Localizer["Not Reserved"]</p>
+                                                }
+                                                else
+                                                {
+                                                    @if (date.DoctorBooking)
+                                                    {
+                                                        if (date.DoctorReservationDate.UserId == date.PatientId)
+                                                        {
+                                                            <p class="label label-danger">@Localizer["کاربر موجود نیست"]</p>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="flex-style-center">
+                                                                @if (date.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.NotReserved)
+                                                                {
+                                                                    <p style="margin-top:50px;" class="label label-danger">@Localizer["Not Reserved"]</p>
+                                                                }
+                                                                else
+                                                                {
+                                                                    if (date.User != null)
+                                                                    {
+                                                                        <img src="@date.User.GetUserAvatar()" class="avatar-style" style="border-radius:50px;" />
+                                                                        <div class="mr-10px">
+                                                                            <span>@Localizer["Username"] : @date.User.Username</span>
+                                                                            <hr class="margin-7" />
+                                                                            <span>@Localizer["Mobile"] : @date.User.Mobile</span>
+                                                                        </div>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <p class="label label-warning">@Localizer["لغو شده است"]</p>
+                                                                    }
+                                                                }
+                                                            </div>
+
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="flex-style-center">
+                                                            @if (date.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.NotReserved)
+                                                            {
+                                                                <p style="margin-top:50px;" class="label label-danger">@Localizer["Not Reserved"]</p>
+                                                            }
+                                                            else
+                                                            {
+                                                                if (date.User != null)
+                                                                {
+                                                                    <img src="@date.User.GetUserAvatar()" class="avatar-style" style="border-radius:50px;" />
+                                                                    <div class="mr-10px">
+                                                                        <span>@Localizer["Username"] : @date.User.Username</span>
+                                                                        <hr class="margin-7" />
+                                                                        <span>@Localizer["Mobile"] : @date.User.Mobile</span>
+                                                                    </div>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <p class="label label-warning">@Localizer["لغو شده است"]</p>
+                                                                }
+                                                            }
+                                                        </div>
+
+                                                    }
+                                                }
                                             </div>
-                                        }
+
                                     </div>
                                 </td>
                                 <td class="vm">

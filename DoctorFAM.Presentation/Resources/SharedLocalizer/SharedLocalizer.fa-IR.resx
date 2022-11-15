@@ -705,4 +705,7 @@
   <data name="Manage Wallet" xml:space="preserve">
     <value>مدیریت تراکنش های شما</value>
   </data>
+  <data name="Not Exist Patient" xml:space="preserve">
+    <value>لیست بیماران ناموجود</value>
+  </data>
 </root>

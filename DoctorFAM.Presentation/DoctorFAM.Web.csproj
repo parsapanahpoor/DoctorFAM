@@ -48,6 +48,7 @@
 		<Folder Include="Resources\Areas\Pharmacy\Controllers\" />
 		<Folder Include="Resources\Controllers\" />
 		<Folder Include="Resources\Views\" />
+		<Folder Include="wwwroot\Content\images\Ticket\" />
 		<Folder Include="wwwroot\Content\Radio\vendor\" />
 		<Folder Include="Areas\Nurse\Data\" />
 		<Folder Include="Areas\Nurse\Models\" />

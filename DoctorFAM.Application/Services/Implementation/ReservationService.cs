@@ -935,7 +935,7 @@ namespace DoctorFAM.Application.Services.Implementation
         {
             #region Get Reservation Date Time By Id
 
-            var reservationDateTime = await _reservation.GetDoctorReservationDateTimeById(reservationId);
+            var reservationDateTime = await _reservation.GetDoctorReservationDateTimeByIncludeRelationWithDoctorBooking(reservationId);
             if (reservationDateTime == null) return null;
             if (reservationDateTime.DoctorReservationState == Domain.Enums.DoctorReservation.DoctorReservationState.Canceled) return null;
 
@@ -1006,6 +1006,12 @@ namespace DoctorFAM.Application.Services.Implementation
         public async Task<FilterCancelationRequestReservationDateTimeViewModel?> FilterCancelationRequestReservationDateTime(FilterCancelationRequestReservationDateTimeViewModel filter)
         {
             return await _reservation.FilterCancelationRequestReservationDateTime(filter);
+        }
+
+        //List Of Doctor Personal Booking
+        public async Task<List<DoctorPersonalBooking>> ListOfDoctorPersonalBooking()
+        {
+            return await _reservation.ListOfDoctorPersonalBooking();
         }
 
         #endregion

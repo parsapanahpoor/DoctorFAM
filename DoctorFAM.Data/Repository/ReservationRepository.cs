@@ -1052,6 +1052,17 @@ namespace DoctorFAM.Data.Repository
             return filter;
         }
 
+        //List Of Doctor Personal Booking
+        public async Task<List<DoctorPersonalBooking>> ListOfDoctorPersonalBooking()
+        {
+            return await _context.DoctorPersonalBooking.Include(p => p.DoctorReservationDateTime)
+                            .ThenInclude(p => p.DoctorReservationDate)
+                            .ThenInclude(p => p.User)
+                            .Where(p => !p.IsDelete)
+                            .OrderByDescending(p => p.CreateDate)
+                            .ToListAsync();
+        }
+
         #endregion
 
         #region Supporter Side 
