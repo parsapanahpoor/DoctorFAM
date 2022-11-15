@@ -1,4 +1,6 @@
-﻿using DoctorFAM.Application.Services.Interfaces;
+﻿using DoctorFAM.Application.Extensions;
+using DoctorFAM.Application.Services.Implementation;
+using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.Reservation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
@@ -38,6 +40,15 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
 
             var model = await _reservationService.FillShowReservationDetailAdminSideViewModel(ReservationId);
             if (model == null) return NotFound();
+
+            #endregion
+
+            #region Check Doctor Booking 
+
+            if (await _reservationService.CheckThatIsDoctorReservationIsDoctorPersonalBooking(model.DoctorReservationDateTime.Id, model.Doctor.Id))
+            {
+                ViewBag.DoctorBooking = true;
+            }
 
             #endregion
 
@@ -108,6 +119,15 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
         public async Task<IActionResult> FilterCancelReservationDateTimeRequests(FilterCancelationRequestReservationDateTimeViewModel filter)
         {
             return View(await _reservationService.FilterCancelationRequestReservationDateTime(filter));
+        }
+
+        #endregion
+
+        #region List Of Doctor Personal Bookings
+
+        public async Task<IActionResult> ListOfDoctorPersonalBookings()
+        {
+            return View(await _reservationService.ListOfDoctorPersonalBooking());
         }
 
         #endregion

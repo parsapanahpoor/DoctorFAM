@@ -1,0 +1,142 @@
+﻿@model List<DoctorFAM.Domain.Entities.DoctorReservation.DoctorPersonalBooking>
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Domain.ViewModels.Common
+
+@{
+    ViewData["Title"] = @Localizer["لیست کاربران نوبت گیری شده"];
+}
+
+@section Breadcrumb
+    {
+    <li>
+        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+    </li>
+}
+
+    @section Styles
+    {
+    <link href="/admin/css/dataTables.bootstrap.rtl.css" rel="stylesheet" />
+}
+
+    @section Scripts
+    {
+    <script src="~/admin/js/datatable/jquery.dataTables.min.js"></script>
+    <script src="~/admin/js/datatable/ZeroClipboard.js"></script>
+    <script src="~/admin/js/datatable/dataTables.tableTools.min.js"></script>
+    <script src="~/admin/js/datatable/dataTables.bootstrap.min.js"></script>
+    <script src="~/admin/js/datatable/datatables-init.js"></script>
+    <script>
+        InitiateSimpleDataTable.init();
+        InitiateEditableDataTable.init();
+        InitiateExpandableDataTable.init();
+        InitiateSearchableDataTable.init();
+    </script>
+
+    }
+
+    <div class="page-body">
+
+        <div class="row ">
+            <div class="col-xs-12 col-md-12">
+                <div class="widget">
+                    <div class="widget-header bordered-bottom bordered-yellow">
+                        <span class="widget-caption">@Localizer["لیست کاربران نویت دهی شده توسط پزشک که در سایت موجود نمی باشند."]</span>
+                        <div class="widget-buttons">
+                            <a href="#" data-toggle="maximize">
+                                <i class="fa fa-expand"></i>
+                            </a>
+                            <a href="#" data-toggle="collapse">
+                                <i class="fa fa-minus"></i>
+                            </a>
+                            <a href="#" data-toggle="dispose">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                @if (Model != null && Model.Any())
+                {
+
+                    <div class="widget-body no-padding">
+                        <div id="searchable_wrapper" class="dataTables_wrapper form-inline">
+
+                            <table class="table table-bordered table-hover table-striped dataTable" id="searchable" role="grid" aria-describedby="searchable_info">
+                                <thead class="bordered-darkorange">
+                                    <tr role="row">
+
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">@Localizer["پزشک"]</th>
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" aria-sort="ascending">@Localizer["نام"]</th>
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" aria-sort="ascending">@Localizer["نام خانوادگی"]</th>
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">@Localizer["موبایل بیمار"]</th>
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">@Localizer["کدملی بیمار"]</th>
+
+                                    </tr>
+                                </thead>
+
+                                <tfoot>
+                                    <tr>
+                                        <th rowspan="1" colspan="1"></th>
+                                        <th rowspan="1" colspan="1"></th>
+                                        <th rowspan="1" colspan="1"></th>
+                                        <th rowspan="1" colspan="1"></th>
+                                        <th rowspan="1" colspan="1"></th>
+                                    </tr>
+                                </tfoot>
+                                <tbody>
+
+                                    @foreach (var user in Model)
+                                    {
+                                        <tr role="row" class="even responsive">
+
+                                            <td class=" sorting_1">
+                                                <div class="flex-style-center">
+                                                    <img src="@user.DoctorReservationDateTime.DoctorReservationDate.User.GetUserAvatar()" class="avatar-style" style="border-radius:50px;" />
+                                                    <div class="mr-10px">
+                                                        <span>@Localizer["نام پزشک"] : @user.DoctorReservationDateTime.DoctorReservationDate.User.Username</span>
+                                                        <hr class="margin-7" />
+                                                        <span>@Localizer["موبایل پزشک"] : @user.DoctorReservationDateTime.DoctorReservationDate.User.Mobile</span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="sorting_1">
+                                                @user.FirstName
+                                            </td>
+                                            <td class="sorting_1">
+                                                @user.LastName
+                                            </td>
+                                            <td class="sorting_1">
+                                                @user.Mobile
+                                            </td>
+                                            <td class="sorting_1">
+
+                                                @if (string.IsNullOrEmpty(user.NationalId))
+                                                {
+                                                    <span class="label label-success">@Localizer["وارد نشده"]</span>
+                                                }
+                                                else
+                                                {
+                                                @user.NationalId
+                                                }
+
+                                            </td>
+
+                                        </tr>
+
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <partial name="_AdminNotFoundPartial" />
+                }
+            </div>
+        </div>
+    </div>
+
+</div>

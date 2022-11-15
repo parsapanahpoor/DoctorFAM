@@ -41,6 +41,15 @@ namespace DoctorFAM.Web.Areas.Supporter.Controllers
 
             #endregion
 
+            #region Check Doctor Booking 
+
+            if (await _reservationService.CheckThatIsDoctorReservationIsDoctorPersonalBooking(model.DoctorReservationDateTime.Id, model.Doctor.Id))
+            {
+                ViewBag.DoctorBooking = true;
+            }
+
+            #endregion
+
             return View(model);
         }
 
@@ -81,6 +90,15 @@ namespace DoctorFAM.Web.Areas.Supporter.Controllers
 
             TempData[SuccessMessage] = _sharedLocalizer["Operation Successfully"].Value;
             return RedirectToAction(nameof(FilterReservation));
+        }
+
+        #endregion
+
+        #region List Of Doctor Personal Bookings
+
+        public async Task<IActionResult> ListOfDoctorPersonalBookings()
+        {
+            return View(await _reservationService.ListOfDoctorPersonalBooking());
         }
 
         #endregion

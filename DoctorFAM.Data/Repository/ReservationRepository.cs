@@ -469,10 +469,31 @@ namespace DoctorFAM.Data.Repository
             return await _context.DoctorReservationDateTimes.Include(p => p.DoctorReservationDate).FirstOrDefaultAsync(p => !p.IsDelete && p.Id == reservationDateTimeId);
         }
 
+        //Get Doctor Reservation Date Time By Include Relation With Doctor Booking
+        public async Task<DoctorReservationDateTime?> GetDoctorReservationDateTimeByIncludeRelationWithDoctorBooking(ulong reservationDateTimeId)
+        {
+            return await _context.DoctorReservationDateTimes.Include(p => p.DoctorPersonalBooking)
+                                                               .Include(p=> p.DoctorReservationDate)
+                                                                .FirstOrDefaultAsync(p => !p.IsDelete && p.Id == reservationDateTimeId);
+        }
+
         public async Task UpdateReservationDateTime(DoctorReservationDateTime reservationDateTime)
         {
             _context.DoctorReservationDateTimes.Update(reservationDateTime);
             await _context.SaveChangesAsync();
+        }
+
+        //Add Doctor Personal Booking 
+        public async Task AddDoctorPersonalBooking(DoctorPersonalBooking booking)
+        {
+            await _context.DoctorPersonalBooking.AddAsync(booking);
+            await _context.SaveChangesAsync();
+        }
+
+        //Get Doctor Reservation Booking By Doctor Reservation Date Time 
+        public async Task<DoctorPersonalBooking?> GetDoctorReservationBookingByDoctorReservationDateTime(ulong doctorReservationDateTimeId)
+        {
+            return await _context.DoctorPersonalBooking.FirstOrDefaultAsync(p => !p.IsDelete && p.DoctorReservationDateTimeId == doctorReservationDateTimeId);
         }
 
         #endregion
@@ -1029,6 +1050,17 @@ namespace DoctorFAM.Data.Repository
             await filter.Paging(query);
 
             return filter;
+        }
+
+        //List Of Doctor Personal Booking
+        public async Task<List<DoctorPersonalBooking>> ListOfDoctorPersonalBooking()
+        {
+            return await _context.DoctorPersonalBooking.Include(p => p.DoctorReservationDateTime)
+                            .ThenInclude(p => p.DoctorReservationDate)
+                            .ThenInclude(p => p.User)
+                            .Where(p => !p.IsDelete)
+                            .OrderByDescending(p => p.CreateDate)
+                            .ToListAsync();
         }
 
         #endregion

@@ -4,37 +4,37 @@
   "description": "This Is Doctor FAM Web Application",
   "icons": [
     {
-      "src": "doctorfamLogo.png",
+      "src": "doctorfamLogo48.png",
       "type": "image/png",
       "sizes": "48x48"
     },
     {
-      "src": "doctorfamLogo.png",
+      "src": "doctorfamLogo96.png",
       "type": "image/png",
       "sizes": "96x96"
     },
     {
-      "src": "doctorfamLogo.png",
+      "src": "doctorfamLogo144.png",
       "type": "image/png",
       "sizes": "144x144"
     },
     {
-      "src": "doctorfamLogo.png",
+      "src": "doctorfamLogo192.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "doctorfamLogo.png",
+      "src": "doctorfamLogo256.png",
       "type": "image/png",
       "sizes": "256x256"
     },
     {
-      "src": "doctorfamLogo.png",
+      "src": "doctorfamLogo384.png",
       "type": "image/png",
       "sizes": "384x384"
     },
     {
-      "src": "doctorfamLogo.png",
+      "src": "doctorfamLogo512.png",
       "type": "image/png",
       "sizes": "512x512"
     }
@@ -42,6 +42,5 @@
   "start_url": "http://doctorfam.com/?utm_source=homescreen",
   "background_color": "#3367D6",
   "display": "standalone",
-  "theme_color": "#3367D6",
-  "scope": "."
+  "theme_color": "#3367D6"
 }

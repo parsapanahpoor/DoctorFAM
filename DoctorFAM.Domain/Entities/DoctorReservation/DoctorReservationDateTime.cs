@@ -28,6 +28,8 @@ namespace DoctorFAM.Domain.Entities.DoctorReservation
 
         public string EndTime { get; set; }
 
+        public bool DoctorBooking { get; set; }
+
         #endregion
 
         #region relations
@@ -42,6 +44,8 @@ namespace DoctorFAM.Domain.Entities.DoctorReservation
         public ICollection<LogForCloseReservation> LogForCloseReservations { get; set; }
 
         public ReservationDateTimeCancelation ReservationDateTimeCancelation { get; set; }
+
+        public DoctorPersonalBooking DoctorPersonalBooking { get; set; }
 
         #endregion
     }

@@ -41,7 +41,160 @@
 </li>
 }
 
-<div class="row">
+@if (ViewBag.DoctorBooking == true)
+{
+    <div class="row">
+
+        @if (Model.DoctorReservationDateTime.DoctorPersonalBooking != null)
+        {
+            <div class="col-md-12">
+
+                <div class="col-md-12">
+                    <div class="profile-container">
+                        <div class="profile-header row">
+
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="col-md-12 text-center">
+
+                                        @if (Model.DoctorReservationDateTime.DoctorPersonalBooking.FirstName != null && Model.DoctorReservationDateTime.DoctorPersonalBooking.LastName != null)
+                                        {
+                                            <div class="header-fullname">
+                                                <p>@Model.DoctorReservationDateTime.DoctorPersonalBooking.FirstName @Model.DoctorReservationDateTime.DoctorPersonalBooking.LastName</p>
+
+                                            </div>
+                                        }
+                                        <div class="header-fullname2">
+                                            <p>
+                                                @Model.DoctorReservationDateTime.DoctorPersonalBooking.Mobile
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 profile-stats">
+                                    <div class="row rowmt">
+                                        <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12  stats-col">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <span class="stats-value ">@Localizer["Reserve Date"] : @Model.DoctorReservationDate.ReservationDate.ToStringShamsiDate()</span>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    @if (Model.DoctorReservationDateTime.DoctorReservationType == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationType.Onile)
+                                                    {
+                                                        <span class="stats-value "> @Localizer["Type"] : @Localizer["Online"] </span>
+
+                                                    }
+                                                    @if (Model.DoctorReservationDateTime.DoctorReservationType == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationType.Reserved)
+                                                    {
+                                                        <span class="stats-value "> @Localizer["Type"] : @Localizer["In Persone"] </span>
+
+                                                    }
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12  stats-col">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    @Localizer["Start Time"]<span class="stats-value2 ">  @string.Concat(Model.DoctorReservationDateTime.StartTime.Reverse().Skip(3).Reverse()) </span>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    @Localizer["End Time"]<span class="stats-value2 "> @string.Concat(Model.DoctorReservationDateTime.EndTime.Reverse().Skip(3).Reverse()) </span>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="profile-body">
+                            <div class="col-lg-12">
+                                <div class="tabbable">
+
+                                    <div class="tab-content tabs-flat">
+
+                                        <div id="settings" class="tab-pane active">
+                                            <div class="form-title">
+                                                @Localizer["Patient Personal Informations"]
+                                            </div>
+                                            <div class="row">
+
+                                                <div class="col-sm-12">
+                                                    <div class="form-group">
+                                                        <span class="input-icon icon-right">
+                                                            @if (Model.DoctorReservationDateTime.DoctorPersonalBooking.LastName != null && Model.DoctorReservationDateTime.DoctorPersonalBooking.FirstName != null)
+                                                            {
+                                                                <input type="text" readonly class="form-control" value="@Model.DoctorReservationDateTime.DoctorPersonalBooking.FirstName @Model.DoctorReservationDateTime.DoctorPersonalBooking.LastName" placeholder="@Localizer["FullName"]">
+                                                            }
+                                                            else
+                                                            {
+                                                                <input type="text" class="form-control" placeholder="@Localizer["FullName"]">
+                                                            }
+                                                            <i class="fa fa-user orange"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <div class="form-group">
+                                                        <span class="input-icon icon-right">
+                                                            @if (Model.DoctorReservationDateTime.DoctorPersonalBooking.Mobile != null)
+                                                            {
+                                                                <input type="text" readonly class="form-control" value="@Model.DoctorReservationDateTime.DoctorPersonalBooking.Mobile" placeholder="@Localizer["Extra Phone"]">
+                                                            }
+                                                            else
+                                                            {
+                                                                <input type="text" class="form-control" placeholder="@Localizer["Extra Phone"]">
+                                                            }
+                                                            <i class="glyphicon glyphicon-earphone yellow"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr class="wide">
+                                            <div class="row">
+
+                                                <div class="col-sm-12">
+                                                    <div class="form-group">
+                                                        <span class="input-icon icon-right">
+                                                            @if (Model.DoctorReservationDateTime.DoctorPersonalBooking.NationalId != null)
+                                                            {
+                                                                <input type="text" readonly class="form-control" value="@Model.DoctorReservationDateTime.DoctorPersonalBooking.NationalId" placeholder="@Localizer["NationalId"]">
+                                                            }
+                                                            else
+                                                            {
+                                                                <input type="text" class="form-control" placeholder="@Localizer["NationalId"]">
+                                                            }                                                        <i class="fa fa-globe"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        }
+
+    </div>
+
+}
+
+else
+{
+    <div class="row">
 
     <div class="col-md-12">
         <dsiv class="profile-container">
@@ -438,4 +591,6 @@
     </div>
 
 </div>
+
+}
 

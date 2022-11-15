@@ -217,6 +217,8 @@ namespace DoctorFAM.Data.DbContext
 
         public DbSet<LogForCloseReservation> LogForCloseReservations { get; set; }
 
+        public DbSet<DoctorPersonalBooking> DoctorPersonalBooking { get; set; }
+
         #endregion
 
         #region Notification 

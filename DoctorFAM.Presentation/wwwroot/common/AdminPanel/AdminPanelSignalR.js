@@ -76,9 +76,9 @@ function GetSupporterNotification(notificationModel) {
     if (Notification.permission === "granted") {
         var notification = new Notification("اعلان جدید",
             {
-                icone: 'Content/images/Logo/doctorfamLogo-1.png',
+                icone: 'Site/Manifest/doctorfamLogo512.png',
                 body: notificationModel.notificationText,
-                image: 'Content/images/Logo/doctorfamLogo-1.png'
+                image: 'Site/Manifest/doctorfamLogo512.png'
             });
         notification.onclick = function () {
             window.open('http://doctorfam.com');
