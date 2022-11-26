@@ -331,6 +331,27 @@
         <li>
             <a href="#" class="menu-dropdown">
                 <i class="menu-icon  glyphicon glyphicon-th-large"></i>
+                <span class="menu-text">@SharedLocalizer["دسته بندی دانستنیهای سلامت"]</span>
+                <i class="menu-expand"></i>
+            </a>
+
+            <ul class="submenu">
+                <li>
+                    <a asp-action="ListOfVideFAMCategoryList" asp-controller="HealthInformation" asp-area="Admin">
+                        <span class="menu-text"> @SharedLocalizer["دسته بندی های ویدیوها"] </span>
+                    </a>
+                </li>
+                <li>
+                    <a asp-action="CreateMarketCategory" asp-controller="HealthInformation" asp-area="Admin">
+                        <span class="menu-text"> @SharedLocalizer["دسته بندی های پادکست ها"] </span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="#" class="menu-dropdown">
+                <i class="menu-icon  glyphicon glyphicon-th-large"></i>
                 <span class="menu-text">@SharedLocalizer["Manage Market Categories"]</span>
                 <i class="menu-expand"></i>
             </a>

@@ -37,6 +37,8 @@ namespace DoctorFAM.Domain.Entities.Languages
 
         public ICollection<TVFAMCategoryInfo> TVFAMCategoryInfo { get; set; }
 
+        public ICollection<RadioFAMCategoryInfo> RadioFAMCategoryInfos { get; set; }
+
         #endregion
     }
 }
