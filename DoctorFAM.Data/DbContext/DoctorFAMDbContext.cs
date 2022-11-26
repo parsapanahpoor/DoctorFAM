@@ -10,6 +10,7 @@ using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.FamilyDoctor;
 using DoctorFAM.Domain.Entities.FamilyDoctor.ParsaSystem;
 using DoctorFAM.Domain.Entities.FamilyDoctor.VIPSystem;
+using DoctorFAM.Domain.Entities.HealthInformation;
 using DoctorFAM.Domain.Entities.Interest;
 using DoctorFAM.Domain.Entities.Laboratory;
 using DoctorFAM.Domain.Entities.Languages;
@@ -290,6 +291,14 @@ namespace DoctorFAM.Data.DbContext
         public DbSet<Laboratory> Laboratory { get; set; }
 
         public DbSet<LaboratoryInfo> LaboratoryInfos { get; set; }
+
+        #endregion
+
+        #region Health Information 
+
+        public DbSet<TVFAMCategory> TVFAMCategories { get; set; }
+
+        public DbSet<TVFAMCategoryInfo> TVFAMCategoryInfos { get; set; }
 
         #endregion
 

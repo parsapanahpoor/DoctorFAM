@@ -166,7 +166,7 @@
     <value>تنظیمات</value>
   </data>
   <data name="Profile" xml:space="preserve">
-    <value>پروفایل</value>
+    <value>اطلاعات کاربری (پروفایل)</value>
   </data>
   <data name="Ok" xml:space="preserve">
     <value>تایید</value>
@@ -256,16 +256,16 @@
     <value>ویرایش اطلاعات کاربری</value>
   </data>
   <data name="Add Household" xml:space="preserve">
-    <value>افزودن خانوار</value>
+    <value>افزودن افراد زیر مجموعه</value>
   </data>
   <data name="Manage Population Covered" xml:space="preserve">
     <value>مدیریت جمعیت تحت پوشش</value>
   </data>
   <data name="Family Members" xml:space="preserve">
-    <value>اعضای خانوار</value>
+    <value>افراد زیر مجموعه</value>
   </data>
   <data name="Family Members List" xml:space="preserve">
-    <value>لیست اعضای خانوار</value>
+    <value>لیست افراد زیر مجموعه</value>
   </data>
   <data name="Doctor Info" xml:space="preserve">
     <value>اطلاعات پزشک</value>
@@ -343,7 +343,7 @@
     <value>داروخانه در منزل</value>
   </data>
   <data name="Doctor Family" xml:space="preserve">
-    <value>پزشک خانواده من </value>
+    <value>پزشک من </value>
   </data>
   <data name="Favorite activities" xml:space="preserve">
     <value>فعالیت های انتخابی شما</value>
@@ -424,10 +424,10 @@
     <value>لیست نوبت دهی </value>
   </data>
   <data name="Manage Reservation" xml:space="preserve">
-    <value>نوبتهای اخذ شده</value>
+    <value>مدیریت اخذ نوبت</value>
   </data>
   <data name="List Of Futur Reservation" xml:space="preserve">
-    <value>لیست نوبت های گرفته شده</value>
+    <value>لیست نوبت های اخذ شده</value>
   </data>
   <data name="List Of Closed Reservations" xml:space="preserve">
     <value>لیست نوبت های لغو شده </value>
@@ -493,7 +493,7 @@
     <value>نمایه های سلامت</value>
   </data>
   <data name="List Of Yours Requests" xml:space="preserve">
-    <value>درخواست های دریافتی شما</value>
+    <value>درخواست های دریافتی </value>
   </data>
   <data name="To choose a family doctor, you must specify the address of your practice or activity in the doctor's information section." xml:space="preserve">
     <value>برای انتخاب پزشک خانواده باید در قسمت اطلاعات پزشک آدرس مطب یا فعالیت خود را تعیین کنید.</value>
@@ -550,7 +550,7 @@
     <value>لیست آخرین درخواست ها</value>
   </data>
   <data name="List Of Your Online Visit" xml:space="preserve">
-    <value>لیست درخواست های شما</value>
+    <value>لیست درخواست ها </value>
   </data>
   <data name="Create Ticket" xml:space="preserve">
     <value>ایجاد تیکت ها </value>
@@ -583,7 +583,7 @@
     <value>ساعت</value>
   </data>
   <data name="List Of Home Nurse Requests" xml:space="preserve">
-    <value>لیست درخواست های پرستار در منزل شما </value>
+    <value>لیست درخواست های پرستار در منزل </value>
   </data>
   <data name="Consultant Info" xml:space="preserve">
     <value>اطلاعات کاربری</value>
@@ -613,13 +613,13 @@
     <value>لیست درخواست ها</value>
   </data>
   <data name="List Of Your Home Visit" xml:space="preserve">
-    <value>درخواست های تایید شده شما</value>
+    <value>درخواست های تایید شده </value>
   </data>
   <data name="List Of Death Certificate" xml:space="preserve">
     <value>درخواست های صدورگواهی فوت</value>
   </data>
   <data name="List Of Your Death Certificate" xml:space="preserve">
-    <value>درخواست های تاییدی شما </value>
+    <value>درخواست های تاییدی </value>
   </data>
   <data name="Your Age" xml:space="preserve">
     <value>سن شما</value>
@@ -649,7 +649,7 @@
     <value>آپلود فایل اکسل</value>
   </data>
   <data name="List Of Your Users" xml:space="preserve">
-    <value>اطلاعات سامانه ی پارسای شما</value>
+    <value>اطلاعات آپلودی </value>
   </data>
   <data name="Parsa System" xml:space="preserve">
     <value>سامانه ی پارسا </value>
@@ -703,9 +703,9 @@
     <value>لیست تراکنش ها</value>
   </data>
   <data name="Manage Wallet" xml:space="preserve">
-    <value>مدیریت تراکنش های شما</value>
+    <value>مدیریت مالی</value>
   </data>
-  <data name="Not Exist Patient" xml:space="preserve">
-    <value>لیست بیماران ناموجود</value>
+  <data name="List Of Get Reservation Date" xml:space="preserve">
+    <value>لیست نوبتها</value>
   </data>
 </root>

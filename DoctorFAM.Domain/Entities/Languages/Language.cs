@@ -1,4 +1,5 @@
-﻿using DoctorFAM.Domain.Entities.Interest;
+﻿using DoctorFAM.Domain.Entities.HealthInformation;
+using DoctorFAM.Domain.Entities.Interest;
 using DoctorFAM.Domain.Entities.MarketCategory;
 using DoctorFAM.Domain.Entities.SiteSetting;
 using DoctorFAM.Domain.Entities.States;
@@ -33,6 +34,8 @@ namespace DoctorFAM.Domain.Entities.Languages
         public ICollection<DoctorsInterestInfo> InterestInfos { get; set; }
 
         public ICollection<PharmacyInterestInfo> PharmacyInterests { get; set; }
+
+        public ICollection<TVFAMCategoryInfo> TVFAMCategoryInfo { get; set; }
 
         #endregion
     }
