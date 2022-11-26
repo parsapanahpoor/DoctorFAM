@@ -1,6 +1,8 @@
 ﻿using AngleSharp.Css;
 using CRM.Web.Areas.Admin.Controllers;
 using DoctorFAM.Application.Services.Interfaces;
+using DoctorFAM.Domain.Entities.HealthInformation;
+using DoctorFAM.Domain.ViewModels.Admin.HealthInformation.RadioFAM.Category;
 using DoctorFAM.Domain.ViewModels.Admin.HealthInformation.TVFAM.Category;
 using DoctorFAM.Web.HttpManager;
 using Microsoft.AspNetCore.Mvc;
@@ -215,6 +217,190 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
         #endregion
 
         #region Radio FAM 
+
+        #region Radio FAM CAtegory
+
+        #region List Of Radio FAM Category
+
+        public async Task<IActionResult> ListOfRadioFAMCategoryList(FilterRadioFAMCategoryViewModel filter)
+        {
+            return View(await _healthInformationService.FilterRadioFAMCategory(filter));
+        }
+
+        #endregion
+
+        #region Create Video FAM Category
+
+        [HttpGet]
+        public async Task<IActionResult> CreateRadioFAMCategory(ulong? parentId)
+        {
+            #region Send Category View Bag
+
+            ViewBag.parentId = parentId;
+
+            if (parentId != null)
+            {
+                ViewBag.parentCategory = await _healthInformationService.GetRadioFAMCategoryByHealthInformationCategoryId(parentId.Value);
+            }
+
+            #endregion
+
+            return View();
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateRadioFAMCategory(CreateRadioFAMCategoryViewModel model)
+        {
+            #region Model State
+
+            if (!ModelState.IsValid)
+            {
+                #region Send Category View Bag
+
+                ViewBag.parentId = model.ParentId;
+
+                if (model.ParentId != null)
+                {
+                    ViewBag.parentCategory = await _healthInformationService.GetRadioFAMCategoryByHealthInformationCategoryId(model.ParentId.Value);
+                }
+
+                #endregion
+
+                return View(model);
+            }
+
+            #endregion
+
+            #region Add Location 
+
+            var result = await _healthInformationService.CreateRadioFAMCategory(model);
+
+            switch (result)
+            {
+                case CreateRadioFAMCategoryResult.Success:
+                    TempData[SuccessMessage] = "عملیات با موفقیت انجام شده است .";
+                    if (model.ParentId.HasValue)
+                    {
+                        return RedirectToAction("ListOfRadioFAMCategoryList", new { ParentId = model.ParentId.Value });
+                    }
+                    return RedirectToAction("ListOfRadioFAMCategoryList");
+
+                case CreateRadioFAMCategoryResult.UniqNameIsExist:
+                    TempData[ErrorMessage] = "عنوان انتخاب شده تکراری است .";
+                    break;
+
+                case CreateRadioFAMCategoryResult.Fail:
+                    TempData[ErrorMessage] = "عملیات با شکست مواجه شده است .";
+                    break;
+            }
+
+            #region Send Category View Bag
+
+            ViewBag.parentId = model.ParentId;
+
+            if (model.ParentId != null)
+            {
+                ViewBag.parentCategory = await _healthInformationService.GetRadioFAMCategoryByHealthInformationCategoryId(model.ParentId.Value);
+            }
+
+            #endregion
+
+            return View(model);
+
+            #endregion
+        }
+
+        #endregion
+
+        #region Edit Radio FAM Category 
+
+        [HttpGet]
+        public async Task<IActionResult> EditRadioFAMCategory(ulong? radioFAMCategoryId)
+        {
+            #region Get Radio FAM Category 
+
+            if (radioFAMCategoryId == null) return NotFound();
+
+            var result = await _healthInformationService.FillRadioFAMCategoryViewModel(radioFAMCategoryId.Value);
+
+            if (result == null) return NotFound();
+
+            #endregion
+
+            return View(result);
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditRadioFAMCategory(EditRadioFAMCategoryViewModel radioFAMCategory)
+        {
+            #region Is Exist Tv FAM Category By Id
+
+            if (radioFAMCategory.Id == null) return NotFound();
+
+            var model = await _healthInformationService.FillRadioFAMCategoryViewModel(radioFAMCategory.Id);
+
+            if (model == null) return NotFound();
+
+            #endregion
+
+            #region Model State Validation
+
+            if (!ModelState.IsValid)
+            {
+                TempData[ErrorMessage] = "اطلاعات وارد شده مورد تایید نمی باشد.";
+
+                return View(model);
+            }
+
+            #endregion
+
+            #region Edit Tv FAM Category
+
+            var result = await _healthInformationService.EditService(radioFAMCategory);
+
+            switch (result)
+            {
+                case EditRadioFAMCategoryResult.Success:
+                    TempData[SuccessMessage] = "عملیات با موفقیت انجام شده است.";
+                    if (radioFAMCategory.ParentId.HasValue)
+                    {
+                        return RedirectToAction("ListOfRadioFAMCategoryList", new { ParentId = radioFAMCategory.ParentId.Value });
+                    }
+                    return RedirectToAction("ListOfRadioFAMCategoryList");
+
+                case EditRadioFAMCategoryResult.UniqNameIsExist:
+                    TempData[ErrorMessage] = "عنوان وارد شده تکراری است .";
+                    break;
+
+                case EditRadioFAMCategoryResult.Fail:
+                    TempData[ErrorMessage] = "عملیات باشکست مواجه شده است.";
+                    break;
+            }
+
+            return View(model);
+
+            #endregion
+        }
+
+        #endregion
+
+        #region Delete Radio FAM Category 
+
+        public async Task<IActionResult> DeleteRadioFAMCategegory(ulong id)
+        {
+            var result = await _healthInformationService.DeleteRadioFAMCategory(id);
+
+            if (result)
+            {
+                return ApiResponse.SetResponse(ApiResponseStatus.Success, null, _localizer["Mission Accomplished"].Value);
+            }
+
+            return ApiResponse.SetResponse(ApiResponseStatus.Danger, null, _localizer["The operation failed"].Value);
+        }
+
+        #endregion
+
+        #endregion
 
         #endregion
     }

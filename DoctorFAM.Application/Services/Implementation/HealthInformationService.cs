@@ -4,6 +4,7 @@ using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Application.StaticTools;
 using DoctorFAM.Domain.Entities.HealthInformation;
 using DoctorFAM.Domain.Interfaces.EFCore;
+using DoctorFAM.Domain.ViewModels.Admin.HealthInformation.RadioFAM.Category;
 using DoctorFAM.Domain.ViewModels.Admin.HealthInformation.TVFAM.Category;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -211,7 +212,173 @@ namespace DoctorFAM.Application.Services.Implementation
 
         #region Category 
 
+        #region Admin Side 
 
+        //Get Radio FAM Category By Health Information Category Id 
+        public async Task<RadioFAMCategory?> GetRadioFAMCategoryByHealthInformationCategoryId(ulong RadioFAMCategoryId)
+        {
+            return await _healthinformationRepository.GetRadioFAMCategoryByHealthInformationCategoryId(RadioFAMCategoryId);
+        }
+
+        //Create Radio FAM Category 
+        public async Task<CreateRadioFAMCategoryResult> CreateRadioFAMCategory(CreateRadioFAMCategoryViewModel model)
+        {
+            #region Is Exist Radio FAM Category By Unique Name
+
+            if (await _healthinformationRepository.IsExistRadioFAMCategoryByUniqueName(model.UniqueName))
+            {
+                return CreateRadioFAMCategoryResult.UniqNameIsExist;
+            }
+
+            #endregion
+
+            #region Add Radio FAM Category
+
+            var mainRadioFAMCategory = new RadioFAMCategory()
+            {
+                UniqueName = model.UniqueName.SanitizeText(),
+                IsDelete = false,
+                IsActive = true
+            };
+
+            if (model.ParentId != null && model.ParentId != 0)
+            {
+                if (await _healthinformationRepository.IsExistRadioFAMCategoryById(model.ParentId.Value))
+                {
+                    mainRadioFAMCategory.ParentId = model.ParentId;
+                }
+                else
+                {
+                    return CreateRadioFAMCategoryResult.Fail;
+                }
+            }
+
+            var RadioFAMCategoryId = await _healthinformationRepository.AddRadioFAMCategory(mainRadioFAMCategory);
+
+            #endregion
+
+            #region Add Radio FAM Category Info
+
+            var RadioFAMCategoryInfo = new List<RadioFAMCategoryInfo>();
+
+            foreach (var culture in model.RadioFAMCategoryInfos)
+            {
+                var RadioFAMCategoryInfos = new RadioFAMCategoryInfo
+                {
+                    RadioFAMCategoryId = RadioFAMCategoryId,
+                    LanguageId = culture.Culture,
+                    Title = culture.Title.SanitizeText(),
+                    CreateDate = DateTime.Now,
+                };
+
+                RadioFAMCategoryInfo.Add(RadioFAMCategoryInfos);
+            }
+
+            await _healthinformationRepository.AddRadioFAMCategoryInfo(RadioFAMCategoryInfo);
+
+            #endregion
+
+            return CreateRadioFAMCategoryResult.Success;
+        }
+
+        //Fill Edit Radio FAM Category Info
+        public async Task<EditRadioFAMCategoryViewModel?> FillRadioFAMCategoryViewModel(ulong RadioFAMCategoryId)
+        {
+            return await _healthinformationRepository.FillRadioFAMCategoryViewModel(RadioFAMCategoryId);
+        }
+
+        //Get Radio FAM Category By Radio FAM Category Id 
+        public async Task<RadioFAMCategory?> GetRadioFAMCategoryById(ulong seRadioFAMCategoryId)
+        {
+            return await _healthinformationRepository.GetRadioFAMCategoryById(seRadioFAMCategoryId);
+        }
+
+        //Edit Radio FAM Category
+        public async Task<EditRadioFAMCategoryResult> EditService(EditRadioFAMCategoryViewModel RadioFAMCategory)
+        {
+            #region Get Radio FAM Category By Id
+
+            var RadioFAMCat = await _healthinformationRepository.GetRadioFAMCategoryById(RadioFAMCategory.Id);
+
+            if (RadioFAMCat == null) return EditRadioFAMCategoryResult.Fail;
+
+            #endregion
+
+            #region Is Exist Radio FAM Category By Unique Name
+
+            if (RadioFAMCat.UniqueName != RadioFAMCategory.UniqueName)
+            {
+                if (await _healthinformationRepository.IsExistRadioFAMCategoryByUniqueName(RadioFAMCategory.UniqueName))
+                {
+                    return EditRadioFAMCategoryResult.UniqNameIsExist;
+                }
+            }
+
+            #endregion
+
+            #region Is Exist Radio FAM Category By Parent Id
+
+            if (RadioFAMCategory.ParentId != null && RadioFAMCategory.ParentId != 0)
+            {
+                if (!await _healthinformationRepository.IsExistRadioFAMCategoryById(RadioFAMCategory.ParentId.Value))
+                {
+                    return EditRadioFAMCategoryResult.Fail;
+                }
+            }
+
+            #endregion
+
+            #region Update Radio FAM Category
+
+            RadioFAMCat.UniqueName = RadioFAMCategory.UniqueName.SanitizeText();
+            RadioFAMCat.IsActive = true;
+
+            _healthinformationRepository.UpdateRadioFAMCategory(RadioFAMCat);
+
+            #endregion
+
+            #region Radio FAM Info 
+
+            foreach (var RadioFAMCategoryInfo in RadioFAMCat.RadioFAMCategoryInfos)
+            {
+                var updatedInfo = RadioFAMCategory.RadioFAMCategoryInfos.FirstOrDefault(p => p.Culture == RadioFAMCategoryInfo.LanguageId);
+
+                if (updatedInfo != null)
+                {
+                    RadioFAMCategoryInfo.Title = updatedInfo.Title.SanitizeText();
+                }
+
+                _healthinformationRepository.UpdateRadioFAMCategoryInfo(RadioFAMCategoryInfo);
+            }
+
+            await _healthinformationRepository.SaveChanges();
+
+            #endregion
+
+            return EditRadioFAMCategoryResult.Success;
+        }
+
+        //Delete Radio FAM Category
+        public async Task<bool> DeleteRadioFAMCategory(ulong RadioFAMCategoryId)
+        {
+            //Get Radio FAM Category By Id
+            var serviceCategory = await _healthinformationRepository.GetRadioFAMCategoryById(RadioFAMCategoryId);
+
+            if (serviceCategory == null) return false;
+
+            //Delete Radio FAM And Radio FAM Category Info
+            await _healthinformationRepository.DeleteServiceCategory(serviceCategory);
+
+            return true;
+        }
+
+        //List Of Radio FAM Category 
+        public async Task<FilterRadioFAMCategoryViewModel> FilterRadioFAMCategory(FilterRadioFAMCategoryViewModel filter)
+        {
+            return await _healthinformationRepository.FilterRadioFAMCategory(filter);
+        }
+
+        #endregion
 
         #endregion
 

@@ -300,6 +300,10 @@ namespace DoctorFAM.Data.DbContext
 
         public DbSet<TVFAMCategoryInfo> TVFAMCategoryInfos { get; set; }
 
+        public DbSet<RadioFAMCategory> RadioFAMCategories { get; set; }
+
+        public DbSet<RadioFAMCategoryInfo> RadioFAMCategoryInfos { get; set; }
+
         #endregion
 
         #endregion
@@ -546,6 +550,8 @@ namespace DoctorFAM.Data.DbContext
             modelBuilder.Entity<PharmacyInterestInfo>().HasQueryFilter(e => e.LanguageId == culture);
 
             modelBuilder.Entity<TVFAMCategoryInfo>().HasQueryFilter(e => e.LanguageId == culture);
+
+            modelBuilder.Entity<RadioFAMCategoryInfo>().HasQueryFilter(e => e.LanguageId == culture);
 
             #endregion
 

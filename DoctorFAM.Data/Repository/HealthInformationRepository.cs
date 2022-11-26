@@ -2,6 +2,7 @@
 using DoctorFAM.Domain.Entities.HealthInformation;
 using DoctorFAM.Domain.Entities.MarketCategory;
 using DoctorFAM.Domain.Interfaces.EFCore;
+using DoctorFAM.Domain.ViewModels.Admin.HealthInformation.RadioFAM.Category;
 using DoctorFAM.Domain.ViewModels.Admin.HealthInformation.TVFAM.Category;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -212,7 +213,170 @@ namespace DoctorFAM.Data.Repository
 
         #region Category 
 
+        #region Admin Side 
 
+        //List Of Radio FAM Category 
+        public async Task<FilterRadioFAMCategoryViewModel> FilterRadioFAMCategory(FilterRadioFAMCategoryViewModel filter)
+        {
+            var query = _context.RadioFAMCategoryInfos
+               .Include(a => a.RadioFAMCategory)
+               .ThenInclude(p => p.Parent)
+               .OrderByDescending(s => s.CreateDate)
+               .AsQueryable();
+
+            #region Filter
+
+            if (!string.IsNullOrEmpty(filter.UniqueName))
+            {
+                query = query.Where(s => EF.Functions.Like(s.RadioFAMCategory.UniqueName, $"%{filter.UniqueName}%"));
+            }
+
+            if (!string.IsNullOrEmpty(filter.Title))
+            {
+                query = query.Where(s => EF.Functions.Like(s.Title, $"%{filter.Title}%"));
+            }
+
+            if (filter.ParentId != null)
+            {
+                query = query.Where(a => a.RadioFAMCategory.ParentId == filter.ParentId);
+                filter.ParentRadioFAMCategory = await _context.RadioFAMCategories.FirstOrDefaultAsync(a => a.Id == filter.ParentId);
+            }
+            else
+            {
+                query = query.Where(a => a.RadioFAMCategory.ParentId == null);
+            }
+
+            #endregion
+
+            await filter.Paging(query);
+
+            return filter;
+        }
+
+        //Get Health Information Category By Health Information Category Id 
+        public async Task<RadioFAMCategory?> GetRadioFAMCategoryByHealthInformationCategoryId(ulong RadioFAMCategoryId)
+        {
+            return await _context.RadioFAMCategories.Include(p => p.RadioFAMCategoryInfos)
+                                    .FirstOrDefaultAsync(s => !s.IsDelete && s.Id == RadioFAMCategoryId);
+        }
+
+        //Is Exist Radio FAM Category By Unique Name
+        public async Task<bool> IsExistRadioFAMCategoryByUniqueName(string uniqueName)
+        {
+            return await _context.RadioFAMCategories.AnyAsync(p => p.UniqueName == uniqueName && !p.IsDelete);
+        }
+
+        //Is Exist Any Radio FAM Category By Id 
+        public async Task<bool> IsExistRadioFAMCategoryById(ulong RadioFAMCategoryId)
+        {
+            return await _context.RadioFAMCategories.AnyAsync(p => p.Id == RadioFAMCategoryId && !p.IsDelete);
+        }
+
+        //Add Radio FAM Categories
+        public async Task<ulong> AddRadioFAMCategory(RadioFAMCategory RadioFAMCategory)
+        {
+            #region Add Radio FAM Categroy
+
+            await _context.RadioFAMCategories.AddAsync(RadioFAMCategory);
+            await _context.SaveChangesAsync();
+
+            #endregion
+
+            return RadioFAMCategory.Id;
+        }
+
+        //Add Radio FAM Category Info
+        public async Task AddRadioFAMCategoryInfo(List<RadioFAMCategoryInfo> RadioFAMCategoryInfos)
+        {
+            await _context.RadioFAMCategoryInfos.AddRangeAsync(RadioFAMCategoryInfos);
+            await _context.SaveChangesAsync();
+        }
+
+        //Fill Edit Radio FAM Category Info
+        public async Task<EditRadioFAMCategoryViewModel?> FillRadioFAMCategoryViewModel(ulong RadioFAMCategoryId)
+        {
+            return await _context.RadioFAMCategories
+                            .Include(p => p.RadioFAMCategoryInfos)
+                            .Where(p => p.Id == RadioFAMCategoryId && !p.IsDelete).Select(p => new EditRadioFAMCategoryViewModel()
+                            {
+                                Id = p.Id,
+                                UniqueName = p.UniqueName,
+                                ParentId = p.ParentId,
+                                CurrentInfos = p.RadioFAMCategoryInfos.AsQueryable().IgnoreQueryFilters().ToList(),
+                            }).FirstOrDefaultAsync();
+        }
+
+        //Get Radio FAM Category By Radio FAM Category Id 
+        public async Task<RadioFAMCategory?> GetRadioFAMCategoryById(ulong seRadioFAMCategoryId)
+        {
+            return await _context.RadioFAMCategories.Include(p => p.RadioFAMCategoryInfos)
+                                    .FirstOrDefaultAsync(s => !s.IsDelete && s.Id == seRadioFAMCategoryId);
+        }
+
+        //Update Radio FAM Category
+        public void UpdateRadioFAMCategory(RadioFAMCategory RadioFAMCategory)
+        {
+            _context.RadioFAMCategories.Update(RadioFAMCategory);
+        }
+
+        //Update Radio FAM Category Info
+        public void UpdateRadioFAMCategoryInfo(RadioFAMCategoryInfo RadioFAMCategoryInfo)
+        {
+            _context.RadioFAMCategoryInfos.Update(RadioFAMCategoryInfo);
+        }
+
+        //Delete Radio FAM Category Info
+        public async Task DeleteRadioFAMCategoryInfo(ulong RadioFAMCategoryId)
+        {
+            var RadioFAMCategoryInfo = await _context.RadioFAMCategoryInfos.Where(p => p.RadioFAMCategoryId == RadioFAMCategoryId).IgnoreQueryFilters().ToListAsync();
+
+            if (RadioFAMCategoryInfo != null && RadioFAMCategoryInfo.Any())
+            {
+                foreach (var item in RadioFAMCategoryInfo)
+                {
+                    _context.RadioFAMCategoryInfos.Remove(item);
+                }
+            }
+        }
+
+        //Get Childs Of Radio FAM Category By Parent ID
+        public async Task<List<RadioFAMCategory>> GetChildRadioFAMCategoryByParentId(ulong parentId)
+        {
+            return await _context.RadioFAMCategories.Where(p => !p.IsDelete && p.ParentId == parentId).ToListAsync();
+        }
+
+        //Delete RadioFAM Category And RadioFAM Category Info
+        public async Task DeleteServiceCategory(RadioFAMCategory RadioFAMCategory)
+        {
+            //Delete First Part Of Categories
+            RadioFAMCategory.IsDelete = true;
+            _context.RadioFAMCategories.Update(RadioFAMCategory);
+
+            //Delete First PartOf Category Info
+            await DeleteRadioFAMCategoryInfo(RadioFAMCategory.Id);
+
+            //Get Seconde Part Of Category Info
+            var secondePartOfChild = await GetChildRadioFAMCategoryByParentId(RadioFAMCategory.Id);
+
+            if (secondePartOfChild != null && secondePartOfChild.Any())
+            {
+                foreach (var item in secondePartOfChild)
+                {
+                    //Delete Seconde PartOf Category Info
+                    item.IsDelete = true;
+                    _context.RadioFAMCategories.Update(item);
+
+                    //Delete Seconde PartOf Category Info
+                    await DeleteRadioFAMCategoryInfo(item.Id);
+
+                }
+            }
+
+            await _context.SaveChangesAsync();
+
+        }
+
+        #endregion
 
         #endregion
 

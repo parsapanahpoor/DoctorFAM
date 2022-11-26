@@ -1,4 +1,5 @@
 ﻿using DoctorFAM.Domain.Entities.HealthInformation;
+using DoctorFAM.Domain.ViewModels.Admin.HealthInformation.RadioFAM.Category;
 using DoctorFAM.Domain.ViewModels.Admin.HealthInformation.TVFAM.Category;
 using System;
 using System.Collections.Generic;
@@ -51,7 +52,30 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         #region Category 
 
+        #region Admin Side 
 
+        //Get Radio FAM Category By Health Information Category Id 
+        Task<RadioFAMCategory?> GetRadioFAMCategoryByHealthInformationCategoryId(ulong RadioFAMCategoryId);
+
+        //Create Radio FAM Category 
+        Task<CreateRadioFAMCategoryResult> CreateRadioFAMCategory(CreateRadioFAMCategoryViewModel model);
+
+        //Fill Edit Radio FAM Category Info
+        Task<EditRadioFAMCategoryViewModel?> FillRadioFAMCategoryViewModel(ulong RadioFAMCategoryId);
+
+        //Get Radio FAM Category By Radio FAM Category Id 
+        Task<RadioFAMCategory?> GetRadioFAMCategoryById(ulong seRadioFAMCategoryId);
+
+        //Edit Radio FAM Category
+        Task<EditRadioFAMCategoryResult> EditService(EditRadioFAMCategoryViewModel RadioFAMCategory);
+
+        //Delete Radio FAM Category
+        Task<bool> DeleteRadioFAMCategory(ulong RadioFAMCategoryId);
+
+        //List Of Radio FAM Category 
+        Task<FilterRadioFAMCategoryViewModel> FilterRadioFAMCategory(FilterRadioFAMCategoryViewModel filter);
+
+        #endregion
 
         #endregion
 

@@ -1,9 +1,9 @@
-﻿@model DoctorFAM.Domain.ViewModels.Admin.HealthInformation.TVFAM.Category.FilterTVFAMCategoryViewModel
+﻿@model DoctorFAM.Domain.ViewModels.Admin.HealthInformation.RadioFAM.Category.FilterRadioFAMCategoryViewModel
 @inject IViewLocalizer Localizer
 @inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
 
 @{
-    ViewData["Title"] = "لیست دسته بندی های ویدیو";
+    ViewData["Title"] = "لیست دسته بندی های پادکست";
 }
 
 @section Scripts
@@ -20,29 +20,29 @@
 
 <div class="row">
     <div class="col-lg-3 col-sm-12">
-        @if (Model != null && Model.ParentTVFAMCategory != null)
+        @if (Model != null && Model.ParentRadioFAMCategory != null)
         {
-            <a class="btn btn-sky w-100 margin-bottom-10" asp-route-ParentId="@Model.ParentTVFAMCategory.Id" asp-action="CreateVideoFAMCategory" asp-controller="HealthInformation" asp-area="Admin"> افزودن دسته بندی جدید برای @Model.ParentTVFAMCategory.UniqueName</a>
+            <a class="btn btn-sky w-100 margin-bottom-10" asp-route-ParentId="@Model.ParentRadioFAMCategory.Id" asp-action="CreateRadioFAMCategory" asp-controller="HealthInformation" asp-area="Admin"> افزودن دسته بندی جدید برای @Model.ParentRadioFAMCategory.UniqueName</a>
         }
         else
         {
-            <a class="btn btn-sky w-100 margin-bottom-10" asp-action="CreateVideoFAMCategory" asp-controller="HealthInformation" asp-area="Admin">افزودن دسته بندی</a>
+            <a class="btn btn-sky w-100 margin-bottom-10" asp-action="CreateRadioFAMCategory" asp-controller="HealthInformation" asp-area="Admin">افزودن دسته بندی</a>
         }
         <div class="widget">
             <div class="widget-header bordered-bottom bordered-green">
                 @if (Model.ParentId != null)
                 {
-                    <span class="widget-caption"> فیلتر دسته بندی ویدیو ها @Model.ParentTVFAMCategory.UniqueName </span>
+                    <span class="widget-caption"> فیلتر دسته بندی پادکست ها @Model.ParentRadioFAMCategory.UniqueName </span>
                 }
                 else
                 {
-                    <span class="widget-caption"> فیلتر دسته بندی ویدیو ها </span>
+                    <span class="widget-caption"> فیلتر دسته بندی پادکست ها </span>
                 }
 
             </div>
             <div class="widget-body">
                 <div>
-                    <form asp-action="ListOfVideFAMCategoryList" asp-controller="HealthInformation" asp-area="Admin" id="filter-search" method="get">
+                    <form asp-action="ListOfRadioFAMCategoryList" asp-controller="HealthInformation" asp-area="Admin" id="filter-search" method="get">
                         <input type="hidden" asp-for="ParentId" />
                         <input type="hidden" asp-for="Page" /> 
 
@@ -66,15 +66,15 @@
 
                                 @if (Context.Request.QueryString.HasValue)
                                 {
-                                    @if (Model.ParentTVFAMCategory != null)
+                                    @if (Model.ParentRadioFAMCategory != null)
                                     {
-                                        <a asp-area="Admin" asp-action="ListOfVideFAMCategoryList" asp-controller="HealthInformation" asp-route-ParentId="@Model.ParentId" class="btn btn-labeled w-100 btn-darkorange">
+                                        <a asp-area="Admin" asp-action="ListOfRadioFAMCategoryList" asp-controller="HealthInformation" asp-route-ParentId="@Model.ParentId" class="btn btn-labeled w-100 btn-darkorange">
                                             <i class="btn-label glyphicon glyphicon-remove"></i>حذف فیلتر
                                         </a>
                                     }
                                     else
                                     {
-                                        <a asp-area="Admin" asp-action="ListOfVideFAMCategoryList" asp-controller="HealthInformation" class="btn btn-labeled w-100 btn-darkorange ">
+                                        <a asp-area="Admin" asp-action="ListOfRadioFAMCategoryList" asp-controller="HealthInformation" class="btn btn-labeled w-100 btn-darkorange ">
                                             <i class="btn-label glyphicon glyphicon-remove"></i>حذف فیلتر
                                         </a>
                                     }
@@ -92,13 +92,13 @@
         <div class="well with-header with-footer table-responsive">
             <div class="header bordered-azure">
                 <div class="flex-style">
-                    @if (Model.ParentTVFAMCategory != null)
+                    @if (Model.ParentRadioFAMCategory != null)
                     {
-                        <span class="widget-caption"> لیست دسته بندی های ویدیو ها @Model.ParentTVFAMCategory.UniqueName </span>
+                        <span class="widget-caption"> لیست دسته بندی های پادکست ها @Model.ParentRadioFAMCategory.UniqueName </span>
                     }
                     else
                     {
-                        <span> لیست دسته بندی های ویدیو ها </span>
+                        <span> لیست دسته بندی های پادکست ها </span>
                     }
 
                     <span>@Model.GetShownEntitiesPagesTitle()</span>
@@ -126,22 +126,22 @@
                         {
                             <tr class="tc vm" remove-ajax-item="@serviceCategory.Id">
                                 <td class="tc vm" style="max-width: 200px">
-                                    <p> @serviceCategory.TVFAMCategory.UniqueName </p>
+                                    <p> @serviceCategory.RadioFAMCategory.UniqueName </p>
                                 </td>
                                 <td class="tc vm">
                                     <p> @serviceCategory.Title </p>
                                 </td>
                                 <td class="tc vm">
-                                    @if (serviceCategory.TVFAMCategory.Parent != null && serviceCategory.TVFAMCategory.ParentId.HasValue && !serviceCategory.TVFAMCategory.Parent.ParentId.HasValue)
+                                    @if (serviceCategory.RadioFAMCategory.Parent != null && serviceCategory.RadioFAMCategory.ParentId.HasValue && !serviceCategory.RadioFAMCategory.Parent.ParentId.HasValue)
                                     {
 
                                     }
                                     else
                                     {
-                                        <a asp-action="ListOfVideFAMCategoryList" asp-controller="HealthInformation" asp-area="Admin" asp-route-ParentId="@serviceCategory.TVFAMCategory.Id" class="btn btn-primary btn-circle btn-xs"><i class="glyphicon glyphicon-list"></i></a>
+                                        <a asp-action="ListOfRadioFAMCategoryList" asp-controller="HealthInformation" asp-area="Admin" asp-route-ParentId="@serviceCategory.RadioFAMCategory.Id" class="btn btn-primary btn-circle btn-xs"><i class="glyphicon glyphicon-list"></i></a>
                                     }
-                                    <a asp-action="EditVideFAMCategory" asp-controller="HealthInformation" asp-area="Admin" asp-route-tvFAMCategoryId="@serviceCategory.TVFAMCategory.Id" class="btn btn-warning btn-circle btn-xs"><i class="glyphicon glyphicon-edit"></i></a>
-                                    <button onclick="DeleteAjax(@serviceCategory.Id, '@Url.Action("DeleteVideFAMCategegory", "HealthInformation", new {area = "Admin", id = serviceCategory.TVFAMCategory.Id})')" class="btn btn-danger btn-circle btn-xs"><i class="glyphicon glyphicon-trash"></i></button>
+                                    <a asp-action="EditRadioFAMCategory" asp-controller="HealthInformation" asp-area="Admin" asp-route-RadioFAMCategoryId="@serviceCategory.RadioFAMCategory.Id" class="btn btn-warning btn-circle btn-xs"><i class="glyphicon glyphicon-edit"></i></a>
+                                    <button onclick="DeleteAjax(@serviceCategory.Id, '@Url.Action("DeleteRadioFAMCategegory", "HealthInformation", new {area = "Admin", id = serviceCategory.RadioFAMCategory.Id})')" class="btn btn-danger btn-circle btn-xs"><i class="glyphicon glyphicon-trash"></i></button>
                                 </td>
                             </tr>
                         }

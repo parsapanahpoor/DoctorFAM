@@ -1,5 +1,7 @@
 ﻿using DoctorFAM.Domain.Entities.HealthInformation;
+using DoctorFAM.Domain.ViewModels.Admin.HealthInformation.RadioFAM.Category;
 using DoctorFAM.Domain.ViewModels.Admin.HealthInformation.TVFAM.Category;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DoctorFAM.Domain.Interfaces.EFCore
 {
-    public interface IHealthInformationRepository 
+    public interface IHealthInformationRepository
     {
         #region TV FAM
 
@@ -41,7 +43,7 @@ namespace DoctorFAM.Domain.Interfaces.EFCore
         Task<TVFAMCategory?> GetTVFAMCategoryById(ulong setvFAMCategoryId);
 
         //Update TV FAM Category
-         void UpdateTVFAMCategory(TVFAMCategory tvFAMCategory);
+        void UpdateTVFAMCategory(TVFAMCategory tvFAMCategory);
 
         //Save Changes 
         Task SaveChanges();
@@ -69,7 +71,48 @@ namespace DoctorFAM.Domain.Interfaces.EFCore
 
         #region Category 
 
+        #region Admin Side 
 
+        //List Of Radio FAM Category 
+        Task<FilterRadioFAMCategoryViewModel> FilterRadioFAMCategory(FilterRadioFAMCategoryViewModel filter);
+
+        //Get Health Information Category By Health Information Category Id 
+        Task<RadioFAMCategory?> GetRadioFAMCategoryByHealthInformationCategoryId(ulong RadioFAMCategoryId);
+
+        //Is Exist Radio FAM Category By Unique Name
+        Task<bool> IsExistRadioFAMCategoryByUniqueName(string uniqueName);
+
+        //Is Exist Any Radio FAM Category By Id 
+        Task<bool> IsExistRadioFAMCategoryById(ulong RadioFAMCategoryId);
+
+        //Add Radio FAM Categories
+        Task<ulong> AddRadioFAMCategory(RadioFAMCategory RadioFAMCategory);
+
+        //Add Radio FAM Category Info
+        Task AddRadioFAMCategoryInfo(List<RadioFAMCategoryInfo> RadioFAMCategoryInfos);
+
+        //Fill Edit Radio FAM Category Info
+        Task<EditRadioFAMCategoryViewModel?> FillRadioFAMCategoryViewModel(ulong RadioFAMCategoryId);
+
+        //Get Radio FAM Category By Radio FAM Category Id 
+        Task<RadioFAMCategory?> GetRadioFAMCategoryById(ulong seRadioFAMCategoryId);
+
+        //Update Radio FAM Category
+        void UpdateRadioFAMCategory(RadioFAMCategory RadioFAMCategory);
+
+        //Update Radio FAM Category Info
+        void UpdateRadioFAMCategoryInfo(RadioFAMCategoryInfo RadioFAMCategoryInfo);
+
+        //Delete Radio FAM Category Info
+        Task DeleteRadioFAMCategoryInfo(ulong RadioFAMCategoryId);
+
+        //Get Childs Of Radio FAM Category By Parent ID
+        Task<List<RadioFAMCategory>> GetChildRadioFAMCategoryByParentId(ulong parentId);
+
+        //Delete RadioFAM Category And RadioFAM Category Info
+        Task DeleteServiceCategory(RadioFAMCategory RadioFAMCategory);
+
+        #endregion
 
         #endregion
 
