@@ -1,9 +1,12 @@
 ﻿using AngleSharp.Css;
 using CRM.Web.Areas.Admin.Controllers;
+using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Services.Interfaces;
+using DoctorFAM.Application.StaticTools;
 using DoctorFAM.Domain.Entities.HealthInformation;
 using DoctorFAM.Domain.ViewModels.Admin.HealthInformation.RadioFAM.Category;
 using DoctorFAM.Domain.ViewModels.Admin.HealthInformation.TVFAM.Category;
+using DoctorFAM.Domain.ViewModels.Admin.HealthInformation.TVFAM.Video;
 using DoctorFAM.Web.HttpManager;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -211,6 +214,63 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
         }
 
         #endregion
+
+        #endregion
+
+        #region Videos And Uploads
+
+        public async Task<IActionResult> FilterVideos()
+        {
+            return View();
+        }
+
+        #endregion
+
+        #region Create Tv FAM Video
+
+        [HttpGet]
+        public async Task<IActionResult> CreateTVFAM()
+        {
+            return View();
+        }
+
+        [HttpPost , ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateTVFAM(CreateTVFAMVideViewModel model)
+        {
+            #region Model State Validation 
+
+            if (!ModelState.IsValid)
+            {
+
+            }
+
+            #endregion
+
+            return View();
+        }
+
+        #endregion
+
+        #region Upload Chunk Attachment File
+
+        public IActionResult UploadCourseAttachmentFile(IFormFile? videoFile)
+        {
+            var result = videoFile.AddChunkFileToServer(PathTools.HealthInformationAttachmentFilesChunkServerPath,
+                PathTools.HealthInformationAttachmentFilesServerPath);
+
+            if (result == null)
+            {
+                return ApiResponse.SetResponse(ApiResponseStatus.Danger, null, _localizer["The operation failed"].Value);
+            }
+            else if (result == string.Empty)
+            {
+                return ApiResponse.SetResponse(ApiResponseStatus.Success, null, _localizer["Mission Accomplished"].Value);
+            }
+            else
+            {
+                return ApiResponse.SetResponse(ApiResponseStatus.Success, result, _localizer["Mission Accomplished"].Value);
+            }
+        }
 
         #endregion
 

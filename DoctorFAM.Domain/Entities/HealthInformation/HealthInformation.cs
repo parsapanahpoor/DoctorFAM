@@ -30,7 +30,7 @@ namespace DoctorFAM.Domain.Entities.HealthInformation
 
         public bool ShowInDoctorPanel { get; set; }
 
-        public int MyProperty { get; set; }
+        public HealtInformationFileState HealtInformationFileState { get; set; }
 
         public DateTime? StartDate { get; set; }
 
