@@ -28,6 +28,8 @@ namespace DoctorFAM.Domain.Entities.HealthInformation
 
         public ICollection<RadioFAMCategoryInfo> RadioFAMCategoryInfos { get; set; }
 
+        public ICollection<RadioFAMSelectedCategory> RadioFAMSelectedCategory { get; set; }
+
         public RadioFAMCategory Parent { get; set; }
 
         #endregion

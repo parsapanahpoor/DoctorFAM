@@ -304,6 +304,14 @@ namespace DoctorFAM.Data.DbContext
 
         public DbSet<RadioFAMCategoryInfo> RadioFAMCategoryInfos { get; set; }
 
+        public DbSet<HealthInformationTag> HealthInformationTags { get; set; }
+
+        public DbSet<HealthInformation> HealthInformation { get; set; }
+
+        public DbSet<RadioFAMSelectedCategory> RadioFAMSelectedCategories { get; set; }
+
+        public DbSet<TVFAMSelectedCategory> TVFAMSelectedCategories { get; set; }
+
         #endregion
 
         #endregion

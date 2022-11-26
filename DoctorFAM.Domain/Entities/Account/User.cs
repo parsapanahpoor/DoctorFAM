@@ -168,6 +168,8 @@ namespace DoctorFAM.Domain.Entities.Account
 
         public ICollection<UserInsertedFromParsaSystem> UserInsertedFromParsaSystems { get; set; }
 
+        public ICollection<HealthInformation.HealthInformation> HealthInformation { get; set; }
+
         #endregion
     }
 }
