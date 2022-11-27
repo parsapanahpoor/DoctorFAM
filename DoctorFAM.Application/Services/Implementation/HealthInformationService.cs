@@ -1,12 +1,17 @@
-﻿using DoctorFAM.Application.Extensions;
+﻿using DoctorFAM.Application.Convertors;
+using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Application.StaticTools;
 using DoctorFAM.Domain.Entities.HealthInformation;
+using DoctorFAM.Domain.Enums.HealtInformation;
 using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.Admin.HealthInformation.RadioFAM.Category;
 using DoctorFAM.Domain.ViewModels.Admin.HealthInformation.TVFAM.Category;
+using DoctorFAM.Domain.ViewModels.Admin.HealthInformation.TVFAM.Video;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,6 +38,12 @@ namespace DoctorFAM.Application.Services.Implementation
         #region Category 
 
         #region Admin Side 
+
+        //List OF TV FAM Category 
+        public async Task<List<TVFAMCategoryViewModel>> ListOFTVFAMCategory()
+        {
+            return await _healthinformationRepository.ListOFTVFAMCategory();
+        }
 
         //Get Health Information Category By Health Information Category Id 
         public async Task<TVFAMCategory?> GetHealthInformationCategoryByHealthInformationCategoryId(ulong tvFAMCategoryId)
@@ -203,6 +214,102 @@ namespace DoctorFAM.Application.Services.Implementation
         #endregion
 
         #region TV FAM
+
+        #region Admin Side 
+
+        //Create TV FAM video From Admin Side
+        public async Task<bool> CreateTVFAMvideoFromAdminSide(CreateTVFAMVideViewModel model)
+        {
+            #region Check Validation
+
+            if (model.AttachmentFileName == null)
+            {
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(model.longDescription))
+            {
+                return false;
+            }
+
+            #endregion
+
+            #region Set Datas From ViewModel
+
+            HealthInformation tvFAMVide = new HealthInformation()
+            {
+                Title = model.Title.SanitizeText(),
+                OwnerId = (model.OwnerId.HasValue) ? model.OwnerId.Value : null,
+                longDescription = model.longDescription.SanitizeText(),
+                ShortDescription = model.ShortDescription.SanitizeText(),
+                HealthInformationType = HealthInformationType.TVFAM,
+                HealtInformationFileState = HealtInformationFileState.Accepted,
+                File = model.AttachmentFileName,
+                ShowInSite = model.ShowInSite,
+                ShowInDoctorPanel = model.ShowInDoctorPanel,
+                ShowInfinity = model.ShowInfinity,
+                StartDate = (string.IsNullOrEmpty(model.StartDate)) ? null : model.StartDate.ToMiladiDateTime(),
+                EndDate = (string.IsNullOrEmpty(model.EndDate)) ? null : model.EndDate.ToMiladiDateTime(),
+            };
+
+            #endregion
+
+            #region Add TV FAM Video 
+
+            await _healthinformationRepository.CreateTVFAMVideo(tvFAMVide);
+
+            #endregion
+
+            #region Tv FAM Tags
+
+            if (!string.IsNullOrEmpty(model.Tags))
+            {
+                List<string> tagsList = model.Tags.Split(',').ToList<string>();
+                foreach (var itemTag in tagsList)
+                {
+                    var newTag = new HealthInformationTag
+                    {
+                        HealthInformationId = tvFAMVide.Id,
+                        TagTitle = itemTag,
+                        IsDelete = false,
+                        CreateDate = DateTime.Now
+                    };
+                    await _healthinformationRepository.CreateHealthInformationTags(newTag);
+                }
+            }
+
+            #endregion
+
+            #region TV FAM Categories
+
+            foreach (var item in model.Permissions)
+            {
+                TVFAMSelectedCategory Category = new TVFAMSelectedCategory()
+                {
+                    TVFAMCategoryId = item,
+                    HealthInformationId = tvFAMVide.Id
+                };
+
+                await _healthinformationRepository.CreateTVFAMSelectedCatgeories(Category);
+            }
+
+            await _healthinformationRepository.SaveChanges();
+
+            #endregion
+
+            return true;
+        }
+
+        //Filter Health Information (Video FAM) From Admin Side 
+        public async Task<List<HealthInformation>> FilterTVFAMAdminSide()
+        {
+            return await _healthinformationRepository.FilterTVFAMAdminSide();
+        }
+
+        //Fill Edit TVFAM Video Model Admin Side
+
+
+        #endregion
 
         #endregion
 

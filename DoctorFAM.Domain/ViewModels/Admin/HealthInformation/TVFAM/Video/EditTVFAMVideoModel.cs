@@ -1,5 +1,4 @@
 ﻿using DoctorFAM.Domain.Enums.HealtInformation;
-using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -10,7 +9,7 @@ using System.Xml.Linq;
 
 namespace DoctorFAM.Domain.ViewModels.Admin.HealthInformation.TVFAM.Video
 {
-    public class CreateTVFAMVideViewModel
+    public class EditTVFAMVideoModel
     {
         #region properties
 
@@ -46,11 +45,7 @@ namespace DoctorFAM.Domain.ViewModels.Admin.HealthInformation.TVFAM.Video
 
         public List<ulong>? Permissions { get; set; }
 
-        #endregion
-
-        #region relation 
-
-
+        public string? RejectNote  { get; set; }
 
         #endregion
     }

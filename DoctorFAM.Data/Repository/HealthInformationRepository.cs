@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Intrinsics.X86;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -31,6 +32,12 @@ namespace DoctorFAM.Data.Repository
         #region Category 
 
         #region Admin Side 
+
+        //Create TV FAM Selected Catgeories
+        public async Task CreateTVFAMSelectedCatgeories(TVFAMSelectedCategory tVFAM)
+        {
+            await _context.TVFAMSelectedCategories.AddAsync(tVFAM);
+        }
 
         //List Of TV FAM Category 
         public async Task<FilterTVFAMCategoryViewModel> FilterTVFAMCategory(FilterTVFAMCategoryViewModel filter)
@@ -199,11 +206,51 @@ namespace DoctorFAM.Data.Repository
 
         }
 
+        //List OF TV FAM Category 
+        public async Task<List<TVFAMCategoryViewModel>> ListOFTVFAMCategory()
+        {
+            return await _context.TVFAMCategoryInfos
+               .Include(a => a.TVFAMCategory)
+               .ThenInclude(p => p.Parent)
+               .Where(p => !p.IsDelete)
+                .Select(p => new TVFAMCategoryViewModel()
+                {
+                    CategoryName = p.Title,
+                    ParentId = p.TVFAMCategory.ParentId,
+                    CatgeoryId = p.TVFAMCategoryId
+                }).ToListAsync();
+        }
+
         #endregion
 
         #endregion
 
         #region TV FAM
+
+        #region Admin Side 
+
+        //Create Health Information 
+        public async Task CreateTVFAMVideo(HealthInformation healthInformation)
+        {
+            await _context.HealthInformation.AddAsync(healthInformation);
+            await _context.SaveChangesAsync();
+        }
+
+        //Create Health Information Tags 
+        public async Task CreateHealthInformationTags(HealthInformationTag tag)
+        {
+            await _context.HealthInformationTags.AddAsync(tag);
+        }
+
+        //Filter Health Information (Video FAM) From Admin Side 
+        public async Task<List<HealthInformation>> FilterTVFAMAdminSide()
+        {
+            return await _context.HealthInformation.Include(p => p.User)
+                .Where(p => !p.IsDelete && p.HealthInformationType == Domain.Enums.HealtInformation.HealthInformationType.TVFAM)
+                .OrderByDescending(p => p.CreateDate).ToListAsync();
+        }
+
+        #endregion
 
         #endregion
 

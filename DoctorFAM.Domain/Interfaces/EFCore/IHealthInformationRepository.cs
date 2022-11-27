@@ -18,6 +18,12 @@ namespace DoctorFAM.Domain.Interfaces.EFCore
 
         #region Admin Side 
 
+        //Create TV FAM Selected Catgeories
+        Task CreateTVFAMSelectedCatgeories(TVFAMSelectedCategory tVFAM);
+
+        //List OF TV FAM Category 
+        Task<List<TVFAMCategoryViewModel>> ListOFTVFAMCategory();
+
         //List Of TV FAM Category 
         Task<FilterTVFAMCategoryViewModel> FilterTVFAMCategory(FilterTVFAMCategoryViewModel filter);
 
@@ -62,6 +68,19 @@ namespace DoctorFAM.Domain.Interfaces.EFCore
         #endregion
 
         #region TV FAM
+
+        #region Admin Side 
+
+        //Create Health Information 
+        Task CreateTVFAMVideo(HealthInformation healthInformation);
+
+        //Create Health Information Tags 
+        Task CreateHealthInformationTags(HealthInformationTag tag);
+
+        //Filter Health Information (Video FAM) From Admin Side 
+        Task<List<HealthInformation>> FilterTVFAMAdminSide();
+
+        #endregion
 
         #endregion
 

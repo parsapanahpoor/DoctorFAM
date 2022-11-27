@@ -221,7 +221,7 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
 
         public async Task<IActionResult> FilterVideos()
         {
-            return View();
+            return View(await _healthInformationService.FilterTVFAMAdminSide());
         }
 
         #endregion
@@ -231,6 +231,12 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> CreateTVFAM()
         {
+            #region Categories
+
+            ViewBag.Categories = await _healthInformationService.ListOFTVFAMCategory();
+
+            #endregion
+
             return View();
         }
 
@@ -241,12 +247,53 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
 
             if (!ModelState.IsValid)
             {
+                #region Categories
 
+                ViewBag.Categories = await _healthInformationService.ListOFTVFAMCategory();
+
+                #endregion
+
+                TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد."; 
+                return View(model);
             }
 
             #endregion
 
+            #region Create Video 
+
+            var res = await _healthInformationService.CreateTVFAMvideoFromAdminSide(model);
+            if (res)
+            {
+                TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+
+                return RedirectToAction(nameof(FilterVideos));
+            }
+
+            #endregion
+
+            #region Categories
+
+            ViewBag.Categories = await _healthInformationService.ListOFTVFAMCategory();
+
+            #endregion
+
+            return View(model);
+        }
+
+        #endregion
+
+        #region Edit TV FAM Video 
+
+        [HttpGet]
+        public async Task<IActionResult> EditTVFAMVideo()
+        {
             return View();
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditTVFAMVideo()
+        {
+            return View(); 
         }
 
         #endregion

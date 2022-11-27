@@ -6,6 +6,8 @@
 
 @{
     ViewData["Title"] = "افزودن ویدیو";
+
+    List<DoctorFAM.Domain.ViewModels.Admin.HealthInformation.TVFAM.Category.TVFAMCategoryViewModel> categories = ViewBag.Categories as List<DoctorFAM.Domain.ViewModels.Admin.HealthInformation.TVFAM.Category.TVFAMCategoryViewModel>;
 }
 
 @section Scripts
@@ -42,7 +44,7 @@
                                     <label asp-for="OwnerId">تهیه کننده ی ویدیو </label>
                                     <input type="hidden" asp-for="OwnerId" id="Owner-Input">
                                     <input type="text" class="form-control" asp-for="AuthorName" id="Owner-Display" readonly="readonly" />
-                                    <span onclick="ShowSearchUserModal('Owner')" class="search-btn"><i class="glyphicon glyphicon-search" style="/*! margin-bottom: 50px; */position: relative;top: -25px;right: 340px;"></i></span>
+                                    <span onclick="ShowSearchUserModal('Owner')" class="search-btn"><i class="glyphicon glyphicon-search" style="position: relative;top: -25px;right: 320px;"></i></span>
                                     <span class="text-danger" asp-validation-for="OwnerId"></span>
 
                                 </div>
@@ -72,7 +74,7 @@
 
                                 <div class="form-group col-md-12 col-sm-12">
                                     <label asp-for="Tags">تگ </label>
-                                    <input type="text" class="form-control" asp-for="Tags">
+                                    <input type="text" class="form-control" tagify="1" asp-for="Tags">
                                     <span class="text-danger" asp-validation-for="Tags"></span>
                                 </div>
 
@@ -105,6 +107,78 @@
 
             <div class="col-lg-3 col-sm-12">
                 <div class="row">
+
+                    <div class="col-lg-12">
+                        <div class="widget">
+                            <div class="widget-header bordered-bottom bordered-green flex-style">
+
+                                <span class="widget-caption"> @Localizer["انتخاب دسته"] </span>
+                           
+                            </div>
+                            <div class="widget-body @((categories != null && categories.Any()) ? "no-padding" : "")">
+
+                            @if (categories != null && categories.Any())
+                            {
+                                <div class="panel-group accordion">
+                                    @foreach (var permission in categories.Where(s => s.ParentId == null))
+                                    {
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a class="accordion-toggle collapsed" data-toggle="collapse" href="#permission-@permission.CatgeoryId" aria-expanded="false">
+                                                        @permission.CategoryName
+                                                    </a>
+                                                </h4>
+                                            </div>
+                                            <div id="permission-@permission.CatgeoryId" class="panel-collapse collapse " aria-expanded="false" style="height: 0">
+                                                <div class="panel-body" style="padding: 5px 15px 0 15px !important">
+
+                                                    <span class="label-style">@Localizer["سرگروه"]</span>
+
+                                                    <div class="form-group">
+                                                        <div class="checkbox">
+                                                            <label>
+                                                                <input type="checkbox" value="@permission.CatgeoryId" name="Permissions" data-id="@permission.CatgeoryId" >
+                                                                <span class="text"> @permission.CategoryName </span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+
+                                                    @if (categories.Any(s => s.ParentId.HasValue && s.ParentId.Value == permission.CatgeoryId))
+                                                    {
+                                                        <hr style="margin-top: 10px !important; margin-bottom: 10px !important" />
+
+                                                        <span class="label-style">@Localizer["زیر گروه"]</span>
+
+                                                        @foreach (var subPermission in categories.Where(s => s.ParentId.HasValue && s.ParentId.Value == permission.CatgeoryId))
+                                                        {
+
+                                                            <div class="form-group">
+                                                                <div class="checkbox">
+                                                                    <label>
+                                                                        <input type="checkbox" value="@subPermission.CatgeoryId" name="Permissions" data-id="@subPermission.CatgeoryId" data-parentId="@permission.CatgeoryId" >
+                                                                        <span class="text"> @subPermission.CategoryName </span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                    }
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                            else
+                            {
+                                <partial name="_AdminNotFoundPartial" />
+                            }
+
+                        </div>
+                    </div>
+                </div>
+
 
                     <div class="col-lg-12">
                         <div class="widget">
