@@ -80,6 +80,37 @@ namespace DoctorFAM.Domain.Interfaces.EFCore
         //Filter Health Information (Video FAM) From Admin Side 
         Task<List<HealthInformation>> FilterTVFAMAdminSide();
 
+        //Get Health Information By Id
+        Task<HealthInformation?> GetHealthInformationById(ulong healthId);
+
+        //Get Healt Informations Tags
+        Task<List<HealthInformationTag>> GetHealtInformationsTags(ulong Id);
+
+        //Get Health Information Selected Categories
+        Task<List<ulong>> GetHealthInformationSelectedCategories(ulong healthId);
+
+        //Remove Health Information Tags 
+        Task RemoveHealthInformationTags(List<HealthInformationTag> tags);
+
+        //Remove Health Information Selected Category
+        Task RemoveHealthInformationSelectedCategory(List<TVFAMSelectedCategory> tvFAMCategory);
+
+        //Remove Health Information Selected Category
+        Task RemoveHealthInformationSelectedCategory(TVFAMSelectedCategory tvFAMCategory);
+
+        //Get List Of Health Information Selected Categories
+        Task<List<TVFAMSelectedCategory>> GetListOfHealthInformationSelectedCategories(ulong healthId);
+
+        //Update TV FAM 
+        Task UpdateTVFAM(HealthInformation model);
+
+        #endregion
+
+        #region Doctor Panel 
+
+        //Filter Health Information (Video FAM) From Doctor Panel Side  
+        Task<List<HealthInformation>> FilterTVFAMDoctorPanelSide(ulong ownerId);
+
         #endregion
 
         #endregion

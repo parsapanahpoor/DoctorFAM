@@ -10,8 +10,10 @@ using DoctorFAM.Domain.ViewModels.Admin.HealthInformation.TVFAM.Video;
 using DoctorFAM.Web.HttpManager;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
 using Microsoft.Extensions.Localization;
 using System.ComponentModel.DataAnnotations;
+using ZNetCS.AspNetCore.ResumingFileResults.Extensions;
 
 namespace DoctorFAM.Web.Areas.Admin.Controllers
 {
@@ -217,7 +219,7 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
 
         #endregion
 
-        #region Videos And Uploads
+        #region Filter Videos
 
         public async Task<IActionResult> FilterVideos()
         {
@@ -285,15 +287,77 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
         #region Edit TV FAM Video 
 
         [HttpGet]
-        public async Task<IActionResult> EditTVFAMVideo()
+        public async Task<IActionResult> EditTVFAMVideo(ulong id)
         {
-            return View();
+            #region Fill View Model
+
+            var model = await _healthInformationService.FillEditTVFAMVideoModelAdminSide(id);
+            if (model == null) return NotFound();
+
+            #endregion
+
+            #region Categories
+
+            ViewBag.Categories = await _healthInformationService.ListOFTVFAMCategory();
+
+            #endregion
+
+            return View(model);
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditTVFAMVideo()
+        public async Task<IActionResult> EditTVFAMVideo(EditTVFAMVideoModel model)
         {
-            return View(); 
+            #region Model State Validation 
+
+            if (!ModelState.IsValid)
+            {
+                #region Categories
+
+                ViewBag.Categories = await _healthInformationService.ListOFTVFAMCategory();
+
+                #endregion
+
+                TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+                return View(model);
+            }
+
+            #endregion
+
+            #region Edit TV FAM Video 
+
+            var res = await _healthInformationService.EditTVFAMVideoAdminSide(model);
+            if (res)
+            {
+                TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+                return RedirectToAction(nameof(FilterVideos));
+            }
+
+            #endregion
+
+            #region Categories
+
+            ViewBag.Categories = await _healthInformationService.ListOFTVFAMCategory();
+
+            #endregion
+
+            TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+            return View(model); 
+        }
+
+        #endregion
+
+        #region Delete Health Information 
+
+        public async Task<IActionResult> DeleteHealthInformation(ulong id)
+        {
+            var result = await _healthInformationService.DeleteTVFAM(id);
+            if (result)
+            {
+                return ApiResponse.SetResponse(ApiResponseStatus.Success, null, _localizer["Mission Accomplished"].Value);
+            }
+
+            return ApiResponse.SetResponse(ApiResponseStatus.Danger, null, _localizer["The operation failed"].Value);
         }
 
         #endregion
@@ -317,6 +381,31 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
             {
                 return ApiResponse.SetResponse(ApiResponseStatus.Success, result, _localizer["Mission Accomplished"].Value);
             }
+        }
+
+        #endregion
+
+        #region Download Attachment File
+
+        public IActionResult DownloadAttachmentFile(string fileName)
+        {
+            if (string.IsNullOrEmpty(fileName))
+            {
+                return NotFound();
+            }
+
+            var webRoot = PathTools.HealthInformationAttachmentFilesServerPath;
+
+            if (!System.IO.File.Exists(Path.Combine(webRoot, fileName)))
+            {
+                return NotFound();
+            }
+
+            var stream = System.IO.File.OpenRead(Path.Combine(webRoot, fileName));
+
+            var download = this.ResumingFile(stream, "application/octet-stream", fileName);
+
+            return download;
         }
 
         #endregion

@@ -122,8 +122,8 @@
 
                                         </td>
                                         <td>
-                                            <a asp-action="EditTVFAMVideo" asp-controller="HealthInformation" asp-area="Admin" asp-route-id="@tvFAM.Id" class="btn btn-warning btn-circle btn-xs"><i class="glyphicon glyphicon-edit"></i></a>
-                                            <button onclick="DeleteAjax(@tvFAM.Id, '@Url.Action("DeleteHealthInformation", "HealthInformation", new { area = "Admin", id = tvFAM.Id })')" class="btn btn-danger btn-circle btn-xs"><i class="glyphicon glyphicon-trash"></i></button>
+                                            <a asp-action="EditTVFAMVideo" asp-controller="HealthInformation" asp-area="Doctor" asp-route-id="@tvFAM.Id" class="btn btn-warning btn-circle btn-xs"><i class="glyphicon glyphicon-edit"></i></a>
+                                            <button onclick="DeleteAjax(@tvFAM.Id, '@Url.Action("DeleteHealthInformation", "HealthInformation", new { area = "Doctor", id = tvFAM.Id })')" class="btn btn-danger btn-circle btn-xs"><i class="glyphicon glyphicon-trash"></i></button>
                                         </td>
 
                                     </tr>
@@ -137,7 +137,7 @@
             }
             else
             {
-                <partial name="_AdminNotFoundPartial" />
+                <partial name="_DoctorPanelNotFoundPartial" />
             }
 
         </div>

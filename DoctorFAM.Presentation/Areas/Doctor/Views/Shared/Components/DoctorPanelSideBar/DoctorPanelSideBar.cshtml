@@ -179,8 +179,6 @@
                 </ul>
             </li>
 
-
-
              <li>
                 <a href="#" class="menu-dropdown" style="font-size:16px;font-weight:500; color:#ef2e2e   ">
                     <i class="menu-icon glyphicon glyphicon-send"></i>                   
@@ -213,7 +211,26 @@
                 </ul>
             </li>
 
+            <li>
+                <a href="#" class="menu-dropdown">
+                    <i class="menu-icon  glyphicon glyphicon-facetime-video"></i>
+                    <span class="menu-text">@SharedLocalizer["Health Info Videos"]</span>
+                    <i class="menu-expand"></i>
+                </a>
 
+                <ul class="submenu">
+                    <li>
+                        <a asp-action="FilterVideos" asp-controller="HealthInformation" asp-area="Doctor">
+                            <span class="menu-text"> @SharedLocalizer["Manage Videos"] </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-action="CreateTVFAM" asp-controller="HealthInformation" asp-area="Doctor">
+                            <span class="menu-text"> @SharedLocalizer["Create Videos"] </span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
 
             <li>
                 <a href="#" class="menu-dropdown">

@@ -2,6 +2,7 @@
 using DoctorFAM.Domain.ViewModels.Admin.HealthInformation.RadioFAM.Category;
 using DoctorFAM.Domain.ViewModels.Admin.HealthInformation.TVFAM.Category;
 using DoctorFAM.Domain.ViewModels.Admin.HealthInformation.TVFAM.Video;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.HealthInformation.TVFAM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,6 +57,31 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Filter Health Information (Video FAM) From Admin Side 
         Task<List<HealthInformation>> FilterTVFAMAdminSide();
 
+        //Get Health Information By Id
+        Task<HealthInformation?> GetHealthInformationById(ulong healthId);
+
+        //Get Healt Informations Tags
+        Task<List<HealthInformationTag>> GetHealtInformationsTags(ulong Id);
+
+        #endregion
+
+        #region Doctor Panel 
+
+        //Filter Health Information (Video FAM) From Doctor Panel Side  
+        Task<List<HealthInformation>> FilterTVFAMDoctorPanelSide(ulong ownerId);
+
+        //Create TV FAM video From Doctor Side
+        Task<bool> CreateTVFAMvideoFromDoctorSide(CreateTVFAMVideDoctorPanelViewModel model, ulong userId);
+
+        //Edit TV FAM Video Doctor Side 
+        Task<bool> EditTVFAMVideoDoctorSide(EditTVFAMVideoDoctorPanelViewModel model, ulong ownerId);
+
+        //Fill Edit TVFAM Video Model Doctor Side
+        Task<EditTVFAMVideoDoctorPanelViewModel?> FillEditTVFAMVideoModelDoctorSide(ulong tvFAMId, ulong ownerId);
+
+        //Delete Health Information Doctor Panel 
+        Task<bool> DeleteTVFAMDoctorPanel(ulong healthInfoId, ulong userId);
+
         #endregion
 
         #endregion
@@ -88,6 +114,15 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //List Of Radio FAM Category 
         Task<FilterRadioFAMCategoryViewModel> FilterRadioFAMCategory(FilterRadioFAMCategoryViewModel filter);
+
+        //Fill Edit TVFAM Video Model Admin Side
+        Task<EditTVFAMVideoModel?> FillEditTVFAMVideoModelAdminSide(ulong tvFAMId);
+
+        //Edit TV FAM Video Admin Side 
+        Task<bool> EditTVFAMVideoAdminSide(EditTVFAMVideoModel model);
+
+        //Delete Health Information 
+        Task<bool> DeleteTVFAM(ulong healthInfoId);
 
         #endregion
 

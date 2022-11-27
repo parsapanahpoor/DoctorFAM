@@ -331,19 +331,19 @@
         <li>
             <a href="#" class="menu-dropdown">
                 <i class="menu-icon  glyphicon glyphicon-facetime-video"></i>
-                <span class="menu-text">@SharedLocalizer[" دانستنیهای سلامت"]</span>
+                <span class="menu-text">@SharedLocalizer[" ویدیوهای دانستنی سلامت"]</span>
                 <i class="menu-expand"></i>
             </a>
 
             <ul class="submenu">
                 <li>
-                    <a asp-action="CreateTVFAM" asp-controller="HealthInformation" asp-area="Admin">
-                        <span class="menu-text"> @SharedLocalizer["ویدیوها "] </span>
+                    <a asp-action="FilterVideos" asp-controller="HealthInformation" asp-area="Admin">
+                        <span class="menu-text"> @SharedLocalizer["مدیریت ویدیوها "] </span>
                     </a>
                 </li>
                 <li>
-                    <a asp-action="ListOfRadioFAMCategoryList" asp-controller="HealthInformation" asp-area="Admin">
-                        <span class="menu-text"> @SharedLocalizer[" پادکست ها"] </span>
+                    <a asp-action="CreateTVFAM" asp-controller="HealthInformation" asp-area="Admin">
+                        <span class="menu-text"> @SharedLocalizer[" افزودن ویدیو"] </span>
                     </a>
                 </li>
             </ul>

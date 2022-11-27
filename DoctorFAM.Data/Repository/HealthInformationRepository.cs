@@ -1,12 +1,15 @@
 ﻿using DoctorFAM.Data.DbContext;
 using DoctorFAM.Domain.Entities.HealthInformation;
 using DoctorFAM.Domain.Entities.MarketCategory;
+using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.Admin.HealthInformation.RadioFAM.Category;
 using DoctorFAM.Domain.ViewModels.Admin.HealthInformation.TVFAM.Category;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Runtime.Intrinsics.X86;
 using System.Text;
@@ -20,9 +23,12 @@ namespace DoctorFAM.Data.Repository
 
         private readonly DoctorFAMDbContext _context;
 
-        public HealthInformationRepository(DoctorFAMDbContext context)
+        private readonly IOrganizationRepository _organizationRepository;
+
+        public HealthInformationRepository(DoctorFAMDbContext context , IOrganizationRepository organizationRepository)
         {
             _context = context;
+            _organizationRepository = organizationRepository;
         }
 
         #endregion
@@ -247,6 +253,72 @@ namespace DoctorFAM.Data.Repository
         {
             return await _context.HealthInformation.Include(p => p.User)
                 .Where(p => !p.IsDelete && p.HealthInformationType == Domain.Enums.HealtInformation.HealthInformationType.TVFAM)
+                .OrderByDescending(p => p.CreateDate).ToListAsync();
+        }
+
+        //Get Health Information By Id
+        public async Task<HealthInformation?> GetHealthInformationById(ulong healthId)
+        {
+            return await _context.HealthInformation.Include(p => p.User).FirstOrDefaultAsync(p => !p.IsDelete && p.Id == healthId);
+        }
+
+        //Get Healt Informations Tags
+        public async Task<List<HealthInformationTag>> GetHealtInformationsTags(ulong Id)
+        {
+            return await _context.HealthInformationTags.Where(p => !p.IsDelete && p.HealthInformationId == Id).ToListAsync();
+        }
+
+        //Get Health Information Selected Categories
+        public async Task<List<ulong>> GetHealthInformationSelectedCategories(ulong healthId)
+        {
+            return await _context.TVFAMSelectedCategories.Where(p => !p.IsDelete && p.HealthInformationId == healthId)
+                            .Select(p => p.TVFAMCategoryId).ToListAsync(); 
+        }
+
+        //Remove Health Information Tags 
+        public async Task RemoveHealthInformationTags(List<HealthInformationTag> tags)
+        {
+            _context.HealthInformationTags.RemoveRange(tags);
+            await _context.SaveChangesAsync(); 
+        }
+
+        //Remove Health Information Selected Category
+        public async Task RemoveHealthInformationSelectedCategory(List<TVFAMSelectedCategory> tvFAMCategory)
+        {
+             _context.TVFAMSelectedCategories.RemoveRange(tvFAMCategory);
+            await _context.SaveChangesAsync();
+        }
+
+        //Remove Health Information Selected Category
+        public async Task RemoveHealthInformationSelectedCategory(TVFAMSelectedCategory tvFAMCategory)
+        {
+             _context.TVFAMSelectedCategories.Remove(tvFAMCategory);
+            await _context.SaveChangesAsync();
+        }
+
+        //Get List Of Health Information Selected Categories
+        public async Task<List<TVFAMSelectedCategory>> GetListOfHealthInformationSelectedCategories(ulong healthId)
+        {
+            return await _context.TVFAMSelectedCategories.Where(p => !p.IsDelete && p.HealthInformationId == healthId).ToListAsync();
+        }
+
+        //Update TV FAM 
+        public async Task UpdateTVFAM(HealthInformation model)
+        {
+            _context.HealthInformation.Update(model);
+            await _context.SaveChangesAsync();
+        }
+
+        #endregion
+
+        #region Doctor Panel 
+
+        //Filter Health Information (Video FAM) From Doctor Panel Side  
+        public async Task<List<HealthInformation>> FilterTVFAMDoctorPanelSide(ulong ownerId)
+        {
+            return await _context.HealthInformation.Include(p => p.User)
+                .Where(p => !p.IsDelete && p.HealthInformationType == Domain.Enums.HealtInformation.HealthInformationType.TVFAM
+                        && p.OwnerId.Value == ownerId)
                 .OrderByDescending(p => p.CreateDate).ToListAsync();
         }
 
