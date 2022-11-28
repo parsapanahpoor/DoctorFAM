@@ -118,12 +118,12 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Add Covered Person" xml:space="preserve">
-    <value>افزودن فرد تحت پوشش</value>
+    <value>افزودن فرد زیرمجموعه</value>
   </data>
   <data name="Submit" xml:space="preserve">
     <value>ثبت</value>
   </data>
   <data name="User Dashboard" xml:space="preserve">
-    <value>داشبورد کاربری </value>
+    <value>داشبورد  </value>
   </data>
 </root>

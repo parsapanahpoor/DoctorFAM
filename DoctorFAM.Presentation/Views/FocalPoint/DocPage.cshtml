@@ -8,7 +8,7 @@
 
 <div class="content">
     <div class="container">
-        
+
         <div class="card m-2 ">
             <div class="card-body">
                 <div class="doctor-widget">
@@ -39,9 +39,9 @@
                                     @((!string.IsNullOrEmpty(Model.CountryName)) ? Model.CountryName + "-" : null)
                                     @((!string.IsNullOrEmpty(Model.StateName)) ? Model.StateName + "-" : null)
                                     @((!string.IsNullOrEmpty(Model.CityName)) ? Model.CityName : null)
-                                    
+
                                     <br />
-                                     @if (!string.IsNullOrEmpty(Model.WorkAddress))
+                                    @if (!string.IsNullOrEmpty(Model.WorkAddress))
                                     {
                                         <i class="fas fa-map-marker-alt"></i>
                                     }
@@ -51,13 +51,13 @@
 
 
                                     <br />
-                                   @((!string.IsNullOrEmpty(Model.ClinicPhone)) ? Model.ClinicPhone : null)
+                                    @((!string.IsNullOrEmpty(Model.ClinicPhone)) ? Model.ClinicPhone : null)
 
-                                     <br />
-                                  @((!string.IsNullOrEmpty(Model.GeneralPhone)) ? Model.GeneralPhone : null)
+                                    <br />
+                                    @((!string.IsNullOrEmpty(Model.GeneralPhone)) ? Model.GeneralPhone : null)
 
                                 </p>
-                               
+
                                 <ul class="clinic-gallery">
                                     <li>
                                         <a href="~/Content/Doctor/assets/img/features/feature-01.jpg" data-fancybox="gallery">
@@ -96,7 +96,7 @@
                             <ul>
                                 <li><i class="far fa-thumbs-up"></i> 99%</li>
                                 <li><i class="far fa-comment"></i> 35 فیدبک </li>
-                                
+
                                 <li><i class="far fa-money-bill-alt"></i> حق ویزیت: سامانه </li>
                             </ul>
                         </div>
@@ -115,9 +115,307 @@
                             </a>
                         </div>
                         <div class="clinic-booking">
-                           <a class="apt-btn" asp-action="DocBooking" asp-controller="FocalPoint" asp-area="" asp-route-userId="@Model.UserId">رزرو نوبت</a>
+                            <a class="apt-btn" asp-action="DocBooking" asp-controller="FocalPoint" asp-area="" asp-route-userId="@Model.UserId">رزرو نوبت</a>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body pt-0">
+
+                <nav class="user-tabs mb-4">
+                    <ul class="nav nav-tabs nav-tabs-bottom nav-justified">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#doc_overview" data-bs-toggle="tab"> رزومه </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#doc_locations" data-bs-toggle="tab"> آدرس محل کار </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#doc_reviews" data-bs-toggle="tab">گواهینامه ها</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#doc_business_hours" data-bs-toggle="tab">کلیپها </a>
+                        </li>
+                    </ul>
+                </nav>
+
+
+                <div class="tab-content pt-0">
+
+                    <div role="tabpanel" id="doc_overview" class="tab-pane fade show active">
+
+
+                        <div class="widget about-widget">
+                            <h4 class="widget-title"> درباره من </h4>
+                            <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد. کتابهای زیادی در شصت و سه درصد گذشته، حال و آینده شناخت فراوان جامعه و متخصصان را می طلبد</p>
+                        </div>
+
+                        <div class="row  text-center justify-content-center">
+                            <div class="col-md-5  divst1">
+                                <div class="widget education-widget">
+                                    <h4 class="widget-title"> تحصیلات </h4>
+                                    <div class="experience-box">
+                                        <ul class="experience-list">
+                                            <li>
+                                                <div class="experience-user">
+                                                    <div class="before-circle"></div>
+                                                </div>
+                                                <div class="experience-content">
+                                                    <div class="timeline-content">
+                                                        <a href="#/" class="name">دانشگاه دندان پزشکی آمریکا</a>
+                                                        <div>BDS</div>
+                                                        <span class="time">1361 - 1375</span>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="experience-user">
+                                                    <div class="before-circle"></div>
+                                                </div>
+                                                <div class="experience-content">
+                                                    <div class="timeline-content">
+                                                        <a href="#/" class="name">دانشگاه دندان پزشکی آمریکا</a>
+                                                        <div>MDS</div>
+                                                        <span class="time">1380 - 1385</span>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5  divst1">
+                                <div class="widget experience-widget">
+                                    <h4 class="widget-title"> سوابق کاری </h4>
+                                    <div class="experience-box">
+                                        <ul class="experience-list">
+                                            <li>
+                                                <div class="experience-user">
+                                                    <div class="before-circle"></div>
+                                                </div>
+                                                <div class="experience-content">
+                                                    <div class="timeline-content">
+                                                        <a href="#/" class="name">کلینیک دندانپزشکی خانواده لبخندهای درخشان</a>
+                                                        <span class="time">1398 - الان (5سال)</span>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="experience-user">
+                                                    <div class="before-circle"></div>
+                                                </div>
+                                                <div class="experience-content">
+                                                    <div class="timeline-content">
+                                                        <a href="#/" class="name">کلینیک دندانپزشکی کامفورت کر</a>
+                                                        <span class="time">1392 - 1398 (3 سال)</span>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="experience-user">
+                                                    <div class="before-circle"></div>
+                                                </div>
+                                                <div class="experience-content">
+                                                    <div class="timeline-content">
+                                                        <a href="#/" class="name">لبخند رویایی دندانپزشکی</a>
+                                                        <span class="time">1390 - 1392 (2 سال)</span>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row  text-center justify-content-center">
+                            <div class="col-md-10  divst1">
+                                <div class="widget awards-widget">
+                                    <h4 class="widget-title">جوایز و افتخارات</h4>
+                                    <div class="experience-box">
+                                        <ul class="experience-list">
+                                            <li>
+                                                <div class="experience-user">
+                                                    <div class="before-circle"></div>
+                                                </div>
+                                                <div class="experience-content">
+                                                    <div class="timeline-content">
+                                                        <p class="exp-year">مهر 1362</p>
+                                                        <h4 class="exp-title">جایزه بشردوستانه</h4>
+                                                        <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="experience-user">
+                                                    <div class="before-circle"></div>
+                                                </div>
+                                                <div class="experience-content">
+                                                    <div class="timeline-content">
+                                                        <p class="exp-year">مهر 1390</p>
+                                                        <h4 class="exp-title">گواهی خدمات داوطلب بین المللی</h4>
+                                                        <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="experience-user">
+                                                    <div class="before-circle"></div>
+                                                </div>
+                                                <div class="experience-content">
+                                                    <div class="timeline-content">
+                                                        <p class="exp-year">مهر 1390</p>
+                                                        <h4 class="exp-title">جایزه حرفه ای دندانپزشکی سال</h4>
+                                                        <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <div class="row text-center justify-content-center">
+                            <div class="col-md-5 divst1">
+                                <div class="service-list">
+                                    <h4>خدمات</h4>
+                                    <ul class="clearfix">
+                                        <li>تمیز کردن دندان</li>
+                                        <li>عصب کشی</li>
+                                        <li>ایمپلمنت</li>
+                                        @* <li>کامپوزیت</li>
+                                            <li>فیشور سیلانت</li>
+                                            <li>جراحی دندان</li>*@
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-md-5 divst1">
+                                <div class="service-list">
+                                    <h4>تخصص ها</h4>
+                                    <ul class="clearfix">
+                                        <li>مراقبت کودک</li>
+                                        <li>مراقبت دندان</li>
+                                        <li>بهداشت و جراحی </li>
+                                        <li>ارتودونسی</li>
+                                        <li>پریودنتیست</li>
+                                        <li>پروتزهای دندانی</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div role="tabpanel" id="doc_locations" class="tab-pane fade">
+
+                        <div class="location-list">
+                            <div class="row divst1">
+
+                                <div class="col-md-6">
+                                    <div class="clinic-content">
+                                        <h4 class="clinic-name"><a href="#">مطب شخصی</a></h4>
+                                        <p>ساری - خیابان فرهنگ - ساختمان شهریار 3 - واحد 412</p>
+                                       
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-4">
+                                    <div class="clinic-timing">
+                                        <div>
+                                            <p class="timings-days">
+                                                <span> دوشنبه - سه شنبه </span>
+                                            </p>
+                                            <p class="timings-times">
+                                                <span>10:00 صبح - 2:00 عصر</span>
+                                                <span>4:00 عصر - 9:00 عصر</span>
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <p class="timings-days">
+                                                <span>جمعه</span>
+                                            </p>
+                                            <p class="timings-times">
+                                                <span>10:00 صبح - 2:00 عصر</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                
+                            </div>
+                        </div>
+
+
+                        <div class="location-list">
+                            <div class="row divst1">
+
+                                <div class="col-md-6 ">
+                                    <div class="clinic-content">
+                                        <h4 class="clinic-name"><a href="#">کلینیک دندانپزشکی خانواده</a></h4>
+                                        <p class="doc-speciality">ساری- خیابان معلم </p>
+                                        
+                                       
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-4 ">
+                                    <div class="clinic-timing">
+                                        <div>
+                                            <p class="timings-days">
+                                                <span> چهارشنبه - پنجشنبه</span>
+                                            </p>
+                                            <p class="timings-times">
+                                                <span>11:00 صبح - 1:00 عصر</span>
+                                                <span>6:00 عصر - 11:00 عصر</span>
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <p class="timings-days">
+                                                <span>شنبه - دوشنبه</span>
+                                            </p>
+                                            <p class="timings-times">
+                                                <span>8:00 صبح - 10:00 صبح</span>
+                                                <span>3:00 عصر - 7:00 عصر</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                               
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div role="tabpanel" id="doc_reviews" class="tab-pane fade">
+                    </div>
+
+
+                    <div role="tabpanel" id="doc_business_hours" class="tab-pane fade">
+                        <div class="row">
+                            <div class="col-md-6 offset-md-3">
+
+                                <div class="widget business-widget">
+                                    <div class="widget-content">
+                                        <div class="listing-hours">
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>

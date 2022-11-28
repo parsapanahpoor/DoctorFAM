@@ -90,7 +90,7 @@
             <div class="header bordered-azure">
                 <div class="flex-style">
                     <span>@ViewData["Title"]</span>
-                    <span>@Model.GetShownEntitiesPagesTitle()</span>
+                    <span class="red">(@Model.GetShownEntitiesPagesTitle())</span><span>نوبت</span>
                 </div>
             </div>
 
@@ -108,11 +108,12 @@
                             <th class="tc vm">
                                 @Localizer["Start Time"]
                             </th>
-                            <th class="tc vm">
-                                @Localizer["End Time"]
-                            </th>
+
                             <th class="tc vm">
                                 @Localizer["State"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["Type"]
                             </th>
                             <th class="tc vm">
                                 @Localizer["Possibilities"]
@@ -125,65 +126,44 @@
                             <tr class="tc vm" remove-ajax-item="@date.Id">
                                 <td class="vm">
                                     <div class="flex-style-center">
-                                        <img src="@date.DoctorReservationDate.User.GetUserAvatar()" class="avatar-style" style="border-radius:50px;" />
+
                                         <div class="mr-10px">
-                                            <span>@Localizer["Username"] : @date.DoctorReservationDate.User.Username</span>
-                                            <hr class="margin-7" />
-                                            @if (date.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.Reserved)
-                                            {
-                                                <span>@Localizer["Mobile"] : @date.DoctorReservationDate.User.Mobile</span>
-                                            }
-                                            else
-                                            {
-                                                <span>@Localizer["Mobile"] : <span class="label label-danger"> @Localizer["Un Visible"] </span></span>
-                                            }
+                                            <span>@Localizer["Doctor"] @date.DoctorReservationDate.User.Username</span>
+
+
                                         </div>
                                     </div>
                                 </td>
                                 <td class="vm">
                                     <div class="flex-style-center">
-                                        <p> @date.DoctorReservationDate.ReservationDate.ToShamsi() </p>
+                                        <p> @date.DoctorReservationDate.ReservationDate.ToStringShamsiDate() </p>
                                     </div>
                                 </td>
-
                                 <td class="tc vm">
                                     <p>@string.Concat(date.StartTime.Reverse().Skip(3).Reverse())   </p>
-
                                 </td>
-
-                                <td class="tc vm">
-                                    <p>@string.Concat(date.EndTime.Reverse().Skip(3).Reverse())  </p>
-                                </td>
-
                                 <td class="vm">
-                                    <div class="flex-style-center">
-                                        <div class="mr-10px">
-                                            @if (date.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.Reserved)
-                                            {
-                                                <p class="label label-success">@Localizer["Reserved"]</p>
-                                            }
+                                    @if (date.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.Reserved)
+                                    {
+                                        <p class="label label-success">@Localizer["Reserved"]</p>
+                                    }
 
-                                            @if (date.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.WaitingForComplete)
-                                            {
-                                                <p class="label label-danger">@Localizer["Waiting"]</p>
-                                            }
-
-                                            <hr class="margin-7" />
-
-                                            @if (date.DoctorReservationType == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationType.Onile)
-                                            {
-                                                <p class="label label-success">@Localizer["Online"]</p>
-                                            }
-
-                                            @if (date.DoctorReservationType == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationType.Reserved)
-                                            {
-                                                <p class="label label-info">@Localizer["In Persone"]</p>
-                                            }
-
-                                        </div>
-                                    </div>
+                                    @if (date.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.WaitingForComplete)
+                                    {
+                                        <p class="label label-danger">@Localizer["Waiting"]</p>
+                                    }
                                 </td>
+                                <td class="vm">
+                                    @if (date.DoctorReservationType == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationType.Onile)
+                                    {
+                                        <p class="label label-success">@Localizer["Online"]</p>
+                                    }
 
+                                    @if (date.DoctorReservationType == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationType.Reserved)
+                                    {
+                                        <p class="label label-info">@Localizer["In Persone"]</p>
+                                    }
+                                </td>
                                 <td class="tc vm">
                                     @if (date.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.Reserved)
                                     {

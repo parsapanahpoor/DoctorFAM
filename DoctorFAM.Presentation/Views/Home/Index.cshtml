@@ -12,9 +12,9 @@
             <div class="d-flex align-items-center">
 
                 <div class="container">
-                    <h2 class="hColorFontt"> پزشک خانواده من </h2>
+                    <h2 class="hColorFontt"> پزشکان عمومی و خانواده </h2>
                     <div class="col-md-4 pricing-btn text-center">
-                        <a asp-action="ListOfFamilyDoctors" asp-controller="FamilyDoctor" asp-area="" class="pricing-btn default-btn">مشاهده لیست پزشکان خانواده</a>
+                        <a asp-action="ListOfFamilyDoctors" asp-controller="FamilyDoctor" asp-area="" class="pricing-btn default-btn">مشاهده </a>
                     </div>
                 </div>
             </div>
@@ -106,8 +106,8 @@
             <hr />
             <div class="row mt-3 text-center justify-content-center">
                 <div class="col-md-6 col-sm-6 text-center justify-content-center">
-                    <a class=" hover-icon" asp-action="Index" asp-controller="Diabet">
-
+                    @*<a class=" hover-icon" asp-action="Index" asp-controller="Diabet">*@
+                    <a class=" hover-icon" >
                         <div class="featured-icon">
 
                             <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/Diabete.jpg" alt="">
@@ -116,8 +116,8 @@
                     </a>
                 </div>
                 <div class="col-md-6 col-sm-6 text-center justify-content-center">
-                    <a class=" hover-icon" asp-action="Index" asp-controller="BloodPressure">
-
+                    @*<a class=" hover-icon" asp-action="Index" asp-controller="BloodPressure">*@
+<a class=" hover-icon" >
                         <div class="featured-icon">
 
                             <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/Blod.jpg" alt="">
@@ -126,8 +126,8 @@
                     </a>
                 </div>
                 <div class="col-md-6 col-sm-6  text-center justify-content-center">
-                    <a class=" hover-icon" asp-action="Index" asp-controller="Cancer">
-
+                   @* <a class=" hover-icon" asp-action="Index" asp-controller="Cancer">*@
+                        <a class=" hover-icon" >
                         <div class="featured-icon">
 
                             <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/Cancer.jpg" alt="">
@@ -136,11 +136,11 @@
                     </a>
                 </div>
                 <div class="col-md-6 col-sm-6  text-center justify-content-center">
-                    <a class=" hover-icon" asp-action="Index" asp-controller="Psych">
-
+                    @*<a class=" hover-icon" asp-action="Index" asp-controller="Psych">*@
+                        <a class=" hover-icon" >
                         <div class="featured-icon">
 
-                            <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/Grow.jpg" alt="">
+                            <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/Psyche.jpg" alt="">
                         </div>
                         <p class="text-white mt-2"> روان </p>
                     </a>
@@ -213,7 +213,7 @@
                 <p class="text-white mt-2"> مکمل ها  </p>
                 </a>
                 </div>*@
-                @*  <div class="col-md-6 col-sm-6 text-center justify-content-center">
+                 <div class="col-md-6 col-sm-6 text-center justify-content-center">
                 <a class=" hover-icon">
 
                 <div class="featured-icon">
@@ -222,7 +222,7 @@
                 </div>
                 <p class="text-white mt-2"> کتب و مجلات </p>
                 </a>
-                </div>*@
+                </div>
                 <div class="col-md-6 col-sm-6 text-center justify-content-center">
                     <a class=" hover-icon">
 
@@ -233,7 +233,8 @@
                         <p class="text-white mt-2"> خدمات بیمه </p>
                     </a>
                 </div>
-                <div class="col-md-6 col-sm-6 text-center justify-content-center">
+
+               @* <div class="col-md-6 col-sm-6 text-center justify-content-center">
                     <a class=" hover-icon">
 
                         <div class="featured-icon">
@@ -242,7 +243,7 @@
                         </div>
                         <p class="text-white mt-2"> مشاوره حقوقی </p>
                     </a>
-                </div>
+                </div>*@
 
                 @* <a class="btn hover-icon mt-3 p-3 text-center" style="border:1px solid #0b0637; border-radius:5px !important;" asp-action="HealthProductsItems" asp-controller="Home">
                 <span class="p-5"> بیشتر    </span>

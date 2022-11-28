@@ -139,16 +139,16 @@
     <value>خالی</value>
   </data>
   <data name="End Date" xml:space="preserve">
-    <value>زمان پایان</value>
+    <value>تا ساعت</value>
   </data>
   <data name="Finalized" xml:space="preserve">
     <value>نهایی شده</value>
   </data>
   <data name="List Of Your Home Visit Requests" xml:space="preserve">
-    <value>لیست درخواست های وزیت در منزل شما</value>
+    <value>لیست درخواست های ویزیت در منزل </value>
   </data>
   <data name="Not Insert" xml:space="preserve">
-    <value>وارد نشده</value>
+    <value>تعیین نشده</value>
   </data>
   <data name="Options" xml:space="preserve">
     <value>امکانات</value>
@@ -166,21 +166,24 @@
     <value>انتخاب شده توسط پزشک</value>
   </data>
   <data name="Start Date" xml:space="preserve">
-    <value>زمان شروع</value>
+    <value>از ساعت</value>
   </data>
   <data name="The Time your choice" xml:space="preserve">
     <value>زمان انتخابی شما</value>
   </data>
   <data name="User Avatar" xml:space="preserve">
-    <value>آواتار</value>
+    <value>تصویر پروفایل کاربر</value>
+  </data>
+  <data name="Visiting hours" xml:space="preserve">
+    <value>ساعت مراجعه</value>
   </data>
   <data name="Waiting For Accept From Customer" xml:space="preserve">
-    <value>در انتظار تایید شما </value>
+    <value>در انتظار تایید </value>
   </data>
   <data name="WaitingForConfirmFromDestination" xml:space="preserve">
     <value>در انتظار تایید از مقصد</value>
   </data>
   <data name="Your chosen date" xml:space="preserve">
-    <value>تاریخ انتخابی شما</value>
+    <value>تاریخ مراجعه پزشک</value>
   </data>
 </root>

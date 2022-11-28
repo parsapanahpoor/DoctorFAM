@@ -123,8 +123,11 @@
   <data name="Delete Filter" xml:space="preserve">
     <value>حذف فیلتر</value>
   </data>
+  <data name="Doctor" xml:space="preserve">
+    <value>دکتر</value>
+  </data>
   <data name="Doctor Information" xml:space="preserve">
-    <value>اطلاعات پزشک</value>
+    <value>نام پزشک</value>
   </data>
   <data name="End Time" xml:space="preserve">
     <value>زمان پایان</value>
@@ -139,7 +142,7 @@
     <value>حضوری</value>
   </data>
   <data name="List Of Reservation Date" xml:space="preserve">
-    <value>لیست تاریخ های نوبت گیری شده</value>
+    <value>لیست نوبتها</value>
   </data>
   <data name="Manage Reservation Date Info" xml:space="preserve">
     <value>مدیریت اطلاعات نوبت دهی </value>
@@ -166,13 +169,16 @@
     <value>رزرو شده</value>
   </data>
   <data name="Start Time" xml:space="preserve">
-    <value>زمان شروع</value>
+    <value>ساعت</value>
   </data>
   <data name="State" xml:space="preserve">
     <value>وضعیت</value>
   </data>
   <data name="To Date" xml:space="preserve">
     <value>تا تاریخ</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>نوع</value>
   </data>
   <data name="Un Visible" xml:space="preserve">
     <value>غیر قابل دسترسی</value>

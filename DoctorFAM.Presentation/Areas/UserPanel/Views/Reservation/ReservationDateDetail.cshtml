@@ -111,7 +111,8 @@
             <div class="header bordered-azure">
                 <div class="flex-style">
                     <span>@ViewData["Title"]</span>
-                    <span>@Model.GetShownEntitiesPagesTitle()</span>
+                    
+                    <span class="red">(@Model.GetShownEntitiesPagesTitle())</span><span>نوبت</span>
                 </div>
             </div>
 
@@ -193,7 +194,7 @@
 
                                     @if (date.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.NotReserved)
                                     {
-                                        <p onclick="ChooseReservationType(@date.Id,@Model.UserId)" class="btn btn-info btn-circle btn-xs"><i class="glyphicon glyphicon-ok"></i></p>
+                                        <p onclick="ChooseReservationType(@date.Id,@Model.UserId)" class="btn btn-info ">رزرو میکنم</p>
                                     }
 
                                 </td>

@@ -16,51 +16,47 @@
 
 }
 
-    @section Scripts
+@section Scripts
     {
-    <partial name="_JqueryValidation" />
+<partial name="_JqueryValidation" />
 }
 
-    @section Breadcrumb
+@section Breadcrumb
     {
-    <li>
-        <a href="javascript:void(0)"> @ViewData["Title"] </a>
-    </li>
+<li>
+    <a href="javascript:void(0)"> @ViewData["Title"] </a>
+</li>
 }
-    <form asp-action="FilterHomeVisitViewModel" asp-controller="HomeVisit" asp-area="UserPanel" id="filter-search" method="get">
-        <input type="hidden" asp-for="Page" />
-    </form>
+<form asp-action="FilterHomeVisitViewModel" asp-controller="HomeVisit" asp-area="UserPanel" id="filter-search" method="get">
+    <input type="hidden" asp-for="Page" />
+</form>
 
-    <div class="row">
-        <div class="col-lg-12 col-sm-12">
-            <div class="well with-header with-footer table-responsive">
-                <div class="header bordered-azure">
-                    <div class="flex-style">
-                        <span>@ViewData["Title"]</span>
-                        <span>@Model.GetShownEntitiesPagesTitle()</span>
-                    </div>
+<div class="row">
+    <div class="col-lg-12 col-sm-12">
+        <div class="well with-header with-footer table-responsive">
+            <div class="header bordered-azure">
+                <div class="flex-style">
+                    <span>@ViewData["Title"]</span>
+                    <span class="red">(@Model.GetShownEntitiesPagesTitle())</span><span>درخواست</span>
                 </div>
+            </div>
 
             @if (Model.Entities != null && Model.Entities.Any())
             {
                 <table class="table table-hover table-bordered tc vm">
                     <thead class="tc vm">
                         <tr class="tc vm">
-                            <th class="tc vm">
-                                @Localizer["User Avatar"]
-                            </th>
+
                             <th class="tc vm">
                                 @Localizer["Request State"]
                             </th>
                             <th class="tc vm">
-                                @Localizer["Start Date"]
-                            </th>
-                            <th class="tc vm">
-                                @Localizer["End Date"]
-                            </th>
-                            <th class="tc vm">
                                 @Localizer["Your chosen date"]
                             </th>
+                            <th class="tc vm">
+                                @Localizer["Visiting hours"]
+                            </th>
+
                             <th class="tc vm">
                                 @Localizer["Options"]
                             </th>
@@ -70,22 +66,7 @@
                         @foreach (var request in Model.Entities)
                         {
                             <tr class="tc vm">
-                                <td class="vm">
-                                    @if (request.OperationId.HasValue)
-                                    {
-                                        <div class="flex-style-center">
-                                            <img src="@request.Operation.GetUserAvatar()" class="avatar-style" style="border-radius:50px;" />
-                                            <div class="mr-10px">
-                                                <span> @request.Operation.Username </span>
-                                            </div>
-                                        </div>
-                                    }
-                                    else
-                                    {
-                                        <span class="mr-8px label label-warning"> @Localizer["Empty"] </span>
-                                    }
 
-                                </td>
                                 <td class="tc vm">
                                     <p class="flex-style-center">
 
@@ -129,31 +110,11 @@
                                         {
                                             <span class="mr-8px label label-warning"> @Localizer["Waiting For Accept From Customer"] </span>
                                         }
-                                          @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.Canceled)
+                                        @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.Canceled)
                                         {
                                             <span class="mr-8px label label-danger"> @Localizer["Canceled"] </span>
                                         }
                                     </p>
-                                </td>
-                                <td class="tc vm">
-                                    @if (request.PatientRequestDateTimeDetails != null)
-                                    {
-                                        <p>  @request.PatientRequestDateTimeDetails.StartTime.ToString("00")</p>
-                                    }
-                                    else
-                                    {
-                                        <p class="label label-danger"> @Localizer["Not Insert"] </p>
-                                    }
-                                </td>
-                                <td class="tc vm">
-                                    @if (request.PatientRequestDateTimeDetails != null)
-                                    {
-                                        <p>  @request.PatientRequestDateTimeDetails.EndTime.ToString("00")</p>
-                                    }
-                                    else
-                                    {
-                                        <p class="label label-danger"> @Localizer["Not Insert"] </p>
-                                    }
                                 </td>
                                 <td class="tc vm">
                                     @if (request.PatientRequestDateTimeDetails != null)
@@ -165,6 +126,26 @@
                                         <p class="label label-danger"> @Localizer["Not Insert"] </p>
                                     }
                                 </td>
+                                <td class="tc vm">
+                                    @if (request.PatientRequestDateTimeDetails != null)
+                                    {
+                                        <span> @Localizer["Start Date"] @request.PatientRequestDateTimeDetails.StartTime.ToString("00")</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="label label-danger"> @Localizer["Not Insert"] </span>
+                                    }
+                               
+                                    @if (request.PatientRequestDateTimeDetails != null)
+                                    {
+                                        <span>@Localizer["End Date"]  @request.PatientRequestDateTimeDetails.EndTime.ToString("00")</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="label label-danger"> @Localizer["Not Insert"] </span>
+                                    }
+                                </td>
+
                                 <td class="tc vm">
                                     @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.SelectedFromDoctor)
                                     {

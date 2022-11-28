@@ -2051,8 +2051,8 @@
     border: 1px solid #a7a5a5;
 }
 .rad_img3 {
-    width:75% !important;
-    height:75% !important;
+    width:100px !important;
+    height:100px !important;
     border-radius: 50%;
     border:1px solid #fd5b03;
     

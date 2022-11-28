@@ -8,19 +8,17 @@
 
 
     <div class="page-body">
-
-        <div class="row">
-
-         
-
-           
-            <partial name="_ListUserParsaSystemThatDidntSendSMSTOThem" model="@Model.UserNotSendSMS" />
-
+         <div class="row text-center ">
             
-            <partial name="_ListUserParsaSystemThatSentSMSTOThem" model="@Model.UserSendSMS" />
+            
+                <a asp-area="Doctor" asp-controller="IncomeSystem" asp-action="ListOfYourUsers" class="exlStyle btn btn-primary">برای ارسال پیامک به لیست زیر این کلید را فشار دهید</a>
+            
+        </div>
 
-           
-
+        <div class="row">           
+            <partial name="_ListUserParsaSystemThatDidntSendSMSTOThem" model="@Model.UserNotSendSMS" />
+            
+            @*<partial name="_ListUserParsaSystemThatSentSMSTOThem" model="@Model.UserSendSMS" />   *@       
         </div>
 
     </div>
