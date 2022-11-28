@@ -717,4 +717,13 @@
   <data name="Manage Videos" xml:space="preserve">
     <value>مدیریت ویدیوها</value>
   </data>
+  <data name="Create Podcast" xml:space="preserve">
+    <value>افزودن پادکست</value>
+  </data>
+  <data name="Health Info Podcasts" xml:space="preserve">
+    <value>رادیوفام</value>
+  </data>
+  <data name="Manage Podcast" xml:space="preserve">
+    <value>مدیریت پادکست ها</value>
+  </data>
 </root>

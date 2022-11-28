@@ -34,6 +34,8 @@ namespace DoctorFAM.Domain.ViewModels.Admin.Dashboard
 
         public List<CooperationRequest> CooperationRequests { get; set; }
 
+        public List<Entities.HealthInformation.HealthInformation> LastestIncomingTVFAM { get; set; }
+
         #endregion
     }
 }

@@ -234,6 +234,27 @@
 
             <li>
                 <a href="#" class="menu-dropdown">
+                    <i class="menu-icon  glyphicon glyphicon-volume-up"></i>
+                    <span class="menu-text">@SharedLocalizer["Health Info Podcasts"]</span>
+                    <i class="menu-expand"></i>
+                </a>
+
+                <ul class="submenu">
+                    <li>
+                        <a asp-action="FilterPodcast" asp-controller="HealthInformation" asp-area="Doctor">
+                            <span class="menu-text"> @SharedLocalizer["Manage Podcast"] </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-action="CreatePodcast" asp-controller="HealthInformation" asp-area="Doctor">
+                            <span class="menu-text"> @SharedLocalizer["Create Podcast"] </span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li>
+                <a href="#" class="menu-dropdown">
                     <i class="menu-icon fa fa-users"></i>
                     <span class="menu-text"> @SharedLocalizer["Manage Employees"] </span>
                     <i class="menu-expand"></i>

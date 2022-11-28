@@ -598,6 +598,153 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
 
         #endregion
 
+        #region Podcasts
+
+        #region Filter Podcasts
+
+        public async Task<IActionResult> FilterPodcasts()
+        {
+            return View(await _healthInformationService.FilterPodcastsAdminSide());
+        }
+
+        #endregion
+
+        #region Create Podcasts
+
+        [HttpGet]
+        public async Task<IActionResult> CreatePodcasts()
+        {
+            #region Categories
+
+            ViewBag.Categories = await _healthInformationService.ListOFPodcastsCategory();
+
+            #endregion
+
+            return View();
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreatePodcasts(CreateTVFAMVideViewModel model)
+        {
+            #region Model State Validation 
+
+            if (!ModelState.IsValid)
+            {
+                #region Categories
+
+                ViewBag.Categories = await _healthInformationService.ListOFPodcastsCategory();
+
+                #endregion
+
+                TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+                return View(model);
+            }
+
+            #endregion
+
+            #region Create Video 
+
+            var res = await _healthInformationService.CreatePodcastsFromAdminSide(model);
+            if (res)
+            {
+                TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+
+                return RedirectToAction(nameof(FilterPodcasts));
+            }
+
+            #endregion
+
+            #region Categories
+
+            ViewBag.Categories = await _healthInformationService.ListOFPodcastsCategory();
+
+            #endregion
+
+            return View(model);
+        }
+
+        #endregion
+
+        #region Edit Podcasts 
+
+        [HttpGet]
+        public async Task<IActionResult> EditPodcasts(ulong id)
+        {
+            #region Fill View Model
+
+            var model = await _healthInformationService.FillEditPodcastsModelAdminSide(id);
+            if (model == null) return NotFound();
+
+            #endregion
+
+            #region Categories
+
+            ViewBag.Categories = await _healthInformationService.ListOFPodcastsCategory();
+
+            #endregion
+
+            return View(model);
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditPodcasts(EditTVFAMVideoModel model)
+        {
+            #region Model State Validation 
+
+            if (!ModelState.IsValid)
+            {
+                #region Categories
+
+                ViewBag.Categories = await _healthInformationService.ListOFPodcastsCategory();
+
+                #endregion
+
+                TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+                return View(model);
+            }
+
+            #endregion
+
+            #region Edit Podcasts
+
+            var res = await _healthInformationService.EditPodcastAdminSide(model);
+            if (res)
+            {
+                TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+                return RedirectToAction(nameof(FilterPodcasts));
+            }
+
+            #endregion
+
+            #region Categories
+
+            ViewBag.Categories = await _healthInformationService.ListOFPodcastsCategory();
+
+            #endregion
+
+            TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+            return View(model);
+        }
+
+        #endregion
+
+        #region Delete Podcast 
+
+        public async Task<IActionResult> DeletePodcast(ulong id)
+        {
+            var result = await _healthInformationService.DeletePodcast(id);
+            if (result)
+            {
+                return ApiResponse.SetResponse(ApiResponseStatus.Success, null, _localizer["Mission Accomplished"].Value);
+            }
+
+            return ApiResponse.SetResponse(ApiResponseStatus.Danger, null, _localizer["The operation failed"].Value);
+        }
+
+        #endregion
+
+        #endregion
+
         #endregion
     }
 }

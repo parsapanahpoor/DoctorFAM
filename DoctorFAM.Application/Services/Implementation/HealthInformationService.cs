@@ -988,6 +988,583 @@ namespace DoctorFAM.Application.Services.Implementation
 
         #region Radio FAM
 
+        #region Admin Side 
+
+        //Filter Podcasts From Admin Side 
+        public async Task<List<HealthInformation>> FilterPodcastsAdminSide()
+        {
+            return await _healthinformationRepository.FilterPodcastsAdminSide();
+        }
+
+        //Create Podcasts From Admin Side
+        public async Task<bool> CreatePodcastsFromAdminSide(CreateTVFAMVideViewModel model)
+        {
+            #region Check Validation
+
+            if (model.AttachmentFileName == null)
+            {
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(model.longDescription))
+            {
+                return false;
+            }
+
+            #endregion
+
+            #region Set Datas From ViewModel
+
+            HealthInformation tvFAMVide = new HealthInformation()
+            {
+                Title = model.Title.SanitizeText(),
+                OwnerId = (model.OwnerId.HasValue) ? model.OwnerId.Value : null,
+                longDescription = model.longDescription.SanitizeText(),
+                ShortDescription = model.ShortDescription.SanitizeText(),
+                HealthInformationType = HealthInformationType.RadioFAM,
+                HealtInformationFileState = HealtInformationFileState.Accepted,
+                File = model.AttachmentFileName,
+                ShowInSite = model.ShowInSite,
+                ShowInDoctorPanel = model.ShowInDoctorPanel,
+                ShowInfinity = model.ShowInfinity,
+                StartDate = (string.IsNullOrEmpty(model.StartDate)) ? null : model.StartDate.ToMiladiDateTime(),
+                EndDate = (string.IsNullOrEmpty(model.EndDate)) ? null : model.EndDate.ToMiladiDateTime(),
+            };
+
+            #endregion
+
+            #region Add Podcasts 
+
+            await _healthinformationRepository.CreateTVFAMVideo(tvFAMVide);
+
+            #endregion
+
+            #region Podcasts Tags
+
+            if (!string.IsNullOrEmpty(model.Tags))
+            {
+                List<string> tagsList = model.Tags.Split(',').ToList<string>();
+                foreach (var itemTag in tagsList)
+                {
+                    var newTag = new HealthInformationTag
+                    {
+                        HealthInformationId = tvFAMVide.Id,
+                        TagTitle = itemTag,
+                        IsDelete = false,
+                        CreateDate = DateTime.Now
+                    };
+                    await _healthinformationRepository.CreateHealthInformationTags(newTag);
+                }
+            }
+
+            #endregion
+
+            #region Podcasts Categories
+
+            if (model.Permissions != null && model.Permissions.Any())
+            {
+                foreach (var item in model.Permissions)
+                {
+                    RadioFAMSelectedCategory Category = new RadioFAMSelectedCategory()
+                    {
+                        RadioFAMCategoryId = item,
+                        HealthInformationId = tvFAMVide.Id
+                    };
+
+                    await _healthinformationRepository.CreatePodcastsSelectedCatgeories(Category);
+                }
+            }
+
+            await _healthinformationRepository.SaveChanges();
+
+            #endregion
+
+            return true;
+        }
+
+        //List OF Podcast Category 
+        public async Task<List<TVFAMCategoryViewModel>> ListOFPodcastsCategory()
+        {
+            return await _healthinformationRepository.ListOFPodcastsCategory();
+        }
+
+        //Fill Edit Podcasts Model Admin Side
+        public async Task<EditTVFAMVideoModel?> FillEditPodcastsModelAdminSide(ulong podcastId)
+        {
+            #region Get Tv FAM Video By ID
+
+            var health = await GetHealthInformationById(podcastId);
+            if (health == null) return null;
+
+            #endregion
+
+            #region Fill View Model
+
+            EditTVFAMVideoModel model = new EditTVFAMVideoModel()
+            {
+                OwnerId = (health.OwnerId.HasValue) ? health.OwnerId.Value : null,
+                AuthorName = (health.OwnerId.HasValue) ? health.User.Username : null,
+                Title = health.Title,
+                ShortDescription = health.ShortDescription,
+                longDescription = health.longDescription,
+                AttachmentFileName = health.File,
+                EndDate = (health.EndDate == null ? null : health.EndDate.Value.ToShamsi()),
+                StartDate = (health.StartDate == null ? null : health.StartDate.Value.ToShamsi()),
+                HealthInformationType = health.HealthInformationType,
+                HealtInformationFileState = health.HealtInformationFileState,
+                RejectNote = health.RejectNote,
+                ShowInDoctorPanel = health.ShowInDoctorPanel,
+                ShowInfinity = health.ShowInfinity,
+                ShowInSite = health.ShowInSite,
+                HealthInfoId = health.Id,
+                Permissions = await _healthinformationRepository.GetPodcastsSelectedCategories(health.Id)
+            };
+
+            #endregion
+
+            #region Health Information Tags
+
+            var tags = await _healthinformationRepository.GetHealtInformationsTags(health.Id);
+
+            model.Tags = string.Join(",", tags.Select(p => p.TagTitle).ToList());
+
+            #endregion
+
+            return model;
+        }
+
+        //Edit Podcast Admin Side 
+        public async Task<bool> EditPodcastAdminSide(EditTVFAMVideoModel model)
+        {
+            #region Get TV FAM Video 
+
+            var healthFAM = await _healthinformationRepository.GetHealthInformationById(model.HealthInfoId);
+            if (healthFAM == null) return false;
+
+            #endregion
+
+            #region Update Model 
+
+            healthFAM.OwnerId = ((model.OwnerId.HasValue) ? model.OwnerId : null);
+            healthFAM.Title = model.Title;
+            healthFAM.ShortDescription = model.ShortDescription;
+            healthFAM.longDescription = model.longDescription;
+            healthFAM.RejectNote = model.RejectNote;
+            healthFAM.HealtInformationFileState = model.HealtInformationFileState;
+            healthFAM.ShowInDoctorPanel = model.ShowInDoctorPanel;
+            healthFAM.ShowInSite = model.ShowInSite;
+            healthFAM.ShowInfinity = model.ShowInfinity;
+            healthFAM.StartDate = (string.IsNullOrEmpty(model.StartDate)) ? null : model.StartDate.ToMiladiDateTime();
+            healthFAM.EndDate = (string.IsNullOrEmpty(model.EndDate)) ? null : model.EndDate.ToMiladiDateTime();
+
+            #region Attachment File 
+
+            if (!string.IsNullOrEmpty(healthFAM.File) &&
+                  !string.IsNullOrEmpty(model.AttachmentFileName) &&
+                        model.AttachmentFileName != healthFAM.File)
+            {
+                healthFAM.File.DeleteFile(PathTools.HealthInformationAttachmentFilesServerPath);
+            }
+
+            if (string.IsNullOrEmpty(healthFAM.File) || healthFAM.File != model.AttachmentFileName)
+            {
+                healthFAM.File = model.AttachmentFileName;
+            }
+
+            #endregion
+
+            //Update Podcasts
+            await _healthinformationRepository.UpdateTVFAM(healthFAM);
+
+            #endregion
+
+            #region Update Tags 
+
+            var healthTag = await _healthinformationRepository.GetHealtInformationsTags(healthFAM.Id);
+
+            if (healthTag.Any())
+            {
+                await _healthinformationRepository.RemoveHealthInformationTags(healthTag);
+            }
+
+            if (!string.IsNullOrEmpty(model.Tags))
+            {
+                var tags = model.Tags.Split(',').ToList();
+
+                foreach (var item in tags)
+                {
+                    var tag = new HealthInformationTag
+                    {
+                        HealthInformationId = healthFAM.Id,
+                        TagTitle = item
+                    };
+                    await _healthinformationRepository.CreateHealthInformationTags(tag);
+                }
+            }
+
+            #endregion
+
+            #region Categories
+
+            var selected = await _healthinformationRepository.GetListOfPOdcastSelectedCategories(healthFAM.Id);
+
+            if (selected != null && selected.Any())
+            {
+                foreach (var item in selected)
+                {
+                    await _healthinformationRepository.RemovePodcastSelectedCategory(item);
+                }
+            }
+
+            if (model.Permissions != null && model.Permissions.Any())
+            {
+                foreach (var item in model.Permissions)
+                {
+                    RadioFAMSelectedCategory Category = new RadioFAMSelectedCategory()
+                    {
+                        RadioFAMCategoryId = item,
+                        HealthInformationId = healthFAM.Id
+                    };
+
+                    await _healthinformationRepository.CreatePodcastsSelectedCatgeories(Category);
+                }
+            }
+
+            await _healthinformationRepository.SaveChanges();
+
+            #endregion
+
+            return true;
+        }
+
+        //Delete Podcast 
+        public async Task<bool> DeletePodcast(ulong healthInfoId)
+        {
+            #region Get Podcast
+
+            var healthFAM = await _healthinformationRepository.GetHealthInformationById(healthInfoId);
+            if (healthFAM == null)
+            {
+                return false;
+            }
+
+            #endregion
+
+            #region Delete Podcast File 
+
+            if (!string.IsNullOrEmpty(healthFAM.File))
+            {
+                healthFAM.File.DeleteFile(PathTools.HealthInformationAttachmentFilesServerPath);
+            }
+
+            #endregion
+
+            #region Update Podcast Field 
+
+            healthFAM.IsDelete = true;
+
+            #endregion
+
+            await _healthinformationRepository.UpdateTVFAM(healthFAM);
+
+            return true;
+        }
+
+        #endregion
+
+        #region Doctor Panel
+
+        //Filter Podcast From Doctor Panel Side  
+        public async Task<List<HealthInformation>> FilterPodcastDoctorPanelSide(ulong ownerId)
+        {
+            #region Get Owner Organization By EmployeeId 
+
+            var organization = await _organizationRepository.GetDoctorOrganizationByUserId(ownerId);
+            if (organization == null) return null;
+
+            #endregion
+
+            return await _healthinformationRepository.FilterPodcastoctorPanelSide(organization.OwnerId);
+        }
+
+        //Create Podcast From Doctor Side
+        public async Task<bool> CreatePodcastFromDoctorSide(CreateTVFAMVideDoctorPanelViewModel model, ulong userId)
+        {
+            #region Get Owner Organization By EmployeeId 
+
+            var organization = await _organizationRepository.GetDoctorOrganizationByUserId(userId);
+            if (organization == null) return false;
+
+            #endregion
+
+            #region Check Validation
+
+            if (model.AttachmentFileName == null)
+            {
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(model.longDescription))
+            {
+                return false;
+            }
+
+            #endregion
+
+            #region Set Datas From ViewModel
+
+            HealthInformation tvFAMVide = new HealthInformation()
+            {
+                Title = model.Title.SanitizeText(),
+                OwnerId = organization.OwnerId,
+                longDescription = model.longDescription.SanitizeText(),
+                ShortDescription = model.ShortDescription.SanitizeText(),
+                HealthInformationType = HealthInformationType.RadioFAM,
+                HealtInformationFileState = HealtInformationFileState.WaitingForConfirm,
+                File = model.AttachmentFileName,
+                ShowInDoctorPanel = model.ShowInDoctorPanel,
+            };
+
+            #endregion
+
+            #region Add Podcast 
+
+            await _healthinformationRepository.CreateTVFAMVideo(tvFAMVide);
+
+            #endregion
+
+            #region Tv FAM Tags
+
+            if (!string.IsNullOrEmpty(model.Tags))
+            {
+                List<string> tagsList = model.Tags.Split(',').ToList<string>();
+                foreach (var itemTag in tagsList)
+                {
+                    var newTag = new HealthInformationTag
+                    {
+                        HealthInformationId = tvFAMVide.Id,
+                        TagTitle = itemTag,
+                        IsDelete = false,
+                        CreateDate = DateTime.Now
+                    };
+                    await _healthinformationRepository.CreateHealthInformationTags(newTag);
+                }
+            }
+
+            #endregion
+
+            #region TV FAM Categories
+
+            if (model.Permissions != null && model.Permissions.Any())
+            {
+                foreach (var item in model.Permissions)
+                {
+                    RadioFAMSelectedCategory Category = new RadioFAMSelectedCategory()
+                    {
+                        RadioFAMCategoryId = item,
+                        HealthInformationId = tvFAMVide.Id
+                    };
+
+                    await _healthinformationRepository.CreatePodcastsSelectedCatgeories(Category);
+                }
+            }
+
+            await _healthinformationRepository.SaveChanges();
+
+            #endregion
+
+            return true;
+        }
+
+        //Fill Edit Podcast Model Doctor Side
+        public async Task<EditTVFAMVideoDoctorPanelViewModel?> FillEditPodcastModelDoctorSide(ulong tvFAMId, ulong ownerId)
+        {
+            #region Get Owner Organization By EmployeeId 
+
+            var organization = await _organizationRepository.GetDoctorOrganizationByUserId(ownerId);
+            if (organization == null) return null;
+
+            #endregion
+
+            #region Get Podcast By ID
+
+            var health = await GetHealthInformationById(tvFAMId);
+            if (health == null) return null;
+            if (health.OwnerId != organization.OwnerId) return null;
+
+            #endregion
+
+            #region Fill View Model
+
+            EditTVFAMVideoDoctorPanelViewModel model = new EditTVFAMVideoDoctorPanelViewModel()
+            {
+                Title = health.Title,
+                ShortDescription = health.ShortDescription,
+                longDescription = health.longDescription,
+                AttachmentFileName = health.File,
+                HealtInformationFileState = health.HealtInformationFileState,
+                RejectNote = health.RejectNote,
+                HealthInfoId = health.Id,
+                Permissions = await _healthinformationRepository.GetPodcastsSelectedCategories(health.Id)
+            };
+
+            #endregion
+
+            #region Health Information Tags
+
+            var tags = await _healthinformationRepository.GetHealtInformationsTags(health.Id);
+
+            model.Tags = string.Join(",", tags.Select(p => p.TagTitle).ToList());
+
+            #endregion
+
+            return model;
+        }
+
+        //Edit Podcast Doctor Side 
+        public async Task<bool> EditPodcastDoctorSide(EditTVFAMVideoDoctorPanelViewModel model, ulong ownerId)
+        {
+            #region Get Owner Organization By EmployeeId 
+
+            var organization = await _organizationRepository.GetDoctorOrganizationByUserId(ownerId);
+            if (organization == null) return false;
+
+            #endregion
+
+            #region Get TV FAM Video 
+
+            var healthFAM = await _healthinformationRepository.GetHealthInformationById(model.HealthInfoId);
+            if (healthFAM == null) return false;
+            if (healthFAM.OwnerId != organization.OwnerId) return false;
+
+            #endregion
+
+            #region Update Model 
+
+            healthFAM.Title = model.Title;
+            healthFAM.ShortDescription = model.ShortDescription;
+            healthFAM.longDescription = model.longDescription;
+            healthFAM.HealtInformationFileState = HealtInformationFileState.WaitingForConfirm;
+
+            #region Attachment File 
+
+            if (!string.IsNullOrEmpty(healthFAM.File) &&
+                  !string.IsNullOrEmpty(model.AttachmentFileName) &&
+                        model.AttachmentFileName != healthFAM.File)
+            {
+                healthFAM.File.DeleteFile(PathTools.HealthInformationAttachmentFilesServerPath);
+            }
+
+            if (string.IsNullOrEmpty(healthFAM.File) || healthFAM.File != model.AttachmentFileName)
+            {
+                healthFAM.File = model.AttachmentFileName;
+            }
+
+            #endregion
+
+            //Update Podcast
+            await _healthinformationRepository.UpdateTVFAM(healthFAM);
+
+            #endregion
+
+            #region Update Tags 
+
+            var healthTag = await _healthinformationRepository.GetHealtInformationsTags(healthFAM.Id);
+
+            if (healthTag.Any())
+            {
+                await _healthinformationRepository.RemoveHealthInformationTags(healthTag);
+            }
+
+            if (!string.IsNullOrEmpty(model.Tags))
+            {
+                var tags = model.Tags.Split(',').ToList();
+
+                foreach (var item in tags)
+                {
+                    var tag = new HealthInformationTag
+                    {
+                        HealthInformationId = healthFAM.Id,
+                        TagTitle = item
+                    };
+                    await _healthinformationRepository.CreateHealthInformationTags(tag);
+                }
+            }
+
+            #endregion
+
+            #region Categories
+
+            var selected = await _healthinformationRepository.GetListOfPOdcastSelectedCategories(healthFAM.Id);
+
+            if (selected != null && selected.Any())
+            {
+                foreach (var item in selected)
+                {
+                    await _healthinformationRepository.RemovePodcastSelectedCategory(item);
+                }
+            }
+
+            if (model.Permissions != null && model.Permissions.Any())
+            {
+                foreach (var item in model.Permissions)
+                {
+                    RadioFAMSelectedCategory Category = new RadioFAMSelectedCategory()
+                    {
+                        RadioFAMCategoryId = item,
+                        HealthInformationId = healthFAM.Id
+                    };
+
+                    await _healthinformationRepository.CreatePodcastsSelectedCatgeories(Category);
+                }
+            }
+
+            await _healthinformationRepository.SaveChanges();
+
+            #endregion
+
+            return true;
+        }
+
+        //Delete Podcast Doctor Panel 
+        public async Task<bool> DeletePodcastDoctorPanel(ulong healthInfoId, ulong userId)
+        {
+            #region Get Owner Organization By EmployeeId 
+
+            var organization = await _organizationRepository.GetDoctorOrganizationByUserId(userId);
+            if (organization == null) return false;
+
+            #endregion
+
+            #region Get Podcast
+
+            var healthFAM = await _healthinformationRepository.GetHealthInformationById(healthInfoId);
+            if (healthFAM == null || healthFAM.OwnerId != organization.OwnerId) return false;
+
+            #endregion
+
+            #region Delete Podcast File 
+
+            if (!string.IsNullOrEmpty(healthFAM.File))
+            {
+                healthFAM.File.DeleteFile(PathTools.HealthInformationAttachmentFilesServerPath);
+            }
+
+            #endregion
+
+            #region Update Podcast Delete 
+
+            healthFAM.IsDelete = true;
+
+            #endregion
+
+            await _healthinformationRepository.UpdateTVFAM(healthFAM);
+
+            return true;
+        }
+
+        #endregion
+
         #endregion
 
         #endregion

@@ -39,6 +39,12 @@ namespace DoctorFAM.Data.Repository
 
         #region Admin Side 
 
+        //Create Radio FAM Selected Catgeories
+        public async Task CreatePodcastsSelectedCatgeories(RadioFAMSelectedCategory radio)
+        {
+            await _context.RadioFAMSelectedCategories.AddAsync(radio);
+        }
+
         //Create TV FAM Selected Catgeories
         public async Task CreateTVFAMSelectedCatgeories(TVFAMSelectedCategory tVFAM)
         {
@@ -500,6 +506,73 @@ namespace DoctorFAM.Data.Repository
         #endregion
 
         #region Radio FAM
+
+        #region Admin Side 
+
+        //List OF Podcast Category 
+        public async Task<List<TVFAMCategoryViewModel>> ListOFPodcastsCategory()
+        {
+            return await _context.RadioFAMCategoryInfos
+               .Include(a => a.RadioFAMCategory)
+               .ThenInclude(p => p.Parent)
+               .Where(p => !p.IsDelete)
+                .Select(p => new TVFAMCategoryViewModel()
+                {
+                    CategoryName = p.Title,
+                    ParentId = p.RadioFAMCategory.ParentId,
+                    CatgeoryId = p.RadioFAMCategoryId
+                }).ToListAsync();
+        }
+
+        //Filter Podcasts From Admin Side 
+        public async Task<List<HealthInformation>> FilterPodcastsAdminSide()
+        {
+            return await _context.HealthInformation.Include(p => p.User)
+                .Where(p => !p.IsDelete && p.HealthInformationType == Domain.Enums.HealtInformation.HealthInformationType.RadioFAM)
+                .OrderByDescending(p => p.CreateDate).ToListAsync();
+        }
+
+        //Get Podcasts Selected Categories
+        public async Task<List<ulong>> GetPodcastsSelectedCategories(ulong healthId)
+        {
+            return await _context.RadioFAMSelectedCategories.Where(p => !p.IsDelete && p.HealthInformationId == healthId)
+                            .Select(p => p.RadioFAMCategoryId).ToListAsync();
+        }
+
+        //Get List Of Podcasts Selected Categories
+        public async Task<List<RadioFAMSelectedCategory>> GetListOfPOdcastSelectedCategories(ulong healthId)
+        {
+            return await _context.RadioFAMSelectedCategories.Where(p => !p.IsDelete && p.HealthInformationId == healthId).ToListAsync();
+        }
+
+        //Remove Podcast Selected Category
+        public async Task RemovePodcastSelectedCategory(List<RadioFAMSelectedCategory> tvFAMCategory)
+        {
+            _context.RadioFAMSelectedCategories.RemoveRange(tvFAMCategory);
+            await _context.SaveChangesAsync();
+        }
+
+        //Remove Podcast Selected Category
+        public async Task RemovePodcastSelectedCategory(RadioFAMSelectedCategory tvFAMCategory)
+        {
+            _context.RadioFAMSelectedCategories.Remove(tvFAMCategory);
+            await _context.SaveChangesAsync();
+        }
+
+        #endregion
+
+        #region Doctor Panel 
+
+        //Filter Podcast From Doctor Panel Side  
+        public async Task<List<HealthInformation>> FilterPodcastoctorPanelSide(ulong ownerId)
+        {
+            return await _context.HealthInformation.Include(p => p.User)
+                .Where(p => !p.IsDelete && p.HealthInformationType == Domain.Enums.HealtInformation.HealthInformationType.RadioFAM
+                        && p.OwnerId.Value == ownerId)
+                .OrderByDescending(p => p.CreateDate).ToListAsync();
+        }
+
+        #endregion
 
         #endregion
 

@@ -168,6 +168,38 @@ namespace DoctorFAM.Domain.Interfaces.EFCore
 
         #region Radio FAM
 
+        #region Admin Side 
+
+        //Filter Podcasts From Admin Side 
+        Task<List<HealthInformation>> FilterPodcastsAdminSide();
+
+        //Create Radio FAM Selected Catgeories
+        Task CreatePodcastsSelectedCatgeories(RadioFAMSelectedCategory radio);
+
+        //List OF Podcast Category 
+        Task<List<TVFAMCategoryViewModel>> ListOFPodcastsCategory();
+
+        //Get Podcasts Selected Categories
+        Task<List<ulong>> GetPodcastsSelectedCategories(ulong healthId);
+
+        //Get List Of Podcasts Selected Categories
+        Task<List<RadioFAMSelectedCategory>> GetListOfPOdcastSelectedCategories(ulong healthId);
+
+        //Remove Podcast Selected Category
+        Task RemovePodcastSelectedCategory(List<RadioFAMSelectedCategory> tvFAMCategory);
+
+        //Remove Podcast Selected Category
+        Task RemovePodcastSelectedCategory(RadioFAMSelectedCategory tvFAMCategory);
+
+        #endregion
+
+        #region Doctor Panel 
+
+        //Filter Podcast From Doctor Panel Side  
+        Task<List<HealthInformation>> FilterPodcastoctorPanelSide(ulong ownerId);
+
+        #endregion
+
         #endregion
 
         #endregion

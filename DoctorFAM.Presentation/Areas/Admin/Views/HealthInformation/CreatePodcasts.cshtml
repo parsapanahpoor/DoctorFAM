@@ -1,0 +1,271 @@
+﻿@model DoctorFAM.Domain.ViewModels.Admin.HealthInformation.TVFAM.Video.CreateTVFAMVideViewModel
+
+@using DoctorFAM.Domain.Entities.HealthInformation
+@using DoctorFAM.Web.Culture
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = "افزودن پادکست";
+
+    List<DoctorFAM.Domain.ViewModels.Admin.HealthInformation.TVFAM.Category.TVFAMCategoryViewModel> categories = ViewBag.Categories as List<DoctorFAM.Domain.ViewModels.Admin.HealthInformation.TVFAM.Category.TVFAMCategoryViewModel>;
+}
+
+@section Scripts
+    {
+    <partial name="_JqueryValidation" />
+}
+
+    @section Breadcrumb
+    {
+    <li>
+        <a asp-area="Admin" asp-controller="HealthInformation" asp-action="FilterPodcasts"> مدیریت پادکست ها  </a>
+        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+    </li>
+}
+
+    <form method="post" asp-action="CreatePodcasts" asp-controller="HealthInformation" asp-area="Admin" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col-lg-9 col-sm-12">
+                <div class="widget">
+                    <div class="widget-header bordered-bottom bordered-green">
+                        <span class="widget-caption"> @ViewData["Title"] </span>
+                    </div>
+                    <div class="widget-body">
+                        <div>
+
+                            <div class="row">
+                                <div class="form-group col-md-6 col-sm-12">
+                                    <label asp-for="Title">عنوان</label>
+                                    <input type="text" class="form-control" asp-for="Title">
+                                    <span class="text-danger" asp-validation-for="Title"></span>
+                                </div>
+
+                                <div class="form-group col-md-6 col-sm-12">
+                                    <label asp-for="OwnerId">تهیه کننده ی پادکست </label>
+                                    <input type="hidden" asp-for="OwnerId" id="Owner-Input">
+                                    <input type="text" class="form-control" asp-for="AuthorName" id="Owner-Display" readonly="readonly" />
+                                    <span onclick="ShowSearchUserModal('Owner')" class="search-btn"><i class="glyphicon glyphicon-search" style="position: relative;top: -25px;right: 320px;"></i></span>
+                                    <span class="text-danger" asp-validation-for="OwnerId"></span>
+
+                                </div>
+                                <div class="clearfix"></div>
+
+                                <div class="form-group col-md-12 col-sm-12">
+                                    <label asp-for="ShortDescription">توضیح مختصر</label>
+                                    <input type="text" class="form-control" asp-for="ShortDescription">
+                                    <span class="text-danger" asp-validation-for="ShortDescription"></span>
+                                </div>
+
+                                <div class="clearfix"></div>
+
+                                <div class="form-group col-md-6 col-sm-12">
+                                    <label asp-for="StartDate">تاریخ شروع</label>
+                                    <input type="text" class="form-control" AdminDatePicker="1" style="z-index:9999!important;" asp-for="StartDate">
+                                    <span class="text-danger" asp-validation-for="StartDate"></span>
+                                </div>
+
+                                <div class="form-group col-md-6 col-sm-12">
+                                    <label asp-for="EndDate">تاریخ پایان</label>
+                                    <input type="text" class="form-control" AdminDatePicker="1" style="z-index:9999!important;" asp-for="EndDate">
+                                    <span class="text-danger" asp-validation-for="EndDate"></span>
+                                </div>
+
+                                <div class="clearfix"></div>
+
+                                <div class="form-group col-md-12 col-sm-12">
+                                    <label asp-for="Tags">تگ </label>
+                                    <input type="text" class="form-control" tagify="1" asp-for="Tags">
+                                    <span class="text-danger" asp-validation-for="Tags"></span>
+                                </div>
+
+                                <div class="clearfix"></div>
+
+                                <div class="form-group col-md-12">
+                                    <label asp-for="longDescription">توضیح کامل</label>
+                                    <textarea class="form-control" ckeditor="1" asp-for="longDescription"></textarea>
+                                    <span class="text-danger" asp-validation-for="longDescription"></span>
+
+                                </div>
+
+                            </div>
+
+                            <hr class="margin-bottom-10 margin-top-10" />
+
+                            <div class="row">
+                                <div class="col-md-12 flex-style">
+                                    <button type="submit" class="btn btn-labeled btn-palegreen">
+                                        <i class="btn-label glyphicon glyphicon-ok"></i>ثبت
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-lg-3 col-sm-12">
+                <div class="row">
+
+                    <div class="col-lg-12">
+                        <div class="widget">
+                            <div class="widget-header bordered-bottom bordered-green flex-style">
+
+                                <span class="widget-caption"> @Localizer["انتخاب دسته"] </span>
+                           
+                            </div>
+                            <div class="widget-body @((categories != null && categories.Any()) ? "no-padding" : "")">
+
+                            @if (categories != null && categories.Any())
+                            {
+                                <div class="panel-group accordion">
+                                    @foreach (var permission in categories.Where(s => s.ParentId == null))
+                                    {
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a class="accordion-toggle collapsed" data-toggle="collapse" href="#permission-@permission.CatgeoryId" aria-expanded="false">
+                                                        @permission.CategoryName
+                                                    </a>
+                                                </h4>
+                                            </div>
+                                            <div id="permission-@permission.CatgeoryId" class="panel-collapse collapse " aria-expanded="false" style="height: 0">
+                                                <div class="panel-body" style="padding: 5px 15px 0 15px !important">
+
+                                                    <span class="label-style">@Localizer["سرگروه"]</span>
+
+                                                    <div class="form-group">
+                                                        <div class="checkbox">
+                                                            <label>
+                                                                <input type="checkbox" value="@permission.CatgeoryId" name="Permissions" data-id="@permission.CatgeoryId" >
+                                                                <span class="text"> @permission.CategoryName </span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+
+                                                    @if (categories.Any(s => s.ParentId.HasValue && s.ParentId.Value == permission.CatgeoryId))
+                                                    {
+                                                        <hr style="margin-top: 10px !important; margin-bottom: 10px !important" />
+
+                                                        <span class="label-style">@Localizer["زیر گروه"]</span>
+
+                                                        @foreach (var subPermission in categories.Where(s => s.ParentId.HasValue && s.ParentId.Value == permission.CatgeoryId))
+                                                        {
+
+                                                            <div class="form-group">
+                                                                <div class="checkbox">
+                                                                    <label>
+                                                                        <input type="checkbox" value="@subPermission.CatgeoryId" name="Permissions" data-id="@subPermission.CatgeoryId" data-parentId="@permission.CatgeoryId" >
+                                                                        <span class="text"> @subPermission.CategoryName </span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                    }
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                            else
+                            {
+                                <partial name="_AdminNotFoundPartial" />
+                            }
+
+                        </div>
+                    </div>
+                </div>
+
+
+                    <div class="col-lg-12">
+                        <div class="widget">
+                            <div class="widget-header bordered-bottom bordered-green">
+                                <span class="widget-caption"> فایل ضمیمه </span>
+                            </div>
+                            <div class="widget-body">
+                                <div class="row">
+
+                                    <input type="hidden" asp-for="AttachmentFileName">
+
+                                    <div class="col-md-12">
+                                        <label for="courseAttachmentFile" class="file-input-style">
+                                            <i class="glyphicon glyphicon-upload"></i>
+                                            <span class="mr-8px">لطفا فایل ضمیمه را انتخاب کنید .</span>
+                                        </label>
+                                    </div>
+
+                                    <div class="col-md-12 mt-10px display-none" id="CourseAttachment" inputId="AttachmentFileName" upload-url="@Url.Action("UploadCourseAttachmentFile", "HealthInformation", new {area = "Admin"})">
+                                        <div class="progress progress-bordered" style="margin-bottom: 10px !important">
+                                            <div class="progress-bar progress-bar-blue" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                                                <span class="percent"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12 mt-10px @((Model != null && !string.IsNullOrEmpty(Model.AttachmentFileName)) ? "" : "display-none")" style="margin-bottom: 5px" id="CourseAttachmentDownloadBox">
+                                        <div class="file-admin-style bg-sky">
+                                            <span> فایل ضمیمه </span>
+                                            <a asp-action="DownloadCourseAttachmentFile" asp-controller="Course" asp-area="Admin" asp-route-fileName="@((Model != null && !string.IsNullOrEmpty(Model.AttachmentFileName)) ? Model.AttachmentFileName : string.Empty)" class="icon-download-style">
+                                                <i class="glyphicon glyphicon-cloud-download"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-12">
+                        <div class="widget">
+                            <div class="widget-header bordered-bottom bordered-green">
+                                <span class="widget-caption"> وضعیت </span>
+                            </div>
+                            <div class="widget-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+
+                                        <div class="form-group">
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" asp-for="ShowInfinity">
+                                                    <span class="text"> نمایش همیشگی </span>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" asp-for="ShowInDoctorPanel">
+                                                    <span class="text"> نمایش در پنل پزشک </span>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" asp-for="ShowInSite">
+                                                    <span class="text"> نمایش در سایت </span>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <input type="file" chunk-upload="CourseAttachment" class="display-none" name="courseAttachmentFile" id="courseAttachmentFile" />
+

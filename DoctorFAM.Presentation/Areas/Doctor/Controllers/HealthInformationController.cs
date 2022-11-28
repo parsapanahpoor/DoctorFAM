@@ -28,6 +28,8 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
         #endregion
 
+        #region TV FAM Video
+
         #region Filter Videos
 
         public async Task<IActionResult> FilterVideos()
@@ -72,7 +74,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
             #region Create Video 
 
-            var res = await _healthInformationService.CreateTVFAMvideoFromDoctorSide(model , User.GetUserId());
+            var res = await _healthInformationService.CreateTVFAMvideoFromDoctorSide(model, User.GetUserId());
             if (res)
             {
                 TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
@@ -90,6 +92,8 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
             return View(model);
         }
+
+        #endregion
 
         #region Upload Chunk Attachment File
 
@@ -139,8 +143,6 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
         #endregion
 
-        #endregion
-
         #region Edit TV FAM Video 
 
         [HttpGet]
@@ -148,7 +150,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
         {
             #region Fill View Model
 
-            var model = await _healthInformationService.FillEditTVFAMVideoModelDoctorSide(id , User.GetUserId());
+            var model = await _healthInformationService.FillEditTVFAMVideoModelDoctorSide(id, User.GetUserId());
             if (model == null) return NotFound();
 
             #endregion
@@ -183,7 +185,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
             #region Edit TV FAM Video 
 
-            var res = await _healthInformationService.EditTVFAMVideoDoctorSide(model , User.GetUserId());
+            var res = await _healthInformationService.EditTVFAMVideoDoctorSide(model, User.GetUserId());
             if (res)
             {
                 TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
@@ -208,7 +210,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
         public async Task<IActionResult> DeleteHealthInformation(ulong id)
         {
-            var result = await _healthInformationService.DeleteTVFAMDoctorPanel(id , User.GetUserId());
+            var result = await _healthInformationService.DeleteTVFAMDoctorPanel(id, User.GetUserId());
             if (result)
             {
                 return ApiResponse.SetResponse(ApiResponseStatus.Success, null, _localizer["Mission Accomplished"].Value);
@@ -216,6 +218,155 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
             return ApiResponse.SetResponse(ApiResponseStatus.Danger, null, _localizer["The operation failed"].Value);
         }
+
+        #endregion
+
+        #endregion
+
+        #region Podcast
+
+        #region Filter Podcast
+
+        public async Task<IActionResult> FilterPodcast()
+        {
+            return View(await _healthInformationService.FilterPodcastDoctorPanelSide(User.GetUserId()));
+        }
+
+        #endregion
+
+        #region Create Podcast
+
+        [HttpGet]
+        public async Task<IActionResult> CreatePodcast()
+        {
+            #region Categories
+
+            ViewBag.Categories = await _healthInformationService.ListOFPodcastsCategory();
+
+            #endregion
+
+            return View();
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreatePodcast(CreateTVFAMVideDoctorPanelViewModel model)
+        {
+            #region Model State Validation 
+
+            if (!ModelState.IsValid)
+            {
+                #region Categories
+
+                ViewBag.Categories = await _healthInformationService.ListOFPodcastsCategory();
+
+                #endregion
+
+                TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+                return View(model);
+            }
+
+            #endregion
+
+            #region Create Podcast 
+
+            var res = await _healthInformationService.CreatePodcastFromDoctorSide(model, User.GetUserId());
+            if (res)
+            {
+                TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+
+                return RedirectToAction(nameof(FilterPodcast));
+            }
+
+            #endregion
+
+            #region Categories
+
+            ViewBag.Categories = await _healthInformationService.ListOFPodcastsCategory();
+
+            #endregion
+
+            return View(model);
+        }
+
+        #endregion
+
+        #region Edit Podcast 
+
+        [HttpGet]
+        public async Task<IActionResult> EditPodcast(ulong id)
+        {
+            #region Fill View Model
+
+            var model = await _healthInformationService.FillEditPodcastModelDoctorSide(id, User.GetUserId());
+            if (model == null) return NotFound();
+
+            #endregion
+
+            #region Categories
+
+            ViewBag.Categories = await _healthInformationService.ListOFPodcastsCategory();
+
+            #endregion
+
+            return View(model);
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditPodcast(EditTVFAMVideoDoctorPanelViewModel model)
+        {
+            #region Model State Validation 
+
+            if (!ModelState.IsValid)
+            {
+                #region Categories
+
+                ViewBag.Categories = await _healthInformationService.ListOFPodcastsCategory();
+
+                #endregion
+
+                TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+                return View(model);
+            }
+
+            #endregion
+
+            #region Edit Podcast 
+
+            var res = await _healthInformationService.EditPodcastDoctorSide(model, User.GetUserId());
+            if (res)
+            {
+                TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+                return RedirectToAction(nameof(FilterPodcast));
+            }
+
+            #endregion
+
+            #region Categories
+
+            ViewBag.Categories = await _healthInformationService.ListOFPodcastsCategory();
+
+            #endregion
+
+            TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+            return View(model);
+        }
+
+        #endregion
+
+        #region Delete Podcast 
+
+        public async Task<IActionResult> DeletePodcast(ulong id)
+        {
+            var result = await _healthInformationService.DeletePodcastDoctorPanel(id, User.GetUserId());
+            if (result)
+            {
+                return ApiResponse.SetResponse(ApiResponseStatus.Success, null, _localizer["Mission Accomplished"].Value);
+            }
+
+            return ApiResponse.SetResponse(ApiResponseStatus.Danger, null, _localizer["The operation failed"].Value);
+        }
+
+        #endregion
 
         #endregion
     }

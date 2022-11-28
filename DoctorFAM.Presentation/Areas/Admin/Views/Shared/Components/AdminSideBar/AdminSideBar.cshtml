@@ -349,6 +349,26 @@
             </ul>
         </li>
 
+              <li>
+            <a href="#" class="menu-dropdown">
+                <i class="menu-icon  glyphicon glyphicon-volume-up"></i>
+                <span class="menu-text">@SharedLocalizer[" پادکست های دانستنی سلامت"]</span>
+                <i class="menu-expand"></i>
+            </a>
+
+            <ul class="submenu">
+                <li>
+                    <a asp-action="FilterPodcasts" asp-controller="HealthInformation" asp-area="Admin">
+                        <span class="menu-text"> @SharedLocalizer["مدیریت پادکست "] </span>
+                    </a>
+                </li>
+                <li>
+                    <a asp-action="CreatePodcasts" asp-controller="HealthInformation" asp-area="Admin">
+                        <span class="menu-text"> @SharedLocalizer[" افزودن پادکست"] </span>
+                    </a>
+                </li>
+            </ul>
+        </li>
 
         <li>
             <a href="#" class="menu-dropdown">

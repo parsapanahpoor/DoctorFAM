@@ -130,6 +130,47 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         #region Radio FAM
 
+        #region Admin Side
+
+        //Filter Podcasts From Admin Side 
+        Task<List<HealthInformation>> FilterPodcastsAdminSide();
+
+        //Create Podcasts From Admin Side
+        Task<bool> CreatePodcastsFromAdminSide(CreateTVFAMVideViewModel model);
+
+        //List OF Podcast Category 
+        Task<List<TVFAMCategoryViewModel>> ListOFPodcastsCategory();
+
+        //Fill Edit Podcasts Model Admin Side
+        Task<EditTVFAMVideoModel?> FillEditPodcastsModelAdminSide(ulong podcastId);
+
+        //Edit Podcast Admin Side 
+        Task<bool> EditPodcastAdminSide(EditTVFAMVideoModel model);
+
+        //Delete Podcast 
+        Task<bool> DeletePodcast(ulong healthInfoId);
+
+        #endregion
+
+        #region Doctor Panel 
+
+        //Filter Podcast From Doctor Panel Side  
+        Task<List<HealthInformation>> FilterPodcastDoctorPanelSide(ulong ownerId);
+
+        //Create Podcast From Doctor Side
+        Task<bool> CreatePodcastFromDoctorSide(CreateTVFAMVideDoctorPanelViewModel model, ulong userId);
+
+        //Fill Edit Podcast Model Doctor Side
+        Task<EditTVFAMVideoDoctorPanelViewModel?> FillEditPodcastModelDoctorSide(ulong tvFAMId, ulong ownerId);
+
+        //Edit Podcast Doctor Side 
+        Task<bool> EditPodcastDoctorSide(EditTVFAMVideoDoctorPanelViewModel model, ulong ownerId);
+
+        //Delete Podcast Doctor Panel 
+        Task<bool> DeletePodcastDoctorPanel(ulong healthInfoId, ulong userId);
+
+        #endregion
+
         #endregion
 
         #endregion

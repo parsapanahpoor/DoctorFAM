@@ -226,6 +226,14 @@ namespace DoctorFAM.Data.Repository
 
             #endregion
 
+            #region List Of Lastest TV FAM Incoming Video
+
+            model.LastestIncomingTVFAM = await _context.HealthInformation.Where(p => !p.IsDelete && p.HealtInformationFileState == Domain.Enums.HealtInformation.HealtInformationFileState.WaitingForConfirm
+                                            && p.HealthInformationType == Domain.Enums.HealtInformation.HealthInformationType.TVFAM)
+                                            .OrderByDescending(p=> p.CreateDate).ToListAsync();
+
+            #endregion
+
             return model;
         }
 
