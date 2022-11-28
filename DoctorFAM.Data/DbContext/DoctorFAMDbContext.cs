@@ -10,6 +10,7 @@ using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.FamilyDoctor;
 using DoctorFAM.Domain.Entities.FamilyDoctor.ParsaSystem;
 using DoctorFAM.Domain.Entities.FamilyDoctor.VIPSystem;
+using DoctorFAM.Domain.Entities.HealthInformation;
 using DoctorFAM.Domain.Entities.Interest;
 using DoctorFAM.Domain.Entities.Laboratory;
 using DoctorFAM.Domain.Entities.Languages;
@@ -293,6 +294,26 @@ namespace DoctorFAM.Data.DbContext
 
         #endregion
 
+        #region Health Information 
+
+        public DbSet<TVFAMCategory> TVFAMCategories { get; set; }
+
+        public DbSet<TVFAMCategoryInfo> TVFAMCategoryInfos { get; set; }
+
+        public DbSet<RadioFAMCategory> RadioFAMCategories { get; set; }
+
+        public DbSet<RadioFAMCategoryInfo> RadioFAMCategoryInfos { get; set; }
+
+        public DbSet<HealthInformationTag> HealthInformationTags { get; set; }
+
+        public DbSet<HealthInformation> HealthInformation { get; set; }
+
+        public DbSet<RadioFAMSelectedCategory> RadioFAMSelectedCategories { get; set; }
+
+        public DbSet<TVFAMSelectedCategory> TVFAMSelectedCategories { get; set; }
+
+        #endregion
+
         #endregion
 
         #region On Model Creating
@@ -535,6 +556,10 @@ namespace DoctorFAM.Data.DbContext
             modelBuilder.Entity<DoctorsInterestInfo>().HasQueryFilter(e => e.LanguageId == culture);
 
             modelBuilder.Entity<PharmacyInterestInfo>().HasQueryFilter(e => e.LanguageId == culture);
+
+            modelBuilder.Entity<TVFAMCategoryInfo>().HasQueryFilter(e => e.LanguageId == culture);
+
+            modelBuilder.Entity<RadioFAMCategoryInfo>().HasQueryFilter(e => e.LanguageId == culture);
 
             #endregion
 

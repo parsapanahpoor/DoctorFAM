@@ -708,4 +708,24 @@
   <data name="List Of Get Reservation Date" xml:space="preserve">
     <value>لیست نوبتها</value>
   </data>
+  <data name="Create Videos" xml:space="preserve">
+    <value>افزودن ویدیو </value>
+  </data>
+  <data name="Health Info Videos" xml:space="preserve">
+    <value>ویدیوهای دانستنی سلامت</value>
+  </data>
+  <data name="Manage Videos" xml:space="preserve">
+    <value>مدیریت ویدیوها</value>
+  </data>
+  <data name="Create Podcast" xml:space="preserve">
+    <value>افزودن پادکست</value>
+  </data>
+  <data name="Health Info Podcasts" xml:space="preserve">
+    <value>رادیوفام</value>
+  </data>
+  <data name="Manage Podcast" xml:space="preserve">
+    <value>مدیریت پادکست ها</value>
+  <data name="List Of Get Reservation Date" xml:space="preserve">
+    <value>لیست نوبتها</value>
+  </data>
 </root>

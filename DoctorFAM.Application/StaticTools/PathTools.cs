@@ -115,5 +115,12 @@ namespace DoctorFAM.Application.StaticTools
         public static readonly string ProductsGalleryPathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/Products/Gallery/thumb/");
 
         #endregion
+
+        #region Health Information  Attachment Files
+
+        public static readonly string HealthInformationAttachmentFilesServerPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/HealthInformationAttachmentFiles/Files/");
+        public static readonly string HealthInformationAttachmentFilesChunkServerPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/HealthInformationAttachmentFiles/Chunks/");
+
+        #endregion
     }
 }

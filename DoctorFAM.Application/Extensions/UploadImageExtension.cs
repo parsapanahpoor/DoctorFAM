@@ -65,6 +65,17 @@ namespace DoctorFAM.Application.Extensions
                 }
             }
         }
-       
+
+        public static void DeleteFile(this string fileName, string OriginPath)
+        {
+            if (!string.IsNullOrEmpty(fileName))
+            {
+                if (File.Exists(OriginPath + fileName))
+                {
+                    File.Delete(OriginPath + fileName);
+                }
+            }
+        }
+
     }
 }

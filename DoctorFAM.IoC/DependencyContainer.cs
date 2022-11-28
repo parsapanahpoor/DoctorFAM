@@ -7,6 +7,7 @@ using DoctorFAM.Data.Dapper.Repository;
 using DoctorFAM.Data.Repository;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.Interfaces.Dapper;
+using DoctorFAM.Domain.Interfaces.EFCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -55,6 +56,7 @@ namespace DoctorFAM.IoC
             services.AddScoped<INurseService, NurseService>();
             services.AddScoped<IConsultantService, ConsultantService>();
             services.AddScoped<ILaboratoryService, LaboratoryService>();
+            services.AddScoped<IHealthInformationService, HealthInformationService>();
 
             #endregion
 
@@ -89,6 +91,7 @@ namespace DoctorFAM.IoC
             services.AddScoped<INurseRepository, NurseRepository>();
             services.AddScoped<IConsultantRepository, ConsultantRepository>();
             services.AddScoped<ILaboratoryRepository, LaboratoryRepository>();
+            services.AddScoped<IHealthInformationRepository, HealthInformationRepository>();
 
             #endregion
 

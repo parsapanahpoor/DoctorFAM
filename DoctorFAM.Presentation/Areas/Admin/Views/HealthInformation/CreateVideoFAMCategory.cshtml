@@ -1,0 +1,96 @@
+﻿@model DoctorFAM.Domain.ViewModels.Admin.HealthInformation.TVFAM.Category.CreateTVFAMCategoryViewModel
+
+@using DoctorFAM.Domain.Entities.HealthInformation
+@using DoctorFAM.Web.Culture
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = "افزودن دسته بندی";
+    var parentId = ViewBag.parentId != null ? (ulong)ViewBag.parentId : (ulong?)null;
+    var parentLocation = ViewBag.parentLocation != null ? ViewBag.parentLocation as TVFAMCategory : null;
+}
+
+@section Scripts
+    {
+    <partial name="_JqueryValidation" />
+}
+
+    @section Breadcrumb
+    {
+    <li>
+        <a asp-area="Admin" asp-controller="HealthInformation" asp-controller="ListOfVideFAMCategoryList"> مدیریت اطلاعات دسته بندی / </a>
+        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+    </li>
+}
+
+    <form method="post" asp-action="CreateVideoFAMCategory" asp-controller="HealthInformation" asp-area="Admin" enctype="multipart/form-data">
+        <input type="hidden" asp-for="ParentId" />
+        <div class="row">
+            <div class="col-lg-12 col-sm-12">
+                <div class="widget">
+                    <div class="widget-header bordered-bottom bordered-green">
+                    @if (parentLocation != null)
+                    {
+                        <span class="widget-caption"> افزودن دسته بندی  @parentLocation.UniqueName </span>
+                    }
+                    else
+                    {
+                        <span class="widget-caption"> افزودن دسته بندی   </span>
+                    }
+
+                </div>
+                <div class="widget-body">
+                    <div>
+
+                        <div class="row">
+                            <div class="form-group col-md-12 col-sm-12">
+                                <label asp-for="UniqueName"></label>
+                                <input type="text" class="form-control" asp-for="UniqueName">
+                                <span class="text-danger" asp-validation-for="UniqueName"></span>
+                            </div>
+
+                        </div>
+
+                        <hr class="margin-bottom-10 margin-top-10" />
+
+                        @{
+                            int i = 0;
+                        }
+                        @foreach (var language in ApplicationCultures.CultureItems)
+                        {
+                            <div class="card">
+                                <div class="card-body">
+                                    <input type="hidden" asp-for="TVFAMCategoryInfos[i].Culture" value="@language.CultureKey" />
+                                    <h5 class="mb-4">
+                                        دسته بندی خدمات ( @language.Title )
+                                    </h5>
+                                    <div class="form-group">
+                                        <label>عنوان دسته بندی خدمات</label>
+                                        <input class="form-control" asp-for="TVFAMCategoryInfos[i].Title" />
+                                        <span asp-validation-for="TVFAMCategoryInfos[i].Title" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr class="margin-bottom-10 margin-top-10" />
+
+                            <br />
+                            i++;
+                        }
+
+                        <div class="row">
+                            <div class="col-md-12 flex-style">
+                                <button type="submit" class="btn btn-labeled btn-palegreen">
+                                    <i class="btn-label glyphicon glyphicon-ok"></i>ثبت
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+

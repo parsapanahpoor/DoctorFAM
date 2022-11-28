@@ -78,6 +78,7 @@ builder.Services.AddControllersWithViews()
         };
     });
 
+builder.Services.AddResumingFileResult();
 builder.Services.AddMvc();
 
 #endregion
@@ -230,7 +231,7 @@ faIR.NumberFormat.CurrencyGroupSeparator = ",";
 faIR.NumberFormat.NegativeSign = "-";
 
 
-var supportedCultures = new List<CultureInfo>() { faIR, trTR , arSA , new CultureInfo("en-US") };
+var supportedCultures = new List<CultureInfo>() { faIR, trTR, arSA, new CultureInfo("en-US") };
 
 var options = new RequestLocalizationOptions()
 {
