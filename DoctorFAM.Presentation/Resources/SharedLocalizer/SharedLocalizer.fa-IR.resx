@@ -723,8 +723,9 @@
   <data name="Health Info Podcasts" xml:space="preserve">
     <value>رادیوفام</value>
   </data>
-  <data name="Manage Podcast" xml:space="preserve">
+	<data name="Manage Podcast" xml:space="preserve">
     <value>مدیریت پادکست ها</value>
+	  </data>
   <data name="List Of Get Reservation Date" xml:space="preserve">
     <value>لیست نوبتها</value>
   </data>
