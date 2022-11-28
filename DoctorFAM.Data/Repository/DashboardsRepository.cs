@@ -234,6 +234,14 @@ namespace DoctorFAM.Data.Repository
 
             #endregion
 
+            #region List Of Lastest Podcasts 
+
+            model.LastestIncomingRadioFAM = await _context.HealthInformation.Where(p => !p.IsDelete && p.HealtInformationFileState == Domain.Enums.HealtInformation.HealtInformationFileState.WaitingForConfirm
+                                            && p.HealthInformationType == Domain.Enums.HealtInformation.HealthInformationType.RadioFAM)
+                                            .OrderByDescending(p => p.CreateDate).ToListAsync();
+
+            #endregion
+
             return model;
         }
 
