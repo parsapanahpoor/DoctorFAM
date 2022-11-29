@@ -69,6 +69,7 @@ namespace DoctorFAM.Web.Controllers
 
         #region Doctor Reservation Detail 
 
+        [Authorize]
         [HttpGet]
         [CheckUserFillPersonalInformation]
         public async Task<IActionResult> DocBooking(ulong userId , string? loggedDateTime)
@@ -96,6 +97,7 @@ namespace DoctorFAM.Web.Controllers
             return View(model);
         }
 
+        [Authorize]
         [HttpPost , ValidateAntiForgeryToken]
         [CheckUserFillPersonalInformation]
         public async Task<IActionResult> DocBooking(ShowDoctorReservationDetailViewModel reservationDetail)
