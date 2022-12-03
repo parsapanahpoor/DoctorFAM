@@ -723,10 +723,13 @@
   <data name="Health Info Podcasts" xml:space="preserve">
     <value>رادیوفام</value>
   </data>
-	<data name="Manage Podcast" xml:space="preserve">
+  <data name="Manage Podcast" xml:space="preserve">
     <value>مدیریت پادکست ها</value>
-	  </data>
-  <data name="List Of Get Reservation Date" xml:space="preserve">
-    <value>لیست نوبتها</value>
+  </data>
+  <data name="Manage Resume" xml:space="preserve">
+    <value>مدیریت رزومه</value>
+  </data>
+  <data name="Resume" xml:space="preserve">
+    <value>رزومه</value>
   </data>
 </root>

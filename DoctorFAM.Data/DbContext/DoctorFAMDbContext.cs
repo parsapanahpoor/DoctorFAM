@@ -24,6 +24,7 @@ using DoctorFAM.Domain.Entities.Pharmacy;
 using DoctorFAM.Domain.Entities.PopulationCovered;
 using DoctorFAM.Domain.Entities.Product;
 using DoctorFAM.Domain.Entities.Requests;
+using DoctorFAM.Domain.Entities.Resume;
 using DoctorFAM.Domain.Entities.SiteSetting;
 using DoctorFAM.Domain.Entities.States;
 using DoctorFAM.Domain.Entities.Wallet;
@@ -311,6 +312,14 @@ namespace DoctorFAM.Data.DbContext
         public DbSet<RadioFAMSelectedCategory> RadioFAMSelectedCategories { get; set; }
 
         public DbSet<TVFAMSelectedCategory> TVFAMSelectedCategories { get; set; }
+
+        #endregion
+
+        #region Resume
+
+        public DbSet<Resume> Resumes { get; set; }
+
+        public DbSet<ResumeAboutMe> ResumeAboutMe { get; set; }
 
         #endregion
 

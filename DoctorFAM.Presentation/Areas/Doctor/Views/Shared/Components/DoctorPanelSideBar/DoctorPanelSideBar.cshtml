@@ -255,6 +255,22 @@
 
             <li>
                 <a href="#" class="menu-dropdown">
+                    <i class="menu-icon  glyphicon glyphicon-list-alt"></i>
+                    <span class="menu-text">@SharedLocalizer["Resume"]</span>
+                    <i class="menu-expand"></i>
+                </a>
+
+                <ul class="submenu">
+                    <li>
+                        <a asp-action="PageOfResume" asp-controller="Resume" asp-area="Doctor">
+                            <span class="menu-text"> @SharedLocalizer["Manage Resume"] </span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li>
+                <a href="#" class="menu-dropdown">
                     <i class="menu-icon fa fa-users"></i>
                     <span class="menu-text"> @SharedLocalizer["Manage Employees"] </span>
                     <i class="menu-expand"></i>
