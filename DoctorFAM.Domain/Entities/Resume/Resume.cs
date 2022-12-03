@@ -28,6 +28,8 @@ namespace DoctorFAM.Domain.Entities.Resume
 
         public ResumeAboutMe ResumeAboutMe { get; set; }
 
+        public ICollection<EducationResume> EducationResumes { get; set; }
+
         #endregion
     }
 }
