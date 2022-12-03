@@ -33,6 +33,18 @@ namespace DoctorFAM.Domain.Interfaces.EFCore
         //Change Resume State To The Waiting State  
         Task ChangeResumeStateToTheWaitingState(Resume resume);
 
+        //Get Education Resume By User Id
+        Task<List<EducationResume>?> GetEducationResumeByUserId(ulong resumeId);
+
+        //Create Education Resume 
+        Task CreateEducationResume(EducationResume model);
+
+        //Get Education By Id
+        Task<EducationResume?> GetEducationById(ulong educationId);
+
+        //Update Education 
+        Task UpdateEducation(EducationResume education);
+
         #endregion
 
         #region Doctor Panel 

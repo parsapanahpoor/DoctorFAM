@@ -18,6 +18,8 @@ namespace DoctorFAM.Domain.ViewModels.DoctorPanel.Resume
 
         public ResumeAboutMeDoctorPanelViewModel ResumeAboutMeDoctorPanelViewModel { get; set; }
 
+        public List<EducationResumeInDoctorPanelViewModel>? EducationResume { get; set; }
+
         #endregion
     }
 }

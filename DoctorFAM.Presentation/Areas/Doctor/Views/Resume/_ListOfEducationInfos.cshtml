@@ -1,0 +1,47 @@
+﻿@model List<DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.EducationResumeInDoctorPanelViewModel>
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.Utils
+
+<div class="form-title">
+    بخش تحصیلات
+
+    <a asp-action="CreateEducation" asp-area="Doctor" asp-controller="Resume" style="margin-right: 10px;" class="btn btn-success mr-4">افزودن اطلاعات</a>
+</div>
+
+<ul class="timeline animated fadeInDown">
+
+    @if (Model != null && Model.Any())
+    {
+        foreach (var education in Model)
+        {
+            <li>
+                <div class="timeline-datetime">
+                    <a asp-action="EditEducationResume" asp-area="Doctor" asp-controller="Resume" asp-route-id="@education.Id" style="margin-right: 10px;" class="btn btn-primary mr-4">ویرایش</a>
+                    <a asp-action="DeleteEducation" asp-area="Doctor" asp-controller="Resume" asp-route-id="@education.Id" style="margin-right: 10px;" class="btn btn-danger mr-4">حذف</a>
+                </div>
+                <div class="timeline-badge blue">
+                    <i class="fa fa-book"></i>
+                </div>
+                <div class="timeline-panel">
+                    <div class="timeline-header bordered-bottom bordered-blue">
+                        @if (education.UnivercityName != null)
+                        {
+                            <span class="timeline-title">
+                                @education.UnivercityName
+                            </span>
+                        }
+                    </div>
+                    <div class="timeline-body">
+                        <p>رشته ی تحصیلی : @((string.IsNullOrEmpty(education.FieldOfStudy)) ? "وارد نشده" : education.FieldOfStudy)</p>
+                        <p>گرایش : @((string.IsNullOrEmpty(education.Orientation)) ? "وارد نشده" : education.Orientation)</p>
+
+                    </div>
+                    
+                </div>
+            </li>
+
+        }
+    }
+
+</ul>

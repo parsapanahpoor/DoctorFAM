@@ -2,6 +2,7 @@
 using DoctorFAM.Application.Services.Implementation;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.Entities.Resume;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Education;
 using DoctorFAM.Web.Areas.Doctor.ActionFilterAttributes;
 using DoctorFAM.Web.Doctor.Controllers;
 using Microsoft.AspNetCore.Mvc;
@@ -53,7 +54,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
         #region Create About Me 
 
-        [HttpPost , ValidateAntiForgeryToken]
+        [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateAboutMe(ResumeAboutMe aboutMe)
         {
             #region Model State Validation 
@@ -68,7 +69,119 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
             #region Create About Me Resume 
 
-            var res = await _resumeService.CreateAboutMeResume(aboutMe , User.GetUserId());
+            var res = await _resumeService.CreateAboutMeResume(aboutMe, User.GetUserId());
+            if (res)
+            {
+                TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+                return RedirectToAction(nameof(PageOfResume));
+            }
+
+            #endregion
+
+            TempData[ErrorMessage] = "اطلاعات وارد شده معتبر نمی باشد";
+            return RedirectToAction(nameof(PageOfResume));
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Education Info 
+
+        #region Create Education 
+
+        [HttpGet]
+        public async Task<IActionResult> CreateEducation()
+        {
+            return View();
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateEducation(CreateEducationDoctorPanel model)
+        {
+            #region Model State Validation 
+
+            if (!ModelState.IsValid)
+            {
+                TempData[ErrorMessage] = "اطلاعات وارد شده معتبر نمی باشد";
+                return View(model);
+            }
+
+            #endregion
+
+            #region Create Education Resume 
+
+            var res = await _resumeService.CreateResumeEducationFromDoctorSide(model, User.GetUserId());
+            if (res)
+            {
+                TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+                return RedirectToAction(nameof(PageOfResume));
+            }
+
+            #endregion
+
+            TempData[ErrorMessage] = "اطلاعات وارد شده معتبر نمی باشد";
+            return View(model);
+        }
+
+        #endregion
+
+        #region Edit Education 
+
+        [HttpGet]
+        public async Task<IActionResult> EditEducationResume(ulong id)
+        {
+            #region Fill Model
+
+            var model = await _resumeService.FillEditEducationDoctorPanelViewModel(id , User.GetUserId());
+            if (model == null) 
+            {
+                TempData[ErrorMessage] = "اطلاعات وارد شده معتبر نمی باشد";
+                return RedirectToAction(nameof(PageOfResume));
+            }
+
+            #endregion
+
+            return View(model);
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditEducationResume(EditEducationDoctorPanelViewModel model)
+        {
+            #region Model State Validation 
+
+            if (!ModelState.IsValid)
+            {
+                TempData[ErrorMessage] = "اطلاعات وارد شده معتبر نمی باشد";
+                return View(model);
+            }
+
+            #endregion
+
+            #region Edit Education
+
+            var res = await _resumeService.EditEducationFromDoctorPanel(model , User.GetUserId()) ;
+            if (res)
+            {
+                TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+                return RedirectToAction(nameof(PageOfResume));
+            }
+
+            #endregion
+
+            TempData[ErrorMessage] = "اطلاعات وارد شده معتبر نمی باشد";
+            return View(model);
+        }
+
+        #endregion
+
+        #region Delete Education 
+
+        public async Task<IActionResult> DeleteEducation(ulong id)
+        {
+            #region Delete Education
+
+            var res = await _resumeService.DeleteEducation(id , User.GetUserId());
             if (res)
             {
                 TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";

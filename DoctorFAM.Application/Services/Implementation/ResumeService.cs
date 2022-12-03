@@ -1,11 +1,14 @@
-﻿using DoctorFAM.Application.Security;
+﻿using DoctorFAM.Application.Convertors;
+using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.Entities.Account;
+using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.Entities.Resume;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Education;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
 using System;
 using System.Collections.Generic;
@@ -194,6 +197,86 @@ namespace DoctorFAM.Application.Services.Implementation
             #endregion
         }
 
+        //Get Education Resume By User Id
+        public async Task<List<EducationResume>?> GetEducationResumeByUserId(ulong userId)
+        {
+            #region Get Owner Organization By EmployeeId 
+
+            var organization = await _organizationService.GetOrganizationByUserId(userId);
+            if (organization == null) return null;
+
+            #endregion
+
+            #region Get Resume 
+
+            var resume = await _resumeRepository.GetResumeByUserId(organization.OwnerId);
+            if (resume == null) return null;
+
+            #endregion
+
+            #region Get  Education 
+
+            var education = await _resumeRepository.GetEducationResumeByUserId(resume.Id);
+            if (education == null) return null;
+
+            #endregion
+
+            return education;
+        }
+
+        //Get Education Resume By resume Id
+        public async Task<List<EducationResume>?> GetEducationResumeByResumeId(ulong resumeId)
+        {
+            #region Get  Education 
+
+            var education = await _resumeRepository.GetEducationResumeByUserId(resumeId);
+            if (education == null) return null;
+
+            #endregion
+
+            return education;
+        }
+
+        //Delete Education 
+        public async Task<bool> DeleteEducation(ulong educationId , ulong userId)
+        {
+            #region Get Owner Organization By EmployeeId 
+
+            var organization = await _organizationService.GetOrganizationByUserId(userId);
+            if (organization == null) return false;
+
+            #endregion
+
+            #region Get Education 
+
+            var education = await _resumeRepository.GetEducationById(educationId);
+            if (education == null) return false;
+
+            #endregion
+
+            #region Get Resume 
+
+            var resume = await _resumeRepository.GetResumeByUserId(organization.OwnerId);
+            if (resume == null) return false;
+            if (education.ResumeId != resume.Id) return false;
+
+            #endregion
+
+            #region Delete Education 
+
+            education.IsDelete = true;
+
+            #endregion
+
+            #region Update Education 
+
+            await _resumeRepository.UpdateEducation(education);
+
+            #endregion
+
+            return true;
+        }
+
         #endregion
 
         #region Doctor Panel  
@@ -244,9 +327,182 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #endregion
 
+            #region Fill Education 
+
+            var education = await GetEducationResumeByResumeId(resume.Id);
+
+            var returnEducation = new List<EducationResumeInDoctorPanelViewModel>();
+
+            //Create New Instance
+            if (education != null && education.Any())
+            {
+                foreach (var item in education)
+                {
+                    EducationResumeInDoctorPanelViewModel ed = (new EducationResumeInDoctorPanelViewModel()
+                    {
+                        CityName = ((string.IsNullOrEmpty(item.CityName)) ? null : item.CityName),
+                        CountryName = ((string.IsNullOrEmpty(item.CountryName)) ? null : item.CountryName) ,
+                        EndDate = ((item.EndDate == null) ? null : item.EndDate) ,
+                        FieldOfStudy = ((string.IsNullOrEmpty(item.FieldOfStudy)) ? null : item.FieldOfStudy) ,
+                        Orientation = ((string.IsNullOrEmpty(item.Orientation)) ? null : item.Orientation) ,
+                        StartDate = ((item.StartDate == null) ? null : item.StartDate) ,
+                        UnivercityName = ((string.IsNullOrEmpty(item.UnivercityName)) ? null : item.UnivercityName),
+                        CreateDate = item.CreateDate,
+                        Id = item.Id,
+                    });
+
+                    returnEducation.Add(ed);
+                }
+            }
+
+            model.EducationResume = returnEducation;
+
+            #endregion
+
             #endregion
 
             return model;
+        }
+
+        //Create Resume Education 
+        public async Task<bool> CreateResumeEducationFromDoctorSide(CreateEducationDoctorPanel model, ulong userId)
+        {
+            #region Get Owner Organization By EmployeeId 
+
+            var organization = await _organizationService.GetOrganizationByUserId(userId);
+            if (organization == null) return false;
+
+            #endregion
+
+            #region Get Resume 
+
+            var resume = await _resumeRepository.GetResumeByUserId(organization.OwnerId);
+            if (resume == null) return false;
+
+            #endregion
+
+            #region Fill Model 
+
+            EducationResume newEducation = new EducationResume()
+            {
+                CityName = ((string.IsNullOrEmpty(model.CityName)) ? null : model.CityName.SanitizeText()),
+                CountryName = ((string.IsNullOrEmpty(model.CountryName)) ? null : model.CountryName.SanitizeText()),
+                FieldOfStudy = ((string.IsNullOrEmpty(model.FieldOfStudy)) ? null : model.FieldOfStudy.SanitizeText()),
+                Orientation = ((string.IsNullOrEmpty(model.Orientation)) ? null : model.Orientation.SanitizeText()),
+                UnivercityName = ((string.IsNullOrEmpty(model.UnivercityName)) ? null : model.UnivercityName.SanitizeText()),
+                ResumeId = resume.Id
+            };
+
+            #region Date Times
+
+            if (!string.IsNullOrEmpty(model.StartDate))
+            {
+                newEducation.StartDate = model.StartDate.ToMiladiDateTime(); 
+            }
+
+            if (!string.IsNullOrEmpty(model.EndDate))
+            {
+                newEducation.EndDate = model.EndDate.ToMiladiDateTime();
+            }
+
+            #endregion
+
+            //Add Education Resume 
+            await _resumeRepository.CreateEducationResume(newEducation);
+
+            #endregion
+
+            return true;
+        }
+
+        //Fill Edit Education Doctor Panel View Model
+        public async Task<EditEducationDoctorPanelViewModel?> FillEditEducationDoctorPanelViewModel(ulong educationId , ulong userId)
+        {
+            #region Get Owner Organization By EmployeeId 
+
+            var organization = await _organizationService.GetOrganizationByUserId(userId);
+            if (organization == null) return null;
+
+            #endregion
+
+            #region Get Education 
+
+            var education = await _resumeRepository.GetEducationById(educationId);
+            if (education == null) return null;
+
+            #endregion
+
+            #region Get Resume 
+
+            var resume = await _resumeRepository.GetResumeByUserId(organization.OwnerId);
+            if (resume == null) return null;
+            if (education.ResumeId != resume.Id) return null;
+
+            #endregion
+
+            #region Fill Model
+
+            EditEducationDoctorPanelViewModel model = new EditEducationDoctorPanelViewModel()
+            {
+                CityName = ((string.IsNullOrEmpty(education.CityName)) ? null : education.CityName),
+                CountryName = ((string.IsNullOrEmpty(education.CountryName)) ? null : education.CountryName),
+                UnivercityName = ((string.IsNullOrEmpty(education.UnivercityName)) ? null : education.UnivercityName),
+                FieldOfStudy = ((string.IsNullOrEmpty(education.FieldOfStudy)) ? null : education.FieldOfStudy),
+                Orientation = ((string.IsNullOrEmpty(education.Orientation)) ? null : education.Orientation),
+                EndDate = ((education.EndDate == null) ? null : education.EndDate.Value.ToShamsi()),
+                StartDate = ((education.StartDate == null) ? null : education.StartDate.Value.ToShamsi()),
+                Id = education.Id,
+            };
+
+            #endregion
+
+            return model;
+        }
+
+        //Edit Education From Doctor Panel
+        public async Task<bool> EditEducationFromDoctorPanel(EditEducationDoctorPanelViewModel model , ulong userId)
+        {
+            #region Get Owner Organization By EmployeeId 
+
+            var organization = await _organizationService.GetOrganizationByUserId(userId);
+            if (organization == null) return false;
+
+            #endregion
+
+            #region Get Resume 
+
+            var resume = await _resumeRepository.GetResumeByUserId(organization.OwnerId);
+            if (resume == null) return false;
+
+            #endregion
+
+            #region Get Education 
+
+            var education = await _resumeRepository.GetEducationById(model.Id);
+            if (education == null) return false;
+            if (education.ResumeId != resume.Id) return false;
+
+            #endregion
+
+            #region Update Education 
+
+            education.CityName = model.CityName;
+            education.CountryName = model.CountryName;
+            education.UnivercityName = model.UnivercityName;
+            education.FieldOfStudy = model.FieldOfStudy;
+            education.Orientation = model.Orientation;
+            education.EndDate = ((string.IsNullOrEmpty(model.EndDate)) ? null : model.EndDate.ToMiladiDateTime());
+            education.StartDate = ((string.IsNullOrEmpty(model.StartDate)) ? null : model.StartDate.ToMiladiDateTime());
+
+            #endregion
+
+            #region Update Education 
+
+            await _resumeRepository.UpdateEducation(education);
+
+            #endregion
+
+            return true;
         }
 
         #endregion

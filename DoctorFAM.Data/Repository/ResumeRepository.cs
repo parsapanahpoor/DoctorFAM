@@ -74,6 +74,32 @@ namespace DoctorFAM.Data.Repository
             await _context.SaveChangesAsync();
         }
 
+        //Get Education Resume By User Id
+        public async Task<List<EducationResume>?> GetEducationResumeByUserId(ulong resumeId)
+        {
+            return await _context.EducationResume.Where(p => !p.IsDelete && p.ResumeId == resumeId).ToListAsync();
+        }
+
+        //Create Education Resume 
+        public async Task CreateEducationResume(EducationResume model)
+        {
+            await _context.EducationResume.AddAsync(model);
+            await _context.SaveChangesAsync();
+        }
+
+        //Get Education By Id
+        public async Task<EducationResume?> GetEducationById(ulong educationId)
+        {
+            return await _context.EducationResume.FirstOrDefaultAsync(p=> !p.IsDelete && p.Id == educationId);
+        }
+
+        //Update Education 
+        public async Task UpdateEducation(EducationResume education)
+        {
+            _context.EducationResume.Update(education);
+            await _context.SaveChangesAsync();
+        }
+
         #endregion
 
         #region Doctor Panel 
