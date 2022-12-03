@@ -18,6 +18,21 @@ namespace DoctorFAM.Domain.Interfaces.EFCore
         //Add Resume To Data Base 
         Task CreateResume(Resume resume);
 
+        //Get User About Me Resume By Resume Id
+        Task<ResumeAboutMe?> GetUserAboutMeResumeByResumeId(ulong resumeId);
+
+        //Get Resume By Id
+        Task<Resume?> GetResuemById(ulong resumeId);
+
+        //Create About Me 
+        Task CreateAboutMe(ResumeAboutMe model);
+
+        //Update About Me Resume 
+        Task UpdateAboutMeResume(ResumeAboutMe model);
+
+        //Change Resume State To The Waiting State  
+        Task ChangeResumeStateToTheWaitingState(Resume resume);
+
         #endregion
 
         #region Doctor Panel 

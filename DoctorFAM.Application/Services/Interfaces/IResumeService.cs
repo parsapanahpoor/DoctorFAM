@@ -1,4 +1,6 @@
-﻿using DoctorFAM.Domain.Entities.Resume;
+﻿using DoctorFAM.Application.Services.Implementation;
+using DoctorFAM.Domain.Entities.Resume;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,9 +19,21 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Check Taht Is Exist Resume For This User
         Task<bool> CheckTahtIsExistResumeForThisUser(ulong userId);
 
+        //Get User About Me Resume By User Id 
+        Task<ResumeAboutMe?> GetUserAboutMeResumeByUserId(ulong userId);
+
+        //Get User About Me Resume By Resume Id 
+        Task<ResumeAboutMe?> GetUserAboutMeResumeByResumeId(ulong resumeId);
+
+        //Create About Me Resume 
+        Task<bool> CreateAboutMeResume(ResumeAboutMe model, ulong userId);
+
         #endregion
 
         #region Doctor Panel 
+
+        //Fill The Model For Page Of Manage Resume In Doctor Panel 
+        Task<ManageResumeDoctorPanelViewModel?> FillTheModelForPageOfManageResumeInDoctorPanel(ulong userId);
 
         #endregion
     }

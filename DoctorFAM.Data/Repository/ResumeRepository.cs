@@ -1,7 +1,9 @@
 ﻿using DoctorFAM.Data.DbContext;
 using DoctorFAM.Domain.Entities.Account;
+using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.Resume;
 using DoctorFAM.Domain.Interfaces.EFCore;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -39,9 +41,44 @@ namespace DoctorFAM.Data.Repository
             await _context.SaveChangesAsync();
         }
 
+        //Get User About Me Resume By Resume Id
+        public async Task<ResumeAboutMe?> GetUserAboutMeResumeByResumeId(ulong resumeId)
+        {
+            return await _context.ResumeAboutMe.FirstOrDefaultAsync(p => !p.IsDelete & p.ResumeId == resumeId);
+        }
+
+        //Get Resume By Id
+        public async Task<Resume?> GetResuemById(ulong resumeId)
+        {
+            return await _context.Resumes.FirstOrDefaultAsync(p => !p.IsDelete && p.Id == resumeId);
+        }
+
+        //Create About Me 
+        public async Task CreateAboutMe(ResumeAboutMe model)
+        {
+            await _context.ResumeAboutMe.AddAsync(model);
+            await _context.SaveChangesAsync();
+        }
+
+        //Update About Me Resume 
+        public async Task UpdateAboutMeResume(ResumeAboutMe model)
+        {
+            _context.ResumeAboutMe.Update(model);
+            await _context.SaveChangesAsync();
+        }
+
+        //Change Resume State To The Waiting State  
+        public async Task ChangeResumeStateToTheWaitingState(Resume resume)
+        {
+            _context.Resumes.Update(resume);
+            await _context.SaveChangesAsync();
+        }
+
         #endregion
 
         #region Doctor Panel 
+
+
 
         #endregion
     }

@@ -1,4 +1,7 @@
-﻿using DoctorFAM.Application.Services.Interfaces;
+﻿using DoctorFAM.Application.Extensions;
+using DoctorFAM.Application.Services.Implementation;
+using DoctorFAM.Application.Services.Interfaces;
+using DoctorFAM.Domain.Entities.Resume;
 using DoctorFAM.Web.Areas.Doctor.ActionFilterAttributes;
 using DoctorFAM.Web.Doctor.Controllers;
 using Microsoft.AspNetCore.Mvc;
@@ -25,8 +28,60 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
         public async Task<IActionResult> PageOfResume()
         {
-            return View();
+            return View(await _resumeService.FillTheModelForPageOfManageResumeInDoctorPanel(User.GetUserId()));
         }
+
+        #endregion
+
+        #region About Me 
+
+        #region Show About Me In Modal 
+
+        [HttpGet("/Show-About-Me-In-Modal")]
+        public async Task<IActionResult> ShowAboutMeInModal()
+        {
+            #region Get Model Body
+
+            var model = await _resumeService.GetUserAboutMeResumeByUserId(User.GetUserId());
+
+            #endregion
+
+            return PartialView("_ShowAboutMeInModal", model);
+        }
+
+        #endregion
+
+        #region Create About Me 
+
+        [HttpPost , ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateAboutMe(ResumeAboutMe aboutMe)
+        {
+            #region Model State Validation 
+
+            if (string.IsNullOrEmpty(aboutMe.AboutMeText))
+            {
+                TempData[ErrorMessage] = "اطلاعات وارد شده معتبر نمی باشد";
+                return RedirectToAction(nameof(PageOfResume));
+            }
+
+            #endregion
+
+            #region Create About Me Resume 
+
+            var res = await _resumeService.CreateAboutMeResume(aboutMe , User.GetUserId());
+            if (res)
+            {
+                TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+                return RedirectToAction(nameof(PageOfResume));
+            }
+
+            #endregion
+
+            TempData[ErrorMessage] = "اطلاعات وارد شده معتبر نمی باشد";
+            return RedirectToAction(nameof(PageOfResume));
+        }
+
+        #endregion
 
         #endregion
     }
