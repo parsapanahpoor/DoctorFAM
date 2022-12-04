@@ -9,6 +9,7 @@ using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Education;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.WorkHistory;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
 using System;
 using System.Collections.Generic;
@@ -277,6 +278,59 @@ namespace DoctorFAM.Application.Services.Implementation
             return true;
         }
 
+        //Delete Work History 
+        public async Task<bool> DeleteWorkHistory(ulong workHistoryId, ulong userId)
+        {
+            #region Get Owner Organization By EmployeeId 
+
+            var organization = await _organizationService.GetOrganizationByUserId(userId);
+            if (organization == null) return false;
+
+            #endregion
+
+            #region Get Work History 
+
+            var workHistory = await _resumeRepository.GetWorkHistoryById(workHistoryId);
+            if (workHistory == null) return false;
+
+            #endregion
+
+            #region Get Resume 
+
+            var resume = await _resumeRepository.GetResumeByUserId(organization.OwnerId);
+            if (resume == null) return false;
+            if (workHistory.ResumeId != resume.Id) return false;
+
+            #endregion
+
+            #region Delete Work History 
+
+            workHistory.IsDelete = true;
+
+            #endregion
+
+            #region Update Work History 
+
+            await _resumeRepository.UpdateWorkHistory(workHistory);
+
+            #endregion
+
+            return true;
+        }
+
+        //Get Work History Resume Resume By resume Id
+        public async Task<List<WorkHistoryResume>?> GetWorkHistoryResumeByResumeId(ulong resumeId)
+        {
+            #region Get Work History 
+
+            var workHistory = await _resumeRepository.GetWorkHistoryResumeByUserId(resumeId);
+            if (workHistory == null) return null;
+
+            #endregion
+
+            return workHistory;
+        }
+
         #endregion
 
         #region Doctor Panel  
@@ -359,6 +413,34 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #endregion
 
+            #region Fill Work Address
+
+            var workHistory = await GetWorkHistoryResumeByResumeId(resume.Id);
+
+            var returnWorkHistory = new List<WorkHistoryResumeInDoctorPanelViewModel>();
+
+            //Create New Instance
+            if (workHistory != null && workHistory.Any())
+            {
+                foreach (var item in workHistory)
+                {
+                    WorkHistoryResumeInDoctorPanelViewModel work = (new WorkHistoryResumeInDoctorPanelViewModel()
+                    {
+                        WorkAddress = ((string.IsNullOrEmpty(item.WorkAddress)) ? null : item.WorkAddress),
+                        JobPosition = ((string.IsNullOrEmpty(item.JobPosition)) ? null : item.JobPosition),
+                        EndDate = ((item.EndDate == null) ? null : item.EndDate),
+                        StartDate = ((item.StartDate == null) ? null : item.StartDate),
+                        Id = item.Id,
+                    });
+
+                    returnWorkHistory.Add(work);
+                }
+            }
+
+            model.WorkHistoryResume = returnWorkHistory;
+
+            #endregion
+
             #endregion
 
             return model;
@@ -409,6 +491,9 @@ namespace DoctorFAM.Application.Services.Implementation
 
             //Add Education Resume 
             await _resumeRepository.CreateEducationResume(newEducation);
+
+            //Change Rsume To The Waiting State 
+            await _resumeRepository.ChangeResumeStateToTheWaitingState(resume);
 
             #endregion
 
@@ -499,6 +584,147 @@ namespace DoctorFAM.Application.Services.Implementation
             #region Update Education 
 
             await _resumeRepository.UpdateEducation(education);
+
+            //Change Rsume To The Waiting State 
+            await _resumeRepository.ChangeResumeStateToTheWaitingState(resume);
+
+            #endregion
+
+            return true;
+        }
+
+        //Create Work History From Doctor Panel  
+        public async Task<bool> CreateResumeWorkHistoryFromDoctorSide(CreateWorkHistoryDoctorPanel model, ulong userId)
+        {
+            #region Get Owner Organization By EmployeeId 
+
+            var organization = await _organizationService.GetOrganizationByUserId(userId);
+            if (organization == null) return false;
+
+            #endregion
+
+            #region Get Resume 
+
+            var resume = await _resumeRepository.GetResumeByUserId(organization.OwnerId);
+            if (resume == null) return false;
+
+            #endregion
+
+            #region Fill Model 
+
+            WorkHistoryResume newWork = new WorkHistoryResume()
+            {
+                WorkAddress = ((string.IsNullOrEmpty(model.WorkAddress)) ? null : model.WorkAddress.SanitizeText()),
+                JobPosition = ((string.IsNullOrEmpty(model.JobPosition)) ? null : model.JobPosition.SanitizeText()),
+                ResumeId = resume.Id
+            };
+
+            #region Date Times
+
+            if (!string.IsNullOrEmpty(model.StartDate))
+            {
+                newWork.StartDate = model.StartDate.ToMiladiDateTime();
+            }
+
+            if (!string.IsNullOrEmpty(model.EndDate))
+            {
+                newWork.EndDate = model.EndDate.ToMiladiDateTime();
+            }
+
+            #endregion
+
+            //Add Education Resume 
+            await _resumeRepository.CreateWorkHistoryResume(newWork);
+
+            //Change Rsume To The Waiting State 
+            await _resumeRepository.ChangeResumeStateToTheWaitingState(resume);
+
+            #endregion
+
+            return true;
+        }
+
+        //Fill Edit Work History Doctor Panel View Model
+        public async Task<EditWorkHistoryDoctorPanelViewModel?> FillEditWorkHistoryDoctorPanelViewModel(ulong workHistoryId, ulong userId)
+        {
+            #region Get Owner Organization By EmployeeId 
+
+            var organization = await _organizationService.GetOrganizationByUserId(userId);
+            if (organization == null) return null;
+
+            #endregion
+
+            #region Get work History 
+
+            var workHistory = await _resumeRepository.GetWorkHistoryById(workHistoryId);
+            if (workHistory == null) return null;
+
+            #endregion
+
+            #region Get Resume 
+
+            var resume = await _resumeRepository.GetResumeByUserId(organization.OwnerId);
+            if (resume == null) return null;
+            if (workHistory.ResumeId != resume.Id) return null;
+
+            #endregion
+
+            #region Fill Model
+
+            EditWorkHistoryDoctorPanelViewModel model = new EditWorkHistoryDoctorPanelViewModel()
+            {
+                JobPosition = ((string.IsNullOrEmpty(workHistory.JobPosition)) ? null : workHistory.JobPosition),
+                WorkAddress = ((string.IsNullOrEmpty(workHistory.WorkAddress)) ? null : workHistory.WorkAddress),
+                EndDate = ((workHistory.EndDate == null) ? null : workHistory.EndDate.Value.ToShamsi()),
+                StartDate = ((workHistory.StartDate == null) ? null : workHistory.StartDate.Value.ToShamsi()),
+                Id = workHistory.Id,
+            };
+
+            #endregion
+
+            return model;
+        }
+
+        //Edit Work History From Doctor Panel
+        public async Task<bool> EditWorkHistoryFromDoctorPanel(EditWorkHistoryDoctorPanelViewModel model, ulong userId)
+        {
+            #region Get Owner Organization By EmployeeId 
+
+            var organization = await _organizationService.GetOrganizationByUserId(userId);
+            if (organization == null) return false;
+
+            #endregion
+
+            #region Get Resume 
+
+            var resume = await _resumeRepository.GetResumeByUserId(organization.OwnerId);
+            if (resume == null) return false;
+
+            #endregion
+
+            #region Get Work History 
+
+            var workHistory = await _resumeRepository.GetWorkHistoryById(model.Id);
+            if (workHistory == null) return false;
+            if (workHistory.ResumeId != resume.Id) return false;
+
+            #endregion
+
+            #region Update Work History 
+
+            workHistory.JobPosition = model.JobPosition;
+            workHistory.WorkAddress = model.WorkAddress;
+            workHistory.EndDate = ((string.IsNullOrEmpty(model.EndDate)) ? null : model.EndDate.ToMiladiDateTime());
+            workHistory.StartDate = ((string.IsNullOrEmpty(model.StartDate)) ? null : model.StartDate.ToMiladiDateTime());
+
+            #endregion
+
+            #region Update Work History 
+
+            await _resumeRepository.UpdateWorkHistory(workHistory);
+
+            //Change Rsume To The Waiting State 
+            await _resumeRepository.ChangeResumeStateToTheWaitingState(resume);
 
             #endregion
 

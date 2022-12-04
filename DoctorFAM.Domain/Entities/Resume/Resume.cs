@@ -32,6 +32,8 @@ namespace DoctorFAM.Domain.Entities.Resume
 
         public ICollection<WorkHistoryResume> WorkHistoryResumes { get; set; }
 
+        public ICollection<Honors> Honors { get; set; }
+
         #endregion
     }
 }

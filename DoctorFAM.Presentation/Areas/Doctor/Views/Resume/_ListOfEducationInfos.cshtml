@@ -9,12 +9,12 @@
     <a asp-action="CreateEducation" asp-area="Doctor" asp-controller="Resume" style="margin-right: 10px;" class="btn btn-success mr-4">افزودن اطلاعات</a>
 </div>
 
-<ul class="timeline animated fadeInDown">
-
-    @if (Model != null && Model.Any())
+@if (Model != null && Model.Any())
+{
+    foreach (var education in Model)
     {
-        foreach (var education in Model)
-        {
+        <ul class="timeline animated fadeInDown">
+
             <li>
                 <div class="timeline-datetime">
                     <a asp-action="EditEducationResume" asp-area="Doctor" asp-controller="Resume" asp-route-id="@education.Id" style="margin-right: 10px;" class="btn btn-primary mr-4">ویرایش</a>
@@ -37,11 +37,10 @@
                         <p>گرایش : @((string.IsNullOrEmpty(education.Orientation)) ? "وارد نشده" : education.Orientation)</p>
 
                     </div>
-                    
+
                 </div>
             </li>
-
-        }
+        </ul>
     }
+}
 
-</ul>

@@ -100,6 +100,32 @@ namespace DoctorFAM.Data.Repository
             await _context.SaveChangesAsync();
         }
 
+        //Get Work History Resume By User Id
+        public async Task<List<WorkHistoryResume>?> GetWorkHistoryResumeByUserId(ulong resumeId)
+        {
+            return await _context.WorkHistoryResume.Where(p => !p.IsDelete && p.ResumeId == resumeId).ToListAsync();
+        }
+
+        //Create Work History Resume 
+        public async Task CreateWorkHistoryResume(WorkHistoryResume model)
+        {
+            await _context.WorkHistoryResume.AddAsync(model);
+            await _context.SaveChangesAsync();
+        }
+
+        //Get Work History By Id
+        public async Task<WorkHistoryResume?> GetWorkHistoryById(ulong workHistoryId)
+        {
+            return await _context.WorkHistoryResume.FirstOrDefaultAsync(p => !p.IsDelete && p.Id == workHistoryId);
+        }
+
+        //Update Work History 
+        public async Task UpdateWorkHistory(WorkHistoryResume workHistory)
+        {
+            _context.WorkHistoryResume.Update(workHistory);
+            await _context.SaveChangesAsync();
+        }
+
         #endregion
 
         #region Doctor Panel 

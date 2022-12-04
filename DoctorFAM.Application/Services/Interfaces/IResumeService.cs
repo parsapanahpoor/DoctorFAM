@@ -2,6 +2,7 @@
 using DoctorFAM.Domain.Entities.Resume;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Education;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.WorkHistory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,6 +36,9 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Get Education Resume By resume Id
         Task<List<EducationResume>?> GetEducationResumeByResumeId(ulong resumeId);
 
+        //Delete Work History 
+        Task<bool> DeleteWorkHistory(ulong workHistoryId, ulong userId);
+
         #endregion
 
         #region Doctor Panel 
@@ -53,6 +57,15 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Delete Education 
         Task<bool> DeleteEducation(ulong educationId, ulong userId);
+
+        //Create Work History From Doctor Panel  
+        Task<bool> CreateResumeWorkHistoryFromDoctorSide(CreateWorkHistoryDoctorPanel model, ulong userId);
+
+        //Fill Edit Work History Doctor Panel View Model
+        Task<EditWorkHistoryDoctorPanelViewModel?> FillEditWorkHistoryDoctorPanelViewModel(ulong workHistoryId, ulong userId);
+
+        //Edit Work History From Doctor Panel
+        Task<bool> EditWorkHistoryFromDoctorPanel(EditWorkHistoryDoctorPanelViewModel model, ulong userId);
 
         #endregion
     }

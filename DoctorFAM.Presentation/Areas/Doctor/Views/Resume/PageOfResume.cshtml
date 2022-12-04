@@ -33,7 +33,7 @@
             });
         }
 
-                                //#endregion
+                                        //#endregion
 
     </script>
 }
@@ -83,12 +83,18 @@
 
                                 <li class="tab-palegreen">
                                     <a data-toggle="tab" id="contacttab" href="#contacts" aria-expanded="false">
-                                        Contacts
+                                        سوابق کاری
                                     </a>
                                 </li>
 
                                 <li class="tab-yellow">
                                     <a data-toggle="tab" href="#settings" aria-expanded="false">
+                                        Settings
+                                    </a>
+                                </li>
+
+                                <li class="tab-yellow">
+                                    <a data-toggle="tab" href="#setting" aria-expanded="false">
                                         Settings
                                     </a>
                                 </li>
@@ -306,6 +312,133 @@
                                 </div>
 
                                 <div id="contacts" class="tab-pane">
+                                    @*Box Of Work History Part*@
+                                    <partial name="_ListOfWorkHistory" model="@Model.WorkHistoryResume" />
+                                </div>
+
+                                <div id="settings" class="tab-pane">
+                                    <form role="form">
+                                        <div class="form-title">
+                                            Personal Information
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <span class="input-icon icon-right">
+                                                        <input type="text" class="form-control" placeholder="Name">
+                                                        <i class="fa fa-user blue"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <span class="input-icon icon-right">
+                                                        <input type="text" class="form-control" placeholder="Family">
+                                                        <i class="fa fa-user orange"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <span class="input-icon icon-right">
+                                                        <input type="text" class="form-control" placeholder="Phone">
+                                                        <i class="glyphicon glyphicon-earphone yellow"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <span class="input-icon icon-right">
+                                                        <input type="text" class="form-control" placeholder="Mobile">
+                                                        <i class="glyphicon glyphicon-phone palegreen"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr class="wide">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <span class="input-icon icon-right">
+                                                        <input class="form-control date-picker" id="id-date-picker-1" type="text" data-date-format="dd-mm-yyyy" placeholder="Birth Date">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <span class="input-icon icon-right">
+                                                        <input type="text" class="form-control" placeholder="Birth Place">
+                                                        <i class="fa fa-globe"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-title">
+                                            Social Networks
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <span class="input-icon icon-right">
+                                                        <input type="text" class="form-control" placeholder="Facebook">
+                                                        <i class="fa fa-facebook purple"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <span class="input-icon icon-right">
+                                                        <input type="text" class="form-control" placeholder="Twitter">
+                                                        <i class="fa fa-twitter azure"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <span class="input-icon icon-right">
+                                                        <input type="text" class="form-control" placeholder="Pinterest">
+                                                        <i class="fa fa-pinterest red"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <span class="input-icon icon-right">
+                                                        <input type="text" class="form-control" placeholder="Flickr">
+                                                        <i class="fa fa-flickr blue"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-title">
+                                            Contact Information
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <span class="input-icon icon-right">
+                                                        <input type="text" class="form-control" placeholder="Address 1">
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <span class="input-icon icon-right">
+                                                        <input type="text" class="form-control" placeholder="Address 1">
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Save Profile</button>
+                                    </form>
+                                </div>
+
+                                <div id="setting" class="tab-pane">
                                     <form role="form">
                                         <div class="form-title">
                                             بخش تحصیلات
@@ -504,128 +637,6 @@
                                         </ul>
 
 
-                                    </form>
-                                </div>
-
-                                <div id="settings" class="tab-pane">
-                                    <form role="form">
-                                        <div class="form-title">
-                                            Personal Information
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <span class="input-icon icon-right">
-                                                        <input type="text" class="form-control" placeholder="Name">
-                                                        <i class="fa fa-user blue"></i>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <span class="input-icon icon-right">
-                                                        <input type="text" class="form-control" placeholder="Family">
-                                                        <i class="fa fa-user orange"></i>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <span class="input-icon icon-right">
-                                                        <input type="text" class="form-control" placeholder="Phone">
-                                                        <i class="glyphicon glyphicon-earphone yellow"></i>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <span class="input-icon icon-right">
-                                                        <input type="text" class="form-control" placeholder="Mobile">
-                                                        <i class="glyphicon glyphicon-phone palegreen"></i>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <hr class="wide">
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <span class="input-icon icon-right">
-                                                        <input class="form-control date-picker" id="id-date-picker-1" type="text" data-date-format="dd-mm-yyyy" placeholder="Birth Date">
-                                                        <i class="fa fa-calendar"></i>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <span class="input-icon icon-right">
-                                                        <input type="text" class="form-control" placeholder="Birth Place">
-                                                        <i class="fa fa-globe"></i>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-title">
-                                            Social Networks
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <span class="input-icon icon-right">
-                                                        <input type="text" class="form-control" placeholder="Facebook">
-                                                        <i class="fa fa-facebook purple"></i>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <span class="input-icon icon-right">
-                                                        <input type="text" class="form-control" placeholder="Twitter">
-                                                        <i class="fa fa-twitter azure"></i>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <span class="input-icon icon-right">
-                                                        <input type="text" class="form-control" placeholder="Pinterest">
-                                                        <i class="fa fa-pinterest red"></i>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <span class="input-icon icon-right">
-                                                        <input type="text" class="form-control" placeholder="Flickr">
-                                                        <i class="fa fa-flickr blue"></i>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-title">
-                                            Contact Information
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <span class="input-icon icon-right">
-                                                        <input type="text" class="form-control" placeholder="Address 1">
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <span class="input-icon icon-right">
-                                                        <input type="text" class="form-control" placeholder="Address 1">
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary">Save Profile</button>
                                     </form>
                                 </div>
 

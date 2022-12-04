@@ -3,6 +3,7 @@ using DoctorFAM.Application.Services.Implementation;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.Entities.Resume;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Education;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.WorkHistory;
 using DoctorFAM.Web.Areas.Doctor.ActionFilterAttributes;
 using DoctorFAM.Web.Doctor.Controllers;
 using Microsoft.AspNetCore.Mvc;
@@ -182,6 +183,118 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
             #region Delete Education
 
             var res = await _resumeService.DeleteEducation(id , User.GetUserId());
+            if (res)
+            {
+                TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+                return RedirectToAction(nameof(PageOfResume));
+            }
+
+            #endregion
+
+            TempData[ErrorMessage] = "اطلاعات وارد شده معتبر نمی باشد";
+            return RedirectToAction(nameof(PageOfResume));
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Work History
+
+        #region Create Work History 
+
+        [HttpGet]
+        public async Task<IActionResult> CreateWorkHistory()
+        {
+            return View();
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateWorkHistory(CreateWorkHistoryDoctorPanel model)
+        {
+            #region Model State Validation 
+
+            if (!ModelState.IsValid)
+            {
+                TempData[ErrorMessage] = "اطلاعات وارد شده معتبر نمی باشد";
+                return View(model);
+            }
+
+            #endregion
+
+            #region Create Education Resume 
+
+            var res = await _resumeService.CreateResumeWorkHistoryFromDoctorSide(model, User.GetUserId());
+            if (res)
+            {
+                TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+                return RedirectToAction(nameof(PageOfResume));
+            }
+
+            #endregion
+
+            TempData[ErrorMessage] = "اطلاعات وارد شده معتبر نمی باشد";
+            return View(model);
+        }
+
+        #endregion
+
+        #region Edit Work History
+
+        [HttpGet]
+        public async Task<IActionResult> EditWorkHistory(ulong id)
+        {
+            #region Fill Model
+
+            var model = await _resumeService.FillEditWorkHistoryDoctorPanelViewModel(id, User.GetUserId());
+            if (model == null)
+            {
+                TempData[ErrorMessage] = "اطلاعات وارد شده معتبر نمی باشد";
+                return RedirectToAction(nameof(PageOfResume));
+            }
+
+            #endregion
+
+            return View(model);
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditWorkHistory(EditWorkHistoryDoctorPanelViewModel model)
+        {
+            #region Model State Validation 
+
+            if (!ModelState.IsValid)
+            {
+                TempData[ErrorMessage] = "اطلاعات وارد شده معتبر نمی باشد";
+                return View(model);
+            }
+
+            #endregion
+
+            #region Edit Work History
+
+            var res = await _resumeService.EditWorkHistoryFromDoctorPanel(model, User.GetUserId());
+            if (res)
+            {
+                TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+                return RedirectToAction(nameof(PageOfResume));
+            }
+
+            #endregion
+
+            TempData[ErrorMessage] = "اطلاعات وارد شده معتبر نمی باشد";
+            return View(model);
+        }
+
+        #endregion
+
+        #region Delete Work History 
+
+        public async Task<IActionResult> DeleteWorkHistory(ulong id)
+        {
+            #region Delete Work History
+
+            var res = await _resumeService.DeleteWorkHistory(id, User.GetUserId());
             if (res)
             {
                 TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";

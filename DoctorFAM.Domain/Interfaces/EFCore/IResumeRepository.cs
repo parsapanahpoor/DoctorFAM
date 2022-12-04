@@ -45,6 +45,18 @@ namespace DoctorFAM.Domain.Interfaces.EFCore
         //Update Education 
         Task UpdateEducation(EducationResume education);
 
+        //Get Work History Resume By User Id
+        Task<List<WorkHistoryResume>?> GetWorkHistoryResumeByUserId(ulong resumeId);
+
+        //Create Work History Resume 
+        Task CreateWorkHistoryResume(WorkHistoryResume model);
+
+        //Get Work History By Id
+        Task<WorkHistoryResume?> GetWorkHistoryById(ulong workHistoryId);
+
+        //Update Work History 
+        Task UpdateWorkHistory(WorkHistoryResume workHistory);
+
         #endregion
 
         #region Doctor Panel 

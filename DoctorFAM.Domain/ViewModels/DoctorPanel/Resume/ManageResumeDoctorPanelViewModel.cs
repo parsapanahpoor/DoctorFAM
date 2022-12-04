@@ -1,5 +1,6 @@
 ﻿using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Resume;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.WorkHistory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,8 @@ namespace DoctorFAM.Domain.ViewModels.DoctorPanel.Resume
         public ResumeAboutMeDoctorPanelViewModel ResumeAboutMeDoctorPanelViewModel { get; set; }
 
         public List<EducationResumeInDoctorPanelViewModel>? EducationResume { get; set; }
+
+        public List<WorkHistoryResumeInDoctorPanelViewModel>? WorkHistoryResume { get; set; }
 
         #endregion
     }

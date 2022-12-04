@@ -325,6 +325,8 @@ namespace DoctorFAM.Data.DbContext
 
         public DbSet<WorkHistoryResume> WorkHistoryResume { get; set; }
 
+        public DbSet<Honors> Honors { get; set; }
+
         #endregion
 
         #endregion

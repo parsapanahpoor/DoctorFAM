@@ -1,0 +1,45 @@
+﻿@model List<DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.WorkHistory.WorkHistoryResumeInDoctorPanelViewModel>
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.Utils
+
+<div class="form-title">
+    بخش سوابق کاری
+
+    <a asp-action="CreateWorkHistory" asp-area="Doctor" asp-controller="Resume" style="margin-right: 10px;" class="btn btn-success mr-4">افزودن اطلاعات</a>
+</div>
+
+
+    @if (Model != null && Model.Any())
+    {
+        foreach (var work in Model)
+        {
+        <ul class="timeline animated fadeInDown">
+
+            <li>
+                <div class="timeline-datetime">
+                    <a asp-action="EditWorkHistory" asp-area="Doctor" asp-controller="Resume" asp-route-id="@work.Id" style="margin-right: 10px;" class="btn btn-primary mr-4">ویرایش</a>
+                    <a asp-action="DeleteWorkHistory" asp-area="Doctor" asp-controller="Resume" asp-route-id="@work.Id" style="margin-right: 10px;" class="btn btn-danger mr-4">حذف</a>
+                </div>
+                <div class="timeline-badge blue">
+                    <i class="fa fa-thumb-tack"></i>
+                </div>
+                <div class="timeline-panel">
+                    <div class="timeline-header bordered-bottom bordered-blue">
+                        @if (!string.IsNullOrEmpty(work.JobPosition))
+                        {
+                            <span class="timeline-title">
+                                @work.JobPosition
+                            </span>
+                        }
+                    </div>
+                    <div class="timeline-body">
+                        <p> @((string.IsNullOrEmpty(work.WorkAddress)) ? "وارد نشده" : work.WorkAddress)</p>
+                    </div>
+                    
+                </div>
+            </li>
+        </ul>
+        }
+    }
+
