@@ -3,6 +3,7 @@ using DoctorFAM.Domain.Entities.Resume;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Education;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Honor;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Service;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.WorkHistory;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -47,6 +48,15 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Delete Honor 
         Task<bool> DeleteHonor(ulong honorId, ulong userId);
 
+        //Get Servfice Resume By resume Id
+        Task<List<ServiceResume>?> GetServiceResumeByResumeId(ulong resumeId);
+
+        //Create Service From Doctor Panel  
+        Task<bool> CreateResumeServiceFromDoctorSide(CreateServiceDoctorPanel model, ulong userId);
+
+        //Delete Service 
+        Task<bool> DeleteService(ulong serviceId, ulong userId);
+
         #endregion
 
         #region Doctor Panel 
@@ -83,6 +93,12 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Edit Honor From Doctor Panel
         Task<bool> EditHonorFromDoctorPanel(EditHonorDoctorPanelViewModel model, ulong userId, IFormFile? image);
+
+        //Fill Edit Service Doctor Panel View Model
+        Task<EditServiceDoctorPanelViewModel?> FillEditServiceDoctorPanelViewModel(ulong serviceId, ulong userId);
+
+        //Edit Service From Doctor Panel
+        Task<bool> EditServiceFromDoctorPanel(EditServiceDoctorPanelViewModel model, ulong userId);
 
         #endregion
     }

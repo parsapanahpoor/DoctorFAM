@@ -112,10 +112,23 @@ namespace DoctorFAM.Data.Repository
             return await _context.Honors.Where(p => !p.IsDelete && p.ResumeId == resumeId).ToListAsync();
         }
 
+        //Get Service Resume By User Id
+        public async Task<List<ServiceResume>?> GetServiceResumeByUserId(ulong resumeId)
+        {
+            return await _context.ServiceResume.Where(p => !p.IsDelete && p.ResumeId == resumeId).ToListAsync();
+        }
+
         //Create Work History Resume 
         public async Task CreateWorkHistoryResume(WorkHistoryResume model)
         {
             await _context.WorkHistoryResume.AddAsync(model);
+            await _context.SaveChangesAsync();
+        }
+
+        //Create Service Resume 
+        public async Task CreateServiceResume(ServiceResume model)
+        {
+            await _context.ServiceResume.AddAsync(model);
             await _context.SaveChangesAsync();
         }
 
@@ -132,6 +145,12 @@ namespace DoctorFAM.Data.Repository
             return await _context.WorkHistoryResume.FirstOrDefaultAsync(p => !p.IsDelete && p.Id == workHistoryId);
         }
 
+        //Get Service By Id
+        public async Task<ServiceResume?> GetServiceById(ulong serviceId)
+        {
+            return await _context.ServiceResume.FirstOrDefaultAsync(p => !p.IsDelete && p.Id == serviceId);
+        }
+
         //Get Honor By Id
         public async Task<Honors?> GetHonotById(ulong honorId)
         {
@@ -142,6 +161,13 @@ namespace DoctorFAM.Data.Repository
         public async Task UpdateWorkHistory(WorkHistoryResume workHistory)
         {
             _context.WorkHistoryResume.Update(workHistory);
+            await _context.SaveChangesAsync();
+        }
+
+        //Update Service 
+        public async Task UpdateService(ServiceResume service)
+        {
+            _context.ServiceResume.Update(service);
             await _context.SaveChangesAsync();
         }
 

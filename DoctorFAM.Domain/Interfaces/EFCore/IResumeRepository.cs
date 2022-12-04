@@ -69,6 +69,18 @@ namespace DoctorFAM.Domain.Interfaces.EFCore
         //Update Honor 
         Task UpdateHonor(Honors honor);
 
+        //Get Service Resume By User Id
+        Task<List<ServiceResume>?> GetServiceResumeByUserId(ulong resumeId);
+
+        //Create Service Resume 
+        Task CreateServiceResume(ServiceResume model);
+
+        //Get Service By Id
+        Task<ServiceResume?> GetServiceById(ulong serviceId);
+
+        //Update Service 
+        Task UpdateService(ServiceResume service);
+
         #endregion
 
         #region Doctor Panel 

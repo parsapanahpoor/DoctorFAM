@@ -13,6 +13,7 @@ using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Education;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Honor;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Service;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.WorkHistory;
 using Microsoft.AspNetCore.Http;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
@@ -323,6 +324,46 @@ namespace DoctorFAM.Application.Services.Implementation
             return true;
         }
 
+        //Delete Service 
+        public async Task<bool> DeleteService(ulong serviceId, ulong userId)
+        {
+            #region Get Owner Organization By EmployeeId 
+
+            var organization = await _organizationService.GetOrganizationByUserId(userId);
+            if (organization == null) return false;
+
+            #endregion
+
+            #region Get service 
+
+            var service = await _resumeRepository.GetServiceById(serviceId);
+            if (service == null) return false;
+
+            #endregion
+
+            #region Get Resume 
+
+            var resume = await _resumeRepository.GetResumeByUserId(organization.OwnerId);
+            if (resume == null) return false;
+            if (service.ResumeId != resume.Id) return false;
+
+            #endregion
+
+            #region Delete service 
+
+            service.IsDelete = true;
+
+            #endregion
+
+            #region Update service 
+
+            await _resumeRepository.UpdateService(service);
+
+            #endregion
+
+            return true;
+        }
+
         //Delete Honor 
         public async Task<bool> DeleteHonor(ulong honorId, ulong userId)
         {
@@ -387,6 +428,19 @@ namespace DoctorFAM.Application.Services.Implementation
             #endregion
 
             return honor;
+        }
+
+        //Get Servfice Resume By resume Id
+        public async Task<List<ServiceResume>?> GetServiceResumeByResumeId(ulong resumeId)
+        {
+            #region Get Service 
+
+            var service = await _resumeRepository.GetServiceResumeByUserId(resumeId);
+            if (service == null) return null;
+
+            #endregion
+
+            return service;
         }
 
         #endregion
@@ -524,6 +578,31 @@ namespace DoctorFAM.Application.Services.Implementation
             }
 
             model.HonorResume = returnHonor;
+
+            #endregion
+
+            #region Fill Service
+
+            var service = await GetServiceResumeByResumeId(resume.Id);
+
+            var returnService = new List<ServiceResumeInDoctorPanelViewModel>();
+
+            //Create New Instance
+            if (service != null && service.Any())
+            {
+                foreach (var item in service)
+                {
+                    ServiceResumeInDoctorPanelViewModel sr = (new ServiceResumeInDoctorPanelViewModel()
+                    {
+                        ServiceTitle = ((string.IsNullOrEmpty(item.ServiceTitle)) ? null : item.ServiceTitle),
+                        Id = item.Id,
+                    });
+
+                    returnService.Add(sr);
+                }
+            }
+
+            model.ServiceResume = returnService;
 
             #endregion
 
@@ -967,6 +1046,123 @@ namespace DoctorFAM.Application.Services.Implementation
             #region Update Work History 
 
             await _resumeRepository.UpdateHonor(honor);
+
+            //Change Rsume To The Waiting State 
+            await _resumeRepository.ChangeResumeStateToTheWaitingState(resume);
+
+            #endregion
+
+            return true;
+        }
+
+        //Create Service From Doctor Panel  
+        public async Task<bool> CreateResumeServiceFromDoctorSide(CreateServiceDoctorPanel model, ulong userId)
+        {
+            #region Get Owner Organization By EmployeeId 
+
+            var organization = await _organizationService.GetOrganizationByUserId(userId);
+            if (organization == null) return false;
+
+            #endregion
+
+            #region Get Resume 
+
+            var resume = await _resumeRepository.GetResumeByUserId(organization.OwnerId);
+            if (resume == null) return false;
+
+            #endregion
+
+            #region Fill Model 
+
+            ServiceResume service = new ServiceResume()
+            {
+                ServiceTitle = ((string.IsNullOrEmpty(model.ServiceTitle)) ? null : model.ServiceTitle.SanitizeText()),
+                ResumeId = resume.Id
+            };
+
+            //Add Service Resume 
+            await _resumeRepository.CreateServiceResume(service);
+
+            //Change Rsume To The Waiting State 
+            await _resumeRepository.ChangeResumeStateToTheWaitingState(resume);
+
+            #endregion
+
+            return true;
+        }
+
+        //Fill Edit Service Doctor Panel View Model
+        public async Task<EditServiceDoctorPanelViewModel?> FillEditServiceDoctorPanelViewModel(ulong serviceId, ulong userId)
+        {
+            #region Get Owner Organization By EmployeeId 
+
+            var organization = await _organizationService.GetOrganizationByUserId(userId);
+            if (organization == null) return null;
+
+            #endregion
+
+            #region Get Service 
+
+            var service = await _resumeRepository.GetServiceById(serviceId);
+            if (service == null) return null;
+
+            #endregion
+
+            #region Get Resume 
+
+            var resume = await _resumeRepository.GetResumeByUserId(organization.OwnerId);
+            if (resume == null) return null;
+            if (service.ResumeId != resume.Id) return null;
+
+            #endregion
+
+            #region Fill Model
+
+            EditServiceDoctorPanelViewModel model = new EditServiceDoctorPanelViewModel()
+            {
+                ServiceTitle = ((string.IsNullOrEmpty(service.ServiceTitle)) ? null : service.ServiceTitle),
+                Id = service.Id,
+            };
+
+            #endregion
+
+            return model;
+        }
+
+        //Edit Service From Doctor Panel
+        public async Task<bool> EditServiceFromDoctorPanel(EditServiceDoctorPanelViewModel model, ulong userId)
+        {
+            #region Get Owner Organization By EmployeeId 
+
+            var organization = await _organizationService.GetOrganizationByUserId(userId);
+            if (organization == null) return false;
+
+            #endregion
+
+            #region Get Resume 
+
+            var resume = await _resumeRepository.GetResumeByUserId(organization.OwnerId);
+            if (resume == null) return false;
+
+            #endregion
+
+            #region Get Work History 
+
+            var service = await _resumeRepository.GetServiceById(model.Id);
+            if (service == null) return false;
+            if (service.ResumeId != resume.Id) return false;
+
+            #endregion
+
+            #region Update Work History 
+
+            service.ServiceTitle = model.ServiceTitle;
+
+            #endregion
+
+            #region Update Work History 
+
+            await _resumeRepository.UpdateService(service);
 
             //Change Rsume To The Waiting State 
             await _resumeRepository.ChangeResumeStateToTheWaitingState(resume);
