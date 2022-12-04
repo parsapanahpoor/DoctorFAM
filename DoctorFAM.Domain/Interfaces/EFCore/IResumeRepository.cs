@@ -96,6 +96,15 @@ namespace DoctorFAM.Domain.Interfaces.EFCore
         //Get Certificate Resume By User Id
         Task<List<CertificateResume>?> GetCertificateResumeByUserId(ulong resumeId);
 
+        //Create Certificate Resume 
+        Task CreateCertificateResume(CertificateResume model);
+
+        //Get Certificate By Id
+        Task<CertificateResume?> GetCertificateById(ulong certificateId);
+
+        //Update Certificate 
+        Task UpdateCertificate(CertificateResume certificate);
+
         #endregion
 
         #region Doctor Panel 

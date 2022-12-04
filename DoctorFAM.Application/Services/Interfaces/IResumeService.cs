@@ -1,6 +1,7 @@
 ﻿using DoctorFAM.Application.Services.Implementation;
 using DoctorFAM.Domain.Entities.Resume;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Certificate;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Education;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Honor;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Service;
@@ -64,6 +65,12 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Get Certificate Resume By resume Id
         Task<List<CertificateResume>?> GetCertificateResumeByResumeId(ulong resumeId);
 
+        //Create Certifdicate From Doctor Panel  
+        Task<bool> CreateCertifdicateFromDoctorSide(CreateCertificateDoctorPanel model, ulong userId, IFormFile image);
+
+        //Delete Honor 
+        Task<bool> DeleteCertificate(ulong certificateId, ulong userId);
+
         #endregion
 
         #region Doctor Panel 
@@ -115,6 +122,12 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Edit Working Address From Doctor Panel
         Task<bool> EditWorkingAddressFromDoctorPanel(EditWorkingAddressDoctorPanelViewModel model, ulong userId);
+
+        //Fill Edit Certificate Doctor Panel View Model
+        Task<EditCertificateDoctorPanelViewModel?> FillEditCertificateDoctorPanelViewModel(ulong certificateId, ulong userId);
+
+        //Edit Certificate From Doctor Panel
+        Task<bool> EditCertificateFromDoctorPanel(EditCertificateDoctorPanelViewModel model, ulong userId, IFormFile? image);
 
         #endregion
     }

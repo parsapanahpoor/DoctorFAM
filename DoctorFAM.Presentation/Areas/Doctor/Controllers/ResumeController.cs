@@ -676,7 +676,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
             #region Create Certificate Resume 
 
-            var res = await _resumeService.CreateResumeHonorFromDoctorSide(model, User.GetUserId(), image);
+            var res = await _resumeService.CreateCertifdicateFromDoctorSide(model, User.GetUserId(), image);
             if (res)
             {
                 TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
@@ -698,7 +698,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
         {
             #region Fill Model
 
-            var model = await _resumeService.FillEditHonorDoctorPanelViewModel(id, User.GetUserId());
+            var model = await _resumeService.FillEditCertificateDoctorPanelViewModel(id, User.GetUserId());
             if (model == null)
             {
                 TempData[ErrorMessage] = "اطلاعات وارد شده معتبر نمی باشد";
@@ -725,7 +725,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
             #region Edit Certificate
 
-            var res = await _resumeService.EditHonorFromDoctorPanel(model, User.GetUserId(), image);
+            var res = await _resumeService.EditCertificateFromDoctorPanel(model, User.GetUserId(), image);
             if (res)
             {
                 TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
@@ -746,7 +746,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
         {
             #region Delete Honor
 
-            var res = await _resumeService.DeleteHonor(id, User.GetUserId());
+            var res = await _resumeService.DeleteCertificate(id, User.GetUserId());
             if (res)
             {
                 TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";

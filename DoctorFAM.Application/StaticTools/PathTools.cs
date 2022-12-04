@@ -125,11 +125,21 @@ namespace DoctorFAM.Application.StaticTools
 
         #region Honor Image
 
-        public static readonly string HonorPath = "/content/images/Products/Gallery/main/";
-        public static readonly string HonorPathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/Products/Gallery/main/");
+        public static readonly string HonorPath = "/content/images/Honor/main/";
+        public static readonly string HonorPathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/Honor/Products/main/");
 
-        public static readonly string HonorPathThumb = "/content/images/Products/Gallery/thumb/";
-        public static readonly string HonorPathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/Products/Gallery/thumb/");
+        public static readonly string HonorPathThumb = "/content/images/Honor/thumb/";
+        public static readonly string HonorPathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/Honor/thumb/");
+
+        #endregion
+
+        #region Certificate Image
+
+        public static readonly string CertificatePath = "/content/images/Certificate/main/";
+        public static readonly string CertificatePathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/Certificate/main/");
+
+        public static readonly string CertificatePathThumb = "/content/images/Certificate/Gallery/thumb/";
+        public static readonly string CertificatePathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/Certificate/Products/thumb/");
 
         #endregion
     }

@@ -406,6 +406,46 @@ namespace DoctorFAM.Application.Services.Implementation
             return true;
         }
 
+        //Delete Honor 
+        public async Task<bool> DeleteCertificate(ulong certificateId, ulong userId)
+        {
+            #region Get Owner Organization By EmployeeId 
+
+            var organization = await _organizationService.GetOrganizationByUserId(userId);
+            if (organization == null) return false;
+
+            #endregion
+
+            #region Get certificate 
+
+            var certificate = await _resumeRepository.GetCertificateById(certificateId);
+            if (certificate == null) return false;
+
+            #endregion
+
+            #region Get Resume 
+
+            var resume = await _resumeRepository.GetResumeByUserId(organization.OwnerId);
+            if (resume == null) return false;
+            if (certificate.ResumeId != resume.Id) return false;
+
+            #endregion
+
+            #region Delete certificate 
+
+            certificate.IsDelete = true;
+
+            #endregion
+
+            #region Update certificate 
+
+            await _resumeRepository.UpdateCertificate(certificate);
+
+            #endregion
+
+            return true;
+        }
+
         //Delete Working Address 
         public async Task<bool> DeleteWorkingAddress(ulong workingAddressId, ulong userId)
         {
@@ -1117,6 +1157,46 @@ namespace DoctorFAM.Application.Services.Implementation
             return model;
         }
 
+        //Fill Edit Certificate Doctor Panel View Model
+        public async Task<EditCertificateDoctorPanelViewModel?> FillEditCertificateDoctorPanelViewModel(ulong certificateId, ulong userId)
+        {
+            #region Get Owner Organization By EmployeeId 
+
+            var organization = await _organizationService.GetOrganizationByUserId(userId);
+            if (organization == null) return null;
+
+            #endregion
+
+            #region Get Certificate 
+
+            var certificate = await _resumeRepository.GetCertificateById(certificateId);
+            if (certificate == null) return null;
+
+            #endregion
+
+            #region Get Resume 
+
+            var resume = await _resumeRepository.GetResumeByUserId(organization.OwnerId);
+            if (resume == null) return null;
+            if (certificate.ResumeId != resume.Id) return null;
+
+            #endregion
+
+            #region Fill Model
+
+            EditCertificateDoctorPanelViewModel model = new EditCertificateDoctorPanelViewModel()
+            {
+                CertificateTitle = ((string.IsNullOrEmpty(certificate.CertificateTitle)) ? null : certificate.CertificateTitle),
+                ExporterRefrence = ((string.IsNullOrEmpty(certificate.ExporterRefrence)) ? null : certificate.ExporterRefrence),
+                ImageName = ((string.IsNullOrEmpty(certificate.ImageName)) ? null : certificate.ImageName),
+                Id = certificate.Id,
+            };
+
+            #endregion
+
+            return model;
+        }
+
         //Edit Honor From Doctor Panel
         public async Task<bool> EditHonorFromDoctorPanel(EditHonorDoctorPanelViewModel model, ulong userId , IFormFile? image)
         {
@@ -1412,6 +1492,114 @@ namespace DoctorFAM.Application.Services.Implementation
             #region Update Work History 
 
             await _resumeRepository.UpdateWorkingAddress(work);
+
+            //Change Rsume To The Waiting State 
+            await _resumeRepository.ChangeResumeStateToTheWaitingState(resume);
+
+            #endregion
+
+            return true;
+        }
+
+        //Create Certifdicate From Doctor Panel  
+        public async Task<bool> CreateCertifdicateFromDoctorSide(CreateCertificateDoctorPanel model, ulong userId, IFormFile image)
+        {
+            #region Get Owner Organization By EmployeeId 
+
+            var organization = await _organizationService.GetOrganizationByUserId(userId);
+            if (organization == null) return false;
+
+            #endregion
+
+            #region Get Resume 
+
+            var resume = await _resumeRepository.GetResumeByUserId(organization.OwnerId);
+            if (resume == null) return false;
+
+            #endregion
+
+            #region Fill Model 
+
+            CertificateResume newCertificate = new CertificateResume()
+            {
+                CertificateTitle = ((string.IsNullOrEmpty(model.CertificateTitle)) ? null : model.CertificateTitle.SanitizeText()),
+                ExporterRefrence = ((string.IsNullOrEmpty(model.ExporterRefrence)) ? null : model.ExporterRefrence.SanitizeText()),
+                ResumeId = resume.Id
+            };
+
+            #region Image 
+
+            if (image != null && image.IsImage())
+            {
+                var imageName = CodeGenerator.GenerateUniqCode() + Path.GetExtension(image.FileName);
+                image.AddImageToServer(imageName, PathTools.CertificatePathServer, 270, 270, PathTools.CertificatePathThumbServer);
+                newCertificate.ImageName = imageName;
+            }
+
+            #endregion
+
+            //Add Education Resume 
+            await _resumeRepository.CreateCertificateResume(newCertificate);
+
+            //Change Rsume To The Waiting State 
+            await _resumeRepository.ChangeResumeStateToTheWaitingState(resume);
+
+            #endregion
+
+            return true;
+        }
+
+        //Edit Certificate From Doctor Panel
+        public async Task<bool> EditCertificateFromDoctorPanel(EditCertificateDoctorPanelViewModel model, ulong userId, IFormFile? image)
+        {
+            #region Get Owner Organization By EmployeeId 
+
+            var organization = await _organizationService.GetOrganizationByUserId(userId);
+            if (organization == null) return false;
+
+            #endregion
+
+            #region Get Resume 
+
+            var resume = await _resumeRepository.GetResumeByUserId(organization.OwnerId);
+            if (resume == null) return false;
+
+            #endregion
+
+            #region Get Certificate 
+
+            var certificate = await _resumeRepository.GetCertificateById(model.Id);
+            if (certificate == null) return false;
+            if (certificate.ResumeId != resume.Id) return false;
+
+            #endregion
+
+            #region Update Honor 
+
+            certificate.CertificateTitle = model.CertificateTitle.SanitizeText();
+            certificate.ExporterRefrence = model.ExporterRefrence.SanitizeText();
+
+            #endregion
+
+            #region Image
+
+            if (image != null && image.IsImage())
+            {
+                if (!string.IsNullOrEmpty(certificate.ImageName))
+                {
+                    certificate.ImageName.DeleteImage(PathTools.CertificatePathServer, PathTools.CertificatePathThumbServer);
+                }
+
+                var imageName = CodeGenerator.GenerateUniqCode() + Path.GetExtension(image.FileName);
+                image.AddImageToServer(imageName, PathTools.CertificatePathServer, 270, 270, PathTools.CertificatePathThumbServer);
+                certificate.ImageName = imageName;
+            }
+
+            #endregion
+
+            #region Update Work History 
+
+            await _resumeRepository.UpdateCertificate(certificate);
 
             //Change Rsume To The Waiting State 
             await _resumeRepository.ChangeResumeStateToTheWaitingState(resume);

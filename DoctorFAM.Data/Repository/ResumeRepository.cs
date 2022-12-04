@@ -158,6 +158,13 @@ namespace DoctorFAM.Data.Repository
             await _context.SaveChangesAsync();
         }
 
+        //Create Certificate Resume 
+        public async Task CreateCertificateResume(CertificateResume model)
+        {
+            await _context.CertificateResume.AddAsync(model);
+            await _context.SaveChangesAsync();
+        }
+
         //Get Work History By Id
         public async Task<WorkHistoryResume?> GetWorkHistoryById(ulong workHistoryId)
         {
@@ -180,6 +187,12 @@ namespace DoctorFAM.Data.Repository
         public async Task<Honors?> GetHonotById(ulong honorId)
         {
             return await _context.Honors.FirstOrDefaultAsync(p => !p.IsDelete && p.Id == honorId);
+        }
+
+        //Get Certificate By Id
+        public async Task<CertificateResume?> GetCertificateById(ulong certificateId)
+        {
+            return await _context.CertificateResume.FirstOrDefaultAsync(p => !p.IsDelete && p.Id == certificateId);
         }
 
         //Update Work History 
@@ -207,6 +220,13 @@ namespace DoctorFAM.Data.Repository
         public async Task UpdateHonor(Honors honor)
         {
             _context.Honors.Update(honor);
+            await _context.SaveChangesAsync();
+        }
+
+        //Update Certificate 
+        public async Task UpdateCertificate(CertificateResume certificate)
+        {
+            _context.CertificateResume.Update(certificate);
             await _context.SaveChangesAsync();
         }
 
