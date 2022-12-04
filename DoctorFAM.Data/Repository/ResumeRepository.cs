@@ -103,31 +103,44 @@ namespace DoctorFAM.Data.Repository
         //Get Work History Resume By User Id
         public async Task<List<WorkHistoryResume>?> GetWorkHistoryResumeByUserId(ulong resumeId)
         {
-            return await _context.WorkHistoryResume.Where(p => !p.IsDelete && p.ResumeId == resumeId).ToListAsync();
+            return await _context.WorkHistoryResume.Where(p => !p.IsDelete && p.ResumeId == resumeId)
+                                                        .OrderByDescending(p => p.CreateDate).ToListAsync();
         }
 
         //Get Honor Resume By User Id
         public async Task<List<Honors>?> GetHonorResumeByUserId(ulong resumeId)
         {
-            return await _context.Honors.Where(p => !p.IsDelete && p.ResumeId == resumeId).ToListAsync();
+            return await _context.Honors.Where(p => !p.IsDelete && p.ResumeId == resumeId)
+                                                        .OrderByDescending(p => p.CreateDate).ToListAsync();
+        }
+
+        //Get Gallery Resume By User Id
+        public async Task<List<GalleryResume>?> GetGalleryResumeByUserId(ulong resumeId)
+        {
+            return await _context.GalleryResume.Where(p => !p.IsDelete && p.ResumeId == resumeId)   
+                                                        .OrderByDescending(p=> p.CreateDate).ToListAsync();
         }
 
         //Get Certificate Resume By User Id
         public async Task<List<CertificateResume>?> GetCertificateResumeByUserId(ulong resumeId)
         {
-            return await _context.CertificateResume.Where(p => !p.IsDelete && p.ResumeId == resumeId).ToListAsync();
+            return await _context.CertificateResume.Where(p => !p.IsDelete && p.ResumeId == resumeId)
+                                                        .OrderByDescending(p => p.CreateDate).ToListAsync();
         }
 
         //Get Service Resume By User Id
         public async Task<List<ServiceResume>?> GetServiceResumeByUserId(ulong resumeId)
         {
-            return await _context.ServiceResume.Where(p => !p.IsDelete && p.ResumeId == resumeId).ToListAsync();
+            return await _context.ServiceResume.Where(p => !p.IsDelete && p.ResumeId == resumeId)
+                                                        .OrderByDescending(p => p.CreateDate).ToListAsync();
+
         }
 
         //Get Working Address Resume By User Id
         public async Task<List<WorkingAddressResume>?> GetWorkingAddressResumeByUserId(ulong resumeId)
         {
-            return await _context.WorkingAddressResume.Where(p => !p.IsDelete && p.ResumeId == resumeId).ToListAsync();
+            return await _context.WorkingAddressResume.Where(p => !p.IsDelete && p.ResumeId == resumeId)
+                                                         .OrderByDescending(p => p.CreateDate).ToListAsync();
         }
 
         //Create Work History Resume 
@@ -155,6 +168,13 @@ namespace DoctorFAM.Data.Repository
         public async Task CreateHonorResume(Honors model)
         {
             await _context.Honors.AddAsync(model);
+            await _context.SaveChangesAsync();
+        }
+
+        //Create Gallery Resume 
+        public async Task CreateGalleryResume(GalleryResume model)
+        {
+            await _context.GalleryResume.AddAsync(model);
             await _context.SaveChangesAsync();
         }
 
@@ -187,6 +207,12 @@ namespace DoctorFAM.Data.Repository
         public async Task<Honors?> GetHonotById(ulong honorId)
         {
             return await _context.Honors.FirstOrDefaultAsync(p => !p.IsDelete && p.Id == honorId);
+        }
+
+        //Get Gallery By Id
+        public async Task<GalleryResume?> GetGalleryById(ulong galleryId)
+        {
+            return await _context.GalleryResume.FirstOrDefaultAsync(p => !p.IsDelete && p.Id == galleryId);
         }
 
         //Get Certificate By Id
@@ -223,11 +249,24 @@ namespace DoctorFAM.Data.Repository
             await _context.SaveChangesAsync();
         }
 
+        //Update Gallery 
+        public async Task UpdateGallery(GalleryResume gallery)
+        {
+            _context.GalleryResume.Update(gallery);
+            await _context.SaveChangesAsync();
+        }
+
         //Update Certificate 
         public async Task UpdateCertificate(CertificateResume certificate)
         {
             _context.CertificateResume.Update(certificate);
             await _context.SaveChangesAsync();
+        }
+
+        //Get User Gallery By Resume Id 
+        public async Task<List<GalleryResume>> GetUserGalleryByResumeId(ulong resumeId)
+        {
+            return await _context.GalleryResume.Where(p => !p.IsDelete && p.ResumeId == resumeId).ToListAsync(); 
         }
 
         #endregion

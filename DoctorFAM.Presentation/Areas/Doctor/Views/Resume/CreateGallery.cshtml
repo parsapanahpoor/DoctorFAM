@@ -1,11 +1,11 @@
-﻿@model DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Honor.EditHonorDoctorPanelViewModel
+﻿@model DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Gallery.CreateGalleryDoctorPanel
 
 @using DoctorFAM.Domain.Enums
 @using DoctorFAM.Application.StaticTools
 @using DoctorFAM.Domain.ViewModels.Common
 
 @{
-    ViewData["Title"] = "ویرایش رزومه ی افتخارات";
+    ViewData["Title"] = "ثبت گالری تصاویر";
 }
 
 @section Scripts
@@ -17,43 +17,30 @@
     @section Breadcrumb
     {
     <li>
-        <a asp-action="PageOfResume" asp-controller="Resume" asp-area="Doctor"> مدیریت  </a>
+        <a asp-action="PageOfResume" asp-controller="Resume" asp-area="Doctor"> مدیریت رزومه </a>
     </li>
     <li>
         <a href="javascript:void(0)"> @ViewData["Title"] </a>
     </li>
 }
 
-    <form method="post" asp-action="EditHonor" asp-controller="Resume" asp-area="Doctor" enctype="multipart/form-data">
-        <input asp-for="Id" type="hidden">
-        <input asp-for="ImageName" type="hidden">
+    <form method="post" asp-action="CreateGallery" asp-controller="Resume" asp-area="Doctor" enctype="multipart/form-data">
+
         <div class="row">
             <div class="col-lg-9 col-sm-12">
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="widget">
                             <div class="widget-header bordered-bottom bordered-green" style="background-color:#d1f4fa">
-                                <span class="widget-caption"> ویرایش رزومه ی افتخارات </span>
+                                <span class="widget-caption"> افزودن تصویر </span>
                             </div>
                             <div class="widget-body" style="background-color:#d1f4fa !important;">
                                 <div class="row">
 
-                                    <div class="form-group col-md-6 col-sm-12">
-                                        <label> عنوان</label>
-                                        <input type="text" class="form-control" asp-for="HonorTitle">
-                                        <span class="text-danger" asp-validation-for="HonorTitle"></span>
-                                    </div>
-
-                                    <div class="form-group col-md-6 col-sm-12">
-                                        <label> تاریخ </label>
-                                        <input type="text" class="form-control" DatePicker="1" asp-for="HonorDate">
-                                        <span class="text-danger" asp-validation-for="HonorDate"></span>
-                                    </div>
-
                                     <div class="form-group col-md-12 col-sm-12">
-                                        <label>توضیح </label>
-                                        <input type="text" class="form-control" asp-for="Description">
-                                        <span class="text-danger" asp-validation-for="Description"></span>
+                                        <label> عنوان</label>
+                                        <input type="text" class="form-control" asp-for="Title">
+                                        <span class="text-danger" asp-validation-for="Title"></span>
                                     </div>
 
                                     <hr class="margin-bottom-10 margin-top-10" />
@@ -78,7 +65,7 @@
                     <div class="col-lg-12">
                         <div class="widget">
                             <div class="widget-header bordered-bottom bordered-green">
-                                <span class="widget-caption"> تصویر افتخار</span>
+                                <span class="widget-caption"> تصویر </span>
                             </div>
                             <div class="widget-body">
                                 <div class="row">
@@ -92,18 +79,9 @@
                                         </label>
                                     </div>
 
-                                        @{
-                                    var avatarUrl = PathTools.DefaultUserAvatar;
-
-                                    if (Model.ImageName != null && !string.IsNullOrEmpty(Model.ImageName))
-                                    {
-                                        avatarUrl = $"{PathTools.HonorPathThumb}{Model.ImageName}";
-                                    }
-                                }
-
-                                <div class="col-md-12 tc mt-10px">
-                                    <img src="@avatarUrl" class="image-style" ImageFile="1" />
-                                </div>
+                                    <div class="col-md-12 tc mt-10px">
+                                        <img src="@PathTools.DefaultProductAvatar" class="image-style" ImageFile="1" />
+                                    </div>
 
                                 </div>
                             </div>

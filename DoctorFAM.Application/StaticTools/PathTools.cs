@@ -142,5 +142,15 @@ namespace DoctorFAM.Application.StaticTools
         public static readonly string CertificatePathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/Certificate/thumb/");
 
         #endregion
+
+        #region Gallery Image
+
+        public static readonly string ResumeGalleryPath = "/content/images/ResumeGallery/main/";
+        public static readonly string ResumeGalleryPathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/ResumeGallery/main/");
+
+        public static readonly string ResumeGalleryPathThumb = "/content/images/ResumeGallery/thumb/";
+        public static readonly string ResumeGalleryPathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/ResumeGallery/thumb/");
+
+        #endregion
     }
 }

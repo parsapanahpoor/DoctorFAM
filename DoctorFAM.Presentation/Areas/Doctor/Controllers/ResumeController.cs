@@ -4,6 +4,7 @@ using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.Entities.Resume;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Certificate;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Education;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Gallery;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Honor;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Service;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.WorkHistory;
@@ -747,6 +748,142 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
             #region Delete Honor
 
             var res = await _resumeService.DeleteCertificate(id, User.GetUserId());
+            if (res)
+            {
+                TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+                return RedirectToAction(nameof(PageOfResume));
+            }
+
+            #endregion
+
+            TempData[ErrorMessage] = "اطلاعات وارد شده معتبر نمی باشد";
+            return RedirectToAction(nameof(PageOfResume));
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Gallery
+
+        #region Create Gallery 
+
+        [HttpGet]
+        public async Task<IActionResult> CreateGallery()
+        {
+            #region Check User Gallery Count 
+
+            var gallery = await _resumeService.GetUserGalleryByUserId(User.GetUserId());
+
+            if (gallery.Count() >= 5)
+            {
+                TempData[ErrorMessage] = "بیشتر از 5 تصویر نمی توان وارد کرد.";
+                return RedirectToAction(nameof(PageOfResume));
+            }
+
+            #endregion
+
+            return View();
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateGallery(CreateGalleryDoctorPanel model, IFormFile image)
+        {
+            #region Check User Gallery Count 
+
+            var gallery = await _resumeService.GetUserGalleryByUserId(User.GetUserId());
+
+            if (gallery.Count() >= 5)
+            {
+                TempData[ErrorMessage] = "بیشتر از 5 تصویر نمی توان وارد کرد.";
+                return RedirectToAction(nameof(PageOfResume));
+            }
+
+            #endregion
+
+            #region Model State Validation 
+
+            if (!ModelState.IsValid)
+            {
+                TempData[ErrorMessage] = "اطلاعات وارد شده معتبر نمی باشد";
+                return View(model);
+            }
+
+            #endregion
+
+            #region Create Gallery 
+
+            var res = await _resumeService.CreateGalleryFromDoctorSide(model, User.GetUserId(), image);
+            if (res)
+            {
+                TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+                return RedirectToAction(nameof(PageOfResume));
+            }
+
+            #endregion
+
+            TempData[ErrorMessage] = "اطلاعات وارد شده معتبر نمی باشد";
+            return View(model);
+        }
+
+        #endregion
+
+        #region Edit Gallery
+
+        [HttpGet]
+        public async Task<IActionResult> EditGallery(ulong id)
+        {
+            #region Fill Model
+
+            var model = await _resumeService.FillEditGalleryDoctorPanelViewModel(id, User.GetUserId());
+            if (model == null)
+            {
+                TempData[ErrorMessage] = "اطلاعات وارد شده معتبر نمی باشد";
+                return RedirectToAction(nameof(PageOfResume));
+            }
+
+            #endregion
+
+            return View(model);
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditGallery(EditGalleryDoctorPanelViewModel model, IFormFile? image)
+        {
+            #region Model State Validation 
+
+            if (!ModelState.IsValid)
+            {
+                TempData[ErrorMessage] = "اطلاعات وارد شده معتبر نمی باشد";
+                return View(model);
+            }
+
+            #endregion
+
+            #region Edit Gallery
+
+            var res = await _resumeService.EditGalleryFromDoctorPanel(model, User.GetUserId(), image);
+            if (res)
+            {
+                TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+                return RedirectToAction(nameof(PageOfResume));
+            }
+
+            #endregion
+
+            TempData[ErrorMessage] = "اطلاعات وارد شده معتبر نمی باشد";
+            return View(model);
+        }
+
+        #endregion
+
+        #region Delete Gallery 
+
+        public async Task<IActionResult> DeleteGallery(ulong id)
+        {
+            #region Delete Honor
+
+            var res = await _resumeService.DeleteGallery(id, User.GetUserId());
             if (res)
             {
                 TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";

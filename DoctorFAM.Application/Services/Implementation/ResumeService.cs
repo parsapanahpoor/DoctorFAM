@@ -4,6 +4,7 @@ using DoctorFAM.Application.Generators;
 using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Application.StaticTools;
+using DoctorFAM.Data.Migrations;
 using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.Organization;
@@ -13,12 +14,14 @@ using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Certificate;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Education;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Gallery;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Honor;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Service;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.WorkHistory;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.WorkingAddress;
 using Microsoft.AspNetCore.Http;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -406,6 +409,46 @@ namespace DoctorFAM.Application.Services.Implementation
             return true;
         }
 
+        //Delete Gallery 
+        public async Task<bool> DeleteGallery(ulong honorId, ulong userId)
+        {
+            #region Get Owner Organization By EmployeeId 
+
+            var organization = await _organizationService.GetOrganizationByUserId(userId);
+            if (organization == null) return false;
+
+            #endregion
+
+            #region Get Gallery 
+
+            var Gallery = await _resumeRepository.GetGalleryById(honorId);
+            if (Gallery == null) return false;
+
+            #endregion
+
+            #region Get Resume 
+
+            var resume = await _resumeRepository.GetResumeByUserId(organization.OwnerId);
+            if (resume == null) return false;
+            if (Gallery.ResumeId != resume.Id) return false;
+
+            #endregion
+
+            #region Delete Gallery 
+
+            Gallery.IsDelete = true;
+
+            #endregion
+
+            #region Update honor 
+
+            await _resumeRepository.UpdateGallery(Gallery);
+
+            #endregion
+
+            return true;
+        }
+
         //Delete Honor 
         public async Task<bool> DeleteCertificate(ulong certificateId, ulong userId)
         {
@@ -512,6 +555,19 @@ namespace DoctorFAM.Application.Services.Implementation
             return honor;
         }
 
+        //Get Gallery Resume By resume Id
+        public async Task<List<GalleryResume>?> GetGalleryResumeByResumeId(ulong resumeId)
+        {
+            #region Get Gallery 
+
+            var gallery = await _resumeRepository.GetGalleryResumeByUserId(resumeId);
+            if (gallery == null) return null;
+
+            #endregion
+
+            return gallery;
+        }
+
         //Get Certificate Resume By resume Id
         public async Task<List<CertificateResume>?> GetCertificateResumeByResumeId(ulong resumeId)
         {
@@ -549,6 +605,19 @@ namespace DoctorFAM.Application.Services.Implementation
             #endregion
 
             return workingAddress;
+        }
+
+        //Get User Gallery By User Id 
+        public async Task<List<GalleryResume>> GetUserGalleryByUserId(ulong userId)
+        {
+            #region Get Resume By User Id
+
+            var resume = await GetResumeByUserId(userId);
+            if (resume == null) return null;
+
+            #endregion
+
+            return await _resumeRepository.GetUserGalleryByResumeId(resume.Id);
         }
 
         #endregion
@@ -766,6 +835,32 @@ namespace DoctorFAM.Application.Services.Implementation
             }
 
             model.CertificateResume = returnCertificate;
+
+            #endregion
+
+            #region Fill Gallery
+
+            var gallery = await GetGalleryResumeByResumeId(resume.Id);
+
+            var returnGallery = new List<GalleryResumeInDoctorPanelViewModel>();
+
+            //Create New Instance
+            if (gallery != null && gallery.Any())
+            {
+                foreach (var item in gallery)
+                {
+                    GalleryResumeInDoctorPanelViewModel gal = (new GalleryResumeInDoctorPanelViewModel()
+                    {
+                        Title = ((string.IsNullOrEmpty(item.Title)) ? null : item.Title),
+                        ImageName = ((string.IsNullOrEmpty(item.ImageName)) ? null : item.ImageName),
+                        Id = item.Id,
+                    });
+
+                    returnGallery.Add(gal);
+                }
+            }
+
+            model.GalleryResume = returnGallery;
 
             #endregion
 
@@ -1600,6 +1695,151 @@ namespace DoctorFAM.Application.Services.Implementation
             #region Update Work History 
 
             await _resumeRepository.UpdateCertificate(certificate);
+
+            //Change Rsume To The Waiting State 
+            await _resumeRepository.ChangeResumeStateToTheWaitingState(resume);
+
+            #endregion
+
+            return true;
+        }
+
+        //Create Gallery From Doctor Panel  
+        public async Task<bool> CreateGalleryFromDoctorSide(CreateGalleryDoctorPanel model, ulong userId, IFormFile image)
+        {
+            #region Get Owner Organization By EmployeeId 
+
+            var organization = await _organizationService.GetOrganizationByUserId(userId);
+            if (organization == null) return false;
+
+            #endregion
+
+            #region Get Resume 
+
+            var resume = await _resumeRepository.GetResumeByUserId(organization.OwnerId);
+            if (resume == null) return false;
+
+            #endregion
+
+            #region Fill Model 
+
+            GalleryResume newGallery = new GalleryResume()
+            {
+                Title = ((string.IsNullOrEmpty(model.Title)) ? null : model.Title.SanitizeText()),
+                ResumeId = resume.Id
+            };
+
+            #region Image 
+
+            if (image != null && image.IsImage())
+            {
+                var imageName = CodeGenerator.GenerateUniqCode() + Path.GetExtension(image.FileName);
+                image.AddImageToServer(imageName, PathTools.ResumeGalleryPathServer, 270, 270, PathTools.ResumeGalleryPathThumbServer);
+                newGallery.ImageName = imageName;
+            }
+
+            #endregion
+
+            //Add Education Resume 
+            await _resumeRepository.CreateGalleryResume(newGallery);
+
+            //Change Rsume To The Waiting State 
+            await _resumeRepository.ChangeResumeStateToTheWaitingState(resume);
+
+            #endregion
+
+            return true;
+        }
+
+        //Fill Edit Gallery Doctor Panel View Model
+        public async Task<EditGalleryDoctorPanelViewModel?> FillEditGalleryDoctorPanelViewModel(ulong galleryId, ulong userId)
+        {
+            #region Get Owner Organization By EmployeeId 
+
+            var organization = await _organizationService.GetOrganizationByUserId(userId);
+            if (organization == null) return null;
+
+            #endregion
+
+            #region Get work History 
+
+            var gallery = await _resumeRepository.GetGalleryById(galleryId);
+            if (gallery == null) return null;
+
+            #endregion
+
+            #region Get Resume 
+
+            var resume = await _resumeRepository.GetResumeByUserId(organization.OwnerId);
+            if (resume == null) return null;
+            if (gallery.ResumeId != resume.Id) return null;
+
+            #endregion
+
+            #region Fill Model
+
+            EditGalleryDoctorPanelViewModel model = new EditGalleryDoctorPanelViewModel()
+            {
+                Title = ((string.IsNullOrEmpty(gallery.Title)) ? null : gallery.Title),
+                ImageName = ((string.IsNullOrEmpty(gallery.ImageName)) ? null : gallery.ImageName),
+                Id = gallery.Id,
+            };
+
+            #endregion
+
+            return model;
+        }
+
+        //Edit Gallery From Doctor Panel
+        public async Task<bool> EditGalleryFromDoctorPanel(EditGalleryDoctorPanelViewModel model, ulong userId, IFormFile? image)
+        {
+            #region Get Owner Organization By EmployeeId 
+
+            var organization = await _organizationService.GetOrganizationByUserId(userId);
+            if (organization == null) return false;
+
+            #endregion
+
+            #region Get Resume 
+
+            var resume = await _resumeRepository.GetResumeByUserId(organization.OwnerId);
+            if (resume == null) return false;
+
+            #endregion
+
+            #region Get Gallery 
+
+            var gallery = await _resumeRepository.GetGalleryById(model.Id);
+            if (gallery == null) return false;
+            if (gallery.ResumeId != resume.Id) return false;
+
+            #endregion
+
+            #region Update gallery 
+
+            gallery.Title = model.Title;
+
+            #endregion
+
+            #region Image
+
+            if (image != null && image.IsImage())
+            {
+                if (!string.IsNullOrEmpty(gallery.ImageName))
+                {
+                    gallery.ImageName.DeleteImage(PathTools.ResumeGalleryPathServer, PathTools.ResumeGalleryPathThumbServer);
+                }
+
+                var imageName = CodeGenerator.GenerateUniqCode() + Path.GetExtension(image.FileName);
+                image.AddImageToServer(imageName, PathTools.ResumeGalleryPathServer, 270, 270, PathTools.ResumeGalleryPathThumbServer);
+                gallery.ImageName = imageName;
+            }
+
+            #endregion
+
+            #region Update Gallery 
+
+            await _resumeRepository.UpdateGallery(gallery);
 
             //Change Rsume To The Waiting State 
             await _resumeRepository.ChangeResumeStateToTheWaitingState(resume);

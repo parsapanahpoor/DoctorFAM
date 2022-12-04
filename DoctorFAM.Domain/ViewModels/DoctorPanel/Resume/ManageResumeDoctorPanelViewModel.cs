@@ -1,6 +1,7 @@
 ﻿using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Resume;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Certificate;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Gallery;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Honor;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Service;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.WorkHistory;
@@ -34,6 +35,8 @@ namespace DoctorFAM.Domain.ViewModels.DoctorPanel.Resume
         public List<WorkingAddressResumeInDoctorPanelViewModel>? WorkingAddressResume { get; set; }
 
         public List<CertificateResumeInDoctorPanelViewModel>? CertificateResume { get; set; }
+
+        public List<GalleryResumeInDoctorPanelViewModel>? GalleryResume { get; set; }
 
         #endregion
     }

@@ -3,6 +3,7 @@ using DoctorFAM.Domain.Entities.Resume;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Certificate;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Education;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Gallery;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Honor;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Service;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.WorkHistory;
@@ -71,6 +72,15 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Delete Honor 
         Task<bool> DeleteCertificate(ulong certificateId, ulong userId);
 
+        //Get Gallery Resume By resume Id
+        Task<List<GalleryResume>?> GetGalleryResumeByResumeId(ulong resumeId);
+
+        //Delete Gallery 
+        Task<bool> DeleteGallery(ulong honorId, ulong userId);
+
+        //Get User Gallery By User Id 
+        Task<List<GalleryResume>> GetUserGalleryByUserId(ulong userId);
+
         #endregion
 
         #region Doctor Panel 
@@ -128,6 +138,15 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Edit Certificate From Doctor Panel
         Task<bool> EditCertificateFromDoctorPanel(EditCertificateDoctorPanelViewModel model, ulong userId, IFormFile? image);
+
+        //Create Gallery From Doctor Panel  
+        Task<bool> CreateGalleryFromDoctorSide(CreateGalleryDoctorPanel model, ulong userId, IFormFile image);
+
+        //Fill Edit Gallery Doctor Panel View Model
+        Task<EditGalleryDoctorPanelViewModel?> FillEditGalleryDoctorPanelViewModel(ulong galleryId, ulong userId);
+
+        //Edit Gallery From Doctor Panel
+        Task<bool> EditGalleryFromDoctorPanel(EditGalleryDoctorPanelViewModel model, ulong userId, IFormFile? image);
 
         #endregion
     }

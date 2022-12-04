@@ -105,6 +105,21 @@ namespace DoctorFAM.Domain.Interfaces.EFCore
         //Update Certificate 
         Task UpdateCertificate(CertificateResume certificate);
 
+        //Get Gallery Resume By User Id
+        Task<List<GalleryResume>?> GetGalleryResumeByUserId(ulong resumeId);
+
+        //Create Gallery Resume 
+        Task CreateGalleryResume(GalleryResume model);
+
+        //Get Gallery By Id
+        Task<GalleryResume?> GetGalleryById(ulong galleryId);
+
+        //Update Gallery 
+        Task UpdateGallery(GalleryResume gallery);
+
+        //Get User Gallery By Resume Id 
+        Task<List<GalleryResume>> GetUserGalleryByResumeId(ulong resumeId);
+
         #endregion
 
         #region Doctor Panel 
