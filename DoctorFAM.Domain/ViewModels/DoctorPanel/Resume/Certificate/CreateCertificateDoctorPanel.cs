@@ -19,8 +19,6 @@ namespace DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Certificate
         [Required(ErrorMessage = "Please Enter {0}")]
         public string ExporterRefrence { get; set; }
 
-        public string ImageName { get; set; }
-
         #endregion
     }
 }

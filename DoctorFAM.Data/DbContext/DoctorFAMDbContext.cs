@@ -333,6 +333,8 @@ namespace DoctorFAM.Data.DbContext
 
         public DbSet<CertificateResume> CertificateResume { get; set; }
 
+        public DbSet<GalleryResume> GalleryResume { get; set; }
+
         #endregion
 
         #endregion

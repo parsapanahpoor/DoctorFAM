@@ -40,6 +40,8 @@ namespace DoctorFAM.Domain.Entities.Resume
 
         public ICollection<CertificateResume> CertificateResume { get; set; }
 
+        public ICollection<GalleryResume> GalleryResume { get; set; }
+
         #endregion
     }
 }
