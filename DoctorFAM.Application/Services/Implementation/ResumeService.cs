@@ -1,6 +1,9 @@
 ﻿using DoctorFAM.Application.Convertors;
+using DoctorFAM.Application.Extensions;
+using DoctorFAM.Application.Generators;
 using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
+using DoctorFAM.Application.StaticTools;
 using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.Organization;
@@ -9,7 +12,9 @@ using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Education;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Honor;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.WorkHistory;
+using Microsoft.AspNetCore.Http;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
 using System;
 using System.Collections.Generic;
@@ -318,6 +323,46 @@ namespace DoctorFAM.Application.Services.Implementation
             return true;
         }
 
+        //Delete Honor 
+        public async Task<bool> DeleteHonor(ulong honorId, ulong userId)
+        {
+            #region Get Owner Organization By EmployeeId 
+
+            var organization = await _organizationService.GetOrganizationByUserId(userId);
+            if (organization == null) return false;
+
+            #endregion
+
+            #region Get Honor 
+
+            var honor = await _resumeRepository.GetHonotById(honorId);
+            if (honor == null) return false;
+
+            #endregion
+
+            #region Get Resume 
+
+            var resume = await _resumeRepository.GetResumeByUserId(organization.OwnerId);
+            if (resume == null) return false;
+            if (honor.ResumeId != resume.Id) return false;
+
+            #endregion
+
+            #region Delete honor 
+
+            honor.IsDelete = true;
+
+            #endregion
+
+            #region Update honor 
+
+            await _resumeRepository.UpdateHonor(honor);
+
+            #endregion
+
+            return true;
+        }
+
         //Get Work History Resume Resume By resume Id
         public async Task<List<WorkHistoryResume>?> GetWorkHistoryResumeByResumeId(ulong resumeId)
         {
@@ -329,6 +374,19 @@ namespace DoctorFAM.Application.Services.Implementation
             #endregion
 
             return workHistory;
+        }
+
+        //Get Honor Resume By resume Id
+        public async Task<List<Honors>?> GetHonorResumeByResumeId(ulong resumeId)
+        {
+            #region Get Honor 
+
+            var honor = await _resumeRepository.GetHonorResumeByUserId(resumeId);
+            if (honor == null) return null;
+
+            #endregion
+
+            return honor;
         }
 
         #endregion
@@ -438,6 +496,34 @@ namespace DoctorFAM.Application.Services.Implementation
             }
 
             model.WorkHistoryResume = returnWorkHistory;
+
+            #endregion
+
+            #region Fill Honor
+
+            var honor = await GetHonorResumeByResumeId(resume.Id);
+
+            var returnHonor = new List<HonorResumeInDoctorPanelViewModel>();
+
+            //Create New Instance
+            if (honor != null && honor.Any())
+            {
+                foreach (var item in honor)
+                {
+                    HonorResumeInDoctorPanelViewModel hr = (new HonorResumeInDoctorPanelViewModel()
+                    {
+                        HonorTitle = ((string.IsNullOrEmpty(item.HonorTitle)) ? null : item.HonorTitle),
+                        ImageName = ((string.IsNullOrEmpty(item.ImageName)) ? null : item.ImageName),
+                        Description = ((string.IsNullOrEmpty(item.Description)) ? null : item.Description),
+                        HonorDate = item.HonorDate,
+                        Id = item.Id,
+                    });
+
+                    returnHonor.Add(hr);
+                }
+            }
+
+            model.HonorResume = returnHonor;
 
             #endregion
 
@@ -722,6 +808,165 @@ namespace DoctorFAM.Application.Services.Implementation
             #region Update Work History 
 
             await _resumeRepository.UpdateWorkHistory(workHistory);
+
+            //Change Rsume To The Waiting State 
+            await _resumeRepository.ChangeResumeStateToTheWaitingState(resume);
+
+            #endregion
+
+            return true;
+        }
+
+        //Create Honor From Doctor Panel  
+        public async Task<bool> CreateResumeHonorFromDoctorSide(CreateHonorDoctorPanel model, ulong userId , IFormFile image)
+        {
+            #region Get Owner Organization By EmployeeId 
+
+            var organization = await _organizationService.GetOrganizationByUserId(userId);
+            if (organization == null) return false;
+
+            #endregion
+
+            #region Get Resume 
+
+            var resume = await _resumeRepository.GetResumeByUserId(organization.OwnerId);
+            if (resume == null) return false;
+
+            #endregion
+
+            #region Fill Model 
+
+            Honors newHonor = new Honors()
+            {
+                HonorTitle = ((string.IsNullOrEmpty(model.HonorTitle)) ? null : model.HonorTitle.SanitizeText()),
+                Description = ((string.IsNullOrEmpty(model.Description)) ? null : model.Description.SanitizeText()),
+                ResumeId = resume.Id
+            };
+
+            #region Date Times
+
+            if (!string.IsNullOrEmpty(model.HonorDate))
+            {
+                newHonor.HonorDate = model.HonorDate.ToMiladiDateTime();
+            }
+
+            #endregion
+
+            #region Image 
+
+            if (image != null && image.IsImage())
+            {
+                var imageName = CodeGenerator.GenerateUniqCode() + Path.GetExtension(image.FileName);
+                image.AddImageToServer(imageName, PathTools.HonorPathServer, 270, 270, PathTools.HonorPathThumbServer);
+                newHonor.ImageName = imageName;
+            }
+
+            #endregion
+
+            //Add Education Resume 
+            await _resumeRepository.CreateHonorResume(newHonor);
+
+            //Change Rsume To The Waiting State 
+            await _resumeRepository.ChangeResumeStateToTheWaitingState(resume);
+
+            #endregion
+
+            return true;
+        }
+
+        //Fill Edit Honor Doctor Panel View Model
+        public async Task<EditHonorDoctorPanelViewModel?> FillEditHonorDoctorPanelViewModel(ulong honorId, ulong userId)
+        {
+            #region Get Owner Organization By EmployeeId 
+
+            var organization = await _organizationService.GetOrganizationByUserId(userId);
+            if (organization == null) return null;
+
+            #endregion
+
+            #region Get work History 
+
+            var honor = await _resumeRepository.GetHonotById(honorId);
+            if (honor == null) return null;
+
+            #endregion
+
+            #region Get Resume 
+
+            var resume = await _resumeRepository.GetResumeByUserId(organization.OwnerId);
+            if (resume == null) return null;
+            if (honor.ResumeId != resume.Id) return null;
+
+            #endregion
+
+            #region Fill Model
+
+            EditHonorDoctorPanelViewModel model = new EditHonorDoctorPanelViewModel()
+            {
+                HonorTitle = ((string.IsNullOrEmpty(honor.HonorTitle)) ? null : honor.HonorTitle),
+                Description = ((string.IsNullOrEmpty(honor.Description)) ? null : honor.Description),
+                ImageName = ((string.IsNullOrEmpty(honor.ImageName)) ? null : honor.ImageName),
+                HonorDate = ((honor.HonorDate == null) ? null : honor.HonorDate.ToShamsi()),
+                Id = honor.Id,
+            };
+
+            #endregion
+
+            return model;
+        }
+
+        //Edit Honor From Doctor Panel
+        public async Task<bool> EditHonorFromDoctorPanel(EditHonorDoctorPanelViewModel model, ulong userId , IFormFile? image)
+        {
+            #region Get Owner Organization By EmployeeId 
+
+            var organization = await _organizationService.GetOrganizationByUserId(userId);
+            if (organization == null) return false;
+
+            #endregion
+
+            #region Get Resume 
+
+            var resume = await _resumeRepository.GetResumeByUserId(organization.OwnerId);
+            if (resume == null) return false;
+
+            #endregion
+
+            #region Get Honor 
+
+            var honor = await _resumeRepository.GetHonotById(model.Id);
+            if (honor == null) return false;
+            if (honor.ResumeId != resume.Id) return false;
+
+            #endregion
+
+            #region Update Honor 
+
+            honor.HonorTitle = model.HonorTitle;
+            honor.Description = model.Description;
+            honor.HonorDate = model.HonorDate.ToMiladiDateTime();
+
+            #endregion
+
+            #region Image
+
+            if (image != null && image.IsImage())
+            {
+                if (!string.IsNullOrEmpty(honor.ImageName))
+                {
+                    honor.ImageName.DeleteImage(PathTools.HonorPathServer, PathTools.HonorPathThumbServer);
+                }
+
+                var imageName = CodeGenerator.GenerateUniqCode() + Path.GetExtension(image.FileName);
+                image.AddImageToServer(imageName, PathTools.HonorPathServer, 270, 270, PathTools.HonorPathThumbServer);
+                honor.ImageName = imageName;
+            }
+
+            #endregion
+
+            #region Update Work History 
+
+            await _resumeRepository.UpdateHonor(honor);
 
             //Change Rsume To The Waiting State 
             await _resumeRepository.ChangeResumeStateToTheWaitingState(resume);

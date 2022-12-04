@@ -122,5 +122,15 @@ namespace DoctorFAM.Application.StaticTools
         public static readonly string HealthInformationAttachmentFilesChunkServerPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/HealthInformationAttachmentFiles/Chunks/");
 
         #endregion
+
+        #region Honor Image
+
+        public static readonly string HonorPath = "/content/images/Products/Gallery/main/";
+        public static readonly string HonorPathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/Products/Gallery/main/");
+
+        public static readonly string HonorPathThumb = "/content/images/Products/Gallery/thumb/";
+        public static readonly string HonorPathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/Products/Gallery/thumb/");
+
+        #endregion
     }
 }

@@ -1,0 +1,46 @@
+﻿@model List<DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Honor.HonorResumeInDoctorPanelViewModel>
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.Utils
+@using DoctorFAM.Application.StaticTools
+
+<div class="form-title">
+    بخش افتخارات
+
+    <a asp-action="CreateHonor" asp-area="Doctor" asp-controller="Resume" style="margin-right: 10px;" class="btn btn-success mr-4">افزودن اطلاعات</a>
+</div>
+
+
+@if (Model != null && Model.Any())
+{
+    foreach (var work in Model)
+    {
+        <ul class="timeline animated fadeInDown">
+
+            <li>
+                <div class="timeline-datetime">
+                    <a asp-action="EditHonor" asp-area="Doctor" asp-controller="Resume" asp-route-id="@work.Id" style="margin-right: 10px;" class="btn btn-primary mr-4">ویرایش</a>
+                    <a asp-action="DeleteHonor" asp-area="Doctor" asp-controller="Resume" asp-route-id="@work.Id" style="margin-right: 10px;" class="btn btn-danger mr-4">حذف</a>
+                </div>
+                <div class="timeline-badge " style="height:0px !important;widt:0px !important">
+                    <img style="border-radius: 50px;height: 70px;" src="@PathTools.HonorPathThumb@work.ImageName" />
+                </div>
+                <div class="timeline-panel">
+                    <div class="timeline-header bordered-bottom bordered-blue">
+                        @if (!string.IsNullOrEmpty(work.HonorTitle))
+                        {
+                            <span class="timeline-title">
+                                @work.HonorTitle
+                            </span>
+                        }
+                    </div>
+                    <div class="timeline-body">
+                        <p> @((string.IsNullOrEmpty(work.Description)) ? "وارد نشده" : work.Description)</p>
+                    </div>
+
+                </div>
+            </li>
+        </ul>
+    }
+}
+

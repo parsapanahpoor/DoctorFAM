@@ -2,7 +2,9 @@
 using DoctorFAM.Domain.Entities.Resume;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Education;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Honor;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.WorkHistory;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,6 +41,12 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Delete Work History 
         Task<bool> DeleteWorkHistory(ulong workHistoryId, ulong userId);
 
+        //Get Honor Resume By resume Id
+        Task<List<Honors>?> GetHonorResumeByResumeId(ulong resumeId);
+
+        //Delete Honor 
+        Task<bool> DeleteHonor(ulong honorId, ulong userId);
+
         #endregion
 
         #region Doctor Panel 
@@ -66,6 +74,15 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Edit Work History From Doctor Panel
         Task<bool> EditWorkHistoryFromDoctorPanel(EditWorkHistoryDoctorPanelViewModel model, ulong userId);
+
+        //Create Honor From Doctor Panel  
+        Task<bool> CreateResumeHonorFromDoctorSide(CreateHonorDoctorPanel model, ulong userId, IFormFile image);
+
+        //Fill Edit Honor Doctor Panel View Model
+        Task<EditHonorDoctorPanelViewModel?> FillEditHonorDoctorPanelViewModel(ulong honorId, ulong userId);
+
+        //Edit Honor From Doctor Panel
+        Task<bool> EditHonorFromDoctorPanel(EditHonorDoctorPanelViewModel model, ulong userId, IFormFile? image);
 
         #endregion
     }
