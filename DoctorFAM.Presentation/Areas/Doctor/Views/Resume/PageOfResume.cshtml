@@ -33,7 +33,7 @@
             });
         }
 
-                                                        //#endregion
+               //#endregion
 
     </script>
 }
@@ -96,6 +96,18 @@
                                 <li class="tab-yellow">
                                     <a data-toggle="tab" href="#setting" aria-expanded="false">
                                         خدمات
+                                    </a>
+                                </li>
+
+                                <li class="tab-yellow">
+                                    <a data-toggle="tab" href="#settin" aria-expanded="false">
+                                        آدرس محل کار
+                                    </a>
+                                </li>
+
+                                <li class="tab-yellow">
+                                    <a data-toggle="tab" href="#setti" aria-expanded="false">
+                                        گواهینامه 
                                     </a>
                                 </li>
 
@@ -324,6 +336,16 @@
                                 <div id="setting" class="tab-pane">
                                     @*Box Of Servicec Part*@
                                     <partial name="_ListOfService" model="@Model.ServiceResume" />
+                                </div>
+
+                                <div id="settin" class="tab-pane">
+                                    @*Box Of Working Address Part*@
+                                    <partial name="_ListOfWorkingAddress" model="@Model.WorkingAddressResume" />
+                                </div>
+
+                                <div id="setti" class="tab-pane">
+                                    @*Box Of Certificate Part*@
+                                    <partial name="_ListOfCertificate" model="@Model.CertificateResume" />
                                 </div>
 
                             </div>

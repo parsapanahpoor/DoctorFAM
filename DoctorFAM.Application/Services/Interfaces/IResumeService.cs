@@ -5,6 +5,7 @@ using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Education;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Honor;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Service;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.WorkHistory;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.WorkingAddress;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -57,6 +58,12 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Delete Service 
         Task<bool> DeleteService(ulong serviceId, ulong userId);
 
+        //Delete Working Address 
+        Task<bool> DeleteWorkingAddress(ulong workingAddressId, ulong userId);
+
+        //Get Certificate Resume By resume Id
+        Task<List<CertificateResume>?> GetCertificateResumeByResumeId(ulong resumeId);
+
         #endregion
 
         #region Doctor Panel 
@@ -99,6 +106,15 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Edit Service From Doctor Panel
         Task<bool> EditServiceFromDoctorPanel(EditServiceDoctorPanelViewModel model, ulong userId);
+
+        //Create Working Address From Doctor Panel  
+        Task<bool> CreateWorkingAddressFromDoctorSide(CreateWorkingAddressDoctorPanel model, ulong userId);
+
+        //Fill Edit Working Address Doctor Panel View Model
+        Task<EditWorkingAddressDoctorPanelViewModel?> FillEditWorkingAddressDoctorPanelViewModel(ulong workingAddressId, ulong userId);
+
+        //Edit Working Address From Doctor Panel
+        Task<bool> EditWorkingAddressFromDoctorPanel(EditWorkingAddressDoctorPanelViewModel model, ulong userId);
 
         #endregion
     }

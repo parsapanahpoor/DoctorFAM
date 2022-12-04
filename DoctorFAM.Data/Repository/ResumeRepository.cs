@@ -112,10 +112,22 @@ namespace DoctorFAM.Data.Repository
             return await _context.Honors.Where(p => !p.IsDelete && p.ResumeId == resumeId).ToListAsync();
         }
 
+        //Get Certificate Resume By User Id
+        public async Task<List<CertificateResume>?> GetCertificateResumeByUserId(ulong resumeId)
+        {
+            return await _context.CertificateResume.Where(p => !p.IsDelete && p.ResumeId == resumeId).ToListAsync();
+        }
+
         //Get Service Resume By User Id
         public async Task<List<ServiceResume>?> GetServiceResumeByUserId(ulong resumeId)
         {
             return await _context.ServiceResume.Where(p => !p.IsDelete && p.ResumeId == resumeId).ToListAsync();
+        }
+
+        //Get Working Address Resume By User Id
+        public async Task<List<WorkingAddressResume>?> GetWorkingAddressResumeByUserId(ulong resumeId)
+        {
+            return await _context.WorkingAddressResume.Where(p => !p.IsDelete && p.ResumeId == resumeId).ToListAsync();
         }
 
         //Create Work History Resume 
@@ -129,6 +141,13 @@ namespace DoctorFAM.Data.Repository
         public async Task CreateServiceResume(ServiceResume model)
         {
             await _context.ServiceResume.AddAsync(model);
+            await _context.SaveChangesAsync();
+        }
+
+        //Create Working Address Resume 
+        public async Task CreateWorkingAddressResume(WorkingAddressResume model)
+        {
+            await _context.WorkingAddressResume.AddAsync(model);
             await _context.SaveChangesAsync();
         }
 
@@ -151,6 +170,12 @@ namespace DoctorFAM.Data.Repository
             return await _context.ServiceResume.FirstOrDefaultAsync(p => !p.IsDelete && p.Id == serviceId);
         }
 
+        //Get Working Address By Id
+        public async Task<WorkingAddressResume?> GetWorkingAddressById(ulong serviceId)
+        {
+            return await _context.WorkingAddressResume.FirstOrDefaultAsync(p => !p.IsDelete && p.Id == serviceId);
+        }
+
         //Get Honor By Id
         public async Task<Honors?> GetHonotById(ulong honorId)
         {
@@ -168,6 +193,13 @@ namespace DoctorFAM.Data.Repository
         public async Task UpdateService(ServiceResume service)
         {
             _context.ServiceResume.Update(service);
+            await _context.SaveChangesAsync();
+        }
+
+        //Update Working Address 
+        public async Task UpdateWorkingAddress(WorkingAddressResume address)
+        {
+            _context.WorkingAddressResume.Update(address);
             await _context.SaveChangesAsync();
         }
 

@@ -329,6 +329,10 @@ namespace DoctorFAM.Data.DbContext
 
         public DbSet<ServiceResume> ServiceResume { get; set; }
 
+        public DbSet<WorkingAddressResume> WorkingAddressResume { get; set; }
+
+        public DbSet<CertificateResume> CertificateResume { get; set; }
+
         #endregion
 
         #endregion

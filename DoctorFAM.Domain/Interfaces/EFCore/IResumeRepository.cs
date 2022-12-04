@@ -81,6 +81,21 @@ namespace DoctorFAM.Domain.Interfaces.EFCore
         //Update Service 
         Task UpdateService(ServiceResume service);
 
+        //Get Working Address Resume By User Id
+        Task<List<WorkingAddressResume>?> GetWorkingAddressResumeByUserId(ulong resumeId);
+
+        //Create Working Address Resume 
+        Task CreateWorkingAddressResume(WorkingAddressResume model);
+
+        //Get Working Address By Id
+        Task<WorkingAddressResume?> GetWorkingAddressById(ulong serviceId);
+
+        //Update Working Address 
+        Task UpdateWorkingAddress(WorkingAddressResume address);
+
+        //Get Certificate Resume By User Id
+        Task<List<CertificateResume>?> GetCertificateResumeByUserId(ulong resumeId);
+
         #endregion
 
         #region Doctor Panel 

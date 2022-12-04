@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Honor
+namespace DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Certificate
 {
-    public class EditHonorDoctorPanelViewModel 
+    public class EditCertificateDoctorPanelViewModel
     {
         #region properties
 
@@ -17,11 +17,11 @@ namespace DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Honor
 
         [MaxLength(300, ErrorMessage = "Please Enter {0} Less Than {1} Character")]
         [Required(ErrorMessage = "Please Enter {0}")]
-        public string HonorTitle { get; set; }
+        public string CertificateTitle { get; set; }
 
-        public string HonorDate { get; set; }
-
-        public string? Description { get; set; }
+        [MaxLength(300, ErrorMessage = "Please Enter {0} Less Than {1} Character")]
+        [Required(ErrorMessage = "Please Enter {0}")] 
+        public string ExporterRefrence { get; set; }
 
         public string ImageName { get; set; }
 

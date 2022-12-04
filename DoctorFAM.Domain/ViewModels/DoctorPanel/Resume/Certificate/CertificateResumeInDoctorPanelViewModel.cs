@@ -5,20 +5,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Honor
+namespace DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Certificate
 {
-    public class HonorResumeInDoctorPanelViewModel
+    public class CertificateResumeInDoctorPanelViewModel
     {
         #region properties
 
         public ulong Id { get; set; }
 
         [MaxLength(300)]
-        public string HonorTitle { get; set; }
+        public string CertificateTitle { get; set; }
 
-        public DateTime HonorDate { get; set; }
-
-        public string? Description { get; set; }
+        [MaxLength(300)]
+        public string ExporterRefrence { get; set; }
 
         public string ImageName { get; set; }
 

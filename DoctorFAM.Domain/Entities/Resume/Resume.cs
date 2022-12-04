@@ -36,6 +36,10 @@ namespace DoctorFAM.Domain.Entities.Resume
 
         public ICollection<ServiceResume> ServiceResumes { get; set; }
 
+        public ICollection<WorkingAddressResume> WorkingAddressResume { get; set; }
+
+        public ICollection<CertificateResume> CertificateResume { get; set; }
+
         #endregion
     }
 }

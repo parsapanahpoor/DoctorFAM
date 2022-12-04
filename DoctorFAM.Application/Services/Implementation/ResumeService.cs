@@ -11,10 +11,12 @@ using DoctorFAM.Domain.Entities.Resume;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Certificate;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Education;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Honor;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Service;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.WorkHistory;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.WorkingAddress;
 using Microsoft.AspNetCore.Http;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
 using System;
@@ -404,6 +406,46 @@ namespace DoctorFAM.Application.Services.Implementation
             return true;
         }
 
+        //Delete Working Address 
+        public async Task<bool> DeleteWorkingAddress(ulong workingAddressId, ulong userId)
+        {
+            #region Get Owner Organization By EmployeeId 
+
+            var organization = await _organizationService.GetOrganizationByUserId(userId);
+            if (organization == null) return false;
+
+            #endregion
+
+            #region Get Working Address 
+
+            var work = await _resumeRepository.GetWorkingAddressById(workingAddressId);
+            if (work == null) return false;
+
+            #endregion
+
+            #region Get Resume 
+
+            var resume = await _resumeRepository.GetResumeByUserId(organization.OwnerId);
+            if (resume == null) return false;
+            if (work.ResumeId != resume.Id) return false;
+
+            #endregion
+
+            #region Delete Working Address 
+
+            work.IsDelete = true;
+
+            #endregion
+
+            #region Update Working Address 
+
+            await _resumeRepository.UpdateWorkingAddress(work);
+
+            #endregion
+
+            return true;
+        }
+
         //Get Work History Resume Resume By resume Id
         public async Task<List<WorkHistoryResume>?> GetWorkHistoryResumeByResumeId(ulong resumeId)
         {
@@ -430,6 +472,19 @@ namespace DoctorFAM.Application.Services.Implementation
             return honor;
         }
 
+        //Get Certificate Resume By resume Id
+        public async Task<List<CertificateResume>?> GetCertificateResumeByResumeId(ulong resumeId)
+        {
+            #region Get Certificate 
+
+            var certificate = await _resumeRepository.GetCertificateResumeByUserId(resumeId);
+            if (certificate == null) return null;
+
+            #endregion
+
+            return certificate;
+        }
+
         //Get Servfice Resume By resume Id
         public async Task<List<ServiceResume>?> GetServiceResumeByResumeId(ulong resumeId)
         {
@@ -441,6 +496,19 @@ namespace DoctorFAM.Application.Services.Implementation
             #endregion
 
             return service;
+        }
+
+        //Get Working Address Resume By resume Id
+        public async Task<List<WorkingAddressResume>?> GetWorkingAddressResumeByResumeId(ulong resumeId)
+        {
+            #region Get Working Address 
+
+            var workingAddress = await _resumeRepository.GetWorkingAddressResumeByUserId(resumeId);
+            if (workingAddress == null) return null;
+
+            #endregion
+
+            return workingAddress;
         }
 
         #endregion
@@ -603,6 +671,61 @@ namespace DoctorFAM.Application.Services.Implementation
             }
 
             model.ServiceResume = returnService;
+
+            #endregion
+
+            #region Fill Working Address
+
+            var workingAddress = await GetWorkingAddressResumeByResumeId(resume.Id);
+
+            var returnWorkingAddress = new List<WorkingAddressResumeInDoctorPanelViewModel>();
+
+            //Create New Instance
+            if (workingAddress != null && workingAddress.Any())
+            {
+                foreach (var item in workingAddress)
+                {
+                    WorkingAddressResumeInDoctorPanelViewModel wr = (new WorkingAddressResumeInDoctorPanelViewModel()
+                    {
+                        WorkingAddress = ((string.IsNullOrEmpty(item.WorkingAddress)) ? null : item.WorkingAddress),
+                        WorkingAddressTitle = ((string.IsNullOrEmpty(item.WorkingAddressTitle)) ? null : item.WorkingAddressTitle),
+                        Days = ((string.IsNullOrEmpty(item.Days)) ? null : item.Days),
+                        Times = ((string.IsNullOrEmpty(item.Times)) ? null : item.Times),
+                        Id = item.Id,
+                    });
+
+                    returnWorkingAddress.Add(wr);
+                }
+            }
+
+            model.WorkingAddressResume = returnWorkingAddress;
+
+            #endregion
+
+            #region Fill Certificate
+
+            var certificate = await GetCertificateResumeByResumeId(resume.Id);
+
+            var returnCertificate = new List<CertificateResumeInDoctorPanelViewModel>();
+
+            //Create New Instance
+            if (certificate != null && certificate.Any())
+            {
+                foreach (var item in certificate)
+                {
+                    CertificateResumeInDoctorPanelViewModel cr = (new CertificateResumeInDoctorPanelViewModel()
+                    {
+                        CertificateTitle = ((string.IsNullOrEmpty(item.CertificateTitle)) ? null : item.CertificateTitle),
+                        ImageName = ((string.IsNullOrEmpty(item.ImageName)) ? null : item.ImageName),
+                        ExporterRefrence = ((string.IsNullOrEmpty(item.ExporterRefrence)) ? null : item.ExporterRefrence),
+                        Id = item.Id,
+                    });
+
+                    returnCertificate.Add(cr);
+                }
+            }
+
+            model.CertificateResume = returnCertificate;
 
             #endregion
 
@@ -1163,6 +1286,132 @@ namespace DoctorFAM.Application.Services.Implementation
             #region Update Work History 
 
             await _resumeRepository.UpdateService(service);
+
+            //Change Rsume To The Waiting State 
+            await _resumeRepository.ChangeResumeStateToTheWaitingState(resume);
+
+            #endregion
+
+            return true;
+        }
+
+        //Create Working Address From Doctor Panel  
+        public async Task<bool> CreateWorkingAddressFromDoctorSide(CreateWorkingAddressDoctorPanel model, ulong userId)
+        {
+            #region Get Owner Organization By EmployeeId 
+
+            var organization = await _organizationService.GetOrganizationByUserId(userId);
+            if (organization == null) return false;
+
+            #endregion
+
+            #region Get Resume 
+
+            var resume = await _resumeRepository.GetResumeByUserId(organization.OwnerId);
+            if (resume == null) return false;
+
+            #endregion
+
+            #region Fill Model 
+
+            WorkingAddressResume service = new WorkingAddressResume()
+            {
+                WorkingAddressTitle = ((string.IsNullOrEmpty(model.WorkingAddressTitle)) ? null : model.WorkingAddressTitle.SanitizeText()),
+                WorkingAddress = ((string.IsNullOrEmpty(model.WorkingAddress)) ? null : model.WorkingAddress.SanitizeText()),
+                Days = ((string.IsNullOrEmpty(model.Days)) ? null : model.Days.SanitizeText()),
+                Times = ((string.IsNullOrEmpty(model.Times)) ? null : model.Times.SanitizeText()),
+                ResumeId = resume.Id
+            };
+
+            //Add Working Address Resume 
+            await _resumeRepository.CreateWorkingAddressResume(service);
+
+            //Change Rsume To The Waiting State 
+            await _resumeRepository.ChangeResumeStateToTheWaitingState(resume);
+
+            #endregion
+
+            return true;
+        }
+
+        //Fill Edit Working Address Doctor Panel View Model
+        public async Task<EditWorkingAddressDoctorPanelViewModel?> FillEditWorkingAddressDoctorPanelViewModel(ulong workingAddressId, ulong userId)
+        {
+            #region Get Owner Organization By EmployeeId 
+
+            var organization = await _organizationService.GetOrganizationByUserId(userId);
+            if (organization == null) return null;
+
+            #endregion
+
+            #region Get Working Address 
+
+            var work = await _resumeRepository.GetWorkingAddressById(workingAddressId);
+            if (work == null) return null;
+
+            #endregion
+
+            #region Get Resume 
+
+            var resume = await _resumeRepository.GetResumeByUserId(organization.OwnerId);
+            if (resume == null) return null;
+            if (work.ResumeId != resume.Id) return null;
+
+            #endregion
+
+            #region Fill Model
+
+            EditWorkingAddressDoctorPanelViewModel model = new EditWorkingAddressDoctorPanelViewModel()
+            {
+                WorkingAddressTitle = ((string.IsNullOrEmpty(work.WorkingAddressTitle)) ? null : work.WorkingAddressTitle),
+                WorkingAddress = ((string.IsNullOrEmpty(work.WorkingAddress)) ? null : work.WorkingAddress),
+                Days = ((string.IsNullOrEmpty(work.Days)) ? null : work.Days),
+                Times = ((string.IsNullOrEmpty(work.Times)) ? null : work.Times),
+                Id = work.Id,
+            };
+
+            #endregion
+
+            return model;
+        }
+
+        //Edit Working Address From Doctor Panel
+        public async Task<bool> EditWorkingAddressFromDoctorPanel(EditWorkingAddressDoctorPanelViewModel model, ulong userId)
+        {
+            #region Get Owner Organization By EmployeeId 
+
+            var organization = await _organizationService.GetOrganizationByUserId(userId);
+            if (organization == null) return false;
+
+            #endregion
+
+            #region Get Resume 
+
+            var resume = await _resumeRepository.GetResumeByUserId(organization.OwnerId);
+            if (resume == null) return false;
+
+            #endregion
+
+            #region Get Working Address 
+
+            var work = await _resumeRepository.GetWorkingAddressById(model.Id);
+            if (work == null) return false;
+            if (work.ResumeId != resume.Id) return false;
+
+            #endregion
+
+            #region Update Work History 
+
+            work.WorkingAddressTitle = model.WorkingAddressTitle;
+            work.WorkingAddress = model.WorkingAddress;
+            work.Days = model.Days;
+            work.Times = model.Times;
+
+            #endregion
+
+            #region Update Work History 
+
+            await _resumeRepository.UpdateWorkingAddress(work);
 
             //Change Rsume To The Waiting State 
             await _resumeRepository.ChangeResumeStateToTheWaitingState(resume);

@@ -20,6 +20,5 @@ namespace DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Honor
         public string? Description { get; set; }
 
         #endregion
-
     }
 }
