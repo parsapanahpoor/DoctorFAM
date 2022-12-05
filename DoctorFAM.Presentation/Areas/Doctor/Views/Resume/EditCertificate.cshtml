@@ -50,6 +50,18 @@
                                         <span class="text-danger" asp-validation-for="ExporterRefrence"></span>
                                     </div>
 
+                                    <div class="form-group col-md-6 col-sm-12">
+                                        <label>تاریخ اعتبار </label>
+                                        <input type="text" class="form-control" DatePicker="2" asp-for="ValidityDate">
+                                        <span class="text-danger" asp-validation-for="ValidityDate"></span>
+                                    </div>
+
+                                    <div class="form-group col-md-6 col-sm-12">
+                                        <label>تاریخ صدور </label>
+                                        <input type="text" class="form-control" DatePicker="1" asp-for="IssueDate">
+                                        <span class="text-danger" asp-validation-for="IssueDate"></span>
+                                    </div>
+
                                     <hr class="margin-bottom-10 margin-top-10" />
 
                                     <div class="col-md-12 flex-style">

@@ -4,10 +4,10 @@
 
 @if (Model != null && Model.Any())
 {
-    foreach (var item in Model)
-    {
-        <div role="tabpanel" id="doc_reviews" class="tab-pane fade">
+    <div role="tabpanel" id="doc_reviews" class="tab-pane fade">
 
+        @foreach (var item in Model)
+        {
             <div class="location-list">
                 <div class="row divst1">
 
@@ -28,6 +28,7 @@
 
                 </div>
             </div>
-        </div>
-    }
+        }
+
+    </div>
 }

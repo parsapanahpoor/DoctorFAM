@@ -1330,6 +1330,8 @@ namespace DoctorFAM.Application.Services.Implementation
                 CertificateTitle = ((string.IsNullOrEmpty(certificate.CertificateTitle)) ? null : certificate.CertificateTitle),
                 ExporterRefrence = ((string.IsNullOrEmpty(certificate.ExporterRefrence)) ? null : certificate.ExporterRefrence),
                 ImageName = ((string.IsNullOrEmpty(certificate.ImageName)) ? null : certificate.ImageName),
+                ValidityDate = ((certificate.ValidityDate == null) ? null : certificate.ValidityDate.Value.ToShamsi()),
+                IssueDate = ((certificate.IssueDate == null) ? null : certificate.IssueDate.ToShamsi()),
                 Id = certificate.Id,
             };
 
@@ -1668,6 +1670,20 @@ namespace DoctorFAM.Application.Services.Implementation
                 ResumeId = resume.Id
             };
 
+            #region Date Times
+
+            if (!string.IsNullOrEmpty(model.IssueDate))
+            {
+                newCertificate.IssueDate = model.IssueDate.ToMiladiDateTime();
+            }
+
+            if (!string.IsNullOrEmpty(model.ValidityDate))
+            {
+                newCertificate.IssueDate = model.ValidityDate.ToMiladiDateTime();
+            }
+
+            #endregion
+
             #region Image 
 
             if (image != null && image.IsImage())
@@ -1715,10 +1731,12 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #endregion
 
-            #region Update Honor 
+            #region Update Certificate 
 
             certificate.CertificateTitle = model.CertificateTitle.SanitizeText();
             certificate.ExporterRefrence = model.ExporterRefrence.SanitizeText();
+            certificate.ValidityDate = ((string.IsNullOrEmpty(model.ValidityDate)) ? null : model.ValidityDate.ToMiladiDateTime());
+            certificate.IssueDate = model.IssueDate.ToMiladiDateTime();
 
             #endregion
 

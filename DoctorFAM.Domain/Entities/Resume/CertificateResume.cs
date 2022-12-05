@@ -22,6 +22,10 @@ namespace DoctorFAM.Domain.Entities.Resume
 
         public string ImageName { get; set; }
 
+        public DateTime? ValidityDate { get; set; }
+
+        public DateTime IssueDate { get; set; }
+
         #endregion
 
         #region relation
