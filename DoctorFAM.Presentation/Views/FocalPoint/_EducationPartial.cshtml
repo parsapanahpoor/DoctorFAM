@@ -1,0 +1,30 @@
+﻿@model List<DoctorFAM.Domain.ViewModels.Site.Doctor.Resume.Education.EducationResumeInSitePanelViewModel>
+
+
+<div class="col-md-5  divst1">
+    <div class="widget education-widget">
+        <h4 class="widget-title"> تحصیلات </h4>
+        @if (Model != null && Model.Any())
+        {
+            <div class="experience-box">
+                <ul class="experience-list">
+                    @foreach (var item in Model)
+                    {
+                        <li>
+                            <div class="experience-user">
+                                <div class="before-circle"></div>
+                            </div>
+                            <div class="experience-content">
+                                <div class="timeline-content">
+                                    <a href="#/" class="name">@item.UnivercityName</a>
+                                    <div>@item.FieldOfStudy</div>
+                                    <span class="time">1361 - 1375</span>
+                                </div>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </div>
+        }
+    </div>
+</div>

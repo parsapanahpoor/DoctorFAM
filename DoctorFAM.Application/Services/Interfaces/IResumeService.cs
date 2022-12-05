@@ -40,6 +40,12 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Get User About Me Resume By Resume Id 
         Task<ResumeAboutMe?> GetUserAboutMeResumeByResumeId(ulong resumeId);
 
+        //Get Work History Resume Resume By resume Id
+        Task<List<WorkHistoryResume>?> GetWorkHistoryResumeByResumeId(ulong resumeId);
+
+        //Get Working Address Resume By resume Id
+        Task<List<WorkingAddressResume>?> GetWorkingAddressResumeByResumeId(ulong resumeId);
+
         //Create About Me Resume 
         Task<bool> CreateAboutMeResume(ResumeAboutMe model, ulong userId);
 

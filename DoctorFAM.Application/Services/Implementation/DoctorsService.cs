@@ -12,9 +12,18 @@ using DoctorFAM.Domain.Entities.FamilyDoctor.VIPSystem;
 using DoctorFAM.Domain.Entities.Interest;
 using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.Entities.Patient;
+using DoctorFAM.Domain.Entities.Resume;
 using DoctorFAM.Domain.Entities.WorkAddress;
 using DoctorFAM.Domain.Interfaces;
+using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo;
+using DoctorFAM.Domain.ViewModels.Admin.Resume.Certificate;
+using DoctorFAM.Domain.ViewModels.Admin.Resume.Gallery;
+using DoctorFAM.Domain.ViewModels.Admin.Resume.Honor;
+using DoctorFAM.Domain.ViewModels.Admin.Resume.Service;
+using DoctorFAM.Domain.ViewModels.Admin.Resume.WorkHistory;
+using DoctorFAM.Domain.ViewModels.Admin.Resume.WorkingAddress;
+using DoctorFAM.Domain.ViewModels.Admin.Resume;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DosctorSideBarInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Employees;
@@ -35,6 +44,14 @@ using SixLabors.ImageSharp.ColorSpaces;
 using System.Collections.Generic;
 using System.Numerics;
 using System.Reflection.Emit;
+using DoctorFAM.Domain.ViewModels.Site.Doctor.Resume;
+using DoctorFAM.Domain.ViewModels.Site.Doctor.Resume.Education;
+using DoctorFAM.Domain.ViewModels.Site.Doctor.Resume.WorkHistory;
+using DoctorFAM.Domain.ViewModels.Site.Doctor.Resume.Honor;
+using DoctorFAM.Domain.ViewModels.Site.Doctor.Resume.Service;
+using DoctorFAM.Domain.ViewModels.Site.Doctor.Resume.WorkingAddress;
+using DoctorFAM.Domain.ViewModels.Site.Doctor.Resume.Certificate;
+using DoctorFAM.Domain.ViewModels.Site.Doctor.Resume.Gallery;
 
 namespace DoctorFAM.Application.Services.Implementation
 {
@@ -49,10 +66,12 @@ namespace DoctorFAM.Application.Services.Implementation
         private readonly ILocationRepository _locationRepository;
         private readonly IReservationService _reservationService;
         private readonly ISMSService _smsservice;
+        private readonly IResumeService _resumeService;
 
 
         public DoctorsService(IDoctorsRepository doctorRepository, IUserService userService, IOrganizationService organizationService,
-                                IWorkAddressService workAddress, ILocationRepository locationRepository, IReservationService reservationService, ISMSService smsservice)
+                                IWorkAddressService workAddress, ILocationRepository locationRepository 
+                                    , IReservationService reservationService, ISMSService smsservice, IResumeService resumeService)
         {
             _doctorRepository = doctorRepository;
             _userService = userService;
@@ -61,6 +80,7 @@ namespace DoctorFAM.Application.Services.Implementation
             _locationRepository = locationRepository;
             _reservationService = reservationService;
             _smsservice = smsservice;
+            _resumeService = resumeService;
         }
 
         #endregion
@@ -2063,7 +2083,6 @@ namespace DoctorFAM.Application.Services.Implementation
                 UserAvatar = doctor.User.Avatar,
                 Education = doctorPersonalInfo.Education,
                 Specialist = doctorPersonalInfo.Specialty,
-
             };
 
             #endregion
@@ -2087,6 +2106,240 @@ namespace DoctorFAM.Application.Services.Implementation
                 model.StateName = state.UniqueName;
                 model.CityName = city.UniqueName;
                 model.WorkAddress = workAddress.Address;
+            }
+
+            #endregion
+
+            #region Get Resume By Id
+
+            var resume = await _resumeService.GetResumeByUserId(organization.OwnerId);
+            if (resume != null)
+            {
+                model.Resume = resume;
+            }
+
+            #endregion
+
+            #region Fill Resume Model 
+
+            if (resume != null)
+            {
+                #region Fill User Property 
+
+                var user = await _userService.GetUserById(resume.UserId);
+                if (user == null) return null;
+
+                model.User = user;
+
+                #endregion
+
+                #region Fill About Me 
+
+                var aboutMe = await _resumeService.GetUserAboutMeResumeByResumeId(resume.Id);
+
+                //Create New Instance 
+                model.ResumeAboutMeSitePanelViewModel = new ResumeAboutMeSitePanelViewModel()
+                {
+                    AboutMeId = ((aboutMe == null) ? null : aboutMe.Id),
+                    Text = ((aboutMe == null) ? null : aboutMe.AboutMeText),
+                    ResumeId = resume.Id,
+                };
+
+                #endregion
+
+                #region Fill Education 
+
+                var education = await _resumeService.GetEducationResumeByResumeId(resume.Id);
+
+                var returnEducation = new List<EducationResumeInSitePanelViewModel>();
+
+                //Create New Instance
+                if (education != null && education.Any())
+                {
+                    foreach (var item in education)
+                    {
+                        EducationResumeInSitePanelViewModel ed = (new EducationResumeInSitePanelViewModel()
+                        {
+                            CityName = ((string.IsNullOrEmpty(item.CityName)) ? null : item.CityName),
+                            CountryName = ((string.IsNullOrEmpty(item.CountryName)) ? null : item.CountryName),
+                            EndDate = ((item.EndDate == null) ? null : item.EndDate),
+                            FieldOfStudy = ((string.IsNullOrEmpty(item.FieldOfStudy)) ? null : item.FieldOfStudy),
+                            Orientation = ((string.IsNullOrEmpty(item.Orientation)) ? null : item.Orientation),
+                            StartDate = ((item.StartDate == null) ? null : item.StartDate),
+                            UnivercityName = ((string.IsNullOrEmpty(item.UnivercityName)) ? null : item.UnivercityName),
+                            CreateDate = item.CreateDate,
+                            Id = item.Id,
+                        });
+
+                        returnEducation.Add(ed);
+                    }
+                }
+
+                model.EducationResume = returnEducation;
+
+                #endregion
+
+                #region Fill Work Address
+
+                var workHistory = await _resumeService.GetWorkHistoryResumeByResumeId(resume.Id);
+
+                var returnWorkHistory = new List<WorkHistoryResumeInSitePanelViewModel>();
+
+                //Create New Instance
+                if (workHistory != null && workHistory.Any())
+                {
+                    foreach (var item in workHistory)
+                    {
+                        WorkHistoryResumeInSitePanelViewModel work = (new WorkHistoryResumeInSitePanelViewModel()
+                        {
+                            WorkAddress = ((string.IsNullOrEmpty(item.WorkAddress)) ? null : item.WorkAddress),
+                            JobPosition = ((string.IsNullOrEmpty(item.JobPosition)) ? null : item.JobPosition),
+                            EndDate = ((item.EndDate == null) ? null : item.EndDate),
+                            StartDate = ((item.StartDate == null) ? null : item.StartDate),
+                            Id = item.Id,
+                        });
+
+                        returnWorkHistory.Add(work);
+                    }
+                }
+
+                model.WorkHistoryResume = returnWorkHistory;
+
+                #endregion
+
+                #region Fill Honor
+
+                var honor = await _resumeService.GetHonorResumeByResumeId(resume.Id);
+
+                var returnHonor = new List<HonorResumeInSitePanelViewModel>();
+
+                //Create New Instance
+                if (honor != null && honor.Any())
+                {
+                    foreach (var item in honor)
+                    {
+                        HonorResumeInSitePanelViewModel hr = (new HonorResumeInSitePanelViewModel()
+                        {
+                            HonorTitle = ((string.IsNullOrEmpty(item.HonorTitle)) ? null : item.HonorTitle),
+                            ImageName = ((string.IsNullOrEmpty(item.ImageName)) ? null : item.ImageName),
+                            Description = ((string.IsNullOrEmpty(item.Description)) ? null : item.Description),
+                            HonorDate = item.HonorDate,
+                            Id = item.Id,
+                        });
+
+                        returnHonor.Add(hr);
+                    }
+                }
+
+                model.HonorResume = returnHonor;
+
+                #endregion
+
+                #region Fill Service
+
+                var service = await _resumeService.GetServiceResumeByResumeId(resume.Id);
+
+                var returnService = new List<ServiceResumeInSitePanelViewModel>();
+
+                //Create New Instance
+                if (service != null && service.Any())
+                {
+                    foreach (var item in service)
+                    {
+                        ServiceResumeInSitePanelViewModel sr = (new ServiceResumeInSitePanelViewModel()
+                        {
+                            ServiceTitle = ((string.IsNullOrEmpty(item.ServiceTitle)) ? null : item.ServiceTitle),
+                            Id = item.Id,
+                        });
+
+                        returnService.Add(sr);
+                    }
+                }
+
+                model.ServiceResume = returnService;
+
+                #endregion
+
+                #region Fill Working Address
+
+                var workingAddress = await _resumeService.GetWorkingAddressResumeByResumeId(resume.Id);
+
+                var returnWorkingAddress = new List<WorkingAddressResumeInSitePanelViewModel>();
+
+                //Create New Instance
+                if (workingAddress != null && workingAddress.Any())
+                {
+                    foreach (var item in workingAddress)
+                    {
+                        WorkingAddressResumeInSitePanelViewModel wr = (new WorkingAddressResumeInSitePanelViewModel()
+                        {
+                            WorkingAddress = ((string.IsNullOrEmpty(item.WorkingAddress)) ? null : item.WorkingAddress),
+                            WorkingAddressTitle = ((string.IsNullOrEmpty(item.WorkingAddressTitle)) ? null : item.WorkingAddressTitle),
+                            Days = ((string.IsNullOrEmpty(item.Days)) ? null : item.Days),
+                            Times = ((string.IsNullOrEmpty(item.Times)) ? null : item.Times),
+                            Id = item.Id,
+                        });
+
+                        returnWorkingAddress.Add(wr);
+                    }
+                }
+
+                model.WorkingAddressResume = returnWorkingAddress;
+
+                #endregion
+
+                #region Fill Certificate
+
+                var certificate = await _resumeService.GetCertificateResumeByResumeId(resume.Id);
+
+                var returnCertificate = new List<CertificateResumeInSitePanelViewModel>();
+
+                //Create New Instance
+                if (certificate != null && certificate.Any())
+                {
+                    foreach (var item in certificate)
+                    {
+                        CertificateResumeInSitePanelViewModel cr = (new CertificateResumeInSitePanelViewModel()
+                        {
+                            CertificateTitle = ((string.IsNullOrEmpty(item.CertificateTitle)) ? null : item.CertificateTitle),
+                            ImageName = ((string.IsNullOrEmpty(item.ImageName)) ? null : item.ImageName),
+                            ExporterRefrence = ((string.IsNullOrEmpty(item.ExporterRefrence)) ? null : item.ExporterRefrence),
+                            Id = item.Id,
+                        });
+
+                        returnCertificate.Add(cr);
+                    }
+                }
+
+                model.CertificateResume = returnCertificate;
+
+                #endregion
+
+                #region Fill Gallery
+
+                var gallery = await _resumeService.GetGalleryResumeByResumeId(resume.Id);
+
+                var returnGallery = new List<GalleryResumeInSitePanelViewModel>();
+
+                //Create New Instance
+                if (gallery != null && gallery.Any())
+                {
+                    foreach (var item in gallery)
+                    {
+                        GalleryResumeInSitePanelViewModel gal = (new GalleryResumeInSitePanelViewModel()
+                        {
+                            Title = ((string.IsNullOrEmpty(item.Title)) ? null : item.Title),
+                            ImageName = ((string.IsNullOrEmpty(item.ImageName)) ? null : item.ImageName),
+                            Id = item.Id,
+                        });
+
+                        returnGallery.Add(gal);
+                    }
+                }
+
+                model.GalleryResume = returnGallery;
+
+                #endregion
             }
 
             #endregion
