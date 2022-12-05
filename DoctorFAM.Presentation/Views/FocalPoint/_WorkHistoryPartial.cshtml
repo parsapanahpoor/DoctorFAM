@@ -1,13 +1,13 @@
-﻿@model List<DoctorFAM.Domain.ViewModels.Site.Doctor.Resume.Education.EducationResumeInSitePanelViewModel>
+﻿@model List<DoctorFAM.Domain.ViewModels.Site.Doctor.Resume.WorkHistory.WorkHistoryResumeInSitePanelViewModel>
 @using DoctorFAM.Application.Convertors
 @using DoctorFAM.Application.Extensions
 
 <div class="col-md-5  divst1">
-    <div class="widget education-widget">
-        <h4 class="widget-title"> تحصیلات </h4>
-        @if (Model != null && Model.Any())
-        {
-            <div class="experience-box">
+    <div class="widget experience-widget">
+        <h4 class="widget-title"> سوابق کاری </h4>
+        <div class="experience-box">
+            @if (Model != null && Model.Any())
+            {
                 <ul class="experience-list">
                     @foreach (var item in Model)
                     {
@@ -16,14 +16,14 @@
                                 <div class="before-circle"></div>
                             </div>
                             <div class="experience-content">
-                                <div class="timeline-content">
-                                    @if (!string.IsNullOrEmpty(item.UnivercityName))
+                                  <div class="timeline-content">
+                                    @if (!string.IsNullOrEmpty(item.WorkAddress))
                                     {
-                                        <a href="#/" class="name">@item.UnivercityName</a>
+                                        <a href="#/" class="name">@item.WorkAddress</a>
                                     }
-                                    @if (!string.IsNullOrEmpty(item.FieldOfStudy))
+                                    @if (!string.IsNullOrEmpty(item.JobPosition))
                                     {
-                                        <div>@item.FieldOfStudy</div>
+                                        <div>@item.JobPosition</div>
                                     }
                                     @if (item.StartDate != null && item.EndDate != null)
                                     {
@@ -33,8 +33,9 @@
                             </div>
                         </li>
                     }
+
                 </ul>
-            </div>
-        }
+            }
+        </div>
     </div>
 </div>

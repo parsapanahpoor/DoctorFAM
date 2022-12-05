@@ -47,9 +47,6 @@
                                     }
                                     @((string.IsNullOrEmpty(Model.WorkAddress)) ? null : Model.WorkAddress)
 
-
-
-
                                     <br />
                                     @((!string.IsNullOrEmpty(Model.ClinicPhone)) ? Model.ClinicPhone : null)
 
@@ -58,28 +55,9 @@
 
                                 </p>
 
-                                <ul class="clinic-gallery">
-                                    <li>
-                                        <a href="~/Content/Doctor/assets/img/features/feature-01.jpg" data-fancybox="gallery">
-                                            <img src="~/Content/Doctor/assets/img/features/feature-01.jpg" alt="Feature">
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="~/Content/Doctor/assets/img/features/feature-02.jpg" data-fancybox="gallery">
-                                            <img src="~/Content/Doctor/assets/img/features/feature-02.jpg" alt="Feature Image">
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="assets/img/features/feature-03.jpg" data-fancybox="gallery">
-                                            <img src="~/Content/Doctor/assets/img/features/feature-03.jpg" alt="Feature">
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="assets/img/features/feature-04.jpg" data-fancybox="gallery">
-                                            <img src="~/Content/Doctor/assets/img/features/feature-04.jpg" alt="Feature">
-                                        </a>
-                                    </li>
-                                </ul>
+                                @*Box Of Gallery*@
+                                <partial name="_GalleryPartial" model="@Model.GalleryResume" />
+
                             </div>
                             <div class="clinic-services">
                                 <span>آنلاین</span>
@@ -144,233 +122,44 @@
                         </ul>
                     </nav>
 
-
                     <div class="tab-content pt-0">
 
                         <div role="tabpanel" id="doc_overview" class="tab-pane fade show active">
 
                             @*Box Of ABout Me*@
                             <partial name="_LastestAboutMePartial" model="@Model.ResumeAboutMeSitePanelViewModel" />
-                          
+
                             <div class="row  text-center justify-content-center">
 
                                 @*Box Of Education*@
                                 <partial name="_EducationPartial" model="@Model.EducationResume" />
 
-                                <div class="col-md-5  divst1">
-                                    <div class="widget experience-widget">
-                                        <h4 class="widget-title"> سوابق کاری </h4>
-                                        <div class="experience-box">
-                                            <ul class="experience-list">
-                                                <li>
-                                                    <div class="experience-user">
-                                                        <div class="before-circle"></div>
-                                                    </div>
-                                                    <div class="experience-content">
-                                                        <div class="timeline-content">
-                                                            <a href="#/" class="name">کلینیک دندانپزشکی خانواده لبخندهای درخشان</a>
-                                                            <span class="time">1398 - الان (5سال)</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="experience-user">
-                                                        <div class="before-circle"></div>
-                                                    </div>
-                                                    <div class="experience-content">
-                                                        <div class="timeline-content">
-                                                            <a href="#/" class="name">کلینیک دندانپزشکی کامفورت کر</a>
-                                                            <span class="time">1392 - 1398 (3 سال)</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="experience-user">
-                                                        <div class="before-circle"></div>
-                                                    </div>
-                                                    <div class="experience-content">
-                                                        <div class="timeline-content">
-                                                            <a href="#/" class="name">لبخند رویایی دندانپزشکی</a>
-                                                            <span class="time">1390 - 1392 (2 سال)</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
+                                @*Box Of Work History*@
+                                <partial name="_WorkHistoryPartial" model="@Model.WorkHistoryResume" />
 
                             </div>
 
                             <div class="row  text-center justify-content-center">
-                                <div class="col-md-10  divst1">
-                                    <div class="widget awards-widget">
-                                        <h4 class="widget-title">جوایز و افتخارات</h4>
-                                        <div class="experience-box">
-                                            <ul class="experience-list">
-                                                <li>
-                                                    <div class="experience-user">
-                                                        <div class="before-circle"></div>
-                                                    </div>
-                                                    <div class="experience-content">
-                                                        <div class="timeline-content">
-                                                            <p class="exp-year">مهر 1362</p>
-                                                            <h4 class="exp-title">جایزه بشردوستانه</h4>
-                                                            <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است</p>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="experience-user">
-                                                        <div class="before-circle"></div>
-                                                    </div>
-                                                    <div class="experience-content">
-                                                        <div class="timeline-content">
-                                                            <p class="exp-year">مهر 1390</p>
-                                                            <h4 class="exp-title">گواهی خدمات داوطلب بین المللی</h4>
-                                                            <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است</p>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="experience-user">
-                                                        <div class="before-circle"></div>
-                                                    </div>
-                                                    <div class="experience-content">
-                                                        <div class="timeline-content">
-                                                            <p class="exp-year">مهر 1390</p>
-                                                            <h4 class="exp-title">جایزه حرفه ای دندانپزشکی سال</h4>
-                                                            <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است</p>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
+
+                                @*Box Of Honors*@
+                                <partial name="_HonorsPartial" model="@Model.HonorResume" />
 
                             </div>
-
 
                             <div class="row text-center justify-content-center">
-                                <div class="col-md-5 divst1">
-                                    <div class="service-list">
-                                        <h4>خدمات</h4>
-                                        <ul class="clearfix">
-                                            <li>تمیز کردن دندان</li>
-                                            <li>عصب کشی</li>
-                                            <li>ایمپلمنت</li>
-                                            @* <li>کامپوزیت</li>
-                                        <li>فیشور سیلانت</li>
-                                        <li>جراحی دندان</li>*@
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="col-md-5 divst1">
-                                    <div class="service-list">
-                                        <h4>تخصص ها</h4>
-                                        <ul class="clearfix">
-                                            <li>مراقبت کودک</li>
-                                            <li>مراقبت دندان</li>
-                                            <li>بهداشت و جراحی </li>
-                                            <li>ارتودونسی</li>
-                                            <li>پریودنتیست</li>
-                                            <li>پروتزهای دندانی</li>
-                                        </ul>
-                                    </div>
-                                </div>
+
+                                @*Box Of Services*@
+                                <partial name="_ServicesPartial" model="@Model.ServiceResume" />
+
                             </div>
 
                         </div>
 
+                        @*Box Of Work Address*@
+                        <partial name="_WorkAddressPartial" model="@Model.WorkingAddressResume" />
 
-                        <div role="tabpanel" id="doc_locations" class="tab-pane fade">
-
-                            <div class="location-list">
-                                <div class="row divst1">
-
-                                    <div class="col-md-6">
-                                        <div class="clinic-content">
-                                            <h4 class="clinic-name"><a href="#">مطب شخصی</a></h4>
-                                            <p>ساری - خیابان فرهنگ - ساختمان شهریار 3 - واحد 412</p>
-
-                                        </div>
-                                    </div>
-
-
-                                    <div class="col-md-4">
-                                        <div class="clinic-timing">
-                                            <div>
-                                                <p class="timings-days">
-                                                    <span> دوشنبه - سه شنبه </span>
-                                                </p>
-                                                <p class="timings-times">
-                                                    <span>10:00 صبح - 2:00 عصر</span>
-                                                    <span>4:00 عصر - 9:00 عصر</span>
-                                                </p>
-                                            </div>
-                                            <div>
-                                                <p class="timings-days">
-                                                    <span>جمعه</span>
-                                                </p>
-                                                <p class="timings-times">
-                                                    <span>10:00 صبح - 2:00 عصر</span>
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-                                </div>
-                            </div>
-
-
-                            <div class="location-list">
-                                <div class="row divst1">
-
-                                    <div class="col-md-6 ">
-                                        <div class="clinic-content">
-                                            <h4 class="clinic-name"><a href="#">کلینیک دندانپزشکی خانواده</a></h4>
-                                            <p class="doc-speciality">ساری- خیابان معلم </p>
-
-
-                                        </div>
-                                    </div>
-
-
-                                    <div class="col-md-4 ">
-                                        <div class="clinic-timing">
-                                            <div>
-                                                <p class="timings-days">
-                                                    <span> چهارشنبه - پنجشنبه</span>
-                                                </p>
-                                                <p class="timings-times">
-                                                    <span>11:00 صبح - 1:00 عصر</span>
-                                                    <span>6:00 عصر - 11:00 عصر</span>
-                                                </p>
-                                            </div>
-                                            <div>
-                                                <p class="timings-days">
-                                                    <span>شنبه - دوشنبه</span>
-                                                </p>
-                                                <p class="timings-times">
-                                                    <span>8:00 صبح - 10:00 صبح</span>
-                                                    <span>3:00 عصر - 7:00 عصر</span>
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-                                </div>
-                            </div>
-
-                        </div>
-
-
-                        <div role="tabpanel" id="doc_reviews" class="tab-pane fade">
-                        </div>
-
+                        @*Box Of Certificate*@
+                        <partial name="_CertificatePartial" model="@Model.CertificateResume" />
 
                         <div role="tabpanel" id="doc_business_hours" class="tab-pane fade">
                             <div class="row">

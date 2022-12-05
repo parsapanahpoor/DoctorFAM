@@ -1079,6 +1079,8 @@ namespace DoctorFAM.Application.Services.Implementation
             {
                 WorkAddress = ((string.IsNullOrEmpty(model.WorkAddress)) ? null : model.WorkAddress.SanitizeText()),
                 JobPosition = ((string.IsNullOrEmpty(model.JobPosition)) ? null : model.JobPosition.SanitizeText()),
+                CountryName = ((string.IsNullOrEmpty(model.CountryName)) ? null : model.CountryName.SanitizeText()),
+                CityName = ((string.IsNullOrEmpty(model.CityName)) ? null : model.CityName.SanitizeText()),
                 ResumeId = resume.Id
             };
 
@@ -1138,6 +1140,8 @@ namespace DoctorFAM.Application.Services.Implementation
             {
                 JobPosition = ((string.IsNullOrEmpty(workHistory.JobPosition)) ? null : workHistory.JobPosition),
                 WorkAddress = ((string.IsNullOrEmpty(workHistory.WorkAddress)) ? null : workHistory.WorkAddress),
+                CountryName = ((string.IsNullOrEmpty(workHistory.CountryName)) ? null : workHistory.CountryName),
+                CityName = ((string.IsNullOrEmpty(workHistory.CityName)) ? null : workHistory.CityName),
                 EndDate = ((workHistory.EndDate == null) ? null : workHistory.EndDate.Value.ToShamsi()),
                 StartDate = ((workHistory.StartDate == null) ? null : workHistory.StartDate.Value.ToShamsi()),
                 Id = workHistory.Id,
@@ -1179,6 +1183,8 @@ namespace DoctorFAM.Application.Services.Implementation
             workHistory.WorkAddress = model.WorkAddress;
             workHistory.EndDate = ((string.IsNullOrEmpty(model.EndDate)) ? null : model.EndDate.ToMiladiDateTime());
             workHistory.StartDate = ((string.IsNullOrEmpty(model.StartDate)) ? null : model.StartDate.ToMiladiDateTime());
+            workHistory.CountryName = ((string.IsNullOrEmpty(model.CountryName)) ? null : model.CountryName);
+            workHistory.CityName = ((string.IsNullOrEmpty(model.CityName)) ? null : model.CityName);
 
             #endregion
 

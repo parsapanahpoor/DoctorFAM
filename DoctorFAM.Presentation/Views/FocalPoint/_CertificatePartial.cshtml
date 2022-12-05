@@ -1,0 +1,33 @@
+﻿@model List<DoctorFAM.Domain.ViewModels.Site.Doctor.Resume.Certificate.CertificateResumeInSitePanelViewModel>
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.Extensions
+
+@if (Model != null && Model.Any())
+{
+    foreach (var item in Model)
+    {
+        <div role="tabpanel" id="doc_reviews" class="tab-pane fade">
+
+            <div class="location-list">
+                <div class="row divst1">
+
+                    <div class="col-md-12">
+                        <div class="clinic-content">
+
+                            @if (!string.IsNullOrEmpty(item.CertificateTitle))
+                            {
+                                <h4 class="clinic-name"><a href="#">@item.CertificateTitle</a></h4>
+                            }
+                            @if (!string.IsNullOrEmpty(item.ExporterRefrence))
+                            {
+                                <p>@item.ExporterRefrence</p>
+                            }
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    }
+}
