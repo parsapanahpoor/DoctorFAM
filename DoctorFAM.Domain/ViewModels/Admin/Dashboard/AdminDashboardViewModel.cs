@@ -38,6 +38,8 @@ namespace DoctorFAM.Domain.ViewModels.Admin.Dashboard
 
         public List<Entities.HealthInformation.HealthInformation> LastestIncomingRadioFAM { get; set; }
 
+        public List<Domain.Entities.Resume.Resume> LastestArrivalResumes { get; set; }
+
         #endregion
     }
 }

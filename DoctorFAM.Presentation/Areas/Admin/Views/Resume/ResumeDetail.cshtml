@@ -1,4 +1,4 @@
-﻿@model DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.ManageResumeDoctorPanelViewModel
+﻿@model DoctorFAM.Domain.ViewModels.Admin.Resume.ManageResumeAdminPanelViewModel
 @using DoctorFAM.Application.Convertors
 @using DoctorFAM.Application.Extensions
 @using DoctorFAM.Application.Generators
@@ -18,9 +18,9 @@
 
         //#region About Me
 
-        function ShowAboutMe() {
+        function ChangeStateFromAdmin(resumeId) {
             $.ajax({
-                url: "/Show-About-Me-In-Modal",
+                url: "/Change-State-From-Admin/" + resumeId ,
                 type: "get",
                 data: {
 
@@ -46,38 +46,6 @@
 }
 
     <div class="row">
-
-    @if (!string.IsNullOrEmpty(Model.Resume.RejectedNote) && Model.Resume.ResumeState == DoctorFAM.Domain.Enums.ResumeState.ResumeState.Decline)
-    {
-        <div class="col-lg-12 col-sm-12 col-xs-12">
-            <div class="widget">
-                <div class="widget-header bg-red">
-                    <span class="widget-caption">پیام پشتیبانی </span>
-                    <div class="widget-buttons">
-                        <a href="#" data-toggle="config">
-                            <i class="fa fa-cog"></i>
-                        </a>
-                        <a href="#" data-toggle="maximize">
-                            <i class="fa fa-expand"></i>
-                        </a>
-                        <a href="#" data-toggle="collapse">
-                            <i class="fa fa-minus"></i>
-                        </a>
-                        <a href="#" data-toggle="dispose">
-                            <i class="fa fa-times"></i>
-                        </a>
-                    </div><!--Widget Buttons-->
-                </div><!--Widget Header-->
-                <div class="widget-body bg-red">
-                    <p> @Model.Resume.RejectedNote </p>
-                </div><!--Widget Body-->
-            </div><!--Widget-->
-        </div>
-    }
-
-</div>
-
-    <div class="row">
         <div class="col-md-12">
             <div class="profile-container">
 
@@ -90,7 +58,7 @@
                         <div class="header-fullname">@Model.User.Username</div>
 
                         @*Box Of About Me Resume Part*@
-                        <partial name="_AboutMe" model="@Model.ResumeAboutMeDoctorPanelViewModel" />
+                        <partial name="_AboutMe" model="@Model.ResumeAboutMeAdminPanelViewModel" />
 
                     </div>
 
@@ -103,7 +71,7 @@
 
                                 <li class="active">
                                     <a data-toggle="tab" href="#overview" aria-expanded="true">
-                                         تصاویر
+                                        تصاویر
                                     </a>
                                 </li>
 
@@ -133,13 +101,13 @@
 
                                 <li class="tab-yellow">
                                     <a data-toggle="tab" href="#settin" aria-expanded="false">
-                                         محل کار
+                                        محل کار
                                     </a>
                                 </li>
 
                                 <li class="tab-yellow">
                                     <a data-toggle="tab" href="#setti" aria-expanded="false">
-                                        گواهینامه 
+                                        گواهینامه
                                     </a>
                                 </li>
 
@@ -147,7 +115,7 @@
 
                             <div class="tab-content tabs-flat">
                                 <div id="overview" class="tab-pane active">
-                                                @*Box Of Galley Part*@
+                                    @*Box Of Galley Part*@
                                     <partial name="_ListOfGallery" model="@Model.GalleryResume" />
                                 </div>
 

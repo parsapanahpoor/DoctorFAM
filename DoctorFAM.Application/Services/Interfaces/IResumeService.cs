@@ -1,5 +1,6 @@
 ﻿using DoctorFAM.Application.Services.Implementation;
 using DoctorFAM.Domain.Entities.Resume;
+using DoctorFAM.Domain.ViewModels.Admin.Resume;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Certificate;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Education;
@@ -20,6 +21,12 @@ namespace DoctorFAM.Application.Services.Interfaces
     public interface IResumeService
     {
         #region General For All Users
+
+        //Change Resume From Admin Panel
+        Task<bool> ChangeResumeFromAdminPanel(ResumeAdminViewModel resume);
+
+        //Get Resume By ResumeId
+        Task<Resume?> GetResumeByREsumeId(ulong resumeId);
 
         //Get Resume By User Id 
         Task<Resume?> GetResumeByUserId(ulong userId);
@@ -147,6 +154,19 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Edit Gallery From Doctor Panel
         Task<bool> EditGalleryFromDoctorPanel(EditGalleryDoctorPanelViewModel model, ulong userId, IFormFile? image);
+
+        #endregion
+
+        #region Admin Panel 
+
+        //List Of Doctors That Has Send Resume Admin Side 
+        Task<List<Resume>> ListOfDoctorsThatHasSendResume();
+
+        //Fill The Model For Page Of Manage Resume In Admin Panel 
+        Task<ManageResumeAdminPanelViewModel?> FillTheModelForPageOfManageResumeInAdminPanel(ulong resumeId);
+
+        //Fill Change Resume View Model For Admin Side 
+        Task<ResumeAdminViewModel?> FillResumeAdminViewModel(ulong resumeId);
 
         #endregion
     }

@@ -140,6 +140,21 @@
             </ul>
         </li>
 
+            <li>
+                <a href="#" class="menu-dropdown">
+                    <i class="menu-icon  glyphicon glyphicon-list-alt"></i>
+                    <span class="menu-text">@SharedLocalizer["Resume"]</span>
+                    <i class="menu-expand"></i>
+                </a>
+
+                <ul class="submenu">
+                    <li>
+                        <a asp-action="ListOfDoctorsThatHasSendResume" asp-controller="Resume" asp-area="Admin">
+                            <span class="menu-text"> مدیریت رزومه ها </span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
 
         <li>
             <a asp-controller="Wallet" asp-action="Index">

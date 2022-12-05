@@ -12,6 +12,9 @@ namespace DoctorFAM.Domain.Interfaces.EFCore
     {
         #region General Methods For All User
 
+        //Update Resume 
+        Task UpdateResume(Resume resume);
+
         //Get Resume By User Id 
         Task<Resume?> GetResumeByUserId(ulong userId);
 
@@ -123,6 +126,13 @@ namespace DoctorFAM.Domain.Interfaces.EFCore
         #endregion
 
         #region Doctor Panel 
+
+        #endregion
+
+        #region Admin Side 
+
+        //List Of Doctors That Has Send Resume Admin Side 
+        Task<List<Resume>> ListOfDoctorsThatHasSendResume();
 
         #endregion
     }

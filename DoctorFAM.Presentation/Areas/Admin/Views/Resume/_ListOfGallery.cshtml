@@ -1,0 +1,40 @@
+﻿@model List<DoctorFAM.Domain.ViewModels.Admin.Resume.Gallery.GalleryResumeInAdminPanelViewModel>
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.Utils
+@using DoctorFAM.Application.StaticTools
+
+<div class="form-title">
+    بخش گواهینامه
+</div>
+
+@if (Model != null && Model.Any())
+{
+    foreach (var gallery in Model)
+    {
+        <ul class="timeline animated fadeInDown">
+
+            <li>
+                <div class="timeline-datetime">
+                </div>
+                <div class="timeline-badge">
+                    <i class="fa fa-picture-o darkpink"></i>
+                </div>
+                <div class="timeline-panel">
+                    <div class="timeline-body">
+                        <div class="tl-wide text-center" style="padding: 5px; margin-top:10px; margin-bottom: 10px;">
+                            <img src="@PathTools.ResumeGalleryPathThumb@gallery.ImageName" alt="" style="max-height: 158px;max-width: 100%;">
+                        </div>
+                        <i class="text-muted text-sm">@gallery.Title</i>
+                    </div>
+                </div>
+            </li>
+
+        </ul>
+    }
+}else
+{
+    <div class="alert alert-info fade in">
+        @SharedLocalizer["Not Found"]
+    </div>
+}

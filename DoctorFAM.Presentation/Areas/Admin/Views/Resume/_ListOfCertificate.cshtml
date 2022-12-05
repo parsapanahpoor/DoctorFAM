@@ -1,0 +1,47 @@
+﻿@model List<DoctorFAM.Domain.ViewModels.Admin.Resume.Certificate.CertificateResumeInAdminPanelViewModel>
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.Utils
+@using DoctorFAM.Application.StaticTools
+
+<div class="form-title">
+    بخش گواهینامه
+</div>
+
+
+@if (Model != null && Model.Any())
+{
+    foreach (var Certificate in Model)
+    {
+        <ul class="timeline animated fadeInDown">
+
+            <li>
+                <div class="timeline-datetime">
+                </div>
+                <div class="timeline-badge " style="height:0px !important;width:0px !important">
+                    <img style="border-radius: 50px;height: 70px;" src="@PathTools.CertificatePathThumb@Certificate.ImageName" />
+                </div>
+                <div class="timeline-panel">
+                    <div class="timeline-header bordered-bottom bordered-blue">
+                        @if (!string.IsNullOrEmpty(Certificate.CertificateTitle))
+                        {
+                            <span class="timeline-title">
+                                @Certificate.CertificateTitle
+                            </span>
+                        }
+                    </div>
+                    <div class="timeline-body">
+                        <p> @((string.IsNullOrEmpty(Certificate.ExporterRefrence)) ? "وارد نشده" : Certificate.ExporterRefrence)</p>
+                    </div>
+
+                </div>
+            </li>
+        </ul>
+    }
+}
+else
+{
+    <div class="alert alert-info fade in">
+        @SharedLocalizer["Not Found"]
+    </div>
+}

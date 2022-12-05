@@ -11,6 +11,13 @@ using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.Entities.Resume;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.Interfaces.EFCore;
+using DoctorFAM.Domain.ViewModels.Admin.Resume;
+using DoctorFAM.Domain.ViewModels.Admin.Resume.Certificate;
+using DoctorFAM.Domain.ViewModels.Admin.Resume.Gallery;
+using DoctorFAM.Domain.ViewModels.Admin.Resume.Honor;
+using DoctorFAM.Domain.ViewModels.Admin.Resume.Service;
+using DoctorFAM.Domain.ViewModels.Admin.Resume.WorkHistory;
+using DoctorFAM.Domain.ViewModels.Admin.Resume.WorkingAddress;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Certificate;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Education;
@@ -20,6 +27,7 @@ using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Service;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.WorkHistory;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.WorkingAddress;
 using Microsoft.AspNetCore.Http;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Database;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using System;
@@ -50,6 +58,12 @@ namespace DoctorFAM.Application.Services.Implementation
         #endregion
 
         #region General For All Users
+
+        //Get Resume By ResumeId
+        public async Task<Resume?> GetResumeByREsumeId(ulong resumeId)
+        {
+            return await _resumeRepository.GetResuemById(resumeId);
+        }
 
         //Get Resume By User Id 
         public async Task<Resume?> GetResumeByUserId(ulong userId)
@@ -187,7 +201,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 await _resumeRepository.CreateAboutMe(createAboutMe);
 
                 //Change Rsume To The Waiting State 
-                await _resumeRepository.ChangeResumeStateToTheWaitingState(resume) ;
+                await _resumeRepository.ChangeResumeStateToTheWaitingState(resume);
 
                 return true;
             }
@@ -618,6 +632,32 @@ namespace DoctorFAM.Application.Services.Implementation
             #endregion
 
             return await _resumeRepository.GetUserGalleryByResumeId(resume.Id);
+        }
+
+        //Change Resume From Admin Panel
+        public async Task<bool> ChangeResumeFromAdminPanel(ResumeAdminViewModel resume)
+        {
+            #region Get Resume By  Id
+
+            var oldResume = await _resumeRepository.GetResuemById(resume.resumeId);
+            if (oldResume == null) return false;
+
+            #endregion
+
+            #region Edit Fields 
+
+            oldResume.ResumeState = resume.ResumeState;
+            oldResume.RejectedNote = resume.RejectNote;
+
+            #endregion
+
+            #region Update Method 
+
+            await _resumeRepository.UpdateResume(oldResume);
+
+            #endregion
+
+            return true;
         }
 
         #endregion
@@ -1847,6 +1887,279 @@ namespace DoctorFAM.Application.Services.Implementation
             #endregion
 
             return true;
+        }
+
+        #endregion
+
+        #region Admin Side 
+
+        //Fill Change Resume View Model For Admin Side 
+        public async Task<ResumeAdminViewModel?> FillResumeAdminViewModel(ulong resumeId)
+        {
+            #region Get Resume By Id 
+
+            var resume = await _resumeRepository.GetResuemById(resumeId);
+            if (resume == null) return null;
+
+            #endregion
+
+            #region Fill Model 
+
+            ResumeAdminViewModel model = new ResumeAdminViewModel()
+            {
+                resumeId = resume.Id,
+                ResumeState = resume.ResumeState,
+                RejectNote = resume.RejectedNote
+            };
+
+            #endregion
+
+            return model;
+        }
+
+        //List Of Doctors That Has Send Resume Admin Side 
+        public async Task<List<Resume>> ListOfDoctorsThatHasSendResume()
+        {
+            return await _resumeRepository.ListOfDoctorsThatHasSendResume();
+        }
+
+        //Fill The Model For Page Of Manage Resume In Admin Panel 
+        public async Task<ManageResumeAdminPanelViewModel?> FillTheModelForPageOfManageResumeInAdminPanel(ulong resumeId)
+        {
+            #region Get Resume By Id
+
+            var resume = await _resumeRepository.GetResuemById(resumeId);
+            if (resume == null) return null;
+
+            #endregion
+
+            #region Fill Model 
+
+            ManageResumeAdminPanelViewModel model = new ManageResumeAdminPanelViewModel()
+            {
+                Resume = resume,
+            };
+
+            #region Fill User Property 
+
+            var user = await _userService.GetUserById(resume.UserId);
+            if (user == null) return null;
+
+            model.User = user;
+
+            #endregion
+
+            #region Fill About Me 
+
+            var aboutMe = await GetUserAboutMeResumeByResumeId(resume.Id);
+
+            //Create New Instance 
+            model.ResumeAboutMeAdminPanelViewModel = new ResumeAboutMeAdminPanelViewModel()
+            {
+                AboutMeId = ((aboutMe == null) ? null : aboutMe.Id),
+                Text = ((aboutMe == null) ? null : aboutMe.AboutMeText),
+                ResumeId = resume.Id,
+            };
+
+            #endregion
+
+            #region Fill Education 
+
+            var education = await GetEducationResumeByResumeId(resume.Id);
+
+            var returnEducation = new List<EducationResumeInAdminPanelViewModel>();
+
+            //Create New Instance
+            if (education != null && education.Any())
+            {
+                foreach (var item in education)
+                {
+                    EducationResumeInAdminPanelViewModel ed = (new EducationResumeInAdminPanelViewModel()
+                    {
+                        CityName = ((string.IsNullOrEmpty(item.CityName)) ? null : item.CityName),
+                        CountryName = ((string.IsNullOrEmpty(item.CountryName)) ? null : item.CountryName),
+                        EndDate = ((item.EndDate == null) ? null : item.EndDate),
+                        FieldOfStudy = ((string.IsNullOrEmpty(item.FieldOfStudy)) ? null : item.FieldOfStudy),
+                        Orientation = ((string.IsNullOrEmpty(item.Orientation)) ? null : item.Orientation),
+                        StartDate = ((item.StartDate == null) ? null : item.StartDate),
+                        UnivercityName = ((string.IsNullOrEmpty(item.UnivercityName)) ? null : item.UnivercityName),
+                        CreateDate = item.CreateDate,
+                        Id = item.Id,
+                    });
+
+                    returnEducation.Add(ed);
+                }
+            }
+
+            model.EducationResume = returnEducation;
+
+            #endregion
+
+            #region Fill Work Address
+
+            var workHistory = await GetWorkHistoryResumeByResumeId(resume.Id);
+
+            var returnWorkHistory = new List<WorkHistoryResumeInAdminPanelViewModel>();
+
+            //Create New Instance
+            if (workHistory != null && workHistory.Any())
+            {
+                foreach (var item in workHistory)
+                {
+                    WorkHistoryResumeInAdminPanelViewModel work = (new WorkHistoryResumeInAdminPanelViewModel()
+                    {
+                        WorkAddress = ((string.IsNullOrEmpty(item.WorkAddress)) ? null : item.WorkAddress),
+                        JobPosition = ((string.IsNullOrEmpty(item.JobPosition)) ? null : item.JobPosition),
+                        EndDate = ((item.EndDate == null) ? null : item.EndDate),
+                        StartDate = ((item.StartDate == null) ? null : item.StartDate),
+                        Id = item.Id,
+                    });
+
+                    returnWorkHistory.Add(work);
+                }
+            }
+
+            model.WorkHistoryResume = returnWorkHistory;
+
+            #endregion
+
+            #region Fill Honor
+
+            var honor = await GetHonorResumeByResumeId(resume.Id);
+
+            var returnHonor = new List<HonorResumeInAdminPanelViewModel>();
+
+            //Create New Instance
+            if (honor != null && honor.Any())
+            {
+                foreach (var item in honor)
+                {
+                    HonorResumeInAdminPanelViewModel hr = (new HonorResumeInAdminPanelViewModel()
+                    {
+                        HonorTitle = ((string.IsNullOrEmpty(item.HonorTitle)) ? null : item.HonorTitle),
+                        ImageName = ((string.IsNullOrEmpty(item.ImageName)) ? null : item.ImageName),
+                        Description = ((string.IsNullOrEmpty(item.Description)) ? null : item.Description),
+                        HonorDate = item.HonorDate,
+                        Id = item.Id,
+                    });
+
+                    returnHonor.Add(hr);
+                }
+            }
+
+            model.HonorResume = returnHonor;
+
+            #endregion
+
+            #region Fill Service
+
+            var service = await GetServiceResumeByResumeId(resume.Id);
+
+            var returnService = new List<ServiceResumeInAdminPanelViewModel>();
+
+            //Create New Instance
+            if (service != null && service.Any())
+            {
+                foreach (var item in service)
+                {
+                    ServiceResumeInAdminPanelViewModel sr = (new ServiceResumeInAdminPanelViewModel()
+                    {
+                        ServiceTitle = ((string.IsNullOrEmpty(item.ServiceTitle)) ? null : item.ServiceTitle),
+                        Id = item.Id,
+                    });
+
+                    returnService.Add(sr);
+                }
+            }
+
+            model.ServiceResume = returnService;
+
+            #endregion
+
+            #region Fill Working Address
+
+            var workingAddress = await GetWorkingAddressResumeByResumeId(resume.Id);
+
+            var returnWorkingAddress = new List<WorkingAddressResumeInAdminPanelViewModel>();
+
+            //Create New Instance
+            if (workingAddress != null && workingAddress.Any())
+            {
+                foreach (var item in workingAddress)
+                {
+                    WorkingAddressResumeInAdminPanelViewModel wr = (new WorkingAddressResumeInAdminPanelViewModel()
+                    {
+                        WorkingAddress = ((string.IsNullOrEmpty(item.WorkingAddress)) ? null : item.WorkingAddress),
+                        WorkingAddressTitle = ((string.IsNullOrEmpty(item.WorkingAddressTitle)) ? null : item.WorkingAddressTitle),
+                        Days = ((string.IsNullOrEmpty(item.Days)) ? null : item.Days),
+                        Times = ((string.IsNullOrEmpty(item.Times)) ? null : item.Times),
+                        Id = item.Id,
+                    });
+
+                    returnWorkingAddress.Add(wr);
+                }
+            }
+
+            model.WorkingAddressResume = returnWorkingAddress;
+
+            #endregion
+
+            #region Fill Certificate
+
+            var certificate = await GetCertificateResumeByResumeId(resume.Id);
+
+            var returnCertificate = new List<CertificateResumeInAdminPanelViewModel>();
+
+            //Create New Instance
+            if (certificate != null && certificate.Any())
+            {
+                foreach (var item in certificate)
+                {
+                    CertificateResumeInAdminPanelViewModel cr = (new CertificateResumeInAdminPanelViewModel()
+                    {
+                        CertificateTitle = ((string.IsNullOrEmpty(item.CertificateTitle)) ? null : item.CertificateTitle),
+                        ImageName = ((string.IsNullOrEmpty(item.ImageName)) ? null : item.ImageName),
+                        ExporterRefrence = ((string.IsNullOrEmpty(item.ExporterRefrence)) ? null : item.ExporterRefrence),
+                        Id = item.Id,
+                    });
+
+                    returnCertificate.Add(cr);
+                }
+            }
+
+            model.CertificateResume = returnCertificate;
+
+            #endregion
+
+            #region Fill Gallery
+
+            var gallery = await GetGalleryResumeByResumeId(resume.Id);
+
+            var returnGallery = new List<GalleryResumeInAdminPanelViewModel>();
+
+            //Create New Instance
+            if (gallery != null && gallery.Any())
+            {
+                foreach (var item in gallery)
+                {
+                    GalleryResumeInAdminPanelViewModel gal = (new GalleryResumeInAdminPanelViewModel()
+                    {
+                        Title = ((string.IsNullOrEmpty(item.Title)) ? null : item.Title),
+                        ImageName = ((string.IsNullOrEmpty(item.ImageName)) ? null : item.ImageName),
+                        Id = item.Id,
+                    });
+
+                    returnGallery.Add(gal);
+                }
+            }
+
+            model.GalleryResume = returnGallery;
+
+            #endregion
+
+            #endregion
+
+            return model;
         }
 
         #endregion

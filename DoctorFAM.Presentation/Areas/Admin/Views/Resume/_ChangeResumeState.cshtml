@@ -1,0 +1,28 @@
+﻿@model DoctorFAM.Domain.ViewModels.Admin.Resume.ResumeAdminViewModel
+
+<form method="post" asp-action="ChangeResume" asp-controller="Resume" asp-area="Admin">
+    <input asp-for="resumeId" type="hidden" />
+    <div class="row">
+
+        <div class="form-group col-md-12 col-sm-12">
+            <label>وضعیت</label>
+            <select asp-for="ResumeState" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.ResumeState.ResumeState))"></select>
+            <span class="text-danger" asp-validation-for="ResumeState"></span>
+        </div>
+
+        <div class="clearfix"></div>
+
+        <div class="form-group col-md-12" >
+            <label>علت عدم تایید</label>
+            <textarea asp-for="RejectNote" rows="10" class="form-control" placeholder="علت عدم تایید اطلاعات را وارد کنید"></textarea>
+            <span asp-validation-for="RejectNote" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-12 flex-style">
+            <button type="submit" class="btn btn-labeled btn-palegreen">
+                <i class="btn-label glyphicon glyphicon-ok"></i>ثبت
+            </button>
+        </div>
+
+    </div>
+</form>

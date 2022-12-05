@@ -1,0 +1,45 @@
+﻿@model List<DoctorFAM.Domain.ViewModels.Admin.Resume.Service.ServiceResumeInAdminPanelViewModel>
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.Utils
+
+<div class="form-title">
+    بخش خدمات
+
+</div>
+
+
+@if (Model != null && Model.Any())
+{
+    foreach (var work in Model)
+    {
+        <ul class="timeline animated fadeInDown">
+
+            <li>
+                <div class="timeline-datetime">
+                </div>
+                <div class="timeline-badge blue">
+                    <i class="fa fa-thumb-tack"></i>
+                </div>
+                <div class="timeline-panel">
+                    <div class="timeline-header bordered-bottom bordered-blue">
+                        @if (!string.IsNullOrEmpty(work.ServiceTitle))
+                        {
+                            <span class="timeline-title">
+                                @work.ServiceTitle
+                            </span>
+                        }
+                    </div>
+                         <div class="timeline-body">
+                    </div>
+                </div>
+            </li>
+        </ul>
+    }
+}
+else
+{
+    <div class="alert alert-info fade in">
+        @SharedLocalizer["Not Found"]
+    </div>
+}

@@ -1,0 +1,47 @@
+﻿@model List<DoctorFAM.Domain.ViewModels.Admin.Resume.Honor.HonorResumeInAdminPanelViewModel>
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.Utils
+@using DoctorFAM.Application.StaticTools
+
+<div class="form-title">
+    بخش افتخارات
+</div>
+
+
+@if (Model != null && Model.Any())
+{
+    foreach (var work in Model)
+    {
+        <ul class="timeline animated fadeInDown">
+
+            <li>
+                <div class="timeline-datetime">
+                </div>
+                <div class="timeline-badge " style="height:0px !important;widt:0px !important">
+                    <img style="border-radius: 50px;height: 70px;" src="@PathTools.HonorPathThumb@work.ImageName" />
+                </div>
+                <div class="timeline-panel">
+                    <div class="timeline-header bordered-bottom bordered-blue">
+                        @if (!string.IsNullOrEmpty(work.HonorTitle))
+                        {
+                            <span class="timeline-title">
+                                @work.HonorTitle
+                            </span>
+                        }
+                    </div>
+                    <div class="timeline-body">
+                        <p> @((string.IsNullOrEmpty(work.Description)) ? "وارد نشده" : work.Description)</p>
+                    </div>
+
+                </div>
+            </li>
+        </ul>
+    }
+}
+else
+{
+        <div class="alert alert-info fade in">
+        @SharedLocalizer["Not Found"]
+        </div>
+}

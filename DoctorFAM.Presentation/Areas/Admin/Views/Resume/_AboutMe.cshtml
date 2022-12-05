@@ -1,0 +1,18 @@
+﻿@model DoctorFAM.Domain.ViewModels.Admin.Resume.ResumeAboutMeAdminPanelViewModel
+
+<p onclick="ChangeStateFromAdmin(@Model.ResumeId)" style="margin-top: -30px;" class="btn btn-palegreen btn-sm  btn-follow">
+        <i class="fa fa-check"></i>
+        تغییر وضعیت رزومه 
+    </p>
+<div class="header-information" style="margin-top: 20px;">
+    @if (string.IsNullOrEmpty(Model.Text))
+    {
+        <p class="btn btn-danger btn-sm  ">
+            وارد نشده است
+        </p>
+    }
+    else
+    {
+        @Model.Text
+    }
+</div>

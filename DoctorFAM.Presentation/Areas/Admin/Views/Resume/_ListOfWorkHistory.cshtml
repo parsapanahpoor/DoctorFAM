@@ -1,0 +1,46 @@
+﻿@model List<DoctorFAM.Domain.ViewModels.Admin.Resume.WorkHistory.WorkHistoryResumeInAdminPanelViewModel>
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.Utils
+
+<div class="form-title">
+    بخش سوابق کاری
+</div>
+
+
+    @if (Model != null && Model.Any())
+    {
+        foreach (var work in Model)
+        {
+        <ul class="timeline animated fadeInDown">
+
+            <li>
+                <div class="timeline-datetime">
+                </div>
+                <div class="timeline-badge blue">
+                    <i class="fa fa-thumb-tack"></i>
+                </div>
+                <div class="timeline-panel">
+                    <div class="timeline-header bordered-bottom bordered-blue">
+                        @if (!string.IsNullOrEmpty(work.JobPosition))
+                        {
+                            <span class="timeline-title">
+                                @work.JobPosition
+                            </span>
+                        }
+                    </div>
+                    <div class="timeline-body">
+                        <p> @((string.IsNullOrEmpty(work.WorkAddress)) ? "وارد نشده" : work.WorkAddress)</p>
+                    </div>
+                    
+                </div>
+            </li>
+        </ul>
+        }
+    }
+else
+{
+    <div class="alert alert-info fade in">
+        @SharedLocalizer["Not Found"]
+    </div>
+}

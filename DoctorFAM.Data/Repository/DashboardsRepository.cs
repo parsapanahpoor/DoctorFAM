@@ -242,6 +242,13 @@ namespace DoctorFAM.Data.Repository
 
             #endregion
 
+            #region List Of Arrival Resumes
+
+            model.LastestArrivalResumes = await _context.Resumes.Include(p=> p.User).Where(p => !p.IsDelete && p.ResumeState == Domain.Enums.ResumeState.ResumeState.WaitingForConfirm)
+                                                                    .OrderByDescending(p => p.CreateDate).ToListAsync();
+
+            #endregion
+
             return model;
         }
 

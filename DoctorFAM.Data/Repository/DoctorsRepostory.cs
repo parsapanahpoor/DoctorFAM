@@ -351,6 +351,7 @@ namespace DoctorFAM.Data.Repository
 
 
             #endregion
+
             DoctorSideBarViewModel model = new DoctorSideBarViewModel();
 
             #region Doctor State 

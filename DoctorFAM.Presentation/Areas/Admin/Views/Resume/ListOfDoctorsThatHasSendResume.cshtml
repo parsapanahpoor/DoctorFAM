@@ -1,0 +1,123 @@
+﻿@model List<DoctorFAM.Domain.Entities.Resume.Resume>
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.Extensions
+
+@{
+    ViewData["Title"] = "لیست رزومه های ارسالی";
+}
+
+@section Breadcrumb
+    {
+    <li>
+        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+    </li>
+}
+
+    @section Styles
+    {
+    <link href="/admin/css/dataTables.bootstrap.rtl.css" rel="stylesheet" />
+}
+
+    @section Scripts
+    {
+    <script src="~/admin/js/datatable/jquery.dataTables.min.js"></script>
+    <script src="~/admin/js/datatable/ZeroClipboard.js"></script>
+    <script src="~/admin/js/datatable/dataTables.tableTools.min.js"></script>
+    <script src="~/admin/js/datatable/dataTables.bootstrap.min.js"></script>
+    <script src="~/admin/js/datatable/datatables-init.js"></script>
+    <script>
+        InitiateSimpleDataTable.init();
+        InitiateEditableDataTable.init();
+        InitiateExpandableDataTable.init();
+        InitiateSearchableDataTable.init();
+    </script>
+
+    }
+
+    <div class="page-body">
+
+        <div class="row">
+
+            <div id="horizontal-form">
+
+            @if (Model != null && Model.Any())
+            {
+
+                <div class="widget-body no-padding">
+                    <div id="searchable_wrapper" class="dataTables_wrapper form-inline">
+
+                        <table class="table table-bordered table-hover table-striped dataTable" id="searchable" role="grid" aria-describedby="searchable_info">
+                            <thead class="bordered-darkorange">
+                                <tr role="row">
+
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">ارسال کننده</th>
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" aria-sort="ascending">تاریخ ایجاد</th>
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Platform: activate to sort column ascending">وضعیت</th>
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending"></th>
+
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                @foreach (var resume in Model)
+                                {
+                                    <tr role="row" class="even responsive" remove-ajax-item="@resume.Id">
+
+                                        <td class=" sorting_1">
+                                            <div class="flex-style-center">
+
+                                                <img src="@resume.User.GetUserAvatar()" class="avatar-style" style="border-radius:50px" />
+                                                <div class="mr-10px">
+                                                    <span> @resume.User.Username </span>
+                                                </div>
+
+                                            </div>
+                                        </td>
+                                        <td class="center ">
+
+                                            @resume.CreateDate.ToShamsi()
+
+                                        </td>
+                                        <td class="sorting_1">
+                                            <div class="row" style="width: 100%;margin: auto;text-aling">
+                                                @if (resume.ResumeState == DoctorFAM.Domain.Enums.ResumeState.ResumeState.Accepted)
+                                                {
+                                                    <span class=" label label-success"> تایید شده </span>
+                                                }
+
+                                                @if (resume.ResumeState == DoctorFAM.Domain.Enums.ResumeState.ResumeState.Decline)
+                                                {
+                                                    <span class=" label label-orange"> تایید نشده</span>
+                                                }
+
+                                                @if (resume.ResumeState == DoctorFAM.Domain.Enums.ResumeState.ResumeState.WaitingForConfirm)
+                                                {
+                                                    <span class=" label label-warning"> در انتظار</span>
+                                                }
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <a asp-action="ResumeDetail" asp-controller="Resume" asp-area="Admin" asp-route-resumeId="@resume.Id" class="btn btn-warning btn-circle btn-xs"><i class="glyphicon glyphicon-edit"></i></a>
+                                        </td>
+
+                                    </tr>
+
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <partial name="_AdminNotFoundPartial" />
+            }
+
+        </div>
+    </div>
+
+</div>
+
+

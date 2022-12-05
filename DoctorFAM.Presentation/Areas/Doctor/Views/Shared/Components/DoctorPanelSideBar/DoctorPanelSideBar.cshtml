@@ -179,10 +179,10 @@
                 </ul>
             </li>
 
-             <li>
+            <li>
                 <a href="#" class="menu-dropdown" style="font-size:16px;font-weight:500; color:#ef2e2e   ">
-                    <i class="menu-icon glyphicon glyphicon-send"></i>                   
-                    <span class="menu-text" > @SharedLocalizer["SMS Management"] </span>
+                    <i class="menu-icon glyphicon glyphicon-send"></i>
+                    <span class="menu-text"> @SharedLocalizer["SMS Management"] </span>
                     <i class="menu-expand"></i>
                 </a>
 
@@ -206,7 +206,7 @@
                         </a>
                     </li>
 
-                   
+
 
                 </ul>
             </li>
@@ -253,21 +253,7 @@
                 </ul>
             </li>
 
-            <li>
-                <a href="#" class="menu-dropdown">
-                    <i class="menu-icon  glyphicon glyphicon-list-alt"></i>
-                    <span class="menu-text">@SharedLocalizer["Resume"]</span>
-                    <i class="menu-expand"></i>
-                </a>
-
-                <ul class="submenu">
-                    <li>
-                        <a asp-action="PageOfResume" asp-controller="Resume" asp-area="Doctor">
-                            <span class="menu-text"> @SharedLocalizer["Manage Resume"] </span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
+            @await Component.InvokeAsync("DoctorsResumeStateBadge")
 
             <li>
                 <a href="#" class="menu-dropdown">
@@ -291,7 +277,7 @@
                     </li>
                 </ul>
             </li>
-            
+
             @await Component.InvokeAsync("DoctorsInfosBadge")
         }
 
@@ -300,7 +286,7 @@
             @await Component.InvokeAsync("DoctorsInfosBadge")
         }
 
-       
+
         <li>
             <a href="#" class="menu-dropdown">
                 <i class="menu-icon fa fa-ticket"></i>

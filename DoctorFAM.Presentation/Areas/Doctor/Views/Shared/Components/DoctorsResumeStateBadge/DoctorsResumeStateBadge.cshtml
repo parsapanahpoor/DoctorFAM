@@ -1,0 +1,40 @@
+﻿@model DoctorFAM.Domain.Entities.Resume.Resume
+
+@if (Model.ResumeState == DoctorFAM.Domain.Enums.ResumeState.ResumeState.Accepted)
+{
+    <li>
+        <a asp-action="PageOfResume" asp-controller="Resume" asp-area="Doctor">
+            <i class="menu-icon glyphicon glyphicon-education"></i>
+            <span class="menu-text">@SharedLocalizer["Manage Resume"]</span>
+            <div class="badge badge-success" id="DoctorInfoState">
+                @SharedLocalizer["Accepted"]
+            </div>
+        </a>
+    </li>
+}
+
+@if (Model.ResumeState == DoctorFAM.Domain.Enums.ResumeState.ResumeState.WaitingForConfirm)
+{
+    <li>
+        <a asp-action="PageOfResume" asp-controller="Resume" asp-area="Doctor">
+            <i class="menu-icon glyphicon glyphicon-education"></i>
+            <span class="menu-text">@SharedLocalizer["Manage Resume"]</span>
+            <div class="badge badge-warning" id="DoctorInfoState">
+                @SharedLocalizer["Waiting"]
+            </div>
+        </a>
+    </li>
+}
+
+@if (Model.ResumeState == DoctorFAM.Domain.Enums.ResumeState.ResumeState.Decline)
+{
+    <li>
+        <a asp-action="PageOfResume" asp-controller="Resume" asp-area="Doctor">
+            <i class="menu-icon glyphicon glyphicon-education"></i>
+            <span class="menu-text">@SharedLocalizer["Manage Resume"]</span>
+            <div class="badge badge-danger" id="DoctorInfoState">
+                @SharedLocalizer["Decline"]
+            </div>
+        </a>
+    </li>
+}

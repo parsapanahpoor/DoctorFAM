@@ -28,6 +28,13 @@ namespace DoctorFAM.Data.Repository
 
         #region General Methods For All User
 
+        //Update Resume 
+        public async Task UpdateResume(Resume resume)
+        {
+            _context.Resumes.Update(resume);
+            await _context.SaveChangesAsync();
+        }
+
         //Get Resume By User Id 
         public async Task<Resume?> GetResumeByUserId(ulong userId)
         {
@@ -70,6 +77,8 @@ namespace DoctorFAM.Data.Repository
         //Change Resume State To The Waiting State  
         public async Task ChangeResumeStateToTheWaitingState(Resume resume)
         {
+            resume.ResumeState = Domain.Enums.ResumeState.ResumeState.WaitingForConfirm;
+
             _context.Resumes.Update(resume);
             await _context.SaveChangesAsync();
         }
@@ -274,6 +283,17 @@ namespace DoctorFAM.Data.Repository
         #region Doctor Panel 
 
 
+
+        #endregion
+
+        #region Admin Side 
+
+        //List Of Doctors That Has Send Resume Admin Side 
+        public async Task<List<Resume>> ListOfDoctorsThatHasSendResume()
+        {
+            return await _context.Resumes.Include(p => p.User).Where(p => !p.IsDelete)
+                                                                    .OrderByDescending(p => p.CreateDate).ToListAsync();
+        }
 
         #endregion
     }
