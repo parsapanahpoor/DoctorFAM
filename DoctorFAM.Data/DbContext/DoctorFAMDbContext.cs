@@ -1,6 +1,7 @@
 ﻿using Academy.Domain.Entities.SiteSetting;
 using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Account;
+using DoctorFAM.Domain.Entities.Advertisement;
 using DoctorFAM.Domain.Entities.BMI;
 using DoctorFAM.Domain.Entities.Consultant;
 using DoctorFAM.Domain.Entities.Contact;
@@ -336,6 +337,12 @@ namespace DoctorFAM.Data.DbContext
         public DbSet<CertificateResume> CertificateResume { get; set; }
 
         public DbSet<GalleryResume> GalleryResume { get; set; }
+
+        #endregion
+
+        #region Customer Advertisement
+
+        public DbSet<CustomerAdvertisement> CustomerAdvertisement { get; set; }
 
         #endregion
 
