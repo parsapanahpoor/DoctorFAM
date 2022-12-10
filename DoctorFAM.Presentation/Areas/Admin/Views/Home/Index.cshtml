@@ -47,11 +47,14 @@
             @*Box Of Lastest Requests*@
             <partial name="_TodayReservationReserved" model="@Model.DoctorReservationDateTimes" />
 
-            @*Box Of  Tickets List*@
-            <partial name="_LastestTicketsPartial" model="@Model.ListOfLastestTickets" />
+            @*Box Of  Lastest Request For Excel File*@
+            <partial name="_LastestRequestForExcelFile" model="@Model.LatestRequestForUploadExcelFile" />
 
             @*Box Of  Lastest Arrival Resume*@
             <partial name="_LastestArrivalResumes" model="@Model.LastestArrivalResumes" />
+
+            @*Box Of  Tickets List*@
+            <partial name="_LastestTicketsPartial" model="@Model.ListOfLastestTickets" />
 
             @*Box Of  Cooperation Request*@
             <partial name="_LastestCooperationRequest" model="@Model.CooperationRequests" />

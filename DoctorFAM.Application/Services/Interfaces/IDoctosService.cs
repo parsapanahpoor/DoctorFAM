@@ -35,6 +35,9 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Fill ViewModel For Send SMS For Range Of VIP Patient
         Task<SendSMSForRangeOfVIPInsertedPatientViewModel?> FillSendSMSForRangeOfVIPInsertedPatientViewModel(string label, ulong doctorUserId);
 
+        //change Excel File Request From Admin Or Supporter Panel 
+        Task<bool> ChangeExcelFileRequestFromAdminOrSupporterPanel(RequestForUploadExcelFileDetailAdminSideViewModel model);
+
         //Send SMS From Doctor To The VIP Users That Income From Parsa Sysem 
         Task<bool> SendSMSFromVIPDoctorToTheUsersThatIncomeFromParsaSysem(SendSMSToPatientViewModel model);
 
@@ -117,6 +120,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //List Of Arrival Excel Files Show In Admin Side 
         Task<List<ListOfArrivalExcelFiles>> FillListOfArrivalExcelFilesAdminSideViewModel();
+
+        // Fill Request For Upload Excel File Detail Admin Side View Model
+        Task<RequestForUploadExcelFileDetailAdminSideViewModel?> FillRequestForUploadExcelFileDetailAdminSideViewModel(ulong requestId);
 
         Task<Doctor?> GetDoctorById(ulong doctorId);
 

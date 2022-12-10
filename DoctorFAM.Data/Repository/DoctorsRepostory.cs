@@ -46,7 +46,7 @@ namespace DoctorFAM.Data.Repository
         //Create Request Excel File For Compelete From Admin 
         public async Task CreateRequestExcelFileForCompeleteFromAdmin(RequestForUploadExcelFileFromDoctorsToSite model)
         {
-            await _context.RequestForUploadExcelFileFromDoctorsToSite.AddAsync(model) ;
+            await _context.RequestForUploadExcelFileFromDoctorsToSite.AddAsync(model);
             await _context.SaveChangesAsync();
         }
 
@@ -57,7 +57,7 @@ namespace DoctorFAM.Data.Repository
         }
 
         //Get List Of VIP Inserted PAtient With Label Name
-        public async Task<List<VIPUserInsertedFromDoctorSystem>?> GetListOfVIPInsertedPAtientWithLabelName(ulong labelId , ulong doctorUserId)
+        public async Task<List<VIPUserInsertedFromDoctorSystem>?> GetListOfVIPInsertedPAtientWithLabelName(ulong labelId, ulong doctorUserId)
         {
             return await _context.LabelOfVIPDoctorInsertedPatient.Include(p => p.VIPUserInsertedFromDoctorSystem)
                         .Where(p => !p.IsDelete && p.VIPUserInsertedFromDoctorSystem.DoctorUserId == doctorUserId
@@ -75,7 +75,7 @@ namespace DoctorFAM.Data.Repository
         //Get Label Of Sickness From VIP Users
         public async Task<List<string>> GetLabelOfSicknessFromVIPUsers(ulong incomeUserId)
         {
-            return await _context.LabelOfVIPDoctorInsertedPatient.Include(p=> p.DoctorsLabelsForVIPInsertedDoctor).Where(p => !p.IsDelete && p.VIPUserInsertedFromDoctorSystemId == incomeUserId)
+            return await _context.LabelOfVIPDoctorInsertedPatient.Include(p => p.DoctorsLabelsForVIPInsertedDoctor).Where(p => !p.IsDelete && p.VIPUserInsertedFromDoctorSystemId == incomeUserId)
                                 .Select(p => p.DoctorsLabelsForVIPInsertedDoctor.LabelName).ToListAsync();
         }
 
@@ -130,11 +130,11 @@ namespace DoctorFAM.Data.Repository
         }
 
         //List Of DOctor VIP Parsa System UsersWith Sickness Label Id
-        public async Task<List<VIPUserInsertedFromDoctorSystem>?> ListOfDOctorVIPParsaSystemUsers(ulong DoctorUserId , ulong sicknessLabelId)
+        public async Task<List<VIPUserInsertedFromDoctorSystem>?> ListOfDOctorVIPParsaSystemUsers(ulong DoctorUserId, ulong sicknessLabelId)
         {
-            return await _context.LabelOfVIPDoctorInsertedPatient.Include(p=> p.VIPUserInsertedFromDoctorSystem)
-                                .Where(p => !p.IsDelete && p.VIPUserInsertedFromDoctorSystem.DoctorUserId == DoctorUserId && p.DoctorsLabelsForVIPInsertedDoctorId == sicknessLabelId )
-                                                 .OrderByDescending(p => p.VIPUserInsertedFromDoctorSystem.CreateDate).Select(p=>p.VIPUserInsertedFromDoctorSystem).ToListAsync();
+            return await _context.LabelOfVIPDoctorInsertedPatient.Include(p => p.VIPUserInsertedFromDoctorSystem)
+                                .Where(p => !p.IsDelete && p.VIPUserInsertedFromDoctorSystem.DoctorUserId == DoctorUserId && p.DoctorsLabelsForVIPInsertedDoctorId == sicknessLabelId)
+                                                 .OrderByDescending(p => p.VIPUserInsertedFromDoctorSystem.CreateDate).Select(p => p.VIPUserInsertedFromDoctorSystem).ToListAsync();
         }
 
         //Update Parsa System Record 
@@ -182,7 +182,7 @@ namespace DoctorFAM.Data.Repository
         }
 
         //Get Label By Doctor User Id And Label Name 
-        public async Task<DoctorsLabelsForVIPInsertedDoctor?> GetLabelByDoctorUserIdAndLabelName(string labelName , ulong doctorUserId)
+        public async Task<DoctorsLabelsForVIPInsertedDoctor?> GetLabelByDoctorUserIdAndLabelName(string labelName, ulong doctorUserId)
         {
             return await _context.DoctorsLabelsForVIPInsertedDoctor.FirstOrDefaultAsync(p => !p.IsDelete && p.LabelName == labelName && p.DoctorUserId == doctorUserId);
         }
@@ -192,7 +192,7 @@ namespace DoctorFAM.Data.Repository
         {
             var user = await _context.VIPUserInsertedFromDoctorSystem.FirstOrDefaultAsync(p => !p.IsDelete && p.DoctorUserId == doctorUserId && p.PatientMobile == mobileNumber && p.PatientNationalId == NationalId);
 
-            var doctorLabel = await GetLabelByDoctorUserIdAndLabelName(label , doctorUserId);
+            var doctorLabel = await GetLabelByDoctorUserIdAndLabelName(label, doctorUserId);
 
             if (user != null)
             {
@@ -221,7 +221,7 @@ namespace DoctorFAM.Data.Repository
                 else
                 {
                     //Add Label To The User
-                    if (! await _context.LabelOfVIPDoctorInsertedPatient.AnyAsync(p => !p.IsDelete && p.DoctorsLabelsForVIPInsertedDoctorId == doctorLabel.Id && p.VIPUserInsertedFromDoctorSystemId == user.Id))
+                    if (!await _context.LabelOfVIPDoctorInsertedPatient.AnyAsync(p => !p.IsDelete && p.DoctorsLabelsForVIPInsertedDoctorId == doctorLabel.Id && p.VIPUserInsertedFromDoctorSystemId == user.Id))
                     {
                         //Add Label Of Sickness To The User 
                         LabelOfVIPDoctorInsertedPatient model = new LabelOfVIPDoctorInsertedPatient()
@@ -523,6 +523,19 @@ namespace DoctorFAM.Data.Repository
         #endregion
 
         #region Admin Side
+
+        //Update Request Excel File For Compelete From Admin 
+        public async Task UpdateRequestExcelFileForCompeleteFromAdmin(RequestForUploadExcelFileFromDoctorsToSite model)
+        {
+            _context.RequestForUploadExcelFileFromDoctorsToSite.Update(model);
+            await _context.SaveChangesAsync();
+        }
+
+        //Get Request Excel File By Id 
+        public async Task<RequestForUploadExcelFileFromDoctorsToSite?> GetRequestExcelFileById(ulong requetsId)
+        {
+            return await _context.RequestForUploadExcelFileFromDoctorsToSite.FirstOrDefaultAsync(p => !p.IsDelete && p.Id == requetsId);
+        }
 
         //Get Lastest Request For Uplaod Excel File
         public async Task<List<RequestForUploadExcelFileFromDoctorsToSite>> GetLastestRequestForUplaodExcelFile()

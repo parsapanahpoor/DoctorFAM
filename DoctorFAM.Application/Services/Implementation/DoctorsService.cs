@@ -444,7 +444,7 @@ namespace DoctorFAM.Application.Services.Implementation
             return true;
         }
 
-        //List Of DOctor Parsa System Users
+        //List Of Doctor Parsa System Users
         public async Task<List<UserInsertedFromParsaSystem>?> ListOfDoctorParsaSystemUsers(ulong DoctorUserId)
         {
             #region Get Organization
@@ -754,6 +754,31 @@ namespace DoctorFAM.Application.Services.Implementation
                     }
                 }
             }
+
+            #endregion
+
+            return true;
+        }
+
+        //change Excel File Request From Admin Or Supporter Panel 
+        public async Task<bool> ChangeExcelFileRequestFromAdminOrSupporterPanel(RequestForUploadExcelFileDetailAdminSideViewModel model)
+        {
+            #region Get Request By Id 
+
+            var request = await _doctorRepository.GetRequestExcelFileById(model.requestId);
+            if (request == null) return false;
+
+            #endregion
+
+            #region Change Request State 
+
+            request.IsPending = model.IsPending;
+
+            #endregion
+
+            #region Update Mthod 
+
+            await _doctorRepository.UpdateRequestExcelFileForCompeleteFromAdmin(request);
 
             #endregion
 
@@ -1872,6 +1897,38 @@ namespace DoctorFAM.Application.Services.Implementation
                     User = await _userService.GetUserById(request.DoctorId)
                 });
             }
+
+            #endregion
+
+            return model;
+        }
+
+        // Fill Request For Upload Excel File Detail Admin Side View Model
+        public async Task<RequestForUploadExcelFileDetailAdminSideViewModel?> FillRequestForUploadExcelFileDetailAdminSideViewModel(ulong requestId)
+        {
+            #region Get Request Excel File By Id 
+
+            var request = await _doctorRepository.GetRequestExcelFileById(requestId);
+            if (request == null) return null;
+
+            #endregion
+
+            #region Get User By User Id 
+
+            var user = await _userService.GetUserById(request.DoctorId);
+            if (user == null) return null;
+
+            #endregion
+
+            #region Fill Model 
+
+            RequestForUploadExcelFileDetailAdminSideViewModel model = new RequestForUploadExcelFileDetailAdminSideViewModel()
+            {
+                ExcelFile = request.ExcelFile,
+                User = user,
+                IsPending = request.IsPending,
+                requestId = request.Id
+            };
 
             #endregion
 

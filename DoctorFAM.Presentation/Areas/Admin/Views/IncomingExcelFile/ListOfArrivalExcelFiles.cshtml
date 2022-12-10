@@ -85,7 +85,7 @@
                                                 {
                                                     <span class=" label label-danger"> درحال برسی   </span>
                                                 }
-                                                esle 
+                                                else
                                                 {
                                                     <span class=" label label-success"> برسی شده</span>
                                                 }
@@ -93,7 +93,7 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <a asp-action="ResumeDetail" asp-controller="Resume" asp-area="Admin" asp-route-resumeId="@resume.ExcelFile.Id" class="btn btn-warning btn-circle btn-xs"><i class="glyphicon glyphicon-edit"></i></a>
+                                            <a asp-action="ExcelFileDetail" asp-controller="IncomingExcelFile" asp-area="Admin" asp-route-excelFileId="@resume.ExcelFile.Id" class="btn btn-warning btn-circle btn-xs"><i class="glyphicon glyphicon-edit"></i></a>
                                         </td>
 
                                     </tr>

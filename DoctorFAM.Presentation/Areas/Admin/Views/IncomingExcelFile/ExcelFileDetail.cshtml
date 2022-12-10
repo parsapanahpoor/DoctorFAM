@@ -1,0 +1,233 @@
+﻿@model DoctorFAM.Domain.ViewModels.Admin.IncomingExcelFile.RequestForUploadExcelFileDetailAdminSideViewModel
+@using DoctorFAM.Application.StaticTools
+
+@{
+    var users = ViewBag.Users as List<DoctorFAM.Domain.Entities.FamilyDoctor.ParsaSystem.UserInsertedFromParsaSystem>;
+
+}
+
+@section Breadcrumb {
+    <li class="active">@SharedHtmlLocalizer["Home"]</li>
+}
+
+    @section Styles
+    {
+    <link href="/admin/css/dataTables.bootstrap.rtl.css" rel="stylesheet" />
+}
+
+    @section Scripts
+    {
+    <script src="~/admin/js/datatable/jquery.dataTables.min.js"></script>
+    <script src="~/admin/js/datatable/ZeroClipboard.js"></script>
+    <script src="~/admin/js/datatable/dataTables.tableTools.min.js"></script>
+    <script src="~/admin/js/datatable/dataTables.bootstrap.min.js"></script>
+    <script src="~/admin/js/datatable/datatables-init.js"></script>
+    <script>
+        InitiateSimpleDataTable.init();
+        InitiateEditableDataTable.init();
+        InitiateExpandableDataTable.init();
+        InitiateSearchableDataTable.init();
+    </script>
+
+    }
+
+    <div class="page-body">
+
+        <div class="row text-center ">
+            <a target="_blank" href="@PathTools.RequestExcelFilePath@Model.ExcelFile" class="exlStyle btn btn-primary">دانلود فایل اکسل خام </a>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12 col-sm-12">
+
+                <div class="widget">
+                    <div class="widget-header bordered-bottom bordered-green">
+                        <span class="widget-caption"> تغییر وضعیت این درخواست </span>
+                    </div>
+                    <div class="widget-body">
+                        <div>
+
+                            <form asp-action="ChangeRequestState" asp-controller="IncomingExcelFile" asp-area="Admin" method="post" enctype="multipart/form-data">
+                                <input asp-for="requestId" value="@Model.requestId" type="hidden" />
+                                <input asp-for="User" value="@Model.User" type="hidden" />
+                                <input asp-for="ExcelFile" value="@Model.ExcelFile" type="hidden" />
+
+                                <div class="modal-body">
+                                    <div class="row">
+
+                                        <div class="form-group">
+                                            <label> وضعیت  </label>
+                                            <select class="form-control" asp-for="IsPending">
+                                            @if (Model.IsPending == true)
+                                            {
+                                                <option selected="selected" value="true">درحال برسی </option>
+                                                <option value="ffalse">برسی شده است</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="true">درحال برسی </option>
+                                                <option selected="selected" value="false">برسی شده است</option>
+                                            }
+                                        </select>
+
+                                    </div>
+
+                                    <div class="clearfix"></div>
+
+                                    <div class="form-group col-md-12">
+                                        <button type="submit" class="btn btn-success">ثبت</button>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12 col-sm-12">
+
+            <div class="widget">
+                <div class="widget-header bordered-bottom bordered-green">
+                    <span class="widget-caption"> آپلود فایل اکسل تکمیل شده برای پزشک </span>
+                </div>
+                <div class="widget-body">
+                    <div>
+
+                        <form asp-action="IncomingExcelFile" asp-controller="IncomingExcelFile" asp-area="Admin" method="post" enctype="multipart/form-data">
+                            <input name="userId" value="@Model.User.Id" type="hidden" />
+                            <input name="requestId" value="@Model.requestId" type="hidden" />
+
+                            <div class="modal-body">
+                                <div class="row">
+
+                                    <div class="form-group col-md-12 col-sm-12">
+                                        <input type="file" class="form-control" name="excelFile">
+                                    </div>
+
+                                    <div class="clearfix"></div>
+
+                                    <div class="form-group col-md-12">
+                                        <button type="submit" class="btn btn-success">ثبت</button>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row ">
+        <div class="col-xs-12 col-md-12">
+            <div class="widget">
+                <div class="widget-header bordered-bottom bordered-yellow">
+                    <span class="widget-caption">لیست کاربران آماده شده از سامانه برای پزشک جاری </span>
+
+                    <div class="widget-buttons">
+                        <a href="#" data-toggle="maximize">
+                            <i class="fa fa-expand"></i>
+                        </a>
+                        <a href="#" data-toggle="collapse">
+                            <i class="fa fa-minus"></i>
+                        </a>
+                        <a href="#" data-toggle="dispose">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+
+                @if (users != null && users.Any())
+                {
+                    <div class="widget-body no-padding">
+                        <div id="searchable_wrapper" class="dataTables_wrapper form-inline">
+
+                            <table class="table table-bordered table-hover table-striped dataTable" id="searchable" role="grid" aria-describedby="searchable_info">
+                                <thead class="bordered-darkorange">
+                                    <tr role="row">
+
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">نام کامل </th>
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" aria-sort="ascending">شماره ملی</th>
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" aria-sort="ascending">موبایل</th>
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">وضعیت</th>
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">وضعیت پزشک خانواده </th>
+
+
+                                    </tr>
+                                </thead>
+
+                                <tfoot>
+                                    <tr>
+                                        <th rowspan="1" colspan="1"></th>
+                                        <th rowspan="1" colspan="1"></th>
+                                        <th rowspan="1" colspan="1"></th>
+                                        <th rowspan="1" colspan="1"></th>
+                                        <th rowspan="1" colspan="1"></th>
+
+                                    </tr>
+                                </tfoot>
+                                <tbody>
+
+                                    @foreach (var user in users)
+                                    {
+                                        <tr role="row" class="even responsive">
+
+                                            <td class=" sorting_1">@user.PatientFirstName @user.PatientLastName</td>
+                                            <td class="sorting_1">
+                                                @user.PatientNationalId
+                                            </td>
+                                            <td class="sorting_1">
+                                                @user.PatientMobile
+                                            </td>
+                                            <td class="sorting_1">
+                                                @if (!user.IsRegisteredUser)
+                                                {
+                                                    <span class="label label-danger">ثبت نام نکرده</span>
+                                                }
+                                                @if (user.IsRegisteredUser)
+                                                {
+                                                    <span class="label label-success">ثبت نام کرده </span>
+                                                }
+
+                                            </td>
+                                            <td class="sorting_1">
+
+                                                @if (user.HasAnyFamilyDoctor)
+                                                {
+                                                    <span class="label label-success">پزشک خانواده دارد </span>
+                                                }
+                                                @if (!user.HasAnyFamilyDoctor)
+                                                {
+                                                    <span class="label label-danger">پزشک خانواده دارد </span>
+                                                }
+
+                                            </td>
+
+                                        </tr>
+
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <partial name="_AdminNotFoundPartial" />
+                }
+            </div>
+        </div>
+    </div>
+
+
+</div>

@@ -167,6 +167,12 @@ namespace DoctorFAM.Domain.Interfaces
 
         #region Admin Side 
 
+        //Update Request Excel File For Compelete From Admin 
+         Task UpdateRequestExcelFileForCompeleteFromAdmin(RequestForUploadExcelFileFromDoctorsToSite model);
+
+        //Get Request Excel File By Id 
+        Task<RequestForUploadExcelFileFromDoctorsToSite?> GetRequestExcelFileById(ulong requetsId);
+
         //Get Lastest Request For Uplaod Excel File
         Task<List<RequestForUploadExcelFileFromDoctorsToSite>> GetLastestRequestForUplaodExcelFile();
 

@@ -1,7 +1,9 @@
 ﻿using DoctorFAM.Data.DbContext;
+using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.Dashboard;
+using DoctorFAM.Domain.ViewModels.Admin.IncomingExcelFile;
 using DoctorFAM.Domain.ViewModels.Consultant.Dashboard;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Dashbaord;
 using DoctorFAM.Domain.ViewModels.Nurse.NurseDashboard;
@@ -222,7 +224,7 @@ namespace DoctorFAM.Data.Repository
 
             #region List Of Cooperation Requests
 
-            model.CooperationRequests = await _context.CooperationRequests.Where(p => !p.IsDelete && !p.FollowedUp).OrderByDescending(p=> p.CreateDate).ToListAsync();
+            model.CooperationRequests = await _context.CooperationRequests.Where(p => !p.IsDelete && !p.FollowedUp).OrderByDescending(p => p.CreateDate).ToListAsync();
 
             #endregion
 
@@ -230,7 +232,7 @@ namespace DoctorFAM.Data.Repository
 
             model.LastestIncomingTVFAM = await _context.HealthInformation.Where(p => !p.IsDelete && p.HealtInformationFileState == Domain.Enums.HealtInformation.HealtInformationFileState.WaitingForConfirm
                                             && p.HealthInformationType == Domain.Enums.HealtInformation.HealthInformationType.TVFAM)
-                                            .OrderByDescending(p=> p.CreateDate).ToListAsync();
+                                            .OrderByDescending(p => p.CreateDate).ToListAsync();
 
             #endregion
 
@@ -244,8 +246,33 @@ namespace DoctorFAM.Data.Repository
 
             #region List Of Arrival Resumes
 
-            model.LastestArrivalResumes = await _context.Resumes.Include(p=> p.User).Where(p => !p.IsDelete && p.ResumeState == Domain.Enums.ResumeState.ResumeState.WaitingForConfirm)
+            model.LastestArrivalResumes = await _context.Resumes.Include(p => p.User).Where(p => !p.IsDelete && p.ResumeState == Domain.Enums.ResumeState.ResumeState.WaitingForConfirm)
                                                                     .OrderByDescending(p => p.CreateDate).ToListAsync();
+
+            #endregion
+
+            #region Latest Request For Upload Excel File
+
+            //Main Instance
+            List<ListOfArrivalExcelFiles> MainRequests = new List<ListOfArrivalExcelFiles>();
+
+            //Get List Of Requests For Excel Files
+            var listOFRequests = await _context.RequestForUploadExcelFileFromDoctorsToSite.Where(p => !p.IsDelete && p.IsPending)
+                                                   .OrderByDescending(p => p.CreateDate).ToListAsync();
+
+            if (listOFRequests != null)
+            {
+                foreach (var request in listOFRequests)
+                {
+                    MainRequests.Add(new ListOfArrivalExcelFiles()
+                    {
+                        ExcelFile = request,
+                        User = await _context.Users.FirstOrDefaultAsync(s => s.Id == request.DoctorId && !s.IsDelete),
+                    });
+                }
+            }
+
+            model.LatestRequestForUploadExcelFile = MainRequests;
 
             #endregion
 
@@ -319,7 +346,7 @@ namespace DoctorFAM.Data.Repository
 
             model.UserNotSendSMS = await _context.UserInsertedFromParsaSystems.Where(p => !p.IsDelete && p.DoctorUserId == organization.OwnerId
                                                 && p.ShowInDashboard && !p.SMSSent)
-                                                .OrderByDescending(p=> p.CreateDate).ToListAsync();
+                                                .OrderByDescending(p => p.CreateDate).ToListAsync();
 
             #endregion
 
@@ -327,7 +354,7 @@ namespace DoctorFAM.Data.Repository
 
             model.UserSendSMS = await _context.UserInsertedFromParsaSystems.Where(p => !p.IsDelete && p.DoctorUserId == organization.OwnerId
                                                 && p.ShowInDashboard && p.SMSSent)
-                                                .OrderByDescending(p=> p.CreateDate).ToListAsync();
+                                                .OrderByDescending(p => p.CreateDate).ToListAsync();
 
             #endregion
 

@@ -2,6 +2,7 @@
 using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.CooperationRequest;
 using DoctorFAM.Domain.Entities.DoctorReservation;
+using DoctorFAM.Domain.ViewModels.Admin.IncomingExcelFile;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,6 +40,8 @@ namespace DoctorFAM.Domain.ViewModels.Admin.Dashboard
         public List<Entities.HealthInformation.HealthInformation> LastestIncomingRadioFAM { get; set; }
 
         public List<Domain.Entities.Resume.Resume> LastestArrivalResumes { get; set; }
+
+        public List<ListOfArrivalExcelFiles> LatestRequestForUploadExcelFile{ get; set; }
 
         #endregion
     }
