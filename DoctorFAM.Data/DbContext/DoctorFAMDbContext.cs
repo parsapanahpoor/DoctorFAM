@@ -267,6 +267,8 @@ namespace DoctorFAM.Data.DbContext
 
         public DbSet<DoctorsLabelsForVIPInsertedDoctor> DoctorsLabelsForVIPInsertedDoctor { get; set; }
 
+        public DbSet<RequestForUploadExcelFileFromDoctorsToSite> RequestForUploadExcelFileFromDoctorsToSite { get; set; }
+
         #endregion
 
         #region Nurse 

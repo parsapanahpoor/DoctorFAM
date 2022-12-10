@@ -52,6 +52,9 @@ using DoctorFAM.Domain.ViewModels.Site.Doctor.Resume.Service;
 using DoctorFAM.Domain.ViewModels.Site.Doctor.Resume.WorkingAddress;
 using DoctorFAM.Domain.ViewModels.Site.Doctor.Resume.Certificate;
 using DoctorFAM.Domain.ViewModels.Site.Doctor.Resume.Gallery;
+using DoctorFAM.Domain.ViewModels.Admin.FamilyDoctor;
+using DoctorFAM.Domain.ViewModels.Admin.IncomingExcelFile;
+using OfficeOpenXml.VBA;
 
 namespace DoctorFAM.Application.Services.Implementation
 {
@@ -931,6 +934,55 @@ namespace DoctorFAM.Application.Services.Implementation
             return true;
         }
 
+        //Request For Epload Excel File From Site
+        public async Task<bool> RequestForEploadExcelFileFromSite(RequestForUploadExcelFileFromDoctorsToSiteViewModel model , ulong userId)
+        {
+            #region Validation 
+
+            if (model.ExcelFile == null)
+            {
+                return false;
+            }
+
+            #endregion
+
+            #region Get Doctor Organization 
+
+            var organization = await _organizationService.GetDoctorOrganizationByUserId(userId);
+            if (organization.OrganizationInfoState != OrganizationInfoState.Accepted || organization.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice)
+            {
+                return false;
+            }
+
+            #endregion
+
+            #region Fill Entity
+
+            RequestForUploadExcelFileFromDoctorsToSite instance = new RequestForUploadExcelFileFromDoctorsToSite()
+            {
+                DoctorId = organization.OwnerId,
+                CreateDate = DateTime.Now,
+                IsPending = true,
+            };
+
+            if (model.ExcelFile != null)
+            {
+                var excelFile = CodeGenerator.GenerateUniqCode() + Path.GetExtension(model.ExcelFile.FileName);
+                model.ExcelFile.AddFileToServer(excelFile, PathTools.RequestExcelFilePathServer);
+                instance.ExcelFile = excelFile;
+            }
+
+            #endregion
+
+            #region Add To The Data Base 
+
+            await _doctorRepository.CreateRequestExcelFileForCompeleteFromAdmin(instance);
+
+            #endregion
+
+            return true;
+        }
+
         public async Task<List<DoctorsInterestInfo>> GetDoctorSelectedInterests(ulong doctorId)
         {
             return await _doctorRepository.GetDoctorSelectedInterests(doctorId);
@@ -1800,6 +1852,31 @@ namespace DoctorFAM.Application.Services.Implementation
         #endregion
 
         #region Admin Side
+
+        //List Of Arrival Excel Files Show In Admin Side 
+        public async Task<List<ListOfArrivalExcelFiles>> FillListOfArrivalExcelFilesAdminSideViewModel()
+        {
+            #region Fill Model 
+
+            //Main Instance
+            List<ListOfArrivalExcelFiles> model = new List<ListOfArrivalExcelFiles>();
+
+            //Get List Of Requests For Excel Files
+            var listOFRequests = await _doctorRepository.GetLastestRequestForUplaodExcelFile();
+
+            foreach (var request in listOFRequests)
+            {
+                model.Add(new ListOfArrivalExcelFiles()
+                {
+                    ExcelFile = request,
+                    User = await _userService.GetUserById(request.DoctorId)
+                });
+            }
+
+            #endregion
+
+            return model;
+        }
 
         public async Task<Doctor?> GetDoctorById(ulong doctorId)
         {

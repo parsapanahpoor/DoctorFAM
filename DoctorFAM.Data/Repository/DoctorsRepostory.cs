@@ -1,4 +1,5 @@
 ﻿using DoctorFAM.Data.DbContext;
+using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.FamilyDoctor.ParsaSystem;
@@ -41,6 +42,13 @@ namespace DoctorFAM.Data.Repository
         #endregion
 
         #region Doctors Panel Side
+
+        //Create Request Excel File For Compelete From Admin 
+        public async Task CreateRequestExcelFileForCompeleteFromAdmin(RequestForUploadExcelFileFromDoctorsToSite model)
+        {
+            await _context.RequestForUploadExcelFileFromDoctorsToSite.AddAsync(model) ;
+            await _context.SaveChangesAsync();
+        }
 
         //Get Doctor Lable Of Sickness By Doctor User Id 
         public async Task<List<DoctorsLabelsForVIPInsertedDoctor>?> GetDoctorLableOfSicknessByDoctorUserId(ulong doctorUserId)
@@ -515,6 +523,13 @@ namespace DoctorFAM.Data.Repository
         #endregion
 
         #region Admin Side
+
+        //Get Lastest Request For Uplaod Excel File
+        public async Task<List<RequestForUploadExcelFileFromDoctorsToSite>> GetLastestRequestForUplaodExcelFile()
+        {
+            return await _context.RequestForUploadExcelFileFromDoctorsToSite.Where(p => !p.IsDelete)
+                            .OrderByDescending(p => p.CreateDate).ToListAsync();
+        }
 
         public async Task<ListOfDoctorsInfoViewModel> FilterDoctorsInfoAdminSide(ListOfDoctorsInfoViewModel filter)
         {

@@ -14,21 +14,24 @@
     </li>
 }
 
-   
-    
+
+
 
     <div class="page-body">
 
-        
+
         <div class="row text-center ">
-            <div class="col-md-6">                
-                <a target="_blank" href="/Content/ExcelSampleFile/PopulationCoveredSmple.xlsx" title="از اینجا برای دانلود یک نمونه فایل اکسل، برای انتقال اطلاعات از کامپیوتر خود، به این سامانه استفاده کنید."  class="exlStyle btn btn-primary ">@SharedLocalizer["dlw Sample Of Excel File"]</a>
+            <div class="col-md-4">
+                <a target="_blank" href="/Content/ExcelSampleFile/PopulationCoveredSmple.xlsx" title="از اینجا برای دانلود یک نمونه فایل اکسل، برای انتقال اطلاعات از کامپیوتر خود، به این سامانه استفاده کنید." class="exlStyle btn btn-primary ">@SharedLocalizer["dlw Sample Of Excel File"]</a>
             </div>
-            <div class="col-md-6">
-                <a asp-action="IncomingExcelFile" asp-controller="IncomeSystem" asp-area="Doctor" title="از اینجا برای آپلود یا بارگذاری فایل اکسلی که آماده کرده اید، استفاده کنید."  class="exlStyle btn btn-primary">@SharedLocalizer["Upload Compelete Excel File"]</a>
+            <div class="col-md-4">
+                <a asp-action="IncomingExcelFile" asp-controller="IncomeSystem" asp-area="Doctor" title="از اینجا برای آپلود یا بارگذاری فایل اکسلی که آماده کرده اید، استفاده کنید." class="exlStyle btn btn-primary">@SharedLocalizer["Upload Compelete Excel File"]</a>
+            </div>
+            <div class="col-md-4">
+                <a asp-action="RequestForEploadExcelFileFromSite" asp-controller="IncomeSystem" asp-area="Doctor" title="اگر به هر دلیلی نمی توانید فایل اکسل خود را تکمیل کنید این کار را به ما بسپارید " class="exlStyle btn btn-primary">آپلود فایل اکسل خام</a>
             </div>
         </div>
 
-      
+
     </div>
 

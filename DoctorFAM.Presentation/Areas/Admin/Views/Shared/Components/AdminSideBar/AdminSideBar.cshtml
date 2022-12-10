@@ -73,11 +73,16 @@
                         <span class="menu-text"> @SharedLocalizer["Manage Doctors Info"]  </span>
                     </a>
                 </li>
-                    <li>
-                        <a asp-action="ListOfDoctorsThatHasSendResume" asp-controller="Resume" asp-area="Admin">
-                            <span class="menu-text"> مدیریت رزومه ها </span>
-                        </a>
-                    </li>
+                <li>
+                    <a asp-action="ListOfDoctorsThatHasSendResume" asp-controller="Resume" asp-area="Admin">
+                        <span class="menu-text"> مدیریت رزومه ها </span>
+                    </a>
+                </li>
+                <li>
+                    <a asp-action="ListOfArrivalExcelFiles" asp-controller="IncomingExcelFile" asp-area="Admin">
+                        <span class="menu-text"> فایل های اکسل ارسالی </span>
+                    </a>
+                </li>
             </ul>
         </li>
 
@@ -169,7 +174,7 @@
             </ul>
         </li>
 
-           <li>
+        <li>
             <a href="#" class="menu-dropdown">
                 <i class="menu-icon glyphicon glyphicon-thumbs-up"></i>
                 <span class="menu-text">@SharedLocalizer["Consultant"]</span>
@@ -186,7 +191,7 @@
             </ul>
         </li>
 
-       
+
 
         <li>
             <a href="#" class="menu-dropdown">
@@ -279,7 +284,7 @@
                     <a asp-area="Admin" asp-controller="Reservation" asp-action="ListOfClosedReservation">
                         <span class="menu-text">@SharedLocalizer["List Of Closed Reservations"]</span>
                     </a>
-                </li> 
+                </li>
                 <li>
                     <a asp-area="Admin" asp-controller="Reservation" asp-action="ListOfDoctorPersonalBookings">
                         <span class="menu-text">@SharedLocalizer["Not Exist Patient"]</span>
@@ -353,7 +358,7 @@
             </ul>
         </li>
 
-              <li>
+        <li>
             <a href="#" class="menu-dropdown">
                 <i class="menu-icon  glyphicon glyphicon-volume-up"></i>
                 <span class="menu-text">@SharedLocalizer[" پادکست های دانستنی سلامت"]</span>

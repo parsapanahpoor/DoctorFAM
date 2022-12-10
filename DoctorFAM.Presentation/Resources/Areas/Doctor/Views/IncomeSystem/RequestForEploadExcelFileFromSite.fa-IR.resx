@@ -117,8 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Input list of family physician population" xml:space="preserve">
-    <value>آپلود لیست انتخابی</value>
+  <data name="Please Select Your File" xml:space="preserve">
+    <value>لطفا فایل مورد نظر را انتخاب کنید .</value>
+  </data>
+  <data name="Submit" xml:space="preserve">
+    <value>ثبت</value>
   </data>
   <data name="Upload Raw Excel File" xml:space="preserve">
     <value>آپلود فایل اکسل خام</value>

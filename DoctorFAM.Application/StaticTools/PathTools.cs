@@ -152,5 +152,13 @@ namespace DoctorFAM.Application.StaticTools
         public static readonly string ResumeGalleryPathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/ResumeGallery/thumb/");
 
         #endregion
+
+        #region ADvertisement File
+
+        public static readonly string RequestExcelFilePath = "/content/images/RequestForUploadExcelFile/";
+
+        public static readonly string RequestExcelFilePathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/RequestForUploadExcelFile/");
+
+        #endregion
     }
 }

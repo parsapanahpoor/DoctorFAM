@@ -3,6 +3,8 @@ using DoctorFAM.Domain.Entities.FamilyDoctor.ParsaSystem;
 using DoctorFAM.Domain.Entities.FamilyDoctor.VIPSystem;
 using DoctorFAM.Domain.Entities.Interest;
 using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo;
+using DoctorFAM.Domain.ViewModels.Admin.FamilyDoctor;
+using DoctorFAM.Domain.ViewModels.Admin.IncomingExcelFile;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DosctorSideBarInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Employees;
@@ -112,6 +114,10 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         Task<Doctor?> GetDoctorByUserId(ulong userId);
 
+
+        //List Of Arrival Excel Files Show In Admin Side 
+        Task<List<ListOfArrivalExcelFiles>> FillListOfArrivalExcelFilesAdminSideViewModel();
+
         Task<Doctor?> GetDoctorById(ulong doctorId);
 
         Task<bool> IsExistAnyDoctorByUserId(ulong userId);
@@ -131,6 +137,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Decline Doctor Information By One Click 
         Task<bool> DeclineDoctorInformationByOneClick(ulong userId);
+
+        //Request For Epload Excel File From Site
+        Task<bool> RequestForEploadExcelFileFromSite(RequestForUploadExcelFileFromDoctorsToSiteViewModel model, ulong userId);
 
         #endregion
 

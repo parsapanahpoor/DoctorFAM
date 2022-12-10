@@ -19,6 +19,9 @@ namespace DoctorFAM.Domain.Interfaces
     {
         #region Doctors Panel Side
 
+        //Create Request Excel File For Compelete From Admin 
+        Task CreateRequestExcelFileForCompeleteFromAdmin(RequestForUploadExcelFileFromDoctorsToSite model);
+
         //List Of DOctor VIP Parsa System UsersWith Sickness Label Id
         Task<List<VIPUserInsertedFromDoctorSystem>?> ListOfDOctorVIPParsaSystemUsers(ulong DoctorUserId, ulong sicknessLabelId);
 
@@ -163,6 +166,9 @@ namespace DoctorFAM.Domain.Interfaces
         #endregion
 
         #region Admin Side 
+
+        //Get Lastest Request For Uplaod Excel File
+        Task<List<RequestForUploadExcelFileFromDoctorsToSite>> GetLastestRequestForUplaodExcelFile();
 
         Task<ListOfDoctorsInfoViewModel> FilterDoctorsInfoAdminSide(ListOfDoctorsInfoViewModel filter);
 

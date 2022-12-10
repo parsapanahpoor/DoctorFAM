@@ -1,11 +1,13 @@
 ﻿using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Services.Interfaces;
+using DoctorFAM.Domain.ViewModels.Admin.FamilyDoctor;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.ParsaSystem;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.ParsaSystem.VIPPatient;
 using DoctorFAM.Web.Doctor.Controllers;
 using DoctorFAM.Web.HttpManager;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DoctorFAM.Web.Areas.Doctor.Controllers
 {
@@ -422,6 +424,49 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
             #endregion
 
             return PartialView("_ShowListOfSMSVIP", model);
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Request For Upload Excel File From Doctors To Site 
+
+        #region Request For Epload Excel File From Site
+
+        [HttpGet]
+        public async Task<IActionResult> RequestForEploadExcelFileFromSite()
+        {
+            return View();
+        }
+
+        [HttpPost , ValidateAntiForgeryToken]
+        public async Task<IActionResult> RequestForEploadExcelFileFromSite(RequestForUploadExcelFileFromDoctorsToSiteViewModel model)
+        {
+            #region Model State Validation 
+
+            if (!ModelState.IsValid)
+            {
+                TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+                return View(model);
+            }
+
+            #endregion
+
+            #region Create Request Method 
+
+            var res = await _doctorService.RequestForEploadExcelFileFromSite(model , User.GetUserId()) ;
+            if (res)
+            {
+                TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+                TempData[WarningMessage] = "لطفا تا تکمیل از طرف پشتیبانی شکیبا باشید.";
+                return RedirectToAction("Index" , "Home" , new { area = "Doctor" } ) ;
+            }
+
+            #endregion
+
+            TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+            return View(model);
         }
 
         #endregion
