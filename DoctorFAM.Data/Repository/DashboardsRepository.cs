@@ -124,6 +124,31 @@ namespace DoctorFAM.Data.Repository
 
             #endregion
 
+            #region Latest Request For Upload Excel File
+
+            //Main Instance
+            List<ListOfArrivalExcelFiles> MainRequests = new List<ListOfArrivalExcelFiles>();
+
+            //Get List Of Requests For Excel Files
+            var listOFRequests = await _context.RequestForUploadExcelFileFromDoctorsToSite.Where(p => !p.IsDelete && p.IsPending)
+                                                   .OrderByDescending(p => p.CreateDate).ToListAsync();
+
+            if (listOFRequests != null)
+            {
+                foreach (var request in listOFRequests)
+                {
+                    MainRequests.Add(new ListOfArrivalExcelFiles()
+                    {
+                        ExcelFile = request,
+                        User = await _context.Users.FirstOrDefaultAsync(s => s.Id == request.DoctorId && !s.IsDelete),
+                    });
+                }
+            }
+
+            model.LatestRequestForUploadExcelFile = MainRequests;
+
+            #endregion
+
             return model;
         }
 

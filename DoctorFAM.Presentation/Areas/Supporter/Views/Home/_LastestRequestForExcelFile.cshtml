@@ -1,21 +1,20 @@
-﻿@model List<DoctorFAM.Domain.Entities.Contact.Ticket>
-@using DoctorFAM.Domain.ViewModels.Admin.Ticket
+﻿@model List<DoctorFAM.Domain.ViewModels.Admin.IncomingExcelFile.ListOfArrivalExcelFiles>
+
 @using DoctorFAM.Application.Convertors
 @using DoctorFAM.Application.Extensions
 
-
-<div class="col-lg-6 col-md-6 col-xl-6 col-sm-12 col-xs-12">
+<div class="col-lg-6 col-md-6 col-xl-12 col-sm-12 col-xs-12">
 
     <div class="widget">
         <div class="widget-header">
             <i class="widget-icon fa fa-comment"></i>
-            <span class="widget-caption"> آخرین تیکت ها   </span>
+            <span class="widget-caption"> درخواست های آپلود فایل اکسل   </span>
             <div class="widget-buttons">
                 <div class="row" style="margin-right: -84px;">
 
                     @if (Model != null && Model.Any())
                     {
-                        <a id="ShowUserCommentInAdminPanel" asp-action="FilterTickets" asp-controller="Ticket" asp-area="Supporter" asp-route-UserEmail="@ViewBag.userEmail" class="badge badge-info">نمایش همه</a>
+                        <a id="ShowUserCommentInAdminPanel" asp-action="ListOfArrivalExcelFiles" asp-controller="IncomingExcelFile" asp-area="Supporter" class="badge badge-info">نمایش همه</a>
                     }
 
                     <a id="ShowUserCommentInAdminPanelMinus" href="#" data-toggle="collapse">
@@ -25,7 +24,7 @@
                 </div>
             </div><!--Widget Buttons-->
         </div><!--Widget Header-->
-        <div class="widget-body">
+        <div class="widget-body" style="max-height: 230px !important; overflow-y: scroll; height:auto;">
             @if (Model != null && Model.Any())
             {
                 <div class="table-responsive">
@@ -36,9 +35,6 @@
                                     اطلاعات ارسال کننده
                                 </th>
                                 <th class="tc vm">
-                                    وضعیت
-                                </th>
-                                <th class="tc vm">
                                     تاریخ درج
                                 </th>
                                 <th class="tc vm">
@@ -47,35 +43,27 @@
                             </tr>
                         </thead>
                         <tbody class="tc vm">
-                            @foreach (var ticket in Model)
+                            @foreach (var user in Model)
                             {
-                                <tr class="tc vm" remove-ajax-item="@ticket.Id">
+                                <tr class="tc vm" remove-ajax-item="@user.User.Id">
                                     <td class="vm">
                                         <div class="flex-style-center">
-                                            <img src="@ticket.Owner.GetUserAvatar()" class="avatar-style" style="border-radius:50px;" />
+                                            <img src="@user.User.GetUserAvatar()" class="avatar-style" style="border-radius:50px;" />
                                             <div class="mr-10px">
-                                                <span> @ticket.Owner.Username </span>
+                                                <span> @user.User.Username </span>
                                             </div>
                                         </div>
                                     </td>
 
                                     <td class="tc vm">
-                                        <p class="flex-style-center">
-                                        <p class="mr-8px label label-primary">
-                                                @ticket.TicketStatus.GetEnumName()
-                                        </p>
-                                        </p>
-                                    </td>
-
-                                    <td class="tc vm">
                                         <div class="tc vm">
-                                            <p id="ArticleTitle">@ticket.CreateDate.ToShamsi()</p>
+                                            <p id="ArticleTitle">@user.ExcelFile.CreateDate.ToShamsi()</p>
                                         </div>
                                     </td>
-
+                                        
                                     <td class="tc vm">
 
-                                        <a asp-action="TicketDetail" asp-controller="Ticket" asp-area="Supporter" asp-route-id="@ticket.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+                                            <a asp-action="ExcelFileDetail" asp-controller="IncomingExcelFile" asp-area="Supporter" asp-route-excelFileId="@user.ExcelFile.Id" class="btn btn-warning btn-circle btn-xs"><i class="glyphicon glyphicon-edit"></i></a>
 
                                     </td>
                                 </tr>
