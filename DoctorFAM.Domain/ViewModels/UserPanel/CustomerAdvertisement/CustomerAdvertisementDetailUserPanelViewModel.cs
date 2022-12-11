@@ -7,15 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DoctorFAM.Domain.ViewModels.Admin.CustomerAdvertisement
+namespace DoctorFAM.Domain.ViewModels.UserPanel.CustomerAdvertisement
 {
-    public class CustomerAdvertisementDetailViewModel
+    public class CustomerAdvertisementDetailUserPanelViewModel
     {
         #region properties
 
         public ulong AdvertisementId { get; set; }
-
-        public User Owner { get; set; }
 
         [Required(ErrorMessage = "این فیلد الزامی است .")]
         [MaxLength(300, ErrorMessage = "تعداد کاراکتر های {0} نمیتواند بیشتر از {1} باشد")]
@@ -42,5 +40,6 @@ namespace DoctorFAM.Domain.ViewModels.Admin.CustomerAdvertisement
         public bool ShowInfinit { get; set; }
 
         #endregion
+
     }
 }

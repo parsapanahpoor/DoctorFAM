@@ -1,4 +1,5 @@
-﻿using DoctorFAM.Domain.Entities.Advertisement;
+﻿using DoctorFAM.Domain.Entities.Account;
+using DoctorFAM.Domain.Entities.Advertisement;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,12 @@ namespace DoctorFAM.Domain.Interfaces.EFCore
 
         //Add Advertisement To The Data Base 
         Task AddAdvertisementToTheDataBase(CustomerAdvertisement advertisement);
+
+        //Has User Any Advertisement 
+        Task<bool> HasUserAnyAdvertisement(User user);
+
+        //List Of User Advertisements
+        Task<List<CustomerAdvertisement>> ListOfUserAdvertisements(ulong userId);
 
         #endregion
 

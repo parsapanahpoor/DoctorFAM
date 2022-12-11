@@ -18,6 +18,15 @@ namespace DoctorFAM.Web.Areas.UserPanel.Controllers
 
         #endregion
 
+        #region List Of Advertisements
+
+        public async Task<IActionResult> ListOfAdvertisements()
+        {
+            return View(await _advertisementService.ListOfUserAdvertisements(User.GetUserId()));
+        }
+
+        #endregion
+
         #region Create Advertisement
 
         [HttpGet]
@@ -56,5 +65,39 @@ namespace DoctorFAM.Web.Areas.UserPanel.Controllers
         }
 
         #endregion
+
+        #region Show Invoice
+
+        public async Task<IActionResult> ShowInvocie(ulong id)
+        {
+            #region Get Advertisement By Id 
+
+            var model = await _advertisementService.GetCustomerAdvertisementById(id);
+            if (model == null) return NotFound();
+            if (model.UserId != User.GetUserId()) return NotFound();
+
+            #endregion
+
+            return View(model);
+        }
+
+        #endregion
+
+        #region Show Advertisement Detail 
+
+        [HttpGet]
+        public async Task<IActionResult> ShowAdvertisementDetail(ulong advertisementId)
+        {
+            #region Fill Model 
+
+            var advertisement = await _advertisementService.FillCustomerAdvertisementDetailUserPanelViewModel(advertisementId , User.GetUserId());
+            if (advertisement == null) return NotFound();
+
+            #endregion
+
+            return View(advertisement);
+        }
+
+        #endregion  
     }
 }

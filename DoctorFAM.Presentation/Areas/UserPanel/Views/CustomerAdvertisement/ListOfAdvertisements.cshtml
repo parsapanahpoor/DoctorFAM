@@ -1,4 +1,4 @@
-﻿@model List<DoctorFAM.Domain.ViewModels.Admin.CustomerAdvertisement.ListOfCustomerAdvertisementAdminSideViewModel>
+﻿@model List<DoctorFAM.Domain.Entities.Advertisement.CustomerAdvertisement>
 @using DoctorFAM.Application.Convertors
 @using DoctorFAM.Application.Extensions
 
@@ -50,7 +50,6 @@
                             <thead class="bordered-darkorange">
                                 <tr role="row">
 
-                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">درخواست دهنده</th>
                                     <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" aria-sort="ascending">عنوان</th>
                                     <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" aria-sort="ascending">تاریخ درخواست</th>
                                     <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Platform: activate to sort column ascending">وضعیت</th>
@@ -63,42 +62,32 @@
 
                                 @foreach (var ads in Model)
                                 {
-                                    <tr role="row" class="even responsive" remove-ajax-item="@ads.CustomerAdvertisement.Id">
+                                    <tr role="row" class="even responsive" remove-ajax-item="@ads.Id">
 
-                                        <td class=" sorting_1">
-                                            <div class="flex-style-center">
-
-                                                <img src="@ads.User.GetUserAvatar()" class="avatar-style" style="border-radius:50px" />
-                                                <div class="mr-10px">
-                                                    <span> @ads.User.Username </span>
-                                                </div>
-
-                                            </div>
+                                        <td class="sorting_1">
+                                            @ads.Title
                                         </td>
                                         <td class="sorting_1">
-                                            @ads.CustomerAdvertisement.Title
-                                        </td>
-                                        <td class="sorting_1">
-                                            @ads.CustomerAdvertisement.CreateDate.ToShamsi()
+                                            @ads.CreateDate.ToShamsi()
                                         </td>
                                         <td class="sorting_1">
                                             <div class="row" style="width: 100%;margin: auto;text-aling">
-                                                @if (ads.CustomerAdvertisement.CustomerAdvertisementState == DoctorFAM.Domain.Enums.CustomerAdvertisement.CustomerAdvertisementState.WaitingForPayment)
+                                                @if (ads.CustomerAdvertisementState == DoctorFAM.Domain.Enums.CustomerAdvertisement.CustomerAdvertisementState.WaitingForPayment)
                                                 {
                                                     <span class=" label label-primary"> درانتظار پرداخت کاربر </span>
                                                 }
 
-                                                @if (ads.CustomerAdvertisement.CustomerAdvertisementState == DoctorFAM.Domain.Enums.CustomerAdvertisement.CustomerAdvertisementState.Paied)
+                                                @if (ads.CustomerAdvertisementState == DoctorFAM.Domain.Enums.CustomerAdvertisement.CustomerAdvertisementState.Paied)
                                                 {
                                                     <span class=" label label-success"> پرداخات شده</span>
                                                 }
 
-                                                @if (ads.CustomerAdvertisement.CustomerAdvertisementState == DoctorFAM.Domain.Enums.CustomerAdvertisement.CustomerAdvertisementState.WaitingForInitialInvoice)
+                                                @if (ads.CustomerAdvertisementState == DoctorFAM.Domain.Enums.CustomerAdvertisement.CustomerAdvertisementState.WaitingForInitialInvoice)
                                                 {
                                                     <span class=" label label-warning"> در انتظار برسی </span>
                                                 }
 
-                                                @if (ads.CustomerAdvertisement.CustomerAdvertisementState == DoctorFAM.Domain.Enums.CustomerAdvertisement.CustomerAdvertisementState.Decline)
+                                                @if (ads.CustomerAdvertisementState == DoctorFAM.Domain.Enums.CustomerAdvertisement.CustomerAdvertisementState.Decline)
                                                 {
                                                     <span class=" label label-danger"> درخواست رد شده  </span>
                                                 }
@@ -106,7 +95,12 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <a asp-action="ShowAdvertisementDetail" asp-controller="CustomerAdvertisement" asp-area="Admin" asp-route-id="@ads.CustomerAdvertisement.Id" class="btn btn-warning btn-circle btn-xs"><i class="glyphicon glyphicon-edit"></i></a>
+                                            @if (ads.CustomerAdvertisementState == DoctorFAM.Domain.Enums.CustomerAdvertisement.CustomerAdvertisementState.WaitingForPayment)
+                                            {
+                                                <a asp-action="ShowInvocie" asp-controller="CustomerAdvertisement" asp-area="UserPanel" asp-route-id="@ads.Id" class="btn btn-success  btn-xs">نمایش پیش فاکتور</a>
+                                            }
+                                            <a asp-action="ShowAdvertisementDetail" asp-controller="CustomerAdvertisement" asp-area="UserPanel" asp-route-id="@ads.Id" class="btn btn-warning btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+
                                         </td>
 
                                     </tr>
@@ -120,12 +114,11 @@
             }
             else
             {
-                <partial name="_AdminNotFoundPartial" />
+                <partial name="_UserPanelNotFoundPartial" />
             }
 
         </div>
     </div>
 
 </div>
-
 

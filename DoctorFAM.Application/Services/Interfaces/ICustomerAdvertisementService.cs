@@ -1,4 +1,5 @@
-﻿using DoctorFAM.Domain.ViewModels.Admin.CustomerAdvertisement;
+﻿using DoctorFAM.Domain.Entities.Advertisement;
+using DoctorFAM.Domain.ViewModels.Admin.CustomerAdvertisement;
 using DoctorFAM.Domain.ViewModels.UserPanel.CustomerAdvertisement;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -15,6 +16,18 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Create Advertisement From User Panel 
         Task<bool> CreateAdvertisementFromUserPanel(CreateCustomerAdvertisementUserPanelViewModel model, IFormFile UserAvatar, ulong userId);
+
+        //Has User Any Advertisement 
+        Task<bool> HasUserAnyAdvertisement(ulong userId);
+
+        //List Of User Advertisements
+        Task<List<CustomerAdvertisement>?> ListOfUserAdvertisements(ulong userId);
+
+        //Get Customer Advertisement By Id 
+        Task<CustomerAdvertisement?> GetCustomerAdvertisementById(ulong advertisementId);
+
+        //Fill Customer Advertisement Detail View Model
+        Task<CustomerAdvertisementDetailUserPanelViewModel?> FillCustomerAdvertisementDetailUserPanelViewModel(ulong advertisementId, ulong userId);
 
         #endregion
 

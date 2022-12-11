@@ -10,6 +10,7 @@ using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.Admin.CustomerAdvertisement;
 using DoctorFAM.Domain.ViewModels.UserPanel.CustomerAdvertisement;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -82,6 +83,78 @@ namespace DoctorFAM.Application.Services.Implementation
             #endregion
 
             return true;
+        }
+
+        //Has User Any Advertisement 
+        public async Task<bool> HasUserAnyAdvertisement(ulong userId)
+        {
+            #region Get User By Id
+
+            var user = await _userService.GetUserById(userId);
+            if (user == null) return false;
+
+            #endregion
+
+            return await _advertisement.HasUserAnyAdvertisement(user);
+        }
+
+        //List Of User Advertisements
+        public async Task<List<CustomerAdvertisement>?> ListOfUserAdvertisements(ulong userId)
+        {
+            #region Get User By Id
+
+            var user = await _userService.GetUserById(userId);
+            if (user == null) return null;
+
+            #endregion
+
+            return await _advertisement.ListOfUserAdvertisements(userId);
+        }
+
+        //Get Customer Advertisement By Id 
+        public async Task<CustomerAdvertisement?> GetCustomerAdvertisementById(ulong advertisementId)
+        {
+            return await _advertisement.GetCustomerAdvertisementById(advertisementId);
+        }
+
+        //Fill Customer Advertisement Detail View Model
+        public async Task<CustomerAdvertisementDetailUserPanelViewModel?> FillCustomerAdvertisementDetailUserPanelViewModel(ulong advertisementId , ulong userId)
+        {
+            #region Get Advertisement By Id
+
+            var advertisement = await _advertisement.GetCustomerAdvertisementById(advertisementId);
+            if (advertisement == null) return null;
+            if (advertisement.UserId != userId) return null;
+
+            #endregion
+
+            #region Get User 
+
+            var user = await _userService.GetUserById(advertisement.UserId);
+            if (user == null) return null;
+
+            #endregion
+
+            #region Fill Model 
+
+            CustomerAdvertisementDetailUserPanelViewModel model = new CustomerAdvertisementDetailUserPanelViewModel()
+            {
+                AdvertisementId = advertisement.Id,
+                CustomerAdvertisementState = advertisement.CustomerAdvertisementState,
+                EndDate = ((advertisement.EndDate == null) ? null : advertisement.EndDate.Value.ToShamsi()),
+                Image = advertisement.Image,
+                LongDescription = advertisement.LongDescription,
+                Price = advertisement.Price,
+                Priority = advertisement.Priority,
+                ShortDescription = advertisement.ShortDescription,
+                ShowInfinit = advertisement.ShowInfinit,
+                StartDate = ((advertisement.StartDate == null) ? null : advertisement.StartDate.Value.ToShamsi()),
+                Title = advertisement.Title,
+            };
+
+            #endregion
+
+            return model;
         }
 
         #endregion
