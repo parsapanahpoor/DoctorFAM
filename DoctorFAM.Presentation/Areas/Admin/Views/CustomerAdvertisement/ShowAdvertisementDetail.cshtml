@@ -1,0 +1,167 @@
+﻿@model DoctorFAM.Domain.ViewModels.Admin.CustomerAdvertisement.CustomerAdvertisementDetailViewModel
+@using DoctorFAM.Application.StaticTools
+
+@{
+    ViewData["Title"] = "جزییات تبلیغات";
+}
+
+@section Breadcrumb
+    {
+    <li>
+        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+    </li>
+}
+
+    @section Scripts
+    {
+    <partial name="_JqueryValidation" />
+}
+
+    <form asp-action="ShowAdvertisementDetail" enctype="multipart/form-data" method="post">
+        <input asp-for="AdvertisementId" type="hidden" />
+
+        <div class="col-lg-9 col-sm-9 col-xs-12">
+            <div id="settings" class="tab-pane  active">
+                <div class="widget-header bordered-bottom bordered-success">
+                    <span class="widget-caption"> جزییات تبلیغات  </span>
+                </div>
+                <div class="widget-body">
+                    <div class="row">
+
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label >عنوان </label>
+                                <input readonly class="form-control" placeholder="@Model.Title" />
+                            </div>
+                        </div>
+
+                        <div class="clearfix"></div>
+
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label >نام و نام خانوادگی  </label>
+                                <input readonly class="form-control" placeholder="@Model.Owner.Username" />
+                            </div>
+                        </div>
+
+                         <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>نام و نام خانوادگی  </label>
+                                <input readonly class="form-control" placeholder="@Model.Owner.Mobile" />
+                            </div>
+                        </div>
+
+                        <div class="clearfix"></div>
+
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label >توضیح کوتاه </label>
+                                <input readonly class="form-control" placeholder="@Model.ShortDescription" />
+                            </div>
+                        </div>
+
+                        <div class="clearfix"></div>
+
+                        <div class="form-group col-md-6 col-sm-12">
+                            <label asp-for="StartDate">تاریخ شروع</label>
+                            <input type="text" class="form-control" AdminDatePicker="1" style="z-index:9999!important;" asp-for="StartDate">
+                            <span class="text-danger" asp-validation-for="StartDate"></span>
+                        </div>
+
+                        <div class="form-group col-md-6 col-sm-12">
+                            <label asp-for="EndDate">تاریخ پایان</label>
+                            <input type="text" class="form-control" AdminDatePicker="1" style="z-index:9999!important;" asp-for="EndDate">
+                            <span class="text-danger" asp-validation-for="EndDate"></span>
+                        </div>
+
+                        <div class="clearfix"></div>
+
+                        <div class="form-group col-md-12 col-sm-12">
+                            <label>وضعیت</label>
+                            <select asp-for="CustomerAdvertisementState" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.CustomerAdvertisement.CustomerAdvertisementState))"></select>
+                            <span class="text-danger" asp-validation-for="CustomerAdvertisementState"></span>
+                        </div>
+
+                        <div class="clearfix"></div>
+
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>مبلغ </label>
+                                <input asp-for="Price" NumericInput="1" class="form-control" placeholder="@Model.Price" />
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>الویت نمایش </label>
+                                <input asp-for="Priority" class="form-control" placeholder="@Model.Priority" />
+                            </div>
+                        </div>
+
+                        <div class="clearfix"></div>
+
+                        <div class="form-group col-md-12">
+                            <label>توضیح کامل</label>
+                            <textarea class="form-control" ckeditor="1" readonly>@Model.LongDescription</textarea>
+                        </div>
+
+                    </div>
+
+                    <div>
+                        <button type="submit" class="btn btn-labeled btn-palegreen">
+                            <i class="btn-label glyphicon glyphicon-ok"></i>ثبت
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-sm-12">
+            <div class="row">
+
+                <div class="col-lg-12">
+                    <div class="widget">
+                        <div class="widget-header bordered-bottom bordered-green">
+                            <span class="widget-caption"> تصویر تبلیغ </span>
+                        </div>
+                        <div class="widget-body">
+                            <div class="row">
+
+                                <div class="col-md-12 tc mt-10px">
+                                    <img src="@PathTools.CustomerAdvertisementPathThumb/@Model.Image" class="image-style" ImageFile="1" />
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-12">
+                    <div class="widget">
+                        <div class="widget-header bordered-bottom bordered-green">
+                            <span class="widget-caption"> وضعیت </span>
+                        </div>
+                        <div class="widget-body">
+                            <div class="row">
+                                <div class="col-md-12">
+
+                                    <div class="form-group">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" asp-for="ShowInfinit">
+                                                <span class="text"> نمایش همیشگی </span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+    </form>

@@ -1,0 +1,132 @@
+﻿@model List<DoctorFAM.Domain.ViewModels.Admin.CustomerAdvertisement.ListOfCustomerAdvertisementAdminSideViewModel>
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.Extensions
+
+@{
+    ViewData["Title"] = "لیست تبلیغات";
+}
+
+@section Breadcrumb
+    {
+    <li>
+        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+    </li>
+}
+
+    @section Styles
+    {
+    <link href="/admin/css/dataTables.bootstrap.rtl.css" rel="stylesheet" />
+}
+
+    @section Scripts
+    {
+    <script src="~/admin/js/datatable/jquery.dataTables.min.js"></script>
+    <script src="~/admin/js/datatable/ZeroClipboard.js"></script>
+    <script src="~/admin/js/datatable/dataTables.tableTools.min.js"></script>
+    <script src="~/admin/js/datatable/dataTables.bootstrap.min.js"></script>
+    <script src="~/admin/js/datatable/datatables-init.js"></script>
+    <script>
+        InitiateSimpleDataTable.init();
+        InitiateEditableDataTable.init();
+        InitiateExpandableDataTable.init();
+        InitiateSearchableDataTable.init();
+    </script>
+
+    }
+
+    <div class="page-body">
+
+        <div class="row">
+
+            <div id="horizontal-form">
+
+            @if (Model != null && Model.Any())
+            {
+
+                <div class="widget-body no-padding">
+                    <div id="searchable_wrapper" class="dataTables_wrapper form-inline">
+
+                        <table class="table table-bordered table-hover table-striped dataTable" id="searchable" role="grid" aria-describedby="searchable_info">
+                            <thead class="bordered-darkorange">
+                                <tr role="row">
+
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">درخواست دهنده</th>
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" aria-sort="ascending">عنوان</th>
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" aria-sort="ascending">تاریخ درخواست</th>
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Platform: activate to sort column ascending">وضعیت</th>
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending"></th>
+
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                @foreach (var ads in Model)
+                                {
+                                    <tr role="row" class="even responsive" remove-ajax-item="@ads.CustomerAdvertisement.Id">
+
+                                        <td class=" sorting_1">
+                                            <div class="flex-style-center">
+
+                                                <img src="@ads.User.GetUserAvatar()" class="avatar-style" style="border-radius:50px" />
+                                                <div class="mr-10px">
+                                                    <span> @ads.User.Username </span>
+                                                </div>
+
+                                            </div>
+                                        </td>
+                                        <td class="sorting_1">
+                                            @ads.CustomerAdvertisement.Title
+                                        </td>
+                                        <td class="sorting_1">
+                                            @ads.CustomerAdvertisement.CreateDate.ToShamsi()
+                                        </td>
+                                        <td class="sorting_1">
+                                            <div class="row" style="width: 100%;margin: auto;text-aling">
+                                                @if (ads.CustomerAdvertisement.CustomerAdvertisementState == DoctorFAM.Domain.Enums.CustomerAdvertisement.CustomerAdvertisementState.WaitingForPayment)
+                                                {
+                                                    <span class=" label label-primary"> درانتظار پرداخت کاربر </span>
+                                                }
+
+                                                @if (ads.CustomerAdvertisement.CustomerAdvertisementState == DoctorFAM.Domain.Enums.CustomerAdvertisement.CustomerAdvertisementState.Paied)
+                                                {
+                                                    <span class=" label label-success"> پرداخات شده</span>
+                                                }
+
+                                                @if (ads.CustomerAdvertisement.CustomerAdvertisementState == DoctorFAM.Domain.Enums.CustomerAdvertisement.CustomerAdvertisementState.WaitingForInitialInvoice)
+                                                {
+                                                    <span class=" label label-warning"> در انتظار برسی </span>
+                                                }
+
+                                                @if (ads.CustomerAdvertisement.CustomerAdvertisementState == DoctorFAM.Domain.Enums.CustomerAdvertisement.CustomerAdvertisementState.Decline)
+                                                {
+                                                    <span class=" label label-danger"> درخواست رد شده  </span>
+                                                }
+
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <a asp-action="ShowAdvertisementDetail" asp-controller="CustomerAdvertisement" asp-area="Admin" asp-route-id="@ads.CustomerAdvertisement.Id" class="btn btn-warning btn-circle btn-xs"><i class="glyphicon glyphicon-edit"></i></a>
+                                            <button onclick="DeleteAjax(@ads.CustomerAdvertisement.Id, '@Url.Action("DeleteHealthInformation", "HealthInformation", new { area = "Admin", id = ads.CustomerAdvertisement.Id })')" class="btn btn-danger btn-circle btn-xs"><i class="glyphicon glyphicon-trash"></i></button>
+                                        </td>
+
+                                    </tr>
+
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <partial name="_AdminNotFoundPartial" />
+            }
+
+        </div>
+    </div>
+
+</div>
+
+

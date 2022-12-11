@@ -1,24 +1,21 @@
-﻿using DoctorFAM.Domain.Entities.Common;
+﻿using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Enums.CustomerAdvertisement;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DoctorFAM.Domain.Entities.Advertisement
+namespace DoctorFAM.Domain.ViewModels.Admin.CustomerAdvertisement
 {
-    public class CustomerAdvertisement : BaseEntity
+    public class CustomerAdvertisementDetailViewModel
     {
         #region properties
 
-        public ulong UserId { get; set; }
+        public ulong AdvertisementId { get; set; }
 
-        [Required(ErrorMessage = "این فیلد الزامی است .")]
-        [MaxLength(300, ErrorMessage = "تعداد کاراکتر های {0} نمیتواند بیشتر از {1} باشد")]
-        public string Username { get; set; }
+        public User Owner { get; set; }
 
         [Required(ErrorMessage = "این فیلد الزامی است .")]
         [MaxLength(300, ErrorMessage = "تعداد کاراکتر های {0} نمیتواند بیشتر از {1} باشد")]
@@ -38,12 +35,13 @@ namespace DoctorFAM.Domain.Entities.Advertisement
 
         public int Priority { get; set; }
 
-        public DateTime? StartDate { get; set; }
+        public string? StartDate { get; set; }
 
-        public DateTime? EndDate { get; set; }
+        public string? EndDate { get; set; }
 
         public bool ShowInfinit { get; set; }
 
         #endregion
+
     }
 }

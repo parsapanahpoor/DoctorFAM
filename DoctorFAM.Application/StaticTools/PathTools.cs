@@ -153,11 +153,21 @@ namespace DoctorFAM.Application.StaticTools
 
         #endregion
 
-        #region ADvertisement File
+        #region Excel File
 
         public static readonly string RequestExcelFilePath = "/content/images/RequestForUploadExcelFile/";
 
         public static readonly string RequestExcelFilePathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/RequestForUploadExcelFile/");
+
+        #endregion
+
+        #region Customer Advertisement File 
+
+        public static readonly string CustomerAdvertisementPath = "/content/images/CustomerAdvertisement/main/";
+        public static readonly string CustomerAdvertisementPathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/CustomerAdvertisement/main/");
+
+        public static readonly string CustomerAdvertisementPathThumb = "/content/images/CustomerAdvertisement/thumb/";
+        public static readonly string CustomerAdvertisementPathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/CustomerAdvertisement/thumb/");
 
         #endregion
     }
