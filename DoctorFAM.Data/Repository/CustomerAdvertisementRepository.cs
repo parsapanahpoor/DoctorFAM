@@ -58,7 +58,7 @@ namespace DoctorFAM.Data.Repository
         //Get Customer Advertisement By Id 
         public async Task<CustomerAdvertisement?> GetCustomerAdvertisementById(ulong advertisementId)
         {
-            return await _context.CustomerAdvertisement.FirstOrDefaultAsync(p=> !p.IsDelete);
+            return await _context.CustomerAdvertisement.FirstOrDefaultAsync(p=> !p.IsDelete && p.Id == advertisementId);
         }
 
         //Update Advertisement Fields

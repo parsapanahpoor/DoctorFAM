@@ -301,6 +301,13 @@ namespace DoctorFAM.Data.Repository
 
             #endregion
 
+            #region Lastest Customer Advertisements
+
+            model.LastestCustomerAdvertisements = await _context.CustomerAdvertisement.Where(p => !p.IsDelete && p.CustomerAdvertisementState == Domain.Enums.CustomerAdvertisement.CustomerAdvertisementState.WaitingForInitialInvoice)
+                                                                     .OrderByDescending(p=> p.CreateDate).ToListAsync();
+
+            #endregion
+
             return model;
         }
 

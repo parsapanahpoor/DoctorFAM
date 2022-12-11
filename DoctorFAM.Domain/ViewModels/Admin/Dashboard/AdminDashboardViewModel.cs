@@ -43,6 +43,8 @@ namespace DoctorFAM.Domain.ViewModels.Admin.Dashboard
 
         public List<ListOfArrivalExcelFiles> LatestRequestForUploadExcelFile{ get; set; }
 
+        public List<DoctorFAM.Domain.Entities.Advertisement.CustomerAdvertisement> LastestCustomerAdvertisements { get; set; }
+
         #endregion
     }
 }
