@@ -319,6 +319,12 @@ namespace DoctorFAM.Application.Services.Implementation
             return await _siteSettingRepository.GetListOfTariffForHealthHouseServices();
         }
 
+        //Get List Of Tariff For Home Visit Health House Services
+        public async Task<List<TariffForHealthHouseServices>?> GetListOfTariffForHomeVisitHealthHouseServices()
+        {
+            return await _siteSettingRepository.GetListOfTariffForHomeVisitHealthHouseServices();
+        }
+
         //Add Or Edit Tariff For Health House Services
         public async Task<bool> AddOrEditTariffForHealthHouseServices(AddOrEditTariffForHealthHouseServicesViewModel model)
         {
@@ -333,7 +339,7 @@ namespace DoctorFAM.Application.Services.Implementation
                     DeathCertificate = model.DeathCertificate,
                     HomeNurse = model.HomeNurse,
                     HomeVisit = model.HomeVisit,
-                    Price= model.Price,
+                    Price = model.Price,
                     Title = model.Title
                 };
 
@@ -345,7 +351,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
                 #endregion
 
-                return true; 
+                return true;
             }
 
             #endregion

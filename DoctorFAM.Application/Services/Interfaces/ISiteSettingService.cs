@@ -47,6 +47,9 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Add Or Edit Tariff For Health House Services
         Task<bool> AddOrEditTariffForHealthHouseServices(AddOrEditTariffForHealthHouseServicesViewModel model);
 
+        //Get List Of Tariff For Home Visit Health House Services
+        Task<List<TariffForHealthHouseServices>?> GetListOfTariffForHomeVisitHealthHouseServices();
+
         #endregion
 
         #region Site Side

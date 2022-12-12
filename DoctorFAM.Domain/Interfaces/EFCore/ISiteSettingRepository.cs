@@ -44,6 +44,9 @@ namespace DoctorFAM.Domain.Interfaces
         //Update Tariff To The Data Base 
         Task UpdateTariffToTheDataBase(TariffForHealthHouseServices tariff);
 
+        //Get List Of Tariff For Home Visit Health House Services
+        Task<List<TariffForHealthHouseServices>?> GetListOfTariffForHomeVisitHealthHouseServices();
+
         #endregion
 
         #region Site Side

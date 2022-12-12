@@ -92,6 +92,8 @@ namespace DoctorFAM.Data.DbContext
 
         #region Request
 
+        public DbSet<RequestSelectedHealthHouseTariff> RequestSelectedHealthHouseTariff { get; set; }
+
         public DbSet<Request> Requests { get; set; }
 
         public DbSet<PaitientRequestDetail> PaitientRequestDetails { get; set; }

@@ -160,6 +160,12 @@ namespace DoctorFAM.Data.Repository
             return await _context.TariffForHealthHouseServices.Where(p=> !p.IsDelete ).ToListAsync();
         }
 
+        //Get List Of Tariff For Home Visit Health House Services
+        public async Task<List<TariffForHealthHouseServices>?> GetListOfTariffForHomeVisitHealthHouseServices()
+        {
+            return await _context.TariffForHealthHouseServices.Where(p => !p.IsDelete && p.HomeVisit).ToListAsync();
+        }
+
         //Add Tariff To The Data Base 
         public async Task AddTariffToTheDataBase(TariffForHealthHouseServices tariff)
         {

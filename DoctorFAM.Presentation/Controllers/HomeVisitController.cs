@@ -228,7 +228,8 @@ namespace DoctorFAM.Web.Controllers
             return View(new PatienAddressForHomeVistiViewModel()
             {
                 RequestId = requestId,
-                PatientId = patientId
+                PatientId = patientId,
+                ListOfTariffs = await _siteSettingService.GetListOfTariffForHomeVisitHealthHouseServices()
             });
         }
 
@@ -238,6 +239,7 @@ namespace DoctorFAM.Web.Controllers
             #region Page Data
 
             ViewData["Countries"] = await _locationService.GetAllCountriesForHomeVisit();
+            patientRequest.ListOfTariffs = await _siteSettingService.GetListOfTariffForHomeVisitHealthHouseServices();
 
             #endregion
 

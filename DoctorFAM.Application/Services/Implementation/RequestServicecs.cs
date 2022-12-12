@@ -321,25 +321,16 @@ namespace DoctorFAM.Application.Services.Implementation
 
             HomeVisitRequestDetail visitRequestDetail = new HomeVisitRequestDetail()
             {
-                BloodPressureMeasurement = model.BloodPressureMeasurement,
-                DermalOrSubcutaneousInjection = model.DermalOrSubcutaneousInjection,
-                ECG = model.ECG,
                 EmergencyVisit = model.EmergencyVisit,
                 FemalePhysician = model.FemalePhysician,
-                GastricIntubation = model.GastricIntubation,
-                Glucometry = model.Glucometry,
-                GreatDressing = model.GreatDressing,
-                IntramuscularInjection = model.IntramuscularInjection,
-                OxygenTherapy = model.OxygenTherapy,
-                PulseOximetry = model.PulseOximetry,
-                ReedyInjection = model.ReedyInjection,
                 RequestId = model.RequestId,
-                SerumTherapy = model.SerumTherapy,
-                SmallDressing = model.SmallDressing,
-                UrinaryBladder = model.UrinaryBladder,
             };
 
             await _request.AddHomeVisitRequestDetail(visitRequestDetail);
+
+            #endregion
+
+            #region Add Home Visit selected Tariff Request 
 
             #endregion
 
