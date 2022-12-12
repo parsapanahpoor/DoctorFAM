@@ -406,96 +406,12 @@ namespace DoctorFAM.Application.Services.Implementation
                 cost = cost + ((homeVisitTariff * 20) / 100);
             }
 
-            if (homeVisitRequestDetail.IntramuscularInjection == true)
-            {
-                var IntramuscularInjection = await _siteSettingService.GetIntramuscularInjectionCost();
+            //if (homeVisitRequestDetail.IntramuscularInjection == true)
+            //{
+            //    var IntramuscularInjection = await _siteSettingService.GetIntramuscularInjectionCost();
 
-                cost = cost + IntramuscularInjection;
-            }
-
-            if (homeVisitRequestDetail.DermalOrSubcutaneousInjection == true)
-            {
-                var DermalOrSubcutaneousInjection = await _siteSettingService.GetDermalOrSubcutaneousInjectionCost();
-
-                cost = cost + DermalOrSubcutaneousInjection;
-            }
-
-            if (homeVisitRequestDetail.ReedyInjection == true)
-            {
-                var ReedyInjection = await _siteSettingService.GetReedyInjectionCost();
-
-                cost = cost + ReedyInjection;
-            }
-
-            if (homeVisitRequestDetail.SerumTherapy == true)
-            {
-                var SerumTherapy = await _siteSettingService.GetSerumTherapyCost();
-
-                cost = cost + SerumTherapy;
-            }
-
-            if (homeVisitRequestDetail.BloodPressureMeasurement == true)
-            {
-                var BloodPressureMeasurement = await _siteSettingService.GetBloodPressureMeasurementCost();
-
-                cost = cost + BloodPressureMeasurement;
-            }
-
-            if (homeVisitRequestDetail.Glucometry == true)
-            {
-                var Glucometry = await _siteSettingService.GetGlucometrytCost();
-
-                cost = cost + Glucometry;
-            }
-
-            if (homeVisitRequestDetail.PulseOximetry == true)
-            {
-                var PulseOximetry = await _siteSettingService.GetPulseOximetryCost();
-
-                cost = cost + PulseOximetry;
-            }
-
-            if (homeVisitRequestDetail.SmallDressing == true)
-            {
-                var SmallDressing = await _siteSettingService.GetSmallDressingCost();
-
-                cost = cost + SmallDressing;
-            }
-
-            if (homeVisitRequestDetail.GreatDressing == true)
-            {
-                var GreatDressing = await _siteSettingService.GetGreatDressingCost();
-
-                cost = cost + GreatDressing;
-            }
-
-            if (homeVisitRequestDetail.GastricIntubation == true)
-            {
-                var GastricIntubation = await _siteSettingService.GetGastricIntubationCost();
-
-                cost = cost + GastricIntubation;
-            }
-
-            if (homeVisitRequestDetail.UrinaryBladder == true)
-            {
-                var UrinaryBladder = await _siteSettingService.GetUrinaryBladderCost();
-
-                cost = cost + UrinaryBladder;
-            }
-
-            if (homeVisitRequestDetail.OxygenTherapy == true)
-            {
-                var OxygenTherapy = await _siteSettingService.GetOxygenTherapyCost();
-
-                cost = cost + OxygenTherapy;
-            }
-
-            if (homeVisitRequestDetail.ECG == true)
-            {
-                var ECG = await _siteSettingService.GetECGCost();
-
-                cost = cost + ECG;
-            }
+            //    cost = cost + IntramuscularInjection;
+            //}
 
             #endregion
 

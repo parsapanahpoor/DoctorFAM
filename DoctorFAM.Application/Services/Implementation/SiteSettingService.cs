@@ -53,19 +53,6 @@ namespace DoctorFAM.Application.Services.Implementation
                     SendSMSTime = setting.SendSMSTimer,
                     SiteDomain = setting.SiteDomain,
                     OnlineVisitTariff = setting.OnlineVisitTariff,
-                    IntramuscularInjection = setting.IntramuscularInjection,
-                    DermalOrSubcutaneousInjection = setting.DermalOrSubcutaneousInjection,
-                    ReedyInjection = setting.ReedyInjection ,
-                    SerumTherapy = setting.SerumTherapy ,
-                    BloodPressureMeasurement = setting.BloodPressureMeasurement ,
-                    Glucometry = setting.Glucometry ,
-                    PulseOximetry = setting.PulseOximetry,
-                    SmallDressing = setting.SmallDressing,
-                    GreatDressing = setting.GreatDressing,
-                    GastricIntubation = setting.GastricIntubation,
-                    UrinaryBladder = setting.UrinaryBladder,
-                    OxygenTherapy = setting.OxygenTherapy,
-                    ECG = setting.ECG,
                     DistanceFromCityTarriff = setting.DistanceFromCityTarriff,
                 };
             }
@@ -160,21 +147,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 setting.SendSMSTimer = editSiteSettingViewModel.SendSMSTime.Value;
                 setting.SiteDomain = editSiteSettingViewModel.SiteDomain;
                 setting.OnlineVisitTariff = editSiteSettingViewModel.HomeVisitTariff.Value;
-                setting.IntramuscularInjection = editSiteSettingViewModel.IntramuscularInjection;
-                setting.DermalOrSubcutaneousInjection = editSiteSettingViewModel.DermalOrSubcutaneousInjection;
-                setting.ReedyInjection = editSiteSettingViewModel.ReedyInjection;
-                setting.SerumTherapy = editSiteSettingViewModel.SerumTherapy;
-                setting.BloodPressureMeasurement = editSiteSettingViewModel.BloodPressureMeasurement;
-                setting.Glucometry = editSiteSettingViewModel.Glucometry;
-                setting.PulseOximetry = editSiteSettingViewModel.PulseOximetry;
-                setting.SmallDressing = editSiteSettingViewModel.SmallDressing;
-                setting.GreatDressing = editSiteSettingViewModel.GreatDressing;
-                setting.GastricIntubation = editSiteSettingViewModel.GastricIntubation;
-                setting.UrinaryBladder = editSiteSettingViewModel.UrinaryBladder;
-                setting.OxygenTherapy = editSiteSettingViewModel.OxygenTherapy;
-                setting.ECG = editSiteSettingViewModel.ECG;
                 setting.DistanceFromCityTarriff = editSiteSettingViewModel.DistanceFromCityTarriff;
-
             }
 
             await _siteSettingRepository.UpdateSiteSetting(setting);
@@ -256,19 +229,6 @@ namespace DoctorFAM.Application.Services.Implementation
                 SendSMSTimer = editSiteSettingViewModel.SendSMSTime.Value,
                 SiteDomain = editSiteSettingViewModel.SiteDomain,
                 OnlineVisitTariff = editSiteSettingViewModel.OnlineVisitTariff.Value,
-                IntramuscularInjection = editSiteSettingViewModel.IntramuscularInjection,
-                DermalOrSubcutaneousInjection = editSiteSettingViewModel.DermalOrSubcutaneousInjection,
-                ReedyInjection = editSiteSettingViewModel.ReedyInjection,
-                SerumTherapy = editSiteSettingViewModel.SerumTherapy,
-                BloodPressureMeasurement = editSiteSettingViewModel.BloodPressureMeasurement,
-                Glucometry = editSiteSettingViewModel.Glucometry,
-                PulseOximetry = editSiteSettingViewModel.PulseOximetry,
-                SmallDressing = editSiteSettingViewModel.SmallDressing,
-                GreatDressing = editSiteSettingViewModel.GreatDressing,
-                GastricIntubation = editSiteSettingViewModel.GastricIntubation,
-                UrinaryBladder = editSiteSettingViewModel.UrinaryBladder,
-                OxygenTherapy = editSiteSettingViewModel.OxygenTherapy,
-                ECG = editSiteSettingViewModel.ECG,
                 DistanceFromCityTarriff = editSiteSettingViewModel.DistanceFromCityTarriff,
             };
 
@@ -336,74 +296,9 @@ namespace DoctorFAM.Application.Services.Implementation
             return await _siteSettingRepository.GetSiteAddressDomain();
         }
 
-        public async Task<int> GetIntramuscularInjectionCost()
-        {
-            return await _siteSettingRepository.GetIntramuscularInjectionCost();
-        }
-
         public async Task<int> GetDistanceFromCityTarriffCost()
         {
             return await _siteSettingRepository.GetDistanceFromCityTarriffCost();
-        }
-
-        public async Task<int> GetDermalOrSubcutaneousInjectionCost()
-        {
-            return await _siteSettingRepository.GetDermalOrSubcutaneousInjectionCost();
-        }
-
-        public async Task<int> GetReedyInjectionCost()
-        {
-            return await _siteSettingRepository.GetReedyInjectionCost();
-        }
-
-        public async Task<int> GetSerumTherapyCost()
-        {
-            return await _siteSettingRepository.GetSerumTherapyCost();
-        }
-
-        public async Task<int> GetBloodPressureMeasurementCost()
-        {
-            return await _siteSettingRepository.GetBloodPressureMeasurementCost();
-        }
-
-        public async Task<int> GetGlucometrytCost()
-        {
-            return await _siteSettingRepository.GetGlucometrytCost();
-        }
-
-        public async Task<int> GetPulseOximetryCost()
-        {
-            return await _siteSettingRepository.GetPulseOximetryCost();
-        }
-
-        public async Task<int> GetSmallDressingCost()
-        {
-            return await _siteSettingRepository.GetSmallDressingCost();
-        }
-
-        public async Task<int> GetGreatDressingCost()
-        {
-            return await _siteSettingRepository.GetGreatDressingCost();
-        }
-
-        public async Task<int> GetGastricIntubationCost()
-        {
-            return await _siteSettingRepository.GetGastricIntubationCost();
-        }
-
-        public async Task<int> GetUrinaryBladderCost()
-        {
-            return await _siteSettingRepository.GetUrinaryBladderCost();
-        }
-
-        public async Task<int> GetOxygenTherapyCost()
-        {
-            return await _siteSettingRepository.GetOxygenTherapyCost();
-        }
-
-        public async Task<int> GetECGCost()
-        {
-            return await _siteSettingRepository.GetECGCost();
         }
 
         #endregion
