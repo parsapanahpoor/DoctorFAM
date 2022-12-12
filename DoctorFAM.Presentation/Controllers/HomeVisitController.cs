@@ -266,7 +266,7 @@ namespace DoctorFAM.Web.Controllers
             {
                 case CreatePatientAddressResult.Success:
                     TempData[SuccessMessage] = "عملیات با موفقیت انجام شده است ";
-                    return RedirectToAction("BankPay", "HomeVisit", new { requestId = patientRequest.RequestId });
+                    return RedirectToAction("HomeVisitInvoice", "HomeVisit", new { requestId = patientRequest.RequestId });
 
                 case CreatePatientAddressResult.Failed:
                     TempData[ErrorMessage] = "عملیات با شکست مواجه شده است ";
@@ -288,6 +288,33 @@ namespace DoctorFAM.Web.Controllers
             #endregion
 
             return View(patientRequest);
+        }
+
+        #endregion
+
+        #region Home Visit Invoice
+
+        public async Task<IActionResult> HomeVisitInvoice(ulong requestId)
+        {
+            #region Get Request By Id
+
+            var request = await _requestService.GetRequestById(requestId);
+            if (request == null) return NotFound();
+            if (!await _patientService.IsExistPatientById(request.PatientId.Value) || request.UserId != User.GetUserId())
+            {
+                return NotFound();
+            }
+
+            #endregion
+
+            #region Fill Model 
+
+            var model = await _homeVisitService.FillHomeVisitRequestInvoiceViewModel(request);
+            if (model == null) return NotFound();
+
+            #endregion
+
+            return View(model);
         }
 
         #endregion

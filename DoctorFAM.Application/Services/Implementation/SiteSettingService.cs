@@ -1,10 +1,12 @@
 ﻿using Academy.Domain.Entities.SiteSetting;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Data.DbContext;
+using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Entities.SiteSetting;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.SiteSetting;
 using DoctorFAM.Domain.ViewModels.Admin.SiteSetting.HealthHouseServiceTariff;
+using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
 using System;
 using System.Collections.Generic;
@@ -388,6 +390,12 @@ namespace DoctorFAM.Application.Services.Implementation
             return false;
         }
 
+        //Is Exist Any Tariff By Id 
+        public async Task<bool> IsExistAnyTariffById(ulong tariffId)
+        {
+            return await _siteSettingRepository.IsExistAnyTariffById(tariffId);
+        }
+
         #endregion
 
         #region Site Side
@@ -410,6 +418,24 @@ namespace DoctorFAM.Application.Services.Implementation
         public async Task<int> GetDistanceFromCityTarriffCost()
         {
             return await _siteSettingRepository.GetDistanceFromCityTarriffCost();
+        }
+
+        //Add Request Selected Healt House Tariff Without Savechanges
+        public async Task AddRequestSelectedHealtHouseTariffWithoutSavechanges(RequestSelectedHealthHouseTariff model)
+        {
+            await _siteSettingRepository.AddRequestSelectedHealtHouseTariffWithoutSavechanges(model);
+        }
+
+        //Get Request Selected Tariffs By Request Id 
+        public async Task<List<RequestSelectedHealthHouseTariff>> GetRequestSelectedTariffsByRequestId(ulong requestId)
+        {
+            return await _siteSettingRepository.GetRequestSelectedTariffsByRequestId(requestId);
+        }
+
+        //Get Request Selected Tariffs By Request Id 
+        public async Task<List<TariffForHealthHouseServices>> GetTariffBySelectedTariffs(ulong requestId)
+        {
+            return await _siteSettingRepository.GetTariffBySelectedTariffs(requestId);
         }
 
         #endregion

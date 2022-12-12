@@ -1,4 +1,5 @@
-﻿using DoctorFAM.Domain.Entities.SiteSetting;
+﻿using DoctorFAM.Domain.Entities.Requests;
+using DoctorFAM.Domain.Entities.SiteSetting;
 using DoctorFAM.Domain.ViewModels.Admin.SiteSetting;
 using DoctorFAM.Domain.ViewModels.Admin.SiteSetting.HealthHouseServiceTariff;
 using System;
@@ -50,6 +51,9 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Get List Of Tariff For Home Visit Health House Services
         Task<List<TariffForHealthHouseServices>?> GetListOfTariffForHomeVisitHealthHouseServices();
 
+        //Is Exist Any Tariff By Id 
+        Task<bool> IsExistAnyTariffById(ulong tariffId);
+
         #endregion
 
         #region Site Side
@@ -61,6 +65,15 @@ namespace DoctorFAM.Application.Services.Interfaces
         Task<int> GetSMSTimer();
 
         Task<string?> GetSiteAddressDomain();
+
+        //Add Request Selected Healt House Tariff Without Savechanges
+        Task AddRequestSelectedHealtHouseTariffWithoutSavechanges(RequestSelectedHealthHouseTariff model);
+
+        //Get Request Selected Tariffs By Request Id 
+        Task<List<RequestSelectedHealthHouseTariff>> GetRequestSelectedTariffsByRequestId(ulong requestId);
+
+        //Get Request Selected Tariffs By Request Id 
+        Task<List<TariffForHealthHouseServices>> GetTariffBySelectedTariffs(ulong requestId);
 
         #endregion
     }

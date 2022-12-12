@@ -1,4 +1,5 @@
 ﻿using DoctorFAM.Domain.Entities.Common;
+using DoctorFAM.Domain.Entities.Requests;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -28,6 +29,12 @@ namespace DoctorFAM.Domain.Entities.SiteSetting
         public bool HomeNurse { get; set; }
 
         public bool DeathCertificate { get; set; }
+
+        #endregion
+
+        #region realtion 
+
+        public ICollection<RequestSelectedHealthHouseTariff> RequestSelectedHealthHouseTariffs { get; set; }
 
         #endregion
     }

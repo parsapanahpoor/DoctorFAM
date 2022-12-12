@@ -5,6 +5,7 @@ using DoctorFAM.Domain.ViewModels.Admin.HealthHouse;
 using DoctorFAM.Domain.ViewModels.Admin.HealthHouse.HomeVisit;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DeathCertificate;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.HomeVisit;
+using DoctorFAM.Domain.ViewModels.Site.HomeVisitRequest;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
 using DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor;
 using System;
@@ -35,6 +36,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Proccess Home Visit Request Cost 
         Task<int> ProccessHomeVisitRequestCost(Request request);
+
+        //Fill Home Visit Request Invoice View Model
+        Task<HomeVisitRequestInvoiceViewModel?> FillHomeVisitRequestInvoiceViewModel(Request request);
 
         #endregion
 

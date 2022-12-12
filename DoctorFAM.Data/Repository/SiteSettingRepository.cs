@@ -1,10 +1,13 @@
 ﻿using Academy.Domain.Entities.SiteSetting;
 using DoctorFAM.Data.DbContext;
+using DoctorFAM.DataLayer.Entities;
+using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Entities.SiteSetting;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.SiteSetting;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -180,6 +183,12 @@ namespace DoctorFAM.Data.Repository
             await _context.SaveChangesAsync();
         }
 
+        //Is Exist Any Tariff By Id 
+        public async Task<bool> IsExistAnyTariffById(ulong tariffId)
+        {
+            return await _context.TariffForHealthHouseServices.AnyAsync(p=> !p.IsDelete && p.Id == tariffId);
+        }
+
         #endregion
 
         #region Site Side 
@@ -210,6 +219,27 @@ namespace DoctorFAM.Data.Repository
             }
 
             return siteSetting.DistanceFromCityTarriff;
+        }
+
+        //Add Request Selected Healt House Tariff Without Savechanges
+        public async Task AddRequestSelectedHealtHouseTariffWithoutSavechanges(RequestSelectedHealthHouseTariff model)
+        {
+            await _context.RequestSelectedHealthHouseTariff.AddAsync(model);
+        }
+
+        //Get Request Selected Tariffs By Request Id 
+        public async Task<List<RequestSelectedHealthHouseTariff>> GetRequestSelectedTariffsByRequestId(ulong requestId)
+        {
+            return await _context.RequestSelectedHealthHouseTariff.Include(p => p.TariffForHealthHouseService)
+                                        .Where(p => !p.IsDelete && p.RequestId == requestId).ToListAsync();
+        }
+
+        //Get Request Selected Tariffs By Request Id 
+        public async Task<List<TariffForHealthHouseServices>> GetTariffBySelectedTariffs(ulong requestId)
+        {
+            return await _context.RequestSelectedHealthHouseTariff.Include(p => p.TariffForHealthHouseService)
+                                        .Where(p => !p.IsDelete && p.RequestId == requestId)
+                                            .Select(p=>p.TariffForHealthHouseService).ToListAsync();
         }
 
         #endregion

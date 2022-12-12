@@ -31,12 +31,16 @@ namespace DoctorFAM.Application.Services.Implementation
 
         private readonly IOrganizationService _organizationService;
 
-        public RequestServicecs(IPatientService patientService, IRequestRepository request, ILocationService locationService, IOrganizationService organizationService)
+        private readonly ISiteSettingService _siteSettingService;
+
+        public RequestServicecs(IPatientService patientService, IRequestRepository request, ILocationService locationService, IOrganizationService organizationService
+                                        , ISiteSettingService siteSettingService)
         {
             _patientService = patientService;
             _request = request;
             _locationService = locationService;
             _organizationService = organizationService;
+            _siteSettingService = siteSettingService;
         }
 
         #endregion
@@ -46,7 +50,7 @@ namespace DoctorFAM.Application.Services.Implementation
         #region Request 
 
         //Invoice Finalization And See Invoice Detail
-        public async Task<int> FinalizationHomePharmacyInvoiceFromPharmacy(ulong requestId , ulong userId)
+        public async Task<int> FinalizationHomePharmacyInvoiceFromPharmacy(ulong requestId, ulong userId)
         {
             //return 0 : NotFound
             //return 1 : Success
@@ -64,7 +68,7 @@ namespace DoctorFAM.Application.Services.Implementation
             var request = await GetRequestById(requestId);
             if (request == null) return 0;
             if (!request.OperationId.HasValue || request.OperationId.Value != organization.OwnerId) return 0;
-            if(request.RequestType != RequestType.HomeDrog) return 0;
+            if (request.RequestType != RequestType.HomeDrog) return 0;
 
             #endregion
 
@@ -85,7 +89,7 @@ namespace DoctorFAM.Application.Services.Implementation
         }
 
         //Is Operator Is Current User 
-        public async Task<bool> IsOperatorIsCurrentUser(ulong userId , ulong requestId)
+        public async Task<bool> IsOperatorIsCurrentUser(ulong userId, ulong requestId)
         {
             #region Get Organization By User Id
 
@@ -128,7 +132,7 @@ namespace DoctorFAM.Application.Services.Implementation
             if (request == null) return false;
 
             //If Request Is Not For This User
-            if(request.UserId != userId) return false;
+            if (request.UserId != userId) return false;
 
             //If Request Type Is Not Valid
             if (request.RequestType != requestType) return false;
@@ -137,7 +141,7 @@ namespace DoctorFAM.Application.Services.Implementation
             if (request.RequestState != RequestState.WaitingForCompleteInformationFromUser) return false;
 
             //If Request Patient Is Not Valid 
-            if(patientId.HasValue && request.PatientId != patientId.Value) return false;
+            if (patientId.HasValue && request.PatientId != patientId.Value) return false;
 
             return true;
         }
@@ -167,7 +171,7 @@ namespace DoctorFAM.Application.Services.Implementation
             await _request.AddRequest(request);
         }
 
-        public async Task AddPatientIdToRequest(ulong requestId , ulong patientId)
+        public async Task AddPatientIdToRequest(ulong requestId, ulong patientId)
         {
             #region Get Request 
 
@@ -215,11 +219,11 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #endregion
 
-            return await _request.GetRequestTransferingPriceFromOperator(organization.OwnerId , requestId);
+            return await _request.GetRequestTransferingPriceFromOperator(organization.OwnerId, requestId);
         }
 
         //Add Request Transfering Price From Operator 
-        public async Task<bool> AddRequestTransferingPriceFromOperator(RequestTransferingPriceFromOperator requestTransfering , ulong operatorId)
+        public async Task<bool> AddRequestTransferingPriceFromOperator(RequestTransferingPriceFromOperator requestTransfering, ulong operatorId)
         {
             #region Get Organization By User Id
 
@@ -231,7 +235,7 @@ namespace DoctorFAM.Application.Services.Implementation
             #region Get Request 
 
             var request = await GetRequestById(requestTransfering.RequestId);
-            if(request == null) return false;
+            if (request == null) return false;
             if (request.OperationId != organization.OwnerId) return false;
 
             #endregion
@@ -331,6 +335,25 @@ namespace DoctorFAM.Application.Services.Implementation
             #endregion
 
             #region Add Home Visit selected Tariff Request 
+
+            if (model.SelectedTariffs != null && model.SelectedTariffs.Any())
+            {
+                foreach (var selectedTariff in model.SelectedTariffs)
+                {
+                    if (await _siteSettingService.IsExistAnyTariffById(selectedTariff))
+                    {
+                        RequestSelectedHealthHouseTariff tariff = new RequestSelectedHealthHouseTariff()
+                        {
+                            CreateDate = DateTime.Now,
+                            RequestId = model.RequestId,
+                            TariffForHealthHouseServiceId = selectedTariff
+                        };
+
+                        //Add Request Selected Tariff To Data Base 
+                        await _siteSettingService.AddRequestSelectedHealtHouseTariffWithoutSavechanges(tariff);
+                    }
+                }
+            }
 
             #endregion
 

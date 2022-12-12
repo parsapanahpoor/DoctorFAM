@@ -18,10 +18,12 @@ using DoctorFAM.Domain.ViewModels.Admin.HealthHouse.HomeVisit;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DeathCertificate;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.HomeVisit;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.OnlineVisit;
+using DoctorFAM.Domain.ViewModels.Site.HomeVisitRequest;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
 using DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -415,7 +417,137 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #endregion
 
+            #region Get Request Selected Tariffs 
+
+            var selectedTariffs = await _siteSettingService.GetRequestSelectedTariffsByRequestId(request.Id);
+
+            if (selectedTariffs != null && selectedTariffs.Any())
+            {
+                foreach (var tariff in selectedTariffs)
+                {
+                    cost = cost + Int64.Parse(tariff.TariffForHealthHouseService.Price);
+                }
+            }
+
+            #endregion
+
             return (int)cost;
+        }
+
+        //Fill Home Visit Request Invoice View Model
+        public async Task<HomeVisitRequestInvoiceViewModel?> FillHomeVisitRequestInvoiceViewModel(Request request)
+        {
+            //Make Instance From Return Model 
+            HomeVisitRequestInvoiceViewModel model = new HomeVisitRequestInvoiceViewModel();
+            model.RequestId = request.Id;
+
+            #region Get Requets Patient Address Detail
+
+            var requestPatietnAddressDetail = await GetRequestPatientDetailByRequestId(request.Id);
+            if (requestPatietnAddressDetail == null) return null;
+
+            model.PaitientRequestDetail = requestPatietnAddressDetail;
+
+            #endregion
+
+            #region Get Requets Patient Date Time 
+
+            var dateTimeDetail = await _requestService.GetRequestDateTimeDetailByRequestDetailId(request.Id);
+            if (dateTimeDetail == null) return null;
+
+            model.PatientRequestDateTimeDetail = dateTimeDetail;
+
+            #endregion
+
+            #region Get Home Visit Request Detail 
+
+            var homeVisitRequestDetail = await GetHomeVisitRequestDetailByRequestId(request.Id);
+            if (homeVisitRequestDetail == null) return null;
+
+            model.HomeVisitRequestDetail = homeVisitRequestDetail;
+
+            #endregion
+
+            #region Get Home Visit Tariff From Site Setting 
+
+            double homeVisitTariff = await _siteSettingService.GetHomeVisitTariff();
+            if (homeVisitTariff == null || homeVisitTariff == 0) return null;
+
+            model.HomeVisitTariff = (int)homeVisitTariff;
+
+            #endregion
+
+            #region Proccess Cost
+
+            double cost = homeVisitTariff;
+
+            if (requestPatietnAddressDetail.Distance != null && requestPatietnAddressDetail.Distance != 0)
+            {
+                var DistanceFromCityTarriff = await _siteSettingService.GetDistanceFromCityTarriffCost();
+
+                var distancePerTenKilometer = DistanceFromCityTarriff / 10;
+
+                cost = cost + (DistanceFromCityTarriff * distancePerTenKilometer);
+
+                DistanceFromCityTarriff =  (DistanceFromCityTarriff * distancePerTenKilometer);
+            }
+
+            if (homeVisitRequestDetail.EmergencyVisit == true)
+            {
+                cost = cost + ((homeVisitTariff * 20) / 100);
+
+                model.EmergencyVisit = ((int)((homeVisitTariff * 20) / 100));
+            }
+
+            if (homeVisitRequestDetail.FemalePhysician == true)
+            {
+                cost = cost + ((homeVisitTariff * 20) / 100);
+
+                model.FemalePhysician =   ((int)((homeVisitTariff * 20) / 100));
+            }
+
+            if (dateTimeDetail.StartTime >= 22 || dateTimeDetail.EndTime <= 8)
+            {
+                cost = cost + ((homeVisitTariff * 20) / 100);
+
+                model.OverTiming = ((int)((homeVisitTariff * 20) / 100));
+            }
+
+
+
+            #endregion
+
+            #region Get Request Selected Tariffs 
+
+            List<HomeVisitInvoiceTariff> returnTariff = new List<HomeVisitInvoiceTariff>();
+
+            var selectedTariffs = await _siteSettingService.GetTariffBySelectedTariffs(request.Id);
+
+            if (selectedTariffs != null && selectedTariffs.Any())
+            {
+                foreach (var tariff in selectedTariffs)
+                {
+                    cost = cost + Int64.Parse(tariff.Price);
+
+                    returnTariff.Add(new HomeVisitInvoiceTariff()
+                    {
+                        Price = tariff.Price,
+                        Title = tariff.Title
+                    });
+                }
+            }
+
+            model.TariffForHealthHouseServices = returnTariff;
+
+            #endregion
+
+            #region Invoic Sum 
+
+            model.InvoiceSum = (int)cost;
+
+            #endregion
+
+            return model;
         }
 
         #endregion
