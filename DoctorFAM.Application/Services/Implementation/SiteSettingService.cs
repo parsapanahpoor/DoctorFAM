@@ -1,8 +1,11 @@
 ﻿using Academy.Domain.Entities.SiteSetting;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Data.DbContext;
+using DoctorFAM.Domain.Entities.SiteSetting;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.SiteSetting;
+using DoctorFAM.Domain.ViewModels.Admin.SiteSetting.HealthHouseServiceTariff;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -275,6 +278,108 @@ namespace DoctorFAM.Application.Services.Implementation
         public async Task<int> GetOnlineVisitTariff()
         {
             return await _siteSettingRepository.GetOnlineVisitTariff();
+        }
+
+        //Get Health House Tariff Service By Id 
+        public async Task<TariffForHealthHouseServices?> GetHealthHouseTariffServiceById(ulong id)
+        {
+            return await _siteSettingRepository.GetHealthHouseTariffServiceById(id);
+        }
+
+        //Fill Add Or Edit Tariff For Health House Services View Model
+        public async Task<AddOrEditTariffForHealthHouseServicesViewModel?> FillAddOrEditTariffForHealthHouseServicesViewModel(ulong id)
+        {
+            #region Get Health House Tariff Service By Id 
+
+            var tariff = await GetHealthHouseTariffServiceById(id);
+            if (tariff == null) return null;
+
+            #endregion
+
+            #region Fill Model  
+
+            AddOrEditTariffForHealthHouseServicesViewModel model = new AddOrEditTariffForHealthHouseServicesViewModel()
+            {
+                DeathCertificate = tariff.DeathCertificate,
+                HomeNurse = tariff.HomeNurse,
+                HomeVisit = tariff.HomeVisit,
+                Id = tariff.Id,
+                Price = tariff.Price,
+                Title = tariff.Title
+            };
+
+            #endregion
+
+            return model;
+        }
+
+        //Get List Of Tariff For Health House Services
+        public async Task<List<TariffForHealthHouseServices>?> GetListOfTariffForHealthHouseServices()
+        {
+            return await _siteSettingRepository.GetListOfTariffForHealthHouseServices();
+        }
+
+        //Add Or Edit Tariff For Health House Services
+        public async Task<bool> AddOrEditTariffForHealthHouseServices(AddOrEditTariffForHealthHouseServicesViewModel model)
+        {
+            #region Create Tariff
+
+            if (!model.Id.HasValue)
+            {
+                #region Fill Entity
+
+                TariffForHealthHouseServices addTariff = new TariffForHealthHouseServices()
+                {
+                    DeathCertificate = model.DeathCertificate,
+                    HomeNurse = model.HomeNurse,
+                    HomeVisit = model.HomeVisit,
+                    Price= model.Price,
+                    Title = model.Title
+                };
+
+                #endregion
+
+                #region Add To Data Base
+
+                await _siteSettingRepository.AddTariffToTheDataBase(addTariff);
+
+                #endregion
+
+                return true; 
+            }
+
+            #endregion
+
+            #region Edit Tariff
+
+            if (model.Id.HasValue)
+            {
+                #region Get Health House Tariff Service By Id 
+
+                var tariff = await GetHealthHouseTariffServiceById(model.Id.Value);
+                if (tariff == null) return false;
+
+                #endregion
+
+                #region Update Fields
+
+                tariff.Title = model.Title;
+                tariff.Price = model.Price;
+                tariff.HomeVisit = model.HomeVisit;
+                tariff.HomeNurse = model.HomeNurse;
+                tariff.DeathCertificate = model.DeathCertificate;
+
+                #endregion
+
+                //Update Data Base 
+                await _siteSettingRepository.UpdateTariffToTheDataBase(tariff);
+
+                return true;
+            }
+
+            #endregion
+
+            return false;
         }
 
         #endregion

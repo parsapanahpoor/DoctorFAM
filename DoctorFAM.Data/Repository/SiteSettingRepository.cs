@@ -1,5 +1,6 @@
 ﻿using Academy.Domain.Entities.SiteSetting;
 using DoctorFAM.Data.DbContext;
+using DoctorFAM.Domain.Entities.SiteSetting;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.SiteSetting;
 using Microsoft.EntityFrameworkCore;
@@ -145,6 +146,32 @@ namespace DoctorFAM.Data.Repository
             }
 
             return siteSetting.ReservationTarrif;
+        }
+
+        //Get Health House Tariff Service By Id 
+        public async Task<TariffForHealthHouseServices?> GetHealthHouseTariffServiceById(ulong id)
+        {
+            return await _context.TariffForHealthHouseServices.FirstOrDefaultAsync(p=> !p.IsDelete && p.Id == id);
+        }
+
+        //Get List Of Tariff For Health House Services
+        public async Task<List<TariffForHealthHouseServices>?> GetListOfTariffForHealthHouseServices()
+        {
+            return await _context.TariffForHealthHouseServices.Where(p=> !p.IsDelete ).ToListAsync();
+        }
+
+        //Add Tariff To The Data Base 
+        public async Task AddTariffToTheDataBase(TariffForHealthHouseServices tariff)
+        {
+            await _context.TariffForHealthHouseServices.AddAsync(tariff);
+            await _context.SaveChangesAsync();
+        }
+
+        //Update Tariff To The Data Base 
+        public async Task UpdateTariffToTheDataBase(TariffForHealthHouseServices tariff)
+        {
+            _context.TariffForHealthHouseServices.Update(tariff);
+            await _context.SaveChangesAsync();
         }
 
         #endregion

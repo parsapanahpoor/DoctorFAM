@@ -1,6 +1,7 @@
 ﻿using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.SiteSetting;
+using DoctorFAM.Domain.ViewModels.Admin.SiteSetting.HealthHouseServiceTariff;
 using DoctorFAM.Web.Areas.Admin.Controllers;
 using Microsoft.AspNetCore.Mvc;
 
@@ -53,6 +54,68 @@ namespace Academy.Web.Areas.Admin.Controllers
 
             return View(siteSetting);
         }
+
+        #endregion
+
+        #region Healt House Tariffs Service
+
+        #region List OF Health House Tariffs
+
+        public async Task<IActionResult> ListOFHealthHouseTariffs()
+        {
+            return View(await _siteSettingService.GetListOfTariffForHealthHouseServices());
+        }
+
+        #endregion
+
+        #region Add Or Edit Health House Service Tariffs
+
+        [HttpGet]
+        public async Task<IActionResult> AddOrEditHealthHouseServiceTariffs(ulong? id)
+        {
+            #region Fill Model
+
+            if (id.HasValue)
+            {
+                var model = await _siteSettingService.FillAddOrEditTariffForHealthHouseServicesViewModel(id.Value) ;
+                if (model == null) return NotFound();
+
+                return View(model);
+            }
+
+            #endregion
+
+            return View();
+        }
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddOrEditHealthHouseServiceTariffs(AddOrEditTariffForHealthHouseServicesViewModel model)
+        {
+            #region Model State Validation 
+
+            if (!ModelState.IsValid)
+            {
+                TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+                return View(model);
+            }
+
+            #endregion
+
+            #region Add Or Edit 
+
+            var res = await _siteSettingService.AddOrEditTariffForHealthHouseServices(model);
+            if (res)
+            {
+                TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+                return RedirectToAction(nameof(ListOFHealthHouseTariffs));
+            }
+
+            #endregion
+
+            TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+            return View(model);
+        }
+
+        #endregion
 
         #endregion
     }

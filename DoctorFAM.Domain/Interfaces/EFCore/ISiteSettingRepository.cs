@@ -1,4 +1,5 @@
 ﻿using Academy.Domain.Entities.SiteSetting;
+using DoctorFAM.Domain.Entities.SiteSetting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,6 +31,18 @@ namespace DoctorFAM.Domain.Interfaces
         Task<int> GetHomePahrmacyTariff();
 
         Task<int> GetReservationTariff();
+
+        //Get Health House Tariff Service By Id 
+        Task<TariffForHealthHouseServices?> GetHealthHouseTariffServiceById(ulong id);
+
+        //Get List Of Tariff For Health House Services
+        Task<List<TariffForHealthHouseServices>?> GetListOfTariffForHealthHouseServices();
+
+        //Add Tariff To The Data Base 
+        Task AddTariffToTheDataBase(TariffForHealthHouseServices tariff);
+
+        //Update Tariff To The Data Base 
+        Task UpdateTariffToTheDataBase(TariffForHealthHouseServices tariff);
 
         #endregion
 

@@ -1,4 +1,6 @@
-﻿using DoctorFAM.Domain.ViewModels.Admin.SiteSetting;
+﻿using DoctorFAM.Domain.Entities.SiteSetting;
+using DoctorFAM.Domain.ViewModels.Admin.SiteSetting;
+using DoctorFAM.Domain.ViewModels.Admin.SiteSetting.HealthHouseServiceTariff;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,6 +34,18 @@ namespace DoctorFAM.Application.Services.Interfaces
         Task<int> GetHomePahrmacyTariff();
 
         Task<int> GetReservationTariff();
+
+        //Get Health House Tariff Service By Id 
+        Task<TariffForHealthHouseServices?> GetHealthHouseTariffServiceById(ulong id);
+
+        //Fill Add Or Edit Tariff For Health House Services View Model
+        Task<AddOrEditTariffForHealthHouseServicesViewModel?> FillAddOrEditTariffForHealthHouseServicesViewModel(ulong id);
+
+        //Get List Of Tariff For Health House Services
+        Task<List<TariffForHealthHouseServices>?> GetListOfTariffForHealthHouseServices();
+
+        //Add Or Edit Tariff For Health House Services
+        Task<bool> AddOrEditTariffForHealthHouseServices(AddOrEditTariffForHealthHouseServicesViewModel model);
 
         #endregion
 
