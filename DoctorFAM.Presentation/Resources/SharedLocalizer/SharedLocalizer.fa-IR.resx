@@ -708,34 +708,37 @@
   <data name="List Of Get Reservation Date" xml:space="preserve">
     <value>لیست نوبتها</value>
   </data>
-  <data name="Create Videos" xml:space="preserve">
-    <value>افزودن ویدیو </value>
+  <data name="Create new Video" xml:space="preserve">
+    <value>افزودن ویدیو جدید</value>
   </data>
   <data name="Health Info Videos" xml:space="preserve">
     <value>ویدیوهای دانستنی سلامت</value>
   </data>
-  <data name="Manage Videos" xml:space="preserve">
-    <value>مدیریت ویدیوها</value>
+  <data name="List of Videos" xml:space="preserve">
+    <value>لیست ویدیوها</value>
   </data>
-  <data name="Create Podcast" xml:space="preserve">
-    <value>افزودن پادکست</value>
+  <data name="Create new Podcast" xml:space="preserve">
+    <value>افزودن پادکست جدید</value>
   </data>
   <data name="Health Info Podcasts" xml:space="preserve">
     <value>رادیوفام</value>
   </data>
-  <data name="Manage Podcast" xml:space="preserve">
-    <value>مدیریت پادکست ها</value>
+  <data name="List of Podcast" xml:space="preserve">
+    <value>لیست پادکستها</value>
+  </data>
+  <data name="Media Management" xml:space="preserve">
+    <value>مدیریت مدیا</value>
+  </data>
+  <data name="Audio File" xml:space="preserve">
+    <value>فایل صوتی</value>
+  </data>
+  <data name="Video Clip" xml:space="preserve">
+    <value>فایل تصویری</value>
+  </data>
+  <data name="Video/Podcast" xml:space="preserve">
+    <value>ویدئو/پادکست</value>
   </data>
   <data name="Manage Resume" xml:space="preserve">
     <value>مدیریت رزومه</value>
-  </data>
-  <data name="Resume" xml:space="preserve">
-    <value>رزومه</value>
-  </data>
-  <data name="List OF Customer Ads" xml:space="preserve">
-    <value>لیست آگهی ها</value>
-  </data>
-  <data name="Manage Customer Ads" xml:space="preserve">
-    <value>مدیریت آگهی ها</value>
   </data>
 </root>

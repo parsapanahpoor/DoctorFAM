@@ -12,6 +12,12 @@
     <!-- Sidebar Menu -->
     <ul class="nav sidebar-menu">
         <!--Dashboard-->
+         <li>
+            <a asp-area="" asp-controller="Home" asp-action="Index">
+                <i class="menu-icon fa fa-globe"></i>
+                <span class="menu-text"> صفحه اصلی سایت </span>
+            </a>
+        </li>
 
         <li>
             <a asp-area="Doctor" asp-controller="Home" asp-action="Index">
@@ -22,6 +28,74 @@
 
         @if (Model.DoctorInfoState == "Accepted")
         {
+             <li>
+                <a href="#" class="menu-dropdown" style="font-size:16px;font-weight:500; color:#ef2e2e   ">
+                    <i class="menu-icon glyphicon glyphicon-edit"></i>
+                    <span class="menu-text"> @SharedLocalizer["Turn ratings"] </span>
+                    <i class="menu-expand" style="font-size:16px;font-weight:500; color:#ef2e2e   "></i>
+                </a>
+
+                <ul class="submenu">
+
+                    <li>
+                        <a asp-area="Doctor" asp-controller="Appointment" asp-action="ListOfReservationDate">
+                            <span class="menu-text">@SharedLocalizer["List Of Reservations"]</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a asp-area="Doctor" asp-controller="Appointment" asp-action="AddReservationDateView">
+                            <span class="menu-text">@SharedLocalizer["Add Reservation Date"]</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a asp-area="Doctor" asp-controller="Appointment" asp-action="ListOfDoctorReservationHistory">
+                            <span class="menu-text">@SharedLocalizer["Reservation History"]</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a asp-area="Doctor" asp-controller="Appointment" asp-action="CancelReservationRequest">
+                            <span class="menu-text">@SharedLocalizer["Canecl Reservation Request"]</span>
+                        </a>
+                    </li>
+
+                </ul>
+            </li>
+
+            <li>
+                <a href="#" class="menu-dropdown" style="font-size:16px;font-weight:500; color:#ef2e2e   ">
+                    <i class="menu-icon glyphicon glyphicon-send"></i>
+                    <span class="menu-text"> @SharedLocalizer["SMS Management"] </span>
+                    <i class="menu-expand" style="font-size:16px;font-weight:500; color:#ef2e2e   "></i>
+                </a>
+
+                <ul class="submenu">
+
+                    <li>
+                        <a asp-area="Doctor" asp-controller="IncomeSystem" asp-action="UploadFile">
+                            <span class="menu-text">@SharedLocalizer["UpLoad population list"]</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a asp-area="Doctor" asp-controller="IncomeSystem" asp-action="ListOfYourUsers">
+                            <span class="menu-text">@SharedLocalizer["Send SMS"]</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a asp-area="Doctor" asp-controller="IncomeSystem" asp-action="ListOfVIPYourUsers">
+                            <span class="menu-text">@SharedLocalizer["Send Special SMS"]</span>
+                        </a>
+                    </li>
+
+
+
+                </ul>
+            </li>
+            
             @if (Model.DoctorFamily == true)
             {
 
@@ -143,111 +217,89 @@
                 </ul>
             </li>
 
+           
+
             <li>
                 <a href="#" class="menu-dropdown">
-                    <i class="menu-icon glyphicon glyphicon-edit"></i>
-                    <span class="menu-text"> @SharedLocalizer["Turn ratings"] </span>
+                    <i class="menu-icon glyphicon glyphicon-share"></i>
+                    <span class="menu-text"> @SharedLocalizer["Media Management"] </span>
+                    <span style="color:#ef2e2e">(@SharedLocalizer["Video/Podcast"])</span>
                     <i class="menu-expand"></i>
                 </a>
-
                 <ul class="submenu">
 
                     <li>
-                        <a asp-area="Doctor" asp-controller="Appointment" asp-action="ListOfReservationDate">
-                            <span class="menu-text">@SharedLocalizer["List Of Reservations"]</span>
+                        <a href="#" class="menu-dropdown">
+                            <i class="menu-icon  glyphicon glyphicon-facetime-video"></i>
+                            <span class="menu-text">@SharedLocalizer["Video Clip"]</span>
+                            <i class="menu-expand"></i>
                         </a>
+
+                        <ul class="submenu">
+
+                            <li>
+                                <a asp-action="FilterVideos" asp-controller="HealthInformation" asp-area="Doctor">
+                                    <span class="menu-text"> @SharedLocalizer["List of Videos"] </span>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a asp-action="CreateTVFAM" asp-controller="HealthInformation" asp-area="Doctor">
+                                    <span class="menu-text"> @SharedLocalizer["Create new Video"] </span>
+                                </a>
+                            </li>
+
+                        </ul>
                     </li>
 
                     <li>
-                        <a asp-area="Doctor" asp-controller="Appointment" asp-action="AddReservationDateView">
-                            <span class="menu-text">@SharedLocalizer["Add Reservation Date"]</span>
+                        <a href="#" class="menu-dropdown">
+                            <i class="menu-icon  glyphicon glyphicon-volume-up"></i>
+                            <span class="menu-text">@SharedLocalizer["Audio File"]</span>
+                            <i class="menu-expand"></i>
                         </a>
+
+                        <ul class="submenu">
+
+                            <li>
+                                <a asp-action="FilterPodcast" asp-controller="HealthInformation" asp-area="Doctor">
+                                    <span class="menu-text"> @SharedLocalizer["List of Podcast"] </span>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a asp-action="CreatePodcast" asp-controller="HealthInformation" asp-area="Doctor">
+                                    <span class="menu-text"> @SharedLocalizer["Create new Podcast"] </span>
+                                </a>
+                            </li>
+
+                        </ul>
                     </li>
 
-                    <li>
-                        <a asp-area="Doctor" asp-controller="Appointment" asp-action="ListOfDoctorReservationHistory">
-                            <span class="menu-text">@SharedLocalizer["Reservation History"]</span>
-                        </a>
-                    </li>
 
-                    <li>
-                        <a asp-area="Doctor" asp-controller="Appointment" asp-action="CancelReservationRequest">
-                            <span class="menu-text">@SharedLocalizer["Canecl Reservation Request"]</span>
-                        </a>
-                    </li>
+
 
                 </ul>
             </li>
 
             <li>
-                <a href="#" class="menu-dropdown" style="font-size:16px;font-weight:500; color:#ef2e2e   ">
-                    <i class="menu-icon glyphicon glyphicon-send"></i>
-                    <span class="menu-text"> @SharedLocalizer["SMS Management"] </span>
-                    <i class="menu-expand"></i>
-                </a>
-
-                <ul class="submenu">
-
-                    <li>
-                        <a asp-area="Doctor" asp-controller="IncomeSystem" asp-action="UploadFile">
-                            <span class="menu-text">@SharedLocalizer["UpLoad population list"]</span>
-                        </a>
-                    </li>
-
-                    <li>
-                        <a asp-area="Doctor" asp-controller="IncomeSystem" asp-action="ListOfYourUsers">
-                            <span class="menu-text">@SharedLocalizer["Send SMS"]</span>
-                        </a>
-                    </li>
-
-                    <li>
-                        <a asp-area="Doctor" asp-controller="IncomeSystem" asp-action="ListOfVIPYourUsers">
-                            <span class="menu-text">@SharedLocalizer["Send Special SMS"]</span>
-                        </a>
-                    </li>
-
-
-
-                </ul>
-            </li>
-
-            <li>
                 <a href="#" class="menu-dropdown">
-                    <i class="menu-icon  glyphicon glyphicon-facetime-video"></i>
-                    <span class="menu-text">@SharedLocalizer["Health Info Videos"]</span>
+                    <i class="menu-icon fa fa-users"></i>
+                    <span class="menu-text"> @SharedLocalizer["Manage Employees"] </span>
                     <i class="menu-expand"></i>
                 </a>
 
                 <ul class="submenu">
-                    <li>
-                        <a asp-action="FilterVideos" asp-controller="HealthInformation" asp-area="Doctor">
-                            <span class="menu-text"> @SharedLocalizer["Manage Videos"] </span>
-                        </a>
-                    </li>
-                    <li>
-                        <a asp-action="CreateTVFAM" asp-controller="HealthInformation" asp-area="Doctor">
-                            <span class="menu-text"> @SharedLocalizer["Create Videos"] </span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
 
-            <li>
-                <a href="#" class="menu-dropdown">
-                    <i class="menu-icon  glyphicon glyphicon-volume-up"></i>
-                    <span class="menu-text">@SharedLocalizer["Health Info Podcasts"]</span>
-                    <i class="menu-expand"></i>
-                </a>
-
-                <ul class="submenu">
                     <li>
-                        <a asp-action="FilterPodcast" asp-controller="HealthInformation" asp-area="Doctor">
-                            <span class="menu-text"> @SharedLocalizer["Manage Podcast"] </span>
+                        <a asp-area="Doctor" asp-controller="Account" asp-action="FilterEmployees">
+                            <span class="menu-text">@SharedLocalizer["List Of Employees"]</span>
                         </a>
                     </li>
+
                     <li>
-                        <a asp-action="CreatePodcast" asp-controller="HealthInformation" asp-area="Doctor">
-                            <span class="menu-text"> @SharedLocalizer["Create Podcast"] </span>
+                        <a asp-area="Doctor" asp-controller="Account" asp-action="AddNewUser">
+                            <span class="menu-text">@SharedLocalizer["Add New Employee"]</span>
                         </a>
                     </li>
                 </ul>
