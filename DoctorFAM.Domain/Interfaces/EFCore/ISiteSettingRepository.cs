@@ -48,8 +48,14 @@ namespace DoctorFAM.Domain.Interfaces
         //Get List Of Tariff For Home Visit Health House Services
         Task<List<TariffForHealthHouseServices>?> GetListOfTariffForHomeVisitHealthHouseServices();
 
+        //Get List Of Tariff For Home Nurse Health House Services
+        Task<List<TariffForHealthHouseServices>?> GetListOfTariffForHomeNurseHealthHouseServices();
+
         //Is Exist Any Tariff By Id 
         Task<bool> IsExistAnyTariffById(ulong tariffId);
+
+        //Get List Of Tariff For Death Certificate Health House Services
+        Task<List<TariffForHealthHouseServices>?> GetListOfTariffForDeathCertificateHealthHouseServices();
 
         #endregion
 

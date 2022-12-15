@@ -123,24 +123,6 @@
                             <span class="text-danger" asp-validation-for="CityId"></span>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-8">
-                            <div class="form-group">
-                                <label asp-for="Vilage" class="control-label"></label>
-                                <input asp-for="Vilage" class="form-control" />
-                                <span asp-validation-for="Vilage" class="text-danger"></span>
-                            </div>
-                        </div>
-
-
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label asp-for="Distance" class="control-label"></label>
-                                <input asp-for="Distance" class="form-control" />
-                                <span asp-validation-for="Distance" class="text-danger"></span>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
                 <div class="col-md-6">
@@ -166,17 +148,69 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="row">
-
-                        <hr />
-                        <div class="col-md-12  text-center mt-4">
+                        <div class="col-md-8">
                             <div class="form-group">
-
-                                <input type="submit" value="ثبت  آدرس" class="btn-Accept" />
+                                <label asp-for="Vilage" class="control-label"></label>
+                                <input asp-for="Vilage" class="form-control" />
+                                <span asp-validation-for="Vilage" class="text-danger"></span>
                             </div>
                         </div>
 
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="Distance" class="control-label"></label>
+                                <input asp-for="Distance" class="form-control" />
+                                <span asp-validation-for="Distance" class="text-danger"></span>
+                            </div>
+                        </div>
                     </div>
+
+                </div>
+
+                                <div class="col-md-12">
+
+                    <div class="col-md-12">
+                        <p>شما می توانید با انتخاب نیاز مندی های خود از موارد زیر درخواست خود را تکمیل کنید : </p>
+                        <div>
+                            @if (Model.ListOfTariffs != null && Model.ListOfTariffs.Any())
+                            {
+                                <table class="table table-hover table-bordered tc vm text-center align-items-center">
+
+                                    <tr>
+                                        <th class=" text-center align-items-center">عنوان</th>
+                                        <th class=" text-center align-items-center">مبلغ</th>
+                                        <th class=" text-center align-items-center">انتخاب </th>
+                                    </tr>
+
+                                    @foreach (var item in Model.ListOfTariffs)
+                                    {
+                                        <tr class="tc vm text-center align-items-center" remove-ajax-item="@item.Id">
+
+                                            <td class=" text-center align-items-center">@item.Title</td>
+                                            <td class=" text-center align-items-center">@item.Price ریال</td>
+
+                                            <td class=" text-center align-items-center">
+                                                <input name="SelectedTariffs" type="checkbox" style="height:30px;" value="@item.Id" class="form-control" />
+                                            </td>
+
+                                        </tr>
+                                    }
+                                </table>
+                            }
+                        </div>
+                    </div>
+
+                    <hr />
+                    <div class="col-md-12  text-center mt-4">
+                        <div class="form-group">
+
+                            <input type="submit" value="ثبت  آدرس" class="btn-Accept" />
+                        </div>
+                    </div>
+
                 </div>
 
 

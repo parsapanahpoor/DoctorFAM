@@ -39,6 +39,9 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Get Health House Tariff Service By Id 
         Task<TariffForHealthHouseServices?> GetHealthHouseTariffServiceById(ulong id);
 
+        //Get List Of Tariff For Death Certificate Health House Services
+        Task<List<TariffForHealthHouseServices>?> GetListOfTariffForDeathCertificateHealthHouseServices();
+
         //Fill Add Or Edit Tariff For Health House Services View Model
         Task<AddOrEditTariffForHealthHouseServicesViewModel?> FillAddOrEditTariffForHealthHouseServicesViewModel(ulong id);
 
@@ -50,6 +53,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Get List Of Tariff For Home Visit Health House Services
         Task<List<TariffForHealthHouseServices>?> GetListOfTariffForHomeVisitHealthHouseServices();
+
+        //Get List Of Tariff For Home Nurse Health House Services
+        Task<List<TariffForHealthHouseServices>?> GetListOfTariffForHomeNurseHealthHouseServices();
 
         //Is Exist Any Tariff By Id 
         Task<bool> IsExistAnyTariffById(ulong tariffId);

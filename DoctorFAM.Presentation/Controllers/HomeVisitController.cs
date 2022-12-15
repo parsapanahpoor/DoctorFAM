@@ -393,7 +393,6 @@ namespace DoctorFAM.Web.Controllers
 
             #endregion
 
-
             try
             {
                 #region Fill Parametrs

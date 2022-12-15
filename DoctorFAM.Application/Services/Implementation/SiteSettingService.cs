@@ -327,6 +327,18 @@ namespace DoctorFAM.Application.Services.Implementation
             return await _siteSettingRepository.GetListOfTariffForHomeVisitHealthHouseServices();
         }
 
+        //Get List Of Tariff For Death Certificate Health House Services
+        public async Task<List<TariffForHealthHouseServices>?> GetListOfTariffForDeathCertificateHealthHouseServices()
+        {
+            return await _siteSettingRepository.GetListOfTariffForDeathCertificateHealthHouseServices();
+        }
+
+        //Get List Of Tariff For Home Nurse Health House Services
+        public async Task<List<TariffForHealthHouseServices>?> GetListOfTariffForHomeNurseHealthHouseServices()
+        {
+            return await _siteSettingRepository.GetListOfTariffForHomeNurseHealthHouseServices();
+        }
+
         //Add Or Edit Tariff For Health House Services
         public async Task<bool> AddOrEditTariffForHealthHouseServices(AddOrEditTariffForHealthHouseServicesViewModel model)
         {

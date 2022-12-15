@@ -1,4 +1,5 @@
-﻿using DoctorFAM.Application.Interfaces;
+﻿using Academy.Domain.Entities.SiteSetting;
+using DoctorFAM.Application.Interfaces;
 using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Data.DbContext;
@@ -17,6 +18,8 @@ using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.HealthHouse.DeathCertificate;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DeathCertificate;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.OnlineVisit;
+using DoctorFAM.Domain.ViewModels.Site.DeathCertificate;
+using DoctorFAM.Domain.ViewModels.Site.HomeNurseRequest;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
 using DoctorFAM.Domain.ViewModels.UserPanel.HealthHouse.DeathCertificate;
 using DoctorFAM.Domain.ViewModels.UserPanel.HealthHouse.HomeNurse;
@@ -45,11 +48,12 @@ namespace DoctorFAM.Application.Services.Implementation
         private readonly IDoctorsService _doctorsService;
         private readonly IWorkAddressService _workAddressService;
         private readonly IHomeVisitService _homeVisitService;
+        private readonly ISiteSettingService _siteSettingService;
 
         public DeathCertificateService(IDeathCertificateRepository deathCertificate, IRequestService requestService,
                                 IUserService userService, IPatientService patientService, ILocationService locationservice, IWalletRepository walletRepository
                                     , IPopulationCoveredRepository populationCovered, IHomePharmacyRepository homePharmacyRepository, IOrganizationService organizationService, IDoctorsService doctorsService, IWorkAddressService workAddressService
-                                        , IHomeVisitService homeVisitService)
+                                        , IHomeVisitService homeVisitService, ISiteSettingService siteSettingService)
         {
             _deathCertificate = deathCertificate;
             _requestService = requestService;
@@ -63,6 +67,7 @@ namespace DoctorFAM.Application.Services.Implementation
             _doctorsService = doctorsService;
             _workAddressService = workAddressService;
             _homeVisitService = homeVisitService;
+            _siteSettingService = siteSettingService;
         }
 
         #endregion
@@ -264,6 +269,130 @@ namespace DoctorFAM.Application.Services.Implementation
             #endregion
 
             return returnValue;
+        }
+
+        //Proccess Death Certificate Request Cost 
+        public async Task<int> ProccessDeathCertificateRequestCost(Request request)
+        {
+            #region Get Requets Patient Address Detail
+
+            var requestPatietnAddressDetail = await GetRequestPatientDetailByRequestId(request.Id);
+            if (requestPatietnAddressDetail == null) return 0;
+
+            #endregion
+
+            #region Get Death Certificate Tariff From Site Setting 
+
+            double deathCertificateTariff = await _siteSettingService.GetDeathCertificateTariff();
+            if (deathCertificateTariff == null || deathCertificateTariff == 0) return 0;
+
+            #endregion
+
+            #region Proccess Cost
+
+            double cost = deathCertificateTariff;
+
+            if (requestPatietnAddressDetail.Distance != null && requestPatietnAddressDetail.Distance != 0)
+            {
+                var DistanceFromCityTarriff = await _siteSettingService.GetDistanceFromCityTarriffCost();
+
+                var distancePerTenKilometer = DistanceFromCityTarriff / 10;
+
+                cost = cost + (DistanceFromCityTarriff * distancePerTenKilometer);
+            }
+
+            #endregion
+
+            #region Get Request Selected Tariffs 
+
+            var selectedTariffs = await _siteSettingService.GetRequestSelectedTariffsByRequestId(request.Id);
+
+            if (selectedTariffs != null && selectedTariffs.Any())
+            {
+                foreach (var tariff in selectedTariffs)
+                {
+                    cost = cost + Int64.Parse(tariff.TariffForHealthHouseService.Price);
+                }
+            }
+
+            #endregion
+
+            return (int)cost;
+        }
+
+        //Fill Death Certificate Request Invoice View Model
+        public async Task<DeathCertificateRequestInvoiceViewModel?> FillDeathCertificateRequestInvoiceViewModel(Request request)
+        {
+            //Make Instance From Return Model 
+            DeathCertificateRequestInvoiceViewModel model = new DeathCertificateRequestInvoiceViewModel();
+            model.RequestId = request.Id;
+
+            #region Get Requets Patient Address Detail
+
+            var requestPatietnAddressDetail = await GetRequestPatientDetailByRequestId(request.Id);
+            if (requestPatietnAddressDetail == null) return null;
+
+            model.PaitientRequestDetail = requestPatietnAddressDetail;
+
+            #endregion
+
+            #region Get Death Certificate Tariff From Site Setting 
+
+            double deathCertificateTariff = await _siteSettingService.GetDeathCertificateTariff();
+            if (deathCertificateTariff == null || deathCertificateTariff == 0) return null;
+
+            model.DeathCertificateTariff = (int)deathCertificateTariff;
+
+            #endregion
+
+            #region Proccess Cost
+
+            double cost = deathCertificateTariff;
+
+            if (requestPatietnAddressDetail.Distance != null && requestPatietnAddressDetail.Distance != 0)
+            {
+                var DistanceFromCityTarriff = await _siteSettingService.GetDistanceFromCityTarriffCost();
+
+                var distancePerTenKilometer = DistanceFromCityTarriff / 10;
+
+                cost = cost + (DistanceFromCityTarriff * distancePerTenKilometer);
+
+                DistanceFromCityTarriff = (DistanceFromCityTarriff * distancePerTenKilometer);
+            }
+
+            #endregion
+
+            #region Get Request Selected Tariffs 
+
+            List<DeathCertificateInvoiceTariff> returnTariff = new List<DeathCertificateInvoiceTariff>();
+
+            var selectedTariffs = await _siteSettingService.GetTariffBySelectedTariffs(request.Id);
+
+            if (selectedTariffs != null && selectedTariffs.Any())
+            {
+                foreach (var tariff in selectedTariffs)
+                {
+                    cost = cost + Int64.Parse(tariff.Price);
+
+                    returnTariff.Add(new DeathCertificateInvoiceTariff()
+                    {
+                        Price = tariff.Price,
+                        Title = tariff.Title
+                    });
+                }
+            }
+
+            model.TariffForHealthHouseServices = returnTariff;
+
+            #endregion
+
+            #region Invoic Sum 
+
+            model.InvoiceSum = (int)cost;
+
+            #endregion
+
+            return model;
         }
 
         #endregion

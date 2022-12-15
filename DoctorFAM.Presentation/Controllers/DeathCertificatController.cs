@@ -3,8 +3,11 @@ using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Interfaces;
 using DoctorFAM.Application.Services.Implementation;
 using DoctorFAM.Application.Services.Interfaces;
+using DoctorFAM.Application.StaticTools;
 using DoctorFAM.Data.DbContext;
+using DoctorFAM.Domain.DTOs.ZarinPal;
 using DoctorFAM.Domain.Entities.PopulationCovered;
+using DoctorFAM.Domain.Entities.Wallet;
 using DoctorFAM.Domain.Enums.RequestType;
 using DoctorFAM.Domain.ViewModels.Site.Common;
 using DoctorFAM.Domain.ViewModels.Site.DeathCertificate;
@@ -17,6 +20,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.SignalR;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using System.Text;
 
 namespace DoctorFAM.Web.Controllers
 {
@@ -35,10 +41,12 @@ namespace DoctorFAM.Web.Controllers
         private readonly IPopulationCoveredService _populationCoveredService;
         private readonly IHubContext<NotificationHub> _notificationHub;
         private readonly INotificationService _notificationService;
+        private readonly IWalletService _walletService;
 
         public DeathCertificatController(IDeathCertificateService deathCertificateService, ILocationService locationService, IPatientService patientService
                                     , IRequestService requestService, IUserService userService , ISiteSettingService siteSettingService, IPopulationCoveredService populationCoveredService
-                                        , IHubContext<NotificationHub> notificationHub , INotificationService notificationService)
+                                        , IHubContext<NotificationHub> notificationHub , INotificationService notificationService
+                                            , IWalletService walletService)
         {
             _deathCertificateService = deathCertificateService;
             _locationService = locationService;
@@ -49,6 +57,7 @@ namespace DoctorFAM.Web.Controllers
             _populationCoveredService = populationCoveredService;
             _notificationHub = notificationHub;
             _notificationService = notificationService;
+            _walletService = walletService;
         }
 
         #endregion
@@ -219,7 +228,8 @@ namespace DoctorFAM.Web.Controllers
             return View(new PatienAddressForDeathCertificateViewModel()
             {
                 RequestId = requestId,
-                PatientId = patientId
+                PatientId = patientId,
+                ListOfTariffs = await _siteSettingService.GetListOfTariffForHomeNurseHealthHouseServices()
             });
         }
 
@@ -229,6 +239,7 @@ namespace DoctorFAM.Web.Controllers
             #region Page Data
 
             ViewData["Countries"] = await _locationService.GetAllCountriesForHomeNurse();
+            patientRequest.ListOfTariffs = await _siteSettingService.GetListOfTariffForHomeNurseHealthHouseServices();
 
             #endregion
 
@@ -273,7 +284,7 @@ namespace DoctorFAM.Web.Controllers
             {
                 case CreatePatientAddressResult.Success:
                     TempData[SuccessMessage] = "عملیات با موفقیت انجام شده است ";
-                    return RedirectToAction("BankPay", "DeathCertificat", new { requestId = patientRequest.RequestId });
+                    return RedirectToAction("DeathCertificateInvoice", "DeathCertificat", new { requestId = patientRequest.RequestId });
 
                 case CreatePatientAddressResult.Failed:
                     TempData[ErrorMessage] = "عملیات با شکست مواجه شده است ";
@@ -299,6 +310,33 @@ namespace DoctorFAM.Web.Controllers
 
         #endregion
 
+        #region Death Certificate Invoice
+
+        public async Task<IActionResult> DeathCertificateInvoice(ulong requestId)
+        {
+            #region Get Request By Id
+
+            var request = await _requestService.GetRequestById(requestId);
+            if (request == null) return NotFound();
+            if (!await _patientService.IsExistPatientById(request.PatientId.Value) || request.UserId != User.GetUserId())
+            {
+                return NotFound();
+            }
+
+            #endregion
+
+            #region Fill Model 
+
+            var model = await _deathCertificateService.FillDeathCertificateRequestInvoiceViewModel(request);
+            if (model == null) return NotFound();
+
+            #endregion
+
+            return View(model);
+        }
+
+        #endregion
+
         #region Bank Redirect
 
         [HttpGet]
@@ -315,7 +353,7 @@ namespace DoctorFAM.Web.Controllers
 
             #region Get Death Certificate Tarif 
 
-            var deathCertificate = await _siteSettingService.GetDeathCertificateTariff();
+            var deathCertificate = await _deathCertificateService.ProccessDeathCertificateRequestCost(request);
             if (deathCertificate == 0)
             {
                 TempData[ErrorMessage] = "لطفا با پشتیبانی تماس بگیرید";
@@ -337,25 +375,16 @@ namespace DoctorFAM.Web.Controllers
 
             #region Online Payment
 
-            var payment = new ZarinpalSandbox.Payment(deathCertificate);
-
-            var res = payment.PaymentRequest("پرداخت  ", $"{siteAddressDomain}PayDeathCertificate/" + requestId, "Parsapanahpoor@yahoo.com", "09117878804");
-
-            if (res.Result.Status == 100)
+            return RedirectToAction("PaymentMethod", "Payment", new
             {
-
-                #region Update Request State 
-
-                await _requestService.UpdateRequestStateForTramsferringToTheBankingPortal(request);
-
-                #endregion
-
-                return Redirect("https://sandbox.zarinpal.com/pg/StartPay/" + res.Result.Authority);
-            }
+                gatewayType = GatewayType.Zarinpal,
+                amount = deathCertificate,
+                description = "شارژ حساب کاربری برای پرداخت هزینه ی صدورگواهی فوت",
+                returURL = $"{PathTools.SiteAddress}/PayDeathCertificate/" + requestId,
+                requestId = requestId
+            });
 
             #endregion
-
-            return View();
         }
 
         #endregion
@@ -371,16 +400,21 @@ namespace DoctorFAM.Web.Controllers
 
             #endregion
 
-            if (HttpContext.Request.Query["Status"] != "" &&
-                HttpContext.Request.Query["Status"].ToString().ToLower() == "ok"
-                && HttpContext.Request.Query["Authority"] != "")
+            try
             {
-                string authority = HttpContext.Request.Query["Authority"];
+                #region Fill Parametrs
 
-                #region Get Death Certificate Tarif 
+                VerifyParameters parameters = new VerifyParameters();
 
-                var deathCertificate = await _siteSettingService.GetDeathCertificateTariff();
-                if (deathCertificate == 0)
+                if (HttpContext.Request.Query["Authority"] != "")
+                {
+                    parameters.authority = HttpContext.Request.Query["Authority"];
+                }
+
+                #region Get Home Visit Tarif 
+
+                var deathCertificateTarif = await _deathCertificateService.ProccessDeathCertificateRequestCost(request);
+                if (deathCertificateTarif == 0)
                 {
                     TempData[ErrorMessage] = "لطفا با پشتیبانی تماس بگیرید";
                     return View();
@@ -388,67 +422,106 @@ namespace DoctorFAM.Web.Controllers
 
                 #endregion
 
-                var payment = new ZarinpalSandbox.Payment(deathCertificate);
-                var res = payment.Verification(authority).Result;
+                parameters.amount = deathCertificateTarif.ToString();
+                parameters.merchant_id = PathTools.merchant;
 
-                if (res.Status == 100)
+                #endregion
+
+                using (HttpClient client = new HttpClient())
                 {
-                    ViewBag.code = res.RefId;
-                    ViewBag.IsSuccess = true;
+                    #region Verify Payment
 
-                    //Update Request State 
-                    await _requestService.UpdateRequestStateForPayed(request);
+                    var json = JsonConvert.SerializeObject(parameters);
 
-                    //Charge User Wallet
-                    await _deathCertificateService.ChargeUserWallet(User.GetUserId(), deathCertificate , request.Id);
+                    HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
 
-                    //Pay Death Certificate Tariff
-                    await _deathCertificateService.PayDeathCertificateTariff(User.GetUserId(), deathCertificate , request.Id);
+                    HttpResponseMessage response = await client.PostAsync(URLs.verifyUrl, content);
 
-                    #region Send Notification In SignalR
+                    string responseBody = await response.Content.ReadAsStringAsync();
 
-                    //Create Notification For Supporters And Admins
-                    var notifyResult = await _notificationService.CreateSupporterNotification(request.Id, Domain.Enums.Notification.SupporterNotificationText.NewArrivalDeathCertificateRequest, Domain.Enums.Notification.NotificationTarget.request, User.GetUserId());
+                    JObject jodata = JObject.Parse(responseBody);
 
-                    //Create Notification For Online Visit Doctors 
-                    var DeathCertificatetResult = await _notificationService.CreateNotificationForDeathCertificateDoctors(request.Id, Domain.Enums.Notification.SupporterNotificationText.NewArrivalDeathCertificateRequest, Domain.Enums.Notification.NotificationTarget.request, User.GetUserId());
+                    string data = jodata["data"].ToString();
 
-                    //Get Current User
-                    var currentUser = await _userService.GetUserById(User.GetUserId());
+                    JObject jo = JObject.Parse(responseBody);
 
-                    if (notifyResult && DeathCertificatetResult)
-                    {
-                        //Get List Of Admins And Supporter To Send Notification Into Them
-                        var users = await _userService.GetAdminsAndSupportersNotificationForSendNotificationInOnlineVisit();
-
-                        //Get Doctor For Send Notification  
-                        users.AddRange(await _deathCertificateService.GetActivatedAndDoctorsInterestDeathCertificate(request.Id));
-
-                        //Fill Send Supporter Notification ViewModel For Send Notification
-                        SendSupporterNotificationViewModel viewModel = new SendSupporterNotificationViewModel()
-                        {
-                            CreateNotificationDate = $"{DateTime.Now.ToShamsi()} - {DateTime.Now.Hour}:{DateTime.Now.Minute}",
-                            NotificationText = "درخواست جدید صدور گواهی فوت",
-                            RequestId = request.Id,
-                            Username = User.Identity.Name,
-                            UserImage = currentUser.Avatar
-                        };
-
-                        await _notificationHub.Clients.Users(users).SendAsync("SendSupporterNotification", viewModel);
-                    }
+                    string errors = jo["errors"].ToString();
 
                     #endregion
 
-                    TempData[SuccessMessage] = "درخواست صدور گواهی فوت شما با موفقیت ثبت گردید. ";
-                    return View();
+                    if (data != "[]")
+                    {
+                        //Authority Code
+                        string refid = jodata["data"]["ref_id"].ToString();
+
+                        //Get Wallet Transaction For Validation 
+                        var wallet = await _walletService.FindWalletTransactionForRedirectToTheBankPortal(User.GetUserId(), GatewayType.Zarinpal, request.Id, parameters.authority, deathCertificateTarif);
+
+                        if (wallet != null)
+                        {
+                            //Update Request State 
+                            await _requestService.UpdateRequestStateForPayed(request);
+
+                            //Charge User Wallet
+                            //await _reservationService.ChargeUserWallet(User.GetUserId(), reservationTariff);
+
+                            await _walletService.UpdateWalletAndCalculateUserBalanceAfterBankingPayment(wallet);
+
+                            //Pay Death Certificate Tariff
+                            await _deathCertificateService.PayDeathCertificateTariff(User.GetUserId(), deathCertificateTarif, request.Id);
+
+                            #region Send Notification In SignalR
+
+                            //Create Notification For Supporters And Admins
+                            var notifyResult = await _notificationService.CreateSupporterNotification(request.Id, Domain.Enums.Notification.SupporterNotificationText.NewArrivalDeathCertificateRequest, Domain.Enums.Notification.NotificationTarget.request, User.GetUserId());
+
+                            //Create Notification For Online Visit Doctors 
+                            var DeathCertificatetResult = await _notificationService.CreateNotificationForDeathCertificateDoctors(request.Id, Domain.Enums.Notification.SupporterNotificationText.NewArrivalDeathCertificateRequest, Domain.Enums.Notification.NotificationTarget.request, User.GetUserId());
+
+                            //Get Current User
+                            var currentUser = await _userService.GetUserById(User.GetUserId());
+
+                            if (notifyResult && DeathCertificatetResult)
+                            {
+                                //Get List Of Admins And Supporter To Send Notification Into Them
+                                var users = await _userService.GetAdminsAndSupportersNotificationForSendNotificationInOnlineVisit();
+
+                                //Get Doctor For Send Notification  
+                                users.AddRange(await _deathCertificateService.GetActivatedAndDoctorsInterestDeathCertificate(request.Id));
+
+                                //Fill Send Supporter Notification ViewModel For Send Notification
+                                SendSupporterNotificationViewModel viewModel = new SendSupporterNotificationViewModel()
+                                {
+                                    CreateNotificationDate = $"{DateTime.Now.ToShamsi()} - {DateTime.Now.Hour}:{DateTime.Now.Minute}",
+                                    NotificationText = "درخواست جدید صدور گواهی فوت",
+                                    RequestId = request.Id,
+                                    Username = User.Identity.Name,
+                                    UserImage = currentUser.Avatar
+                                };
+
+                                await _notificationHub.Clients.Users(users).SendAsync("SendSupporterNotification", viewModel);
+                            }
+
+                            #endregion
+
+                            return RedirectToAction("PaymentResult", "Payment", new { IsSuccess = true, refId = refid });
+                        }
+                    }
+                    else if (errors != "[]")
+                    {
+                        string errorscode = jo["errors"]["code"].ToString();
+
+                        return BadRequest($"error code {errorscode}");
+
+                    }
                 }
             }
-            else
+            catch (Exception ex)
             {
-                await _requestService.UpdateRequestStateForNotPayed(request);
+                throw ex;
             }
 
-            return View();
+            return NotFound();
         }
 
         #endregion
