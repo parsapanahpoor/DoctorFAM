@@ -3,7 +3,11 @@ using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Interfaces;
 using DoctorFAM.Application.Services.Implementation;
 using DoctorFAM.Application.Services.Interfaces;
+using DoctorFAM.Application.StaticTools;
 using DoctorFAM.Data.DbContext;
+using DoctorFAM.Domain.DTOs.ZarinPal;
+using DoctorFAM.Domain.Entities.Account;
+using DoctorFAM.Domain.Entities.Wallet;
 using DoctorFAM.Domain.Enums.RequestType;
 using DoctorFAM.Domain.ViewModels.Site.Common;
 using DoctorFAM.Domain.ViewModels.Site.Notification;
@@ -15,6 +19,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.SignalR;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using System.Text;
 
 namespace DoctorFAM.Web.Controllers
 {
@@ -33,11 +40,12 @@ namespace DoctorFAM.Web.Controllers
         private readonly ISiteSettingService _siteSettingService;
         private readonly IHubContext<NotificationHub> _notificationHub;
         private readonly INotificationService _notificationService;
+        private readonly IWalletService _walletService;
 
         public HomeVisitController(IHomeVisitService homeVisitService, ILocationService locationService, IPatientService patientService
                                     , IRequestService requestService, IUserService userService, ISiteSettingService siteSettingService ,
                                         IPopulationCoveredService populationCovered, IHubContext<NotificationHub> notificationHub
-                                                , INotificationService notificationService)
+                                                , INotificationService notificationService , IWalletService walletService)
         {
             _homeVisitService = homeVisitService;
             _locationService = locationService;
@@ -48,6 +56,7 @@ namespace DoctorFAM.Web.Controllers
             _populationCovered = populationCovered;
             _notificationHub = notificationHub;
             _notificationService = notificationService;
+            _walletService = walletService;
         }
 
         #endregion
@@ -359,25 +368,16 @@ namespace DoctorFAM.Web.Controllers
 
             #region Online Payment
 
-            var payment = new ZarinpalSandbox.Payment(homeVisitTarif);
-
-            var res = payment.PaymentRequest("پرداخت  ", $"{siteAddressDomain}HomeVisitPayment/" + requestId, "Parsapanahpoor@yahoo.com", "09117878804");
-
-            if (res.Result.Status == 100)
+            return RedirectToAction("PaymentMethod", "Payment", new
             {
-
-                #region Update Request State 
-
-                await _requestService.UpdateRequestStateForTramsferringToTheBankingPortal(request);
-
-                #endregion
-
-                return Redirect("https://sandbox.zarinpal.com/pg/StartPay/" + res.Result.Authority);
-            }
+                gatewayType = GatewayType.Zarinpal,
+                amount = homeVisitTarif,
+                description = "شارژ حساب کاربری برای پرداخت هزینه ی ویزیت در منزل",
+                returURL = $"{PathTools.SiteAddress}/HomeVisitPayment/" + requestId,
+                requestId = requestId
+            });
 
             #endregion
-
-            return View();
         }
 
         #endregion
@@ -393,11 +393,17 @@ namespace DoctorFAM.Web.Controllers
 
             #endregion
 
-            if (HttpContext.Request.Query["Status"] != "" &&
-                HttpContext.Request.Query["Status"].ToString().ToLower() == "ok"
-                && HttpContext.Request.Query["Authority"] != "")
+
+            try
             {
-                string authority = HttpContext.Request.Query["Authority"];
+                #region Fill Parametrs
+
+                VerifyParameters parameters = new VerifyParameters();
+
+                if (HttpContext.Request.Query["Authority"] != "")
+                {
+                    parameters.authority = HttpContext.Request.Query["Authority"];
+                }
 
                 #region Get Home Visit Tarif 
 
@@ -410,69 +416,107 @@ namespace DoctorFAM.Web.Controllers
 
                 #endregion
 
-                var payment = new ZarinpalSandbox.Payment(homeVisitTarif);
-                var res = payment.Verification(authority).Result;
+                parameters.amount = homeVisitTarif.ToString();
+                parameters.merchant_id = PathTools.merchant;
 
-                if (res.Status == 100)
+                #endregion
+
+                using (HttpClient client = new HttpClient())
                 {
-                    ViewBag.code = res.RefId;
-                    ViewBag.IsSuccess = true;
+                    #region Verify Payment
 
-                    //Update Request State 
-                    await _requestService.UpdateRequestStateForPayed(request);
+                    var json = JsonConvert.SerializeObject(parameters);
 
-                    //Charge User Wallet
-                    await _homeVisitService.ChargeUserWallet(User.GetUserId(), homeVisitTarif , request.Id);
+                    HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
 
-                    //Pay Home Visit Tariff
-                    await _homeVisitService.PayHomeVisitTariff(User.GetUserId(), homeVisitTarif , request.Id);
+                    HttpResponseMessage response = await client.PostAsync(URLs.verifyUrl, content);
 
-                    #region Send Notification In SignalR
+                    string responseBody = await response.Content.ReadAsStringAsync();
 
-                    //Create Notification For Supporters And Admins
-                    var notifyResult = await _notificationService.CreateSupporterNotification(request.Id, Domain.Enums.Notification.SupporterNotificationText.HomeVisitRequest, Domain.Enums.Notification.NotificationTarget.request, User.GetUserId());
+                    JObject jodata = JObject.Parse(responseBody);
 
-                    //Create Notification For Home Visit Doctors 
-                    var HomeVisitResult = await _notificationService.CreateNotificationForHomeVisitDoctors(request.Id, Domain.Enums.Notification.SupporterNotificationText.HomeVisitRequest, Domain.Enums.Notification.NotificationTarget.request, User.GetUserId());
+                    string data = jodata["data"].ToString();
 
-                    //Get Current User
-                    var currentUser = await _userService.GetUserById(User.GetUserId());
+                    JObject jo = JObject.Parse(responseBody);
 
-                    if (notifyResult && HomeVisitResult)
-                    {
-                        //Get List Of Admins And Supporter To Send Notification Into Them
-                        var users = await _userService.GetAdminsAndSupportersNotificationForSendNotificationInHomeVisit();
-
-                        //Get Doctor For Send Notification  
-                        users.AddRange(await _notificationService.GetListOfDoctorsForArrivalsHomeVisitRequests(request.Id));
-
-                        //Fill Send Supporter Notification ViewModel For Send Notification
-                        SendSupporterNotificationViewModel viewModel = new SendSupporterNotificationViewModel()
-                        {
-                            CreateNotificationDate = $"{DateTime.Now.ToShamsi()} - {DateTime.Now.Hour}:{DateTime.Now.Minute}",
-                            NotificationText = "درخواست برای ویزیت درمنزل",
-                            RequestId = request.Id,
-                            Username = User.Identity.Name,
-                            UserImage = currentUser.Avatar
-                        };
-
-                        await _notificationHub.Clients.Users(users).SendAsync("SendSupporterNotification", viewModel);
-                    }
+                    string errors = jo["errors"].ToString();
 
                     #endregion
 
-                    TempData[SuccessMessage] = "لطفا تا تایید پزشک صبور باشید.این فرایند حداکثر تا 30دقیقه زمان خواهد برد.";
+                    if (data != "[]")
+                    {
+                        //Authority Code
+                        string refid = jodata["data"]["ref_id"].ToString();
 
-                    return View();
+                        //Get Wallet Transaction For Validation 
+                        var wallet = await _walletService.FindWalletTransactionForRedirectToTheBankPortal(User.GetUserId(), GatewayType.Zarinpal, request.Id, parameters.authority, homeVisitTarif);
+
+                        if (wallet != null)
+                        {
+                            //Update Request State 
+                            await _requestService.UpdateRequestStateForPayed(request);
+
+                            //Charge User Wallet
+                            //await _reservationService.ChargeUserWallet(User.GetUserId(), reservationTariff);
+
+                            await _walletService.UpdateWalletAndCalculateUserBalanceAfterBankingPayment(wallet);
+
+                            //Pay Home Visit Tariff
+                            await _homeVisitService.PayHomeVisitTariff(User.GetUserId(), homeVisitTarif, request.Id);
+
+                            #region Send Notification In SignalR
+
+                            //Create Notification For Supporters And Admins
+                            var notifyResult = await _notificationService.CreateSupporterNotification(request.Id, Domain.Enums.Notification.SupporterNotificationText.HomeVisitRequest, Domain.Enums.Notification.NotificationTarget.request, User.GetUserId());
+
+                            //Create Notification For Home Visit Doctors 
+                            var HomeVisitResult = await _notificationService.CreateNotificationForHomeVisitDoctors(request.Id, Domain.Enums.Notification.SupporterNotificationText.HomeVisitRequest, Domain.Enums.Notification.NotificationTarget.request, User.GetUserId());
+
+                            //Get Current User
+                            var currentUser = await _userService.GetUserById(User.GetUserId());
+
+                            if (notifyResult && HomeVisitResult)
+                            {
+                                //Get List Of Admins And Supporter To Send Notification Into Them
+                                var users = await _userService.GetAdminsAndSupportersNotificationForSendNotificationInHomeVisit();
+
+                                //Get Doctor For Send Notification  
+                                users.AddRange(await _notificationService.GetListOfDoctorsForArrivalsHomeVisitRequests(request.Id));
+
+                                //Fill Send Supporter Notification ViewModel For Send Notification
+                                SendSupporterNotificationViewModel viewModel = new SendSupporterNotificationViewModel()
+                                {
+                                    CreateNotificationDate = $"{DateTime.Now.ToShamsi()} - {DateTime.Now.Hour}:{DateTime.Now.Minute}",
+                                    NotificationText = "درخواست برای ویزیت درمنزل",
+                                    RequestId = request.Id,
+                                    Username = User.Identity.Name,
+                                    UserImage = currentUser.Avatar
+                                };
+
+                                await _notificationHub.Clients.Users(users).SendAsync("SendSupporterNotification", viewModel);
+                            }
+
+                            #endregion
+
+                            return RedirectToAction("PaymentResult", "Payment", new { IsSuccess = true, refId = refid });
+                        }
+                    }
+                    else if (errors != "[]")
+                    {
+                        string errorscode = jo["errors"]["code"].ToString();
+
+                        return BadRequest($"error code {errorscode}");
+
+                    }
                 }
-
             }
-            else
+            catch (Exception ex)
             {
-                await _requestService.UpdateRequestStateForNotPayed(request);
+
+                throw ex;
             }
 
-            return View();
+            return NotFound();
         }
 
         #endregion
