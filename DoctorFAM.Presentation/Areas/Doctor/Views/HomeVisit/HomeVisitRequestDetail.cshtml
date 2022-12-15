@@ -118,6 +118,19 @@
                                         </p>
                                     </div>
 
+                                    @if (Model.TariffsSelected != null && Model.TariffsSelected.Any())
+                                    {
+                                        foreach (var tariff in Model.TariffsSelected)
+                                        {
+                                            <div class="form-group col-md-4 col-sm-12">
+                                                <p class="flex-style-center">
+                                                    <span> @tariff.TariffForHealthHouseService.Title </span>
+                                                    <span class="mr-8px label label-success">  @Localizer["Yes"] </span>
+                                                </p>
+                                            </div>
+                                        }
+                                    }
+
                                 </div>
                             </div>
                             <div id="settings" class="tab-pane active">

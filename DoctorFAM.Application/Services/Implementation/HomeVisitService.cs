@@ -600,7 +600,8 @@ namespace DoctorFAM.Application.Services.Implementation
                 PatientRequestDetail = await _pharmacyService.GetRequestPatientDetailByRequestId(request.Id),
                 Request = request,
                 HomeVisitRequestDetail = await _homeVisit.GetHomeVisitRequestDetailByRequestId(requestId),
-                PatientRequestDateTimeDetail = await _requestService.GetRequestDateTimeDetailByRequestDetailId(requestId)
+                PatientRequestDateTimeDetail = await _requestService.GetRequestDateTimeDetailByRequestDetailId(requestId),
+                TariffsSelected = await _siteSettingService.GetRequestSelectedTariffsByRequestId(requestId),
             };
 
             #endregion
@@ -690,6 +691,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 PatientRequestDateTimeDetail = await _requestService.GetRequestDateTimeDetailByRequestDetailId(request.Id),
                 Request = request,
                 HomeVisitRequestDetail = await GetHomeVisitRequestDetailByRequestId(request.Id),
+                TariffSelected = await _siteSettingService.GetRequestSelectedTariffsByRequestId(request.Id),
             };
 
             if (request.OperationId.HasValue)
