@@ -23,6 +23,8 @@ namespace DoctorFAM.Domain.ViewModels.DoctorPanel.DeathCertificate
 
         public User User { get; set; }
 
+        public List<RequestSelectedHealthHouseTariff>? TariffSelected { get; set; }
+
         #endregion
     }
 }

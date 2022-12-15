@@ -272,6 +272,7 @@ namespace DoctorFAM.Web.Controllers
                 Phone = patientRequest.Phone,
                 RequestId = patientRequest.RequestId ,
                 Vilage = patientRequest.Vilage,
+                SelectedTariffs = patientRequest.SelectedTariffs
             };
 
             #endregion

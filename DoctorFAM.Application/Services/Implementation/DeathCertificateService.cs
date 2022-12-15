@@ -439,6 +439,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 User = await _userService.GetUserById(request.UserId),
                 PatientRequestDetail = await _homeVisitService.GetRequestPatientDetailByRequestId(request.Id),
                 Request = request,
+                TariffSelected = await _siteSettingService.GetRequestSelectedTariffsByRequestId(request.Id),
             };
 
             if (request.OperationId.HasValue)
@@ -495,6 +496,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 User = await _userService.GetUserById(request.UserId),
                 PatientRequestDetail = await _homePharmacyRepository.GetRequestPatientDetailByRequestId(request.Id),
                 Request = request,
+                TariffSelected = await _siteSettingService.GetRequestSelectedTariffsByRequestId(request.Id),
             };
 
             #endregion
