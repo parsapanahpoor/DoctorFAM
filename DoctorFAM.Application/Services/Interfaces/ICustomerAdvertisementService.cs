@@ -29,6 +29,15 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Fill Customer Advertisement Detail View Model
         Task<CustomerAdvertisementDetailUserPanelViewModel?> FillCustomerAdvertisementDetailUserPanelViewModel(ulong advertisementId, ulong userId);
 
+        //Check Advertisement For Redirect To Bank Portal
+        Task<bool> CheckAdvertisementForRedirectToBankPortal(ulong adsId, ulong userId, CustomerAdvertisement advertisement);
+
+        //Update Advertisement State After Pay From Bank Portal
+        Task UpdateAdvertisementStateAfterPayFromBankPortal(CustomerAdvertisement advertisement);
+
+        //Pay Advertisement Price 
+        Task<bool> PayAdvertisementPrice(ulong userId, int price, ulong? adsId);
+
         #endregion
 
         #region Admin Side 
