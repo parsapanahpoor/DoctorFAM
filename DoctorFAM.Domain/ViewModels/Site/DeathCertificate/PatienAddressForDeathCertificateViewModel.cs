@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DoctorFAM.Domain.Entities.SiteSetting;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -49,6 +50,10 @@ namespace DoctorFAM.Domain.ViewModels.Site.DeathCertificate
         [Display(Name = "فاصله از شهر")]
         [RegularExpression(@"^[0-9]*$", ErrorMessage = "The information entered is not valid.")]
         public int Distance { get; set; }
+
+        public List<TariffForHealthHouseServices>? ListOfTariffs { get; set; }
+
+        public List<ulong>? SelectedTariffs { get; set; }
 
         #endregion
 

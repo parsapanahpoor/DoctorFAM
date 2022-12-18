@@ -1,4 +1,6 @@
 ﻿using Academy.Domain.Entities.SiteSetting;
+using DoctorFAM.Domain.Entities.Requests;
+using DoctorFAM.Domain.Entities.SiteSetting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,11 +33,44 @@ namespace DoctorFAM.Domain.Interfaces
 
         Task<int> GetReservationTariff();
 
+        //Get Health House Tariff Service By Id 
+        Task<TariffForHealthHouseServices?> GetHealthHouseTariffServiceById(ulong id);
+
+        //Get List Of Tariff For Health House Services
+        Task<List<TariffForHealthHouseServices>?> GetListOfTariffForHealthHouseServices();
+
+        //Add Tariff To The Data Base 
+        Task AddTariffToTheDataBase(TariffForHealthHouseServices tariff);
+
+        //Update Tariff To The Data Base 
+        Task UpdateTariffToTheDataBase(TariffForHealthHouseServices tariff);
+
+        //Get List Of Tariff For Home Visit Health House Services
+        Task<List<TariffForHealthHouseServices>?> GetListOfTariffForHomeVisitHealthHouseServices();
+
+        //Get List Of Tariff For Home Nurse Health House Services
+        Task<List<TariffForHealthHouseServices>?> GetListOfTariffForHomeNurseHealthHouseServices();
+
+        //Is Exist Any Tariff By Id 
+        Task<bool> IsExistAnyTariffById(ulong tariffId);
+
+        //Get List Of Tariff For Death Certificate Health House Services
+        Task<List<TariffForHealthHouseServices>?> GetListOfTariffForDeathCertificateHealthHouseServices();
+
         #endregion
 
         #region Site Side
 
         Task<int> GetDistanceFromCityTarriffCost();
+
+        //Add Request Selected Healt House Tariff Without Savechanges
+        Task AddRequestSelectedHealtHouseTariffWithoutSavechanges(RequestSelectedHealthHouseTariff model);
+
+        //Get Request Selected Tariffs By Request Id 
+        Task<List<RequestSelectedHealthHouseTariff>> GetRequestSelectedTariffsByRequestId(ulong requestId);
+
+        //Get Request Selected Tariffs By Request Id 
+        Task<List<TariffForHealthHouseServices>> GetTariffBySelectedTariffs(ulong requestId);
 
         Task<bool> IsExistSiteSetting();
 
@@ -44,32 +79,6 @@ namespace DoctorFAM.Domain.Interfaces
         Task<string?> GetSiteAddressDomain();
 
         Task<int> GetOnlineVisitTariff();
-
-        Task<int> GetIntramuscularInjectionCost();
-
-        Task<int> GetDermalOrSubcutaneousInjectionCost();
-
-        Task<int> GetReedyInjectionCost();
-
-        Task<int> GetSerumTherapyCost();
-
-        Task<int> GetBloodPressureMeasurementCost();
-
-        Task<int> GetGlucometrytCost();
-
-        Task<int> GetPulseOximetryCost();
-
-        Task<int> GetSmallDressingCost();
-
-        Task<int> GetGreatDressingCost();
-
-        Task<int> GetGastricIntubationCost();
-
-        Task<int> GetUrinaryBladderCost();
-
-        Task<int> GetOxygenTherapyCost();
-
-        Task<int> GetECGCost();
 
         #endregion
     }

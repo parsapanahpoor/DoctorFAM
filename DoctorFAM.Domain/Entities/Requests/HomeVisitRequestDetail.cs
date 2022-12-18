@@ -20,45 +20,6 @@ namespace DoctorFAM.Domain.Entities.Requests
 
         public bool EmergencyVisit { get; set; }
 
-        [Display(Name = "تزریق عضلانی")]
-        public bool IntramuscularInjection { get; set; }
-
-        [Display(Name = "تزریق جلدی یا زیر جلدی")]
-        public bool DermalOrSubcutaneousInjection { get; set; }
-
-        [Display(Name = "تزریق ریدی")]
-        public bool ReedyInjection { get; set; }
-
-        [Display(Name = "سرم تراپی")]
-        public bool SerumTherapy { get; set; }
-
-        [Display(Name = "اندازه گیری فشار خون")]
-        public bool BloodPressureMeasurement { get; set; }
-
-        [Display(Name = "گلوکومتری")]
-        public bool Glucometry { get; set; }
-
-        [Display(Name = "پالس اکسیمتری")]
-        public bool PulseOximetry { get; set; }
-
-        [Display(Name = "پانسمان کوچک")]
-        public bool SmallDressing { get; set; }
-
-        [Display(Name = "پانسمان بزرگ")]
-        public bool GreatDressing { get; set; }
-
-        [Display(Name = "لوله گذاری معده")]
-        public bool GastricIntubation { get; set; }
-
-        [Display(Name = "سونگذاری مثانه")]
-        public bool UrinaryBladder { get; set; }
-
-        [Display(Name = "اکسیژن تراپی")]
-        public bool OxygenTherapy { get; set; }
-
-        [Display(Name = "نوار قلب")]
-        public bool ECG { get; set; }
-
         #endregion
 
         #region relations 

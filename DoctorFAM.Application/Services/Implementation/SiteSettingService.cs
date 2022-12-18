@@ -1,8 +1,13 @@
 ﻿using Academy.Domain.Entities.SiteSetting;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Data.DbContext;
+using DoctorFAM.Domain.Entities.Requests;
+using DoctorFAM.Domain.Entities.SiteSetting;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.SiteSetting;
+using DoctorFAM.Domain.ViewModels.Admin.SiteSetting.HealthHouseServiceTariff;
+using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,19 +58,6 @@ namespace DoctorFAM.Application.Services.Implementation
                     SendSMSTime = setting.SendSMSTimer,
                     SiteDomain = setting.SiteDomain,
                     OnlineVisitTariff = setting.OnlineVisitTariff,
-                    IntramuscularInjection = setting.IntramuscularInjection,
-                    DermalOrSubcutaneousInjection = setting.DermalOrSubcutaneousInjection,
-                    ReedyInjection = setting.ReedyInjection ,
-                    SerumTherapy = setting.SerumTherapy ,
-                    BloodPressureMeasurement = setting.BloodPressureMeasurement ,
-                    Glucometry = setting.Glucometry ,
-                    PulseOximetry = setting.PulseOximetry,
-                    SmallDressing = setting.SmallDressing,
-                    GreatDressing = setting.GreatDressing,
-                    GastricIntubation = setting.GastricIntubation,
-                    UrinaryBladder = setting.UrinaryBladder,
-                    OxygenTherapy = setting.OxygenTherapy,
-                    ECG = setting.ECG,
                     DistanceFromCityTarriff = setting.DistanceFromCityTarriff,
                 };
             }
@@ -160,21 +152,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 setting.SendSMSTimer = editSiteSettingViewModel.SendSMSTime.Value;
                 setting.SiteDomain = editSiteSettingViewModel.SiteDomain;
                 setting.OnlineVisitTariff = editSiteSettingViewModel.HomeVisitTariff.Value;
-                setting.IntramuscularInjection = editSiteSettingViewModel.IntramuscularInjection;
-                setting.DermalOrSubcutaneousInjection = editSiteSettingViewModel.DermalOrSubcutaneousInjection;
-                setting.ReedyInjection = editSiteSettingViewModel.ReedyInjection;
-                setting.SerumTherapy = editSiteSettingViewModel.SerumTherapy;
-                setting.BloodPressureMeasurement = editSiteSettingViewModel.BloodPressureMeasurement;
-                setting.Glucometry = editSiteSettingViewModel.Glucometry;
-                setting.PulseOximetry = editSiteSettingViewModel.PulseOximetry;
-                setting.SmallDressing = editSiteSettingViewModel.SmallDressing;
-                setting.GreatDressing = editSiteSettingViewModel.GreatDressing;
-                setting.GastricIntubation = editSiteSettingViewModel.GastricIntubation;
-                setting.UrinaryBladder = editSiteSettingViewModel.UrinaryBladder;
-                setting.OxygenTherapy = editSiteSettingViewModel.OxygenTherapy;
-                setting.ECG = editSiteSettingViewModel.ECG;
                 setting.DistanceFromCityTarriff = editSiteSettingViewModel.DistanceFromCityTarriff;
-
             }
 
             await _siteSettingRepository.UpdateSiteSetting(setting);
@@ -256,19 +234,6 @@ namespace DoctorFAM.Application.Services.Implementation
                 SendSMSTimer = editSiteSettingViewModel.SendSMSTime.Value,
                 SiteDomain = editSiteSettingViewModel.SiteDomain,
                 OnlineVisitTariff = editSiteSettingViewModel.OnlineVisitTariff.Value,
-                IntramuscularInjection = editSiteSettingViewModel.IntramuscularInjection,
-                DermalOrSubcutaneousInjection = editSiteSettingViewModel.DermalOrSubcutaneousInjection,
-                ReedyInjection = editSiteSettingViewModel.ReedyInjection,
-                SerumTherapy = editSiteSettingViewModel.SerumTherapy,
-                BloodPressureMeasurement = editSiteSettingViewModel.BloodPressureMeasurement,
-                Glucometry = editSiteSettingViewModel.Glucometry,
-                PulseOximetry = editSiteSettingViewModel.PulseOximetry,
-                SmallDressing = editSiteSettingViewModel.SmallDressing,
-                GreatDressing = editSiteSettingViewModel.GreatDressing,
-                GastricIntubation = editSiteSettingViewModel.GastricIntubation,
-                UrinaryBladder = editSiteSettingViewModel.UrinaryBladder,
-                OxygenTherapy = editSiteSettingViewModel.OxygenTherapy,
-                ECG = editSiteSettingViewModel.ECG,
                 DistanceFromCityTarriff = editSiteSettingViewModel.DistanceFromCityTarriff,
             };
 
@@ -317,6 +282,132 @@ namespace DoctorFAM.Application.Services.Implementation
             return await _siteSettingRepository.GetOnlineVisitTariff();
         }
 
+        //Get Health House Tariff Service By Id 
+        public async Task<TariffForHealthHouseServices?> GetHealthHouseTariffServiceById(ulong id)
+        {
+            return await _siteSettingRepository.GetHealthHouseTariffServiceById(id);
+        }
+
+        //Fill Add Or Edit Tariff For Health House Services View Model
+        public async Task<AddOrEditTariffForHealthHouseServicesViewModel?> FillAddOrEditTariffForHealthHouseServicesViewModel(ulong id)
+        {
+            #region Get Health House Tariff Service By Id 
+
+            var tariff = await GetHealthHouseTariffServiceById(id);
+            if (tariff == null) return null;
+
+            #endregion
+
+            #region Fill Model  
+
+            AddOrEditTariffForHealthHouseServicesViewModel model = new AddOrEditTariffForHealthHouseServicesViewModel()
+            {
+                DeathCertificate = tariff.DeathCertificate,
+                HomeNurse = tariff.HomeNurse,
+                HomeVisit = tariff.HomeVisit,
+                Id = tariff.Id,
+                Price = tariff.Price,
+                Title = tariff.Title
+            };
+
+            #endregion
+
+            return model;
+        }
+
+        //Get List Of Tariff For Health House Services
+        public async Task<List<TariffForHealthHouseServices>?> GetListOfTariffForHealthHouseServices()
+        {
+            return await _siteSettingRepository.GetListOfTariffForHealthHouseServices();
+        }
+
+        //Get List Of Tariff For Home Visit Health House Services
+        public async Task<List<TariffForHealthHouseServices>?> GetListOfTariffForHomeVisitHealthHouseServices()
+        {
+            return await _siteSettingRepository.GetListOfTariffForHomeVisitHealthHouseServices();
+        }
+
+        //Get List Of Tariff For Death Certificate Health House Services
+        public async Task<List<TariffForHealthHouseServices>?> GetListOfTariffForDeathCertificateHealthHouseServices()
+        {
+            return await _siteSettingRepository.GetListOfTariffForDeathCertificateHealthHouseServices();
+        }
+
+        //Get List Of Tariff For Home Nurse Health House Services
+        public async Task<List<TariffForHealthHouseServices>?> GetListOfTariffForHomeNurseHealthHouseServices()
+        {
+            return await _siteSettingRepository.GetListOfTariffForHomeNurseHealthHouseServices();
+        }
+
+        //Add Or Edit Tariff For Health House Services
+        public async Task<bool> AddOrEditTariffForHealthHouseServices(AddOrEditTariffForHealthHouseServicesViewModel model)
+        {
+            #region Create Tariff
+
+            if (!model.Id.HasValue)
+            {
+                #region Fill Entity
+
+                TariffForHealthHouseServices addTariff = new TariffForHealthHouseServices()
+                {
+                    DeathCertificate = model.DeathCertificate,
+                    HomeNurse = model.HomeNurse,
+                    HomeVisit = model.HomeVisit,
+                    Price = model.Price,
+                    Title = model.Title
+                };
+
+                #endregion
+
+                #region Add To Data Base
+
+                await _siteSettingRepository.AddTariffToTheDataBase(addTariff);
+
+                #endregion
+
+                return true;
+            }
+
+            #endregion
+
+            #region Edit Tariff
+
+            if (model.Id.HasValue)
+            {
+                #region Get Health House Tariff Service By Id 
+
+                var tariff = await GetHealthHouseTariffServiceById(model.Id.Value);
+                if (tariff == null) return false;
+
+                #endregion
+
+                #region Update Fields
+
+                tariff.Title = model.Title;
+                tariff.Price = model.Price;
+                tariff.HomeVisit = model.HomeVisit;
+                tariff.HomeNurse = model.HomeNurse;
+                tariff.DeathCertificate = model.DeathCertificate;
+
+                #endregion
+
+                //Update Data Base 
+                await _siteSettingRepository.UpdateTariffToTheDataBase(tariff);
+
+                return true;
+            }
+
+            #endregion
+
+            return false;
+        }
+
+        //Is Exist Any Tariff By Id 
+        public async Task<bool> IsExistAnyTariffById(ulong tariffId)
+        {
+            return await _siteSettingRepository.IsExistAnyTariffById(tariffId);
+        }
+
         #endregion
 
         #region Site Side
@@ -336,74 +427,27 @@ namespace DoctorFAM.Application.Services.Implementation
             return await _siteSettingRepository.GetSiteAddressDomain();
         }
 
-        public async Task<int> GetIntramuscularInjectionCost()
-        {
-            return await _siteSettingRepository.GetIntramuscularInjectionCost();
-        }
-
         public async Task<int> GetDistanceFromCityTarriffCost()
         {
             return await _siteSettingRepository.GetDistanceFromCityTarriffCost();
         }
 
-        public async Task<int> GetDermalOrSubcutaneousInjectionCost()
+        //Add Request Selected Healt House Tariff Without Savechanges
+        public async Task AddRequestSelectedHealtHouseTariffWithoutSavechanges(RequestSelectedHealthHouseTariff model)
         {
-            return await _siteSettingRepository.GetDermalOrSubcutaneousInjectionCost();
+            await _siteSettingRepository.AddRequestSelectedHealtHouseTariffWithoutSavechanges(model);
         }
 
-        public async Task<int> GetReedyInjectionCost()
+        //Get Request Selected Tariffs By Request Id 
+        public async Task<List<RequestSelectedHealthHouseTariff>> GetRequestSelectedTariffsByRequestId(ulong requestId)
         {
-            return await _siteSettingRepository.GetReedyInjectionCost();
+            return await _siteSettingRepository.GetRequestSelectedTariffsByRequestId(requestId);
         }
 
-        public async Task<int> GetSerumTherapyCost()
+        //Get Request Selected Tariffs By Request Id 
+        public async Task<List<TariffForHealthHouseServices>> GetTariffBySelectedTariffs(ulong requestId)
         {
-            return await _siteSettingRepository.GetSerumTherapyCost();
-        }
-
-        public async Task<int> GetBloodPressureMeasurementCost()
-        {
-            return await _siteSettingRepository.GetBloodPressureMeasurementCost();
-        }
-
-        public async Task<int> GetGlucometrytCost()
-        {
-            return await _siteSettingRepository.GetGlucometrytCost();
-        }
-
-        public async Task<int> GetPulseOximetryCost()
-        {
-            return await _siteSettingRepository.GetPulseOximetryCost();
-        }
-
-        public async Task<int> GetSmallDressingCost()
-        {
-            return await _siteSettingRepository.GetSmallDressingCost();
-        }
-
-        public async Task<int> GetGreatDressingCost()
-        {
-            return await _siteSettingRepository.GetGreatDressingCost();
-        }
-
-        public async Task<int> GetGastricIntubationCost()
-        {
-            return await _siteSettingRepository.GetGastricIntubationCost();
-        }
-
-        public async Task<int> GetUrinaryBladderCost()
-        {
-            return await _siteSettingRepository.GetUrinaryBladderCost();
-        }
-
-        public async Task<int> GetOxygenTherapyCost()
-        {
-            return await _siteSettingRepository.GetOxygenTherapyCost();
-        }
-
-        public async Task<int> GetECGCost()
-        {
-            return await _siteSettingRepository.GetECGCost();
+            return await _siteSettingRepository.GetTariffBySelectedTariffs(requestId);
         }
 
         #endregion

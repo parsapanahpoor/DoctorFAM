@@ -6,6 +6,8 @@ using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Application.StaticTools;
 using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Advertisement;
+using DoctorFAM.Domain.Entities.Wallet;
+using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.Admin.CustomerAdvertisement;
 using DoctorFAM.Domain.ViewModels.UserPanel.CustomerAdvertisement;
@@ -24,13 +26,14 @@ namespace DoctorFAM.Application.Services.Implementation
         #region Ctor
 
         private readonly ICustomerAdvertisementRepository _advertisement;
-
+        private readonly IWalletRepository _walletRepository;
         private readonly IUserService _userService;
 
-        public CustomerAdvertisementService(ICustomerAdvertisementRepository advertisement, IUserService userService)
+        public CustomerAdvertisementService(ICustomerAdvertisementRepository advertisement, IUserService userService , IWalletRepository walletRepository)
         {
             _advertisement = advertisement;
             _userService = userService;
+            _walletRepository = walletRepository;
         }
 
         #endregion
@@ -155,6 +158,59 @@ namespace DoctorFAM.Application.Services.Implementation
             #endregion
 
             return model;
+        }
+
+        //Check Advertisement For Redirect To Bank Portal
+        public async Task<bool> CheckAdvertisementForRedirectToBankPortal(ulong adsId , ulong userId , CustomerAdvertisement advertisement)
+        {
+            #region Get User By Id 
+
+            var user = await _userService.GetUserById(userId);
+            if (user == null) return false;
+
+            #endregion
+
+            #region Get Advertisement By ID 
+
+            if (advertisement.UserId != userId) return false;
+            if (advertisement.CustomerAdvertisementState != Domain.Enums.CustomerAdvertisement.CustomerAdvertisementState.WaitingForPayment) return false;
+
+            #endregion
+
+            return true;
+        }
+
+        //Update Advertisement State After Pay From Bank Portal
+        public async Task UpdateAdvertisementStateAfterPayFromBankPortal(CustomerAdvertisement advertisement)
+        {
+            advertisement.CustomerAdvertisementState = Domain.Enums.CustomerAdvertisement.CustomerAdvertisementState.Paied;
+
+            //Update Advertisement 
+            await _advertisement.UpdateAdvertisementFields(advertisement);
+        }
+
+        //Pay Advertisement Price 
+        public async Task<bool> PayAdvertisementPrice(ulong userId, int price, ulong? adsId)
+        {
+            if (!await _userService.IsExistUserById(userId))
+            {
+                return false;
+            }
+
+            var wallet = new Wallet
+            {
+                UserId = userId,
+                TransactionType = TransactionType.Withdraw,
+                GatewayType = GatewayType.Zarinpal,
+                PaymentType = PaymentType.CustomerAdvertisementPayment,
+                Price = price,
+                Description = "پرداخت مبلغ تبلیغات",
+                IsFinally = true,
+                RequestId = adsId.Value
+            };
+
+            await _walletRepository.CreateWalletAsync(wallet);
+            return true;
         }
 
         #endregion

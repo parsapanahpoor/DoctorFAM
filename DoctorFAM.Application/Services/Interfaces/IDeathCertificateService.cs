@@ -3,6 +3,7 @@ using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.ViewModels.Admin.HealthHouse.DeathCertificate;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DeathCertificate;
+using DoctorFAM.Domain.ViewModels.Site.DeathCertificate;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
 using DoctorFAM.Domain.ViewModels.UserPanel.HealthHouse.DeathCertificate;
 using System;
@@ -26,6 +27,12 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Get Activated And Death Certificate Interests Death Certificate For Send Correct Notification For Arrival Death Certificate Request 
         Task<List<string?>> GetActivatedAndDoctorsInterestDeathCertificate(ulong requestId);
+
+        //Fill Death Certificate Request Invoice View Model
+        Task<DeathCertificateRequestInvoiceViewModel?> FillDeathCertificateRequestInvoiceViewModel(Request request);
+
+        //Proccess Death Certificate Request Cost 
+        Task<int> ProccessDeathCertificateRequestCost(Request request);
 
         #endregion
 

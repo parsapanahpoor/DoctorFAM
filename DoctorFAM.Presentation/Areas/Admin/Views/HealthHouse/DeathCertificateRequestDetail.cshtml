@@ -193,6 +193,20 @@
                                             <label>@Localizer["Extra Mobile"]</label>
                                             <input type="text" class="form-control" readonly value="@(string.IsNullOrEmpty(Model.User.ExtraPhoneNumber) ? @Localizer["Empty"] : @Model.User.ExtraPhoneNumber )">
                                         </div>
+
+                                        @if (Model.TariffSelected != null && Model.TariffSelected.Any())
+                                        {
+                                            foreach (var tariff in Model.TariffSelected)
+                                            {
+                                                <div class="form-group col-md-4 col-sm-12">
+                                                    <p class="flex-style-center">
+                                                        <span> @tariff.TariffForHealthHouseService.Title </span>
+                                                        <span class="mr-8px label label-success">  بله </span>
+                                                    </p>
+                                                </div>
+                                            }
+                                        }
+
                                     </div>
 
                                 </div>

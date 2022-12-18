@@ -27,6 +27,8 @@ namespace DoctorFAM.Domain.ViewModels.DoctorPanel.HomeVisit
 
         public PatientRequestDateTimeDetail PatientRequestDateTimeDetail { get; set; }
 
+        public List<RequestSelectedHealthHouseTariff>? TariffsSelected { get; set; }
+
         #endregion
     }
 }

@@ -18,10 +18,12 @@ using DoctorFAM.Domain.ViewModels.Admin.HealthHouse.HomeVisit;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DeathCertificate;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.HomeVisit;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.OnlineVisit;
+using DoctorFAM.Domain.ViewModels.Site.HomeVisitRequest;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
 using DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -406,100 +408,146 @@ namespace DoctorFAM.Application.Services.Implementation
                 cost = cost + ((homeVisitTariff * 20) / 100);
             }
 
-            if (homeVisitRequestDetail.IntramuscularInjection == true)
+            //if (homeVisitRequestDetail.IntramuscularInjection == true)
+            //{
+            //    var IntramuscularInjection = await _siteSettingService.GetIntramuscularInjectionCost();
+
+            //    cost = cost + IntramuscularInjection;
+            //}
+
+            #endregion
+
+            #region Get Request Selected Tariffs 
+
+            var selectedTariffs = await _siteSettingService.GetRequestSelectedTariffsByRequestId(request.Id);
+
+            if (selectedTariffs != null && selectedTariffs.Any())
             {
-                var IntramuscularInjection = await _siteSettingService.GetIntramuscularInjectionCost();
-
-                cost = cost + IntramuscularInjection;
-            }
-
-            if (homeVisitRequestDetail.DermalOrSubcutaneousInjection == true)
-            {
-                var DermalOrSubcutaneousInjection = await _siteSettingService.GetDermalOrSubcutaneousInjectionCost();
-
-                cost = cost + DermalOrSubcutaneousInjection;
-            }
-
-            if (homeVisitRequestDetail.ReedyInjection == true)
-            {
-                var ReedyInjection = await _siteSettingService.GetReedyInjectionCost();
-
-                cost = cost + ReedyInjection;
-            }
-
-            if (homeVisitRequestDetail.SerumTherapy == true)
-            {
-                var SerumTherapy = await _siteSettingService.GetSerumTherapyCost();
-
-                cost = cost + SerumTherapy;
-            }
-
-            if (homeVisitRequestDetail.BloodPressureMeasurement == true)
-            {
-                var BloodPressureMeasurement = await _siteSettingService.GetBloodPressureMeasurementCost();
-
-                cost = cost + BloodPressureMeasurement;
-            }
-
-            if (homeVisitRequestDetail.Glucometry == true)
-            {
-                var Glucometry = await _siteSettingService.GetGlucometrytCost();
-
-                cost = cost + Glucometry;
-            }
-
-            if (homeVisitRequestDetail.PulseOximetry == true)
-            {
-                var PulseOximetry = await _siteSettingService.GetPulseOximetryCost();
-
-                cost = cost + PulseOximetry;
-            }
-
-            if (homeVisitRequestDetail.SmallDressing == true)
-            {
-                var SmallDressing = await _siteSettingService.GetSmallDressingCost();
-
-                cost = cost + SmallDressing;
-            }
-
-            if (homeVisitRequestDetail.GreatDressing == true)
-            {
-                var GreatDressing = await _siteSettingService.GetGreatDressingCost();
-
-                cost = cost + GreatDressing;
-            }
-
-            if (homeVisitRequestDetail.GastricIntubation == true)
-            {
-                var GastricIntubation = await _siteSettingService.GetGastricIntubationCost();
-
-                cost = cost + GastricIntubation;
-            }
-
-            if (homeVisitRequestDetail.UrinaryBladder == true)
-            {
-                var UrinaryBladder = await _siteSettingService.GetUrinaryBladderCost();
-
-                cost = cost + UrinaryBladder;
-            }
-
-            if (homeVisitRequestDetail.OxygenTherapy == true)
-            {
-                var OxygenTherapy = await _siteSettingService.GetOxygenTherapyCost();
-
-                cost = cost + OxygenTherapy;
-            }
-
-            if (homeVisitRequestDetail.ECG == true)
-            {
-                var ECG = await _siteSettingService.GetECGCost();
-
-                cost = cost + ECG;
+                foreach (var tariff in selectedTariffs)
+                {
+                    cost = cost + Int64.Parse(tariff.TariffForHealthHouseService.Price);
+                }
             }
 
             #endregion
 
             return (int)cost;
+        }
+
+        //Fill Home Visit Request Invoice View Model
+        public async Task<HomeVisitRequestInvoiceViewModel?> FillHomeVisitRequestInvoiceViewModel(Request request)
+        {
+            //Make Instance From Return Model 
+            HomeVisitRequestInvoiceViewModel model = new HomeVisitRequestInvoiceViewModel();
+            model.RequestId = request.Id;
+
+            #region Get Requets Patient Address Detail
+
+            var requestPatietnAddressDetail = await GetRequestPatientDetailByRequestId(request.Id);
+            if (requestPatietnAddressDetail == null) return null;
+
+            model.PaitientRequestDetail = requestPatietnAddressDetail;
+
+            #endregion
+
+            #region Get Requets Patient Date Time 
+
+            var dateTimeDetail = await _requestService.GetRequestDateTimeDetailByRequestDetailId(request.Id);
+            if (dateTimeDetail == null) return null;
+
+            model.PatientRequestDateTimeDetail = dateTimeDetail;
+
+            #endregion
+
+            #region Get Home Visit Request Detail 
+
+            var homeVisitRequestDetail = await GetHomeVisitRequestDetailByRequestId(request.Id);
+            if (homeVisitRequestDetail == null) return null;
+
+            model.HomeVisitRequestDetail = homeVisitRequestDetail;
+
+            #endregion
+
+            #region Get Home Visit Tariff From Site Setting 
+
+            double homeVisitTariff = await _siteSettingService.GetHomeVisitTariff();
+            if (homeVisitTariff == null || homeVisitTariff == 0) return null;
+
+            model.HomeVisitTariff = (int)homeVisitTariff;
+
+            #endregion
+
+            #region Proccess Cost
+
+            double cost = homeVisitTariff;
+
+            if (requestPatietnAddressDetail.Distance != null && requestPatietnAddressDetail.Distance != 0)
+            {
+                var DistanceFromCityTarriff = await _siteSettingService.GetDistanceFromCityTarriffCost();
+
+                var distancePerTenKilometer = DistanceFromCityTarriff / 10;
+
+                cost = cost + (DistanceFromCityTarriff * distancePerTenKilometer);
+
+                DistanceFromCityTarriff =  (DistanceFromCityTarriff * distancePerTenKilometer);
+            }
+
+            if (homeVisitRequestDetail.EmergencyVisit == true)
+            {
+                cost = cost + ((homeVisitTariff * 20) / 100);
+
+                model.EmergencyVisit = ((int)((homeVisitTariff * 20) / 100));
+            }
+
+            if (homeVisitRequestDetail.FemalePhysician == true)
+            {
+                cost = cost + ((homeVisitTariff * 20) / 100);
+
+                model.FemalePhysician =   ((int)((homeVisitTariff * 20) / 100));
+            }
+
+            if (dateTimeDetail.StartTime >= 22 || dateTimeDetail.EndTime <= 8)
+            {
+                cost = cost + ((homeVisitTariff * 20) / 100);
+
+                model.OverTiming = ((int)((homeVisitTariff * 20) / 100));
+            }
+
+
+
+            #endregion
+
+            #region Get Request Selected Tariffs 
+
+            List<HomeVisitInvoiceTariff> returnTariff = new List<HomeVisitInvoiceTariff>();
+
+            var selectedTariffs = await _siteSettingService.GetTariffBySelectedTariffs(request.Id);
+
+            if (selectedTariffs != null && selectedTariffs.Any())
+            {
+                foreach (var tariff in selectedTariffs)
+                {
+                    cost = cost + Int64.Parse(tariff.Price);
+
+                    returnTariff.Add(new HomeVisitInvoiceTariff()
+                    {
+                        Price = tariff.Price,
+                        Title = tariff.Title
+                    });
+                }
+            }
+
+            model.TariffForHealthHouseServices = returnTariff;
+
+            #endregion
+
+            #region Invoic Sum 
+
+            model.InvoiceSum = (int)cost;
+
+            #endregion
+
+            return model;
         }
 
         #endregion
@@ -552,7 +600,8 @@ namespace DoctorFAM.Application.Services.Implementation
                 PatientRequestDetail = await _pharmacyService.GetRequestPatientDetailByRequestId(request.Id),
                 Request = request,
                 HomeVisitRequestDetail = await _homeVisit.GetHomeVisitRequestDetailByRequestId(requestId),
-                PatientRequestDateTimeDetail = await _requestService.GetRequestDateTimeDetailByRequestDetailId(requestId)
+                PatientRequestDateTimeDetail = await _requestService.GetRequestDateTimeDetailByRequestDetailId(requestId),
+                TariffsSelected = await _siteSettingService.GetRequestSelectedTariffsByRequestId(requestId),
             };
 
             #endregion
@@ -642,6 +691,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 PatientRequestDateTimeDetail = await _requestService.GetRequestDateTimeDetailByRequestDetailId(request.Id),
                 Request = request,
                 HomeVisitRequestDetail = await GetHomeVisitRequestDetailByRequestId(request.Id),
+                TariffSelected = await _siteSettingService.GetRequestSelectedTariffsByRequestId(request.Id),
             };
 
             if (request.OperationId.HasValue)

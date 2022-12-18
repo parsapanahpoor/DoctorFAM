@@ -74,11 +74,13 @@ namespace DoctorFAM.Data.DbContext
 
         #endregion
 
-        #region Email Setting
+        #region Email & Site Setting
 
         public DbSet<EmailSetting> EmailSettings { get; set; }
 
         public DbSet<SiteSetting> SiteSettings { get; set; }
+
+        public DbSet<TariffForHealthHouseServices> TariffForHealthHouseServices { get; set; }
 
         #endregion
 
@@ -89,6 +91,8 @@ namespace DoctorFAM.Data.DbContext
         #endregion
 
         #region Request
+
+        public DbSet<RequestSelectedHealthHouseTariff> RequestSelectedHealthHouseTariff { get; set; }
 
         public DbSet<Request> Requests { get; set; }
 

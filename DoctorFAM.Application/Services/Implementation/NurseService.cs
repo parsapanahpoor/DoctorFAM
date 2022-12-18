@@ -36,10 +36,11 @@ namespace DoctorFAM.Application.Services.Implementation
         private readonly IUserService _userService;
         private readonly IRequestService _requestService;
         private readonly IPatientService _patientService;
+        private readonly ISiteSettingService _siteSettingService;
 
         public NurseService(INurseRepository nurseRepository, IOrganizationRepository organizationRepository,
                                 IWorkAddressRepository workAddressRepository, IUserService userService , IRequestService requestService
-                                    , IPatientService patientService)
+                                    , IPatientService patientService , ISiteSettingService siteSettingService)
         {
             _nurseRepository = nurseRepository;
             _organizationRepository = organizationRepository;
@@ -47,6 +48,7 @@ namespace DoctorFAM.Application.Services.Implementation
             _userService = userService;
             _requestService = requestService;
             _patientService = patientService;
+            _siteSettingService = siteSettingService;
         }
 
         #endregion
@@ -549,7 +551,8 @@ namespace DoctorFAM.Application.Services.Implementation
                 User = await _userService.GetUserById(request.UserId),
                 PatientRequestDetail = await _nurseRepository.GetRequestPatientDetailByRequestId(request.Id),
                 PatientRequestDateTimeDetail = await _requestService.GetRequestDateTimeDetailByRequestDetailId(request.Id),
-                Request = request
+                Request = request,
+                TariffSelected = await _siteSettingService.GetRequestSelectedTariffsByRequestId(request.Id),
             };
 
             #endregion
@@ -716,7 +719,8 @@ namespace DoctorFAM.Application.Services.Implementation
                 User = await _userService.GetUserById(request.UserId),
                 PatientRequestDetail = await _nurseRepository.GetRequestPatientDetailByRequestId(request.Id),
                 PatientRequestDateTimeDetail = await _requestService.GetRequestDateTimeDetailByRequestDetailId(request.Id),
-                Request = request
+                Request = request,
+                TariffSelected = await _siteSettingService.GetRequestSelectedTariffsByRequestId(request.Id),
             };
 
             if (request.OperationId.HasValue)

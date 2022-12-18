@@ -27,6 +27,8 @@ namespace DoctorFAM.Domain.ViewModels.Admin.HealthHouse.HomeNurse
 
         public User? Nurse { get; set; }
 
+        public List<RequestSelectedHealthHouseTariff>? TariffSelected { get; set; }
+
         #endregion
     }
 }

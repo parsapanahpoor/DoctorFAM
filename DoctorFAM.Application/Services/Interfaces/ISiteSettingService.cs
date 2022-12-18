@@ -1,4 +1,7 @@
-﻿using DoctorFAM.Domain.ViewModels.Admin.SiteSetting;
+﻿using DoctorFAM.Domain.Entities.Requests;
+using DoctorFAM.Domain.Entities.SiteSetting;
+using DoctorFAM.Domain.ViewModels.Admin.SiteSetting;
+using DoctorFAM.Domain.ViewModels.Admin.SiteSetting.HealthHouseServiceTariff;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,6 +36,30 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         Task<int> GetReservationTariff();
 
+        //Get Health House Tariff Service By Id 
+        Task<TariffForHealthHouseServices?> GetHealthHouseTariffServiceById(ulong id);
+
+        //Get List Of Tariff For Death Certificate Health House Services
+        Task<List<TariffForHealthHouseServices>?> GetListOfTariffForDeathCertificateHealthHouseServices();
+
+        //Fill Add Or Edit Tariff For Health House Services View Model
+        Task<AddOrEditTariffForHealthHouseServicesViewModel?> FillAddOrEditTariffForHealthHouseServicesViewModel(ulong id);
+
+        //Get List Of Tariff For Health House Services
+        Task<List<TariffForHealthHouseServices>?> GetListOfTariffForHealthHouseServices();
+
+        //Add Or Edit Tariff For Health House Services
+        Task<bool> AddOrEditTariffForHealthHouseServices(AddOrEditTariffForHealthHouseServicesViewModel model);
+
+        //Get List Of Tariff For Home Visit Health House Services
+        Task<List<TariffForHealthHouseServices>?> GetListOfTariffForHomeVisitHealthHouseServices();
+
+        //Get List Of Tariff For Home Nurse Health House Services
+        Task<List<TariffForHealthHouseServices>?> GetListOfTariffForHomeNurseHealthHouseServices();
+
+        //Is Exist Any Tariff By Id 
+        Task<bool> IsExistAnyTariffById(ulong tariffId);
+
         #endregion
 
         #region Site Side
@@ -45,31 +72,14 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         Task<string?> GetSiteAddressDomain();
 
-        Task<int> GetIntramuscularInjectionCost();
+        //Add Request Selected Healt House Tariff Without Savechanges
+        Task AddRequestSelectedHealtHouseTariffWithoutSavechanges(RequestSelectedHealthHouseTariff model);
 
-        Task<int> GetDermalOrSubcutaneousInjectionCost();
+        //Get Request Selected Tariffs By Request Id 
+        Task<List<RequestSelectedHealthHouseTariff>> GetRequestSelectedTariffsByRequestId(ulong requestId);
 
-        Task<int> GetReedyInjectionCost();
-
-        Task<int> GetSerumTherapyCost();
-
-        Task<int> GetBloodPressureMeasurementCost();
-
-        Task<int> GetGlucometrytCost();
-
-        Task<int> GetPulseOximetryCost();
-
-        Task<int> GetSmallDressingCost();
-
-        Task<int> GetGreatDressingCost();
-
-        Task<int> GetGastricIntubationCost();
-
-        Task<int> GetUrinaryBladderCost();
-
-        Task<int> GetOxygenTherapyCost();
-
-        Task<int> GetECGCost();
+        //Get Request Selected Tariffs By Request Id 
+        Task<List<TariffForHealthHouseServices>> GetTariffBySelectedTariffs(ulong requestId);
 
         #endregion
     }

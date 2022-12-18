@@ -9,6 +9,8 @@ using DoctorFAM.Domain.Entities.Wallet;
 using DoctorFAM.Domain.Enums.RequestType;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.HealthHouse.HomeNurse;
+using DoctorFAM.Domain.ViewModels.Site.HomeNurseRequest;
+using DoctorFAM.Domain.ViewModels.Site.HomeVisitRequest;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -24,24 +26,18 @@ namespace DoctorFAM.Application.Services.Implementation
         #region Ctor
 
         private readonly DoctorFAMDbContext _context;
-
         private readonly IHomeNurseRepository _homeNurse;
-
         private readonly IRequestService _requestService;
-
         private readonly IUserService _userService;
-
         private readonly IPatientService _patientService;
-
         private readonly ILocationService _locationService;
-
         private readonly IWalletRepository _walletRepository;
-
         private readonly IPopulationCoveredRepository _populationCovered;
+        private readonly ISiteSettingService _siteSetting;
 
         public HomeNurseService(DoctorFAMDbContext context, IHomeNurseRepository homeNurse, IRequestService requestService,
-                                IUserService userService, IPatientService patientService , ILocationService locationService ,
-                                IWalletRepository walletRepository, IPopulationCoveredRepository populationCovered)
+                                IUserService userService, IPatientService patientService , ILocationService locationService,
+                                IWalletRepository walletRepository, IPopulationCoveredRepository populationCovered, ISiteSettingService siteSetting)
         {
             _context = context;
             _homeNurse = homeNurse;
@@ -51,7 +47,7 @@ namespace DoctorFAM.Application.Services.Implementation
             _locationService = locationService;
             _walletRepository = walletRepository;
             _populationCovered = populationCovered;
-
+            _siteSetting = siteSetting;
         }
 
         #endregion
@@ -281,6 +277,158 @@ namespace DoctorFAM.Application.Services.Implementation
         #endregion
 
         #region Site Side
+
+        //Proccess Home Nurse Request Cost 
+        public async Task<int> ProccessHomeNurseRequestCost(Request request)
+        {
+            #region Get Requets Patient Address Detail
+
+            var requestPatietnAddressDetail = await GetRequestPatientDetailByRequestId(request.Id);
+            if (requestPatietnAddressDetail == null) return 0;
+
+            #endregion
+
+            #region Get Requets Patient Date Time 
+
+            var dateTimeDetail = await _requestService.GetRequestDateTimeDetailByRequestDetailId(request.Id);
+            if (dateTimeDetail == null) return 0;
+
+            #endregion
+
+            #region Get Home Nurse Tariff From Site Setting 
+
+            double homeNurseTariff = await _siteSetting.GetHomeNurseTariff();
+            if (homeNurseTariff == null || homeNurseTariff == 0) return 0;
+
+            #endregion
+
+            #region Proccess Cost
+
+            double cost = homeNurseTariff;
+
+            if (requestPatietnAddressDetail.Distance != null && requestPatietnAddressDetail.Distance != 0)
+            {
+                var DistanceFromCityTarriff = await _siteSetting.GetDistanceFromCityTarriffCost();
+
+                var distancePerTenKilometer = DistanceFromCityTarriff / 10;
+
+                cost = cost + (DistanceFromCityTarriff * distancePerTenKilometer);
+            }
+
+            if (dateTimeDetail.StartTime >= 22)
+            {
+                cost = cost + ((homeNurseTariff * 20) / 100);
+            }
+
+            #endregion
+
+            #region Get Request Selected Tariffs 
+
+            var selectedTariffs = await _siteSetting.GetRequestSelectedTariffsByRequestId(request.Id);
+
+            if (selectedTariffs != null && selectedTariffs.Any())
+            {
+                foreach (var tariff in selectedTariffs)
+                {
+                    cost = cost + Int64.Parse(tariff.TariffForHealthHouseService.Price);
+                }
+            }
+
+            #endregion
+
+            return (int)cost;
+        }
+
+        //Fill Home Nurse Request Invoice View Model
+        public async Task<HomeNurseRequestInvoiceViewModel?> FillHomeNurseRequestInvoiceViewModel(Request request)
+        {
+            //Make Instance From Return Model 
+            HomeNurseRequestInvoiceViewModel model = new HomeNurseRequestInvoiceViewModel();
+            model.RequestId = request.Id;
+
+            #region Get Requets Patient Address Detail
+
+            var requestPatietnAddressDetail = await GetRequestPatientDetailByRequestId(request.Id);
+            if (requestPatietnAddressDetail == null) return null;
+
+            model.PaitientRequestDetail = requestPatietnAddressDetail;
+
+            #endregion
+
+            #region Get Requets Patient Date Time 
+
+            var dateTimeDetail = await _requestService.GetRequestDateTimeDetailByRequestDetailId(request.Id);
+            if (dateTimeDetail == null) return null;
+
+            model.PatientRequestDateTimeDetail = dateTimeDetail;
+
+            #endregion
+
+            #region Get Home Nurse Tariff From Site Setting 
+
+            double homeNurseTariff = await _siteSetting.GetHomeNurseTariff();
+            if (homeNurseTariff == null || homeNurseTariff == 0) return null;
+
+            model.HomeVisitTariff = (int)homeNurseTariff;
+
+            #endregion
+
+            #region Proccess Cost
+
+            double cost = homeNurseTariff;
+
+            if (requestPatietnAddressDetail.Distance != null && requestPatietnAddressDetail.Distance != 0)
+            {
+                var DistanceFromCityTarriff = await _siteSetting.GetDistanceFromCityTarriffCost();
+
+                var distancePerTenKilometer = DistanceFromCityTarriff / 10;
+
+                cost = cost + (DistanceFromCityTarriff * distancePerTenKilometer);
+
+                DistanceFromCityTarriff = (DistanceFromCityTarriff * distancePerTenKilometer);
+            }
+
+            if (dateTimeDetail.StartTime >= 22 )
+            {
+                cost = cost + ((homeNurseTariff * 20) / 100);
+
+                model.OverTiming = ((int)((homeNurseTariff * 20) / 100));
+            }
+
+            #endregion
+
+            #region Get Request Selected Tariffs 
+
+            List<HomeNurseInvoiceTariff> returnTariff = new List<HomeNurseInvoiceTariff>();
+
+            var selectedTariffs = await _siteSetting.GetTariffBySelectedTariffs(request.Id);
+
+            if (selectedTariffs != null && selectedTariffs.Any())
+            {
+                foreach (var tariff in selectedTariffs)
+                {
+                    cost = cost + Int64.Parse(tariff.Price);
+
+                    returnTariff.Add(new HomeNurseInvoiceTariff()
+                    {
+                        Price = tariff.Price,
+                        Title = tariff.Title
+                    });
+                }
+            }
+
+            model.TariffForHealthHouseServices = returnTariff;
+
+            #endregion
+
+            #region Invoic Sum 
+
+            model.InvoiceSum = (int)cost;
+
+            #endregion
+
+            return model;
+        }
 
         #endregion
 

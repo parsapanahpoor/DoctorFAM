@@ -1,4 +1,6 @@
-﻿using DoctorFAM.Domain.ViewModels.Admin.HealthHouse.HomeNurse;
+﻿using DoctorFAM.DataLayer.Entities;
+using DoctorFAM.Domain.ViewModels.Admin.HealthHouse.HomeNurse;
+using DoctorFAM.Domain.ViewModels.Site.HomeNurseRequest;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
 using System;
 using System.Collections.Generic;
@@ -20,6 +22,11 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         Task<PatientViewModel> FillPatientViewModelFromSelectedPopulationCoveredData(ulong populationId, ulong requestId, ulong userId);
 
+        //Fill Home Nurse Request Invoice View Model
+        Task<HomeNurseRequestInvoiceViewModel?> FillHomeNurseRequestInvoiceViewModel(Request request);
+
+        //Proccess Home Nurse Request Cost 
+        Task<int> ProccessHomeNurseRequestCost(Request request);
 
         #endregion
 

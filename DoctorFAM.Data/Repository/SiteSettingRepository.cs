@@ -1,9 +1,13 @@
 ﻿using Academy.Domain.Entities.SiteSetting;
 using DoctorFAM.Data.DbContext;
+using DoctorFAM.DataLayer.Entities;
+using DoctorFAM.Domain.Entities.Requests;
+using DoctorFAM.Domain.Entities.SiteSetting;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.SiteSetting;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -147,6 +151,56 @@ namespace DoctorFAM.Data.Repository
             return siteSetting.ReservationTarrif;
         }
 
+        //Get Health House Tariff Service By Id 
+        public async Task<TariffForHealthHouseServices?> GetHealthHouseTariffServiceById(ulong id)
+        {
+            return await _context.TariffForHealthHouseServices.FirstOrDefaultAsync(p=> !p.IsDelete && p.Id == id);
+        }
+
+        //Get List Of Tariff For Health House Services
+        public async Task<List<TariffForHealthHouseServices>?> GetListOfTariffForHealthHouseServices()
+        {
+            return await _context.TariffForHealthHouseServices.Where(p=> !p.IsDelete ).ToListAsync();
+        }
+
+        //Get List Of Tariff For Home Visit Health House Services
+        public async Task<List<TariffForHealthHouseServices>?> GetListOfTariffForHomeVisitHealthHouseServices()
+        {
+            return await _context.TariffForHealthHouseServices.Where(p => !p.IsDelete && p.HomeVisit).ToListAsync();
+        }
+
+        //Get List Of Tariff For Death Certificate Health House Services
+        public async Task<List<TariffForHealthHouseServices>?> GetListOfTariffForDeathCertificateHealthHouseServices()
+        {
+            return await _context.TariffForHealthHouseServices.Where(p => !p.IsDelete && p.DeathCertificate).ToListAsync();
+        }
+
+        //Get List Of Tariff For Home Nurse Health House Services
+        public async Task<List<TariffForHealthHouseServices>?> GetListOfTariffForHomeNurseHealthHouseServices()
+        {
+            return await _context.TariffForHealthHouseServices.Where(p => !p.IsDelete && p.HomeNurse).ToListAsync();
+        }
+
+        //Add Tariff To The Data Base 
+        public async Task AddTariffToTheDataBase(TariffForHealthHouseServices tariff)
+        {
+            await _context.TariffForHealthHouseServices.AddAsync(tariff);
+            await _context.SaveChangesAsync();
+        }
+
+        //Update Tariff To The Data Base 
+        public async Task UpdateTariffToTheDataBase(TariffForHealthHouseServices tariff)
+        {
+            _context.TariffForHealthHouseServices.Update(tariff);
+            await _context.SaveChangesAsync();
+        }
+
+        //Is Exist Any Tariff By Id 
+        public async Task<bool> IsExistAnyTariffById(ulong tariffId)
+        {
+            return await _context.TariffForHealthHouseServices.AnyAsync(p=> !p.IsDelete && p.Id == tariffId);
+        }
+
         #endregion
 
         #region Site Side 
@@ -179,173 +233,25 @@ namespace DoctorFAM.Data.Repository
             return siteSetting.DistanceFromCityTarriff;
         }
 
-        public async Task<int> GetIntramuscularInjectionCost()
+        //Add Request Selected Healt House Tariff Without Savechanges
+        public async Task AddRequestSelectedHealtHouseTariffWithoutSavechanges(RequestSelectedHealthHouseTariff model)
         {
-            var siteSetting = await GetSiteSetting();
-            if (siteSetting == null) return 0;
-
-            if (siteSetting.IntramuscularInjection == null || siteSetting.IntramuscularInjection == 0)
-            {
-                return 0;
-            }
-
-            return siteSetting.IntramuscularInjection;
+            await _context.RequestSelectedHealthHouseTariff.AddAsync(model);
         }
 
-        public async Task<int> GetDermalOrSubcutaneousInjectionCost()
+        //Get Request Selected Tariffs By Request Id 
+        public async Task<List<RequestSelectedHealthHouseTariff>> GetRequestSelectedTariffsByRequestId(ulong requestId)
         {
-            var siteSetting = await GetSiteSetting();
-            if (siteSetting == null) return 0;
-
-            if (siteSetting.DermalOrSubcutaneousInjection == null || siteSetting.DermalOrSubcutaneousInjection == 0)
-            {
-                return 0;
-            }
-
-            return siteSetting.DermalOrSubcutaneousInjection;
+            return await _context.RequestSelectedHealthHouseTariff.Include(p => p.TariffForHealthHouseService)
+                                        .Where(p => !p.IsDelete && p.RequestId == requestId).ToListAsync();
         }
 
-        public async Task<int> GetReedyInjectionCost()
+        //Get Request Selected Tariffs By Request Id 
+        public async Task<List<TariffForHealthHouseServices>> GetTariffBySelectedTariffs(ulong requestId)
         {
-            var siteSetting = await GetSiteSetting();
-            if (siteSetting == null) return 0;
-
-            if (siteSetting.ReedyInjection == null || siteSetting.ReedyInjection == 0)
-            {
-                return 0;
-            }
-
-            return siteSetting.ReedyInjection;
-        }
-
-        public async Task<int> GetSerumTherapyCost()
-        {
-            var siteSetting = await GetSiteSetting();
-            if (siteSetting == null) return 0;
-
-            if (siteSetting.SerumTherapy == null || siteSetting.SerumTherapy == 0)
-            {
-                return 0;
-            }
-
-            return siteSetting.SerumTherapy;
-        }
-
-        public async Task<int> GetBloodPressureMeasurementCost()
-        {
-            var siteSetting = await GetSiteSetting();
-            if (siteSetting == null) return 0;
-
-            if (siteSetting.BloodPressureMeasurement == null || siteSetting.BloodPressureMeasurement == 0)
-            {
-                return 0;
-            }
-
-            return siteSetting.BloodPressureMeasurement;
-        }
-
-        public async Task<int> GetGlucometrytCost()
-        {
-            var siteSetting = await GetSiteSetting();
-            if (siteSetting == null) return 0;
-
-            if (siteSetting.Glucometry == null || siteSetting.Glucometry == 0)
-            {
-                return 0;
-            }
-
-            return siteSetting.Glucometry;
-        }
-
-        public async Task<int> GetPulseOximetryCost()
-        {
-            var siteSetting = await GetSiteSetting();
-            if (siteSetting == null) return 0;
-
-            if (siteSetting.PulseOximetry == null || siteSetting.PulseOximetry == 0)
-            {
-                return 0;
-            }
-
-            return siteSetting.PulseOximetry;
-        }
-
-        public async Task<int> GetSmallDressingCost()
-        {
-            var siteSetting = await GetSiteSetting();
-            if (siteSetting == null) return 0;
-
-            if (siteSetting.SmallDressing == null || siteSetting.SmallDressing == 0)
-            {
-                return 0;
-            }
-
-            return siteSetting.SmallDressing;
-        }
-
-        public async Task<int> GetGreatDressingCost()
-        {
-            var siteSetting = await GetSiteSetting();
-            if (siteSetting == null) return 0;
-
-            if (siteSetting.GreatDressing == null || siteSetting.GreatDressing == 0)
-            {
-                return 0;
-            }
-
-            return siteSetting.GreatDressing;
-        }
-
-        public async Task<int> GetGastricIntubationCost()
-        {
-            var siteSetting = await GetSiteSetting();
-            if (siteSetting == null) return 0;
-
-            if (siteSetting.GastricIntubation == null || siteSetting.GastricIntubation == 0)
-            {
-                return 0;
-            }
-
-            return siteSetting.GastricIntubation;
-        }
-
-        public async Task<int> GetUrinaryBladderCost()
-        {
-            var siteSetting = await GetSiteSetting();
-            if (siteSetting == null) return 0;
-
-            if (siteSetting.UrinaryBladder == null || siteSetting.UrinaryBladder == 0)
-            {
-                return 0;
-            }
-
-            return siteSetting.UrinaryBladder;
-        }
-
-        public async Task<int> GetOxygenTherapyCost()
-        {
-            var siteSetting = await GetSiteSetting();
-            if (siteSetting == null) return 0;
-
-            if (siteSetting.OxygenTherapy == null || siteSetting.OxygenTherapy == 0)
-            {
-                return 0;
-            }
-
-            return siteSetting.OxygenTherapy;
-        }
-
-        public async Task<int> GetECGCost()
-        {
-            var siteSetting = await GetSiteSetting();
-            if (siteSetting == null) return 0;
-
-            if (siteSetting.ECG == null || siteSetting.ECG == 0)
-            {
-                return 0;
-            }
-
-            return siteSetting.ECG;
+            return await _context.RequestSelectedHealthHouseTariff.Include(p => p.TariffForHealthHouseService)
+                                        .Where(p => !p.IsDelete && p.RequestId == requestId)
+                                            .Select(p=>p.TariffForHealthHouseService).ToListAsync();
         }
 
         #endregion
