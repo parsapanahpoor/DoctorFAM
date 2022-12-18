@@ -17,12 +17,14 @@
         <ul class="timeline animated fadeInDown">
 
             <li>
-                <div class="timeline-datetime">
+                @*<div class="timeline-datetime">
                     <a asp-action="EditWorkHistory" asp-area="Doctor" asp-controller="Resume" asp-route-id="@work.Id" style="margin-right: 10px;" class="btn btn-primary mr-4">ویرایش</a>
                     <a asp-action="DeleteWorkHistory" asp-area="Doctor" asp-controller="Resume" asp-route-id="@work.Id" style="margin-right: 10px;" class="btn btn-danger mr-4">حذف</a>
-                </div>
+                </div>*@
                 <div class="timeline-badge blue">
                     <i class="fa fa-thumb-tack"></i>
+                     <a asp-action="EditWorkHistory" asp-area="Doctor" asp-controller="Resume" asp-route-id="@work.Id" class="tmlnbutton "><i class="fa fa-edit warning"></i></a>
+                    <a asp-action="DeleteWorkHistory" asp-area="Doctor" asp-controller="Resume" asp-route-id="@work.Id" class="tmlnbuttondelete "><i class="fa fa-trash-o danger"></i></a>
                 </div>
                 <div class="timeline-panel">
                     <div class="timeline-header bordered-bottom bordered-blue">
@@ -33,9 +35,38 @@
                             </span>
                         }
                     </div>
-                    <div class="timeline-body">
+                   @* <div class="timeline-body">
                         <p> @((string.IsNullOrEmpty(work.WorkAddress)) ? "وارد نشده" : work.WorkAddress)</p>
+                         <p> @((string.IsNullOrEmpty(work.CityName)) ? "وارد نشده" : work.CityName)</p>
+                         <p> @((string.IsNullOrEmpty(work.CountryName)) ? "وارد نشده" : work.CountryName)</p>
+                    </div>*@
+
+
+
+                    <div class="timeline-body">
+                        <div class="row mt-2 ">
+                            
+                            <div class="col-md-12  ">
+                                <p>سمت یا عنوان شغلی : @((string.IsNullOrEmpty(work.JobPosition)) ? "وارد نشده" : work.JobPosition)</p>
+                            </div>
+                            <div class="col-md-12  ">
+                                <p>محل فعالیت : @((string.IsNullOrEmpty(work.WorkAddress)) ? "وارد نشده" : work.WorkAddress)</p>
+                            </div>
+                            <div class="col-md-12  ">
+                                <p>شهر محل اشتغال : @((string.IsNullOrEmpty(work.CityName)) ? "وارد نشده" : work.CityName)</p>
+                            </div>
+                            <div class="col-md-12  ">
+                                <p>کشور محل اشتغال : @((string.IsNullOrEmpty(work.CountryName)) ? "وارد نشده" : work.CountryName)</p>
+                            </div>
+                        </div>
+
                     </div>
+
+
+
+
+
+
                     
                 </div>
             </li>

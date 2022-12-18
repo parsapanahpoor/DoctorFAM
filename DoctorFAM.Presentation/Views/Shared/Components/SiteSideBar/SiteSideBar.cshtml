@@ -100,16 +100,16 @@
                                     <div class="dropdown-menu">
                                         <ul class="list-unstyled">
                                             <li>
-                                                <a href="/Home/CentersIntrud">  مراکز درمانی</a>
+                                                <a href="/Home/CentersIntrud">  مراکز تشخیصی و درمانی</a>
                                             </li>
                                             <li>
-                                                <a href="/Home/DoctorIntrud">  پزشکان</a>
+                                                <a href="/Home/DoctorIntrud">  پزشکان و دندانپزشکان</a>
                                             </li>
                                             <li>
                                                 <a href="index-3.html">  داروخانه ها</a>
                                             </li>
                                             <li>
-                                                <a href="index-4.html">  آزمایشگاهها</a>
+                                                <a href="index-4.html">  آزمایشگاههای تشخیص طبی</a>
                                             </li>
                                         </ul>
                                     </div>
@@ -191,13 +191,13 @@
                                 </div>
                                 </div>*@
 
-                            <div class="search-icon ml-1 ml-sm-1 mr-1 mr-sm-1">
+                            @*<div class="search-icon ml-1 ml-sm-1 mr-1 mr-sm-1">
                                 <a id="search" href="javascript:void(0)"><i class="flaticon-search" title="جستجو"></i></a>
-                            </div>
+                            </div>*@
 
                             <div class=" mr-1 mr-sm-1 text-center align-items-center">
                                 <div class="row">
-                                    <div class="col-4 ml-1">
+                                   @* <div class="col-4 ml-1">
                                         <div class="d-flex align-items-center">
                                             <div class="language-selection ">
                                                 <div class="dropdown btn-Accept">
@@ -213,8 +213,8 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-4 mr-2">
+                                    </div>*@
+                                    <div class="col-12 ">
 
                                         @if (User.Identity.IsAuthenticated)
                                         {
@@ -312,7 +312,7 @@
                                         else
                                         {
 
-                                            <a asp-action="Login" asp-controller="Account" class="btn-Accept mr-2"><span> ورود </span></a>
+                                            <a asp-action="Login" asp-controller="Account" class="btn-Accept mr-2"><span> ورود/ثبت نام </span></a>
 
                                         }
                                     </div>
@@ -339,12 +339,12 @@
     </div>
 </div>*@
 <!--header end-->
-@if (User.Identity.IsAuthenticated)
+@*@if (User.Identity.IsAuthenticated)
 {
     <div class=" row ">
-        <div class=" col-md-9"></div>
-        <div class=" col-md-3  align-items-center text-center justify-content-center">
+        <div class=" col-md-10"></div>
+        <div class=" col-md-2  align-items-center text-center justify-content-center">
             <a asp-action="Index" asp-area="UserPanel" asp-controller="Home" class="btn-AcceptX">ورود به صفحه شخصی</a>
         </div>
     </div>
-}
+}*@

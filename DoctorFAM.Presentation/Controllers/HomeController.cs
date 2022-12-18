@@ -179,5 +179,18 @@ namespace DoctorFAM.Web.Controllers
         }
 
         #endregion
+
+        #region ADS
+
+        public IActionResult Insurance()
+        {
+            return View();
+        }
+
+        public IActionResult Cosmetics()
+        {
+            return View();
+        }
+        #endregion
     }
 }

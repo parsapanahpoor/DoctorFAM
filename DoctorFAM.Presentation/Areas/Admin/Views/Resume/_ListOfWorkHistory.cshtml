@@ -30,7 +30,21 @@
                         }
                     </div>
                     <div class="timeline-body">
-                        <p> @((string.IsNullOrEmpty(work.WorkAddress)) ? "وارد نشده" : work.WorkAddress)</p>
+                       <div class="row mt-2 ">
+                            
+                            <div class="col-md-12  ">
+                                <p>سمت یا عنوان شغلی : @((string.IsNullOrEmpty(work.JobPosition)) ? "وارد نشده" : work.JobPosition)</p>
+                            </div>
+                            <div class="col-md-12  ">
+                                <p>محل فعالیت : @((string.IsNullOrEmpty(work.WorkAddress)) ? "وارد نشده" : work.WorkAddress)</p>
+                            </div>
+                            <div class="col-md-12  ">
+                                <p>شهر محل اشتغال : @((string.IsNullOrEmpty(work.CityName)) ? "وارد نشده" : work.CityName)</p>
+                            </div>
+                            <div class="col-md-12  ">
+                                <p>کشور محل اشتغال : @((string.IsNullOrEmpty(work.CountryName)) ? "وارد نشده" : work.CountryName)</p>
+                            </div>
+                        </div>
                     </div>
                     
                 </div>

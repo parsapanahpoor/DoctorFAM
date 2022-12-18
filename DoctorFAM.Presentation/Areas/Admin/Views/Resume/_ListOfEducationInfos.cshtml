@@ -29,9 +29,21 @@
                         }
                     </div>
                     <div class="timeline-body">
-                        <p>رشته ی تحصیلی : @((string.IsNullOrEmpty(education.FieldOfStudy)) ? "وارد نشده" : education.FieldOfStudy)</p>
-                        <p>گرایش : @((string.IsNullOrEmpty(education.Orientation)) ? "وارد نشده" : education.Orientation)</p>
-
+                       <div class="row mt-2 ">
+                            
+                            <div class="col-md-12  ">
+                                <p>رشته ی تحصیلی : @((string.IsNullOrEmpty(education.FieldOfStudy)) ? "وارد نشده" : education.FieldOfStudy)</p>
+                            </div>
+                            <div class="col-md-12  ">
+                                <p>گرایش : @((string.IsNullOrEmpty(education.Orientation)) ? "وارد نشده" : education.Orientation)</p>
+                            </div>
+                            <div class="col-md-12  ">
+                                <p>شهر محل تحصیل : @((string.IsNullOrEmpty(education.CityName)) ? "وارد نشده" : education.CityName)</p>
+                            </div>
+                            <div class="col-md-12  ">
+                                <p>کشور محل تحصیل : @((string.IsNullOrEmpty(education.CountryName)) ? "وارد نشده" : education.CountryName)</p>
+                            </div>
+                        </div>
                     </div>
 
                 </div>

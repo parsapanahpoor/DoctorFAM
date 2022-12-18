@@ -17,10 +17,10 @@
         <ul class="timeline animated fadeInDown">
 
             <li>
-                <div class="timeline-datetime">
+                @*  <div class="timeline-datetime">
                     <a asp-action="EditService" asp-area="Doctor" asp-controller="Resume" asp-route-id="@work.Id" style="margin-right: 10px;" class="btn btn-primary mr-4">ویرایش</a>
                     <a asp-action="DeleteService" asp-area="Doctor" asp-controller="Resume" asp-route-id="@work.Id" style="margin-right: 10px;" class="btn btn-danger mr-4">حذف</a>
-                </div>
+                    </div>*@
                 <div class="timeline-badge blue">
                     <i class="fa fa-thumb-tack"></i>
                 </div>
@@ -33,8 +33,16 @@
                             </span>
                         }
                     </div>
-                         <div class="timeline-body">
+                    <div class="timeline-body">
+                        <div class="row ">
+                            <div class="col-md-12 ">
+
+                                <a asp-action="EditService" asp-area="Doctor" asp-controller="Resume" asp-route-id="@work.Id" class="tmlnbutton2 "><i class="fa fa-edit warning"></i></a>
+                                <a asp-action="DeleteService" asp-area="Doctor" asp-controller="Resume" asp-route-id="@work.Id" class="tmlnbuttondelete2"><i class="fa fa-trash-o danger"></i></a>
+                            </div>
+                        </div>
                     </div>
+
                 </div>
             </li>
         </ul>

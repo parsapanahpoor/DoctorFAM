@@ -18,12 +18,12 @@
         <ul class="timeline animated fadeInDown">
 
             <li>
-                <div class="timeline-datetime">
+                @*<div class="timeline-datetime">
                     <a asp-action="EditCertificate" asp-area="Doctor" asp-controller="Resume" asp-route-id="@Certificate.Id" style="margin-right: 10px;" class="btn btn-primary mr-4">ویرایش</a>
                     <a asp-action="DeleteCertificate" asp-area="Doctor" asp-controller="Resume" asp-route-id="@Certificate.Id" style="margin-right: 10px;" class="btn btn-danger mr-4">حذف</a>
-                </div>
+                </div>*@
                 <div class="timeline-badge " style="height:0px !important;width:0px !important">
-                    <img style="border-radius: 50px;height: 70px;" src="@PathTools.CertificatePathThumb@Certificate.ImageName" />
+                   <a href="@PathTools.CertificatePathThumb@Certificate.ImageName" target="_blank" ><img style="border-radius: 50px;height: 70px;" src="@PathTools.CertificatePathThumb@Certificate.ImageName" /></a>
                 </div>
                 <div class="timeline-panel">
                     <div class="timeline-header bordered-bottom bordered-blue">
@@ -36,6 +36,15 @@
                     </div>
                     <div class="timeline-body">
                         <p> @((string.IsNullOrEmpty(Certificate.ExporterRefrence)) ? "وارد نشده" : Certificate.ExporterRefrence)</p>
+                        <p> @((string.IsNullOrEmpty(Certificate.ValidityDate)) ? "وارد نشده" : Certificate.ValidityDate)</p>
+                        <p> @((string.IsNullOrEmpty(Certificate.IssueDate)) ? "وارد نشده" : Certificate.IssueDate)</p>
+                        <div class="row ">
+                            <div class="col-md-12 ">
+
+                                <a asp-action="EditCertificate" asp-area="Doctor" asp-controller="Resume" asp-route-id="@Certificate.Id" class="tmlnbutton2 "><i class="fa fa-edit warning"></i></a>
+                                <a asp-action="DeleteCertificate" asp-area="Doctor" asp-controller="Resume" asp-route-id="@Certificate.Id" class="tmlnbuttondelete2"><i class="fa fa-trash-o danger"></i></a>
+                            </div>
+                        </div>
                     </div>
 
                 </div>

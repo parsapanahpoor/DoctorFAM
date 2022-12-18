@@ -26,5 +26,14 @@ namespace DoctorFAM.Web.Areas.UserPanel.Controllers
         }
 
         #endregion
+
+        #region Index_Sec
+
+        public async Task<IActionResult> Index_Sec()
+        {
+            return View(await _dashboardService.FillUserPanelDashboardViewModel(User.GetUserId()));
+        }
+
+        #endregion
     }
 }

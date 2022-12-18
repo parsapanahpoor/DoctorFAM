@@ -3014,7 +3014,7 @@ Pricing Area CSS
 }
 
 .select-box {
-    background: url(../Doctor/assets/img/slider/doctor-bg.jpg);
+    background: url(../Doctor/assets/img/slider/slider-10.jpg);
     padding: 10px;
     border-radius: 30px 30px 30px 30px;
     border: 2px solid rgba(255, 255, 255, 0.8);
@@ -3024,7 +3024,7 @@ Pricing Area CSS
     transition: background-size .9s ease;
 }
     .select-box:hover {
-        background: url(../Doctor/assets/img/slider/doctor-bg.jpg);
+        background: url(../Doctor/assets/img/slider/slider-10.jpg);
         background-size: 125%;
     }
     .select-box::before {
@@ -3084,13 +3084,13 @@ Pricing Area CSS
             background-color: #fd5b03;
         }
     .select-box.theme {
-        background: url(../Doctor/assets/img/slider/slider-4.jpg);
+        background: url(../Doctor/assets/img/slider/slider-9.jpg);
         border-radius: 30px 30px 30px 30px;
         background-size: 100%;
         transition: background-size .9s ease;
     }
         .select-box.theme:hover {
-            background: url(../Doctor/assets/img/slider/slider-4.jpg);
+            background: url(../Doctor/assets/img/slider/slider-9.jpg);
             background-size: 125%;
         }
             .select-box.theme::before {
@@ -3115,6 +3115,155 @@ Pricing Area CSS
             .select-box.theme .book-now:hover {
                 background-color: #fd5b03;
             }
+/**************************************************************/
+    .select-box.theme2 {
+        background: url(../Doctor/assets/img/slider/slider-12.jpg);
+        border-radius: 30px 30px 30px 30px;
+        background-size: 100%;
+        transition: background-size .9s ease;
+    }
+
+        .select-box.theme2:hover {
+            background: url(../Doctor/assets/img/slider/slider-12.jpg);
+            background-size: 125%;
+        }
+
+        .select-box.theme2::before {
+            content: "";
+            position: absolute;
+            background: rgba(16, 222, 253, 0.6);
+            top: 0;
+            right: 0;
+            left: 0;
+            bottom: 0;
+            z-index: -1;
+            border-radius: 30px 30px 30px 30px;
+        }
+
+        .select-box.theme2 .image-holder span {
+            border: 6px solid rgb(217 225 240);
+        }
+
+        .select-box.theme2 .book-now {
+            background-color: #1C71EF;
+        }
+
+            .select-box.theme2 .book-now:hover {
+                background-color: #fd5b03;
+            }
+
+/*****************************************************************/
+
+
+.new-box {
+    background: url(../Doctor/assets/img/slider/pharmacy-icon10.jpg);
+    padding: 10px;
+    border-radius: 30px 30px 30px 30px;
+    /*border: 2px solid #2264c5;*/
+    position: relative;
+    z-index: 1;
+    background-size: 100%;
+    transition: background-size .9s ease;
+}
+
+    .new-box:hover {
+        background: url(../Doctor/assets/img/slider/pharmacy-icon10.jpg);
+        background-size: 125%;
+    }
+
+    .new-box::before {
+        content: "";
+        position: absolute;
+        background: rgba(16, 22, 253, 0.4);
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        z-index: -1;
+        border-radius: 30px 30px 30px 30px;
+    }
+
+    .new-box h2 {
+        font-size: 20px;
+        font-weight: 600;
+        color: #fff;
+        margin-bottom: 15px;
+    }
+
+    .new-box p {
+        font-size: 15px;
+        color: #fff;
+        margin-bottom: 30px;
+    }
+
+    .new-box .book-now {
+        background-color: #1C71EF;
+        padding: 6px 20px;
+        color: #fff;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        display: inline-block;
+    }
+
+        .new-box .book-now:hover {
+            background-color: #fd5b03;
+        }
+
+.new-box2 {
+    background: url(../Doctor/assets/img/slider/laboratoar.jpg);
+    padding: 10px;
+    border-radius: 30px 30px 30px 30px;
+    /*border: 2px solid #2264c5;*/
+    position: relative;
+    z-index: 1;
+    background-size: 100%;
+    transition: background-size .9s ease;
+}
+
+    .new-box2:hover {
+        background: url(../Doctor/assets/img/slider/laboratoar.jpg);
+        background-size: 125%;
+    }
+
+    .new-box2::before {
+        content: "";
+        position: absolute;
+        background: rgba(16, 22, 253, 0.4);
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        z-index: -1;
+        border-radius: 30px 30px 30px 30px;
+    }
+
+    .new-box2 h2 {
+        font-size: 20px;
+        font-weight: 600;
+        color: #fff;
+        margin-bottom: 15px;
+    }
+
+    .new-box2 p {
+        font-size: 15px;
+        color: #fff;
+        margin-bottom: 30px;
+    }
+
+    .new-box2 .book-now {
+        background-color: #1C71EF;
+        padding: 6px 20px;
+        color: #fff;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        display: inline-block;
+    }
+
+        .new-box2 .book-now:hover {
+            background-color: #fd5b03;
+        }
 
 
 

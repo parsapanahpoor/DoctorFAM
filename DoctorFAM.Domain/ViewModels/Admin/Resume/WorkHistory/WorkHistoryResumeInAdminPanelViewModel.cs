@@ -23,6 +23,12 @@ namespace DoctorFAM.Domain.ViewModels.Admin.Resume.WorkHistory
         [MaxLength(300)]
         public string? JobPosition { get; set; }
 
+        [MaxLength(300)]
+        public string? CountryName { get; set; }
+
+        [MaxLength(300)]
+        public string? CityName { get; set; }
+
         #endregion
     }
 }

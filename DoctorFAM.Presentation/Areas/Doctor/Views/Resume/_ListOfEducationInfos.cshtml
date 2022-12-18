@@ -16,12 +16,15 @@
         <ul class="timeline animated fadeInDown">
 
             <li>
-                <div class="timeline-datetime">
+                @*<div class="timeline-datetime">
                     <a asp-action="EditEducationResume" asp-area="Doctor" asp-controller="Resume" asp-route-id="@education.Id" style="margin-right: 10px;" class="btn btn-primary mr-4">ویرایش</a>
                     <a asp-action="DeleteEducation" asp-area="Doctor" asp-controller="Resume" asp-route-id="@education.Id" style="margin-right: 10px;" class="btn btn-danger mr-4">حذف</a>
-                </div>
+                    </div>*@
                 <div class="timeline-badge blue">
-                    <i class="fa fa-book"></i>
+                    <i class="fa fa-graduation-cap"></i>
+                    <a asp-action="EditEducationResume" asp-area="Doctor" asp-controller="Resume" asp-route-id="@education.Id" class="tmlnbutton "><i class="fa fa-edit warning"></i></a>                           
+                    <a asp-action="DeleteEducation" asp-area="Doctor" asp-controller="Resume" asp-route-id="@education.Id" class="tmlnbuttondelete "><i class="fa fa-trash-o danger"></i></a>
+
                 </div>
                 <div class="timeline-panel">
                     <div class="timeline-header bordered-bottom bordered-blue">
@@ -33,12 +36,33 @@
                         }
                     </div>
                     <div class="timeline-body">
-                        <p>رشته ی تحصیلی : @((string.IsNullOrEmpty(education.FieldOfStudy)) ? "وارد نشده" : education.FieldOfStudy)</p>
-                        <p>گرایش : @((string.IsNullOrEmpty(education.Orientation)) ? "وارد نشده" : education.Orientation)</p>
+                        <div class="row mt-2 ">
+                            
+                            <div class="col-md-12  ">
+                                <p>رشته ی تحصیلی : @((string.IsNullOrEmpty(education.FieldOfStudy)) ? "وارد نشده" : education.FieldOfStudy)</p>
+                            </div>
+                            <div class="col-md-12  ">
+                                <p>گرایش : @((string.IsNullOrEmpty(education.Orientation)) ? "وارد نشده" : education.Orientation)</p>
+                            </div>
+                            <div class="col-md-12  ">
+                                <p>شهر محل تحصیل : @((string.IsNullOrEmpty(education.CityName)) ? "وارد نشده" : education.CityName)</p>
+                            </div>
+                            <div class="col-md-12  ">
+                                <p>کشور محل تحصیل : @((string.IsNullOrEmpty(education.CountryName)) ? "وارد نشده" : education.CountryName)</p>
+                            </div>
+                        </div>
 
+
+                        @*<div class="row mt-2 ">
+                            <div class="col-md-12 ">
+                                <a asp-action="EditEducationResume" asp-area="Doctor" asp-controller="Resume" asp-route-id="@education.Id" class="tmlnbutton2 "><i class="fa fa-edit warning"></i></a>
+                           
+                                <a asp-action="DeleteEducation" asp-area="Doctor" asp-controller="Resume" asp-route-id="@education.Id" class="tmlnbuttondelete2 "><i class="fa fa-trash-o danger"></i></a>
+                            </div>
+                        </div>*@
                     </div>
-
                 </div>
+
             </li>
         </ul>
     }
@@ -46,7 +70,7 @@
 
 else
 {
-        <div class="alert alert-info fade in">
+    <div class="alert alert-info fade in">
         @SharedLocalizer["Not Found"]
-        </div>
+    </div>
 }

@@ -3,34 +3,90 @@
 @inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
 
 @{
-    ViewData["Title"] = @Localizer["Index"];
+    ViewData["Title"] = "پنل کاربری" ;
 }
 
 @section Breadcrumb{
 }
 
-    <div class="page-body">
+<div class="page-body">
 
-        <div class="row">
 
-            @*Check User Decline Family Doctor Request*@
-            @await Component.InvokeAsync("CheckUserDeclineFamilyDoctorRequest")
-
-            @*Check User Decline Consultant Request*@
-            @await Component.InvokeAsync("CheckUserDeclineConsultantRequest")
-
-            @*Box Of Lastest Requests*@
-            <partial name="_ListOfInProgressRequests" model="@Model.ListOfInProgressRequests" />
-
-            @*List Of Future Reservation*@
-            @await Component.InvokeAsync("FutureReservationsDetail")
-
-            @*List Of Future Reservation*@
-            @await Component.InvokeAsync("ListOfBMIHistory")
-
-            @*List Of Future Reservation*@
-            @await Component.InvokeAsync("ListOfGFRHistory")
-
+    <div class="row text-center align-Item-center">
+        <div class="col-lg-6 col-sm-6 col-xs-12">
+            <div class="row">
+              
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview text-center justify-content-center">
+                    <a asp-area="UserPanel" asp-controller="Home" asp-action="Index_Sec" class="btn btn-success  btn-circle btn-lg"><i class="glyphicon glyphicon-home"></i></a>
+                    <p class="text-center justify-content-center" style="font-size:12PX;"> داشبورد </p>
+                </div>
+               <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview  text-center justify-content-center">
+                    <a asp-area="UserPanel" asp-controller="Account" asp-action="EditProfile" class="btn btn-info  btn-circle btn-lg"><i class="fa fa-user"></i></a>
+                    <p class="text-center justify-content-center" style="font-size:12PX;">اطلاعات کاربری</p>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview  text-center justify-content-center">
+                    <a asp-area="UserPanel" asp-controller="PopulationCovered" asp-action="ListOfPopulationCovered" class="btn btn-primary  btn-circle btn-lg"><i class="fa fa-users"></i></a>
+                    <p class="text-center justify-content-center" style="font-size:12PX;">افراد زیرمجموعه</p>
+                </div>
+            </div>
         </div>
-
+        <div class="col-lg-6 col-sm-6 col-xs-12">
+            <div class="row">
+              
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview">
+                    <a asp-area="UserPanel" asp-controller="FamilyDoctor" asp-action="CheckUserHasFamilyDoctor" class="btn btn-warning  btn-circle btn-lg"><i class="fa fa-user-md"></i></a>
+                   <p class="text-center justify-content-center" style="font-size:12PX;"> پزشک من </p>
+                </div>
+               <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview">
+                    <a asp-area="UserPanel" asp-controller="Consultant" asp-action="ProccessConsultant" class="btn btn-success  btn-circle btn-lg"><i class="fa fa-heartbeat"></i></a>
+                    <p class="text-center justify-content-center" style="font-size:12PX;"> مشاور روان من </p>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview">
+                    <a asp-area="UserPanel" asp-controller="FamilyDoctor" asp-action="CheckUserHasFamilyDoctor" class="btn btn-info  btn-circle btn-lg"><i class="fa fa-stethoscope"></i></a>
+                    <p class="text-center justify-content-center" style="font-size:12PX;"> متخصصین من </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-sm-6 col-xs-12">
+            <div class="row">
+              
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview">
+                    <a asp-action="ListOfReservation" asp-controller="Reservation" asp-area="UserPanel" class="btn btn-info  btn-circle btn-lg"><i class="fa fa-calendar-o"></i></a>
+                   <p class="text-center justify-content-center" style="font-size:12PX;"> اخذ نوبت </p>
+                </div>
+               <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview">
+                    <a asp-area="UserPanel" asp-controller="Consultant" asp-action="ProccessConsultant" class="btn btn-warning  btn-circle btn-lg"><i class="glyphicon glyphicon-th"></i></a>
+                    <p class="text-center justify-content-center" style="font-size:12PX;"> خانه سلامت </p>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview">
+                    <a asp-area="UserPanel" asp-controller="OnlineVisit" asp-action="ListOfCurrentUserOnlineVisitRequests" class="btn btn-success  btn-circle btn-lg"><i class="fa fa-mobile"></i></a>
+                    <p class="text-center justify-content-center" style="font-size:12PX;"> ویزیت آنلاین </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-sm-6 col-xs-12">
+            <div class="row">
+              
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview">
+                    <a asp-area="UserPanel" asp-controller="Home" asp-action="Index" class="btn btn-primary  btn-circle btn-lg"><i class="fa fa-heart"></i></a>
+                   <p class="text-center justify-content-center" style="font-size:12PX;"> نمایه های سلامت </p>
+                </div>
+               <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview">
+                    <a asp-area="UserPanel" asp-controller="Wallet" asp-action="Index" class="btn btn-info  btn-circle btn-lg"><i class="fa fa-money"></i></a>
+                    <p class="text-center justify-content-center" style="font-size:12PX;"> مالی </p>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview">
+                    <a asp-area="UserPanel" asp-controller="Ticket" asp-action="FilterTickets" class="btn btn-warning  btn-circle btn-lg"><i class="fa fa-ticket"></i></a>
+                    <p class="text-center justify-content-center" style="font-size:12PX;"> تیکت پشتیبانی </p>
+                </div>
+            </div>
+        </div>
     </div>
+
+
+</div>
+
+
+
+
+

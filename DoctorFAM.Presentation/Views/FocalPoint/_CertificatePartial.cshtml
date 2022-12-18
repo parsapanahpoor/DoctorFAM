@@ -1,6 +1,7 @@
 ﻿@model List<DoctorFAM.Domain.ViewModels.Site.Doctor.Resume.Certificate.CertificateResumeInSitePanelViewModel>
 @using DoctorFAM.Application.Convertors
 @using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.StaticTools
 
 @if (Model != null && Model.Any())
 {
@@ -11,7 +12,7 @@
             <div class="location-list">
                 <div class="row divst1">
 
-                    <div class="col-md-12">
+                    <div class="col-md-9">
                         <div class="clinic-content">
 
                             @if (!string.IsNullOrEmpty(item.CertificateTitle))
@@ -22,10 +23,19 @@
                             {
                                 <p>@item.ExporterRefrence</p>
                             }
-
+                            
+                            
                         </div>
                     </div>
-
+                    <div class="col-md-3 text-center">
+                        <div class="clinic-content">                            
+                            @if (!string.IsNullOrEmpty(item.ImageName))
+                            {
+                                <a href="@PathTools.CertificatePathThumb@item.ImageName" target="_blank" > <img style="border-radius: 8px;height: 90px;" src="@PathTools.CertificatePathThumb@item.ImageName" /></a>
+                            }
+                            
+                        </div>
+                    </div>
                 </div>
             </div>
         }

@@ -21,6 +21,10 @@ namespace DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Certificate
 
         public string ImageName { get; set; }
 
+        public string? ValidityDate { get; set; }
+
+        public string IssueDate { get; set; }
+
         #endregion
     }
 }

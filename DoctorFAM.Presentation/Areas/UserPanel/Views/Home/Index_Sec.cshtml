@@ -1,0 +1,38 @@
+﻿
+
+@model DoctorFAM.Domain.ViewModels.UserPanel.Home.HomeDashboardViewModel
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
+
+@{
+    ViewData["Title"] = "داشبورد";
+}
+
+@section Breadcrumb{
+}
+
+    <div class="page-body">
+
+        <div class="row">
+
+            @*Check User Decline Family Doctor Request*@
+            @await Component.InvokeAsync("CheckUserDeclineFamilyDoctorRequest")
+
+            @*Check User Decline Consultant Request*@
+            @await Component.InvokeAsync("CheckUserDeclineConsultantRequest")
+
+            @*Box Of Lastest Requests*@
+            <partial name="_ListOfInProgressRequests" model="@Model.ListOfInProgressRequests" />
+
+            @*List Of Future Reservation*@
+            @await Component.InvokeAsync("FutureReservationsDetail")
+
+            @*List Of Future Reservation*@
+            @await Component.InvokeAsync("ListOfBMIHistory")
+
+            @*List Of Future Reservation*@
+            @await Component.InvokeAsync("ListOfGFRHistory")
+
+        </div>
+
+    </div>

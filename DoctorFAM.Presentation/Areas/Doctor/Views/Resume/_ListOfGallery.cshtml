@@ -7,7 +7,7 @@
 <div class="form-title">
     بخش تصاویر
 
-    <a asp-action="CreateGallery" asp-area="Doctor" asp-controller="Resume" style="margin-right: 10px;" class="btn btn-success mr-4">افزودن اطلاعات</a>
+    <a asp-action="CreateGallery" asp-area="Doctor" asp-controller="Resume" style="margin-right: 10px;" class="btn btn-success mr-4">افزودن تصویر</a>
 </div>
 
 @if (Model != null && Model.Any())
@@ -17,18 +17,23 @@
         <ul class="timeline animated fadeInDown">
 
             <li>
-                <div class="timeline-datetime">
+                @*<div class="timeline-datetime">
                     <a asp-action="EditGallery" asp-area="Doctor" asp-controller="Resume" asp-route-id="@gallery.Id" style="margin-right: 10px;" class="btn btn-primary mr-4">ویرایش</a>
                     <a asp-action="DeleteGallery" asp-area="Doctor" asp-controller="Resume" asp-route-id="@gallery.Id" style="margin-right: 10px;" class="btn btn-danger mr-4">حذف</a>
-                </div>
+                </div>*@
                 <div class="timeline-badge">
-                    <i class="fa fa-picture-o darkpink"></i>
+                    <i class="fa fa-picture-o "></i>
+                    
+                    <a asp-action="EditGallery" asp-area="Doctor" asp-controller="Resume" asp-route-id="@gallery.Id"  class="tmlnbutton "><i class="fa fa-edit warning"></i></a>
+                    
+                    <a asp-action="DeleteGallery" asp-area="Doctor" asp-controller="Resume" asp-route-id="@gallery.Id"  class="tmlnbuttondelete "><i class="fa fa-trash-o danger"></i></a>
                 </div>
                 <div class="timeline-panel">
                     <div class="timeline-body">
                         <div class="tl-wide text-center" style="padding: 5px; margin-top:10px; margin-bottom: 10px;">
-                            <img src="@PathTools.ResumeGalleryPathThumb@gallery.ImageName" alt="" style="max-height: 158px;max-width: 100%;">
-                        </div>
+                          <a href="@PathTools.ResumeGalleryPathThumb@gallery.ImageName" target="_blank">  <img src="@PathTools.ResumeGalleryPathThumb@gallery.ImageName" alt="" style="max-height: 158px;max-width: 100%;"></a>
+                       
+                      </div>
                         <i class="text-muted text-sm">@gallery.Title</i>
                     </div>
                 </div>

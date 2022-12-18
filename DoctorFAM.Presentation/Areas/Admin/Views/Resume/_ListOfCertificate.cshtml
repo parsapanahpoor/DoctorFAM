@@ -19,7 +19,7 @@
                 <div class="timeline-datetime">
                 </div>
                 <div class="timeline-badge " style="height:0px !important;width:0px !important">
-                    <img style="border-radius: 50px;height: 70px;" src="@PathTools.CertificatePathThumb@Certificate.ImageName" />
+                   <a href="@PathTools.CertificatePathThumb@Certificate.ImageName" target="_blank" > <img style="border-radius: 50px;height: 70px;" src="@PathTools.CertificatePathThumb@Certificate.ImageName" /></a>
                 </div>
                 <div class="timeline-panel">
                     <div class="timeline-header bordered-bottom bordered-blue">
@@ -32,6 +32,9 @@
                     </div>
                     <div class="timeline-body">
                         <p> @((string.IsNullOrEmpty(Certificate.ExporterRefrence)) ? "وارد نشده" : Certificate.ExporterRefrence)</p>
+                        <p> @((string.IsNullOrEmpty(Certificate.ValidityDate)) ? "وارد نشده" : Certificate.ValidityDate)</p>
+                        <p> @((string.IsNullOrEmpty(Certificate.IssueDate)) ? "وارد نشده" : Certificate.IssueDate)</p>
+
                     </div>
 
                 </div>
