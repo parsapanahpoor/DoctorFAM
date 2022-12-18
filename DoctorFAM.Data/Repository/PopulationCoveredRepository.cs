@@ -70,6 +70,18 @@ namespace DoctorFAM.Data.Repository
             return false;
         }
 
+        //Is Exist Recorde By National Id 
+        public async Task<bool> IsExistRecordeByNationalId(string nationalId)
+        {
+            return await _context.PopulationCovered.AnyAsync(p => !p.IsDelete && p.NationalId == nationalId.ToLower().Trim());
+        }
+
+        //Get User By National Id From Poplation Covered
+        public async Task<PopulationCovered?> GetUserByNationalIdFromPopulationCovered(string nationalId)
+        {
+            return await _context.PopulationCovered.FirstOrDefaultAsync(p=> !p.IsDelete && p.NationalId == nationalId.Trim().ToLower());
+        }
+
         public async Task AddPopulationCovered(PopulationCovered population)
         {
             await _context.PopulationCovered.AddAsync(population);

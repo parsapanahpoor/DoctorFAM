@@ -137,4 +137,11 @@ public static class Messages
         return
             $"{smsBody} {Environment.NewLine} {PathTools.SiteFarsiName}";
     }
+
+    //Send SMS To The Master Of Population Cover
+    public static string SendSMSToTheMasterOfPopulationCover(string nationalId, string mobile)
+    {
+        return
+                 $"فردی از جمعیت تحت پوشش شما با شماره موبایل : {mobile} و کدملی : {nationalId} عضو سایت شده است.{ Environment.NewLine} این کاربر از جمعیت تحت پوشش شما خارج می گردد . {Environment.NewLine} {PathTools.SiteFarsiName}" ;
+    }
 }

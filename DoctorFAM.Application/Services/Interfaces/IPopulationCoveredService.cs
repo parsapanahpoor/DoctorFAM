@@ -22,9 +22,17 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         Task<bool> DeletePopulationCoveredAdminSide(ulong id);
 
+        Task UpdatePopulationCovered(PopulationCovered population);
+
         #endregion
 
         #region User Panel Side
+
+        //Get User By National Id From Poplation Covered
+        Task<PopulationCovered?> GetUserByNationalIdFromPopulationCovered(string nationalId);
+
+        //Is Exist Recorde By National Id 
+        Task<bool> IsExistRecordeByNationalId(string nationalId);
 
         Task<CreatePopulationCoveredUserPanelResult> CreatePopulationCoveredUserPanel(CreatePopulationCoveredUserPanelViewModel model);
 

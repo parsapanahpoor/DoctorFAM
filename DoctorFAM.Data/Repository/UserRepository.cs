@@ -5,6 +5,7 @@ using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Common;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -228,6 +229,12 @@ namespace DoctorFAM.Data.Repository
         {
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
+        }
+
+        //Is Exist Any User By National Id 
+        public async Task<bool> IsExistAnyUserByNationalId(string nationalId)
+        {
+            return await _context.Users.AnyAsync(p => !p.IsDelete && p.NationalId == nationalId); 
         }
 
         #endregion

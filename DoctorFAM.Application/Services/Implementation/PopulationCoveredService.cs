@@ -133,9 +133,26 @@ namespace DoctorFAM.Application.Services.Implementation
             return true;
         }
 
+        public async Task UpdatePopulationCovered(PopulationCovered population)
+        {
+            await _populationCovered.UpdatePopulationCovered(population);
+        }
+
         #endregion
 
         #region User Panel Side
+
+        //Get User By National Id From Poplation Covered
+        public async Task<PopulationCovered?> GetUserByNationalIdFromPopulationCovered(string nationalId)
+        {
+            return await _populationCovered.GetUserByNationalIdFromPopulationCovered(nationalId);
+        }
+
+        //Is Exist Recorde By National Id 
+        public async Task<bool> IsExistRecordeByNationalId(string nationalId)
+        {
+            return await _populationCovered.IsExistRecordeByNationalId(nationalId);
+        }
 
         public async Task<CreatePopulationCoveredUserPanelResult> CreatePopulationCoveredUserPanel(CreatePopulationCoveredUserPanelViewModel model)
         {
@@ -145,7 +162,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
             if (!await _userService.IsExistUserById(model.UserId.Value)) return CreatePopulationCoveredUserPanelResult.Faild;
 
-            if (!string.IsNullOrEmpty(model.NationalId) && !await _populationCovered.CheckIsExistNationalId(model.NationalId, model.UserId.Value))
+            if (!string.IsNullOrEmpty(model.NationalId) && !await _populationCovered.CheckIsExistNationalId(model.NationalId.Trim().ToLower(), model.UserId.Value))
             {
                 return CreatePopulationCoveredUserPanelResult.NationalIdIsExist;
             }
@@ -164,7 +181,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 IsDelete = false,
                 PatientLastName = model.LastName.SanitizeText(),
                 PatientName = model.Name.SanitizeText(),
-                NationalId = model.NationalId,
+                NationalId = model.NationalId.Trim().ToLower().SanitizeText(),
                 Ratio = model.Ratio,
             };
 
@@ -232,7 +249,14 @@ namespace DoctorFAM.Application.Services.Implementation
 
             if (population.UserId != model.UserId) return EditPopulationCoveredUserPanelResult.Faild;
 
-            if (!string.IsNullOrEmpty(model.NationalId) && !await _populationCovered.CheckIsExistNationalId(model.NationalId, model.UserId.Value))
+            //For National Id In Population Covered Table 
+            if (!string.IsNullOrEmpty(model.NationalId) && !await _populationCovered.CheckIsExistNationalId(model.NationalId.Trim().ToLower(), model.UserId.Value))
+            {
+                return EditPopulationCoveredUserPanelResult.NationalIdIsExist;
+            }
+
+            //For National Id In User Table 
+            if (!string.IsNullOrEmpty(model.NationalId) && await _userService.IsExistAnyUserByNationalId(model.NationalId.Trim().ToLower()))
             {
                 return EditPopulationCoveredUserPanelResult.NationalIdIsExist;
             }
@@ -243,7 +267,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
             population.Age = model.Age;
             population.Gender = model.Gender;
-            population.NationalId = model.NationalId;
+            population.NationalId = model.NationalId.Trim().ToLower().SanitizeText();
             population.PatientName = model.Name.SanitizeText();
             population.PatientLastName = model.LastName.SanitizeText();
             population.InsuranceType = model.InsuranceType;

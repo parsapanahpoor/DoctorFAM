@@ -37,6 +37,9 @@ namespace DoctorFAM.Domain.Interfaces
         //Get List Of Admins and Supporters 
         Task<List<string>?> GetAllAdminsAndSupportersNotification();
 
+        //Is Exist Any User By National Id 
+        Task<bool> IsExistAnyUserByNationalId(string nationalId);
+
         #endregion
 
         #region Admin Side 
