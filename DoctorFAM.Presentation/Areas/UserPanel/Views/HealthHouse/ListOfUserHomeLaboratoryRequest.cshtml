@@ -1,4 +1,4 @@
-﻿@model DoctorFAM.Domain.ViewModels.UserPanel.HealthHouse.HomeVisit.FilterHomeVisitViewModel
+﻿@model DoctorFAM.Domain.ViewModels.UserPanel.HealthHouse.HomeLaboratory.ListOfHomeLaboratoryUserPanelSideViewModel
 @using DoctorFAM.Domain.ViewModels.Admin.HealthHouse
 @using DoctorFAM.Application.Extensions
 @using DoctorFAM.Application.Convertors
@@ -8,7 +8,7 @@
 @inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
 
 @{
-    ViewData["Title"] = @Localizer["List Of Your Home Visit Requests"];
+    ViewData["Title"] = "لیست درخواست های شما";
 }
 
 @section Styles
@@ -16,49 +16,50 @@
 
 }
 
-@section Scripts
+    @section Scripts
     {
-<partial name="_JqueryValidation" />
+    <partial name="_JqueryValidation" />
 }
 
-@section Breadcrumb
+    @section Breadcrumb
     {
-<li>
-    <a href="javascript:void(0)"> @ViewData["Title"] </a>
-</li>
+    <li>
+        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+    </li>
 }
-<form asp-action="FilterHomeVisitViewModel" asp-controller="HomeVisit" asp-area="UserPanel" id="filter-search" method="get">
-    <input type="hidden" asp-for="Page" />
-</form>
+    <form asp-action="ListOfUserHomeLaboratoryRequest" asp-controller="HealthHouse" asp-area="UserPanel" id="filter-search" method="get">
+        <input type="hidden" asp-for="Page" />
+    </form>
 
-<div class="row">
-    <div class="col-lg-12 col-sm-12">
-        <div class="well with-header with-footer table-responsive">
-            <div class="header bordered-azure">
-                <div class="flex-style">
-                    <span>@ViewData["Title"]</span>
-                    <span class="red">(@Model.GetShownEntitiesPagesTitle())</span><span>درخواست</span>
+    <div class="row">
+        <div class="col-lg-12 col-sm-12">
+            <div class="well with-header with-footer table-responsive">
+                <div class="header bordered-azure">
+                    <div class="flex-style">
+                        <span>@ViewData["Title"]</span>
+                        <span>@Model.GetShownEntitiesPagesTitle()</span>
+                    </div>
                 </div>
-            </div>
 
             @if (Model.Entities != null && Model.Entities.Any())
             {
                 <table class="table table-hover table-bordered tc vm">
                     <thead class="tc vm">
                         <tr class="tc vm">
-
                             <th class="tc vm">
-                                @Localizer["Request State"]
+                                کد رهگیری
                             </th>
                             <th class="tc vm">
-                                @Localizer["Your chosen date"]
+                                وضعیت
                             </th>
                             <th class="tc vm">
-                                @Localizer["Visiting hours"]
+                                ساعت مراجعه
                             </th>
-
                             <th class="tc vm">
-                                @Localizer["Options"]
+                                تاریخ مورد نظر
+                            </th>
+                            <th class="tc vm">
+                                امکانات
                             </th>
                         </tr>
                     </thead>
@@ -66,41 +67,43 @@
                         @foreach (var request in Model.Entities)
                         {
                             <tr class="tc vm">
-
+                                <td class="vm">
+                                    @request.Id
+                                </td>
                                 <td class="tc vm">
                                     <p class="flex-style-center">
 
                                         @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.Paid)
                                         {
-                                            <span class="mr-8px label label-info"> @Localizer["Paid"] </span>
+                                            <span class="mr-8px label label-info"> پرداخت شده </span>
                                         }
                                         @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.ConfirmFromDestinationAndWaitingForIssuanceOfDraftInvoice)
                                         {
-                                            <span class="mr-8px label label-info"> @Localizer["ConfirmFromDestinationAndWaitingForIssuanceOfDraftInvoice"] </span>
+                                            <span class="mr-8px label label-info"> تایید شده توسط مقصد و درانتظار صدور فاکتور  </span>
                                         }
                                         @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.AwaitingThePaymentOfTheInvoiceAmount)
                                         {
-                                            <span class="mr-8px label label-warning"> @Localizer["AwaitingThePaymentOfTheInvoiceAmount"] </span>
+                                            <span class="mr-8px label label-warning"> در انتظار پرداخت فاکتور  </span>
                                         }
                                         @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.DeliveryToCourierAndSending)
                                         {
-                                            <span class="mr-8px label label-info"> @Localizer["DeliveryToCourierAndSending"] </span>
+                                            <span class="mr-8px label label-info"> در حال ارسال  </span>
                                         }
                                         @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.PreparingTheOrder)
                                         {
-                                            <span class="mr-8px label label-info"> @Localizer["DeliveryToCourierAndSending"] </span>
+                                            <span class="mr-8px label label-info"> در انتظار آماده سازی </span>
                                         }
                                         @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.SelectedFromDoctor)
                                         {
-                                            <span class="mr-8px label label-warning"> @Localizer["SelectedFromDoctor"] </span>
+                                            <span class="mr-8px label label-info"> تایید از طرف پزشک </span>
                                         }
                                         @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.WaitingForConfirmFromDestination)
                                         {
-                                            <span class="mr-8px label label-warning"> @Localizer["WaitingForConfirmFromDestination"] </span>
+                                            <span class="mr-8px label label-warning"> در انتظار تایید مقصد  </span>
                                         }
                                         @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.AcceptFromCustomer)
                                         {
-                                            <span class="mr-8px label label-info"> @Localizer["Accepted From Customer"] </span>
+                                            <span class="mr-8px label label-info"> تایید شده توسط کاربر </span>
                                         }
                                         @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.Finalized)
                                         {
@@ -108,11 +111,7 @@
                                         }
                                         @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.WaitingForAcceptFromCustomer)
                                         {
-                                            <span class="mr-8px label label-warning"> @Localizer["Waiting For Accept From Customer"] </span>
-                                        }
-                                        @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.Canceled)
-                                        {
-                                            <span class="mr-8px label label-danger"> @Localizer["Canceled"] </span>
+                                            <span class="mr-8px label label-warning"> در انتظار تایید کاربر </span>
                                         }
                                         @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.Canceled)
                                         {
@@ -130,56 +129,34 @@
                                         {
                                             <span class="mr-8px label label-warning"> درانتظار تکمیل اطلاعات توسط   </span>
                                         }
-                                          @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.WaitingForConfirmFromDestination)
+                                        @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.WaitingForConfirmFromDestination)
                                         {
                                             <span class="mr-8px label label-warning"> درانتظار تکمیل اطلاعات توسط   </span>
                                         }
                                     </p>
                                 </td>
                                 <td class="tc vm">
-                                    @if (request.PatientRequestDateTimeDetails != null)
+                                    @if (request.PatientRequestDateTimeDetails != null && request.PatientRequestDateTimeDetails.StartTime != null)
+                                    {
+                                        <p>  @request.PatientRequestDateTimeDetails.StartTime.ToString("00")</p>
+                                    }
+                                    else
+                                    {
+                                        <p class="label label-danger"> اطلاعاتی وجود ندارد . </p>
+                                    }
+                                </td>
+                                <td class="tc vm">
+                                    @if (request.PatientRequestDateTimeDetails != null && request.PatientRequestDateTimeDetails.SendDate != null)
                                     {
                                         <p>  @request.PatientRequestDateTimeDetails.SendDate.ToStringShamsiDate() </p>
                                     }
                                     else
                                     {
-                                        <p class="label label-danger"> @Localizer["Not Insert"] </p>
+                                        <p class="label label-danger"> اطلاعاتی وجود ندارد . </p>
                                     }
                                 </td>
                                 <td class="tc vm">
-                                    @if (request.PatientRequestDateTimeDetails != null)
-                                    {
-                                        <span> @Localizer["Start Date"] @request.PatientRequestDateTimeDetails.StartTime.ToString("00")</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="label label-danger"> @Localizer["Not Insert"] </span>
-                                    }
-                               
-                                    @if (request.PatientRequestDateTimeDetails != null)
-                                    {
-                                        <span>@Localizer["End Date"]  @request.PatientRequestDateTimeDetails.EndTime.ToString("00")</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="label label-danger"> @Localizer["Not Insert"] </span>
-                                    }
-                                </td>
-
-                                <td class="tc vm">
-                                    @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.SelectedFromDoctor)
-                                    {
-                                        <a asp-action="RequestDetail" asp-controller="HomeVisit" asp-area="UserPanel" asp-route-requestId="@request.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
-                                    }
-                                    @if (request.PatientRequestDateTimeDetails != null && request.RequestState == RequestState.Finalized)
-                                    {
-                                        @if ((request.PatientRequestDateTimeDetails.SendDate.Year == DateTime.Now.Year && DateTime.Now.DayOfYear <= request.PatientRequestDateTimeDetails.SendDate.DayOfYear)
-                                       || request.PatientRequestDateTimeDetails.SendDate.Year > DateTime.Now.Year)
-                                        {
-                                            <button onclick="DeleteAjax(@request.Id, '@Url.Action("RemoveRequest", "HomeVisit", new {area = "UserPanel", requestId = request.Id})')" class="btn btn-danger  btn-xs">@Localizer["Remove Request"]</button>
-                                        }
-                                    }
-
+                                  
                                 </td>
                             </tr>
                         }

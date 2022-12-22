@@ -126,13 +126,47 @@
                                         {
                                             <span class="mr-8px label label-warning"> @Localizer["Waiting For Accept From Customer"] </span>
                                         }
+                                        @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.Canceled)
+                                        {
+                                            <span class="mr-8px label label-danger"> لغوشده  </span>
+                                        }
+                                        @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.TramsferringToTheBankingPortal)
+                                        {
+                                            <span class="mr-8px label label-warning"> در انتظار پرداخت   </span>
+                                        }
+                                        @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.unpaid)
+                                        {
+                                            <span class="mr-8px label label-warning"> پرداخت نشده  </span>
+                                        }
+                                        @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.WaitingForCompleteInformationFromUser)
+                                        {
+                                            <span class="mr-8px label label-warning"> درانتظار تکمیل اطلاعات توسط   </span>
+                                        }
+                                          @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.WaitingForConfirmFromDestination)
+                                        {
+                                            <span class="mr-8px label label-warning"> درانتظار تکمیل اطلاعات توسط   </span>
+                                        }
                                     </p>
                                 </td>
                                 <td class="tc vm">
-                                    <p>  @request.PatientRequestDateTimeDetails.StartTime.ToString("00")</p>
+                                    @if (request.PatientRequestDateTimeDetails != null && request.PatientRequestDateTimeDetails.StartTime != null)
+                                    {
+                                        <p>  @request.PatientRequestDateTimeDetails.StartTime.ToString("00")</p>
+                                    }
+                                    else
+                                    {
+                                        <p class="label label-danger"> اطلاعاتی وجود ندارد . </p>
+                                    }
                                 </td>
                                 <td class="tc vm">
-                                    <p>  @request.PatientRequestDateTimeDetails.SendDate.ToStringShamsiDate() </p>
+                                    @if (request.PatientRequestDateTimeDetails != null && request.PatientRequestDateTimeDetails.SendDate != null)
+                                    {
+                                        <p>  @request.PatientRequestDateTimeDetails.SendDate.ToStringShamsiDate() </p>
+                                    }
+                                    else
+                                    {
+                                        <p class="label label-danger"> اطلاعاتی وجود ندارد . </p>
+                                    }
                                 </td>
                                 <td class="tc vm">
                                     @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.Finalized)

@@ -3,6 +3,7 @@ using DoctorFAM.Domain.Entities.Laboratory;
 using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.ViewModels.Admin.HealthHouse.HomeLabratory;
+using DoctorFAM.Domain.ViewModels.UserPanel.HealthHouse.HomeLaboratory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,5 +44,10 @@ namespace DoctorFAM.Domain.Interfaces
 
         #endregion
 
+        #region User Panel 
+
+        Task<ListOfHomeLaboratoryUserPanelSideViewModel> ListOfUserHomeLaboratoryRequest(ListOfHomeLaboratoryUserPanelSideViewModel filter);
+
+        #endregion
     }
 }

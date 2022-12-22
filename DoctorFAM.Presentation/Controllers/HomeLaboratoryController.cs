@@ -1,7 +1,10 @@
 ﻿using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Interfaces;
 using DoctorFAM.Application.Services.Interfaces;
+using DoctorFAM.Application.StaticTools;
 using DoctorFAM.Data.DbContext;
+using DoctorFAM.Domain.DTOs.ZarinPal;
+using DoctorFAM.Domain.Entities.Wallet;
 using DoctorFAM.Domain.Enums.RequestType;
 using DoctorFAM.Domain.ViewModels.Site.Common;
 using DoctorFAM.Domain.ViewModels.Site.HomeLaboratory;
@@ -12,6 +15,9 @@ using DoctorFAM.Web.HttpManager;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.Text;
 
 namespace DoctorFAM.Web.Controllers
 {
@@ -22,20 +28,18 @@ namespace DoctorFAM.Web.Controllers
         #region Ctor
 
         private readonly IHomeLaboratoryServices _homeLaboratory;
-
         private readonly IRequestService _requestService;
-
         private readonly IUserService _userService;
-
         private readonly IPatientService _patientService;
-
         private readonly ILocationService _locationService;
-
         private readonly IPopulationCoveredService _populationCovered;
-
         private readonly ISiteSettingService _siteSettingService;
+        private readonly IWalletService _walletService;
 
-        public HomeLaboratoryController(IHomeLaboratoryServices homeLaboratory, IRequestService requestService, IUserService userService, IPatientService patientService, ILocationService locationService, ISiteSettingService siteSettingService , IPopulationCoveredService populationCovered)
+        public HomeLaboratoryController(IHomeLaboratoryServices homeLaboratory, IRequestService requestService, IUserService userService
+                            , IPatientService patientService, ILocationService locationService
+                                , ISiteSettingService siteSettingService, IPopulationCoveredService populationCovered
+                                    , IWalletService walletService)
         
         {
             _homeLaboratory = homeLaboratory;
@@ -45,6 +49,7 @@ namespace DoctorFAM.Web.Controllers
             _locationService = locationService;
             _siteSettingService = siteSettingService;
             _populationCovered = populationCovered;
+            _walletService = walletService;
         }
 
         #endregion
@@ -403,7 +408,7 @@ namespace DoctorFAM.Web.Controllers
 
             #endregion
 
-            #region Get Site Address Domain For Redirect To Bank Portal\
+            #region Get Site Address Domain For Redirect To Bank Portal
 
             var siteAddressDomain = await _siteSettingService.GetSiteAddressDomain();
             if (string.IsNullOrEmpty(siteAddressDomain))
@@ -414,26 +419,25 @@ namespace DoctorFAM.Web.Controllers
 
             #endregion
 
-            #region Online Payment
+            #region Update Request State 
 
-            var payment = new ZarinpalSandbox.Payment(homeLaboratory);
-
-            var res = payment.PaymentRequest("پرداخت  ", $"{siteAddressDomain}HomeLaboratoryPayment/" + requestId, "Parsapanahpoor@yahoo.com", "09117878804");
-
-            if (res.Result.Status == 100)
-            {
-                #region Update Request State 
-
-                await _requestService.UpdateRequestStateForTramsferringToTheBankingPortal(request);
-
-                #endregion
-
-                return Redirect("https://sandbox.zarinpal.com/pg/StartPay/" + res.Result.Authority);
-            }
+            await _requestService.UpdateRequestStateForTramsferringToTheBankingPortal(request);
 
             #endregion
 
-            return View();
+            #region Online Payment
+
+            return RedirectToAction("PaymentMethod", "Payment", new
+            {
+                gatewayType = GatewayType.Zarinpal,
+                amount = homeLaboratory,
+                description = "شارژ حساب کاربری برای پرداخت هزینه ی آزمایشگاه در منزل",
+                returURL = $"{PathTools.SiteAddress}/HomeLaboratoryPayment/" + requestId,
+                requestId = requestId
+            });
+
+            #endregion
+
         }
 
         #endregion
@@ -449,11 +453,16 @@ namespace DoctorFAM.Web.Controllers
 
             #endregion
 
-            if (HttpContext.Request.Query["Status"] != "" &&
-                HttpContext.Request.Query["Status"].ToString().ToLower() == "ok"
-                && HttpContext.Request.Query["Authority"] != "")
+            try
             {
-                string authority = HttpContext.Request.Query["Authority"];
+                #region Fill Parametrs
+
+                VerifyParameters parameters = new VerifyParameters();
+
+                if (HttpContext.Request.Query["Authority"] != "")
+                {
+                    parameters.authority = HttpContext.Request.Query["Authority"];
+                }
 
                 #region Get Home Laboratory Tarif 
 
@@ -466,33 +475,72 @@ namespace DoctorFAM.Web.Controllers
 
                 #endregion
 
-                var payment = new ZarinpalSandbox.Payment(homeLaboratory);
-                var res = payment.Verification(authority).Result;
+                parameters.amount = homeLaboratory.ToString();
+                parameters.merchant_id = PathTools.merchant;
 
-                if (res.Status == 100)
+                #endregion
+
+                using (HttpClient client = new HttpClient())
                 {
-                    ViewBag.code = res.RefId;
-                    ViewBag.IsSuccess = true;
+                    #region Verify Payment
 
-                    //Update Request State 
-                    await _requestService.UpdateRequestStateForPayed(request);
+                    var json = JsonConvert.SerializeObject(parameters);
 
-                    //Charge User Wallet
-                    await _homeLaboratory.ChargeUserWallet(User.GetUserId(), homeLaboratory);
+                    HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
 
-                    //Pay Home Laboratory Tariff
-                    await _homeLaboratory.PayHomeLAboratoryTariff(User.GetUserId(), homeLaboratory);
+                    HttpResponseMessage response = await client.PostAsync(URLs.verifyUrl, content);
 
-                    return View();
+                    string responseBody = await response.Content.ReadAsStringAsync();
+
+                    JObject jodata = JObject.Parse(responseBody);
+
+                    string data = jodata["data"].ToString();
+
+                    JObject jo = JObject.Parse(responseBody);
+
+                    string errors = jo["errors"].ToString();
+
+                    #endregion
+
+                    if (data != "[]")
+                    {
+                        //Authority Code
+                        string refid = jodata["data"]["ref_id"].ToString();
+
+                        //Get Wallet Transaction For Validation 
+                        var wallet = await _walletService.FindWalletTransactionForRedirectToTheBankPortal(User.GetUserId(), GatewayType.Zarinpal, request.Id, parameters.authority, homeLaboratory);
+
+                        if (wallet != null)
+                        {
+                            //Update Request State 
+                            await _requestService.UpdateRequestStateForPayed(request);
+
+                            //Charge User Wallet
+                            //await _reservationService.ChargeUserWallet(User.GetUserId(), reservationTariff);
+
+                            await _walletService.UpdateWalletAndCalculateUserBalanceAfterBankingPayment(wallet);
+
+                            //Pay Home Laboratory Tariff
+                            await _homeLaboratory.PayHomeLAboratoryTariff(User.GetUserId(), homeLaboratory, request.Id);
+
+                            return RedirectToAction("PaymentResult", "Payment", new { IsSuccess = true, refId = refid });
+                        }
+                    }
+                    else if (errors != "[]")
+                    {
+                        string errorscode = jo["errors"]["code"].ToString();
+
+                        return BadRequest($"error code {errorscode}");
+
+                    }
                 }
-
             }
-            else
+            catch (Exception ex)
             {
-                await _requestService.UpdateRequestStateForNotPayed(request);
+                throw ex;
             }
-
-            return View();
+             
+            return NotFound();
         }
 
         #endregion
