@@ -39,7 +39,7 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": "http://doctorfam.com/?utm_source=homescreen",
+  "start_url": "https://localhost:44322/?utm_source=homescreen",
   "background_color": "#3367D6",
   "display": "standalone",
   "theme_color": "#3367D6"

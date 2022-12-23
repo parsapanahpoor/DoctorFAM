@@ -4,96 +4,96 @@
     ViewData["Title"] = "سوابق اقدامات پزشکی";
 }
 
-
-
 @section Breadcrumb
     {
 
 }
 
 
-<div class="page-body">
+    <div class="page-body">
 
 
-    <div class="row text-center align-Item-center">
-        <div class="col-lg-12 col-sm-12 col-xs-12">
-            <div class="row">
-                @* @if (Model.HomeVisit == true)
-                    {*@
-                <div class="col-lg-4 col-md-4  buttons-preview mt-2">
-                    <div class="bordered-well-container">
-                        <div class="well bordered-top bordered-bottom  bordered-blue">
-                           
+        <div class="row text-center align-Item-center">
+            <div class="col-lg-12 col-sm-12 col-xs-12">
+                <div class="row">
+                @if (Model.HomeVisit == true)
+                {
+                    <div class="col-lg-4 col-md-4  buttons-preview mt-2">
+                        <div class="bordered-well-container">
+                            <div class="well bordered-top bordered-bottom  bordered-blue">
+
                                 <div class="featured-icon">
                                     <i class="fa fa-medkit fa-2x"></i>
                                 </div>
                                 <p class="text-center justify-content-center"> ویزیت در منزل  </p>
-                            
+
+                            </div>
+                            <a asp-action="ListOfHomeVisitRequest" asp-area="Doctor" asp-controller="HomeVisit">
+                                <div class="well  bordered-bottom  bordered-pink">
+                                    <p class="text-center justify-content-center" style="font-size:12px !important;"> جدیدترین درخواستها  </p>
+                                </div>
+                            </a>
+                            <a asp-action="ListOfYourHomeVisitRequest" asp-area="Doctor" asp-controller="HomeVisit">
+                                <div class="well  bordered-bottom  bordered-palegreen">
+                                    <p class="text-center justify-content-center" style="font-size:12px !important;"> درخواستهای پذیرفته شده  </p>
+                                </div>
+                            </a>
                         </div>
-                         <a asp-action="ListOfHomeVisitRequest" asp-area="Doctor" asp-controller="HomeVisit">
-                        <div class="well  bordered-bottom  bordered-pink">
-                            <p class="text-center justify-content-center" style="font-size:12px !important;"> جدیدترین درخواستها  </p>
-                        </div>
-                        </a>
-                        <a asp-action="ListOfYourHomeVisitRequest" asp-area="Doctor" asp-controller="HomeVisit">
-                        <div class="well  bordered-bottom  bordered-palegreen">
-                            <p class="text-center justify-content-center" style="font-size:12px !important;"> درخواستهای پذیرفته شده  </p>
-                        </div>
-                        </a>
                     </div>
-                </div>
-                @*   }
-                    @if (Model.DeathCertificate == true)
-                    { *@<div class="col-lg-4 col-md-4   buttons-preview mt-2">
-                    <div class="bordered-well-container">
-                        <div class="well bordered-top bordered-bottom  bordered-blue">
-                           
+                }
+                @if (Model.DeathCertificate == true)
+                {
+                    <div class="col-lg-4 col-md-4   buttons-preview mt-2">
+                        <div class="bordered-well-container">
+                            <div class="well bordered-top bordered-bottom  bordered-blue">
+
                                 <div class="featured-icon">
                                     <i class="fa fa-ambulance fa-2x"></i>
                                 </div>
                                 <p class="text-center justify-content-center"> صدور گواهی فوت  </p>
-                            
+
+                            </div>
+                            <a asp-action="ListOfDeathCertificateRequests" asp-area="Doctor" asp-controller="DeathCertificate">
+                                <div class="well  bordered-bottom  bordered-pink">
+                                    <p class="text-center justify-content-center" style="font-size:12px !important;"> جدیدترین درخواستها  </p>
+                                </div>
+                            </a>
+                            <a asp-action="ListOfYourDeathCertificateRequests" asp-area="Doctor" asp-controller="DeathCertificate">
+                                <div class="well  bordered-bottom  bordered-palegreen">
+                                    <p class="text-center justify-content-center" style="font-size:12px !important;"> درخواستهای پذیرفته شده  </p>
+                                </div>
+                            </a>
                         </div>
-                        <a asp-action="ListOfDeathCertificateRequests" asp-area="Doctor" asp-controller="DeathCertificate">
-                        <div class="well  bordered-bottom  bordered-pink">
-                            <p class="text-center justify-content-center" style="font-size:12px !important;"> جدیدترین درخواستها  </p>
-                        </div>
-                        </a>
-                        <a asp-action="ListOfYourDeathCertificateRequests" asp-area="Doctor" asp-controller="DeathCertificate">
-                        <div class="well  bordered-bottom  bordered-palegreen">
-                            <p class="text-center justify-content-center" style="font-size:12px !important;"> درخواستهای پذیرفته شده  </p>
-                        </div>
-                        </a>
+
                     </div>
+                }
 
-                </div>@*}
+                @if (Model.OnlineVisit == true)
+                {
+                    <div class="col-lg-4 col-md-4   buttons-preview mt-2">
+                        <div class="bordered-well-container">
+                            <div class="well bordered-top bordered-bottom  bordered-blue">
 
-                    @if (Model.OnlineVisit == true)
-                    {*@
-                <div class="col-lg-4 col-md-4   buttons-preview mt-2">
-                    <div class="bordered-well-container">
-                        <div class="well bordered-top bordered-bottom  bordered-blue">
-                            
                                 <div class="featured-icon">
                                     <i class="fa fa-headphones fa-2x"></i>
                                 </div>
                                 <p class="text-center justify-content-center"> ویزیت آنلاین  </p>
-                           
-                        </div>
-                        <a asp-action="FilterOnlineVisitRequests" asp-area="Doctor" asp-controller="OnlineVisit">
-                        <div class="well  bordered-bottom  bordered-pink">
-                            <p class="text-center justify-content-center" style="font-size:12px !important;"> جدیدترین درخواستها  </p>
-                        </div>
-                         </a>
-                        <a asp-action="FilterYourOnlineVisitRequest" asp-area="Doctor" asp-controller="OnlineVisit">
-                        <div class="well  bordered-bottom  bordered-palegreen">
-                            <p class="text-center justify-content-center" style="font-size:12px !important;"> درخواستهای پذیرفته شده  </p>
-                        </div>
-                         </a>
-                    </div>
 
-                </div>
-                @* } *@
+                            </div>
+                            <a asp-action="FilterOnlineVisitRequests" asp-area="Doctor" asp-controller="OnlineVisit">
+                                <div class="well  bordered-bottom  bordered-pink">
+                                    <p class="text-center justify-content-center" style="font-size:12px !important;"> جدیدترین درخواستها  </p>
+                                </div>
+                            </a>
+                            <a asp-action="FilterYourOnlineVisitRequest" asp-area="Doctor" asp-controller="OnlineVisit">
+                                <div class="well  bordered-bottom  bordered-palegreen">
+                                    <p class="text-center justify-content-center" style="font-size:12px !important;"> درخواستهای پذیرفته شده  </p>
+                                </div>
+                            </a>
+                        </div>
+
+                    </div>
+                }
 
 
             </div>

@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DoctorFAM.Web.Areas.UserPanel.ViewComponents
 {
-    public class DoctorPanelSideBarViewComponent : ViewComponent
+    #region In Menu Side Bar 
+
+   public class DoctorPanelSideBarViewComponent : ViewComponent
     {
         #region Ctor
 
@@ -22,4 +24,29 @@ namespace DoctorFAM.Web.Areas.UserPanel.ViewComponents
             return View("DoctorPanelSideBar" , await _doctorService.GetDoctorsSideBarInfo(User.GetUserId()));
         }
     }
+
+    #endregion
+
+    #region In Index View
+
+    public class DoctorPanelSideBarInIndexViewComponent : ViewComponent
+    {
+        #region Ctor
+
+        public IDoctorsService _doctorService;
+
+        public DoctorPanelSideBarInIndexViewComponent(IDoctorsService doctorService)
+        {
+            _doctorService = doctorService;
+        }
+
+        #endregion
+
+        public async Task<IViewComponentResult> InvokeAsync()
+        {
+            return View("DoctorPanelSideBarInIndex", await _doctorService.GetDoctorsSideBarInfo(User.GetUserId()));
+        }
+    }
+
+    #endregion
 }

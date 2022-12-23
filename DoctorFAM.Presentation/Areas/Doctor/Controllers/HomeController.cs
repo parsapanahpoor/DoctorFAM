@@ -119,8 +119,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
         #region Medical Records  Page 
         public async Task<IActionResult> MedicalRecords()
         {
-
-            return View();
+            return View(await _doctorService.GetDoctorsSideBarInfo(User.GetUserId()));
         }
         #endregion
 
@@ -131,7 +130,5 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
             return View();
         }
         #endregion
-
-       
     }
 }
