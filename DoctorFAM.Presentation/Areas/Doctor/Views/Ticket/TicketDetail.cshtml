@@ -23,11 +23,9 @@
     @section Breadcrumb
     {
     <li>
-        <a asp-action="FilterTickets" asp-controller="Ticket" asp-area="Doctor"> @Localizer["List Of Tickets"] </a>
+        <a asp-action="FilterTickets" asp-controller="Ticket" asp-area="Doctor"> لیست تیکتهای پشتیبانی </a>
     </li>
-    <li>
-        <a href="javascript:void(0)"> @ViewData["Title"] </a>
-    </li>
+    
 }
 
     <div class="row">
@@ -50,7 +48,7 @@
                                     <input type="hidden" asp-for="TicketId" />
 
                                     <div class="form-group col-md-12">
-                                        <label asp-for="Message"></label>
+                                        <label >متن پیام</label>
                                         <textarea class="form-control" ckeditor="1" asp-for="Message"></textarea>
                                         <span class="text-danger" asp-validation-for="Message"></span>
                                     </div>

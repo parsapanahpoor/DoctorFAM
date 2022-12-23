@@ -9,7 +9,7 @@
 
 
 @{
-    ViewData["Title"] = @Localizer["Home Visit Records"];
+    ViewData["Title"] = "لیست  درخواستهای پذیرفته شده ویزیت در منزل شما";
 }
 
 @section Styles
@@ -25,7 +25,7 @@
     @section Breadcrumb
     {
     <li>
-        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+        <a asp-action="MedicalRecords" asp-area="Doctor" asp-controller="Home"> اقدامات پزشکی </a> 
     </li>
 }
 
@@ -33,7 +33,7 @@
         <div class="col-lg-3 col-sm-12">
             <div class="widget">
                 <div class="widget-header bordered-bottom bordered-green">
-                    <span class="widget-caption"> @ViewData["Title"] </span>
+                    <span class="widget-caption"> جستجو </span>
                 </div>
                 <div class="widget-body">
                     <div>
@@ -88,7 +88,7 @@
             <div class="header bordered-azure">
                 <div class="flex-style">
                     <span> @ViewData["Title"]</span>
-                    <span>@Model.GetShownEntitiesPagesTitle()</span>
+                    <span class="red">(@Model.GetShownEntitiesPagesTitle())</span><span>درخواست</span>
                 </div>
             </div>
 

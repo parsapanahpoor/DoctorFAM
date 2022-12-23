@@ -2467,14 +2467,18 @@ a:focus, a:active {
                         margin-left: 14px;
                         display: block;
                         float: right;
-                        border-right: 2px solid #fb6e52;
-                        width: 29px;
-                        height: 29px
+                       /* border-right: 2px solid #fb6e52;*/
+                        width: 33px;
+                        height: 33px;
+                       
+
                     }
 
                         .navbar .navbar-inner .navbar-header .navbar-account .account-area .login-area .avatar img {
-                            width: 29px;
-                            height: 29px
+                            width: 33px;
+                            height: 33px;
+                            border-radius: 15px;
+                            border: 1px solid #e5e5e5;
                         }
 
                     .navbar .navbar-inner .navbar-header .navbar-account .account-area .login-area section {
@@ -19723,4 +19727,29 @@ a.fc-more {
     background-color: rgba(166, 248, 159,.6);
     border-radius: 8px;
     padding: 10px;
+}
+
+.divch {
+    transform: scale(1, 1);
+}
+
+    .divch:hover {
+        -webkit-transition: .5s !important;
+        transition: .5s !important;
+        border: none !important;
+        transform: scale(1.05, 1.05);
+    }
+
+.img-fluid2 {
+    max-width: 100%;
+    height: auto;
+}
+.rounded {
+    border-radius: .25rem !important;
+}
+
+.box-shadow, .dropdown-menu, #header-wrap.fixed-header, .navbar-nav ul, .btn, .post .post-image, .video-box, .team-member .team-description, .featured-item.style-3 .featured-icon, .cases-item.style-2 .cases-desc, .testimonial.style-2 .testimonial-img img, .media-holder .media, .timeline-title h2, .product-overlay ul li a, .featured-item.style-6:hover, .featured-item.style-6.active {
+    -webkit-box-shadow: 0px 3px 65px 0px rgba(26, 26, 66, 0.070);
+    -moz-box-shadow: 0px 3px 65px 0px rgba(26, 26, 66, 0.070);
+    box-shadow: 0px 3px 65px 0px rgba(26, 26, 66, 0.070);
 }

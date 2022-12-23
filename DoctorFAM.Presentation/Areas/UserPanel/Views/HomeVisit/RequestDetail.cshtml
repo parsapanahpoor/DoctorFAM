@@ -13,40 +13,43 @@
 
 @section Styles
     {
-    <style>
+<style>
 
-        .header-fullname {
-            font: 21px 'YekanBakh-FaNum';
-            margin-top: 27px;
-            display: inline-block;
-        }
+    .header-fullname {
+        font: 21px 'YekanBakh-FaNum';
+        margin-top: 27px;
+        display: inline-block;
+    }
 
-    </style>
+</style>
 }
 
-    @section Scripts
+@section Scripts
     {
-    <partial name="_JqueryValidation" />
+<partial name="_JqueryValidation" />
 }
 
-    @section Breadcrumb
+@section Breadcrumb
     {
-    <li>
-        <a href="javascript:void(0)"> @ViewData["Title"] </a>
-    </li>
+<li>
+    <a asp-action="HealthHouse" asp-controller="Home" asp-area="UserPanel"> خانه سلامت </a>
+</li>
+<li>
+    <a href="javascript:void(0)"> @ViewData["Title"] </a>
+</li>
 }
 
-    <div class="row">
+<div class="row">
+
+    <div class="col-md-12">
 
         <div class="col-md-12">
-
-            <div class="col-md-12">
-                <div class="profile-container">
-                    <div class="profile-header row">
-                        <div class="col-lg-2 col-md-4 col-sm-12 text-center">
-                            <img src="@Model.User.GetUserAvatar()" alt="" class="header-avatar">
-                        </div>
-                        <div class="col-lg-2 col-md-8 col-sm-12 profile-info">
+            <div class="profile-container">
+                <div class="profile-header row">
+                    <div class="col-lg-2 col-md-4 col-sm-12 text-center">
+                        <img src="@Model.User.GetUserAvatar()" alt="" class="header-avatar">
+                    </div>
+                    <div class="col-lg-2 col-md-8 col-sm-12 profile-info">
                         @if (Model.User.FirstName != null && Model.User.LastName != null)
                         {
                             <div class="header-fullname">@Model.User.FirstName @Model.User.LastName</div>

@@ -472,7 +472,7 @@
     <value>چاق</value>
   </data>
   <data name="List Of BMI History" xml:space="preserve">
-    <value>تاریخجه ی BMI های کاربر</value>
+    <value>تاریخجه ی BMI  </value>
   </data>
   <data name="Overweight" xml:space="preserve">
     <value>اضافه وزن</value>
@@ -628,7 +628,7 @@
     <value>GFR شما</value>
   </data>
   <data name="List Of GFR History" xml:space="preserve">
-    <value>تاریخچه ی GFR های کاربر</value>
+    <value>تاریخچه ی GFR  </value>
   </data>
   <data name="Laboratory Info" xml:space="preserve">
     <value>اطلاعات آزمایشگاه</value>

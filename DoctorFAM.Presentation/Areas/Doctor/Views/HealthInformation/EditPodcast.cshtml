@@ -12,15 +12,18 @@
 
 @section Scripts
     {
-    <partial name="_JqueryValidation" />
+<partial name="_JqueryValidation" />
 }
 
-    @section Breadcrumb
+@section Breadcrumb
     {
-    <li>
-        <a asp-area="Doctor" asp-controller="HealthInformation" asp-action="FilterPodcast"> مدیریت پادکستها  </a>
-        <a href="javascript:void(0)"> @ViewData["Title"] </a>
-    </li>
+<li>
+    <a asp-action="MediaManage" asp-area="Doctor" asp-controller="Home"> مدیریت مدیا </a>
+</li>
+<li>
+    <a asp-area="Doctor" asp-controller="HealthInformation" asp-action="FilterPodcast"> مدیریت پادکستها  </a>
+
+</li>
 }
 
 <div class="row">
@@ -55,76 +58,76 @@
 
 </div>
 
-    <form method="post" asp-action="EditPodcast" asp-controller="HealthInformation" asp-area="Doctor" enctype="multipart/form-data">
-        <input asp-for="HealthInfoId" type="hidden" />
-        <div class="row">
-            <div class="col-lg-9 col-sm-12">
-                <div class="widget">
-                    <div class="widget-header bordered-bottom bordered-green">
-                        <span class="widget-caption"> @ViewData["Title"] </span>
-                    </div>
-                    <div class="widget-body">
-                        <div>
+<form method="post" asp-action="EditPodcast" asp-controller="HealthInformation" asp-area="Doctor" enctype="multipart/form-data">
+    <input asp-for="HealthInfoId" type="hidden" />
+    <div class="row">
+        <div class="col-lg-9 col-sm-12">
+            <div class="widget">
+                <div class="widget-header bordered-bottom bordered-green">
+                    <span class="widget-caption"> @ViewData["Title"] </span>
+                </div>
+                <div class="widget-body">
+                    <div>
 
-                            <div class="row">
-                                <div class="form-group col-md-12 col-sm-12">
-                                    <label asp-for="Title">عنوان</label>
-                                    <input type="text" class="form-control" asp-for="Title">
-                                    <span class="text-danger" asp-validation-for="Title"></span>
-                                </div>
-
-                                <div class="clearfix"></div>
-
-                                <div class="form-group col-md-12 col-sm-12">
-                                    <label asp-for="ShortDescription">توضیح مختصر</label>
-                                    <input type="text" class="form-control" asp-for="ShortDescription">
-                                    <span class="text-danger" asp-validation-for="ShortDescription"></span>
-                                </div>
-
-                                <div class="clearfix"></div>
-
-                                <div class="form-group col-md-12 col-sm-12">
-                                    <label asp-for="Tags">تگ </label>
-                                    <input type="text" class="form-control" tagify="1" asp-for="Tags">
-                                    <span class="text-danger" asp-validation-for="Tags"></span>
-                                </div>
-
-                                <div class="clearfix"></div>
-
-                                <div class="form-group col-md-12">
-                                    <label asp-for="longDescription">توضیح کامل</label>
-                                    <textarea class="form-control" ckeditor="1" asp-for="longDescription"></textarea>
-                                    <span class="text-danger" asp-validation-for="longDescription"></span>
-
-                                </div>
-
+                        <div class="row">
+                            <div class="form-group col-md-12 col-sm-12">
+                                <label asp-for="Title">عنوان</label>
+                                <input type="text" class="form-control" asp-for="Title">
+                                <span class="text-danger" asp-validation-for="Title"></span>
                             </div>
 
-                            <hr class="margin-bottom-10 margin-top-10" />
+                            <div class="clearfix"></div>
 
-                            <div class="row">
-                                <div class="col-md-12 flex-style">
-                                    <button type="submit" class="btn btn-labeled btn-palegreen">
-                                        <i class="btn-label glyphicon glyphicon-ok"></i>ثبت
-                                    </button>
-                                </div>
+                            <div class="form-group col-md-12 col-sm-12">
+                                <label asp-for="ShortDescription">توضیح مختصر</label>
+                                <input type="text" class="form-control" asp-for="ShortDescription">
+                                <span class="text-danger" asp-validation-for="ShortDescription"></span>
+                            </div>
+
+                            <div class="clearfix"></div>
+
+                            <div class="form-group col-md-12 col-sm-12">
+                                <label asp-for="Tags">تگ </label>
+                                <input type="text" class="form-control" tagify="1" asp-for="Tags">
+                                <span class="text-danger" asp-validation-for="Tags"></span>
+                            </div>
+
+                            <div class="clearfix"></div>
+
+                            <div class="form-group col-md-12">
+                                <label asp-for="longDescription">توضیح کامل</label>
+                                <textarea class="form-control" ckeditor="1" asp-for="longDescription"></textarea>
+                                <span class="text-danger" asp-validation-for="longDescription"></span>
+
                             </div>
 
                         </div>
+
+                        <hr class="margin-bottom-10 margin-top-10" />
+
+                        <div class="row">
+                            <div class="col-md-12 flex-style">
+                                <button type="submit" class="btn btn-labeled btn-palegreen">
+                                    <i class="btn-label glyphicon glyphicon-ok"></i>ثبت
+                                </button>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
+        </div>
 
 
-            <div class="col-lg-3 col-sm-12">
-                <div class="row">
+        <div class="col-lg-3 col-sm-12">
+            <div class="row">
 
-                    <div class="col-lg-12">
-                        <div class="widget">
-                            <div class="widget-header bordered-bottom bordered-blue flex-style">
-                                <span class="widget-caption"> انتخاب دسته بندی</span>
-                            </div>
-                            <div class="widget-body @((permissions != null && permissions.Any()) ? "no-padding" : "")">
+                <div class="col-lg-12">
+                    <div class="widget">
+                        <div class="widget-header bordered-bottom bordered-blue flex-style">
+                            <span class="widget-caption"> انتخاب دسته بندی</span>
+                        </div>
+                        <div class="widget-body @((permissions != null && permissions.Any()) ? "no-padding" : "")">
 
                             @if (permissions != null && permissions.Any())
                             {

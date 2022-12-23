@@ -14,9 +14,7 @@
 
     @section breadcrumb
     {
-    <li>
-        <a href="javascript:void(0)"> @ViewData["Title"] </a>
-    </li>
+    
 }
 
     <div class="row">
@@ -24,7 +22,7 @@
         <div class="col-lg-3 col-sm-12">
             <div class="widget">
                 <div class="widget-header bordered-bottom bordered-green">
-                    <span class="widget-caption"> @ViewData["Title"] </span>
+                    <span class="widget-caption"> جستجو </span>
                 </div>
                 <div class="widget-body">
                     <div>
@@ -74,9 +72,9 @@
             <div class="header bordered-azure">
                 <div class="flex-style">
 
-                    <span> @Localizer["List Of User Tickets"] </span>
+                    <span> لیست تیکتهای پشتیبانی </span>
 
-                    <span>@Model.GetShownEntitiesPagesTitle()</span>
+                    <span class="red">(@Model.GetShownEntitiesPagesTitle())</span><span>تیکت</span>
                 </div>
             </div>
 
@@ -124,8 +122,16 @@
                 </table>
 
                 <div class="footer tc">
-
-                    <partial name="_DoctorPanelPaging" model="@Model.GetCurrentPaging()" />
+                    <div class="row">
+                        <div class="col-md-6">
+                            <a class="btn btn-primary w-100 margin-bottom-10" asp-action="CreateTicket" asp-controller="Ticket" asp-area="Doctor"> <i class="fa fa-plus"></i> ایجاد تیکت پشتیبانی جدید </a>
+                        </div>
+                        <div class="col-md-6">
+                            <partial name="_DoctorPanelPaging" model="@Model.GetCurrentPaging()" />
+                        </div>
+                        
+                    </div>
+                    
 
                 </div>
             }

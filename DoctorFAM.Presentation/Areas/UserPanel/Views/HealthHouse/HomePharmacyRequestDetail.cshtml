@@ -12,41 +12,44 @@
 
 @section Styles
     {
-    <style>
+<style>
 
-        .header-fullname {
-            font: 21px 'YekanBakh-FaNum';
-            margin-top: 27px;
-            display: inline-block;
-        }
+    .header-fullname {
+        font: 21px 'YekanBakh-FaNum';
+        margin-top: 27px;
+        display: inline-block;
+    }
 
-    </style>
+</style>
 }
 
-    @section Scripts
+@section Scripts
     {
-    <partial name="_JqueryValidation" />
+<partial name="_JqueryValidation" />
 }
 
-    @section Breadcrumb
+@section Breadcrumb
     {
-    <li>
-        <a href="javascript:void(0)"> @Localizer["Request Code"] : @Model.Request.Id </a>
-    </li>
+<li>
+    <a asp-action="HealthHouse" asp-controller="Home" asp-area="UserPanel"> خانه سلامت </a>
+</li>
+<li>
+    <a href="javascript:void(0)"> @Localizer["Request Code"] : @Model.Request.Id </a>
+</li>
 }
 
-    <div class="row">
+<div class="row">
+
+    <div class="col-md-12">
 
         <div class="col-md-12">
-
-            <div class="col-md-12">
-                <div class="profile-container">
-                    <div class="profile-header row">
-                        <div class="col-lg-2 col-md-4 col-sm-12 text-center">
-                            <img src="@(Model.User != null ? Model.User.GetUserAvatar() : Localizer["Empty"])" alt="" class="header-avatar">
-                        </div>
-                        <div class="col-lg-3 col-md-8 col-sm-12 profile-info">
-                            <div class="header-fullname">@(Model.User.Username != null ? Model.User.Username : Localizer["Empty"])</div>
+            <div class="profile-container">
+                <div class="profile-header row">
+                    <div class="col-lg-2 col-md-4 col-sm-12 text-center">
+                        <img src="@(Model.User != null ? Model.User.GetUserAvatar() : Localizer["Empty"])" alt="" class="header-avatar">
+                    </div>
+                    <div class="col-lg-3 col-md-8 col-sm-12 profile-info">
+                        <div class="header-fullname">@(Model.User.Username != null ? Model.User.Username : Localizer["Empty"])</div>
 
                         <div class="header-information">
                             @Localizer["Mobile"] : @(Model.User.Mobile != null ? Model.User.Mobile : Localizer["Empty"])
@@ -348,14 +351,14 @@
                                     </div>
 
                                     @if (Model.Request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.AwaitingThePaymentOfTheInvoiceAmount
-                                      || Model.Request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.Finalized
-                                      || Model.Request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.DeliveryToCourierAndSending
-                                      || Model.Request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.AcceptFromCustomer
-                                      || Model.Request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.WaitingForAcceptFromCustomer)
+                                    || Model.Request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.Finalized
+                                    || Model.Request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.DeliveryToCourierAndSending
+                                    || Model.Request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.AcceptFromCustomer
+                                    || Model.Request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.WaitingForAcceptFromCustomer)
                                     {
                                         <a asp-action="InvoiceFinalization" asp-area="UserPanel" asp-controller="HealthHouse" asp-route-requestId="@Model.Request.Id" class="btn btn-primary">@Localizer["View Invoice"]</a>
                                     }
-                                  
+
                                 </div>
                             </div>
                         </div>

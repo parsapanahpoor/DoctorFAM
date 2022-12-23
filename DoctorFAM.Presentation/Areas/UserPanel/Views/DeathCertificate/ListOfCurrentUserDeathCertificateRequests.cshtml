@@ -16,30 +16,33 @@
 
 }
 
-    @section Scripts
+@section Scripts
     {
-    <partial name="_JqueryValidation" />
+<partial name="_JqueryValidation" />
 }
 
-    @section Breadcrumb
+@section Breadcrumb
     {
-    <li>
-        <a href="javascript:void(0)"> @ViewData["Title"] </a>
-    </li>
+<li>
+    <a asp-action="HealthHouse" asp-controller="Home" asp-area="UserPanel"> خانه سلامت </a>
+</li>
+<li>
+    <a href="javascript:void(0)"> @ViewData["Title"] </a>
+</li>
 }
-    <form asp-action="ListOfCurrentUserDeathCertificateRequests" asp-controller="HealthHouse" asp-area="UserPanel" id="filter-search" method="get">
-        <input type="hidden" asp-for="Page" />
-    </form>
+<form asp-action="ListOfCurrentUserDeathCertificateRequests" asp-controller="HealthHouse" asp-area="UserPanel" id="filter-search" method="get">
+    <input type="hidden" asp-for="Page" />
+</form>
 
-    <div class="row">
-        <div class="col-lg-12 col-sm-12">
-            <div class="well with-header with-footer table-responsive">
-                <div class="header bordered-azure">
-                    <div class="flex-style">
-                        <span>@ViewData["Title"]</span>
-                        <span>@Model.GetShownEntitiesPagesTitle()</span>
-                    </div>
+<div class="row">
+    <div class="col-lg-12 col-sm-12">
+        <div class="well with-header with-footer table-responsive">
+            <div class="header bordered-azure">
+                <div class="flex-style">
+                    <span>@ViewData["Title"]</span>
+                    <span>@Model.GetShownEntitiesPagesTitle()</span>
                 </div>
+            </div>
 
             @if (Model.Entities != null && Model.Entities.Any())
             {

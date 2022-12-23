@@ -3,7 +3,7 @@
 @inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
 
 @{
-    ViewData["Title"] = @Localizer["Filter population Covered"];
+    ViewData["Title"] = "لیست افراد زیر  مجموعه";
 }
 
 @section Scripts
@@ -21,7 +21,8 @@
 <div class="row">
     <div class="col-lg-3 col-sm-12">
 
-        <a class="btn btn-sky w-100 margin-bottom-10" asp-action="CreatePopulationCovered" asp-controller="PopulationCovered" asp-area="UserPanel"> @Localizer["Create Population Covered"] </a>
+        <a class="btn btn-sky w-100 margin-bottom-10"   > جستجو </a>
+        
 
         <div class="widget">
             <div class="widget-body">
@@ -58,6 +59,11 @@
     </div>
 
     <div class="col-lg-9 col-sm-12">
+        <p >
+            شما میتوانید <span style="color:#fd5b03;"><b><u>اعضاء خانواده و یا دوستان و نزدیکان </u></b></span> خود را، به عنوان افراد زیر مجموعه، ثبت نام کنید و از خدمات سایت، برای آنها استفاده نمایید.
+            <p>در نظر داشته باشید، کسانیکه <span style="color:#fd5b03;"><b><u>تلفن همراه هوشمند دارند و همچنین توانایی کار با سایت و اپلیکیشن دکترفم را دارا هستند</u></b></span> بهتر است، بعنوان <span style="color:#fd5b03;"><b><u>کاربر اصلی</u></b></span> در سایت ثبت نام نمایند.</p>
+            <span style="color:#fd5b03;"><b><u>بدیهی است، کاربران اصلی امکانات بیشتری را در اختیار خواهند داشت. </u></b></span>
+        </p>
         <div class="well with-header with-footer table-responsive">
             <div class="header bordered-azure">
                 <div class="flex-style">
@@ -65,7 +71,9 @@
                     <span> @Localizer["List Of Population Covered"] </span>
 
                     <span class="red p-5">(@Model.GetShownEntitiesPagesTitle())</span><span>نفر</span>
+                   
                 </div>
+                
             </div>
 
             @if (Model.Entities != null && Model.Entities.Any())
@@ -116,9 +124,18 @@
                 </table>
 
                 <div class="footer tc">
-
-                    <partial name="_UserPanelPaging" model="@Model.GetCurrentPaging()" />
-
+                    <div class="row">
+                        <div class="col-md-4">
+                            <a class="btn btn-primary w-100 margin-bottom-10" asp-action="CreatePopulationCovered" asp-controller="PopulationCovered" asp-area="UserPanel"> <i class="fa fa-plus"></i> افزودن فرد جدید </a>
+                        </div>
+                        <div class="col-md-4">
+                            <partial name="_UserPanelPaging" model="@Model.GetCurrentPaging()" />
+                        </div>
+                        <div class="col-md-4"></div>
+                    </div>
+                    
+                    
+                    
                 </div>
             }
             else

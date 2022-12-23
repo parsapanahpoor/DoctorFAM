@@ -22,6 +22,13 @@
         <li>
             <a asp-area="Doctor" asp-controller="Home" asp-action="Index">
                 <i class="menu-icon glyphicon glyphicon-home"></i>
+                <span class="menu-text"> پنل پزشک </span>
+            </a>
+        </li>
+
+        <li>
+            <a asp-area="Doctor" asp-controller="Home" asp-action="Index_Sec">
+                <i class="menu-icon glyphicon glyphicon-th"></i>
                 <span class="menu-text"> @SharedLocalizer["Dashboard"] </span>
             </a>
         </li>
@@ -30,7 +37,7 @@
         {
              <li>
                 <a href="#" class="menu-dropdown" style="font-size:16px;font-weight:500; color:#ef2e2e   ">
-                    <i class="menu-icon glyphicon glyphicon-edit"></i>
+                    <i class="menu-icon fa fa-check-square-o"></i>
                     <span class="menu-text"> @SharedLocalizer["Turn ratings"] </span>
                     <i class="menu-expand" style="font-size:16px;font-weight:500; color:#ef2e2e   "></i>
                 </a>
@@ -223,7 +230,7 @@
                 <a href="#" class="menu-dropdown">
                     <i class="menu-icon glyphicon glyphicon-share"></i>
                     <span class="menu-text"> @SharedLocalizer["Media Management"] </span>
-                    <span style="color:#ef2e2e">(@SharedLocalizer["Video/Podcast"])</span>
+                    
                     <i class="menu-expand"></i>
                 </a>
                 <ul class="submenu">
@@ -307,28 +314,7 @@
 
             @await Component.InvokeAsync("DoctorsResumeStateBadge")
 
-            <li>
-                <a href="#" class="menu-dropdown">
-                    <i class="menu-icon fa fa-users"></i>
-                    <span class="menu-text"> @SharedLocalizer["Manage Employees"] </span>
-                    <i class="menu-expand"></i>
-                </a>
-
-                <ul class="submenu">
-
-                    <li>
-                        <a asp-area="Doctor" asp-controller="Account" asp-action="FilterEmployees">
-                            <span class="menu-text">@SharedLocalizer["List Of Employees"]</span>
-                        </a>
-                    </li>
-
-                    <li>
-                        <a asp-area="Doctor" asp-controller="Account" asp-action="AddNewUser">
-                            <span class="menu-text">@SharedLocalizer["Add New Employee"]</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
+          
 
             @await Component.InvokeAsync("DoctorsInfosBadge")
         }
@@ -342,7 +328,7 @@
         <li>
             <a href="#" class="menu-dropdown">
                 <i class="menu-icon fa fa-ticket"></i>
-                <span class="menu-text"> @SharedLocalizer["Manage Tickets"]</span>
+                <span class="menu-text">تیکت پشتیبانی</span>
 
                 <i class="menu-expand"></i>
             </a>

@@ -1,0 +1,68 @@
+﻿@{
+    ViewData["Title"] = "خانه سلامت";
+}
+
+
+
+@section Breadcrumb
+    {
+
+}
+
+<div class="page-body">
+
+
+    <div class="row text-center align-Item-center">
+        <div class="col-lg-6 col-sm-6 col-xs-12">
+            <div class="row">
+
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6  buttons-preview">
+                    <a class=" hover-icon" asp-action="FilterHomeVisitViewModel" asp-controller="HomeVisit" asp-area="UserPanel">
+                        <div class="featured-icon">
+                            <img class="img-fluid2  divch" src="~/Content/images/case-studies/HomeVisit.jpg" style="border-radius:85px; border:1px solid yellow;" alt="">
+                        </div>
+                        <p class="text-center justify-content-center" style="font-size:12PX;"> ویزیت در منزل </p>
+                    </a>
+
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6  buttons-preview">
+                    <a class=" hover-icon" asp-action="FilterHomeNurseFromUserPanel" asp-area="UserPanel" asp-controller="HealthHouse">
+                        <div class="featured-icon">
+                            <img class="img-fluid2  divch" src="~/Content/images/case-studies/HouseNurse.jpg" style="border-radius:85px; border:1px solid yellow;"  alt="">
+                        </div>
+                        <p class="text-center justify-content-center" style="font-size:12PX;"> پرستار در منزل </p>
+                    </a>
+
+                </div>
+
+            </div>
+        </div>
+        <div class="col-lg-6 col-sm-6 col-xs-12">
+            <div class="row">
+
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6  buttons-preview">
+                    <a class=" hover-icon" asp-action="ListOfHomeLabratory" asp-area="UserPanel" asp-controller="HealthHouse">
+                        <div class="featured-icon">
+                            <img class="img-fluid2 w divch" src="~/Content/images/case-studies/HomeLab.jpg" style="border-radius:85px; border:1px solid yellow;"  alt="">
+                        </div>
+                        <p class="text-center justify-content-center" style="font-size:12PX;"> آزمایشگاه در منزل </p>
+                    </a>
+
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6  buttons-preview">
+                    <a class=" hover-icon" asp-action="ListOfCurrentUserDeathCertificateRequests" asp-area="UserPanel" asp-controller="DeathCertificate">
+                        <div class="featured-icon">
+                            <img class="img-fluid2  divch" src="~/Content/images/case-studies/Death.jpg" style="border-radius:85px; border:1px solid yellow;"  alt="">
+                        </div>
+                        <p class="text-center justify-content-center" style="font-size:12PX;"> صدور گواهی فوت </p>
+                    </a>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+</div>

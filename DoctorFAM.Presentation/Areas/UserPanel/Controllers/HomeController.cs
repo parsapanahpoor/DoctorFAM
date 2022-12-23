@@ -35,5 +35,24 @@ namespace DoctorFAM.Web.Areas.UserPanel.Controllers
         }
 
         #endregion
+
+        #region HealthHouse
+
+        public async Task<IActionResult> HealthHouse()
+        {
+            return View();
+        }
+
+        #endregion
+
+        #region HealthIndex
+
+        public async Task<IActionResult> HealthIndex()
+        {
+            return View();
+        }
+
+        #endregion
+
     }
 }

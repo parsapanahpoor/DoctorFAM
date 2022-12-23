@@ -16,9 +16,11 @@
 
 @section breadcrumb
 {
-<li>
-    <a href="javascript:void(0)"> @ViewData["Title"] </a>
-</li>
+
+    <li>
+        <a asp-action="FilterTickets" asp-controller="Ticket" asp-area="Doctor"> لیست تیکتهای پشتیبانی </a>
+    </li>
+
 }
 
 <form method="post" asp-action="CreateTicket" asp-controller="Ticket" asp-area="Doctor">
@@ -41,7 +43,7 @@
                             <div class="clearfix"></div>
 
                             <div class="form-group col-md-12">
-                                <label asp-for="Message"></label>
+                                <label >متن پیام</label>
                                 <textarea class="form-control" ck-lang="@ApplicationCultures.GetLanguageCode()" ckeditor="1" asp-for="Message"></textarea>
                                 <span class="text-danger" asp-validation-for="Message"></span>
                             </div>

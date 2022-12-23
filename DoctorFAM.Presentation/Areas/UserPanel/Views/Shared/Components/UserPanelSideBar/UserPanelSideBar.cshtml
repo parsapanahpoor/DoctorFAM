@@ -18,10 +18,18 @@
                 <span class="menu-text"> صفحه اصلی سایت </span>
             </a>
         </li>
-        
+
         <li>
             <a asp-area="UserPanel" asp-controller="Home" asp-action="Index">
                 <i class="menu-icon glyphicon glyphicon-home"></i>
+                <span class="menu-text">  صفحه شخصی کاربر </span>
+            </a>
+        </li>
+
+        
+        <li>
+            <a asp-area="UserPanel" asp-controller="Home" asp-action="Index_Sec">
+                <i class="menu-icon glyphicon glyphicon-th"></i>
                 <span class="menu-text"> @SharedLocalizer["Dashboard"] </span>
             </a>
         </li>
@@ -51,7 +59,7 @@
 
         <li>
             <a href="#" class="menu-dropdown">
-                <i class="menu-icon fa fa-user"></i>
+                <i class="menu-icon fa fa-users"></i>
                 <span class="menu-text"> @SharedLocalizer["Family Members"] </span>
 
                 <i class="menu-expand"></i>
@@ -74,7 +82,7 @@
 
         <li>
             <a asp-area="UserPanel" asp-controller="FamilyDoctor" asp-action="CheckUserHasFamilyDoctor">
-                <i class="menu-icon glyphicon glyphicon-file"></i>
+                <i class="menu-icon fa fa-user-md"></i>
                 <span class="menu-text"> @SharedLocalizer["Doctor Family"] </span>
                 <i class="menu-expand"></i>
             </a>
@@ -82,7 +90,7 @@
 
         <li>
             <a asp-area="UserPanel" asp-controller="Consultant" asp-action="ProccessConsultant">
-                <i class="menu-icon glyphicon glyphicon-education"></i>
+                <i class="menu-icon fa fa-heartbeat"></i>
                 <span class="menu-text"> @SharedLocalizer["Consultant"] </span>
                 <i class="menu-expand"></i>
             </a>
@@ -108,7 +116,7 @@
 
         <li>
             <a href="#" class="menu-dropdown">
-                <i class="menu-icon glyphicon glyphicon-th"></i>
+                <i class="menu-icon fa fa-medkit"></i>
                 <span class="menu-text"> @SharedLocalizer["Health House"] </span>
                 <i class="menu-expand"></i>
             </a>
@@ -159,7 +167,7 @@
 
         <li>
             <a asp-area="UserPanel" asp-controller="OnlineVisit" asp-action="ListOfCurrentUserOnlineVisitRequests">
-                <i class="menu-icon glyphicon glyphicon-file"></i>
+                <i class="menu-icon fa fa-mobile"></i>
                 <span class="menu-text"> @SharedLocalizer["Online Visit"] </span>
                 <i class="menu-expand"></i>
             </a>

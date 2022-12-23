@@ -1,0 +1,76 @@
+﻿
+
+@model DoctorFAM.Domain.ViewModels.DoctorPanel.Dashbaord.DoctorPanelDashboardViewModel
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
+
+@{
+    ViewData["Title"] = Localizer["Doctor Panel Dashboard"];
+}
+
+@section Breadcrumb {
+    
+}
+
+    @section Styles
+    {
+    <style>
+
+        .databox-bottom {
+            height: 100% !important;
+        }
+
+        .databox.databox-vertical.databox-lg {
+            height: 100%;
+            width: 100%;
+        }
+
+        .databox.databox-vertical.databox-halved .databox-top {
+            height: 60px;
+        }
+
+        .databox-icon {
+            margin-top: 10px !important;
+        }
+
+        .dropdown-menu {
+            left: 0;
+            right: auto;
+        }
+
+    </style>
+}
+
+@await Component.InvokeAsync("DoctorsInfos")
+
+
+    <div class="page-body">
+
+        <div class="row">
+
+            @*Count Of Population Covered*@
+            <partial name="_CountOfPopulationCovered" model="@Model" />
+
+             @*Box Of Lastest Family Doctor Requests*@
+            <partial name="_LastestFamilyDoctorRequests" model="@Model.ListOfRequestForFamilyDoctor" />
+
+             @*Count Of Population Covered*@
+         @*   <partial name="_CountOfPopulationCovered" model="@Model" />*@
+
+            @*Count Of Population Covered*@
+          @*  <partial name="_CountOfPopulationCovered" model="@Model" />*@
+
+            @*Count Of Population Covered*@
+          @*  <partial name="_CountOfPopulationCovered" model="@Model" />*@
+
+            @*Box Of List Of User From Parsa System That Didnt Send SMS TO Them*@
+            @*<partial name="_ListUserParsaSystemThatDidntSendSMSTOThem" model="@Model.UserNotSendSMS" />*@
+
+            @*Box Of List Of User From Parsa System That Sent SMS TO Them*@
+           @* <partial name="_ListUserParsaSystemThatSentSMSTOThem" model="@Model.UserSendSMS" />*@
+
+           
+
+        </div>
+
+    </div>

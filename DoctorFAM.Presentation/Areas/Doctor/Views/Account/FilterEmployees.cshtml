@@ -18,19 +18,17 @@
 
 @section Breadcrumb
 {
-<li>
-    <a href="javascript:void(0)"> @ViewData["Title"] </a>
-</li>
+
 }
 
 <div class="row">
     <div class="col-lg-3 col-sm-12">
 
-        <a class="btn btn-sky w-100 margin-bottom-10" asp-action="AddNewUser" asp-controller="Account" asp-area="Doctor"> @Localizer["Add New Employee"] </a>
+        <a class="btn btn-sky w-100 margin-bottom-10"   > جستجو </a>
 
         <div class="widget">
             <div class="widget-header bordered-bottom bordered-green">
-                <span class="widget-caption"> @Localizer["User Fiter"] </span>
+                <span class="widget-caption"> فیلتر کارکنان </span>
             </div>
             <div class="widget-body">
                 <div>
@@ -122,8 +120,15 @@
                 </table>
 
                 <div class="footer tc">
-
-                    <partial name="_DoctorPanelPaging" model="@Model.GetCurrentPaging()" />
+                    <div class="row">
+                        <div class="col-md-4">
+                            <a class="btn btn-primary w-100 margin-bottom-10" asp-action="AddNewUser" asp-controller="Account" asp-area="Doctor"> <i class="fa fa-plus"></i> افزودن کارمند جدید </a>
+                        </div>
+                        <div class="col-md-4">
+                            <partial name="_DoctorPanelPaging" model="@Model.GetCurrentPaging()" />
+                        </div>
+                        <div class="col-md-4"></div>
+                    </div>
 
                 </div>
             }

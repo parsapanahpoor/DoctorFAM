@@ -24,11 +24,9 @@
 @section Breadcrumb
     {
 <li>
-    <a asp-action="Index" asp-controller="Home" asp-area="Doctor"> @Localizer["Docotr Panel"] </a>
+    <a asp-action="PageOfManageDoctorInfo" asp-controller="DoctorsInfo" asp-area="Doctor"> @Localizer["Doctor Personal Informations"] </a>
 </li>
-<li>
-    <a href="javascript:void(0)"> @ViewData["Title"] </a>
-</li>
+
 }
 
 <form method="post" asp-action="ManageDoctorsInfo" asp-controller="DoctorsInfo" asp-area="Doctor" enctype="multipart/form-data">

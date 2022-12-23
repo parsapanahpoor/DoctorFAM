@@ -1,0 +1,24 @@
+﻿@{
+    ViewData["Title"] = "نمایه های سلامت";
+
+   
+}
+
+
+@section Breadcrumb
+    {
+
+}
+
+<div class="page-body">
+
+   
+
+
+            @*List Of Future Reservation*@
+            @await Component.InvokeAsync("ListOfBMIHistory")
+
+            @*List Of Future Reservation*@
+            @await Component.InvokeAsync("ListOfGFRHistory")
+
+</div>

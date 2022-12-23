@@ -6,7 +6,7 @@
 @inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
 
 @{
-    ViewData["Title"] = @Localizer["List Of Your Population Covered"];
+    ViewData["Title"] = "لیست درخواستهای پزشک خانواده از شما";
 }
 
 @section Scripts
@@ -19,7 +19,7 @@
     @section Breadcrumb
     {
     <li>
-        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+        <a asp-area="Doctor" asp-controller="Home" asp-action="FamilyDoctorPop"> جمعیت پزشک خانواده </a>
     </li>
 }
 

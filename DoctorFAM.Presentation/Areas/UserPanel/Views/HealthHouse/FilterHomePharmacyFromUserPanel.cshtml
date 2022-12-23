@@ -18,29 +18,32 @@
 
 @section Scripts
 {
-    <partial name="_JqueryValidation" />
+<partial name="_JqueryValidation" />
 }
 
 @section Breadcrumb
 {
-    <li>
-        <a href="javascript:void(0)"> @ViewData["Title"] </a>
-    </li>
+<li>
+    <a asp-action="HealthHouse" asp-controller="Home" asp-area="UserPanel"> خانه سلامت </a>
+</li>
+<li>
+    <a href="javascript:void(0)"> @ViewData["Title"] </a>
+</li>
 }
 
-    <form asp-action="FilterHomePharmacyFromUserPanel" asp-controller="HealthHouse" asp-area="UserPanel" id="filter-search" method="get">
-        <input type="hidden" asp-for="Page" />
-    </form>
+<form asp-action="FilterHomePharmacyFromUserPanel" asp-controller="HealthHouse" asp-area="UserPanel" id="filter-search" method="get">
+    <input type="hidden" asp-for="Page" />
+</form>
 
-    <div class="row">
-        <div class="col-lg-12 col-sm-12">
-            <div class="well with-header with-footer table-responsive">
-                <div class="header bordered-azure">
-                    <div class="flex-style">
-                        <span>@ViewData["Title"]</span>
-                        <span>@Model.GetShownEntitiesPagesTitle()</span>
-                    </div>
+<div class="row">
+    <div class="col-lg-12 col-sm-12">
+        <div class="well with-header with-footer table-responsive">
+            <div class="header bordered-azure">
+                <div class="flex-style">
+                    <span>@ViewData["Title"]</span>
+                    <span>@Model.GetShownEntitiesPagesTitle()</span>
                 </div>
+            </div>
 
             @if (Model.Entities != null && Model.Entities.Any())
             {
@@ -53,7 +56,7 @@
                             <th class="tc vm">
                                 @Localizer["Start Date"]
                             </th>
-                                <th class="tc vm">
+                            <th class="tc vm">
                                 @Localizer["End Date"]
                             </th>
                             <th class="tc vm">
@@ -107,7 +110,7 @@
                                         {
                                             <span class="mr-8px label label-success" style="    background-image: linear-gradient(#ff00cc, #333399) !important;"> @Localizer["Finalized"] </span>
                                         }
-                                          @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.WaitingForAcceptFromCustomer)
+                                        @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.WaitingForAcceptFromCustomer)
                                         {
                                             <span class="mr-8px label label-warning"> @Localizer["Waiting For Accept From Customer"] </span>
                                         }
