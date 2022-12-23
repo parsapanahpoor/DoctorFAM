@@ -1,4 +1,4 @@
-﻿@model DoctorFAM.Domain.ViewModels.UserPanel.HealthHouse.HomeNurse.FilterHomeNurseViewModel
+﻿@model DoctorFAM.Domain.ViewModels.UserPanel.HealthHouse.HomeLaboratory.ListOfHomeLaboratoryUserPanelSideViewModel
 @using DoctorFAM.Domain.ViewModels.Admin.HealthHouse
 @using DoctorFAM.Application.Extensions
 @using DoctorFAM.Application.Convertors
@@ -8,7 +8,7 @@
 @inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
 
 @{
-    ViewData["Title"] = @Localizer["List Of Your Home Nurse Requests"];
+    ViewData["Title"] = "لیست درخواست های شما";
 }
 
 @section Styles
@@ -27,7 +27,7 @@
         <a href="javascript:void(0)"> @ViewData["Title"] </a>
     </li>
 }
-    <form asp-action="FilterHomeNurseFromUserPanel" asp-controller="HealthHouse" asp-area="UserPanel" id="filter-search" method="get">
+    <form asp-action="ListOfUserHomeLaboratoryRequest" asp-controller="HealthHouse" asp-area="UserPanel" id="filter-search" method="get">
         <input type="hidden" asp-for="Page" />
     </form>
 
@@ -47,19 +47,19 @@
                     <thead class="tc vm">
                         <tr class="tc vm">
                             <th class="tc vm">
-                                @Localizer["User Avatar"]
+                                کد رهگیری
                             </th>
                             <th class="tc vm">
-                                @Localizer["Request State"]
+                                وضعیت
                             </th>
                             <th class="tc vm">
-                                @Localizer["Start Date"]
+                                ساعت مراجعه
                             </th>
                             <th class="tc vm">
-                                @Localizer["Your chosen date"]
+                                تاریخ مورد نظر
                             </th>
                             <th class="tc vm">
-                                @Localizer["Options"]
+                                امکانات
                             </th>
                         </tr>
                     </thead>
@@ -68,55 +68,42 @@
                         {
                             <tr class="tc vm">
                                 <td class="vm">
-                                    @if (request.OperationId.HasValue)
-                                    {
-                                        <div class="flex-style-center">
-                                            <img src="@request.Operation.GetUserAvatar()" class="avatar-style" style="border-radius:50px;" />
-                                            <div class="mr-10px">
-                                                <span> @request.Operation.Username </span>
-                                            </div>
-                                        </div>
-                                    }
-                                    else
-                                    {
-                                        <span class="mr-8px label label-warning"> @Localizer["Empty"] </span>
-                                    }
-
+                                    @request.Id
                                 </td>
                                 <td class="tc vm">
                                     <p class="flex-style-center">
 
                                         @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.Paid)
                                         {
-                                            <span class="mr-8px label label-info"> @Localizer["Paid"] </span>
+                                            <span class="mr-8px label label-info"> پرداخت شده </span>
                                         }
                                         @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.ConfirmFromDestinationAndWaitingForIssuanceOfDraftInvoice)
                                         {
-                                            <span class="mr-8px label label-info"> @Localizer["ConfirmFromDestinationAndWaitingForIssuanceOfDraftInvoice"] </span>
+                                            <span class="mr-8px label label-info"> تایید شده توسط مقصد و درانتظار صدور فاکتور  </span>
                                         }
                                         @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.AwaitingThePaymentOfTheInvoiceAmount)
                                         {
-                                            <span class="mr-8px label label-warning"> @Localizer["AwaitingThePaymentOfTheInvoiceAmount"] </span>
+                                            <span class="mr-8px label label-warning"> در انتظار پرداخت فاکتور  </span>
                                         }
                                         @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.DeliveryToCourierAndSending)
                                         {
-                                            <span class="mr-8px label label-info"> @Localizer["DeliveryToCourierAndSending"] </span>
+                                            <span class="mr-8px label label-info"> در حال ارسال  </span>
                                         }
                                         @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.PreparingTheOrder)
                                         {
-                                            <span class="mr-8px label label-info"> @Localizer["DeliveryToCourierAndSending"] </span>
+                                            <span class="mr-8px label label-info"> در انتظار آماده سازی </span>
                                         }
                                         @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.SelectedFromDoctor)
                                         {
-                                            <span class="mr-8px label label-info"> @Localizer["SelectedFromDoctor"] </span>
+                                            <span class="mr-8px label label-info"> تایید از طرف پزشک </span>
                                         }
                                         @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.WaitingForConfirmFromDestination)
                                         {
-                                            <span class="mr-8px label label-warning"> @Localizer["WaitingForConfirmFromDestination"] </span>
+                                            <span class="mr-8px label label-warning"> در انتظار تایید مقصد  </span>
                                         }
                                         @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.AcceptFromCustomer)
                                         {
-                                            <span class="mr-8px label label-info"> @Localizer["Accepted From Customer"] </span>
+                                            <span class="mr-8px label label-info"> تایید شده توسط کاربر </span>
                                         }
                                         @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.Finalized)
                                         {
@@ -124,7 +111,7 @@
                                         }
                                         @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.WaitingForAcceptFromCustomer)
                                         {
-                                            <span class="mr-8px label label-warning"> @Localizer["Waiting For Accept From Customer"] </span>
+                                            <span class="mr-8px label label-warning"> در انتظار تایید کاربر </span>
                                         }
                                         @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.Canceled)
                                         {
@@ -142,7 +129,7 @@
                                         {
                                             <span class="mr-8px label label-warning"> درانتظار تکمیل اطلاعات توسط   </span>
                                         }
-                                          @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.WaitingForConfirmFromDestination)
+                                        @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.WaitingForConfirmFromDestination)
                                         {
                                             <span class="mr-8px label label-warning"> درانتظار تکمیل اطلاعات توسط   </span>
                                         }
@@ -169,10 +156,7 @@
                                     }
                                 </td>
                                 <td class="tc vm">
-                                    @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.Finalized)
-                                    {
-                                        <a asp-action="HomeNurseRequestDetail" asp-controller="HealthHouse" asp-area="UserPanel" asp-route-requestId="@request.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
-                                    }
+                                  
                                 </td>
                             </tr>
                         }

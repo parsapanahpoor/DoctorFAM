@@ -5,6 +5,7 @@ using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Application.StaticTools;
 using DoctorFAM.Domain.ViewModels.Site.Notification;
 using DoctorFAM.Domain.ViewModels.UserPanel.HealthHouse;
+using DoctorFAM.Domain.ViewModels.UserPanel.HealthHouse.HomeLaboratory;
 using DoctorFAM.Domain.ViewModels.UserPanel.HealthHouse.HomeNurse;
 using DoctorFAM.Web.ActionFilterAttributes;
 using DoctorFAM.Web.Hubs;
@@ -24,9 +25,12 @@ namespace DoctorFAM.Web.Areas.UserPanel.Controllers
         private readonly IHubContext<NotificationHub> _notificationHub;
         private readonly IUserService _userService;
         private readonly INurseService _nurseService;
+        private readonly ILaboratoryService _laboratoryService;
+        private readonly IHomeLaboratoryServices _homeLaboratoryServices;
 
         public HealthHouseController(IRequestService requestService, IPharmacyService pharmacyService
-            , IHubContext<NotificationHub> notificationHub, INotificationService notificationService, IUserService userService, INurseService nurseService)
+                                      , IHubContext<NotificationHub> notificationHub, INotificationService notificationService, IUserService userService
+                                          , INurseService nurseService, ILaboratoryService laboratoryService, IHomeLaboratoryServices homeLaboratoryServices)
         {
             _requestService = requestService;
             _pharmacyService = pharmacyService;
@@ -34,6 +38,8 @@ namespace DoctorFAM.Web.Areas.UserPanel.Controllers
             _notificationHub = notificationHub;
             _userService = userService;
             _nurseService = nurseService;
+            _laboratoryService = laboratoryService;
+            _homeLaboratoryServices = homeLaboratoryServices;
         }
 
         #endregion
@@ -276,6 +282,20 @@ namespace DoctorFAM.Web.Areas.UserPanel.Controllers
             #endregion
 
             return View(model);
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Home Laboratory
+
+        #region List Of User Home Laboratory Request
+
+        public async Task<IActionResult> ListOfUserHomeLaboratoryRequest(ListOfHomeLaboratoryUserPanelSideViewModel filter)
+        {
+            filter.UserId = User.GetUserId();
+            return View(await _homeLaboratoryServices.ListOfUserHomeLaboratoryRequest(filter));
         }
 
         #endregion

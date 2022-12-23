@@ -27,6 +27,12 @@ namespace DoctorFAM.Domain.Interfaces
 
         Task UpdatePopulationCovered(PopulationCovered population);
 
+        //Is Exist Recorde By National Id 
+        Task<bool> IsExistRecordeByNationalId(string nationalId);
+
+        //Get User By National Id From Poplation Covered
+        Task<PopulationCovered?> GetUserByNationalIdFromPopulationCovered(string nationalId);
+
         #endregion
 
         #region Site Side

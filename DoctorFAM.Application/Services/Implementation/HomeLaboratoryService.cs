@@ -22,6 +22,7 @@ using System.Threading.Tasks;
 using DoctorFAM.Domain.ViewModels.Admin.HealthHouse.HomeLabratory;
 using DoctorFAM.Domain.Entities.Wallet;
 using DoctorFAM.Domain.Enums.RequestType;
+using DoctorFAM.Domain.ViewModels.UserPanel.HealthHouse.HomeLaboratory;
 
 namespace DoctorFAM.Application.Services.Implementation
 {
@@ -81,7 +82,7 @@ namespace DoctorFAM.Application.Services.Implementation
             return true;
         }
 
-        public async Task<bool> PayHomeLAboratoryTariff(ulong userId, int price)
+        public async Task<bool> PayHomeLAboratoryTariff(ulong userId, int price, ulong? requestId)
         {
             if (!await _userService.IsExistUserById(userId))
             {
@@ -96,7 +97,8 @@ namespace DoctorFAM.Application.Services.Implementation
                 PaymentType = PaymentType.HomeLaboratory,
                 Price = price,
                 Description = "پرداخت مبلغ آزمایشگاه در منزل",
-                IsFinally = true
+                IsFinally = true,
+                RequestId = requestId
             };
 
             await _walletRepository.CreateWalletAsync(wallet);
@@ -534,7 +536,6 @@ namespace DoctorFAM.Application.Services.Implementation
             return CreatePatientAddressResult.Success;
         }
 
-
         #endregion
 
         #region Admin Side
@@ -657,6 +658,15 @@ namespace DoctorFAM.Application.Services.Implementation
         public async Task<List<RequestedLabratoryAdminSideViewModel>?> GetRequestLabratoryByRequestId(ulong requestId)
         {
             return await _homeLaboratory.GetRequestLabratoryByRequestId(requestId);
+        }
+
+        #endregion
+
+        #region User Panel
+
+        public async Task<ListOfHomeLaboratoryUserPanelSideViewModel> ListOfUserHomeLaboratoryRequest(ListOfHomeLaboratoryUserPanelSideViewModel filter)
+        {
+            return await _homeLaboratory.ListOfUserHomeLaboratoryRequest(filter);
         }
 
         #endregion

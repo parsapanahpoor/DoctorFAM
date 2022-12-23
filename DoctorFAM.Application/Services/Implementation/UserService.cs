@@ -10,6 +10,7 @@ using DoctorFAM.Data.DbContext;
 using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.CooperationRequest;
 using DoctorFAM.Domain.Entities.Organization;
+using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Account;
 using DoctorFAM.Domain.ViewModels.Admin;
@@ -37,26 +38,19 @@ namespace DoctorFAM.Application.Services.Implementation
         #region Ctor
 
         private readonly DoctorFAMDbContext _context;
-
         private readonly ISiteSettingService _siteSettingService;
-
         private readonly IViewRenderService _viewRenderService;
-
         private readonly IEmailSender _emailSender;
-
         private readonly IUserRepository _userRepository;
-
         private readonly IOrganizationService _organizationService;
-
         private readonly ISMSService _smsservice;
-
         private static readonly HttpClient client = new HttpClient();
-
         private readonly IDoctorsRepository _doctorService;
+        private readonly IPopulationCoveredRepository _populationCoveredService;
 
         public UserService(DoctorFAMDbContext context, ISiteSettingService siteSettingService, IViewRenderService viewRenderService,
                                 IEmailSender emailSender, IUserRepository userRepository, IOrganizationService organizationService, ISMSService smsservice
-                                    , IDoctorsRepository doctorService)
+                                    , IDoctorsRepository doctorService, IPopulationCoveredRepository populationCoveredService)
         {
             _context = context;
             _siteSettingService = siteSettingService;
@@ -66,6 +60,7 @@ namespace DoctorFAM.Application.Services.Implementation
             _organizationService = organizationService;
             _smsservice = smsservice;
             _doctorService = doctorService;
+            _populationCoveredService = populationCoveredService;
         }
 
         #endregion
@@ -1509,6 +1504,38 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #endregion
 
+            #region If Exist User By National Id In Population Covered Table
+
+            if (await _populationCoveredService.IsExistRecordeByNationalId(edit.NationalId.Trim().ToLower().SanitizeText()))
+            {
+                #region Delete Population Covered 
+
+                //Get Population Covered 
+                var population = await _populationCoveredService.GetUserByNationalIdFromPopulationCovered(edit.NationalId);
+                if(population == null) return UserPanelEditUserInfoResult.NotValidNationalId;
+
+                //Delete Population Covered 
+                population.IsDelete = true;
+
+                //Update Population Covered 
+                await _populationCoveredService.UpdatePopulationCovered(population);
+
+                #region Send SMS To The Master Of Current Population 
+
+                var master = await GetUserById(edit.UserId);
+                if (master == null) return UserPanelEditUserInfoResult.NotValidNationalId;
+
+                //Initial SMS Body With Algorithm
+                var message = Messages.SendSMSToTheMasterOfPopulationCover(edit.NationalId , user.Mobile);
+                await _smsservice.SendSimpleSMS(user.Mobile, message);
+
+                #endregion
+
+                #endregion
+            }
+
+            #endregion
+
             return UserPanelEditUserInfoResult.Success;
         }
 
@@ -1535,6 +1562,12 @@ namespace DoctorFAM.Application.Services.Implementation
             #endregion
 
             return ChangeUserPasswordResponse.Success;
+        }
+
+        //Is Exist Any User By National Id 
+        public async Task<bool> IsExistAnyUserByNationalId(string nationalId)
+        {
+            return await _userRepository.IsExistAnyUserByNationalId(nationalId) ;
         }
 
         #endregion

@@ -117,6 +117,26 @@
                                         {
                                             <span class="mr-8px label label-danger"> @Localizer["Canceled"] </span>
                                         }
+                                        @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.Canceled)
+                                        {
+                                            <span class="mr-8px label label-danger"> لغوشده  </span>
+                                        }
+                                        @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.TramsferringToTheBankingPortal)
+                                        {
+                                            <span class="mr-8px label label-warning"> در انتظار پرداخت   </span>
+                                        }
+                                        @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.unpaid)
+                                        {
+                                            <span class="mr-8px label label-warning"> پرداخت نشده  </span>
+                                        }
+                                        @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.WaitingForCompleteInformationFromUser)
+                                        {
+                                            <span class="mr-8px label label-warning"> درانتظار تکمیل اطلاعات توسط   </span>
+                                        }
+                                          @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.WaitingForConfirmFromDestination)
+                                        {
+                                            <span class="mr-8px label label-warning"> درانتظار تکمیل اطلاعات توسط   </span>
+                                        }
                                     </p>
                                 </td>
                                 <td class="tc vm">

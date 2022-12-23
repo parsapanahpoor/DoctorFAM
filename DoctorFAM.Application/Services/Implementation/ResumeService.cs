@@ -760,6 +760,8 @@ namespace DoctorFAM.Application.Services.Implementation
                         EndDate = ((item.EndDate == null) ? null : item.EndDate),
                         StartDate = ((item.StartDate == null) ? null : item.StartDate),
                         Id = item.Id,
+                        CityName = ((string.IsNullOrEmpty(item.CityName)) ? null : item.CityName),
+                        CountryName = ((string.IsNullOrEmpty(item.CountryName)) ? null : item.CountryName),
                     });
 
                     returnWorkHistory.Add(work);

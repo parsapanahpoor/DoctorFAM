@@ -7,6 +7,7 @@ using DoctorFAM.Domain.Enums.Request;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.HealthHouse.HomeLabratory;
 using DoctorFAM.Domain.ViewModels.Admin.HealthHouse.HomePharmacy;
+using DoctorFAM.Domain.ViewModels.UserPanel.HealthHouse.HomeLaboratory;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -159,6 +160,24 @@ namespace DoctorFAM.Data.Repository
                                         ExperimentPrescription = p.ExperimentPrescription,
                                         ExperimentTrakingCode = p.ExperimentTrakingCode,
                                     }).ToListAsync();
+        }
+
+        #endregion
+
+        #region User Panel 
+
+        public async Task<ListOfHomeLaboratoryUserPanelSideViewModel> ListOfUserHomeLaboratoryRequest(ListOfHomeLaboratoryUserPanelSideViewModel filter)
+        {
+            var query = _context.Requests
+             .Include(p => p.Patient)
+             .Include(p=> p.PatientRequestDateTimeDetails)
+             .Where(s => !s.IsDelete && s.RequestType == Domain.Enums.RequestType.RequestType.HomeLab && s.UserId == filter.UserId)
+             .OrderByDescending(s => s.CreateDate)
+             .AsQueryable();
+
+            await filter.Paging(query);
+
+            return filter;
         }
 
         #endregion

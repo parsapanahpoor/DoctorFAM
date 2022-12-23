@@ -5,6 +5,7 @@ using DoctorFAM.Domain.ViewModels.Admin.HealthHouse.HomeLabratory;
 using DoctorFAM.Domain.ViewModels.Site.Common;
 using DoctorFAM.Domain.ViewModels.Site.HomeLaboratory;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
+using DoctorFAM.Domain.ViewModels.UserPanel.HealthHouse.HomeLaboratory;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,7 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         Task<bool> ChargeUserWallet(ulong userId, int price);
 
-        Task<bool> PayHomeLAboratoryTariff(ulong userId, int price);
+        Task<bool> PayHomeLAboratoryTariff(ulong userId, int price, ulong? requestId);
 
         Task<ulong?> CreateHomeLaboratoryRequest(ulong userId);
 
@@ -58,6 +59,12 @@ namespace DoctorFAM.Application.Services.Interfaces
         Task<PatientRequestDateTimeDetail?> GetRequestDateTimeDetailByRequestDetailId(ulong requestDetailId);
 
         Task<List<RequestedLabratoryAdminSideViewModel>?> GetRequestLabratoryByRequestId(ulong requestId);
+
+        #endregion
+
+        #region User Panel 
+
+        Task<ListOfHomeLaboratoryUserPanelSideViewModel> ListOfUserHomeLaboratoryRequest(ListOfHomeLaboratoryUserPanelSideViewModel filter);
 
         #endregion
     }
