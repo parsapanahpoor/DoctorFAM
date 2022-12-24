@@ -361,7 +361,7 @@ namespace DoctorFAM.Data.DbContext
 
         public DbSet<NewsComment> NewsComments { get; set; }
 
-        public DbSet<NewsSelectedCategory> MyProperty { get; set; }
+        public DbSet<NewsSelectedCategory> NewsSelectedCategory { get; set; }
 
         #endregion
 

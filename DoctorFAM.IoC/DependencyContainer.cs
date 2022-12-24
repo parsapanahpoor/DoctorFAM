@@ -59,6 +59,7 @@ namespace DoctorFAM.IoC
             services.AddScoped<IHealthInformationService, HealthInformationService>();
             services.AddScoped<IResumeService, ResumeService>();
             services.AddScoped<ICustomerAdvertisementService, CustomerAdvertisementService>();
+            services.AddScoped<INewsService, Newservice>();
 
             #endregion
 

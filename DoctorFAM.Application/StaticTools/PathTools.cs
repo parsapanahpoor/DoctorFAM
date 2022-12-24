@@ -170,5 +170,15 @@ namespace DoctorFAM.Application.StaticTools
         public static readonly string CustomerAdvertisementPathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/CustomerAdvertisement/thumb/");
 
         #endregion
+
+        #region News Image
+
+        public static readonly string NewsPath = "/content/images/News/main/";
+        public static readonly string NewsPathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/News/main/");
+
+        public static readonly string NewsPathThumb = "/content/images/News/thumb/";
+        public static readonly string NewsPathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/News/thumb/");
+
+        #endregion
     }
 }
