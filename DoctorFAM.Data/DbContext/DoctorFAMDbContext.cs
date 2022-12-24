@@ -16,6 +16,7 @@ using DoctorFAM.Domain.Entities.Interest;
 using DoctorFAM.Domain.Entities.Laboratory;
 using DoctorFAM.Domain.Entities.Languages;
 using DoctorFAM.Domain.Entities.MarketCategory;
+using DoctorFAM.Domain.Entities.News;
 using DoctorFAM.Domain.Entities.Notification;
 using DoctorFAM.Domain.Entities.Nurse;
 using DoctorFAM.Domain.Entities.OnlineVisit;
@@ -347,6 +348,20 @@ namespace DoctorFAM.Data.DbContext
         #region Customer Advertisement
 
         public DbSet<CustomerAdvertisement> CustomerAdvertisement { get; set; }
+
+        #endregion
+
+        #region News 
+
+        public DbSet<News> News { get; set; }
+
+        public DbSet<NewsTag> NewsTags { get; set; }
+
+        public DbSet<NewsCategory> NewsCategories { get; set; }
+
+        public DbSet<NewsComment> NewsComments { get; set; }
+
+        public DbSet<NewsSelectedCategory> MyProperty { get; set; }
 
         #endregion
 
