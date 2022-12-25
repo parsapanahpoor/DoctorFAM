@@ -13,12 +13,15 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
         private readonly IProductService _productService;
         private readonly IUserService _userService;
         private readonly IDashboardsService _boardsService;
+        private readonly INewsService _newsService;
 
-        public HomeController(IProductService productService , IDashboardsService boardsService, IUserService userService)
+        public HomeController(IProductService productService , IDashboardsService boardsService, IUserService userService 
+                                , INewsService newsService)
         {
             _productService = productService;
             _boardsService = boardsService;
             _userService = userService;
+            _newsService = newsService;
         }
 
         #endregion
@@ -32,14 +35,14 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
 
         #endregion
 
-        #region Load Article Sub Categories
+        #region Load Products Sub Categories
 
-        public async Task<IActionResult> LoadSubCategories(ulong MainCategoryId)
-        {
-            var result = await _productService.GetSubProductCategories(MainCategoryId);
+        //public async Task<IActionResult> LoadSubCategories(ulong MainCategoryId)
+        //{
+        //    var result = await _productService.GetSubProductCategories(MainCategoryId);
 
-            return JsonResponseStatus.Success(result);
-        }
+        //    return JsonResponseStatus.Success(result);
+        //}
 
         #endregion
 
@@ -57,5 +60,17 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
         }
 
         #endregion
+
+        #region Load News Sub Categories
+
+        public async Task<IActionResult> LoadSubCategories(ulong MainCategoryId)
+        {
+            var result = await _newsService.GetCategoriesChildrent(MainCategoryId);
+
+            return JsonResponseStatus.Success(result);
+        }
+
+        #endregion
+
     }
 }

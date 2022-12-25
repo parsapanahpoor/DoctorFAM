@@ -1,0 +1,159 @@
+﻿@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@model DoctorFAM.Domain.ViewModels.News.Admin.FilterNewsCategoryViewModel
+@using DoctorFAM.Domain.ViewModels.News.Admin
+
+@{
+    ViewData["Title"] = "لیست دسته بندی های خبرها ";
+}
+
+@section Styles
+{
+
+}
+
+@section Scripts
+{
+<partial name="_JqueryValidation" />
+}
+
+    @section Breadcrumb
+{
+<li>
+    <a href="javascript:void(0)"> @ViewData["Title"] </a>
+</li>
+}
+
+<div class="row">
+    <div class="col-lg-3 col-sm-12">
+
+                <a class="btn btn-sky w-100 margin-bottom-10" asp-action="CreateMainNewsCategory" asp-controller="NewsCategory" asp-area="Admin">ایجاد دسته بندی جدید</a>
+
+        <div class="widget">
+            <div class="widget-header bordered-bottom bordered-green">
+                <span class="widget-caption"> لیست دسته بندی های خبرها </span>
+            </div>
+            <div class="widget-body">
+                <div>
+
+                    <form asp-action="Index" asp-controller="NewsCategory" asp-area="Admin" id="filter-search" method="get">
+
+                        <input type="hidden" asp-for="Page" />
+
+                        <div class="form-group">
+                            <label asp-for="Title"> عنوان فارسی دسته بندی      </label>
+                            <input type="text" class="form-control" asp-for="Title" placeholder="عنوان فارسی دسته بندی را وارد کنید ">
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="UniqueName"> عنوان لاتین دسته بندی      </label>
+                            <input type="text" class="form-control" asp-for="UniqueName" placeholder="عنوان لاتین دسته بندی را وارد کنید ">
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="filterNewsCategoryAdminSideState"> وضعیت </label>
+                            <select asp-for="filterNewsCategoryAdminSideState" class="form-control" asp-items="Html.GetEnumSelectList(typeof(FilterNewsCategoryAdminSideState))"></select>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="filterNewsCatgeoryAdminSideOrder"> مرتب سازی براساس تاریخ </label>
+                            <select asp-for="filterNewsCatgeoryAdminSideOrder" class="form-control" asp-items="Html.GetEnumSelectList(typeof(FilterNewsCatgeoryAdminSideOrder))"></select>
+                        </div>
+
+                        <hr />
+
+                        <div class="row">
+                            <div class="col-md-12 flex-style">
+                                <button type="submit" class="btn btn-labeled w-100 btn-palegreen">
+                                    <i class="btn-label glyphicon glyphicon-filter"></i>اعمال فیلتر
+                                </button>
+
+                                @if (Context.Request.QueryString.HasValue)
+                                {
+                                    <a asp-action="Index" asp-controller="NewsCategory" asp-area="Admin" class="btn btn-labeled w-100 btn-darkorange">
+                                        <i class="btn-label glyphicon glyphicon-remove"></i>حذف فیلتر
+                                    </a>
+                                }
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-9 col-sm-12">
+        <div class="well with-header with-footer table-responsive">
+            <div class="header bordered-azure">
+                <div class="flex-style">
+                    <span>لیست دسته بندی خبرها </span>
+                    <span>@Model.GetShownEntitiesPagesTitle()</span>
+                </div>
+            </div>
+
+            @if (Model.Entities != null && Model.Entities.Any())
+            {
+                <table class="table table-hover table-bordered tc vm">
+                    <thead class="tc vm">
+                        <tr class="tc vm">
+
+                            <th class="tc vm">
+                                عنوان فارسی
+                            </th>
+                            <th class="tc vm">
+                                عنوان لاتین
+                            </th>
+                            <th class="tc vm">
+                                وضعیت
+                            </th>
+                            <th class="tc vm">
+                                امکانات
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="tc vm">
+                        @foreach (var cat in Model.Entities.Where(p => p.ParentId == null))
+                        {
+                            <tr class="tc vm" remove-ajax-item="@cat.Id">
+                                <td class="tc vm">
+                                    <div  >
+                                        <p >@cat.Title</p>
+                                    </div>
+                                </td>
+                                <td class="tc vm">
+                                    <div class="tc vm" >
+                                        <p >@cat.UniqueName</p>
+                                    </div>
+                                </td>
+                                <td class="tc vm">
+
+                                    <p class="flex-style-center">
+                                        <span class="mr-8px label @((cat.IsActive) ? "label-success" : "label-orange")">@((cat.IsActive) ? "فعال  " : " غیر فعال")</span>
+                                    </p>
+                                </td>
+                                <td class="tc vm">                                    
+                                    <a title="افزودن زیر گروه " asp-area="Admin" asp-action="CreateSubCategory" asp-controller="NewsCategory" asp-route-ParentId="@cat.Id"  class="btn btn-success btn-circle btn-xs"><i class="glyphicon glyphicon-plus"></i></a>
+                                    <a title="لیست زیر گروه ها  " asp-area="Admin" asp-action="ListOfSubCategories" asp-controller="NewsCategory" asp-route-ParentId="@cat.Id"  class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-th-list"></i></a>
+                                    <a title="ویرایش " asp-action="EditNewsCategory" asp-area="Admin" asp-controller="NewsCategory" asp-route-Id="@cat.Id" class="btn btn-warning btn-circle btn-xs"><i class="glyphicon glyphicon-pencil"></i></a>
+                                    <button title="حذف " onclick="DeleteAjax(@cat.Id, '@Url.Action("DeleteNewsCategory", "NewsCategory", new { area = "Admin", Id = cat.Id })')" class="btn btn-danger btn-circle btn-xs"><i class="glyphicon glyphicon-trash"></i></button>
+
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <div class="footer tc">
+                    <partial name="_AdminPaging" model="@Model.GetCurrentPaging()" />
+
+                </div>
+            }
+            else
+            {
+                <partial name="_AdminNotFoundPartial" />
+            }
+        </div>
+    </div>
+</div>
+

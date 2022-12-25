@@ -627,5 +627,15 @@ namespace DoctorFAM.Application.Services.Implementation
         }
 
         #endregion
+
+        #region Site Side 
+
+        public async Task<List<News>?> LastestNewForShowOnLandingPage()
+        {
+            return await _context.News.Where(p => !p.IsDelete && p.IsActive)
+                                .OrderByDescending(p=> p.CreateDate).Take(3).ToListAsync();
+        }
+
+        #endregion
     }
 }

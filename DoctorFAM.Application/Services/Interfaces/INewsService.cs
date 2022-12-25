@@ -74,5 +74,11 @@ namespace DoctorFAM.Application.Services.Interfaces
         Task<List<NewsCategory>> GetLastestNewsCategories(int countNumber);
 
         #endregion
+
+        #region Site Side 
+
+        Task<List<News>?> LastestNewForShowOnLandingPage();
+
+        #endregion
     }
 }
