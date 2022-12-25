@@ -134,7 +134,6 @@
                                 </td>
                                 <td class="tc vm">
                                     <a asp-action="EditNews" asp-area="Admin" asp-controller="News" asp-route-Id="@News.Id" class="btn btn-warning btn-circle btn-xs"><i class="glyphicon glyphicon-pencil"></i></a>
-                                    <a asp-area="" asp-action="NewsDetail" asp-controller="News" asp-route-NewsId="@News.Id" asp-route-NewsTitle="@News.Title.FixTextForUrl()" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
                                     <button onclick="DeleteAjax(@News.Id, '@Url.Action("DeleteNews", "News", new { area = "Admin", Id = News.Id })')" class="btn btn-danger btn-circle btn-xs"><i class="glyphicon glyphicon-trash"></i></button>
                                 </td>
                             </tr>
