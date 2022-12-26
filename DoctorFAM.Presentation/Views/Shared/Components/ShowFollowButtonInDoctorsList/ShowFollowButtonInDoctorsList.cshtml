@@ -5,7 +5,7 @@
     if (Model.IsUserFollowed)
     {
         <div class="doc-info-right clinic-booking mt-3">
-            <a class="view-pro-btn" style="background: #20c0f3 !important;color: #fff !important;">
+            <a class="view-pro-btn" asp-action="UnFollow" asp-route-doctorId="@Model.TargetUserId" asp-area="" asp-controller="FamilyDoctor" style="background: #20c0f3 !important;color: #fff !important;">
                 دنبال نکردن
             </a>
         </div>
@@ -13,7 +13,7 @@
     else
     {
         <div class="doc-info-right clinic-booking mt-3">
-            <a class="view-pro-btn">دنبال کردن  </a>
+            <a asp-action="FollowDoctor" asp-route-doctorId="@Model.TargetUserId" asp-area="" asp-controller="FamilyDoctor" class="view-pro-btn">دنبال کردن  </a>
         </div>
     }
 }

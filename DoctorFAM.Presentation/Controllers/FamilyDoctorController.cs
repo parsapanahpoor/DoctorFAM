@@ -1,8 +1,10 @@
-﻿using DoctorFAM.Application.Interfaces;
+﻿using DoctorFAM.Application.Extensions;
+using DoctorFAM.Application.Interfaces;
 using DoctorFAM.Application.Services.Implementation;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor;
 using DoctorFAM.Web.Areas.UserPanel.Controllers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DoctorFAM.Web.Controllers
@@ -14,11 +16,13 @@ namespace DoctorFAM.Web.Controllers
 
         private readonly IDoctorsService _doctorService;
         private readonly ILocationService _locationServcie;
+        private readonly IFollowService _followService;
 
-        public FamilyDoctorController(IDoctorsService doctorsService , ILocationService locationService)
+        public FamilyDoctorController(IDoctorsService doctorsService, ILocationService locationService, IFollowService followService)
         {
             _doctorService = doctorsService;
             _locationServcie = locationService;
+            _followService = followService;
         }
 
         #endregion
@@ -70,6 +74,50 @@ namespace DoctorFAM.Web.Controllers
             #endregion
 
             return View(viewModel);
+        }
+
+        #endregion
+
+        #region Follow Users 
+
+        [Authorize]
+        public async Task<IActionResult> FollowDoctor(ulong doctorId)
+        {
+            #region Follow User 
+
+            var res = await _followService.FollowUsers(User.GetUserId(), doctorId);
+            if (res)
+            {
+                TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+                return RedirectToAction(nameof(ListOfFamilyDoctors));
+            }
+
+            #endregion
+
+            TempData[ErrorMessage] = "عمایت باشکست مواجه شده است.";
+            return RedirectToAction(nameof(ListOfFamilyDoctors));
+        }
+
+        #endregion
+
+        #region Un Follow 
+
+        [Authorize]
+        public async Task<IActionResult> UnFollow(ulong doctorId)
+        {
+            #region Follow User 
+
+            var res = await _followService.UnFollow(User.GetUserId(), doctorId);
+            if (res)
+            {
+                TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+                return RedirectToAction(nameof(ListOfFamilyDoctors));
+            }
+
+            #endregion
+
+            TempData[ErrorMessage] = "عمایت باشکست مواجه شده است.";
+            return RedirectToAction(nameof(ListOfFamilyDoctors));
         }
 
         #endregion

@@ -27,6 +27,7 @@ namespace DoctorFAM.Web.ViewComponents
             if (User.Identity.IsAuthenticated)
             {
                 model.IsUserFollowed = await _followServicel.CheckThatCurrentUserFollowedTargetUser(User.GetUserId() , targetUserId);
+                model.TargetUserId = targetUserId;
             }
 
             #endregion
