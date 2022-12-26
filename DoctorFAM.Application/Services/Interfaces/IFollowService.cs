@@ -1,4 +1,5 @@
-﻿using DoctorFAM.Domain.ViewModels.Site.Doctor.Follow;
+﻿using DoctorFAM.Domain.ViewModels.DoctorPanel.Follow;
+using DoctorFAM.Domain.ViewModels.Site.Doctor.Follow;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,15 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Check That Current User Followed Target User 
         Task<bool> CheckThatCurrentUserFollowedTargetUser(ulong currentUserId, ulong targetUserId);
+
+        //Follow Users
+        Task<bool> FollowUsers(ulong currentUserId, ulong targetUserId);
+
+        //Un Follow 
+        Task<bool> UnFollow(ulong currentUserId, ulong targetUserId);
+
+        //List Of User Followers That Has Role 
+        Task<List<ListOfFollowersViewModel>?> ListOfUserFollowersThatHasRole(ulong currentUserId);
 
         #endregion
     }

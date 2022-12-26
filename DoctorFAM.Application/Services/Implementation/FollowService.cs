@@ -1,16 +1,20 @@
 ﻿using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Doctors;
+using DoctorFAM.Domain.Entities.FollowAndUnFollow;
 using DoctorFAM.Domain.Entities.HealthInformation;
 using DoctorFAM.Domain.Interfaces.EFCore;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.Follow;
 using DoctorFAM.Domain.ViewModels.Site.Doctor.Follow;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -61,6 +65,121 @@ namespace DoctorFAM.Application.Services.Implementation
         public async Task<bool> CheckThatCurrentUserFollowedTargetUser(ulong currentUserId, ulong targetUserId)
         {
             return await  _followRepository.CheckThatCurrentUserFollowedTargetUser(currentUserId , targetUserId);
+        }
+
+        //Follow Users
+        public async Task<bool> FollowUsers(ulong currentUserId , ulong targetUserId)
+        {
+            #region Get User Target
+
+            var targetUser = await _userService.GetUserById(targetUserId);
+            if (targetUser == null) return false;
+
+            #endregion
+
+            #region Get Current User
+
+            var currentUser = await _userService.GetUserById(currentUserId);
+            if (currentUser == null) return false;
+
+            #endregion
+
+            #region Check That User Followed Target User Before 
+
+            if (await _followRepository.CheckThatCurrentUserFollowedTargetUser(currentUserId, targetUserId))
+            {
+                return false;
+            }
+
+            #endregion
+
+            #region Fill Model 
+
+            Follow follow = new Follow()
+            {
+                TargetUserId = targetUserId,
+                UserId = currentUserId
+            };
+
+            #endregion
+
+            #region Follow Method 
+
+            await _followRepository.FollowMethod(follow);
+
+            #endregion
+
+            return true;
+        }
+
+        //Un Follow 
+        public async Task<bool> UnFollow(ulong currentUserId , ulong targetUserId)
+        {
+            #region Get User Target
+
+            var targetUser = await _userService.GetUserById(targetUserId);
+            if (targetUser == null) return false;
+
+            #endregion
+
+            #region Get Current User
+
+            var currentUser = await _userService.GetUserById(currentUserId);
+            if (currentUser == null) return false;
+
+            #endregion
+
+            #region Get Follow Recorde
+
+            var follow = await _followRepository.GetFollowRecordWithCurrentUserIdAndTargetUserId(currentUserId , targetUserId);
+            if (follow == null) return false;
+
+            #endregion
+
+            #region Update Follow Record
+
+            follow.IsDelete = true;
+
+            await _followRepository.UpdateFollowRecord(follow);
+
+            #endregion
+
+            return true;
+        }
+
+        //List Of User Followers That Has Role 
+        public async Task<List<ListOfFollowersViewModel>?> ListOfUserFollowersThatHasRole(ulong currentUserId)
+        {
+            #region Get Organization 
+
+            var organization = await _organizationService.GetOrganizationByUserId(currentUserId);
+            if (organization == null) return null;
+            if (organization.OrganizationInfoState != OrganizationInfoState.Accepted) return null;
+
+            #endregion
+
+            #region Get User Followrs
+
+            var followers = await _followRepository.GetListOfUserFollowers(organization.OwnerId);
+            if (followers == null) return null;
+
+            #endregion
+
+            #region Fill return Model 
+
+            List<ListOfFollowersViewModel> model = new List<ListOfFollowersViewModel>();
+
+            foreach (var Follower in followers)
+            {
+                model.Add(new ListOfFollowersViewModel() { 
+                    CreateDate = Follower.CreateDate,
+                    User = await _userService.GetUserById(Follower.UserId),
+                });
+            }
+
+            #endregion
+
+            return model;
         }
 
         #endregion

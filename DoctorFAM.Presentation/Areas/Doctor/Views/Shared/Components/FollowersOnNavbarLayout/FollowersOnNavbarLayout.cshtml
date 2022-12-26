@@ -1,0 +1,62 @@
+﻿@model List<DoctorFAM.Domain.ViewModels.DoctorPanel.Follow.ListOfFollowersViewModel>
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.Extensions
+
+<li class="" style="margin-right: 20px;">
+    <a class="dropdown-toggle" data-toggle="dropdown" title="Mails" href="#" aria-expanded="false">
+        <i class="icon glyphicon glyphicon-heart-empty"></i>
+        <span class="badge">@Model.Count()</span>
+    </a>
+    <!--Messages Dropdown-->
+    <ul class="pull-right dropdown-menu dropdown-arrow dropdown-messages">
+        <li class="dropdown-header bordered-darkorange">
+            <i class="fa fa-users"></i>
+            آخرین کاربران که شما را دنبال کرده اند
+        </li>
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var follow in Model.Take(3))
+            {
+                <li>
+                    <a href="#">
+                        <img src="@follow.User.GetUserAvatar()" class="message-avatar" >
+                        <div class="message">
+                                  @if (follow.User.Username.Contains("0911"))
+                                {
+                                    if (!string.IsNullOrEmpty(follow.User.FirstName) || !string.IsNullOrEmpty(follow.User.LastName))
+                                    {
+                                    <span class="message-sender">
+                                        @follow.User.FirstName @follow.User.LastName
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="message-sender">
+                                        غیرقابل نمایش
+                                    </span>
+                                    }
+                                }
+                                else
+                                {
+                                    <span class="message-sender">@follow.User.Username </span>
+                                }
+                           
+                            <span class="message-time">
+                                @follow.CreateDate.ToShamsi()
+                            </span>
+                        </div>
+                    </a>
+
+                </li>
+            }
+
+        }
+        <li class="dropdown-footer">
+            <a asp-area="Doctor" asp-controller="Follow" asp-action="ListOfFollowers">
+                نمایش تمام افراد
+            </a>
+        </li>
+
+    </ul>
+    <!--/Messages Dropdown-->
+</li>

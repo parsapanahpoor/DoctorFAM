@@ -1,0 +1,119 @@
+﻿@model List<DoctorFAM.Domain.ViewModels.DoctorPanel.Follow.ListOfFollowersViewModel>
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.Extensions
+
+@{
+    ViewData["Title"] = "لیست دنبال کنندگان شما";
+}
+
+@section Breadcrumb
+    {
+    <li>
+        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+    </li>
+}
+
+    @section Styles
+    {
+    <link href="/admin/css/dataTables.bootstrap.rtl.css" rel="stylesheet" />
+}
+
+    @section Scripts
+    {
+    <script src="~/admin/js/datatable/jquery.dataTables.min.js"></script>
+    <script src="~/admin/js/datatable/ZeroClipboard.js"></script>
+    <script src="~/admin/js/datatable/dataTables.tableTools.min.js"></script>
+    <script src="~/admin/js/datatable/dataTables.bootstrap.min.js"></script>
+    <script src="~/admin/js/datatable/datatables-init.js"></script>
+    <script>
+        InitiateSimpleDataTable.init();
+        InitiateEditableDataTable.init();
+        InitiateExpandableDataTable.init();
+        InitiateSearchableDataTable.init();
+    </script>
+
+    }
+
+    <div class="page-body">
+
+        <div class="row">
+
+            <div id="horizontal-form">
+
+            @if (Model != null && Model.Any())
+            {
+
+                <div class="widget-body no-padding">
+                    <div id="searchable_wrapper" class="dataTables_wrapper form-inline">
+
+                        <table class="table table-bordered table-hover table-striped dataTable" id="searchable" role="grid" aria-describedby="searchable_info">
+                            <thead class="bordered-darkorange">
+                                <tr role="row">
+
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">تصویر</th>
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" aria-sort="ascending">نام کاربر</th>
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" aria-sort="ascending">تاریخ دنبال کردن</th>
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending"></th>
+
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                @foreach (var follow in Model)
+                                {
+                                    <tr role="row" class="even responsive">
+
+                                        <td class=" sorting_1">
+                                            <div class="flex-style-center">
+                             
+                                                    <img src="@follow.User.GetUserAvatar()" class="avatar-style" style="border-radius:50px" />
+                                           
+                                            </div>
+                                        </td>
+                                        <td class="sorting_1">
+                                            @if (follow.User.Username.Contains("0911"))
+                                            {
+                                                if (!string.IsNullOrEmpty(follow.User.FirstName) || !string.IsNullOrEmpty(follow.User.LastName))
+                                                {
+                                                    @follow.User.FirstName @follow.User.LastName
+                                                }
+                                                else
+                                                {
+                                                    <span>غیرقابل نمایش</span>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                @follow.User.Username
+                                            }
+                                        </td>
+                                        <td class="sorting_1">
+                                            <div class="row" style="width: 100%;margin: auto;text-aling">
+                                             @follow.CreateDate.ToShamsiDate()
+                                            </div>
+                                        </td>
+                                        <td>
+
+                                        </td>
+
+                                    </tr>
+
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <partial name="_DoctorPanelNotFoundPartial" />
+            }
+
+        </div>
+    </div>
+
+</div>
+
+
