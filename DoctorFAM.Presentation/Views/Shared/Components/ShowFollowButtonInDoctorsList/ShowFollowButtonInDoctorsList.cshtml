@@ -1,0 +1,19 @@
+﻿@model DoctorFAM.Domain.ViewModels.Site.Doctor.Follow.IsUserFollowedViewModel
+
+@if (Model != null)
+{
+    if (Model.IsUserFollowed)
+    {
+        <div class="doc-info-right clinic-booking mt-3">
+            <a class="view-pro-btn" style="background: #20c0f3 !important;color: #fff !important;">
+                دنبال نکردن
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="doc-info-right clinic-booking mt-3">
+            <a class="view-pro-btn">دنبال کردن  </a>
+        </div>
+    }
+}

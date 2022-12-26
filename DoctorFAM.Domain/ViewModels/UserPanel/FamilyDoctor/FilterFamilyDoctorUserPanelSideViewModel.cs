@@ -30,6 +30,10 @@ namespace DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor
 
         public int? Gender { get; set; }
 
+        public int CountOfFollowers { get; set; }
+
+        public bool YouFollowed { get; set; }
+
         #endregion
     }
 }
