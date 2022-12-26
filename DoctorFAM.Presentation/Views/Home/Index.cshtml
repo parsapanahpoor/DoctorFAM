@@ -107,7 +107,7 @@
             <div class="row mt-3 text-center justify-content-center">
                 <div class="col-md-6 col-sm-6 text-center justify-content-center">
                     <a class=" hover-icon" asp-action="Index" asp-controller="Diabet">
-                   @* <a class=" hover-icon">*@
+                        @* <a class=" hover-icon">*@
                         <div class="featured-icon">
 
                             <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/Diabete.jpg" alt="">
@@ -432,9 +432,6 @@
         </section>*@
 
 
-
-
-
     <div class=" mt-5  pl-3 pr-3">
         <div class="row mt-3 text-center">
             <div class="col-lg-12 col-md-12  text-center ">
@@ -596,11 +593,14 @@
             </div>
         </div>
     </div>
-            
-            @*Lastest News For Show in Landing Page*@ 
-            @await Component.InvokeAsync("LastestNewsOnLandingPage")
 
-    <section class="dark-bg parallaxie" data-bg-img="/Content/images/bg/slide-1.jpg" data-overlay="6">
+
+    @*Lastest News For Show in Landing Page*@
+    @await Component.InvokeAsync("LastestNewsOnLandingPage")
+
+
+
+    <section class="dark-bg parallaxie" data-bg-img="/Content/images/bg/slider-1.jpg" data-overlay="6">
         <div class="container">
             <div class="row text-center">
                 <div class="col-md-3 col-sm-6">
@@ -652,16 +652,16 @@
                                         <div class="post-desc">
                                             @*<div class="post-meta">
                                                 <ul class="list-inline">
-                                                    <li>
-                                                        پزشکان، متخصصین، داروخانه ها و آزمایشگاهها
-                                                    </li>
+                                                <li>
+                                                پزشکان، متخصصین، داروخانه ها و آزمایشگاهها
+                                                </li>
 
                                                 </ul>
-                                            </div>
-                                            <div class="post-title">
+                                                </div>
+                                                <div class="post-title">
                                                 <h4><a href="blog-single.html"> پذیرش کادر محترم درمان در سراسر کشور </a></h4>
-                                            </div>*@
-                                            <div class="post-title text-center">                                                
+                                                </div>*@
+                                            <div class="post-title text-center">
                                                 <h4><a asp-action="CreateAdvertisement" asp-controller="CustomerAdvertisement" asp-area="UserPanel" class="btn btn-acc   hover-icon  text-center ">  پذیرش تبلیغات از سراسر کشور </a></h4>
                                             </div>
                                         </div>
@@ -675,12 +675,12 @@
                                         <div class="post-desc">
                                             @*<div class="post-meta">
                                                 <ul class="list-inline">
-                                                    <li>
-                                                        عرضه کنندگان محصولات و تجهیزات پزشکی
-                                                    </li>
+                                                <li>
+                                                عرضه کنندگان محصولات و تجهیزات پزشکی
+                                                </li>
 
                                                 </ul>
-                                            </div>*@
+                                                </div>*@
                                             <div class="post-title  text-center">
                                                 <h4><a asp-action="CreateAdvertisement" asp-controller="CustomerAdvertisement" asp-area="UserPanel" class="btn btn-acc   hover-icon  text-center ">  پذیرش تبلیغات از سراسر کشور </a></h4>
                                             </div>

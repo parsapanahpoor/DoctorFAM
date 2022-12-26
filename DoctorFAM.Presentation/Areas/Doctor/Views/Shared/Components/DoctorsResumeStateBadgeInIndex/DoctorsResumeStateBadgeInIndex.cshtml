@@ -5,9 +5,9 @@
     @if (Model.ResumeState == DoctorFAM.Domain.Enums.ResumeState.ResumeState.Accepted)
     {
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview">
-            <div class="badge badge-success">
+            @*<div class="badge badge-success">
                 @SharedLocalizer["Accepted"]
-            </div>
+            </div>*@
             <a asp-area="Doctor" asp-controller="Resume" asp-action="PageOfResume" class="btn btn-warning  btn-circle btn-lg"><i class="fa fa-file-text-o"></i></a>
             <p class="text-center justify-content-center" style="font-size:12PX;">  رزومه پزشک  </p>
         </div>
@@ -16,10 +16,10 @@
     @if (Model.ResumeState == DoctorFAM.Domain.Enums.ResumeState.ResumeState.WaitingForConfirm)
     {
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview">
-            <div class="badge badge-warning">
+           @* <div class="badge badge-warning">
                 @SharedLocalizer["Waiting"]
-            </div>
-            <a asp-area="Doctor" asp-controller="Resume" asp-action="PageOfResume" class="btn btn-warning  btn-circle btn-lg"><i class="fa fa-file-text-o"></i></a>
+            </div>*@
+            <a asp-area="Doctor" asp-controller="Resume" asp-action="PageOfResume" class="btn btn-warning  btn-circle btn-lg">@SharedLocalizer["Waiting"]</a>
             <p class="text-center justify-content-center" style="font-size:12PX;">  رزومه پزشک  </p>
         </div>
     }
@@ -27,10 +27,10 @@
     @if (Model.ResumeState == DoctorFAM.Domain.Enums.ResumeState.ResumeState.Decline)
     {
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview">
-            <div class="badge badge-danger">
+           @* <div class="badge badge-danger">
                 @SharedLocalizer["Decline"]
-            </div>
-            <a asp-area="Doctor" asp-controller="Resume" asp-action="PageOfResume" class="btn btn-warning  btn-circle btn-lg"><i class="fa fa-file-text-o"></i></a>
+            </div>*@
+            <a asp-area="Doctor" asp-controller="Resume" asp-action="PageOfResume" class="btn btn-warning  btn-circle btn-lg">@SharedLocalizer["Decline"]</a>
             <p class="text-center justify-content-center" style="font-size:12PX;">  رزومه پزشک  </p>
         </div>
     }
@@ -38,10 +38,10 @@
 else
 {
     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview">
-        <div class="badge badge-warning">
+        @*<div class="badge badge-warning">
             @SharedLocalizer["Waiting"]
-        </div>
-        <a asp-area="Doctor" asp-controller="Resume" asp-action="PageOfResume" class="btn btn-warning  btn-circle btn-lg"><i class="fa fa-file-text-o"></i></a>
+        </div>*@
+        <a asp-area="Doctor" asp-controller="Resume" asp-action="PageOfResume" class="btn btn-warning  btn-circle btn-lg">@SharedLocalizer["Waiting"]</a>
         <p class="text-center justify-content-center" style="font-size:12PX;">  رزومه پزشک  </p>
     </div>
 }
