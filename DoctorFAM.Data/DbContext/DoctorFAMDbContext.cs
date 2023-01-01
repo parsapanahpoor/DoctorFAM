@@ -29,6 +29,7 @@ using DoctorFAM.Domain.Entities.Product;
 using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Entities.Resume;
 using DoctorFAM.Domain.Entities.SiteSetting;
+using DoctorFAM.Domain.Entities.Speciality;
 using DoctorFAM.Domain.Entities.States;
 using DoctorFAM.Domain.Entities.Wallet;
 using DoctorFAM.Domain.Entities.WorkAddress;
@@ -363,6 +364,14 @@ namespace DoctorFAM.Data.DbContext
         public DbSet<NewsComment> NewsComments { get; set; }
 
         public DbSet<NewsSelectedCategory> NewsSelectedCategory { get; set; }
+
+        #endregion
+
+        #region Speciality
+
+        public DbSet<Speciality> Specialities { get; set; }
+
+        public DbSet<SpecialtiyInfo> SpecialtiyInfos { get; set; }
 
         #endregion
 

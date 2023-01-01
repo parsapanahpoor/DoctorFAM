@@ -29,6 +29,8 @@ namespace DoctorFAM.Domain.Entities.Languages
 
         public ICollection<LocationInfo> MyProperty { get; set; }
 
+        public ICollection<Speciality.SpecialtiyInfo> SpecialtiyInfos { get; set; }
+
         public ICollection<CategoryInfo> CategoryInfos { get; set; }
 
         public ICollection<DoctorsInterestInfo> InterestInfos { get; set; }

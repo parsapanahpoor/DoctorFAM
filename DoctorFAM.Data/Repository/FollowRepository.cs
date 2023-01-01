@@ -62,7 +62,8 @@ namespace DoctorFAM.Data.Repository
         //Get List Of User Followers
         public async Task<List<Follow>?> GetListOfUserFollowers(ulong userId)
         {
-            return await _context.Follow.Where(p=> !p.IsDelete && p.TargetUserId == userId).ToListAsync();
+            return await _context.Follow.Where(p=> !p.IsDelete && p.TargetUserId == userId)
+                                .OrderByDescending(p=> p.CreateDate).ToListAsync();
         }
 
         #endregion
