@@ -1,0 +1,163 @@
+﻿@model DoctorFAM.Domain.ViewModels.Admin.Speciality.FilterSpecialityViewModel
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
+
+@{
+    ViewData["Title"] = "لیست تخصص ها";
+}
+
+@section Scripts
+{
+<partial name="_AdminSweetAlertLocalizer" />
+}
+
+@section Breadcrumb
+{
+<li>
+    <a href="javascript:void(0)"> @ViewData["Title"] </a>
+</li>
+}
+
+<div class="row">
+    <div class="col-lg-3 col-sm-12">
+        @if (Model != null && Model.ParentSpeciality != null)
+        {
+            <a class="btn btn-sky w-100 margin-bottom-10" asp-route-ParentId="@Model.ParentSpeciality.Id" asp-action="CreateSpeciality" asp-controller="Speciality" asp-area="Admin"> افزودن فوق تخصص @Model.ParentSpeciality.UniqueName</a>
+        }
+        else
+        {
+            <a class="btn btn-sky w-100 margin-bottom-10" asp-action="CreateSpeciality" asp-controller="Speciality" asp-area="Admin">افزودن تخصص</a>
+        }
+        <div class="widget">
+            <div class="widget-header bordered-bottom bordered-green">
+                @if (Model.ParentSpeciality != null)
+                {
+                    <span class="widget-caption"> لیست فوق تخصص های : @Model.ParentSpeciality.UniqueName </span>
+                }
+                else
+                {
+                    <span class="widget-caption"> لیست تخصص ها </span>
+                }
+
+            </div>
+            <div class="widget-body">
+                <div>
+                    <form asp-action="ListOfSpeciality" asp-controller="Speciality" asp-area="Admin" id="filter-search" method="get">
+                        <input type="hidden" asp-for="ParentId" />
+                        <input type="hidden" asp-for="Page" />
+
+                        <div class="form-group">
+                            <label>عنوان </label>
+                            <input type="text" class="form-control" asp-for="Title">
+                        </div>
+
+                        <div class="form-group">
+                            <label>عنوان یکتا</label>
+                            <input type="text" class="form-control" asp-for="UniqueName">
+                        </div>
+
+                        <hr />
+
+                        <div class="row">
+                            <div class="col-md-12 flex-style">
+                                <button type="submit" class="btn btn-labeled w-100 btn-palegreen">
+                                    <i class="btn-label glyphicon glyphicon-filter"></i>ثبت فیلتر 
+                                </button>
+
+                                @if (Context.Request.QueryString.HasValue)
+                                {
+                                    @if (Model.ParentSpeciality != null)
+                                    {
+                                        <a asp-area="Admin" asp-controller="Speciality" asp-action="ListOfSpeciality" asp-route-ParentId="@Model.ParentId" class="btn btn-labeled w-100 btn-darkorange">
+                                            <i class="btn-label glyphicon glyphicon-remove"></i>حذف فیلتر
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a asp-area="Admin" asp-controller="Speciality" asp-action="ListOfSpeciality" class="btn btn-labeled w-100 btn-darkorange">
+                                            <i class="btn-label glyphicon glyphicon-remove"></i>حذف فیلتر
+                                        </a>
+                                    }
+
+                                }
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-9 col-sm-12">
+        <div class="well with-header with-footer table-responsive">
+            <div class="header bordered-azure">
+                <div class="flex-style">
+                    @if (Model.ParentSpeciality != null)
+                    {
+                        <span class="widget-caption"> لیست فوق تخصص ها @Model.ParentSpeciality.UniqueName </span>
+                    }
+                    else
+                    {
+                        <span> لیست تخصص ها   </span>
+                    }
+
+                    <span>@Model.GetShownEntitiesPagesTitle()</span>
+                </div>
+            </div>
+
+            @if (Model.Entities != null && Model.Entities.Any())
+            {
+                <table class="table table-hover table-bordered tc vm margin-bottom-30">
+                    <thead class="tc vm">
+                        <tr class="tc vm">
+                            <th class="tc vm">
+                                عنوان یکتا
+                            </th>
+                            <th class="tc vm">
+                                عنوان
+                            </th>
+                            <th class="tc vm">
+                                امکانات
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="tc vm">
+                        @foreach (var Speciality in Model.Entities)
+                        {
+                            <tr class="tc vm" remove-ajax-item="@Speciality.Id">
+                                <td class="tc vm" style="max-width: 200px">
+                                    <p> @Speciality.Speciality.UniqueName </p>
+                                </td>
+                                <td class="tc vm">
+                                    <p> @Speciality.Title </p>
+                                </td>
+                                <td class="tc vm">
+                                    @if (Speciality.Speciality.Parent != null && Speciality.Speciality.ParentId.HasValue )
+                                    {
+
+                                    }
+                                    else
+                                    {
+                                        <a asp-action="ListOfSpeciality" asp-controller="Speciality" asp-area="Admin" asp-route-ParentId="@Speciality.Speciality.Id" class="btn btn-primary btn-circle btn-xs"><i class="glyphicon glyphicon-list"></i></a>
+                                    }
+                                    <a asp-action="EditSpeciality" asp-controller="Speciality" asp-area="Admin" asp-route-SpecialityId="@Speciality.Speciality.Id" class="btn btn-warning btn-circle btn-xs"><i class="glyphicon glyphicon-edit"></i></a>
+                                    <button onclick="DeleteAjax(@Speciality.Id, '@Url.Action("DeleteSpeciality", "Speciality", new {area = "Admin", SpecialityId = Speciality.Speciality.Id})')" class="btn btn-danger btn-circle btn-xs"><i class="glyphicon glyphicon-trash"></i></button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <div class="footer tc">
+
+                    <partial name="_AdminPaging" model="@Model.GetCurrentPaging()" />
+
+                </div>
+            }
+            else
+            {
+                <partial name="_AdminNotFoundPartial" />
+            }
+        </div>
+    </div>
+</div>

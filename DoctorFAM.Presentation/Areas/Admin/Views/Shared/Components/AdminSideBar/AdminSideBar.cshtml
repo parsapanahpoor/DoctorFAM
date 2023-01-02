@@ -326,6 +326,27 @@
 
         <li>
             <a href="#" class="menu-dropdown">
+                <i class="menu-icon glyphicon glyphicon-check"></i>
+                <span class="menu-text">لیست تخصص ها</span>
+                <i class="menu-expand"></i>
+            </a>
+
+            <ul class="submenu">
+                <li>
+                    <a asp-action="ListOfSpeciality" asp-controller="Speciality" asp-area="Admin">
+                        <span class="menu-text"> لیست تخصص ها </span>
+                    </a>
+                </li>
+                <li>
+                    <a asp-action="CreateSpeciality" asp-controller="Speciality" asp-area="Admin">
+                        <span class="menu-text"> افزودن تخصص   </span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="#" class="menu-dropdown">
                 <i class="menu-icon glyphicon glyphicon-map-marker"></i>
                 <span class="menu-text">@SharedLocalizer["Manage Locations"]</span>
                 <i class="menu-expand"></i>
@@ -408,7 +429,7 @@
             </ul>
         </li>
 
-        
+
         <li>
             <a href="#" class="menu-dropdown">
                 <i class="menu-icon  glyphicon glyphicon-file"></i>

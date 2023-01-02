@@ -628,6 +628,8 @@ namespace DoctorFAM.Data.DbContext
 
             modelBuilder.Entity<RadioFAMCategoryInfo>().HasQueryFilter(e => e.LanguageId == culture);
 
+            modelBuilder.Entity<SpecialtiyInfo>().HasQueryFilter(e => e.LanguageId == culture);
+
             #endregion
 
             #region Email Setting Seed Data
