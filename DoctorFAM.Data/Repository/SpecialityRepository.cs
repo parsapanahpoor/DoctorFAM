@@ -121,6 +121,7 @@ namespace DoctorFAM.Data.Repository
                             {
                                 Id = p.Id,
                                 UniqueName = p.UniqueName,
+                                UniqueId = p.UniqueId,
                                 ParentId = p.ParentId,
                                 CurrentInfos = p.SpecialtiyInfo.AsQueryable().IgnoreQueryFilters().ToList()
                             }).FirstOrDefaultAsync();
