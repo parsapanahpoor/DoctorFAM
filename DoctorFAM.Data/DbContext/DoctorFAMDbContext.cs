@@ -373,6 +373,8 @@ namespace DoctorFAM.Data.DbContext
 
         public DbSet<SpecialtiyInfo> SpecialtiyInfos { get; set; }
 
+        public DbSet<DoctorSelectedSpeciality> DoctorSelectedSpeciality { get; set; }
+
         #endregion
 
         #region Follow

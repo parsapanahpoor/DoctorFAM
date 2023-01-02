@@ -242,5 +242,19 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
         }
 
         #endregion
+
+        #region Speciality
+
+        #region List OF Specialities
+
+        [HttpGet]
+        public async Task<IActionResult> ListOFSpecialities()
+        {
+            return View();
+        }
+
+        #endregion
+
+        #endregion
     }
 }
