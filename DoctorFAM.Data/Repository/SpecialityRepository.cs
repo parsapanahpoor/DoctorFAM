@@ -1,9 +1,12 @@
 ﻿using DoctorFAM.Data.DbContext;
+using DoctorFAM.Domain.Entities.Account;
+using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.Speciality;
 using DoctorFAM.Domain.Entities.States;
 using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.Admin.Location;
 using DoctorFAM.Domain.ViewModels.Admin.Speciality;
+using DoctorFAM.Domain.ViewModels.Site.HomeLaboratory;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections;
@@ -211,6 +214,42 @@ namespace DoctorFAM.Data.Repository
 
         }
 
+        //Get List Of Specialities 
+        public async Task<List<SpecialtiyInfo>> GetListOfSpecialities()
+        {
+            return await _context.SpecialtiyInfos.Include(p => p.Speciality)
+                                    .Where(p => !p.IsDelete).ToListAsync();
+        }
+
+        #endregion
+
+        #region Doctor Panel 
+
+        //Get List Of Doctor's Specialities
+        public async Task<List<ulong>?> GetListOfDoctorSpecialities(ulong userId)
+        {
+            return await _context.DoctorSelectedSpeciality.Where(p => !p.IsDelete && p.UserId == userId)
+                                                                         .Select(p=> p.SpecialityId).ToListAsync();
+        }
+
+        //Remove List Of User Seleted Specialities
+        public async Task RemoveListOfUserSeletedSpecialities(List<DoctorSelectedSpeciality> doctorSelecteds)
+        {
+             _context.DoctorSelectedSpeciality.RemoveRange(doctorSelecteds);
+            await _context.SaveChangesAsync();
+        }
+
+        //Get Docto Selected Specialities By User Id
+        public async Task<List<DoctorSelectedSpeciality>?> GetDoctoSelectedSpecialitiesByUserId(ulong userid)
+        {
+            return await _context.DoctorSelectedSpeciality.Where(p => !p.IsDelete && p.UserId == userid).ToListAsync();
+        }
+
+        //Add Doctor Selected Speciality
+        public async Task AddDoctorSelectedSpeciality(DoctorSelectedSpeciality speciality)
+        {
+            await _context.DoctorSelectedSpeciality.AddAsync(speciality);
+        }
 
         #endregion
     }

@@ -250,7 +250,28 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
         [HttpGet]
         public async Task<IActionResult> ListOFSpecialities()
         {
-            return View();
+            return View(await _doctorService.FillListOFDoctorsSpeciality(User.GetUserId()));
+        }
+
+        [HttpPost , ValidateAntiForgeryToken]
+        public async Task<IActionResult> ListOFSpecialities(List<ulong>? Permissions)
+        {
+            #region Update Doctor Speciality Info
+
+            var res = await _doctorService.UpdateDoctorSpecialitySelected(Permissions, User.GetUserId());
+            if (res)
+            {
+                TempData[SuccessMessage] = "تغییرات باموفقیت ثبت شده است.";
+                TempData[WarningMessage] = "لطفا تا تایید اطلاعات ارسالی خود شکیبا باشید.";
+
+                return RedirectToAction(nameof(PageOfManageDoctorInfo));
+            }
+
+            #endregion
+
+            TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+
+            return View(await _doctorService.FillListOFDoctorsSpeciality(User.GetUserId()));
         }
 
         #endregion

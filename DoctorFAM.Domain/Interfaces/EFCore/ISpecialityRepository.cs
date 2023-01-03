@@ -52,6 +52,25 @@ namespace DoctorFAM.Domain.Interfaces.EFCore
 
         Task DeleteSpeciality(Speciality speciality);
 
+        //Get List Of Specialities 
+        Task<List<SpecialtiyInfo>> GetListOfSpecialities();
+
+        //Get List Of Doctor's Specialities
+        Task<List<ulong>?> GetListOfDoctorSpecialities(ulong userId);
+
+        #endregion
+
+        #region Doctor Panel 
+
+        //Remove List Of User Seleted Specialities
+        Task RemoveListOfUserSeletedSpecialities(List<DoctorSelectedSpeciality> doctorSelecteds);
+
+        //Get Docto Selected Specialities By User Id
+        Task<List<DoctorSelectedSpeciality>?> GetDoctoSelectedSpecialitiesByUserId(ulong userid);
+
+        //Add Doctor Selected Speciality
+        Task AddDoctorSelectedSpeciality(DoctorSelectedSpeciality speciality);
+
         #endregion
     }
 }

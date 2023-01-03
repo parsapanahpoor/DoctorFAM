@@ -10,6 +10,7 @@ using DoctorFAM.Domain.ViewModels.DoctorPanel.DosctorSideBarInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Employees;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.ParsaSystem;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.ParsaSystem.VIPPatient;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.Speciality;
 using DoctorFAM.Domain.ViewModels.Site.Doctor;
 using DoctorFAM.Domain.ViewModels.Site.Reservation;
 using DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor;
@@ -146,6 +147,12 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Request For Epload Excel File From Site
         Task<bool> RequestForEploadExcelFileFromSite(RequestForUploadExcelFileFromDoctorsToSiteViewModel model, ulong userId);
+
+        //Fill List OF Doctors Speciality
+        Task<List<ListOfSpecialityViewModel>?> FillListOFDoctorsSpeciality(ulong doctorId);
+
+        //Update Doctor Speciality Selected
+        Task<bool> UpdateDoctorSpecialitySelected(List<ulong>? speciallities, ulong userId);
 
         #endregion
 

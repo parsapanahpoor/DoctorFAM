@@ -226,6 +226,22 @@ namespace DoctorFAM.Application.Services.Implementation
             return true;
         }
 
+        //Get List Of Specialities 
+        public async Task<List<SpecialtiyInfo>> GetListOfSpecialities()
+        {
+            return await _specialityRepository.GetListOfSpecialities();
+        }
+
+        #endregion
+
+        #region Doctor Panel Side 
+
+        //Get Docto Selected Specialities By User Id
+        public async Task<List<DoctorFAM.Domain.Entities.Speciality.DoctorSelectedSpeciality>?> GetDoctoSelectedSpecialitiesByUserId(ulong userid)
+        {
+            return await _specialityRepository.GetDoctoSelectedSpecialitiesByUserId(userid);
+        }
+
         #endregion
     }
 }

@@ -1,0 +1,111 @@
+﻿@model List<DoctorFAM.Domain.ViewModels.DoctorPanel.Speciality.ListOfSpecialityViewModel>
+
+@using DoctorFAM.Domain.Entities.Account
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
+
+@{
+    ViewData["Title"] = "انتخاب تخصص";
+}
+
+
+@section Scripts
+    {
+    <partial name="_JqueryValidation" />
+}
+
+    @section Breadcrumb
+    {
+    <li>
+        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+    </li>
+}
+
+    <form method="post" asp-action="ListOFSpecialities" asp-controller="DoctorsInfo" asp-area="Doctor">
+        <div class="row">
+
+            <div class="col-lg-12 col-sm-12">
+                <div class="row">
+
+                    <div class="col-lg-12">
+                        <div class="widget">
+                            <div class="widget-header bordered-bottom bordered-blue flex-style">
+
+                                <span class="widget-caption" style="margin-top:10px;"> تخصص خود را انتخاب کنید </span>
+
+                                <div class="checkbox"  style="margin-left=10px" type="submit">
+                                        <input style="margin-top:10px;margin-left=10px" type="submit" class="btn btn-success" value="ثبت">
+                                </div>
+
+                            </div>
+                            <div class="widget-body @((Model != null && Model.Any()) ? "no-padding" : "")">
+
+                            @if (Model != null && Model.Any())
+                            {
+                                <div class="panel-group accordion">
+                                    @foreach (var permission in Model.Where(s => s.SpecialtiyInfo.Speciality.ParentId == null))
+                                    {
+                                        var isPermissionSelected = permission.SelectedFromDoctor;
+
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a class="accordion-toggle @((isPermissionSelected) ? "" : "collapsed")" data-toggle="collapse" href="#permission-@permission.SpecialtiyInfo.SpecialityId" aria-expanded="@((isPermissionSelected) ? "true" : "false")">
+                                                        @permission.SpecialtiyInfo.Title
+                                                    </a>
+                                                </h4>
+                                            </div>
+                                            <div id="permission-@permission.SpecialtiyInfo.SpecialityId" class="panel-collapse collapse @((isPermissionSelected) ? "in" : "")" aria-expanded="@((isPermissionSelected) ? "true" : "false")" style="height: @((isPermissionSelected) ? "auto" : "0")">
+                                                <div class="panel-body" style="padding: 5px 15px 0 15px !important">
+
+                                                    <span class="label-style">تخصص</span>
+
+                                                    <div class="form-group">
+                                                        <div class="checkbox">
+                                                            <label>
+                                                                <input type="checkbox" value="@permission.SpecialtiyInfo.SpecialityId" name="Permissions" data-id="@permission.SpecialtiyInfo.SpecialityId" @((isPermissionSelected) ? "checked" : "")>
+                                                                <span class="text"> @permission.SpecialtiyInfo.Title </span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+
+                                                    @if (Model.Any(s => s.SpecialtiyInfo.Speciality.ParentId.HasValue && s.SpecialtiyInfo.Speciality.ParentId.Value == permission.SpecialtiyInfo.SpecialityId))
+                                                    {
+                                                        <hr style="margin-top: 10px !important; margin-bottom: 10px !important" />
+
+                                                        <span class="label-style">فوق تخصص</span>
+
+                                                        @foreach (var subPermission in Model.Where(s => s.SpecialtiyInfo.Speciality.ParentId.HasValue && s.SpecialtiyInfo.Speciality.ParentId.Value == permission.SpecialtiyInfo.SpecialityId))
+                                                        {
+                                                            var isSubPermissionSelected = subPermission.SelectedFromDoctor;
+
+                                                            <div class="form-group">
+                                                                <div class="checkbox">
+                                                                    <label>
+                                                                        <input type="checkbox" value="@subPermission.SpecialtiyInfo.SpecialityId" name="Permissions" data-id="@subPermission.SpecialtiyInfo.SpecialityId" data-parentId="@permission.SpecialtiyInfo.SpecialityId" @((isSubPermissionSelected) ? "checked" : "")>
+                                                                        <span class="text"> @subPermission.SpecialtiyInfo.Title </span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                    }
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                            else
+                            {
+                                <partial name="_DoctorPanelNotFoundPartial" />
+                            }
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</form>

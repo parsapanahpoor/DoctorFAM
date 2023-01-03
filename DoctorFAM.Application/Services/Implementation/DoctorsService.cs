@@ -55,6 +55,9 @@ using DoctorFAM.Domain.ViewModels.Site.Doctor.Resume.Gallery;
 using DoctorFAM.Domain.ViewModels.Admin.FamilyDoctor;
 using DoctorFAM.Domain.ViewModels.Admin.IncomingExcelFile;
 using OfficeOpenXml.VBA;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.Speciality;
+using System.Data;
+using DoctorFAM.Data.Migrations;
 
 namespace DoctorFAM.Application.Services.Implementation
 {
@@ -70,11 +73,11 @@ namespace DoctorFAM.Application.Services.Implementation
         private readonly IReservationService _reservationService;
         private readonly ISMSService _smsservice;
         private readonly IResumeService _resumeService;
-
+        private readonly ISpecialityRepository _specialityRepository;
 
         public DoctorsService(IDoctorsRepository doctorRepository, IUserService userService, IOrganizationService organizationService,
                                 IWorkAddressService workAddress, ILocationRepository locationRepository 
-                                    , IReservationService reservationService, ISMSService smsservice, IResumeService resumeService)
+                                    , IReservationService reservationService, ISMSService smsservice, IResumeService resumeService, ISpecialityRepository specialityRepository)
         {
             _doctorRepository = doctorRepository;
             _userService = userService;
@@ -84,11 +87,65 @@ namespace DoctorFAM.Application.Services.Implementation
             _reservationService = reservationService;
             _smsservice = smsservice;
             _resumeService = resumeService;
+            _specialityRepository = specialityRepository;
         }
 
         #endregion
 
         #region Doctors Panel Side
+
+        //Update Doctor Speciality Selected
+        public async Task<bool> UpdateDoctorSpecialitySelected(List<ulong>? speciallities , ulong userId)
+        {
+            #region Get Organization
+
+            var organization = await _organizationService.GetDoctorOrganizationByUserId(userId);
+            if (organization == null || organization.OrganizationInfoState != OrganizationInfoState.Accepted || organization.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice)
+            {
+                return false;
+            }
+
+            #endregion
+
+            #region Update Specialities
+
+            // remove all Doctor Selected Specialities
+
+            var doctrorLastSpecialities = await _specialityRepository.GetDoctoSelectedSpecialitiesByUserId(organization.OwnerId);
+
+            if(doctrorLastSpecialities != null && doctrorLastSpecialities.Any()) await _specialityRepository.RemoveListOfUserSeletedSpecialities(doctrorLastSpecialities);
+            
+            // add Specialities To The Doctor Choices
+            if (speciallities != null && speciallities.Any())
+            {
+                foreach (var specialityId in speciallities)
+                {
+                    if (await _specialityRepository.IsExistSpecialityBySpecialityId(specialityId))
+                    {
+                        var specsh = new DoctorFAM.Domain.Entities.Speciality.DoctorSelectedSpeciality
+                        {
+                            SpecialityId = specialityId,
+                            UserId = organization.OwnerId,
+                        };
+
+                        await _specialityRepository.AddDoctorSelectedSpeciality(specsh);
+                    }
+                }
+                await _specialityRepository.Savechanges();
+            }
+
+            #endregion
+
+            #region Update Organization State 
+
+            organization.OrganizationInfoState = OrganizationInfoState.WatingForConfirm;
+
+            await _organizationService.UpdateOrganization(organization);
+
+            #endregion
+
+            return true; 
+        }
 
         //Get Doctor Lable Of Sickness By Doctor User Id 
         public async Task<List<DoctorsLabelsForVIPInsertedDoctor>?> GetDoctorLableOfSicknessByDoctorUserId(ulong doctorUserId)
@@ -1699,6 +1756,65 @@ namespace DoctorFAM.Application.Services.Implementation
             #endregion
 
             return model;
+        }
+
+        //Fill List OF Doctors Speciality
+        public async Task<List<ListOfSpecialityViewModel>?> FillListOFDoctorsSpeciality(ulong doctorId)
+        {
+            #region Gett Doctor
+
+            var doctor = await _doctorRepository.GetDoctorByUserId(doctorId);
+            if (doctor == null) return null;
+
+            #endregion
+
+            #region Get Current Doctor Office
+
+            var doctorOffice = await _organizationService.GetDoctorOrganizationByUserId(doctorId);
+            if (doctorOffice == null) return null;
+            if (doctorOffice.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice) return null;
+            if (doctorOffice.OrganizationInfoState != OrganizationInfoState.Accepted) return null;
+
+            #endregion
+
+            #region Get List Of Specialities
+
+            var specialities = await _specialityRepository.GetListOfSpecialities();
+            if (specialities == null) return null;
+
+            #endregion
+
+            #region Get List Of Doctor's Specialities
+
+            var doctorSpecialities = await _specialityRepository.GetListOfDoctorSpecialities(doctorOffice.OwnerId);
+
+            #endregion
+
+            #region Fill View Model 
+
+            var ListOfSpecialityViewModel = new List<ListOfSpecialityViewModel>();
+
+            foreach (var speciality in specialities)
+            {
+                var reutnItems = new ListOfSpecialityViewModel();
+
+                reutnItems.SpecialtiyInfo = speciality;
+
+                if (doctorSpecialities != null && doctorSpecialities.Any() && doctorSpecialities.Contains(speciality.SpecialityId))
+                {
+                    reutnItems.SelectedFromDoctor = true;
+                }
+                else
+                {
+                    reutnItems.SelectedFromDoctor = false;
+                }
+
+                ListOfSpecialityViewModel.Add(reutnItems);
+            }
+
+            #endregion
+
+            return ListOfSpecialityViewModel;
         }
 
         public async Task<List<DoctorsInterestInfo>> GetDoctorInterestsInfo()

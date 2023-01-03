@@ -38,6 +38,16 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         Task<bool> DeleteSpeciality(ulong specialityId);
 
+        //Get List Of Specialities 
+        Task<List<SpecialtiyInfo>> GetListOfSpecialities();
+
+        #endregion
+
+        #region Doctor Panel Side 
+
+        //Get Docto Selected Specialities By User Id
+        Task<List<DoctorSelectedSpeciality>?> GetDoctoSelectedSpecialitiesByUserId(ulong userid);
+
         #endregion
     }
 }
