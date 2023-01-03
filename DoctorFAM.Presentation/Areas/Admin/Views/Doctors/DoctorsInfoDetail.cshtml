@@ -191,6 +191,43 @@
                 </div>
             </div>
 
+            @if (Model != null && Model.DoctorsSelectedSpecialities != null && Model.DoctorsSelectedSpecialities.Any())
+            {
+                <div class="row">
+                    <div class="col-lg-3 col-sm-12">
+                        <div class="widget">
+                            <div class="widget-header bordered-bottom bordered-success">
+                                <i class="widget-icon fa fa-user black"></i>
+                                <span class="widget-caption black">تخصص های انتخابی </span>
+                            </div><!--Widget Header-->
+                            <div class="widget-body  no-padding">
+                                <div class="tickets-container">
+                                    <ul class="tickets-list">
+
+                                        @if (Model.DoctorsSelectedSpecialities != null && Model.DoctorsSelectedSpecialities.Any())
+                                        {
+                                            foreach (var item in Model.DoctorsSelectedSpecialities)
+                                            {
+                                                <li class="ticket-item">
+                                                    <div class="row">
+                                                        <div class="ticket-type  col-lg-12 col-sm-12 col-xs-12">
+                                                            <span class="divider hidden-xs"></span>
+                                                            <span class="type">@item.UniqueName</span>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            }
+                                        }
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            }
+
         }
 
     </div>

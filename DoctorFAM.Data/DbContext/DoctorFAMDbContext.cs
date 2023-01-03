@@ -855,6 +855,67 @@ namespace DoctorFAM.Data.DbContext
 
             #endregion
 
+            #region Doctor Speciality
+
+            #region Speciality
+
+            modelBuilder.Entity<Speciality>().HasData(new Speciality
+            {
+                Id = 1,
+                CreateDate = DateTime.Now,
+                IsDelete = false,
+                UniqueName = "دیبات",
+                UniqueId = 1
+            });
+
+            #endregion
+
+            #region Speciality Info
+
+            modelBuilder.Entity<SpecialtiyInfo>().HasData(new SpecialtiyInfo
+            {
+                Id = 1,
+                SpecialityId = 1,
+                IsDelete = false,
+                CreateDate = DateTime.Now,
+                LanguageId = "fa-IR",
+                Title = "دیابت",
+            });
+
+            modelBuilder.Entity<SpecialtiyInfo>().HasData(new SpecialtiyInfo
+            {
+                Id = 2,
+                SpecialityId = 1,
+                IsDelete = false,
+                CreateDate = DateTime.Now,
+                LanguageId = "en-US",
+                Title = "diabetes"
+            });
+
+            modelBuilder.Entity<SpecialtiyInfo>().HasData(new SpecialtiyInfo
+            {
+                Id = 3,
+                SpecialityId = 1,
+                IsDelete = false,
+                CreateDate = DateTime.Now,
+                LanguageId = "tr-TR",
+                Title = "şeker hastalığı"
+            });
+
+            modelBuilder.Entity<SpecialtiyInfo>().HasData(new SpecialtiyInfo
+            {
+                Id = 4,
+                SpecialityId = 1,
+                IsDelete = false,
+                CreateDate = DateTime.Now,
+                LanguageId = "ar-SA",
+                Title = "داء السكري"
+            });
+
+            #endregion
+
+            #endregion
+
             #region Pharmacy Interests
 
             #region Interests

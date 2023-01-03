@@ -76,7 +76,7 @@ namespace DoctorFAM.Application.Services.Implementation
         private readonly ISpecialityRepository _specialityRepository;
 
         public DoctorsService(IDoctorsRepository doctorRepository, IUserService userService, IOrganizationService organizationService,
-                                IWorkAddressService workAddress, ILocationRepository locationRepository 
+                                IWorkAddressService workAddress, ILocationRepository locationRepository
                                     , IReservationService reservationService, ISMSService smsservice, IResumeService resumeService, ISpecialityRepository specialityRepository)
         {
             _doctorRepository = doctorRepository;
@@ -95,12 +95,12 @@ namespace DoctorFAM.Application.Services.Implementation
         #region Doctors Panel Side
 
         //Update Doctor Speciality Selected
-        public async Task<bool> UpdateDoctorSpecialitySelected(List<ulong>? speciallities , ulong userId)
+        public async Task<bool> UpdateDoctorSpecialitySelected(List<ulong>? speciallities, ulong userId)
         {
             #region Get Organization
 
             var organization = await _organizationService.GetDoctorOrganizationByUserId(userId);
-            if (organization == null || organization.OrganizationInfoState != OrganizationInfoState.Accepted || organization.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice)
+            if (organization == null || organization.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice)
             {
                 return false;
             }
@@ -113,8 +113,8 @@ namespace DoctorFAM.Application.Services.Implementation
 
             var doctrorLastSpecialities = await _specialityRepository.GetDoctoSelectedSpecialitiesByUserId(organization.OwnerId);
 
-            if(doctrorLastSpecialities != null && doctrorLastSpecialities.Any()) await _specialityRepository.RemoveListOfUserSeletedSpecialities(doctrorLastSpecialities);
-            
+            if (doctrorLastSpecialities != null && doctrorLastSpecialities.Any()) await _specialityRepository.RemoveListOfUserSeletedSpecialities(doctrorLastSpecialities);
+
             // add Specialities To The Doctor Choices
             if (speciallities != null && speciallities.Any())
             {
@@ -144,7 +144,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #endregion
 
-            return true; 
+            return true;
         }
 
         //Get Doctor Lable Of Sickness By Doctor User Id 
@@ -536,7 +536,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
             if (sicknessLabelId.HasValue)
             {
-                users = await _doctorRepository.ListOfDOctorVIPParsaSystemUsers(organization.OwnerId , sicknessLabelId.Value);
+                users = await _doctorRepository.ListOfDOctorVIPParsaSystemUsers(organization.OwnerId, sicknessLabelId.Value);
             }
             else
             {
@@ -1017,7 +1017,7 @@ namespace DoctorFAM.Application.Services.Implementation
         }
 
         //Request For Epload Excel File From Site
-        public async Task<bool> RequestForEploadExcelFileFromSite(RequestForUploadExcelFileFromDoctorsToSiteViewModel model , ulong userId)
+        public async Task<bool> RequestForEploadExcelFileFromSite(RequestForUploadExcelFileFromDoctorsToSiteViewModel model, ulong userId)
         {
             #region Validation 
 
@@ -1773,7 +1773,6 @@ namespace DoctorFAM.Application.Services.Implementation
             var doctorOffice = await _organizationService.GetDoctorOrganizationByUserId(doctorId);
             if (doctorOffice == null) return null;
             if (doctorOffice.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice) return null;
-            if (doctorOffice.OrganizationInfoState != OrganizationInfoState.Accepted) return null;
 
             #endregion
 
@@ -2141,7 +2140,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 DoctorsInterests = await _doctorRepository.GetDoctorSelectedInterests(doctor.Id),
                 GeneralPhone = info.GeneralPhone,
                 ClinicPhone = info.ClinicPhone,
-                DoctorSkills = string.Join(",", doctorSkills.Select(p => p.DoctorSkil).ToList())
+                DoctorSkills = string.Join(",", doctorSkills.Select(p => p.DoctorSkil).ToList()),
             };
 
             #endregion
@@ -2149,6 +2148,29 @@ namespace DoctorFAM.Application.Services.Implementation
             #region Get Doctor Work Addresses
 
             model.WorkAddresses = await _workAddress.GetUserWorkAddressesByUserId(doctor.UserId);
+
+            #endregion
+
+            #region Get Doctor Selected Specialities
+
+            var doctorSelectedSpecialitiesIds = await _specialityRepository.GetListOfDoctorSpecialities(doctorOffice.OwnerId);
+
+            List<DoctorFAM.Domain.Entities.Speciality.Speciality> spcs = new List<DoctorFAM.Domain.Entities.Speciality.Speciality>();
+
+            if (doctorSelectedSpecialitiesIds != null && doctorSelectedSpecialitiesIds.Any())
+            {
+                foreach (var item in doctorSelectedSpecialitiesIds)
+                {
+                    var seletedspeciality = await _specialityRepository.GetSpecialityById(item);
+                    
+                    if (seletedspeciality != null)
+                    {
+                        spcs.Add(seletedspeciality);
+                    }
+                }
+            }
+
+            model.DoctorsSelectedSpecialities = spcs;
 
             #endregion
 

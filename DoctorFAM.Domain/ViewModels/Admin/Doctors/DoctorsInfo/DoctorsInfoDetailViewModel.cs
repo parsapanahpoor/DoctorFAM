@@ -1,5 +1,6 @@
 ﻿using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.Interest;
+using DoctorFAM.Domain.Entities.Speciality;
 using DoctorFAM.Domain.Entities.WorkAddress;
 using DoctorFAM.Domain.Enums.Gender;
 using System;
@@ -65,6 +66,8 @@ namespace DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo
 
         [Display(Name = "Doctor Skills")]
         public string? DoctorSkills { get; set; }
+
+        public List<Entities.Speciality.Speciality> DoctorsSelectedSpecialities { get; set; }
 
         #endregion
     }
