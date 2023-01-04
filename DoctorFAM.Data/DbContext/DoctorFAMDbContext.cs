@@ -687,6 +687,13 @@ namespace DoctorFAM.Data.DbContext
                 IsDelete = false
             });
 
+            modelBuilder.Entity<DoctorsInterest>().HasData(new DoctorsInterest
+            {
+                Id = 5,
+                CreateDate = DateTime.Now,
+                IsDelete = false
+            });
+
             #endregion
 
             #region Interest Info
@@ -849,6 +856,46 @@ namespace DoctorFAM.Data.DbContext
                 CreateDate = DateTime.Now,
                 LanguageId = "ar-SA",
                 Title = "اصدار شهادة وفاة"
+            });
+
+            modelBuilder.Entity<DoctorsInterestInfo>().HasData(new DoctorsInterestInfo
+            {
+                Id = 17,
+                InterestId = 5,
+                IsDelete = false,
+                CreateDate = DateTime.Now,
+                LanguageId = "fa-IR",
+                Title = "مشاور دیابت"
+            });
+
+            modelBuilder.Entity<DoctorsInterestInfo>().HasData(new DoctorsInterestInfo
+            {
+                Id = 18,
+                InterestId = 5,
+                IsDelete = false,
+                CreateDate = DateTime.Now,
+                LanguageId = "en-US",
+                Title = "Diabetes consultant"
+            });
+
+            modelBuilder.Entity<DoctorsInterestInfo>().HasData(new DoctorsInterestInfo
+            {
+                Id = 19,
+                InterestId = 5,
+                IsDelete = false,
+                CreateDate = DateTime.Now,
+                LanguageId = "tr-TR",
+                Title = "diyabet danışmanı"
+            });
+
+            modelBuilder.Entity<DoctorsInterestInfo>().HasData(new DoctorsInterestInfo
+            {
+                Id = 20,
+                InterestId = 5,
+                IsDelete = false,
+                CreateDate = DateTime.Now,
+                LanguageId = "ar-SA",
+                Title = "استشاري مرض السكر"
             });
 
             #endregion
