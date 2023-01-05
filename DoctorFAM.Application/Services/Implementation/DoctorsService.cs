@@ -1793,7 +1793,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #region Get List Of Doctor's Specialities
 
-            var doctorSpecialities = await _specialityRepository.GetListOfDoctorSpecialities(doctorId);
+            var doctorSpecialities = await _specialityRepository.GetListOfDoctorSpecialities(doctor.Id);
 
             #endregion
 
@@ -2170,7 +2170,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 foreach (var item in doctorSelectedSpecialitiesIds)
                 {
                     var seletedspeciality = await _specialityRepository.GetSpecialityById(item);
-                    
+
                     if (seletedspeciality != null)
                     {
                         spcs.Add(seletedspeciality);
@@ -2690,6 +2690,12 @@ namespace DoctorFAM.Application.Services.Implementation
             #endregion
 
             return reservationDateTime.DoctorReservationDate.UserId.ToString();
+        }
+
+        //Get List Of Doctors With Diabet Speciality
+        public async Task<List<Doctor>?> FilterDoctorsWithDiabetSpecialitySiteSide(FilterDoctorsWithDiabetSpecialitySiteSideViewModel filter)
+        {
+            return await _doctorRepository.FilterDoctorsWithDiabetSpecialitySiteSide(filter);
         }
 
         #endregion
