@@ -18,7 +18,7 @@ namespace DoctorFAM.Web.ViewComponents
 
         #endregion
 
-        public async Task<IViewComponentResult> InvokeAsync(ulong targetUserId)
+        public async Task<IViewComponentResult> InvokeAsync(ulong targetUserId , string actionName , string controllerName , string? area)
         {
             #region Fill Model
 
@@ -28,6 +28,9 @@ namespace DoctorFAM.Web.ViewComponents
             {
                 model.IsUserFollowed = await _followServicel.CheckThatCurrentUserFollowedTargetUser(User.GetUserId() , targetUserId);
                 model.TargetUserId = targetUserId;
+                model.ActionName = actionName;
+                model.ControllerName = controllerName;
+                model.AreaName = area; 
             }
 
             #endregion

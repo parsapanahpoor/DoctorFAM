@@ -67,7 +67,7 @@ namespace DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo
         [Display(Name = "Doctor Skills")]
         public string? DoctorSkills { get; set; }
 
-        public List<Entities.Speciality.Speciality> DoctorsSelectedSpecialities { get; set; }
+        public List<Entities.Speciality.Speciality>? DoctorsSelectedSpecialities { get; set; }
 
         #endregion
     }

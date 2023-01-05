@@ -228,7 +228,7 @@ namespace DoctorFAM.Data.Repository
         //Get List Of Doctor's Specialities
         public async Task<List<ulong>?> GetListOfDoctorSpecialities(ulong userId)
         {
-            return await _context.DoctorSelectedSpeciality.Where(p => !p.IsDelete && p.UserId == userId)
+            return await _context.DoctorSelectedSpeciality.Where(p => !p.IsDelete && p.DoctorId == userId)
                                                                          .Select(p=> p.SpecialityId).ToListAsync();
         }
 
@@ -242,7 +242,7 @@ namespace DoctorFAM.Data.Repository
         //Get Docto Selected Specialities By User Id
         public async Task<List<DoctorSelectedSpeciality>?> GetDoctoSelectedSpecialitiesByUserId(ulong userid)
         {
-            return await _context.DoctorSelectedSpeciality.Where(p => !p.IsDelete && p.UserId == userid).ToListAsync();
+            return await _context.DoctorSelectedSpeciality.Where(p => !p.IsDelete && p.DoctorId == userid).ToListAsync();
         }
 
         //Add Doctor Selected Speciality

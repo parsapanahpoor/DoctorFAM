@@ -78,48 +78,6 @@ namespace DoctorFAM.Web.Controllers
 
         #endregion
 
-        #region Follow Users 
 
-        [Authorize]
-        public async Task<IActionResult> FollowDoctor(ulong doctorId)
-        {
-            #region Follow User 
-
-            var res = await _followService.FollowUsers(User.GetUserId(), doctorId);
-            if (res)
-            {
-                TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
-                return RedirectToAction(nameof(ListOfFamilyDoctors));
-            }
-
-            #endregion
-
-            TempData[ErrorMessage] = "عمایت باشکست مواجه شده است.";
-            return RedirectToAction(nameof(ListOfFamilyDoctors));
-        }
-
-        #endregion
-
-        #region Un Follow 
-
-        [Authorize]
-        public async Task<IActionResult> UnFollow(ulong doctorId)
-        {
-            #region Follow User 
-
-            var res = await _followService.UnFollow(User.GetUserId(), doctorId);
-            if (res)
-            {
-                TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
-                return RedirectToAction(nameof(ListOfFamilyDoctors));
-            }
-
-            #endregion
-
-            TempData[ErrorMessage] = "عمایت باشکست مواجه شده است.";
-            return RedirectToAction(nameof(ListOfFamilyDoctors));
-        }
-
-        #endregion
     }
 }

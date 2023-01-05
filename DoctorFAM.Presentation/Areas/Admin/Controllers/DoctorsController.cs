@@ -83,6 +83,7 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
 
             if (!ModelState.IsValid)
             {
+                TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
                 return View(info);
             }
 

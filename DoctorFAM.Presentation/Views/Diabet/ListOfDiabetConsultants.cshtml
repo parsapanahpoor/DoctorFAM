@@ -1,4 +1,4 @@
-﻿@model Tuple<List<DoctorFAM.Domain.Entities.Doctors.Doctor>, DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor.FilterFamilyDoctorUserPanelSideViewModel>
+﻿@model Tuple<List<DoctorFAM.Domain.Entities.Doctors.Doctor>, DoctorFAM.Domain.ViewModels.Site.Diabet.FilterDiabetConsultantsSiteSideViewModel>
 
 @using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo
 @using DoctorFAM.Application.Extensions
@@ -9,7 +9,7 @@
 @inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
 
 @{
-    ViewBag.Title = "معرفی پزشکان";
+    ViewBag.Title = "معرفی مشاوران دیابت";
 }
 
 @{
@@ -69,7 +69,7 @@
                 <div class="row">
                     <div class="col-md-4  theiaStickySidebar">
 
-                        <form asp-action="ListOfFamilyDoctors" asp-controller="FamilyDoctor" asp-area="" id="formFilter" method="get">
+                        <form asp-action="ListOfDiabetConsultants" asp-controller="Diabet" asp-area="" id="formFilter" method="get">
                             <input type="hidden" id="pageid" name="pageId" value="@Model.Item2.PageId.ToString()" />
 
                             <div class="card search-filter">
@@ -182,7 +182,7 @@
 
                                 <div class="btn-search text-center justify-center-content">
 
-                                    <a asp-action="ListOfFamilyDoctors" asp-controller="FamilyDoctor" asp-area="" class="btn-SelfTest mt-2 text-center justify-center-content" style="padding-top: 10px;padding-bottom: 10px;padding-right: 20px;padding-left: 20px; ">
+                                    <a asp-action="ListOfDiabetConsultants" asp-controller="Diabet" asp-area="" class="btn-SelfTest mt-2 text-center justify-center-content" style="padding-top: 10px;padding-bottom: 10px;padding-right: 20px;padding-left: 20px; ">
                                         حذف فیلتر
                                     </a>
 
@@ -241,7 +241,7 @@
                                                 {
                                                     @*Followers Method*@
                                                     @await Component.InvokeAsync("ShowFollowButtonInDoctorsList" , new{targetUserId = doctor.User.Id,
-                                        actionName = "ListOfFamilyDoctors" , controllerName = "FamilyDoctor" , area = ""})
+                                        actionName = "ListOfDiabetConsultants" , controllerName = "Diabet" , area = ""})
                                                 }
                                                 else
                                                 {
@@ -261,7 +261,6 @@
                                             <div class="clinic-booking mt-1">
 
                                                 <a class="apt-btn" asp-action="DocBooking" asp-controller="FocalPoint" asp-area="" asp-route-userId="@doctor.UserId">رزرو نوبت</a>
-                                                <a asp-action="ChoosingFamilyDoctor" asp-area="UserPanel" asp-controller="FamilyDoctor" asp-route-doctorUserId="@doctor.User.Id" class="apt-btn">انتخاب پزشک خانواده</a>
                                             </div>
                                         </div>
                                     </div>

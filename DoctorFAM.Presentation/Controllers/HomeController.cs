@@ -1,5 +1,6 @@
 ﻿using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Interfaces;
+using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Presentation.Models;
 using DoctorFAM.Web.HttpManager;
 using DoctorFAM.Web.Hubs;
@@ -8,25 +9,27 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.SignalR;
+using System;
 using System.Diagnostics;
 
 namespace DoctorFAM.Web.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : SiteBaseController
     {
         #region Ctor
 
         private readonly ILogger<HomeController> _logger;
-
         public ILocationService _locationService;
-
         private readonly IHubContext<NotificationHub> _notificationHub;
+        private readonly IFollowService _followService;
 
-        public HomeController(ILogger<HomeController> logger , ILocationService lcaotionService , IHubContext<NotificationHub> notificationHub)
+        public HomeController(ILogger<HomeController> logger , ILocationService lcaotionService , IHubContext<NotificationHub> notificationHub
+                                , IFollowService followService)
         {
             _logger = logger;
             _locationService = lcaotionService;
             _notificationHub = notificationHub;
+            _followService = followService;
         }
 
         #endregion
@@ -191,6 +194,79 @@ namespace DoctorFAM.Web.Controllers
         {
             return View();
         }
+        #endregion
+
+        #region Follow Users 
+
+        [Authorize]
+        public async Task<IActionResult> FollowDoctor(ulong doctorId , string actionName , string controllerName , string? areaName)
+        {
+            #region Follow User 
+
+            var res = await _followService.FollowUsers(User.GetUserId(), doctorId);
+            if (res)
+            {
+                TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+
+                if (string.IsNullOrEmpty(areaName))
+                {
+                    return Redirect($"/{controllerName}/{actionName}");
+                }
+                else
+                {
+                    return Redirect($"/{areaName}/{controllerName}/{actionName}");
+                }
+            }
+
+            #endregion
+
+            TempData[ErrorMessage] = "عمایت باشکست مواجه شده است.";
+            if (string.IsNullOrEmpty(areaName))
+            {
+                return Redirect($"/{controllerName}/{actionName}");
+            }
+            else
+            {
+                return Redirect($"/{areaName}/{controllerName}/{actionName}");
+            }
+        }
+
+        #endregion
+
+        #region Un Follow 
+
+        [Authorize]
+        public async Task<IActionResult> UnFollow(ulong doctorId, string actionName, string controllerName, string? areaName)
+        {
+            #region Follow User 
+
+            var res = await _followService.UnFollow(User.GetUserId(), doctorId);
+            if (res)
+            {
+                TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+                if (string.IsNullOrEmpty(areaName))
+                {
+                    return Redirect($"/{controllerName}/{actionName}");
+                }
+                else
+                {
+                    return Redirect($"/{areaName}/{controllerName}/{actionName}");
+                }
+            }
+
+            #endregion
+
+            TempData[ErrorMessage] = "عمایت باشکست مواجه شده است.";
+            if (string.IsNullOrEmpty(areaName))
+            {
+                return Redirect($"/{controllerName}/{actionName}");
+            }
+            else
+            {
+                return Redirect($"/{areaName}/{controllerName}/{actionName}");
+            }
+        }
+
         #endregion
     }
 }

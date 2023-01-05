@@ -1,5 +1,6 @@
 ﻿using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Common;
+using DoctorFAM.Domain.Entities.Speciality;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,8 @@ namespace DoctorFAM.Domain.Entities.Doctors
         public DoctorsInfo DoctorsInfos { get; set; }
 
         public ICollection<DoctorsSkils> DoctorsSkils { get; set; }
+
+        public ICollection<DoctorSelectedSpeciality> DoctorSelectedSpecialities { get; set; }
 
         #endregion
     }

@@ -11,6 +11,7 @@ using DoctorFAM.Domain.ViewModels.DoctorPanel.Employees;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.ParsaSystem;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.ParsaSystem.VIPPatient;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Speciality;
+using DoctorFAM.Domain.ViewModels.Site.Diabet;
 using DoctorFAM.Domain.ViewModels.Site.Doctor;
 using DoctorFAM.Domain.ViewModels.Site.Reservation;
 using DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor;
@@ -181,6 +182,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Get Doctro For Send Notification For Take Reservation Notification 
         Task<string?> GetDoctroForSendNotificationForTakeReservationNotification(ulong reservationDateTimeId);
+
+        //Get List Of Doctors With Diabet Consultant Interests
+        Task<List<Doctor>?> FilterDiabetConsultantsSiteSide(FilterDiabetConsultantsSiteSideViewModel filter);
 
         #endregion
 

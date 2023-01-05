@@ -58,6 +58,7 @@ using OfficeOpenXml.VBA;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Speciality;
 using System.Data;
 using DoctorFAM.Data.Migrations;
+using DoctorFAM.Domain.ViewModels.Site.Diabet;
 
 namespace DoctorFAM.Application.Services.Implementation
 {
@@ -97,6 +98,13 @@ namespace DoctorFAM.Application.Services.Implementation
         //Update Doctor Speciality Selected
         public async Task<bool> UpdateDoctorSpecialitySelected(List<ulong>? speciallities, ulong userId)
         {
+            #region Gett Doctor
+
+            var doctor = await _doctorRepository.GetDoctorByUserId(userId);
+            if (doctor == null) return false;
+
+            #endregion
+
             #region Get Organization
 
             var organization = await _organizationService.GetDoctorOrganizationByUserId(userId);
@@ -111,7 +119,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
             // remove all Doctor Selected Specialities
 
-            var doctrorLastSpecialities = await _specialityRepository.GetDoctoSelectedSpecialitiesByUserId(organization.OwnerId);
+            var doctrorLastSpecialities = await _specialityRepository.GetDoctoSelectedSpecialitiesByUserId(doctor.Id);
 
             if (doctrorLastSpecialities != null && doctrorLastSpecialities.Any()) await _specialityRepository.RemoveListOfUserSeletedSpecialities(doctrorLastSpecialities);
 
@@ -125,7 +133,7 @@ namespace DoctorFAM.Application.Services.Implementation
                         var specsh = new DoctorFAM.Domain.Entities.Speciality.DoctorSelectedSpeciality
                         {
                             SpecialityId = specialityId,
-                            UserId = organization.OwnerId,
+                            DoctorId = doctor.Id,
                         };
 
                         await _specialityRepository.AddDoctorSelectedSpeciality(specsh);
@@ -1785,7 +1793,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #region Get List Of Doctor's Specialities
 
-            var doctorSpecialities = await _specialityRepository.GetListOfDoctorSpecialities(doctorOffice.OwnerId);
+            var doctorSpecialities = await _specialityRepository.GetListOfDoctorSpecialities(doctorId);
 
             #endregion
 
@@ -2153,7 +2161,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #region Get Doctor Selected Specialities
 
-            var doctorSelectedSpecialitiesIds = await _specialityRepository.GetListOfDoctorSpecialities(doctorOffice.OwnerId);
+            var doctorSelectedSpecialitiesIds = await _specialityRepository.GetListOfDoctorSpecialities(doctorInfoId);
 
             List<DoctorFAM.Domain.Entities.Speciality.Speciality> spcs = new List<DoctorFAM.Domain.Entities.Speciality.Speciality>();
 
@@ -2692,6 +2700,12 @@ namespace DoctorFAM.Application.Services.Implementation
         public async Task<List<Doctor?>> FilterFamilyDoctorUserPanelSide(FilterFamilyDoctorUserPanelSideViewModel filter)
         {
             return await _doctorRepository.FilterFamilyDoctorUserPanelSide(filter);
+        }
+
+        //Get List Of Doctors With Diabet Consultant Interests
+        public async Task<List<Doctor>?> FilterDiabetConsultantsSiteSide(FilterDiabetConsultantsSiteSideViewModel filter)
+        {
+            return await _doctorRepository.FilterDiabetConsultantsSiteSide(filter);
         }
 
         //Fill Doctor Family Reservation Information Detail View Model

@@ -1,7 +1,9 @@
 ﻿using DoctorFAM.Application.Extensions;
+using DoctorFAM.Application.Interfaces;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.Entities.BMI;
 using DoctorFAM.Domain.ViewModels.Site.Diabet;
+using DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DoctorFAM.Web.Controllers
@@ -11,15 +13,19 @@ namespace DoctorFAM.Web.Controllers
         #region Ctor 
 
         private readonly IBMIService _bmiService;
+        private readonly ILocationService _locationService;
+        private readonly IDoctorsService _doctorsService;
 
-        public DiabetController(IBMIService bmiService)
+        public DiabetController(IBMIService bmiService,ILocationService locationService, IDoctorsService doctorsService)
         {
             _bmiService = bmiService;
+            _locationService = locationService;
+            _doctorsService = doctorsService;
         }
 
         #endregion
 
-        #region Index Page
+        #region Index Page Of Diabet Part
 
         public IActionResult Index(int? bmiResult , decimal? gfrResult)
         {
@@ -125,5 +131,55 @@ namespace DoctorFAM.Web.Controllers
 
         #endregion
 
+        #region List Of Diabet Consultants
+
+        [HttpGet]
+        public async Task<IActionResult> ListOfDiabetConsultants(FilterDiabetConsultantsSiteSideViewModel filter)
+        {
+            #region Location ViewBags 
+
+            ViewData["Countries"] = await _locationService.GetAllCountries();
+
+            if (filter.CountryId != null)
+            {
+                ViewData["States"] = await _locationService.GetStateChildren(filter.CountryId.Value);
+                if (filter.StateId != null)
+                {
+                    ViewData["Cities"] = await _locationService.GetStateChildren(filter.StateId.Value);
+                }
+            }
+
+            #endregion
+
+            ViewBag.pageId = filter.PageId;
+
+            var model = await _doctorsService.FilterDiabetConsultantsSiteSide(filter);
+            if (model == null || !model.Any())
+            {
+                TempData[ErrorMessage] = "نتیجه ای برای شما یافت نشده است .";
+                return RedirectToAction(nameof(Index));
+            }
+
+            #region Paginaition
+
+            int take = 20;
+
+            int skip = (filter.PageId.Value - 1) * take;
+
+            int pageCount = (model.Count() / take);
+
+
+            filter.PageCount = pageCount;
+
+            var query = model.Skip(skip).Take(take).ToList();
+
+            var viewModel = Tuple.Create(query, filter);
+
+            #endregion
+
+            return View(viewModel);
+        }
+
+        #endregion
     }
 }

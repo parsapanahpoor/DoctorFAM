@@ -1,4 +1,5 @@
 ﻿using DoctorFAM.Domain.Entities.Common;
+using DoctorFAM.Domain.Entities.Doctors;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +12,15 @@ namespace DoctorFAM.Domain.Entities.Speciality
     {
         #region properties
 
-        public ulong UserId { get; set; }
+        public ulong DoctorId { get; set; }
 
         public ulong SpecialityId { get; set; }
+
+        #endregion
+
+        #region relations
+
+        public Doctor Doctor { get; set; }
 
         #endregion
     }
