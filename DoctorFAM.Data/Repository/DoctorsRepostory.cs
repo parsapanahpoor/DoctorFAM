@@ -870,7 +870,7 @@ namespace DoctorFAM.Data.Repository
                     .ThenInclude(p => p.DoctorsInfos)
                     .Include(p => p.Doctor)
                     .ThenInclude(p => p.User)
-                    .Where(s => !s.IsDelete && s.InterestId == 5)
+                    .Where(s => !s.IsDelete && s.SpecialityId == 1)
                     .OrderByDescending(s => s.CreateDate)
                     .Select(p => p.Doctor)
                     .ToListAsync();
