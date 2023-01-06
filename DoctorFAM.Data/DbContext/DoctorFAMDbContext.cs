@@ -896,7 +896,7 @@ namespace DoctorFAM.Data.DbContext
 
             #endregion
 
-            #region Doctor Speciality
+            #region Doctor Speciality Seed Data 
 
             #region Speciality
 
@@ -924,7 +924,8 @@ namespace DoctorFAM.Data.DbContext
                 CreateDate = DateTime.Now,
                 IsDelete = false,
                 UniqueName = "متخصص داخلی",
-                UniqueId = 3
+                UniqueId = 3,
+                ParentId = 2,
             });
 
             modelBuilder.Entity<Speciality>().HasData(new Speciality
@@ -933,7 +934,8 @@ namespace DoctorFAM.Data.DbContext
                 CreateDate = DateTime.Now,
                 IsDelete = false,
                 UniqueName = "فوق تخصص غدد",
-                UniqueId = 4
+                UniqueId = 4,
+                ParentId = 2,
             });
 
             #endregion
