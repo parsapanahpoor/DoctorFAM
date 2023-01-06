@@ -180,5 +180,15 @@ namespace DoctorFAM.Application.StaticTools
         public static readonly string NewsPathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/News/thumb/");
 
         #endregion
+
+        #region Diabet Consultant Resume Files
+
+        public static readonly string DiabetConsultantResumeFilesPath = "/content/images/DiabetConsultantResumeFiles/main/";
+        public static readonly string DiabetConsultantResumeFilesPathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/DiabetConsultantResumeFiles/main/");
+
+        public static readonly string DiabetConsultantResumeFilesPathThumb = "/content/images/DiabetConsultantResumeFiles/thumb/";
+        public static readonly string DiabetConsultantResumeFilesPathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/DiabetConsultantResumeFiles/thumb/");
+
+        #endregion
     }
 }

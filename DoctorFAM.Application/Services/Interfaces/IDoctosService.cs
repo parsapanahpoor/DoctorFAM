@@ -28,6 +28,21 @@ namespace DoctorFAM.Application.Services.Interfaces
     {
         #region Doctors Panel Side   
 
+        //Delete Diabet Consultant Resume By Resume Id
+        Task<bool> DeleteDiabetConsultantResumeByResumeId(ulong resumeId, ulong userId);
+
+        //Get Diabet Consualtant Resume By Id
+        Task<DiabetConsultantsResume?> GetDiabetConsualtantResumeById(ulong resumeId);
+
+        //Upload Doctor Diabet Consultant Resume File 
+        Task<bool> UploadDoctorDiabetConsultantResumeFile(ulong userId, string? description, IFormFile? resumePicture);
+
+        //Get Doctor Diabet Consultant Resumes By Doctor User Id 
+        Task<List<DiabetConsultantsResume>?> GetDoctorDiabetConsultantResumesByDoctorUserId(ulong doctorUserId);
+
+        //Fill Diabet Consultatn Resume View Model
+        Task<UploadDiabetConsultatntDoctorSideViewModel?> FillDiabetConsultatnResumeViewModel(ulong userId);
+
         //Get Doctor Lable Of Sickness By Doctor User Id 
         Task<List<DoctorsLabelsForVIPInsertedDoctor>?> GetDoctorLableOfSicknessByDoctorUserId(ulong doctorUserId);
 
@@ -158,6 +173,9 @@ namespace DoctorFAM.Application.Services.Interfaces
         #endregion
 
         #region Admin Side 
+
+        //Get Diabet Consultant Resumes By UserId Admin Side
+        Task<List<DiabetConsultantsResume>?> GetDiabetConsultanResumesByUserIdAdminSide(ulong userId);
 
         Task<ListOfDoctorsInfoViewModel> FilterDoctorsInfoAdminSide(ListOfDoctorsInfoViewModel filter);
 

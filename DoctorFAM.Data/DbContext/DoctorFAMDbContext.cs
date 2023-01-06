@@ -197,6 +197,8 @@ namespace DoctorFAM.Data.DbContext
 
         public DbSet<PharmacyInterestInfo> PharmacyInterestInfos { get; set; }
 
+        public DbSet<DiabetConsultantsResume> DiabetConsultantsResumes { get; set; }
+
         #endregion
 
         #region Organization

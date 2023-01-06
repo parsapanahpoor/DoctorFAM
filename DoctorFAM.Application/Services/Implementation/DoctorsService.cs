@@ -1,5 +1,4 @@
-﻿using AngleSharp.Dom;
-using DoctorFAM.Application.Convertors;
+﻿using DoctorFAM.Application.Convertors;
 using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Generators;
 using DoctorFAM.Application.Security;
@@ -11,39 +10,20 @@ using DoctorFAM.Domain.Entities.FamilyDoctor.ParsaSystem;
 using DoctorFAM.Domain.Entities.FamilyDoctor.VIPSystem;
 using DoctorFAM.Domain.Entities.Interest;
 using DoctorFAM.Domain.Entities.Organization;
-using DoctorFAM.Domain.Entities.Patient;
-using DoctorFAM.Domain.Entities.Resume;
 using DoctorFAM.Domain.Entities.WorkAddress;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo;
-using DoctorFAM.Domain.ViewModels.Admin.Resume.Certificate;
-using DoctorFAM.Domain.ViewModels.Admin.Resume.Gallery;
-using DoctorFAM.Domain.ViewModels.Admin.Resume.Honor;
-using DoctorFAM.Domain.ViewModels.Admin.Resume.Service;
-using DoctorFAM.Domain.ViewModels.Admin.Resume.WorkHistory;
-using DoctorFAM.Domain.ViewModels.Admin.Resume.WorkingAddress;
-using DoctorFAM.Domain.ViewModels.Admin.Resume;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DosctorSideBarInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Employees;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.ParsaSystem;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.ParsaSystem.VIPPatient;
-using DoctorFAM.Domain.ViewModels.Nurse.HomeNurse;
 using DoctorFAM.Domain.ViewModels.Site.Doctor;
 using DoctorFAM.Domain.ViewModels.Site.Reservation;
-using DoctorFAM.Domain.ViewModels.UserPanel.Account;
 using DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Data.SqlClient.DataClassification;
-using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
-using SixLabors.ImageSharp.ColorSpaces;
-using System.Collections.Generic;
-using System.Numerics;
-using System.Reflection.Emit;
 using DoctorFAM.Domain.ViewModels.Site.Doctor.Resume;
 using DoctorFAM.Domain.ViewModels.Site.Doctor.Resume.Education;
 using DoctorFAM.Domain.ViewModels.Site.Doctor.Resume.WorkHistory;
@@ -54,11 +34,10 @@ using DoctorFAM.Domain.ViewModels.Site.Doctor.Resume.Certificate;
 using DoctorFAM.Domain.ViewModels.Site.Doctor.Resume.Gallery;
 using DoctorFAM.Domain.ViewModels.Admin.FamilyDoctor;
 using DoctorFAM.Domain.ViewModels.Admin.IncomingExcelFile;
-using OfficeOpenXml.VBA;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Speciality;
 using System.Data;
-using DoctorFAM.Data.Migrations;
 using DoctorFAM.Domain.ViewModels.Site.Diabet;
+using DoctorFAM.Domain.Entities.Resume;
 
 namespace DoctorFAM.Application.Services.Implementation
 {
@@ -94,6 +73,184 @@ namespace DoctorFAM.Application.Services.Implementation
         #endregion
 
         #region Doctors Panel Side
+
+        //Get Diabet Consualtant Resume By Id
+        public async Task<DiabetConsultantsResume?> GetDiabetConsualtantResumeById(ulong resumeId)
+        {
+            return await _doctorRepository.GetDiabetConsualtantResumeById(resumeId) ;
+        }
+
+        //Delete Diabet Consultant Resume By Resume Id
+        public async Task<bool> DeleteDiabetConsultantResumeByResumeId(ulong resumeId , ulong userId)
+        {
+            #region Gett Doctor
+
+            var doctor = await _doctorRepository.GetDoctorByUserId(userId);
+            if (doctor == null) return false;
+
+            #endregion
+
+            #region Get Organization
+
+            var organization = await _organizationService.GetDoctorOrganizationByUserId(userId);
+            if (organization == null || organization.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice)
+            {
+                return false;
+            }
+
+            #endregion
+
+            #region Get Diabet Consultant Resume By Id 
+
+            var resume = await _doctorRepository.GetDiabetConsualtantResumeById(resumeId);
+            if (resume == null) return false;
+            if (resume.UserId != organization.OwnerId) return false;
+
+            #endregion
+
+            #region Delete Resume
+
+            resume.IsDelete = true;
+
+            #region Resume File 
+
+            if (resume.ResumePicture != null)
+            {
+                if (!string.IsNullOrEmpty(resume.ResumePicture))
+                {
+                    resume.ResumePicture.DeleteImage(PathTools.DiabetConsultantResumeFilesPathServer, PathTools.DiabetConsultantResumeFilesPathThumbServer);
+                }
+            }
+
+            #endregion
+
+            //Update Diabet Consultant Resume 
+            await _doctorRepository.UpdateDiabetConsultantResume(resume);
+
+            #endregion
+
+            #region Update Organization 
+
+            organization.OrganizationInfoState = OrganizationInfoState.WatingForConfirm;
+
+            //Update Method 
+            await _organizationService.UpdateOrganization(organization);
+
+            #endregion
+
+            return true; 
+        }
+
+        //Upload Doctor Diabet Consultant Resume File 
+        public async Task<bool> UploadDoctorDiabetConsultantResumeFile(ulong userId , string? description , IFormFile? resumePicture)
+        {
+            #region Gett Doctor
+
+            var doctor = await _doctorRepository.GetDoctorByUserId(userId);
+            if (doctor == null) return false;
+
+            #endregion
+
+            #region Get Organization
+
+            var organization = await _organizationService.GetDoctorOrganizationByUserId(userId);
+            if (organization == null || organization.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice)
+            {
+                return false;
+            }
+
+            #endregion
+
+            #region Upload Resume 
+
+            DiabetConsultantsResume model = new DiabetConsultantsResume()
+            {
+                CreateDate = DateTime.Now,
+                Description = description,
+                UserId = organization.OwnerId,
+                IsDelete = false,
+            };
+
+            #region Resume File  
+
+            if (resumePicture != null)
+            {
+                var imageName = CodeGenerator.GenerateUniqCode() + Path.GetExtension(resumePicture.FileName);
+                resumePicture.AddImageToServer(imageName, PathTools.DiabetConsultantResumeFilesPathServer, 270, 270, PathTools.DiabetConsultantResumeFilesPathThumbServer);
+                model.ResumePicture = imageName;
+            }
+
+            #endregion
+
+            //Add To The Data Base 
+            await _doctorRepository.UploadResumeFroDiabetConsultant(model);
+
+            #endregion
+
+            #region Update Organization 
+
+            organization.OrganizationInfoState = OrganizationInfoState.WatingForConfirm;
+
+            //Update MEthod 
+            await _organizationService.UpdateOrganization(organization);
+
+            #endregion
+
+            return true; 
+        }
+
+        //Get Doctor Diabet Consultant Resumes By Doctor User Id 
+        public async Task<List<DiabetConsultantsResume>?> GetDoctorDiabetConsultantResumesByDoctorUserId(ulong doctorUserId)
+        {
+            #region Gett Doctor
+
+            var doctor = await _doctorRepository.GetDoctorByUserId(doctorUserId);
+            if (doctor == null) return null;
+
+            #endregion
+
+            #region Get Organization
+
+            var organization = await _organizationService.GetDoctorOrganizationByUserId(doctorUserId);
+            if (organization == null || organization.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice)
+            {
+                return null;
+            }
+
+            #endregion
+
+            return await _doctorRepository.GetDoctorDiabetConsultantResumesByDoctorUserId(organization.OwnerId);
+        }
+
+        //Fill Diabet Consultatn Resume View Model
+        public async Task<UploadDiabetConsultatntDoctorSideViewModel?> FillDiabetConsultatnResumeViewModel(ulong userId)
+        {
+            #region Gett Doctor
+
+            var doctor = await _doctorRepository.GetDoctorByUserId(userId);
+            if (doctor == null) return null;
+
+            #endregion
+
+            #region Get Organization
+
+            var organization = await _organizationService.GetDoctorOrganizationByUserId(userId);
+            if (organization == null || organization.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice)
+            {
+                return null;
+            }
+
+            #endregion
+
+            #region Fill Model 
+
+            return new UploadDiabetConsultatntDoctorSideViewModel()
+            {
+                DiabetConsultantsResumes = await _doctorRepository.GetDoctorDiabetConsultantResumesByDoctorUserId(organization.OwnerId)
+            }; 
+
+            #endregion
+        }
 
         //Update Doctor Speciality Selected
         public async Task<bool> UpdateDoctorSpecialitySelected(List<ulong>? speciallities, ulong userId)
@@ -2000,6 +2157,12 @@ namespace DoctorFAM.Application.Services.Implementation
         #endregion
 
         #region Admin Side
+
+        //Get Diabet Consultant Resumes By UserId Admin Side
+        public async Task<List<DiabetConsultantsResume>?> GetDiabetConsultanResumesByUserIdAdminSide(ulong userId)
+        {
+            return await _doctorRepository.GetDoctorDiabetConsultantResumesByDoctorUserId(userId);
+        }
 
         //List Of Arrival Excel Files Show In Admin Side 
         public async Task<List<ListOfArrivalExcelFiles>> FillListOfArrivalExcelFilesAdminSideViewModel()

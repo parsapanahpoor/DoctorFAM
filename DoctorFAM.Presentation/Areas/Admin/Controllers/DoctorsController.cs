@@ -182,6 +182,27 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
 
         #endregion
 
+        #region Doctor Diabet Consultant Resume 
+
+        [HttpGet]
+        public async Task<IActionResult> ShowDiabetConsultantResume(ulong userId)
+        {
+            #region Fill Model 
+
+            var model = await _doctorsService.GetDiabetConsultanResumesByUserIdAdminSide(userId);
+            if (model == null)
+            {
+                TempData[ErrorMessage] = "اطلاعاتی برای نمایش یافت نشده است.";
+                return RedirectToAction(nameof(DoctorsInfoDetail) , new { userId = userId});
+            }
+
+            #endregion
+
+            return View(model);
+        }
+
+        #endregion
+
         #endregion
     }
 }

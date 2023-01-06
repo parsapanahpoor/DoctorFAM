@@ -254,6 +254,12 @@
                                                 <div class="ticket-type  col-lg-12 col-sm-12 col-xs-12">
                                                     <span class="divider hidden-xs"></span>
                                                     <span class="type">@item.Title</span>
+                                                    @if (item.InterestId == 5)
+                                                    {
+                                                        <a class="badge badge-primary" asp-action="ShowDiabetConsultantResume" asp-area="Admin" asp-controller="Doctors" asp-route-UserId="@Model.UserId">
+                                                            مشاهده ی رزومه
+                                                        </a>
+                                                    }
                                                 </div>
                                                 <div class="ticket-state bg-darkorange">
                                                     <a asp-action="DeleteDoctorSelectedInfo" asp-area="Admin" asp-controller="Doctors" asp-route-interestId="@item.InterestId" asp-route-doctorId="@Model.DoctorId" asp-route-doctorInfoId="@Model.Id">

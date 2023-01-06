@@ -1,6 +1,7 @@
 ﻿using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Interfaces;
 using DoctorFAM.Application.Services.Interfaces;
+using DoctorFAM.Data.Migrations;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo;
 using DoctorFAM.Domain.ViewModels.UserPanel.Account;
 using DoctorFAM.Web.Areas.Doctor.ActionFilterAttributes;
@@ -24,8 +25,8 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
         private readonly ILocationService _locationService;
 
-        public DoctorsInfoController(IDoctorsService doctorService , IStringLocalizer<SharedLocalizer.SharedLocalizer> sharedLocalizer 
-                                    , IOrganizationService organization , ILocationService locationService)
+        public DoctorsInfoController(IDoctorsService doctorService, IStringLocalizer<SharedLocalizer.SharedLocalizer> sharedLocalizer
+                                    , IOrganizationService organization, ILocationService locationService)
         {
             _doctorService = doctorService;
             _sharedLocalizer = sharedLocalizer;
@@ -108,7 +109,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
                 return View(returnModel);
             }
 
-            if (!string.IsNullOrEmpty(model.WorkAddress) && (!model.CountryId.HasValue || !model.StateId.HasValue || !model.CityId.HasValue) )
+            if (!string.IsNullOrEmpty(model.WorkAddress) && (!model.CountryId.HasValue || !model.StateId.HasValue || !model.CityId.HasValue))
             {
                 TempData[ErrorMessage] = _sharedLocalizer["You Must enter All Of Address Fields"].Value;
                 return View(returnModel);
@@ -130,7 +131,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
             #region Add Or Edit Doctors Information
 
-            var result = await _doctorService.AddOrEditDoctorInfoDoctorsPanel(model, MediacalFile , UserAvatar);
+            var result = await _doctorService.AddOrEditDoctorInfoDoctorsPanel(model, MediacalFile, UserAvatar);
 
             switch (result)
             {
@@ -197,7 +198,16 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
             {
                 case Domain.Entities.Doctors.DoctorSelectedInterestResult.Success:
                     TempData[SuccessMessage] = _sharedLocalizer["Operation Successfully"].Value;
-                    return RedirectToAction(nameof(DoctorInterests));
+
+                    //If Selected Interests Is Diabet Consultant
+                    if (interestId == 5)
+                    {
+                        return RedirectToAction(nameof(UploadResumeForDiabetConsultants));
+                    }
+                    else
+                    {
+                        return RedirectToAction(nameof(DoctorInterests));
+                    }
 
                 case Domain.Entities.Doctors.DoctorSelectedInterestResult.Faild:
                     TempData[ErrorMessage] = _sharedLocalizer["The operation has failed"].Value;
@@ -250,7 +260,67 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
         [HttpGet]
         public async Task<IActionResult> UploadResumeForDiabetConsultants()
         {
-            return View();
+            #region Fill Model 
+
+            var model = await _doctorService.FillDiabetConsultatnResumeViewModel(User.GetUserId());
+
+            #endregion
+
+            return View(model);
+        }
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> UploadResumeForDiabetConsultants(UploadDiabetConsultatntDoctorSideViewModel model, IFormFile? MediacalFile)
+        {
+            #region Model State Validation 
+
+            if (MediacalFile == null && string.IsNullOrEmpty(model.Description))
+            {
+                model.DiabetConsultantsResumes = await _doctorService.GetDoctorDiabetConsultantResumesByDoctorUserId(User.GetUserId());
+
+                TempData[ErrorMessage] = "اطلاعات وارد شده معتبر نمی باشد.";
+                return View(model);
+
+            }
+
+            #endregion
+
+            #region Upload Resume For Diabet Consultant 
+
+            var res = await _doctorService.UploadDoctorDiabetConsultantResumeFile(User.GetUserId() , model.Description , MediacalFile);
+            if (res)
+            {
+                TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+                return RedirectToAction(nameof(UploadResumeForDiabetConsultants));
+            }
+
+            #endregion
+
+            model.DiabetConsultantsResumes = await _doctorService.GetDoctorDiabetConsultantResumesByDoctorUserId(User.GetUserId());
+
+            TempData[ErrorMessage] = "عملیات باخطا مواجه شده است.";
+            return View(model);
+        }
+
+        #endregion
+
+        #region Delete Diabet Consultant Resume 
+
+        [HttpGet]
+        public async Task<IActionResult> DeleteDiabetConsultantResume(ulong resumeId)
+        {
+            #region Delete Method 
+
+            var res = await _doctorService.DeleteDiabetConsultantResumeByResumeId(resumeId , User.GetUserId());
+            if (res)
+            {
+                TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+                return RedirectToAction(nameof(UploadResumeForDiabetConsultants));
+            }
+
+            #endregion
+
+            TempData[ErrorMessage] = "عملیات باخطا مواجه شده است.";
+            return RedirectToAction(nameof(UploadResumeForDiabetConsultants));
         }
 
         #endregion
@@ -267,7 +337,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
             return View(await _doctorService.FillListOFDoctorsSpeciality(User.GetUserId()));
         }
 
-        [HttpPost , ValidateAntiForgeryToken]
+        [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> ListOFSpecialities(List<ulong>? Permissions)
         {
             #region Update Doctor Speciality Info

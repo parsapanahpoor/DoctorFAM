@@ -20,6 +20,18 @@ namespace DoctorFAM.Domain.Interfaces
     {
         #region Doctors Panel Side
 
+        //Update Diabet Consultant Resume 
+        Task UpdateDiabetConsultantResume(DiabetConsultantsResume diabet);
+
+        //Get Diabet Consualtant Resume By Id
+        Task<DiabetConsultantsResume?> GetDiabetConsualtantResumeById(ulong resumeId);
+
+        //Upload Resume From Diabet Consultant 
+        Task UploadResumeFroDiabetConsultant(DiabetConsultantsResume diabet);
+
+        //Get Doctor Diabet Consultant Resumes By Doctor User Id 
+        Task<List<DiabetConsultantsResume>?> GetDoctorDiabetConsultantResumesByDoctorUserId(ulong doctorUserId);
+
         //Create Request Excel File For Compelete From Admin 
         Task CreateRequestExcelFileForCompeleteFromAdmin(RequestForUploadExcelFileFromDoctorsToSite model);
 

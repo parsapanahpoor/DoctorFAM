@@ -1,12 +1,14 @@
 ﻿using DoctorFAM.Data.DbContext;
 using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Account;
+using DoctorFAM.Domain.Entities.Consultant;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.FamilyDoctor.ParsaSystem;
 using DoctorFAM.Domain.Entities.FamilyDoctor.VIPSystem;
 using DoctorFAM.Domain.Entities.Interest;
 using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.Entities.Patient;
+using DoctorFAM.Domain.Entities.Resume;
 using DoctorFAM.Domain.Entities.WorkAddress;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo;
@@ -43,6 +45,33 @@ namespace DoctorFAM.Data.Repository
         #endregion
 
         #region Doctors Panel Side
+
+        //Update Diabet Consultant Resume 
+        public async Task UpdateDiabetConsultantResume(DiabetConsultantsResume diabet)
+        {
+            _context.DiabetConsultantsResumes.Update(diabet);
+            await _context.SaveChangesAsync(); 
+        }
+
+        //Get Diabet Consualtant Resume By Id
+        public async Task<DiabetConsultantsResume?> GetDiabetConsualtantResumeById(ulong resumeId)
+        {
+            return await _context.DiabetConsultantsResumes.FirstOrDefaultAsync(p=> !p.IsDelete && p.Id == resumeId);
+        }
+
+        //Get Doctor Diabet Consultant Resumes By Doctor User Id 
+        public async Task<List<DiabetConsultantsResume>?> GetDoctorDiabetConsultantResumesByDoctorUserId(ulong doctorUserId)
+        {
+            return await _context.DiabetConsultantsResumes.Where(p => !p.IsDelete && p.UserId == doctorUserId)
+                                                            .OrderByDescending(p=> p.CreateDate).ToListAsync();                        
+        }
+
+        //Upload Resume From Diabet Consultant 
+        public async Task UploadResumeFroDiabetConsultant(DiabetConsultantsResume diabet)
+        {
+            await _context.DiabetConsultantsResumes.AddAsync(diabet);
+            await _context.SaveChangesAsync();
+        }
 
         //Create Request Excel File For Compelete From Admin 
         public async Task CreateRequestExcelFileForCompeleteFromAdmin(RequestForUploadExcelFileFromDoctorsToSite model)
