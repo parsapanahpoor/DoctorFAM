@@ -170,6 +170,8 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
         #endregion
 
+        #region Interests
+
         #region Doctor Interests 
 
         public async Task<IActionResult> DoctorInterests()
@@ -189,7 +191,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
         public async Task<IActionResult> AddInterestToDoctor(ulong interestId)
         {
-            var result = await _doctorService.AddDoctorSelectedInterest(interestId , User.GetUserId());
+            var result = await _doctorService.AddDoctorSelectedInterest(interestId, User.GetUserId());
 
             switch (result)
             {
@@ -240,6 +242,18 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
             TempData[ErrorMessage] = _sharedLocalizer["The operation has failed"].Value;
             return RedirectToAction(nameof(DoctorInterests));
         }
+
+        #endregion
+
+        #region Upload Resume For Diabet Consultants
+
+        [HttpGet]
+        public async Task<IActionResult> UploadResumeForDiabetConsultants()
+        {
+            return View();
+        }
+
+        #endregion
 
         #endregion
 
