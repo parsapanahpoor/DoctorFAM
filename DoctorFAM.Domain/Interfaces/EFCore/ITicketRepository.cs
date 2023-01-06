@@ -51,6 +51,9 @@ namespace DoctorFAM.Domain.Interfaces
 
         #region Admin Side 
 
+        //Get Waiting For Response Ticekts Count For Admin And Supporters
+        Task<int> GetWaitingForResponseTicektsCountForAdminAnSupporters();
+
         //Filter Admin side Ticketes
         Task<AdminFilterTicketViewModel> FilterAdminTicketViewModel(AdminFilterTicketViewModel filter);
 

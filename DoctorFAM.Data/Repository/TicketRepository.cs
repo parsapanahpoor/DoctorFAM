@@ -54,7 +54,7 @@ namespace DoctorFAM.Data.Repository
         {
             return await _context.Tickets.Include(p => p.Owner)
                             .Include(p => p.TargetUser)
-                            .FirstOrDefaultAsync(p=> !p.IsDelete && p.RequestId == requestId);
+                            .FirstOrDefaultAsync(p => !p.IsDelete && p.RequestId == requestId);
         }
 
         //Get Ticket By Consultant Request Id
@@ -180,6 +180,13 @@ namespace DoctorFAM.Data.Repository
 
         #region Admin Side 
 
+        //Get Waiting For Response Ticekts Count For Admin And Supporters
+        public async Task<int> GetWaitingForResponseTicektsCountForAdminAnSupporters()
+        {
+            return await _context.Tickets.Include(p => p.Owner).Where(p => !p.IsDelete && !p.IsReadByAdmin && p.TicketForAdminAndSupporters
+                                                                          && !p.OnlineVisitRequest).Take(5).OrderByDescending(p => p.CreateDate).CountAsync();
+        }
+
         //Read Ticket By Admin
         public async Task ReadTicketByAdmin(Ticket ticket)
         {
@@ -193,7 +200,7 @@ namespace DoctorFAM.Data.Repository
             var query = _context.Tickets
                 .Include(s => s.Owner)
                 .Where(s => !s.IsDelete && !s.OnlineVisitRequest && !s.ConsultantRequest && !s.RequesConsultanttId.HasValue)
-                .OrderByDescending(s => s.CreateDate )
+                .OrderByDescending(s => s.CreateDate)
                 .AsQueryable();
 
             #region State

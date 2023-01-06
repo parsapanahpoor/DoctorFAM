@@ -68,6 +68,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         #region Admin Side And Supporter Side 
 
+        //Get Waiting For Response Ticekts Count For Admin And Supporters
+        Task<int> GetWaitingForResponseTicektsCountForAdminAnSupporters();
+
         //Read Ticket By Admin 
         Task ReadTicketByAdmin(Ticket ticket);
 

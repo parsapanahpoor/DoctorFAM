@@ -143,11 +143,13 @@
             </ul>
         </li>
 
-              <li>
+        <li>
             <a href="#" class="menu-dropdown">
                 <i class="menu-icon fa fa-ticket"></i>
                 <span class="menu-text"> @SharedLocalizer["Manage Tickets"]</span>
-
+                <div class="badge badge-warning" id="DoctorInfoState">
+                    @ViewBag.TicketCounts
+                </div>
                 <i class="menu-expand"></i>
             </a>
 

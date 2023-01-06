@@ -497,6 +497,12 @@ namespace DoctorFAM.Application.Services.Implementation
 
         #region Admin Side 
 
+        //Get Waiting For Response Ticekts Count For Admin And Supporters
+        public async Task<int> GetWaitingForResponseTicektsCountForAdminAnSupporters()
+        {
+            return await _ticketRepository.GetWaitingForResponseTicektsCountForAdminAnSupporters();
+        }
+
         //Filter Admin side Ticketes
         public async Task<AdminFilterTicketViewModel> FilterAdminTicketViewModel(AdminFilterTicketViewModel filter)
         {
