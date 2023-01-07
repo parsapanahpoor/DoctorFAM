@@ -18,15 +18,13 @@ namespace DoctorFAM.Web.Controllers
     {
         #region Ctor
 
-        private readonly ILogger<HomeController> _logger;
         public ILocationService _locationService;
         private readonly IHubContext<NotificationHub> _notificationHub;
         private readonly IFollowService _followService;
 
-        public HomeController(ILogger<HomeController> logger , ILocationService lcaotionService , IHubContext<NotificationHub> notificationHub
+        public HomeController( ILocationService lcaotionService , IHubContext<NotificationHub> notificationHub
                                 , IFollowService followService)
         {
-            _logger = logger;
             _locationService = lcaotionService;
             _notificationHub = notificationHub;
             _followService = followService;

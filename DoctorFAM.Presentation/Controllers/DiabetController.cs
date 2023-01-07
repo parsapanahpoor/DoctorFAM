@@ -25,6 +25,15 @@ namespace DoctorFAM.Web.Controllers
 
         #endregion
 
+        #region SecPage
+
+        public async Task<IActionResult> SecPage()
+        {
+            return View();
+        }
+
+        #endregion
+
         #region Index Page Of Diabet Part
 
         public IActionResult Index(int? bmiResult , decimal? gfrResult)
