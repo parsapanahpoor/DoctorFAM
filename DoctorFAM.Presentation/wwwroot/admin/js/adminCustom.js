@@ -286,7 +286,7 @@ if (editors.length > 0) {
 //#endregion
 
 
-//#region show Selec tUser Section in  create notification page
+//#region show Select User Section in  create notification page
 function showSelectUserSection() {
     var checkBox = document.getElementById("IsForSingleUser");
     var userList = document.getElementById("findUserSection");
