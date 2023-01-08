@@ -1512,6 +1512,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\DoctorFAM.Application\DoctorFAM.Application.csproj" />
+	  <ProjectReference Include="..\DoctorFAM.BackgroundTask\DoctorFAM.BackgroundTask.csproj" />
 	  <ProjectReference Include="..\DoctorFAM.Data\DoctorFAM.Data.csproj" />
 	  <ProjectReference Include="..\DoctorFAM.Domain\DoctorFAM.Domain.csproj" />
 	  <ProjectReference Include="..\DoctorFAM.IoC\DoctorFAM.IoC.csproj" />

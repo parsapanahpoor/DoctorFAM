@@ -1,4 +1,5 @@
 using DoctorFAM.Application.SiteServices;
+using DoctorFAM.BackgroundTask;
 using DoctorFAM.Data.DbContext;
 using DoctorFAM.Domain.SharedResource;
 using DoctorFAM.IoC;
@@ -15,6 +16,12 @@ using System.Text.Unicode;
 var builder = WebApplication.CreateBuilder(args);
 
 #region Service
+
+#region Back Ground Tasks
+
+builder.Services.AddHostedService<DeletePastHistoryRequests>();
+
+#endregion
 
 #region Localizer
 
