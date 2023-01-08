@@ -2,6 +2,7 @@
 using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.Requests;
+using DoctorFAM.Domain.Enums.Request;
 using DoctorFAM.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -76,6 +77,29 @@ namespace DoctorFAM.Data.Repository
         public async Task AddRequestTransferingPriceFromOperator(RequestTransferingPriceFromOperator request)
         {
             await _context.TransferingPriceFromOperators.AddAsync(request);
+            await _context.SaveChangesAsync();
+        }
+
+        //Get List Of Requests That Pass History Until 2days And With Waiting For Complete Information From Patient
+        public async Task<List<Request>?> GetListOfRequestsThatPassHistoryUntil2daysAndWithWaitingForCompleteInformationFromPatient()
+        {
+            return await _context.Requests.Where(p => !p.IsDelete && p.RequestState == Domain.Enums.Request.RequestState.WaitingForCompleteInformationFromUser
+                                                 && (DateTime.Now.Year == p.CreateDate.Year && DateTime.Now.DayOfYear - p.CreateDate.DayOfYear >= 2))
+                                                    .ToListAsync();
+        }
+
+        //Soft Delete Range Of Requests
+        public async Task SoftDeleteRangeOfRequests(List<Request> requests)
+        {
+            //Soft Delete Range Of Requests
+            foreach (var request in requests)
+            {
+                request.IsDelete = true;
+
+                _context.Requests.Update(request); 
+            }
+
+            //Update Data Base 
             await _context.SaveChangesAsync();
         }
 

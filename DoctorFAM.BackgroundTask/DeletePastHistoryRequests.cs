@@ -27,7 +27,13 @@ namespace DoctorFAM.BackgroundTask
         {
             var startTimer = "00:00";
 
-            _timer = new Timer(UpdateUserSMSValidationToken, null, startTimer.getJobRunDelay() , TimeSpan.FromSeconds(20));
+            _timer = new Timer(
+                GetListOfRequestsThatPassHistoryUntil2daysAndWithWaitingForCompleteInformationFromPatient,
+                null,
+                startTimer.getJobRunDelay(),
+                TimeSpan.FromHours(24)
+                );
+
             return Task.CompletedTask;
         }
 
@@ -45,17 +51,16 @@ namespace DoctorFAM.BackgroundTask
 
         #region Worker Method 
 
-        public async void UpdateUserSMSValidationToken(object? state)
+        public async void GetListOfRequestsThatPassHistoryUntil2daysAndWithWaitingForCompleteInformationFromPatient(object? state)
         {
             using var scope = _serviceScopeFactory.CreateScope();
-            var service = scope.ServiceProvider.GetRequiredService<IUserService>();
+            var service = scope.ServiceProvider.GetRequiredService<IRequestService>();
 
-            //Get User 
-            var user = await service.GetUserById(1);
-
-            user.MobileActivationCode = "545154" ;
-
-            await service.UpdateUser(user);
+            var requests = await service.GetListOfRequestsThatPassHistoryUntil2daysAndWithWaitingForCompleteInformationFromPatient();
+            if (requests != null)
+            {
+                await service.SoftDeleteRangeOfRequests(requests);
+            }
         }
 
         #endregion
@@ -68,6 +73,5 @@ namespace DoctorFAM.BackgroundTask
         }
 
         #endregion
-
     }
 }

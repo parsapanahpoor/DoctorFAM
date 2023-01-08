@@ -24,6 +24,12 @@ namespace DoctorFAM.Domain.Interfaces
 
         Task UpdateRequest(Request request);
 
+        //Get List Of Requests That Pass History Until 2days And With Waiting For Complete Information From Patient
+        Task<List<Request>?> GetListOfRequestsThatPassHistoryUntil2daysAndWithWaitingForCompleteInformationFromPatient();
+
+        //Soft Delete Range Of Requests
+        Task SoftDeleteRangeOfRequests(List<Request> requests);
+
         #endregion
 
         #region Patient Request Detail

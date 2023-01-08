@@ -2,6 +2,7 @@
 using DoctorFAM.Application.Convertors;
 using DoctorFAM.Application.Interfaces;
 using DoctorFAM.Application.Services.Interfaces;
+using DoctorFAM.Data.Migrations;
 using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Patient;
@@ -247,6 +248,18 @@ namespace DoctorFAM.Application.Services.Implementation
             #endregion
 
             return true;
+        }
+
+        //Get List Of Requests That Pass History Until 2days And With Waiting For Complete Information From Patient
+        public async Task<List<Request>?> GetListOfRequestsThatPassHistoryUntil2daysAndWithWaitingForCompleteInformationFromPatient()
+        {
+            return await _request.GetListOfRequestsThatPassHistoryUntil2daysAndWithWaitingForCompleteInformationFromPatient();
+        }
+
+        //Soft Delete Range Of Requests
+        public async Task SoftDeleteRangeOfRequests(List<Request> requests)
+        {
+            await _request.SoftDeleteRangeOfRequests(requests);
         }
 
         #endregion
