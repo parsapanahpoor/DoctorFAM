@@ -242,5 +242,20 @@ namespace DoctorFAM.Web.Controllers
 
         #endregion
 
+        #region Medical Examination 
+
+        #region Create Medical Examination From User
+
+
+
+        #endregion
+
+        #region List Of User Examination 
+
+
+
+        #endregion
+
+        #endregion
     }
 }
