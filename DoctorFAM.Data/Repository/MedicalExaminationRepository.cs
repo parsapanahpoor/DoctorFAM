@@ -56,6 +56,19 @@ namespace DoctorFAM.Data.Repository
             return filter;
         }
 
+        //Get Medical Examination By Id 
+        public async Task<MedicalExamination?> GetMedicalExaminationById(ulong medicalExaminationId)
+        {
+            return await _context.MedicalExaminations.FirstOrDefaultAsync(p => !p.IsDelete && p.Id == medicalExaminationId);
+        }
+
+        //Edit Medical Examination Admin Side 
+        public async Task EditMedicalExaminationAdminSide(MedicalExamination model)
+        {
+            _context.MedicalExaminations.Update(model);
+            await _context.SaveChangesAsync();
+        }
+
         #endregion
 
         #region User Panel Side 

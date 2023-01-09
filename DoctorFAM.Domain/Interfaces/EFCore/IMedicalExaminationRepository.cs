@@ -18,6 +18,12 @@ namespace DoctorFAM.Domain.Interfaces.EFCore
         //Filter Medical Examination 
         Task<FilterMedicalExaminationAdminSideViewModel> FilterMedicalExamination(FilterMedicalExaminationAdminSideViewModel filter);
 
+        //Get Medical Examination By Id 
+        Task<MedicalExamination?> GetMedicalExaminationById(ulong medicalExaminationId);
+
+        //Edit Medical Examination Admin Side 
+        Task EditMedicalExaminationAdminSide(MedicalExamination model);
+
         #endregion
     }
 }
