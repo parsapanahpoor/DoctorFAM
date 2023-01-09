@@ -25,6 +25,7 @@ using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.Pharmacy;
 using DoctorFAM.Domain.Entities.PopulationCovered;
+using DoctorFAM.Domain.Entities.PriodicExamination;
 using DoctorFAM.Domain.Entities.Product;
 using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Entities.Resume;
@@ -376,6 +377,12 @@ namespace DoctorFAM.Data.DbContext
         #region Follow
 
         public DbSet<Follow> Follow { get; set; }
+
+        #endregion
+
+        #region Priodic Examinations
+
+        public DbSet<MedicalExamination> MedicalExaminations { get; set; }
 
         #endregion
 
