@@ -1,0 +1,122 @@
+﻿@using DoctorFAM.Application.Extensions
+@model DoctorFAM.Domain.ViewModels.Admin.MedicalExamination.FilterMedicalExaminationAdminSideViewModel
+
+@{
+    ViewData["Title"] = "لیست عنوان معاینات پزشکی";
+}
+
+@section Styles
+    {
+
+}
+
+@section Scripts
+    {
+}
+
+@section Breadcrumb
+    {
+    <li>
+        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+    </li>
+}
+
+<div class="row">
+    <div class="col-lg-3 col-sm-12">
+
+        <a class="btn btn-sky w-100 margin-bottom-10" asp-action="CreateMEdicalExamination" asp-controller="MedicalExamination" asp-area="Admin">افزودن عنوان جدید</a>
+
+        <div class="widget">
+            <div class="widget-header bordered-bottom bordered-green">
+                <span class="widget-caption"> لیست عناوین </span>
+            </div>
+            <div class="widget-body">
+                <div>
+                    <form asp-action="FilterMedicalExaminations" asp-controller="MedicalExamination" asp-area="Admin" id="filter-search" method="get">
+                        <input type="hidden" asp-for="Page" />
+
+                        <div class="form-group">
+                            <label asp-for="MEdicalExaminationName"> عنوان </label>
+                            <input type="text" class="form-control" asp-for="MEdicalExaminationName">
+                        </div>
+
+                        <hr />
+
+                        <div class="row">
+                            <div class="col-md-12 flex-style">
+                                <button type="submit" class="btn btn-labeled w-100 btn-palegreen">
+                                    <i class="btn-label glyphicon glyphicon-filter"></i>فیلتر
+                                </button>
+
+                                @if (Context.Request.QueryString.HasValue)
+                                {
+                                    <a asp-area="Admin" asp-action="CreateMEdicalExamination" asp-controller="MedicalExamination" class="btn btn-labeled w-100 btn-darkorange">
+                                        <i class="btn-label glyphicon glyphicon-remove"></i>حذف فیلتر
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-9 col-sm-12">
+        <div class="well with-header with-footer table-responsive">
+            <div class="header bordered-azure">
+                <div class="flex-style">
+                    <span> @ViewData["Title"] </span>
+                    <span>@Model.GetShownEntitiesPagesTitle()</span>
+                </div>
+            </div>
+
+            @if (Model.Entities != null && Model.Entities.Any())
+            {
+                <table class="table table-hover table-bordered tc vm">
+                    <thead class="tc vm">
+                        <tr class="tc vm">
+                            <th class="tc vm">
+                                عنوان
+                            </th>
+                            <th class="tc vm">
+                                دوره ی پیشنهادی سیستم 
+                            </th>
+                            <th class="tc vm">
+                                امکانات
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="tc vm">
+                        @foreach (var examination in Model.Entities)
+                        {
+                            <tr class="tc vm" remove-ajax-item="@examination.Id">
+                                <td class="tc vm">
+                                    <p> @examination.MedicalExaminationName </p>
+                                </td>
+                                <td class="tc vm">
+                                    <p> @examination.PriodMonth </p>
+                                </td>
+                                <td class="tc vm">
+                                    <a asp-action="EditMedicalExamination" asp-controller="MedicalExamination" asp-area="Admin" asp-route-id="@examination.Id" class="btn btn-warning btn-circle btn-xs"><i class="glyphicon glyphicon-edit"></i></a>
+                                    <button onclick="DeleteAjax(@examination.Id, '@Url.Action("DeleteMedicalExamination", "MedicalExamination", new { area = "Admin", id = examination.Id })')" class="btn btn-danger btn-circle btn-xs"><i class="glyphicon glyphicon-trash"></i></button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <div class="footer tc">
+
+                    <partial name="_AdminPaging" model="@Model.GetCurrentPaging()" />
+
+                </div>
+            }
+            else
+            {
+                <partial name="_AdminNotFoundPartial" />
+            }
+        </div>
+    </div>
+</div>
+
