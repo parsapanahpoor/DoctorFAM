@@ -269,6 +269,12 @@ namespace DoctorFAM.Web.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateMedicalExaminationFromUser(CreatePriodicPatientExaminationSiteSideViewModel model)
         {
+            #region View Bags
+
+            ViewBag.ListOfMedicalExamination = await _medicalExamination.GetListOfMedicalExaminationsWithSelectList();
+
+            #endregion
+
             #region Model State Validation 
 
             if (!ModelState.IsValid)
@@ -300,11 +306,14 @@ namespace DoctorFAM.Web.Controllers
                 case CreatePriodicEcaminationFromUser.UserNotfound:
                     TempData[ErrorMessage] = "کاربر موردنطر یافت نشده است.";
                     break;
+
+                case CreatePriodicEcaminationFromUser.TimeNotValid:
+                    TempData[ErrorMessage] = "تاریخ وارد شده معتبر نمی باشد.";
+                    break;
             }
 
             #endregion
 
-            TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
             return View(model);
         }
 

@@ -26,6 +26,7 @@ namespace DoctorFAM.Domain.ViewModels.Site.MedicalExamination
         DoctorNotFound,
         Success,
         UserNotfound,
-        MedicalExaminationNotFound
+        MedicalExaminationNotFound,
+        TimeNotValid
     }
 }

@@ -181,6 +181,11 @@ namespace DoctorFAM.Application.Services.Implementation
             //Next Examination Date Time 
             if (!string.IsNullOrEmpty(model.NextMedicalExamination))
             {
+                if (model.NextMedicalExamination.ToMiladiDateTime() < DateTime.Now)
+                {
+                    return CreatePriodicEcaminationFromUser.TimeNotValid;
+                }
+
                 entity.NextExaminationDate = model.NextMedicalExamination.ToMiladiDateTime();
             }
             else

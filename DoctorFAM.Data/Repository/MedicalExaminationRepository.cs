@@ -86,8 +86,8 @@ namespace DoctorFAM.Data.Repository
         //Get List Of Medical Examinations
         public async Task<List<MedicalExamination>?> GetListOfMedicalExaminations()
         {
-            return await _context.MedicalExaminations.Where(p=> !p.IsDelete)
-                                                .OrderByDescending(p=> p.CreateDate).ToListAsync();          
+            return await _context.MedicalExaminations.Where(p => !p.IsDelete)
+                                                .OrderByDescending(p => p.CreateDate).ToListAsync();
         }
 
         //Get List Of Medical Examinations With Select List 
@@ -124,16 +124,19 @@ namespace DoctorFAM.Data.Repository
         //Update Priodic Examination
         public async Task UpdatePriodicExamination(PriodicPatientsExamination priodic)
         {
-             _context.PriodicPatientsExamination.Update(priodic);
+            _context.PriodicPatientsExamination.Update(priodic);
             await _context.SaveChangesAsync();
         }
 
         //Check That Current User Has Any Priodic Examination In This Week
         public async Task<List<PriodicPatientsExamination>?> CheckThatCurrentUserHasAnyPriodicExaminationInThisWeek(ulong userId)
         {
-            return await _context.PriodicPatientsExamination.Include(p=> p.MedicalExamination)
-                            .Where(p=> !p.IsDelete && p.UserId == userId && 
-                            (p.NextExaminationDate >= DateTime.Now && p.NextExaminationDate <= DateTime.Now.AddDays(7) )).ToListAsync();
+            return await _context.PriodicPatientsExamination.Include(p => p.MedicalExamination)
+                                                   .Where(p => !p.IsDelete && p.UserId == userId && (
+                                                    (p.NextExaminationDate.Year == DateTime.Now.Year && p.NextExaminationDate.DayOfYear - DateTime.Now.DayOfYear <= 7)
+                                                    ||
+                                                    (p.NextExaminationDate.Year >= DateTime.Now.Year && 365 - DateTime.Now.DayOfYear > 7 && 365 - p.NextExaminationDate.DayOfYear < 360)
+                                                    )).ToListAsync();
         }
 
         #endregion
