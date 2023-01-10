@@ -2,6 +2,7 @@
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Web.ActionFilterAttributes;
 using Microsoft.AspNetCore.Mvc;
+using System.Runtime.CompilerServices;
 
 namespace DoctorFAM.Web.Areas.UserPanel.Controllers
 {
@@ -10,10 +11,12 @@ namespace DoctorFAM.Web.Areas.UserPanel.Controllers
         #region Ctor
 
         private readonly IDashboardsService _dashboardService;
+        private readonly IMedicalExaminationService _medicalExamination;
 
-        public HomeController(IDashboardsService dashboardService)
+        public HomeController(IDashboardsService dashboardService , IMedicalExaminationService medicalExamination)
         {
             _dashboardService = dashboardService;
+            _medicalExamination = medicalExamination; 
         }
 
         #endregion
@@ -22,6 +25,12 @@ namespace DoctorFAM.Web.Areas.UserPanel.Controllers
 
         public async Task<IActionResult> Index()
         {
+            #region Model's Data 
+
+            ViewBag.UserPriodicExaminations = await _medicalExamination.CheckThatCurrentUserHasAnyPriodicExaminationInThisWeek(User.GetUserId());
+
+            #endregion
+
             return View(await _dashboardService.FillUserPanelDashboardViewModel(User.GetUserId()));
         }
 

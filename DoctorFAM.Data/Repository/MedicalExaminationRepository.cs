@@ -1,5 +1,6 @@
 ﻿using DoctorFAM.Data.DbContext;
 using DoctorFAM.Data.Migrations;
+using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.HealthInformation;
 using DoctorFAM.Domain.Entities.PriodicExamination;
 using DoctorFAM.Domain.Interfaces.EFCore;
@@ -13,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DoctorFAM.Data.Repository
 {
@@ -111,6 +113,27 @@ namespace DoctorFAM.Data.Repository
         {
             return await _context.PriodicPatientsExamination.Include(p => p.MedicalExamination)
                             .Where(p => !p.IsDelete && p.UserId == userId).ToListAsync();
+        }
+
+        //Get Priodic Examination By Priodic Examination Id
+        public async Task<PriodicPatientsExamination?> GetPriodicExaminationByPriodicExaminationId(ulong priodicExaminationId)
+        {
+            return await _context.PriodicPatientsExamination.FirstOrDefaultAsync(p => !p.IsDelete && p.Id == priodicExaminationId);
+        }
+
+        //Update Priodic Examination
+        public async Task UpdatePriodicExamination(PriodicPatientsExamination priodic)
+        {
+             _context.PriodicPatientsExamination.Update(priodic);
+            await _context.SaveChangesAsync();
+        }
+
+        //Check That Current User Has Any Priodic Examination In This Week
+        public async Task<List<PriodicPatientsExamination>?> CheckThatCurrentUserHasAnyPriodicExaminationInThisWeek(ulong userId)
+        {
+            return await _context.PriodicPatientsExamination.Include(p=> p.MedicalExamination)
+                            .Where(p=> !p.IsDelete && p.UserId == userId && 
+                            (p.NextExaminationDate >= DateTime.Now && p.NextExaminationDate <= DateTime.Now.AddDays(7) )).ToListAsync();
         }
 
         #endregion

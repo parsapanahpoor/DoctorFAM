@@ -7,6 +7,7 @@ using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.Admin.MedicalExamination;
 using DoctorFAM.Domain.ViewModels.Common;
 using DoctorFAM.Domain.ViewModels.Site.MedicalExamination;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DoctorFAM.Application.Services.Implementation
 {
@@ -195,7 +196,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
                 #region Get Organization
 
-                var organization = await _organizationRepository.GetDoctorOrganizationByUserId(userId);
+                var organization = await _organizationRepository.GetDoctorOrganizationByUserId(doctor.Id);
                 if (organization == null || organization.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice || organization.OrganizationInfoState != Domain.Entities.Doctors.OrganizationInfoState.Accepted)
                 {
                     return CreatePriodicEcaminationFromUser.DoctorNotFound;
@@ -257,6 +258,40 @@ namespace DoctorFAM.Application.Services.Implementation
             #endregion
 
             return model;
+        }
+
+        //Get Priodic Examination By Priodic Examination Id
+        public async Task<PriodicPatientsExamination?> GetPriodicExaminationByPriodicExaminationId(ulong priodicExaminationId)
+        {
+            return await _medicalExamination.GetPriodicExaminationByPriodicExaminationId(priodicExaminationId);
+        }
+
+        //Delete Priodic Examination From User
+        public async Task<bool> DeletePriodicExaminationFromUser(ulong priodicExaminationId, ulong userId)
+        {
+            #region Get Priodic Examination 
+
+            var priodicExamination = await GetPriodicExaminationByPriodicExaminationId(priodicExaminationId);
+            if (priodicExamination == null || priodicExamination.UserId != userId) return false;
+
+            #endregion
+
+            #region Update State 
+
+            priodicExamination.IsDelete = true;
+
+            //Update Method
+            await _medicalExamination.UpdatePriodicExamination(priodicExamination);
+
+            #endregion
+
+            return true;
+        }
+
+        //Check That Current User Has Any Priodic Examination In This Week
+        public async Task<List<PriodicPatientsExamination>?> CheckThatCurrentUserHasAnyPriodicExaminationInThisWeek(ulong userId)
+        {
+            return await _medicalExamination.CheckThatCurrentUserHasAnyPriodicExaminationInThisWeek(userId);
         }
 
         #endregion

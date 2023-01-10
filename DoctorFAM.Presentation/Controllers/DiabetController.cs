@@ -317,11 +317,30 @@ namespace DoctorFAM.Web.Controllers
         {
             #region Fill Model
 
-
+            var model = await _medicalExamination.ListOfUserPriodicPatientExamination(User.GetUserId());
+            if (model == null && !model.Any()) return RedirectToAction(nameof(CreateMedicalExaminationFromUser));
 
             #endregion
 
-            return View();
+            return View(model);
+        }
+
+        #endregion
+
+        #region Delete Priodic Examination From User
+
+        public async Task<IActionResult> DeletePriodicExaminationFromUser(ulong priodicExaminationId)
+        {
+            //Delete Method 
+            var res = await _medicalExamination.DeletePriodicExaminationFromUser(priodicExaminationId , User.GetUserId());
+            if (res)
+            {
+                TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+                return RedirectToAction(nameof(ListOfUserExamination));
+            }
+
+            TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+            return RedirectToAction(nameof(ListOfUserExamination));
         }
 
         #endregion

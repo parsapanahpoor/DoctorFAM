@@ -41,6 +41,16 @@ namespace DoctorFAM.Domain.Interfaces.EFCore
         //Get User Priodic Examination By User Id
         Task<List<PriodicPatientsExamination>?> GetUserPriodicExaminationByUserId(ulong userId);
 
+        //Get Priodic Examination By Priodic Examination Id
+        Task<PriodicPatientsExamination?> GetPriodicExaminationByPriodicExaminationId(ulong priodicExaminationId);
+
+        //Update Priodic Examination
+        Task UpdatePriodicExamination(PriodicPatientsExamination priodic);
+
+        //Check That Current User Has Any Priodic Examination In This Week
+        Task<List<PriodicPatientsExamination>?> CheckThatCurrentUserHasAnyPriodicExaminationInThisWeek(ulong userId);
+
         #endregion
     }
 }
+

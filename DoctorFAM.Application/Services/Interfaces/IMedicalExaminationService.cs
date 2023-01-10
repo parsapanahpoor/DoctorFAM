@@ -48,6 +48,15 @@ namespace DoctorFAM.Application.Services.Interfaces
         //List Of User Priodic Patient Examination 
         Task<List<ListOfUserPriodicExaminationSiteSideViewModel>?> ListOfUserPriodicPatientExamination(ulong userId);
 
+        //Get Priodic Examination By Priodic Examination Id
+        Task<PriodicPatientsExamination?> GetPriodicExaminationByPriodicExaminationId(ulong priodicExaminationId);
+
+        //Delete Priodic Examination From User
+        Task<bool> DeletePriodicExaminationFromUser(ulong priodicExaminationId, ulong userId);
+
+        //Check That Current User Has Any Priodic Examination In This Week
+        Task<List<PriodicPatientsExamination>?> CheckThatCurrentUserHasAnyPriodicExaminationInThisWeek(ulong userId);
+
         #endregion
 
         #region User Panel Side
