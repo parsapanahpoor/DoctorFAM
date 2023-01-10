@@ -498,6 +498,12 @@ namespace DoctorFAM.Application.Services.Implementation
 
         #region Site Side
 
+        //Get User By Username
+        public async Task<User?> GetUserByUsername(string userName)
+        {
+            return await _userRepository.GetUserByUsername(userName);
+        }
+
         public async Task<ForgotPasswordResult> RecoverUserPassword(ForgetPasswordViewModel forgot)
         {
             #region Get User By Mobile

@@ -1,0 +1,133 @@
+﻿@model DoctorFAM.Domain.ViewModels.Site.MedicalExamination.CreatePriodicPatientExaminationSiteSideViewModel
+@using DoctorFAM.Domain.ViewModels.Common
+@using DoctorFAM.Application.StaticTools
+
+@{
+    ViewData["Title"] = "اطلاعات معاینه بیمار";
+    var medicalExamination = ViewData["ListOfMedicalExamination"] != null ? ViewData["ListOfMedicalExamination"] as List<SelectListViewModel> : null;
+}
+
+@section Styles
+    {
+    <style>
+
+        #MedicalExaminationId {
+            display: initial !important;
+        }
+
+        .nice-select {
+            display: none !important;
+        }
+
+    </style>
+}
+
+@section Scripts
+    {
+    <partial name="_JqueryValidation" />
+
+    <script>
+        $(document).ready(function () {
+            $("#autFilter").autocomplete({
+                source: '@PathTools.SiteAddress/api/DoctorAPI/DoctorName'
+            });
+        });
+    </script>
+
+    }
+
+<div class="page-content  formHealth">
+    <div class="row HomeVisitTitle text-center  text-align-justify ">
+
+        <div class="col-md-12   text-center  text-align-justify M-5 P-5">
+
+            <p class="text-center  text-align-justify">
+                لطفا اطلاعات معاینات دوره ای خود را وارد کنید :
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="container  p-4">
+
+        <form asp-action="CreateMedicalExaminationFromUser" asp-area="" asp-controller="Diabet">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="row">
+
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <label asp-for="MedicalExaminationId">نلم معاینه</label>
+                            <select class="form-control" asp-for="MedicalExaminationId">
+                                <option value=""> لطفا نام معاینه ی خود را انتخاب کنید  </option>
+                                @if (medicalExamination != null && medicalExamination.Any())
+                                {
+                                    foreach (var medical in medicalExamination)
+                                    {
+                                        if (Model != null && Model.MedicalExaminationId == medical.Id)
+                                        {
+                                            <option value="@medical.Id" selected="selected"> @medical.Title </option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@medical.Id"> @medical.Title </option>
+                                        }
+                                    }
+                                }
+                            </select>
+                            <span class="text-danger" asp-validation-for="MedicalExaminationId"></span>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label asp-for="LastMedicalExamination" class="control-label">تاریخ انجام </label>
+                                <input asp-for="LastMedicalExamination" autocomplete="off" DatePicker="1" class="form-control" />
+                                <span asp-validation-for="LastMedicalExamination" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label asp-for="NextMedicalExamination" class="control-label">تاریخ معاینه ی بعدی(درصورت وارد نکردن سیستم تاریخ بعدی را برای شما حساب میکند)</label>
+                                <input asp-for="NextMedicalExamination" autocomplete="off" DatePicker="2" class="form-control" />
+                                <span asp-validation-for="NextMedicalExamination" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+                    <div class="row">
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label">نام پزشک در سامانه ی دکترفم(اختیاری)</label>
+                                <input id="autFilter" asp-for="DoctorUserName" class="form-control" placeholder="اگر پزشک مورد نطر در سامانه حضور دارد آن را انتخاب کنید." />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+
+                                <input type="submit" value="ثبت  " class="btn-Accept" />
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+

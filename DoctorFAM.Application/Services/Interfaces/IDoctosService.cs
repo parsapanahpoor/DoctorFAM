@@ -189,6 +189,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         #region Site Side 
 
+        //Get List Of Doctors Name
+        Task<List<string>?> GetListOfDoctorsName();
+
         //Get List Of All Doctors
         Task<List<ListOfAllDoctorsViewModel>> ListOfDoctors();
 
@@ -206,6 +209,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Get List Of Doctors With Diabet Speciality
         Task<List<Doctor>?> FilterDoctorsWithDiabetSpecialitySiteSide(FilterDoctorsWithDiabetSpecialitySiteSideViewModel filter);
+
+        //Get Doctr Name With PArt Of Name
+        Task<List<string>?> GetListOfDoctorsName(string doctorNamePart);
 
         #endregion
 

@@ -1,9 +1,11 @@
 ﻿using DoctorFAM.Data.DbContext;
+using DoctorFAM.Data.Migrations;
 using DoctorFAM.Domain.Entities.HealthInformation;
 using DoctorFAM.Domain.Entities.PriodicExamination;
 using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.Access;
 using DoctorFAM.Domain.ViewModels.Admin.MedicalExamination;
+using DoctorFAM.Domain.ViewModels.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using System;
@@ -74,6 +76,42 @@ namespace DoctorFAM.Data.Repository
         #region User Panel Side 
 
 
+
+        #endregion
+
+        #region Site Side
+
+        //Get List Of Medical Examinations
+        public async Task<List<MedicalExamination>?> GetListOfMedicalExaminations()
+        {
+            return await _context.MedicalExaminations.Where(p=> !p.IsDelete)
+                                                .OrderByDescending(p=> p.CreateDate).ToListAsync();          
+        }
+
+        //Get List Of Medical Examinations With Select List 
+        public async Task<List<SelectListViewModel>> GetListOfMedicalExaminationsWithSelectList()
+        {
+            return await _context.MedicalExaminations.Where(s => !s.IsDelete)
+                .Select(s => new SelectListViewModel
+                {
+                    Id = s.Id,
+                    Title = s.MedicalExaminationName
+                }).ToListAsync();
+        }
+
+        //Add Priodic Examination From Site 
+        public async Task AddPriodicExaminationFromSite(PriodicPatientsExamination model)
+        {
+            await _context.PriodicPatientsExamination.AddAsync(model);
+            await _context.SaveChangesAsync();
+        }
+
+        //Get User Priodic Examination By User Id
+        public async Task<List<PriodicPatientsExamination>?> GetUserPriodicExaminationByUserId(ulong userId)
+        {
+            return await _context.PriodicPatientsExamination.Include(p => p.MedicalExamination)
+                            .Where(p => !p.IsDelete && p.UserId == userId).ToListAsync();
+        }
 
         #endregion
 

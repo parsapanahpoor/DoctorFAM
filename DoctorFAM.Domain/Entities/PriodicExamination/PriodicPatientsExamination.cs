@@ -22,5 +22,11 @@ namespace DoctorFAM.Domain.Entities.PriodicExamination
         public ulong? DoctorUserId { get; set; }
 
         #endregion
+
+        #region relation 
+
+        public MedicalExamination MedicalExamination { get; set; }
+
+        #endregion
     }
 }

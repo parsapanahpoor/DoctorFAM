@@ -384,6 +384,8 @@ namespace DoctorFAM.Data.DbContext
 
         public DbSet<MedicalExamination> MedicalExaminations { get; set; }
 
+        public DbSet<PriodicPatientsExamination> PriodicPatientsExamination { get; set; }
+
         #endregion
 
         #endregion

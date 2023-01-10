@@ -28,6 +28,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace DoctorFAM.Data.Repository
 {
@@ -50,20 +51,20 @@ namespace DoctorFAM.Data.Repository
         public async Task UpdateDiabetConsultantResume(DiabetConsultantsResume diabet)
         {
             _context.DiabetConsultantsResumes.Update(diabet);
-            await _context.SaveChangesAsync(); 
+            await _context.SaveChangesAsync();
         }
 
         //Get Diabet Consualtant Resume By Id
         public async Task<DiabetConsultantsResume?> GetDiabetConsualtantResumeById(ulong resumeId)
         {
-            return await _context.DiabetConsultantsResumes.FirstOrDefaultAsync(p=> !p.IsDelete && p.Id == resumeId);
+            return await _context.DiabetConsultantsResumes.FirstOrDefaultAsync(p => !p.IsDelete && p.Id == resumeId);
         }
 
         //Get Doctor Diabet Consultant Resumes By Doctor User Id 
         public async Task<List<DiabetConsultantsResume>?> GetDoctorDiabetConsultantResumesByDoctorUserId(ulong doctorUserId)
         {
             return await _context.DiabetConsultantsResumes.Where(p => !p.IsDelete && p.UserId == doctorUserId)
-                                                            .OrderByDescending(p=> p.CreateDate).ToListAsync();                        
+                                                            .OrderByDescending(p => p.CreateDate).ToListAsync();
         }
 
         //Upload Resume From Diabet Consultant 
@@ -679,6 +680,17 @@ namespace DoctorFAM.Data.Repository
             return model;
         }
 
+        //Get List Of Doctors Name
+        public async Task<List<string>?> GetListOfDoctorsName()
+        {
+            return await _context.Organizations
+                .Where(s => !s.IsDelete && s.OrganizationType == Domain.Enums.Organization.OrganizationType.DoctorOffice && s.OrganizationInfoState == OrganizationInfoState.Accepted)
+                .Include(p => p.User)
+                .OrderByDescending(s => s.CreateDate)
+                .Select(p=> p.User.Username)
+                .ToListAsync();
+        }
+
         #endregion
 
         #region User Panel Side 
@@ -899,7 +911,7 @@ namespace DoctorFAM.Data.Repository
                     .ThenInclude(p => p.DoctorsInfos)
                     .Include(p => p.Doctor)
                     .ThenInclude(p => p.User)
-                    .Where(s => !s.IsDelete && (s.SpecialityId == 1 || s.SpecialityId == 3 || s.SpecialityId == 4 ))
+                    .Where(s => !s.IsDelete && (s.SpecialityId == 1 || s.SpecialityId == 3 || s.SpecialityId == 4))
                     .OrderByDescending(s => s.CreateDate)
                     .Select(p => p.Doctor)
                     .ToListAsync();

@@ -21,7 +21,7 @@ namespace DoctorFAM.Domain.Entities.PriodicExamination
 
         #region Relations
 
-
+        public ICollection<PriodicPatientsExamination> PriodicPatientsExaminations { get; set; }
 
         #endregion
     }

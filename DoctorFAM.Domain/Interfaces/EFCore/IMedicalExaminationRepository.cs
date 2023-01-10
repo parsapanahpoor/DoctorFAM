@@ -1,5 +1,6 @@
 ﻿using DoctorFAM.Domain.Entities.PriodicExamination;
 using DoctorFAM.Domain.ViewModels.Admin.MedicalExamination;
+using DoctorFAM.Domain.ViewModels.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,22 @@ namespace DoctorFAM.Domain.Interfaces.EFCore
 
         //Edit Medical Examination Admin Side 
         Task EditMedicalExaminationAdminSide(MedicalExamination model);
+
+        #endregion
+
+        #region Site Side 
+
+        //Get List Of Medical Examinations
+        Task<List<MedicalExamination>?> GetListOfMedicalExaminations();
+
+        //Get List Of Medical Examinations With Select List 
+        Task<List<SelectListViewModel>> GetListOfMedicalExaminationsWithSelectList();
+
+        //Add Priodic Examination From Site 
+        Task AddPriodicExaminationFromSite(PriodicPatientsExamination model);
+
+        //Get User Priodic Examination By User Id
+        Task<List<PriodicPatientsExamination>?> GetUserPriodicExaminationByUserId(ulong userId);
 
         #endregion
     }

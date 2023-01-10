@@ -1,5 +1,7 @@
 ﻿using DoctorFAM.Domain.Entities.PriodicExamination;
 using DoctorFAM.Domain.ViewModels.Admin.MedicalExamination;
+using DoctorFAM.Domain.ViewModels.Common;
+using DoctorFAM.Domain.ViewModels.Site.MedicalExamination;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +31,22 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Delete Medical Examination Admin Side 
         Task<bool> DeleteMedicalExaminationAdminSide(ulong medicalExamination);
+
+        #endregion
+
+        #region Site Side 
+
+        //Get List Of Medical Examinations
+        Task<List<MedicalExamination>?> GetListOfMedicalExaminations();
+
+        //Get List Of Medical Examinations With Select List 
+        Task<List<SelectListViewModel>> GetListOfMedicalExaminationsWithSelectList();
+
+        //Create Priodic Examination From Site Side 
+        Task<CreatePriodicEcaminationFromUser> CreatePriodicPatientExaminationSiteSideViewModel(CreatePriodicPatientExaminationSiteSideViewModel model, ulong userId);
+
+        //List Of User Priodic Patient Examination 
+        Task<List<ListOfUserPriodicExaminationSiteSideViewModel>?> ListOfUserPriodicPatientExamination(ulong userId);
 
         #endregion
 

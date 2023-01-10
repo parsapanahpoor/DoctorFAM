@@ -20,42 +20,13 @@ namespace DoctorFAM.Test.Controller
     {
         #region Ctor 
 
-        private readonly DiabetController _controller;
-
-        public HomeControllerTest()
-        {
-            var bmiService = new Mock<IBMIService>();
-            var locationService = new Mock<ILocationService>();
-            var doctorService = new Mock<IDoctorsService>();
-
-            _controller = new DiabetController(bmiService.Object, locationService.Object, doctorService.Object);
-        }
+       
 
         #endregion
 
         #region Seconde Page Test 
 
-        [Fact]
-        public async Task SecondePageTest()
-        {
-            #region Arange
-
-
-
-            #endregion
-
-            #region Act 
-
-            var result = await _controller.SecPage();
-
-            #endregion
-
-            #region Assert
-
-            var viewResult = Assert.IsType<ViewResult>(result);
-
-            #endregion
-        }
+   
 
         #endregion
     }

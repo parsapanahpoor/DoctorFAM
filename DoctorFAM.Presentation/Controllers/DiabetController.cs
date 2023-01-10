@@ -3,8 +3,11 @@ using DoctorFAM.Application.Interfaces;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.Entities.BMI;
 using DoctorFAM.Domain.ViewModels.Site.Diabet;
+using DoctorFAM.Domain.ViewModels.Site.MedicalExamination;
 using DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Win32;
 
 namespace DoctorFAM.Web.Controllers
 {
@@ -15,12 +18,15 @@ namespace DoctorFAM.Web.Controllers
         private readonly IBMIService _bmiService;
         private readonly ILocationService _locationService;
         private readonly IDoctorsService _doctorsService;
+        private readonly IMedicalExaminationService _medicalExamination;
 
-        public DiabetController(IBMIService bmiService,ILocationService locationService, IDoctorsService doctorsService)
+        public DiabetController(IBMIService bmiService, ILocationService locationService, IDoctorsService doctorsService
+                                    , IMedicalExaminationService medicalExamination)
         {
             _bmiService = bmiService;
             _locationService = locationService;
             _doctorsService = doctorsService;
+            _medicalExamination = medicalExamination;
         }
 
         #endregion
@@ -36,7 +42,7 @@ namespace DoctorFAM.Web.Controllers
 
         #region Index Page Of Diabet Part
 
-        public IActionResult Index(int? bmiResult , decimal? gfrResult)
+        public IActionResult Index(int? bmiResult, decimal? gfrResult)
         {
             #region Send BMI && GFR Result To View 
 
@@ -87,11 +93,11 @@ namespace DoctorFAM.Web.Controllers
             {
                 var res = await _bmiService.ProcessBMI(bmi, User.GetUserId());
 
-                return RedirectToAction(nameof(Index) , new { bmiResult = res.BMIResult });
+                return RedirectToAction(nameof(Index), new { bmiResult = res.BMIResult });
             }
             else
             {
-                var res = await _bmiService.ProcessBMI(bmi , null);
+                var res = await _bmiService.ProcessBMI(bmi, null);
 
                 return RedirectToAction(nameof(Index), new { bmiResult = res.BMIResult });
             }
@@ -130,7 +136,7 @@ namespace DoctorFAM.Web.Controllers
             {
                 var res = await _bmiService.ProcessGFR(gfr, null);
 
-                return RedirectToAction(nameof(Index), new { gfrResult = (res / 100 )});
+                return RedirectToAction(nameof(Index), new { gfrResult = (res / 100) });
             }
 
             return RedirectToAction(nameof(Index));
@@ -246,13 +252,77 @@ namespace DoctorFAM.Web.Controllers
 
         #region Create Medical Examination From User
 
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> CreateMedicalExaminationFromUser()
+        {
+            #region View Bags
 
+            ViewBag.ListOfMedicalExamination = await _medicalExamination.GetListOfMedicalExaminationsWithSelectList();
+
+            #endregion
+
+            return View();
+        }
+
+        [Authorize]
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateMedicalExaminationFromUser(CreatePriodicPatientExaminationSiteSideViewModel model)
+        {
+            #region Model State Validation 
+
+            if (!ModelState.IsValid)
+            {
+                TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+                return View(model);
+            }
+
+            #endregion
+
+            #region Add Record Method 
+
+            var result = await _medicalExamination.CreatePriodicPatientExaminationSiteSideViewModel(model , User.GetUserId());
+
+            switch (result)
+            {
+                case CreatePriodicEcaminationFromUser.Success:
+                    TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+                    return RedirectToAction(nameof(ListOfUserExamination));
+
+                case CreatePriodicEcaminationFromUser.DoctorNotFound:
+                    TempData[ErrorMessage] = "پزشک مورد نظر یافت نشده است.";
+                    break;
+
+                case CreatePriodicEcaminationFromUser.MedicalExaminationNotFound:
+                    TempData[ErrorMessage] = "معاینه ی انتخابی صحیح نمی باشد.";
+                    break;
+
+                case CreatePriodicEcaminationFromUser.UserNotfound:
+                    TempData[ErrorMessage] = "کاربر موردنطر یافت نشده است.";
+                    break;
+            }
+
+            #endregion
+
+            TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+            return View(model);
+        }
 
         #endregion
 
         #region List Of User Examination 
 
+        [Authorize]
+        public async Task<IActionResult> ListOfUserExamination()
+        {
+            #region Fill Model
 
+
+
+            #endregion
+
+            return View();
+        }
 
         #endregion
 

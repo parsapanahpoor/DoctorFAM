@@ -201,6 +201,9 @@ namespace DoctorFAM.Domain.Interfaces
 
         #region Site Side 
 
+        //Get List Of Doctors Name
+        Task<List<string>?> GetListOfDoctorsName();
+
         //Get List Of All Doctors
         Task<List<ListOfAllDoctorsViewModel>> ListOfDoctors();
 

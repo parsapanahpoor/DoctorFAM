@@ -2231,6 +2231,12 @@ namespace DoctorFAM.Application.Services.Implementation
             return await _doctorRepository.FilterDoctorsInfoAdminSide(filter);
         }
 
+        //Get List Of Doctors Name
+        public async Task<List<string>?> GetListOfDoctorsName()
+        {
+            return await _doctorRepository.GetListOfDoctorsName(); 
+        }
+
         public async Task<DoctorsInfo?> GetDoctorsInfoById(ulong doctorInfoId)
         {
             return await _doctorRepository.GetDoctorsInfoById(doctorInfoId);
@@ -2859,6 +2865,26 @@ namespace DoctorFAM.Application.Services.Implementation
         public async Task<List<Doctor>?> FilterDoctorsWithDiabetSpecialitySiteSide(FilterDoctorsWithDiabetSpecialitySiteSideViewModel filter)
         {
             return await _doctorRepository.FilterDoctorsWithDiabetSpecialitySiteSide(filter);
+        }
+
+        //Get Doctr Name With PArt Of Name
+        public async Task<List<string>?> GetListOfDoctorsName(string doctorNamePart)
+        {
+            //Get List Of Doctors Name 
+            var doctorsNames = await _doctorRepository.GetListOfDoctorsName();
+
+            //New Instance Of Return Moldel
+            List<string>? returnModel = new List<string>();
+
+            foreach (var doctorName in doctorsNames)
+            {
+                if (doctorName.Contains(doctorNamePart))
+                {
+                    returnModel.Add(doctorName); 
+                }
+            }
+
+            return returnModel;
         }
 
         #endregion

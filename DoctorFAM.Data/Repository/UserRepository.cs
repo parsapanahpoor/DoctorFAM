@@ -28,6 +28,12 @@ namespace DoctorFAM.Data.Repository
 
         #region Site Side
 
+        //Get User By Username
+        public async Task<User?> GetUserByUsername(string userName)
+        {
+            return await _context.Users.FirstOrDefaultAsync(p => !p.IsDelete && p.Username == userName);
+        }
+
         //Add Cooperation Request
         public async Task AddCooperationRequest(DoctorFAM.Domain.Entities.CooperationRequest.CooperationRequest request)
         {

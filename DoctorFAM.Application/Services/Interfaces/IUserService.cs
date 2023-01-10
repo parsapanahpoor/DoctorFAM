@@ -66,6 +66,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         #region Site Side
 
+        //Get User By Username
+        Task<User?> GetUserByUsername(string userName);
+
         //Validate For NAtional Id 
         Task<bool> IsValidNationalIdForUserEditByAdmin(string mobile, ulong userId);
 
