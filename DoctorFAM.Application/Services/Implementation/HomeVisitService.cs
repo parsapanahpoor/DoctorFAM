@@ -24,12 +24,14 @@ using DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace DoctorFAM.Application.Services.Implementation
 {
@@ -51,7 +53,7 @@ namespace DoctorFAM.Application.Services.Implementation
         private readonly IDoctorsRepository _doctorsRepository;
         private readonly IWorkAddressService _workAddressService;
 
-        public HomeVisitService( IHomeVisitRepository homeVisit, IRequestService requestService,
+        public HomeVisitService(IHomeVisitRepository homeVisit, IRequestService requestService,
                                 IUserService userService, IPatientService patientService, ILocationService locationServoce
                                 , IWalletRepository walletRepository, IPopulationCoveredRepository populationCovered, ISiteSettingService siteSettingService,
                                     IOrganizationService organizationService, IHomePharmacyRepository pharmacyService, IDoctorsService doctorsService, IDoctorsRepository doctorsRepository
@@ -292,7 +294,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 gender = Gender.Male;
             }
 
-            var returnValue = await _homeVisit.GetActivatedAndDoctorsInterestHomeVisit(requetsDetail.CountryId, requetsDetail.StateId, requetsDetail.CityId , gender);
+            var returnValue = await _homeVisit.GetActivatedAndDoctorsInterestHomeVisit(requetsDetail.CountryId, requetsDetail.StateId, requetsDetail.CityId, gender);
 
             #endregion
 
@@ -326,7 +328,7 @@ namespace DoctorFAM.Application.Services.Implementation
             return true;
         }
 
-        public async Task<bool> PayHomeVisitTariff(ulong userId, int price , ulong? requestId)
+        public async Task<bool> PayHomeVisitTariff(ulong userId, int price, ulong? requestId)
         {
             if (!await _userService.IsExistUserById(userId))
             {
@@ -489,7 +491,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
                 cost = cost + (DistanceFromCityTarriff * distancePerTenKilometer);
 
-                DistanceFromCityTarriff =  (DistanceFromCityTarriff * distancePerTenKilometer);
+                DistanceFromCityTarriff = (DistanceFromCityTarriff * distancePerTenKilometer);
             }
 
             if (homeVisitRequestDetail.EmergencyVisit == true)
@@ -503,7 +505,7 @@ namespace DoctorFAM.Application.Services.Implementation
             {
                 cost = cost + ((homeVisitTariff * 20) / 100);
 
-                model.FemalePhysician =   ((int)((homeVisitTariff * 20) / 100));
+                model.FemalePhysician = ((int)((homeVisitTariff * 20) / 100));
             }
 
             if (dateTimeDetail.StartTime >= 22 || dateTimeDetail.EndTime <= 8)
@@ -548,6 +550,141 @@ namespace DoctorFAM.Application.Services.Implementation
             #endregion
 
             return model;
+        }
+
+        //Fill Request Seleted Features View Model 
+        public async Task<HomeVisitRequestFeatureViewModel> FillRequestSeletedFeaturesViewModel(ulong requestId)
+        {
+            //Initial Instance For Model
+            HomeVisitRequestFeatureViewModel model = new HomeVisitRequestFeatureViewModel()
+            {
+                EmergencyVisit = false,
+                RequestId = requestId,
+                ListOfTariffs = await _siteSettingService.GetListOfTariffForHomeVisitHealthHouseServices(),
+                FemalePhysician = false,
+            };
+
+            #region Get Request Selected Tariffs 
+
+            var selectedTariffs = await _siteSettingService.GetTariffBySelectedTariffs(requestId);
+            if (selectedTariffs != null && selectedTariffs.Any())
+            {
+                model.ListOfUserSelectedTAriff = selectedTariffs;
+            }
+
+            #endregion
+
+            #region Get Home Visit Request Detail 
+
+            var homeVisitRequestDetail = await GetHomeVisitRequestDetailByRequestId(requestId);
+            if (homeVisitRequestDetail != null)
+            {
+                model.EmergencyVisit = homeVisitRequestDetail.EmergencyVisit;
+                model.FemalePhysician = homeVisitRequestDetail.FemalePhysician;
+            }
+
+            #endregion
+
+            return model;
+        }
+
+        //Add Feature For Request Selected Features
+        public async Task<bool> AddFeatureForRequestSelectedFeatures(ulong requestId, ulong tarrifId)
+        {
+            #region Get Tarrif By Id 
+
+            var tariff = await _siteSettingService.GetHealthHouseTariffServiceById(tarrifId);
+            if (tariff == null || !tariff.HomeVisit) return false;
+
+            #endregion
+
+            #region Add Request selected Tariff Request 
+
+            RequestSelectedHealthHouseTariff selectedtariff = new RequestSelectedHealthHouseTariff()
+            {
+                CreateDate = DateTime.Now,
+                RequestId = requestId,
+                TariffForHealthHouseServiceId = tarrifId
+            };
+
+            //Add Request Selected Tariff To Data Base 
+            await _siteSettingService.AddRequestSelectedHealtHouseTariffWithoutSavechanges(selectedtariff);
+            await _homeVisit.Savechanges();
+
+            #endregion
+
+            return true;
+        }
+
+        //Minus Feature For Request Selectde Features
+        public async Task<bool> MinusFeatureForRequestSelectdeFeatures(ulong requestId, ulong tarrifId)
+        {
+            #region Get Tarrif By Id 
+
+            var tariff = await _siteSettingService.GetHealthHouseTariffServiceById(tarrifId);
+            if (tariff == null || !tariff.HomeVisit) return false;
+
+            #endregion
+
+            #region Check Validation  
+
+            var selectedFeature = await _homeVisit.GetrequestSelectedTariffByRequestIdAndTarrifId(requestId, tarrifId);
+            if (selectedFeature == null) return false;
+
+            //Delete Selected Feature
+            selectedFeature.IsDelete = true;
+
+            //Update Method 
+            await _homeVisit.UpdaterequestSelectedFeatureState(selectedFeature);
+
+            #endregion
+
+            return true;
+        }
+
+        //Add Or Edit Home Visit Request Detail State  
+        public async Task<bool> AddOrEditHomeVisitRequestDetailState(Request request, bool femalDoctor, bool emergancy)
+        {
+            #region Get Home Visit Request Detail 
+
+            var homeVisitRequestDetail = await GetHomeVisitRequestDetailByRequestId(request.Id);
+
+            #endregion
+
+            #region Add 
+
+            if (homeVisitRequestDetail == null)
+            {
+                HomeVisitRequestDetail visitRequestDetail = new HomeVisitRequestDetail()
+                {
+                    EmergencyVisit = emergancy,
+                    FemalePhysician = femalDoctor,
+                    RequestId = request.Id,
+                };
+
+                await _homeVisit.AddHomeVisitRequestDetailvisitRequestDetail(visitRequestDetail);
+
+                return true;
+            }
+
+            #endregion
+
+            #region Edit
+
+            if (homeVisitRequestDetail != null )
+            {
+                homeVisitRequestDetail.FemalePhysician = femalDoctor;
+                homeVisitRequestDetail.EmergencyVisit = emergancy;
+
+                //Update Home Visit Requst Detail
+                await _homeVisit.UpdateHomeVisitRequstDetail(homeVisitRequestDetail);
+
+                return true;
+            }
+
+            #endregion
+
+            return false;
         }
 
         #endregion
@@ -661,7 +798,7 @@ namespace DoctorFAM.Application.Services.Implementation
         }
 
         #endregion
-         
+
         #region Admin Side
 
         public async Task<FilterHomeVisistViewModel> FilterHomeVisit(FilterHomeVisistViewModel filter)
@@ -810,15 +947,15 @@ namespace DoctorFAM.Application.Services.Implementation
         }
 
         //Remove Home Visit Request From User
-        public async Task<bool> RemoveHomeVisitRequestFromUser(Request request , ulong userId)
-        {           
+        public async Task<bool> RemoveHomeVisitRequestFromUser(Request request, ulong userId)
+        {
             #region Get Request Date Time Detail 
 
             var dateTimeDetail = await _pharmacyService.GetRequestDateTimeDetailByRequestDetailId(request.Id);
             if (dateTimeDetail == null) return false;
             if ((dateTimeDetail.SendDate.Year == DateTime.Now.Year && DateTime.Now.DayOfYear > dateTimeDetail.SendDate.DayOfYear)
                 || dateTimeDetail.SendDate.Year < DateTime.Now.Year) return false;
-            if (dateTimeDetail.SendDate == DateTime.Now && dateTimeDetail.SendDate.Hour <= DateTime.Now.Hour )
+            if (dateTimeDetail.SendDate == DateTime.Now && dateTimeDetail.SendDate.Hour <= DateTime.Now.Hour)
             {
                 return false;
             }
@@ -852,7 +989,7 @@ namespace DoctorFAM.Application.Services.Implementation
                     TransactionType = TransactionType.Deposit,
                     GatewayType = GatewayType.Zarinpal,
                     PaymentType = PaymentType.HomeVisit,
-                    Price = (int)(((double)tranaction.Price * (double)30) / (double)100 ),
+                    Price = (int)(((double)tranaction.Price * (double)30) / (double)100),
                     Description = "عودت وجه برای لغو ویزیت در منزل",
                     IsFinally = true,
                     RequestId = request.Id

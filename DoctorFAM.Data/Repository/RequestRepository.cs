@@ -30,6 +30,8 @@ namespace DoctorFAM.Data.Repository
 
         #region Request 
 
+        //Get Req
+
         public async Task<bool> IsExistRequestByRequestId(ulong requestId)
         {
             return await _context.Requests.AnyAsync(p => p.Id == requestId && !p.IsDelete);

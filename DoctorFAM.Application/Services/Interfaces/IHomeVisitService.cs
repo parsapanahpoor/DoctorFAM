@@ -40,6 +40,18 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Fill Home Visit Request Invoice View Model
         Task<HomeVisitRequestInvoiceViewModel?> FillHomeVisitRequestInvoiceViewModel(Request request);
 
+        //Fill Request Seleted Features View Model 
+        Task<HomeVisitRequestFeatureViewModel> FillRequestSeletedFeaturesViewModel(ulong requestId);
+
+        //Add Feature For Request Selected Features
+        Task<bool> AddFeatureForRequestSelectedFeatures(ulong requestId, ulong tarrifId);
+
+        //Minus Feature For Request Selectde Features
+        Task<bool> MinusFeatureForRequestSelectdeFeatures(ulong requestId, ulong tarrifId);
+
+        //Add Or Edit Home Visit Request Detail State  
+        Task<bool> AddOrEditHomeVisitRequestDetailState(Request request, bool femalDoctor, bool emergancy);
+
         #endregion
 
         #region Doctor Panel Side

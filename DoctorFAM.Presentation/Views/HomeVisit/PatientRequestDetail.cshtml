@@ -214,58 +214,11 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6">
-                            <label asp-for="FemalePhysician">آیا به پزشک خانم نیاز دارید؟</label>
-                            <select class="form-control" asp-for="FemalePhysician">
-                                <option selected="selected" value="false"> خیر </option>
-                                <option value="true"> بله </option>
-                            </select>
-                        </div>
-
-                        <div class="col-md-6">
-                            <label asp-for="EmergencyVisit">آیا درخواست اورژانسی دارید ؟</label>
-                            <select class="form-control" asp-for="EmergencyVisit">
-                                <option selected="selected" value="false"> خیر </option>
-                                <option value="true"> بله </option>
-                            </select>
-                        </div>
-
                     </div>
 
                 </div>
 
                 <div class="col-md-12">
-
-                    <div class="col-md-12">
-                        <p>شما می توانید با انتخاب نیاز مندی های خود از موارد زیر درخواست خود را تکمیل کنید : </p>
-                        <div>
-                            @if (Model.ListOfTariffs != null && Model.ListOfTariffs.Any())
-                            {
-                                <table class="table table-hover table-bordered tc vm text-center align-items-center">
-
-                                    <tr>
-                                        <th class=" text-center align-items-center">عنوان</th>
-                                        <th class=" text-center align-items-center">مبلغ</th>
-                                        <th class=" text-center align-items-center">انتخاب </th>
-                                    </tr>
-
-                                    @foreach (var item in Model.ListOfTariffs)
-                                    {
-                                        <tr class="tc vm text-center align-items-center" remove-ajax-item="@item.Id">
-
-                                            <td class=" text-center align-items-center">@item.Title</td>
-                                            <td class=" text-center align-items-center">@item.Price ریال</td>
-
-                                            <td class=" text-center align-items-center">
-                                                <input name="SelectedTariffs" type="checkbox" style="height:30px;" value="@item.Id" class="form-control" />
-                                            </td>
-
-                                        </tr>
-                                    }
-                                </table>
-                            }
-                        </div>
-                    </div>
 
                     <hr />
                     <div class="col-md-12  text-center mt-4">

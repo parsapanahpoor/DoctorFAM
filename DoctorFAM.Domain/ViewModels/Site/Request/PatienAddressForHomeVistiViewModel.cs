@@ -66,16 +66,6 @@ namespace DoctorFAM.Domain.ViewModels.Site.Request
         [RegularExpression(@"2[0-4]|1[0-9]|[1-9]", ErrorMessage = "ساعت وارد شده معتبر نمی باشد ")]
         public int EndTime { get; set; }
 
-        [Display(Name = "پزشک خانم")]
-        public bool FemalePhysician { get; set; }
-
-        [Display(Name = "ویزیت اورژانسی")]
-        public bool EmergencyVisit { get; set; }
-
-        public List<TariffForHealthHouseServices>? ListOfTariffs { get; set; }
-
-        public List<ulong>? SelectedTariffs { get; set; }
-
         #endregion
     }
 }

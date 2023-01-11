@@ -334,42 +334,6 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #endregion
 
-            #region Add Patient Home Visit Request Detail 
-
-            HomeVisitRequestDetail visitRequestDetail = new HomeVisitRequestDetail()
-            {
-                EmergencyVisit = model.EmergencyVisit,
-                FemalePhysician = model.FemalePhysician,
-                RequestId = model.RequestId,
-            };
-
-            await _request.AddHomeVisitRequestDetail(visitRequestDetail);
-
-            #endregion
-
-            #region Add Home Visit selected Tariff Request 
-
-            if (model.SelectedTariffs != null && model.SelectedTariffs.Any())
-            {
-                foreach (var selectedTariff in model.SelectedTariffs)
-                {
-                    if (await _siteSettingService.IsExistAnyTariffById(selectedTariff))
-                    {
-                        RequestSelectedHealthHouseTariff tariff = new RequestSelectedHealthHouseTariff()
-                        {
-                            CreateDate = DateTime.Now,
-                            RequestId = model.RequestId,
-                            TariffForHealthHouseServiceId = selectedTariff
-                        };
-
-                        //Add Request Selected Tariff To Data Base 
-                        await _siteSettingService.AddRequestSelectedHealtHouseTariffWithoutSavechanges(tariff);
-                    }
-                }
-            }
-
-            #endregion
-
             #region Update Reuqest State
 
             #region Get Request 
@@ -380,7 +344,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #region Update request
 
-            requestState.RequestState = Domain.Enums.Request.RequestState.TramsferringToTheBankingPortal;
+            requestState.RequestState = Domain.Enums.Request.RequestState.WaitingForCompleteInformationFromUser;
 
             await _request.UpdateRequest(requestState);
 
@@ -470,7 +434,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #region Update request
 
-            requestState.RequestState = Domain.Enums.Request.RequestState.TramsferringToTheBankingPortal;
+            requestState.RequestState = Domain.Enums.Request.RequestState.WaitingForCompleteInformationFromUser;
 
             await _request.UpdateRequest(requestState);
 

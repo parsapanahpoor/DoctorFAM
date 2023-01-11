@@ -22,6 +22,7 @@ using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.Text;
+using DoctorFAM.Domain.ViewModels.Site.HomeVisitRequest;
 
 namespace DoctorFAM.Web.Controllers
 {
@@ -43,9 +44,9 @@ namespace DoctorFAM.Web.Controllers
         private readonly IWalletService _walletService;
 
         public HomeVisitController(IHomeVisitService homeVisitService, ILocationService locationService, IPatientService patientService
-                                    , IRequestService requestService, IUserService userService, ISiteSettingService siteSettingService ,
+                                    , IRequestService requestService, IUserService userService, ISiteSettingService siteSettingService,
                                         IPopulationCoveredService populationCovered, IHubContext<NotificationHub> notificationHub
-                                                , INotificationService notificationService , IWalletService walletService)
+                                                , INotificationService notificationService, IWalletService walletService)
         {
             _homeVisitService = homeVisitService;
             _locationService = locationService;
@@ -88,7 +89,7 @@ namespace DoctorFAM.Web.Controllers
         #region Patient Detail
 
         [HttpGet]
-        public async Task<IActionResult> PatientDetails(ulong requestId , ulong? populationCoveredId)
+        public async Task<IActionResult> PatientDetails(ulong requestId, ulong? populationCoveredId)
         {
             #region Data Validation
 
@@ -115,7 +116,7 @@ namespace DoctorFAM.Web.Controllers
             if (populationCoveredId != null && populationCoveredId.HasValue)
             {
                 //Fill Page Model From Selected Population Covered Data
-                var mode = await _homeVisitService.FillPatientViewModelFromSelectedPopulationCoveredData(populationCoveredId.Value , requestId , User.GetUserId());
+                var mode = await _homeVisitService.FillPatientViewModelFromSelectedPopulationCoveredData(populationCoveredId.Value, requestId, User.GetUserId());
                 if (mode == null) return NotFound();
 
                 return View(mode);
@@ -238,7 +239,6 @@ namespace DoctorFAM.Web.Controllers
             {
                 RequestId = requestId,
                 PatientId = patientId,
-                ListOfTariffs = await _siteSettingService.GetListOfTariffForHomeVisitHealthHouseServices()
             });
         }
 
@@ -248,7 +248,6 @@ namespace DoctorFAM.Web.Controllers
             #region Page Data
 
             ViewData["Countries"] = await _locationService.GetAllCountriesForHomeVisit();
-            patientRequest.ListOfTariffs = await _siteSettingService.GetListOfTariffForHomeVisitHealthHouseServices();
 
             #endregion
 
@@ -275,7 +274,7 @@ namespace DoctorFAM.Web.Controllers
             {
                 case CreatePatientAddressResult.Success:
                     TempData[SuccessMessage] = "عملیات با موفقیت انجام شده است ";
-                    return RedirectToAction("HomeVisitInvoice", "HomeVisit", new { requestId = patientRequest.RequestId });
+                    return RedirectToAction("RequestFeatures", "HomeVisit", new { requestId = patientRequest.RequestId });
 
                 case CreatePatientAddressResult.Failed:
                     TempData[ErrorMessage] = "عملیات با شکست مواجه شده است ";
@@ -298,6 +297,133 @@ namespace DoctorFAM.Web.Controllers
 
             return View(patientRequest);
         }
+
+        #endregion
+
+        #region Request Features
+
+        #region Request Features
+
+        [HttpGet]
+        public async Task<IActionResult> RequestFeatures(ulong requestId)
+        {
+            #region Get Request By Id
+
+            var request = await _requestService.GetRequestById(requestId);
+            if (request == null) return NotFound();
+
+            if (!await _patientService.IsExistPatientById(request.PatientId.Value) || request.UserId != User.GetUserId())
+            {
+                return NotFound();
+            }
+
+            #endregion
+
+            #region Initial Model
+
+            var model = await _homeVisitService.FillRequestSeletedFeaturesViewModel(requestId);
+
+            #endregion
+
+            return View(model);
+        }
+
+        #endregion
+
+        #region HomeVisitRequestFeatureViewModel
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> HomeVisitRequestFeatureViewModel(HomeVisitRequestFeatureViewModel model)
+        {
+            #region Get Request By Id
+
+            var request = await _requestService.GetRequestById(model.RequestId);
+            if (request == null)
+            {
+                TempData[ErrorMessage] = ".اطلاعات وارد شده صحیح نمی باشد";
+                return RedirectToAction(nameof(RequestFeatures), new { requestId = model.RequestId });
+            }
+
+            if (!await _patientService.IsExistPatientById(request.PatientId.Value) || request.UserId != User.GetUserId())
+            {
+                TempData[ErrorMessage] = ".اطلاعات وارد شده صحیح نمی باشد";
+                return RedirectToAction(nameof(RequestFeatures), new { requestId = model.RequestId });
+            }
+
+            #endregion
+
+            #region Update Or Add 
+
+            var res = await _homeVisitService.AddOrEditHomeVisitRequestDetailState(request, model.FemalePhysician, model.EmergencyVisit);
+            if (res)
+            {
+                TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+                return RedirectToAction(nameof(RequestFeatures), new { requestId = model.RequestId });
+            }
+
+            #endregion
+
+            TempData[ErrorMessage] = ".اطلاعات وارد شده صحیح نمی باشد";
+            return RedirectToAction(nameof(RequestFeatures), new { requestId = model.RequestId });
+        }
+
+        #endregion
+
+        #region Add Feature For Request
+
+        [HttpGet]
+        public async Task<IActionResult> AddFeatureForRequest(ulong featureId, ulong requestId, bool plus, bool minus)
+        {
+            #region Get Request By Id
+
+            var request = await _requestService.GetRequestById(requestId);
+            if (request == null)
+            {
+                TempData[ErrorMessage] = ".اطلاعات وارد شده صحیح نمی باشد";
+                return RedirectToAction(nameof(RequestFeatures), new { requestId = requestId });
+            }
+
+            if (!await _patientService.IsExistPatientById(request.PatientId.Value) || request.UserId != User.GetUserId())
+            {
+                TempData[ErrorMessage] = ".اطلاعات وارد شده صحیح نمی باشد";
+                return RedirectToAction(nameof(RequestFeatures), new { requestId = requestId });
+            }
+
+            #endregion
+
+            #region Plus Method 
+
+            if (plus)
+            {
+                var res = await _homeVisitService.AddFeatureForRequestSelectedFeatures(requestId, featureId);
+                if (res)
+                {
+                    TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+                    return RedirectToAction(nameof(RequestFeatures), new { requestId = requestId });
+                }
+            }
+
+            #endregion
+
+            #region Minus Method 
+
+            if (minus)
+            {
+                var res = await _homeVisitService.MinusFeatureForRequestSelectdeFeatures(requestId, featureId);
+                if (res)
+                {
+                    TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+                    return RedirectToAction(nameof(RequestFeatures), new { requestId = requestId });
+                }
+            }
+
+            #endregion
+
+            TempData[ErrorMessage] = ".اطلاعات وارد شده صحیح نمی باشد";
+            return RedirectToAction(nameof(RequestFeatures), new { requestId = requestId });
+        }
+
+        #endregion
 
         #endregion
 
@@ -341,6 +467,10 @@ namespace DoctorFAM.Web.Controllers
             {
                 return NotFound();
             }
+
+            //Update Request To Transfer To Bank Protal
+            request.RequestState = Domain.Enums.Request.RequestState.TramsferringToTheBankingPortal;
+            await _requestService.UpdateRequest(request);
 
             #endregion
 

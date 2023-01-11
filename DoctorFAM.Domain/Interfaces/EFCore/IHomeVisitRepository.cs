@@ -23,6 +23,24 @@ namespace DoctorFAM.Domain.Interfaces
         //Get Activated And Home Visit Interests Home Visit For Send Correct Notification For Arrival Home Visit Request 
         Task<List<string?>> GetActivatedAndDoctorsInterestHomeVisit(ulong countryId, ulong stateId, ulong cityId, Gender gender);
 
+        //Check That Is Request Selected Coming Tariff
+        Task<bool> CheckThatIsRequestSelectedComingTariff(ulong request, ulong tariffId);
+
+        //Get request Selected Tariff By Request Id And Tarrif Id 
+        Task<RequestSelectedHealthHouseTariff?> GetrequestSelectedTariffByRequestIdAndTarrifId(ulong request, ulong tariffId);
+
+        //Update request Selected Feature State 
+        Task UpdaterequestSelectedFeatureState(RequestSelectedHealthHouseTariff requestSelected);
+
+        //Svechanges 
+        Task Savechanges();
+
+        //Add HomeVisitRequestDetail visitRequestDetail
+        Task AddHomeVisitRequestDetailvisitRequestDetail(HomeVisitRequestDetail visitRequestDetail);
+
+        //Update Home Visit Requst Detail
+        Task UpdateHomeVisitRequstDetail(HomeVisitRequestDetail homeVisitRequest);
+
         #endregion
 
         #region Doctor Panel Side

@@ -350,6 +350,10 @@ namespace DoctorFAM.Web.Controllers
             if (request.RequestType != RequestType.DeathCertificate) return NotFound();
             if (request.UserId != User.GetUserId()) return NotFound();
 
+            //Update Request To Transfer To Bank Protal
+            request.RequestState = Domain.Enums.Request.RequestState.TramsferringToTheBankingPortal;
+            await _requestService.UpdateRequest(request);
+
             #endregion
 
             #region Get Death Certificate Tarif 

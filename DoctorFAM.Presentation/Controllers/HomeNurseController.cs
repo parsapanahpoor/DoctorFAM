@@ -329,6 +329,10 @@ namespace DoctorFAM.Web.Controllers
             var request = await _requestService.GetRequestById(requestId);
             if (request == null) return NotFound();
 
+            //Update Request To Transfer To Bank Protal
+            request.RequestState = Domain.Enums.Request.RequestState.TramsferringToTheBankingPortal;
+            await _requestService.UpdateRequest(request);
+
             #endregion
 
             #region Get Home Nurse Tarif 

@@ -38,6 +38,45 @@ namespace DoctorFAM.Data.Repository
 
         #region Site Side
 
+        //Update Home Visit Requst Detail
+        public async Task UpdateHomeVisitRequstDetail(HomeVisitRequestDetail homeVisitRequest)
+        {
+            _context.HomeVisitRequestDetails.Update(homeVisitRequest);
+            await _context.SaveChangesAsync();
+        }
+
+        //Add HomeVisitRequestDetail visitRequestDetail
+        public async Task AddHomeVisitRequestDetailvisitRequestDetail(HomeVisitRequestDetail visitRequestDetail)
+        {
+            await _context.HomeVisitRequestDetails.AddAsync(visitRequestDetail);
+            await _context.SaveChangesAsync();
+        }
+
+        //Svechanges 
+        public async Task Savechanges()
+        {
+            await _context.SaveChangesAsync();
+        }
+
+        //Update request Selected Feature State 
+        public async Task UpdaterequestSelectedFeatureState(RequestSelectedHealthHouseTariff requestSelected)
+        {
+            _context.RequestSelectedHealthHouseTariff.Update(requestSelected);
+            await _context.SaveChangesAsync();
+        }
+
+        //Get request Selected Tariff By Request Id And Tarrif Id 
+        public async Task<RequestSelectedHealthHouseTariff?> GetrequestSelectedTariffByRequestIdAndTarrifId(ulong request, ulong tariffId)
+        {
+            return await _context.RequestSelectedHealthHouseTariff.FirstOrDefaultAsync(p => !p.IsDelete && p.RequestId == request && p.TariffForHealthHouseServiceId == tariffId);
+        }
+
+        //Check That Is Request Selected Coming Tariff
+        public async Task<bool> CheckThatIsRequestSelectedComingTariff(ulong request , ulong tariffId)
+        {
+            return await _context.RequestSelectedHealthHouseTariff.AnyAsync(p => !p.IsDelete && p.RequestId == request && p.TariffForHealthHouseServiceId == tariffId);
+        }
+
         //Get Activated And Home Visit Interests Home Visit For Send Correct Notification For Arrival Home Visit Request 
         public async Task<List<string?>> GetActivatedAndDoctorsInterestHomeVisit(ulong countryId, ulong stateId, ulong cityId , Gender gender)
         {
