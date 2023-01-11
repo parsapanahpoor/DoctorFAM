@@ -29,6 +29,25 @@ namespace DoctorFAM.Data.Repository
 
         #region Site Side
 
+        //Save Changes
+        public async Task Savechanges()
+        {
+            await _context.SaveChangesAsync();
+        }
+
+        //Get request Selected Tariff By Request Id And Tarrif Id 
+        public async Task<RequestSelectedHealthHouseTariff?> GetrequestSelectedTariffByRequestIdAndTarrifId(ulong request, ulong tariffId)
+        {
+            return await _context.RequestSelectedHealthHouseTariff.FirstOrDefaultAsync(p => !p.IsDelete && p.RequestId == request && p.TariffForHealthHouseServiceId == tariffId);
+        }
+
+        //Update request Selected Feature State 
+        public async Task UpdaterequestSelectedFeatureState(RequestSelectedHealthHouseTariff requestSelected)
+        {
+            _context.RequestSelectedHealthHouseTariff.Update(requestSelected);
+            await _context.SaveChangesAsync();
+        }
+
         #endregion
 
         #region Admin Side

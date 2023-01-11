@@ -1,4 +1,6 @@
-﻿using DoctorFAM.DataLayer.Entities;
+﻿using Academy.Domain.Entities.SiteSetting;
+using DoctorFAM.DataLayer.Entities;
+using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.ViewModels.Admin.HealthHouse.HomeNurse;
 using DoctorFAM.Domain.ViewModels.Site.HomeNurseRequest;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
@@ -13,6 +15,15 @@ namespace DoctorFAM.Application.Services.Interfaces
     public  interface IHomeNurseService
     {
         #region Site Side
+
+        //Add Feature For Request Selected Features
+        Task<bool> AddFeatureForRequestSelectedFeatures(ulong requestId, ulong tarrifId);
+
+        //Minus Feature For Request Selectde Features
+        Task<bool> MinusFeatureForRequestSelectdeFeatures(ulong requestId, ulong tarrifId);
+
+        //Fill Request Seleted Features View Model 
+        Task<HomeNurseRequestFeatureViewModel> FillRequestSeletedFeaturesViewModel(ulong requestId);
 
         Task<bool> ChargeUserWallet(ulong userId, int price, ulong requestId);
 

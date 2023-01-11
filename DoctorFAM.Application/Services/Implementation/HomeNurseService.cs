@@ -278,6 +278,83 @@ namespace DoctorFAM.Application.Services.Implementation
 
         #region Site Side
 
+        //Add Feature For Request Selected Features
+        public async Task<bool> AddFeatureForRequestSelectedFeatures(ulong requestId, ulong tarrifId)
+        {
+            #region Get Tarrif By Id 
+
+            var tariff = await _siteSetting.GetHealthHouseTariffServiceById(tarrifId);
+            if (tariff == null || !tariff.HomeVisit) return false;
+
+            #endregion
+
+            #region Add Request selected Tariff Request 
+
+            RequestSelectedHealthHouseTariff selectedtariff = new RequestSelectedHealthHouseTariff()
+            {
+                CreateDate = DateTime.Now,
+                RequestId = requestId,
+                TariffForHealthHouseServiceId = tarrifId
+            };
+
+            //Add Request Selected Tariff To Data Base 
+            await _siteSetting.AddRequestSelectedHealtHouseTariffWithoutSavechanges(selectedtariff);
+            await _homeNurse.Savechanges();
+
+            #endregion
+
+            return true;
+        }
+
+        //Minus Feature For Request Selectde Features
+        public async Task<bool> MinusFeatureForRequestSelectdeFeatures(ulong requestId, ulong tarrifId)
+        {
+            #region Get Tarrif By Id 
+
+            var tariff = await _siteSetting.GetHealthHouseTariffServiceById(tarrifId);
+            if (tariff == null || !tariff.HomeVisit) return false;
+
+            #endregion
+
+            #region Check Validation  
+
+            var selectedFeature = await _homeNurse.GetrequestSelectedTariffByRequestIdAndTarrifId(requestId, tarrifId);
+            if (selectedFeature == null) return false;
+
+            //Delete Selected Feature
+            selectedFeature.IsDelete = true;
+
+            //Update Method 
+            await _homeNurse.UpdaterequestSelectedFeatureState(selectedFeature);
+
+            #endregion
+
+            return true;
+        }
+
+        //Fill Request Seleted Features View Model 
+        public async Task<HomeNurseRequestFeatureViewModel> FillRequestSeletedFeaturesViewModel(ulong requestId)
+        {
+            //Initial Instance For Model
+            HomeNurseRequestFeatureViewModel model = new HomeNurseRequestFeatureViewModel()
+            {
+                RequestId = requestId,
+                ListOfTariffs = await _siteSetting.GetListOfTariffForHomeVisitHealthHouseServices(),
+            };
+
+            #region Get Request Selected Tariffs 
+
+            var selectedTariffs = await _siteSetting.GetTariffBySelectedTariffs(requestId);
+            if (selectedTariffs != null && selectedTariffs.Any())
+            {
+                model.ListOfUserSelectedTAriff = selectedTariffs;
+            }
+
+            #endregion
+
+            return model;
+        }
+
         //Proccess Home Nurse Request Cost 
         public async Task<int> ProccessHomeNurseRequestCost(Request request)
         {
