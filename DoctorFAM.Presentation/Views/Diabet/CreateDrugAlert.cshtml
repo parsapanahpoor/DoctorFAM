@@ -1,0 +1,72 @@
+﻿@model DoctorFAM.Domain.ViewModels.Site.DurgAlert.CreateDrugAlertSiteSideViewModel
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.StaticTools
+
+@{
+    ViewData["Title"] = "هشدار مصرف دارو";
+}
+
+@section Styles
+    {
+
+}
+
+@section Scripts
+    {
+    <partial name="_JqueryValidation" />
+}
+
+<div class="page-content  formHealth">
+    <div class="row HomeVisitTitle text-center  text-align-justify ">
+        <div class="col-md-12   text-center  text-align-justify M-5 P-5">
+            <h2 class="text-center  text-align-justify ">  هشدار مصرف دارو</h2>
+            <p class="text-center  text-align-justify">
+              لطفا اطلاعات داروی مصرفی خود را وارد کنید :
+            </p>
+        </div>
+    </div>
+    <div class="container  p-4">
+
+        <form class="" asp-action="CreateDrugAlert" asp-controller="Diabet" asp-area="">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <span style="color:red;">*</span>
+                        <label asp-for="DrugName" class="control-label">نام دارو</label>
+                        <input id="DrugTrakingCode" asp-for="DrugName" class="form-control" />
+                        <span asp-validation-for="DrugName" class="text-danger"></span>
+                    </div>
+                </div>
+                 <div class="col-md-4">
+                    <div class="form-group">
+                        <span style="color:red;">*</span>
+                        <label asp-for="DrugAlertDurationType" class="control-label">دوره ی مصرفی دارو</label>
+                        <select asp-for="DrugAlertDurationType" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.DrugAlert.DrugAlertDurationType))"></select>
+                        <span asp-validation-for="DrugAlertDurationType" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <span style="color:red;">*</span>
+                        <label asp-for="CountOfUsage" class="control-label">تعداد دفعات مصرف</label>
+                        <input id="DrugTrakingCode" asp-for="CountOfUsage" class="form-control" />
+                        <span asp-validation-for="CountOfUsage" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 mt-4 text-center">
+                    <div class="form-group">
+                        <input type="submit" value="ثبت و ادامه " class="btn-Accept" />
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+

@@ -63,6 +63,7 @@ namespace DoctorFAM.IoC
             services.AddScoped<IFollowService, FollowService>();
             services.AddScoped<ISpecialityService, SpecialityService>();
             services.AddScoped<IMedicalExaminationService, MedicalExaminationService>();
+            services.AddScoped < IDrugAlertService, DrugAlertService>();
 
             #endregion
 
@@ -103,6 +104,7 @@ namespace DoctorFAM.IoC
             services.AddScoped<IFollowRepository, FollowRepository>();
             services.AddScoped<ISpecialityRepository, SpecialityRepository>();
             services.AddScoped<IMedicalExaminationRepository, MedicalExaminationRepository>();
+            services.AddScoped<IDrugAlertRepository, DrugAlertRepository>();
 
             #endregion
 
