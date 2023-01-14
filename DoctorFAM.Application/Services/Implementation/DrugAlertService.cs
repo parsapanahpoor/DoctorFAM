@@ -1,4 +1,5 @@
-﻿using DoctorFAM.Application.Convertors;
+﻿using AngleSharp.Common;
+using DoctorFAM.Application.Convertors;
 using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.Entities.DurgAlert;
@@ -60,7 +61,7 @@ namespace DoctorFAM.Application.Services.Implementation
             {
                 UserId = user.Id,
                 DrugName = model.DrugName.SanitizeText(),
-                CountOfUsage = model.CountOfUsage,
+                CountOfUsage = ((model.CountOfUsage.HasValue) ? model.CountOfUsage : 1 ),
                 DrugAlertDurationType = model.DrugAlertDurationType,
             };
 
@@ -247,6 +248,59 @@ namespace DoctorFAM.Application.Services.Implementation
             return true;
         }
 
+        //Fill Show Drug Alert Detail Site Side View Model
+        public async Task<ShowDrugAlertDetailSiteSideViewModel> FillShowDrugAlertDetailSiteSideViewModel(ulong drugId , ulong userId)
+        {
+            #region Get User By Id 
+
+            var user = await _userService.GetUserById(userId);
+            if (user == null) return null;
+
+            #endregion
+
+            #region Get Drug Alert 
+
+            var drugAlert = await _drugAlertRepository.GetDrugAlertById(drugId);
+            if (drugAlert == null || drugAlert.UserId != userId) return null;
+
+            #endregion
+
+            #region Get Drug Alerts Detail By Drug Alert Id 
+
+            var drugAlertDetail = await _drugAlertRepository.GetDrugAlertsDetailByDrugAlertId(drugAlert.Id);
+
+            #endregion
+
+            #region Instance For Model
+
+            ShowDrugAlertDetailSiteSideViewModel model = new ShowDrugAlertDetailSiteSideViewModel { };
+
+            if (drugAlert.DrugAlertDurationType == Domain.Enums.DrugAlert.DrugAlertDurationType.Daily)
+            {
+                if (drugAlertDetail != null && drugAlertDetail.Any())
+                {
+                    foreach (var item in drugAlertDetail)
+                    {
+                        model.Houre.Add(item.Hour.Value);
+                    }
+                }
+            }
+            else
+            {
+                if (drugAlertDetail != null && drugAlertDetail.Any())
+                {
+                    foreach (var item in drugAlertDetail)
+                    {
+                        model.DateTime= item.DateTime;
+                    }
+                }
+            }
+
+            #endregion
+
+            return model;
+        }
+
         #endregion
     }
-}
+    }

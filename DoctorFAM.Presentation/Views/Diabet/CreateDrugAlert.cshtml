@@ -15,6 +15,20 @@
 @section Scripts
     {
     <partial name="_JqueryValidation" />
+
+    <script>
+        $("#DrugAlertDurationType").on("change",
+            function () {
+
+                var selectedAdvertisementStatusValue = $("#DrugAlertDurationType :selected").val();
+                if (selectedAdvertisementStatusValue == 1 || selectedAdvertisementStatusValue == 2 || selectedAdvertisementStatusValue == 3) {
+                    $("#RejectDescription-div").addClass("d-none");
+
+                } else {
+                    $("#RejectDescription-div").removeClass("d-none");
+                }
+            });
+    </script>
 }
 
 <div class="page-content  formHealth">
@@ -22,7 +36,7 @@
         <div class="col-md-12   text-center  text-align-justify M-5 P-5">
             <h2 class="text-center  text-align-justify ">  هشدار مصرف دارو</h2>
             <p class="text-center  text-align-justify">
-              لطفا اطلاعات داروی مصرفی خود را وارد کنید :
+                لطفا اطلاعات داروی مصرفی خود را وارد کنید :
             </p>
         </div>
     </div>
@@ -40,7 +54,7 @@
                         <span asp-validation-for="DrugName" class="text-danger"></span>
                     </div>
                 </div>
-                 <div class="col-md-4">
+                <div class="col-md-4">
                     <div class="form-group">
                         <span style="color:red;">*</span>
                         <label asp-for="DrugAlertDurationType" class="control-label">دوره ی مصرفی دارو</label>
@@ -49,10 +63,10 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="form-group">
+                    <div class="form-group" id="RejectDescription-div">
                         <span style="color:red;">*</span>
                         <label asp-for="CountOfUsage" class="control-label">تعداد دفعات مصرف</label>
-                        <input id="DrugTrakingCode" asp-for="CountOfUsage" class="form-control" />
+                        <input id="DrugTrakingCode" asp-for="CountOfUsage" placeholder="تعداد مصرف را وارد کنید" class="form-control" />
                         <span asp-validation-for="CountOfUsage" class="text-danger"></span>
                     </div>
                 </div>

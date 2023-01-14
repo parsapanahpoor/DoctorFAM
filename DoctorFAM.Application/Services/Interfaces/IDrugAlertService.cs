@@ -30,6 +30,9 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Delete Drug Alert 
         Task<bool> DeleteDrugAlert(ulong drugAlertId, ulong userId);
 
+        //Fill Show Drug Alert Detail Site Side View Model
+        Task<ShowDrugAlertDetailSiteSideViewModel> FillShowDrugAlertDetailSiteSideViewModel(ulong drugId, ulong userId);
+
         #endregion
     }
 }

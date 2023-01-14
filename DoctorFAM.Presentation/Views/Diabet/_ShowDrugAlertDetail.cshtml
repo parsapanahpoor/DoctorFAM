@@ -1,0 +1,30 @@
+﻿@model DoctorFAM.Domain.ViewModels.Site.DurgAlert.ShowDrugAlertDetailSiteSideViewModel
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+
+<h5 class="modal-title" id="exampleModalLabel">اطلاعات دارو </h5>
+
+<div class="modal-body">
+    <div class="row">
+
+        @if (Model.Houre != null && Model.Houre.Any() && Model.DateTime == null)
+        {
+            foreach (var item in Model.Houre)
+            {
+                <div class="form-group col-md-12 col-sm-12">
+                    <label >ساعت مصرف دارو</label>
+                    <input type="number" readonly class="form-control" value="@item" placeholder="@item">
+                </div>
+            }
+        }
+        else
+        {
+            <div class="form-group col-md-12 col-sm-12">
+                <label >تاریخ مصرف بعدی دارو</label>
+                <input type="number" readonly class="form-control" value="@Model.DateTime.Value.ToShamsi()" placeholder="@Model.DateTime.Value.ToShamsi()">
+            </div>
+        }
+
+    </div>
+</div>
+

@@ -17,7 +17,7 @@ namespace DoctorFAM.Domain.ViewModels.Site.DurgAlert
 
         public DrugAlertDurationType DrugAlertDurationType { get; set; }
 
-        public int CountOfUsage { get; set; }
+        public int? CountOfUsage { get; set; }
 
         #endregion
     }

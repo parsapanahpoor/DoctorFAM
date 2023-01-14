@@ -1,4 +1,5 @@
-﻿using DoctorFAM.Application.Extensions;
+﻿using DoctorFAM.Application.Convertors;
+using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Interfaces;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.Entities.BMI;
@@ -451,7 +452,7 @@ namespace DoctorFAM.Web.Controllers
             {
                 foreach (var item in model.DateTime)
                 {
-                    if (string.IsNullOrEmpty(item))
+                    if (string.IsNullOrEmpty(item) || item.ToMiladiDateTime() < DateTime.Now)
                     {
                         #region Fill Model 
 
@@ -505,6 +506,23 @@ namespace DoctorFAM.Web.Controllers
 
             TempData[ErrorMessage] = "عملیات باشکست مواجه شده است.";
             return RedirectToAction(nameof(ListOfCurrentUserDrugAlerts));
+        }
+
+        #endregion
+
+        #region Show Drug Alert Detail
+
+        [HttpGet("/Show-Drug-Alert-Detail/{id}")]
+        public async Task<IActionResult> ShowDrugAlertDetail(ulong id)
+        {
+            #region Fill Model 
+
+            var model = await _drugAlertService.FillShowDrugAlertDetailSiteSideViewModel(id , User.GetUserId());
+            if (model == null) return NotFound();
+
+            #endregion
+
+            return PartialView("_ShowDrugAlertDetail" , model);
         }
 
         #endregion

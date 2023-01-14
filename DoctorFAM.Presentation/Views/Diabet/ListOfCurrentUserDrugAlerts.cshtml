@@ -9,7 +9,7 @@
 
 @section Styles
     {
-
+    
 }
 
 @section Scripts
@@ -22,7 +22,7 @@
         <div class="col-md-12   text-center  text-align-justify M-5 P-5">
             <h2 class="text-center  text-align-justify ">  لیست دارو های شما </h2>
             <p class="text-center  text-align-justify">
-                شما می توانید از لیست زیر داروهای خود را مشاهده کنید 
+                شما می توانید از لیست زیر داروهای خود را مشاهده کنید
             </p>
         </div>
     </div>
@@ -60,7 +60,7 @@
                                         <tr class="tc vm text-center align-items-center">
 
                                             <td class=" text-center align-items-center">
-                                              
+
                                                 @item.DrugName
 
                                             </td>
@@ -78,7 +78,10 @@
                                             </td>
 
                                             <td class=" text-center align-items-center">
-                                                <a asp-action="CreateDrugAlert" asp-area="" asp-controller="Diabet" class="btn-Accept">نمایش جزییات</a>
+@*
+                                                <button onclick="ShowDrugDetailModal(@item.Id)" type="button" class="btn-Accept" data-toggle="modal" data-target="#exampleModal">
+                                                    نمایش جزییات
+                                                </button>*@
 
                                                 <a asp-action="DeleteDrugAlert" asp-area="" asp-controller="Diabet" asp-route-drugAlertId="@item.Id" class="btn-Accept-Danger">حذف</a>
                                             </td>
