@@ -1,6 +1,7 @@
 ﻿using DoctorFAM.Data.DbContext;
 using DoctorFAM.Domain.Entities.DurgAlert;
 using DoctorFAM.Domain.Interfaces.EFCore;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +29,24 @@ namespace DoctorFAM.Data.Repository
         public async Task CreateDrugAler(DrugAlert alert)
         {
             await _context.DrugAlerts.AddAsync(alert);
+            await _context.SaveChangesAsync();
+        }
+
+        //Get Drug Alert Detail By ID
+        public async Task<DrugAlert?> GetDrugAlertById(ulong drugAlertId)
+        {
+            return await _context.DrugAlerts.FirstOrDefaultAsync(p=> !p.IsDelete && p.Id == drugAlertId);
+        }
+
+        //create Drug Alert Detail 
+        public async Task CreateDrugAlertDetail(DrugAlertDetail alert)
+        {
+            await _context.DrugAlertDetails.AddAsync(alert);
+        }
+
+        //Save Changes
+        public async Task SaveChanges()
+        {
             await _context.SaveChangesAsync();
         }
 

@@ -201,7 +201,7 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="StartTime" class="control-label">از ساعت</label>
-                                <input asp-for="StartTime" min="1" class="form-control " />
+                                <input asp-for="StartTime" min="1" max="24" class="form-control " />
                                 <span asp-validation-for="StartTime" class="text-danger"></span>
                             </div>
                         </div>
@@ -209,7 +209,7 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="EndTime" class="control-label">تا ساعت</label>
-                                <input asp-for="EndTime" min="1" class="form-control " />
+                                <input asp-for="EndTime" min="1" max="24" class="form-control " />
                                 <span asp-validation-for="EndTime" class="text-danger"></span>
                             </div>
                         </div>

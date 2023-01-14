@@ -365,7 +365,11 @@ namespace DoctorFAM.Web.Controllers
 
         #region List Of Current User Drug Alerts
 
-
+        [HttpGet]
+        public async Task<IActionResult> ListOfCurrentUserDrugAlerts()
+        {
+            return View();
+        }
 
         #endregion
 
@@ -397,7 +401,7 @@ namespace DoctorFAM.Web.Controllers
             if (res.Result)
             {
                 TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
-                return RedirectToAction();
+                return RedirectToAction(nameof(CreateDrugAlertDetail) , new { createDrugAlertId = res.CreatedDrugAlertId });
             }
 
             #endregion
@@ -416,31 +420,73 @@ namespace DoctorFAM.Web.Controllers
         {
             #region Fill Model 
 
-
+            var model = await _drugAlertService.FillCreateDrugAlertSiteSideViewModel(createDrugAlertId , User.GetUserId());
+            if (model == null) return NotFound(); 
 
             #endregion
 
-            return View();
+            return View(model);
         }
         [Authorize]
-        [HttpGet]
+        [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateDrugAlertDetail(CreateDrugAlertDetailSiteSideViewModel model)
         {
             #region Model State Valdiation 
 
             if (!ModelState.IsValid)
             {
-                return View(model);
+                #region Fill Model 
+
+                var returnModel = await _drugAlertService.FillCreateDrugAlertSiteSideViewModel(model.CreatedDrugAlertId, User.GetUserId());
+                if (returnModel == null) return NotFound();
+
+                #endregion
+
+                TempData[ErrorMessage] = "عملیات باشکست مواجه شده است.";
+                return View(returnModel);
             }
 
-            if (string.IsNullOrEmpty(model.DateTime) && !model.Hour.HasValue)
+            if ((model.Hour == null || !model.Hour.Any() ))
             {
-                return View(model);
+                foreach (var item in model.DateTime)
+                {
+                    if (string.IsNullOrEmpty(item))
+                    {
+                        #region Fill Model 
+
+                        var returnModel2 = await _drugAlertService.FillCreateDrugAlertSiteSideViewModel(model.CreatedDrugAlertId, User.GetUserId());
+                        if (returnModel2 == null) return NotFound();
+
+                        #endregion
+
+                        TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+                        return View(returnModel2);
+                    }
+                }
             }
 
             #endregion
 
-            return View(model);
+            #region Create Drug Alert Detail 
+
+            var res = await _drugAlertService.CrerateDrugAlertDetail(model , User.GetUserId());
+            if (res)
+            {
+                TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+                return RedirectToAction(nameof(ListOfCurrentUserDrugAlerts));
+            }
+
+            #endregion
+
+            #region Fill Model 
+
+            var returnModel1 = await _drugAlertService.FillCreateDrugAlertSiteSideViewModel(model.CreatedDrugAlertId, User.GetUserId());
+            if (returnModel1 == null) return NotFound();
+
+            #endregion
+
+            TempData[ErrorMessage] = "عملیات باشکست مواجه شده است.";
+            return View(returnModel1);
         }
 
         #endregion

@@ -1,0 +1,80 @@
+﻿@model DoctorFAM.Domain.ViewModels.Site.DurgAlert.CreateDrugAlertDetailSiteSideViewModel
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.StaticTools
+
+@{
+    ViewData["Title"] = "هشدار مصرف دارو";
+}
+
+@section Styles
+    {
+
+}
+
+@section Scripts
+    {
+    <partial name="_JqueryValidation" />
+}
+
+<div class="page-content  formHealth">
+    <div class="row HomeVisitTitle text-center  text-align-justify ">
+        <div class="col-md-12   text-center  text-align-justify M-5 P-5">
+            <h2 class="text-center  text-align-justify ">  اطلاعات مصرف دارو</h2>
+            <p class="text-center  text-align-justify">
+                لطفا اطلاعات مربوط به مدت زمان مصرف دارو را وارد کنید :
+            </p>
+        </div>
+    </div>
+    <div class="container  p-4">
+
+        <form class="" asp-action="CreateDrugAlertDetail" asp-controller="Diabet" asp-area="">
+            <input type="hidden" asp-for="CreatedDrugAlertId" />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            @if (Model.DrugAlert.DrugAlertDurationType == DoctorFAM.Domain.Enums.DrugAlert.DrugAlertDurationType.Daily)
+            {
+                for (int i = 1; i <= Model.DrugAlert.CountOfUsage; i++)
+                {
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <span style="color:red;">*</span>
+                                <label class="control-label"> @i - ساعت مصرف دارو (در بازه ی 24 ساعته)</label>
+                                <input asp-for="Hour" class="form-control" type="number" min="1" max="24">
+                                <span asp-validation-for="Hour" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                for (int i = 1; i <= Model.DrugAlert.CountOfUsage; i++)
+                {
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <span style="color:red;">*</span>
+                                <label class="control-label"> @i - تاریخ مصرف دارو</label>
+                                <input asp-for="DateTime" class="form-control" type="text" autocomplete="off" DatePicker="3">
+                                <span asp-validation-for="DateTime" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+
+            <div class="row">
+                <div class="col-md-12 mt-4 text-center">
+                    <div class="form-group">
+                        <input type="submit" value="ثبت  " class="btn-Accept" />
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+

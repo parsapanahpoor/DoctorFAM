@@ -13,11 +13,13 @@ namespace DoctorFAM.Domain.ViewModels.Site.DurgAlert
     {
         #region properties
 
+        public ulong CreatedDrugAlertId { get; set; }
+
         public DrugAlert? DrugAlert { get; set; }
 
-        public int? Hour{ get; set; }
+        public List<int>? Hour{ get; set; }
 
-        public string? DateTime { get; set; }
+        public List<string>? DateTime { get; set; }
 
         #endregion
     }
