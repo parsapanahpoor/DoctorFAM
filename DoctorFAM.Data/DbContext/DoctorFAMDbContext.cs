@@ -8,6 +8,7 @@ using DoctorFAM.Domain.Entities.Contact;
 using DoctorFAM.Domain.Entities.CooperationRequest;
 using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.Entities.Doctors;
+using DoctorFAM.Domain.Entities.DurgAlert;
 using DoctorFAM.Domain.Entities.FamilyDoctor;
 using DoctorFAM.Domain.Entities.FamilyDoctor.ParsaSystem;
 using DoctorFAM.Domain.Entities.FamilyDoctor.VIPSystem;
@@ -385,6 +386,14 @@ namespace DoctorFAM.Data.DbContext
         public DbSet<MedicalExamination> MedicalExaminations { get; set; }
 
         public DbSet<PriodicPatientsExamination> PriodicPatientsExamination { get; set; }
+
+        #endregion
+
+        #region Drug Alert
+
+        public DbSet<DrugAlert> DrugAlerts { get; set; }
+
+        public DbSet<DrugAlertDetail> DrugAlertDetails { get; set; }
 
         #endregion
 

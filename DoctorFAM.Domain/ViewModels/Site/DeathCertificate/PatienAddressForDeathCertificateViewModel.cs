@@ -51,10 +51,6 @@ namespace DoctorFAM.Domain.ViewModels.Site.DeathCertificate
         [RegularExpression(@"^[0-9]*$", ErrorMessage = "The information entered is not valid.")]
         public int Distance { get; set; }
 
-        public List<TariffForHealthHouseServices>? ListOfTariffs { get; set; }
-
-        public List<ulong>? SelectedTariffs { get; set; }
-
         #endregion
 
     }

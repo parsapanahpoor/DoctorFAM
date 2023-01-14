@@ -34,6 +34,25 @@ namespace DoctorFAM.Data.Repository
 
         #region Site Side
 
+        //Svechanges 
+        public async Task Savechanges()
+        {
+            await _context.SaveChangesAsync();
+        }
+
+        //Update request Selected Feature State 
+        public async Task UpdaterequestSelectedFeatureState(RequestSelectedHealthHouseTariff requestSelected)
+        {
+            _context.RequestSelectedHealthHouseTariff.Update(requestSelected);
+            await _context.SaveChangesAsync();
+        }
+
+        //Get request Selected Tariff By Request Id And Tarrif Id 
+        public async Task<RequestSelectedHealthHouseTariff?> GetrequestSelectedTariffByRequestIdAndTarrifId(ulong request, ulong tariffId)
+        {
+            return await _context.RequestSelectedHealthHouseTariff.FirstOrDefaultAsync(p => !p.IsDelete && p.RequestId == request && p.TariffForHealthHouseServiceId == tariffId);
+        }
+
         //Get Activated And Death Certificate Interests Death Certificate For Send Correct Notification For Arrival Death Certificate Request 
         public async Task<List<string?>> GetActivatedAndDoctorsInterestDeathCertificate(ulong countryId, ulong stateId, ulong cityId)
         {

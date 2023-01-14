@@ -1,0 +1,93 @@
+﻿@model DoctorFAM.Domain.ViewModels.Site.DeathCertificate.DeathCertificateRequestFeatureViewModel
+@using DoctorFAM.Domain.ViewModels.Common
+@using DoctorFAM.Application.StaticTools
+
+@{
+    ViewData["Title"] = "نیازمندی های درخواست";
+}
+
+@section Styles
+    {
+}
+
+@section Scripts
+    {
+    <partial name="_JqueryValidation" />
+
+    }
+
+<div class="page-content  formHealth">
+    <div class="row DeathCertificatTitle text-center  text-align-justify ">
+
+        <div class="col-md-12   text-center  text-align-justify M-5 P-5">
+
+            <h2 class="text-center  text-align-justify ">  درخواست صدور گواهی فوت</h2>
+
+            <p class="text-center  text-align-justify">
+                لطفا نیازمندی های درخواست خود را وارد کنید:
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="container  p-4">
+
+        <div class="col-md-12 mt-5">
+
+            <div class="col-md-12">
+                <p>شما می توانید با انتخاب نیاز مندی های خود از موارد زیر درخواست خود را تکمیل کنید : </p>
+                <div>
+                    @if (Model.ListOfTariffs != null && Model.ListOfTariffs.Any())
+                    {
+                        <table class="table table-hover table-bordered tc vm text-center align-items-center">
+
+                            <tr>
+                                <th class=" text-center align-items-center">عنوان</th>
+                                <th class=" text-center align-items-center">مبلغ</th>
+                                <th class=" text-center align-items-center">تعداد </th>
+                            </tr>
+
+                            @foreach (var item in Model.ListOfTariffs)
+                            {
+                                <tr class="tc vm text-center align-items-center" remove-ajax-item="@item.Id">
+
+                                    <td class=" text-center align-items-center">@item.Title</td>
+                                    <td class=" text-center align-items-center">@item.Price ریال</td>
+
+                                    <td class=" text-center align-items-center">
+
+                                        <a class="btn-Accept" asp-action="AddFeatureForRequest" asp-area="" asp-controller="DeathCertificat" asp-route-featureId="@item.Id" asp-route-requestId="@Model.RequestId" asp-route-plus="true">+</a>
+
+                                        @if (Model.ListOfUserSelectedTAriff != null && Model.ListOfUserSelectedTAriff.Any(p => p.Id == item.Id))
+                                        {
+                                            <span style="color:green;"> تعداد  : @Model.ListOfUserSelectedTAriff.Count(p=> p.Id == item.Id) </span>
+                                        }
+                                        else
+                                        {
+                                            <span style="color:green;"> تعداد  : 0 </span>
+                                        }
+
+                                        <a class="btn-Accept" asp-action="AddFeatureForRequest" asp-area="" asp-controller="DeathCertificat" asp-route-featureId="@item.Id" asp-route-requestId="@Model.RequestId" asp-route-minus="true">-</a>
+
+                                    </td>
+
+                                </tr>
+                            }
+                        </table>
+                    }
+                </div>
+            </div>
+
+            <hr />
+            <div class="col-md-12  text-center mt-4">
+                <div class="form-group">
+
+                    <a asp-action="DeathCertificateInvoice" asp-area="" asp-controller="DeathCertificat" asp-route-requestId="@Model.RequestId" class="btn-Accept">ثبت نهایی</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>

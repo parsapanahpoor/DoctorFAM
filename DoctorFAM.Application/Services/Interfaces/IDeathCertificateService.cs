@@ -1,4 +1,5 @@
-﻿using DoctorFAM.DataLayer.Entities;
+﻿using DoctorFAM.Application.Services.Implementation;
+using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.ViewModels.Admin.HealthHouse.DeathCertificate;
@@ -17,6 +18,15 @@ namespace DoctorFAM.Application.Services.Interfaces
     public interface IDeathCertificateService
     {
         #region Site Side
+
+        //Add Feature For Request Selected Features
+         Task<bool> AddFeatureForRequestSelectedFeatures(ulong requestId, ulong tarrifId);
+
+        //Minus Feature For Request Selectde Features
+         Task<bool> MinusFeatureForRequestSelectdeFeatures(ulong requestId, ulong tarrifId);
+
+        //Fill Request Seleted Features View Model 
+        Task<DeathCertificateRequestFeatureViewModel> FillRequestSeletedFeaturesViewModel(ulong requestId);
 
         Task<bool> ChargeUserWallet(ulong userId, int price , ulong requestId);
 

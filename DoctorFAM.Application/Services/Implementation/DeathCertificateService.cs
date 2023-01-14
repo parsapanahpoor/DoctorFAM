@@ -20,6 +20,7 @@ using DoctorFAM.Domain.ViewModels.DoctorPanel.DeathCertificate;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.Site.DeathCertificate;
 using DoctorFAM.Domain.ViewModels.Site.HomeNurseRequest;
+using DoctorFAM.Domain.ViewModels.Site.HomeVisitRequest;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
 using DoctorFAM.Domain.ViewModels.UserPanel.HealthHouse.DeathCertificate;
 using DoctorFAM.Domain.ViewModels.UserPanel.HealthHouse.HomeNurse;
@@ -198,6 +199,83 @@ namespace DoctorFAM.Application.Services.Implementation
         #endregion
 
         #region Site Side
+
+        //Add Feature For Request Selected Features
+        public async Task<bool> AddFeatureForRequestSelectedFeatures(ulong requestId, ulong tarrifId)
+        {
+            #region Get Tarrif By Id 
+
+            var tariff = await _siteSettingService.GetHealthHouseTariffServiceById(tarrifId);
+            if (tariff == null || !tariff.HomeVisit) return false;
+
+            #endregion
+
+            #region Add Request selected Tariff Request 
+
+            RequestSelectedHealthHouseTariff selectedtariff = new RequestSelectedHealthHouseTariff()
+            {
+                CreateDate = DateTime.Now,
+                RequestId = requestId,
+                TariffForHealthHouseServiceId = tarrifId
+            };
+
+            //Add Request Selected Tariff To Data Base 
+            await _siteSettingService.AddRequestSelectedHealtHouseTariffWithoutSavechanges(selectedtariff);
+            await _deathCertificate.Savechanges();
+
+            #endregion
+
+            return true;
+        }
+
+        //Minus Feature For Request Selectde Features
+        public async Task<bool> MinusFeatureForRequestSelectdeFeatures(ulong requestId, ulong tarrifId)
+        {
+            #region Get Tarrif By Id 
+
+            var tariff = await _siteSettingService.GetHealthHouseTariffServiceById(tarrifId);
+            if (tariff == null || !tariff.HomeVisit) return false;
+
+            #endregion
+
+            #region Check Validation  
+
+            var selectedFeature = await _deathCertificate.GetrequestSelectedTariffByRequestIdAndTarrifId(requestId, tarrifId);
+            if (selectedFeature == null) return false;
+
+            //Delete Selected Feature
+            selectedFeature.IsDelete = true;
+
+            //Update Method 
+            await _deathCertificate.UpdaterequestSelectedFeatureState(selectedFeature);
+
+            #endregion
+
+            return true;
+        }
+
+        //Fill Request Seleted Features View Model 
+        public async Task<DeathCertificateRequestFeatureViewModel> FillRequestSeletedFeaturesViewModel(ulong requestId)
+        {
+            //Initial Instance For Model
+            DeathCertificateRequestFeatureViewModel model = new DeathCertificateRequestFeatureViewModel()
+            {
+                RequestId = requestId,
+                ListOfTariffs = await _siteSettingService.GetListOfTariffForHomeVisitHealthHouseServices(),
+            };
+
+            #region Get Request Selected Tariffs 
+
+            var selectedTariffs = await _siteSettingService.GetTariffBySelectedTariffs(requestId);
+            if (selectedTariffs != null && selectedTariffs.Any())
+            {
+                model.ListOfUserSelectedTAriff = selectedTariffs;
+            }
+
+            #endregion
+
+            return model;
+        }
 
         public async Task<bool> ChargeUserWallet(ulong userId, int price , ulong requestId)
         {

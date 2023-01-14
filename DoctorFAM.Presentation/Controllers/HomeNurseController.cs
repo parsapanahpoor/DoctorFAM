@@ -230,7 +230,6 @@ namespace DoctorFAM.Web.Controllers
             {
                 RequestId = requestId,
                 PatientId = patientId,
-                ListOfTariffs = await _siteSettingService.GetListOfTariffForHomeNurseHealthHouseServices()
             });
         }
 
@@ -240,7 +239,6 @@ namespace DoctorFAM.Web.Controllers
             #region Page Data
 
             ViewData["Countries"] = await _locationService.GetAllCountriesForHomeNurse();
-            patientRequest.ListOfTariffs = await _siteSettingService.GetListOfTariffForHomeNurseHealthHouseServices();
 
             #endregion
 
