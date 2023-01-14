@@ -1,4 +1,5 @@
 ﻿using DoctorFAM.Domain.Entities.DurgAlert;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +29,12 @@ namespace DoctorFAM.Domain.Interfaces.EFCore
 
         //Get Drug Alerts Detail By Drug Alert Id 
         Task<List<DrugAlertDetail>?> GetDrugAlertsDetailByDrugAlertId(ulong drugAlertId);
+
+        //Update Drug Alert Without SaveChanges
+        void UpdateDrugAlertWithoutSaveChanges(DrugAlert alert);
+
+        //Update Drug Alert Detail Without Savechanges
+        void UpdateDrugAlertDetailWithoutSavechanges(DrugAlertDetail alertDetail);
 
         #endregion
     }

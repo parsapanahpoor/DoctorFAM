@@ -20,7 +20,7 @@ namespace DoctorFAM.Domain.Entities.DurgAlert
 
         public DrugAlertDurationType DrugAlertDurationType { get; set; }
 
-        public int CountOfUsage { get; set; }
+        public int? CountOfUsage { get; set; }
 
         #endregion
 

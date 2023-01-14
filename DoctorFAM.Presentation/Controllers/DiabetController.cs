@@ -494,10 +494,18 @@ namespace DoctorFAM.Web.Controllers
 
         #region Delete Drug Alert 
 
-        //public async Task<IActionResult> DeleteDrugAlert(ulong drugAlertId)
-        //{
-            
-        //}
+        public async Task<IActionResult> DeleteDrugAlert(ulong drugAlertId)
+        {
+            var res = await _drugAlertService.DeleteDrugAlert(drugAlertId , User.GetUserId()) ;
+            if (res)
+            {
+                TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+                return RedirectToAction(nameof(ListOfCurrentUserDrugAlerts));
+            }
+
+            TempData[ErrorMessage] = "عملیات باشکست مواجه شده است.";
+            return RedirectToAction(nameof(ListOfCurrentUserDrugAlerts));
+        }
 
         #endregion
 

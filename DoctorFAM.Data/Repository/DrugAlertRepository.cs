@@ -64,6 +64,18 @@ namespace DoctorFAM.Data.Repository
                                                                                                     .ToListAsync();
         }
 
+        //Update Drug Alert Without SaveChanges
+        public void UpdateDrugAlertWithoutSaveChanges(DrugAlert alert)
+        {
+            _context.DrugAlerts.Update(alert);
+        }
+
+        //Update Drug Alert Detail Without Savechanges
+        public void UpdateDrugAlertDetailWithoutSavechanges(DrugAlertDetail alertDetail)
+        {
+            _context.DrugAlertDetails.Update(alertDetail);
+        }
+
         #endregion
     }
 }

@@ -221,9 +221,28 @@ namespace DoctorFAM.Application.Services.Implementation
 
             drugAlert.IsDelete = true;
 
-            //Doing
+            //Update Method 
+            _drugAlertRepository.UpdateDrugAlertWithoutSaveChanges(drugAlert);
 
             #endregion
+
+            #region Delete Drug Alerts Detail 
+
+            if (drugAlertDetail != null && drugAlertDetail.Any())
+            {
+                foreach (var item in drugAlertDetail)
+                {
+                    item.IsDelete = true;
+
+                    //Update Method
+                    _drugAlertRepository.UpdateDrugAlertDetailWithoutSavechanges(item);
+                }
+            }
+
+            #endregion
+
+            //Save Changes 
+            await _drugAlertRepository.SaveChanges();
 
             return true;
         }

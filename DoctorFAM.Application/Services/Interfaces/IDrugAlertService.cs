@@ -27,6 +27,9 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Get Drug Alerts Detail By Drug Alert Id 
         Task<List<DrugAlertDetail>?> GetDrugAlertsDetailByDrugAlertId(ulong drugAlertId);
 
+        //Delete Drug Alert 
+        Task<bool> DeleteDrugAlert(ulong drugAlertId, ulong userId);
+
         #endregion
     }
 }
