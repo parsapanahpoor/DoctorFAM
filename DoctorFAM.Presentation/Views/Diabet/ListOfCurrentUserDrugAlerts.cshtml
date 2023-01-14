@@ -1,4 +1,5 @@
-﻿@using DoctorFAM.Application.Extensions
+﻿@model DoctorFAM.Domain.ViewModels.Site.DurgAlert.ListOfUserDrugsAlertSiteSideViewModel
+@using DoctorFAM.Application.Extensions
 @using DoctorFAM.Application.Convertors
 @using DoctorFAM.Application.StaticTools
 
@@ -41,7 +42,53 @@
                             </div>
                         </div>
 
-                     
+                        <div>
+                            @if (Model.DrugAlerts != null && Model.DrugAlerts.Any())
+                            {
+                                <table class="table table-hover table-bordered tc vm text-center align-items-center">
+
+                                    <tr>
+                                        <th class=" text-center align-items-center"> نام دارو</th>
+                                        <th class=" text-center align-items-center">دوره ی مصرف دارو</th>
+                                        <th class=" text-center align-items-center">تعداد مصرف </th>
+                                        <th class=" text-center align-items-center"> تاریخ درج </th>
+                                        <th class=" text-center align-items-center">عملیات</th>
+                                    </tr>
+
+                                    @foreach (var item in Model.DrugAlerts)
+                                    {
+                                        <tr class="tc vm text-center align-items-center">
+
+                                            <td class=" text-center align-items-center">
+                                              
+                                                @item.DrugName
+
+                                            </td>
+
+                                            <td class=" text-center align-items-center">
+                                                @item.DrugAlertDurationType.GetEnumName()
+                                            </td>
+
+                                            <td class=" text-center align-items-center">
+                                                <h5> @item.CountOfUsage </h5>
+                                            </td>
+
+                                            <td class=" text-center align-items-center">
+                                                @item.CreateDate.ToShamsi()
+                                            </td>
+
+                                            <td class=" text-center align-items-center">
+                                                <a asp-action="CreateDrugAlert" asp-area="" asp-controller="Diabet" class="btn-Accept">نمایش جزییات</a>
+
+                                                <a asp-action="DeleteDrugAlert" asp-area="" asp-controller="Diabet" asp-route-drugAlertId="@item.Id" class="btn-Accept-Danger">حذف</a>
+                                            </td>
+
+                                        </tr>
+                                    }
+                                </table>
+                            }
+                        </div>
+
 
                     </div>
                 </div>

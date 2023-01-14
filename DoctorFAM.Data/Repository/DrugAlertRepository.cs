@@ -50,6 +50,20 @@ namespace DoctorFAM.Data.Repository
             await _context.SaveChangesAsync();
         }
 
+        //Get List Of User Drug Alerts 
+        public async Task<List<DrugAlert>?> GetListOfUserDrugAlerts(ulong userId)
+        {
+            return await _context.DrugAlerts.Where(p=> !p.IsDelete && p.UserId == userId)
+                                                .OrderByDescending(p=> p.CreateDate).ToListAsync();
+        }
+
+        //Get Drug Alerts Detail By Drug Alert Id 
+        public async Task<List<DrugAlertDetail>?> GetDrugAlertsDetailByDrugAlertId(ulong drugAlertId)
+        {
+            return await _context.DrugAlertDetails.Where(p => !p.IsDelete && p.DrugAlertId == drugAlertId)
+                                                                                                    .ToListAsync();
+        }
+
         #endregion
     }
 }

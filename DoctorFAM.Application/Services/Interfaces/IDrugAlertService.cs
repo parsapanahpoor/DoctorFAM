@@ -1,4 +1,5 @@
-﻿using DoctorFAM.Domain.ViewModels.Site.DurgAlert;
+﻿using DoctorFAM.Domain.Entities.DurgAlert;
+using DoctorFAM.Domain.ViewModels.Site.DurgAlert;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,12 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Create Drug Alert Detail 
         Task<bool> CrerateDrugAlertDetail(CreateDrugAlertDetailSiteSideViewModel model, ulong userId);
+
+        //List Of User Drug Alerts Site Side View Model 
+        Task<ListOfUserDrugsAlertSiteSideViewModel?> FillListOfUserDrugAlertsSiteSideViewModel(ulong userId);
+
+        //Get Drug Alerts Detail By Drug Alert Id 
+        Task<List<DrugAlertDetail>?> GetDrugAlertsDetailByDrugAlertId(ulong drugAlertId);
 
         #endregion
     }

@@ -23,6 +23,12 @@ namespace DoctorFAM.Domain.Interfaces.EFCore
         //Save Changes
         Task SaveChanges();
 
+        //Get List Of User Drug Alerts 
+        Task<List<DrugAlert>?> GetListOfUserDrugAlerts(ulong userId);
+
+        //Get Drug Alerts Detail By Drug Alert Id 
+        Task<List<DrugAlertDetail>?> GetDrugAlertsDetailByDrugAlertId(ulong drugAlertId);
+
         #endregion
     }
 }

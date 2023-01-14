@@ -365,10 +365,11 @@ namespace DoctorFAM.Web.Controllers
 
         #region List Of Current User Drug Alerts
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> ListOfCurrentUserDrugAlerts()
         {
-            return View();
+            return View(await _drugAlertService.FillListOfUserDrugAlertsSiteSideViewModel(User.GetUserId()));
         }
 
         #endregion
@@ -488,6 +489,15 @@ namespace DoctorFAM.Web.Controllers
             TempData[ErrorMessage] = "عملیات باشکست مواجه شده است.";
             return View(returnModel1);
         }
+
+        #endregion
+
+        #region Delete Drug Alert 
+
+        //public async Task<IActionResult> DeleteDrugAlert(ulong drugAlertId)
+        //{
+            
+        //}
 
         #endregion
 
