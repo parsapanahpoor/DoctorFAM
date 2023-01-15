@@ -152,6 +152,16 @@ namespace DoctorFAM.Web.Controllers
 
         #endregion
 
+        #region Periodic Self Evaluation
+
+        [HttpGet("/Priodic-Self-Evaluation-Modal")]
+        public async Task<IActionResult> PriodicSelfEvaluationModal()
+        {
+            return PartialView("_PeriodicSelfEvaluationModal");
+        }
+
+        #endregion
+
         #region List Of Diabet Consultants
 
         [HttpGet]
