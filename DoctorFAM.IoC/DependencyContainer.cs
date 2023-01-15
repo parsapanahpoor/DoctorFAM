@@ -63,8 +63,9 @@ namespace DoctorFAM.IoC
             services.AddScoped<IFollowService, FollowService>();
             services.AddScoped<ISpecialityService, SpecialityService>();
             services.AddScoped<IMedicalExaminationService, MedicalExaminationService>();
-            services.AddScoped < IDrugAlertService, DrugAlertService>();
-            services.AddScoped < IPeriodicSelftEvaluationService, PeriodicSelftEvaluationService>();
+            services.AddScoped <IDrugAlertService, DrugAlertService>();
+            services.AddScoped <IPeriodicSelftEvaluationService, PeriodicSelftEvaluationService>();
+            services.AddScoped <IPeriodicTestService, PeriodicTestService>();
 
             #endregion
 
@@ -107,6 +108,7 @@ namespace DoctorFAM.IoC
             services.AddScoped<IMedicalExaminationRepository, MedicalExaminationRepository>();
             services.AddScoped<IDrugAlertRepository, DrugAlertRepository>();
             services.AddScoped<IPeriodicSelftEvaluationRepository, PeriodicSelftEvaluationRepository>();
+            services.AddScoped<IPeriodicTestRepository, PeriodicTestRepository>();
 
             #endregion
 
