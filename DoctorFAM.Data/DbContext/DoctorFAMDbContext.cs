@@ -24,6 +24,7 @@ using DoctorFAM.Domain.Entities.Nurse;
 using DoctorFAM.Domain.Entities.OnlineVisit;
 using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.Entities.Patient;
+using DoctorFAM.Domain.Entities.PeriodicSelfEvaluatuion;
 using DoctorFAM.Domain.Entities.Pharmacy;
 using DoctorFAM.Domain.Entities.PopulationCovered;
 using DoctorFAM.Domain.Entities.PriodicExamination;
@@ -394,6 +395,12 @@ namespace DoctorFAM.Data.DbContext
         public DbSet<DrugAlert> DrugAlerts { get; set; }
 
         public DbSet<DrugAlertDetail> DrugAlertDetails { get; set; }
+
+        #endregion
+
+        #region Periodic Self Evaluation 
+
+        public DbSet<DiabetRiskFactorQuestions> DiabetRiskFactorQuestions { get; set; }
 
         #endregion
 
