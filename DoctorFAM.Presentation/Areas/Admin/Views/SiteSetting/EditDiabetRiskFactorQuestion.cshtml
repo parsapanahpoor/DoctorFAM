@@ -1,0 +1,56 @@
+﻿@model DoctorFAM.Domain.Entities.PeriodicSelfEvaluatuion.DiabetRiskFactorQuestions
+
+@{
+    ViewData["Title"] = "ویرایش پرسشنامه فاکتورهای خطر دیابت";
+}
+
+@section Scripts
+    {
+    <partial name="_JqueryValidation" />
+}
+
+@section breadcrumb
+    {
+    <li>
+        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+    </li>
+}
+
+<form method="post" asp-action="EditDiabetRiskFactorQuestion" asp-controller="SiteSetting" asp-area="Admin" enctype="multipart/form-data">
+    <input asp-for="Id" type="hidden">
+    <div class="row">
+        <div class="col-lg-12 col-sm-12">
+            <div class="widget">
+                <div class="widget-header bordered-bottom bordered-info">
+                    <span class="widget-caption"> @ViewData["Title"] </span>
+                </div>
+                <div class="widget-body">
+                    <div>
+                        <div class="row">
+
+                            <div class="form-group col-md-12">
+                                <label asp-for="Title">عنوان</label>
+                                <input type="text" class="form-control" asp-for="Title" />
+                                <span class="text-danger" asp-validation-for="Title"></span>
+                            </div>
+
+                        </div>
+
+                        <hr class="margin-bottom-10 margin-top-10" />
+
+                        <div class="row">
+                            <div class="col-md-12 flex-style">
+                                <button type="submit" class="btn btn-labeled btn-info">
+                                    <i class="btn-label glyphicon glyphicon-ok"></i>ویرایش
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</form>
+

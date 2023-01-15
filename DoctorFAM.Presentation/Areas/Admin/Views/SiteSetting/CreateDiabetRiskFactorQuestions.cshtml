@@ -1,0 +1,54 @@
+﻿@model string
+
+@{
+    ViewData["Title"] = "افزودن پرسشنامه فاکتورهای خطر دیابت";
+}
+
+@section Scripts
+    {
+    <partial name="_JqueryValidation" />
+}
+
+@section breadcrumb
+    {
+    <li>
+        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+    </li>
+}
+
+<form method="post" asp-action="CreateDiabetRiskFactorQuestions" asp-controller="SiteSetting" asp-area="Admin" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-lg-12 col-sm-12">
+            <div class="widget">
+                <div class="widget-header bordered-bottom bordered-green">
+                    <span class="widget-caption"> @ViewData["Title"] </span>
+                </div>
+                <div class="widget-body">
+                    <div>
+                        <div class="row">
+
+                            <div class="form-group col-md-12">
+                                <label >عنوان</label>
+                                <input type="text" class="form-control" name="title" />
+                            </div>
+
+                        </div>
+
+                        <hr class="margin-bottom-10 margin-top-10" />
+
+                        <div class="row">
+                            <div class="col-md-12 flex-style">
+                                <button type="submit" class="btn btn-labeled btn-palegreen">
+                                    <i class="btn-label glyphicon glyphicon-ok"></i>ثبت
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</form>
+

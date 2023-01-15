@@ -1,9 +1,12 @@
 ﻿using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
+using DoctorFAM.Domain.Entities.PeriodicSelfEvaluatuion;
 using DoctorFAM.Domain.ViewModels.Admin.SiteSetting;
 using DoctorFAM.Domain.ViewModels.Admin.SiteSetting.HealthHouseServiceTariff;
 using DoctorFAM.Web.Areas.Admin.Controllers;
+using DoctorFAM.Web.HttpManager;
 using Microsoft.AspNetCore.Mvc;
+using System.Reflection;
 
 namespace Academy.Web.Areas.Admin.Controllers
 {
@@ -12,10 +15,12 @@ namespace Academy.Web.Areas.Admin.Controllers
         #region Constructor
 
         private readonly ISiteSettingService _siteSettingService;
+        private readonly IPeriodicSelftEvaluationService _periodicSelftEvaluationService;
 
-        public SiteSettingController(ISiteSettingService siteSettingService)
+        public SiteSettingController(ISiteSettingService siteSettingService, IPeriodicSelftEvaluationService periodicSelftEvaluationService)
         {
             _siteSettingService = siteSettingService;
+            _periodicSelftEvaluationService = periodicSelftEvaluationService;
         }
 
         #endregion
@@ -77,7 +82,7 @@ namespace Academy.Web.Areas.Admin.Controllers
 
             if (id.HasValue)
             {
-                var model = await _siteSettingService.FillAddOrEditTariffForHealthHouseServicesViewModel(id.Value) ;
+                var model = await _siteSettingService.FillAddOrEditTariffForHealthHouseServicesViewModel(id.Value);
                 if (model == null) return NotFound();
 
                 return View(model);
@@ -113,6 +118,121 @@ namespace Academy.Web.Areas.Admin.Controllers
 
             TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
             return View(model);
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Diabet Risk Factor Question 
+
+        #region List 
+
+        [HttpGet]
+        public async Task<IActionResult> ListOfDiabetRiskFactorQuestions()
+        {
+            return View(await _periodicSelftEvaluationService.ListOfDiabetRiskFactorQuestions());
+        }
+
+        #endregion
+
+        #region Create 
+
+        [HttpGet]
+        public async Task<IActionResult> CreateDiabetRiskFactorQuestions()
+        {
+            return View();
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateDiabetRiskFactorQuestions(string title)
+        {
+            #region Model State Validation 
+
+            if (!ModelState.IsValid)
+            {
+                TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+                return View(title);
+            }
+
+            #endregion
+
+            #region Create Method 
+
+            var res = await _periodicSelftEvaluationService.CreateDiabetRiskFactorQuestions(title);
+            if (res)
+            {
+                TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+                return RedirectToAction(nameof(ListOfDiabetRiskFactorQuestions));
+            }
+
+            #endregion
+
+            TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+            return View(title);
+        }
+
+        #endregion
+
+        #region Edit 
+
+        [HttpGet]
+        public async Task<IActionResult> EditDiabetRiskFactorQuestion(ulong id)
+        {
+            #region Fill Model
+
+            var model = await _periodicSelftEvaluationService.GetDiabetRiskFactorQuestionById(id);
+            if(model == null) return NotFound();
+
+            #endregion
+
+            return View(model);
+        }
+
+        [HttpPost , ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditDiabetRiskFactorQuestion(DiabetRiskFactorQuestions model)
+        {
+            #region Model State Validation 
+
+            if (!ModelState.IsValid)
+            {
+                TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+                return View(model);
+            }
+
+            #endregion
+
+            #region Update Method
+
+            var res = await _periodicSelftEvaluationService.UpdateDiabetRiskFactorQuestion(model);
+            if (res)
+            {
+                TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+                return RedirectToAction(nameof(ListOfDiabetRiskFactorQuestions));
+            }
+
+            #endregion
+
+            TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+            return View(model);
+        }
+
+        #endregion
+
+        #region Delete
+
+        public async Task<IActionResult> DeleteDiabetRiskFactorQuestion(ulong id)
+        {
+            var result = await _periodicSelftEvaluationService.DeleteDiabetRiskFactorQuestions(id);
+
+            if (result)
+            {
+                return ApiResponse.SetResponse(ApiResponseStatus.Success, null,
+                    "عملیات باموفقیت انجام شده است.");
+            }
+
+            return ApiResponse.SetResponse(ApiResponseStatus.Danger, null,
+                "اطلاعات وارد شده صحیح نمی باشد.");
         }
 
         #endregion
