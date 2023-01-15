@@ -25,6 +25,7 @@ using DoctorFAM.Domain.Entities.OnlineVisit;
 using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.PeriodicSelfEvaluatuion;
+using DoctorFAM.Domain.Entities.PeriodicTest;
 using DoctorFAM.Domain.Entities.Pharmacy;
 using DoctorFAM.Domain.Entities.PopulationCovered;
 using DoctorFAM.Domain.Entities.PriodicExamination;
@@ -36,6 +37,7 @@ using DoctorFAM.Domain.Entities.Speciality;
 using DoctorFAM.Domain.Entities.States;
 using DoctorFAM.Domain.Entities.Wallet;
 using DoctorFAM.Domain.Entities.WorkAddress;
+using DoctorFAM.Domain.Enums.PeriodicTestType;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 
@@ -401,6 +403,14 @@ namespace DoctorFAM.Data.DbContext
         #region Periodic Self Evaluation 
 
         public DbSet<DiabetRiskFactorQuestions> DiabetRiskFactorQuestions { get; set; }
+
+        #endregion
+
+        #region Periodic Test 
+
+        public DbSet<PeriodicTest> PeriodicTests { get; set; }
+
+        public DbSet<UserPeriodicTest> UserPeriodicTests { get; set; }
 
         #endregion
 
