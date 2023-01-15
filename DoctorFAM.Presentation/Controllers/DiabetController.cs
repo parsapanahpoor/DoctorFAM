@@ -6,6 +6,7 @@ using DoctorFAM.Domain.Entities.BMI;
 using DoctorFAM.Domain.ViewModels.Site.Diabet;
 using DoctorFAM.Domain.ViewModels.Site.DurgAlert;
 using DoctorFAM.Domain.ViewModels.Site.MedicalExamination;
+using DoctorFAM.Domain.ViewModels.Site.PeriodicTest;
 using DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -533,6 +534,42 @@ namespace DoctorFAM.Web.Controllers
             #endregion
 
             return PartialView("_ShowDrugAlertDetail" , model);
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Periodic Test 
+
+        #region List Of User Periodic Tests 
+
+        [HttpGet]
+        public async Task<IActionResult> ListOfUserPeriodicTest()
+        {
+            return View();
+        }
+
+        #endregion
+
+        #region Create Periodic Test
+
+        [HttpGet]
+        public async Task<IActionResult> CreatePeriodicTest()
+        {
+            #region View Bags
+
+            
+
+            #endregion
+
+            return View();
+        }
+
+        [HttpPost , ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreatePeriodicTest(CreatePeriodicTestSiteSideViewModel model)
+        {
+            return View();
         }
 
         #endregion
