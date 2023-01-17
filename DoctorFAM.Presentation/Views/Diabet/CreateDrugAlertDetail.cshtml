@@ -31,13 +31,14 @@
         <form class="" asp-action="CreateDrugAlertDetail" asp-controller="Diabet" asp-area="">
             <input type="hidden" asp-for="CreatedDrugAlertId" />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-            @if (Model.DrugAlert.DrugAlertDurationType == DoctorFAM.Domain.Enums.DrugAlert.DrugAlertDurationType.Daily)
-            {
-                for (int i = 1; i <= Model.DrugAlert.CountOfUsage; i++)
+            <div class="row">
+                @if (Model.DrugAlert.DrugAlertDurationType == DoctorFAM.Domain.Enums.DrugAlert.DrugAlertDurationType.Daily)
                 {
-                    <div class="row">
-                        <div class="col-md-12">
+
+                    for (int i = 1; i <= Model.DrugAlert.CountOfUsage; i++)
+                    {
+
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <span style="color:red;">*</span>
                                 <label class="control-label"> @i - ساعت مصرف دارو (در بازه ی 24 ساعته)</label>
@@ -45,15 +46,17 @@
                                 <span asp-validation-for="Hour" class="text-danger"></span>
                             </div>
                         </div>
-                    </div>
+
+                    }
+
                 }
-            }
-            else
-            {
-                for (int i = 1; i <= Model.DrugAlert.CountOfUsage; i++)
+                else
                 {
-                    <div class="row">
-                        <div class="col-md-12">
+
+                    for (int i = 1; i <= Model.DrugAlert.CountOfUsage; i++)
+                    {
+
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <span style="color:red;">*</span>
                                 <label class="control-label"> @i - تاریخ مصرف بعدی دارو(دقت فرمایید نوبت مصرف بعدی دارو وارد گردد)</label>
@@ -61,10 +64,11 @@
                                 <span asp-validation-for="DateTime" class="text-danger"></span>
                             </div>
                         </div>
-                    </div>
-                }
-            }
 
+                    }
+
+                }
+            </div>
             <div class="row">
                 <div class="col-md-12 mt-4 text-center">
                     <div class="form-group">

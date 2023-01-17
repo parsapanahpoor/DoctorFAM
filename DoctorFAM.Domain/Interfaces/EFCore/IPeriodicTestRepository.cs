@@ -1,4 +1,5 @@
 ﻿using DoctorFAM.Domain.Entities.PeriodicTest;
+using DoctorFAM.Domain.ViewModels.Common;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,27 @@ namespace DoctorFAM.Domain.Interfaces.EFCore
 
         //Get List Of Periodic Test 
         Task<List<PeriodicTest>?> GetListOfPeriodicTest();
+
+        //Get List Of Diabet Part Of Periodic Test
+        Task<List<SelectListViewModel>> GetListOfDiabetPartOfPeriodicTest();
+
+
+
+        #endregion
+
+        #region Site Side 
+
+        //Get List OF User Periodic Test By UserId
+        Task<List<UserPeriodicTest>?> GetListOFUserPeriodicTestByUserId(ulong userId);
+
+        //Add User Periodic Test Drom User
+        Task AddUserPeriodicTestDromUser(UserPeriodicTest entity);
+
+        //Get User Periodic Test By User Id And Periodic Id
+        Task<UserPeriodicTest?> GetUserPeriodicTestByUserIdAndPeriodicId(ulong periodicId, ulong userId);
+
+        //Update User Periodic Test
+        Task UpdateUserPeriodicTest(UserPeriodicTest test);
 
         #endregion
     }
