@@ -61,7 +61,20 @@
 
     </style>
 }
-
+<div class="row" style="background-color:#d6d6d6;">
+    <div class="container">
+        <div class="m-2  pr-3">
+            <div class="row text-center ">
+                <div class="page-breadcrumbs">
+                    <i class="menu-icon fa fa-globe"></i>
+                    <a asp-area="" asp-controller="Home" asp-action="Index">  <span class="menu-text"> صفحه اصلی سایت </span></a>
+                    <span>/</span>
+                    <a asp-area="" asp-controller="Diabet" asp-action="Index">بازگشت به صفحه دیابت</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
     <div class="container">
 
         <div class="content mt-3">
@@ -110,68 +123,74 @@
                                         </select>
                                     </div>
 
-                                    <div class="form-group">
-                                        <h6>کشور</h6>
-                                        <select class="form-control" id="CountryId" name="CountryId">
-                                            <option value="">لطفا کشور مورد نطر را انتخاب کنید </option>
-                                            @if (countries != null && countries.Any())
-                                            {
-                                                foreach (var country in countries)
-                                                {
-                                                    if (Model != null && Model.Item2.CountryId == country.Id)
+                                   <div class="row">
+                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                            <div class="form-group">
+                                                <h6>کشور</h6>
+                                                <select class="form-control" id="CountryId" name="CountryId">
+                                                    <option value="">نام کشور </option>
+                                                    @if (countries != null && countries.Any())
                                                     {
-                                                        <option value="@country.Id" selected="selected"> @country.Title </option>
+                                                        foreach (var country in countries)
+                                                        {
+                                                            if (Model != null && Model.Item2.CountryId == country.Id)
+                                                            {
+                                                                <option value="@country.Id" selected="selected"> @country.Title </option>
+                                                            }
+                                                            else
+                                                            {
+                                                                <option value="@country.Id"> @country.Title </option>
+                                                            }
+                                                        }
                                                     }
-                                                    else
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                            <div class="form-group">
+                                                <h6>استان</h6>
+                                                <select class="form-control" id="StateId" name="StateId">
+                                                    <option value=""> نام استان  </option>
+                                                    @if (states != null && states.Any())
                                                     {
-                                                        <option value="@country.Id"> @country.Title </option>
+                                                        foreach (var state in states)
+                                                        {
+                                                            if (Model != null && Model.Item2.StateId == state.Id)
+                                                            {
+                                                                <option value="@state.Id" selected="selected"> @state.Title </option>
+                                                            }
+                                                            else
+                                                            {
+                                                                <option value="@state.Id"> @state.Title </option>
+                                                            }
+                                                        }
                                                     }
-                                                }
-                                            }
-                                        </select>
-                                    </div>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                            <div class="form-group">
+                                                <h6>شهر</h6>
+                                                <select name="CityId" id="CityId" class="form-control">
+                                                    <option value=""> نام شهر  </option>
+                                                    @if (cities != null && cities.Any())
+                                                    {
+                                                        foreach (var city in cities)
+                                                        {
+                                                            if (Model != null && Model.Item2.CityId == city.Id)
+                                                            {
+                                                                <option value="@city.Id" selected="selected"> @city.Title </option>
+                                                            }
+                                                            else
+                                                            {
+                                                                <option value="@city.Id"> @city.Title </option>
 
-                                    <div class="form-group">
-                                        <h6>استان</h6>
-                                        <select class="form-control" id="StateId" name="StateId">
-                                            <option value=""> لطفا استان مورد نطر را انتخاب کنید </option>
-                                            @if (states != null && states.Any())
-                                            {
-                                                foreach (var state in states)
-                                                {
-                                                    if (Model != null && Model.Item2.StateId == state.Id)
-                                                    {
-                                                        <option value="@state.Id" selected="selected"> @state.Title </option>
+                                                            }
+                                                        }
                                                     }
-                                                    else
-                                                    {
-                                                        <option value="@state.Id"> @state.Title </option>
-                                                    }
-                                                }
-                                            }
-                                        </select>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <h6>شهر</h6>
-                                        <select name="CityId" id="CityId" class="form-control">
-                                            <option value=""> لطفا شهر مورد نطر را انتخاب کنید </option>
-                                            @if (cities != null && cities.Any())
-                                            {
-                                                foreach (var city in cities)
-                                                {
-                                                    if (Model != null && Model.Item2.CityId == city.Id)
-                                                    {
-                                                        <option value="@city.Id" selected="selected"> @city.Title </option>
-                                                    }
-                                                    else
-                                                    {
-                                                        <option value="@city.Id"> @city.Title </option>
-
-                                                    }
-                                                }
-                                            }
-                                        </select>
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
 
                                 </div>
