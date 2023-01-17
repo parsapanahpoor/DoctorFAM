@@ -48,9 +48,6 @@
 		<Folder Include="Resources\Areas\Pharmacy\Controllers\" />
 		<Folder Include="Resources\Controllers\" />
 		<Folder Include="Resources\Views\" />
-		<Folder Include="wwwroot\Content\images\HealthInformationAttachmentFiles\Chunks\" />
-		<Folder Include="wwwroot\Content\images\Ticket\" />
-		<Folder Include="wwwroot\Content\images\Ticket\main\" />
 		<Folder Include="wwwroot\Content\Radio\vendor\" />
 		<Folder Include="Areas\Nurse\Data\" />
 		<Folder Include="Areas\Nurse\Models\" />
@@ -1370,12 +1367,6 @@
 		<None Include="wwwroot\Content\fonts\YekanBakhFaNum-Medium.woff2" />
 		<None Include="wwwroot\Content\fonts\YekanBakhFaNum-Regular.woff2" />
 		<None Include="wwwroot\Content\fonts\YekanBakhFaNum-Thin.woff2" />
-		<None Include="wwwroot\Content\images\logo-customizer\radio-svgrepo-com%281%29.svg" />
-		<None Include="wwwroot\Content\images\logo-customizer\radio-svgrepo-com%282%29.svg" />
-		<None Include="wwwroot\Content\images\logo-customizer\radio-svgrepo-com.svg" />
-		<None Include="wwwroot\Content\images\logo-customizer\tv-svgrepo-com.svg" />
-		<None Include="wwwroot\Content\images\Logo\doctorfam-Icon_logo.psd" />
-		<None Include="wwwroot\Content\images\Logo\doctorfam.psd" />
 		<None Include="wwwroot\Content\js\color-customize\color-customizer.js" />
 		<None Include="wwwroot\Content\js\gauge\gauge.min.js" />
 		<None Include="wwwroot\Content\js\script.js" />
