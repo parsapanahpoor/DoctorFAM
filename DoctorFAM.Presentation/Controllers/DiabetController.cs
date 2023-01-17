@@ -25,15 +25,18 @@ namespace DoctorFAM.Web.Controllers
         private readonly IDoctorsService _doctorsService;
         private readonly IMedicalExaminationService _medicalExamination;
         private readonly IDrugAlertService _drugAlertService;
+        private readonly IPeriodicTestService _periodicTestService;
 
         public DiabetController(IBMIService bmiService, ILocationService locationService, IDoctorsService doctorsService
-                                    , IMedicalExaminationService medicalExamination, IDrugAlertService drugAlertService)
+                                    , IMedicalExaminationService medicalExamination, IDrugAlertService drugAlertService
+                                        , IPeriodicTestService periodicTestService)
         {
             _bmiService = bmiService;
             _locationService = locationService;
             _doctorsService = doctorsService;
             _medicalExamination = medicalExamination;
             _drugAlertService = drugAlertService;
+            _periodicTestService = periodicTestService;
         }
 
         #endregion
@@ -544,10 +547,18 @@ namespace DoctorFAM.Web.Controllers
 
         #region List Of User Periodic Tests 
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> ListOfUserPeriodicTest()
         {
-            return View();
+            #region Fill Model 
+
+            var model = await _periodicTestService.GetListOFUserPeriodicTestByUserId(User.GetUserId());
+            if(model == null) return NotFound();
+
+            #endregion
+
+            return View(model);
         }
 
         #endregion
@@ -555,11 +566,12 @@ namespace DoctorFAM.Web.Controllers
         #region Create Periodic Test
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> CreatePeriodicTest()
         {
             #region View Bags
 
-            
+            ViewBag.PeriodicTestes = await _periodicTestService.GetListOfDiabetPartOfPeriodicTest();
 
             #endregion
 
@@ -567,9 +579,73 @@ namespace DoctorFAM.Web.Controllers
         }
 
         [HttpPost , ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> CreatePeriodicTest(CreatePeriodicTestSiteSideViewModel model)
         {
-            return View();
+            #region Model State Validation 
+
+            if (!ModelState.IsValid)
+            {
+                #region View Bags
+
+                ViewBag.PeriodicTestes = await _periodicTestService.GetListOfDiabetPartOfPeriodicTest();
+
+                #endregion
+
+                TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+                return View(model);
+            }
+
+            #endregion
+
+            #region Create Method
+
+            var res = await _periodicTestService.CreateUserPeriodicTestSiteSide(model , User.GetUserId());
+
+            switch (res)
+            {
+                case CreatePeridicTestResult.Success:
+                    TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+                    return RedirectToAction(nameof(ListOfUserPeriodicTest));
+
+                case CreatePeridicTestResult.DoctorOrderDateIsNotValid:
+                    TempData[ErrorMessage] = "تاریخ پیشنهادی پزشک معتبر نمی باشد.";
+                    break;
+
+                case CreatePeridicTestResult.Faild:
+                    TempData[ErrorMessage] = "عملیات باشکست مواجه شده است.";
+                    break;
+            }
+
+            #endregion
+
+            #region View Bags
+
+            ViewBag.PeriodicTestes = await _periodicTestService.GetListOfDiabetPartOfPeriodicTest();
+
+            #endregion
+
+            TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+            return View(model);
+        }
+
+        #endregion
+
+        #region Delete User Periodic Test
+
+        [Authorize]
+        public async Task<IActionResult> DeleteUserPeriodicTest(ulong id)
+        {
+            var res = await _periodicTestService.DeleteUserPeriodicSelectedTest(id , User.GetUserId()) ;
+
+            if (res)
+            {
+                TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+                return RedirectToAction(nameof(ListOfUserPeriodicTest));
+            }
+
+            TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+            return RedirectToAction(nameof(ListOfUserPeriodicTest));
         }
 
         #endregion
