@@ -1,0 +1,112 @@
+﻿@model DoctorFAM.Domain.ViewModels.Site.PeriodicTest.CreatePeriodicTestSiteSideViewModel
+@using DoctorFAM.Domain.ViewModels.Common
+@using DoctorFAM.Application.StaticTools
+
+@{
+    ViewData["Title"] = "اطلاعات آزمایش";
+    var test = ViewBag.PeriodicTestes != null ? ViewBag.PeriodicTestes as List<SelectListViewModel> : null;
+}
+
+@section Styles
+    {
+    <style>
+
+        #PeriodicTestId {
+            display: initial !important;
+        }
+
+        .nice-select {
+            display: none !important;
+        }
+
+    </style>
+}
+
+@section Scripts
+    {
+    <partial name="_JqueryValidation" />
+    }
+
+<div class="page-content  formHealth">
+    <div class="row HomeVisitTitle text-center  text-align-justify ">
+
+        <div class="col-md-12   text-center  text-align-justify M-5 P-5">
+
+            <p class="text-center  text-align-justify">
+                لطفا اطلاعات آزمایش خود را وارد کنید :
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="container  p-4">
+
+        <form asp-action="CreatePeriodicTest" asp-area="" asp-controller="Diabet">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="row">
+
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <label asp-for="PeriodicTestId">نام آزمایش</label>
+                            <select class="form-control" asp-for="PeriodicTestId">
+                                <option value=""> لطفا نام آزمایش  خود را انتخاب کنید  </option>
+                                @if (test != null && test.Any())
+                                {
+                                    foreach (var medical in test)
+                                    {
+                                        if (Model != null && Model.PeriodicTestId == medical.Id)
+                                        {
+                                            <option value="@medical.Id" selected="selected"> @medical.Title </option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@medical.Id"> @medical.Title </option>
+                                        }
+                                    }
+                                }
+                            </select>
+                            <span class="text-danger" asp-validation-for="PeriodicTestId"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="LastTestDate" class="control-label">تاریخ انجام </label>
+                                <input asp-for="LastTestDate" autocomplete="off" DatePicker="1" class="form-control" />
+                                <span asp-validation-for="LastTestDate" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="DoctorOrderNextDate" class="control-label">تاریخ آزمایش بعدی(درصورت وارد نکردن سیستم تاریخ بعدی را برای شما حساب میکند)</label>
+                                <input asp-for="DoctorOrderNextDate" autocomplete="off" DatePicker="2" class="form-control" />
+                                <span asp-validation-for="DoctorOrderNextDate" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+
+                                <input type="submit" value="ثبت  " class="btn-Accept" />
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+
