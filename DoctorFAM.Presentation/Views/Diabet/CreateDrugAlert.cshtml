@@ -17,24 +17,39 @@
     <partial name="_JqueryValidation" />
 
     <script>
-        $("#DrugAlertDurationType").on("change",
-            function () {
 
-                var selectedAdvertisementStatusValue = $("#DrugAlertDurationType :selected").val();
-                if (selectedAdvertisementStatusValue == 1 || selectedAdvertisementStatusValue == 2 || selectedAdvertisementStatusValue == 3) {
-                    $("#RejectDescription-div").addClass("d-none");
 
-                } else {
-                    $("#RejectDescription-div").removeClass("d-none");
-                }
+        $(document).ready(function () {
+
+            $("#DrugAlertDurationType").on("change",
+                function () {
+
+                    var selectedAdvertisementStatusValue = $("#DrugAlertDurationType :selected").val();
+                    if (selectedAdvertisementStatusValue == 1 || selectedAdvertisementStatusValue == 2 || selectedAdvertisementStatusValue == 3) {
+                        $("#Houre-div").addClass("d-none");
+                        $("#WantsAppend").addClass("d-none");
+                        $("#Datetime-div").removeClass("d-none");
+
+                    } else {
+                        $("#Houre-div").removeClass("d-none");
+                        $("#WantsAppend").removeClass("d-none");
+                        $("#Datetime-div").addClass("d-none");
+                    }
+                });
+
+            $("#btn1").click(function () {
+                $("#WantsAppend").append("<br/><div class='col-md-12'><div class='form-group'><span style='color:red;'>* </span><label class='control-label'> ساعت مصرف دارو(در بازه ی 24 ساعته) </label><input name='Hour' class='form-control' type='number' min ='1' max='24'></div> </div>");
             });
+
+        });
+
     </script>
 }
 
 <div class="page-content  formHealth">
     <div class="row HomePharmacyTitle text-center  text-align-justify ">
         <div class="col-md-3 page-breadcrumbs">
-           
+
             <a asp-area="" asp-controller="Diabet" asp-action="Index">  <span class="menu-text"> بازگشت به صفحه دیابت </span></a>
             <span>/</span>
             <a asp-area="" asp-controller="Diabet" asp-action="ListOfCurrentUserDrugAlerts">بازگشت به صفحه قبل</a>
@@ -48,7 +63,7 @@
         </div>
         <div class="col-md-3 "></div>
     </div>
-    
+
     <div class="container  p-4">
 
         <form class="" asp-action="CreateDrugAlert" asp-controller="Diabet" asp-area="">
@@ -71,13 +86,24 @@
                         <span asp-validation-for="DrugAlertDurationType" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="form-group" id="RejectDescription-div">
-                        <span style="color:red;">*</span>
-                        <label asp-for="CountOfUsage" class="control-label">تعداد دفعات مصرف</label>
-                        <input id="DrugTrakingCode" asp-for="CountOfUsage" placeholder="تعداد مصرف را وارد کنید" class="form-control" />
-                        <span asp-validation-for="CountOfUsage" class="text-danger"></span>
+
+                <div class="col-md-4" id="Houre-div" style="padding-top:20px;">
+                    <div class="form-group">
+                        <div id="btn1" class="btn-AcceptXX">
+                            افزودن ساعت
+                        </div>
                     </div>
+                </div>
+
+                <div class="col-md-12 d-none" id="Datetime-div">
+                    <div class="form-group">
+                        <span style="color:red;">*</span>
+                        <label class="control-label">  تاریخ مصرف بعدی دارو(دقت فرمایید نوبت مصرف بعدی دارو وارد گردد)</label>
+                        <input name="DateTimeInserted" class="form-control" type="text" autocomplete="off" DatePicker="3">
+                    </div>
+                </div>
+
+                <div class="col-md-12 row" id="WantsAppend">
                 </div>
             </div>
             <div class="row">

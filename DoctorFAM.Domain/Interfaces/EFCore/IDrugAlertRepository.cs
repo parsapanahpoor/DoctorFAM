@@ -21,6 +21,9 @@ namespace DoctorFAM.Domain.Interfaces.EFCore
         //create Drug Alert Detail 
         Task CreateDrugAlertDetail(DrugAlertDetail alert);
 
+        //Update Drug Alert Whitout Save changes 
+        void UpdateDrugAlertWhitoutSavechanges(DrugAlert drug);
+
         //Save Changes
         Task SaveChanges();
 

@@ -109,17 +109,35 @@ $(document).on('change', '#HowYearsOld', function () {
     var selectedAdvertisementStatusValue = $("#HowYearsOld :selected").val();
 
     if (selectedAdvertisementStatusValue == 1) {
-        $("#-div").removeClass("d-none");
+        $("#DiabetRiskFactorFields-div").removeClass("d-none");
         $("#EmergancyFBS-div").addClass("d-none");
     }
     else if
         (selectedAdvertisementStatusValue == 2) {
         $("#EmergancyFBS-div").removeClass("d-none");
-        $("#-div").addClass("d-none");
+        $("#DiabetRiskFactorFields-div").addClass("d-none");
     }
     else {
         $("#EmergancyFBS-div").addClass("d-none");
-        $("#-div").addClass("d-none");
+        $("#DiabetRiskFactorFields-div").addClass("d-none");
+    }
+});
+
+$(document).on('change', '#QuestionOfDiabetRiskFactor', function () {
+    var selectedAdvertisementStatusValue = $("#QuestionOfDiabetRiskFactor :selected").val();
+
+    if (selectedAdvertisementStatusValue == 1) {
+        $("#FBSTest-div").removeClass("d-none");
+        $("#NoFBSTest-div").addClass("d-none");
+    }
+    else if
+        (selectedAdvertisementStatusValue == 2) {
+        $("#NoFBSTest-div").removeClass("d-none");
+        $("#FBSTest-div").addClass("d-none");
+    }
+    else {
+        $("#NoFBSTest-div").addClass("d-none");
+        $("#FBSTest-div").addClass("d-none");
     }
 });
 

@@ -44,6 +44,12 @@ namespace DoctorFAM.Data.Repository
             await _context.DrugAlertDetails.AddAsync(alert);
         }
 
+        //Update Drug Alert Whitout Save changes 
+        public void UpdateDrugAlertWhitoutSavechanges(DrugAlert drug)
+        {
+            _context.DrugAlerts.Update(drug);
+        }
+
         //Save Changes
         public async Task SaveChanges()
         {

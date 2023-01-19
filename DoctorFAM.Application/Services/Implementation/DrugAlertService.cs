@@ -35,7 +35,7 @@ namespace DoctorFAM.Application.Services.Implementation
         #region Site Side 
 
         //Create Drug Alert Site Side
-        public async Task<CreateDrugAlertSiteSideViewModelResult> CreateDrugAlertSide(CreateDrugAlertSiteSideViewModel model, ulong userId)
+        public async Task<CreateDrugAlertSiteSideViewModelResult> CreateDrugAlertSide(CreateDrugAlertSiteSideViewModel model, ulong userId, List<int>? Hour, string? DateTimeInserted)
         {
             #region Instance Return Mode
 
@@ -61,12 +61,67 @@ namespace DoctorFAM.Application.Services.Implementation
             {
                 UserId = user.Id,
                 DrugName = model.DrugName.SanitizeText(),
-                CountOfUsage = ((model.CountOfUsage.HasValue) ? model.CountOfUsage : 1 ),
                 DrugAlertDurationType = model.DrugAlertDurationType,
             };
 
             //Add Drug Alert To The Data Base
             await _drugAlertRepository.CreateDrugAler(entity);
+
+            #endregion
+
+            #region Add drug Alert Detail
+
+            //If Drug Alert Type Is Daily
+            if (model.DrugAlertDurationType == Domain.Enums.DrugAlert.DrugAlertDurationType.Daily && Hour != null && Hour.Any())
+            {
+                foreach (var daily in Hour)
+                {
+                    DrugAlertDetail drugAlertDetail = new DrugAlertDetail()
+                    {
+                        DrugAlertId = entity.Id,
+                        Hour = daily
+                    };
+
+                    //Create Drug Alert Detail 
+                    await _drugAlertRepository.CreateDrugAlertDetail(drugAlertDetail);
+                }
+
+                #region Update Count Of Usage
+
+                entity.CountOfUsage = Hour.Count();
+
+                //Update 
+                _drugAlertRepository.UpdateDrugAlertWithoutSaveChanges(entity);
+
+                #endregion
+
+                //Save Changes
+                await _drugAlertRepository.SaveChanges();
+            }
+
+            if (entity.DrugAlertDurationType != Domain.Enums.DrugAlert.DrugAlertDurationType.Daily && !string.IsNullOrEmpty(DateTimeInserted))
+            {
+                DrugAlertDetail drugAlertDetail = new DrugAlertDetail()
+                {
+                    DrugAlertId = entity.Id,
+                    DateTime = DateTimeInserted.ToMiladiDateTime(),
+                };
+
+                //Create Drug Alert Detail 
+                await _drugAlertRepository.CreateDrugAlertDetail(drugAlertDetail);
+
+                #region Update Count Of Usage
+
+                entity.CountOfUsage = 1;
+
+                //Update 
+                _drugAlertRepository.UpdateDrugAlertWithoutSaveChanges(entity);
+
+                #endregion
+
+                //Save Changes 
+                await _drugAlertRepository.SaveChanges();
+            }
 
             #endregion
 
@@ -77,7 +132,7 @@ namespace DoctorFAM.Application.Services.Implementation
         }
 
         //Fill Create Drug Alert Site Side View Model 
-        public async Task<CreateDrugAlertDetailSiteSideViewModel?> FillCreateDrugAlertSiteSideViewModel(ulong createDrugAlertId , ulong userId)
+        public async Task<CreateDrugAlertDetailSiteSideViewModel?> FillCreateDrugAlertSiteSideViewModel(ulong createDrugAlertId, ulong userId)
         {
             #region Get User By Id 
 
@@ -97,8 +152,8 @@ namespace DoctorFAM.Application.Services.Implementation
 
             CreateDrugAlertDetailSiteSideViewModel returnModel = new CreateDrugAlertDetailSiteSideViewModel()
             {
-                 DrugAlert = createdDeurgAlert,
-                 CreatedDrugAlertId = createDrugAlertId
+                DrugAlert = createdDeurgAlert,
+                CreatedDrugAlertId = createDrugAlertId
             };
 
             #endregion
@@ -107,7 +162,7 @@ namespace DoctorFAM.Application.Services.Implementation
         }
 
         //Create Drug Alert Detail 
-        public async Task<bool> CrerateDrugAlertDetail(CreateDrugAlertDetailSiteSideViewModel model , ulong userId)
+        public async Task<bool> CrerateDrugAlertDetail(CreateDrugAlertDetailSiteSideViewModel model, ulong userId)
         {
             #region Get User By Id 
 
@@ -181,7 +236,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
             ListOfUserDrugsAlertSiteSideViewModel model = new ListOfUserDrugsAlertSiteSideViewModel()
             {
-                 DrugAlerts = await _drugAlertRepository.GetListOfUserDrugAlerts(userId)
+                DrugAlerts = await _drugAlertRepository.GetListOfUserDrugAlerts(userId)
             };
 
             #endregion
@@ -196,7 +251,7 @@ namespace DoctorFAM.Application.Services.Implementation
         }
 
         //Delete Drug Alert 
-        public async Task<bool> DeleteDrugAlert(ulong drugAlertId , ulong userId)
+        public async Task<bool> DeleteDrugAlert(ulong drugAlertId, ulong userId)
         {
             #region Get User By Id 
 
@@ -249,7 +304,7 @@ namespace DoctorFAM.Application.Services.Implementation
         }
 
         //Fill Show Drug Alert Detail Site Side View Model
-        public async Task<ShowDrugAlertDetailSiteSideViewModel> FillShowDrugAlertDetailSiteSideViewModel(ulong drugId , ulong userId)
+        public async Task<ShowDrugAlertDetailSiteSideViewModel> FillShowDrugAlertDetailSiteSideViewModel(ulong drugId, ulong userId)
         {
             #region Get User By Id 
 
@@ -291,7 +346,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 {
                     foreach (var item in drugAlertDetail)
                     {
-                        model.DateTime= item.DateTime;
+                        model.DateTime = item.DateTime;
                     }
                 }
             }
@@ -303,4 +358,4 @@ namespace DoctorFAM.Application.Services.Implementation
 
         #endregion
     }
-    }
+}

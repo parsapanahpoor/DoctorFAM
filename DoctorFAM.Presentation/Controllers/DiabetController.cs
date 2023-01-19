@@ -3,6 +3,7 @@ using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Interfaces;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.Entities.BMI;
+using DoctorFAM.Domain.Entities.PeriodicSelfEvaluatuion;
 using DoctorFAM.Domain.ViewModels.Site.Diabet;
 using DoctorFAM.Domain.ViewModels.Site.DurgAlert;
 using DoctorFAM.Domain.ViewModels.Site.MedicalExamination;
@@ -26,10 +27,11 @@ namespace DoctorFAM.Web.Controllers
         private readonly IMedicalExaminationService _medicalExamination;
         private readonly IDrugAlertService _drugAlertService;
         private readonly IPeriodicTestService _periodicTestService;
+        private readonly IPeriodicSelftEvaluationService _periodicSelftEvaluationService;
 
         public DiabetController(IBMIService bmiService, ILocationService locationService, IDoctorsService doctorsService
                                     , IMedicalExaminationService medicalExamination, IDrugAlertService drugAlertService
-                                        , IPeriodicTestService periodicTestService)
+                                        , IPeriodicTestService periodicTestService , IPeriodicSelftEvaluationService periodicSelftEvaluationService)
         {
             _bmiService = bmiService;
             _locationService = locationService;
@@ -37,6 +39,7 @@ namespace DoctorFAM.Web.Controllers
             _medicalExamination = medicalExamination;
             _drugAlertService = drugAlertService;
             _periodicTestService = periodicTestService;
+            _periodicSelftEvaluationService = periodicSelftEvaluationService;
         }
 
         #endregion
@@ -161,6 +164,8 @@ namespace DoctorFAM.Web.Controllers
         [HttpGet("/Priodic-Self-Evaluation-Modal")]
         public async Task<IActionResult> PriodicSelfEvaluationModal()
         {
+            ViewBag.RisksFields = await _periodicSelftEvaluationService.ListOfDiabetRiskFactorQuestions();
+
             return PartialView("_PeriodicSelfEvaluationModal");
         }
 
@@ -399,7 +404,7 @@ namespace DoctorFAM.Web.Controllers
         }
         [Authorize]
         [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateDrugAlert(CreateDrugAlertSiteSideViewModel model)
+        public async Task<IActionResult> CreateDrugAlert(CreateDrugAlertSiteSideViewModel model , List<int>? Hour , string? DateTimeInserted)
         {
             #region Model State Validation
 
@@ -409,15 +414,27 @@ namespace DoctorFAM.Web.Controllers
                 return View(model);
             }
 
+            if (model.DrugAlertDurationType == Domain.Enums.DrugAlert.DrugAlertDurationType.Daily && Hour == null && !Hour.Any())
+            {
+                TempData[ErrorMessage] = "ساعات مصرف دارو باید وارد گردد.";
+                return View(model);
+            }
+
+            if (model.DrugAlertDurationType != Domain.Enums.DrugAlert.DrugAlertDurationType.Daily && string.IsNullOrEmpty(DateTimeInserted))
+            {
+                TempData[ErrorMessage] = "تاریخ مصرف دارو باید وارد گردد.";
+                return View(model);
+            }
+
             #endregion
 
             #region Create Drug Alert 
 
-            var res = await _drugAlertService.CreateDrugAlertSide(model, User.GetUserId());
+            var res = await _drugAlertService.CreateDrugAlertSide(model, User.GetUserId() , Hour , DateTimeInserted);
             if (res.Result)
             {
                 TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
-                return RedirectToAction(nameof(CreateDrugAlertDetail) , new { createDrugAlertId = res.CreatedDrugAlertId });
+                return RedirectToAction(nameof(ListOfCurrentUserDrugAlerts) , new { createDrugAlertId = res.CreatedDrugAlertId });
             }
 
             #endregion

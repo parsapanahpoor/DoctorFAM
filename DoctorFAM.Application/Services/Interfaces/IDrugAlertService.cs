@@ -13,7 +13,7 @@ namespace DoctorFAM.Application.Services.Interfaces
         #region Site Side 
 
         //Create Drug Alert Site Side
-        Task<CreateDrugAlertSiteSideViewModelResult> CreateDrugAlertSide(CreateDrugAlertSiteSideViewModel model, ulong userId);
+        Task<CreateDrugAlertSiteSideViewModelResult> CreateDrugAlertSide(CreateDrugAlertSiteSideViewModel model, ulong userId, List<int>? Hour, string? DateTimeInserted);
 
         //Fill Create Drug Alert Site Side View Model 
         Task<CreateDrugAlertDetailSiteSideViewModel?> FillCreateDrugAlertSiteSideViewModel(ulong createDrugAlertId, ulong userId);

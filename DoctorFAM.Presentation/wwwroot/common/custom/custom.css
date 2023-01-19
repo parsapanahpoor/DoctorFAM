@@ -1,5 +1,18 @@
-﻿.d-none {
-display:none;
+﻿#DiabetHelp1 {
+    border: 2px solid #eeeff7;
+    border-radius: 8px;
+    color: #081b3a;
+    display: block;
+    font-size: 16px;
+    font-weight: 600;
+    position: relative;
+    padding: 0px 10px 0px 10px;
+    line-height: 3.5rem;
+    background: #fd5b03;
+}
+
+.d-none {
+    display: none;
 }
 
 .avatar-style {
