@@ -28,7 +28,8 @@ namespace DoctorFAM.Domain.Interfaces.EFCore
         //Get List Of Diabet Part Of Periodic Test
         Task<List<SelectListViewModel>> GetListOfDiabetPartOfPeriodicTest();
 
-
+        //Get List Of Blood Pressure Part Of Periodic Test
+        Task<List<SelectListViewModel>> GetListOfBloodPressurePartOfPeriodicTest();
 
         #endregion
 

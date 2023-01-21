@@ -426,6 +426,12 @@ namespace DoctorFAM.Web.Controllers
                 return View(model);
             }
 
+            if (Hour != null && Hour.Any() && Hour.Count() >= 7)
+            {
+                TempData[ErrorMessage] = "تعداد ساعات وارد شده بیش از حد مجاز است.";
+                return View(model);
+            }
+
             #endregion
 
             #region Create Drug Alert 
@@ -434,7 +440,7 @@ namespace DoctorFAM.Web.Controllers
             if (res.Result)
             {
                 TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
-                return RedirectToAction(nameof(ListOfCurrentUserDrugAlerts) , new { createDrugAlertId = res.CreatedDrugAlertId });
+                return RedirectToAction(nameof(ListOfCurrentUserDrugAlerts));
             }
 
             #endregion
@@ -575,7 +581,8 @@ namespace DoctorFAM.Web.Controllers
 
             #endregion
 
-            return View(model);
+            return View(model.Where(p => p.PeriodicTest.PeriodicTestType == Domain.Enums.PeriodicTestType.PeriodicTestType.General ||
+                                         p.PeriodicTest.PeriodicTestType == Domain.Enums.PeriodicTestType.PeriodicTestType.Diabet).ToList());
         }
 
         #endregion

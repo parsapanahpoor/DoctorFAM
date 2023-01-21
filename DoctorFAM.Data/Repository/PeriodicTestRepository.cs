@@ -71,6 +71,22 @@ namespace DoctorFAM.Data.Repository
                }).ToListAsync();
         }
 
+        //Get List Of Blood Pressure Part Of Periodic Test
+        public async Task<List<SelectListViewModel>> GetListOfBloodPressurePartOfPeriodicTest()
+        {
+
+            return await _context.PeriodicTests.Where(p => !p.IsDelete &&
+                                        p.PeriodicTestType == Domain.Enums.PeriodicTestType.PeriodicTestType.BloodPressure
+                                        ||
+                                        p.PeriodicTestType == Domain.Enums.PeriodicTestType.PeriodicTestType.General
+                                        )
+               .Select(s => new SelectListViewModel
+               {
+                   Id = s.Id,
+                   Title = s.Name
+               }).ToListAsync();
+        }
+
         //Add User Periodic Test Drom User
         public async Task AddUserPeriodicTestDromUser(UserPeriodicTest entity)
         {

@@ -138,6 +138,12 @@ namespace DoctorFAM.Application.Services.Implementation
             return await _periodicTestRepository.GetListOfDiabetPartOfPeriodicTest();
         }
 
+        //Get List Of Blood Pressure Part Of Periodic Test
+        public async Task<List<SelectListViewModel>> GetListOfBloodPressurePartOfPeriodicTest()
+        {
+            return await _periodicTestRepository.GetListOfBloodPressurePartOfPeriodicTest();
+        }
+
         #endregion
 
         #region Site Side 

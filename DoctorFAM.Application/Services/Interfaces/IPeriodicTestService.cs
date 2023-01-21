@@ -33,6 +33,9 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Get List Of Diabet Part Of Periodic Test
         Task<List<SelectListViewModel>> GetListOfDiabetPartOfPeriodicTest();
 
+        //Get List Of Blood Pressure Part Of Periodic Test
+        Task<List<SelectListViewModel>> GetListOfBloodPressurePartOfPeriodicTest();
+
         //Create Periodic Test From User
         Task<CreatePeridicTestResult> CreateUserPeriodicTestSiteSide(CreatePeriodicTestSiteSideViewModel model, ulong userId);
 
