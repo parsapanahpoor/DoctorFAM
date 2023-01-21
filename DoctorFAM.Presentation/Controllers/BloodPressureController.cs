@@ -3,6 +3,7 @@ using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Services.Implementation;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.ViewModels.Site.DurgAlert;
+using DoctorFAM.Domain.ViewModels.Site.MedicalExamination;
 using DoctorFAM.Domain.ViewModels.Site.PeriodicTest;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,10 +18,14 @@ namespace DoctorFAM.Web.Controllers
 
         private readonly IPeriodicTestService _periodicTestService;
 
-        public BloodPressureController(IDrugAlertService drugAlertService, IPeriodicTestService periodicTestService)
+        private readonly IMedicalExaminationService _medicalExamination;
+
+        public BloodPressureController(IDrugAlertService drugAlertService, IPeriodicTestService periodicTestService
+                                        , IMedicalExaminationService medicalExaminationService)
         {
             _drugAlertService = drugAlertService;
             _periodicTestService = periodicTestService;
+            _medicalExamination = medicalExaminationService;
         }
 
         #endregion
@@ -244,6 +249,114 @@ namespace DoctorFAM.Web.Controllers
 
             TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
             return RedirectToAction(nameof(ListOfUserPeriodicTest));
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Medical Examination 
+
+        #region Create Medical Examination From User
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> CreateMedicalExaminationFromUser()
+        {
+            #region View Bags
+
+            ViewBag.ListOfMedicalExamination = await _medicalExamination.GetListOfMedicalExaminationsWithSelectList();
+
+            #endregion
+
+            return View();
+        }
+
+        [Authorize]
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateMedicalExaminationFromUser(CreatePriodicPatientExaminationSiteSideViewModel model)
+        {
+            #region View Bags
+
+            ViewBag.ListOfMedicalExamination = await _medicalExamination.GetListOfMedicalExaminationsWithSelectList();
+
+            #endregion
+
+            #region Model State Validation 
+
+            if (!ModelState.IsValid)
+            {
+                TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+                return View(model);
+            }
+
+            #endregion
+
+            #region Add Record Method 
+
+            var result = await _medicalExamination.CreatePriodicPatientExaminationSiteSideViewModel(model, User.GetUserId());
+
+            switch (result)
+            {
+                case CreatePriodicEcaminationFromUser.Success:
+                    TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+                    return RedirectToAction(nameof(ListOfUserExamination));
+
+                case CreatePriodicEcaminationFromUser.DoctorNotFound:
+                    TempData[ErrorMessage] = "پزشک مورد نظر یافت نشده است.";
+                    break;
+
+                case CreatePriodicEcaminationFromUser.MedicalExaminationNotFound:
+                    TempData[ErrorMessage] = "معاینه ی انتخابی صحیح نمی باشد.";
+                    break;
+
+                case CreatePriodicEcaminationFromUser.UserNotfound:
+                    TempData[ErrorMessage] = "کاربر موردنطر یافت نشده است.";
+                    break;
+
+                case CreatePriodicEcaminationFromUser.TimeNotValid:
+                    TempData[ErrorMessage] = "تاریخ وارد شده معتبر نمی باشد.";
+                    break;
+            }
+
+            #endregion
+
+            return View(model);
+        }
+
+        #endregion
+
+        #region List Of User Examination 
+
+        [Authorize]
+        public async Task<IActionResult> ListOfUserExamination()
+        {
+            #region Fill Model
+
+            var model = await _medicalExamination.ListOfUserPriodicPatientExamination(User.GetUserId());
+            if (model == null && !model.Any()) return RedirectToAction(nameof(CreateMedicalExaminationFromUser));
+
+            #endregion
+
+            return View(model);
+        }
+
+        #endregion
+
+        #region Delete Priodic Examination From User
+
+        public async Task<IActionResult> DeletePriodicExaminationFromUser(ulong priodicExaminationId)
+        {
+            //Delete Method 
+            var res = await _medicalExamination.DeletePriodicExaminationFromUser(priodicExaminationId, User.GetUserId());
+            if (res)
+            {
+                TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+                return RedirectToAction(nameof(ListOfUserExamination));
+            }
+
+            TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+            return RedirectToAction(nameof(ListOfUserExamination));
         }
 
         #endregion

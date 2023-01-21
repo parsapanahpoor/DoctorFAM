@@ -3,7 +3,7 @@
 @using DoctorFAM.Application.Extensions
 
 @{
-    ViewData["Title"] = " معاینات دوره ای دیابت";
+    ViewData["Title"] = " معاینات دوره ای فشارخون";
 }
 
 <div class="page-content  formHealth">
@@ -12,7 +12,7 @@
             <i class="menu-icon fa fa-globe"></i>
             <a asp-area="" asp-controller="Home" asp-action="Index">  <span class="menu-text"> صفحه اصلی سایت </span></a>
             <span>/</span>
-            <a asp-area="" asp-controller="Diabet" asp-action="Index">بازگشت به صفحه دیابت</a>
+            <a asp-area="" asp-controller="BloodPressure" asp-action="Index">بازگشت به صفحه فشارخون</a>
         </div>
         <div class="col-md-6   text-center  text-align-justify M-5 P-5">
 
@@ -31,7 +31,7 @@
                         <div class="row">
                             <div class="col-md-12 mt-3 text-center mb-2">
                                 <div class="form-group">
-                                    <a asp-action="CreateMedicalExaminationFromUser" asp-area="" asp-controller="Diabet" class="btn-Accept">افزودن عنوان جدید</a>
+                                    <a asp-action="CreateMedicalExaminationFromUser" asp-area="" asp-controller="BloodPressure" class="btn-Accept">افزودن عنوان جدید</a>
                                 </div>
                             </div>
                         </div>
@@ -86,7 +86,7 @@
                                             <td class=" text-center align-items-center">@item.PriodicPatientsExaminations.MedicalExamination.PriodMonth ماه دیگر</td>
 
                                             <td class=" text-center align-items-center">
-                                                <a asp-action="DeletePriodicExaminationFromUser" asp-area="" asp-controller="Diabet" asp-route-priodicExaminationId="@item.PriodicPatientsExaminations.Id" class="btn-Accept-Danger">حذف</a>
+                                                <a asp-action="DeletePriodicExaminationFromUser" asp-area="" asp-controller="BloodPressure" asp-route-priodicExaminationId="@item.PriodicPatientsExaminations.Id" class="btn-Accept-Danger">حذف</a>
                                             </td>
 
                                         </tr>

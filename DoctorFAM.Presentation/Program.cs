@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System.Globalization;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
@@ -194,6 +196,35 @@ builder.Services.AddSignalR();
 
 #endregion
 
+#region API Configuration
+
+builder.Services.AddEndpointsApiExplorer();
+
+JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+{
+    ContractResolver = new CamelCasePropertyNamesContractResolver(),
+};
+
+#endregion
+
+#region cors
+
+builder.Services.AddCors(
+    options =>
+    {
+        options.AddPolicy(
+            "ApiCORS",
+            builder => builder
+                .AllowAnyOrigin()
+                .SetIsOriginAllowed(domains => true)
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .SetPreflightMaxAge(TimeSpan.FromSeconds(43200))
+        );
+    });
+
+#endregion
+
 #endregion
 
 #region MiddleWares
@@ -262,6 +293,7 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseSession();
+app.UseCors("ApiCORS");
 
 SiteCurrentContext.Configure(app.Services.GetRequiredService<IHttpContextAccessor>());
 
