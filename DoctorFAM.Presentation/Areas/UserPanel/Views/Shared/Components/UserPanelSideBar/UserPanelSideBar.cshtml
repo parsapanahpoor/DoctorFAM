@@ -211,6 +211,24 @@
         </li>
 
         <li>
+            <a asp-action="ListOfUserPeriodicTest" asp-area="UserPanel" asp-controller="PeriodicTest" class="menu-dropdown">
+                <i class="menu-icon fa fa-heart"></i>
+                <span class="menu-text"> آزمایشات دوره ای </span>
+
+                <i class="menu-expand"></i>
+            </a>
+        </li>
+
+        <li>
+            <a asp-action="ListOfCurrentUserDrugAlerts" asp-area="UserPanel" asp-controller="DrugAlert" class="menu-dropdown">
+                <i class="menu-icon fa fa-medkit"></i>
+                <span class="menu-text"> برنامه ریزی مصرف دارو </span>
+
+                <i class="menu-expand"></i>
+            </a>
+        </li>
+
+        <li>
             <a href="#" class="menu-dropdown">
                 <i class="menu-icon fa fa-money"></i>
                 <span class="menu-text"> @SharedLocalizer["Manage Wallet"] </span>

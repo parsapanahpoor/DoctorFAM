@@ -1,0 +1,113 @@
+﻿@model DoctorFAM.Domain.ViewModels.Site.DurgAlert.ListOfUserDrugsAlertSiteSideViewModel
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.StaticTools
+
+@{
+    ViewData["Title"] = "هشدار مصرف دارو";
+}
+
+@section Breadcrumb
+    {
+    <li>
+        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+    </li>
+}
+
+@section Styles
+    {
+    <link href="/admin/css/dataTables.bootstrap.rtl.css" rel="stylesheet" />
+}
+
+@section Scripts
+    {
+    <script src="~/admin/js/datatable/jquery.dataTables.min.js"></script>
+    <script src="~/admin/js/datatable/ZeroClipboard.js"></script>
+    <script src="~/admin/js/datatable/dataTables.tableTools.min.js"></script>
+    <script src="~/admin/js/datatable/dataTables.bootstrap.min.js"></script>
+    <script src="~/admin/js/datatable/datatables-init.js"></script>
+    <script>
+        InitiateSimpleDataTable.init();
+        InitiateEditableDataTable.init();
+        InitiateExpandableDataTable.init();
+        InitiateSearchableDataTable.init();
+    </script>
+
+    }
+
+<div class="page-body">
+
+    <div class="row">
+
+        <div id="horizontal-form">
+
+            @if (Model.DrugAlerts != null && Model.DrugAlerts.Any())
+            {
+
+                <div class="widget-body no-padding">
+                    <div id="searchable_wrapper" class="dataTables_wrapper form-inline">
+
+                        <table class="table table-bordered table-hover table-striped dataTable" id="searchable" role="grid" aria-describedby="searchable_info">
+                            <thead class="bordered-darkorange">
+                                <tr role="row">
+
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">نام دارو</th>
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">دوره ی مصرف دارو</th>
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">تعداد مصرف</th>
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">تاریخ درج</th>
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending"></th>
+
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                @foreach (var item in Model.DrugAlerts)
+                                {
+                                    <tr role="row" class="even responsive">
+
+                                        <td class="center ">
+                                            @item.DrugName
+                                        </td>
+
+                                        <td class="center ">
+                                            <div class="label label-warning">
+
+                                                @item.DrugAlertDurationType.GetEnumName()
+
+                                            </div>
+                                        </td>
+
+                                        <td class="center ">
+                                            <div class="label label-primary">
+                                                    @item.CountOfUsage
+                                            </div>
+                                        </td>
+
+                                        <td class="center ">
+                                            @item.CreateDate.ToShamsi()
+                                        </td>
+
+                                        <td>
+                                            <a asp-action="DeleteDrugAlert" asp-area="UserPanel" asp-controller="DrugAlert" asp-route-drugAlertId="@item.Id" class="btn btn-danger btn-circle btn-xs"><i class="glyphicon glyphicon-trash"></i></a>
+                                        </td>
+
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <partial name="_UserPanelNotFoundPartial" />
+            }
+
+        </div>
+    </div>
+
+</div>
+
+

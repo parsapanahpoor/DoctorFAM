@@ -1,0 +1,133 @@
+﻿@model List<DoctorFAM.Domain.Entities.PeriodicTest.UserPeriodicTest>
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.Extensions
+
+@{
+    ViewData["Title"] = "لیست آزمایشات شما";
+}
+
+@section Breadcrumb
+    {
+    <li>
+        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+    </li>
+}
+
+@section Styles
+    {
+    <link href="/admin/css/dataTables.bootstrap.rtl.css" rel="stylesheet" />
+}
+
+@section Scripts
+    {
+    <script src="~/admin/js/datatable/jquery.dataTables.min.js"></script>
+    <script src="~/admin/js/datatable/ZeroClipboard.js"></script>
+    <script src="~/admin/js/datatable/dataTables.tableTools.min.js"></script>
+    <script src="~/admin/js/datatable/dataTables.bootstrap.min.js"></script>
+    <script src="~/admin/js/datatable/datatables-init.js"></script>
+    <script>
+        InitiateSimpleDataTable.init();
+        InitiateEditableDataTable.init();
+        InitiateExpandableDataTable.init();
+        InitiateSearchableDataTable.init();
+    </script>
+
+    }
+
+<div class="page-body">
+
+    <div class="row">
+
+        <div id="horizontal-form">
+
+            @if (Model != null && Model.Any())
+            {
+
+                <div class="widget-body no-padding">
+                    <div id="searchable_wrapper" class="dataTables_wrapper form-inline">
+
+                        <table class="table table-bordered table-hover table-striped dataTable" id="searchable" role="grid" aria-describedby="searchable_info">
+                            <thead class="bordered-darkorange">
+                                <tr role="row">
+
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">عنوان</th>
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">تاریخ آخرین آزمایش</th>
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">تاریخ پیشنهادی داکترفام</th>
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">تاریخ پیشنهادی پزشک</th>
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">نوع آزمایش</th>
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending"></th>
+
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                @foreach (var item in Model)
+                                {
+                                    <tr role="row" class="even responsive">
+
+                                        <td class="center ">
+                                            <span>@item.PeriodicTest.Name</span>
+                                        </td>
+
+                                        <td class="center ">
+                                                <h5 style="color:#fd5b03"> @item.LastUserTest.ToShamsi()</h5>
+                                        </td>
+
+                                        <td class="center ">
+                                            <h5 style="color:green"> @item.SystemOrderForNextTest.ToShamsi()</h5>
+                                        </td>
+
+                                        @if (item.DoctorOrderForNextTest == null)
+                                        {
+                                            <td class="center ">
+                                                وارد نشده است
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td class="center ">
+                                                @item.DoctorOrderForNextTest.Value.ToShamsi()
+                                            </td>
+                                        }
+
+                                        <td class="center ">
+
+                                            @if (item.PeriodicTest.PeriodicTestType == DoctorFAM.Domain.Enums.PeriodicTestType.PeriodicTestType.Diabet)
+                                            {
+                                                <div class="label label-warning">دیابت</div>
+                                            }
+                                            @if (item.PeriodicTest.PeriodicTestType == DoctorFAM.Domain.Enums.PeriodicTestType.PeriodicTestType.BloodPressure)
+                                            {
+                                                <div class="label label-warning">فشارخون</div>
+                                            }
+                                            @if (item.PeriodicTest.PeriodicTestType == DoctorFAM.Domain.Enums.PeriodicTestType.PeriodicTestType.General)
+                                            {
+                                                <div class="label label-warning">عمومی</div>
+                                            }
+                                                
+                                        </td>
+
+                                        <td>
+                                            <a asp-action="DeleteUserPeriodicTest" asp-area="UserPanel" asp-controller="PeriodicTest" asp-route-id="@item.PeriodicTestId" class="btn btn-danger btn-circle btn-xs"><i class="glyphicon glyphicon-trash"></i></a>
+                                        </td>
+
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <partial name="_UserPanelNotFoundPartial" />
+            }
+
+        </div>
+    </div>
+
+</div>
+
+
