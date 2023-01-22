@@ -133,9 +133,7 @@ namespace DoctorFAM.Data.Repository
         {
             return await _context.PriodicPatientsExamination.Include(p => p.MedicalExamination)
                                                    .Where(p => !p.IsDelete && p.UserId == userId && (
-                                                    (p.NextExaminationDate.Year == DateTime.Now.Year && p.NextExaminationDate.DayOfYear - DateTime.Now.DayOfYear <= 7)
-                                                    ||
-                                                    (p.NextExaminationDate.Year >= DateTime.Now.Year && 365 - DateTime.Now.DayOfYear > 7 && 365 - p.NextExaminationDate.DayOfYear < 360)
+                                                    (p.NextExaminationDate.Year == DateTime.Now.Year && p.NextExaminationDate.DayOfYear >= DateTime.Now.DayOfYear && p.NextExaminationDate.DayOfYear - DateTime.Now.DayOfYear <= 7 && p.NextExaminationDate.DayOfYear - DateTime.Now.DayOfYear >= 0)
                                                     )).ToListAsync();
         }
 
