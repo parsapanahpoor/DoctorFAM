@@ -725,6 +725,13 @@ namespace DoctorFAM.Data.DbContext
                 IsDelete = false
             });
 
+            modelBuilder.Entity<DoctorsInterest>().HasData(new DoctorsInterest
+            {
+                Id = 6,
+                CreateDate = DateTime.Now,
+                IsDelete = false
+            });
+
             #endregion
 
             #region Interest Info
@@ -927,6 +934,46 @@ namespace DoctorFAM.Data.DbContext
                 CreateDate = DateTime.Now,
                 LanguageId = "ar-SA",
                 Title = "استشاري مرض السكر"
+            });
+
+            modelBuilder.Entity<DoctorsInterestInfo>().HasData(new DoctorsInterestInfo
+            {
+                Id = 21,
+                InterestId = 6,
+                IsDelete = false,
+                CreateDate = DateTime.Now,
+                LanguageId = "fa-IR",
+                Title = "مشاور فشارخون"
+            });
+
+            modelBuilder.Entity<DoctorsInterestInfo>().HasData(new DoctorsInterestInfo
+            {
+                Id = 22,
+                InterestId = 6,
+                IsDelete = false,
+                CreateDate = DateTime.Now,
+                LanguageId = "en-US",
+                Title = "Blood pressure consultant"
+            });
+
+            modelBuilder.Entity<DoctorsInterestInfo>().HasData(new DoctorsInterestInfo
+            {
+                Id = 23,
+                InterestId = 6,
+                IsDelete = false,
+                CreateDate = DateTime.Now,
+                LanguageId = "tr-TR",
+                Title = "tansiyon danışmanı"
+            });
+
+            modelBuilder.Entity<DoctorsInterestInfo>().HasData(new DoctorsInterestInfo
+            {
+                Id = 24,
+                InterestId = 6,
+                IsDelete = false,
+                CreateDate = DateTime.Now,
+                LanguageId = "ar-SA",
+                Title = "استشاري ضغط الدم"
             });
 
             #endregion
