@@ -260,6 +260,12 @@
                                                             مشاهده ی رزومه
                                                         </a>
                                                     }
+                                                    @if (item.InterestId == 6)
+                                                    {
+                                                        <a class="badge badge-primary" asp-action="ShowBloodPressureConsultantResume" asp-area="Admin" asp-controller="Doctors" asp-route-UserId="@Model.UserId">
+                                                            مشاهده ی رزومه
+                                                        </a>
+                                                    }
                                                 </div>
                                                 <div class="ticket-state bg-darkorange">
                                                     <a asp-action="DeleteDoctorSelectedInfo" asp-area="Admin" asp-controller="Doctors" asp-route-interestId="@item.InterestId" asp-route-doctorId="@Model.DoctorId" asp-route-doctorInfoId="@Model.Id">

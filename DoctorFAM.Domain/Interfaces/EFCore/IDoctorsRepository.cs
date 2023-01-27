@@ -23,14 +23,26 @@ namespace DoctorFAM.Domain.Interfaces
         //Update Diabet Consultant Resume 
         Task UpdateDiabetConsultantResume(DiabetConsultantsResume diabet);
 
+        //Update Blood Pressure Consultant Resume 
+        Task UpdateBloodPressureConsultantResume(BloodPressureConsultantResume bloodPressure);
+
         //Get Diabet Consualtant Resume By Id
         Task<DiabetConsultantsResume?> GetDiabetConsualtantResumeById(ulong resumeId);
+
+        //Get Blood Pressure Consualtant Resume By Id
+        Task<BloodPressureConsultantResume?> GetBloodPressureConsualtantResumeById(ulong resumeId);
 
         //Upload Resume From Diabet Consultant 
         Task UploadResumeFroDiabetConsultant(DiabetConsultantsResume diabet);
 
+        //Upload Resume From Blood Pressure Consultant 
+        Task UploadResumeFroBloodPressureConsultant(BloodPressureConsultantResume bloodPressure);
+
         //Get Doctor Diabet Consultant Resumes By Doctor User Id 
         Task<List<DiabetConsultantsResume>?> GetDoctorDiabetConsultantResumesByDoctorUserId(ulong doctorUserId);
+
+        //Get Doctor Blood Pressure Consultant Resumes By Doctor User Id 
+        Task<List<BloodPressureConsultantResume>?> GetDoctorBloodPressureConsultantResumesByDoctorUserId(ulong doctorUserId);
 
         //Create Request Excel File For Compelete From Admin 
         Task CreateRequestExcelFileForCompeleteFromAdmin(RequestForUploadExcelFileFromDoctorsToSite model);

@@ -255,6 +255,8 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
         #endregion
 
+        #region Diabet
+
         #region Upload Resume For Diabet Consultants
 
         [HttpGet]
@@ -286,7 +288,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
             #region Upload Resume For Diabet Consultant 
 
-            var res = await _doctorService.UploadDoctorDiabetConsultantResumeFile(User.GetUserId() , model.Description , MediacalFile);
+            var res = await _doctorService.UploadDoctorDiabetConsultantResumeFile(User.GetUserId(), model.Description, MediacalFile);
             if (res)
             {
                 TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
@@ -310,7 +312,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
         {
             #region Delete Method 
 
-            var res = await _doctorService.DeleteDiabetConsultantResumeByResumeId(resumeId , User.GetUserId());
+            var res = await _doctorService.DeleteDiabetConsultantResumeByResumeId(resumeId, User.GetUserId());
             if (res)
             {
                 TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
@@ -322,6 +324,82 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
             TempData[ErrorMessage] = "عملیات باخطا مواجه شده است.";
             return RedirectToAction(nameof(UploadResumeForDiabetConsultants));
         }
+
+        #endregion
+
+        #endregion
+
+        #region Blood Pressure
+
+        #region Upload Resume For Blood Pressure Consultants
+
+        [HttpGet]
+        public async Task<IActionResult> UploadResumeForBloodPressureConsultants()
+        {
+            #region Fill Model 
+
+            var model = await _doctorService.FillBloodPressureConsultatnResumeViewModel(User.GetUserId());
+
+            #endregion
+
+            return View(model);
+        }
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> UploadResumeForBloodPressureConsultants(UploadBloodPressureConsultatntDoctorSideViewModel model, IFormFile? MediacalFile)
+        {
+            #region Model State Validation 
+
+            if (MediacalFile == null && string.IsNullOrEmpty(model.Description))
+            {
+                model.BloodPressureConsultantResume = await _doctorService.GetDoctorBloodPressureConsultantResumesByDoctorUserId(User.GetUserId());
+
+                TempData[ErrorMessage] = "اطلاعات وارد شده معتبر نمی باشد.";
+                return View(model);
+
+            }
+
+            #endregion
+
+            #region Upload Resume For Blood Pressure Consultant 
+
+            var res = await _doctorService.UploadDoctorBloodPressureConsultantResumeFile(User.GetUserId(), model.Description, MediacalFile);
+            if (res)
+            {
+                TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+                return RedirectToAction(nameof(UploadResumeForBloodPressureConsultants));
+            }
+
+            #endregion
+
+            model.BloodPressureConsultantResume = await _doctorService.GetDoctorBloodPressureConsultantResumesByDoctorUserId(User.GetUserId());
+
+            TempData[ErrorMessage] = "عملیات باخطا مواجه شده است.";
+            return View(model);
+        }
+
+        #endregion
+
+        #region Delete Blood Pressure Consultant Resume 
+
+        [HttpGet]
+        public async Task<IActionResult> DeleteBloodPRessureConsultantResume(ulong resumeId)
+        {
+            #region Delete Method 
+
+            var res = await _doctorService.DeleteBloodPressureConsultantResumeByResumeId(resumeId, User.GetUserId());
+            if (res)
+            {
+                TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+                return RedirectToAction(nameof(UploadResumeForBloodPressureConsultants));
+            }
+
+            #endregion
+
+            TempData[ErrorMessage] = "عملیات باخطا مواجه شده است.";
+            return RedirectToAction(nameof(UploadResumeForBloodPressureConsultants));
+        }
+
+        #endregion
 
         #endregion
 

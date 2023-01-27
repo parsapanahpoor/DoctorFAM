@@ -54,10 +54,23 @@ namespace DoctorFAM.Data.Repository
             await _context.SaveChangesAsync();
         }
 
+        //Update Blood Pressure Consultant Resume 
+        public async Task UpdateBloodPressureConsultantResume(BloodPressureConsultantResume bloodPressure)
+        {
+            _context.BloodPressureConsultantResumes.Update(bloodPressure);
+            await _context.SaveChangesAsync();
+        }
+
         //Get Diabet Consualtant Resume By Id
         public async Task<DiabetConsultantsResume?> GetDiabetConsualtantResumeById(ulong resumeId)
         {
             return await _context.DiabetConsultantsResumes.FirstOrDefaultAsync(p => !p.IsDelete && p.Id == resumeId);
+        }
+
+        //Get Blood Pressure Consualtant Resume By Id
+        public async Task<BloodPressureConsultantResume?> GetBloodPressureConsualtantResumeById(ulong resumeId)
+        {
+            return await _context.BloodPressureConsultantResumes.FirstOrDefaultAsync(p => !p.IsDelete && p.Id == resumeId);
         }
 
         //Get Doctor Diabet Consultant Resumes By Doctor User Id 
@@ -67,10 +80,24 @@ namespace DoctorFAM.Data.Repository
                                                             .OrderByDescending(p => p.CreateDate).ToListAsync();
         }
 
+        //Get Doctor Blood Pressure Consultant Resumes By Doctor User Id 
+        public async Task<List<BloodPressureConsultantResume>?> GetDoctorBloodPressureConsultantResumesByDoctorUserId(ulong doctorUserId)
+        {
+            return await _context.BloodPressureConsultantResumes.Where(p => !p.IsDelete && p.UserId == doctorUserId)
+                                                            .OrderByDescending(p => p.CreateDate).ToListAsync();
+        }
+
         //Upload Resume From Diabet Consultant 
         public async Task UploadResumeFroDiabetConsultant(DiabetConsultantsResume diabet)
         {
             await _context.DiabetConsultantsResumes.AddAsync(diabet);
+            await _context.SaveChangesAsync();
+        }
+
+        //Upload Resume From Blood Pressure Consultant 
+        public async Task UploadResumeFroBloodPressureConsultant(BloodPressureConsultantResume bloodPressure)
+        {
+            await _context.BloodPressureConsultantResumes.AddAsync(bloodPressure);
             await _context.SaveChangesAsync();
         }
 

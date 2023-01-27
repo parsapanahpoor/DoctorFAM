@@ -31,17 +31,29 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Delete Diabet Consultant Resume By Resume Id
         Task<bool> DeleteDiabetConsultantResumeByResumeId(ulong resumeId, ulong userId);
 
+        //Delete Blood Pressure Consultant Resume By Resume Id
+        Task<bool> DeleteBloodPressureConsultantResumeByResumeId(ulong resumeId, ulong userId);
+
         //Get Diabet Consualtant Resume By Id
         Task<DiabetConsultantsResume?> GetDiabetConsualtantResumeById(ulong resumeId);
 
         //Upload Doctor Diabet Consultant Resume File 
         Task<bool> UploadDoctorDiabetConsultantResumeFile(ulong userId, string? description, IFormFile? resumePicture);
 
+        //Upload Doctor Blood Pressure Consultant Resume File 
+        Task<bool> UploadDoctorBloodPressureConsultantResumeFile(ulong userId, string? description, IFormFile? resumePicture);
+
         //Get Doctor Diabet Consultant Resumes By Doctor User Id 
         Task<List<DiabetConsultantsResume>?> GetDoctorDiabetConsultantResumesByDoctorUserId(ulong doctorUserId);
 
+        //Get Doctor Blood Pressure Consultant Resumes By Doctor User Id 
+        Task<List<BloodPressureConsultantResume>?> GetDoctorBloodPressureConsultantResumesByDoctorUserId(ulong doctorUserId);
+
         //Fill Diabet Consultatn Resume View Model
         Task<UploadDiabetConsultatntDoctorSideViewModel?> FillDiabetConsultatnResumeViewModel(ulong userId);
+
+        //Fill Blood Pressure Consultatn Resume View Model
+        Task<UploadBloodPressureConsultatntDoctorSideViewModel?> FillBloodPressureConsultatnResumeViewModel(ulong userId);
 
         //Get Doctor Lable Of Sickness By Doctor User Id 
         Task<List<DoctorsLabelsForVIPInsertedDoctor>?> GetDoctorLableOfSicknessByDoctorUserId(ulong doctorUserId);
@@ -176,6 +188,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Get Diabet Consultant Resumes By UserId Admin Side
         Task<List<DiabetConsultantsResume>?> GetDiabetConsultanResumesByUserIdAdminSide(ulong userId);
+
+        //Get Blood Pressure Consultant Resumes By UserId Admin Side
+        Task<List<BloodPressureConsultantResume>?> GetBloodPressureConsultanResumesByUserIdAdminSide(ulong userId);
 
         Task<ListOfDoctorsInfoViewModel> FilterDoctorsInfoAdminSide(ListOfDoctorsInfoViewModel filter);
 

@@ -1,0 +1,92 @@
+﻿@model List<DoctorFAM.Domain.Entities.Interest.BloodPressureConsultantResume>
+@using DoctorFAM.Domain.Enums
+@using DoctorFAM.Application.StaticTools
+@using DoctorFAM.Domain.ViewModels.Common
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.Extensions
+
+@{
+    ViewData["Title"] = " رزومه ";
+}
+
+@section Scripts
+    {
+    <partial name="_JqueryValidation" />
+
+}
+
+@section Breadcrumb
+    {
+    <li>
+        <a asp-action="Index" asp-controller="Home" asp-area="Admin">اطلاعات پزشک </a>
+    </li>
+    <li>
+        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+    </li>
+}
+
+<div class="row">
+
+    <div class="col-lg-12 col-sm-12">
+        <div class="well with-header with-footer table-responsive">
+            <div class="header bordered-azure">
+                <div class="flex-style">
+                    <span> لیست رزومه های فشارخون </span>
+                </div>
+            </div>
+
+            @if (Model != null && Model.Any())
+            {
+                <table class="table table-hover table-bordered tc vm">
+                    <thead class="tc vm">
+                        <tr class="tc vm">
+                            <th class="tc vm">
+                                تصویر رزومه
+                            </th>
+                            <th class="tc vm">
+                                توضیحات
+                            </th>
+                            <th class="tc vm">
+                                تاریخ درج
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="tc vm">
+                        @foreach (var resume in Model)
+                        {
+                            <tr class="tc vm" remove-ajax-item="@resume.Id">
+                                <td class="vm">
+                                    <div class="flex-style-center">
+                                        @if (string.IsNullOrEmpty(resume.ResumePicture))
+                                        {
+                                            <span class="badge badge-warning">وارد نشده است.</span>
+                                        }
+                                        else
+                                        {
+                                            <a target="_blank" href="@PathTools.BloodPressureConsultantResumeFilesPath@resume.ResumePicture">
+                                                <img src="@PathTools.BloodPressureConsultantResumeFilesPathThumb/@resume.ResumePicture" class="avatar-style" />
+                                            </a>
+                                        }
+                                    </div>
+                                </td>
+                                <td class="tc vm">
+                                    <p> @resume.Description </p>
+                                </td>
+                                <td class="tc vm">
+                                    <p> @resume.CreateDate.ToShamsi() </p>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            }
+            else
+            {
+                <partial name="_AdminNotFoundPartial" />
+            }
+        </div>
+    </div>
+</div>
+
+
