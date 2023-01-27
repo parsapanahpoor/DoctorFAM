@@ -5,6 +5,7 @@ using DoctorFAM.Domain.Entities.Interest;
 using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DosctorSideBarInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Employees;
+using DoctorFAM.Domain.ViewModels.Site.BloodPressure;
 using DoctorFAM.Domain.ViewModels.Site.Diabet;
 using DoctorFAM.Domain.ViewModels.Site.Doctor;
 using DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor;
@@ -221,6 +222,9 @@ namespace DoctorFAM.Domain.Interfaces
 
         //Get List Of Doctors With Diabet Consultant Interests
         Task<List<Doctor>?> FilterDiabetConsultantsSiteSide(FilterDiabetConsultantsSiteSideViewModel filter);
+
+        //Get List Of Doctors With Blood Pressure Consultant Interests
+        Task<List<Doctor>?> FilterBloodPressureConsultantsSiteSide(FilterBloodPressureConsultantsSiteSideViewModel filter);
 
         //Get List Of Doctors With Diabet Speciality
         Task<List<Doctor>?> FilterDoctorsWithDiabetSpecialitySiteSide(FilterDoctorsWithDiabetSpecialitySiteSideViewModel filter);

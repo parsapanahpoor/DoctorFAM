@@ -1024,6 +1024,35 @@ namespace DoctorFAM.Data.DbContext
                 ParentId = 2,
             });
 
+            modelBuilder.Entity<Speciality>().HasData(new Speciality
+            {
+                Id = 5,
+                CreateDate = DateTime.Now,
+                IsDelete = false,
+                UniqueName = "قلب و عروق",
+                UniqueId = 4
+            });
+
+            modelBuilder.Entity<Speciality>().HasData(new Speciality
+            {
+                Id = 6,
+                CreateDate = DateTime.Now,
+                IsDelete = false,
+                UniqueName = " متخصص قلب و عروق",
+                UniqueId = 5,
+                ParentId = 5,
+            });
+
+            modelBuilder.Entity<Speciality>().HasData(new Speciality
+            {
+                Id = 7,
+                CreateDate = DateTime.Now,
+                IsDelete = false,
+                UniqueName = "فوق تخصص قلب و عروق",
+                UniqueId = 6,
+                ParentId = 5,
+            });
+
             #endregion
 
             #region Speciality Info
@@ -1186,6 +1215,126 @@ namespace DoctorFAM.Data.DbContext
                 CreateDate = DateTime.Now,
                 LanguageId = "ar-SA",
                 Title = "أخصائي أمراض الغدد الصماء"
+            });
+
+            modelBuilder.Entity<SpecialtiyInfo>().HasData(new SpecialtiyInfo
+            {
+                Id = 17,
+                SpecialityId = 5,
+                IsDelete = false,
+                CreateDate = DateTime.Now,
+                LanguageId = "en-US",
+                Title = "Cardiovascular"
+            });
+
+            modelBuilder.Entity<SpecialtiyInfo>().HasData(new SpecialtiyInfo
+            {
+                Id = 18,
+                SpecialityId = 5,
+                IsDelete = false,
+                CreateDate = DateTime.Now,
+                LanguageId = "fa-IR",
+                Title = "قلب و عروق"
+            });
+
+            modelBuilder.Entity<SpecialtiyInfo>().HasData(new SpecialtiyInfo
+            {
+                Id = 19,
+                SpecialityId = 5,
+                IsDelete = false,
+                CreateDate = DateTime.Now,
+                LanguageId = "ar-SA",
+                Title = "القلب والأوعية الدموية"
+            });
+
+            modelBuilder.Entity<SpecialtiyInfo>().HasData(new SpecialtiyInfo
+            {
+                Id = 20,
+                SpecialityId = 5,
+                IsDelete = false,
+                CreateDate = DateTime.Now,
+                LanguageId = "tr-TR",
+                Title = "kardiyovasküler"
+            });
+
+            modelBuilder.Entity<SpecialtiyInfo>().HasData(new SpecialtiyInfo
+            {
+                Id = 21,
+                SpecialityId = 6,
+                IsDelete = false,
+                CreateDate = DateTime.Now,
+                LanguageId = "en-US",
+                Title = "Cardiologist"
+            });
+
+            modelBuilder.Entity<SpecialtiyInfo>().HasData(new SpecialtiyInfo
+            {
+                Id = 22,
+                SpecialityId = 6,
+                IsDelete = false,
+                CreateDate = DateTime.Now,
+                LanguageId = "fa-IR",
+                Title = "متخصص قلب و عروق"
+            });
+
+            modelBuilder.Entity<SpecialtiyInfo>().HasData(new SpecialtiyInfo
+            {
+                Id = 23,
+                SpecialityId = 6,
+                IsDelete = false,
+                CreateDate = DateTime.Now,
+                LanguageId = "ar-SA",
+                Title = "طبيب قلب"
+            });
+
+            modelBuilder.Entity<SpecialtiyInfo>().HasData(new SpecialtiyInfo
+            {
+                Id = 24,
+                SpecialityId = 6,
+                IsDelete = false,
+                CreateDate = DateTime.Now,
+                LanguageId = "tr-TR",
+                Title = "kardiyolog"
+            });
+
+            modelBuilder.Entity<SpecialtiyInfo>().HasData(new SpecialtiyInfo
+            {
+                Id = 25,
+                SpecialityId = 7,
+                IsDelete = false,
+                CreateDate = DateTime.Now,
+                LanguageId = "en-US",
+                Title = "Cardiology specialist"
+            });
+
+            modelBuilder.Entity<SpecialtiyInfo>().HasData(new SpecialtiyInfo
+            {
+                Id = 26,
+                SpecialityId = 7,
+                IsDelete = false,
+                CreateDate = DateTime.Now,
+                LanguageId = "fa-IR",
+                Title = "فوق تخصص قلب و عروق"
+            });
+
+            modelBuilder.Entity<SpecialtiyInfo>().HasData(new SpecialtiyInfo
+            {
+                Id = 27,
+                SpecialityId = 7,
+                IsDelete = false,
+                CreateDate = DateTime.Now,
+                LanguageId = "ar-SA",
+                Title = "أخصائي أمراض القلب"
+            });
+
+            modelBuilder.Entity<SpecialtiyInfo>().HasData(new SpecialtiyInfo
+            {
+                Id = 28,
+                SpecialityId = 7,
+                IsDelete = false,
+                CreateDate = DateTime.Now,
+                LanguageId = "tr-TR",
+                Title = "kardiyoloji uzmanı"
             });
 
             #endregion

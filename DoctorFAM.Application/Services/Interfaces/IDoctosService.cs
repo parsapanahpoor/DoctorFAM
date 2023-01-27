@@ -11,6 +11,7 @@ using DoctorFAM.Domain.ViewModels.DoctorPanel.Employees;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.ParsaSystem;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.ParsaSystem.VIPPatient;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Speciality;
+using DoctorFAM.Domain.ViewModels.Site.BloodPressure;
 using DoctorFAM.Domain.ViewModels.Site.Diabet;
 using DoctorFAM.Domain.ViewModels.Site.Doctor;
 using DoctorFAM.Domain.ViewModels.Site.Reservation;
@@ -221,6 +222,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Get List Of Doctors With Diabet Consultant Interests
         Task<List<Doctor>?> FilterDiabetConsultantsSiteSide(FilterDiabetConsultantsSiteSideViewModel filter);
+
+        //Get List Of Doctors With Blood Pressure Consultant Interests
+        Task<List<Doctor>?> FilterBloodPressureConsultantsSiteSide(FilterBloodPressureConsultantsSiteSideViewModel filter);
 
         //Get List Of Doctors With Diabet Speciality
         Task<List<Doctor>?> FilterDoctorsWithDiabetSpecialitySiteSide(FilterDoctorsWithDiabetSpecialitySiteSideViewModel filter);

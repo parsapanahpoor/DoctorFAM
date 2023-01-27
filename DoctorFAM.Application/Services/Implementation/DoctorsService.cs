@@ -38,6 +38,7 @@ using DoctorFAM.Domain.ViewModels.DoctorPanel.Speciality;
 using System.Data;
 using DoctorFAM.Domain.ViewModels.Site.Diabet;
 using DoctorFAM.Domain.Entities.Resume;
+using DoctorFAM.Domain.ViewModels.Site.BloodPressure;
 
 namespace DoctorFAM.Application.Services.Implementation
 {
@@ -77,11 +78,11 @@ namespace DoctorFAM.Application.Services.Implementation
         //Get Diabet Consualtant Resume By Id
         public async Task<DiabetConsultantsResume?> GetDiabetConsualtantResumeById(ulong resumeId)
         {
-            return await _doctorRepository.GetDiabetConsualtantResumeById(resumeId) ;
+            return await _doctorRepository.GetDiabetConsualtantResumeById(resumeId);
         }
 
         //Delete Diabet Consultant Resume By Resume Id
-        public async Task<bool> DeleteDiabetConsultantResumeByResumeId(ulong resumeId , ulong userId)
+        public async Task<bool> DeleteDiabetConsultantResumeByResumeId(ulong resumeId, ulong userId)
         {
             #region Gett Doctor
 
@@ -138,7 +139,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #endregion
 
-            return true; 
+            return true;
         }
 
         //Delete Blood Pressure Consultant Resume By Resume Id
@@ -203,7 +204,7 @@ namespace DoctorFAM.Application.Services.Implementation
         }
 
         //Upload Doctor Diabet Consultant Resume File 
-        public async Task<bool> UploadDoctorDiabetConsultantResumeFile(ulong userId , string? description , IFormFile? resumePicture)
+        public async Task<bool> UploadDoctorDiabetConsultantResumeFile(ulong userId, string? description, IFormFile? resumePicture)
         {
             #region Gett Doctor
 
@@ -257,7 +258,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #endregion
 
-            return true; 
+            return true;
         }
 
         //Upload Doctor Blood Pressure Consultant Resume File 
@@ -389,7 +390,7 @@ namespace DoctorFAM.Application.Services.Implementation
             return new UploadDiabetConsultatntDoctorSideViewModel()
             {
                 DiabetConsultantsResumes = await _doctorRepository.GetDoctorDiabetConsultantResumesByDoctorUserId(organization.OwnerId)
-            }; 
+            };
 
             #endregion
         }
@@ -2412,7 +2413,7 @@ namespace DoctorFAM.Application.Services.Implementation
         //Get List Of Doctors Name
         public async Task<List<string>?> GetListOfDoctorsName()
         {
-            return await _doctorRepository.GetListOfDoctorsName(); 
+            return await _doctorRepository.GetListOfDoctorsName();
         }
 
         public async Task<DoctorsInfo?> GetDoctorsInfoById(ulong doctorInfoId)
@@ -3058,7 +3059,7 @@ namespace DoctorFAM.Application.Services.Implementation
             {
                 if (doctorName.Contains(doctorNamePart))
                 {
-                    returnModel.Add(doctorName); 
+                    returnModel.Add(doctorName);
                 }
             }
 
@@ -3079,6 +3080,12 @@ namespace DoctorFAM.Application.Services.Implementation
         public async Task<List<Doctor>?> FilterDiabetConsultantsSiteSide(FilterDiabetConsultantsSiteSideViewModel filter)
         {
             return await _doctorRepository.FilterDiabetConsultantsSiteSide(filter);
+        }
+
+        //Get List Of Doctors With Blood Pressure Consultant Interests
+        public async Task<List<Doctor>?> FilterBloodPressureConsultantsSiteSide(FilterBloodPressureConsultantsSiteSideViewModel filter)
+        {
+            return await _doctorRepository.FilterBloodPressureConsultantsSiteSide(filter);
         }
 
         //Fill Doctor Family Reservation Information Detail View Model
