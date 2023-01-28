@@ -4,6 +4,7 @@
 
     var bmiResult = ViewBag.bmiResult != null ? (int)ViewBag.bmiResult : 0;
     var GFRResult = ViewBag.gfrResult != null ? (decimal)ViewBag.gfrResult : 0;
+    var selfAssessment = ViewBag.selfAssessment != null ? (decimal)ViewBag.selfAssessment : 0;
 }
 
 @section Scripts{
@@ -76,7 +77,7 @@
                                     <div class="col-xl-3  ">
                                         <div class="gauge">
                                             <canvas data-type="radial-gauge" data-width="280" data-height="280" data-units="Km/h"
-                                                    data-title="false" data-value="@GFRResult" data-animate-on-init="true" data-animated-value="true"
+                                                    data-title="false" data-value="@selfAssessment" data-animate-on-init="true" data-animated-value="true"
                                                     data-min-value="0" data-max-value="120" data-major-ticks="0,20,40,60,80,100,120"
                                                     data-minor-ticks="5" data-stroke-ticks="false" data-highlights='[
                         { "from": 0, "to": 15, "color": "rgba(143,1,1)" },

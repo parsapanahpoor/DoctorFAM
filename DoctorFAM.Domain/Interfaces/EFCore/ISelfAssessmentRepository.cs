@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DoctorFAM.Domain.Entities.SelfAssessment;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,7 +13,8 @@ namespace DoctorFAM.Domain.Interfaces.EFCore
 
         #region Site Side 
 
-
+        //Add Diabet Self Assessment To The Data Base 
+        Task AddDiabetSelfAssessmentToTheDataBase(DiabetSelfAssessment model);
 
         #endregion
 

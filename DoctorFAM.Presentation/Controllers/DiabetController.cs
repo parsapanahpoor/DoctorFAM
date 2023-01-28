@@ -28,10 +28,12 @@ namespace DoctorFAM.Web.Controllers
         private readonly IDrugAlertService _drugAlertService;
         private readonly IPeriodicTestService _periodicTestService;
         private readonly IPeriodicSelftEvaluationService _periodicSelftEvaluationService;
+        private readonly ISelfAssessmentService _selfAssessmentService;
 
         public DiabetController(IBMIService bmiService, ILocationService locationService, IDoctorsService doctorsService
                                     , IMedicalExaminationService medicalExamination, IDrugAlertService drugAlertService
-                                        , IPeriodicTestService periodicTestService , IPeriodicSelftEvaluationService periodicSelftEvaluationService)
+                                        , IPeriodicTestService periodicTestService, IPeriodicSelftEvaluationService periodicSelftEvaluationService
+                                            , ISelfAssessmentService selfAssessmentService)
         {
             _bmiService = bmiService;
             _locationService = locationService;
@@ -40,6 +42,7 @@ namespace DoctorFAM.Web.Controllers
             _drugAlertService = drugAlertService;
             _periodicTestService = periodicTestService;
             _periodicSelftEvaluationService = periodicSelftEvaluationService;
+            _selfAssessmentService = selfAssessmentService;
         }
 
         #endregion
@@ -55,7 +58,7 @@ namespace DoctorFAM.Web.Controllers
 
         #region Index Page Of Diabet Part
 
-        public IActionResult Index(int? bmiResult, decimal? gfrResult)
+        public IActionResult Index(int? bmiResult, decimal? gfrResult, decimal? selfAssessment)
         {
             #region Send BMI && GFR Result To View 
 
@@ -67,6 +70,11 @@ namespace DoctorFAM.Web.Controllers
             if (gfrResult != null)
             {
                 ViewBag.gfrResult = gfrResult;
+            }
+
+            if (selfAssessment != null)
+            {
+                ViewBag.selfAssessment = selfAssessment;
             }
 
             #endregion
@@ -159,6 +167,8 @@ namespace DoctorFAM.Web.Controllers
 
         #endregion
 
+        #region Self Assessment
+
         #region Periodic Self Evaluation
 
         [HttpGet("/Priodic-Self-Evaluation-Modal")]
@@ -168,6 +178,61 @@ namespace DoctorFAM.Web.Controllers
 
             return PartialView("_PeriodicSelfEvaluationModal");
         }
+
+        #endregion
+
+        #region Process Self Assessment
+
+        [HttpPost]
+        public async Task<IActionResult> ProcesSelfAssessment(SelfAssessmentSiteSideViewModel model)
+        {
+            #region Model State Validation 
+
+            if (!ModelState.IsValid)
+            {
+                TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            #endregion
+
+            #region Process Self Assessmnet 
+
+            if (User.Identity.IsAuthenticated)
+            {
+                var res = await _selfAssessmentService.ProcessDiabetSelfAssessmentSiteSide(model, User.GetUserId());
+                if (res == null)
+                {
+                    TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+                    return RedirectToAction(nameof(Index), new { selfAssessment = res });
+                }
+            }
+            else
+            {
+                var res = await _selfAssessmentService.ProcessDiabetSelfAssessmentSiteSide(model, null);
+                if (res == null)
+                {
+                    TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+                    return RedirectToAction(nameof(Index), new { selfAssessment = res });
+                }
+            }
+
+            #endregion
+
+            return NotFound();
+        }
+
+        #endregion
 
         #endregion
 
@@ -404,7 +469,7 @@ namespace DoctorFAM.Web.Controllers
         }
         [Authorize]
         [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateDrugAlert(CreateDrugAlertSiteSideViewModel model , List<int>? Hour , string? DateTimeInserted)
+        public async Task<IActionResult> CreateDrugAlert(CreateDrugAlertSiteSideViewModel model, List<int>? Hour, string? DateTimeInserted)
         {
             #region Model State Validation
 
@@ -436,7 +501,7 @@ namespace DoctorFAM.Web.Controllers
 
             #region Create Drug Alert 
 
-            var res = await _drugAlertService.CreateDrugAlertSide(model, User.GetUserId() , Hour , DateTimeInserted);
+            var res = await _drugAlertService.CreateDrugAlertSide(model, User.GetUserId(), Hour, DateTimeInserted);
             if (res.Result)
             {
                 TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
@@ -459,8 +524,8 @@ namespace DoctorFAM.Web.Controllers
         {
             #region Fill Model 
 
-            var model = await _drugAlertService.FillCreateDrugAlertSiteSideViewModel(createDrugAlertId , User.GetUserId());
-            if (model == null) return NotFound(); 
+            var model = await _drugAlertService.FillCreateDrugAlertSiteSideViewModel(createDrugAlertId, User.GetUserId());
+            if (model == null) return NotFound();
 
             #endregion
 
@@ -485,7 +550,7 @@ namespace DoctorFAM.Web.Controllers
                 return View(returnModel);
             }
 
-            if ((model.Hour == null || !model.Hour.Any() ))
+            if ((model.Hour == null || !model.Hour.Any()))
             {
                 foreach (var item in model.DateTime)
                 {
@@ -508,7 +573,7 @@ namespace DoctorFAM.Web.Controllers
 
             #region Create Drug Alert Detail 
 
-            var res = await _drugAlertService.CrerateDrugAlertDetail(model , User.GetUserId());
+            var res = await _drugAlertService.CrerateDrugAlertDetail(model, User.GetUserId());
             if (res)
             {
                 TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
@@ -534,7 +599,7 @@ namespace DoctorFAM.Web.Controllers
 
         public async Task<IActionResult> DeleteDrugAlert(ulong drugAlertId)
         {
-            var res = await _drugAlertService.DeleteDrugAlert(drugAlertId , User.GetUserId()) ;
+            var res = await _drugAlertService.DeleteDrugAlert(drugAlertId, User.GetUserId());
             if (res)
             {
                 TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
@@ -554,12 +619,12 @@ namespace DoctorFAM.Web.Controllers
         {
             #region Fill Model 
 
-            var model = await _drugAlertService.FillShowDrugAlertDetailSiteSideViewModel(id , User.GetUserId());
+            var model = await _drugAlertService.FillShowDrugAlertDetailSiteSideViewModel(id, User.GetUserId());
             if (model == null) return NotFound();
 
             #endregion
 
-            return PartialView("_ShowDrugAlertDetail" , model);
+            return PartialView("_ShowDrugAlertDetail", model);
         }
 
         #endregion
@@ -577,7 +642,7 @@ namespace DoctorFAM.Web.Controllers
             #region Fill Model 
 
             var model = await _periodicTestService.GetListOFUserPeriodicTestByUserId(User.GetUserId());
-            if(model == null) return NotFound();
+            if (model == null) return NotFound();
 
             #endregion
 
@@ -602,7 +667,7 @@ namespace DoctorFAM.Web.Controllers
             return View();
         }
 
-        [HttpPost , ValidateAntiForgeryToken]
+        [HttpPost, ValidateAntiForgeryToken]
         [Authorize]
         public async Task<IActionResult> CreatePeriodicTest(CreatePeriodicTestSiteSideViewModel model)
         {
@@ -624,7 +689,7 @@ namespace DoctorFAM.Web.Controllers
 
             #region Create Method
 
-            var res = await _periodicTestService.CreateUserPeriodicTestSiteSide(model , User.GetUserId());
+            var res = await _periodicTestService.CreateUserPeriodicTestSiteSide(model, User.GetUserId());
 
             switch (res)
             {
@@ -660,7 +725,7 @@ namespace DoctorFAM.Web.Controllers
         [Authorize]
         public async Task<IActionResult> DeleteUserPeriodicTest(ulong id)
         {
-            var res = await _periodicTestService.DeleteUserPeriodicSelectedTest(id , User.GetUserId()) ;
+            var res = await _periodicTestService.DeleteUserPeriodicSelectedTest(id, User.GetUserId());
 
             if (res)
             {

@@ -1,4 +1,5 @@
 ﻿using DoctorFAM.Data.DbContext;
+using DoctorFAM.Domain.Entities.SelfAssessment;
 using DoctorFAM.Domain.Interfaces.EFCore;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,12 @@ namespace DoctorFAM.Data.Repository
 
         #region Site Side 
 
-
+        //Add Diabet Self Assessment To The Data Base 
+        public async Task AddDiabetSelfAssessmentToTheDataBase(DiabetSelfAssessment model)
+        {
+            await _context.DiabetSelfAssessments.AddAsync(model);
+            await _context.SaveChangesAsync();
+        }
 
         #endregion
 

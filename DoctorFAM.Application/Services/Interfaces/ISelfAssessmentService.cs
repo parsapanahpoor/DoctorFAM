@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DoctorFAM.Domain.ViewModels.Site.Diabet;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,7 +13,8 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         #region Site Side 
 
-
+        //Process Diabet Self Assessment Site Side
+        Task<decimal?> ProcessDiabetSelfAssessmentSiteSide(SelfAssessmentSiteSideViewModel model, ulong? userId);
 
         #endregion
 

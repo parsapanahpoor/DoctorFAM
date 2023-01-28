@@ -1,10 +1,10 @@
-﻿
+﻿@model DoctorFAM.Domain.ViewModels.Site.Diabet.SelfAssessmentSiteSideViewModel
 
 @{
     var diabetRiskFactors = ViewBag.RisksFields as List<DoctorFAM.Domain.Entities.PeriodicSelfEvaluatuion.DiabetRiskFactorQuestions>;
 }
 
-<form id="PriodicSelfEvaluationForm" asp-action="ProcessBMI" asp-controller="Diabet" asp-area="">
+<form id="PriodicSelfEvaluationForm" asp-action="ProcesSelfAssessment" asp-controller="Diabet" asp-area="">
     <h5 class="modal-title" id="exampleModalLabel"> خود ارزیابی دوره ای</h5>
 
     <div class="row">
@@ -44,7 +44,24 @@
         </div>
         <div class="col-md-12 d-none" id="DoctorFathi-div">
             <div class="form-group">
-                <textarea class="form-control" maxlength="3">فرمول دکتر فتحی</textarea>
+                <label class="control-label">
+                    نتیجه ی آخرین آزمایش قند خون ناشتای صبح(FBS)
+                </label>
+                <input class="form-control" min="0" asp-for="FBS"/>
+            </div>
+
+               <div class="form-group">
+                <label class="control-label">
+                    نتیجه ی آخرین آزمایش قند خون 2 ساعت پس از صبحانه(2hpp)
+                </label>
+                <input class="form-control" min="0" asp-for="Twohpp"/>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">
+                    نتیجه ی آخرین آزمایش هموگلوبین ای وان سی(A1c)
+                </label>
+                <input class="form-control" type="number" step="0.1" value="0.0" asp-for="A1C" />
             </div>
         </div>
         <div class="col-md-12 d-none" id="HowYearsOld-div">
@@ -145,7 +162,7 @@
 
     </div>
     <div class="row">
-        <div class="col-md-12 mt-4 text-center d-none" id="DoctorFathi-div">
+        <div class="col-md-12 mt-4 text-center" id="DoctorFathi-div">
             <div class="form-group">
                 <input type="submit" value="محاسبه" class="btn-Accept" />
             </div>
