@@ -119,9 +119,9 @@ namespace DoctorFAM.Application.Services.Implementation
             var result = $"https://api.kavenegar.com/v1/564672526D58694D3477685571796F7372574F576C476B6366785462356D3164683370395A2B61356D6E383D/verify/lookup.json?receptor={user.Mobile}&token={user.MobileActivationCode}&template=Register";
             var results = client.GetStringAsync(result);
 
-            var message = Messages.SendActivationRegisterSms(user.MobileActivationCode);
+            //var message = Messages.SendActivationRegisterSms(user.MobileActivationCode);
 
-            await _smsservice.SendSimpleSMS(user.Mobile, message);
+            //await _smsservice.SendSimpleSMS(user.Mobile, message);
 
             #endregion
 
@@ -239,9 +239,9 @@ namespace DoctorFAM.Application.Services.Implementation
             var result = $"https://api.kavenegar.com/v1/564672526D58694D3477685571796F7372574F576C476B6366785462356D3164683370395A2B61356D6E383D/verify/lookup.json?receptor={User.Mobile}&token={User.MobileActivationCode}&template=Register";
             var results = client.GetStringAsync(result);
 
-            var message = Messages.SendActivationRegisterSms(User.MobileActivationCode);
+            //var message = Messages.SendActivationRegisterSms(User.MobileActivationCode);
 
-            await _smsservice.SendSimpleSMS(User.Mobile, message);
+            //await _smsservice.SendSimpleSMS(User.Mobile, message);
 
             #endregion
 

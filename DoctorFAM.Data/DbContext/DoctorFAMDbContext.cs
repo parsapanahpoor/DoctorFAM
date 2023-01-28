@@ -999,7 +999,10 @@ namespace DoctorFAM.Data.DbContext
                 CreateDate = DateTime.Now,
                 IsDelete = false,
                 UniqueName = "متخصص پزشک خانواده",
-                UniqueId = 1
+                UniqueId = 1,
+                IsSuperSpecialty = false,
+                IsSpecialty = false,
+                IsTitle = true
             });
 
             modelBuilder.Entity<Speciality>().HasData(new Speciality
@@ -1008,7 +1011,10 @@ namespace DoctorFAM.Data.DbContext
                 CreateDate = DateTime.Now,
                 IsDelete = false,
                 UniqueName = "داخلی",
-                UniqueId = 2
+                UniqueId = 2,
+                IsSuperSpecialty = false,
+                IsSpecialty = false,
+                IsTitle = true
             });
 
             modelBuilder.Entity<Speciality>().HasData(new Speciality
@@ -1019,6 +1025,9 @@ namespace DoctorFAM.Data.DbContext
                 UniqueName = "متخصص داخلی",
                 UniqueId = 3,
                 ParentId = 2,
+                IsSuperSpecialty = false,
+                IsSpecialty = true,
+                IsTitle = false
             });
 
             modelBuilder.Entity<Speciality>().HasData(new Speciality
@@ -1029,6 +1038,9 @@ namespace DoctorFAM.Data.DbContext
                 UniqueName = "فوق تخصص غدد",
                 UniqueId = 4,
                 ParentId = 2,
+                IsSuperSpecialty = true,
+                IsSpecialty = false,
+                IsTitle = false
             });
 
             modelBuilder.Entity<Speciality>().HasData(new Speciality
@@ -1037,7 +1049,10 @@ namespace DoctorFAM.Data.DbContext
                 CreateDate = DateTime.Now,
                 IsDelete = false,
                 UniqueName = "قلب و عروق",
-                UniqueId = 4
+                UniqueId = 4,
+                IsSuperSpecialty = false,
+                IsSpecialty = false,
+                IsTitle = true
             });
 
             modelBuilder.Entity<Speciality>().HasData(new Speciality
@@ -1048,6 +1063,9 @@ namespace DoctorFAM.Data.DbContext
                 UniqueName = " متخصص قلب و عروق",
                 UniqueId = 5,
                 ParentId = 5,
+                IsSuperSpecialty = false,
+                IsSpecialty = true,
+                IsTitle = false
             });
 
             modelBuilder.Entity<Speciality>().HasData(new Speciality
@@ -1058,6 +1076,22 @@ namespace DoctorFAM.Data.DbContext
                 UniqueName = "فوق تخصص قلب و عروق",
                 UniqueId = 6,
                 ParentId = 5,
+                IsSuperSpecialty= true,
+                IsSpecialty = false,
+                IsTitle = false
+            });
+
+            modelBuilder.Entity<Speciality>().HasData(new Speciality
+            {
+                Id = 8,
+                CreateDate = DateTime.Now,
+                IsDelete = false,
+                UniqueName = "متخصص پزشک خانواده",
+                UniqueId = 8,
+                IsSuperSpecialty = false,
+                IsSpecialty = true,
+                IsTitle = false,
+                ParentId = 1
             });
 
             #endregion
@@ -1342,6 +1376,46 @@ namespace DoctorFAM.Data.DbContext
                 CreateDate = DateTime.Now,
                 LanguageId = "tr-TR",
                 Title = "kardiyoloji uzmanı"
+            });
+
+            modelBuilder.Entity<SpecialtiyInfo>().HasData(new SpecialtiyInfo
+            {
+                Id = 29,
+                SpecialityId = 8,
+                IsDelete = false,
+                CreateDate = DateTime.Now,
+                LanguageId = "fa-IR",
+                Title = "متخصص پزشک خانواده",
+            });
+
+            modelBuilder.Entity<SpecialtiyInfo>().HasData(new SpecialtiyInfo
+            {
+                Id = 30,
+                SpecialityId = 8,
+                IsDelete = false,
+                CreateDate = DateTime.Now,
+                LanguageId = "en-US",
+                Title = "Family doctor specialist"
+            });
+
+            modelBuilder.Entity<SpecialtiyInfo>().HasData(new SpecialtiyInfo
+            {
+                Id = 31,
+                SpecialityId = 8,
+                IsDelete = false,
+                CreateDate = DateTime.Now,
+                LanguageId = "tr-TR",
+                Title = "Aile hekimi uzmanı"
+            });
+
+            modelBuilder.Entity<SpecialtiyInfo>().HasData(new SpecialtiyInfo
+            {
+                Id = 32,
+                SpecialityId = 8,
+                IsDelete = false,
+                CreateDate = DateTime.Now,
+                LanguageId = "ar-SA",
+                Title = "أخصائي طب الأسرة"
             });
 
             #endregion
