@@ -17,6 +17,12 @@ namespace DoctorFAM.Domain.Entities.Speciality
         [Required]
         public string UniqueName { get; set; }
 
+        public bool IsTitle { get; set; }
+
+        public bool IsSpecialty { get; set; }
+
+        public bool IsSuperSpecialty { get; set; }
+
         public ulong? ParentId { get; set; }
 
         public ulong UniqueId { get; set; }
