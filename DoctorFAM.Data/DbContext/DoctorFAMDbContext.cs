@@ -32,6 +32,7 @@ using DoctorFAM.Domain.Entities.PriodicExamination;
 using DoctorFAM.Domain.Entities.Product;
 using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Entities.Resume;
+using DoctorFAM.Domain.Entities.SelfAssessment;
 using DoctorFAM.Domain.Entities.SiteSetting;
 using DoctorFAM.Domain.Entities.Speciality;
 using DoctorFAM.Domain.Entities.States;
@@ -413,6 +414,12 @@ namespace DoctorFAM.Data.DbContext
         public DbSet<PeriodicTest> PeriodicTests { get; set; }
 
         public DbSet<UserPeriodicTest> UserPeriodicTests { get; set; }
+
+        #endregion
+
+        #region Slef Assessments
+
+        public DbSet<DiabetSelfAssessment> DiabetSelfAssessments { get; set; }
 
         #endregion
 
