@@ -23,15 +23,18 @@ namespace DoctorFAM.Web.Controllers
         private readonly IMedicalExaminationService _medicalExamination;
         private readonly ILocationService _locationService;
         private readonly IDoctorsService _doctorService;
+        private readonly ISelfAssessmentService _selfAssessmentService;
+
         public BloodPressureController(IDrugAlertService drugAlertService, IPeriodicTestService periodicTestService
                                         , IMedicalExaminationService medicalExaminationService , ILocationService locationService
-                                            , IDoctorsService doctorsService)
+                                            , IDoctorsService doctorsService, ISelfAssessmentService selfAssessmentService)
         {
             _drugAlertService = drugAlertService;
             _periodicTestService = periodicTestService;
             _medicalExamination = medicalExaminationService;
             _locationService = locationService;
             _doctorService = doctorsService;
+            _selfAssessmentService = selfAssessmentService;
         }
 
         #endregion
@@ -42,6 +45,20 @@ namespace DoctorFAM.Web.Controllers
         {
             return View();
         }
+
+        #endregion
+
+        #region Self Assessment
+
+        #region Periodic Self Evaluation
+
+        [HttpGet("/Priodic-BloodPressure-Self-Evaluation-Modal")]
+        public async Task<IActionResult> PriodicBloodPressureSelfEvaluationModal()
+        {
+            return PartialView("_PeriodicBloodPressureSelfEvaluationModal");
+        }
+
+        #endregion
 
         #endregion
 

@@ -63,7 +63,6 @@ function PriodicSelfEvaluationModal() {
     });
 }
 
-
 //The Java Scripts Codes For Inside Of The Modal
 
 $(document).on('change', '#HasDiabet', function () {
@@ -71,6 +70,7 @@ $(document).on('change', '#HasDiabet', function () {
 
     $("#HowYearsOld-div").addClass("d-none");
     $("#DoctorFathi-div").addClass("d-none");
+    $("#Submit-div").addClass("d-none");
 
     if (selectedAdvertisementStatusValue == 1) {
         $("#DiabetHelp1-div").removeClass("d-none");
@@ -92,16 +92,19 @@ $(document).on('change', '#RequestFor3MonthLater', function () {
 
     if (selectedAdvertisementStatusValue == 1) {
         $("#DoctorFathi-div").removeClass("d-none");
+        $("#Submit-div").removeClass("d-none");
         $("#HowYearsOld-div").addClass("d-none");
     }
     else if
         (selectedAdvertisementStatusValue == 2) {
         $("#HowYearsOld-div").removeClass("d-none");
         $("#DoctorFathi-div").addClass("d-none");
+        $("#Submit-div").addClass("d-none");
     }
     else {
         $("#HowYearsOld-div").addClass("d-none");
         $("#DoctorFathi-div").addClass("d-none");
+        $("#Submit-div").addClass("d-none");
     }
 });
 
@@ -138,6 +141,73 @@ $(document).on('change', '#QuestionOfDiabetRiskFactor', function () {
     else {
         $("#NoFBSTest-div").addClass("d-none");
         $("#FBSTest-div").addClass("d-none");
+    }
+});
+
+//#endregion
+
+//#region Priodic Blood Pressure Self Evaluation Model
+
+function PriodicBloodPressureSelfEvaluationModal() {
+    $.ajax({
+        url: "/Priodic-BloodPressure-Self-Evaluation-Modal",
+        type: "get",
+        data: {
+
+        },
+        success: function (response) {
+            $("#modal-body").html(response);
+
+            $('#PriodicBloodPressureSelfEvaluationForm').data('validator', null);
+            $.validator.unobtrusive.parse('#PriodicBloodPressureSelfEvaluationForm');
+
+            $("#exampleModal").modal("show");
+        }
+    });
+}
+
+//The Java Scripts Codes For Inside Of The Modal
+
+$(document).on('change', '#HasBloodPressure', function () {
+    var selectedAdvertisementStatusValue = $("#HasBloodPressure :selected").val();
+
+    $("#HowYearsOld-div").addClass("d-none");
+    $("#DoctorFathi-div").addClass("d-none");
+    $("#Submit-div").addClass("d-none");
+
+    if (selectedAdvertisementStatusValue == 1) {
+        $("#BloodPressureHelp1-div").removeClass("d-none");
+        $("#RequestFor3MonthLater-div").addClass("d-none");
+    }
+    else if
+        (selectedAdvertisementStatusValue == 2) {
+        $("#RequestFor3MonthLater-div").removeClass("d-none");
+        $("#BloodPressureHelp1-div").addClass("d-none");
+    }
+    else {
+        $("#RequestFor3MonthLater-div").addClass("d-none");
+        $("#BloodPressureHelp1-div").addClass("d-none");
+    }
+});
+
+$(document).on('change', '#RequestFor3MonthLater', function () {
+    var selectedAdvertisementStatusValue = $("#RequestFor3MonthLater :selected").val();
+
+    if (selectedAdvertisementStatusValue == 1) {
+        $("#DoctorFathi-div").removeClass("d-none");
+        $("#Submit-div").removeClass("d-none");
+        $("#HowYearsOld-div").addClass("d-none");
+    }
+    else if
+        (selectedAdvertisementStatusValue == 2) {
+        $("#HowYearsOld-div").removeClass("d-none");
+        $("#DoctorFathi-div").addClass("d-none");
+        $("#Submit-div").addClass("d-none");
+    }
+    else {
+        $("#HowYearsOld-div").addClass("d-none");
+        $("#DoctorFathi-div").addClass("d-none");
+        $("#Submit-div").addClass("d-none");
     }
 });
 

@@ -1,4 +1,5 @@
 ﻿using DoctorFAM.Domain.Entities.Common;
+using DoctorFAM.Domain.Enums.BloodPressure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,8 @@ namespace DoctorFAM.Domain.Entities.SelfAssessment
         public int Systolic { get; set; }
 
         public int Diastolic { get; set; }
+
+        public BloodPressureSelfAssessmentStatus BloodPressureSelfAssessmentStatus { get; set; }
 
         #endregion
 

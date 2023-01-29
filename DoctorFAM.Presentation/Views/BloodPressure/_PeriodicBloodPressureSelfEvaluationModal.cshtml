@@ -1,0 +1,94 @@
+﻿@model DoctorFAM.Domain.ViewModels.Site.BloodPressure.BloodPressureSelfAssessmentViewModel
+
+<form id="PriodicBloodPressureSelfEvaluationForm" asp-action="ProcesBloodPressureSelfAssessment" asp-controller="BloodPressure" asp-area="">
+    <h5 class="modal-title" id="exampleModalLabel"> خود ارزیابی دوره ای فشارخون</h5>
+
+    <div class="row">
+
+        <div class="col-md-12">
+            <div class="form-group">
+                <label class="control-label">آیا شما مبتلا به فشارخون هستید؟</label>
+                <select id="HasBloodPressure" class="form-control">
+                    <option value="0">انتخاب کنید</option>
+                    <option value="1">بله </option>
+                    <option value="2">خیر</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-12 d-none" id="BloodPressureHelp1-div">
+            <div class="widget ">
+                <div class="sidebar-links">
+                    <ul class="list-unstyled ">
+                        <li>
+                            <p id="BloodPressureHelp1" class="link-text">
+                                باتوجه به اینکه شما مبتلا به فشارخون می باشید لطفا ضمن تکمیل سایر موارد ارزیابی های اولیه بامشاورین فشارخون دکترفم مشورت نموده و یا به پزشک خود مراجعه کنید.
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 d-none" id="RequestFor3MonthLater-div">
+            <div class="form-group">
+                <label class="control-label">
+                    آیا در 3ماه گذشته آزمایش های مربوط به بررسی فشارخون را انجام داده اید؟
+                </label>
+                <select id="RequestFor3MonthLater" class="form-control">
+                    <option value="0">انتخاب کنید</option>
+                    <option value="1">بله </option>
+                    <option value="2">خیر</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-12 d-none" id="DoctorFathi-div">
+            <label class="control-label">
+                به عنوان مثال فشارخون شما 14 بر روی 6 هست . شما باید عدد 14 را در خانه ی عدد اول و عدد 6 را در خانه ی عدد دوم وارد کنید.
+            </label>
+
+            <div class="row">
+
+                <div class="col-md-6">
+
+                    <label class="control-label">
+                        عدد اول
+                    </label>
+                    <input class="form-control" min="0" asp-for="Systolic" />
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <label class="control-label">
+                        عدد دوم
+                    </label>
+                    <input class="form-control" min="0" asp-for="Diastolic" />
+
+                </div>
+
+            </div>
+
+        </div>
+        <div class="col-md-12 d-none" id="HowYearsOld-div">
+            <div class="widget ">
+                <div class="sidebar-links">
+                    <ul class="list-unstyled ">
+                        <li>
+                            <p id="BloodPressureHelp1" class="link-text">
+                                توصیه می گردد هرچه سریع تر فشارخون خود را اندازه گیری کنید.
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row d-none" id="Submit-div">
+        <div class="col-md-12 mt-4 text-center">
+            <div class="form-group">
+                <input type="submit" value="محاسبه" class="btn-Accept" />
+            </div>
+        </div>
+    </div>
+
+</form>
