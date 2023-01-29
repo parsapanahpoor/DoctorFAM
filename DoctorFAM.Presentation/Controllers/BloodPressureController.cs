@@ -3,6 +3,7 @@ using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Interfaces;
 using DoctorFAM.Application.Services.Implementation;
 using DoctorFAM.Application.Services.Interfaces;
+using DoctorFAM.Domain.Enums.BloodPressure;
 using DoctorFAM.Domain.ViewModels.Site.BloodPressure;
 using DoctorFAM.Domain.ViewModels.Site.Diabet;
 using DoctorFAM.Domain.ViewModels.Site.DurgAlert;
@@ -41,8 +42,17 @@ namespace DoctorFAM.Web.Controllers
 
         #region Index Page 
 
-        public IActionResult Index()
+        public IActionResult Index(int? bloodPressureStatus)
         {
+            #region View Bags
+
+            if (bloodPressureStatus != null)
+            {
+                ViewBag.bloodPressureStatus = bloodPressureStatus;
+            }
+
+            #endregion
+
             return View();
         }
 
@@ -56,6 +66,58 @@ namespace DoctorFAM.Web.Controllers
         public async Task<IActionResult> PriodicBloodPressureSelfEvaluationModal()
         {
             return PartialView("_PeriodicBloodPressureSelfEvaluationModal");
+        }
+
+        #endregion
+
+        #region Process Blood Pressure Self Assessment
+
+        [HttpPost]
+        public async Task<IActionResult> ProcessBloodPressureSelfAssessment(BloodPressureSelfAssessmentViewModel model)
+        {
+            #region Model State Validation
+
+            if (!ModelState.IsValid)
+            {
+                TempData[ErrorMessage] = "اطلاعات به درستی وارد نشده است.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            #endregion
+
+            #region Process Method
+
+            var res = await _selfAssessmentService.ProcessBloodPressureSelfAssessmentSiteSide(model , ((User.Identity.IsAuthenticated) ? User.GetUserId() : null ));
+
+            if (res == null)
+            {
+                TempData[ErrorMessage] = "اطلاعات به درستی وارد نشده است.";
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                if (res == BloodPressureSelfAssessmentStatus.Normal)
+                {
+                    return RedirectToAction(nameof(Index), new { bloodPressureStatus = 1 });
+                }
+                if (res == BloodPressureSelfAssessmentStatus.PreBloodPressure)
+                {
+                    return RedirectToAction(nameof(Index), new { bloodPressureStatus = 2 });
+                }
+                if (res == BloodPressureSelfAssessmentStatus.SuperBloodPressure)
+                {
+                    return RedirectToAction(nameof(Index), new { bloodPressureStatus = 3 });
+                }
+                if (res == BloodPressureSelfAssessmentStatus.DangerBloodPressure)
+                {
+                    return RedirectToAction(nameof(Index), new { bloodPressureStatus = 4 });
+                }
+            }
+
+            #endregion
+
+            TempData[ErrorMessage] = "اطلاعات به درستی وارد نشده است.";
+            return RedirectToAction(nameof(Index));
         }
 
         #endregion

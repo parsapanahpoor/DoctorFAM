@@ -22,6 +22,21 @@ namespace DoctorFAM.Data.Repository
 
         #endregion
 
+        #region Blood Pressure Self Assessment 
+
+        #region Site Side 
+
+        //Add Blood Pressure Self Assessment To The Data Base 
+        public async Task AddBloodPressureSelfAssessmentToTheDataBase(BloodPressureSelfAssessment model)
+        {
+            await _context.BloodPressureSelfAssessments.AddAsync(model);
+            await _context.SaveChangesAsync();
+        }
+
+        #endregion
+
+        #endregion
+
         #region Diabet Self Assessment 
 
         #region Site Side 

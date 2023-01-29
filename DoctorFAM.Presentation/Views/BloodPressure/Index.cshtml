@@ -4,11 +4,54 @@
 
     var bmiResult = ViewBag.bmiResult != null ? (int)ViewBag.bmiResult : 0;
     var GFRResult = ViewBag.gfrResult != null ? (decimal)ViewBag.gfrResult : 0;
+    var bloodPressureStatus = ViewBag.bloodPressureStatus != null ? (int)ViewBag.bloodPressureStatus : 0;
 }
 
 @section Scripts{
     <partial name="_JqueryValidation" />
     <script src="~/Site/js/BMI.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+            if (@bloodPressureStatus == 1) {
+             Swal.fire({
+                    title: "فشارخون نرمال",
+                    text: "فشارخون شما طبق خوداظهاری شما در زمان اندازه گیری فشارخون در محدوده نرمال بوده است . لطفا 3 ماه بعد این خودارزیابی را تکرار نمائید.",
+                    icon: 'success',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'بستن',
+                });
+            }
+            if (@bloodPressureStatus == 2) {
+                Swal.fire({
+                    title: "پیش فشارخون",
+                    text: "فشارخون شما طبق خوداظهاری شما در زمان اندازه گیری فشارخون در محدوده پیش فشارخون قرار دارد و لازم است در اولین فرصت به پزشک مراجعه نمائید.",
+                    icon: 'warning',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'بستن',
+                });
+            }
+            if (@bloodPressureStatus == 3) {
+                Swal.fire({
+                    title: "فشارخون بالا",
+                    text: "فشارخون شما طبق خوداظهاری شما در زمان اندازه گیری فشارخون در محدوده فشارخون بالا قرار دارد و لازم است هرچه سریع تر به پزشک خود مراجعه نمائید.",
+                    icon: 'error',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'بستن',
+                });
+            }
+            if (@bloodPressureStatus == 4) {
+ Swal.fire({
+                    title: "فشارخون بحرانی",
+                    text: "فشارخون شما طبق خوداظهاری شما در زمان اندازه گیری فشارخون در محدوده فشارخون بحرانی قرار دارد و لازم است ضمن حفظ خونسردی هرجه سریع تر به نزدیک ترین مرکز مراجعه نمائید.",
+                    icon: 'error',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'بستن',
+                });            }
+        });
+
+    </script>
 }
 
 <div class="m-2  pr-3">

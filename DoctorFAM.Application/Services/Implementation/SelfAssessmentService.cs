@@ -2,11 +2,15 @@
 using DoctorFAM.Data.DbContext;
 using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.SelfAssessment;
+using DoctorFAM.Domain.Enums.BloodPressure;
 using DoctorFAM.Domain.Interfaces.EFCore;
+using DoctorFAM.Domain.ViewModels.Site.BloodPressure;
 using DoctorFAM.Domain.ViewModels.Site.Diabet;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -24,6 +28,120 @@ namespace DoctorFAM.Application.Services.Implementation
             _selfAssessmentRepository = selfAssessmentRepository;
             _userService = userService;
         }
+
+        #endregion
+
+        #region Blood Pressure Self Assessment 
+
+        #region User Panel 
+
+        //Process Blood Pressure Self Assessment Site Side
+        public async Task<BloodPressureSelfAssessmentStatus?> ProcessBloodPressureSelfAssessmentSiteSide(BloodPressureSelfAssessmentViewModel model , ulong? userId)
+        {
+            var sis = model.Systolic * 10;
+            var dis = model.Diastolic * 10;
+
+            if (!userId.HasValue)
+            {
+                #region Process Method 
+
+                if (dis <= 80 && sis <= 120)
+                {
+                    return BloodPressureSelfAssessmentStatus.Normal;
+                }
+
+                if (dis <= 80 && 120 <= sis && sis <= 139)
+                {
+                    return BloodPressureSelfAssessmentStatus.PreBloodPressure;
+                }
+
+                if (dis >= 80 && dis <= 119 && 140 <= sis && sis <= 179)
+                {
+                    return BloodPressureSelfAssessmentStatus.SuperBloodPressure;
+                }
+
+                if (dis >= 120 && sis >= 180)
+                {
+                    return BloodPressureSelfAssessmentStatus.DangerBloodPressure;
+                }
+
+                #endregion
+
+            }
+
+            #region If User Login
+
+            if (userId.HasValue)
+            {
+                #region Get User By Id 
+
+                var user = await _userService.GetUserById(userId.Value);
+                if (user == null) return null;
+
+                #endregion
+
+                #region Log For Informations
+
+                BloodPressureSelfAssessment selfAssessment = new BloodPressureSelfAssessment()
+                {
+                    Diastolic = model.Diastolic,
+                    Systolic= model.Systolic,
+                    UserId = userId.Value,
+                };
+
+                #region Process Method 
+
+                if (dis <= 80 && sis <= 120)
+                {
+                    selfAssessment.BloodPressureSelfAssessmentStatus = BloodPressureSelfAssessmentStatus.Normal; 
+
+                    //Add To The Data Base 
+                    await _selfAssessmentRepository.AddBloodPressureSelfAssessmentToTheDataBase(selfAssessment);
+
+                    return BloodPressureSelfAssessmentStatus.Normal;
+                }
+
+                if (dis <= 80 && 120 <= sis && sis <= 139)
+                {
+                    selfAssessment.BloodPressureSelfAssessmentStatus = BloodPressureSelfAssessmentStatus.PreBloodPressure;
+
+                    //Add To The Data Base 
+                    await _selfAssessmentRepository.AddBloodPressureSelfAssessmentToTheDataBase(selfAssessment);
+
+                    return BloodPressureSelfAssessmentStatus.PreBloodPressure;
+                }
+
+                if (dis >= 80 && dis <= 119 && 140 <= sis && sis <= 179)
+                {
+                    selfAssessment.BloodPressureSelfAssessmentStatus = BloodPressureSelfAssessmentStatus.SuperBloodPressure;
+
+                    //Add To The Data Base 
+                    await _selfAssessmentRepository.AddBloodPressureSelfAssessmentToTheDataBase(selfAssessment);
+
+                    return BloodPressureSelfAssessmentStatus.SuperBloodPressure;
+                }
+
+                if (dis >= 120 && sis >= 180)
+                {
+                    selfAssessment.BloodPressureSelfAssessmentStatus = BloodPressureSelfAssessmentStatus.DangerBloodPressure;
+
+                    //Add To The Data Base 
+                    await _selfAssessmentRepository.AddBloodPressureSelfAssessmentToTheDataBase(selfAssessment);
+
+                    return BloodPressureSelfAssessmentStatus.DangerBloodPressure;
+                }
+
+                #endregion
+
+                #endregion
+            }
+
+            #endregion
+
+            return null;
+        }
+
+        #endregion
 
         #endregion
 
