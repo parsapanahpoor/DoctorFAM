@@ -421,6 +421,8 @@ namespace DoctorFAM.Data.DbContext
 
         public DbSet<DiabetSelfAssessment> DiabetSelfAssessments { get; set; }
 
+        public DbSet<BloodPressureSelfAssessment> BloodPressureSelfAssessments { get; set; }
+
         #endregion
 
         #endregion
