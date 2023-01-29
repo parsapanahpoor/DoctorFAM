@@ -229,6 +229,9 @@ namespace DoctorFAM.Domain.Interfaces
         //Get List Of Doctors With Diabet Speciality
         Task<List<Doctor>?> FilterDoctorsWithDiabetSpecialitySiteSide(FilterDoctorsWithDiabetSpecialitySiteSideViewModel filter);
 
+        //Get List Of Doctors With Blood Pressure Speciality
+        Task<List<Doctor>?> FilterDoctorsWithBloodPressureSpecialitySiteSide(FilterDoctorsWithBloodPressureSpecialitySiteSideViewModel filter);
+
         #endregion
 
         #region User Panel Side 

@@ -229,6 +229,9 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Get List Of Doctors With Diabet Speciality
         Task<List<Doctor>?> FilterDoctorsWithDiabetSpecialitySiteSide(FilterDoctorsWithDiabetSpecialitySiteSideViewModel filter);
 
+        //Get List Of Doctors With Blood Pressure Speciality
+        Task<List<Doctor>?> FilterDoctorsWithBloodPressureSpecialitySiteSide(FilterDoctorsWithBloodPressureSpecialitySiteSideViewModel filter);
+
         //Get Doctr Name With PArt Of Name
         Task<List<string>?> GetListOfDoctorsName(string doctorNamePart);
 

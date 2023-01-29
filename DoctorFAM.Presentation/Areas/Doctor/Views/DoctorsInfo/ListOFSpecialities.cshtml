@@ -58,24 +58,32 @@
                                             <div id="permission-@permission.SpecialtiyInfo.SpecialityId" class="panel-collapse collapse @((isPermissionSelected) ? "in" : "")" aria-expanded="@((isPermissionSelected) ? "true" : "false")" style="height: @((isPermissionSelected) ? "auto" : "0")">
                                                 <div class="panel-body" style="padding: 5px 15px 0 15px !important">
 
-                                                    <span class="label-style">تخصص</span>
+                                                    @if (Model.Any(s => s.SpecialtiyInfo.Speciality.ParentId.HasValue && s.SpecialtiyInfo.Speciality.ParentId.Value == permission.SpecialtiyInfo.SpecialityId && s.SpecialtiyInfo.Speciality.IsSpecialty))
+                                                    {
+                                                        <span class="label-style"> تخصص</span>
 
-                                                    <div class="form-group">
-                                                        <div class="checkbox">
-                                                            <label>
-                                                                <input type="checkbox" value="@permission.SpecialtiyInfo.SpecialityId" name="Permissions" data-id="@permission.SpecialtiyInfo.SpecialityId" @((isPermissionSelected) ? "checked" : "")>
-                                                                <span class="text"> @permission.SpecialtiyInfo.Title </span>
-                                                            </label>
-                                                        </div>
-                                                    </div>
+                                                        @foreach (var subPermission in Model.Where(s => s.SpecialtiyInfo.Speciality.ParentId.HasValue && s.SpecialtiyInfo.Speciality.ParentId.Value == permission.SpecialtiyInfo.SpecialityId&& s.SpecialtiyInfo.Speciality.IsSpecialty))
+                                                        {
+                                                            var isSubPermissionSelected = subPermission.SelectedFromDoctor;
 
-                                                    @if (Model.Any(s => s.SpecialtiyInfo.Speciality.ParentId.HasValue && s.SpecialtiyInfo.Speciality.ParentId.Value == permission.SpecialtiyInfo.SpecialityId))
+                                                            <div class="form-group">
+                                                                <div class="checkbox">
+                                                                    <label>
+                                                                        <input type="checkbox" value="@subPermission.SpecialtiyInfo.SpecialityId" name="Permissions" data-id="@subPermission.SpecialtiyInfo.SpecialityId" data-parentId="@permission.SpecialtiyInfo.SpecialityId" @((isSubPermissionSelected) ? "checked" : "")>
+                                                                        <span class="text"> @subPermission.SpecialtiyInfo.Title </span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                    }
+
+                                                    @if (Model.Any(s => s.SpecialtiyInfo.Speciality.ParentId.HasValue && s.SpecialtiyInfo.Speciality.ParentId.Value == permission.SpecialtiyInfo.SpecialityId && s.SpecialtiyInfo.Speciality.IsSuperSpecialty))
                                                     {
                                                         <hr style="margin-top: 10px !important; margin-bottom: 10px !important" />
 
                                                         <span class="label-style">فوق تخصص</span>
 
-                                                        @foreach (var subPermission in Model.Where(s => s.SpecialtiyInfo.Speciality.ParentId.HasValue && s.SpecialtiyInfo.Speciality.ParentId.Value == permission.SpecialtiyInfo.SpecialityId))
+                                                        @foreach (var subPermission in Model.Where(s => s.SpecialtiyInfo.Speciality.ParentId.HasValue && s.SpecialtiyInfo.Speciality.ParentId.Value == permission.SpecialtiyInfo.SpecialityId && s.SpecialtiyInfo.Speciality.IsSuperSpecialty))
                                                         {
                                                             var isSubPermissionSelected = subPermission.SelectedFromDoctor;
 

@@ -4,6 +4,7 @@ using DoctorFAM.Application.Interfaces;
 using DoctorFAM.Application.Services.Implementation;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.ViewModels.Site.BloodPressure;
+using DoctorFAM.Domain.ViewModels.Site.Diabet;
 using DoctorFAM.Domain.ViewModels.Site.DurgAlert;
 using DoctorFAM.Domain.ViewModels.Site.MedicalExamination;
 using DoctorFAM.Domain.ViewModels.Site.PeriodicTest;
@@ -95,6 +96,56 @@ namespace DoctorFAM.Web.Controllers
 
         #endregion
 
+        #region List Of Blood Pressure Specialities Doctors
+
+        [HttpGet]
+        public async Task<IActionResult> ListOfBloodPressureSpecialities(FilterDoctorsWithBloodPressureSpecialitySiteSideViewModel filter)
+        {
+            #region Location ViewBags 
+
+            ViewData["Countries"] = await _locationService.GetAllCountries();
+
+            if (filter.CountryId != null)
+            {
+                ViewData["States"] = await _locationService.GetStateChildren(filter.CountryId.Value);
+                if (filter.StateId != null)
+                {
+                    ViewData["Cities"] = await _locationService.GetStateChildren(filter.StateId.Value);
+                }
+            }
+
+            #endregion
+
+            ViewBag.pageId = filter.PageId;
+
+            var model = await _doctorService.FilterDoctorsWithBloodPressureSpecialitySiteSide(filter);
+            if (model == null || !model.Any())
+            {
+                TempData[ErrorMessage] = "نتیجه ای برای شما یافت نشده است .";
+                return RedirectToAction(nameof(Index));
+            }
+
+            #region Paginaition
+
+            int take = 20;
+
+            int skip = (filter.PageId.Value - 1) * take;
+
+            int pageCount = (model.Count() / take);
+
+
+            filter.PageCount = pageCount;
+
+            var query = model.Skip(skip).Take(take).ToList();
+
+            var viewModel = Tuple.Create(query, filter);
+
+            #endregion
+
+            return View(viewModel);
+        }
+
+        #endregion
 
         #region Drug Alert 
 

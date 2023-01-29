@@ -22,6 +22,12 @@ namespace DoctorFAM.Domain.ViewModels.Admin.Speciality
         public ulong? ParentId { get; set; }
 
         public ulong UniqueId { get; set; }
+
+        public bool IsTitle { get; set; }
+
+        public bool IsSpeciality { get; set; }
+
+        public bool IsSuperSpeciality { get; set; }
     }
 
     public class CreateSpecialityInfoViewModel : BaseInfoViewModel

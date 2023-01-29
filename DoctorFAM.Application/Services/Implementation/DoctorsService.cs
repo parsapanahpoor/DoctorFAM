@@ -3046,6 +3046,12 @@ namespace DoctorFAM.Application.Services.Implementation
             return await _doctorRepository.FilterDoctorsWithDiabetSpecialitySiteSide(filter);
         }
 
+        //Get List Of Doctors With Blood Pressure Speciality
+        public async Task<List<Doctor>?> FilterDoctorsWithBloodPressureSpecialitySiteSide(FilterDoctorsWithBloodPressureSpecialitySiteSideViewModel filter)
+        {
+            return await _doctorRepository.FilterDoctorsWithBloodPressureSpecialitySiteSide(filter);
+        }
+
         //Get Doctr Name With PArt Of Name
         public async Task<List<string>?> GetListOfDoctorsName(string doctorNamePart)
         {

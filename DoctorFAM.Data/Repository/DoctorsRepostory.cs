@@ -1035,6 +1035,110 @@ namespace DoctorFAM.Data.Repository
             return model.Distinct().ToList();
         }
 
+        //Get List Of Doctors With Blood Pressure Speciality
+        public async Task<List<Doctor>?> FilterDoctorsWithBloodPressureSpecialitySiteSide(FilterDoctorsWithBloodPressureSpecialitySiteSideViewModel filter)
+        {
+            var query = await _context.DoctorSelectedSpeciality
+                    .Include(p => p.Doctor)
+                    .ThenInclude(p => p.DoctorsInfos)
+                    .Include(p => p.Doctor)
+                    .ThenInclude(p => p.User)
+                    .Where(s => !s.IsDelete && (s.SpecialityId == 1 || s.SpecialityId == 6 || s.SpecialityId == 7 || s.SpecialityId == 8))
+                    .OrderByDescending(s => s.CreateDate)
+                    .Select(p => p.Doctor)
+                    .ToListAsync();
+
+            var model = new List<Doctor>();
+
+            foreach (var item in query)
+            {
+                if (await _context.Organizations.FirstOrDefaultAsync(p => !p.IsDelete && p.OwnerId == item.UserId && p.OrganizationInfoState == OrganizationInfoState.Accepted) != null)
+                {
+                    model.Add(item);
+                }
+            }
+
+            #region Filter
+
+            if (filter.Gender.HasValue)
+            {
+                if (filter.Gender.Value == 0)
+                {
+                    model = model.Where(p => !p.IsDelete && p.DoctorsInfos.Gender == Domain.Enums.Gender.Gender.Male).ToList();
+                }
+                if (filter.Gender.Value == 1)
+                {
+                    model = model.Where(p => !p.IsDelete && p.DoctorsInfos.Gender == Domain.Enums.Gender.Gender.Female).ToList();
+                }
+            }
+
+            if (!string.IsNullOrEmpty(filter.Username))
+            {
+                model = model.Where(s => s.User.Username.Contains(filter.Username)).ToList();
+            }
+
+            if (filter.CountryId.HasValue)
+            {
+                List<Doctor?> CountryModel = new List<Doctor?>();
+
+                foreach (var item in model.Select(p => p.UserId))
+                {
+                    var address = await _context.WorkAddresses.FirstOrDefaultAsync(p => !p.IsDelete && p.UserId == item && p.CountryId == filter.CountryId.Value);
+
+                    if (address != null)
+                    {
+                        CountryModel.Add(await _context.DoctorsSelectedInterests
+                                             .Include(p => p.Doctor).ThenInclude(p => p.User)
+                                                .Where(s => !s.IsDelete && s.Doctor.UserId == address.UserId).Select(p => p.Doctor).FirstOrDefaultAsync());
+                    }
+                }
+
+                model = CountryModel;
+            }
+
+            if (filter.StateId.HasValue)
+            {
+                List<Doctor?> StateModel = new List<Doctor?>();
+
+                foreach (var item in query.Select(p => p.UserId))
+                {
+                    var address = await _context.WorkAddresses.FirstOrDefaultAsync(p => !p.IsDelete && p.UserId == item && p.StateId == filter.StateId.Value);
+
+                    if (address != null)
+                    {
+                        StateModel.Add(await _context.DoctorsSelectedInterests
+                                             .Include(p => p.Doctor).ThenInclude(p => p.User)
+                                                .Where(s => !s.IsDelete && s.Doctor.UserId == address.UserId).Select(p => p.Doctor).FirstOrDefaultAsync());
+                    }
+                }
+
+                model = StateModel;
+            }
+
+            if (filter.CityId.HasValue)
+            {
+                List<Doctor?> CityModel = new List<Doctor?>();
+
+                foreach (var item in query.Select(p => p.UserId))
+                {
+                    var address = await _context.WorkAddresses.FirstOrDefaultAsync(p => !p.IsDelete && p.UserId == item && p.CityId == filter.CityId.Value);
+
+                    if (address != null)
+                    {
+                        CityModel.Add(await _context.DoctorsSelectedInterests
+                                             .Include(p => p.Doctor).ThenInclude(p => p.User)
+                                                .Where(s => !s.IsDelete && s.Doctor.UserId == address.UserId ).Select(p => p.Doctor).FirstOrDefaultAsync());
+                    }
+                }
+
+                model = CityModel;
+            }
+
+            #endregion
+
+            return model.DistinctBy(p => p.UserId).ToList();
+        }
+
         //Get List Of Doctors With Diabet Speciality
         public async Task<List<Doctor>?> FilterDoctorsWithDiabetSpecialitySiteSide(FilterDoctorsWithDiabetSpecialitySiteSideViewModel filter)
         {
@@ -1043,7 +1147,7 @@ namespace DoctorFAM.Data.Repository
                     .ThenInclude(p => p.DoctorsInfos)
                     .Include(p => p.Doctor)
                     .ThenInclude(p => p.User)
-                    .Where(s => !s.IsDelete && (s.SpecialityId == 1 || s.SpecialityId == 3 || s.SpecialityId == 4))
+                    .Where(s => !s.IsDelete && (s.SpecialityId == 1 || s.SpecialityId == 3 || s.SpecialityId == 4 || s.SpecialityId == 8))
                     .OrderByDescending(s => s.CreateDate)
                     .Select(p => p.Doctor)
                     .ToListAsync();

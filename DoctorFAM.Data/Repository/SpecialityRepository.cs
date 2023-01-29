@@ -126,6 +126,9 @@ namespace DoctorFAM.Data.Repository
                                 UniqueName = p.UniqueName,
                                 UniqueId = p.UniqueId,
                                 ParentId = p.ParentId,
+                                IsTitle = p.IsTitle,
+                                IsSuperSpeciality = p.IsSuperSpecialty,
+                                IsSpeciality = p.IsSpecialty,
                                 CurrentInfos = p.SpecialtiyInfo.AsQueryable().IgnoreQueryFilters().ToList()
                             }).FirstOrDefaultAsync();
         }

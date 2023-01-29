@@ -87,7 +87,10 @@ namespace DoctorFAM.Application.Services.Implementation
             {
                 UniqueName = Speciality.UniqueName.SanitizeText(),
                 IsDelete = false,
-                UniqueId = Speciality.UniqueId
+                UniqueId = Speciality.UniqueId,
+                IsTitle= Speciality.IsTitle,
+                IsSpecialty= Speciality.IsSpeciality,
+                IsSuperSpecialty= Speciality.IsSuperSpeciality,
             };
 
             if (Speciality.ParentId != null && Speciality.ParentId != 0)
@@ -187,6 +190,9 @@ namespace DoctorFAM.Application.Services.Implementation
 
             Speciality.UniqueName = SpecialityViewModel.UniqueName.SanitizeText();
             Speciality.UniqueId = SpecialityViewModel.UniqueId;
+            Speciality.IsTitle = SpecialityViewModel.IsTitle; 
+            Speciality.IsSpecialty = SpecialityViewModel.IsSpeciality; 
+            Speciality.IsSuperSpecialty = SpecialityViewModel.IsSuperSpeciality; 
 
             _specialityRepository.UpdateSpacialityAdminSide(Speciality);
 
