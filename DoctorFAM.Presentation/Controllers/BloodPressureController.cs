@@ -25,10 +25,11 @@ namespace DoctorFAM.Web.Controllers
         private readonly ILocationService _locationService;
         private readonly IDoctorsService _doctorService;
         private readonly ISelfAssessmentService _selfAssessmentService;
+        private readonly IBMIService _bmiService;
 
         public BloodPressureController(IDrugAlertService drugAlertService, IPeriodicTestService periodicTestService
                                         , IMedicalExaminationService medicalExaminationService , ILocationService locationService
-                                            , IDoctorsService doctorsService, ISelfAssessmentService selfAssessmentService)
+                                            , IDoctorsService doctorsService, ISelfAssessmentService selfAssessmentService, IBMIService bmiService)
         {
             _drugAlertService = drugAlertService;
             _periodicTestService = periodicTestService;
@@ -36,15 +37,26 @@ namespace DoctorFAM.Web.Controllers
             _locationService = locationService;
             _doctorService = doctorsService;
             _selfAssessmentService = selfAssessmentService;
+            _bmiService = bmiService;
         }
 
         #endregion
 
         #region Index Page 
 
-        public IActionResult Index(int? bloodPressureStatus)
+        public IActionResult Index(int? bmiResult, decimal? gfrResult, int? bloodPressureStatus)
         {
             #region View Bags
+
+            if (bmiResult != null)
+            {
+                ViewBag.bmiResult = bmiResult;
+            }
+
+            if (gfrResult != null)
+            {
+                ViewBag.gfrResult = gfrResult;
+            }
 
             if (bloodPressureStatus != null)
             {
@@ -55,6 +67,80 @@ namespace DoctorFAM.Web.Controllers
 
             return View();
         }
+
+        #endregion
+
+        #region BMI 
+
+        #region Show BMI Modal
+
+        [HttpGet("/Show-BMI-Modal-In-BloodPressure")]
+        public async Task<IActionResult> ShowBMIModal()
+        {
+            return PartialView("_BloodPressureBMIModal");
+        }
+
+        #endregion
+
+        #region Add Process BMI Result
+
+        public async Task<IActionResult> ProcessBMI(BMIViewModel bmi)
+        {
+            //IF User Is Loged In 
+            if (User.Identity.IsAuthenticated)
+            {
+                var res = await _bmiService.ProcessBMI(bmi, User.GetUserId());
+
+                return RedirectToAction(nameof(Index), new { bmiResult = res.BMIResult });
+            }
+            else
+            {
+                var res = await _bmiService.ProcessBMI(bmi, null);
+
+                return RedirectToAction(nameof(Index), new { bmiResult = res.BMIResult });
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        #endregion
+
+        #endregion
+
+        #region GFR
+
+        #region Show GFR Modal
+
+        [HttpGet("/Show-GFR-Modal-In-BloodPressure")]
+        public async Task<IActionResult> ShowGFRModal()
+        {
+            return PartialView("_BloodPressureGFRModal");
+        }
+
+        #endregion
+
+        #region Add Process GFR Result
+
+        public async Task<IActionResult> ProcessGFR(GFRViewModel gfr)
+        {
+            //IF User Is Loged In 
+            if (User.Identity.IsAuthenticated)
+            {
+                decimal res = await _bmiService.ProcessGFR(gfr, User.GetUserId());
+
+                return RedirectToAction(nameof(Index), new { gfrResult = (res / 100) });
+            }
+            else
+            {
+                var res = await _bmiService.ProcessGFR(gfr, null);
+
+                return RedirectToAction(nameof(Index), new { gfrResult = (res / 100) });
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        #endregion
 
         #endregion
 

@@ -1536,4 +1536,15 @@
 	  <TypeScriptCompile Include="wwwroot\common\sweetalert\sweetalert.d.ts" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Content Update="Views\BloodPressure\_BloodPressureBMIModal.cshtml">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	  </Content>
+	  <Content Update="Views\BloodPressure\_BloodPressureGFRModal.cshtml">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	  </Content>
+	</ItemGroup>
+
 </Project>

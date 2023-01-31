@@ -45,22 +45,22 @@ namespace DoctorFAM.Application.Services.Implementation
             {
                 #region Process Method 
 
-                if (dis <= 80 && sis <= 120)
+                if (dis <= 80 || sis <= 120)
                 {
                     return BloodPressureSelfAssessmentStatus.Normal;
                 }
 
-                if (dis <= 80 && 120 <= sis && sis <= 139)
+                if (dis <= 80 || 120 <= sis || sis <= 139)
                 {
                     return BloodPressureSelfAssessmentStatus.PreBloodPressure;
                 }
 
-                if (dis >= 80 && dis <= 119 && 140 <= sis && sis <= 179)
+                if (dis >= 80 || dis <= 119 || 140 <= sis || sis <= 179)
                 {
                     return BloodPressureSelfAssessmentStatus.SuperBloodPressure;
                 }
 
-                if (dis >= 120 && sis >= 180)
+                if (dis >= 120 || sis >= 180)
                 {
                     return BloodPressureSelfAssessmentStatus.DangerBloodPressure;
                 }
