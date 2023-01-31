@@ -154,7 +154,53 @@ namespace DoctorFAM.Application.Services.Implementation
                     + (3.149 * ageHdl) + (2.019 * trInSbp) + (1.957 * ntInSbp) + (7.574 * ((model.Smoker) ? 1 : 0)) +
                     (-1.665 * ageSmoke) + (0.661 * ((model.DiabetesMelitus) ? 1 : 0));
 
-                return ((1 - Math.Pow(saa, Math.Exp(whw - mnxb))) * 100);
+                var predic = ((1 - Math.Pow(saa, Math.Exp(whw - mnxb))) * 100);
+
+                #region Add To The Data Base If User Login 
+
+                if (userId.HasValue)
+                {
+                    var ascvd = new ASCVD()
+                    {
+                        Age = model.Age,
+                        CreateDate = DateTime.Now,
+                        DiabetesMelitus = model.DiabetesMelitus,
+                        Gender = model.Gender,
+                        HDLCholesterol = model.HDLCholesterol,
+                        IsDelete = false,
+                        Race = model.Race,
+                        Smoker = model.Smoker,
+                        SystolicBloodPressure = model.SystolicBloodPressure,
+                        TotalCholesterol = model.TotalCholesterol,
+                        TreatmentforHypertension = model.TreatmentforHypertension,
+                        UserId = userId.Value,
+                        CVDPredic = predic
+                    };
+
+                    if (predic < 5)
+                    {
+                        ascvd.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.LowRisk;
+                    }
+                    if (predic >= 5 && predic < 7.4)
+                    {
+                        ascvd.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.BorderLineRisk;
+                    }
+                    if (predic >= 7.5 && predic < 19.9)
+                    {
+                        ascvd.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.IntermediateRisk;
+                    }
+                    if (predic >= 20)
+                    {
+                        ascvd.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.HighRisk;
+                    }
+
+                    //Add To The Data Base 
+                    await _ascvdRepository.AddAscvdToTheDataBase(ascvd);
+                }
+
+                #endregion
+
+                return predic;
             }
 
             if (model.Gender == Domain.Enums.Gender.Gender.Male && model.Race == Domain.Enums.Race.Race.AfricanAmericans)
@@ -165,7 +211,53 @@ namespace DoctorFAM.Application.Services.Implementation
                 aam = (2.469 * inAge) + (0.302 * inTot) + (-0.307 * inHdl) + (1.916 * trInSbp) + (1.809 * ntInSbp)
                       + (0.549 * ((model.Smoker) ? 1 : 0)) + (0.645 * ((model.DiabetesMelitus) ? 1 : 0));
 
-                return ((1 - Math.Pow(saa, Math.Exp(aam - mnxb))) * 100);
+                var predic = ((1 - Math.Pow(saa, Math.Exp(aam - mnxb))) * 100);
+
+                #region Add To The Data Base If User Login 
+
+                if (userId.HasValue)
+                {
+                    var ascvd = new ASCVD()
+                    {
+                        Age = model.Age,
+                        CreateDate = DateTime.Now,
+                        DiabetesMelitus = model.DiabetesMelitus,
+                        Gender = model.Gender,
+                        HDLCholesterol = model.HDLCholesterol,
+                        IsDelete = false,
+                        Race = model.Race,
+                        Smoker = model.Smoker,
+                        SystolicBloodPressure = model.SystolicBloodPressure,
+                        TotalCholesterol = model.TotalCholesterol,
+                        TreatmentforHypertension = model.TreatmentforHypertension,
+                        UserId = userId.Value,
+                        CVDPredic = predic
+                    };
+
+                    if (predic < 5)
+                    {
+                        ascvd.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.LowRisk;
+                    }
+                    if (predic >= 5 && predic < 7.4)
+                    {
+                        ascvd.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.BorderLineRisk;
+                    }
+                    if (predic >= 7.5 && predic < 19.9)
+                    {
+                        ascvd.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.IntermediateRisk;
+                    }
+                    if (predic >= 20)
+                    {
+                        ascvd.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.HighRisk;
+                    }
+
+                    //Add To The Data Base 
+                    await _ascvdRepository.AddAscvdToTheDataBase(ascvd);
+                }
+
+                #endregion
+
+                return predic;
             }
 
             if (model.Gender == Domain.Enums.Gender.Gender.Male && model.Race == Domain.Enums.Race.Race.White)
@@ -176,7 +268,53 @@ namespace DoctorFAM.Application.Services.Implementation
                 whm = (12.344 * inAge) + (11.853 * inTot) + (-2.664 * ageTc) + (-7.99 * inHdl) + (1.769 * ageHdl)
                       + (1.797 * trInSbp) + (1.764 * ntInSbp) + (7.837 * ((model.Smoker) ? 1 : 0)) + (-1.795 * ageSmoke) + (0.658 * ((model.DiabetesMelitus) ? 1 : 0));
 
-                return ((1 - Math.Pow(saa, Math.Exp(whm - mnxb))) * 100);
+                var predic = ((1 - Math.Pow(saa, Math.Exp(whm - mnxb))) * 100);
+
+                #region Add To The Data Base If User Login 
+
+                if (userId.HasValue)
+                {
+                    var ascvd = new ASCVD()
+                    {
+                        Age = model.Age,
+                        CreateDate = DateTime.Now,
+                        DiabetesMelitus = model.DiabetesMelitus,
+                        Gender = model.Gender,
+                        HDLCholesterol = model.HDLCholesterol,
+                        IsDelete = false,
+                        Race = model.Race,
+                        Smoker = model.Smoker,
+                        SystolicBloodPressure = model.SystolicBloodPressure,
+                        TotalCholesterol = model.TotalCholesterol,
+                        TreatmentforHypertension = model.TreatmentforHypertension,
+                        UserId = userId.Value,
+                        CVDPredic = predic
+                    };
+
+                    if (predic < 5)
+                    {
+                        ascvd.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.LowRisk;
+                    }
+                    if (predic >= 5 && predic < 7.4)
+                    {
+                        ascvd.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.BorderLineRisk;
+                    }
+                    if (predic >= 7.5 && predic < 19.9)
+                    {
+                        ascvd.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.IntermediateRisk;
+                    }
+                    if (predic >= 20)
+                    {
+                        ascvd.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.HighRisk;
+                    }
+
+                    //Add To The Data Base 
+                    await _ascvdRepository.AddAscvdToTheDataBase(ascvd);
+                }
+
+                #endregion
+
+                return predic;
             }
 
             #endregion
