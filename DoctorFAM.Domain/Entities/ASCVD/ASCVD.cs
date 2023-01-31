@@ -1,4 +1,5 @@
 ﻿using DoctorFAM.Domain.Entities.Common;
+using DoctorFAM.Domain.Enums.ASCVD;
 using DoctorFAM.Domain.Enums.Gender;
 using DoctorFAM.Domain.Enums.Race;
 using System;
@@ -23,6 +24,8 @@ namespace DoctorFAM.Domain.Entities.ASCVD
 
         public int TotalCholesterol  { get; set; }
 
+        public int HDLCholesterol  { get; set; }
+
         public int SystolicBloodPressure { get; set; }
 
         public bool TreatmentforHypertension { get; set; }
@@ -30,6 +33,10 @@ namespace DoctorFAM.Domain.Entities.ASCVD
         public bool DiabetesMelitus  { get; set; }
 
         public bool Smoker { get; set; }
+
+        public ASCVDStatus ASCVDStatus { get; set; }
+
+        public double CVDPredic { get; set; }
 
         #endregion
 

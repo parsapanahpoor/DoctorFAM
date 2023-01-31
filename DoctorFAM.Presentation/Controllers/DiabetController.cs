@@ -130,6 +130,46 @@ namespace DoctorFAM.Web.Controllers
 
         #endregion
 
+        #region ASCVD
+
+        #region Show ASCVD Modal 
+
+        [HttpGet("/Show-Diabet-Page-ASCVD-Modal")]
+        public async Task<IActionResult> ShowASCVDModal()
+        {
+            return PartialView("_DiabetPageASCVD");
+        }
+
+        #endregion
+
+        #region Process ASCVD
+
+        [HttpPost]
+        public async Task<IActionResult> ProcessASCVD(ASCVDSiteSideViewModel model)
+        {
+            #region Model State Validation 
+
+            if (!ModelState.IsValid)
+            {
+                TempData[ErrorMessage]= "اطلاعات وارد شده صحیح نمی باشد.";
+                return RedirectToAction(nameof(Index)) ;
+            }
+
+            #endregion
+
+            #region Process ASCVD
+
+            #endregion
+
+            TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+            return RedirectToAction(nameof(Index));
+        }
+
+
+        #endregion
+
+        #endregion
+
         #region GFR
 
         #region Show GFR Modal

@@ -1,4 +1,26 @@
 
+//#region Load ASCVD View Model
+
+function ShowASCVDModal() {
+    $.ajax({
+        url: "/Show-Diabet-Page-ASCVD-Modal",
+        type: "get",
+        data: {
+
+        },
+        success: function (response) {
+            $("#modal-body").html(response);
+
+            $('#ASCVDForm').data('validator', null);
+            $.validator.unobtrusive.parse('#ASCVDForm');
+
+            $("#exampleModal").modal("show");
+        }
+    });
+}
+
+//#endregion
+
 //#region Load BMI View Model
 
 function ShowBMIModal() {
