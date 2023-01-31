@@ -1,4 +1,5 @@
-﻿using DoctorFAM.Domain.Enums.Gender;
+﻿using DoctorFAM.Domain.Enums.ASCVD;
+using DoctorFAM.Domain.Enums.Gender;
 using DoctorFAM.Domain.Enums.Race;
 using System;
 using System.Collections.Generic;
@@ -31,5 +32,12 @@ namespace DoctorFAM.Domain.ViewModels.Site.Diabet
         public bool Smoker { get; set; }
 
         #endregion
+    }
+
+    public class AddASCVDSiteSideResult
+    {
+        public double Predic { get; set; }
+
+        public ASCVDStatus ASCVDStatus { get; set; }
     }
 }

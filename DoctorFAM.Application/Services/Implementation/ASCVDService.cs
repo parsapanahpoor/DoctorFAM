@@ -1,18 +1,7 @@
-﻿using AngleSharp.Dom;
-using DoctorFAM.Application.Services.Interfaces;
+﻿using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.Entities.ASCVD;
-using DoctorFAM.Domain.Entities.HealthInformation;
 using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.Site.Diabet;
-using Microsoft.AspNetCore.Mvc;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.Database;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Formats.Asn1.AsnWriter;
 
 namespace DoctorFAM.Application.Services.Implementation
 {
@@ -34,8 +23,14 @@ namespace DoctorFAM.Application.Services.Implementation
         #region Site Side
 
         //Process ASCVD
-        public async Task<double?> ProcessASCVD(ASCVDSiteSideViewModel model, ulong? userId)
+        public async Task<AddASCVDSiteSideResult?> ProcessASCVD(ASCVDSiteSideViewModel model, ulong? userId)
         {
+            #region Initial Return Value
+
+            AddASCVDSiteSideResult returnValue = new AddASCVDSiteSideResult();
+
+            #endregion
+
             #region Get User By Id 
 
             if (userId.HasValue)
@@ -97,6 +92,7 @@ namespace DoctorFAM.Application.Services.Implementation
                     + (0.8738 * ((model.DiabetesMelitus) ? 1 : 0));
 
                 var predic = ((1 - Math.Pow(saa, Math.Exp(aaw - mnxb))) * 100);
+                returnValue.Predic = predic;
 
                 #region Add To The Data Base If User Login 
 
@@ -122,18 +118,26 @@ namespace DoctorFAM.Application.Services.Implementation
                     if (predic < 5)
                     {
                         ascvd.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.LowRisk;
+
+                        returnValue.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.LowRisk;
                     }
                     if (predic >= 5 && predic < 7.4)
                     {
                         ascvd.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.BorderLineRisk;
+
+                        returnValue.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.BorderLineRisk;
                     }
                     if (predic >= 7.5 && predic < 19.9)
                     {
                         ascvd.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.IntermediateRisk;
+
+                        returnValue.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.IntermediateRisk;
                     }
                     if (predic >= 20)
                     {
                         ascvd.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.HighRisk;
+
+                        returnValue.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.HighRisk;
                     }
 
                     //Add To The Data Base 
@@ -142,7 +146,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
                 #endregion
 
-                return predic; 
+                return returnValue; 
             }
 
             if (model.Gender == Domain.Enums.Gender.Gender.Female && model.Race == Domain.Enums.Race.Race.White)
@@ -156,6 +160,8 @@ namespace DoctorFAM.Application.Services.Implementation
 
                 var predic = ((1 - Math.Pow(saa, Math.Exp(whw - mnxb))) * 100);
 
+                returnValue.Predic = predic;
+
                 #region Add To The Data Base If User Login 
 
                 if (userId.HasValue)
@@ -180,18 +186,26 @@ namespace DoctorFAM.Application.Services.Implementation
                     if (predic < 5)
                     {
                         ascvd.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.LowRisk;
+
+                        returnValue.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.LowRisk;
                     }
                     if (predic >= 5 && predic < 7.4)
                     {
                         ascvd.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.BorderLineRisk;
+
+                        returnValue.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.BorderLineRisk;
                     }
                     if (predic >= 7.5 && predic < 19.9)
                     {
                         ascvd.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.IntermediateRisk;
+
+                        returnValue.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.IntermediateRisk;
                     }
                     if (predic >= 20)
                     {
                         ascvd.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.HighRisk;
+
+                        returnValue.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.HighRisk;
                     }
 
                     //Add To The Data Base 
@@ -200,7 +214,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
                 #endregion
 
-                return predic;
+                return returnValue;
             }
 
             if (model.Gender == Domain.Enums.Gender.Gender.Male && model.Race == Domain.Enums.Race.Race.AfricanAmericans)
@@ -213,6 +227,8 @@ namespace DoctorFAM.Application.Services.Implementation
 
                 var predic = ((1 - Math.Pow(saa, Math.Exp(aam - mnxb))) * 100);
 
+                returnValue.Predic = predic; 
+
                 #region Add To The Data Base If User Login 
 
                 if (userId.HasValue)
@@ -237,18 +253,26 @@ namespace DoctorFAM.Application.Services.Implementation
                     if (predic < 5)
                     {
                         ascvd.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.LowRisk;
+
+                        returnValue.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.LowRisk;
                     }
                     if (predic >= 5 && predic < 7.4)
                     {
                         ascvd.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.BorderLineRisk;
+
+                        returnValue.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.BorderLineRisk;
                     }
                     if (predic >= 7.5 && predic < 19.9)
                     {
                         ascvd.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.IntermediateRisk;
+
+                        returnValue.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.IntermediateRisk;
                     }
                     if (predic >= 20)
                     {
                         ascvd.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.HighRisk;
+
+                        returnValue.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.HighRisk;
                     }
 
                     //Add To The Data Base 
@@ -257,7 +281,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
                 #endregion
 
-                return predic;
+                return returnValue;
             }
 
             if (model.Gender == Domain.Enums.Gender.Gender.Male && model.Race == Domain.Enums.Race.Race.White)
@@ -270,6 +294,8 @@ namespace DoctorFAM.Application.Services.Implementation
 
                 var predic = ((1 - Math.Pow(saa, Math.Exp(whm - mnxb))) * 100);
 
+                returnValue.Predic = predic;
+
                 #region Add To The Data Base If User Login 
 
                 if (userId.HasValue)
@@ -294,18 +320,26 @@ namespace DoctorFAM.Application.Services.Implementation
                     if (predic < 5)
                     {
                         ascvd.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.LowRisk;
+
+                        returnValue.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.LowRisk;
                     }
                     if (predic >= 5 && predic < 7.4)
                     {
                         ascvd.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.BorderLineRisk;
+
+                        returnValue.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.BorderLineRisk;
                     }
                     if (predic >= 7.5 && predic < 19.9)
                     {
                         ascvd.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.IntermediateRisk;
+
+                        returnValue.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.IntermediateRisk;
                     }
                     if (predic >= 20)
                     {
                         ascvd.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.HighRisk;
+
+                        returnValue.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.HighRisk;
                     }
 
                     //Add To The Data Base 
@@ -314,7 +348,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
                 #endregion
 
-                return predic;
+                return returnValue;
             }
 
             #endregion
