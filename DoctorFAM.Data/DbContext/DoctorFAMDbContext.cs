@@ -2,6 +2,7 @@
 using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Advertisement;
+using DoctorFAM.Domain.Entities.ASCVD;
 using DoctorFAM.Domain.Entities.BMI;
 using DoctorFAM.Domain.Entities.Consultant;
 using DoctorFAM.Domain.Entities.Contact;
@@ -406,6 +407,12 @@ namespace DoctorFAM.Data.DbContext
         #region Periodic Self Evaluation 
 
         public DbSet<DiabetRiskFactorQuestions> DiabetRiskFactorQuestions { get; set; }
+
+        #endregion
+
+        #region ASCVD
+
+        public DbSet<ASCVD> ASCVD { get; set; }
 
         #endregion
 
