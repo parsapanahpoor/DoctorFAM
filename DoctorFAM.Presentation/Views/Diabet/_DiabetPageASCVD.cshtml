@@ -50,8 +50,8 @@
                         سابقه ی فشارخون بالا
                     </label>
                     <select asp-for="TreatmentforHypertension" class="form-control">
-                        <option value="0">خیر</option>
-                        <option value="1">بله</option>
+                        <option value="@false">خیر</option>
+                        <option value="@true">بله</option>
                     </select>
                 </div>
             </div>
@@ -62,8 +62,8 @@
                         آیا سابقه ی دیابت دارید ؟
                     </label>
                     <select asp-for="DiabetesMelitus" class="form-control">
-                        <option value="0">خیر</option>
-                        <option value="1">بله</option>
+                        <option value="@false">خیر</option>
+                        <option value="@true">بله</option>
                     </select>
                 </div>
             </div>
@@ -74,8 +74,8 @@
                         آیا سابقه ی مصرف دخانیات دارید ؟
                     </label>
                     <select asp-for="Smoker" class="form-control">
-                        <option value="0">خیر</option>
-                        <option value="1">بله</option>
+                        <option value="@false">خیر</option>
+                        <option value="@true">بله</option>
                     </select>
                 </div>
             </div>

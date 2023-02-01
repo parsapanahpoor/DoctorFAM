@@ -10,7 +10,7 @@ namespace DoctorFAM.Domain.Enums.Race
 {
     public enum Race
     {
-        [Display(Name = " سفید پوست و دیگر")]
+        [Display(Name = " سفید پوست و سایر")]
         White,
         [Display(Name = "سیاه پوست")]
         AfricanAmericans

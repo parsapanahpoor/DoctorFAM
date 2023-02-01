@@ -67,6 +67,7 @@ namespace DoctorFAM.IoC
             services.AddScoped <IPeriodicSelftEvaluationService, PeriodicSelftEvaluationService>();
             services.AddScoped <IPeriodicTestService, PeriodicTestService>();
             services.AddScoped <ISelfAssessmentService, SelfAssessmentService>();
+            services.AddScoped <IASCVDService, ASCVDService>();
 
             #endregion
 
@@ -111,6 +112,7 @@ namespace DoctorFAM.IoC
             services.AddScoped<IPeriodicSelftEvaluationRepository, PeriodicSelftEvaluationRepository>();
             services.AddScoped<IPeriodicTestRepository, PeriodicTestRepository>();
             services.AddScoped<ISelfAssessmentRepository, SelfAssessmentRepository>();
+            services.AddScoped<IASCVDRepository, ASCVDRepository>();
 
             #endregion
 

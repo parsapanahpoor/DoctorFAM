@@ -94,6 +94,23 @@ namespace DoctorFAM.Application.Services.Implementation
                 var predic = ((1 - Math.Pow(saa, Math.Exp(aaw - mnxb))) * 100);
                 returnValue.Predic = predic;
 
+                if (predic < 5)
+                {
+                    returnValue.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.LowRisk;
+                }
+                if (predic >= 5 && predic < 7.4)
+                {
+                    returnValue.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.BorderLineRisk;
+                }
+                if (predic >= 7.5 && predic < 19.9)
+                {
+                    returnValue.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.IntermediateRisk;
+                }
+                if (predic >= 20)
+                {
+                    returnValue.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.HighRisk;
+                }
+
                 #region Add To The Data Base If User Login 
 
                 if (userId.HasValue)
@@ -112,33 +129,9 @@ namespace DoctorFAM.Application.Services.Implementation
                         TotalCholesterol = model.TotalCholesterol,
                         TreatmentforHypertension = model.TreatmentforHypertension,
                         UserId = userId.Value,
-                        CVDPredic = predic
+                        CVDPredic = predic,
+                        ASCVDStatus = (returnValue.ASCVDStatus.HasValue) ? returnValue.ASCVDStatus.Value : Domain.Enums.ASCVD.ASCVDStatus.LowRisk
                     };
-
-                    if (predic < 5)
-                    {
-                        ascvd.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.LowRisk;
-
-                        returnValue.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.LowRisk;
-                    }
-                    if (predic >= 5 && predic < 7.4)
-                    {
-                        ascvd.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.BorderLineRisk;
-
-                        returnValue.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.BorderLineRisk;
-                    }
-                    if (predic >= 7.5 && predic < 19.9)
-                    {
-                        ascvd.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.IntermediateRisk;
-
-                        returnValue.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.IntermediateRisk;
-                    }
-                    if (predic >= 20)
-                    {
-                        ascvd.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.HighRisk;
-
-                        returnValue.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.HighRisk;
-                    }
 
                     //Add To The Data Base 
                     await _ascvdRepository.AddAscvdToTheDataBase(ascvd);
@@ -162,6 +155,23 @@ namespace DoctorFAM.Application.Services.Implementation
 
                 returnValue.Predic = predic;
 
+                if (predic < 5)
+                {
+                    returnValue.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.LowRisk;
+                }
+                if (predic >= 5 && predic < 7.4)
+                {
+                    returnValue.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.BorderLineRisk;
+                }
+                if (predic >= 7.5 && predic < 19.9)
+                {
+                    returnValue.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.IntermediateRisk;
+                }
+                if (predic >= 20)
+                {
+                    returnValue.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.HighRisk;
+                }
+
                 #region Add To The Data Base If User Login 
 
                 if (userId.HasValue)
@@ -180,33 +190,9 @@ namespace DoctorFAM.Application.Services.Implementation
                         TotalCholesterol = model.TotalCholesterol,
                         TreatmentforHypertension = model.TreatmentforHypertension,
                         UserId = userId.Value,
-                        CVDPredic = predic
+                        CVDPredic = predic,
+                        ASCVDStatus = (returnValue.ASCVDStatus.HasValue) ? returnValue.ASCVDStatus.Value : Domain.Enums.ASCVD.ASCVDStatus.LowRisk
                     };
-
-                    if (predic < 5)
-                    {
-                        ascvd.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.LowRisk;
-
-                        returnValue.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.LowRisk;
-                    }
-                    if (predic >= 5 && predic < 7.4)
-                    {
-                        ascvd.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.BorderLineRisk;
-
-                        returnValue.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.BorderLineRisk;
-                    }
-                    if (predic >= 7.5 && predic < 19.9)
-                    {
-                        ascvd.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.IntermediateRisk;
-
-                        returnValue.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.IntermediateRisk;
-                    }
-                    if (predic >= 20)
-                    {
-                        ascvd.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.HighRisk;
-
-                        returnValue.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.HighRisk;
-                    }
 
                     //Add To The Data Base 
                     await _ascvdRepository.AddAscvdToTheDataBase(ascvd);
@@ -227,7 +213,24 @@ namespace DoctorFAM.Application.Services.Implementation
 
                 var predic = ((1 - Math.Pow(saa, Math.Exp(aam - mnxb))) * 100);
 
-                returnValue.Predic = predic; 
+                returnValue.Predic = predic;
+
+                if (predic < 5)
+                {
+                    returnValue.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.LowRisk;
+                }
+                if (predic >= 5 && predic < 7.4)
+                {
+                    returnValue.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.BorderLineRisk;
+                }
+                if (predic >= 7.5 && predic < 19.9)
+                {
+                    returnValue.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.IntermediateRisk;
+                }
+                if (predic >= 20)
+                {
+                    returnValue.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.HighRisk;
+                }
 
                 #region Add To The Data Base If User Login 
 
@@ -247,33 +250,9 @@ namespace DoctorFAM.Application.Services.Implementation
                         TotalCholesterol = model.TotalCholesterol,
                         TreatmentforHypertension = model.TreatmentforHypertension,
                         UserId = userId.Value,
-                        CVDPredic = predic
+                        CVDPredic = predic,
+                        ASCVDStatus = (returnValue.ASCVDStatus.HasValue) ? returnValue.ASCVDStatus.Value : Domain.Enums.ASCVD.ASCVDStatus.LowRisk
                     };
-
-                    if (predic < 5)
-                    {
-                        ascvd.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.LowRisk;
-
-                        returnValue.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.LowRisk;
-                    }
-                    if (predic >= 5 && predic < 7.4)
-                    {
-                        ascvd.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.BorderLineRisk;
-
-                        returnValue.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.BorderLineRisk;
-                    }
-                    if (predic >= 7.5 && predic < 19.9)
-                    {
-                        ascvd.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.IntermediateRisk;
-
-                        returnValue.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.IntermediateRisk;
-                    }
-                    if (predic >= 20)
-                    {
-                        ascvd.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.HighRisk;
-
-                        returnValue.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.HighRisk;
-                    }
 
                     //Add To The Data Base 
                     await _ascvdRepository.AddAscvdToTheDataBase(ascvd);
@@ -296,6 +275,23 @@ namespace DoctorFAM.Application.Services.Implementation
 
                 returnValue.Predic = predic;
 
+                if (predic < 5)
+                {
+                    returnValue.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.LowRisk;
+                }
+                if (predic >= 5 && predic < 7.4)
+                {
+                    returnValue.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.BorderLineRisk;
+                }
+                if (predic >= 7.5 && predic < 19.9)
+                {
+                    returnValue.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.IntermediateRisk;
+                }
+                if (predic >= 20)
+                {
+                    returnValue.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.HighRisk;
+                }
+
                 #region Add To The Data Base If User Login 
 
                 if (userId.HasValue)
@@ -314,33 +310,9 @@ namespace DoctorFAM.Application.Services.Implementation
                         TotalCholesterol = model.TotalCholesterol,
                         TreatmentforHypertension = model.TreatmentforHypertension,
                         UserId = userId.Value,
-                        CVDPredic = predic
+                        CVDPredic = predic,
+                        ASCVDStatus = (returnValue.ASCVDStatus.HasValue) ? returnValue.ASCVDStatus.Value : Domain.Enums.ASCVD.ASCVDStatus.LowRisk
                     };
-
-                    if (predic < 5)
-                    {
-                        ascvd.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.LowRisk;
-
-                        returnValue.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.LowRisk;
-                    }
-                    if (predic >= 5 && predic < 7.4)
-                    {
-                        ascvd.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.BorderLineRisk;
-
-                        returnValue.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.BorderLineRisk;
-                    }
-                    if (predic >= 7.5 && predic < 19.9)
-                    {
-                        ascvd.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.IntermediateRisk;
-
-                        returnValue.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.IntermediateRisk;
-                    }
-                    if (predic >= 20)
-                    {
-                        ascvd.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.HighRisk;
-
-                        returnValue.ASCVDStatus = Domain.Enums.ASCVD.ASCVDStatus.HighRisk;
-                    }
 
                     //Add To The Data Base 
                     await _ascvdRepository.AddAscvdToTheDataBase(ascvd);

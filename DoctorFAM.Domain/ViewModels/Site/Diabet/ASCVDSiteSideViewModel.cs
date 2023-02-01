@@ -38,6 +38,6 @@ namespace DoctorFAM.Domain.ViewModels.Site.Diabet
     {
         public double Predic { get; set; }
 
-        public ASCVDStatus ASCVDStatus { get; set; }
+        public ASCVDStatus? ASCVDStatus { get; set; }
     }
 }

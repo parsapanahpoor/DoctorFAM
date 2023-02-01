@@ -4,6 +4,7 @@ using DoctorFAM.Application.Interfaces;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.Entities.BMI;
 using DoctorFAM.Domain.Entities.PeriodicSelfEvaluatuion;
+using DoctorFAM.Domain.Enums.BloodPressure;
 using DoctorFAM.Domain.ViewModels.Site.Diabet;
 using DoctorFAM.Domain.ViewModels.Site.DurgAlert;
 using DoctorFAM.Domain.ViewModels.Site.MedicalExamination;
@@ -29,11 +30,12 @@ namespace DoctorFAM.Web.Controllers
         private readonly IPeriodicTestService _periodicTestService;
         private readonly IPeriodicSelftEvaluationService _periodicSelftEvaluationService;
         private readonly ISelfAssessmentService _selfAssessmentService;
+        private readonly IASCVDService _ascvdService;
 
         public DiabetController(IBMIService bmiService, ILocationService locationService, IDoctorsService doctorsService
                                     , IMedicalExaminationService medicalExamination, IDrugAlertService drugAlertService
                                         , IPeriodicTestService periodicTestService, IPeriodicSelftEvaluationService periodicSelftEvaluationService
-                                            , ISelfAssessmentService selfAssessmentService)
+                                            , ISelfAssessmentService selfAssessmentService , IASCVDService ascvdService)
         {
             _bmiService = bmiService;
             _locationService = locationService;
@@ -43,6 +45,7 @@ namespace DoctorFAM.Web.Controllers
             _periodicTestService = periodicTestService;
             _periodicSelftEvaluationService = periodicSelftEvaluationService;
             _selfAssessmentService = selfAssessmentService;
+            _ascvdService = ascvdService;
         }
 
         #endregion
@@ -58,7 +61,7 @@ namespace DoctorFAM.Web.Controllers
 
         #region Index Page Of Diabet Part
 
-        public IActionResult Index(int? bmiResult, decimal? gfrResult, decimal? selfAssessment)
+        public IActionResult Index(int? bmiResult, decimal? gfrResult, decimal? selfAssessment , int? ascvdResult , int? ascvdStatus )
         {
             #region Send BMI && GFR Result To View 
 
@@ -75,6 +78,16 @@ namespace DoctorFAM.Web.Controllers
             if (selfAssessment != null)
             {
                 ViewBag.selfAssessment = selfAssessment;
+            }
+
+            if (ascvdResult.HasValue)
+            {
+                ViewBag.ascvdPredicResult = ascvdResult.Value; 
+            }
+
+            if (ascvdStatus.HasValue)
+            {
+                ViewBag.ascvdStatusResult = ascvdStatus.Value;
             }
 
             #endregion
@@ -159,10 +172,20 @@ namespace DoctorFAM.Web.Controllers
 
             #region Process ASCVD
 
-            #endregion
+            var res = await _ascvdService.ProcessASCVD(model , ((User.Identity.IsAuthenticated) ? User.GetUserId() : null));
 
-            TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
-            return RedirectToAction(nameof(Index));
+            if (res == null)
+            {
+                TempData[ErrorMessage] = "اطلاعات به درستی وارد نشده است.";
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                TempData[ErrorMessage] = "اطلاعات به درستی وارد نشده است.";
+                return RedirectToAction(nameof(Index) , new { ascvdResult = res.Predic , ascvdStatus = res.ASCVDStatus.Value });
+            }
+
+            #endregion
         }
 
 
