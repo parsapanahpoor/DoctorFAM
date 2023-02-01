@@ -181,8 +181,29 @@ namespace DoctorFAM.Web.Controllers
             }
             else
             {
+                if (res.ASCVDStatus == Domain.Enums.ASCVD.ASCVDStatus.LowRisk)
+                {
+                    TempData[SuccessMessage] = "محاسبه با موفقیت انجام شده است.";
+                    return RedirectToAction(nameof(Index), new { ascvdResult = res.Predic , ascvdStatus = 1 });
+                }
+                if (res.ASCVDStatus == Domain.Enums.ASCVD.ASCVDStatus.BorderLineRisk)
+                {
+                    TempData[SuccessMessage] = "محاسبه با موفقیت انجام شده است.";
+                    return RedirectToAction(nameof(Index), new { ascvdResult = res.Predic, ascvdStatus = 2 });
+                }
+                if (res.ASCVDStatus == Domain.Enums.ASCVD.ASCVDStatus.IntermediateRisk)
+                {
+                    TempData[SuccessMessage] = "محاسبه با موفقیت انجام شده است.";
+                    return RedirectToAction(nameof(Index), new { ascvdResult = res.Predic, ascvdStatus = 3 });
+                }
+                if (res.ASCVDStatus == Domain.Enums.ASCVD.ASCVDStatus.HighRisk)
+                {
+                    TempData[SuccessMessage] = "محاسبه با موفقیت انجام شده است.";
+                    return RedirectToAction(nameof(Index), new { ascvdResult = res.Predic, ascvdStatus = 4 });
+                }
+
                 TempData[ErrorMessage] = "اطلاعات به درستی وارد نشده است.";
-                return RedirectToAction(nameof(Index) , new { ascvdResult = res.Predic , ascvdStatus = res.ASCVDStatus.Value });
+                return RedirectToAction(nameof(Index));
             }
 
             #endregion
