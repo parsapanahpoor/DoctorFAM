@@ -61,6 +61,7 @@ namespace DoctorFAM.Application.Services.Implementation
             {
                 UserId = user.Id,
                 DrugName = model.DrugName.SanitizeText(),
+                DrugLabel = model.LabelName.SanitizeText(),
                 DrugAlertDurationType = model.DrugAlertDurationType,
             };
 

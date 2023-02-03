@@ -56,6 +56,7 @@
                                         <th class=" text-center align-items-center"> نام دارو</th>
                                         <th class=" text-center align-items-center">دوره ی مصرف دارو</th>
                                         <th class=" text-center align-items-center">تعداد مصرف </th>
+                                        <th class=" text-center align-items-center">دسته بندی دارو </th>
                                         <th class=" text-center align-items-center"> تاریخ درج </th>
                                         <th class=" text-center align-items-center">عملیات</th>
                                     </tr>
@@ -76,6 +77,10 @@
 
                                             <td class=" text-center align-items-center">
                                                 <h5> @item.CountOfUsage </h5>
+                                            </td>
+
+                                            <td class=" text-center align-items-center">
+                                                @((string.IsNullOrEmpty(item.DrugLabel) ? "وارد نشده است" : item.DrugLabel))
                                             </td>
 
                                             <td class=" text-center align-items-center">

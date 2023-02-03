@@ -16,6 +16,9 @@ namespace DoctorFAM.Domain.ViewModels.Site.DurgAlert
         [Required(ErrorMessage = "این فیلد الزامی است .")]
         public string DrugName { get; set; }
 
+        [MaxLength(500)]
+        public string? LabelName { get; set; }
+
         public DrugAlertDurationType DrugAlertDurationType { get; set; }
 
         #endregion

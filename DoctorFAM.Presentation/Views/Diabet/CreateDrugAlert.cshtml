@@ -70,7 +70,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="form-group">
                         <span style="color:red;">*</span>
                         <label asp-for="DrugName" class="control-label">نام دارو</label>
@@ -78,7 +78,7 @@
                         <span asp-validation-for="DrugName" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="form-group">
                         <span style="color:red;">*</span>
                         <label asp-for="DrugAlertDurationType" class="control-label">دوره ی مصرفی دارو</label>
@@ -87,7 +87,15 @@
                     </div>
                 </div>
 
-                <div class="col-md-4" id="Houre-div" style="padding-top:20px;">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label asp-for="LabelName" class="control-label">دسته بندی دارو</label>
+                        <input  asp-for="LabelName" class="form-control" />
+                        <span asp-validation-for="LabelName" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-3" id="Houre-div" style="padding-top:20px;">
                     <div class="form-group">
                         <div id="btn1" class="btn-AcceptXX">
                             افزودن ساعت

@@ -53,6 +53,7 @@
 
                                     <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">نام دارو</th>
                                     <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">دوره ی مصرف دارو</th>
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">دسته بندی دارو</th>
                                     <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">تعداد مصرف</th>
                                     <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">تاریخ درج</th>
                                     <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending"></th>
@@ -77,6 +78,26 @@
 
                                             </div>
                                         </td>
+
+                                            <td class="center ">
+                                                @if (string.IsNullOrEmpty(item.DrugLabel))
+                                            {
+                                                <div class="label label-warning">
+
+                                                    .وارد نشده است.
+
+                                                </div>
+                                            }else
+                                            {
+                                                <div class="label label-primary">
+
+                                                    @item.DrugLabel
+
+                                                </div>
+                                            }
+
+                                        </td>
+
 
                                         <td class="center ">
                                             <div class="label label-primary">
