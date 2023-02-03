@@ -22,6 +22,9 @@ namespace DoctorFAM.Domain.Entities.DurgAlert
 
         public int? CountOfUsage { get; set; }
 
+        [MaxLength(500)]
+        public string? DrugLabel { get; set; }
+
         #endregion
 
         #region relation 
