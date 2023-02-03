@@ -18,6 +18,9 @@ namespace DoctorFAM.Domain.ViewModels.Site.MedicalExamination
         [RegularExpression(@"^\d{4}\/(0?[1-9]|1[012])\/(0?[1-9]|[12][0-9]|3[01])$", ErrorMessage = "اطلاعات وارد شده صحیح نمی باشد.")]
         public string? NextMedicalExamination { get; set; }
 
+        [MaxLength(500)]
+        public string? LabelName { get; set; }
+
         #endregion
     }
 

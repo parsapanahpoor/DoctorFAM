@@ -1,6 +1,7 @@
 ﻿using DoctorFAM.Domain.Entities.Common;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,6 +21,9 @@ namespace DoctorFAM.Domain.Entities.PriodicExamination
         public DateTime NextExaminationDate { get; set; }
 
         public ulong? DoctorUserId { get; set; }
+
+        [MaxLength(500)]
+        public string? LabelName { get; set; }
 
         #endregion
 

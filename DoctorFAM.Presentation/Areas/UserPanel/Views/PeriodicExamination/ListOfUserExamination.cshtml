@@ -56,6 +56,7 @@
 
                                     <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">پزشک</th>
                                     <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">عنوان</th>
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">دسته بندی شما</th>
                                     <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">تاریخ آخرین معاینه</th>
                                     <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">تاریخ دوره بعدی پیشنهادی سیستم</th>
                                     <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">هشدار پیشنهادی سیستم</th>
@@ -87,6 +88,10 @@
 
                                         <td class="center ">
                                             <span>@item.PriodicPatientsExaminations.MedicalExamination.MedicalExaminationName</span>
+                                        </td>
+
+                                        <td class="center ">
+                                            <span>@((string.IsNullOrEmpty(item.PriodicPatientsExaminations.LabelName) ? "وارد نشده است." : item.PriodicPatientsExaminations.LabelName))</span>
                                         </td>
 
                                         <td class="center ">

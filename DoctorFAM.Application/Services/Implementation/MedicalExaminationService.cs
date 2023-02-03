@@ -175,7 +175,8 @@ namespace DoctorFAM.Application.Services.Implementation
             {
                 MedicalExaminationId = medicalExamination.Id,
                 LastPatientMedicalExamination = model.LastMedicalExamination.ToMiladiDateTime(),
-                UserId = user.Id
+                UserId = user.Id,
+                LabelName = model.LabelName
             };
 
             //Next Examination Date Time 

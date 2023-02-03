@@ -46,6 +46,7 @@
                                         <th class=" text-center align-items-center">عنوان</th>
                                         <th class=" text-center align-items-center">تاریخ آخرین معاینه</th>
                                         <th class=" text-center align-items-center">تاریخ دوره بعدی پیشنهادی سیستم</th>
+                                        <th class=" text-center align-items-center"> دسته بندی انتخابی</th>
                                         <th class=" text-center align-items-center"> هشدار پیشنهادی سیستم</th>
                                         <th class=" text-center align-items-center">عملیات</th>
                                     </tr>
@@ -81,6 +82,10 @@
 
                                             <td class=" text-center align-items-center">
                                                 <h5 style="color:green"> @item.PriodicPatientsExaminations.NextExaminationDate.ToShamsi()</h5>
+                                            </td>
+
+                                            <td class=" text-center align-items-center">
+                                                <span > @((string.IsNullOrEmpty(item.PriodicPatientsExaminations.LabelName) ? "وارد نشده است" : item.PriodicPatientsExaminations.LabelName))</span>
                                             </td>
 
                                             <td class=" text-center align-items-center">@item.PriodicPatientsExaminations.MedicalExamination.PriodMonth ماه دیگر</td>
