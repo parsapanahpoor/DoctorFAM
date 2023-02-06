@@ -1,25 +1,13 @@
-﻿using AngleSharp.Css;
-using DoctorFAM.Application.Extensions;
+﻿using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
-using DoctorFAM.Application.StaticTools;
-using DoctorFAM.Domain.Entities.Account;
-using DoctorFAM.Domain.Entities.Consultant;
-using DoctorFAM.Domain.Entities.Doctors;
-using DoctorFAM.Domain.Entities.Laboratory;
-using DoctorFAM.Domain.Entities.Nurse;
-using DoctorFAM.Domain.Entities.Pharmacy;
 using DoctorFAM.Domain.ViewModels.Account;
-using DoctorFAM.Domain.ViewModels.Common;
 using DoctorFAM.Domain.ViewModels.Site.Account;
 using DoctorFAM.Domain.ViewModels.Site.CooperationRequest;
-using DoctorFAM.Web.ActionFilterAttributes;
 using DoctorFAM.Web.HttpManager;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Win32;
-using NuGet.Protocol.Plugins;
 using System.Security.Claims;
 
 namespace DoctorFAM.Web.Controllers

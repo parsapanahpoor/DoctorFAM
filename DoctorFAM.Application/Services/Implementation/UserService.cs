@@ -525,21 +525,14 @@ namespace DoctorFAM.Application.Services.Implementation
 
             _context.Users.Update(user);
 
-            var smsViewModel = new SendVerificationSmsViewModel()
-            {
-                Receptor = user.Mobile,
-                Token = user.MobileActivationCode
-            };
-
             await _context.SaveChangesAsync();
 
             #endregion
 
             #region Send Verification Code SMS
 
-            var message = Messages.SendActivationRegisterSms(user.MobileActivationCode);
-
-            await _smsservice.SendSimpleSMS(user.Mobile, message);
+            var result = $"https://api.kavenegar.com/v1/564672526D58694D3477685571796F7372574F576C476B6366785462356D3164683370395A2B61356D6E383D/verify/lookup.json?receptor={user.Mobile}&token={user.MobileActivationCode}&template=Register";
+            var results = client.GetStringAsync(result);
 
             #endregion
 
@@ -1518,7 +1511,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
                 //Get Population Covered 
                 var population = await _populationCoveredService.GetUserByNationalIdFromPopulationCovered(edit.NationalId);
-                if(population == null) return UserPanelEditUserInfoResult.NotValidNationalId;
+                if (population == null) return UserPanelEditUserInfoResult.NotValidNationalId;
 
                 //Delete Population Covered 
                 population.IsDelete = true;
@@ -1532,7 +1525,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 if (master == null) return UserPanelEditUserInfoResult.NotValidNationalId;
 
                 //Initial SMS Body With Algorithm
-                var message = Messages.SendSMSToTheMasterOfPopulationCover(edit.NationalId , user.Mobile);
+                var message = Messages.SendSMSToTheMasterOfPopulationCover(edit.NationalId, user.Mobile);
                 await _smsservice.SendSimpleSMS(user.Mobile, message);
 
                 #endregion
@@ -1573,7 +1566,7 @@ namespace DoctorFAM.Application.Services.Implementation
         //Is Exist Any User By National Id 
         public async Task<bool> IsExistAnyUserByNationalId(string nationalId)
         {
-            return await _userRepository.IsExistAnyUserByNationalId(nationalId) ;
+            return await _userRepository.IsExistAnyUserByNationalId(nationalId);
         }
 
         #endregion

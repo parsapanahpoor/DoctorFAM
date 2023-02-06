@@ -56,18 +56,11 @@
 
     </script>
 }
-
-<div class="m-2  pr-3">
-    <div class="row text-center ">
-        <div class="col-lg-2 col-md-2 col-sm-12 justify-content-center text-center ">
-            <div class="section-title mb-0">
-                @* <h2 class="title">  دیابت </h2>*@
-                <img src="~/Content/images/case-studies/DiabetTitle.png" />
-            </div>
-        </div>
-        <div class="col-lg-10 col-md-10 col-sm-12 justify-content-center text-center ">
-            <img src="~/Content/images/case-studies/diabetbanner.jpeg" style="width:100% !important ;height:65px;" />
-
+<div class="row text-center PageBannerPic">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12   ">
+        <div class="section-title text-right pr-3">
+            <img src="~/Content/images/case-studies/DiabetTitle.png" />
+            <br /><br />
         </div>
     </div>
 </div>
@@ -121,7 +114,7 @@
 
                                     <div class="col-xl-3  ">
                                         <div class="gauge">
-                                            <canvas data-type="radial-gauge" data-width="280" data-height="280" data-units="Km/h"
+                                            <canvas data-type="radial-gauge" data-width="280" data-height="280" data-units="ُSelf Assesstment"
                                                     data-title="false" data-value="@selfAssessment" data-animate-on-init="true" data-animated-value="true"
                                                     data-min-value="0" data-max-value="120" data-major-ticks="0,20,40,60,80,100,120"
                                                     data-minor-ticks="5" data-stroke-ticks="false" data-highlights='[
@@ -147,7 +140,7 @@
                                             </span>
                                         </div>
                                         <button onclick="PriodicSelfEvaluationModal()" type="button" class="btn-SelfTest" data-toggle="modal" data-target="#exampleModal">
-                                            خودارزیابی دوره ای دیابت
+                                            خودارزیابی دیابت
                                         </button>
 
                                     </div>
@@ -199,7 +192,7 @@
 
                                     <div class="col-xl-3  ">
                                         <div class="gauge">
-                                            <canvas data-type="radial-gauge" data-width="280" data-height="280" data-units="Km/h"
+                                            <canvas data-type="radial-gauge" data-width="280" data-height="280" data-units="GFR"
                                                     data-title="false" data-value="@GFRResult" data-animate-on-init="true" data-animated-value="true"
                                                     data-min-value="0" data-max-value="120" data-major-ticks="0,20,40,60,80,100,120"
                                                     data-minor-ticks="5" data-stroke-ticks="false" data-highlights='[
@@ -240,12 +233,13 @@
                                         <div class="gauge">
                                             <canvas data-type="radial-gauge" data-width="280" data-height="280" data-units="BMI"
                                                     data-title="false" data-value="@bmiResult" data-animate-on-init="true" data-animated-value="true"
-                                                    data-min-value="0" data-max-value="60" data-major-ticks="0,20,30,40,50,60"
+                                                    data-min-value="0" data-max-value="60" data-major-ticks="0,10,20,30,40,50,60"
                                                     data-minor-ticks="5" data-stroke-ticks="false" data-highlights='[
 
 
 
-                        { "from": 0, "to": 20, "color": "rgba(0,0,255)" },
+                        { "from": 0, "to": 10, "color": "rgba(89, 190, 241)" },
+                        { "from": 10, "to": 20, "color": "rgba(89, 190, 241)" },
                         { "from": 20, "to": 30, "color": "rgba(255,255,0)" },
                         { "from": 30, "to": 40, "color": "rgba(0,255,0)" },
                         { "from": 40, "to": 50, "color": "rgba(255,120,0)" },
@@ -468,7 +462,7 @@
         <div class="col-md-2 ">
             <div class="card search-filter">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">موضوعات آموزشی</h5>
+                    <p class="card-title mb-0" style="font-weight:500 !important;">موضوعات آموزشی </p>
                 </div>
                 <div class="card-body">
                     <div class="filter-widget">
@@ -500,7 +494,7 @@
                         <div>
                             <label class="custom_check">
                                 <input type="checkbox" name="select_specialist">
-                                <span class="checkmark"></span> درمان
+                                <span class="checkmark"></span> درمان دیابت
                             </label>
                         </div>
                         <div>

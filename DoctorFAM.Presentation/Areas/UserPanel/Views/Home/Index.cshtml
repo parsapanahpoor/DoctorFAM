@@ -16,38 +16,58 @@
 
 <div class="page-body">
 
-    @if (priodicExamination != null)
-    {
-        foreach (var priodic in priodicExamination)
-        {
-            <div class="row">
-                <div class="col-lg-12 col-sm-12 col-xs-12">
-                    <div class="widget">
-                        <div class="widget-header bg-warning">
-                            <span class="widget-caption">هشدار معاینات دوره ای</span>
-                            <div class="widget-buttons">
-                                <a href="#" data-toggle="config">
-                                    <i class="fa fa-cog"></i>
-                                </a>
-                                <a href="#" data-toggle="maximize">
-                                    <i class="fa fa-expand"></i>
-                                </a>
-                                <a href="#" data-toggle="collapse">
-                                    <i class="fa fa-minus"></i>
-                                </a>
-                                <a href="#" data-toggle="dispose">
-                                    <i class="fa fa-times"></i>
-                                </a>
-                            </div><!--Widget Buttons-->
-                        </div><!--Widget Header-->
-                        <div class="widget-body bg-warning">
-                            <p>نوبت @priodic.MedicalExamination.MedicalExaminationName شما در روز @priodic.NextExaminationDate.ToStringShamsiDate() می باشد.   </p>
-                        </div><!--Widget Body-->
-                    </div><!--Widget-->
-                </div>
-            </div>
-        }
-    }
+    <div class="row">
+        <div class="col-md-6 ">
+            <div class="widget">
+                <div class="widget-header bg-info">
+                    <span class="widget-caption">هشدار معاینات دوره ای</span>
+                    <div class="widget-buttons">
+                        <a href="#" data-toggle="collapse">
+                            <i class="fa fa-minus"></i>
+                        </a>
+                        <a href="#" data-toggle="dispose">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div><!--Widget Buttons-->
+                </div><!--Widget Header-->
+
+
+                <div class="widget-body bg-Spec">
+                    @if (priodicExamination != null)
+                    {
+                        foreach (var priodic in priodicExamination)
+                        {
+                            <ul>
+                                <li>نوبت بعدی ویزیت متخصص @priodic.MedicalExamination.MedicalExaminationName شما در روز @priodic.NextExaminationDate.ToStringShamsiDate() می باشد.   </li>
+                            </ul>
+
+                        }
+                    }
+                </div><!--Widget Body-->
+
+            </div><!--Widget-->
+        </div>
+        <div class="col-md-6 ">
+            <div class="widget">
+                <div class="widget-header bg-info">
+                    <span class="widget-caption">هشدار آزمایشهای دوره ای</span>
+                    <div class="widget-buttons">
+                        <a href="#" data-toggle="collapse">
+                            <i class="fa fa-minus"></i>
+                        </a>
+                        <a href="#" data-toggle="dispose">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div><!--Widget Buttons-->
+                </div><!--Widget Header-->
+
+
+                <div class="widget-body bg-Spec">
+                </div><!--Widget Body-->
+
+            </div><!--Widget-->
+        </div>
+    </div>
 
     <div class="row text-center align-Item-center">
         <div class="col-lg-6 col-sm-6 col-xs-12">
@@ -118,13 +138,19 @@
                 </div>
             </div>
         </div>
-
         <div class="col-lg-6 col-sm-6 col-xs-12">
             <div class="row">
-
                 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview">
-                    <a asp-action="ListOfUserExamination" asp-area="" asp-controller="Diabet" class="btn btn-primary  btn-circle btn-lg"><i class="fa fa-heart"></i></a>
-                    <p class="text-center justify-content-center" style="font-size:12PX;"> معاینات دوره ای </p>
+                    <a asp-action="ListOfUserExamination" asp-area="UserPanel" asp-controller="PeriodicExamination" class="btn btn-success  btn-circle btn-lg"><i class="fas fa-comment-medical fa-2x mt-1"></i></a>
+                    <p class="text-center justify-content-center" style="font-size:12PX;"> هشدار معاینات  </p>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview">
+                    <a asp-action="ListOfUserPeriodicTest" asp-area="UserPanel" asp-controller="PeriodicTest" class="btn btn-primary  btn-circle btn-lg"><i class="fas fa-microscope fa-2x mt-1"></i></a>
+                    <p class="text-center justify-content-center" style="font-size:12PX;"> هشدار آزمایشها  </p>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview">
+                    <a asp-action="ListOfCurrentUserDrugAlerts" asp-area="UserPanel" asp-controller="DrugAlert" class="btn btn-info  btn-circle btn-lg"><i class="fas fa-capsules fa-2x mt-1"></i></a>
+                    <p class="text-center justify-content-center" style="font-size:12PX;"> هشدار داروها </p>
                 </div>
             </div>
         </div>

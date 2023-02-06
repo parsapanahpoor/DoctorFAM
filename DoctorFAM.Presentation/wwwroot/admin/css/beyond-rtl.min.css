@@ -3629,7 +3629,14 @@ a:focus, a:active {
     min-height: 100%;
     padding: 0
 }
-
+.page-content-User {
+    display: block;
+    /* margin-right: 224px;*/
+    margin-left: 0;
+    margin-top: 0;
+    min-height: 100%;
+    padding: 0
+}
 @media only screen and (max-width:880px) {
     .page-content {
         margin-right: 0

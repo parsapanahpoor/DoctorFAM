@@ -103,13 +103,14 @@
                                                 <a href="/Home/CentersIntrud">  مراکز تشخیصی و درمانی</a>
                                             </li>
                                             <li>
-                                                <a href="/Home/DoctorIntrud">  پزشکان و دندانپزشکان</a>
+                                                
+                                                <a asp-action="ListOfFamilyDoctors" asp-controller="FamilyDoctor" asp-area="">  پزشکان و دندانپزشکان</a>
                                             </li>
                                             <li>
-                                                <a href="index-3.html">  داروخانه ها</a>
+                                                <a asp-action="ListOfFamilyDoctors" asp-controller="FamilyDoctor" asp-area="">  داروخانه ها</a>
                                             </li>
                                             <li>
-                                                <a href="index-4.html">  آزمایشگاههای تشخیص طبی</a>
+                                                <a asp-action="ListOfFamilyDoctors" asp-controller="FamilyDoctor" asp-area="">  آزمایشگاههای تشخیص طبی</a>
                                             </li>
                                         </ul>
                                     </div>
@@ -120,7 +121,10 @@
                                 <li class="nav-item " data-toggle="hover">
                                     <a class="nav-link " href="/Home/ContactUs"> تماس با ما </a>
                                 </li>
+                                 <li class="nav-item " data-toggle="hover">
 
+                                    <a class="nav-link active" href="/Home/SiteGuid"> <span>راهنمای سایت</span> </a>
+                                </li>
                                 @* <li class="nav-item " data-toggle="hover">
                                     <div style="cursor:pointer;" onclick="ShowCooperationRequest()" class="nav-link "> درخواست همکاری </div>
                                     </li>*@

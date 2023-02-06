@@ -36,7 +36,7 @@
 @section Breadcrumb
 {
 <li>
-    <a href="javascript:void(0)"> @ViewData["Title"] </a>
+        <a asp-action="TurnRating" asp-controller="Home" asp-area="Doctor"> نوبت دهی </a>
 </li>
 }
 
@@ -53,8 +53,8 @@
                     <form asp-action="CancelReservationRequest" asp-controller="Appointment" asp-area="Doctor" method="post">
                         <div class="modal-body">
                             <div class="row">
-
-                                <div class="form-group col-md-6 col-sm-12">
+                                <div class="form-group col-md-3 col-sm-12"></div>
+                                <div class="form-group col-md-6 col-sm-12 text-center">
                                     <label> @Localizer["Date"] </label>
                                     <select asp-for="ReservationDateId" class="form-control">
                                         <option value=""> @Localizer["Please Select One Date"] </option>
@@ -66,18 +66,18 @@
                                             }
                                         }
                                     </select>
-                                </div>
-
-                                <div class="form-group col-md-6 col-sm-12">
+                                    <hr />
                                     <label> @Localizer["Reserve Time"] </label>
                                     <select multiple asp-for="ReservationDateTimeId" class="form-control">
                                         <option value=""> @Localizer["Please Select Yout Reservation Times"] </option>
 
                                     </select>
+                                    <hr />
+                                    <button type="submit" class="btn btn-danger">ثبت لغو نوبت</button>
                                 </div>
 
-                                <div class="form-group col-md-12">
-                                    <button type="submit" class="btn btn-success">@SharedLocalizer["Submit"]</button>
+                                <div class="form-group col-md-3 col-sm-12">
+                                   
                                 </div>
 
                             </div>

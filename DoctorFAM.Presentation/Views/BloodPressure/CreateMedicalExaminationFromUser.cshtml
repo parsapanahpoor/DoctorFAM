@@ -42,12 +42,13 @@
         <div class="col-md-12   text-center  text-align-justify M-5 P-5">
 
             <div class="col-md-3 page-breadcrumbs">
-                <i class="menu-icon fa fa-globe"></i>
-                <a asp-area="" asp-controller="Home" asp-action="Index">  <span class="menu-text"> صفحه اصلی سایت </span></a>
-                <span>/</span>
-                <a asp-area="" asp-controller="BloodPressure" asp-action="Index">بازگشت به صفحه فشارخون</a>
-            </div>
 
+                <a asp-area="" asp-controller="BloodPressure" asp-action="Index">  <span class="menu-text"> بازگشت به صفحه فشارخون </span></a>
+                <span>/</span>
+                <a asp-area="" asp-controller="BloodPressure" asp-action="ListOfUserExamination">بازگشت به صفحه قبل</a>
+
+            </div>
+            <h2 class="text-center  text-align-justify "> معاینات دوره ای</h2>
             <p class="text-center  text-align-justify">
                 لطفا اطلاعات معاینات دوره ای خود را وارد کنید :
             </p>
@@ -55,6 +56,7 @@
             <div class="col-md-3 "></div>
 
         </div>
+
 
     </div>
 
@@ -65,79 +67,52 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div class="row">
-
-                <div class="col-md-6">
-                    <div class="row">
-                        <div class="form-group col-md-12">
-                            <label asp-for="MedicalExaminationId">نلم معاینه</label>
-                            <select class="form-control" asp-for="MedicalExaminationId">
-                                <option value=""> لطفا نام معاینه ی خود را انتخاب کنید  </option>
-                                @if (medicalExamination != null && medicalExamination.Any())
+                <div class="form-group col-md-3">
+                    <label asp-for="MedicalExaminationId">عنوان معاینه</label>
+                    <select class="form-control" asp-for="MedicalExaminationId">
+                        <option value=""> لطفا نام معاینه ی خود را انتخاب کنید  </option>
+                        @if (medicalExamination != null && medicalExamination.Any())
+                        {
+                            foreach (var medical in medicalExamination)
+                            {
+                                if (Model != null && Model.MedicalExaminationId == medical.Id)
                                 {
-                                    foreach (var medical in medicalExamination)
-                                    {
-                                        if (Model != null && Model.MedicalExaminationId == medical.Id)
-                                        {
-                                            <option value="@medical.Id" selected="selected"> @medical.Title </option>
-                                        }
-                                        else
-                                        {
-                                            <option value="@medical.Id"> @medical.Title </option>
-                                        }
-                                    }
+                                    <option value="@medical.Id" selected="selected"> @medical.Title </option>
                                 }
-                            </select>
-                            <span class="text-danger" asp-validation-for="MedicalExaminationId"></span>
-                        </div>
-
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label asp-for="LastMedicalExamination" class="control-label">تاریخ انجام </label>
-                                <input asp-for="LastMedicalExamination" autocomplete="off" DatePicker="1" class="form-control" />
-                                <span asp-validation-for="LastMedicalExamination" class="text-danger"></span>
-                            </div>
-                        </div>
-
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label asp-for="NextMedicalExamination" class="control-label">تاریخ معاینه ی بعدی(درصورت وارد نکردن سیستم تاریخ بعدی را برای شما حساب میکند)</label>
-                                <input asp-for="NextMedicalExamination" autocomplete="off" DatePicker="2" class="form-control" />
-                                <span asp-validation-for="NextMedicalExamination" class="text-danger"></span>
-                            </div>
-                        </div>
-
-                    </div>
-
+                                else
+                                {
+                                    <option value="@medical.Id"> @medical.Title </option>
+                                }
+                            }
+                        }
+                    </select>
+                    <span class="text-danger" asp-validation-for="MedicalExaminationId"></span>
                 </div>
 
-                <div class="col-md-6">
-                    <div class="row">
-
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label class="control-label">نام پزشک در سامانه ی دکترفم(اختیاری)</label>
-                                <input id="autFilter" asp-for="DoctorUserName" class="form-control" placeholder="اگر پزشک مورد نطر در سامانه حضور دارد آن را انتخاب کنید." />
-                            </div>
-                        </div>
-
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label class="control-label">دسته بندی </label>
-                                <input asp-for="LabelName" class="form-control" placeholder="شما می توانید عنوانی برای دسته بندی وارد بفرمایید." />
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-
-                                <input type="submit" value="ثبت  " class="btn-Accept" />
-                            </div>
-                        </div>
-                    </div>
-
+                <div class="form-group col-md-3">
+                    <label class="control-label">نوع بیماری </label>
+                    <input asp-for="LabelName" class="form-control" placeholder="این معاینه مربوط به چه بیماریی می باشد." />
                 </div>
 
+                <div class="form-group col-md-6">
 
+                    <label class="control-label">نام پزشک در سامانه ی دکترفم(اختیاری)</label>
+                    <input id="autFilter" asp-for="DoctorUserName" class="form-control" placeholder="اگر پزشک مورد نطر در سامانه حضور دارد آن را انتخاب کنید." />
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label asp-for="LastMedicalExamination" class="control-label">تاریخ انجام </label>
+                    <input asp-for="LastMedicalExamination" autocomplete="off" DatePicker="1" class="form-control" />
+                    <span asp-validation-for="LastMedicalExamination" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-6">
+                    <label asp-for="NextMedicalExamination" class="control-label">تاریخ معاینه ی بعدی(درصورت وارد نکردن سیستم تاریخ بعدی را برای شما حساب میکند)</label>
+                    <input asp-for="NextMedicalExamination" autocomplete="off" DatePicker="2" class="form-control" />
+                    <span asp-validation-for="NextMedicalExamination" class="text-danger"></span>
+                </div>
+                <div class="text-center col-md-12">
+                    <input type="submit" value="ثبت  " class="btn-Accept" />
+                </div>
             </div>
 
         </form>

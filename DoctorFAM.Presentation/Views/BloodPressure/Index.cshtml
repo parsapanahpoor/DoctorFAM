@@ -5,6 +5,8 @@
     var bmiResult = ViewBag.bmiResult != null ? (int)ViewBag.bmiResult : 0;
     var GFRResult = ViewBag.gfrResult != null ? (decimal)ViewBag.gfrResult : 0;
     var bloodPressureStatus = ViewBag.bloodPressureStatus != null ? (int)ViewBag.bloodPressureStatus : 0;
+    var ascvdPredic = ViewBag.ascvdPredicResult != null ? (decimal)ViewBag.ascvdPredicResult : 0;
+    var ascvdStatus = ViewBag.ascvdStatusResult != null ? (int)ViewBag.ascvdStatusResult : 0;
 }
 
 @section Scripts{
@@ -54,21 +56,14 @@
     </script>
 }
 
-<div class="m-2  pr-3">
-    <div class="row text-center ">
-        <div class="col-lg-2 col-md-2 col-sm-12 justify-content-center text-center ">
-            <div class="section-title mb-0">
-                @* <h2 class="title">  فشار خون </h2>*@
-                <img src="~/Content/images/case-studies/BloodPressureTitle.png" />
-            </div>
-        </div>
-        <div class="col-lg-10 col-md-10 col-sm-12 justify-content-center text-center ">
-            <img src="~/Content/images/case-studies/Blod.jpg" style="width:100% !important ;height:65px;" />
-
+<div class="row text-center PageBannerPicBloodPressure">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12   ">
+        <div class="section-title text-right pr-4">
+            <img src="~/Content/images/case-studies/BloodPressureTitle.png" />
+            <br /><br />
         </div>
     </div>
 </div>
-
 <div class="m-2 pl-3 pr-3">
     <div class="row text-center">
 
@@ -154,15 +149,18 @@
 
 
 
+
                                     <div class="col-xl-3  ">
                                         <div class="gauge">
                                             <canvas data-type="radial-gauge" data-width="280" data-height="280" data-units="ASCVD"
-                                                    data-title="false" data-value="0" data-animate-on-init="true" data-animated-value="true"
-                                                    data-min-value="0" data-max-value="120" data-major-ticks="0,20,40,60,80,100,120"
+                                                    data-title="false" data-value="@ascvdPredic" data-animate-on-init="true" data-animated-value="true"
+                                                    data-min-value="0" data-max-value="30" data-major-ticks="0,5,7.5,15,20,30"
                                                     data-minor-ticks="5" data-stroke-ticks="false" data-highlights='[
-                        { "from": 0, "to": 40, "color": "rgba(0,255,0)" },
-                        { "from": 40, "to": 80, "color": "rgba(255,255,0)" },
-                        { "from": 80, "to": 120, "color": "rgba(255,30,0)" }
+                        { "from": 0, "to": 5, "color": "rgba(0,255,0)" },
+                        { "from": 5, "to": 7.5, "color": "rgba(0,255,0)" },
+                        { "from": 7.5, "to": 15, "color": "rgba(255,255,0)" },
+                        { "from": 15, "to": 20, "color": "rgba(255,255,0)" },
+                        { "from": 20, "to": 30, "color": "rgba(255,255,0)" }
 
                     ]' data-color-plate="transparent" data-color-major-ticks="black" data-color-minor-ticks="0d0d0d"
                                                     data-color-title="#fff" data-color-units="#000" data-color-numbers="#000"
@@ -179,9 +177,8 @@
                                             </span>
                                         </div>
 
-                                        <button class="btn-SelfTest">
+                                        <button onclick="ShowASCVDModal()" type="button" class="btn-SelfTest" data-toggle="modal" data-target="#exampleModal">
                                             محاسبه ASCVD
-                                            <span style="font-size: 12px; ">(به زودی)</span>
                                         </button>
 
                                     </div>
@@ -236,12 +233,13 @@
                                         <div class="gauge">
                                             <canvas data-type="radial-gauge" data-width="280" data-height="280" data-units="BMI"
                                                     data-title="false" data-value="@bmiResult" data-animate-on-init="true" data-animated-value="true"
-                                                    data-min-value="0" data-max-value="60" data-major-ticks="0,20,30,40,50,60"
+                                                    data-min-value="0" data-max-value="60" data-major-ticks="0,10,20,30,40,50,60"
                                                     data-minor-ticks="5" data-stroke-ticks="false" data-highlights='[
 
 
 
-                        { "from": 0, "to": 20, "color": "rgba(0,0,255)" },
+                        { "from": 0, "to": 10, "color": "rgba(89, 190, 241)" },
+                        { "from": 10, "to": 20, "color": "rgba(89, 190, 241)" },
                         { "from": 20, "to": 30, "color": "rgba(255,255,0)" },
                         { "from": 30, "to": 40, "color": "rgba(0,255,0)" },
                         { "from": 40, "to": 50, "color": "rgba(255,120,0)" },
@@ -264,7 +262,6 @@
                                             محاسبه BMI
                                         </button>
                                     </div>
-
 
 
                                 </div>
@@ -472,77 +469,67 @@
                         <div>
                             <label class="custom_check">
                                 <input type="checkbox" name="select_specialist" checked>
-                                <span class="checkmark"></span> بیماری فشار خون
+                                <span class="checkmark"></span> بیماری فشارخون
                             </label>
                         </div>
                         <div>
                             <label class="custom_check">
                                 <input type="checkbox" name="select_specialist" checked>
-                                <span class="checkmark"></span> پره فشار خون
+                                <span class="checkmark"></span> پیش فشارخون
                             </label>
                         </div>
                         <div>
                             <label class="custom_check">
                                 <input type="checkbox" name="select_specialist">
-                                <span class="checkmark"></span> فشار خون بارداری
+                                <span class="checkmark"></span> فشارخون بارداری
                             </label>
                         </div>
                         <div>
                             <label class="custom_check">
                                 <input type="checkbox" name="select_specialist">
-                                <span class="checkmark"></span> عوارض فشار خون
+                                <span class="checkmark"></span> عوارض فشارخون
                             </label>
                         </div>
                         <div>
                             <label class="custom_check">
                                 <input type="checkbox" name="select_specialist">
-                                <span class="checkmark"></span> درمان
+                                <span class="checkmark"></span> درمان فشارخون
                             </label>
                         </div>
                         <div>
                             <label class="custom_check">
                                 <input type="checkbox" name="select_specialist">
-                                <span class="checkmark"></span> تغذیه و فشار خون
+                                <span class="checkmark"></span> تغذیه و فشارخون
                             </label>
                         </div>
                         <div>
                             <label class="custom_check">
                                 <input type="checkbox" name="select_specialist">
-                                <span class="checkmark"></span> فعالیت بدنی و فشار خون
+                                <span class="checkmark"></span> ورزش و فشارخون
+                            </label>
+                        </div>
+
+                        <div>
+                            <label class="custom_check">
+                                <input type="checkbox" name="select_specialist">
+                                <span class="checkmark"></span> رمضان و فشارخون
                             </label>
                         </div>
                         <div>
                             <label class="custom_check">
                                 <input type="checkbox" name="select_specialist">
-                                <span class="checkmark"></span> مسافرت و فشار خون
+                                <span class="checkmark"></span> سالمندی و فشارخون
                             </label>
                         </div>
                         <div>
                             <label class="custom_check">
                                 <input type="checkbox" name="select_specialist">
-                                <span class="checkmark"></span> رمضان و فشار خون
+                                <span class="checkmark"></span> بارداری و فشارخون
                             </label>
                         </div>
-                        <div>
-                            <label class="custom_check">
-                                <input type="checkbox" name="select_specialist">
-                                <span class="checkmark"></span> سالمندی و فشار خون
-                            </label>
-                        </div>
-                        <div>
-                            <label class="custom_check">
-                                <input type="checkbox" name="select_specialist">
-                                <span class="checkmark"></span> بارداری و فشار خون
-                            </label>
-                        </div>
-                        <div>
-                            <label class="custom_check">
-                                <input type="checkbox" name="select_specialist">
-                                <span class="checkmark"></span> پوشاک و فشار خون
-                            </label>
-                        </div>
+
                     </div>
-                    <div class="btn-search">
+                    <div class="btn-search mt-2">
                         <button type="button" class=" btn-Accept w-100">جستجو</button>
                     </div>
                 </div>

@@ -38,7 +38,7 @@
                 });
 
             $("#btn1").click(function () {
-                $("#WantsAppend").append("<br/><div class='col-md-12'><div class='form-group'><span style='color:red;'>* </span><label class='control-label'> ساعت مصرف دارو(در بازه ی 24 ساعته) </label><input name='Hour' class='form-control' type='number' min ='1' max='24'></div> </div>");
+                $("#WantsAppend").append("<br/><div class='col-md-3'><div class='form-group'><span style='color:red;'>* </span><label class='control-label'> ساعت مصرف دارو(در بازه ی 24 ساعته) </label><input name='Hour' class='form-control' type='number' min ='1' max='24'></div> </div>");
             });
 
         });
@@ -88,7 +88,7 @@
                 </div>
                  <div class="col-md-3">
                     <div class="form-group">
-                        <label asp-for="LabelName" class="control-label">دسته بندی دارو</label>
+                        <label asp-for="LabelName" class="control-label">بیماری مرتبط</label>
                         <input  asp-for="LabelName" class="form-control" />
                         <span asp-validation-for="LabelName" class="text-danger"></span>
                     </div>
@@ -97,12 +97,12 @@
                 <div class="col-md-3" id="Houre-div" style="padding-top:20px;">
                     <div class="form-group">
                         <div id="btn1" class="btn-AcceptXX">
-                            افزودن ساعت
+                            تعیین ساعت مصرف دارو
                         </div>
                     </div>
                 </div>
 
-                <div class="col-md-12 d-none" id="Datetime-div">
+                <div class="col-md-6 d-none" id="Datetime-div">
                     <div class="form-group">
                         <span style="color:red;">*</span>
                         <label class="control-label">  تاریخ مصرف بعدی دارو(دقت فرمایید نوبت مصرف بعدی دارو وارد گردد)</label>
@@ -110,7 +110,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-12 row" id="WantsAppend">
+                <div class="col-md-12" id="WantsAppend">
                 </div>
             </div>
             <div class="row">

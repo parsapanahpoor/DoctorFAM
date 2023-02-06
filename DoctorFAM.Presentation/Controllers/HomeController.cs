@@ -68,6 +68,15 @@ namespace DoctorFAM.Web.Controllers
 
         #endregion
 
+        #region Site Guid
+
+        public IActionResult SiteGuid()
+        {
+            return View();
+        }
+
+        #endregion
+
         #region Terms and Conditions
 
         public IActionResult TermsConditions()
