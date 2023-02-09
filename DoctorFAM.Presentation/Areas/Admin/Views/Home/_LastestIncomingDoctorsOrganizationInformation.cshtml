@@ -1,0 +1,112 @@
+﻿@model List<DoctorFAM.Domain.Entities.Organization.Organization>
+
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.Extensions
+
+<div class="col-lg-6 col-md-6 col-xl-12 col-sm-12 col-xs-12">
+
+    <div class="widget">
+        <div class="widget-header">
+            <i class="widget-icon fa fa-comment"></i>
+            <span class="widget-caption"> لیست پزشکان در انتظار تایید    </span>
+            <div class="widget-buttons">
+                <div class="row" style="margin-right: -84px;">
+
+                    @if (Model != null && Model.Any())
+                    {
+                        <a id="ShowUserCommentInAdminPanel" asp-action="ListOfDoctorsInfo" asp-controller="Doctors" asp-area="Admin" class="badge badge-info">نمایش همه</a>
+                    }
+
+                    <a id="ShowUserCommentInAdminPanelMinus" href="#" data-toggle="collapse">
+                        <i class="fa fa-minus"></i>
+                    </a>
+
+                </div>
+            </div><!--Widget Buttons-->
+        </div><!--Widget Header-->
+        <div class="widget-body" style="max-height: 230px !important; overflow-y: scroll; height:auto;">
+            @if (Model != null && Model.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered tc vm">
+                        <thead class="tc vm">
+                            <tr class="tc vm">
+                                <th class="tc vm">
+                                    اطلاعات پزشک
+                                </th>
+                                <th class="tc vm">
+                                    اطلاعات تماس پزشک
+                                </th>
+                                <th class="tc vm">
+                                    تاریخ درج
+                                </th>
+                                <th class="tc vm">
+                                    امکانات
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="tc vm">
+                            @foreach (var doctor in Model)
+                            {
+                                <tr class="tc vm" remove-ajax-item="@doctor.Id">
+                                    <td class="vm">
+                                        <div class="flex-style-center">
+                                            <img src="@doctor.User.GetUserAvatar()" class="avatar-style" style="border-radius:50px;" />
+                                            <div class="mr-10px">
+                                                <span> @doctor.User.Username </span>
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <td class="tc vm">
+                                        <p>
+                                            ایمیل:
+                                            @if (doctor.User.Email == null)
+                                            {
+                                                <span class="mr-8px label label-orange">وارد نشده است. </span>
+                                            }
+                                            else
+                                            {
+                                                @doctor.User.Email
+                                            }
+                                        </p>
+                                        @if (!string.IsNullOrEmpty(doctor.User.Mobile))
+                                        {
+                                            <hr class="margin-7" />
+                                            <p>موبایل: @doctor.User.Mobile</p>
+                                        }
+                                    </td>
+
+                                    <td class="tc vm">
+                                        <div class="tc vm">
+                                            <p id="ArticleTitle">@doctor.CreateDate.ToShamsi()</p>
+                                        </div>
+                                    </td>
+
+                                    <td class="tc vm">
+
+                                        <a asp-action="DoctorsInfoDetail" asp-controller="Doctors" asp-area="Admin" asp-route-userId="@doctor.OwnerId" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+
+
+                <!--Widget Body-->
+            }
+            else
+            {
+                <partial name="_AdminNotFoundPartial" />
+            }
+
+
+        </div>
+    </div>
+</div>
+
+
+

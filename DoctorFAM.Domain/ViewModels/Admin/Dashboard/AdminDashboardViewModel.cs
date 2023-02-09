@@ -2,6 +2,7 @@
 using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.CooperationRequest;
 using DoctorFAM.Domain.Entities.DoctorReservation;
+using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.ViewModels.Admin.IncomingExcelFile;
 using System;
 using System.Collections.Generic;
@@ -44,6 +45,8 @@ namespace DoctorFAM.Domain.ViewModels.Admin.Dashboard
         public List<ListOfArrivalExcelFiles> LatestRequestForUploadExcelFile{ get; set; }
 
         public List<DoctorFAM.Domain.Entities.Advertisement.CustomerAdvertisement> LastestCustomerAdvertisements { get; set; }
+
+        public List<Organization> ListOfWaitingForAcceptInformationsDoctors { get; set; }
 
         #endregion
     }
