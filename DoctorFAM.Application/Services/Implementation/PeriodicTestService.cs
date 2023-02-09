@@ -198,20 +198,20 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #region Add Method 
 
-            await _periodicTestRepository.AddUserPeriodicTestDromUser(entity) ;
+            await _periodicTestRepository.AddUserPeriodicTestDromUser(entity);
 
             #endregion
 
-            return  CreatePeridicTestResult.Success;
+            return CreatePeridicTestResult.Success;
         }
 
         //Delete User Periodic Selected Test
-        public async Task<bool> DeleteUserPeriodicSelectedTest(ulong periodicId , ulong userId)
+        public async Task<bool> DeleteUserPeriodicSelectedTest(ulong periodicId, ulong userId)
         {
             #region Get User Periodic Test
 
-            var test = await _periodicTestRepository.GetUserPeriodicTestByUserIdAndPeriodicId( periodicId, userId );
-            if(test == null) return false;
+            var test = await _periodicTestRepository.GetUserPeriodicTestByUserIdAndPeriodicId(periodicId, userId);
+            if (test == null) return false;
 
             #endregion
 
@@ -224,7 +224,17 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #endregion
 
-            return true; 
+            return true;
+        }
+
+        #endregion
+
+        #region User Panel 
+
+        //Check That Current User Has Any Priodic Test After Today
+        public async Task<List<UserPeriodicTest>?> CheckThatCurrentUserHasAnyPriodicTestAfterToday(ulong userId)
+        {
+            return await _periodicTestRepository.CheckThatCurrentUserHasAnyPriodicTestAfterToday(userId);
         }
 
         #endregion

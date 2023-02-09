@@ -12,11 +12,13 @@ namespace DoctorFAM.Web.Areas.UserPanel.Controllers
 
         private readonly IDashboardsService _dashboardService;
         private readonly IMedicalExaminationService _medicalExamination;
+        private readonly IPeriodicTestService _periodicTestService;
 
-        public HomeController(IDashboardsService dashboardService , IMedicalExaminationService medicalExamination)
+        public HomeController(IDashboardsService dashboardService , IMedicalExaminationService medicalExamination, IPeriodicTestService periodicTestService)
         {
             _dashboardService = dashboardService;
-            _medicalExamination = medicalExamination; 
+            _medicalExamination = medicalExamination;
+            _periodicTestService = periodicTestService;
         }
 
         #endregion
@@ -27,7 +29,9 @@ namespace DoctorFAM.Web.Areas.UserPanel.Controllers
         {
             #region Model's Data 
 
-            ViewBag.UserPriodicExaminations = await _medicalExamination.CheckThatCurrentUserHasAnyPriodicExaminationInThisWeek(User.GetUserId());
+            ViewBag.UserPriodicExaminations = await _medicalExamination.CheckThatCurrentUserHasAnyPriodicExaminationAfterToday(User.GetUserId());
+
+            ViewBag.PriodicTest = await _periodicTestService.CheckThatCurrentUserHasAnyPriodicTestAfterToday(User.GetUserId());
 
             #endregion
 
@@ -62,6 +66,5 @@ namespace DoctorFAM.Web.Areas.UserPanel.Controllers
         }
 
         #endregion
-
     }
 }

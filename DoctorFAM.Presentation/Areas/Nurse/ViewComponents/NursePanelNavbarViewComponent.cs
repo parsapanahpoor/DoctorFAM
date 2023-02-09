@@ -26,29 +26,33 @@ namespace DoctorFAM.Web.Areas.Nurse.ViewComponents
 
             if (User.Identity.IsAuthenticated)
             {
-                var userRole = await _permissionService.GetUserRole(User.GetUserId());
+                var userRole = await _permissionService.GetUserRoleses(User.GetUserId());
 
-                if (userRole == GetUserRoles.Admin) ViewBag.Admin = true;
+                if (userRole == null) ViewBag.User = true;
 
-                if (userRole == GetUserRoles.Doctor) ViewBag.Doctor = true;
+                else
+                {
+                    if (userRole.Contains("Admin")) ViewBag.Admin = true;
 
-                if (userRole == GetUserRoles.Supporter) ViewBag.Supporter = true;
+                    if (userRole.Contains("Doctor")) ViewBag.Doctor = true;
 
-                if (userRole == GetUserRoles.Seller) ViewBag.Seller = true;
+                    if (userRole.Contains("Support")) ViewBag.Supporter = true;
 
-                if (userRole == GetUserRoles.User) ViewBag.User = true;
+                    if (userRole.Contains("Seller")) ViewBag.Seller = true;
 
-                if (userRole == GetUserRoles.Pharmacy) ViewBag.Pharmacy = true;
+                    if (userRole.Contains("Pharmacy")) ViewBag.Pharmacy = true;
 
-                if (userRole == GetUserRoles.Nurse) ViewBag.Nurse = true;
+                    if (userRole.Contains("Nurse")) ViewBag.Nurse = true;
 
-                if (userRole == GetUserRoles.Consultant) ViewBag.Consultant = true;
+                    if (userRole.Contains("Consultant")) ViewBag.Consultant = true;
 
-                if (userRole == GetUserRoles.DoctorOfficeEmployee) ViewBag.DoctorOfficeEmployee = true;
+                    if (userRole.Contains("DoctorOfficeEmployee")) ViewBag.DoctorOfficeEmployee = true;
 
-                if (userRole == GetUserRoles.LaboratoryOfficeEmployee) ViewBag.LaboratoryOfficeEmployee = true;
+                    if (userRole.Contains("LaboratoryOfficeEmployee")) ViewBag.LaboratoryOfficeEmployee = true;
 
-                if (userRole == GetUserRoles.Laboratory) ViewBag.Labratory = true;
+                    if (userRole.Contains("Labratory")) ViewBag.Labratory = true;
+                }
+
             }
 
             #endregion

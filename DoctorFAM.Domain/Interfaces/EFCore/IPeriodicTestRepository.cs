@@ -48,5 +48,12 @@ namespace DoctorFAM.Domain.Interfaces.EFCore
         Task UpdateUserPeriodicTest(UserPeriodicTest test);
 
         #endregion
+
+        #region User Side 
+
+        //Check That Current User Has Any Priodic Test After Today
+        Task<List<UserPeriodicTest>?> CheckThatCurrentUserHasAnyPriodicTestAfterToday(ulong userId);
+
+        #endregion
     }
 }

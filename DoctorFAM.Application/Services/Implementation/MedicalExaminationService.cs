@@ -304,6 +304,12 @@ namespace DoctorFAM.Application.Services.Implementation
 
         #region User Panel
 
+        //Check That Current User Has Any Priodic Examination After Today
+        public async Task<List<PriodicPatientsExamination>?> CheckThatCurrentUserHasAnyPriodicExaminationAfterToday(ulong userId)
+        {
+            return await _medicalExamination.CheckThatCurrentUserHasAnyPriodicExaminationAfterToday(userId);
+        }
+
         #endregion
     }
 }

@@ -100,328 +100,215 @@
                             <!--Login Area Dropdown-->
                             <ul class="pull-right dropdown-menu dropdown-arrow dropdown-login-area">
 
-                                        @if (ViewBag.Admin == true)
-                                        {
-                                            <li>
-                                                <a asp-action="Index" asp-area="UserPanel" asp-controller="Home">
-                                                    <div class="clearfix">
-                                                        <span class="pull-right">ورود به صفحه شخصی</span>
-                                                        <span class="pull-left">></span>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                            <li>
+                                @if (ViewBag.Admin == true)
+                                {
+                                    <li>
+                                        <a asp-action="Index" asp-area="UserPanel" asp-controller="Home">
+                                            <div class="clearfix">
+                                                <span class="pull-right">ورود به صفحه شخصی</span>
+                                                <span class="pull-left">></span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
 
-                                                <a asp-action="Index" asp-area="Doctor" asp-controller="Home">
-                                                    <div class="clearfix">
-                                                        <span class="pull-right">پنل پزشک</span>
-                                                        <span class="pull-left">></span>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                            <li>
+                                        <a asp-action="Index" asp-area="Doctor" asp-controller="Home">
+                                            <div class="clearfix">
+                                                <span class="pull-right">پنل پزشک</span>
+                                                <span class="pull-left">></span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
 
-                                                <a asp-action="Index" asp-area="Nurse" asp-controller="Home">
-                                                    <div class="clearfix">
-                                                        <span class="pull-right">پنل پرستار</span>
-                                                        <span class="pull-left">></span>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                            <li>
+                                        <a asp-action="Index" asp-area="Nurse" asp-controller="Home">
+                                            <div class="clearfix">
+                                                <span class="pull-right">پنل پرستار</span>
+                                                <span class="pull-left">></span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
 
-                                                <a asp-action="Index" asp-area="Laboratory" asp-controller="Home">
-                                                    <div class="clearfix">
-                                                        <span class="pull-right">پنل آزمایشگاه</span>
-                                                        <span class="pull-left">></span>
-                                                    </div>
+                                        <a asp-action="Index" asp-area="Laboratory" asp-controller="Home">
+                                            <div class="clearfix">
+                                                <span class="pull-right">پنل آزمایشگاه</span>
+                                                <span class="pull-left">></span>
+                                            </div>
 
-                                                </a>
-                                            </li>
-                                            <li>
+                                        </a>
+                                    </li>
+                                    <li>
 
-                                                <a asp-action="Index" asp-area="Pharmacy" asp-controller="Home">
-                                                    <div class="clearfix">
-                                                        <span class="pull-right">پنل داروخانه</span>
-                                                        <span class="pull-left">></span>
+                                        <a asp-action="Index" asp-area="Pharmacy" asp-controller="Home">
+                                            <div class="clearfix">
+                                                <span class="pull-right">پنل داروخانه</span>
+                                                <span class="pull-left">></span>
 
-                                                    </div>
-                                                </a>
-                                            </li>
-                                            <li>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
 
-                                                <a asp-action="Index" asp-area="Consultant" asp-controller="Home">
-                                                    <div class="clearfix">
-                                                        <span class="pull-right">پنل مشاور</span>
-                                                        <span class="pull-left">></span>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                            <li>
+                                        <a asp-action="Index" asp-area="Consultant" asp-controller="Home">
+                                            <div class="clearfix">
+                                                <span class="pull-right">پنل مشاور</span>
+                                                <span class="pull-left">></span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
 
-                                                <a asp-action="Index" asp-area="Market" asp-controller="Home">
-                                                    <div class="clearfix">
-                                                        <span class="pull-right">پنل فروشنده</span>
-                                                        <span class="pull-left">></span>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                            <li>
+                                        <a asp-action="Index" asp-area="Market" asp-controller="Home">
+                                            <div class="clearfix">
+                                                <span class="pull-right">پنل فروشنده</span>
+                                                <span class="pull-left">></span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
 
-                                                <a asp-action="Index" asp-area="Supporter" asp-controller="Home">
-                                                    <div class="clearfix">
-                                                        <span class="pull-right">پنل پشتیبان</span>
-                                                        <span class="pull-left">></span>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                            <li>
+                                        <a asp-action="Index" asp-area="Supporter" asp-controller="Home">
+                                            <div class="clearfix">
+                                                <span class="pull-right">پنل پشتیبان</span>
+                                                <span class="pull-left">></span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
 
-                                                <a asp-action="Index" asp-area="Admin" asp-controller="Home">
-                                                    <div class="clearfix">
-                                                        <span class="pull-right">پنل ادمین</span>
-                                                        <span class="pull-left">></span>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                            
-                                        }
+                                        <a asp-action="Index" asp-area="Admin" asp-controller="Home">
+                                            <div class="clearfix">
+                                                <span class="pull-right">پنل ادمین</span>
+                                                <span class="pull-left">></span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                }
 
-                                        @if (ViewBag.Doctor == true)
-                                        {
-                                            <li>
-                                                <a asp-action="Index" asp-area="UserPanel" asp-controller="Home">
-                                                    <div class="clearfix">
-                                                        <span class="pull-right">ورود به صفحه شخصی</span>
-                                                        <span class="pull-left">></span>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                            <li>
+                                else
+                                {
+                                    <li>
+                                        <a asp-action="Index" asp-area="UserPanel" asp-controller="Home">
+                                            <div class="clearfix">
+                                                <span class="pull-right">ورود به صفحه شخصی</span>
+                                                <span class="pull-left">></span>
+                                            </div>
+                                        </a>
+                                    </li>
 
-                                                <a asp-action="Index" asp-area="Doctor" asp-controller="Home">
-                                                    <div class="clearfix">
-                                                        <span class="pull-right">پنل پزشک</span>
-                                                        <span class="pull-left">></span>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                           
-                                        }
+                                    @if (ViewBag.Doctor == true)
+                                    {
+                                        <li>
 
-                                        @if (ViewBag.Labratory == true)
-                                        {
-                                            <li>
-                                                <a asp-action="Index" asp-area="UserPanel" asp-controller="Home">
-                                                    <div class="clearfix">
-                                                        <span class="pull-right">ورود به صفحه شخصی</span>
-                                                        <span class="pull-left">></span>
-                                                    </div>
-                                                </a>
-                                            </li>
+                                            <a asp-action="Index" asp-area="Doctor" asp-controller="Home">
+                                                <div class="clearfix">
+                                                    <span class="pull-right">پنل پزشک</span>
+                                                    <span class="pull-left">></span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    }
+                                    @if (ViewBag.Labratory == true)
+                                    {
+                                        <li>
 
-                                            <li>
+                                            <a asp-action="Index" asp-area="Laboratory" asp-controller="Home">
+                                                <div class="clearfix">
+                                                    <span class="pull-right">پنل آزمایشگاه</span>
+                                                    <span class="pull-left">></span>
+                                                </div>
 
-                                                <a asp-action="Index" asp-area="Laboratory" asp-controller="Home">
-                                                    <div class="clearfix">
-                                                        <span class="pull-right">پنل آزمایشگاه</span>
-                                                        <span class="pull-left">></span>
-                                                    </div>
+                                            </a>
+                                        </li>
+                                    }
+                                    @if (ViewBag.LaboratoryOfficeEmployee == true)
+                                    {
+                                        <li>
 
-                                                </a>
-                                            </li>
+                                            <a asp-action="Index" asp-area="Laboratory" asp-controller="Home">
+                                                <div class="clearfix">
+                                                    <span class="pull-right">پنل آزمایشگاه</span>
+                                                    <span class="pull-left">></span>
+                                                </div>
 
-                                           
-                                        }
+                                            </a>
+                                        </li>
+                                    }
+                                    @if (ViewBag.Pharmacy == true)
+                                    {
+                                        <li>
 
-                                        @if (ViewBag.LaboratoryOfficeEmployee == true)
-                                        {
-                                            <li>
-                                                <a asp-action="Index" asp-area="UserPanel" asp-controller="Home">
-                                                    <div class="clearfix">
-                                                        <span class="pull-right">ورود به صفحه شخصی</span>
-                                                        <span class="pull-left">></span>
-                                                    </div>
-                                                </a>
-                                            </li>
+                                            <a asp-action="Index" asp-area="Pharmacy" asp-controller="Home">
+                                                <div class="clearfix">
+                                                    <span class="pull-right">پنل داروخانه</span>
+                                                    <span class="pull-left">></span>
 
-                                            <li>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    }
+                                    @if (ViewBag.Seller == true)
+                                    {
+                                        <li>
 
-                                                <a asp-action="Index" asp-area="Laboratory" asp-controller="Home">
-                                                    <div class="clearfix">
-                                                        <span class="pull-right">پنل آزمایشگاه</span>
-                                                        <span class="pull-left">></span>
-                                                    </div>
+                                            <a asp-action="Index" asp-area="Market" asp-controller="Home">
+                                                <div class="clearfix">
+                                                    <span class="pull-right">پنل فروشنده</span>
+                                                    <span class="pull-left">></span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    }
+                                    @if (ViewBag.DoctorOfficeEmployee == true)
+                                    {
+                                        <li>
 
-                                                </a>
-                                            </li>
+                                            <a asp-action="Index" asp-area="Doctor" asp-controller="Home">
+                                                <div class="clearfix">
+                                                    <span class="pull-right">پنل پزشک</span>
+                                                    <span class="pull-left">></span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    }
+                                    @if (ViewBag.Supporter == true)
+                                    {
+                                        <li>
 
-                                          
-                                        }
+                                            <a asp-action="Index" asp-area="Supporter" asp-controller="Home">
+                                                <div class="clearfix">
+                                                    <span class="pull-right">پنل پشتیبان</span>
+                                                    <span class="pull-left">></span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    }
+                                    @if (ViewBag.Nurse == true)
+                                    {
+                                        <li>
 
-                                        @if (ViewBag.Pharmacy == true)
-                                        {
-                                            <li>
-                                                <a asp-action="Index" asp-area="UserPanel" asp-controller="Home">
-                                                    <div class="clearfix">
-                                                        <span class="pull-right">ورود به صفحه شخصی</span>
-                                                        <span class="pull-left">></span>
-                                                    </div>
-                                                </a>
-                                            </li>
+                                            <a asp-action="Index" asp-area="Nurse" asp-controller="Home">
+                                                <div class="clearfix">
+                                                    <span class="pull-right">پنل پرستار</span>
+                                                    <span class="pull-left">></span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    }
+                                    @if (ViewBag.Consultant == true)
+                                    {
+                                        <li>
 
-                                            <li>
-
-                                                <a asp-action="Index" asp-area="Pharmacy" asp-controller="Home">
-                                                    <div class="clearfix">
-                                                        <span class="pull-right">پنل داروخانه</span>
-                                                        <span class="pull-left">></span>
-
-                                                    </div>
-                                                </a>
-                                            </li>
-
-
-                                            <li>
-
-                                                <a asp-action="Logout" asp-controller="Account">
-                                                    <div class="clearfix">
-                                                        <span class="pull-right">خروج</span>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                        }
-
-                                        @if (ViewBag.Seller == true)
-                                        {
-                                            <li>
-                                                <a asp-action="Index" asp-area="UserPanel" asp-controller="Home">
-                                                    <div class="clearfix">
-                                                        <span class="pull-right">ورود به صفحه شخصی</span>
-                                                        <span class="pull-left">></span>
-                                                    </div>
-                                                </a>
-                                            </li>
-
-                                            <li>
-
-                                                <a asp-action="Index" asp-area="Market" asp-controller="Home">
-                                                    <div class="clearfix">
-                                                        <span class="pull-right">پنل فروشنده</span>
-                                                        <span class="pull-left">></span>
-                                                    </div>
-                                                </a>
-                                            </li>
-
-                                           
-                                        }
-
-                                        @if (ViewBag.DoctorOfficeEmployee == true)
-                                        {
-                                            <li>
-                                                <a asp-action="Index" asp-area="UserPanel" asp-controller="Home">
-                                                    <div class="clearfix">
-                                                        <span class="pull-right">ورود به صفحه شخصی</span>
-                                                        <span class="pull-left">></span>
-                                                    </div>
-                                                </a>
-                                            </li>
-
-                                            <li>
-
-                                                <a asp-action="Index" asp-area="Doctor" asp-controller="Home">
-                                                    <div class="clearfix">
-                                                        <span class="pull-right">پنل پزشک</span>
-                                                        <span class="pull-left">></span>
-                                                    </div>
-                                                </a>
-                                            </li>
-
-                                        }
-
-                                        @if (ViewBag.Supporter == true)
-                                        {
-                                            <li>
-                                                <a asp-action="Index" asp-area="UserPanel" asp-controller="Home">
-                                                    <div class="clearfix">
-                                                        <span class="pull-right">ورود به صفحه شخصی</span>
-                                                        <span class="pull-left">></span>
-                                                    </div>
-                                                </a>
-                                            </li>
-
-                                            <li>
-
-                                                <a asp-action="Index" asp-area="Supporter" asp-controller="Home">
-                                                    <div class="clearfix">
-                                                        <span class="pull-right">پنل پشتیبان</span>
-                                                        <span class="pull-left">></span>
-                                                    </div>
-                                                </a>
-                                            </li>
-
-                                        }
-
-                                        @if (ViewBag.Nurse == true)
-                                        {
-                                            <li>
-                                                <a asp-action="Index" asp-area="UserPanel" asp-controller="Home">
-                                                    <div class="clearfix">
-                                                        <span class="pull-right">ورود به صفحه شخصی</span>
-                                                        <span class="pull-left">></span>
-                                                    </div>
-                                                </a>
-                                            </li>
-
-                                            <li>
-
-                                                <a asp-action="Index" asp-area="Nurse" asp-controller="Home">
-                                                    <div class="clearfix">
-                                                        <span class="pull-right">پنل پرستار</span>
-                                                        <span class="pull-left">></span>
-                                                    </div>
-                                                </a>
-                                            </li>
-
-                                        }
-
-                                        @if (ViewBag.Consultant == true)
-                                        {
-                                            <li>
-                                                <a asp-action="Index" asp-area="UserPanel" asp-controller="Home">
-                                                    <div class="clearfix">
-                                                        <span class="pull-right">ورود به صفحه شخصی</span>
-                                                        <span class="pull-left">></span>
-                                                    </div>
-                                                </a>
-                                            </li>
-
-                                            <li>
-
-                                                <a asp-action="Index" asp-area="Consultant" asp-controller="Home">
-                                                    <div class="clearfix">
-                                                        <span class="pull-right">پنل مشاور</span>
-                                                        <span class="pull-left">></span>
-                                                    </div>
-                                                </a>
-                                            </li>
-
-                                        }
-
-                                        @if (ViewBag.User == true)
-                                        {
-                                            <li>
-                                                <a asp-action="Index" asp-area="UserPanel" asp-controller="Home">
-                                                    <div class="clearfix">
-                                                        <span class="pull-right">ورود به صفحه شخصی</span>
-                                                        <span class="pull-left">></span>
-                                                    </div>
-                                                </a>
-                                            </li>
-
-                                           
-                                        }
-
+                                            <a asp-action="Index" asp-area="Consultant" asp-controller="Home">
+                                                <div class="clearfix">
+                                                    <span class="pull-right">پنل مشاور</span>
+                                                    <span class="pull-left">></span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    }
+                                }
                                    
                                 
                                 <li>

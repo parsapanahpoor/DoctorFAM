@@ -3,6 +3,7 @@ using DoctorFAM.Data.Migrations;
 using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Common;
 using DoctorFAM.Domain.Entities.PeriodicTest;
+using DoctorFAM.Domain.Entities.PriodicExamination;
 using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.Common;
 using Microsoft.EntityFrameworkCore;
@@ -113,6 +114,19 @@ namespace DoctorFAM.Data.Repository
         {
             _context.UserPeriodicTests.Update(test);
             await _context.SaveChangesAsync();
+        }
+
+        #endregion
+
+        #region User Panel
+
+        //Check That Current User Has Any Priodic Test After Today
+        public async Task<List<UserPeriodicTest>?> CheckThatCurrentUserHasAnyPriodicTestAfterToday(ulong userId)
+        {
+            return await _context.UserPeriodicTests.Include(p=> p.PeriodicTest)
+                                                    .Where(p => !p.IsDelete && p.UserId == userId && (
+                                                    (p.SystemOrderForNextTest >= DateTime.Now)
+                                                    )).ToListAsync();
         }
 
         #endregion

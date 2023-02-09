@@ -1082,7 +1082,7 @@ namespace DoctorFAM.Data.DbContext
                 Id = 7,
                 CreateDate = DateTime.Now,
                 IsDelete = false,
-                UniqueName = "فوق تخصص قلب و عروق",
+                UniqueName = "فوق تخصص قلب وعروق",
                 UniqueId = 6,
                 ParentId = 5,
                 IsSuperSpecialty= true,

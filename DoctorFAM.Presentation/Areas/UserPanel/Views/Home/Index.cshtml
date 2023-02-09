@@ -7,7 +7,8 @@
 @{
     ViewData["Title"] = "پنل کاربری";
 
-    List < DoctorFAM.Domain.Entities.PriodicExamination.PriodicPatientsExamination >  priodicExamination= ViewBag.UserPriodicExaminations as List<DoctorFAM.Domain.Entities.PriodicExamination.PriodicPatientsExamination>;
+    List<DoctorFAM.Domain.Entities.PriodicExamination.PriodicPatientsExamination> priodicExamination = ViewBag.UserPriodicExaminations as List<DoctorFAM.Domain.Entities.PriodicExamination.PriodicPatientsExamination>;
+    List<DoctorFAM.Domain.Entities.PeriodicTest.UserPeriodicTest> priodicTest = ViewBag.PriodicTest as List<DoctorFAM.Domain.Entities.PeriodicTest.UserPeriodicTest>;
 }
 
 @section Breadcrumb{
@@ -17,55 +18,157 @@
 <div class="page-body">
 
     <div class="row">
-        <div class="col-md-6 ">
+
+        <div class="col-lg-6 col-md-6 col-xl-12 col-sm-12 col-xs-12">
+
             <div class="widget">
-                <div class="widget-header bg-info">
-                    <span class="widget-caption">هشدار معاینات دوره ای</span>
+                <div class="widget-header">
+                    <i class="widget-icon fa fa-medkit"></i>
+                    <span class="widget-caption"> هشدار معاینه ی دوره ای
+                        </span>
                     <div class="widget-buttons">
-                        <a href="#" data-toggle="collapse">
-                            <i class="fa fa-minus"></i>
-                        </a>
-                        <a href="#" data-toggle="dispose">
-                            <i class="fa fa-times"></i>
-                        </a>
+                        <div class="row" style="margin-right: -84px;">
+
+                            <a asp-action="ListOfUserExamination" asp-area="UserPanel" asp-controller="PeriodicExamination" id="ShowUserCommentInAdminPanel" class="badge badge-info">نمایش همه</a>
+
+                            <a id="ShowUserCommentInAdminPanelMinus" href="#" data-toggle="collapse">
+                                <i class="fa fa-minus"></i>
+                            </a>
+
+                        </div>
                     </div><!--Widget Buttons-->
                 </div><!--Widget Header-->
-
-
-                <div class="widget-body bg-Spec">
-                    @if (priodicExamination != null)
+                <div class="widget-body" style="max-height: 230px !important; overflow-y: scroll; height:auto;">
+                    @if (priodicExamination != null && priodicExamination.Any())
                     {
-                        foreach (var priodic in priodicExamination)
-                        {
-                            <ul>
-                                <li>نوبت بعدی ویزیت متخصص @priodic.MedicalExamination.MedicalExaminationName شما در روز @priodic.NextExaminationDate.ToStringShamsiDate() می باشد.   </li>
-                            </ul>
+                        <div class="table-responsive">
+                            <table class="table table-hover table-bordered tc vm">
+                                <thead class="tc vm">
+                                    <tr class="tc vm">
+                                        <th class="tc vm">
+                                            عنوان معاینه
+                                        </th>
+                                        <th class="tc vm">
+                                            نوع معاینه
+                                        </th>
+                                        <th class="tc vm">
+                                            تاریخ معاینه ی بعدی
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody class="tc vm">
+                                    @foreach (var Priodic in priodicExamination)
+                                    {
+                                        <tr class="tc vm" remove-ajax-item="@Priodic.Id">
+                                            <td class="vm">
+                                                <div class="flex-style-center label label-warning">
+                                                    @Priodic.MedicalExamination.MedicalExaminationName
+                                                </div>
+                                            </td>
 
-                        }
+                                            <td class="vm">
+                                                <div class="flex-style-center">
+                                                    @((string.IsNullOrEmpty(Priodic.LabelName)) ? "وارد نشده است." : Priodic.LabelName )
+                                                </div>
+                                            </td>
+
+                                            <td class="tc vm">
+                                                <div class="tc vm">
+                                                    <p id="ArticleTitle">@Priodic.NextExaminationDate.ToStringShamsiDate()</p>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!--Widget Body-->
                     }
-                </div><!--Widget Body-->
+                    else
+                    {
+                        <partial name="_UserPanelNotFoundPartial" />
+                    }
 
-            </div><!--Widget-->
+                </div>
+            </div>
         </div>
-        <div class="col-md-6 ">
+
+
+        <div class="col-lg-6 col-md-6 col-xl-12 col-sm-12 col-xs-12">
+
             <div class="widget">
-                <div class="widget-header bg-info">
-                    <span class="widget-caption">هشدار آزمایشهای دوره ای</span>
+                <div class="widget-header">
+                    <i class="widget-icon fa fa-medkit"></i>
+                    <span class="widget-caption">
+                        هشدار آزمایشهای دوره ای
+                    </span>
                     <div class="widget-buttons">
-                        <a href="#" data-toggle="collapse">
-                            <i class="fa fa-minus"></i>
-                        </a>
-                        <a href="#" data-toggle="dispose">
-                            <i class="fa fa-times"></i>
-                        </a>
+                        <div class="row" style="margin-right: -84px;">
+
+                            <a asp-action="ListOfUserPeriodicTest" asp-area="UserPanel" asp-controller="PeriodicTest" id="ShowUserCommentInAdminPanel" class="badge badge-info">نمایش همه</a>
+                            
+                            <a id="ShowUserCommentInAdminPanelMinus" href="#" data-toggle="collapse">
+                                <i class="fa fa-minus"></i>
+                            </a>
+
+                        </div>
                     </div><!--Widget Buttons-->
                 </div><!--Widget Header-->
+                <div class="widget-body" style="max-height: 230px !important; overflow-y: scroll; height:auto;">
+                    @if (priodicTest != null && priodicTest.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover table-bordered tc vm">
+                                <thead class="tc vm">
+                                    <tr class="tc vm">
+                                        <th class="tc vm">
+                                            عنوان آزمایش
+                                        </th>
+                                        <th class="tc vm">
+                                            تاریخ پیشنهادی پزشک
+                                        </th>
+                                        <th class="tc vm">
+                                            تاریخ پیشنهادی دکترفم
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody class="tc vm">
+                                    @foreach (var test in priodicTest)
+                                    {
+                                        <tr class="tc vm" remove-ajax-item="@test.Id">
+                                            <td class="vm">
+                                                <div class="flex-style-center label label-warning">
+                                                    @test.PeriodicTest.Name
+                                                </div>
+                                            </td>
 
+                                            <td class="vm">
+                                                <div class="flex-style-center">
+                                                    @((test.DoctorOrderForNextTest is null) ? "وارد نشده است." : test.DoctorOrderForNextTest.Value.ToStringShamsiDate())
+                                                </div>
+                                            </td>
 
-                <div class="widget-body bg-Spec">
-                </div><!--Widget Body-->
+                                            <td class="tc vm">
+                                                <div class="tc vm">
+                                                    <p id="ArticleTitle">@test.SystemOrderForNextTest.ToStringShamsiDate()</p>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
 
-            </div><!--Widget-->
+                        <!--Widget Body-->
+                    }
+                    else
+                    {
+                        <partial name="_UserPanelNotFoundPartial" />
+                    }
+
+                </div>
+            </div>
         </div>
     </div>
 
@@ -156,10 +259,4 @@
         </div>
     </div>
 
-
 </div>
-
-
-
-
-
