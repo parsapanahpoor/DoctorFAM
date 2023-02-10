@@ -174,5 +174,16 @@ namespace DoctorFAM.Application.Services.Interfaces
         #endregion
 
         #endregion
+
+        #region Status
+
+        #region Doctor Panel 
+
+        //Filter Status From Doctor Panel Side  
+        Task<List<HealthInformation>> FilterStatusDoctorPanelSide(ulong ownerId);
+
+        #endregion
+
+        #endregion
     }
 }

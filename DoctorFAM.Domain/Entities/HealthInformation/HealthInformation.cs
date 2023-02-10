@@ -40,6 +40,8 @@ namespace DoctorFAM.Domain.Entities.HealthInformation
 
         public string? RejectNote { get; set; }
 
+        public bool Lastest { get; set; }
+
         #endregion
 
         #region relations

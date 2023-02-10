@@ -1,5 +1,6 @@
 ﻿using DoctorFAM.Application.Convertors;
 using DoctorFAM.Application.Extensions;
+using DoctorFAM.Application.Generators;
 using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Application.StaticTools;
@@ -1564,6 +1565,92 @@ namespace DoctorFAM.Application.Services.Implementation
         }
 
         #endregion
+
+        #endregion
+
+        #endregion
+
+        #region Status
+
+        #region Doctor Panel 
+
+        //Filter Status From Doctor Panel Side  
+        public async Task<List<HealthInformation>> FilterStatusDoctorPanelSide(ulong ownerId)
+        {
+            #region Get Owner Organization By EmployeeId 
+
+            var organization = await _organizationRepository.GetDoctorOrganizationByUserId(ownerId);
+            if (organization == null) return null;
+
+            #endregion
+
+            return await _healthinformationRepository.FilterStatusDoctorPanelSide(organization.OwnerId);
+        }
+
+        //Create Status From Doctor Side
+        public async Task<bool> CreateStatusFromDoctorSide(CreateStatusFromDoctorPanelViewModel model, ulong userId)
+        {
+            #region Get Owner Organization By EmployeeId 
+
+            var organization = await _organizationRepository.GetDoctorOrganizationByUserId(userId);
+            if (organization == null) return false;
+
+            #endregion
+
+            #region Check Validation
+
+            if (model.AttachmentFileName == null)
+            {
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(model.longDescription))
+            {
+                return false;
+            }
+
+            #endregion
+
+            #region Set Datas From ViewModel
+
+            HealthInformation tvFAMVide = new HealthInformation()
+            {
+                Title = model.Title.SanitizeText(),
+                OwnerId = organization.OwnerId,
+                longDescription = model.longDescription.SanitizeText(),
+                ShortDescription = model.ShortDescription.SanitizeText(),
+                HealthInformationType = HealthInformationType.Status,
+                HealtInformationFileState = HealtInformationFileState.Accepted,
+                Lastest = true,
+            };
+
+            #endregion
+
+            #region Image 
+
+            if (model.AttachmentFileName != null && model.AttachmentFileName.IsImage())
+            {
+                var imageName = CodeGenerator.GenerateUniqCode() + Path.GetExtension(model.AttachmentFileName.FileName);
+                model.AttachmentFileName.AddImageToServer(imageName, PathTools.StatusImagePathServer, 270, 270, PathTools.StatusImagePathThumbServer);
+                tvFAMVide.File = imageName;
+            }
+
+            #endregion
+
+            #region Remove Lastest Statuses
+
+            await _healthinformationRepository.RemoveAllOfLastestStatusFromThisCurrentDoctor(organization.OwnerId);
+
+            #endregion
+
+            #region Add Podcast 
+
+            await _healthinformationRepository.CreateTVFAMVideo(tvFAMVide);
+
+            #endregion
+
+            return true;
+        }
 
         #endregion
 
