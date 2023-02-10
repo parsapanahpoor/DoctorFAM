@@ -15,6 +15,7 @@ using DoctorFAM.Domain.Entities.FamilyDoctor.ParsaSystem;
 using DoctorFAM.Domain.Entities.FamilyDoctor.VIPSystem;
 using DoctorFAM.Domain.Entities.FollowAndUnFollow;
 using DoctorFAM.Domain.Entities.HealthInformation;
+using DoctorFAM.Domain.Entities.Insurance;
 using DoctorFAM.Domain.Entities.Interest;
 using DoctorFAM.Domain.Entities.Laboratory;
 using DoctorFAM.Domain.Entities.Languages;
@@ -429,6 +430,12 @@ namespace DoctorFAM.Data.DbContext
         public DbSet<DiabetSelfAssessment> DiabetSelfAssessments { get; set; }
 
         public DbSet<BloodPressureSelfAssessment> BloodPressureSelfAssessments { get; set; }
+
+        #endregion
+
+        #region Insurance
+
+        public DbSet<Insurance> Insurance { get; set; }
 
         #endregion
 
@@ -995,6 +1002,50 @@ namespace DoctorFAM.Data.DbContext
             });
 
             #endregion
+
+            #endregion
+
+            #region Insurance Seed Data 
+
+            modelBuilder.Entity<Insurance>().HasData(new Insurance
+            {
+                Id = 1,
+                CreateDate = DateTime.Now,
+                IsDelete = false,
+                Title = "بیمه سلامت"
+            });
+
+            modelBuilder.Entity<Insurance>().HasData(new Insurance
+            {
+                Id = 2,
+                CreateDate = DateTime.Now,
+                IsDelete = false,
+                Title = "بیمه ی تامین اجتماعی"
+            });
+
+            modelBuilder.Entity<Insurance>().HasData(new Insurance
+            {
+                Id = 3,
+                CreateDate = DateTime.Now,
+                IsDelete = false,
+                Title = "مشاغل آزاد"
+            });
+
+            modelBuilder.Entity<Insurance>().HasData(new Insurance
+            {
+                Id = 4,
+                CreateDate = DateTime.Now,
+                IsDelete = false,
+                Title = "بیمه ی ایرانیان"
+            });
+
+            modelBuilder.Entity<Insurance>().HasData(new Insurance
+            {
+                Id = 5,
+                CreateDate = DateTime.Now,
+                IsDelete = false,
+                Title = "آزاد"
+            });
 
             #endregion
 

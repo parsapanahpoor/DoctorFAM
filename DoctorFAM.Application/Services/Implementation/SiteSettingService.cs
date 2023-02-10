@@ -1,6 +1,9 @@
 ﻿using Academy.Domain.Entities.SiteSetting;
+using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Data.DbContext;
+using DoctorFAM.Domain.Entities.Insurance;
+using DoctorFAM.Domain.Entities.PeriodicSelfEvaluatuion;
 using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Entities.SiteSetting;
 using DoctorFAM.Domain.Interfaces;
@@ -406,6 +409,44 @@ namespace DoctorFAM.Application.Services.Implementation
         public async Task<bool> IsExistAnyTariffById(ulong tariffId)
         {
             return await _siteSettingRepository.IsExistAnyTariffById(tariffId);
+        }
+
+        //List Of Insurance
+        public async Task<List<Insurance>?> ListOfInsurance()
+        {
+            return await _siteSettingRepository.ListOfInsurance();
+        }
+
+        //Create Insurance
+        public async Task<bool> CreateInsurance(string title)
+        {
+            #region Fill Entity
+
+            Insurance entity = new Insurance()
+            {
+                Title = title.SanitizeText()
+            };
+
+            //Create Data To The Data Base 
+            await _siteSettingRepository.CreateInsurance(entity);
+
+            #endregion
+
+            return true;
+        }
+
+        //Get Insurance By Id
+        public async Task<Insurance?> GetInsuranceById(ulong id)
+        {
+            return await _siteSettingRepository.GetInsuranceById(id);
+        }
+
+        //Update Insurance
+        public async Task<bool> UpdateInsurance(Insurance entity)
+        {
+            await _siteSettingRepository.UpdateInsurance(entity);
+
+            return true;
         }
 
         #endregion

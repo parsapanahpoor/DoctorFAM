@@ -1,6 +1,8 @@
 ﻿using Academy.Domain.Entities.SiteSetting;
 using DoctorFAM.Data.DbContext;
 using DoctorFAM.DataLayer.Entities;
+using DoctorFAM.Domain.Entities.Insurance;
+using DoctorFAM.Domain.Entities.PeriodicSelfEvaluatuion;
 using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Entities.SiteSetting;
 using DoctorFAM.Domain.Interfaces;
@@ -199,6 +201,32 @@ namespace DoctorFAM.Data.Repository
         public async Task<bool> IsExistAnyTariffById(ulong tariffId)
         {
             return await _context.TariffForHealthHouseServices.AnyAsync(p=> !p.IsDelete && p.Id == tariffId);
+        }
+
+        //List Of Insurance
+        public async Task<List<Insurance>?> ListOfInsurance()
+        {
+            return await _context.Insurance.Where(p => !p.IsDelete).ToListAsync();
+        }
+
+        //Create Data To The Data Base 
+        public async Task CreateInsurance(Insurance entity)
+        {
+            await _context.Insurance.AddAsync(entity);
+            await _context.SaveChangesAsync();
+        }
+
+        //Get Insurance By Id
+        public async Task<Insurance?> GetInsuranceById(ulong id)
+        {
+            return await _context.Insurance.FirstOrDefaultAsync(p => !p.IsDelete && p.Id == id);
+        }
+
+        //Update Insurance
+        public async Task UpdateInsurance(Insurance entity)
+        {
+            _context.Insurance.Update(entity);
+            await _context.SaveChangesAsync();
         }
 
         #endregion
