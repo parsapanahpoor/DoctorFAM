@@ -111,7 +111,8 @@ namespace DoctorFAM.Data.Repository
 
         public async Task<PopulationCovered?> GetPopulationCoveredById(ulong id)
         {
-            return await _context.PopulationCovered.FirstOrDefaultAsync(p => !p.IsDelete && p.Id == id); 
+            return await _context.PopulationCovered.Include(p=> p.Insurance)
+                                    .FirstOrDefaultAsync(p => !p.IsDelete && p.Id == id); 
         }
 
         public async Task UpdatePopulationCovered(PopulationCovered population)
@@ -126,7 +127,8 @@ namespace DoctorFAM.Data.Repository
 
         public async Task<List<PopulationCovered>> GetUserPopulation(ulong userId)
         {
-            return await _context.PopulationCovered.Where(p => !p.IsDelete && p.UserId == userId).ToListAsync();
+            return await _context.PopulationCovered.Include(p=> p.Insurance)
+                                        .Where(p => !p.IsDelete && p.UserId == userId).ToListAsync();
         }
 
         #endregion

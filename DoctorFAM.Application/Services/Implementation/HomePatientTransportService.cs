@@ -332,7 +332,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 NationalId = patient?.NationalId,
                 Gender = patient?.Gender,
                 Age = patient?.Age,
-                InsuranceId = patient?.InsuranceId,
+                Insurance = patient?.Insurance.Title,
                 RequestDescription = patient?.RequestDescription,
                 Vilage = requestDetail?.Vilage,
                 FullAddress = requestDetail?.FullAddress,

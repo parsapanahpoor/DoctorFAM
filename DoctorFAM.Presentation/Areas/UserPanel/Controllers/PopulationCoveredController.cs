@@ -14,13 +14,15 @@ namespace DoctorFAM.Web.Areas.UserPanel.Controllers
         #region Ctor
 
         private readonly IPopulationCoveredService _populationCovered;
-
+        private readonly ISiteSettingService _siteSettingService;
         private readonly IStringLocalizer<PopulationCoveredController> _localizer;
 
-        public PopulationCoveredController(IPopulationCoveredService populationCovered , IStringLocalizer<PopulationCoveredController> localizer)
+        public PopulationCoveredController(IPopulationCoveredService populationCovered , IStringLocalizer<PopulationCoveredController> localizer
+                                                , ISiteSettingService siteSettingService )
         {
             _populationCovered = populationCovered;
             _localizer = localizer;
+            _siteSettingService = siteSettingService;
         }
 
         #endregion
@@ -40,6 +42,9 @@ namespace DoctorFAM.Web.Areas.UserPanel.Controllers
         [HttpGet]
         public async Task<IActionResult> CreatePopulationCovered()
         {
+            //Send List Of Insurance To The View
+            ViewBag.Insurances = await _siteSettingService.ListOfInsurance();
+
             return View();
         }
 
@@ -48,7 +53,13 @@ namespace DoctorFAM.Web.Areas.UserPanel.Controllers
         {
             #region Model State Validation
 
-            if (!ModelState.IsValid) return View(model);
+            if (!ModelState.IsValid)
+            {
+                //Send List Of Insurance To The View
+                ViewBag.Insurances = await _siteSettingService.ListOfInsurance();
+
+                return View(model);
+            }
 
             #endregion
 
@@ -73,6 +84,9 @@ namespace DoctorFAM.Web.Areas.UserPanel.Controllers
 
             #endregion
 
+            //Send List Of Insurance To The View
+            ViewBag.Insurances = await _siteSettingService.ListOfInsurance();
+
             return View(model);
         }
 
@@ -91,6 +105,9 @@ namespace DoctorFAM.Web.Areas.UserPanel.Controllers
 
             #endregion
 
+            //Send List Of Insurance To The View
+            ViewBag.Insurances = await _siteSettingService.ListOfInsurance();
+
             return View(model);
         }
 
@@ -99,7 +116,13 @@ namespace DoctorFAM.Web.Areas.UserPanel.Controllers
         {
             #region Model State Validation
 
-            if (!ModelState.IsValid) return NotFound();
+            if (!ModelState.IsValid)
+            {
+                //Send List Of Insurance To The View
+                ViewBag.Insurances = await _siteSettingService.ListOfInsurance();
+
+                return View(model);
+            }
 
             #endregion
 
@@ -123,6 +146,9 @@ namespace DoctorFAM.Web.Areas.UserPanel.Controllers
             }
 
             #endregion
+
+            //Send List Of Insurance To The View
+            ViewBag.Insurances = await _siteSettingService.ListOfInsurance();
 
             return View(model);
         }
