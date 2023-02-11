@@ -169,7 +169,7 @@
                                     @foreach (var item in reserve)
                                     {
                                         <div class="form-group col-md-2 col-sm-12">
-                                        <div class="form-control"> @item.ReservationDate.ToShamsi() </div>
+                                        <div class="form-control"><a asp-action=" ReservationDateDetail" asp-controller="Appointment" asp-area="Doctor">@item.ReservationDate.ToShamsi()</a>  </div>
                                     </div>
                                     }
 

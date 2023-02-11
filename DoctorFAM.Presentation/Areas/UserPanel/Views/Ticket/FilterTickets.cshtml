@@ -14,15 +14,15 @@
 
     @section breadcrumb
     {
-    <li>
-        <a href="javascript:void(0)"> @ViewData["Title"] </a>
-    </li>
+   
 }
 
     <div class="row">
 
         <div class="col-lg-3 col-sm-12">
+        <a class="btn btn-primary w-100 margin-bottom-10" asp-action="CreateTicket" asp-controller="Ticket" asp-area="UserPanel"> <i class="fa fa-plus"></i> ایجاد تیکت پشتیبانی جدید </a>
             <div class="widget">
+                
                 <div class="widget-header bordered-bottom bordered-green">
                     <span class="widget-caption"> @ViewData["Title"] </span>
                 </div>
@@ -125,7 +125,19 @@
 
                 <div class="footer tc">
 
-                    <partial name="_UserPanelPaging" model="@Model.GetCurrentPaging()" />
+
+                    <div class="row text-center">
+                        <div class="col-md-4 text-center">
+                            <a class="btn btn-primary w-100 margin-bottom-10" asp-action="CreateTicket" asp-controller="Ticket" asp-area="UserPanel"> <i class="fa fa-plus"></i> ایجاد تیکت پشتیبانی جدید </a>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <partial name="_UserPanelPaging" model="@Model.GetCurrentPaging()" />
+                        </div>
+                        <div class="col-md-4"></div>
+                    </div>
+
+
+                    
 
                 </div>
             }

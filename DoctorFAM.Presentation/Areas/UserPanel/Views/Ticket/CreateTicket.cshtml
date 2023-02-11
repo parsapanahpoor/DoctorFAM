@@ -16,9 +16,9 @@
 
 @section breadcrumb
 {
-<li>
-    <a href="javascript:void(0)"> @ViewData["Title"] </a>
-</li>
+    <li>
+        <a asp-action="FilterTickets" asp-controller="Ticket" asp-area="UserPanel"> @Localizer["List Of Tickets"] </a>
+    </li>
 }
 
 <form method="post" asp-action="CreateTicket" asp-controller="Ticket" asp-area="UserPanel">
