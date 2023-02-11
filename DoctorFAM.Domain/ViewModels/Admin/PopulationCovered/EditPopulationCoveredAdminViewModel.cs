@@ -44,7 +44,7 @@ namespace DoctorFAM.Domain.ViewModels.Admin.PopulationCovered
 
         [Display(Name = "InsuranceType")]
         [Required(ErrorMessage = "Please Enter {0}")]
-        public InsuranceType InsuranceType { get; set; }
+        public ulong InsuranceId { get; set; }
 
         public ulong Id { get; set; }
 

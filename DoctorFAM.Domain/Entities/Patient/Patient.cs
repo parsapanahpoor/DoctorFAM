@@ -1,6 +1,7 @@
 ﻿using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Common;
+using DoctorFAM.Domain.Entities.Insurance;
 using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Enums.Gender;
 using DoctorFAM.Domain.Enums.InsuranceType;
@@ -20,6 +21,8 @@ namespace DoctorFAM.Domain.Entities.Patient
 
         public ulong UserId { get; set; }
 
+        public ulong InsuranceId { get; set; }
+
         public string PatientName { get; set; }
 
         public string PatientLastName { get; set; }
@@ -29,8 +32,6 @@ namespace DoctorFAM.Domain.Entities.Patient
         public Gender Gender { get; set; }
 
         public int Age { get; set; }
-
-        public InsuranceType InsuranceType { get; set; }
 
         public string RequestDescription { get; set; }
 
@@ -46,6 +47,8 @@ namespace DoctorFAM.Domain.Entities.Patient
         public User User { get; set; }
 
         public ICollection<PaitientRequestDetail> PaitientRequestDetails { get; set; }
+
+        public Insurance.Insurance Insurance { get; set; }
 
         #endregion
     }

@@ -18,6 +18,8 @@ namespace DoctorFAM.Domain.Entities.PopulationCovered
     {
         #region properties
 
+        public ulong InsuranceId { get; set; }
+
         public ulong UserId { get; set; }
 
         public string PatientName { get; set; }
@@ -30,8 +32,6 @@ namespace DoctorFAM.Domain.Entities.PopulationCovered
 
         public int Age { get; set; }
 
-        public InsuranceType InsuranceType { get; set; }
-
         public Ratio Ratio { get; set; }
 
         public DateTime BirthDay { get; set; }
@@ -41,6 +41,8 @@ namespace DoctorFAM.Domain.Entities.PopulationCovered
         #region Relation 
 
         public User User { get; set; }
+
+        public Insurance.Insurance Insurance { get; set; }
 
         #endregion
     }

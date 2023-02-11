@@ -14,5 +14,13 @@ namespace DoctorFAM.Domain.Entities.Insurance
         public string Title { get; set; }
 
         #endregion
+
+        #region properties
+
+        public ICollection<Patient.Patient> Patients { get; set; }
+
+        public ICollection<PopulationCovered.PopulationCovered> PopulationCovered { get; set; }
+
+        #endregion
     }
 }
