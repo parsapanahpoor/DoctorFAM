@@ -1,6 +1,5 @@
 ﻿using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.Speciality;
-using DoctorFAM.Domain.ViewModels.Admin.Speciality;
 using DoctorFAM.Web.HttpManager;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,6 +24,15 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
         {
             var result = await _specialityService.ListOfSpecilaityAdminSide(filter);
             return View(result);
+        }
+
+        #endregion
+
+        #region List Of Speciality With Accardion
+
+        public async Task<IActionResult> ListOfSpecialityWithAccardion()
+        {
+            return View(await _specialityService.GetListOfSpecialities());
         }
 
         #endregion
@@ -73,9 +81,9 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
                     TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است ."; 
                     if (createSpeciality.ParentId.HasValue)
                     {
-                        return RedirectToAction("ListOfSpeciality", new { ParentId = createSpeciality.ParentId.Value });
+                        return RedirectToAction("ListOfSpecialityWithAccardion", new { ParentId = createSpeciality.ParentId.Value });
                     }
-                    return RedirectToAction("ListOfSpeciality");
+                    return RedirectToAction("ListOfSpecialityWithAccardion");
 
                 case CreateSpecialityResult.UniqNameIsExist:
                     TempData[ErrorMessage] = "عنوان مورد نظر تکراری است .";
@@ -154,9 +162,9 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
                     TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است .";
                     if (Speciality.ParentId.HasValue)
                     {
-                        return RedirectToAction("ListOfSpeciality", new { ParentId = Speciality.ParentId.Value });
+                        return RedirectToAction("ListOfSpecialityWithAccardion", new { ParentId = Speciality.ParentId.Value });
                     }
-                    return RedirectToAction("ListOfSpeciality");
+                    return RedirectToAction("ListOfSpecialityWithAccardion");
 
                 case EditSpecialityResult.UniqNameIsExist:
                     TempData[ErrorMessage] = "عنوان مورد نظر تکراری است .";

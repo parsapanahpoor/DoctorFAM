@@ -50,6 +50,9 @@ namespace DoctorFAM.Domain.Interfaces.EFCore
         //Check That Current User Has Any Priodic Examination In This Week
         Task<List<PriodicPatientsExamination>?> CheckThatCurrentUserHasAnyPriodicExaminationInThisWeek(ulong userId);
 
+        //Check That Current User Has Any Priodic Examination After Today
+        Task<List<PriodicPatientsExamination>?> CheckThatCurrentUserHasAnyPriodicExaminationAfterToday(ulong userId);
+
         #endregion
     }
 }

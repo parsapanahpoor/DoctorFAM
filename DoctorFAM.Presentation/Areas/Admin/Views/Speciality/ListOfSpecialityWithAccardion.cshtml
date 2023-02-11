@@ -1,0 +1,112 @@
+﻿@model List<DoctorFAM.Domain.Entities.Speciality.SpecialtiyInfo>
+@using DoctorFAM.Domain.Entities.Account
+
+@{
+    ViewData["Title"] = "لیست تخصص ها";
+}
+
+@section Scripts
+    {
+    <partial name="_JqueryValidation" />
+}
+
+@section Breadcrumb
+    {
+    <li>
+        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+    </li>
+}
+
+<div class="row">
+
+    <div class="col-lg-12 col-sm-12">
+        <div class="row">
+
+            <div class="col-lg-12">
+                <div class="widget">
+                    <div class="widget-header bordered-bottom bordered-blue flex-style">
+
+
+                        <div class="checkbox" style="margin-left:10px" type="submit">
+
+                            <a class="btn btn-sky w-100 margin-bottom-10 margin-top-10" asp-action="CreateSpeciality" asp-controller="Speciality" asp-area="Admin">افزودن عنوان</a>
+
+                        </div>
+
+                    </div>
+                    <div class="widget-body @((Model != null && Model.Any()) ? "no-padding" : "")">
+
+                        @if (Model != null && Model.Any())
+                        {
+                            <div class="panel-group accordion">
+                                @foreach (var permission in Model.Where(s => s.Speciality.ParentId == null))
+                                {
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a class="accordion-toggle collapsed" data-toggle="collapse" href="#permission-@permission.SpecialityId" aria-expanded="false">
+                                                    @permission.Title
+                                                </a>
+                                                <a style="" class="btn btn-success" asp-route-ParentId="@permission.Speciality.Id" asp-action="CreateSpeciality" asp-controller="Speciality" asp-area="Admin"> افزودن  </a>
+                                                <a asp-action="EditSpeciality" asp-controller="Speciality" asp-area="Admin" asp-route-SpecialityId="@permission.Speciality.Id" class="btn btn-warning btn-circle btn-xs"><i class="glyphicon glyphicon-edit"></i></a>
+                                            </h4>
+
+                                        </div>
+                                        <div id="permission-@permission.SpecialityId" class="panel-collapse collapse " aria-expanded="false" style="height: 0">
+                                            <div class="panel-body" style="padding: 5px 15px 0 15px !important">
+
+                                                @if (Model.Any(s => s.Speciality.ParentId.HasValue && s.Speciality.ParentId.Value == permission.SpecialityId && s.Speciality.IsSpecialty))
+                                                {
+                                                    <span class="label-style"> تخصص</span>
+
+                                                    @foreach (var subPermission in Model.Where(s => s.Speciality.ParentId.HasValue && s.Speciality.ParentId.Value == permission.SpecialityId && s.Speciality.IsSpecialty))
+                                                    {
+                                                        <div class="form-group">
+                                                            <div class="checkbox">
+                                                                <label>
+                                                                    <span class="text"> @subPermission.Title </span>
+                                                                    <a asp-action="EditSpeciality" asp-controller="Speciality" asp-area="Admin" asp-route-SpecialityId="@subPermission.Speciality.Id" class="btn btn-warning btn-circle btn-xs"><i class="glyphicon glyphicon-edit"></i></a>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                }
+
+                                                @if (Model.Any(s => s.Speciality.ParentId.HasValue && s.Speciality.ParentId.Value == permission.SpecialityId && s.Speciality.IsSuperSpecialty))
+                                                {
+                                                    <hr style="margin-top: 10px !important; margin-bottom: 10px !important" />
+
+                                                    <span class="label-style">فوق تخصص</span>
+
+                                                    @foreach (var subPermission in Model.Where(s => s.Speciality.ParentId.HasValue && s.Speciality.ParentId.Value == permission.SpecialityId && s.Speciality.IsSuperSpecialty))
+                                                    {
+                                                        <div class="form-group">
+                                                            <div class="checkbox">
+                                                                <label>
+                                                                    <span class="text"> @subPermission.Title </span>
+                                                                    <a asp-action="EditSpeciality" asp-controller="Speciality" asp-area="Admin" asp-route-SpecialityId="@subPermission.Speciality.Id" class="btn btn-warning btn-circle btn-xs"><i class="glyphicon glyphicon-edit"></i></a>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                }
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <partial name="_AdminNotFoundPartial" />
+                        }
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+

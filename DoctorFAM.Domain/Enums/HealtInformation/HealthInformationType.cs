@@ -10,6 +10,7 @@ namespace DoctorFAM.Domain.Enums.HealtInformation
     public enum HealthInformationType
     {
         TVFAM,
-        RadioFAM
+        RadioFAM,
+        Status
     }
 }

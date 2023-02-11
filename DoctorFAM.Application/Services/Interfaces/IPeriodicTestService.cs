@@ -46,5 +46,12 @@ namespace DoctorFAM.Application.Services.Interfaces
         Task<bool> DeleteUserPeriodicSelectedTest(ulong periodicId, ulong userId);
 
         #endregion
+
+        #region User Panel 
+
+        //Check That Current User Has Any Priodic Test After Today
+        Task<List<UserPeriodicTest>?> CheckThatCurrentUserHasAnyPriodicTestAfterToday(ulong userId);
+
+        #endregion
     }
 }

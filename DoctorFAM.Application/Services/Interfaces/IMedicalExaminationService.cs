@@ -61,7 +61,8 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         #region User Panel Side
 
-
+        //Check That Current User Has Any Priodic Examination After Today
+        Task<List<PriodicPatientsExamination>?> CheckThatCurrentUserHasAnyPriodicExaminationAfterToday(ulong userId);
 
         #endregion
     }

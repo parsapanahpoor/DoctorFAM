@@ -1,20 +1,9 @@
 ﻿using DoctorFAM.Data.DbContext;
-using DoctorFAM.Data.Migrations;
-using DoctorFAM.Domain.Entities.Account;
-using DoctorFAM.Domain.Entities.HealthInformation;
 using DoctorFAM.Domain.Entities.PriodicExamination;
 using DoctorFAM.Domain.Interfaces.EFCore;
-using DoctorFAM.Domain.ViewModels.Access;
 using DoctorFAM.Domain.ViewModels.Admin.MedicalExamination;
 using DoctorFAM.Domain.ViewModels.Common;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DoctorFAM.Data.Repository
 {
@@ -134,6 +123,15 @@ namespace DoctorFAM.Data.Repository
             return await _context.PriodicPatientsExamination.Include(p => p.MedicalExamination)
                                                    .Where(p => !p.IsDelete && p.UserId == userId && (
                                                     (p.NextExaminationDate.Year == DateTime.Now.Year && p.NextExaminationDate.DayOfYear >= DateTime.Now.DayOfYear && p.NextExaminationDate.DayOfYear - DateTime.Now.DayOfYear <= 7 && p.NextExaminationDate.DayOfYear - DateTime.Now.DayOfYear >= 0)
+                                                    )).ToListAsync();
+        }
+
+        //Check That Current User Has Any Priodic Examination After Today
+        public async Task<List<PriodicPatientsExamination>?> CheckThatCurrentUserHasAnyPriodicExaminationAfterToday(ulong userId)
+        {
+            return await _context.PriodicPatientsExamination.Include(p => p.MedicalExamination)
+                                                   .Where(p => !p.IsDelete && p.UserId == userId && (
+                                                    (p.NextExaminationDate >= DateTime.Now)
                                                     )).ToListAsync();
         }
 
