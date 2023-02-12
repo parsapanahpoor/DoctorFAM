@@ -39,8 +39,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DoctorFAM.BackgroundTask", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Convertor", "Convertor", "{14548EAB-8D38-4D49-B8C2-621E26627746}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DoctorFAM.Convertors", "DoctorFAM.Convertors\DoctorFAM.Convertors.csproj", "{1157AA24-7BB3-45A4-B0A7-817889339EA0}"
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DoctorFAM.BackgroundTask", "DoctorFAM.BackgroundTask\DoctorFAM.BackgroundTask.csproj", "{B18F360F-66F1-4417-B66C-0518639DD5B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DoctorFAM.Convertors", "DoctorFAM.Convertors\DoctorFAM.Convertors.csproj", "{1157AA24-7BB3-45A4-B0A7-817889339EA0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
