@@ -18,7 +18,7 @@ namespace DoctorFAM.Domain.Entities.PopulationCovered
     {
         #region properties
 
-        public ulong InsuranceId { get; set; }
+        public ulong? InsuranceId { get; set; }
 
         public ulong UserId { get; set; }
 

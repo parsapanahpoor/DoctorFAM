@@ -453,10 +453,11 @@ namespace DoctorFAM.Data.DbContext
                 relationship.DeleteBehavior = DeleteBehavior.Restrict;
             }
 
-            modelBuilder.Entity<PopulationCovered>()
-             .HasOne(c => c.Insurance)
-             .WithOne(c => c.PopulationCovered)
-             .OnDelete(DeleteBehavior.NoAction);
+            //modelBuilder.Entity<PopulationCovered>()
+            // .HasOne(c => c.Insurance)
+            // .WithMany(c => c.PopulationCovered)
+            // .HasForeignKey(p=> p.InsuranceId)
+            // .OnDelete(DeleteBehavior.NoAction);
 
             #region Seed Data
 

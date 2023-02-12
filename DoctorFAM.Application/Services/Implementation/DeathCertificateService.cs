@@ -191,7 +191,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 RequestId = requestId,
                 Age = population.Age,
                 Gender = population.Gender,
-                InsuranceId = population.InsuranceId,
+                InsuranceId = (ulong)population.InsuranceId,
                 NationalId = population.NationalId,
                 PatientName = population.PatientName.SanitizeText(),
                 PatientLastName = population.PatientLastName.SanitizeText(),

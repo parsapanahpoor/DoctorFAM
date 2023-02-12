@@ -21,7 +21,7 @@ namespace DoctorFAM.Domain.Entities.Patient
 
         public ulong UserId { get; set; }
 
-        public ulong InsuranceId { get; set; }
+        public ulong? InsuranceId { get; set; }
 
         public string PatientName { get; set; }
 

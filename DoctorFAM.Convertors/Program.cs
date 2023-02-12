@@ -10,45 +10,63 @@ namespace DoctorFAM.Convertors
     {
         static async Task Main(string[] args)
         {
-            //Remove All Data From New Context
-            await RemoveAllData();
+            CurrentContext _cuurentContext = new CurrentContext();
 
-            OldContext oldContext = new OldContext();
-            NewContext newContext = new NewContext();
+            // Patient And Population Covered
+            await ConvertInsuranceFieldFromPopulationCoveredTable(_cuurentContext);
+            await ConvertInsuranceFieldFromInsuranceTable(_cuurentContext);
 
-            // users
-            await ConvertUsers(oldContext, newContext);
-            await oldContext.DisposeAsync();
-            await newContext.DisposeAsync();
+            await _cuurentContext.DisposeAsync();
         }
 
-        static async Task RemoveAllData()
-        {
-            NewContext context = new NewContext();
-
-            context.RemoveRange(context.Users);
-            await context.SaveChangesAsync();
-
-            Console.WriteLine("Removed All Entities From New Context");
-        }
-
-        static async Task ConvertUsers(OldContext oldContext, NewContext newContext)
+        static async Task ConvertInsuranceFieldFromPopulationCoveredTable(CurrentContext _cuurentContext)
         {
             try
             {
-                List<User> entities = new List<User>();
+                //Get Population Covered
+                var populationCovered = await _cuurentContext.PopulationCovered.ToListAsync();
 
-                var lastUsers = await oldContext.Users.ToListAsync();
-
-                foreach (var user in lastUsers)
+                foreach (var item in populationCovered)
                 {
-                    entities.Add(user);
+                    item.InsuranceId = (((ulong)item.InsuranceType) == 0) ? 5 : ((ulong)item.InsuranceType);
+
+                    //Update Item
+                    _cuurentContext.PopulationCovered.Update(item);
                 }
 
-                await newContext.Users.AddRangeAsync(entities);
-                await newContext.SaveChangesAsync();
+                //Save Changes 
+                await _cuurentContext.SaveChangesAsync();
 
-                Console.WriteLine("Convert Users");
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("Convert Insurance Id From Population Covered Table");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+
+        static async Task ConvertInsuranceFieldFromInsuranceTable(CurrentContext _cuurentContext)
+        {
+            try
+            {
+                //Get Patient Covered
+                var patient = await _cuurentContext.Patients.ToListAsync();
+
+                foreach (var item in patient)
+                {
+                    item.InsuranceId = (((ulong)item.InsuranceType) == 0) ? 5 : ((ulong)item.InsuranceType);
+
+                    //Update Item
+                    _cuurentContext.Patients.Update(item);
+                }
+
+                //Save Changes 
+                await _cuurentContext.SaveChangesAsync();
+
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("Convert Insurance Id From Patient Table");
             }
             catch (Exception e)
             {

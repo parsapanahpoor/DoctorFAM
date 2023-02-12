@@ -22,6 +22,7 @@
 	</ItemGroup>
 	
   <ItemGroup>
+    <ProjectReference Include="..\DoctorFAM.Data\DoctorFAM.Data.csproj" />
     <ProjectReference Include="..\DoctorFAM.Domain\DoctorFAM.Domain.csproj" />
   </ItemGroup>
 
