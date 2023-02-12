@@ -35,7 +35,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DoctorFAM.Test", "DoctorFAM
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BackgroundTasks", "BackgroundTasks", "{916BE58E-597F-4A35-9BF5-A7463103541E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DoctorFAM.BackgroundTask", "DoctorFAM.BackgroundTask\DoctorFAM.BackgroundTask.csproj", "{B18F360F-66F1-4417-B66C-0518639DD5B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DoctorFAM.BackgroundTask", "DoctorFAM.BackgroundTask\DoctorFAM.BackgroundTask.csproj", "{B18F360F-66F1-4417-B66C-0518639DD5B3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
