@@ -49,7 +49,7 @@ namespace DoctorFAM.Domain.ViewModels.Admin.HealthHouse.HomePatientTransport
 
         public int? Age { get; set; }
 
-        public InsuranceType? InsuranceType { get; set; }
+        public string? Insurance { get; set; }
 
         public string? RequestDescription { get; set; }
 

@@ -66,7 +66,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 UserId = population.UserId,
                 Gender = population.Gender,
                 Id = populationId,
-                InsuranceType = population.InsuranceType,
+                InsuranceId = (ulong)population.InsuranceId,
                 LastName = population.PatientLastName,
                 NationalId = population.NationalId,
                 Name = population.PatientName,
@@ -98,7 +98,7 @@ namespace DoctorFAM.Application.Services.Implementation
             population.NationalId = model.NationalId;
             population.PatientName = model.Name.SanitizeText();
             population.PatientLastName = model.LastName.SanitizeText();
-            population.InsuranceType = model.InsuranceType;
+            population.InsuranceId = model.InsuranceId;
             population.Ratio = model.Ratio;
             population.BirthDay = model.BirthDay.ToMiladiDateTime();
 
@@ -177,7 +177,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 Age = model.Age,
                 CreateDate = DateTime.Now,
                 Gender = model.Gender,
-                InsuranceType = model.InsuranceType,
+                InsuranceId = model.InsuranceId,
                 IsDelete = false,
                 PatientLastName = model.LastName.SanitizeText(),
                 PatientName = model.Name.SanitizeText(),
@@ -226,7 +226,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 Age = population.Age,
                 Gender = population.Gender,
                 Id = populationId,
-                InsuranceType=population.InsuranceType,
+                InsuranceId = (ulong)population.InsuranceId,
                 LastName = population.PatientLastName,
                 NationalId = population.NationalId,
                 Name = population.PatientName,
@@ -270,7 +270,7 @@ namespace DoctorFAM.Application.Services.Implementation
             population.NationalId = model.NationalId.Trim().ToLower().SanitizeText();
             population.PatientName = model.Name.SanitizeText();
             population.PatientLastName = model.LastName.SanitizeText();
-            population.InsuranceType = model.InsuranceType;
+            population.InsuranceId = model.InsuranceId;
             population.Ratio = model.Ratio;
             population.BirthDay = model.BirthDay.ToMiladiDateTime();
 

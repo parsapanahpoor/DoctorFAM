@@ -31,21 +31,16 @@ namespace DoctorFAM.Application.Services.Implementation
         #region Ctor
 
         private readonly IHomeLaboratoryRepository _homeLaboratory;
-
         private readonly IUserService _userService;
-
         private readonly IRequestService _requestService;
-
         private readonly IPatientService _patientService;
-
         private readonly ILocationService _locationService;
-
         private readonly IWalletRepository _walletRepository;
-
         private readonly IPopulationCoveredRepository _populationCovered;
+        private readonly ISiteSettingService _siteSettingService;
 
         public HomeLaboratoryService(IHomeLaboratoryRepository homeLaboratory, IUserService userService, IRequestService requestService, IPatientService patientService, ILocationService locationService
-                                        ,IWalletRepository walletRepository, IPopulationCoveredRepository populationCovered)
+                                        ,IWalletRepository walletRepository, IPopulationCoveredRepository populationCovered, ISiteSettingService siteSettingService)
         {
             _homeLaboratory = homeLaboratory;
             _userService = userService;
@@ -54,6 +49,7 @@ namespace DoctorFAM.Application.Services.Implementation
             _locationService = locationService;
             _walletRepository = walletRepository;
             _populationCovered = populationCovered;
+            _siteSettingService = siteSettingService;
         }
 
         #endregion
@@ -153,6 +149,13 @@ namespace DoctorFAM.Application.Services.Implementation
 
         public async Task<ulong> CreatePatientDetail(PatientViewModel patient)
         {
+            #region Get Insurance By Id
+
+            var insurance = await _siteSettingService.GetInsuranceById(patient.InsuranceId);
+            if (insurance is null) return 0;
+
+            #endregion
+
             #region Fill Entity
 
             Patient model = new Patient
@@ -160,7 +163,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 RequestId = patient.RequestId,
                 Age = patient.Age,
                 Gender = patient.Gender,
-                InsuranceType = patient.InsuranceType,
+                InsuranceId = insurance.Id,
                 NationalId = patient.NationalId,
                 PatientName = patient.PatientName.SanitizeText(),
                 PatientLastName = patient.PatientLastName.SanitizeText(),
@@ -215,7 +218,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 RequestId = requestId,
                 Age = population.Age,
                 Gender = population.Gender,
-                InsuranceType = population.InsuranceType,
+                InsuranceId = (ulong)population.InsuranceId,
                 NationalId = population.NationalId,
                 PatientName = population.PatientName.SanitizeText(),
                 PatientLastName = population.PatientLastName.SanitizeText(),
@@ -261,7 +264,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 RequestId = requestId,
                 Age = population.Age,
                 Gender = population.Gender,
-                InsuranceType = population.InsuranceType,
+                InsuranceId = (ulong)population.InsuranceId,
                 NationalId = population.NationalId,
                 PatientName = population.PatientName.SanitizeText(),
                 PatientLastName = population.PatientLastName.SanitizeText(),
@@ -580,7 +583,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 NationalId = patient?.NationalId,
                 Gender = patient?.Gender,
                 Age = patient?.Age,
-                InsuranceType = patient?.InsuranceType,
+                Insurance = patient?.Insurance.Title,
                 RequestDescription = patient?.RequestDescription,
                 Vilage = requestDetail?.Vilage,
                 FullAddress = requestDetail?.FullAddress,

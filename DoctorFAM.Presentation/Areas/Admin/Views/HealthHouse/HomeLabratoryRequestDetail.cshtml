@@ -222,9 +222,9 @@
 
                     <div class="row">
                         <div class="form-group col-md-12 col-sm-12">
-                            <label asp-for="InsuranceType">@Localizer["Patient InsuranceType"]</label>
-                            <input type="text" class="form-control" asp-for="InsuranceType" value="@(Model.InsuranceType == null ? "وارد نشده " : Model.InsuranceType)">
-                            <span class="text-danger" asp-validation-for="InsuranceType"></span>
+                            <label asp-for="Insurance">@Localizer["Patient InsuranceType"]</label>
+                            <input type="text" class="form-control" asp-for="Insurance" value="@(string.IsNullOrEmpty(Model.Insurance) ? "وارد نشده " : Model.Insurance)">
+                            <span class="text-danger" asp-validation-for="Insurance"></span>
                         </div>
                     </div>
 

@@ -38,7 +38,7 @@ namespace DoctorFAM.Domain.ViewModels.Site.Patient
 
         [Display(Name = "نوع بیمه")]
         [Required(ErrorMessage = "لطفا{0} را وارد نمایید...")]
-        public InsuranceType InsuranceType { get; set; }
+        public ulong InsuranceId { get; set; }
 
         [Display(Name = "علت درخواست/ علایم بیمار")]
         [Required(ErrorMessage = "لطفا{0} را وارد نمایید...")]

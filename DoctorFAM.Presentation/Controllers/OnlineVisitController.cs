@@ -96,6 +96,9 @@ namespace DoctorFAM.Web.Controllers
 
             #endregion
 
+            //Send List Of Insurance To The View
+            ViewBag.Insurances = await _siteSettingService.ListOfInsurance();
+
             return View(new PatientDetailForOnlineVisitViewModel()
             {
                 RequestId = requestId,
@@ -162,6 +165,9 @@ namespace DoctorFAM.Web.Controllers
             }
 
             #endregion
+
+            //Send List Of Insurance To The View
+            ViewBag.Insurances = await _siteSettingService.ListOfInsurance();
 
             return View(patient);
         }

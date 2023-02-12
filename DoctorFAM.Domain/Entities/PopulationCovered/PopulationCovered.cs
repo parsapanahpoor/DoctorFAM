@@ -18,6 +18,8 @@ namespace DoctorFAM.Domain.Entities.PopulationCovered
     {
         #region properties
 
+        public ulong? InsuranceId { get; set; }
+
         public ulong UserId { get; set; }
 
         public string PatientName { get; set; }
@@ -40,7 +42,10 @@ namespace DoctorFAM.Domain.Entities.PopulationCovered
 
         #region Relation 
 
+        [ForeignKey("UserId")]
         public User User { get; set; }
+
+        public Insurance.Insurance Insurance { get; set; }
 
         #endregion
     }

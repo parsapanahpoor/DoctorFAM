@@ -401,26 +401,9 @@
 
                                                 <div class="form-group col-md-3 col-sm-12">
                                                     <label>@Localizer["Insurance Type"]</label>
-                                                    @if (item.InsuranceType == DoctorFAM.Domain.Enums.InsuranceType.InsuranceType.Iranian)
-                                                    {
-                                                        <input type="text" class="form-control" readonly value="@SharedLocalizer["Iranian"]">
-                                                    }
-                                                    @if (item.InsuranceType == DoctorFAM.Domain.Enums.InsuranceType.InsuranceType.Tamin)
-                                                    {
-                                                        <input type="text" class="form-control" readonly value="@SharedLocalizer["Tamin"]">
-                                                    }
-                                                    @if (item.InsuranceType == DoctorFAM.Domain.Enums.InsuranceType.InsuranceType.Salamat)
-                                                    {
-                                                        <input type="text" class="form-control" readonly value="@SharedLocalizer["Salamat"]">
-                                                    }
-                                                    @if (item.InsuranceType == DoctorFAM.Domain.Enums.InsuranceType.InsuranceType.FreeJobs)
-                                                    {
-                                                        <input type="text" class="form-control" readonly value="@SharedLocalizer["FreeJobs"]">
-                                                    }
-                                                    @if (item.InsuranceType == DoctorFAM.Domain.Enums.InsuranceType.InsuranceType.Free)
-                                                    {
-                                                        <input type="text" class="form-control" readonly value="@SharedLocalizer["Free"]">
-                                                    }
+
+                                                    <input type="text" class="form-control" readonly value="@item.Insurance.Title">
+                                                
                                                 </div>
 
                                                 <div class="form-group col-md-3 col-sm-12">

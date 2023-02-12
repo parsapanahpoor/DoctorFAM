@@ -172,26 +172,9 @@
 
                                         <div class="form-group col-md-6 col-sm-12">
                                             <label>@Localizer["Insurance Type"]</label>
-                                            @if (Model.Patient.InsuranceType == DoctorFAM.Domain.Enums.InsuranceType.InsuranceType.Free)
-                                            {
-                                                <input type="text" class="form-control" readonly value="@Localizer["Free"]">
-                                            }
-                                            @if (Model.Patient.InsuranceType == DoctorFAM.Domain.Enums.InsuranceType.InsuranceType.Salamat)
-                                            {
-                                                <input type="text" class="form-control" readonly value="@Localizer["Health Insurance"]">
-                                            }
-                                            @if (Model.Patient.InsuranceType == DoctorFAM.Domain.Enums.InsuranceType.InsuranceType.FreeJobs)
-                                            {
-                                                <input type="text" class="form-control" readonly value="@Localizer["بیمه ی آزاد"]">
-                                            }
-                                            @if (Model.Patient.InsuranceType == DoctorFAM.Domain.Enums.InsuranceType.InsuranceType.Iranian)
-                                            {
-                                                <input type="text" class="form-control" readonly value="@Localizer["Iranian health"]">
-                                            }
-                                            @if (Model.Patient.InsuranceType == DoctorFAM.Domain.Enums.InsuranceType.InsuranceType.Tamin)
-                                            {
-                                                <input type="text" class="form-control" readonly value="@Localizer["Social Security"]">
-                                            }
+                                          
+                                                <input type="text" class="form-control" readonly value="@Model.Patient.Insurance.Title">
+                                        
                                         </div>
 
                                         <div class="form-group col-md-12 col-sm-12">

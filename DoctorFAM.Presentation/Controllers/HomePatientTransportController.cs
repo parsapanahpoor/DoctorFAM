@@ -103,6 +103,9 @@ namespace DoctorFAM.Web.Controllers
 
             #endregion
 
+            //Send List Of Insurance To The View
+            ViewBag.Insurances = await _siteSettingService.ListOfInsurance();
+
             return View(new PatientViewModel()
             {
                 RequestId = requestId,
@@ -126,6 +129,9 @@ namespace DoctorFAM.Web.Controllers
                 #region Get User Population Covered
 
                 ViewBag.PopulationCovered = await _populationCovered.GetUserPopulation(User.GetUserId());
+
+                //Send List Of Insurance To The View
+                ViewBag.Insurances = await _siteSettingService.ListOfInsurance();
 
                 #endregion
 
@@ -162,6 +168,9 @@ namespace DoctorFAM.Web.Controllers
             #region Get User Population Covered
 
             ViewBag.PopulationCovered = await _populationCovered.GetUserPopulation(User.GetUserId());
+
+            //Send List Of Insurance To The View
+            ViewBag.Insurances = await _siteSettingService.ListOfInsurance();
 
             #endregion
 

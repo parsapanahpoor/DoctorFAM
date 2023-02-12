@@ -57,7 +57,7 @@ namespace DoctorFAM.Data.Repository
         public async Task<UserSelectedFamilyDoctor?> GetUserSelectedFamilyDoctorByRequestIdWithDoctorAndPatientInformation(ulong requestId)
         {
             return await _context.UserSelectedFamilyDoctor.Include(p=> p.Doctor).Include(p=> p.Patient)
-                                                .ThenInclude(p=> p.PopulationCovered)
+                                                .ThenInclude(p=> p.PopulationCovered).ThenInclude(p=> p.Insurance)
                                                         .FirstOrDefaultAsync(p =>p.Id == requestId);
         }
 

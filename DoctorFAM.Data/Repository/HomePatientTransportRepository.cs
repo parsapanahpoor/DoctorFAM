@@ -106,7 +106,7 @@ namespace DoctorFAM.Data.Repository
 
         public async Task<Patient?> GetPatientByRequestId(ulong requestId)
         {
-            return await _context.Patients.FirstOrDefaultAsync(p => p.RequestId == requestId && !p.IsDelete);
+            return await _context.Patients.Include(p=>p.Insurance).FirstOrDefaultAsync(p => p.RequestId == requestId && !p.IsDelete);
         }
 
         public async Task<PaitientRequestDetail?> GetRequestPatientDetailByRequestId(ulong requestId)
