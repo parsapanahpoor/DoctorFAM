@@ -1,4 +1,6 @@
 ﻿using Academy.Domain.Entities.SiteSetting;
+using DoctorFAM.Convertors.Models.Patient;
+using DoctorFAM.Convertors.Models.PopulationCovered;
 using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Advertisement;
@@ -25,7 +27,6 @@ using DoctorFAM.Domain.Entities.Notification;
 using DoctorFAM.Domain.Entities.Nurse;
 using DoctorFAM.Domain.Entities.OnlineVisit;
 using DoctorFAM.Domain.Entities.Organization;
-using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.PeriodicSelfEvaluatuion;
 using DoctorFAM.Domain.Entities.PeriodicTest;
 using DoctorFAM.Domain.Entities.Pharmacy;
@@ -40,28 +41,41 @@ using DoctorFAM.Domain.Entities.Speciality;
 using DoctorFAM.Domain.Entities.States;
 using DoctorFAM.Domain.Entities.Wallet;
 using DoctorFAM.Domain.Entities.WorkAddress;
-using DoctorFAM.Domain.Enums.PeriodicTestType;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics.Metrics;
+using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace DoctorFAM.Data.DbContext
+namespace DoctorFAM.Convertors.Context
 {
-    public class DoctorFAMDbContext : Microsoft.EntityFrameworkCore.DbContext
+    public class OldContext : DbContext
     {
-        #region Ctor
-
-        public DoctorFAMDbContext(DbContextOptions<DoctorFAMDbContext> options) : base(options)
+        public OldContext()
         {
         }
 
-        #endregion
+        public OldContext(DbContextOptions<OldContext> options)
+            : base(options)
+        {
+        }
+
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlServer("Data Source=DESKTOP-CM9A86V\\MSSQL2019;Initial Catalog=DoctorFAMDb;Integrated Security=True");
+            }
+        }
 
         #region DbSets
 
         #region Account 
 
-        public DbSet<User> Users { get; set; }
+        public virtual DbSet<User> Users { get; set; }
 
         public DbSet<Role> Roles { get; set; }
 
@@ -110,7 +124,7 @@ namespace DoctorFAM.Data.DbContext
 
         public DbSet<ReservationDateTimeCancelation> ReservationDateTimeCancelations { get; set; }
 
-        public DbSet<RequestTransferingPriceFromOperator> TransferingPriceFromOperators{ get; set; }
+        public DbSet<RequestTransferingPriceFromOperator> TransferingPriceFromOperators { get; set; }
 
         public DbSet<HomeVisitRequestDetail> HomeVisitRequestDetails { get; set; }
 
@@ -172,7 +186,7 @@ namespace DoctorFAM.Data.DbContext
 
         #region Population Covered
 
-        public DbSet<PopulationCovered> PopulationCovered { get; set; }
+        public virtual DbSet<Models.PopulationCovered.PopulationCovered> PopulationCovered { get; set; }
 
         #endregion
 
@@ -436,7 +450,7 @@ namespace DoctorFAM.Data.DbContext
 
         #region Insurance
 
-        public DbSet<Insurance> Insurance { get; set; }
+        //public DbSet<Insurance> Insurance { get; set; }
 
         #endregion
 
@@ -453,10 +467,28 @@ namespace DoctorFAM.Data.DbContext
                 relationship.DeleteBehavior = DeleteBehavior.Restrict;
             }
 
-            modelBuilder.Entity<PopulationCovered>()
-             .HasOne(c => c.Insurance)
-             .WithOne(c => c.PopulationCovered)
-             .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<PaitientRequestDetail>()
+           .HasOne(c => c.Patient)
+           .WithMany(c => c.PaitientRequestDetails)
+           .HasForeignKey(c => c.PatientId)
+           .OnDelete(DeleteBehavior.NoAction);
+
+      //      modelBuilder.Entity<PopulationCovered>(entity =>
+      //      {
+      //          entity.HasIndex(e => e.UserId, "IX_PopulationCovered_UserId");
+
+      //          entity.Property(e => e.UserId).HasColumnName("User_Id");
+
+      //          entity.Property(e => e.PatientLastName)
+      //              .IsRequired()
+      //              .HasMaxLength(500);
+      //      });
+
+      //      modelBuilder.Entity<Domain.Entities.PopulationCovered.PopulationCovered>()
+      //.HasOne(c => c.User)
+      //.WithMany(c => c.PopulationCovered)
+      //.HasForeignKey(c => c.PatientId)
+      //.OnDelete(DeleteBehavior.NoAction);
 
             #region Seed Data
 
@@ -1013,45 +1045,45 @@ namespace DoctorFAM.Data.DbContext
 
             #region Insurance Seed Data 
 
-            modelBuilder.Entity<Insurance>().HasData(new Insurance
-            {
-                Id = 1,
-                CreateDate = DateTime.Now,
-                IsDelete = false,
-                Title = "بیمه سلامت"
-            });
+            //modelBuilder.Entity<Insurance>().HasData(new Insurance
+            //{
+            //    Id = 1,
+            //    CreateDate = DateTime.Now,
+            //    IsDelete = false,
+            //    Title = "بیمه سلامت"
+            //});
 
-            modelBuilder.Entity<Insurance>().HasData(new Insurance
-            {
-                Id = 2,
-                CreateDate = DateTime.Now,
-                IsDelete = false,
-                Title = "بیمه ی تامین اجتماعی"
-            });
+            //modelBuilder.Entity<Insurance>().HasData(new Insurance
+            //{
+            //    Id = 2,
+            //    CreateDate = DateTime.Now,
+            //    IsDelete = false,
+            //    Title = "بیمه ی تامین اجتماعی"
+            //});
 
-            modelBuilder.Entity<Insurance>().HasData(new Insurance
-            {
-                Id = 3,
-                CreateDate = DateTime.Now,
-                IsDelete = false,
-                Title = "مشاغل آزاد"
-            });
+            //modelBuilder.Entity<Insurance>().HasData(new Insurance
+            //{
+            //    Id = 3,
+            //    CreateDate = DateTime.Now,
+            //    IsDelete = false,
+            //    Title = "مشاغل آزاد"
+            //});
 
-            modelBuilder.Entity<Insurance>().HasData(new Insurance
-            {
-                Id = 4,
-                CreateDate = DateTime.Now,
-                IsDelete = false,
-                Title = "بیمه ی ایرانیان"
-            });
+            //modelBuilder.Entity<Insurance>().HasData(new Insurance
+            //{
+            //    Id = 4,
+            //    CreateDate = DateTime.Now,
+            //    IsDelete = false,
+            //    Title = "بیمه ی ایرانیان"
+            //});
 
-            modelBuilder.Entity<Insurance>().HasData(new Insurance
-            {
-                Id = 5,
-                CreateDate = DateTime.Now,
-                IsDelete = false,
-                Title = "آزاد"
-            });
+            //modelBuilder.Entity<Insurance>().HasData(new Insurance
+            //{
+            //    Id = 5,
+            //    CreateDate = DateTime.Now,
+            //    IsDelete = false,
+            //    Title = "آزاد"
+            //});
 
             #endregion
 
@@ -1142,7 +1174,7 @@ namespace DoctorFAM.Data.DbContext
                 UniqueName = "فوق تخصص قلب وعروق",
                 UniqueId = 6,
                 ParentId = 5,
-                IsSuperSpecialty= true,
+                IsSuperSpecialty = true,
                 IsSpecialty = false,
                 IsTitle = false
             });

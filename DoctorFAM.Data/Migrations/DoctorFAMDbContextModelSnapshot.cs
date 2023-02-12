@@ -76,7 +76,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SiteSettings");
+                    b.ToTable("SiteSettings", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.DataLayer.Entities.Request", b =>
@@ -117,7 +117,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Requests");
+                    b.ToTable("Requests", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Account.Role", b =>
@@ -149,7 +149,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("ParentId");
 
-                    b.ToTable("Roles");
+                    b.ToTable("Roles", (string)null);
 
                     b.HasData(
                         new
@@ -330,7 +330,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("RolePermissions");
+                    b.ToTable("RolePermissions", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Account.User", b =>
@@ -431,7 +431,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Account.UserRole", b =>
@@ -460,7 +460,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserRoles");
+                    b.ToTable("UserRoles", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Advertisement.CustomerAdvertisement", b =>
@@ -522,7 +522,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CustomerAdvertisement");
+                    b.ToTable("CustomerAdvertisement", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.ASCVD.ASCVD", b =>
@@ -577,7 +577,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ASCVD");
+                    b.ToTable("ASCVD", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.BMI.BMI", b =>
@@ -613,7 +613,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("BMI");
+                    b.ToTable("BMI", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.BMI.GFR", b =>
@@ -655,7 +655,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("GFR");
+                    b.ToTable("GFR", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Consultant.Consultant", b =>
@@ -680,7 +680,7 @@ namespace DoctorFAM.Data.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("consultant");
+                    b.ToTable("consultant", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Consultant.ConsultantInfo", b =>
@@ -720,7 +720,7 @@ namespace DoctorFAM.Data.Migrations
                     b.HasIndex("ConsultantId")
                         .IsUnique();
 
-                    b.ToTable("ConsultantInfos");
+                    b.ToTable("ConsultantInfos", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Consultant.UserSelectedConsultant", b =>
@@ -755,7 +755,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("PatientId");
 
-                    b.ToTable("UserSelectedConsultants");
+                    b.ToTable("UserSelectedConsultants", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Contact.Ticket", b =>
@@ -822,7 +822,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("TargetUserId");
 
-                    b.ToTable("Tickets");
+                    b.ToTable("Tickets", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Contact.TicketMessage", b =>
@@ -858,7 +858,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("TicketId");
 
-                    b.ToTable("TicketMessages");
+                    b.ToTable("TicketMessages", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.CooperationRequest.CooperationRequest", b =>
@@ -892,7 +892,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CooperationRequests");
+                    b.ToTable("CooperationRequests", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.DoctorReservation.DoctorPersonalBooking", b =>
@@ -933,7 +933,7 @@ namespace DoctorFAM.Data.Migrations
                     b.HasIndex("DoctorReservationDateTimeId")
                         .IsUnique();
 
-                    b.ToTable("DoctorPersonalBooking");
+                    b.ToTable("DoctorPersonalBooking", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.DoctorReservation.DoctorReservationDate", b =>
@@ -960,7 +960,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("DoctorReservationDates");
+                    b.ToTable("DoctorReservationDates", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.DoctorReservation.DoctorReservationDateTime", b =>
@@ -1011,7 +1011,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("WorkAddressId");
 
-                    b.ToTable("DoctorReservationDateTimes");
+                    b.ToTable("DoctorReservationDateTimes", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.DoctorReservation.LogForCloseReservation", b =>
@@ -1040,7 +1040,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("LogForCloseReservations");
+                    b.ToTable("LogForCloseReservations", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.DoctorReservation.ReservationDateCancelation", b =>
@@ -1064,7 +1064,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("DoctorReservationDateId");
 
-                    b.ToTable("ReservationDateCancelations");
+                    b.ToTable("ReservationDateCancelations", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.DoctorReservation.ReservationDateTimeCancelation", b =>
@@ -1094,7 +1094,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("ReservationDateCancelationId");
 
-                    b.ToTable("ReservationDateTimeCancelations");
+                    b.ToTable("ReservationDateTimeCancelations", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Doctors.Doctor", b =>
@@ -1119,7 +1119,7 @@ namespace DoctorFAM.Data.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Doctors");
+                    b.ToTable("Doctors", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Doctors.DoctorsInfo", b =>
@@ -1172,7 +1172,7 @@ namespace DoctorFAM.Data.Migrations
                     b.HasIndex("DoctorId")
                         .IsUnique();
 
-                    b.ToTable("DoctorsInfos");
+                    b.ToTable("DoctorsInfos", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Doctors.DoctorsSelectedInterests", b =>
@@ -1201,7 +1201,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("InterestId");
 
-                    b.ToTable("DoctorsSelectedInterests");
+                    b.ToTable("DoctorsSelectedInterests", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Doctors.DoctorsSkils", b =>
@@ -1230,7 +1230,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("DoctorId");
 
-                    b.ToTable("DoctorSkill");
+                    b.ToTable("DoctorSkill", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.DurgAlert.DrugAlert", b =>
@@ -1267,7 +1267,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DrugAlerts");
+                    b.ToTable("DrugAlerts", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.DurgAlert.DrugAlertDetail", b =>
@@ -1297,7 +1297,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("DrugAlertId");
 
-                    b.ToTable("DrugAlertDetails");
+                    b.ToTable("DrugAlertDetails", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.FamilyDoctor.ParsaSystem.LogForSendSMSToUsersIncomeFromParsa", b =>
@@ -1326,7 +1326,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("LogForSendSMSToUsersIncomeFromParsa");
+                    b.ToTable("LogForSendSMSToUsersIncomeFromParsa", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.FamilyDoctor.ParsaSystem.RequestForUploadExcelFileFromDoctorsToSite", b =>
@@ -1355,7 +1355,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RequestForUploadExcelFileFromDoctorsToSite");
+                    b.ToTable("RequestForUploadExcelFileFromDoctorsToSite", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.FamilyDoctor.ParsaSystem.UserInsertedFromParsaSystem", b =>
@@ -1407,7 +1407,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("DoctorUserId");
 
-                    b.ToTable("UserInsertedFromParsaSystems");
+                    b.ToTable("UserInsertedFromParsaSystems", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.FamilyDoctor.UserSelectedFamilyDoctor", b =>
@@ -1442,7 +1442,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("PatientId");
 
-                    b.ToTable("UserSelectedFamilyDoctor");
+                    b.ToTable("UserSelectedFamilyDoctor", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.FamilyDoctor.VIPSystem.DoctorsLabelsForVIPInsertedDoctor", b =>
@@ -1468,7 +1468,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DoctorsLabelsForVIPInsertedDoctor");
+                    b.ToTable("DoctorsLabelsForVIPInsertedDoctor", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.FamilyDoctor.VIPSystem.LabelOfVIPDoctorInsertedPatient", b =>
@@ -1497,7 +1497,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("VIPUserInsertedFromDoctorSystemId");
 
-                    b.ToTable("LabelOfVIPDoctorInsertedPatient");
+                    b.ToTable("LabelOfVIPDoctorInsertedPatient", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.FamilyDoctor.VIPSystem.LogForSendSMSToVIPUsersIncomeFromDoctorSystem", b =>
@@ -1523,7 +1523,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("LogForSendSMSToVIPUsersIncomeFromDoctorSystem");
+                    b.ToTable("LogForSendSMSToVIPUsersIncomeFromDoctorSystem", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.FamilyDoctor.VIPSystem.VIPUserInsertedFromDoctorSystem", b =>
@@ -1564,7 +1564,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("VIPUserInsertedFromDoctorSystem");
+                    b.ToTable("VIPUserInsertedFromDoctorSystem", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.FollowAndUnFollow.Follow", b =>
@@ -1589,7 +1589,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Follow");
+                    b.ToTable("Follow", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.HealthInformation.HealthInformation", b =>
@@ -1656,7 +1656,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("OwnerId");
 
-                    b.ToTable("HealthInformation");
+                    b.ToTable("HealthInformation", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.HealthInformation.HealthInformationTag", b =>
@@ -1684,7 +1684,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("HealthInformationId");
 
-                    b.ToTable("HealthInformationTags");
+                    b.ToTable("HealthInformationTags", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.HealthInformation.RadioFAMCategory", b =>
@@ -1716,7 +1716,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("ParentId");
 
-                    b.ToTable("RadioFAMCategories");
+                    b.ToTable("RadioFAMCategories", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.HealthInformation.RadioFAMCategoryInfo", b =>
@@ -1751,7 +1751,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("RadioFAMCategoryId");
 
-                    b.ToTable("RadioFAMCategoryInfos");
+                    b.ToTable("RadioFAMCategoryInfos", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.HealthInformation.RadioFAMSelectedCategory", b =>
@@ -1780,7 +1780,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("RadioFAMCategoryId");
 
-                    b.ToTable("RadioFAMSelectedCategories");
+                    b.ToTable("RadioFAMSelectedCategories", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.HealthInformation.TVFAMCategory", b =>
@@ -1812,7 +1812,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("ParentId");
 
-                    b.ToTable("TVFAMCategories");
+                    b.ToTable("TVFAMCategories", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.HealthInformation.TVFAMCategoryInfo", b =>
@@ -1847,7 +1847,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("TVFAMCategoryId");
 
-                    b.ToTable("TVFAMCategoryInfos");
+                    b.ToTable("TVFAMCategoryInfos", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.HealthInformation.TVFAMSelectedCategory", b =>
@@ -1876,7 +1876,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("TVFAMCategoryId");
 
-                    b.ToTable("TVFAMSelectedCategories");
+                    b.ToTable("TVFAMSelectedCategories", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Insurance.Insurance", b =>
@@ -1899,7 +1899,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Insurance");
+                    b.ToTable("Insurance", (string)null);
 
                     b.HasData(
                         new
@@ -1964,7 +1964,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BloodPressureConsultantResumes");
+                    b.ToTable("BloodPressureConsultantResumes", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Interest.DiabetConsultantsResume", b =>
@@ -1992,7 +1992,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DiabetConsultantsResumes");
+                    b.ToTable("DiabetConsultantsResumes", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Interest.DoctorsInterest", b =>
@@ -2011,7 +2011,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Interests");
+                    b.ToTable("Interests", (string)null);
 
                     b.HasData(
                         new
@@ -2084,7 +2084,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("LanguageId");
 
-                    b.ToTable("InterestInfos");
+                    b.ToTable("InterestInfos", (string)null);
 
                     b.HasData(
                         new
@@ -2337,7 +2337,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("LanguageId");
 
-                    b.ToTable("PharmacyInterestInfos");
+                    b.ToTable("PharmacyInterestInfos", (string)null);
 
                     b.HasData(
                         new
@@ -2394,7 +2394,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PharmacyInterests");
+                    b.ToTable("PharmacyInterests", (string)null);
 
                     b.HasData(
                         new
@@ -2443,7 +2443,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("RequestId");
 
-                    b.ToTable("HomeLaboratoryRequestDetails");
+                    b.ToTable("HomeLaboratoryRequestDetails", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Laboratory.Laboratory", b =>
@@ -2468,7 +2468,7 @@ namespace DoctorFAM.Data.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Laboratory");
+                    b.ToTable("Laboratory", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Laboratory.LaboratoryInfo", b =>
@@ -2508,7 +2508,7 @@ namespace DoctorFAM.Data.Migrations
                     b.HasIndex("LaboratoryId")
                         .IsUnique();
 
-                    b.ToTable("LaboratoryInfos");
+                    b.ToTable("LaboratoryInfos", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Languages.Language", b =>
@@ -2527,7 +2527,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasKey("SystemName");
 
-                    b.ToTable("languages");
+                    b.ToTable("languages", (string)null);
 
                     b.HasData(
                         new
@@ -2582,7 +2582,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("ParentId");
 
-                    b.ToTable("Category");
+                    b.ToTable("Category", (string)null);
 
                     b.HasData(
                         new
@@ -2633,7 +2633,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("LanguageId");
 
-                    b.ToTable("CategoryInfos");
+                    b.ToTable("CategoryInfos", (string)null);
 
                     b.HasData(
                         new
@@ -2758,7 +2758,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("News");
+                    b.ToTable("News", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.News.NewsCategory", b =>
@@ -2795,7 +2795,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("ParentId");
 
-                    b.ToTable("NewsCategories");
+                    b.ToTable("NewsCategories", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.News.NewsComment", b =>
@@ -2837,7 +2837,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("NewsComments");
+                    b.ToTable("NewsComments", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.News.NewsSelectedCategory", b =>
@@ -2866,7 +2866,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("NewsId");
 
-                    b.ToTable("NewsSelectedCategory");
+                    b.ToTable("NewsSelectedCategory", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.News.NewsTag", b =>
@@ -2895,7 +2895,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("NewsId");
 
-                    b.ToTable("NewsTags");
+                    b.ToTable("NewsTags", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Notification.SupporterNotification", b =>
@@ -2937,7 +2937,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("SupporterNotification");
+                    b.ToTable("SupporterNotification", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Nurse.Nurse", b =>
@@ -2962,7 +2962,7 @@ namespace DoctorFAM.Data.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Nurses");
+                    b.ToTable("Nurses", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Nurse.NurseInfo", b =>
@@ -3002,7 +3002,7 @@ namespace DoctorFAM.Data.Migrations
                     b.HasIndex("NurseId")
                         .IsUnique();
 
-                    b.ToTable("NurseInfo");
+                    b.ToTable("NurseInfo", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.OnlineVisit.OnlineVisitRequestDetail", b =>
@@ -3036,7 +3036,7 @@ namespace DoctorFAM.Data.Migrations
                     b.HasIndex("RequestId")
                         .IsUnique();
 
-                    b.ToTable("OnlineVisitRequestDetails");
+                    b.ToTable("OnlineVisitRequestDetails", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Organization.Organization", b =>
@@ -3069,7 +3069,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("OwnerId");
 
-                    b.ToTable("Organizations");
+                    b.ToTable("Organizations", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Organization.OrganizationMember", b =>
@@ -3098,7 +3098,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("OrganizationMembers");
+                    b.ToTable("OrganizationMembers", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Patient.Patient", b =>
@@ -3157,7 +3157,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Patients");
+                    b.ToTable("Patients", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.PeriodicSelfEvaluatuion.DiabetRiskFactorQuestions", b =>
@@ -3180,7 +3180,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DiabetRiskFactorQuestions");
+                    b.ToTable("DiabetRiskFactorQuestions", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.PeriodicTest.PeriodicTest", b =>
@@ -3210,7 +3210,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PeriodicTests");
+                    b.ToTable("PeriodicTests", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.PeriodicTest.UserPeriodicTest", b =>
@@ -3246,7 +3246,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("PeriodicTestId");
 
-                    b.ToTable("UserPeriodicTests");
+                    b.ToTable("UserPeriodicTests", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Pharmacy.HomePharmacyRequestDetail", b =>
@@ -3291,7 +3291,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("RequestId");
 
-                    b.ToTable("HomePharmacyRequestDetails");
+                    b.ToTable("HomePharmacyRequestDetails", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Pharmacy.HomePharmacyRequestDetailPrice", b =>
@@ -3326,7 +3326,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("SellerId");
 
-                    b.ToTable("HomePharmacyRequestDetailPrices");
+                    b.ToTable("HomePharmacyRequestDetailPrices", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Pharmacy.Pharmacy", b =>
@@ -3351,7 +3351,7 @@ namespace DoctorFAM.Data.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Pharmacies");
+                    b.ToTable("Pharmacies", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Pharmacy.PharmacyInfo", b =>
@@ -3380,7 +3380,7 @@ namespace DoctorFAM.Data.Migrations
                     b.HasIndex("PharmacyId")
                         .IsUnique();
 
-                    b.ToTable("PharmacyInfos");
+                    b.ToTable("PharmacyInfos", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Pharmacy.PharmacySelectedInterests", b =>
@@ -3409,7 +3409,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("PharmacyId");
 
-                    b.ToTable("PharmacySelectedInterests");
+                    b.ToTable("PharmacySelectedInterests", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.PopulationCovered.PopulationCovered", b =>
@@ -3460,7 +3460,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("PopulationCovered");
+                    b.ToTable("PopulationCovered", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.PriodicExamination.MedicalExamination", b =>
@@ -3487,7 +3487,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MedicalExaminations");
+                    b.ToTable("MedicalExaminations", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.PriodicExamination.PriodicPatientsExamination", b =>
@@ -3527,7 +3527,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("MedicalExaminationId");
 
-                    b.ToTable("PriodicPatientsExamination");
+                    b.ToTable("PriodicPatientsExamination", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Product.Product", b =>
@@ -3593,7 +3593,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Product.ProductFeature", b =>
@@ -3627,7 +3627,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("ProductID");
 
-                    b.ToTable("ProductFeatures");
+                    b.ToTable("ProductFeatures", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Product.ProductGallery", b =>
@@ -3661,7 +3661,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("ProductID");
 
-                    b.ToTable("ProductGalleries");
+                    b.ToTable("ProductGalleries", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Product.ProductSelectedCategory", b =>
@@ -3690,7 +3690,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("ProductID");
 
-                    b.ToTable("ProductSelectedCategories");
+                    b.ToTable("ProductSelectedCategories", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Product.ProductsTags", b =>
@@ -3718,7 +3718,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductsTags");
+                    b.ToTable("ProductsTags", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Requests.HomeVisitRequestDetail", b =>
@@ -3749,7 +3749,7 @@ namespace DoctorFAM.Data.Migrations
                     b.HasIndex("RequestId")
                         .IsUnique();
 
-                    b.ToTable("HomeVisitRequestDetails");
+                    b.ToTable("HomeVisitRequestDetails", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Requests.LogForDeclineHomeVisitRequestFromUser", b =>
@@ -3778,7 +3778,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("RequestId");
 
-                    b.ToTable("LogForDeclineHomeVisitRequestFromUser");
+                    b.ToTable("LogForDeclineHomeVisitRequestFromUser", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Requests.PaitientRequestDetail", b =>
@@ -3841,7 +3841,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("StateId");
 
-                    b.ToTable("PaitientRequestDetails");
+                    b.ToTable("PaitientRequestDetails", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Requests.PatientRequestDateTimeDetail", b =>
@@ -3875,7 +3875,7 @@ namespace DoctorFAM.Data.Migrations
                     b.HasIndex("RequestId")
                         .IsUnique();
 
-                    b.ToTable("PatientRequestDateTimeDetails");
+                    b.ToTable("PatientRequestDateTimeDetails", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Requests.RequestSelectedHealthHouseTariff", b =>
@@ -3904,7 +3904,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("TariffForHealthHouseServiceId");
 
-                    b.ToTable("RequestSelectedHealthHouseTariff");
+                    b.ToTable("RequestSelectedHealthHouseTariff", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Requests.RequestTransferingPriceFromOperator", b =>
@@ -3931,7 +3931,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("RequestId");
 
-                    b.ToTable("TransferingPriceFromOperators");
+                    b.ToTable("TransferingPriceFromOperators", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Resume.CertificateResume", b =>
@@ -3975,7 +3975,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("ResumeId");
 
-                    b.ToTable("CertificateResume");
+                    b.ToTable("CertificateResume", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Resume.EducationResume", b =>
@@ -4024,7 +4024,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("ResumeId");
 
-                    b.ToTable("EducationResume");
+                    b.ToTable("EducationResume", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Resume.GalleryResume", b =>
@@ -4057,7 +4057,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("ResumeId");
 
-                    b.ToTable("GalleryResume");
+                    b.ToTable("GalleryResume", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Resume.Honors", b =>
@@ -4096,7 +4096,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("ResumeId");
 
-                    b.ToTable("Honors");
+                    b.ToTable("Honors", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Resume.Resume", b =>
@@ -4127,7 +4127,7 @@ namespace DoctorFAM.Data.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Resumes");
+                    b.ToTable("Resumes", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Resume.ResumeAboutMe", b =>
@@ -4156,7 +4156,7 @@ namespace DoctorFAM.Data.Migrations
                     b.HasIndex("ResumeId")
                         .IsUnique();
 
-                    b.ToTable("ResumeAboutMe");
+                    b.ToTable("ResumeAboutMe", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Resume.ServiceResume", b =>
@@ -4185,7 +4185,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("ResumeId");
 
-                    b.ToTable("ServiceResume");
+                    b.ToTable("ServiceResume", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Resume.WorkHistoryResume", b =>
@@ -4231,7 +4231,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("ResumeId");
 
-                    b.ToTable("WorkHistoryResume");
+                    b.ToTable("WorkHistoryResume", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Resume.WorkingAddressResume", b =>
@@ -4274,7 +4274,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("ResumeId");
 
-                    b.ToTable("WorkingAddressResume");
+                    b.ToTable("WorkingAddressResume", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.SelfAssessment.BloodPressureSelfAssessment", b =>
@@ -4305,7 +4305,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BloodPressureSelfAssessments");
+                    b.ToTable("BloodPressureSelfAssessments", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.SelfAssessment.DiabetSelfAssessment", b =>
@@ -4336,7 +4336,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DiabetSelfAssessments");
+                    b.ToTable("DiabetSelfAssessments", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.SiteSetting.EmailSetting", b =>
@@ -4389,7 +4389,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("EmailSettings");
+                    b.ToTable("EmailSettings", (string)null);
 
                     b.HasData(
                         new
@@ -4443,7 +4443,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TariffForHealthHouseServices");
+                    b.ToTable("TariffForHealthHouseServices", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Speciality.DoctorSelectedSpeciality", b =>
@@ -4470,7 +4470,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("DoctorId");
 
-                    b.ToTable("DoctorSelectedSpeciality");
+                    b.ToTable("DoctorSelectedSpeciality", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Speciality.Speciality", b =>
@@ -4511,7 +4511,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("ParentId");
 
-                    b.ToTable("Specialities");
+                    b.ToTable("Specialities", (string)null);
 
                     b.HasData(
                         new
@@ -4641,7 +4641,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("SpecialityId");
 
-                    b.ToTable("SpecialtiyInfos");
+                    b.ToTable("SpecialtiyInfos", (string)null);
 
                     b.HasData(
                         new
@@ -4978,7 +4978,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("ParentId");
 
-                    b.ToTable("Locations");
+                    b.ToTable("Locations", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.States.LocationInfo", b =>
@@ -5013,7 +5013,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("LocationId");
 
-                    b.ToTable("LocationInfoes");
+                    b.ToTable("LocationInfoes", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Wallet.Wallet", b =>
@@ -5062,7 +5062,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Wallets");
+                    b.ToTable("Wallets", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.Wallet.WalletData", b =>
@@ -5099,7 +5099,7 @@ namespace DoctorFAM.Data.Migrations
                     b.HasIndex("WalletId")
                         .IsUnique();
 
-                    b.ToTable("WalletData");
+                    b.ToTable("WalletData", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.Domain.Entities.WorkAddress.WorkAddress", b =>
@@ -5142,7 +5142,7 @@ namespace DoctorFAM.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("WorkAddresses");
+                    b.ToTable("WorkAddresses", (string)null);
                 });
 
             modelBuilder.Entity("DoctorFAM.DataLayer.Entities.Request", b =>

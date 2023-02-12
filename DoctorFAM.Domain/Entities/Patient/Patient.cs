@@ -33,6 +33,8 @@ namespace DoctorFAM.Domain.Entities.Patient
 
         public int Age { get; set; }
 
+        public InsuranceType InsuranceType { get; set; }
+
         public string RequestDescription { get; set; }
 
         public ulong? RequestId { get; set; }

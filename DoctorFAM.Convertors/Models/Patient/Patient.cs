@@ -4,7 +4,6 @@ using DoctorFAM.Domain.Entities.Common;
 using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Enums.Gender;
 using DoctorFAM.Domain.Enums.InsuranceType;
-using DoctorFAM.Domain.Enums.Population_Covered;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -12,13 +11,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DoctorFAM.Domain.Entities.PopulationCovered
+namespace DoctorFAM.Convertors.Models.Patient
 {
-    public class PopulationCovered : BaseEntity
+    public class Patient : BaseEntity
     {
         #region properties
-
-        public ulong InsuranceId { get; set; }
 
         public ulong UserId { get; set; }
 
@@ -34,18 +31,20 @@ namespace DoctorFAM.Domain.Entities.PopulationCovered
 
         public InsuranceType InsuranceType { get; set; }
 
-        public Ratio Ratio { get; set; }
+        public string RequestDescription { get; set; }
 
-        public DateTime BirthDay { get; set; }
+        public ulong? RequestId { get; set; }
 
         #endregion
 
         #region Relation 
 
-        [ForeignKey("UserId")]
+        [ForeignKey("RequestId")]
+        public Request Request { get; set; }
+
         public User User { get; set; }
 
-        public Insurance.Insurance Insurance { get; set; }
+        public ICollection<PaitientRequestDetail> PaitientRequestDetails { get; set; }
 
         #endregion
     }
