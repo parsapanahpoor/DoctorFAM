@@ -115,6 +115,9 @@ namespace DoctorFAM.Web.Controllers
 
             if (populationCoveredId != null && populationCoveredId.HasValue)
             {
+                //Send List Of Insurance To The View
+                ViewBag.Insurances = await _siteSettingService.ListOfInsurance();
+
                 //Fill Page Model From Selected Population Covered Data
                 var mode = await _deathCertificateService.FillPatientViewModelFromSelectedPopulationCoveredData(populationCoveredId.Value, requestId, User.GetUserId());
                 if (mode == null) return NotFound();

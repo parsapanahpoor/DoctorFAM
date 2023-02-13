@@ -83,14 +83,7 @@
                                     {
                                         foreach (var item in insurances)
                                         {
-                                            if (Model.InsuranceId == item.Id)
-                                            {
-                                                <option value="@item.Id" selected="selected">@item.Title</option>
-                                            }
-                                            else
-                                            {
                                                 <option value="@item.Id">@item.Title</option>
-                                            }
                                         }
                                     }
 
