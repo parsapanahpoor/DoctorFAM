@@ -61,6 +61,13 @@ public static class Messages
             $"باعرض سلام . {Environment.NewLine} درخواست پزشک خانواده ی شما توسط پزشک موردنطر رد شده است . {Environment.NewLine} {PathTools.SiteFarsiName}";
     }
 
+    //Send SMS For Accepted Request From Nurse 
+    public static string SendSMSForAcceptedRequestFromNurse()
+    {
+        return
+            $"باعرض سلام . {Environment.NewLine} درخواست شما برای پرستار از سمت پرستار تایید شده است. . {Environment.NewLine} {PathTools.SiteFarsiName}";
+    }
+
     //Send SMS For Accept Online Visit Request From Doctor  
     public static string SendSMSForAcceptOnlineVisitRequestFromDoctor()
     {
