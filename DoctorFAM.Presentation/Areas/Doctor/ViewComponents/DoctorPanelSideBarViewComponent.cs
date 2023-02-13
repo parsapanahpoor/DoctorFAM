@@ -1,5 +1,6 @@
 ﻿using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Services.Interfaces;
+using DoctorFAM.Domain.Entities.Account;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DoctorFAM.Web.Areas.UserPanel.ViewComponents
@@ -34,16 +35,35 @@ namespace DoctorFAM.Web.Areas.UserPanel.ViewComponents
         #region Ctor
 
         public IDoctorsService _doctorService;
+        private readonly IOrganizationService _organizationService;
 
-        public DoctorPanelSideBarInIndexViewComponent(IDoctorsService doctorService)
+        public DoctorPanelSideBarInIndexViewComponent(IDoctorsService doctorService, IOrganizationService organizationService)
         {
             _doctorService = doctorService;
+            _organizationService = organizationService;
         }
 
         #endregion
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
+            #region Check Owner Of Organization
+
+            var organization = await _organizationService.GetOrganizationByUserId(User.GetUserId());
+            if (organization is not null)
+            {
+                if (organization.OwnerId == User.GetUserId())
+                {
+                    ViewBag.DoctorIncoming = true;
+                }
+                else
+                {
+                    ViewBag.DoctorIncoming = false;
+                }
+            }
+
+            #endregion
+
             return View("DoctorPanelSideBarInIndex", await _doctorService.GetDoctorsSideBarInfo(User.GetUserId()));
         }
     }

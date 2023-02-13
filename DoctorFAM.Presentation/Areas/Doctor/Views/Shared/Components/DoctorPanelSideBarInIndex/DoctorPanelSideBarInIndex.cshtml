@@ -1,8 +1,11 @@
 ﻿@model DoctorFAM.Domain.ViewModels.DoctorPanel.DosctorSideBarInfo.DoctorSideBarViewModel
 
+@{
+    bool doctorLogin = ViewBag.DoctorIncoming;
+}
+
 @if (Model.DoctorInfoState == "Accepted")
 {
-
     <div class="page-body">
 
         <div class="row text-center align-Item-center">
@@ -43,14 +46,17 @@
             <div class="col-lg-6 col-sm-6 col-xs-12">
                 <div class="row">
 
-                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview">
-                        <a asp-area="Doctor" asp-controller="Account" asp-action="FilterEmployees" class="btn btn-info  btn-circle btn-lg"><i class="fa fa-user-plus"></i></a>
-                        <p class="text-center justify-content-center" style="font-size:12PX;"> کارکنان </p>
-                    </div>
+                    @if (doctorLogin)
+                    {
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview">
+                            <a asp-area="Doctor" asp-controller="Account" asp-action="FilterEmployees" class="btn btn-info  btn-circle btn-lg"><i class="fa fa-user-plus"></i></a>
+                            <p class="text-center justify-content-center" style="font-size:12PX;"> کارکنان </p>
+                        </div>
 
-                    @await Component.InvokeAsync("DoctorsResumeStateBadgeInIndex")
+                        @await Component.InvokeAsync("DoctorsResumeStateBadgeInIndex")
 
-                    @await Component.InvokeAsync("DoctorsInfosBadgeIndexView")
+                        @await Component.InvokeAsync("DoctorsInfosBadgeIndexView")
+                    }
 
                 </div>
             </div>
