@@ -183,6 +183,13 @@ namespace DoctorFAM.Data.Repository
             return filter;
         }
 
+        //Get Lastest Family Doctor Request For Current Doctor 
+        public async Task<List<UserSelectedFamilyDoctor>> GetLastestFamilyDoctorRequestForCurrentDoctor(ulong doctorId)
+        {
+            return await _context.UserSelectedFamilyDoctor.Where(p => !p.IsDelete && p.DoctorId == doctorId && p.FamilyDoctorRequestState == FamilyDoctorRequestState.WaitingForConfirm)
+                                                                        .OrderByDescending(p=> p.CreateDate).ToListAsync();
+        }
+
         #endregion
 
         #region Admin And Supporter Side 

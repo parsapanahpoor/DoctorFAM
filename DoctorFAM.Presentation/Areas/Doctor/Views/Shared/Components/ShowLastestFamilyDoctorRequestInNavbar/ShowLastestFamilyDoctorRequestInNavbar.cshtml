@@ -1,0 +1,49 @@
+﻿@model DoctorFAM.Domain.ViewModels.DoctorPanel.NavBar.LastestFamilyDoctorRequestForShowInNavBarViewModel
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+
+@if(Model.HasAccessForShow)
+{
+    <li class="" style="margin-right: 20px;">
+        <a class="dropdown-toggle" data-toggle="dropdown" title="Mails" href="#" aria-expanded="false">
+            <i class="icon glyphicon glyphicon-download-alt"></i>
+            <span class="badge">@Model.RequestCount</span>
+        </a>
+        <!--Messages Dropdown-->
+        <ul class="pull-right dropdown-menu dropdown-arrow dropdown-messages">
+            <li class="dropdown-header bordered-darkorange">
+                <i class="fa fa-users"></i>
+                آخرین درخواست های پزشک خانواده
+            </li>
+            @if (Model.Detail != null && Model.Detail.Any())
+            {
+                @foreach (var detail in Model.Detail)
+                {
+                    <li>
+                        <a href="#">
+                            <img src="@detail.Users.GetUserAvatar()" class="message-avatar">
+                            <div class="message">
+
+                                <span class="message-sender">@detail.Users.Username </span>
+                             
+
+                                <span class="message-time">
+                                    @detail.DateTimes.ToShamsi()
+                                </span>
+                            </div>
+                        </a>
+
+                    </li>
+                }
+
+            }
+            <li class="dropdown-footer">
+                <a asp-area="Doctor" asp-controller="PopulationCovered" asp-action="FilterPopulationCovered">
+                    نمایش تمام درخواست ها
+                </a>
+            </li>
+
+        </ul>
+        <!--/Messages Dropdown-->
+    </li>
+}

@@ -45,6 +45,9 @@ namespace DoctorFAM.Domain.Interfaces
         //List Of Current Doctor Population Covered Users
         Task<ListOfDoctorPopulationCoveredViewModel> FilterCurrentDoctorPopulationCovered(ListOfDoctorPopulationCoveredViewModel filter);
 
+        //Get Lastest Family Doctor Request For Current Doctor 
+        Task<List<UserSelectedFamilyDoctor>> GetLastestFamilyDoctorRequestForCurrentDoctor(ulong doctorId);
+
         #endregion
 
         #region Admin And Supporter Side 

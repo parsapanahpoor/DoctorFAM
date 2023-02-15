@@ -111,7 +111,7 @@
                                         <div class="form-group">
                                             @Localizer["Office Phone"]
                                             <span class="input-icon icon-right">                                                
-                                                <input type="text" readonly class="form-control" value="@Model.User.Mobile" placeholder="@Localizer["Extra Phone"]">
+                                                <input type="text" readonly class="form-control" value="@((string.IsNullOrEmpty(Model.DoctorsInfo.ClinicPhone)) ? "وارد نشده است" : Model.DoctorsInfo.ClinicPhone)" placeholder="@Localizer["Extra Phone"]">
                                                 <i class="glyphicon glyphicon-earphone yellow"></i>
                                                 
                                             </span>
