@@ -275,5 +275,14 @@ namespace DoctorFAM.Web.Controllers
         }
 
         #endregion
+
+        #region Cancel Payment
+
+        public async Task<IActionResult> CancelPayment()
+        {
+            return View();
+        }
+
+        #endregion
     }
 }

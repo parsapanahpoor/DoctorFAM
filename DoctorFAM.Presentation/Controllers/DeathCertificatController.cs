@@ -298,7 +298,7 @@ namespace DoctorFAM.Web.Controllers
             {
                 case CreatePatientAddressResult.Success:
                     TempData[SuccessMessage] = "عملیات با موفقیت انجام شده است ";
-                    return RedirectToAction("RequestFeatures", "DeathCertificat", new { requestId = patientRequest.RequestId });
+                    return RedirectToAction("DeathCertificateInvoice", "DeathCertificat", new { requestId = patientRequest.RequestId });
 
                 case CreatePatientAddressResult.Failed:
                     TempData[ErrorMessage] = "عملیات با شکست مواجه شده است ";
@@ -321,94 +321,6 @@ namespace DoctorFAM.Web.Controllers
 
             return View(patientRequest);
         }
-
-        #endregion
-
-        #region Request Features
-
-        #region Request Features
-
-        [HttpGet]
-        public async Task<IActionResult> RequestFeatures(ulong requestId)
-        {
-            #region Get Request By Id
-
-            var request = await _requestService.GetRequestById(requestId);
-            if (request == null) return NotFound();
-
-            if (!await _patientService.IsExistPatientById(request.PatientId.Value) || request.UserId != User.GetUserId())
-            {
-                return NotFound();
-            }
-
-            #endregion
-
-            #region Initial Model
-
-            var model = await _deathCertificateService.FillRequestSeletedFeaturesViewModel(requestId);
-
-            #endregion
-
-            return View(model);
-        }
-
-        #endregion
-
-        #region Add Feature For Request
-
-        [HttpGet]
-        public async Task<IActionResult> AddFeatureForRequest(ulong featureId, ulong requestId, bool plus, bool minus)
-        {
-            #region Get Request By Id
-
-            var request = await _requestService.GetRequestById(requestId);
-            if (request == null)
-            {
-                TempData[ErrorMessage] = ".اطلاعات وارد شده صحیح نمی باشد";
-                return RedirectToAction(nameof(RequestFeatures), new { requestId = requestId });
-            }
-
-            if (!await _patientService.IsExistPatientById(request.PatientId.Value) || request.UserId != User.GetUserId())
-            {
-                TempData[ErrorMessage] = ".اطلاعات وارد شده صحیح نمی باشد";
-                return RedirectToAction(nameof(RequestFeatures), new { requestId = requestId });
-            }
-
-            #endregion
-
-            #region Plus Method 
-
-            if (plus)
-            {
-                var res = await _deathCertificateService.AddFeatureForRequestSelectedFeatures(requestId, featureId);
-                if (res)
-                {
-                    TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
-                    return RedirectToAction(nameof(RequestFeatures), new { requestId = requestId });
-                }
-            }
-
-            #endregion
-
-            #region Minus Method 
-
-            if (minus)
-            {
-                var res = await _deathCertificateService.MinusFeatureForRequestSelectdeFeatures(requestId, featureId);
-                if (res)
-                {
-                    TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
-                    return RedirectToAction(nameof(RequestFeatures), new { requestId = requestId });
-                }
-            }
-
-            #endregion
-
-            TempData[ErrorMessage] = ".اطلاعات وارد شده صحیح نمی باشد";
-            return RedirectToAction(nameof(RequestFeatures), new { requestId = requestId });
-        }
-
-        #endregion
 
         #endregion
 
@@ -617,8 +529,8 @@ namespace DoctorFAM.Web.Controllers
                     {
                         string errorscode = jo["errors"]["code"].ToString();
 
-                        return BadRequest($"error code {errorscode}");
-
+                        //return BadRequest($"error code {errorscode}");
+                        return RedirectToAction("CancelPayment", "Home");
                     }
                 }
             }

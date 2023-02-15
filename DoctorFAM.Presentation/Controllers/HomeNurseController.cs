@@ -597,8 +597,8 @@ namespace DoctorFAM.Web.Controllers
                     {
                         string errorscode = jo["errors"]["code"].ToString();
 
-                        return BadRequest($"error code {errorscode}");
-
+                        //return BadRequest($"error code {errorscode}");
+                        return RedirectToAction("CancelPayment", "Home");
                     }
                 }
             }
