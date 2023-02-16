@@ -35,7 +35,7 @@ namespace DoctorFAM.Web.Controllers
         public DiabetController(IBMIService bmiService, ILocationService locationService, IDoctorsService doctorsService
                                     , IMedicalExaminationService medicalExamination, IDrugAlertService drugAlertService
                                         , IPeriodicTestService periodicTestService, IPeriodicSelftEvaluationService periodicSelftEvaluationService
-                                            , ISelfAssessmentService selfAssessmentService , IASCVDService ascvdService)
+                                            , ISelfAssessmentService selfAssessmentService, IASCVDService ascvdService)
         {
             _bmiService = bmiService;
             _locationService = locationService;
@@ -61,7 +61,7 @@ namespace DoctorFAM.Web.Controllers
 
         #region Index Page Of Diabet Part
 
-        public IActionResult Index(int? bmiResult, decimal? gfrResult, decimal? selfAssessment , int? ascvdResult , int? ascvdStatus )
+        public IActionResult Index(int? bmiResult, decimal? gfrResult, decimal? selfAssessment, int? ascvdResult, int? ascvdStatus)
         {
             #region Send BMI && GFR Result To View 
 
@@ -82,7 +82,7 @@ namespace DoctorFAM.Web.Controllers
 
             if (ascvdResult.HasValue)
             {
-                ViewBag.ascvdPredicResult = ascvdResult.Value; 
+                ViewBag.ascvdPredicResult = ascvdResult.Value;
             }
 
             if (ascvdStatus.HasValue)
@@ -145,6 +145,24 @@ namespace DoctorFAM.Web.Controllers
 
         #region ASCVD
 
+        #region ASCVD Page
+
+        [Authorize]
+        public async Task<IActionResult> ASCVD(int? ascvdResult, int? ascvdStatus)
+        {
+            if (ascvdResult.HasValue)
+            {
+                ViewBag.ascvdPredicResult = ascvdResult.Value;
+            }
+
+            if (ascvdStatus.HasValue)
+            {
+                ViewBag.ascvdStatusResult = ascvdStatus.Value;
+            }
+            return View();
+        }
+        #endregion
+
         #region Show ASCVD Modal 
 
         [HttpGet("/Show-Diabet-Page-ASCVD-Modal")]
@@ -164,46 +182,46 @@ namespace DoctorFAM.Web.Controllers
 
             if (!ModelState.IsValid)
             {
-                TempData[ErrorMessage]= "اطلاعات وارد شده صحیح نمی باشد.";
-                return RedirectToAction(nameof(Index)) ;
+                TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+                return RedirectToAction(nameof(ASCVD));
             }
 
             #endregion
 
             #region Process ASCVD
 
-            var res = await _ascvdService.ProcessASCVD(model , ((User.Identity.IsAuthenticated) ? User.GetUserId() : null));
+            var res = await _ascvdService.ProcessASCVD(model, ((User.Identity.IsAuthenticated) ? User.GetUserId() : null));
 
             if (res == null)
             {
                 TempData[ErrorMessage] = "اطلاعات به درستی وارد نشده است.";
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(ASCVD));
             }
             else
             {
                 if (res.ASCVDStatus == Domain.Enums.ASCVD.ASCVDStatus.LowRisk)
                 {
                     TempData[SuccessMessage] = "محاسبه با موفقیت انجام شده است.";
-                    return RedirectToAction(nameof(Index), new { ascvdResult = res.Predic , ascvdStatus = 1 });
+                    return RedirectToAction(nameof(ASCVD), new { ascvdResult = res.Predic, ascvdStatus = 1 });
                 }
                 if (res.ASCVDStatus == Domain.Enums.ASCVD.ASCVDStatus.BorderLineRisk)
                 {
                     TempData[SuccessMessage] = "محاسبه با موفقیت انجام شده است.";
-                    return RedirectToAction(nameof(Index), new { ascvdResult = res.Predic, ascvdStatus = 2 });
+                    return RedirectToAction(nameof(ASCVD), new { ascvdResult = res.Predic, ascvdStatus = 2 });
                 }
                 if (res.ASCVDStatus == Domain.Enums.ASCVD.ASCVDStatus.IntermediateRisk)
                 {
                     TempData[SuccessMessage] = "محاسبه با موفقیت انجام شده است.";
-                    return RedirectToAction(nameof(Index), new { ascvdResult = res.Predic, ascvdStatus = 3 });
+                    return RedirectToAction(nameof(ASCVD), new { ascvdResult = res.Predic, ascvdStatus = 3 });
                 }
                 if (res.ASCVDStatus == Domain.Enums.ASCVD.ASCVDStatus.HighRisk)
                 {
                     TempData[SuccessMessage] = "محاسبه با موفقیت انجام شده است.";
-                    return RedirectToAction(nameof(Index), new { ascvdResult = res.Predic, ascvdStatus = 4 });
+                    return RedirectToAction(nameof(ASCVD), new { ascvdResult = res.Predic, ascvdStatus = 4 });
                 }
 
                 TempData[ErrorMessage] = "اطلاعات به درستی وارد نشده است.";
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(ASCVD));
             }
 
             #endregion
@@ -265,6 +283,23 @@ namespace DoctorFAM.Web.Controllers
 
         #endregion
 
+
+        #region Diabet Self Test
+
+        [Authorize]
+
+        public async Task<IActionResult> DiabetSelfTest(decimal? selfAssessment)
+        {
+            ViewBag.RisksFields = await _periodicSelftEvaluationService.ListOfDiabetRiskFactorQuestions();
+            if (selfAssessment != null)
+            {
+                ViewBag.selfAssessment = selfAssessment;
+            }
+
+            return View();
+        }
+        #endregion
+
         #region Process Self Assessment
 
         [HttpPost]
@@ -275,7 +310,7 @@ namespace DoctorFAM.Web.Controllers
             if (!ModelState.IsValid)
             {
                 TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(DiabetSelfTest));
             }
 
             #endregion
@@ -288,12 +323,12 @@ namespace DoctorFAM.Web.Controllers
                 if (res == null)
                 {
                     TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction(nameof(DiabetSelfTest));
                 }
                 else
                 {
                     TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
-                    return RedirectToAction(nameof(Index), new { selfAssessment = res });
+                    return RedirectToAction(nameof(DiabetSelfTest), new { selfAssessment = res });
                 }
             }
             else
@@ -302,12 +337,12 @@ namespace DoctorFAM.Web.Controllers
                 if (res == null)
                 {
                     TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction(nameof(DiabetSelfTest));
                 }
                 else
                 {
                     TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
-                    return RedirectToAction(nameof(Index), new { selfAssessment = res });
+                    return RedirectToAction(nameof(DiabetSelfTest), new { selfAssessment = res });
                 }
             }
 

@@ -1,0 +1,267 @@
+﻿@model DoctorFAM.Domain.ViewModels.Site.Diabet.SelfAssessmentSiteSideViewModel
+
+@{
+    var diabetRiskFactors = ViewBag.RisksFields as List<DoctorFAM.Domain.Entities.PeriodicSelfEvaluatuion.DiabetRiskFactorQuestions>;
+}
+
+
+@{
+    ViewData["Title"] = "خودارزیابی دیابت - دیابت";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var bmiResult = ViewBag.bmiResult != null ? (int)ViewBag.bmiResult : 0;
+    var GFRResult = ViewBag.gfrResult != null ? (decimal)ViewBag.gfrResult : 0;
+    var selfAssessment = ViewBag.selfAssessment != null ? (decimal)ViewBag.selfAssessment : 0;
+    var ascvdPredic = ViewBag.ascvdPredicResult != null ? (decimal)ViewBag.ascvdPredicResult : 0;
+    var ascvdStatus = ViewBag.ascvdStatusResult != null ? (int)ViewBag.ascvdStatusResult : 0;
+}
+
+@section Scripts{
+    <partial name="_JqueryValidation" />
+    <script src="~/Site/js/BMI.js"></script>
+
+
+}
+
+
+<div class="page-content  formHealth">
+    <div class="row HomePharmacyTitle text-center  text-align-justify ">
+        <div class="col-md-3 page-breadcrumbs">
+            <i class="menu-icon fa fa-globe"></i>
+            <a asp-area="" asp-controller="Home" asp-action="Index">  <span class="menu-text"> صفحه اصلی سایت </span></a>
+            <span>/</span>
+            <a asp-area="" asp-controller="Diabet" asp-action="Index">بازگشت به صفحه دیابت</a>
+        </div>
+        <div class="col-md-6   text-center  text-align-justify M-5 P-5">
+
+            <h2 class="text-center  text-align-justify  ">   مراقبت دوره ای</h2>
+            <h4 class="text-center  text-align-justify ">  خودارزیابی دیابت</h4>
+        </div>
+        <div class="col-md-3 "></div>
+    </div>
+    <div class="container mt-2">
+        <div class="tab-content section-title" id="nav-tabContent">
+            <div role="tabpanel" class=" col-md-12 fade show active" id="tab1-1">
+                <div class="row">
+                    <div class="col-xl-3 "></div>
+                    <div class="col-xl-6 p-3" style="border:1px solid #feb2fa; border-radius:8px;">
+                        <div class="gauge text-center">
+                            <canvas data-type="radial-gauge" data-width="320" data-height="320" data-units="ُSelf Assesstment"
+                                    data-title="false" data-value="@selfAssessment" data-animate-on-init="true" data-animated-value="true"
+                                    data-min-value="0" data-max-value="120" data-major-ticks="0,20,40,60,80,100,120"
+                                    data-minor-ticks="5" data-stroke-ticks="false" data-highlights='[
+                                        { "from": 0, "to": 15, "color": "rgba(143,1,1)" },
+                                        { "from": 15, "to": 30, "color": "rgba(247,10,10)" },
+                                        { "from": 30, "to": 45, "color": "rgba(247,125,10)" },
+                                        { "from": 45, "to": 60, "color": "rgba(247,228,10)" },
+                                        { "from": 60, "to": 90, "color": "rgba(69,247,10)" },
+                                        { "from": 90, "to": 120, "color": "rgba(44,171,2)" }
+
+                                        ]' data-color-plate="transparent" data-color-major-ticks="black" data-color-minor-ticks="0d0d0d"
+                                    data-color-title="#fff" data-color-units="#000" data-color-numbers="#000"
+                                    data-color-needle-start="red" data-color-needle-end="red" data-value-box="true"
+                                    data-animation-rule="bounce" data-animation-duration="500" data-border-outer-width="0"
+                                    data-border-middle-width="0" data-border-inner-width="0"></canvas>
+                        </div>
+
+
+
+                        <form id="PriodicSelfEvaluationForm" asp-action="ProcesSelfAssessment" asp-controller="Diabet" asp-area="">
+
+                            <div class="row text-center  text-align-justify mt-2">
+                                <div class="col-md-12">
+                                    <p>کاربر گرامی، به سوالات زیر با دقت پاسخ دهید و یک ارزیابی از وضعیت سلامت جسمانی خود در خصوص خطر ابتلا به دیابت دریافت نمایید.</p>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label"><h6>آیا شما مبتلا به دیابت هستید؟</h6></label>
+                                        <select id="HasDiabet" class="form-control">
+                                            <option value="0">انتخاب کنید</option>
+                                            <option value="1">بله </option>
+                                            <option value="2">خیر</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 d-none" id="DiabetHelp1-div">
+                                    <div class="widget ">
+                                        <div class="sidebar-links">
+                                            <ul class="list-unstyled ">
+                                                <li>
+                                                    <p id="DiabetHelp1" class="link-text"> کاربر گرامی ! شما می توانید از بخش هشدار معاینات دوره ای، آزمایشهای دورهای و مصرف دارو برای کنترل بهتر بیماری دیابت خود اقدام کنید. </p>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row text-center  text-align-justify mt-4">
+                                <div class="col-md-12 d-none" id="RequestFor3MonthLater-div">
+                                    <div class="form-group">
+                                        <label class="control-label">
+                                            <h6>آیا در 3ماه گذشته آزمایش های مربوط به قند خون را انجام داده اید؟</h6>
+                                        </label>
+                                        <select id="RequestFor3MonthLater" class="form-control">
+                                            <option value="0">انتخاب کنید</option>
+                                            <option value="1">بله </option>
+                                            <option value="2">خیر</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 mt-3 d-none" id="DoctorFathi-div">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="control-label">
+                                                    آخرین آزمایش قند خون ناشتا (FBS)
+                                                </label>
+                                                <input class="form-control" min="0" asp-for="FBS" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="control-label">
+                                                    آخرین آزمایش قند خون 2 ساعت پس از صبحانه(2hpp)
+                                                </label>
+                                                <input class="form-control" min="0" asp-for="Twohpp" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="control-label">
+                                                    آخرین آزمایش هموگلوبین ای وان سی(A1c)
+                                                </label>
+                                                <input class="form-control" type="number" step="0.1" value="0.0" asp-for="A1C" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="row text-center  text-align-justify mt-4">
+                                <div class="col-md-12 d-none" id="HowYearsOld-div">
+                                    <div class="form-group">
+                                        <label class="control-label">
+                                            <h6> سن شما در چه بازه ای است ؟</h6>
+                                        </label>
+                                        <select id="HowYearsOld" class="form-control">
+                                            <option value="0">انتخاب کنید</option>
+                                            <option value="1"> کمتر از 35 سال </option>
+                                            <option value="2">بیشتر از 35 سال</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 mt-3 d-none" id="DiabetRiskFactorFields-div">
+                                    <div class="form-group">
+
+                                        <label class="control-label"><h6>آیا شما به حداقل یکی از موارد زیر مبتلا هستید؟</h6></label>
+
+                                        @if (diabetRiskFactors != null && diabetRiskFactors.Any())
+                                        {
+                                            foreach (var item in diabetRiskFactors)
+                                            {
+                                                <p>-@item.Title</p>
+                                            }
+                                        }
+
+                                    </div>
+                                    <div class="col-md-12 mt-3 form-group">
+                                        <select id="QuestionOfDiabetRiskFactor" class="form-control">
+                                            <option value="0">انتخاب کنید</option>
+                                            <option value="1">بله </option>
+                                            <option value="2">خیر</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 mt-3 d-none" id="EmergancyFBS-div">
+                                    <div class="widget ">
+                                        <div class="sidebar-links">
+                                            <ul class="list-unstyled ">
+                                                <li>
+                                                    <p id="DiabetHelp1" class="link-text">
+                                                        حتما در اسرع وقت نسبت به انجام آزمایش قند خون ناشتا
+
+                                                        (FBS) اقدام  و سپس این خودارزیابی را تکرار نمایید.
+                                                    </p>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 mt-3 d-none" id="FBSTest-div">
+                                    <div class="widget ">
+                                        <div class="sidebar-links">
+                                            <ul class="list-unstyled ">
+                                                <li>
+                                                    <p id="DiabetHelp1" class="link-text">
+                                                        حتما در اسرع وقت نسبت به انجام آزمایش قند خون ناشتا
+
+                                                        (FBS) اقدام  و سپس این خودارزیابی را تکرار نمایید.
+                                                    </p>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 mt-3 d-none" id="FBSTest-div">
+                                    <div class="widget ">
+                                        <div class="sidebar-links">
+                                            <ul class="list-unstyled ">
+                                                <li>
+                                                    <p id="DiabetHelp1" class="link-text">
+                                                        حتما در اسرع وقت نسبت به انجام آزمایش قند خون ناشتا
+
+                                                        (FBS) اقدام  و سپس این خودارزیابی را تکرار نمایید.
+                                                    </p>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 mt-3 d-none" id="NoFBSTest-div">
+                                    <div class="widget ">
+                                        <div class="sidebar-links">
+                                            <ul class="list-unstyled ">
+                                                <li>
+                                                    <p id="DiabetHelp1" class="link-text">
+                                                        لطفا یکسال بعد مجددا این ارزیابی را تکرار کنید .
+                                                    </p>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mb-5 text-center  text-align-justify mt-2 d-none" id="Submit-div">
+                                <div class="col-md-12 mt-4 text-center">
+                                    <div class="form-group">
+                                        <input type="submit" value="ثبت" class="btn-Accept" />
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+
+                    </div>
+                    <div class="col-xl-3 "></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+
+
+
+
+
+

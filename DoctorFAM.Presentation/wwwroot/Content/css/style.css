@@ -87,6 +87,7 @@
     font-weight : 900;
     font-style  : normal;
     font-display: swap;
+    
 }
 
 @font-face {
@@ -597,12 +598,12 @@ label {
 }
 
 .form-control {
-    height       : 50px;
+    height: 50px;
     border-radius: 0;
-    font-size    : 13px;
-    color        : #081b3a;
-    background   : none;
-    border       : none;
+    font-size: 13px;
+    color: #081b3a;
+    background: none;
+    border: 1px solid #999999;
     border: 1px solid #999999;
     background-color: #e6e4e4;
 }
@@ -611,6 +612,8 @@ label {
 .dark-bg .form-control {
     background         : none;
     border-bottom-color: #ffffff;
+    
+    
 }
 
 .dark-bg .form-control,
@@ -1071,11 +1074,11 @@ select:-webkit-autofill {
     font-weight: bold;
 }
 
-.nice-select .option.disabled {
-    background-color: transparent;
-    color           : #999;
-    cursor          : default;
-}
+    .nice-select .option.disabled {
+        background-color: transparent;
+        color: #999;
+        cursor: pointer;
+    }
 
 .no-csspointerevents .nice-select .list {
     display: none;

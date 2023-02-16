@@ -130,6 +130,22 @@ namespace DoctorFAM.Web.Controllers
         }
         #endregion
 
+        #region DrugStores
+
+        public IActionResult DrugStores()
+        {
+            return View();
+        }
+        #endregion
+
+        #region Laboratory
+
+        public IActionResult Laboratory()
+        {
+            return View();
+        }
+        #endregion
+
         #region DoctorIntrud
 
         public IActionResult DoctorIntrud()
