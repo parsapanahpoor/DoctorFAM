@@ -23,6 +23,7 @@ using DoctorFAM.Domain.ViewModels.Admin.HealthHouse.HomeLabratory;
 using DoctorFAM.Domain.Entities.Wallet;
 using DoctorFAM.Domain.Enums.RequestType;
 using DoctorFAM.Domain.ViewModels.UserPanel.HealthHouse.HomeLaboratory;
+using DoctorFAM.Domain.ViewModels.Site.HomeVisitRequest;
 
 namespace DoctorFAM.Application.Services.Implementation
 {
@@ -55,6 +56,32 @@ namespace DoctorFAM.Application.Services.Implementation
         #endregion
 
         #region Site Side
+
+        //Get List Of Laboratories For Send Notification For Home Laboratories Notification 
+        public async Task<List<string?>> GetListOfLaboratoriesForArrivalsHomeLaboratoriesRequests(ulong requestId)
+        {
+            #region Get Request By Id 
+
+            var request = await _requestService.GetRequestById(requestId);
+            if (request == null) return null;
+
+            #endregion
+
+            #region Get Request Detail 
+
+            var requetsDetail = await _requestService.GetPatientRequestDetailByRequestId(requestId);
+            if (requetsDetail == null) return null;
+
+            #endregion
+
+            #region Get Activated Laboratories By Home Laboratories Interests And Location Address
+
+            var returnValue = await _homeLaboratory.GetActivatedAndHomeLaboratoriesInterestLaboratories(requetsDetail.CountryId, requetsDetail.StateId, requetsDetail.CityId);
+
+            #endregion
+
+            return returnValue;
+        }
 
         public async Task<bool> ChargeUserWallet(ulong userId, int price)
         {
@@ -537,6 +564,49 @@ namespace DoctorFAM.Application.Services.Implementation
             #endregion
 
             return CreatePatientAddressResult.Success;
+        }
+
+        //Fill Home Laboratory Request Invoice View Model
+        public async Task<HomeLaboratoryRequestInvoiceViewModel?> FillHomeLaboratoryRequestInvoiceViewModel(Request request)
+        {
+            //Make Instance From Return Model 
+            HomeLaboratoryRequestInvoiceViewModel model = new HomeLaboratoryRequestInvoiceViewModel();
+            model.RequestId = request.Id;
+
+            #region Get Requets Patient Address Detail
+
+            var requestPatietnAddressDetail = await GetRequestPatientDetailByRequestId(request.Id);
+            if (requestPatietnAddressDetail == null) return null;
+
+            model.PaitientRequestDetail = requestPatietnAddressDetail;
+
+            #endregion
+
+            #region Get Requets Patient Date Time 
+
+            var dateTimeDetail = await _requestService.GetRequestDateTimeDetailByRequestDetailId(request.Id);
+            if (dateTimeDetail == null) return null;
+
+            model.PatientRequestDateTimeDetail = dateTimeDetail;
+
+            #endregion
+
+            #region Get Home Visit Tariff From Site Setting 
+
+            double homeLaboratoryTariff = await _siteSettingService.GetHomeLaboratoryTariff();
+            if (homeLaboratoryTariff == null || homeLaboratoryTariff == 0) return null;
+
+            model.HomeLaboratoryTariff = (int)homeLaboratoryTariff;
+
+            #endregion
+
+            #region Invoic Sum 
+
+            model.InvoiceSum = (int)homeLaboratoryTariff;
+
+            #endregion
+
+            return model;
         }
 
         #endregion

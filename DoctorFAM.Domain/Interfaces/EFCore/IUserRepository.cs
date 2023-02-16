@@ -47,6 +47,9 @@ namespace DoctorFAM.Domain.Interfaces
 
         #region Admin Side 
 
+        //Get List Of Admins and Supporters User Id For Send Notification For Home Laboratory
+        Task<List<string>?> GetAdminsAndSupportersNotificationForSendNotificationInHomeLaboratory();
+
         //Get List Of Admins and Supporters User Id For Send Notification For Death Certificate
         Task<List<string>?> GetAdminsAndSupportersNotificationForSendNotificationInDeathCertificate();
 

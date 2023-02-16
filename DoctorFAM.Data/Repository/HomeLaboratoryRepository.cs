@@ -32,6 +32,46 @@ namespace DoctorFAM.Data.Repository
 
         #region Site Side
 
+        //Get Activated And Home Laboratories Interests LAboratories For Send Correct Notification For Arrival Home Laboratories Request 
+        public async Task<List<string?>> GetActivatedAndHomeLaboratoriesInterestLaboratories(ulong countryId, ulong stateId, ulong cityId)
+        {
+            #region Get Laboratories   
+
+            var users = await _context.Laboratory.Where(p => !p.IsDelete).Select(p => p.UserId).ToListAsync();
+                                
+            if (users == null) return null;
+
+            #endregion
+
+            #region Check User Work Addresses 
+
+            //Initial Model Of String 
+            List<string?> returnValue = new List<string?>();
+
+            foreach (var item in users)
+            {
+                //Check Laboratories Location By Country Id && State Id && CityId
+                var checkLocation = await _context.WorkAddresses.FirstOrDefaultAsync(p => !p.IsDelete && p.CityId == cityId && p.CountryId == countryId && p.StateId == stateId
+                                                              && p.UserId == item);
+
+                if (checkLocation != null)
+                {
+                    //Check Laboratories Is Activated
+                    var activated = await _context.Organizations.FirstOrDefaultAsync(p => !p.IsDelete && p.OwnerId == checkLocation.UserId
+                                            && p.OrganizationType == Domain.Enums.Organization.OrganizationType.Labratory && p.OrganizationInfoState == Domain.Entities.Doctors.OrganizationInfoState.Accepted);
+
+                    if (activated != null)
+                    {
+                        returnValue.Add(activated.OwnerId.ToString());
+                    }
+                }
+            }
+
+            #endregion
+
+            return returnValue;
+        }
+
         public async Task<List<HomeLaboratoryRequestDetail>> GetHomeLaboratoryRequestDetailByRequestId(ulong requestId)
         {
             return await _context.HomeLaboratoryRequestDetails.Where(p => !p.IsDelete && p.RequestId == requestId).ToListAsync();

@@ -12,6 +12,12 @@ namespace DoctorFAM.Application.Services.Interfaces
     {
         #region Site Side 
 
+        //Get List Of Laboratory For Send Notification For Home Laboratory Notification 
+        Task<List<string?>> GetListOfLaboratoriesForArrivalsHomeLaboratoryRequests(ulong requestId);
+
+        //Create Notification For Laboratory From Home Laboratory Request 
+        Task CreateNotificationForLaboratoriesFromHomeLabpratoryRequest(ulong requestId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId);
+
         //Create Notification For Nurse From Home Nurse Request 
         Task CreateNotificationForNurseFromHomeNurseRequest(ulong requestId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId);
 

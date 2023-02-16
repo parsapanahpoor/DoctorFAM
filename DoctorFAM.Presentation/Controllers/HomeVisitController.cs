@@ -654,7 +654,6 @@ namespace DoctorFAM.Web.Controllers
             catch (Exception ex)
             {
                 throw ex;
-                return RedirectToAction("HomeVisitPayment", "Home");
             }
 
             return NotFound();

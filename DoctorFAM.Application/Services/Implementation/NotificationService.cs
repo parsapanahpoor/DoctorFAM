@@ -28,10 +28,12 @@ namespace DoctorFAM.Application.Services.Implementation
         private readonly IConsultantService _consultantService;
         private readonly IHomeVisitService _homeVisitService;
         private readonly IDeathCertificateService _deathCertificteService;
+        private readonly IHomeLaboratoryServices _homeLaboratoryService;
 
         public NotificationService(INotificationRepository notificationService, IUserService userService,
                                     IRequestService requestService, IHomePharmacyServicec homePharmacyService, IReservationService reservationService
-                                        , IOnlineVisitService onlineVisitService, INurseService nurseService, IConsultantService consultantService, IHomeVisitService homeVisitService, IDeathCertificateService deathCertificteService)
+                                        , IOnlineVisitService onlineVisitService, INurseService nurseService, IConsultantService consultantService, IHomeVisitService homeVisitService, IDeathCertificateService deathCertificteService
+                                            , IHomeLaboratoryServices homeLaboratoryServices)
         {
             _notificationService = notificationService;
             _userService = userService;
@@ -43,11 +45,72 @@ namespace DoctorFAM.Application.Services.Implementation
             _consultantService = consultantService;
             _homeVisitService = homeVisitService;
             _deathCertificteService = deathCertificteService;
+            _homeLaboratoryService = homeLaboratoryServices;
         }
 
         #endregion
 
         #region Site Side 
+
+        //Get List Of Laboratory For Send Notification For Home Laboratory Notification 
+        public async Task<List<string?>> GetListOfLaboratoriesForArrivalsHomeLaboratoryRequests(ulong requestId)
+        {
+            #region Get Request By Id 
+
+            var request = await _requestService.GetRequestById(requestId);
+            if (request == null) return null;
+
+            #endregion
+
+            #region Get Request Detail 
+
+            var requetsDetail = await _requestService.GetPatientRequestDetailByRequestId(requestId);
+            if (requetsDetail == null) return null;
+
+            #endregion
+
+            #region Get Activated Doctor By Home Visit Interests And Location Address
+
+            var usersId = await _homeLaboratoryService.GetListOfLaboratoriesForArrivalsHomeLaboratoriesRequests(requestId);
+
+            #endregion
+
+            return usersId;
+        }
+
+        //Create Notification For Laboratory From Home Laboratory Request 
+        public async Task CreateNotificationForLaboratoriesFromHomeLabpratoryRequest(ulong requestId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId)
+        {
+            #region Get Validated Laboratories
+
+            var usersId = await _homeLaboratoryService.GetListOfLaboratoriesForArrivalsHomeLaboratoriesRequests(requestId);
+
+            #endregion
+
+            #region Fill Notification Entity
+
+            List<SupporterNotification> model = new List<SupporterNotification>();
+
+            foreach (var item in usersId)
+            {
+                SupporterNotification notif = new SupporterNotification()
+                {
+                    CreateDate = DateTime.Now,
+                    IsDelete = false,
+                    IsSeen = false,
+                    SupporterNotificationText = SupporterNotificationText,
+                    TargetId = requestId,
+                    UserId = senderId,
+                    ReciverId = Convert.ToUInt64(Int64.Parse(item)),
+                };
+
+                model.Add(notif);
+            };
+
+            await _notificationService.CreateRangeSupporter(model);
+
+            #endregion
+        }
 
         //Create Notification For Pharmacy From Home Pharmacy Request 
         public async Task CreateNotificationForPharmacyFromHomePharmacyRequest(ulong requestId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId)
@@ -385,6 +448,14 @@ namespace DoctorFAM.Application.Services.Implementation
             }
 
             if (SupporterNotificationText == SupporterNotificationText.ConsultantRequest)
+            {
+                //Get Supporters
+                var supporters = await _userService.GetListOfSupporters();
+                user.AddRange(supporters);
+            }
+
+            if (SupporterNotificationText == SupporterNotificationText.NewArrivalHomeLaboratoryRequest
+                || SupporterNotificationText == SupporterNotificationText.LaboratoryInformationInsert)
             {
                 //Get Supporters
                 var supporters = await _userService.GetListOfSupporters();
