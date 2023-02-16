@@ -15,6 +15,7 @@ using DoctorFAM.Domain.Entities.FamilyDoctor.ParsaSystem;
 using DoctorFAM.Domain.Entities.FamilyDoctor.VIPSystem;
 using DoctorFAM.Domain.Entities.FollowAndUnFollow;
 using DoctorFAM.Domain.Entities.HealthInformation;
+using DoctorFAM.Domain.Entities.Insurance;
 using DoctorFAM.Domain.Entities.Interest;
 using DoctorFAM.Domain.Entities.Laboratory;
 using DoctorFAM.Domain.Entities.Languages;
@@ -41,6 +42,7 @@ using DoctorFAM.Domain.Entities.Wallet;
 using DoctorFAM.Domain.Entities.WorkAddress;
 using DoctorFAM.Domain.Enums.PeriodicTestType;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.Metrics;
 using System.Globalization;
 
 namespace DoctorFAM.Data.DbContext
@@ -432,6 +434,12 @@ namespace DoctorFAM.Data.DbContext
 
         #endregion
 
+        #region Insurance
+
+        public DbSet<Insurance> Insurance { get; set; }
+
+        #endregion
+
         #endregion
 
         #region On Model Creating
@@ -444,6 +452,12 @@ namespace DoctorFAM.Data.DbContext
             {
                 relationship.DeleteBehavior = DeleteBehavior.Restrict;
             }
+
+            //modelBuilder.Entity<PopulationCovered>()
+            // .HasOne(c => c.Insurance)
+            // .WithMany(c => c.PopulationCovered)
+            // .HasForeignKey(p=> p.InsuranceId)
+            // .OnDelete(DeleteBehavior.NoAction);
 
             #region Seed Data
 
@@ -995,6 +1009,50 @@ namespace DoctorFAM.Data.DbContext
             });
 
             #endregion
+
+            #endregion
+
+            #region Insurance Seed Data 
+
+            modelBuilder.Entity<Insurance>().HasData(new Insurance
+            {
+                Id = 1,
+                CreateDate = DateTime.Now,
+                IsDelete = false,
+                Title = "بیمه سلامت"
+            });
+
+            modelBuilder.Entity<Insurance>().HasData(new Insurance
+            {
+                Id = 2,
+                CreateDate = DateTime.Now,
+                IsDelete = false,
+                Title = "بیمه ی تامین اجتماعی"
+            });
+
+            modelBuilder.Entity<Insurance>().HasData(new Insurance
+            {
+                Id = 3,
+                CreateDate = DateTime.Now,
+                IsDelete = false,
+                Title = "مشاغل آزاد"
+            });
+
+            modelBuilder.Entity<Insurance>().HasData(new Insurance
+            {
+                Id = 4,
+                CreateDate = DateTime.Now,
+                IsDelete = false,
+                Title = "بیمه ی ایرانیان"
+            });
+
+            modelBuilder.Entity<Insurance>().HasData(new Insurance
+            {
+                Id = 5,
+                CreateDate = DateTime.Now,
+                IsDelete = false,
+                Title = "آزاد"
+            });
 
             #endregion
 

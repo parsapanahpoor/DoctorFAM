@@ -125,6 +125,13 @@ namespace DoctorFAM.Application.Services.Implementation
 
         public async Task<ulong> CreatePatientDetail(PatientViewModel patient)
         {
+            #region Get Insurance
+
+            var insurance = await _siteSettingService.GetInsuranceById(patient.InsuranceId);
+            if (insurance == null) return 0;
+
+            #endregion
+
             #region Fill Entity
 
             Patient model = new Patient
@@ -132,7 +139,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 RequestId = patient.RequestId,
                 Age = patient.Age,
                 Gender = patient.Gender,
-                InsuranceType = patient.InsuranceType,
+                InsuranceId = patient.InsuranceId,
                 NationalId = patient.NationalId,
                 PatientName = patient.PatientName.SanitizeText(),
                 PatientLastName = patient.PatientLastName.SanitizeText(),
@@ -186,7 +193,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 RequestId = requestId,
                 Age = population.Age,
                 Gender = population.Gender,
-                InsuranceType = population.InsuranceType,
+                InsuranceId  = (ulong)population.InsuranceId,
                 NationalId = population.NationalId,
                 PatientName = population.PatientName.SanitizeText(),
                 PatientLastName = population.PatientLastName.SanitizeText(),
@@ -232,7 +239,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 RequestId = requestId,
                 Age = population.Age,
                 Gender = population.Gender,
-                InsuranceType = population.InsuranceType,
+                InsuranceId = (ulong)population.InsuranceId,
                 NationalId = population.NationalId,
                 PatientName = population.PatientName.SanitizeText(),
                 PatientLastName = population.PatientLastName.SanitizeText(),

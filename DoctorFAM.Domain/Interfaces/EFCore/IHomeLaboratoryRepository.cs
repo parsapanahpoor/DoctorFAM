@@ -16,6 +16,9 @@ namespace DoctorFAM.Domain.Interfaces
     {
         #region Site Side
 
+        //Get Activated And Home Laboratories Interests LAboratories For Send Correct Notification For Arrival Home Laboratories Request 
+        Task<List<string?>> GetActivatedAndHomeLaboratoriesInterestLaboratories(ulong countryId, ulong stateId, ulong cityId);
+
         Task<List<HomeLaboratoryRequestDetail>> GetHomeLaboratoryRequestDetailByRequestId(ulong requestId);
 
         Task AddLaboratoryRequest(HomeLaboratoryRequestDetail laboratory);

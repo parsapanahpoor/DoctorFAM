@@ -1,6 +1,8 @@
 ﻿using Academy.Domain.Entities.SiteSetting;
+using DoctorFAM.Domain.Entities.Insurance;
 using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Entities.SiteSetting;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,8 +56,20 @@ namespace DoctorFAM.Domain.Interfaces
         //Is Exist Any Tariff By Id 
         Task<bool> IsExistAnyTariffById(ulong tariffId);
 
+        //List Of Insurance
+        Task<List<Insurance>?> ListOfInsurance();
+
         //Get List Of Tariff For Death Certificate Health House Services
         Task<List<TariffForHealthHouseServices>?> GetListOfTariffForDeathCertificateHealthHouseServices();
+
+        //Create Data To The Data Base 
+        Task CreateInsurance(Insurance entity);
+
+        //Get Insurance By Id
+        Task<Insurance?> GetInsuranceById(ulong id);
+
+        //Update Insurance
+        Task UpdateInsurance(Insurance entity);
 
         #endregion
 

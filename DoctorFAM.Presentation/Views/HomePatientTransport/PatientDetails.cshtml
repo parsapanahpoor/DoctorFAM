@@ -5,11 +5,13 @@
 @inject IViewLocalizer Localizer
 @inject IStringLocalizer<SharedLocalizer> SharedLocalizer
 @inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
+@using DoctorFAM.Domain.Entities.Insurance
 
 @{
     ViewData["Title"] = "ثبت مشخصات بیمار";
 
     var population = ViewBag.PopulationCovered as List<DoctorFAM.Domain.Entities.PopulationCovered.PopulationCovered>;
+    List<Insurance> insurances = ViewBag.Insurances as List<Insurance>;
 }
 
 @section Styles
@@ -147,9 +149,28 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <span style="color:red;">*</span>
-                        <label asp-for="InsuranceType" class="control-label"></label>
-                        <select asp-for="InsuranceType" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.InsuranceType.InsuranceType))"></select>
-                        <span asp-validation-for="InsuranceType" class="text-danger"></span>
+                        <label asp-for="InsuranceId" class="control-label"></label>
+                        <select asp-for="InsuranceId" class="form-control">
+
+                                 <option>لطفا بیمه ی مورد نظر را انتخاب کنید</option>
+
+                            @if (insurances != null && insurances.Any())
+                            {
+                                foreach (var item in insurances)
+                                {
+                                    if (Model.InsuranceId == item.Id)
+                                    {
+                                        <option value="@item.Id" selected="selected">@item.Title</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@item.Id">@item.Title</option>
+                                    }
+                                }
+                            }
+
+                        </select>
+                        <span class="text-danger" asp-validation-for="InsuranceId"></span>
                     </div>
                 </div>
             </div>

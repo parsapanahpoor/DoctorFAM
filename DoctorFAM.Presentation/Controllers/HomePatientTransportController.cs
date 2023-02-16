@@ -94,6 +94,9 @@ namespace DoctorFAM.Web.Controllers
 
             if (populationCoveredId != null && populationCoveredId.HasValue)
             {
+                //Send List Of Insurance To The View
+                ViewBag.Insurances = await _siteSettingService.ListOfInsurance();
+
                 //Fill Page Model From Selected Population Covered Data
                 var mode = await _homePatientTransportService.FillPatientViewModelFromSelectedPopulationCoveredData(populationCoveredId.Value, requestId, User.GetUserId());
                 if (mode == null) return NotFound();
@@ -102,6 +105,9 @@ namespace DoctorFAM.Web.Controllers
             }
 
             #endregion
+
+            //Send List Of Insurance To The View
+            ViewBag.Insurances = await _siteSettingService.ListOfInsurance();
 
             return View(new PatientViewModel()
             {
@@ -126,6 +132,9 @@ namespace DoctorFAM.Web.Controllers
                 #region Get User Population Covered
 
                 ViewBag.PopulationCovered = await _populationCovered.GetUserPopulation(User.GetUserId());
+
+                //Send List Of Insurance To The View
+                ViewBag.Insurances = await _siteSettingService.ListOfInsurance();
 
                 #endregion
 
@@ -162,6 +171,9 @@ namespace DoctorFAM.Web.Controllers
             #region Get User Population Covered
 
             ViewBag.PopulationCovered = await _populationCovered.GetUserPopulation(User.GetUserId());
+
+            //Send List Of Insurance To The View
+            ViewBag.Insurances = await _siteSettingService.ListOfInsurance();
 
             #endregion
 

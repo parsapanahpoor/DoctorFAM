@@ -19,6 +19,9 @@ namespace DoctorFAM.Application.Services.Interfaces
     {
         #region Site Side
 
+        //Get List Of Laboratories For Send Notification For Home Laboratories Notification 
+        Task<List<string?>> GetListOfLaboratoriesForArrivalsHomeLaboratoriesRequests(ulong requestId);
+
         Task<bool> ChargeUserWallet(ulong userId, int price);
 
         Task<bool> PayHomeLAboratoryTariff(ulong userId, int price, ulong? requestId);
@@ -41,6 +44,9 @@ namespace DoctorFAM.Application.Services.Interfaces
         Task<bool> DeleteRequestedLaboratory(ulong requestedLaboratoryId);
 
         Task<CreatePatientAddressResult> CreatePatientRequestDetail(PatientRequestedLaboratoryAddressViewModel model);
+
+        //Fill Home Laboratory Request Invoice View Model
+        Task<HomeLaboratoryRequestInvoiceViewModel?> FillHomeLaboratoryRequestInvoiceViewModel(Request request);
 
         #endregion
 

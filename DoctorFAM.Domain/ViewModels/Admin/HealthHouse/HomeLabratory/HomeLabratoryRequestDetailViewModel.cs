@@ -1,4 +1,5 @@
-﻿using DoctorFAM.Domain.Enums.Gender;
+﻿using DoctorFAM.Domain.Entities.Insurance;
+using DoctorFAM.Domain.Enums.Gender;
 using DoctorFAM.Domain.Enums.InsuranceType;
 using DoctorFAM.Domain.Enums.Request;
 using System;
@@ -49,7 +50,7 @@ namespace DoctorFAM.Domain.ViewModels.Admin.HealthHouse.HomeLabratory
 
         public int? Age { get; set; }
 
-        public InsuranceType? InsuranceType { get; set; }
+        public string? Insurance { get; set; }
 
         public string? RequestDescription { get; set; }
 

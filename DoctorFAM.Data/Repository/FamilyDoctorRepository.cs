@@ -57,7 +57,7 @@ namespace DoctorFAM.Data.Repository
         public async Task<UserSelectedFamilyDoctor?> GetUserSelectedFamilyDoctorByRequestIdWithDoctorAndPatientInformation(ulong requestId)
         {
             return await _context.UserSelectedFamilyDoctor.Include(p=> p.Doctor).Include(p=> p.Patient)
-                                                .ThenInclude(p=> p.PopulationCovered)
+                                                .ThenInclude(p=> p.PopulationCovered).ThenInclude(p=> p.Insurance)
                                                         .FirstOrDefaultAsync(p =>p.Id == requestId);
         }
 
@@ -181,6 +181,13 @@ namespace DoctorFAM.Data.Repository
             await filter.Paging(query);
 
             return filter;
+        }
+
+        //Get Lastest Family Doctor Request For Current Doctor 
+        public async Task<List<UserSelectedFamilyDoctor>> GetLastestFamilyDoctorRequestForCurrentDoctor(ulong doctorId)
+        {
+            return await _context.UserSelectedFamilyDoctor.Where(p => !p.IsDelete && p.DoctorId == doctorId && p.FamilyDoctorRequestState == FamilyDoctorRequestState.WaitingForConfirm)
+                                                                        .OrderByDescending(p=> p.CreateDate).ToListAsync();
         }
 
         #endregion

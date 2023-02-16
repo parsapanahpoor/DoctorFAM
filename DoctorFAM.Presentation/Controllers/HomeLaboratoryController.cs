@@ -1,5 +1,7 @@
-﻿using DoctorFAM.Application.Extensions;
+﻿using DoctorFAM.Application.Convertors;
+using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Interfaces;
+using DoctorFAM.Application.Services.Implementation;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Application.StaticTools;
 using DoctorFAM.Data.DbContext;
@@ -8,13 +10,16 @@ using DoctorFAM.Domain.Entities.Wallet;
 using DoctorFAM.Domain.Enums.RequestType;
 using DoctorFAM.Domain.ViewModels.Site.Common;
 using DoctorFAM.Domain.ViewModels.Site.HomeLaboratory;
+using DoctorFAM.Domain.ViewModels.Site.Notification;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
 using DoctorFAM.Domain.ViewModels.Site.Request;
 using DoctorFAM.Web.ActionFilterAttributes;
 using DoctorFAM.Web.HttpManager;
+using DoctorFAM.Web.Hubs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Text;
@@ -35,11 +40,14 @@ namespace DoctorFAM.Web.Controllers
         private readonly IPopulationCoveredService _populationCovered;
         private readonly ISiteSettingService _siteSettingService;
         private readonly IWalletService _walletService;
+        private readonly IHubContext<NotificationHub> _notificationHub;
+        private readonly INotificationService _notificationService;
 
         public HomeLaboratoryController(IHomeLaboratoryServices homeLaboratory, IRequestService requestService, IUserService userService
                             , IPatientService patientService, ILocationService locationService
                                 , ISiteSettingService siteSettingService, IPopulationCoveredService populationCovered
-                                    , IWalletService walletService)
+                                    , IWalletService walletService, IHubContext<NotificationHub> notificationHub
+                                                , INotificationService notificationService)
         
         {
             _homeLaboratory = homeLaboratory;
@@ -50,6 +58,8 @@ namespace DoctorFAM.Web.Controllers
             _siteSettingService = siteSettingService;
             _populationCovered = populationCovered;
             _walletService = walletService;
+            _notificationHub = notificationHub;
+            _notificationService = notificationService;
         }
 
         #endregion
@@ -107,6 +117,9 @@ namespace DoctorFAM.Web.Controllers
 
             if (populationCoveredId != null && populationCoveredId.HasValue)
             {
+                //Send List Of Insurance To The View
+                ViewBag.Insurances = await _siteSettingService.ListOfInsurance();
+
                 //Fill Page Model From Selected Population Covered Data
                 var mode = await _homeLaboratory.FillPatientViewModelFromSelectedPopulationCoveredData(populationCoveredId.Value, requestId, User.GetUserId());
                 if (mode == null) return NotFound();
@@ -121,6 +134,9 @@ namespace DoctorFAM.Web.Controllers
             var user = await _userService.GetUserById(User.GetUserId());
 
             #endregion
+
+            //Send List Of Insurance To The View
+            ViewBag.Insurances = await _siteSettingService.ListOfInsurance();
 
             return View(new PatientViewModel()
             {
@@ -156,7 +172,13 @@ namespace DoctorFAM.Web.Controllers
 
             #region Model State
 
-            if (!ModelState.IsValid) return View(patient);
+            if (!ModelState.IsValid)
+            {
+                //Send List Of Insurance To The View
+                ViewBag.Insurances = await _siteSettingService.ListOfInsurance();
+
+                return View(patient);
+            }
 
             #endregion
 
@@ -184,6 +206,9 @@ namespace DoctorFAM.Web.Controllers
             }
 
             #endregion
+
+            //Send List Of Insurance To The View
+            ViewBag.Insurances = await _siteSettingService.ListOfInsurance();
 
             return View(patient);
         }
@@ -359,7 +384,7 @@ namespace DoctorFAM.Web.Controllers
             {
                 case CreatePatientAddressResult.Success:
                     TempData[SuccessMessage] = "عملیات با موفقیت انجام شده است ";
-                    return RedirectToAction("BankPay", "HomeLaboratory", new { requestId = patientRequest.RequestId });
+                    return RedirectToAction("HomeLaboratoryInvoice", "HomeLaboratory", new { requestId = patientRequest.RequestId });
 
                 case CreatePatientAddressResult.Failed:
                     TempData[ErrorMessage] = "عملیات با شکست مواجه شده است ";
@@ -381,6 +406,33 @@ namespace DoctorFAM.Web.Controllers
             #endregion
 
             return View(patientRequest);
+        }
+
+        #endregion
+
+        #region Home Laboratory Invoice
+
+        public async Task<IActionResult> HomeLaboratoryInvoice(ulong requestId)
+        {
+            #region Get Request By Id
+
+            var request = await _requestService.GetRequestById(requestId);
+            if (request == null) return NotFound();
+            if (!await _patientService.IsExistPatientById(request.PatientId.Value) || request.UserId != User.GetUserId())
+            {
+                return NotFound();
+            }
+
+            #endregion
+
+            #region Fill Model 
+
+            var model = await _homeLaboratory.FillHomeLaboratoryRequestInvoiceViewModel(request);
+            if (model == null) return NotFound();
+
+            #endregion
+
+            return View(model);
         }
 
         #endregion
@@ -523,6 +575,40 @@ namespace DoctorFAM.Web.Controllers
                             //Pay Home Laboratory Tariff
                             await _homeLaboratory.PayHomeLAboratoryTariff(User.GetUserId(), homeLaboratory, request.Id);
 
+                            #region Send Notification In SignalR
+
+                            //Create Notification For Supporters And Admins
+                            var notifyResult = await _notificationService.CreateSupporterNotification(request.Id, Domain.Enums.Notification.SupporterNotificationText.NewArrivalHomeLaboratoryRequest, Domain.Enums.Notification.NotificationTarget.request, User.GetUserId());
+
+                            //Create Notification For Laboratories
+                             await _notificationService.CreateNotificationForLaboratoriesFromHomeLabpratoryRequest(request.Id, Domain.Enums.Notification.SupporterNotificationText.NewArrivalHomeLaboratoryRequest, Domain.Enums.Notification.NotificationTarget.request, User.GetUserId());
+
+                            //Get Current User
+                            var currentUser = await _userService.GetUserById(User.GetUserId());
+
+                            if (notifyResult)
+                            {
+                                //Get List Of Admins And Supporter To Send Notification Into Them
+                                var users = await _userService.GetAdminsAndSupportersNotificationForSendNotificationInHomeLaboratory();
+
+                                //Get LAboratories For Send Notification  
+                                users.AddRange(await _notificationService.GetListOfLaboratoriesForArrivalsHomeLaboratoryRequests(request.Id));
+
+                                //Fill Send Supporter Notification ViewModel For Send Notification
+                                SendSupporterNotificationViewModel viewModel = new SendSupporterNotificationViewModel()
+                                {
+                                    CreateNotificationDate = $"{DateTime.Now.ToShamsi()} - {DateTime.Now.Hour}:{DateTime.Now.Minute}",
+                                    NotificationText = "درخواست برای آزمایشگاه درمنزل",
+                                    RequestId = request.Id,
+                                    Username = User.Identity.Name,
+                                    UserImage = currentUser.Avatar
+                                };
+
+                                await _notificationHub.Clients.Users(users).SendAsync("SendSupporterNotification", viewModel);
+                            }
+
+                            #endregion
+
                             return RedirectToAction("PaymentResult", "Payment", new { IsSuccess = true, refId = refid });
                         }
                     }
@@ -530,8 +616,8 @@ namespace DoctorFAM.Web.Controllers
                     {
                         string errorscode = jo["errors"]["code"].ToString();
 
-                        return BadRequest($"error code {errorscode}");
-
+                        //return BadRequest($"error code {errorscode}");
+                        return RedirectToAction("CancelPayment", "Home");
                     }
                 }
             }

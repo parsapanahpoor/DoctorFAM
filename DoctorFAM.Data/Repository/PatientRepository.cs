@@ -32,7 +32,8 @@ namespace DoctorFAM.Data.Repository
 
         public async Task<Patient?> GetPatientById(ulong patientId)
         {
-            return await _context.Patients.FirstOrDefaultAsync(p => p.Id == patientId && !p.IsDelete);
+            return await _context.Patients.Include(p=>p.Insurance)
+                                            .FirstOrDefaultAsync(p => p.Id == patientId && !p.IsDelete);
         }
 
         public async Task AddPatient(Patient patient)

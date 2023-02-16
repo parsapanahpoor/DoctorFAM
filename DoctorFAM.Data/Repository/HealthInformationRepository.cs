@@ -577,5 +577,42 @@ namespace DoctorFAM.Data.Repository
         #endregion
 
         #endregion
+
+        #region Status
+
+        #region Doctor Panel
+
+        //Filter Status From Doctor Panel Side  
+        public async Task<List<HealthInformation>> FilterStatusDoctorPanelSide(ulong ownerId)
+        {
+            return await _context.HealthInformation.Include(p => p.User)
+                .Where(p => !p.IsDelete && p.HealthInformationType == Domain.Enums.HealtInformation.HealthInformationType.Status
+                        && p.OwnerId.Value == ownerId)
+                .OrderByDescending(p => p.CreateDate).ToListAsync();
+        }
+
+        #endregion
+
+        //Remove All Of Lastest Status From This Current Doctor 
+        public async Task RemoveAllOfLastestStatusFromThisCurrentDoctor(ulong doctorUserId)
+        {
+            var statuses = await _context.HealthInformation.Where(p => !p.IsDelete && p.HealthInformationType == Domain.Enums.HealtInformation.HealthInformationType.Status
+                                                                  && p.OwnerId == doctorUserId && p.Lastest).ToListAsync();
+
+            if (statuses != null && statuses.Any())
+            {
+                foreach (var item in statuses)
+                {
+                    item.Lastest = false;
+
+                    _context.HealthInformation.Update(item);
+                }
+            }
+
+            //Update Data Base 
+            await _context.SaveChangesAsync();
+        }
+
+        #endregion
     }
 }

@@ -1,5 +1,6 @@
 ﻿using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
+using DoctorFAM.Domain.Entities.Insurance;
 using DoctorFAM.Domain.Entities.PeriodicSelfEvaluatuion;
 using DoctorFAM.Domain.ViewModels.Admin.SiteSetting;
 using DoctorFAM.Domain.ViewModels.Admin.SiteSetting.HealthHouseServiceTariff;
@@ -233,6 +234,103 @@ namespace Academy.Web.Areas.Admin.Controllers
 
             return ApiResponse.SetResponse(ApiResponseStatus.Danger, null,
                 "اطلاعات وارد شده صحیح نمی باشد.");
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Insurace
+
+        #region List 
+
+        [HttpGet]
+        public async Task<IActionResult> ListOfInsurance()
+        {
+            return View(await _siteSettingService.ListOfInsurance());
+        }
+
+        #endregion
+
+        #region Create 
+
+        [HttpGet]
+        public async Task<IActionResult> CreateInsurance()
+        {
+            return View();
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateInsurance(string title)
+        {
+            #region Model State Validation 
+
+            if (!ModelState.IsValid)
+            {
+                TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+                return View(title);
+            }
+
+            #endregion
+
+            #region Create Method 
+
+            var res = await _siteSettingService.CreateInsurance(title);
+            if (res)
+            {
+                TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+                return RedirectToAction(nameof(ListOfInsurance));
+            }
+
+            #endregion
+
+            TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+            return View(title);
+        }
+
+        #endregion
+
+        #region Edit 
+
+        [HttpGet]
+        public async Task<IActionResult> EditInsurance(ulong id)
+        {
+            #region Fill Model
+
+            var model = await _siteSettingService.GetInsuranceById(id);
+            if (model == null) return NotFound();
+
+            #endregion
+
+            return View(model);
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditInsurance(Insurance model)
+        {
+            #region Model State Validation 
+
+            if (!ModelState.IsValid)
+            {
+                TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+                return View(model);
+            }
+
+            #endregion
+
+            #region Update Method
+
+            var res = await _siteSettingService.UpdateInsurance(model);
+            if (res)
+            {
+                TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+                return RedirectToAction(nameof(ListOfInsurance));
+            }
+
+            #endregion
+
+            TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+            return View(model);
         }
 
         #endregion

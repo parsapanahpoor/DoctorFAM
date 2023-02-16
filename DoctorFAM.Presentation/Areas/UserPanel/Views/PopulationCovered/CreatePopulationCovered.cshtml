@@ -4,25 +4,28 @@
 @using DoctorFAM.Application.Extensions
 @using DoctorFAM.Application.Convertors
 @using DoctorFAM.Application.StaticTools
+@using DoctorFAM.Domain.Entities.Insurance
 
 @{
 
     ViewData["Title"] = Localizer["Add Covered Person"];
 
+    List<Insurance> insurances = ViewBag.Insurances as List<Insurance>;
+
 }
 
 
 @section Scripts
-{
-<partial name="_JqueryValidation" />
+    {
+    <partial name="_JqueryValidation" />
 }
 
 @section Breadcrumb
-{
-<li>
+    {
+    <li>
         <a asp-area="UserPanel" asp-controller="PopulationCovered" asp-action="ListOfPopulationCovered"> لیست افراد زیر مجموعه </a>
-    
-</li>
+
+    </li>
 }
 
 <form method="post" asp-action="CreatePopulationCovered" asp-controller="PopulationCovered" asp-area="UserPanel">
@@ -60,7 +63,7 @@
 
                             <div class="form-group col-md-6 col-sm-12">
                                 <label asp-for="BirthDay"></label>
-                                <input asp-for="BirthDay" class="form-control" autocomplete="off" AdminDatePicker="1"/>
+                                <input asp-for="BirthDay" class="form-control" autocomplete="off" AdminDatePicker="1" />
                                 <span class="text-danger" asp-validation-for="BirthDay"></span>
                             </div>
 
@@ -70,12 +73,22 @@
                                 <span class="text-danger" asp-validation-for="Age"></span>
                             </div>
 
-                            
-
                             <div class="form-group col-md-6 col-sm-12">
-                                <label asp-for="InsuranceType"></label>
-                                <select asp-for="InsuranceType" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.InsuranceType.InsuranceType))"></select>
-                                <span class="text-danger" asp-validation-for="InsuranceType"></span>
+                                <label asp-for="InsuranceId"></label>
+                                <select asp-for="InsuranceId" class="form-control">
+
+                                    <option>لطفا بیمه ی مورد نظر را انتخاب کنید</option>
+
+                                    @if (insurances != null && insurances.Any())
+                                    {
+                                        foreach (var item in insurances)
+                                        {
+                                                <option value="@item.Id">@item.Title</option>
+                                        }
+                                    }
+
+                                </select>
+                                <span class="text-danger" asp-validation-for="InsuranceId"></span>
                             </div>
 
                             <div class="form-group col-md-6 col-sm-12">
@@ -84,7 +97,7 @@
                                 <span class="text-danger" asp-validation-for="Ratio"></span>
                             </div>
 
-                            
+
 
                         </div>
 

@@ -203,5 +203,19 @@ namespace DoctorFAM.Domain.Interfaces.EFCore
         #endregion
 
         #endregion
+
+        #region Status
+
+        #region Doctor Panel
+
+        //Filter Status From Doctor Panel Side  
+        Task<List<HealthInformation>> FilterStatusDoctorPanelSide(ulong ownerId);
+
+        //Remove All Of Lastest Status From This Current Doctor 
+        Task RemoveAllOfLastestStatusFromThisCurrentDoctor(ulong doctorUserId);
+
+        #endregion
+
+        #endregion
     }
 }

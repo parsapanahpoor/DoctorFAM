@@ -4,6 +4,7 @@ using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Application.StaticTools;
 using DoctorFAM.Domain.ViewModels.Admin.HealthInformation.TVFAM.Video;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.HealthInformation.TVFAM;
+using DoctorFAM.Web.Areas.Doctor.ActionFilterAttributes;
 using DoctorFAM.Web.Doctor.Controllers;
 using DoctorFAM.Web.HttpManager;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +13,7 @@ using ZNetCS.AspNetCore.ResumingFileResults.Extensions;
 
 namespace DoctorFAM.Web.Areas.Doctor.Controllers
 {
+    [CheckDoctorsInfo]
     public class HealthInformationController : DoctorBaseController
     {
         #region Ctor 
@@ -364,6 +366,58 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
             }
 
             return ApiResponse.SetResponse(ApiResponseStatus.Danger, null, _localizer["The operation failed"].Value);
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Status
+
+        #region Filter Status
+
+        [HttpGet]
+        public async Task<IActionResult> FilterStatus()
+        {
+            return View(await _healthInformationService.FilterStatusDoctorPanelSide(User.GetUserId()));
+        }
+
+        #endregion
+
+        #region Create Status
+
+        [HttpGet]
+        public async Task<IActionResult> CreateStatus()
+        {
+            return View();
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateStatus(CreateTVFAMVideDoctorPanelViewModel model)
+        {
+            #region Model State Validation 
+
+            if (!ModelState.IsValid)
+            {
+                TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+                return View(model);
+            }
+
+            #endregion
+
+            #region Create Podcast 
+
+            var res = await _healthInformationService.CreatePodcastFromDoctorSide(model, User.GetUserId());
+            if (res)
+            {
+                TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+
+                return RedirectToAction(nameof(FilterStatus));
+            }
+
+            #endregion
+
+            return View(model);
         }
 
         #endregion

@@ -23,6 +23,7 @@ using DoctorFAM.Domain.ViewModels.Admin.HealthHouse.HomeLabratory;
 using DoctorFAM.Domain.Entities.Wallet;
 using DoctorFAM.Domain.Enums.RequestType;
 using DoctorFAM.Domain.ViewModels.UserPanel.HealthHouse.HomeLaboratory;
+using DoctorFAM.Domain.ViewModels.Site.HomeVisitRequest;
 
 namespace DoctorFAM.Application.Services.Implementation
 {
@@ -31,21 +32,16 @@ namespace DoctorFAM.Application.Services.Implementation
         #region Ctor
 
         private readonly IHomeLaboratoryRepository _homeLaboratory;
-
         private readonly IUserService _userService;
-
         private readonly IRequestService _requestService;
-
         private readonly IPatientService _patientService;
-
         private readonly ILocationService _locationService;
-
         private readonly IWalletRepository _walletRepository;
-
         private readonly IPopulationCoveredRepository _populationCovered;
+        private readonly ISiteSettingService _siteSettingService;
 
         public HomeLaboratoryService(IHomeLaboratoryRepository homeLaboratory, IUserService userService, IRequestService requestService, IPatientService patientService, ILocationService locationService
-                                        ,IWalletRepository walletRepository, IPopulationCoveredRepository populationCovered)
+                                        ,IWalletRepository walletRepository, IPopulationCoveredRepository populationCovered, ISiteSettingService siteSettingService)
         {
             _homeLaboratory = homeLaboratory;
             _userService = userService;
@@ -54,11 +50,38 @@ namespace DoctorFAM.Application.Services.Implementation
             _locationService = locationService;
             _walletRepository = walletRepository;
             _populationCovered = populationCovered;
+            _siteSettingService = siteSettingService;
         }
 
         #endregion
 
         #region Site Side
+
+        //Get List Of Laboratories For Send Notification For Home Laboratories Notification 
+        public async Task<List<string?>> GetListOfLaboratoriesForArrivalsHomeLaboratoriesRequests(ulong requestId)
+        {
+            #region Get Request By Id 
+
+            var request = await _requestService.GetRequestById(requestId);
+            if (request == null) return null;
+
+            #endregion
+
+            #region Get Request Detail 
+
+            var requetsDetail = await _requestService.GetPatientRequestDetailByRequestId(requestId);
+            if (requetsDetail == null) return null;
+
+            #endregion
+
+            #region Get Activated Laboratories By Home Laboratories Interests And Location Address
+
+            var returnValue = await _homeLaboratory.GetActivatedAndHomeLaboratoriesInterestLaboratories(requetsDetail.CountryId, requetsDetail.StateId, requetsDetail.CityId);
+
+            #endregion
+
+            return returnValue;
+        }
 
         public async Task<bool> ChargeUserWallet(ulong userId, int price)
         {
@@ -153,6 +176,13 @@ namespace DoctorFAM.Application.Services.Implementation
 
         public async Task<ulong> CreatePatientDetail(PatientViewModel patient)
         {
+            #region Get Insurance By Id
+
+            var insurance = await _siteSettingService.GetInsuranceById(patient.InsuranceId);
+            if (insurance is null) return 0;
+
+            #endregion
+
             #region Fill Entity
 
             Patient model = new Patient
@@ -160,7 +190,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 RequestId = patient.RequestId,
                 Age = patient.Age,
                 Gender = patient.Gender,
-                InsuranceType = patient.InsuranceType,
+                InsuranceId = insurance.Id,
                 NationalId = patient.NationalId,
                 PatientName = patient.PatientName.SanitizeText(),
                 PatientLastName = patient.PatientLastName.SanitizeText(),
@@ -215,7 +245,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 RequestId = requestId,
                 Age = population.Age,
                 Gender = population.Gender,
-                InsuranceType = population.InsuranceType,
+                InsuranceId = (ulong)population.InsuranceId,
                 NationalId = population.NationalId,
                 PatientName = population.PatientName.SanitizeText(),
                 PatientLastName = population.PatientLastName.SanitizeText(),
@@ -261,7 +291,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 RequestId = requestId,
                 Age = population.Age,
                 Gender = population.Gender,
-                InsuranceType = population.InsuranceType,
+                InsuranceId = (ulong)population.InsuranceId,
                 NationalId = population.NationalId,
                 PatientName = population.PatientName.SanitizeText(),
                 PatientLastName = population.PatientLastName.SanitizeText(),
@@ -536,6 +566,49 @@ namespace DoctorFAM.Application.Services.Implementation
             return CreatePatientAddressResult.Success;
         }
 
+        //Fill Home Laboratory Request Invoice View Model
+        public async Task<HomeLaboratoryRequestInvoiceViewModel?> FillHomeLaboratoryRequestInvoiceViewModel(Request request)
+        {
+            //Make Instance From Return Model 
+            HomeLaboratoryRequestInvoiceViewModel model = new HomeLaboratoryRequestInvoiceViewModel();
+            model.RequestId = request.Id;
+
+            #region Get Requets Patient Address Detail
+
+            var requestPatietnAddressDetail = await GetRequestPatientDetailByRequestId(request.Id);
+            if (requestPatietnAddressDetail == null) return null;
+
+            model.PaitientRequestDetail = requestPatietnAddressDetail;
+
+            #endregion
+
+            #region Get Requets Patient Date Time 
+
+            var dateTimeDetail = await _requestService.GetRequestDateTimeDetailByRequestDetailId(request.Id);
+            if (dateTimeDetail == null) return null;
+
+            model.PatientRequestDateTimeDetail = dateTimeDetail;
+
+            #endregion
+
+            #region Get Home Visit Tariff From Site Setting 
+
+            double homeLaboratoryTariff = await _siteSettingService.GetHomeLaboratoryTariff();
+            if (homeLaboratoryTariff == null || homeLaboratoryTariff == 0) return null;
+
+            model.HomeLaboratoryTariff = (int)homeLaboratoryTariff;
+
+            #endregion
+
+            #region Invoic Sum 
+
+            model.InvoiceSum = (int)homeLaboratoryTariff;
+
+            #endregion
+
+            return model;
+        }
+
         #endregion
 
         #region Admin Side
@@ -580,7 +653,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 NationalId = patient?.NationalId,
                 Gender = patient?.Gender,
                 Age = patient?.Age,
-                InsuranceType = patient?.InsuranceType,
+                Insurance = patient?.Insurance.Title,
                 RequestDescription = patient?.RequestDescription,
                 Vilage = requestDetail?.Vilage,
                 FullAddress = requestDetail?.FullAddress,

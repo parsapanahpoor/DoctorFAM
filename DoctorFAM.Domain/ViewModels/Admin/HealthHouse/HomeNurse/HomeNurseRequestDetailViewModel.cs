@@ -49,7 +49,7 @@ namespace DoctorFAM.Domain.ViewModels.Admin.HealthHouse.HomeNurse
 
         public int? Age { get; set; }
 
-        public InsuranceType? InsuranceType { get; set; }
+        public ulong? InsuranceId { get; set; }
 
         public string? RequestDescription { get; set; }
 

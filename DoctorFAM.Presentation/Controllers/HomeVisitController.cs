@@ -115,6 +115,9 @@ namespace DoctorFAM.Web.Controllers
 
             if (populationCoveredId != null && populationCoveredId.HasValue)
             {
+                //Send List Of Insurance To The View
+                ViewBag.Insurances = await _siteSettingService.ListOfInsurance();
+
                 //Fill Page Model From Selected Population Covered Data
                 var mode = await _homeVisitService.FillPatientViewModelFromSelectedPopulationCoveredData(populationCoveredId.Value, requestId, User.GetUserId());
                 if (mode == null) return NotFound();
@@ -129,6 +132,9 @@ namespace DoctorFAM.Web.Controllers
             var user = await _userService.GetUserById(User.GetUserId());
 
             #endregion
+
+            //Send List Of Insurance To The View
+            ViewBag.Insurances = await _siteSettingService.ListOfInsurance();
 
             return View(new PatientViewModel()
             {
@@ -163,6 +169,9 @@ namespace DoctorFAM.Web.Controllers
                 #region Get User Population Covered
 
                 ViewBag.PopulationCovered = await _populationCovered.GetUserPopulation(User.GetUserId());
+
+                //Send List Of Insurance To The View
+                ViewBag.Insurances = await _siteSettingService.ListOfInsurance();
 
                 #endregion
 
@@ -201,6 +210,9 @@ namespace DoctorFAM.Web.Controllers
             ViewBag.PopulationCovered = await _populationCovered.GetUserPopulation(User.GetUserId());
 
             #endregion
+
+            //Send List Of Insurance To The View
+            ViewBag.Insurances = await _siteSettingService.ListOfInsurance();
 
             return View(patient);
         }
@@ -634,14 +646,13 @@ namespace DoctorFAM.Web.Controllers
                     {
                         string errorscode = jo["errors"]["code"].ToString();
 
-                        return BadRequest($"error code {errorscode}");
-
+                        //return BadRequest($"error code {errorscode}");
+                        return RedirectToAction("CancelPayment", "Home");
                     }
                 }
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
 

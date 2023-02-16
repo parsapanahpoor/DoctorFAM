@@ -1,5 +1,6 @@
 ﻿using DoctorFAM.Domain.Entities.FamilyDoctor;
 using DoctorFAM.Domain.ViewModels.Admin.FamilyDoctor;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.NavBar;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.PopulationCovered;
 using DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor;
 using DoctorFAM.Domain.ViewModels.UserPanel.Reservation;
@@ -32,6 +33,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Filter Family Doctor Reservation Date Time
         Task<FilterFamilyDoctorReservationDateTimeUserPanelViewModel?> FilterFamilyDoctorReservationDateTimeUserPanel(FilterFamilyDoctorReservationDateTimeUserPanelViewModel filter);
+
+        //Show Lastest Family Doctor Request In Doctor Panel Nav Bar 
+        Task<LastestFamilyDoctorRequestForShowInNavBarViewModel?> ShowLastestFamilyDoctorRequestInDoctorPanelNavBar(ulong userId);
 
         //Cancel User Selected Family Doctor From User Panel 
         Task<bool> CancelUserSelectedFamilyDoctorFromUserPanel(ulong patientId);

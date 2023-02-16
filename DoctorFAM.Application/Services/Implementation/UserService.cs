@@ -749,6 +749,12 @@ namespace DoctorFAM.Application.Services.Implementation
             return await _userRepository.GetAdminsAndSupportersNotificationForSendNotificationInHomeVisit();
         }
 
+        //Get List Of Admins and Supporters User Id For Send Notification For Home Laboratory
+        public async Task<List<string>?> GetAdminsAndSupportersNotificationForSendNotificationInHomeLaboratory()
+        {
+            return await _userRepository.GetAdminsAndSupportersNotificationForSendNotificationInHomeLaboratory();
+        }
+
         //Get List Of Admins and Supporters User Id For Send Notification For Death Certificate
         public async Task<List<string>?> GetAdminsAndSupportersNotificationForSendNotificationInDeathCertificate()
         {

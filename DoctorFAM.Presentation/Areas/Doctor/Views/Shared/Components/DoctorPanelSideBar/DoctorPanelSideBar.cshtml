@@ -105,7 +105,6 @@
             
             @if (Model.DoctorFamily == true)
             {
-
                 <li>
                     <a href="#" class="menu-dropdown">
                         <i class="menu-icon glyphicon glyphicon-thumbs-up"></i>
@@ -130,8 +129,6 @@
 
                     </ul>
                 </li>
-
-
             }
 
             <li>
@@ -318,8 +315,6 @@
             </li>
 
             @await Component.InvokeAsync("DoctorsResumeStateBadge")
-
-          
 
             @await Component.InvokeAsync("DoctorsInfosBadge")
         }

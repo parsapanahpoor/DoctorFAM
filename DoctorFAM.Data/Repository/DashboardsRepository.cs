@@ -308,6 +308,17 @@ namespace DoctorFAM.Data.Repository
 
             #endregion
 
+            #region List Of Doctors That Waiting For Accpet Them Informations 
+
+            model.ListOfWaitingForAcceptInformationsDoctors = await  _context.Organizations
+                .Where(s => !s.IsDelete && s.OrganizationType == Domain.Enums.Organization.OrganizationType.DoctorOffice
+                       && s.OrganizationInfoState == Domain.Entities.Doctors.OrganizationInfoState.WatingForConfirm)
+                .Include(p => p.User)
+                .OrderByDescending(s => s.CreateDate)
+                .ToListAsync();
+
+            #endregion
+
             return model;
         }
 

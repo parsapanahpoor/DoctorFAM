@@ -12,54 +12,54 @@
 
 @section Styles
     {
-        <style>
+    <style>
 
-            .header-fullname {
-                font: 21px 'YekanBakh-FaNum';
-                margin-top: 27px;
-                display: inline-block;
-            }
+        .header-fullname {
+            font: 21px 'YekanBakh-FaNum';
+            margin-top: 27px;
+            display: inline-block;
+        }
 
-        </style>
+    </style>
 }
 
-    @section Scripts
+@section Scripts
     {
-        <partial name="_JqueryValidation" />
+    <partial name="_JqueryValidation" />
 
-        <script>
-            $("#UserSelectedFamilyDoctorRequest_FamilyDoctorRequestState").on("change",
-                function () {
+    <script>
+        $("#UserSelectedFamilyDoctorRequest_FamilyDoctorRequestState").on("change",
+            function () {
 
-                    var selectedAdvertisementStatusValue = $("#UserSelectedFamilyDoctorRequest_FamilyDoctorRequestState :selected").val();
-                    if (selectedAdvertisementStatusValue == 1) {
-                        $("#RejectDescription-div").removeClass("d-none");
-                    } else {
-                        $("#RejectDescription-div").addClass("d-none");
-                    }
-                });
-        </script>
+                var selectedAdvertisementStatusValue = $("#UserSelectedFamilyDoctorRequest_FamilyDoctorRequestState :selected").val();
+                if (selectedAdvertisementStatusValue == 1) {
+                    $("#RejectDescription-div").removeClass("d-none");
+                } else {
+                    $("#RejectDescription-div").addClass("d-none");
+                }
+            });
+    </script>
 }
 
-    @section Breadcrumb
+@section Breadcrumb
     {
-        <li>
-            <a href="javascript:void(0)"> @Localizer["User Selected Consultant Request Id"] : @Model.UserSelectedConsultant.Id </a>
-        </li>
+    <li>
+        <a href="javascript:void(0)"> @Localizer["User Selected Consultant Request Id"] : @Model.UserSelectedConsultant.Id </a>
+    </li>
 }
 
-        <div class="row">
+<div class="row">
 
-            <div class="col-md-12">
+    <div class="col-md-12">
 
-                <div class="col-md-12">
-                    <div class="profile-container">
-                        <div class="profile-header row">
-                            <div class="col-lg-2 col-md-4 col-sm-12 text-center">
-                                <img src="@(Model.Patient != null ? Model.Patient.GetUserAvatar() : Localizer["Empty"])" alt="" class="header-avatar">
-                            </div>
-                            <div class="col-lg-3 col-md-8 col-sm-12 profile-info">
-                                <div class="header-fullname">@(Model.Patient.Username != null ? Model.Patient.Username : Localizer["Empty"])</div>
+        <div class="col-md-12">
+            <div class="profile-container">
+                <div class="profile-header row">
+                    <div class="col-lg-2 col-md-4 col-sm-12 text-center">
+                        <img src="@(Model.Patient != null ? Model.Patient.GetUserAvatar() : Localizer["Empty"])" alt="" class="header-avatar">
+                    </div>
+                    <div class="col-lg-3 col-md-8 col-sm-12 profile-info">
+                        <div class="header-fullname">@(Model.Patient.Username != null ? Model.Patient.Username : Localizer["Empty"])</div>
 
                         <div class="header-information">
                             @Localizer["Mobile"] : @(Model.Patient.Mobile != null ? Model.Patient.Mobile : Localizer["Empty"])
@@ -113,17 +113,17 @@
                                                     <select id="UserSelectedFamilyDoctorRequest_FamilyDoctorRequestState" name="State" class="form-control">
                                                         @if (Model.UserSelectedConsultant.ConsultantRequestState == DoctorFAM.Domain.Enums.FamilyDoctor.FamilyDoctorRequestState.WaitingForConfirm)
                                                         {
-                                                                <option value="2" selected="selected">@Localizer["Change User Population Covered State"]</option>
+                                                            <option value="2" selected="selected">@Localizer["Change User Population Covered State"]</option>
                                                         }
                                                         @if (Model.UserSelectedConsultant.ConsultantRequestState == DoctorFAM.Domain.Enums.FamilyDoctor.FamilyDoctorRequestState.Accepted)
                                                         {
-                                                                <option value="0" selected="selected">@Localizer["Accepted"]</option>
-                                                                <option value="1">@Localizer["Decline"]</option>
+                                                            <option value="0" selected="selected">@Localizer["Accepted"]</option>
+                                                            <option value="1">@Localizer["Decline"]</option>
                                                         }
                                                         else
                                                         {
-                                                                <option value="1">@Localizer["Decline"]</option>
-                                                                <option value="0">@Localizer["Accepted"]</option>
+                                                            <option value="1">@Localizer["Decline"]</option>
+                                                            <option value="0">@Localizer["Accepted"]</option>
                                                         }
                                                     </select>
                                                 </div>
@@ -153,104 +153,87 @@
                                 <div id="timeline" class="tab-pane">
 
                                     @if (Model.PopulationCovered != null && Model.PopulationCovered.Any())
-                                    { 
+                                    {
 
                                         @foreach (var item in Model.PopulationCovered)
                                         {
-                                                <div class="form-title">
+                                            <div class="form-title">
                                                 @Localizer["Patient population Covered"]
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group col-md-6 col-sm-12">
+                                                    <label>@Localizer["First Name"]</label>
+                                                    <input type="text" class="form-control" readonly value="@item.PatientName">
                                                 </div>
-                                                <div class="row">
-                                                    <div class="form-group col-md-6 col-sm-12">
-                                                        <label>@Localizer["First Name"]</label>
-                                                        <input type="text" class="form-control" readonly value="@item.PatientName">
-                                                    </div>
 
-                                                    <div class="form-group col-md-6 col-sm-12">
-                                                        <label>@Localizer["Last Name"]</label>
-                                                        <input type="text" class="form-control" readonly value="@item.PatientLastName">
-                                                    </div>
+                                                <div class="form-group col-md-6 col-sm-12">
+                                                    <label>@Localizer["Last Name"]</label>
+                                                    <input type="text" class="form-control" readonly value="@item.PatientLastName">
+                                                </div>
 
-                                                    <div class="form-group col-md-6 col-sm-12">
-                                                        <label>@Localizer["Age"]</label>
-                                                        <input type="text" class="form-control" readonly value="@item.Age">
-                                                    </div>
+                                                <div class="form-group col-md-6 col-sm-12">
+                                                    <label>@Localizer["Age"]</label>
+                                                    <input type="text" class="form-control" readonly value="@item.Age">
+                                                </div>
 
-                                                    <div class="form-group col-md-6 col-sm-12">
-                                                        <label>@Localizer["National Id"]</label>
-                                                        <input type="text" class="form-control" readonly value="@item.NationalId">
-                                                    </div>
+                                                <div class="form-group col-md-6 col-sm-12">
+                                                    <label>@Localizer["National Id"]</label>
+                                                    <input type="text" class="form-control" readonly value="@item.NationalId">
+                                                </div>
 
-                                                    <div class="form-group col-md-6 col-sm-12">
-                                                        <label>@Localizer["BirthDay"]</label>
-                                                        <input type="text" class="form-control" readonly value="@item.BirthDay.ToShamsi()">
-                                                    </div>
+                                                <div class="form-group col-md-6 col-sm-12">
+                                                    <label>@Localizer["BirthDay"]</label>
+                                                    <input type="text" class="form-control" readonly value="@item.BirthDay.ToShamsi()">
+                                                </div>
 
-                                                    <div class="form-group col-md-6 col-sm-12">
-                                                        <label>@Localizer["Gender"]</label>
+                                                <div class="form-group col-md-6 col-sm-12">
+                                                    <label>@Localizer["Gender"]</label>
                                                     @if (item.Gender == DoctorFAM.Domain.Enums.Gender.Gender.Female)
                                                     {
-                                                                <input type="text" class="form-control" readonly value="@SharedLocalizer["Female"]">
+                                                        <input type="text" class="form-control" readonly value="@SharedLocalizer["Female"]">
                                                     }
                                                     @if (item.Gender == DoctorFAM.Domain.Enums.Gender.Gender.Male)
                                                     {
-                                                                <input type="text" class="form-control" readonly value="@SharedLocalizer["Male"]">
+                                                        <input type="text" class="form-control" readonly value="@SharedLocalizer["Male"]">
                                                     }
-                                                    </div>
+                                                </div>
 
-                                                    <div class="form-group col-md-6 col-sm-12">
-                                                        <label>@Localizer["Insurance Type"]</label>
-                                                    @if (item.InsuranceType == DoctorFAM.Domain.Enums.InsuranceType.InsuranceType.Iranian)
-                                                    {
-                                                                <input type="text" class="form-control" readonly value="@SharedLocalizer["Iranian"]">
-                                                    }
-                                                    @if (item.InsuranceType == DoctorFAM.Domain.Enums.InsuranceType.InsuranceType.Tamin)
-                                                    {
-                                                                <input type="text" class="form-control" readonly value="@SharedLocalizer["Tamin"]">
-                                                    }
-                                                    @if (item.InsuranceType == DoctorFAM.Domain.Enums.InsuranceType.InsuranceType.Salamat)
-                                                    {
-                                                                <input type="text" class="form-control" readonly value="@SharedLocalizer["Salamat"]">
-                                                    }
-                                                    @if (item.InsuranceType == DoctorFAM.Domain.Enums.InsuranceType.InsuranceType.FreeJobs)
-                                                    {
-                                                                <input type="text" class="form-control" readonly value="@SharedLocalizer["FreeJobs"]">
-                                                    }
-                                                    @if (item.InsuranceType == DoctorFAM.Domain.Enums.InsuranceType.InsuranceType.Free)
-                                                    {
-                                                                <input type="text" class="form-control" readonly value="@SharedLocalizer["Free"]">
-                                                    }
-                                                    </div>
+                                                <div class="form-group col-md-6 col-sm-12">
+                                                    <label>@Localizer["Insurance Type"]</label>
 
-                                                    <div class="form-group col-md-6 col-sm-12">
-                                                        <label>@Localizer["Ratio"]</label>
+                                                    <input type="text" class="form-control" readonly value="@item.Insurance.Title">
+
+                                                </div>
+
+                                                <div class="form-group col-md-6 col-sm-12">
+                                                    <label>@Localizer["Ratio"]</label>
                                                     @if (item.Ratio == DoctorFAM.Domain.Enums.Population_Covered.Ratio.Brother)
                                                     {
-                                                                <input type="text" class="form-control" readonly value="@SharedLocalizer["Brother"]">
+                                                        <input type="text" class="form-control" readonly value="@SharedLocalizer["Brother"]">
                                                     }
                                                     @if (item.Ratio == DoctorFAM.Domain.Enums.Population_Covered.Ratio.Child)
                                                     {
-                                                                <input type="text" class="form-control" readonly value="@SharedLocalizer["Child"]">
+                                                        <input type="text" class="form-control" readonly value="@SharedLocalizer["Child"]">
                                                     }
                                                     @if (item.Ratio == DoctorFAM.Domain.Enums.Population_Covered.Ratio.Father)
                                                     {
-                                                                <input type="text" class="form-control" readonly value="@SharedLocalizer["Father"]">
+                                                        <input type="text" class="form-control" readonly value="@SharedLocalizer["Father"]">
                                                     }
                                                     @if (item.Ratio == DoctorFAM.Domain.Enums.Population_Covered.Ratio.Mother)
                                                     {
-                                                                <input type="text" class="form-control" readonly value="@SharedLocalizer["Mother"]">
+                                                        <input type="text" class="form-control" readonly value="@SharedLocalizer["Mother"]">
                                                     }
                                                     @if (item.Ratio == DoctorFAM.Domain.Enums.Population_Covered.Ratio.Sister)
                                                     {
-                                                                <input type="text" class="form-control" readonly value="@SharedLocalizer["Sister"]">
+                                                        <input type="text" class="form-control" readonly value="@SharedLocalizer["Sister"]">
                                                     }
                                                     @if (item.Ratio == DoctorFAM.Domain.Enums.Population_Covered.Ratio.Partner)
                                                     {
-                                                                <input type="text" class="form-control" readonly value="@SharedLocalizer["Partner"]">
+                                                        <input type="text" class="form-control" readonly value="@SharedLocalizer["Partner"]">
                                                     }
-                                                    </div>
-
                                                 </div>
+
+                                            </div>
 
                                         }
 

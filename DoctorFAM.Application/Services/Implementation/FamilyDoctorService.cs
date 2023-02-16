@@ -3,6 +3,7 @@ using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.FamilyDoctor;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.FamilyDoctor;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.NavBar;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.PopulationCovered;
 using DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor;
 using DoctorFAM.Domain.ViewModels.UserPanel.Reservation;
@@ -28,7 +29,7 @@ namespace DoctorFAM.Application.Services.Implementation
         private readonly IPopulationCoveredService _populationCovered;
         private readonly IReservationService _reservationService;
 
-        public FamilyDoctorService(IFamilyDoctorRepository familyDoctor , IDoctorsService doctorServicec, IOrganizationService organizationService
+        public FamilyDoctorService(IFamilyDoctorRepository familyDoctor, IDoctorsService doctorServicec, IOrganizationService organizationService
                                     , IUserService userService, IPopulationCoveredService populationCovered, IReservationService reservationService)
         {
             _familyDoctor = familyDoctor;
@@ -77,7 +78,7 @@ namespace DoctorFAM.Application.Services.Implementation
         }
 
         //Choosing A Doctor Family
-        public async Task<bool> ChoosingFamilyDoctor(ulong doctorUserId , ulong patientId)
+        public async Task<bool> ChoosingFamilyDoctor(ulong doctorUserId, ulong patientId)
         {
             #region Get Doctor By Doctor Id
 
@@ -92,7 +93,7 @@ namespace DoctorFAM.Application.Services.Implementation
             if (doctorUser == null) return false;
 
             var patient = await _userService.GetUserById(patientId);
-            if (patient == null) return false; 
+            if (patient == null) return false;
 
             #endregion
 
@@ -165,7 +166,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
             var doctor = await _userService.GetUserById(request.DoctorId);
             if (doctor == null) return null;
-            
+
             #endregion
 
             #region Get Doctor Personal Information 
@@ -193,7 +194,7 @@ namespace DoctorFAM.Application.Services.Implementation
         {
             #region Check Validation For User Selected Family Doctor 
 
-            var userSelectedFamilyDoctor = await GetUserSelectedFamilyDoctorByPatientIdAndDoctorIdWithAcceptedAndWaitingState(filter.PatientId , filter.UserId);
+            var userSelectedFamilyDoctor = await GetUserSelectedFamilyDoctorByPatientIdAndDoctorIdWithAcceptedAndWaitingState(filter.PatientId, filter.UserId);
             if (userSelectedFamilyDoctor == null)
             {
                 return null;
@@ -231,6 +232,90 @@ namespace DoctorFAM.Application.Services.Implementation
         #endregion
 
         #region Doctor Panel 
+
+        //Show Lastest Family Doctor Request In Doctor Panel Nav Bar 
+        public async Task<LastestFamilyDoctorRequestForShowInNavBarViewModel?> ShowLastestFamilyDoctorRequestInDoctorPanelNavBar(ulong userId)
+        {
+            //Create Instace From Return Value
+            LastestFamilyDoctorRequestForShowInNavBarViewModel model = new();
+
+            #region Get Doctor Organization
+
+            var organization = await _organizationService.GetDoctorOrganizationByUserId(userId);
+            if (organization == null || organization.OrganizationInfoState != OrganizationInfoState.Accepted)
+            {
+                model.HasAccessForShow = false;
+
+                return model;
+            }
+
+            #endregion
+
+            #region Check That Doctor Is Family Doctor 
+
+            //Get Doctor By Organization Owner Id
+            var doctor = await _doctorService.GetDoctorByUserId(organization.OwnerId);
+            if (doctor is null)
+            {
+                model.HasAccessForShow = false;
+
+                return model;
+            }
+
+            //Get Doctor Selected Interests 
+            var interests = await _doctorService.GetDoctorSelectedInterests(doctor.Id);
+            if (doctor is null || !interests.Any(p => p.InterestId == 3))
+            {
+                model.HasAccessForShow = false;
+
+                return model;
+            }
+            else
+            {
+                model.HasAccessForShow = true;
+            }
+
+            #endregion
+
+            #region Fill Model 
+
+            //Lastest User Request For Family Doctor
+            var requests = await _familyDoctor.GetLastestFamilyDoctorRequestForCurrentDoctor(organization.OwnerId);
+            if (requests is null)
+            {
+                model.RequestCount = 0;
+
+                return model;
+            }
+
+            //Model Count 
+            model.RequestCount = requests.Count;
+
+            //Make Instance  
+            List<LastestFamilyDoctorRequestForShowInNavBarDetailViewModel> detail = new List<LastestFamilyDoctorRequestForShowInNavBarDetailViewModel>();
+
+            //List OF Users 
+            foreach (var item in requests)
+            {
+                //Get User By Patient Id
+                var user = await _userService.GetUserById(item.PatientId);
+
+                if (user is not null)
+                {
+                    detail.Add(new LastestFamilyDoctorRequestForShowInNavBarDetailViewModel()
+                    {
+                        DateTimes = item.CreateDate,
+                        Users = user,
+                    });
+                }
+            }
+
+            model.Detail = detail;
+
+            #endregion
+
+            return model;
+        }
 
         //Get User Selected Family Doctor By Request Id
         public async Task<UserSelectedFamilyDoctor?> GetUserSelectedFamilyDoctorByRequestId(ulong requestId)
@@ -296,11 +381,11 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #endregion
 
-            return await _familyDoctor.GetUserSelectedFamilyDoctorByPatientIdAndDoctorIdWithAcceptedAndWaitingState(userId , organization.OwnerId);
+            return await _familyDoctor.GetUserSelectedFamilyDoctorByPatientIdAndDoctorIdWithAcceptedAndWaitingState(userId, organization.OwnerId);
         }
 
         //Change User Selected Family Doctor Request From Doctor
-        public async Task<bool> ChangeUserSeletedFamilyDoctorRequestFromDoctor(UserSelectedFamilyDoctor userSelectedRequest , ulong doctorId)
+        public async Task<bool> ChangeUserSeletedFamilyDoctorRequestFromDoctor(UserSelectedFamilyDoctor userSelectedRequest, ulong doctorId)
         {
             #region Get Doctor Organization
 
