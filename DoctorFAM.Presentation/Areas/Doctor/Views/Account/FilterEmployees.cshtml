@@ -120,15 +120,8 @@
                 </table>
 
                 <div class="footer tc">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <a class="btn btn-primary w-100 margin-bottom-10" asp-action="AddNewUser" asp-controller="Account" asp-area="Doctor"> <i class="fa fa-plus"></i> افزودن کارمند جدید </a>
-                        </div>
-                        <div class="col-md-4">
-                            <partial name="_DoctorPanelPaging" model="@Model.GetCurrentPaging()" />
-                        </div>
-                        <div class="col-md-4"></div>
-                    </div>
+
+                    <partial name="_DoctorPanelPaging" model="@Model.GetCurrentPaging()" />
 
                 </div>
             }
