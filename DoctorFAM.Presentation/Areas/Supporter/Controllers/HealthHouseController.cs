@@ -1,4 +1,5 @@
-﻿using DoctorFAM.Application.Security;
+﻿using DoctorFAM.Application.Extensions;
+using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Implementation;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.HealthHouse;
@@ -24,10 +25,11 @@ namespace DoctorFAM.Web.Areas.Supporter.Controllers
         private readonly IHomeLaboratoryServices _homeLaboratoryServices;
         private readonly IPharmacyService _pharmacyService;
         private readonly INurseService _nurserService;
+        private readonly ILaboratoryService _laboratoryService;
 
         public HealthHouseController(IHomeVisitService homeVisit, IHomeNurseService homeNurse, IDeathCertificateService deathCertificate, IHomePatientTransportService homePatientTransportService,
                                         IHomePharmacyServicec homePharmacyService, IHomeLaboratoryServices homeLaboratoryServices, 
-                                                IPharmacyService pharmacyService, INurseService nurserService)
+                                                IPharmacyService pharmacyService, INurseService nurserService , ILaboratoryService loboratoryService)
         {
             _homeVisit = homeVisit;
             _homeNurse = homeNurse;
@@ -37,6 +39,7 @@ namespace DoctorFAM.Web.Areas.Supporter.Controllers
             _homeLaboratoryServices = homeLaboratoryServices;
             _pharmacyService = pharmacyService;
             _nurserService = nurserService;
+            _laboratoryService = loboratoryService;
         }
 
         #endregion
@@ -218,9 +221,15 @@ namespace DoctorFAM.Web.Areas.Supporter.Controllers
         {
             #region Get Request
 
-            var model = await _homeLaboratoryServices.ShowHomeLabratoryDetail(requestId);
-
+            var model = await _laboratoryService.FillHomePharmacyRequestDetailAdminSide(requestId, User.GetUserId());
             if (model == null) return NotFound();
+            if (model == null) return NotFound();
+            if (model.User == null) return NotFound();
+            if (model.Request == null) return NotFound();
+            if (model.HomeLaboratoryRequestDetail == null) return NotFound();
+            if (model.PatientRequestDetail == null) return NotFound();
+            if (model.PatientRequestDateTimeDetail == null) return NotFound();
+            if (model.Patient == null) return NotFound();
 
             #endregion
 

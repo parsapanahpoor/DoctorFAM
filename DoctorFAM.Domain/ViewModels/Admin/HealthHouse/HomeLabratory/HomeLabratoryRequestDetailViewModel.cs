@@ -1,4 +1,10 @@
-﻿using DoctorFAM.Domain.Entities.Insurance;
+﻿using DoctorFAM.DataLayer.Entities;
+using DoctorFAM.Domain.Entities.Account;
+using DoctorFAM.Domain.Entities.Insurance;
+using DoctorFAM.Domain.Entities.Laboratory;
+using DoctorFAM.Domain.Entities.Patient;
+using DoctorFAM.Domain.Entities.Pharmacy;
+using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Enums.Gender;
 using DoctorFAM.Domain.Enums.InsuranceType;
 using DoctorFAM.Domain.Enums.Request;
@@ -12,57 +18,16 @@ namespace DoctorFAM.Domain.ViewModels.Admin.HealthHouse.HomeLabratory
 {
     public class HomeLabratoryRequestDetailViewModel
     {
-        #region properties
+        public Request Request { get; set; }
 
-        public ulong RequestId { get; set; }
+        public PaitientRequestDetail PatientRequestDetail { get; set; }
 
-        public string Username { get; set; }
+        public PatientRequestDateTimeDetail PatientRequestDateTimeDetail { get; set; }
 
-        public string Mobile { get; set; }
+        public Patient Patient { get; set; }
 
-        public string? Email { get; set; }
+        public ICollection<HomeLaboratoryRequestDetail> HomeLaboratoryRequestDetail { get; set; }
 
-        public string? Country { get; set; }
-
-        public string? State { get; set; }
-
-        public string? City { get; set; }
-
-        public string? Vilage { get; set; }
-
-        public string? FullAddress { get; set; }
-
-        public string? Phone { get; set; }
-
-        public string? RequestDetailMobile { get; set; }
-
-        public int? Distance { get; set; }
-
-        public RequestState RequestState { get; set; }
-
-        public string? PatientName { get; set; }
-
-        public string? PatientLastName { get; set; }
-
-        public string? NationalId { get; set; }
-
-        public Gender? Gender { get; set; }
-
-        public int? Age { get; set; }
-
-        public string? Insurance { get; set; }
-
-        public string? RequestDescription { get; set; }
-
-        public DateTime? SendDate { get; set; }
-
-        public int? StartTime { get; set; }
-
-        public int? EndTime { get; set; }
-
-        public List<RequestedLabratoryAdminSideViewModel>? RequestedLabratory { get; set; }
-
-        #endregion
-
+        public User User { get; set; }
     }
 }

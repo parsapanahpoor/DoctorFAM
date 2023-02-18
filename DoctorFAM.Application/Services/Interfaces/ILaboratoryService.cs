@@ -1,4 +1,5 @@
 ﻿using DoctorFAM.Domain.Entities.Laboratory;
+using DoctorFAM.Domain.ViewModels.Admin.HealthHouse.HomeLabratory;
 using DoctorFAM.Domain.ViewModels.Admin.Laboratory;
 using DoctorFAM.Domain.ViewModels.Laboratory.Employee;
 using DoctorFAM.Domain.ViewModels.Laboratory.HomeLaboratory;
@@ -67,6 +68,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Edit Laboratory Info From Admin Panel
         Task<EditLaboratoryInfoResult> EditLaboratoryInfoAdminSide(LaboratoryInfoDetailAdminSideViewModel model);
+
+        //Show Home Laboratory Request Detail In Admin And Supporter Panel
+        Task<HomeLabratoryRequestDetailViewModel?> FillHomePharmacyRequestDetailAdminSide(ulong requestId, ulong userId);
 
         #endregion
     }

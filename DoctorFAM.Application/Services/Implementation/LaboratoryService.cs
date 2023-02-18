@@ -12,6 +12,7 @@ using DoctorFAM.Domain.Entities.Pharmacy;
 using DoctorFAM.Domain.Entities.WorkAddress;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.Consultant;
+using DoctorFAM.Domain.ViewModels.Admin.HealthHouse.HomeLabratory;
 using DoctorFAM.Domain.ViewModels.Admin.Laboratory;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Employees;
 using DoctorFAM.Domain.ViewModels.Laboratory.Employee;
@@ -765,6 +766,36 @@ namespace DoctorFAM.Application.Services.Implementation
             #endregion
 
             return EditLaboratoryInfoResult.success;
+        }
+
+        //Show Home Laboratory Request Detail In Admin And Supporter Panel
+        public async Task<HomeLabratoryRequestDetailViewModel?> FillHomePharmacyRequestDetailAdminSide(ulong requestId, ulong userId)
+        {
+            #region Get Request By Request Id
+
+            var request = await _requestService.GetRequestById(requestId);
+
+            if (request == null) return null;
+            if (request.RequestType != Domain.Enums.RequestType.RequestType.HomeLab) return null;
+            if (!request.PatientId.HasValue) return null;
+
+            #endregion
+
+            #region Fill Model 
+
+            HomeLabratoryRequestDetailViewModel model = new HomeLabratoryRequestDetailViewModel()
+            {
+                Patient = await _patientService.GetPatientById(request.PatientId.Value),
+                User = await _userService.GetUserById(request.UserId),
+                HomeLaboratoryRequestDetail = await GetHomeLaboratoryRequestDetailByRequestId(request.Id),
+                PatientRequestDetail = await _laboratoryRepository.GetRequestPatientDetailByRequestId(request.Id),
+                PatientRequestDateTimeDetail = await _laboratoryRepository.GetRequestDateTimeDetailByRequestDetailId(request.Id),
+                Request = request
+            };
+
+            #endregion
+
+            return model;
         }
 
         #endregion

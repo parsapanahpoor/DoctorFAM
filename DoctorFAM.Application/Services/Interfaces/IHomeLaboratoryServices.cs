@@ -54,8 +54,6 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         Task<FilterHomeLabratoryViewModel> FilterHomeLabratory(FilterHomeLabratoryViewModel filter);
 
-        Task<HomeLabratoryRequestDetailViewModel> ShowHomeLabratoryDetail(ulong requestId);
-
         Task<Patient?> GetPatientByRequestId(ulong requestId);
 
         Task<Request?> GetRquestForHomeLabratoryById(ulong requestId);

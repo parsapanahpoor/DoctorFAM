@@ -24,11 +24,12 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
         private readonly IPharmacyService _pharmacyService;
         private readonly IRequestService _requestService;
         private readonly INurseService _nurseService;
+        private readonly ILaboratoryService _laboratoryService;
 
         public HealthHouseController(IHomeVisitService homeVisit, IHomeNurseService homeNurse,
                         IDeathCertificateService deathCertificate, IHomePatientTransportService homePatientTransportService
                         , IHomePharmacyServicec homePharmacyService, IHomeLaboratoryServices homeLaboratoryServices, IPharmacyService pharmacyService
-                              , IRequestService requestService, INurseService nurseService)
+                              , IRequestService requestService, INurseService nurseService, ILaboratoryService laboratoryService)
         {
             _homeVisit = homeVisit;
             _homeNurse = homeNurse;
@@ -39,6 +40,7 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
             _pharmacyService = pharmacyService;
             _requestService = requestService;
             _nurseService = nurseService;
+            _laboratoryService = laboratoryService;
         }
 
         #endregion
@@ -246,9 +248,15 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
         {
             #region Get Request
 
-            var model = await _homeLaboratoryServices.ShowHomeLabratoryDetail(requestId);
-
+            var model = await _laboratoryService.FillHomePharmacyRequestDetailAdminSide(requestId, User.GetUserId());
             if (model == null) return NotFound();
+            if (model == null) return NotFound();
+            if (model.User == null) return NotFound();
+            if (model.Request == null) return NotFound();
+            if (model.HomeLaboratoryRequestDetail == null) return NotFound();
+            if (model.PatientRequestDetail == null) return NotFound();
+            if (model.PatientRequestDateTimeDetail == null) return NotFound();
+            if (model.Patient == null) return NotFound();
 
             #endregion
 

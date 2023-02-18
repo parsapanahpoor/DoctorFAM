@@ -46,9 +46,9 @@
                                 <div class="status">@item.CreateDate.Hour.ToString("00"):@item.CreateDate.Minute.ToString("00") - @item.CreateDate.ToShamsi() </div>
                             </div>
                             <div class="last-chat-time">
-                                @if (item.SupporterNotificationText == DoctorFAM.Domain.Enums.Notification.SupporterNotificationText.TakeReservation)
+                                @if (item.SupporterNotificationText == DoctorFAM.Domain.Enums.Notification.SupporterNotificationText.NewArrivalHomeLaboratoryRequest)
                                 {
-                                    <div>نوبت دریافت شده از پزشک</div>
+                                    <div>درخواست برای آزمایشگاه درمنزل</div>
                                 }
                               
                             </div>
