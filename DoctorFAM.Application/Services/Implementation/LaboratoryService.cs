@@ -8,12 +8,14 @@ using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.Laboratory;
 using DoctorFAM.Domain.Entities.Organization;
+using DoctorFAM.Domain.Entities.Pharmacy;
 using DoctorFAM.Domain.Entities.WorkAddress;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.Consultant;
 using DoctorFAM.Domain.ViewModels.Admin.Laboratory;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Employees;
 using DoctorFAM.Domain.ViewModels.Laboratory.Employee;
+using DoctorFAM.Domain.ViewModels.Laboratory.HomeLaboratory;
 using DoctorFAM.Domain.ViewModels.Laboratory.LaboratoryInfo;
 using DoctorFAM.Domain.ViewModels.Laboratory.LaboratorySideBar;
 using Microsoft.AspNetCore.Http;
@@ -35,15 +37,20 @@ namespace DoctorFAM.Application.Services.Implementation
         private readonly IOrganizationService _organizationService;
         private readonly IUserService _userService;
         private readonly IWorkAddressService _workAddressService;
-        private readonly DoctorFAMDbContext _context;
+        private readonly IRequestService _requestService;
+        private readonly IPatientService _patientService;
+        private readonly IHomeLaboratoryServices _homeLaboratoryServices;
 
-        public LaboratoryService(ILaboratoryRepository laboratoryRepository, IOrganizationService organizationService, IUserService userService, IWorkAddressService workAddressService , DoctorFAMDbContext context)
+        public LaboratoryService(ILaboratoryRepository laboratoryRepository, IOrganizationService organizationService, IUserService userService, IWorkAddressService workAddressService
+                                    , IRequestService requestService , IPatientService patientService , IHomeLaboratoryServices homeLaboratoryServices)
         {
             _laboratoryRepository = laboratoryRepository;
             _organizationService = organizationService;
             _userService = userService;
             _workAddressService = workAddressService;
-            _context = context;
+            _requestService = requestService;   
+            _patientService = patientService;
+            _homeLaboratoryServices= homeLaboratoryServices;
         }
 
         #endregion
@@ -573,6 +580,65 @@ namespace DoctorFAM.Application.Services.Implementation
             #endregion
 
             return true;
+        }
+
+        //Filter List Of Home Laboratory Request ViewModel From User Or Supporter Panel 
+        public async Task<FilterListOfHomeLaboratoryRequestViewModel> FilterListOfHomeLaboratoryRequestViewModel(FilterListOfHomeLaboratoryRequestViewModel filter)
+        {
+            #region Get Organization 
+
+            var organization = await _organizationService.GetLaboratoryOrganizationByUserId(filter.UserId);
+            if (organization == null) return null;
+
+            filter.LaboratoryOwnerId = organization.OwnerId;
+
+            #endregion
+
+            return await _laboratoryRepository.FilterListOfHomeLaboratoryRequestViewModel(filter);
+        }
+
+        //Get List Of Home Laboratory Request Detail By Request Id 
+        public async Task<List<HomeLaboratoryRequestDetail>> GetHomeLaboratoryRequestDetailByRequestId(ulong requestId)
+        {
+            return await _laboratoryRepository.GetHomeLaboratoryRequestDetailByRequestId(requestId);
+        }
+
+        //Show Home Laboratory Request Detail In Laboratory Panel
+        public async Task<HomeLaboratoryRequestViewModel?> FillHomePharmacyRequestViewModel(ulong requestId, ulong userId)
+        {
+            #region Get Organization By User Id
+
+            var organization = await _organizationService.GetOrganizationByUserId(userId);
+            if (organization == null) return null;
+
+            #endregion
+
+            #region Get Request By Request Id
+
+            var request = await _requestService.GetRequestById(requestId);
+
+            if (request == null) return null;
+            if (request.RequestType != Domain.Enums.RequestType.RequestType.HomeLab) return null;
+            if (request.OperationId.HasValue && request.OperationId.Value != organization.OwnerId) return null;
+            if (!request.PatientId.HasValue) return null;
+
+            #endregion
+
+            #region Fill Model 
+
+            HomeLaboratoryRequestViewModel model = new HomeLaboratoryRequestViewModel()
+            {
+                Patient = await _patientService.GetPatientById(request.PatientId.Value),
+                User = await _userService.GetUserById(request.UserId),
+                HomeLaboratoryRequestDetail = await GetHomeLaboratoryRequestDetailByRequestId(request.Id),
+                PatientRequestDetail = await _laboratoryRepository.GetRequestPatientDetailByRequestId(request.Id),
+                PatientRequestDateTimeDetail = await _laboratoryRepository.GetRequestDateTimeDetailByRequestDetailId(request.Id),
+                Request = request
+            };
+
+            #endregion
+
+            return model;
         }
 
         #endregion

@@ -1,7 +1,9 @@
 ﻿using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Laboratory;
+using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.ViewModels.Admin.Laboratory;
 using DoctorFAM.Domain.ViewModels.Laboratory.Employee;
+using DoctorFAM.Domain.ViewModels.Laboratory.HomeLaboratory;
 using DoctorFAM.Domain.ViewModels.Laboratory.LaboratorySideBar;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -15,6 +17,12 @@ namespace DoctorFAM.Domain.Interfaces
     public interface ILaboratoryRepository
     {
         #region Laboratory Side 
+
+        Task<PatientRequestDateTimeDetail?> GetRequestDateTimeDetailByRequestDetailId(ulong requestId);
+
+        Task<PaitientRequestDetail?> GetRequestPatientDetailByRequestId(ulong requestId);
+
+        Task<List<HomeLaboratoryRequestDetail>> GetHomeLaboratoryRequestDetailByRequestId(ulong requestId);
 
         //Check Is Exist Laboratory Info By User ID
         Task<bool> IsExistAnyLaboratoryInfoByUserId(ulong userId);
@@ -48,6 +56,9 @@ namespace DoctorFAM.Domain.Interfaces
 
         //Save Changes
         Task Savechanges();
+
+        //Filter List Of Home Laboratory Request ViewModel From User Or Supporter Panel 
+        Task<FilterListOfHomeLaboratoryRequestViewModel> FilterListOfHomeLaboratoryRequestViewModel(FilterListOfHomeLaboratoryRequestViewModel filter);
 
         #endregion
 

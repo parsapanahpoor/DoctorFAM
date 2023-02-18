@@ -24,6 +24,23 @@
         {
             <li>
                 <a href="#" class="menu-dropdown">
+                    <i class="menu-icon fa fa-tint"></i>
+                    <span class="menu-text"> آزمایشگاه درمنزل </span>
+                    <i class="menu-expand"></i>
+                </a>
+
+                <ul class="submenu">
+
+                    <li>
+                        <a asp-area="Laboratory" asp-controller="HomeLaboratory" asp-action="ListOfHomeLaboratoryRequest">
+                            <span class="menu-text">لیست درخواست های آزمایشگاه درمنزل</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li>
+                <a href="#" class="menu-dropdown">
                     <i class="menu-icon fa fa-user"></i>
                     <span class="menu-text"> @SharedLocalizer["Profile"] </span>
                     <i class="menu-expand"></i>

@@ -1,6 +1,7 @@
 ﻿using DoctorFAM.Domain.Entities.Laboratory;
 using DoctorFAM.Domain.ViewModels.Admin.Laboratory;
 using DoctorFAM.Domain.ViewModels.Laboratory.Employee;
+using DoctorFAM.Domain.ViewModels.Laboratory.HomeLaboratory;
 using DoctorFAM.Domain.ViewModels.Laboratory.LaboratoryInfo;
 using DoctorFAM.Domain.ViewModels.Laboratory.LaboratorySideBar;
 using System;
@@ -44,6 +45,12 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Add Exist User To The Laboratory Organization 
         Task<bool> AddExistUserToTheLaboratoryOrganization(ulong userId, List<ulong> UserRoles, ulong laboratoryId);
+
+        //Filter List Of Home Laboratory Request ViewModel From User Or Supporter Panel 
+        Task<FilterListOfHomeLaboratoryRequestViewModel> FilterListOfHomeLaboratoryRequestViewModel(FilterListOfHomeLaboratoryRequestViewModel filter);
+
+        //Show Home Laboratory Request Detail In Laboratory Panel
+        Task<HomeLaboratoryRequestViewModel?> FillHomePharmacyRequestViewModel(ulong requestId, ulong userId);
 
         #endregion
 

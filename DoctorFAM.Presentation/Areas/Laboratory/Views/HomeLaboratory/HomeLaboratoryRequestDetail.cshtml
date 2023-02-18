@@ -1,0 +1,346 @@
+﻿@model DoctorFAM.Domain.ViewModels.Laboratory.HomeLaboratory.HomeLaboratoryRequestViewModel
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Domain.ViewModels.Common
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
+@using DoctorFAM.Application.StaticTools
+
+@{
+    ViewData["Title"] = @Localizer["نمایش جزییات"];
+}
+
+@section Styles
+    {
+    <style>
+
+        .header-fullname {
+            font: 21px 'YekanBakh-FaNum';
+            margin-top: 27px;
+            display: inline-block;
+        }
+
+    </style>
+}
+
+@section Scripts
+    {
+    <partial name="_JqueryValidation" />
+}
+
+@section Breadcrumb
+    {
+    <li>
+        <a href="javascript:void(0)"> @Localizer["کد درخواست"] : @Model.Request.Id </a>
+    </li>
+}
+
+<div class="row">
+
+    <div class="col-md-12">
+
+        <div class="col-md-12">
+            <div class="profile-container">
+                <div class="profile-header row">
+                    <div class="col-lg-2 col-md-4 col-sm-12 text-center">
+                        <img src="@(Model.User != null ? Model.User.GetUserAvatar() : Localizer["خالی"])" alt="" class="header-avatar">
+                    </div>
+                    <div class="col-lg-3 col-md-8 col-sm-12 profile-info">
+                        <div class="header-fullname">@(Model.User.Username != null ? Model.User.Username : Localizer["خالی"])</div>
+
+                        <div class="header-information">
+                            @Localizer["موبایل"] : @(Model.User.Mobile != null ? Model.User.Mobile : Localizer["خالی"])
+                        </div>
+                    </div>
+                    <div class="col-lg-7 col-md-12 col-sm-12 col-xs-12 profile-stats">
+                        <div class="row">
+                            <div class="col-lg-4 col-md-3 col-sm-3 col-xs-12 stats-col">
+                                <div class="stats-value blue">@(Model.Request.CreateDate != null ? Model.Request.CreateDate.ToStringShamsiDate() : Localizer["خالی"])</div>
+                                <div class="stats-title">@Localizer["تاریخ درج درخواست"]</div>
+                            </div>
+                            <div class="col-lg-2 col-md-3 col-sm-3 col-xs-12 stats-col">
+                                <div class="stats-value blue">@(Model.PatientRequestDateTimeDetail != null ? Model.PatientRequestDateTimeDetail.StartTime.ToString("00") : Localizer["خالی"])</div>
+                                <div class="stats-title">@Localizer["رمان شروع"]</div>
+                            </div>
+                            <div class="col-lg-2 col-md-3 col-sm-3 col-xs-12 stats-col">
+                                <div class="stats-value blue">
+                                    @(Model.PatientRequestDateTimeDetail != null ? Model.PatientRequestDateTimeDetail.EndTime.ToString("00") : Localizer["خالی"])
+                                </div>
+                                <div class="stats-title">@Localizer["زمان پایان"]</div>
+                            </div>
+                            <div class="col-lg-4 col-md-3 col-sm-3 col-xs-12 stats-col">
+                                <div class="stats-value blue">
+                                    @(Model.PatientRequestDateTimeDetail != null ? Model.PatientRequestDateTimeDetail.SendDate.ToStringShamsiDate() : Localizer["خالی"])
+                                </div>
+                                <div class="stats-title">@Localizer["تاریخ موردنظر بیمار"]</div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="profile-body">
+                    <div class="col-lg-12">
+                        <div class="tabbable">
+                            <ul class="nav nav-tabs tabs-flat  nav-justified" id="myTab11">
+                                <li class="tab-red">
+                                    <a data-toggle="tab" href="#timeline" aria-expanded="false">
+                                        @Localizer["اطلاعات سفارش دهنده"]
+                                    </a>
+                                </li>
+                                <li class="tab-palegreen">
+                                    <a data-toggle="tab" id="contacttab" href="#contacts" aria-expanded="false">
+                                        @Localizer["اطلاعات دارو"]
+                                    </a>
+                                </li>
+                                <li class="tab-yellow active">
+                                    <a data-toggle="tab" href="#settings" aria-expanded="true">
+                                        @Localizer["اطلاعات بیمار"]
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="tab-content tabs-flat">
+                                <div id="timeline" class="tab-pane">
+
+                                    <div class="form-title">
+                                        @Localizer["اطلاعات سفارش دهنده"]
+                                    </div>
+                                    <div class="row">
+
+                                        <div class="form-group col-md-6 col-sm-12">
+                                            <label>@Localizer["نام کاربری"]</label>
+                                            <input type="text" class="form-control" readonly value="@Model.User.Username">
+                                        </div>
+
+                                        <div class="form-group col-md-6 col-sm-12">
+                                            <label>@Localizer["موبایل"]</label>
+                                            <input type="text" class="form-control" readonly value="@(string.IsNullOrEmpty(Model.User.Mobile) ? @Localizer["خالی"] : @Model.User.Mobile )">
+                                        </div>
+
+                                        <div class="form-group col-md-6 col-sm-12">
+                                            <label>@Localizer["نام"]</label>
+                                            <input type="text" class="form-control" readonly value="@(string.IsNullOrEmpty(Model.User.LastName) ? @Localizer["خالی"] : @Model.User.FirstName )">
+                                        </div>
+
+                                        <div class="form-group col-md-6 col-sm-12">
+                                            <label>@Localizer["نام خانوادگی"]</label>
+                                            <input type="text" class="form-control" readonly value="@(string.IsNullOrEmpty(Model.User.LastName) ? @Localizer["خالی"] : @Model.User.LastName )">
+                                        </div>
+
+                                        <div class="form-group col-md-6 col-sm-12">
+                                            <label>@Localizer["ایمیل"]</label>
+                                            <input type="text" class="form-control" readonly value="@(string.IsNullOrEmpty(Model.User.Email) ? @Localizer["خالی"] : @Model.User.Email )">
+                                        </div>
+
+                                        <div class="form-group col-md-6 col-sm-12">
+                                            <label>@Localizer["شماره موبایل دوم"]</label>
+                                            <input type="text" class="form-control" readonly value="@(string.IsNullOrEmpty(Model.User.ExtraPhoneNumber) ? @Localizer["خالی"] : @Model.User.ExtraPhoneNumber )">
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                <div id="contacts" class="tab-pane">
+                                    <div class="row">
+                                        <div class="col-lg-12 col-sm-12">
+                                            <div class="well with-header with-footer table-responsive">
+
+
+                                                @if (Model.HomeLaboratoryRequestDetail != null && Model.HomeLaboratoryRequestDetail.Any())
+                                                {
+                                                    <table class="table table-hover table-bordered tc vm text-center align-items-center">
+
+                                                        <tr>
+                                                            <th class=" text-center align-items-center">#</th>
+                                                            <th class=" text-center align-items-center">اطلاعات دارو</th>
+                                                            <th class=" text-center align-items-center">توضیحات</th>
+                                                        </tr>
+
+                                                        @{
+                                                            int i = 1;
+                                                        }
+
+                                                        @foreach (var item in Model.HomeLaboratoryRequestDetail)
+                                                        {
+                                                            <tr class="tc vm text-center align-items-center">
+
+                                                                <td class=" text-center align-items-center"> @i </td>
+
+
+                                                                @if (!string.IsNullOrEmpty(item.ExperimentTrakingCode))
+                                                                {
+
+                                                                    <td class=" text-center align-items-center">
+
+                                                                        <div class="row">
+
+                                                                            <div class=col-md-6>
+                                                                                <span>@Localizer["کد نسخه الکترونیکی"]</span>
+                                                                            </div>
+                                                                            <div class=col-md-6>
+                                                                                <h5 style="color:#fd5b03"> @item.ExperimentTrakingCode</h5>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </td>
+                                                                }
+                                                                @if (!string.IsNullOrEmpty(item.ExperimentPrescription))
+                                                                {
+                                                                    <td class=" text-center align-items-center">
+
+                                                                        <div class="row">
+
+                                                                            <div class=col-md-6>
+                                                                                <span>@Localizer["تصویر نسخه"]</span>
+                                                                            </div>
+                                                                            <div class=col-md-6>
+                                                                                <a target="_blank" href="@PathTools.SiteAddress@PathTools.LabPrescriptionPath/@item.ExperimentPrescription"><img src="@PathTools.LabPrescriptionPathThumb/@item.ExperimentPrescription" class="avatar-style" /></a>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </td>
+                                                                }
+                                                                @if (!string.IsNullOrEmpty(item.ExperimentName) && !string.IsNullOrEmpty(item.ExperimentImage) )
+                                                                {
+                                                                    <td class=" text-center align-items-center">
+
+                                                                        <div class="row">
+
+                                                                            <div class=col-md-6>
+                                                                                <a target="_blank" href="@PathTools.SiteAddress@PathTools.LabPrescriptionPath/@item.ExperimentImage"> <img src="@PathTools.LabPrescriptionPathThumb/@item.ExperimentImage" class="avatar-style" /> </a>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    @if (!string.IsNullOrEmpty(item.ExperimentImage))
+                                                                    {
+                                                                        <td class=" text-center align-items-center">
+                                                                            <span>@Localizer["تصویر لیست آزمایشها"]</span>
+                                                                            <a target="_blank" href="@PathTools.SiteAddress@PathTools.LabPrescriptionPath/@item.ExperimentImage">  <img src="@PathTools.LabPrescriptionPathThumb/@item.ExperimentImage" class="avatar-style" /></a>
+                                                                        </td>
+                                                                    }
+                                                                    @if (!string.IsNullOrEmpty(item.ExperimentName))
+                                                                    {
+                                                                        <td class=" text-center align-items-center">@item.ExperimentName </td>
+                                                                    }
+                                                                }
+
+                                                                <td class=" text-center align-items-center">@item.Description</td>
+
+                                                                @{
+                                                                    i++;
+                                                                }
+
+                                                            </tr>
+                                                        }
+                                                    </table>
+                                                }
+                                                else
+                                                {
+                                                    <partial name="_LaboratoryPanelNotFoundPartial" />
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="settings" class="tab-pane active">
+                                    <div class="form-title">
+                                        @Localizer["اطلاعات بیمار"]
+                                    </div>
+                                    <div class="row">
+
+                                        <div class="form-group col-md-6 col-sm-12">
+                                            <label>@Localizer["نام بیمار"]</label>
+                                            <input type="text" class="form-control" readonly value="@Model.Patient.PatientName">
+                                        </div>
+
+                                        <div class="form-group col-md-6 col-sm-12">
+                                            <label>@Localizer["نام حانوادگی"]</label>
+                                            <input type="text" class="form-control" readonly value="@Model.Patient.PatientLastName">
+                                        </div>
+
+                                        <div class="form-group col-md-6 col-sm-12">
+                                            <label>@Localizer["کدملی"]</label>
+                                            <input type="text" class="form-control" readonly value="@Model.Patient.NationalId">
+                                        </div>
+
+                                        <div class="form-group col-md-6 col-sm-12">
+                                            <label>@Localizer["جنسیت"]</label>
+                                            @if (Model.Patient.Gender == DoctorFAM.Domain.Enums.Gender.Gender.Male)
+                                            {
+                                                <input type="text" class="form-control" readonly value="@Localizer["مرد"]">
+                                            }
+                                            @if (Model.Patient.Gender == DoctorFAM.Domain.Enums.Gender.Gender.Female)
+                                            {
+                                                <input type="text" class="form-control" readonly value="@Localizer["زن"]">
+                                            }
+                                        </div>
+
+                                        <div class="form-group col-md-6 col-sm-12">
+                                            <label>@Localizer["سن"]</label>
+                                            <input type="text" class="form-control" readonly value="@Model.Patient.Age">
+                                        </div>
+
+                                        <div class="form-group col-md-6 col-sm-12">
+                                            <label>@Localizer["بیمه"]</label>
+
+                                            <input type="text" class="form-control" readonly value="@Model.Patient.Insurance.Title">
+
+                                        </div>
+
+                                        <div class="form-group col-md-12 col-sm-12">
+                                            <label>@Localizer["توضیحات درخواست"]</label>
+                                            <textarea type="text" style="max-width:100%;" class="form-control" readonly>@Model.Patient.RequestDescription</textarea>
+                                        </div>
+
+                                        <div class="form-group col-md-6 col-sm-12">
+                                            <label>@Localizer["شماره تلفن بیمار"]</label>
+                                            <input type="text" class="form-control" readonly value="@(string.IsNullOrEmpty(Model.PatientRequestDetail.Phone) ? Localizer["خالی"] : Model.PatientRequestDetail.Phone )">
+                                        </div>
+
+                                        <div class="form-group col-md-6 col-sm-12">
+                                            <label>@Localizer["موبایل بیمار"]</label>
+                                            <input type="text" class="form-control" readonly value="@(string.IsNullOrEmpty(Model.PatientRequestDetail.Mobile) ? Localizer["خالی"] : Model.PatientRequestDetail.Mobile )">
+                                        </div>
+
+                                        <div class="form-group col-md-6 col-sm-12">
+                                            <label>@Localizer["فاصله تا شهر"]</label>
+                                            <input type="text" class="form-control" readonly value="@(Model.PatientRequestDetail.Distance == null ? Localizer["خالی"] : Model.PatientRequestDetail.Distance )">
+                                        </div>
+
+                                        <div class="form-group col-md-6 col-sm-12">
+                                            <label>@Localizer["نام روستا"]</label>
+                                            <input type="text" class="form-control" readonly value="@(string.IsNullOrEmpty(Model.PatientRequestDetail.Vilage) ? Localizer["خالی"] : Model.PatientRequestDetail.Vilage )">
+                                        </div>
+
+                                        <div class="form-group col-md-12 col-sm-12">
+                                            <label>@Localizer["آدرس"]</label>
+                                            <textarea type="text" style="max-width:100%;" class="form-control" readonly>@Model.PatientRequestDetail.FullAddress</textarea>
+                                        </div>
+
+                                    </div>
+
+                                    @if (ViewBag.IsThisRequestForThisLaboratory == true)
+                                    {
+                                        <a asp-action="AcceptHomePharmacyRequestFromPharmacy" asp-area="Laboratory" asp-controller="HomePharmacy" asp-route-requestId="@Model.Request.Id" class="btn btn-primary">@Localizer["نمایش فاکتور"]</a>
+                                    }
+                                    else
+                                    {
+                                        <a asp-action="AcceptHomePharmacyRequestFromPharmacy" asp-area="Laboratory" asp-controller="HomePharmacy" asp-route-requestId="@Model.Request.Id" class="btn btn-primary">@Localizer["پذیرفتن درخواست"]</a>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+
+</div>

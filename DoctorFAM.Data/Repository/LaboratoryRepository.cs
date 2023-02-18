@@ -3,13 +3,18 @@ using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Consultant;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.Laboratory;
+using DoctorFAM.Domain.Entities.Pharmacy;
+using DoctorFAM.Domain.Entities.Requests;
+using DoctorFAM.Domain.Enums.Request;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.Consultant;
 using DoctorFAM.Domain.ViewModels.Admin.Laboratory;
 using DoctorFAM.Domain.ViewModels.Consultant.ConsultantSideBar;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Employees;
 using DoctorFAM.Domain.ViewModels.Laboratory.Employee;
+using DoctorFAM.Domain.ViewModels.Laboratory.HomeLaboratory;
 using DoctorFAM.Domain.ViewModels.Laboratory.LaboratorySideBar;
+using DoctorFAM.Domain.ViewModels.Pharmacy.HomePharmacy;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -33,6 +38,21 @@ namespace DoctorFAM.Data.Repository
         #endregion
 
         #region Laboratory Side 
+
+        public async Task<PatientRequestDateTimeDetail?> GetRequestDateTimeDetailByRequestDetailId(ulong requestId)
+        {
+            return await _context.PatientRequestDateTimeDetails.FirstOrDefaultAsync(p => !p.IsDelete && p.RequestId == requestId);
+        }
+
+        public async Task<PaitientRequestDetail?> GetRequestPatientDetailByRequestId(ulong requestId)
+        {
+            return await _context.PaitientRequestDetails.FirstOrDefaultAsync(p => p.RequestId == requestId && !p.IsDelete);
+        }
+
+        public async Task<List<HomeLaboratoryRequestDetail>> GetHomeLaboratoryRequestDetailByRequestId(ulong requestId)
+        {
+            return await _context.HomeLaboratoryRequestDetails.Where(p => !p.IsDelete && p.RequestId == requestId).ToListAsync();
+        }
 
         //Add User Laboratory Member Role Without Save Changes
         public async Task AddUserLaboratoryMemberRoleWithoutSaveChanges(UserRole userRole)
@@ -151,6 +171,64 @@ namespace DoctorFAM.Data.Repository
             if (!string.IsNullOrEmpty(filter.Username))
             {
                 query = query.Where(s => s.User.Username.Contains(filter.Username));
+            }
+
+            #endregion
+
+            await filter.Paging(query);
+
+            return filter;
+        }
+
+        //Filter List Of Home Laboratory Request ViewModel From User Or Supporter Panel 
+        public async Task<FilterListOfHomeLaboratoryRequestViewModel> FilterListOfHomeLaboratoryRequestViewModel(FilterListOfHomeLaboratoryRequestViewModel filter)
+        {
+            #region Get Laboratory Work Address
+
+            var workAddress = await _context.WorkAddresses.FirstOrDefaultAsync(p => !p.IsDelete && p.UserId == filter.LaboratoryOwnerId);
+            if (workAddress == null) return null;
+
+            #endregion
+
+            var query = _context.Requests
+             .Include(p => p.PatientRequestDateTimeDetails)
+             .Include(p => p.Patient)
+             .Include(p => p.User)
+             .Include(p => p.PaitientRequestDetails)
+             .Where(s => !s.IsDelete && s.RequestType == Domain.Enums.RequestType.RequestType.HomeLab && s.PaitientRequestDetails.CountryId == workAddress.CountryId
+                    && s.PaitientRequestDetails.StateId == workAddress.StateId && s.PaitientRequestDetails.CityId == workAddress.CityId
+                    && s.RequestState == Domain.Enums.Request.RequestState.Paid)
+             .OrderByDescending(s => s.CreateDate)
+             .AsQueryable();
+
+            #region Status
+
+            switch (filter.FilterRequestLaboratorySideOrder)
+            {
+                case FilterRequestAdminSideOrder.CreateDate_Des:
+                    break;
+                case FilterRequestAdminSideOrder.CreateDate_Asc:
+                    query = query.OrderBy(p => p.CreateDate);
+                    break;
+            }
+
+            #endregion
+
+            #region Filter
+
+            if (!string.IsNullOrEmpty(filter.Username))
+            {
+                query = query.Where(s => EF.Functions.Like(s.User.Username, $"%{filter.Username}%"));
+            }
+
+            if (!string.IsNullOrEmpty(filter.FirstName))
+            {
+                query = query.Where(s => EF.Functions.Like(s.User.FirstName, $"%{filter.FirstName}%"));
+            }
+
+            if (!string.IsNullOrEmpty(filter.LastName))
+            {
+                query = query.Where(s => EF.Functions.Like(s.User.LastName, $"%{filter.LastName}%"));
             }
 
             #endregion
