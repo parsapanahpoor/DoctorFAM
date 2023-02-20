@@ -859,5 +859,21 @@ namespace DoctorFAM.Web.Controllers
         #endregion
 
         #endregion
+
+        #region Nutrition And Diabet
+        public async Task<IActionResult> NutritionAndDiabet()
+        {
+            return View();
+        }
+
+        #endregion 
+
+        #region Activity And Diabet
+        public async Task<IActionResult> ActivityAndDiabet()
+        {
+            return View();
+        }
+
+        #endregion 
     }
 }

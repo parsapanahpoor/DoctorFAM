@@ -26,4 +26,8 @@
     <ProjectReference Include="..\DoctorFAM.Presentation\DoctorFAM.Web.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Areas\Admin\Controller\HealthHouse\" />
+  </ItemGroup>
+
 </Project>

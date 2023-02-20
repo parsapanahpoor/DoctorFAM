@@ -9,8 +9,13 @@
         @foreach (var item in Model)
         {
             <li>
-                <a href="@PathTools.ResumeGalleryPathThumb@item.ImageName" data-fancybox="gallery">
+               @* <a href="@PathTools.ResumeGalleryPathThumb@item.ImageName" data-fancybox="gallery">
                     <img src="@PathTools.ResumeGalleryPathThumb@item.ImageName" alt="Feature">
+                </a>*@
+
+
+                <a href="@PathTools.ResumeGalleryPath@item.ImageName" data-fancybox="gallery">
+                    <img src="@PathTools.ResumeGalleryPath@item.ImageName" alt="Feature">
                 </a>
             </li>
         }

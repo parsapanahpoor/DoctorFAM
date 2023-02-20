@@ -69,7 +69,7 @@ namespace DoctorFAM.Convertors.Context
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Data Source=DESKTOP-CM9A86V\\MSSQL2019;Initial Catalog=DoctorFAMDb;Integrated Security=True");
+                optionsBuilder.UseSqlServer("Data Source=185.2.14.254\\MSSQLSERVER2019;Database=DoctorFAMDb;Integrated Security=False;User ID=DoctorFAMDb;Password=hD?av394; MultipleActiveResultSets=True;Connect Timeout=15;Encrypt=False;Packet Size=4096");
             }
         }
 

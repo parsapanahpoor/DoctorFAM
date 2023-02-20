@@ -3528,7 +3528,16 @@ Pricing Area CSS
     width: 350px;
     margin: 0 15px;
 }
+.feature-colDiabet {
+    width: 90%;
+    margin: 0 15px;
+}
 
+.feature-subox2 img {
+    max-height: 320px;
+    width: 90%;
+    border-radius: 5px;
+}
 /************************************************
 doctors intrud*/
 
@@ -6865,10 +6874,24 @@ doctors intrud*/
 }
 
 
+
 .Divborder {
-    border:1px solid #fd5b03;
-    border-radius:8px;
-    background-color:#88d8f2;
+    border: 1px solid #fd5b03;
+    border-radius: 8px;
+    background-color: #88d8f2;
 }
 
 
+.PageBannerPic {
+    background-image: linear-gradient(rgba(255,255,255,10),rgba(255,255,255,0.3)), url('/Content/images/PagesPic/DiabetpageBanner.jpg');
+    background-repeat: no-repeat;
+    background-size: 110% 100%;
+}
+
+
+
+.PageBannerPicBloodPressure {
+    background-image: linear-gradient(rgba(255,255,255,10),rgba(255,255,255,0.3)), url('/Content/images/PagesPic/BloodpageBanner.jpg');
+    background-repeat: no-repeat;
+    background-size: 110% 100%;
+}
