@@ -39,6 +39,7 @@ using System.Data;
 using DoctorFAM.Domain.ViewModels.Site.Diabet;
 using DoctorFAM.Domain.Entities.Resume;
 using DoctorFAM.Domain.ViewModels.Site.BloodPressure;
+using DoctorFAM.Domain.ViewModels.Admin.Doctors;
 
 namespace DoctorFAM.Application.Services.Implementation
 {
@@ -2330,6 +2331,36 @@ namespace DoctorFAM.Application.Services.Implementation
         #endregion
 
         #region Admin Side
+
+        //List Of Doctors Population Covered Count Detail
+        public async Task<List<ListOfDoctorsPopulationCoveredCountDetailViewModel>> ListOfDoctorsPopulationCoveredCountDetail()
+        {
+            //make a main instance
+            List<ListOfDoctorsPopulationCoveredCountDetailViewModel> model = new List<ListOfDoctorsPopulationCoveredCountDetailViewModel>();
+
+            #region Doctors
+
+            var doctors = await _doctorRepository.GetListOfAcceptedDoctors();
+
+            foreach (var item in doctors)
+            {
+                //make instance 
+                ListOfDoctorsPopulationCoveredCountDetailViewModel subMain = new ListOfDoctorsPopulationCoveredCountDetailViewModel();
+
+                subMain.Doctor = item;
+
+                var doctorActivePopulation = await _doctorRepository.GetDoctorActivePopulationCoveredCount(item.Id);
+                subMain.ActiveUsersCount = doctorActivePopulation.Count();
+
+                subMain.UsersPopulationCoveredCount = await _doctorRepository.GetUsersPopulationCountWithRangeOfUserIds(doctorActivePopulation);
+
+                model.Add(subMain);
+            }
+
+            #endregion
+
+            return model;
+        }
 
         //Get Diabet Consultant Resumes By UserId Admin Side
         public async Task<List<DiabetConsultantsResume>?> GetDiabetConsultanResumesByUserIdAdminSide(ulong userId)

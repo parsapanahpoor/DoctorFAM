@@ -225,5 +225,15 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
         #endregion
 
         #endregion
+
+        #region List Of Doctors Population Covered Count Detail
+
+        [HttpGet]
+        public async Task<IActionResult> ListOfDoctorsPopulationCoveredCountDetail()
+        {
+            return View(await _doctorsService.ListOfDoctorsPopulationCoveredCountDetail());
+        }
+
+        #endregion
     }
 }

@@ -1,37 +1,21 @@
 ﻿using DoctorFAM.Application.Interfaces;
 using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
-using DoctorFAM.Data.DbContext;
-using DoctorFAM.Data.Repository;
 using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Entities.Wallet;
-using DoctorFAM.Domain.Entities.WorkAddress;
 using DoctorFAM.Domain.Enums.Gender;
 using DoctorFAM.Domain.Enums.Request;
 using DoctorFAM.Domain.Enums.RequestType;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.HealthHouse;
-using DoctorFAM.Domain.ViewModels.Admin.HealthHouse.HomeVisit;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DeathCertificate;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.HomeVisit;
-using DoctorFAM.Domain.ViewModels.DoctorPanel.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.Site.HomeVisitRequest;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
 using DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace DoctorFAM.Application.Services.Implementation
 {
@@ -193,7 +177,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 RequestId = requestId,
                 Age = population.Age,
                 Gender = population.Gender,
-                InsuranceId  = (ulong)population.InsuranceId,
+                InsuranceId = (ulong)population.InsuranceId,
                 NationalId = population.NationalId,
                 PatientName = population.PatientName.SanitizeText(),
                 PatientLastName = population.PatientLastName.SanitizeText(),
@@ -471,9 +455,10 @@ namespace DoctorFAM.Application.Services.Implementation
             #region Get Home Visit Request Detail 
 
             var homeVisitRequestDetail = await GetHomeVisitRequestDetailByRequestId(request.Id);
-            if (homeVisitRequestDetail == null) return null;
-
-            model.HomeVisitRequestDetail = homeVisitRequestDetail;
+            if (homeVisitRequestDetail != null)
+            {
+                model.HomeVisitRequestDetail = homeVisitRequestDetail;
+            }
 
             #endregion
 
@@ -501,18 +486,21 @@ namespace DoctorFAM.Application.Services.Implementation
                 DistanceFromCityTarriff = (DistanceFromCityTarriff * distancePerTenKilometer);
             }
 
-            if (homeVisitRequestDetail.EmergencyVisit == true)
+            if (homeVisitRequestDetail != null)
             {
-                cost = cost + ((homeVisitTariff * 20) / 100);
+                if (homeVisitRequestDetail.EmergencyVisit == true)
+                {
+                    cost = cost + ((homeVisitTariff * 20) / 100);
 
-                model.EmergencyVisit = ((int)((homeVisitTariff * 20) / 100));
-            }
+                    model.EmergencyVisit = ((int)((homeVisitTariff * 20) / 100));
+                }
 
-            if (homeVisitRequestDetail.FemalePhysician == true)
-            {
-                cost = cost + ((homeVisitTariff * 20) / 100);
+                if (homeVisitRequestDetail.FemalePhysician == true)
+                {
+                    cost = cost + ((homeVisitTariff * 20) / 100);
 
-                model.FemalePhysician = ((int)((homeVisitTariff * 20) / 100));
+                    model.FemalePhysician = ((int)((homeVisitTariff * 20) / 100));
+                }
             }
 
             if (dateTimeDetail.StartTime >= 22 || dateTimeDetail.EndTime <= 8)
@@ -521,8 +509,6 @@ namespace DoctorFAM.Application.Services.Implementation
 
                 model.OverTiming = ((int)((homeVisitTariff * 20) / 100));
             }
-
-
 
             #endregion
 
@@ -678,7 +664,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #region Edit
 
-            if (homeVisitRequestDetail != null )
+            if (homeVisitRequestDetail != null)
             {
                 homeVisitRequestDetail.FemalePhysician = femalDoctor;
                 homeVisitRequestDetail.EmergencyVisit = emergancy;
