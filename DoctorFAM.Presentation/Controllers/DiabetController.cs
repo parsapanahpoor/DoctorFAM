@@ -251,7 +251,7 @@ namespace DoctorFAM.Web.Controllers
         public async Task<IActionResult> ProcessGFR(GFRViewModel gfr)
         {
             //IF User Is Loged In 
-            if (User.Identity.IsAuthenticated)
+            if (User.Identity.IsAuthenticated && gfr.SaveResult == 0)
             {
                 decimal res = await _bmiService.ProcessGFR(gfr, User.GetUserId());
 

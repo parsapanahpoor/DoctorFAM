@@ -55,15 +55,15 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #region BMI Result State 
 
-            if (bmiResult < 18) model.BMIResultState = Domain.Enums.Diabet_Results.BMIResult.Underweight;
+            if (0 < bmiResult && bmiResult <= 20) model.BMIResultState = Domain.Enums.Diabet_Results.BMIResult.Underweight;
 
-            if (bmiResult > 18 && bmiResult < 24) model.BMIResultState = Domain.Enums.Diabet_Results.BMIResult.Appropriate;
+            if (bmiResult > 20 && bmiResult <= 25) model.BMIResultState = Domain.Enums.Diabet_Results.BMIResult.Appropriate;
 
-            if (bmiResult > 25 && bmiResult < 29) model.BMIResultState = Domain.Enums.Diabet_Results.BMIResult.Overweight;
+            if (bmiResult > 25 && bmiResult <= 30) model.BMIResultState = Domain.Enums.Diabet_Results.BMIResult.Overweight;
 
-            if (bmiResult > 30 && bmiResult < 39) model.BMIResultState = Domain.Enums.Diabet_Results.BMIResult.fat;
+            if (bmiResult > 30 && bmiResult <= 35) model.BMIResultState = Domain.Enums.Diabet_Results.BMIResult.fat;
 
-            if (bmiResult > 40) model.BMIResultState = Domain.Enums.Diabet_Results.BMIResult.ExcessiveObesity;
+            if (bmiResult > 35) model.BMIResultState = Domain.Enums.Diabet_Results.BMIResult.ExcessiveObesity;
 
             #endregion
 

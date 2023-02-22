@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 
 namespace DoctorFAM.Domain.ViewModels.Site.Diabet
 {
+    /// <summary>
+    /// para : SaveResult Has Two Result : 0 is meaning True And 1 is meaning false
+    /// </summary>
+
     public class GFRViewModel
     {
         #region properties
@@ -18,6 +22,8 @@ namespace DoctorFAM.Domain.ViewModels.Site.Diabet
         public int Weight { get; set; }
 
         public decimal Keratenin { get; set; }
+
+        public int SaveResult { get; set; }
 
         #endregion
     }

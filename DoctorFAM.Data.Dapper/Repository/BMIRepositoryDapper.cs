@@ -126,7 +126,8 @@ namespace DoctorFAM.Data.Dapper.Repository
 
             string Query = @"Select * 
                              From dbo.GFR as G
-                             Where G.UserId = @userid";
+                             Where G.UserId = @userid
+                             ORDER BY CreateDate DESC ";
 
             #endregion
 

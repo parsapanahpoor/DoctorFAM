@@ -70,6 +70,17 @@ namespace DoctorFAM.Web.Controllers
 
         #endregion
 
+        #region Redirect To Login For Save BMI GFR Result
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> RedirectToLoginForSaveBMIGFRResult()
+        {
+            return RedirectToAction(nameof(Index));
+        }
+
+        #endregion
+
         #region BMI 
 
         #region Show BMI Modal
@@ -87,7 +98,7 @@ namespace DoctorFAM.Web.Controllers
         public async Task<IActionResult> ProcessBMI(BMIViewModel bmi)
         {
             //IF User Is Loged In 
-            if (User.Identity.IsAuthenticated)
+            if (User.Identity.IsAuthenticated && bmi.SaveResult == 0)
             {
                 var res = await _bmiService.ProcessBMI(bmi, User.GetUserId());
 
@@ -124,7 +135,7 @@ namespace DoctorFAM.Web.Controllers
         public async Task<IActionResult> ProcessGFR(GFRViewModel gfr)
         {
             //IF User Is Loged In 
-            if (User.Identity.IsAuthenticated)
+            if (User.Identity.IsAuthenticated && gfr.SaveResult == 0)
             {
                 decimal res = await _bmiService.ProcessGFR(gfr, User.GetUserId());
 
