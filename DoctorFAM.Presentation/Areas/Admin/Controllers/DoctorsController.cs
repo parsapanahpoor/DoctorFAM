@@ -12,13 +12,15 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
         private readonly IDoctorsService _doctorsService;
         private readonly IStringLocalizer<SharedLocalizer.SharedLocalizer> _sharedLocalizer;
         private readonly IUserService _userService;
+        private readonly IPopulationCoveredService _populationCovered;
 
         public DoctorsController(IDoctorsService doctorsService , IStringLocalizer<SharedLocalizer.SharedLocalizer> sharedLocalizer
-                                    , IUserService userService)
+                                    , IUserService userService , IPopulationCoveredService populationCovered)
         {
             _doctorsService = doctorsService;
             _sharedLocalizer = sharedLocalizer;
             _userService = userService;
+            _populationCovered = populationCovered;
         }
 
         #endregion
@@ -231,6 +233,14 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> ListOfDoctorsPopulationCoveredCountDetail()
         {
+            #region View Bags
+
+            ViewBag.AllOfUsersCount = await _userService.CountOfUsers();
+            ViewBag.AllOfPopulationCovered = await _populationCovered.CountOfAllPopulationCovered();
+            ViewBag.AllOfDoctors = await _doctorsService.CountOfAllDoctors();
+
+            #endregion
+
             return View(await _doctorsService.ListOfDoctorsPopulationCoveredCountDetail());
         }
 

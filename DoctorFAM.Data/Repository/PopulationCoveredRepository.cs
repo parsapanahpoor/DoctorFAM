@@ -54,6 +54,11 @@ namespace DoctorFAM.Data.Repository
             return filter;
         }
 
+        //Count Of All Population Covered 
+        public async Task<int> CountOfAllPopulationCovered()
+        {
+            return await _context.PopulationCovered.Where(p => !p.IsDelete).CountAsync(); 
+        }
 
         #endregion
 

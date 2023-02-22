@@ -191,6 +191,9 @@ namespace DoctorFAM.Application.Services.Interfaces
         //List Of Doctors Population Covered Count Detail
         Task<List<ListOfDoctorsPopulationCoveredCountDetailViewModel>> ListOfDoctorsPopulationCoveredCountDetail();
 
+        //Count Of All Doctors 
+        Task<int> CountOfAllDoctors();
+
         //Get Diabet Consultant Resumes By UserId Admin Side
         Task<List<DiabetConsultantsResume>?> GetDiabetConsultanResumesByUserIdAdminSide(ulong userId);
 

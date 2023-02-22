@@ -4,6 +4,10 @@
 
 @{
     ViewData["Title"] = "لیست اطلاعات جمعیت تحت پوشش پزشک";
+
+    var countOfDoctors = ViewBag.AllOfDoctors != null ? (int)ViewBag.AllOfDoctors : 0;
+    var countOfPopulationCovered = ViewBag.AllOfPopulationCovered != null ? (int)ViewBag.AllOfPopulationCovered : 0;
+    var countOfUsers = ViewBag.AllOfUsersCount != null ? (int)ViewBag.AllOfUsersCount : 0;
 }
 
 @section Breadcrumb
@@ -34,8 +38,49 @@
 
     }
 
-<div class="page-body">
+    <div class="row">
 
+    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+        <div class="databox bg-white radius-bordered">
+            <div class="bg-primary databox-right">
+            </div>
+            <div class="databox-left">
+                <span class="databox-number primary">@countOfDoctors</span>
+                <div class="databox-text darkgray">تعداد پزشکان</div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+        <div class="databox bg-white radius-bordered">
+            <div class="bg-primary databox-right">
+            </div>
+            <div class="databox-left">
+                <span class="databox-number primary">@countOfUsers</span>
+                <div class="databox-text darkgray">تعداد کابران اصلی  </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+        <div class="databox bg-white radius-bordered">
+            <div class="bg-primary databox-right">
+            </div>
+            <div class="databox-left">
+                <span class="databox-number primary">@countOfPopulationCovered</span>
+                <div class="databox-text darkgray">تعداد کاربران تحت پوشش</div>
+
+            </div>
+        </div>
+    </div>
+
+    </div>
+
+
+
+<div class="page-body">
     <div class="row">
 
         <div id="horizontal-form">

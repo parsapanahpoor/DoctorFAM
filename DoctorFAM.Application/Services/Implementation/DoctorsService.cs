@@ -2332,6 +2332,13 @@ namespace DoctorFAM.Application.Services.Implementation
 
         #region Admin Side
 
+        //Count Of All Doctors 
+        public async Task<int> CountOfAllDoctors()
+        {
+            var doctors = await _doctorRepository.GetListOfAcceptedDoctors();
+            return doctors.Count();
+        }
+
         //List Of Doctors Population Covered Count Detail
         public async Task<List<ListOfDoctorsPopulationCoveredCountDetailViewModel>> ListOfDoctorsPopulationCoveredCountDetail()
         {
