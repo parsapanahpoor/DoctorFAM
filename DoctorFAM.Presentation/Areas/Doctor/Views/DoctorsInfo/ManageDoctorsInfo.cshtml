@@ -19,6 +19,18 @@
     {
 <partial name="_JqueryValidation" />
 
+    <script>
+
+        function ChangeUsername() {
+
+            var firstName = $('#FirstName').val();
+            var lastName = $('#LastName').val();
+
+            $('#username').val(firstName + ' ' + lastName );
+        }
+
+    </script>
+
 }
 
 @section Breadcrumb
@@ -79,20 +91,19 @@
                             <div class="row" >
 
                                 <div class="form-group col-md-6 col-sm-12">
-                                    @*<label asp-for="username"></label>*@
                                     <span class="red">*</span>
-                                    <label>نام و نام حانوادگی پزشک در سامانه</label>
-                                    <input type="text" class="form-control" asp-for="username">
-                                    <span class="text-danger" asp-validation-for="username"></span>
+                                    <label asp-for="FirstName"></label>
+                                    <input type="text" class="form-control" onblur="ChangeUsername()" asp-for="FirstName">
+                                    <span class="text-danger" asp-validation-for="FirstName"></span>
                                 </div>
 
                                 <div class="form-group col-md-6 col-sm-12">
-                                    @*<label asp-for="Mobile"></label>*@
-
-                                    <label>موبایل(نام کاربری)</label>
-                                    <div class="form-control"> @Model.Mobile </div>
+                                    <span class="red">*</span>
+                                    <label asp-for="LastName"></label>
+                                    <input type="text" class="form-control" onblur="ChangeUsername()" asp-for="LastName">
+                                    <span class="text-danger" asp-validation-for="LastName"></span>
                                 </div>
-
+                             
                                 <div class="form-group col-md-6 col-sm-12">
                                     <span class="red">*</span>
                                     <label asp-for="NationalCode"></label>
@@ -107,18 +118,20 @@
                                     <span class="text-danger" asp-validation-for="MedicalSystemCode"></span>
                                 </div>
 
-                                <div class="form-group col-md-4 col-sm-12">
-                                    <span class="red">*</span>
-                                    <label asp-for="FirstName"></label>
-                                    <input type="text" class="form-control" asp-for="FirstName">
-                                    <span class="text-danger" asp-validation-for="FirstName"></span>
+
+                                  <div class="form-group col-md-4 col-sm-12">
+                                    @*<label asp-for="Mobile"></label>*@
+
+                                    <label>موبایل(نام کاربری)</label>
+                                    <div class="form-control"> @Model.Mobile </div>
                                 </div>
 
                                 <div class="form-group col-md-4 col-sm-12">
+                                    @*<label asp-for="username"></label>*@
                                     <span class="red">*</span>
-                                    <label asp-for="LastName"></label>
-                                    <input type="text" class="form-control" asp-for="LastName">
-                                    <span class="text-danger" asp-validation-for="LastName"></span>
+                                    <label>نام پزشک در سامانه</label>
+                                    <input type="text" class="form-control" readonly asp-for="username">
+                                    <span class="text-danger" asp-validation-for="username"></span>
                                 </div>
 
                                 <div class="form-group col-md-4 col-sm-12">

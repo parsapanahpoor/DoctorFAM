@@ -99,7 +99,8 @@ namespace DoctorFAM.Data.Dapper.Repository
 
             string Query = @"Select * 
                              From dbo.BMI as B
-                             Where b.UserId = @userid";      
+                             Where b.UserId = @userid
+                             ORDER BY CreateDate DESC";      
 
             #endregion
 

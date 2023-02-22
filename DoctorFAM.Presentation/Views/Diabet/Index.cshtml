@@ -1,12 +1,13 @@
-﻿@{
+﻿@using DoctorFAM.Application.StaticTools
+
+@{
     ViewData["Title"] = "دیابت";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     var bmiResult = ViewBag.bmiResult != null ? (int)ViewBag.bmiResult : 0;
     var GFRResult = ViewBag.gfrResult != null ? (decimal)ViewBag.gfrResult : 0;
     var selfAssessment = ViewBag.selfAssessment != null ? (decimal)ViewBag.selfAssessment : 0;
-    var ascvdPredic = ViewBag.ascvdPredicResult != null ? (decimal)ViewBag.ascvdPredicResult : 0;
-    var ascvdStatus = ViewBag.ascvdStatusResult != null ? (int)ViewBag.ascvdStatusResult : 0;
+    int userLogin = (User.Identity.IsAuthenticated) ? 1 : 0;
 }
 
 @section Scripts{
@@ -15,38 +16,89 @@
 
     <script>
 
-        $(document).ready(function () {
-            if (@ascvdStatus == 1) {
-                Swal.fire({
-                    title: "محدوده ی کم خطر",
-                    //text: "فشارخون شما طبق خوداظهاری شما در زمان اندازه گیری فشارخون در محدوده نرمال بوده است . لطفا 3 ماه بعد این خودارزیابی را تکرار نمائید.",
-                    icon: 'success',
-                    confirmButtonColor: '#3085d6',
-                    confirmButtonText: 'بستن',
-                });
+        //#region Ask For Save BMI Result
+
+        $(document).on('change', '#SaveResult', function () {
+            var answer = $("#SaveResult :selected").val();
+
+            if (answer == 0) {
+                if (@userLogin == 1) {
+                    $("#WeightInput").removeClass("d-none");
+                    $("#heightInput").removeClass("d-none");
+                    $("#footer-Div").removeClass("d-none");
+
+                    $("#Login-div").addClass("d-none");
+                }
+                if (@userLogin == 0) {
+                    $("#WeightInput").addClass("d-none");
+                    $("#heightInput").addClass("d-none");
+                    $("#footer-Div").addClass("d-none");
+
+                    $("#Login-div").removeClass("d-none");
+                }
             }
-            if (@ascvdStatus == 2) {
+            else if
+                (answer == 1) {
+                $("#WeightInput").removeClass("d-none");
+                $("#heightInput").removeClass("d-none");
+                $("#footer-Div").removeClass("d-none");
+
+                $("#Login-div").addClass("d-none");
+            }
+        });
+
+        //#endregion
+
+        $(document).ready(function () {
+            if (0 < @bmiResult && @bmiResult <= 20) {
                 Swal.fire({
-                    title: "محدوده ی خطر مرزی",
-                    //text: "فشارخون شما طبق خوداظهاری شما در زمان اندازه گیری فشارخون در محدوده پیش فشارخون قرار دارد و لازم است در اولین فرصت به پزشک مراجعه نمائید.",
+                    title: "محدوده ی کم وزنی",
+                    text: "شاخص توده ی بدنی شما @bmiResult کیلوگرم برمترمربع و درمحدوده ی کم وزنی می باشد. توجه داشته باشید محاسبه ی شاخص توده ی بدنی معادل تشخیص بیماری نمی باشد. برای دریافت اطلاعات بیشتر مشاورین دکترفم درکنار شما هستند .",
                     icon: 'warning',
                     confirmButtonColor: '#3085d6',
                     confirmButtonText: 'بستن',
                 });
             }
-            if (@ascvdStatus == 3) {
+            if (20 <= @bmiResult && @bmiResult <= 25) {
                 Swal.fire({
-                    title: "محدوده ی خطر متوسط",
-                    //text: "فشارخون شما طبق خوداظهاری شما در زمان اندازه گیری فشارخون در محدوده فشارخون بالا قرار دارد و لازم است هرچه سریع تر به پزشک خود مراجعه نمائید.",
-                    icon: 'error',
+                    title: "وزن متناسب",
+                    text: "شاخص توده ی بدنی شما @bmiResult کیلوگرم برمترمربع و درمحدوده ی وزن متناسب می باشد. توجه داشته باشید محاسبه ی شاخص توده ی بدنی معادل تشخیص بیماری نمی باشد. برای دریافت اطلاعات بیشتر مشاورین دکترفم درکنار شما هستند .",
+                    icon: 'success',
                     confirmButtonColor: '#3085d6',
                     confirmButtonText: 'بستن',
                 });
             }
-            if (@ascvdStatus == 4) {
+            if (25 <= @bmiResult && @bmiResult <= 30) {
                 Swal.fire({
-                    title: "محدوده ی پرخطر",
-                    //text: "فشارخون شما طبق خوداظهاری شما در زمان اندازه گیری فشارخون در محدوده فشارخون بحرانی قرار دارد و لازم است ضمن حفظ خونسردی هرجه سریع تر به نزدیک ترین مرکز مراجعه نمائید.",
+                    title: "اضافه وزن",
+                    text: "شاخص توده ی بدنی شما @bmiResult کیلوگرم برمترمربع و درمحدوده ی اضافه وزن می باشد. توجه داشته باشید محاسبه ی شاخص توده ی بدنی معادل تشخیص بیماری نمی باشد. برای دریافت اطلاعات بیشتر مشاورین دکترفم درکنار شما هستند .",
+                    icon: 'warning',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'بستن',
+                });
+            }
+            if (30 <= @bmiResult && @bmiResult <= 35) {
+                Swal.fire({
+                    title: "محدوده ی چاقی درجه یک",
+                    text: "شاخص توده ی بدنی شما @bmiResult کیلوگرم برمترمربع و محدوده ی چاقی درجه یک می باشد. توجه داشته باشید محاسبه ی شاخص توده ی بدنی معادل تشخیص بیماری نمی باشد. برای دریافت اطلاعات بیشتر مشاورین دکترفم درکنار شما هستند .",
+                    icon: 'warning',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'بستن',
+                });
+            }
+            if (35 <= @bmiResult && @bmiResult <= 40) {
+                Swal.fire({
+                    title: "محدوده ی چاقی درجه دو",
+                    text: "شاخص توده ی بدنی شما @bmiResult کیلوگرم برمترمربع و محدوده ی چاقی درجه دو می باشد. توجه داشته باشید محاسبه ی شاخص توده ی بدنی معادل تشخیص بیماری نمی باشد. برای دریافت اطلاعات بیشتر مشاورین دکترفم درکنار شما هستند .",
+                    icon: 'warning',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'بستن',
+                });
+            }
+            if (40 < @bmiResult ) {
+                Swal.fire({
+                    title: "محدوده ی چاقی درجه سه",
+                    text: "شاخص توده ی بدنی شما @bmiResult کیلوگرم برمترمربع و محدوده ی چاقی درجه سه می باشد. توجه داشته باشید محاسبه ی شاخص توده ی بدنی معادل تشخیص بیماری نمی باشد. برای دریافت اطلاعات بیشتر مشاورین دکترفم درکنار شما هستند .",
                     icon: 'error',
                     confirmButtonColor: '#3085d6',
                     confirmButtonText: 'بستن',
@@ -230,7 +282,7 @@
                                             <div class="col-md-2"></div>
                                             <div class="col-md-8 text-center">
                                                 <div class=" text-center btn2 m-1" style="border:1px solid #fd5b03; border-radius:8px;">
-                                                    
+
                                                     <a asp-action="DiabetSelfTest" asp-area="" asp-controller="Diabet">
                                                         <span class="spCol"> مراقبت دوره ای </span>
                                                         <p class=" text-center  m-3" style="color:white !important; font-size:20px; font-weight:700;">خودارزیابی دیابت</p>
