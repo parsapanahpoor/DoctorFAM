@@ -89,6 +89,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         #region Admin
 
+        //Count Of Users 
+        Task<int> CountOfUsers();
+
         //Get List Of Admins and Supporters User Id For Send Notification For Death Certificate
         Task<List<string>?> GetAdminsAndSupportersNotificationForSendNotificationInDeathCertificate();
 

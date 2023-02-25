@@ -603,6 +603,50 @@ namespace DoctorFAM.Data.Repository
                             .OrderByDescending(p => p.CreateDate).ToListAsync();
         }
 
+        //Get Doctor Active Population Covered Count
+        public async Task<List<ulong>> GetDoctorActivePopulationCoveredCount(ulong doctorId)
+        {
+            return await _context.UserSelectedFamilyDoctor.Where(p => !p.IsDelete && p.DoctorId == doctorId && p.FamilyDoctorRequestState == Domain.Enums.FamilyDoctor.FamilyDoctorRequestState.Accepted)
+                                        .Select(p => p.PatientId).ToListAsync();
+        }
+
+        //Get Users Population Count With Range Of User Ids
+        public async Task<int> GetUsersPopulationCountWithRangeOfUserIds(List<ulong> userIds)
+        {
+            var count = 0;
+
+            foreach (var item in userIds)
+            {
+                count = count + await _context.PopulationCovered.Where(p => !p.IsDelete && p.UserId == item).CountAsync();
+            }
+
+            return count;
+        }
+
+        //Get List Of Accepted Doctors 
+        public async Task<List<User>> GetListOfAcceptedDoctors()
+        {
+            //Get Organizations owner Id
+            var ownerIds = await  _context.Organizations
+                .Where(s => !s.IsDelete && s.OrganizationType == Domain.Enums.Organization.OrganizationType.DoctorOffice)
+                .Select(p => p.OwnerId)
+                .ToListAsync();
+
+            List<User> users = new List<User>();
+
+            foreach (var item in ownerIds)
+            {
+                var user = await _context.Users.FirstOrDefaultAsync(p => !p.IsDelete && p.Id == item);
+
+                if (user is not null)
+                {
+                    users.Add(user);
+                }
+            }
+
+            return users;
+        }
+
         public async Task<ListOfDoctorsInfoViewModel> FilterDoctorsInfoAdminSide(ListOfDoctorsInfoViewModel filter)
         {
             var query = _context.Organizations

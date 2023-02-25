@@ -15,6 +15,9 @@ namespace DoctorFAM.Domain.Interfaces
 
         Task<FilterPopulationCoveredAdminViewModel> FilterPopulationCoveredAdmin(FilterPopulationCoveredAdminViewModel filter);
 
+        //Count Of All Population Covered 
+        Task<int> CountOfAllPopulationCovered();
+
         #endregion
 
         #region User Panel Side

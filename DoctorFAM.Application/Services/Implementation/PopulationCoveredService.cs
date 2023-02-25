@@ -42,6 +42,12 @@ namespace DoctorFAM.Application.Services.Implementation
             return await _populationCovered.FilterPopulationCoveredAdmin(filter);
         }
 
+        //Count Of All Population Covered 
+        public async Task<int> CountOfAllPopulationCovered()
+        {
+            return await _populationCovered.CountOfAllPopulationCovered();
+        }
+
         public async Task<EditPopulationCoveredAdminViewModel> FillEditPopulationCoveredAdminViewModel(ulong populationId)
         {
             #region Get population 

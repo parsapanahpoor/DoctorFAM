@@ -1,9 +1,10 @@
-﻿@model DoctorFAM.Domain.ViewModels.Site.Doctor.DoctorPageInReservationViewModel
+﻿
+@model DoctorFAM.Domain.ViewModels.Site.Doctor.DoctorPageInReservationViewModel
 @using DoctorFAM.Application.Extensions
 @using DoctorFAM.Application.Convertors
 
 @{
-    ViewBag.Title = "صفحه پزشک";
+    ViewBag.Title = "پروفایل پزشک";
 }
 
 <div class="content">
@@ -46,15 +47,19 @@
                                         <i class="fas fa-map-marker-alt"></i>
                                     }
                                     @((string.IsNullOrEmpty(Model.WorkAddress)) ? null : Model.WorkAddress)
-
+                                    <br />
+                                    @*Box Of Work Address*@
+                                    <partial name="_WorkAddressPartialINLine" model="@Model.WorkingAddressResume" />
                                     <br />
                                     @((!string.IsNullOrEmpty(Model.ClinicPhone)) ? Model.ClinicPhone : null)
-
+                                    
                                     <br />
                                     @((!string.IsNullOrEmpty(Model.GeneralPhone)) ? Model.GeneralPhone : null)
+                                   
 
                                 </p>
 
+                               
                                 @*Box Of Gallery*@
                                 <partial name="_GalleryPartial" model="@Model.GalleryResume" />
 
@@ -70,30 +75,31 @@
                         </div>
                     </div>
                     <div class="doc-info-right">
-                        <div class="clini-infos">
-                            <ul>
-                                <li><i class="far fa-thumbs-up"></i> 99%</li>
-                                <li><i class="far fa-comment"></i> 35 فیدبک </li>
+                        @*<div class="clini-infos">
+                        <ul>
+                        <li><i class="far fa-thumbs-up"></i> 99%</li>
+                        <li><i class="far fa-comment"></i> 35 فیدبک </li>
 
-                                <li><i class="far fa-money-bill-alt"></i> حق ویزیت: سامانه </li>
-                            </ul>
-                        </div>
-                        <div class="doctor-action">
-                            <a href="javascript:void(0)" class="btnDoc btn-white fav-btn">
-                                <i class="far fa-bookmark"></i>
-                            </a>
-                            <a href="chat.html" class="btnDoc btn-white msg-btn">
-                                <i class="far fa-comment-alt"></i>
-                            </a>
-                            <a href="javascript:void(0)" class="btnDoc btn-white call-btn" data-bs-toggle="modal" data-bs-target="#voice_call">
-                                <i class="fas fa-phone"></i>
-                            </a>
-                            <a href="javascript:void(0)" class="btnDoc btn-white call-btn" data-bs-toggle="modal" data-bs-target="#video_call">
-                                <i class="fas fa-video"></i>
-                            </a>
-                        </div>
-                        <div class="clinic-booking">
-                            <a class="apt-btn" asp-action="DocBooking" asp-controller="FocalPoint" asp-area="" asp-route-userId="@Model.UserId">رزرو نوبت</a>
+                        <li><i class="far fa-money-bill-alt"></i> حق ویزیت: سامانه </li>
+                        </ul>
+                        </div>*@
+                        @*<div class="doctor-action">
+                        <a href="javascript:void(0)" class="btnDoc btn-white fav-btn">
+                        <i class="far fa-bookmark"></i>
+                        </a>
+                        <a href="chat.html" class="btnDoc btn-white msg-btn">
+                        <i class="far fa-comment-alt"></i>
+                        </a>
+                        <a href="javascript:void(0)" class="btnDoc btn-white call-btn" data-bs-toggle="modal" data-bs-target="#voice_call">
+                        <i class="fas fa-phone"></i>
+                        </a>
+                        <a href="javascript:void(0)" class="btnDoc btn-white call-btn" data-bs-toggle="modal" data-bs-target="#video_call">
+                        <i class="fas fa-video"></i>
+                        </a>
+                        </div>*@
+                       
+                        <div class="clinic-booking mt-3">
+                            <a class="apt-btn " asp-action="DocBooking" asp-controller="FocalPoint" asp-area="" asp-route-userId="@Model.UserId">رزرو نوبت</a>
                         </div>
                     </div>
                 </div>
@@ -110,14 +116,15 @@
                             <li class="nav-item">
                                 <a class="nav-link active" href="#doc_overview" data-bs-toggle="tab"> رزومه </a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#doc_locations" data-bs-toggle="tab"> آدرس محل کار </a>
-                            </li>
+
                             <li class="nav-item">
                                 <a class="nav-link" href="#doc_reviews" data-bs-toggle="tab">گواهینامه ها</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#doc_business_hours" data-bs-toggle="tab">کلیپها </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#doc_locations" data-bs-toggle="tab"> آدرس محل کار </a>
                             </li>
                         </ul>
                     </nav>

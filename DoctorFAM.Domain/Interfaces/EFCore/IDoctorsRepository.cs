@@ -1,4 +1,5 @@
-﻿using DoctorFAM.Domain.Entities.Doctors;
+﻿using DoctorFAM.Domain.Entities.Account;
+using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.FamilyDoctor.ParsaSystem;
 using DoctorFAM.Domain.Entities.FamilyDoctor.VIPSystem;
 using DoctorFAM.Domain.Entities.Interest;
@@ -201,6 +202,15 @@ namespace DoctorFAM.Domain.Interfaces
 
         //Get Lastest Request For Uplaod Excel File
         Task<List<RequestForUploadExcelFileFromDoctorsToSite>> GetLastestRequestForUplaodExcelFile();
+
+        //Get Doctor Active Population Covered Count
+        Task<List<ulong>> GetDoctorActivePopulationCoveredCount(ulong doctorId);
+
+        //Get Users Population Count With Range Of User Ids
+        Task<int> GetUsersPopulationCountWithRangeOfUserIds(List<ulong> userIds);
+
+        //Get List Of Accepted Doctors 
+        Task<List<User>> GetListOfAcceptedDoctors();
 
         Task<ListOfDoctorsInfoViewModel> FilterDoctorsInfoAdminSide(ListOfDoctorsInfoViewModel filter);
 

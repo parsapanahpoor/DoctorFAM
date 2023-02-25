@@ -300,5 +300,13 @@ namespace DoctorFAM.Web.Controllers
         }
 
         #endregion
+
+        #region Books
+
+        public async Task<IActionResult> Books()
+        {
+            return View();
+        }
+        #endregion
     }
 }
