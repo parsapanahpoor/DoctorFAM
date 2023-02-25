@@ -1,37 +1,21 @@
 ﻿using DoctorFAM.Application.Interfaces;
 using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
-using DoctorFAM.Data.DbContext;
-using DoctorFAM.Data.Repository;
 using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Entities.Wallet;
-using DoctorFAM.Domain.Entities.WorkAddress;
 using DoctorFAM.Domain.Enums.Gender;
 using DoctorFAM.Domain.Enums.Request;
 using DoctorFAM.Domain.Enums.RequestType;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.HealthHouse;
-using DoctorFAM.Domain.ViewModels.Admin.HealthHouse.HomeVisit;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DeathCertificate;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.HomeVisit;
-using DoctorFAM.Domain.ViewModels.DoctorPanel.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.Site.HomeVisitRequest;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
 using DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace DoctorFAM.Application.Services.Implementation
 {

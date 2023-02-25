@@ -49,6 +49,8 @@ namespace DoctorFAM.Domain.ViewModels.Admin.HealthInformation.TVFAM.Video
 
         public string? RejectNote  { get; set; }
 
+        public bool ShowInLanding { get; set; }
+
         #endregion
     }
 }

@@ -36,3 +36,16 @@ from Roles
 --Get All Of Users Cooperation Request 
 select * from CooperationRequests
 
+---List OF Doctors With Thier User Informations 
+SELECT Users.Username, Users.NationalId , Users.LastName , Users.FirstName
+FROM Doctors
+INNER JOIN Users ON Doctors.UserId = Users.Id;
+
+--- List Of Users Whitout Doctors ---
+SELECT FirstName , LastName  , Username , NationalId , Mobile 
+FROM Users 
+WHERE Users.Id  NOT IN  (SELECT Users.Id
+					FROM Users
+					INNER JOIN Doctors ON  Users.Id =Doctors.UserId);
+             
+

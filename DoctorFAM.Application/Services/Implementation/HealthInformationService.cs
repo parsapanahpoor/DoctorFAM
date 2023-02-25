@@ -261,6 +261,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 ShowInfinity = model.ShowInfinity,
                 StartDate = (string.IsNullOrEmpty(model.StartDate)) ? null : model.StartDate.ToMiladiDateTime(),
                 EndDate = (string.IsNullOrEmpty(model.EndDate)) ? null : model.EndDate.ToMiladiDateTime(),
+                ShowInLanding = model.ShowInLanding,
             };
 
             #endregion
@@ -361,7 +362,8 @@ namespace DoctorFAM.Application.Services.Implementation
                 ShowInfinity = health.ShowInfinity,
                 ShowInSite = health.ShowInSite,
                 HealthInfoId = health.Id,
-                Permissions = await _healthinformationRepository.GetHealthInformationSelectedCategories(health.Id)
+                Permissions = await _healthinformationRepository.GetHealthInformationSelectedCategories(health.Id),
+                ShowInLanding = health.ShowInLanding
             };
 
             #endregion
@@ -400,6 +402,8 @@ namespace DoctorFAM.Application.Services.Implementation
             healthFAM.ShowInfinity = model.ShowInfinity;
             healthFAM.StartDate = (string.IsNullOrEmpty(model.StartDate)) ? null : model.StartDate.ToMiladiDateTime();
             healthFAM.EndDate = (string.IsNullOrEmpty(model.EndDate)) ? null : model.EndDate.ToMiladiDateTime();
+            healthFAM.ShowInLanding = model.ShowInLanding;
+            healthFAM.HealthInformationType = HealthInformationType.TVFAM;
 
             #region Attachment File 
 
@@ -809,6 +813,16 @@ namespace DoctorFAM.Application.Services.Implementation
 
         #endregion
 
+        #region Site Side 
+
+        //Get Lastest 3 TvFAM For Show In Admin Panel 
+        public async Task<List<HealthInformation>?> GetLastest3TvFAMForShowInAdminPanel()
+        {
+            return await _healthinformationRepository.GetLastest3TvFAMForShowInAdminPanel();
+        }
+
+        #endregion
+
         #endregion
 
         #endregion
@@ -1030,7 +1044,26 @@ namespace DoctorFAM.Application.Services.Implementation
                 ShowInfinity = model.ShowInfinity,
                 StartDate = (string.IsNullOrEmpty(model.StartDate)) ? null : model.StartDate.ToMiladiDateTime(),
                 EndDate = (string.IsNullOrEmpty(model.EndDate)) ? null : model.EndDate.ToMiladiDateTime(),
+                ShowInLanding = model.ShowInLanding
             };
+
+            #endregion
+
+            #region Copy File For Show In Landing Page Records
+
+            if (model.ShowInLanding)
+            {
+                if (!Directory.Exists(PathTools.PodcastsForLandingPageFilesServerPath))
+                {
+                    Directory.CreateDirectory(PathTools.PodcastsForLandingPageFilesServerPath);
+                }
+
+                var destanation = $"{PathTools.PodcastsForLandingPageFilesServerPath}{model.AttachmentFileName}";
+
+                var source = $"{PathTools.HealthInformationAttachmentFilesServerPath}{model.AttachmentFileName}";
+
+                File.Copy(source , destanation);
+            }
 
             #endregion
 
@@ -1118,7 +1151,8 @@ namespace DoctorFAM.Application.Services.Implementation
                 ShowInfinity = health.ShowInfinity,
                 ShowInSite = health.ShowInSite,
                 HealthInfoId = health.Id,
-                Permissions = await _healthinformationRepository.GetPodcastsSelectedCategories(health.Id)
+                Permissions = await _healthinformationRepository.GetPodcastsSelectedCategories(health.Id),
+                ShowInLanding = health.ShowInLanding,
             };
 
             #endregion
@@ -1157,14 +1191,51 @@ namespace DoctorFAM.Application.Services.Implementation
             healthFAM.ShowInfinity = model.ShowInfinity;
             healthFAM.StartDate = (string.IsNullOrEmpty(model.StartDate)) ? null : model.StartDate.ToMiladiDateTime();
             healthFAM.EndDate = (string.IsNullOrEmpty(model.EndDate)) ? null : model.EndDate.ToMiladiDateTime();
+            healthFAM.HealthInformationType = HealthInformationType.RadioFAM;
 
             #region Attachment File 
+
+            if (healthFAM.ShowInLanding && !model.ShowInLanding)
+            {
+                healthFAM.File.DeleteFile(PathTools.PodcastsForLandingPageFilesServerPath);
+            }
 
             if (!string.IsNullOrEmpty(healthFAM.File) &&
                   !string.IsNullOrEmpty(model.AttachmentFileName) &&
                         model.AttachmentFileName != healthFAM.File)
             {
                 healthFAM.File.DeleteFile(PathTools.HealthInformationAttachmentFilesServerPath);
+
+                if (healthFAM.ShowInLanding && model.ShowInLanding)
+                {
+                    healthFAM.File.DeleteFile(PathTools.PodcastsForLandingPageFilesServerPath);
+
+                    if (!Directory.Exists(PathTools.PodcastsForLandingPageFilesServerPath))
+                    {
+                        Directory.CreateDirectory(PathTools.PodcastsForLandingPageFilesServerPath);
+                    }
+
+                    var destanation = $"{PathTools.PodcastsForLandingPageFilesServerPath}{model.AttachmentFileName}";
+
+                    var source = $"{PathTools.HealthInformationAttachmentFilesServerPath}{model.AttachmentFileName}";
+
+                    File.Copy(source, destanation);
+                }
+            }
+
+            //Create Show In Landing File
+            if (model.ShowInLanding && !healthFAM.ShowInLanding)
+            {
+                if (!Directory.Exists(PathTools.PodcastsForLandingPageFilesServerPath))
+                {
+                    Directory.CreateDirectory(PathTools.PodcastsForLandingPageFilesServerPath);
+                }
+
+                var destanation = $"{PathTools.PodcastsForLandingPageFilesServerPath}{model.AttachmentFileName}";
+
+                var source = $"{PathTools.HealthInformationAttachmentFilesServerPath}{model.AttachmentFileName}";
+
+                File.Copy(source, destanation);
             }
 
             if (string.IsNullOrEmpty(healthFAM.File) || healthFAM.File != model.AttachmentFileName)
@@ -1173,6 +1244,9 @@ namespace DoctorFAM.Application.Services.Implementation
             }
 
             #endregion
+
+            //Show In LAnding Field
+            healthFAM.ShowInLanding = model.ShowInLanding;
 
             //Update Podcasts
             await _healthinformationRepository.UpdateTVFAM(healthFAM);
@@ -1562,6 +1636,16 @@ namespace DoctorFAM.Application.Services.Implementation
             await _healthinformationRepository.UpdateTVFAM(healthFAM);
 
             return true;
+        }
+
+        #endregion
+
+        #region Site Side
+
+        //Get Lastest 3 Podcast For Show In Admin Panel 
+        public async Task<List<HealthInformation>?> GetLastest3PodcastForShowInAdminPanel()
+        {
+            return await _healthinformationRepository.GetLastest3PodcastForShowInAdminPanel();
         }
 
         #endregion

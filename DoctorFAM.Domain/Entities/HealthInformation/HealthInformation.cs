@@ -42,6 +42,8 @@ namespace DoctorFAM.Domain.Entities.HealthInformation
 
         public bool Lastest { get; set; }
 
+        public bool ShowInLanding { get; set; }
+
         #endregion
 
         #region relations

@@ -7,6 +7,8 @@
     var bloodPressureStatus = ViewBag.bloodPressureStatus != null ? (int)ViewBag.bloodPressureStatus : 0;
     var ascvdPredic = ViewBag.ascvdPredicResult != null ? (decimal)ViewBag.ascvdPredicResult : 0;
     var ascvdStatus = ViewBag.ascvdStatusResult != null ? (int)ViewBag.ascvdStatusResult : 0;
+
+    int userLogin = (User.Identity.IsAuthenticated) ? 1 : 0;
 }
 
 @section Scripts{
@@ -15,9 +17,187 @@
 
     <script>
 
+        //#region Ask For Save BMI Result
+
+        $(document).on('change', '#SaveResult', function () {
+            var answer = $("#SaveResult :selected").val();
+
+            if (answer == 0) {
+                if (@userLogin == 1) {
+                    $("#WeightInput").removeClass("d-none");
+                    $("#heightInput").removeClass("d-none");
+                    $("#footer-Div").removeClass("d-none");
+
+                    $("#Login-div").addClass("d-none");
+                }
+                if (@userLogin == 0) {
+                    $("#WeightInput").addClass("d-none");
+                    $("#heightInput").addClass("d-none");
+                    $("#footer-Div").addClass("d-none");
+
+                    $("#Login-div").removeClass("d-none");
+                }
+            }
+            else if
+                (answer == 1) {
+                $("#WeightInput").removeClass("d-none");
+                $("#heightInput").removeClass("d-none");
+                $("#footer-Div").removeClass("d-none");
+
+                $("#Login-div").addClass("d-none");
+            }
+        });
+
         $(document).ready(function () {
+            if (0 < @bmiResult && @bmiResult <= 20) {
+                Swal.fire({
+                    title: "محدوده ی کم وزنی",
+                    text: "شاخص توده ی بدنی شما @bmiResult کیلوگرم برمترمربع و درمحدوده ی کم وزنی می باشد. توجه داشته باشید محاسبه ی شاخص توده ی بدنی معادل تشخیص بیماری نمی باشد. برای دریافت اطلاعات بیشتر مشاورین دکترفم درکنار شما هستند .",
+                    icon: 'warning',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'بستن',
+                });
+            }
+            if (20 <= @bmiResult && @bmiResult <= 25) {
+                Swal.fire({
+                    title: "وزن متناسب",
+                    text: "شاخص توده ی بدنی شما @bmiResult کیلوگرم برمترمربع و درمحدوده ی وزن متناسب می باشد. توجه داشته باشید محاسبه ی شاخص توده ی بدنی معادل تشخیص بیماری نمی باشد. برای دریافت اطلاعات بیشتر مشاورین دکترفم درکنار شما هستند .",
+                    icon: 'success',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'بستن',
+                });
+            }
+            if (25 <= @bmiResult && @bmiResult <= 30) {
+                Swal.fire({
+                    title: "اضافه وزن",
+                    text: "شاخص توده ی بدنی شما @bmiResult کیلوگرم برمترمربع و درمحدوده ی اضافه وزن می باشد. توجه داشته باشید محاسبه ی شاخص توده ی بدنی معادل تشخیص بیماری نمی باشد. برای دریافت اطلاعات بیشتر مشاورین دکترفم درکنار شما هستند .",
+                    icon: 'warning',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'بستن',
+                });
+            }
+            if (30 <= @bmiResult && @bmiResult <= 35) {
+                Swal.fire({
+                    title: "محدوده ی چاقی درجه یک",
+                    text: "شاخص توده ی بدنی شما @bmiResult کیلوگرم برمترمربع و محدوده ی چاقی درجه یک می باشد. توجه داشته باشید محاسبه ی شاخص توده ی بدنی معادل تشخیص بیماری نمی باشد. برای دریافت اطلاعات بیشتر مشاورین دکترفم درکنار شما هستند .",
+                    icon: 'warning',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'بستن',
+                });
+            }
+            if (35 <= @bmiResult && @bmiResult <= 40) {
+                Swal.fire({
+                    title: "محدوده ی چاقی درجه دو",
+                    text: "شاخص توده ی بدنی شما @bmiResult کیلوگرم برمترمربع و محدوده ی چاقی درجه دو می باشد. توجه داشته باشید محاسبه ی شاخص توده ی بدنی معادل تشخیص بیماری نمی باشد. برای دریافت اطلاعات بیشتر مشاورین دکترفم درکنار شما هستند .",
+                    icon: 'warning',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'بستن',
+                });
+            }
+            if (40 < @bmiResult ) {
+                Swal.fire({
+                    title: "محدوده ی چاقی درجه سه",
+                    text: "شاخص توده ی بدنی شما @bmiResult کیلوگرم برمترمربع و محدوده ی چاقی درجه سه می باشد. توجه داشته باشید محاسبه ی شاخص توده ی بدنی معادل تشخیص بیماری نمی باشد. برای دریافت اطلاعات بیشتر مشاورین دکترفم درکنار شما هستند .",
+                    icon: 'error',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'بستن',
+                });
+            }
+        });
+
+        //#endregion
+
+        //#region Ask For Save GFR Result
+
+        $(document).on('change', '#SaveGFRResult', function () {
+            var answer = $("#SaveGFRResult :selected").val();
+
+            if (answer == 0) {
+                if (@userLogin == 1) {
+                    $("#data").removeClass("d-none");
+
+                    $("#Login-div").addClass("d-none");
+                }
+                if (@userLogin == 0) {
+                    $("#data").addClass("d-none");
+
+                    $("#Login-div").removeClass("d-none");
+                }
+            }
+            else if
+                (answer == 1) {
+                $("#data").removeClass("d-none");
+
+                $("#Login-div").addClass("d-none");
+            }
+        });
+
+        $(document).ready(function () {
+            if (90 <= @GFRResult ) {
+                Swal.fire({
+                    title: "محدوده ی طبیعی",
+                    text: "تخمین تصفیه ی کلیوی شما حدودا @GFRResult می باشد. طی این محاسبه شما در مرحله ی طبیعی قرار دارید .\n توصیه میکنیم برای برسی های تکمیلی با پزشک خود مشورت کنید. \n توجه داشته باشید محاسبه ی تصفیه ی کلیوی برای سن بالای 2 سال معتبر می باشد. \n محاسبات انجام شده دارای نوسان می باشد بنابراین حتمابرای برسی دقیق نتایج با پزشک خود مشورت کنید. \n برای دریافت اطلاعات بیشتر مشاورین داکترفم در کنار شما هستند .",
+                    icon: 'success',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'بستن',
+                });
+            }
+            if (60 <= @GFRResult && @GFRResult <= 90) {
+                Swal.fire({
+                    title: "کاهش خفیف عملکرد کلیه",
+                    text: "تخمین تصفیه ی کلیوی شما حدودا @GFRResult می باشد. طی این محاسبه شما در مرحله ی کاهش خفیف عملکرد کلیه قرار دارید .\n دقت کنید بهبود عملکرد کلیه ها کاملا امکان پذیر است بنابراین برای برسی های تکمیلی و توصیه های ارتقا سلامت با پزشک خود مشورت کنید. \n توجه داشته باشید محاسبه ی تصفیه ی کلیوی برای سن بالای 2 سال معتبر می باشد. \n محاسبات انجام شده دارای نوسان می باشد بنابراین حتمابرای برسی دقیق نتایج با پزشک خود مشورت کنید. \n برای دریافت اطلاعات بیشتر مشاورین داکترفم در کنار شما هستند .",
+                    icon: 'warning',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'بستن',
+                });
+            }
+            if (45 <= @GFRResult && @GFRResult <= 60) {
+                Swal.fire({
+                    title: "کاهش خفیف تا متوسط عملکرد کلیه",
+                    text: "تخمین تصفیه ی کلیوی شما حدودا @GFRResult می باشد. طی این محاسبه شما در مرحله ی کاهش خفیف تا متوسط عملکرد کلیه قرار دارید .\n دقت کنید بهبود عملکرد کلیه ها کاملا امکان پذیر است بنابراین بطور منظم با پزشک خود مشورت کنید. توصیه می کنیم با کارشناس تغذیه نیز مشورت نمایید. \n توجه داشته باشید محاسبه ی تصفیه ی کلیوی برای سن بالای 2 سال معتبر می باشد. \n محاسبات انجام شده دارای نوسان می باشد بنابراین حتمابرای برسی دقیق نتایج با پزشک خود مشورت کنید. \n برای دریافت اطلاعات بیشتر مشاورین داکترفم در کنار شما هستند .",
+                    icon: 'warning',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'بستن',
+                });
+            }
+            if (30 <= @GFRResult && @GFRResult <= 45) {
+                Swal.fire({
+                    title: "کاهش متوسط تا شدید عملکرد کلیه",
+                    text: "تخمین تصفیه ی کلیوی شما حدودا @GFRResult می باشد. طی این محاسبه شما در مرحله ی کاهش متوسط تا شدید عملکرد کلیه قرار دارید .\n دقت کنید حفظ و حتی بهبود عملکرد کلیه ها کاملا امکان پذیر است بنابراین بطور منظم با تیم درمان در ارتباط باشید. توصیه می کنیم با کارشناس تغذیه نیز مشورت نمایید. \n توجه داشته باشید محاسبه ی تصفیه ی کلیوی برای سن بالای 2 سال معتبر می باشد. \n محاسبات انجام شده دارای نوسان می باشد بنابراین حتمابرای برسی دقیق نتایج با پزشک خود مشورت کنید. \n برای دریافت اطلاعات بیشتر مشاورین داکترفم در کنار شما هستند .",
+                    icon: 'warning',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'بستن',
+                });
+            }
+            if (15 <= @GFRResult && @GFRResult <= 30) {
+                Swal.fire({
+                    title: "کاهش شدید عملکرد کلیه",
+                    text: "تخمین تصفیه ی کلیوی شما حدودا @GFRResult می باشد. طی این محاسبه شما در مرحله ی کاهش شدید عملکرد کلیه قرار دارید .\n دقت کنید حفظ و حتی بهبود عملکرد کلیه ها کاملا امکان پذیر است بنابراین اطلاعات خود را در رابطه با بیماری فعلی و گزینه های درمانی تکمیل کنید. توصیه می کنیم با کارشناس تغذیه نیز مشورت نمایید. \n توجه داشته باشید محاسبه ی تصفیه ی کلیوی برای سن بالای 2 سال معتبر می باشد. \n محاسبات انجام شده دارای نوسان می باشد بنابراین حتمابرای برسی دقیق نتایج با پزشک خود مشورت کنید. \n برای دریافت اطلاعات بیشتر مشاورین داکترفم در کنار شما هستند .",
+                    icon: 'error',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'بستن',
+                });
+            }
+            if (0 < @GFRResult && @GFRResult <= 15) {
+                Swal.fire({
+                    title: "نارسایی کلیه",
+                    text: "تخمین تصفیه ی کلیوی شما حدودا @GFRResult می باشد. طی این محاسبه شما در مرحله ی نارسایی کلیه قرار دارید .\n دراین مرحله پزشکان متخصص کلیه گزینه های درمانی را مشخص میکنند. توصیه می کنیم با کارشناس تغذیه نیز مشورت نمایید. \n توجه داشته باشید محاسبه ی تصفیه ی کلیوی برای سن بالای 2 سال معتبر می باشد. \n محاسبات انجام شده دارای نوسان می باشد بنابراین حتمابرای برسی دقیق نتایج با پزشک خود مشورت کنید. \n برای دریافت اطلاعات بیشتر مشاورین داکترفم در کنار شما هستند .",
+                    icon: 'error',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'بستن',
+                });
+            }
+        });
+
+
+        //#endregion
+
+
+        //#region Blood Pressure Self Assessment Result 
+
+            $(document).ready(function () {
             if (@bloodPressureStatus == 1) {
-             Swal.fire({
+                Swal.fire({
                     title: "فشارخون نرمال",
                     text: "فشارخون شما طبق خوداظهاری شما در زمان اندازه گیری فشارخون در محدوده نرمال بوده است . لطفا 3 ماه بعد این خودارزیابی را تکرار نمائید.",
                     icon: 'success',
@@ -44,14 +224,17 @@
                 });
             }
             if (@bloodPressureStatus == 4) {
- Swal.fire({
+                Swal.fire({
                     title: "فشارخون بحرانی",
                     text: "فشارخون شما طبق خوداظهاری شما در زمان اندازه گیری فشارخون در محدوده فشارخون بحرانی قرار دارد و لازم است ضمن حفظ خونسردی هرجه سریع تر به نزدیک ترین مرکز مراجعه نمائید.",
                     icon: 'error',
                     confirmButtonColor: '#3085d6',
                     confirmButtonText: 'بستن',
-                });            }
+                });
+            }
         });
+
+        //#endregion
 
     </script>
 }

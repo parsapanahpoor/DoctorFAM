@@ -18,7 +18,6 @@ using NuGet.Protocol.Plugins;
 
 namespace DoctorFAM.Web.Areas.Doctor.Controllers
 {
-    [IsUserDoctor]
     public class PopulationCoveredController : DoctorBaseController
     {
         #region Ctor
