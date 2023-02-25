@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 
 namespace DoctorFAM.Domain.ViewModels.Site.Diabet
 {
+    /// <summary>
+    /// para : SaveResult Has Two Result : 0 is meaning True And 1 is meaning false
+    /// </summary>
+
     public class BMIViewModel
     {
         #region properties
@@ -18,6 +22,8 @@ namespace DoctorFAM.Domain.ViewModels.Site.Diabet
         [Required(ErrorMessage = "Please Enter {0}")]
         [RegularExpression(@"^[0-9]*$", ErrorMessage = "The information entered is not valid.")]
         public int Height { get; set; }
+
+        public int SaveResult { get; set; }
 
         #endregion
     }

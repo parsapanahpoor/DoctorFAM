@@ -1,0 +1,51 @@
+﻿@model List<DoctorFAM.Domain.Entities.HealthInformation.HealthInformation>
+@using DoctorFAM.Application.StaticTools
+
+@if (Model != null && Model.Any())
+{
+    <div class="col-lg-6 col-md-6 text-center">
+        <div id="radio" class="container-fluid">
+            <div class="container">
+                <div class="radio-content">
+                    <div class="radio-right">
+                        <div class="radio-equalizer">
+                            <div id='music-bars' class="">
+
+                                <span class="four"></span>
+                                <span class="three"></span>
+                                <span class="one"></span>
+                                <span class="two"></span>
+
+                            </div>
+                        </div>
+                        <div class="radio-audio">
+                            <audio src="@PathTools.PodcastsForLandingPageFilesPath@Model[0]" preload="none"></audio>
+                        </div>
+                    </div>
+                    <div class="radio-left">
+                        <div class="radio-folder">
+                            <i class="material-icons">folder_open</i>
+                        </div>
+                        <div class="radio-music-list-popup">
+                            <div class="radio-music-list-item">
+                                <a href="#">مشاهده همه</a>
+                            </div>
+                        </div>
+                        <div class="radio-controls">
+                            <div class="radio-next">
+                            </div>
+                            <div class="radio-stop-play">
+                            </div>
+                            <div class="radio-previous">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+
+

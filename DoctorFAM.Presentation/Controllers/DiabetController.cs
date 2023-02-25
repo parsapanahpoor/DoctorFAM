@@ -61,7 +61,7 @@ namespace DoctorFAM.Web.Controllers
 
         #region Index Page Of Diabet Part
 
-        public IActionResult Index(int? bmiResult, decimal? gfrResult, decimal? selfAssessment, int? ascvdResult, int? ascvdStatus)
+        public IActionResult Index(int? bmiResult, decimal? gfrResult, decimal? selfAssessment)
         {
             #region Send BMI && GFR Result To View 
 
@@ -80,16 +80,6 @@ namespace DoctorFAM.Web.Controllers
                 ViewBag.selfAssessment = selfAssessment;
             }
 
-            if (ascvdResult.HasValue)
-            {
-                ViewBag.ascvdPredicResult = ascvdResult.Value;
-            }
-
-            if (ascvdStatus.HasValue)
-            {
-                ViewBag.ascvdStatusResult = ascvdStatus.Value;
-            }
-
             #endregion
 
             return View();
@@ -102,6 +92,17 @@ namespace DoctorFAM.Web.Controllers
         public IActionResult two()
         {
             return View();
+        }
+
+        #endregion
+
+        #region Redirect To Login For Save BMI GFR Result
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> RedirectToLoginForSaveBMIGFRResult()
+        {
+            return RedirectToAction(nameof(Index));
         }
 
         #endregion
@@ -123,7 +124,7 @@ namespace DoctorFAM.Web.Controllers
         public async Task<IActionResult> ProcessBMI(BMIViewModel bmi)
         {
             //IF User Is Loged In 
-            if (User.Identity.IsAuthenticated)
+            if (User.Identity.IsAuthenticated && bmi.SaveResult == 0)
             {
                 var res = await _bmiService.ProcessBMI(bmi, User.GetUserId());
 
@@ -161,6 +162,7 @@ namespace DoctorFAM.Web.Controllers
             }
             return View();
         }
+
         #endregion
 
         #region Show ASCVD Modal 
@@ -249,7 +251,7 @@ namespace DoctorFAM.Web.Controllers
         public async Task<IActionResult> ProcessGFR(GFRViewModel gfr)
         {
             //IF User Is Loged In 
-            if (User.Identity.IsAuthenticated)
+            if (User.Identity.IsAuthenticated && gfr.SaveResult == 0)
             {
                 decimal res = await _bmiService.ProcessGFR(gfr, User.GetUserId());
 

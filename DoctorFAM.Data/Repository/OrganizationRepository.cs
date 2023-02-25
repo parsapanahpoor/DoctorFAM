@@ -103,6 +103,13 @@ namespace DoctorFAM.Data.Repository
             if (organizationMember == null) return false;
 
             _context.OrganizationMembers.Remove(organizationMember);
+
+            var userRole = await _context.UserRoles.FirstOrDefaultAsync(p => !p.IsDelete && p.UserId == employeeId && p.RoleId == 5);
+            if (userRole == null) return false;
+            
+            userRole.IsDelete = true;
+
+            _context.UserRoles.Update(userRole);
             await _context.SaveChangesAsync();
 
             return true;

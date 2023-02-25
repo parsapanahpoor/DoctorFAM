@@ -330,6 +330,25 @@ namespace DoctorFAM.Data.Repository
 
         #endregion
 
+        #region Site Side 
+
+        //Get Lastest 3 TvFAM For Show In Admin Panel 
+        public async Task<List<HealthInformation>?> GetLastest3TvFAMForShowInAdminPanel()
+        {
+            var tvFAM = await _context.HealthInformation.Where(p=> !p.IsDelete && p.ShowInLanding && p.HealthInformationType == Domain.Enums.HealtInformation.HealthInformationType.TVFAM
+                                                                && p.HealtInformationFileState == Domain.Enums.HealtInformation.HealtInformationFileState.Accepted)
+                                                                    .OrderByDescending(p => p.CreateDate).ToListAsync();
+
+            if (tvFAM is null)
+            {
+                return null;
+            }
+
+            return  tvFAM.Take(3).ToList();
+        }
+
+        #endregion
+
         #endregion
 
         #endregion
@@ -570,6 +589,25 @@ namespace DoctorFAM.Data.Repository
                 .Where(p => !p.IsDelete && p.HealthInformationType == Domain.Enums.HealtInformation.HealthInformationType.RadioFAM
                         && p.OwnerId.Value == ownerId)
                 .OrderByDescending(p => p.CreateDate).ToListAsync();
+        }
+
+        #endregion
+
+        #region Site Side
+
+        //Get Lastest 3 Podcast For Show In Admin Panel 
+        public async Task<List<HealthInformation>?> GetLastest3PodcastForShowInAdminPanel()
+        {
+            var podcast = await _context.HealthInformation.Where(p => !p.IsDelete && p.ShowInLanding && p.HealthInformationType == Domain.Enums.HealtInformation.HealthInformationType.RadioFAM
+                                                                && p.HealtInformationFileState == Domain.Enums.HealtInformation.HealtInformationFileState.Accepted)
+                                                                    .OrderByDescending(p => p.CreateDate).ToListAsync();
+
+            if (podcast is null)
+            {
+                return null;
+            }
+
+            return podcast.Take(3).ToList();
         }
 
         #endregion

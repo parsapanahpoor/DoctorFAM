@@ -113,6 +113,13 @@ namespace DoctorFAM.Domain.Interfaces.EFCore
 
         #endregion
 
+        #region Site Side 
+
+        //Get Lastest 3 TvFAM For Show In Admin Panel 
+        Task<List<HealthInformation>?> GetLastest3TvFAMForShowInAdminPanel();
+
+        #endregion
+
         #endregion
 
         #endregion
@@ -197,6 +204,13 @@ namespace DoctorFAM.Domain.Interfaces.EFCore
 
         //Filter Podcast From Doctor Panel Side  
         Task<List<HealthInformation>> FilterPodcastoctorPanelSide(ulong ownerId);
+
+        #endregion
+
+        #region Site Side 
+
+        //Get Lastest 3 Podcast For Show In Admin Panel 
+        Task<List<HealthInformation>?> GetLastest3PodcastForShowInAdminPanel();
 
         #endregion
 

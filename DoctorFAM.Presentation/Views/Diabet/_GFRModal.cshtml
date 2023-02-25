@@ -6,33 +6,65 @@
     <div class="modal-body">
         <div class="row">
 
-            <div class="form-group col-md-12 col-sm-12">
-                <label asp-for="Gender">جنسیت</label>
-                <select asp-for="Gender" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.Gender.Gender))"></select>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label">آیا مایل هستید که نتیجه ی محاسبات در سوابق شما ثبت گردد ؟</label>
+                    <select id="SaveGFRResult" asp-for="SaveResult" class="form-control">
+                        <option>انتخاب کنید</option>
+                        <option value="0">بله </option>
+                        <option value="1">خیر</option>
+                    </select>
+                </div>
             </div>
 
-            <div class="form-group col-md-12 col-sm-12">
-                <label asp-for="Weight">وزن (برحسب کیلوگرم)</label>
-                <input type="number" min="0" class="form-control" asp-for="Weight">
-                <span class="text-danger" asp-validation-for="Weight"></span>
+            <div class="col-md-12 d-none" id="Login-div">
+                <div class="widget ">
+                    <div class="sidebar-links">
+                        <ul class="list-unstyled ">
+                            <li>
+                                <p id="DiabetHelp1" class="link-text"> کاربر عزیز برای ثبت نتیجه لطفا از لینک زیر وارد سایت شوید. </p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="footer">
+                    <a asp-action="RedirectToLoginForSaveBMIGFRResult" asp-area="" asp-controller="Diabet" style="padding-top: 10px;padding-bottom: 10px;" class="btn-SelfTest">ورود</a>
+                </div>
+
             </div>
 
-             <div class="form-group col-md-12 col-sm-12">
-                <label asp-for="Age">سن</label>
-                <input type="number" min="0" class="form-control" asp-for="Age">
-                <span class="text-danger" asp-validation-for="Age"></span>
-            </div>
+            <div id="data" class="row d-none">
 
-            <div class="form-group col-md-12 col-sm-12">
-                <label asp-for="Keratenin">کراتنین خون</label>
-                <input type="number" min="0" class="form-control" asp-for="Keratenin">
-                <span class="text-danger" asp-validation-for="Keratenin"></span>
-            </div>
+                <div class="form-group col-md-12 col-sm-12">
+                    <label asp-for="Gender">جنسیت</label>
+                    <select asp-for="Gender" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.Gender.Gender))"></select>
+                </div>
 
-            <hr />
+                <div class="form-group col-md-12 col-sm-12">
+                    <label asp-for="Weight">وزن (برحسب کیلوگرم)</label>
+                    <input type="number" min="0" class="form-control" asp-for="Weight">
+                    <span class="text-danger" asp-validation-for="Weight"></span>
+                </div>
 
-            <div class="footer">
-                <button type="submit" style="padding-top: 10px;padding-bottom: 10px;padding-right: 20px;padding-left: 20px;" class="btn-SelfTest">ثبت</button>
+                <div class="form-group col-md-12 col-sm-12">
+                    <label asp-for="Age">سن</label>
+                    <input type="number" min="0" class="form-control" asp-for="Age">
+                    <span class="text-danger" asp-validation-for="Age"></span>
+                </div>
+
+                <div class="form-group col-md-12 col-sm-12">
+                    <label asp-for="Keratenin">کراتنین خون</label>
+                    <input type="number" min="0" class="form-control" asp-for="Keratenin">
+                    <span class="text-danger" asp-validation-for="Keratenin"></span>
+                </div>
+
+                <hr />
+
+                <div class="footer">
+                    <button type="submit" style="padding-top: 10px;padding-bottom: 10px;padding-right: 20px;padding-left: 20px;" class="btn-SelfTest">ثبت</button>
+                </div>
+
             </div>
 
         </div>
