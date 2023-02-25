@@ -193,7 +193,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 RequestId = requestId,
                 Age = population.Age,
                 Gender = population.Gender,
-                InsuranceId  = (ulong)population.InsuranceId,
+                InsuranceId = (ulong)population.InsuranceId,
                 NationalId = population.NationalId,
                 PatientName = population.PatientName.SanitizeText(),
                 PatientLastName = population.PatientLastName.SanitizeText(),
@@ -471,9 +471,10 @@ namespace DoctorFAM.Application.Services.Implementation
             #region Get Home Visit Request Detail 
 
             var homeVisitRequestDetail = await GetHomeVisitRequestDetailByRequestId(request.Id);
-            if (homeVisitRequestDetail == null) return null;
-
-            model.HomeVisitRequestDetail = homeVisitRequestDetail;
+            if (homeVisitRequestDetail != null)
+            {
+                model.HomeVisitRequestDetail = homeVisitRequestDetail;
+            }
 
             #endregion
 
@@ -501,18 +502,21 @@ namespace DoctorFAM.Application.Services.Implementation
                 DistanceFromCityTarriff = (DistanceFromCityTarriff * distancePerTenKilometer);
             }
 
-            if (homeVisitRequestDetail.EmergencyVisit == true)
+            if (homeVisitRequestDetail != null)
             {
-                cost = cost + ((homeVisitTariff * 20) / 100);
+                if (homeVisitRequestDetail.EmergencyVisit == true)
+                {
+                    cost = cost + ((homeVisitTariff * 20) / 100);
 
-                model.EmergencyVisit = ((int)((homeVisitTariff * 20) / 100));
-            }
+                    model.EmergencyVisit = ((int)((homeVisitTariff * 20) / 100));
+                }
 
-            if (homeVisitRequestDetail.FemalePhysician == true)
-            {
-                cost = cost + ((homeVisitTariff * 20) / 100);
+                if (homeVisitRequestDetail.FemalePhysician == true)
+                {
+                    cost = cost + ((homeVisitTariff * 20) / 100);
 
-                model.FemalePhysician = ((int)((homeVisitTariff * 20) / 100));
+                    model.FemalePhysician = ((int)((homeVisitTariff * 20) / 100));
+                }
             }
 
             if (dateTimeDetail.StartTime >= 22 || dateTimeDetail.EndTime <= 8)
@@ -521,8 +525,6 @@ namespace DoctorFAM.Application.Services.Implementation
 
                 model.OverTiming = ((int)((homeVisitTariff * 20) / 100));
             }
-
-
 
             #endregion
 
@@ -678,7 +680,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #region Edit
 
-            if (homeVisitRequestDetail != null )
+            if (homeVisitRequestDetail != null)
             {
                 homeVisitRequestDetail.FemalePhysician = femalDoctor;
                 homeVisitRequestDetail.EmergencyVisit = emergancy;

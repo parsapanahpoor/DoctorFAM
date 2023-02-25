@@ -229,7 +229,7 @@
                                         <div class="row mt-3">
                                             <div class="col-md-2"></div>
                                             <div class="col-md-8 text-center">
-                                                <div class=" text-center btn2 m-1">
+                                                <div class=" text-center btn2 m-1" style="border:1px solid #fd5b03; border-radius:8px;">
                                                     
                                                     <a asp-action="DiabetSelfTest" asp-area="" asp-controller="Diabet">
                                                         <span class="spCol"> مراقبت دوره ای </span>
@@ -240,7 +240,7 @@
                                             <div class="col-md-2"></div>
                                             <div class="col-md-2"></div>
                                             <div class="col-md-8 text-center">
-                                                <div class=" text-center btn2 m-1">
+                                                <div class=" text-center btn2 m-1" style="border:1px solid #fd5b03; border-radius:8px;">
                                                     <a asp-action="ASCVD" asp-area="" asp-controller="Diabet">
                                                         <span class="spCol"> خطرسنجی قلبی عروقی </span>
                                                         <p class=" text-center m-3 " style="color:white !important; font-size:20px; font-weight:700;">محاسبه ASCVD</p>
@@ -434,7 +434,7 @@
             <div class="sidebar-links">
                 <ul class="list-unstyled ">
                     <li>
-                        <a><span class="link-icon link-arrow"></span><p class="link-text"> تغذیه و دیابت </p> </a>
+                        <a asp-action="NutritionAndDiabet" asp-area="" asp-controller="Diabet" class=" hover-icon"><span class="link-icon link-arrow"></span><p class="link-text"> تغذیه و دیابت </p> </a>
                     </li>
                 </ul>
             </div>
@@ -446,7 +446,7 @@
                 <ul class="list-unstyled ">
 
                     <li>
-                        <a><span class="link-icon link-arrow"></span> <p class="link-text">  فعالیت بدنی و دیابت </p> </a>
+                        <a asp-action="ActivityAndDiabet" asp-area="" asp-controller="Diabet" class=" hover-icon"><span class="link-icon link-arrow"></span> <p class="link-text">  فعالیت بدنی و دیابت </p> </a>
                     </li>
 
                 </ul>
@@ -478,7 +478,6 @@
     </div>
     </div>*@
 </div>
-
 <div class="container mt-5  pl-3 pr-3">
     <div class="row mt-5 text-center">
         <div class="col-lg-12 col-md-12  text-center ">
@@ -652,7 +651,7 @@
                 <div class="col-md-8 align-items-center">
                     <div class="video">
                         <video controls>
-                            <source src="~/Content/Video/Bardari1.mp4" type="video/mp4">
+                            <source src="~/Content/Video/Retinopati-1.mp4" type="video/mp4">
                         </video>
                         <div class="overlay">
                             <img src="~/Content/images/tv-png-18664.png" alt="">

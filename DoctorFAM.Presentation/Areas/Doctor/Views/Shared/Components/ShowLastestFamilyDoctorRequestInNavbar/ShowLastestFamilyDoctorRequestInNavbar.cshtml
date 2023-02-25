@@ -5,14 +5,14 @@
 @if(Model.HasAccessForShow)
 {
     <li class="" style="margin-right: 20px;">
-        <a class="dropdown-toggle" data-toggle="dropdown" title="Mails" href="#" aria-expanded="false">
+        <a class="dropdown-toggle" data-toggle="dropdown" title="جدیدترین درخواستهای پزشک خانواده" href="#" aria-expanded="false">
             <i class="icon glyphicon glyphicon-download-alt"></i>
             <span class="badge">@Model.RequestCount</span>
         </a>
         <!--Messages Dropdown-->
-        <ul class="pull-right dropdown-menu dropdown-arrow dropdown-messages">
+        <ul class="pull-right dropdown-menu dropdown-arrow dropdown-messages" >
             <li class="dropdown-header bordered-darkorange">
-                <i class="fa fa-users"></i>
+                <i class="fa fa-users" ></i>
                 آخرین درخواست های پزشک خانواده
             </li>
             @if (Model.Detail != null && Model.Detail.Any())

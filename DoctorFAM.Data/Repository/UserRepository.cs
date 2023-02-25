@@ -139,6 +139,12 @@ namespace DoctorFAM.Data.Repository
             return model;
         }
 
+        //Count Of Users 
+        public async Task<int> CountOfUsers()
+        {
+            return await _context.Users.Where(p => !p.IsDelete).CountAsync();
+        }
+
         //Get List Of Admins About Send Notification For Arrival New Nurses Inormations
         public async Task<List<string>?> GetListOfAdminsAboutSendNotificationForArrivalNewNursesInormations()
         {

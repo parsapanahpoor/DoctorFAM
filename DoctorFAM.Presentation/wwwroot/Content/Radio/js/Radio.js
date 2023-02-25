@@ -11,39 +11,39 @@ let musicCounter = 0;
 let audioArray = [
     {
         musicName: " 1",
-        musicSrc: "/Content/Radio/music/experience.mp3",
+        musicSrc: "/Content/Radio/music/FirstRadioProgram.m4a",
     },
     {
         musicName: " 2",
-        musicSrc: "/Content/Radio/music/experience1.wav",
+        musicSrc: "/Content/Radio/music/FirstRadioProgram.m4a",
     },
     {
         musicName: " 3",
-        musicSrc: "/Content/Radio/music/experience2.mp3",
+        musicSrc: "/Content/Radio/music/FirstRadioProgram.m4a",
     },
     {
         musicName: " 4",
-        musicSrc: "/Content/Radio/music/experience.mp3",
+        musicSrc: "/Content/Radio/music/FirstRadioProgram.m4a",
     },
     {
         musicName: " 5",
-        musicSrc: "/Content/Radio/music/experience1.wav",
+        musicSrc: "/Content/Radio/music/FirstRadioProgram.m4a",
     },
     {
         musicName: " 6",
-        musicSrc: "/Content/Radio/music/experience2.mp3",
+        musicSrc: "/Content/Radio/music/FirstRadioProgram.m4a",
     },
     {
         musicName: " 7",
-        musicSrc: "/Content/Radio/music/experience.mp3",
+        musicSrc: "/Content/Radio/music/FirstRadioProgram.m4a",
     },
     {
         musicName: " 8",
-        musicSrc: "/Content/Radio/music/experience1.wav",
+        musicSrc: "/Content/Radio/music/FirstRadioProgram.m4a",
     },
     {
         musicName: " 9",
-        musicSrc: "/Content/Radio/music/experience2.mp3",
+        musicSrc: "/Content/Radio/music/FirstRadioProgram.m4a",
     },
 ];
 

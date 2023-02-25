@@ -14,6 +14,9 @@ namespace DoctorFAM.Application.Services.Interfaces
     {
         #region Admin Side 
 
+        //Count Of All Population Covered 
+        Task<int> CountOfAllPopulationCovered();
+
         Task<FilterPopulationCoveredAdminViewModel> FilterPopulationCoveredAdmin(FilterPopulationCoveredAdminViewModel filter);
 
         Task<EditPopulationCoveredAdminViewModel> FillEditPopulationCoveredAdminViewModel(ulong populationId);
