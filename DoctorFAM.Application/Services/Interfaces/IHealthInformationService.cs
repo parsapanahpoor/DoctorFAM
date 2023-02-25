@@ -84,6 +84,13 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         #endregion
 
+        #region Site Side 
+
+        //Get Lastest 3 TvFAM For Show In Admin Panel 
+        Task<List<HealthInformation>?> GetLastest3TvFAMForShowInAdminPanel();
+
+        #endregion
+
         #endregion
 
         #endregion
@@ -168,6 +175,13 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Delete Podcast Doctor Panel 
         Task<bool> DeletePodcastDoctorPanel(ulong healthInfoId, ulong userId);
+
+        #endregion
+
+        #region Site Side
+
+        //Get Lastest 3 Podcast For Show In Admin Panel 
+        Task<List<HealthInformation>?> GetLastest3PodcastForShowInAdminPanel();
 
         #endregion
 

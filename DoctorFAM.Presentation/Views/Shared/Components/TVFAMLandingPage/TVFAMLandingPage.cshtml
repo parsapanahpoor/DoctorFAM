@@ -1,0 +1,44 @@
+﻿@model List<DoctorFAM.Domain.Entities.HealthInformation.HealthInformation>
+@using DoctorFAM.Application.StaticTools
+
+
+@if (Model != null && Model.Any())
+{
+    <div class="row    ">
+        <div class="col-lg-3 col-sm-3 col-xs-12 text-center">
+            <div class="section-title">
+                <i class="fa fa-television fa-2x" style="color:#3143ef;" aria-hidden="true"></i>
+                <h6> تی وی فم </h6>
+                <p class="title"> در  <b>تی وی فم</b>  تماشاگر دانستنیهای علمی در زمینه پزشکی و سلامت باشید. </p>
+            </div>
+        </div>
+        <div class="col-lg-6 col-sm-6 col-xs-12 align-items-center">
+            <div class="video">
+                <video id="TVFAM" controls>
+                    <source src="~/Content/Video/Bardari1.mp4" type="video/mp4">
+                </video>
+                <div class="overlay">
+                    <img src="~/Content/images/tv-png-18664.png" alt="">
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12 text-center mt-4">
+            <div class="row text-center">
+
+                @foreach (var video in Model)
+                {
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <video class="thumbnail" id="videoPreview" data-src="@PathTools.HealthInformationAttachmentFilesPath@video.File"
+                       onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;" style="width:130px !important; height:130px !important;">
+
+                            <source src="@PathTools.HealthInformationAttachmentFilesPath@video.File" type="video/mp4">
+                        </video>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+
+}
+

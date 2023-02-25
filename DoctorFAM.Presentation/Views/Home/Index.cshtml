@@ -3,6 +3,150 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@section Scripts
+    {
+
+    <script>
+
+        $(document).on('click', '#videoPreview', function (e) {
+
+            const videoSource = $(this).attr('data-src');
+
+            $('#TVFAM source').attr('src', videoSource);
+            $('#TVFAM')[0].load();
+            $('#TVFAM')[0].play();
+
+        });
+
+        //#region
+
+        let playBtn = document.querySelector(".radio-stop-play");
+        let nextBtn = document.querySelector(".radio-next");
+        let previousBtn = document.querySelector(".radio-previous");
+        let audio = document.querySelector(".radio-audio audio");
+        let radioEqulizer = document.querySelector(".radio-equalizer");
+        let listItemMusicPopUp = document.querySelector(".radio-music-list-popup");
+        let listItemsMusic = document.querySelectorAll(".radio-music-list-item");
+        let radioFolder = document.querySelector(".radio-folder i");
+        let isPlay = false;
+        let musicCounter = 0;
+        let audioArray = [
+            {
+                musicName: " 1",
+                musicSrc: "/Content/Radio/music/experience.mp3",
+            },
+            {
+                musicName: " 2",
+                musicSrc: "/Content/Radio/music/experience1.wav",
+            },
+            {
+                musicName: " 3",
+                musicSrc: "/Content/Radio/music/experience2.mp3",
+            },
+            {
+                musicName: " 4",
+                musicSrc: "/Content/Radio/music/experience.mp3",
+            },
+            {
+                musicName: " 5",
+                musicSrc: "/Content/Radio/music/experience1.wav",
+            },
+            {
+                musicName: " 6",
+                musicSrc: "/Content/Radio/music/experience2.mp3",
+            },
+            {
+                musicName: " 7",
+                musicSrc: "/Content/Radio/music/experience.mp3",
+            },
+            {
+                musicName: " 8",
+                musicSrc: "/Content/Radio/music/experience1.wav",
+            },
+            {
+                musicName: " 9",
+                musicSrc: "/Content/Radio/music/experience2.mp3",
+            },
+        ];
+
+        playBtn.addEventListener("click", playMusic);
+        nextBtn.addEventListener("click", nextMusic);
+        previousBtn.addEventListener("click", previousMusic);
+        radioFolder.addEventListener("click", showDropDown);
+        window.addEventListener("load", loadMusic);
+
+        audio.src = audioArray[musicCounter].musicSrc;
+
+        function playMusic() {
+            if (isPlay === false) {
+                audio.play();
+                isPlay = true;
+                radioEqulizer.classList.add("active-equlizer");
+            } else {
+                audio.pause();
+                isPlay = false;
+                radioEqulizer.classList.remove("active-equlizer");
+            }
+        }
+
+        function nextMusic() {
+            if (musicCounter >= audioArray.length - 1) {
+                musicCounter = -1;
+            }
+            isPlay = false;
+            musicCounter++;
+            audio.src = audioArray[musicCounter].musicSrc;
+            playMusic();
+
+        }
+
+        function previousMusic() {
+            if (musicCounter <= 0) {
+                musicCounter = audioArray.length;
+            }
+            isPlay = false;
+            musicCounter--;
+            audio.src = audioArray[musicCounter].musicSrc;
+            playMusic();
+        }
+
+        function loadMusic() {
+            for (let i = 4; i > -1; i--) {
+                let musicName = audioArray[i].musicName;
+                let musicSrc = audioArray[i].musicSrc;
+                let musicTemplate = `
+                      <div class="radio-music-list-item" onclick="playListMusic(event)">
+                        <div class="radio-music-list-name">
+                            <span>${musicName}</span>
+                        </div>
+                        <div class="radio-musix-list-audio" data-audio-src="${musicSrc}" data-id="${i}"></div>
+                      </div>
+                    `;
+                listItemMusicPopUp.insertAdjacentHTML("afterbegin", musicTemplate);
+            }
+        }
+
+        function playListMusic(event) {
+            let audioSrc = event.currentTarget.lastElementChild.dataset.audioSrc;
+            let audioId = event.currentTarget.lastElementChild.dataset.id;
+            audio.src = audioSrc;
+            isPlay = false;
+            musicCounter = audioId;
+            playMusic();
+        }
+
+        function showDropDown() {
+            listItemMusicPopUp.classList.toggle("active-popup");
+        }
+
+
+
+                //#endregion
+
+    </script>
+
+}
+
 <div class="page-content">
 
     <section class="Banner-select ">
@@ -450,69 +594,10 @@
                     <p class="title"> <b>رادیو فم</b> هر روز یک برنامه جدید در زمینه پزشکی و سلامت برای شما مخاطب عزیز ارائه میکند. </p>
                 </div>
             </div>
-            <div class="col-lg-6 col-md-6 text-center">
-                <div id="radio" class="container-fluid">
-                    <div class="container">
-                        <div class="radio-content">
-                            <div class="radio-right">
-                                <div class="radio-equalizer">
-                                    <div id='music-bars' class="">
-                                        <span class="four"></span>
-                                        <span class="three"></span>
-                                        <span class="one"></span>
-                                        <span class="two"></span>
-                                        <span class="four"></span>
-                                        <span class="three"></span>
-                                        <span class="one"></span>
-                                        <span class="two"></span>
-                                        <span class="four"></span>
-                                        <span class="three"></span>
-                                        <span class="one"></span>
-                                        <span class="two"></span>
-                                        <span class="four"></span>
-                                        <span class="three"></span>
-                                        <span class="one"></span>
-                                        <span class="two"></span>
-                                        <span class="four"></span>
-                                        <span class="three"></span>
-                                        <span class="one"></span>
-                                        <span class="two"></span>
-                                        <span class="four"></span>
-                                        <span class="three"></span>
-                                        <span class="one"></span>
-                                        <span class="two"></span>
-                                        <span class="four"></span>
-                                        <span class="three"></span>
-                                        <span class="one"></span>
-                                        <span class="two"></span>
-                                    </div>
-                                </div>
-                                <div class="radio-audio">
-                                    <audio src="~/Content/Radio/music/experience.mp3" preload="none"></audio>
-                                </div>
-                            </div>
-                            <div class="radio-left">
-                                <div class="radio-folder">
-                                    <i class="material-icons">folder_open</i>
-                                </div>
-                                <div class="radio-music-list-popup">
-                                    <div class="radio-music-list-item">
-                                        <a href="#">مشاهده همه</a>
-                                    </div>
-                                </div>
-                                <div class="radio-controls">
-                                    <div class="radio-next">
-                                    </div>
-                                    <div class="radio-stop-play">
-                                    </div>
-                                    <div class="radio-previous">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
+            @*Lastest TVFAM Videos*@
+            @await Component.InvokeAsync("PodcastLandingPage")
+
             <div class="col-lg-3 col-md-3  text-center">
 
                 <div class="row  p-3 text-center">
@@ -542,44 +627,9 @@
             </div>
         </div>
 
-        <div class="row    ">
-            <div class="col-lg-3 col-sm-3 col-xs-12 text-center">
-                <div class="section-title">
-                    <i class="fa fa-television fa-2x" style="color:#3143ef;" aria-hidden="true"></i>
-                    <h6> تی وی فم </h6>
-                    <p class="title"> در  <b>تی وی فم</b>  تماشاگر دانستنیهای علمی در زمینه پزشکی و سلامت باشید. </p>
-                </div>
-            </div>
-            <div class="col-lg-6 col-sm-6 col-xs-12 align-items-center">
-                <div class="video">
-                    <video controls>
-                        <source src="~/Content/Video/Bardari1.mp4" type="video/mp4">
-                    </video>
-                    <div class="overlay">
-                        <img src="~/Content/images/tv-png-18664.png" alt="">
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12 text-center mt-4">
-                <div class="row text-center">
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                        <video class="thumbnail" onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;" style="width:130px !important; height:130px !important;">
-                            <source src="~/Content/Video/Retinopati-1.mp4" type="video/mp4">
-                        </video>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                        <video class="thumbnail" onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;" style="width:130px !important; height:130px !important;">
-                            <source src="~/Content/Video/BloodPresure_1.mp4" type="video/mp4">
-                        </video>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                        <video class="thumbnail" onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;" style="width:130px !important; height:130px !important;">
-                            <source src="~/Content/Video/Bardari1.mp4" type="video/mp4">
-                        </video>
-                    </div>
-                </div>
-            </div>
-        </div>
+        @*Lastest TVFAM Videos*@
+        @await Component.InvokeAsync("TVFAMLandingPage")
+
     </div>
 
 

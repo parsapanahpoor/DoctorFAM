@@ -1,6 +1,7 @@
 ﻿using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Interfaces;
 using DoctorFAM.Application.Services.Interfaces;
+using DoctorFAM.Domain.Entities.HealthInformation;
 using DoctorFAM.Presentation.Models;
 using DoctorFAM.Web.HttpManager;
 using DoctorFAM.Web.Hubs;
@@ -21,22 +22,26 @@ namespace DoctorFAM.Web.Controllers
         public ILocationService _locationService;
         private readonly IHubContext<NotificationHub> _notificationHub;
         private readonly IFollowService _followService;
+        private readonly IHealthInformationService _healthInformation;
 
-        public HomeController( ILocationService lcaotionService , IHubContext<NotificationHub> notificationHub
-                                , IFollowService followService)
+        public HomeController( ILocationService lcaotionService, IHubContext<NotificationHub> notificationHub
+                                , IFollowService followService, IHealthInformationService healthInformation)
         {
             _locationService = lcaotionService;
             _notificationHub = notificationHub;
             _followService = followService;
+            _healthInformation = healthInformation;
         }
 
         #endregion
 
         #region Index
 
-        public PartialViewResult Index()
+        public async Task<IActionResult> Index()
         {
-            return PartialView();
+            ViewBag.Podcasts = await _healthInformation.GetLastest3PodcastForShowInAdminPanel();
+
+            return View();
         }
 
         #endregion
