@@ -706,6 +706,76 @@ namespace DoctorFAM.Data.Repository
             return filter;
         }
 
+        //List Of Doctors For Export Excel File 
+        public async Task<List<ListOfDoctorsInfoForExportExcelFileViewModel>> ListOfDoctorsForExportExcelFile(ListOfDoctorsInfoForExportExcelFileViewModel filter)
+        {
+            var query = _context.Organizations
+                .Where(s => !s.IsDelete && s.OrganizationType == Domain.Enums.Organization.OrganizationType.DoctorOffice)
+                .Include(p => p.User)
+                .OrderByDescending(s => s.CreateDate)
+                .AsQueryable();
+
+            #region State
+
+            if (filter.SelectStateFromAdmin.HasValue && filter.SelectStateFromAdmin.Value == OrganizationInfoState.Accepted)
+            {
+                query = query.Where(p => p.OrganizationInfoState == OrganizationInfoState.Accepted);
+            }
+
+            if (filter.SelectStateFromAdmin.HasValue && filter.SelectStateFromAdmin.Value == OrganizationInfoState.Rejected)
+            {
+                query = query.Where(p => p.OrganizationInfoState == OrganizationInfoState.Rejected);
+            }
+
+            if (filter.SelectStateFromAdmin.HasValue && filter.SelectStateFromAdmin.Value == OrganizationInfoState.JustRegister)
+            {
+                query = query.Where(p => p.OrganizationInfoState == OrganizationInfoState.JustRegister);
+            }
+
+            if (filter.SelectStateFromAdmin.HasValue && filter.SelectStateFromAdmin.Value == OrganizationInfoState.WatingForConfirm)
+            {
+                query = query.Where(p => p.OrganizationInfoState == OrganizationInfoState.WatingForConfirm);
+            }
+
+            #endregion
+
+            #region Filter
+
+            if (!string.IsNullOrEmpty(filter.Email))
+            {
+                query = query.Where(s => EF.Functions.Like(s.User.Email, $"%{filter.Email}%"));
+            }
+
+            if (!string.IsNullOrEmpty(filter.Mobile))
+            {
+                query = query.Where(s => s.User.Mobile != null && EF.Functions.Like(s.User.Mobile, $"%{filter.Mobile}%"));
+            }
+
+            if (!string.IsNullOrEmpty(filter.FullName))
+            {
+                query = query.Where(s => s.User.Username.Contains(filter.FullName));
+            }
+
+            if (!string.IsNullOrEmpty(filter.NationalCode))
+            {
+                query = query.Where(s => s.User.NationalId.Contains(filter.NationalCode));
+            }
+
+            #endregion
+
+            return await query.Select(p=> new ListOfDoctorsInfoForExportExcelFileViewModel()
+            {
+                OrganizationInfoState = p.OrganizationInfoState,
+                Email = p.User.Email,
+                Mobile = p.User.Mobile,
+                FullName = (!string.IsNullOrEmpty(p.User.Username)) ? p.User.Username : "وارد نشده ",
+                NationalCode = p.User.NationalId,
+                FirstName = (!string.IsNullOrEmpty(p.User.FirstName) ) ? p.User.FirstName : "وارد نشده ",
+                LastName = (!string.IsNullOrEmpty(p.User.LastName) ) ? p.User.LastName : "وارد نشده ",
+            }).ToListAsync();
+        }
+
+
         public async Task<DoctorsInfo?> GetDoctorsInfoById(ulong doctorInfoId)
         {
             return await _context.DoctorsInfos.Include(p => p.Doctor).FirstOrDefaultAsync(p => !p.IsDelete && p.Id == doctorInfoId);

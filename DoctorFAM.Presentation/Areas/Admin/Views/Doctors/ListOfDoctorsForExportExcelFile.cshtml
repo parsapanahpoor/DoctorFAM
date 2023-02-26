@@ -1,0 +1,263 @@
+﻿@model List<DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo.ListOfDoctorsInfoForExportExcelFileViewModel>
+@using DoctorFAM.Domain.Entities.Doctors
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Domain.ViewModels.Common
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
+
+
+@{
+    ViewData["Title"] = "لیست آمار گیری پزشکان دکترفم";
+
+    var state = ViewBag.selectedState != null ? ViewBag.selectedState as int? : null;
+
+    int i=1;
+}
+
+@{
+    var roles = ViewData["Roles"] != null ? ViewData["Roles"] as List<SelectListViewModel> : null;
+}
+
+@section Styles
+    {
+
+}
+
+@section Scripts
+    {
+    <partial name="_JqueryValidation" />
+
+    <script>
+
+        var tableToExcel = (function () {
+            var uri = 'data:application/vnd.ms-excel;base64,',
+                template =
+                    '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/><x:DisplayRightToLeft/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--><meta http-equiv="content-type" content="text/plain; charset=UTF-8"/></head><body><table>{table}</table></body></html>',
+                base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) },
+                format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) }
+            return function (table, name) {
+                if (!table.nodeType) table = document.getElementById(table);
+                var ctx = { worksheet: name || 'Worksheet', table: table.innerHTML }
+                window.location.href = uri + base64(format(template, ctx));
+            }
+        })();
+
+    </script>
+
+}
+
+@section Breadcrumb
+    {
+    <li>
+        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+    </li>
+}
+
+<div class="row">
+    <div class="col-lg-3 col-sm-12">
+        <div class="widget">
+            <div class="widget-header bordered-bottom bordered-green">
+                <span class="widget-caption"> لیست پزشکان </span>
+            </div>
+            <div class="widget-body">
+                <div>
+                    <form asp-action="ListOfDoctorsForExportExcelFile" asp-controller="Doctors" asp-area="Admin" id="filter-search" method="get">
+
+                        <div class="form-group">
+                            <label> نام کاربری </label>
+                            <input type="text" class="form-control" name="FullName">
+                        </div>
+
+                        <div class="form-group">
+                            <label > ایمیل</label>
+                            <input type="text" class="form-control" name="Email">
+                        </div>
+
+                        <div class="form-group">
+                            <label > موبایل</label>
+                            <input type="text" class="form-control" name="Mobile">
+                        </div>
+
+                        <div class="form-group">
+                            <label > کدملی </label>
+                            <input type="text" class="form-control" name="NationalCode">
+                        </div>
+
+                        <div class="form-group">
+                            <label > وضعیت </label>
+                            <select name="SelectStateFromAdmin" class="form-control">
+
+                                @if (state is null)
+                                {
+                                    <option value="@null" selected="selected">همه</option>
+                                    <option value="0" >تایید شده و فعال </option>
+                                    <option value="2">تایید نشده </option>
+                                    <option value="1">در انتظار برسی</option>
+                                    <option value="3">ثبت نامی جدید</option>
+                                } 
+                                @if (state == 0)
+                                {
+                                    <option value="@null">همه</option>
+                                    <option value="0" selected="selected">تایید شده و فعال </option>
+                                    <option value="2">تایید نشده </option>
+                                    <option value="1">در انتظار برسی</option>
+                                    <option value="3">ثبت نامی جدید</option>
+                                } 
+                                @if (state == 1)
+                                {
+                                    <option value="@null">همه</option>
+                                    <option value="0">تایید شده و فعال </option>
+                                    <option value="2">تایید نشده </option>
+                                    <option value="1" selected="selected">در انتظار برسی</option>
+                                    <option value="3">ثبت نامی جدید</option>
+                                }
+                                @if (state == 2)
+                                {
+                                    <option value="@null">همه</option>
+                                    <option value="0" >تایید شده و فعال </option>
+                                    <option value="2" selected="selected">تایید نشده </option>
+                                    <option value="1">در انتظار برسی</option>
+                                    <option value="3">ثبت نامی جدید</option>
+                                }
+                                @if (state ==3)
+                                {
+                                    <option value="@null">همه</option>
+                                    <option value="0">تایید شده و فعال </option>
+                                    <option value="2">تایید نشده </option>
+                                    <option value="1">در انتظار برسی</option>
+                                    <option value="3" selected="selected">ثبت نامی جدید</option>
+                                }
+                            </select>
+                        </div>
+
+                        <hr />
+
+                        <div class="row">
+                            <div class="col-md-12 flex-style">
+                                <button type="submit" class="btn btn-labeled w-100 btn-palegreen">
+                                    <i class="btn-label glyphicon glyphicon-filter"></i>فیلتر
+                                </button>
+
+                                @if (Context.Request.QueryString.HasValue)
+                                {
+                                    <a asp-action="ListOfDoctorsForExportExcelFile" asp-controller="Doctors" asp-area="Admin" class="btn btn-labeled w-100 btn-darkorange">
+                                        <i class="btn-label glyphicon glyphicon-remove"></i>حذف فیلتر
+                                    </a>
+                                }
+
+                                @if (Model != null && Model.Any())
+                                {
+                                    <a onclick="tableToExcel('users-table', 'لیست کاربران')" class="btn btn-labeled w-100 btn-primary mt-2" data-dismiss="modal"> خروجی اکسل  </a>
+                                }
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-9 col-sm-12">
+        <div class="well with-header with-footer table-responsive">
+            <div class="header bordered-azure">
+                <div class="flex-style">
+                    <span>@ViewData["Title"]</span> 
+                    -
+                    <span> تعداد : @((Model != null && Model.Any()) ? Model.Count() : 0)</span>
+                </div>
+            </div>
+
+            @if (Model != null && Model.Any())
+            {
+                <table class="table table-hover table-bordered tc vm" id="users-table">
+                    <thead class="tc vm">
+                        <tr class="tc vm">
+                            <th class="tc vm">
+                                #
+                            </th>
+                            <th class="tc vm">
+                                نام کاربری سامانه
+                            </th>
+                            <th class="tc vm">
+                                نام 
+                            </th>
+                            <th class="tc vm">
+                                نام خانوادگی
+                            </th>
+                            <th class="tc vm">
+                                کدملی 
+                            </th>
+                            <th class="tc vm">
+                                موبایل
+                            </th>
+                            <th class="tc vm">
+                                وضعیت 
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="tc vm">
+                        @foreach (var info in Model)
+                        {
+                            <tr class="tc vm">
+                                   <td class="vm">
+                                    @i
+                                </td>
+                                <td class="vm">
+                                    <div class="flex-style-center">
+                                        @info.FullName
+                                    </div>
+                                </td>
+                                <td class="vm">
+                                    <div class="flex-style-center">
+                                        @info.FirstName
+                                    </div>
+                                </td>
+                                <td class="vm">
+                                    <div class="flex-style-center">
+                                        @info.LastName
+                                    </div>
+                                </td>
+                                <td class="vm">
+                                    <div class="flex-style-center">
+                                        @info.NationalCode
+                                    </div>
+                                </td>
+                                <td class="tc vm">
+                                    @info.Mobile
+                                </td>
+                                <td class="tc vm">
+                                    @if (info.OrganizationInfoState == DoctorFAM.Domain.Entities.Doctors.OrganizationInfoState.Accepted)
+                                    {
+                                        <span> تایید شده و فعال </span>
+                                    }
+                                    @if (info.OrganizationInfoState == DoctorFAM.Domain.Entities.Doctors.OrganizationInfoState.Rejected)
+                                    {
+                                        <span> تایید نشده . </span>
+                                    }
+                                    @if (info.OrganizationInfoState == DoctorFAM.Domain.Entities.Doctors.OrganizationInfoState.WatingForConfirm)
+                                    {
+                                        <span> درانتظار برسی  </span>
+                                    }
+                                    @if (info.OrganizationInfoState == DoctorFAM.Domain.Entities.Doctors.OrganizationInfoState.JustRegister)
+                                    {
+                                        <span> ثبت نامی جدید  </span>
+                                    }
+                                </td>
+                            </tr>
+
+                            i++;
+                        }
+                    </tbody>
+                </table>
+
+            }
+            else
+            {
+                <partial name="_AdminNotFoundPartial" />
+            }
+        </div>
+    </div>
+</div>
+

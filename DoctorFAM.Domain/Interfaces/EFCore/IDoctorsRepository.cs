@@ -3,6 +3,7 @@ using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.FamilyDoctor.ParsaSystem;
 using DoctorFAM.Domain.Entities.FamilyDoctor.VIPSystem;
 using DoctorFAM.Domain.Entities.Interest;
+using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DosctorSideBarInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Employees;
@@ -213,6 +214,9 @@ namespace DoctorFAM.Domain.Interfaces
         Task<List<User>> GetListOfAcceptedDoctors();
 
         Task<ListOfDoctorsInfoViewModel> FilterDoctorsInfoAdminSide(ListOfDoctorsInfoViewModel filter);
+
+        //List Of Doctors For Export Excel File 
+        Task<List<ListOfDoctorsInfoForExportExcelFileViewModel>> ListOfDoctorsForExportExcelFile(ListOfDoctorsInfoForExportExcelFileViewModel filter);
 
         Task<DoctorsInfo?> GetDoctorsInfoById(ulong doctorInfoId);
 
