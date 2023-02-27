@@ -33,6 +33,153 @@
     </li>
 }
 
+<div class="page-body">
+
+    <div class="row">
+
+        <div class="col-lg-2 col-md-6 col-sm-6 col-xs-12">
+            <div class="databox databox-lg databox-halved radius-bordered databox-shadowed databox-vertical">
+                <a href="#">
+
+                    <div class="databox-top bg-info no-padding">
+                        <div class="databox-icon">
+                            <i class="glyphicon glyphicon-user"></i>
+                        </div>
+                    </div>
+                </a>
+                <div class="databox-bottom bg-white no-padding">
+                    <div class="databox-row text-align-center">
+                        <div class="databox-cell cell-12 padding-5">
+                            <a href="#">
+                                <span class="databox-number lightcarbon">تعداد کل کاربران پزشک </span>
+                                <span class="databox-header lightcarbon">@Model.GetShownEntitiesPagesTitle()</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-2 col-md-6 col-sm-6 col-xs-12">
+            <div class="databox databox-lg databox-halved radius-bordered databox-shadowed databox-vertical">
+                <a href="#">
+
+                    <div class="databox-top bg-success no-padding">
+                        <div class="databox-icon">
+                            <i class="glyphicon glyphicon-user"></i>
+                        </div>
+                    </div>
+                </a>
+                <div class="databox-bottom bg-white no-padding">
+                    <div class="databox-row text-align-center">
+                        <div class="databox-cell cell-12 padding-5">
+                            <a href="#">
+                                <span class="databox-number lightcarbon">تعداد پزشکان تایید شده و فعال </span>
+                                <span class="databox-header lightcarbon">@((Model.CountOfAcceptedDoctors.HasValue) ? Model.CountOfAcceptedDoctors.Value : 0 )</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-2 col-md-6 col-sm-6 col-xs-12">
+            <div class="databox databox-lg databox-halved radius-bordered databox-shadowed databox-vertical">
+                <a href="#">
+
+                    <div class="databox-top bg-warning no-padding">
+                        <div class="databox-icon">
+                            <i class="glyphicon glyphicon-user"></i>
+                        </div>
+                    </div>
+                </a>
+                <div class="databox-bottom bg-white no-padding">
+                    <div class="databox-row text-align-center">
+                        <div class="databox-cell cell-12 padding-5">
+                            <a href="#">
+                                <span class="databox-number lightcarbon">تعداد پزشکان درانتظار تایید </span>
+                                <span class="databox-header lightcarbon">@((Model.CountOfWaitingDoctors.HasValue) ? Model.CountOfWaitingDoctors.Value : 0)</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-2 col-md-6 col-sm-6 col-xs-12">
+            <div class="databox databox-lg databox-halved radius-bordered databox-shadowed databox-vertical">
+                <a href="#">
+
+                    <div class="databox-top bg-danger no-padding">
+                        <div class="databox-icon">
+                            <i class="glyphicon glyphicon-user"></i>
+                        </div>
+                    </div>
+                </a>
+                <div class="databox-bottom bg-white no-padding">
+                    <div class="databox-row text-align-center">
+                        <div class="databox-cell cell-12 padding-5">
+                            <a href="#">
+                                <span class="databox-number lightcarbon">تعداد پزشکان تایید نشده </span>
+                                <span class="databox-header lightcarbon">@((Model.CountOfDeclineDoctors.HasValue) ? Model.CountOfDeclineDoctors.Value : 0)</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-2 col-md-6 col-sm-6 col-xs-12">
+            <div class="databox databox-lg databox-halved radius-bordered databox-shadowed databox-vertical">
+                <a href="#">
+
+                    <div class="databox-top bg-primary no-padding">
+                        <div class="databox-icon">
+                            <i class="glyphicon glyphicon-user"></i>
+                        </div>
+                    </div>
+                </a>
+                <div class="databox-bottom bg-white no-padding">
+                    <div class="databox-row text-align-center">
+                        <div class="databox-cell cell-12 padding-5">
+                            <a href="#">
+                                <span class="databox-number lightcarbon">تعداد پزشکان ثبت نامی جدید </span>
+                                <span class="databox-header lightcarbon">@((Model.CountOfNewRegisterDoctors.HasValue) ? Model.CountOfNewRegisterDoctors.Value : 0)</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-2 col-md-6 col-sm-6 col-xs-12">
+            <div class="databox databox-lg databox-halved radius-bordered databox-shadowed databox-vertical">
+                <a href="#">
+
+                    <div class="databox-top bg-dark no-padding">
+                        <div class="databox-icon">
+                            <i class="glyphicon glyphicon-user"></i>
+                        </div>
+                    </div>
+                </a>
+                <div class="databox-bottom bg-white no-padding">
+                    <div class="databox-row text-align-center">
+                        <div class="databox-cell cell-12 padding-5">
+                            <a href="#">
+                                <span class="databox-number lightcarbon">تعداد پزشکان حذف شده </span>
+                                <span class="databox-header lightcarbon">@((Model.CountOfDeletedDoctors.HasValue) ? Model.CountOfDeletedDoctors.Value : 0)</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
 <div class="row">
     <div class="col-lg-3 col-sm-12">
         <div class="widget">

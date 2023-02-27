@@ -40,6 +40,7 @@ using DoctorFAM.Domain.ViewModels.Site.Diabet;
 using DoctorFAM.Domain.Entities.Resume;
 using DoctorFAM.Domain.ViewModels.Site.BloodPressure;
 using DoctorFAM.Domain.ViewModels.Admin.Doctors;
+using Microsoft.EntityFrameworkCore;
 
 namespace DoctorFAM.Application.Services.Implementation
 {
@@ -2443,8 +2444,60 @@ namespace DoctorFAM.Application.Services.Implementation
             return await _doctorRepository.GetDoctorById(doctorId);
         }
 
+        //Count Of Accepted Doctors
+        public async Task<int?> CountOfAcceptedDoctors()
+        {
+            return await _doctorRepository.CountOfAcceptedDoctors();
+        }
+
+        //Count Of Decline Doctors
+        public async Task<int?> CountOfDeclineDoctors()
+        {
+            return await _doctorRepository.CountOfDeclineDoctors();
+        }
+
+        //Count Of Waiting Doctors
+        public async Task<int?> CountOfWaitingDoctors()
+        {
+            return await _doctorRepository.CountOfWaitingDoctors();
+        }
+
+        //Count Of New Register Doctors
+        public async Task<int?> CountOfRegisterDoctors()
+        {
+            return await _doctorRepository.CountOfRegisterDoctors();
+        }
+
+        //Count Of Deleted Doctors
+        public async Task<int?> CountOfDeletedDoctors()
+        {
+            return await _doctorRepository.CountOfDeletedDoctors();
+        }
+
+        //Filter List Of Doctors From Admin Panel
         public async Task<ListOfDoctorsInfoViewModel> FilterDoctorsInfoAdminSide(ListOfDoctorsInfoViewModel filter)
         {
+            #region Fill Return Model 
+
+            var model = await _doctorRepository.FilterDoctorsInfoAdminSide(filter);
+
+            //List Of Accepted Doctors
+            model.CountOfAcceptedDoctors = await CountOfAcceptedDoctors();
+
+            //List Of Decline Doctors
+            model.CountOfDeclineDoctors = await CountOfDeclineDoctors();
+
+            //List Of Waiting Info Doctors
+            model.CountOfWaitingDoctors = await CountOfWaitingDoctors();
+
+            //List Of New Register Doctors
+            model.CountOfNewRegisterDoctors = await CountOfRegisterDoctors();
+
+            //List Of Deleted Doctors
+            model.CountOfDeletedDoctors= await CountOfDeletedDoctors();
+
+            #endregion
+
             return await _doctorRepository.FilterDoctorsInfoAdminSide(filter);
         }
 
