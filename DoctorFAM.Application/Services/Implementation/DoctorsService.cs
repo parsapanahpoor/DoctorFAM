@@ -2448,6 +2448,12 @@ namespace DoctorFAM.Application.Services.Implementation
             return await _doctorRepository.FilterDoctorsInfoAdminSide(filter);
         }
 
+        //List Of Doctors For Export Excel File 
+        public async Task<List<ListOfDoctorsInfoForExportExcelFileViewModel>> ListOfDoctorsForExportExcelFile(ListOfDoctorsInfoForExportExcelFileViewModel filter)
+        {
+            return await _doctorRepository.ListOfDoctorsForExportExcelFile(filter);
+        }
+
         //Get List Of Doctors Name
         public async Task<List<string>?> GetListOfDoctorsName()
         {

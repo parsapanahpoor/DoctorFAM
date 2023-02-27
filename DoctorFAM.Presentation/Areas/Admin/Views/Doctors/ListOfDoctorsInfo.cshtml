@@ -16,20 +16,21 @@
 }
 
 @section Styles
-{
+    {
 
 }
 
 @section Scripts
-{
-<partial name="_JqueryValidation" />
+    {
+    <partial name="_JqueryValidation" />
+
 }
 
 @section Breadcrumb
-{
-<li>
-    <a href="javascript:void(0)"> @ViewData["Title"] </a>
-</li>
+    {
+    <li>
+        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+    </li>
 }
 
 <div class="row">
@@ -88,6 +89,7 @@
                                         <i class="btn-label glyphicon glyphicon-remove"></i>@Localizer["Delete Filter"]
                                     </a>
                                 }
+
                             </div>
                         </div>
                     </form>
@@ -107,7 +109,7 @@
 
             @if (Model.Entities != null && Model.Entities.Any())
             {
-                <table class="table table-hover table-bordered tc vm">
+                <table class="table table-hover table-bordered tc vm" id="users-table">
                     <thead class="tc vm">
                         <tr class="tc vm">
                             <th class="tc vm">
@@ -185,7 +187,7 @@
                                         {
                                             <span class="mr-8px label label-warning"> @Localizer["WaitingForConfirm"] </span>
                                         }
-                                         @if (info.OrganizationInfoState == DoctorFAM.Domain.Entities.Doctors.OrganizationInfoState.JustRegister)
+                                        @if (info.OrganizationInfoState == DoctorFAM.Domain.Entities.Doctors.OrganizationInfoState.JustRegister)
                                         {
                                             <span class="mr-8px label label-warning"> @Localizer["Register yet"] </span>
                                         }
@@ -198,7 +200,7 @@
                                     </p>
 
                                 </td>
-                             
+
                                 <td class="tc vm">
                                     <a asp-action="DoctorsInfoDetail" asp-controller="Doctors" asp-area="Admin" asp-route-userId="@info.OwnerId" class="btn btn-warning btn-circle btn-xs"><i class="glyphicon glyphicon-edit"></i></a>
                                     <a asp-action="ShowDoctorInfoDetail" asp-controller="Doctors" asp-area="Admin" asp-route-userId="@info.OwnerId" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>

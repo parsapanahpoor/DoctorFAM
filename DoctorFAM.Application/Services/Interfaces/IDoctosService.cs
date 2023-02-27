@@ -2,6 +2,7 @@
 using DoctorFAM.Domain.Entities.FamilyDoctor.ParsaSystem;
 using DoctorFAM.Domain.Entities.FamilyDoctor.VIPSystem;
 using DoctorFAM.Domain.Entities.Interest;
+using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.ViewModels.Admin.Doctors;
 using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo;
 using DoctorFAM.Domain.ViewModels.Admin.FamilyDoctor;
@@ -193,6 +194,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Count Of All Doctors 
         Task<int> CountOfAllDoctors();
+
+        //List Of Doctors For Export Excel File 
+        Task<List<ListOfDoctorsInfoForExportExcelFileViewModel>> ListOfDoctorsForExportExcelFile(ListOfDoctorsInfoForExportExcelFileViewModel filter);
 
         //Get Diabet Consultant Resumes By UserId Admin Side
         Task<List<DiabetConsultantsResume>?> GetDiabetConsultanResumesByUserIdAdminSide(ulong userId);

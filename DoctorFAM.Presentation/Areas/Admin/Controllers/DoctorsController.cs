@@ -36,6 +36,17 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
 
         #endregion
 
+        #region List Of Doctors For Export Excel File 
+
+        public async Task<IActionResult> ListOfDoctorsForExportExcelFile(ListOfDoctorsInfoForExportExcelFileViewModel filter)
+        {
+            ViewBag.selectedState = (int?)filter.SelectStateFromAdmin;
+
+            return View(await _doctorsService.ListOfDoctorsForExportExcelFile(filter));
+        }
+
+        #endregion
+
         #region Edit Doctors Infos
 
         [HttpGet]
