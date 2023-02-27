@@ -1,0 +1,195 @@
+﻿@model DoctorFAM.Domain.ViewModels.Site.Diabet.ASCVDSiteSideViewModel
+
+@{
+    ViewData["Title"] = "محاسبه ASCVD - فشارخون";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var bmiResult = ViewBag.bmiResult != null ? (int)ViewBag.bmiResult : 0;
+    var GFRResult = ViewBag.gfrResult != null ? (decimal)ViewBag.gfrResult : 0;
+    var selfAssessment = ViewBag.selfAssessment != null ? (decimal)ViewBag.selfAssessment : 0;
+    var ascvdPredic = ViewBag.ascvdPredicResult != null ? (decimal)ViewBag.ascvdPredicResult : 0;
+    var ascvdStatus = ViewBag.ascvdStatusResult != null ? (int)ViewBag.ascvdStatusResult : 0;
+}
+
+@section Scripts{
+    <partial name="_JqueryValidation" />
+    <script src="~/Site/js/BMI.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+            if (@ascvdStatus == 1) {
+                Swal.fire({
+                    title: "محدوده ی کم خطر",
+                    //text: "فشارخون شما طبق خوداظهاری شما در زمان اندازه گیری فشارخون در محدوده نرمال بوده است . لطفا 3 ماه بعد این خودارزیابی را تکرار نمائید.",
+                    icon: 'success',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'بستن',
+                });
+            }
+            if (@ascvdStatus == 2) {
+                Swal.fire({
+                    title: "محدوده ی خطر مرزی",
+                    //text: "فشارخون شما طبق خوداظهاری شما در زمان اندازه گیری فشارخون در محدوده پیش فشارخون قرار دارد و لازم است در اولین فرصت به پزشک مراجعه نمائید.",
+                    icon: 'warning',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'بستن',
+                });
+            }
+            if (@ascvdStatus == 3) {
+                Swal.fire({
+                    title: "محدوده ی خطر متوسط",
+                    //text: "فشارخون شما طبق خوداظهاری شما در زمان اندازه گیری فشارخون در محدوده فشارخون بالا قرار دارد و لازم است هرچه سریع تر به پزشک خود مراجعه نمائید.",
+                    icon: 'error',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'بستن',
+                });
+            }
+            if (@ascvdStatus == 4) {
+                Swal.fire({
+                    title: "محدوده ی پرخطر",
+                    //text: "فشارخون شما طبق خوداظهاری شما در زمان اندازه گیری فشارخون در محدوده فشارخون بحرانی قرار دارد و لازم است ضمن حفظ خونسردی هرجه سریع تر به نزدیک ترین مرکز مراجعه نمائید.",
+                    icon: 'error',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'بستن',
+                });
+            }
+        });
+
+    </script>
+}
+
+
+<div class="page-content  formHealth">
+    <div class="row PageBannerPic text-center  text-align-justify ">
+        <div class="col-md-3 page-breadcrumbs">
+            <i class="menu-icon fa fa-globe"></i>
+            <a asp-area="" asp-controller="Home" asp-action="Index">  <span class="menu-text"> صفحه اصلی سایت </span></a>
+            <span>/</span>
+            <a asp-area="" asp-controller="BloodPressure" asp-action="Index">بازگشت به صفحه فشارخون</a>
+        </div>
+        <div class="col-md-6   text-center  text-align-justify M-5 P-5">
+
+            <h2 class="text-center  text-align-justify  ">  خطرسنجی قلبی عروقی</h2>
+            <h4 class="text-center  text-align-justify ">  محاسبه ASCVD</h4>
+        </div>
+        <div class="col-md-3 "></div>
+    </div>
+    <div class="container mt-2">
+        <div class="tab-content section-title" id="nav-tabContent">
+            <div role="tabpanel" class=" col-md-12 fade show active" id="tab1-1">
+                <div class="row">
+                    <div class="col-xl-2"></div>
+
+                    <div class="col-xl-8 p-3" style="border:1px solid #feb2fa; border-radius:8px;">
+                        <div class="gauge">
+                            <canvas data-type="radial-gauge" data-width="320" data-height="320" data-units="ASCVD"
+                                    data-title="false" data-value="@ascvdPredic" data-animate-on-init="true" data-animated-value="true"
+                                    data-min-value="0" data-max-value="100" data-major-ticks="0,25,50,75,100"
+                                    data-minor-ticks="5" data-stroke-ticks="false" data-highlights='[
+                                    { "from": 0, "to": 25, "color": "rgba(0,255,0)" },
+                                    { "from": 25, "to": 50, "color": "rgba(255,255,0)" },
+                                    { "from": 50, "to": 75, "color": "rgba(255,69,0)" },
+                                    { "from": 75, "to": 100, "color": "rgba(255, 0, 0)" }
+
+
+                                    ]' data-color-plate="transparent" data-color-major-ticks="black" data-color-minor-ticks="0d0d0d"
+                                    data-color-title="#fff" data-color-units="#000" data-color-numbers="#000"
+                                    data-color-needle-start="red" data-color-needle-end="red" data-value-box="true"
+                                    data-animation-rule="bounce" data-animation-duration="500" data-border-outer-width="0"
+                                    data-border-middle-width="0" data-border-inner-width="0"></canvas>
+
+
+                        </div>
+
+                        <form id="ASCVDForm" asp-action="ProcessASCVD" asp-controller="BloodPressure" asp-area="">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        جنسیت
+                                        <select asp-for="Gender" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.Gender.Gender))"></select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+
+                                        نژاد
+                                        <select asp-for="Gender" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.Race.Race))"></select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        سن
+                                        <input type="number" min="20" class="form-control" asp-for="Age">
+                                        <span class="text-danger" asp-validation-for="Age"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-md-4">
+                                    کلسترول
+                                    <input type="number" class="form-control" asp-for="TotalCholesterol">
+                                    <span class="text-danger" asp-validation-for="TotalCholesterol"></span>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    کلسترول HDL
+                                    <input type="number" class="form-control" asp-for="HDLCholesterol">
+                                    <span class="text-danger" asp-validation-for="HDLCholesterol"></span>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    فشارخون سیستولیک
+                                    <input type="number" class="form-control" asp-for="SystolicBloodPressure ">
+                                    <span class="text-danger" asp-validation-for="SystolicBloodPressure "></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-4">
+                                    آیا سابقه فشارخون بالا دارید؟
+                                    <select asp-for="TreatmentforHypertension" class="form-control">
+                                        <option value="@false">خیر</option>
+                                        <option value="@true">بله</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    آیا سابقه دیابت دارید ؟
+                                    <select asp-for="DiabetesMelitus" class="form-control">
+                                        <option value="@false">خیر</option>
+                                        <option value="@true">بله</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    آیا سابقه مصرف دخانیات دارید ؟
+                                    <select asp-for="Smoker" class="form-control">
+                                        <option value="@false">خیر</option>
+                                        <option value="@true">بله</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row text-center">
+                                <div class="col-md-4"></div>
+                                <div class="col-md-4">
+                                    <button type="submit" class="btn-SelfTestX">ثبت</button>
+                                </div>
+                                <div class="col-md-4"></div>
+                            </div>
+
+
+                        </form>
+
+                    </div>
+                    <div class="col-xl-2"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+

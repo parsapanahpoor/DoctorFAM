@@ -26,10 +26,11 @@ namespace DoctorFAM.Web.Controllers
         private readonly IDoctorsService _doctorService;
         private readonly ISelfAssessmentService _selfAssessmentService;
         private readonly IBMIService _bmiService;
+        private readonly IASCVDService _ascvdService;
 
         public BloodPressureController(IDrugAlertService drugAlertService, IPeriodicTestService periodicTestService
                                         , IMedicalExaminationService medicalExaminationService , ILocationService locationService
-                                            , IDoctorsService doctorsService, ISelfAssessmentService selfAssessmentService, IBMIService bmiService)
+                                            , IDoctorsService doctorsService, ISelfAssessmentService selfAssessmentService, IBMIService bmiService, IASCVDService ascvdService)
         {
             _drugAlertService = drugAlertService;
             _periodicTestService = periodicTestService;
@@ -38,6 +39,7 @@ namespace DoctorFAM.Web.Controllers
             _doctorService = doctorsService;
             _selfAssessmentService = selfAssessmentService;
             _bmiService = bmiService;
+            _ascvdService = ascvdService;
         }
 
         #endregion
@@ -155,14 +157,101 @@ namespace DoctorFAM.Web.Controllers
 
         #endregion
 
+        #region ASCVD Page
+
+        [Authorize]
+        public async Task<IActionResult> ASCVD(int? ascvdResult, int? ascvdStatus)
+        {
+            if (ascvdResult.HasValue)
+            {
+                ViewBag.ascvdPredicResult = ascvdResult.Value;
+            }
+
+            if (ascvdStatus.HasValue)
+            {
+                ViewBag.ascvdStatusResult = ascvdStatus.Value;
+            }
+            return View();
+        }
+
+        #region Show ASCVD Modal 
+
+        [HttpGet("/Show-Diabet-Page-ASCVD-Modal")]
+        public async Task<IActionResult> ShowASCVDModal()
+        {
+            return PartialView("_BloodPressurePageASCVD");
+        }
+
+        #endregion
+
+        #region Process ASCVD
+
+        [HttpPost]
+        public async Task<IActionResult> ProcessASCVD(ASCVDSiteSideViewModel model)
+        {
+            #region Model State Validation 
+
+            if (!ModelState.IsValid)
+            {
+                TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+                return RedirectToAction(nameof(ASCVD));
+            }
+
+            #endregion
+
+            #region Process ASCVD
+
+            var res = await _ascvdService.ProcessASCVD(model, ((User.Identity.IsAuthenticated) ? User.GetUserId() : null));
+
+            if (res == null)
+            {
+                TempData[ErrorMessage] = "اطلاعات به درستی وارد نشده است.";
+                return RedirectToAction(nameof(ASCVD));
+            }
+            else
+            {
+                if (res.ASCVDStatus == Domain.Enums.ASCVD.ASCVDStatus.LowRisk)
+                {
+                    TempData[SuccessMessage] = "محاسبه با موفقیت انجام شده است.";
+                    return RedirectToAction(nameof(ASCVD), new { ascvdResult = res.Predic, ascvdStatus = 1 });
+                }
+                if (res.ASCVDStatus == Domain.Enums.ASCVD.ASCVDStatus.BorderLineRisk)
+                {
+                    TempData[SuccessMessage] = "محاسبه با موفقیت انجام شده است.";
+                    return RedirectToAction(nameof(ASCVD), new { ascvdResult = res.Predic, ascvdStatus = 2 });
+                }
+                if (res.ASCVDStatus == Domain.Enums.ASCVD.ASCVDStatus.IntermediateRisk)
+                {
+                    TempData[SuccessMessage] = "محاسبه با موفقیت انجام شده است.";
+                    return RedirectToAction(nameof(ASCVD), new { ascvdResult = res.Predic, ascvdStatus = 3 });
+                }
+                if (res.ASCVDStatus == Domain.Enums.ASCVD.ASCVDStatus.HighRisk)
+                {
+                    TempData[SuccessMessage] = "محاسبه با موفقیت انجام شده است.";
+                    return RedirectToAction(nameof(ASCVD), new { ascvdResult = res.Predic, ascvdStatus = 4 });
+                }
+
+                TempData[ErrorMessage] = "اطلاعات به درستی وارد نشده است.";
+                return RedirectToAction(nameof(ASCVD));
+            }
+
+            #endregion
+        }
+
+
+        #endregion
+
+        #endregion
+
         #region Self Assessment
 
         #region Periodic Self Evaluation
 
-        [HttpGet("/Priodic-BloodPressure-Self-Evaluation-Modal")]
+        //[HttpGet("/Priodic-BloodPressure-Self-Evaluation-Modal")]
         public async Task<IActionResult> PriodicBloodPressureSelfEvaluationModal()
         {
-            return PartialView("_PeriodicBloodPressureSelfEvaluationModal");
+            //return PartialView("_PeriodicBloodPressureSelfEvaluationModal");
+            return View();
         }
 
         #endregion
@@ -219,6 +308,7 @@ namespace DoctorFAM.Web.Controllers
 
         #endregion
 
+        
         #endregion
 
         #region List Of Blood Pressure Consultants

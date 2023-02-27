@@ -1,0 +1,92 @@
+﻿@model DoctorFAM.Domain.ViewModels.Site.Diabet.ASCVDSiteSideViewModel
+
+<form id="ASCVDForm" asp-action="ProcessASCVD" asp-controller="Diabet" asp-area="">
+    <h5 class="modal-title" id="exampleModalLabel">محاسبه ی ASCVD </h5>
+
+    <div class="modal-body">
+        <div class="row">
+
+            <div class="form-group col-md-12 col-sm-12">
+                <label asp-for="Gender">جنسیت</label>
+                <select asp-for="Gender" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.Gender.Gender))"></select>
+            </div>
+
+            <div class="form-group col-md-12 col-sm-12">
+                <label asp-for="Age">سن</label>
+                <input type="number" min="20" class="form-control" asp-for="Age">
+                <span class="text-danger" asp-validation-for="Age"></span>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label">
+                        نژاد
+                    </label>
+                    <select asp-for="Gender" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.Race.Race))"></select>
+                </div>
+            </div>
+
+            <div class="form-group col-md-12 col-sm-12">
+                <label asp-for="TotalCholesterol">کلسترول بیشینه</label>
+                <input type="number"  class="form-control" asp-for="TotalCholesterol">
+                <span class="text-danger" asp-validation-for="TotalCholesterol"></span>
+            </div>
+
+            <div class="form-group col-md-12 col-sm-12">
+                <label asp-for="HDLCholesterol">کلسترول HDL</label>
+                <input type="number"  class="form-control" asp-for="HDLCholesterol">
+                <span class="text-danger" asp-validation-for="HDLCholesterol"></span>
+            </div>
+
+            <div class="form-group col-md-12 col-sm-12">
+                <label asp-for="SystolicBloodPressure ">فشارخون سیستولیک</label>
+                <input type="number"  class="form-control" asp-for="SystolicBloodPressure ">
+                <span class="text-danger" asp-validation-for="SystolicBloodPressure "></span>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label">
+                        سابقه ی فشارخون بالا
+                    </label>
+                    <select asp-for="TreatmentforHypertension" class="form-control">
+                        <option value="@false">خیر</option>
+                        <option value="@true">بله</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label">
+                        آیا سابقه ی دیابت دارید ؟
+                    </label>
+                    <select asp-for="DiabetesMelitus" class="form-control">
+                        <option value="@false">خیر</option>
+                        <option value="@true">بله</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label">
+                        آیا سابقه ی مصرف دخانیات دارید ؟
+                    </label>
+                    <select asp-for="Smoker" class="form-control">
+                        <option value="@false">خیر</option>
+                        <option value="@true">بله</option>
+                    </select>
+                </div>
+            </div>
+
+            <hr />
+
+            <div class="footer">
+                <button type="submit" style="padding-top: 10px;padding-bottom: 10px;padding-right: 20px;padding-left: 20px;" class="btn-SelfTest">ثبت</button>
+            </div>
+
+        </div>
+    </div>
+
+</form>

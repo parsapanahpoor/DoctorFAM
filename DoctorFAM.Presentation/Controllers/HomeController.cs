@@ -308,5 +308,14 @@ namespace DoctorFAM.Web.Controllers
             return View();
         }
         #endregion
+
+        #region News
+
+        public IActionResult News()
+        {
+            return View();
+        }
+
+        #endregion
     }
 }

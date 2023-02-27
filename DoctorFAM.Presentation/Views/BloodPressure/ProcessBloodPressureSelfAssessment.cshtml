@@ -1,0 +1,410 @@
+﻿@model DoctorFAM.Domain.ViewModels.Site.BloodPressure.BloodPressureSelfAssessmentViewModel
+
+
+@{
+    ViewData["Title"] = "خودارزیابی فشارخون - فشارخون";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var bmiResult = ViewBag.bmiResult != null ? (int)ViewBag.bmiResult : 0;
+    var GFRResult = ViewBag.gfrResult != null ? (decimal)ViewBag.gfrResult : 0;
+    var bloodPressureStatus = ViewBag.bloodPressureStatus != null ? (int)ViewBag.bloodPressureStatus : 0;
+    var ascvdPredic = ViewBag.ascvdPredicResult != null ? (decimal)ViewBag.ascvdPredicResult : 0;
+    var ascvdStatus = ViewBag.ascvdStatusResult != null ? (int)ViewBag.ascvdStatusResult : 0;
+
+    int userLogin = (User.Identity.IsAuthenticated) ? 1 : 0;
+ 
+}
+
+@section Scripts{
+    <partial name="_JqueryValidation" />
+    <script src="~/Site/js/BMI.js"></script>
+
+    <script>
+
+        //#region Ask For Save BMI Result
+
+        $(document).on('change', '#SaveResult', function () {
+            var answer = $("#SaveResult :selected").val();
+
+            if (answer == 0) {
+                if (@userLogin == 1) {
+                    $("#WeightInput").removeClass("d-none");
+                    $("#heightInput").removeClass("d-none");
+                    $("#footer-Div").removeClass("d-none");
+
+                    $("#Login-div").addClass("d-none");
+                }
+                if (@userLogin == 0) {
+                    $("#WeightInput").addClass("d-none");
+                    $("#heightInput").addClass("d-none");
+                    $("#footer-Div").addClass("d-none");
+
+                    $("#Login-div").removeClass("d-none");
+                }
+            }
+            else if
+                (answer == 1) {
+                $("#WeightInput").removeClass("d-none");
+                $("#heightInput").removeClass("d-none");
+                $("#footer-Div").removeClass("d-none");
+
+                $("#Login-div").addClass("d-none");
+            }
+        });
+
+        $(document).ready(function () {
+            if (0 < @bmiResult && @bmiResult <= 20) {
+                Swal.fire({
+                    title: "محدوده ی کم وزنی",
+                    text: "شاخص توده ی بدنی شما @bmiResult کیلوگرم برمترمربع و درمحدوده ی کم وزنی می باشد. توجه داشته باشید محاسبه ی شاخص توده ی بدنی معادل تشخیص بیماری نمی باشد. برای دریافت اطلاعات بیشتر مشاورین دکترفم درکنار شما هستند .",
+                    icon: 'warning',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'بستن',
+                });
+            }
+            if (20 <= @bmiResult && @bmiResult <= 25) {
+                Swal.fire({
+                    title: "وزن متناسب",
+                    text: "شاخص توده ی بدنی شما @bmiResult کیلوگرم برمترمربع و درمحدوده ی وزن متناسب می باشد. توجه داشته باشید محاسبه ی شاخص توده ی بدنی معادل تشخیص بیماری نمی باشد. برای دریافت اطلاعات بیشتر مشاورین دکترفم درکنار شما هستند .",
+                    icon: 'success',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'بستن',
+                });
+            }
+            if (25 <= @bmiResult && @bmiResult <= 30) {
+                Swal.fire({
+                    title: "اضافه وزن",
+                    text: "شاخص توده ی بدنی شما @bmiResult کیلوگرم برمترمربع و درمحدوده ی اضافه وزن می باشد. توجه داشته باشید محاسبه ی شاخص توده ی بدنی معادل تشخیص بیماری نمی باشد. برای دریافت اطلاعات بیشتر مشاورین دکترفم درکنار شما هستند .",
+                    icon: 'warning',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'بستن',
+                });
+            }
+            if (30 <= @bmiResult && @bmiResult <= 35) {
+                Swal.fire({
+                    title: "محدوده ی چاقی درجه یک",
+                    text: "شاخص توده ی بدنی شما @bmiResult کیلوگرم برمترمربع و محدوده ی چاقی درجه یک می باشد. توجه داشته باشید محاسبه ی شاخص توده ی بدنی معادل تشخیص بیماری نمی باشد. برای دریافت اطلاعات بیشتر مشاورین دکترفم درکنار شما هستند .",
+                    icon: 'warning',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'بستن',
+                });
+            }
+            if (35 <= @bmiResult && @bmiResult <= 40) {
+                Swal.fire({
+                    title: "محدوده ی چاقی درجه دو",
+                    text: "شاخص توده ی بدنی شما @bmiResult کیلوگرم برمترمربع و محدوده ی چاقی درجه دو می باشد. توجه داشته باشید محاسبه ی شاخص توده ی بدنی معادل تشخیص بیماری نمی باشد. برای دریافت اطلاعات بیشتر مشاورین دکترفم درکنار شما هستند .",
+                    icon: 'warning',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'بستن',
+                });
+            }
+            if (40 < @bmiResult ) {
+                Swal.fire({
+                    title: "محدوده ی چاقی درجه سه",
+                    text: "شاخص توده ی بدنی شما @bmiResult کیلوگرم برمترمربع و محدوده ی چاقی درجه سه می باشد. توجه داشته باشید محاسبه ی شاخص توده ی بدنی معادل تشخیص بیماری نمی باشد. برای دریافت اطلاعات بیشتر مشاورین دکترفم درکنار شما هستند .",
+                    icon: 'error',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'بستن',
+                });
+            }
+        });
+
+        //#endregion
+
+        //#region Ask For Save GFR Result
+
+        $(document).on('change', '#SaveGFRResult', function () {
+            var answer = $("#SaveGFRResult :selected").val();
+
+            if (answer == 0) {
+                if (@userLogin == 1) {
+                    $("#data").removeClass("d-none");
+
+                    $("#Login-div").addClass("d-none");
+                }
+                if (@userLogin == 0) {
+                    $("#data").addClass("d-none");
+
+                    $("#Login-div").removeClass("d-none");
+                }
+            }
+            else if
+                (answer == 1) {
+                $("#data").removeClass("d-none");
+
+                $("#Login-div").addClass("d-none");
+            }
+        });
+
+        $(document).ready(function () {
+            if (90 <= @GFRResult ) {
+                Swal.fire({
+                    title: "محدوده ی طبیعی",
+                    text: "تخمین تصفیه ی کلیوی شما حدودا @GFRResult می باشد. طی این محاسبه شما در مرحله ی طبیعی قرار دارید .\n توصیه میکنیم برای برسی های تکمیلی با پزشک خود مشورت کنید. \n توجه داشته باشید محاسبه ی تصفیه ی کلیوی برای سن بالای 2 سال معتبر می باشد. \n محاسبات انجام شده دارای نوسان می باشد بنابراین حتمابرای برسی دقیق نتایج با پزشک خود مشورت کنید. \n برای دریافت اطلاعات بیشتر مشاورین داکترفم در کنار شما هستند .",
+                    icon: 'success',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'بستن',
+                });
+            }
+            if (60 <= @GFRResult && @GFRResult <= 90) {
+                Swal.fire({
+                    title: "کاهش خفیف عملکرد کلیه",
+                    text: "تخمین تصفیه ی کلیوی شما حدودا @GFRResult می باشد. طی این محاسبه شما در مرحله ی کاهش خفیف عملکرد کلیه قرار دارید .\n دقت کنید بهبود عملکرد کلیه ها کاملا امکان پذیر است بنابراین برای برسی های تکمیلی و توصیه های ارتقا سلامت با پزشک خود مشورت کنید. \n توجه داشته باشید محاسبه ی تصفیه ی کلیوی برای سن بالای 2 سال معتبر می باشد. \n محاسبات انجام شده دارای نوسان می باشد بنابراین حتمابرای برسی دقیق نتایج با پزشک خود مشورت کنید. \n برای دریافت اطلاعات بیشتر مشاورین داکترفم در کنار شما هستند .",
+                    icon: 'warning',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'بستن',
+                });
+            }
+            if (45 <= @GFRResult && @GFRResult <= 60) {
+                Swal.fire({
+                    title: "کاهش خفیف تا متوسط عملکرد کلیه",
+                    text: "تخمین تصفیه ی کلیوی شما حدودا @GFRResult می باشد. طی این محاسبه شما در مرحله ی کاهش خفیف تا متوسط عملکرد کلیه قرار دارید .\n دقت کنید بهبود عملکرد کلیه ها کاملا امکان پذیر است بنابراین بطور منظم با پزشک خود مشورت کنید. توصیه می کنیم با کارشناس تغذیه نیز مشورت نمایید. \n توجه داشته باشید محاسبه ی تصفیه ی کلیوی برای سن بالای 2 سال معتبر می باشد. \n محاسبات انجام شده دارای نوسان می باشد بنابراین حتمابرای برسی دقیق نتایج با پزشک خود مشورت کنید. \n برای دریافت اطلاعات بیشتر مشاورین داکترفم در کنار شما هستند .",
+                    icon: 'warning',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'بستن',
+                });
+            }
+            if (30 <= @GFRResult && @GFRResult <= 45) {
+                Swal.fire({
+                    title: "کاهش متوسط تا شدید عملکرد کلیه",
+                    text: "تخمین تصفیه ی کلیوی شما حدودا @GFRResult می باشد. طی این محاسبه شما در مرحله ی کاهش متوسط تا شدید عملکرد کلیه قرار دارید .\n دقت کنید حفظ و حتی بهبود عملکرد کلیه ها کاملا امکان پذیر است بنابراین بطور منظم با تیم درمان در ارتباط باشید. توصیه می کنیم با کارشناس تغذیه نیز مشورت نمایید. \n توجه داشته باشید محاسبه ی تصفیه ی کلیوی برای سن بالای 2 سال معتبر می باشد. \n محاسبات انجام شده دارای نوسان می باشد بنابراین حتمابرای برسی دقیق نتایج با پزشک خود مشورت کنید. \n برای دریافت اطلاعات بیشتر مشاورین داکترفم در کنار شما هستند .",
+                    icon: 'warning',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'بستن',
+                });
+            }
+            if (15 <= @GFRResult && @GFRResult <= 30) {
+                Swal.fire({
+                    title: "کاهش شدید عملکرد کلیه",
+                    text: "تخمین تصفیه ی کلیوی شما حدودا @GFRResult می باشد. طی این محاسبه شما در مرحله ی کاهش شدید عملکرد کلیه قرار دارید .\n دقت کنید حفظ و حتی بهبود عملکرد کلیه ها کاملا امکان پذیر است بنابراین اطلاعات خود را در رابطه با بیماری فعلی و گزینه های درمانی تکمیل کنید. توصیه می کنیم با کارشناس تغذیه نیز مشورت نمایید. \n توجه داشته باشید محاسبه ی تصفیه ی کلیوی برای سن بالای 2 سال معتبر می باشد. \n محاسبات انجام شده دارای نوسان می باشد بنابراین حتمابرای برسی دقیق نتایج با پزشک خود مشورت کنید. \n برای دریافت اطلاعات بیشتر مشاورین داکترفم در کنار شما هستند .",
+                    icon: 'error',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'بستن',
+                });
+            }
+            if (0 < @GFRResult && @GFRResult <= 15) {
+                Swal.fire({
+                    title: "نارسایی کلیه",
+                    text: "تخمین تصفیه ی کلیوی شما حدودا @GFRResult می باشد. طی این محاسبه شما در مرحله ی نارسایی کلیه قرار دارید .\n دراین مرحله پزشکان متخصص کلیه گزینه های درمانی را مشخص میکنند. توصیه می کنیم با کارشناس تغذیه نیز مشورت نمایید. \n توجه داشته باشید محاسبه ی تصفیه ی کلیوی برای سن بالای 2 سال معتبر می باشد. \n محاسبات انجام شده دارای نوسان می باشد بنابراین حتمابرای برسی دقیق نتایج با پزشک خود مشورت کنید. \n برای دریافت اطلاعات بیشتر مشاورین داکترفم در کنار شما هستند .",
+                    icon: 'error',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'بستن',
+                });
+            }
+        });
+
+
+        //#endregion
+
+
+        //#region Blood Pressure Self Assessment Result
+
+        $(document).ready(function () {
+            if (@bloodPressureStatus == 1) {
+                Swal.fire({
+                    title: "فشارخون نرمال",
+                    text: "فشارخون شما طبق خوداظهاری شما در زمان اندازه گیری فشارخون در محدوده نرمال بوده است . لطفا 3 ماه بعد این خودارزیابی را تکرار نمائید.",
+                    icon: 'success',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'بستن',
+                });
+            }
+            if (@bloodPressureStatus == 2) {
+                Swal.fire({
+                    title: "پیش فشارخون",
+                    text: "فشارخون شما طبق خوداظهاری شما در زمان اندازه گیری فشارخون در محدوده پیش فشارخون قرار دارد و لازم است در اولین فرصت به پزشک مراجعه نمائید.",
+                    icon: 'warning',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'بستن',
+                });
+            }
+            if (@bloodPressureStatus == 3) {
+                Swal.fire({
+                    title: "فشارخون بالا",
+                    text: "فشارخون شما طبق خوداظهاری شما در زمان اندازه گیری فشارخون در محدوده فشارخون بالا قرار دارد و لازم است هرچه سریع تر به پزشک خود مراجعه نمائید.",
+                    icon: 'error',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'بستن',
+                });
+            }
+            if (@bloodPressureStatus == 4) {
+                Swal.fire({
+                    title: "فشارخون بحرانی",
+                    text: "فشارخون شما طبق خوداظهاری شما در زمان اندازه گیری فشارخون در محدوده فشارخون بحرانی قرار دارد و لازم است ضمن حفظ خونسردی هرجه سریع تر به نزدیک ترین مرکز مراجعه نمائید.",
+                    icon: 'error',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'بستن',
+                });
+            }
+        });
+
+                //#endregion
+
+    </script>
+
+
+}
+
+
+<div class="page-content  formHealth">
+    <div class="row PageBannerPic text-center  text-align-justify ">
+        <div class="col-md-3 page-breadcrumbs">
+            <i class="menu-icon fa fa-globe"></i>
+            <a asp-area="" asp-controller="Home" asp-action="Index">  <span class="menu-text"> صفحه اصلی سایت </span></a>
+            <span>/</span>
+            <a asp-area="" asp-controller="BloodPressure" asp-action="Index">بازگشت به صفحه فشارخون</a>
+        </div>
+        <div class="col-md-6   text-center  text-align-justify M-5 P-5">
+
+            <h2 class="text-center  text-align-justify  ">   مراقبت دوره ای</h2>
+            <h4 class="text-center  text-align-justify ">  خودارزیابی فشارخون</h4>
+        </div>
+        <div class="col-md-3 "></div>
+    </div>
+    <div class="container mt-2">
+        <div class="tab-content section-title" id="nav-tabContent">
+            <div role="tabpanel" class=" col-md-12 fade show active" id="tab1-1">
+                <div class="row">
+                    <div class="col-xl-3 "></div>
+                    <div class="col-xl-6 p-3" style="border:1px solid #feb2fa; border-radius:8px;">
+                        <div class="gauge">
+                            <canvas data-type="radial-gauge" data-width="280" data-height="280" data-units="Km/h"
+                                    data-title="false" data-value="@bloodPressureStatus" data-animate-on-init="true" data-animated-value="true"
+                                    data-min-value="0" data-max-value="120" data-major-ticks="0,20,40,60,80,100,120"
+                                    data-minor-ticks="5" data-stroke-ticks="false" data-highlights='[
+                        { "from": 0, "to": 15, "color": "rgba(143,1,1)" },
+                        { "from": 15, "to": 30, "color": "rgba(247,10,10)" },
+                        { "from": 30, "to": 45, "color": "rgba(247,125,10)" },
+                        { "from": 45, "to": 60, "color": "rgba(247,228,10)" },
+                        { "from": 60, "to": 90, "color": "rgba(69,247,10)" },
+                        { "from": 90, "to": 120, "color": "rgba(44,171,2)" }
+
+                    ]' data-color-plate="transparent" data-color-major-ticks="black" data-color-minor-ticks="0d0d0d"
+                                    data-color-title="#fff" data-color-units="#000" data-color-numbers="#000"
+                                    data-color-needle-start="red" data-color-needle-end="red" data-value-box="true"
+                                    data-animation-rule="bounce" data-animation-duration="500" data-border-outer-width="0"
+                                    data-border-middle-width="0" data-border-inner-width="0"></canvas>
+                        </div>
+
+
+
+                        <form id="PriodicBloodPressureSelfEvaluationForm" asp-action="ProcessBloodPressureSelfAssessment" asp-controller="BloodPressure" asp-area="">
+                            <h5 class="modal-title" id="exampleModalLabel"> خود ارزیابی دوره ای فشارخون</h5>
+
+                            <div class="row">
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label">آیا شما مبتلا به فشارخون هستید؟</label>
+                                        <select id="HasBloodPressure" class="form-control">
+                                            <option value="0">انتخاب کنید</option>
+                                            <option value="1">بله </option>
+                                            <option value="2">خیر</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 d-none" id="BloodPressureHelp1-div">
+                                    <div class="widget ">
+                                        <div class="sidebar-links">
+                                            <ul class="list-unstyled ">
+                                                <li>
+                                                    <p id="BloodPressureHelp1" class="link-text">
+                                                        باتوجه به اینکه شما مبتلا به فشارخون می باشید لطفا ضمن تکمیل سایر موارد ارزیابی های اولیه بامشاورین فشارخون دکترفم مشورت نموده و یا به پزشک خود مراجعه کنید.
+                                                    </p>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 d-none" id="RequestFor3MonthLater-div">
+                                    <div class="form-group">
+                                        <label class="control-label">
+                                            آیا در 3ماه گذشته آزمایش های مربوط به بررسی فشارخون را انجام داده اید؟
+                                        </label>
+                                        <select id="RequestFor3MonthLater" class="form-control">
+                                            <option value="0">انتخاب کنید</option>
+                                            <option value="1">بله </option>
+                                            <option value="2">خیر</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 d-none" id="DoctorFathi-div">
+                                    <label class="control-label">
+                                        به عنوان مثال فشارخون شما 14 بر روی 6 هست . شما باید عدد 14 را در خانه ی عدد اول و عدد 6 را در خانه ی عدد دوم وارد کنید.
+                                    </label>
+
+                                    <div class="row">
+
+                                        <div class="col-md-6">
+
+                                            <label class="control-label">
+                                                عدد اول
+                                            </label>
+                                            <input class="form-control" min="0" asp-for="Systolic" />
+
+                                        </div>
+
+                                        <div class="col-md-6">
+
+                                            <label class="control-label">
+                                                عدد دوم
+                                            </label>
+                                            <input class="form-control" min="0" asp-for="Diastolic" />
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                <div class="col-md-12 d-none" id="HowYearsOld-div">
+                                    <div class="widget ">
+                                        <div class="sidebar-links">
+                                            <ul class="list-unstyled ">
+                                                <li>
+                                                    <p id="BloodPressureHelp1" class="link-text">
+                                                        توصیه می گردد هرچه سریع تر فشارخون خود را اندازه گیری کنید.
+                                                    </p>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row d-none" id="Submit-div">
+                                <div class="col-md-12 mt-4 text-center">
+                                    <div class="form-group">
+                                        <input type="submit" value="محاسبه" class="btn-Accept" />
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+
+                      
+                    </div>
+                    <div class="col-xl-3 "></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
