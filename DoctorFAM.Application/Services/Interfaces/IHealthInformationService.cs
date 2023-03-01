@@ -3,6 +3,7 @@ using DoctorFAM.Domain.ViewModels.Admin.HealthInformation.RadioFAM.Category;
 using DoctorFAM.Domain.ViewModels.Admin.HealthInformation.TVFAM.Category;
 using DoctorFAM.Domain.ViewModels.Admin.HealthInformation.TVFAM.Video;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.HealthInformation.TVFAM;
+using DoctorFAM.Domain.ViewModels.Site.HealthInformation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -182,6 +183,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Get Lastest 3 Podcast For Show In Admin Panel 
         Task<List<HealthInformation>?> GetLastest3PodcastForShowInAdminPanel();
+
+        //Get Lastest Radio FAM Podcasts For Show In Landing Page
+        Task<List<RadioFAMAPIViewModel>?> GetLastestRadioFAMPodcastsForShowInLandingPage();
 
         #endregion
 

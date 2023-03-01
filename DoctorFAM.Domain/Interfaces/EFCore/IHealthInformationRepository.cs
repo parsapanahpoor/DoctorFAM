@@ -212,6 +212,9 @@ namespace DoctorFAM.Domain.Interfaces.EFCore
         //Get Lastest 3 Podcast For Show In Admin Panel 
         Task<List<HealthInformation>?> GetLastest3PodcastForShowInAdminPanel();
 
+        //Get Lastest Radio FAM Podcasts For Show In Landing Page
+        Task<List<HealthInformation>?> GetLastestRadioFAMPodcastsForShowInLandingPage();
+
         #endregion
 
         #endregion

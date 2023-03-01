@@ -5,6 +5,7 @@ using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.Admin.HealthInformation.RadioFAM.Category;
 using DoctorFAM.Domain.ViewModels.Admin.HealthInformation.TVFAM.Category;
+using DoctorFAM.Domain.ViewModels.Site.HealthInformation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
 using System;
@@ -608,6 +609,18 @@ namespace DoctorFAM.Data.Repository
             }
 
             return podcast.Take(3).ToList();
+        }
+
+
+
+        //Get Lastest Radio FAM Podcasts For Show In Landing Page
+        public async Task<List<HealthInformation>?> GetLastestRadioFAMPodcastsForShowInLandingPage()
+        {
+            return await _context.HealthInformation.Where(p => !p.IsDelete && p.ShowInLanding && p.HealthInformationType == Domain.Enums.HealtInformation.HealthInformationType.RadioFAM
+                                                                && p.HealtInformationFileState == Domain.Enums.HealtInformation.HealtInformationFileState.Accepted)
+                                                                    .OrderByDescending(p => p.CreateDate)
+                                                                    .ToListAsync();
+
         }
 
         #endregion
