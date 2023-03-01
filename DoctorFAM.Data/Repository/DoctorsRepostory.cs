@@ -722,6 +722,10 @@ namespace DoctorFAM.Data.Repository
                 case DoctorsState.Rejected:
                     query = query.Where(p => p.OrganizationInfoState == OrganizationInfoState.Rejected);
                     break;
+
+                case DoctorsState.NewRegister:
+                    query = query.Where(p => p.OrganizationInfoState == OrganizationInfoState.JustRegister);
+                    break;
             }
 
             #endregion

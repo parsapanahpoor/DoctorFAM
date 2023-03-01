@@ -39,7 +39,7 @@
 
         <div class="col-lg-2 col-md-6 col-sm-6 col-xs-12">
             <div class="databox databox-lg databox-halved radius-bordered databox-shadowed databox-vertical">
-                <a href="#">
+                <a asp-action="ListOfDoctorsInfo" asp-area="Admin" asp-controller="Doctors" asp-route-DoctorsState="4">
 
                     <div class="databox-top bg-info no-padding">
                         <div class="databox-icon">
@@ -50,7 +50,7 @@
                 <div class="databox-bottom bg-white no-padding">
                     <div class="databox-row text-align-center">
                         <div class="databox-cell cell-12 padding-5">
-                            <a href="#">
+                            <a asp-action="ListOfDoctorsInfo" asp-area="Admin" asp-controller="Doctors" asp-route-DoctorsState="4">
                                 <span class="databox-number lightcarbon">تعداد کل کاربران پزشک </span>
                                 <span class="databox-header lightcarbon">@Model.GetShownEntitiesPagesTitle()</span>
                             </a>
@@ -62,7 +62,7 @@
 
         <div class="col-lg-2 col-md-6 col-sm-6 col-xs-12">
             <div class="databox databox-lg databox-halved radius-bordered databox-shadowed databox-vertical">
-                <a href="#">
+                <a asp-action="ListOfDoctorsInfo" asp-area="Admin" asp-controller="Doctors" asp-route-DoctorsState="0">
 
                     <div class="databox-top bg-success no-padding">
                         <div class="databox-icon">
@@ -73,7 +73,7 @@
                 <div class="databox-bottom bg-white no-padding">
                     <div class="databox-row text-align-center">
                         <div class="databox-cell cell-12 padding-5">
-                            <a href="#">
+                            <a asp-action="ListOfDoctorsInfo" asp-area="Admin" asp-controller="Doctors" asp-route-DoctorsState="0">
                                 <span class="databox-number lightcarbon">تعداد پزشکان تایید شده و فعال </span>
                                 <span class="databox-header lightcarbon">@((Model.CountOfAcceptedDoctors.HasValue) ? Model.CountOfAcceptedDoctors.Value : 0 )</span>
                             </a>
@@ -85,7 +85,7 @@
 
         <div class="col-lg-2 col-md-6 col-sm-6 col-xs-12">
             <div class="databox databox-lg databox-halved radius-bordered databox-shadowed databox-vertical">
-                <a href="#">
+                <a asp-action="ListOfDoctorsInfo" asp-area="Admin" asp-controller="Doctors" asp-route-DoctorsState="1">
 
                     <div class="databox-top bg-warning no-padding">
                         <div class="databox-icon">
@@ -96,7 +96,7 @@
                 <div class="databox-bottom bg-white no-padding">
                     <div class="databox-row text-align-center">
                         <div class="databox-cell cell-12 padding-5">
-                            <a href="#">
+                <a asp-action="ListOfDoctorsInfo" asp-area="Admin" asp-controller="Doctors" asp-route-DoctorsState="1">
                                 <span class="databox-number lightcarbon">تعداد پزشکان درانتظار تایید </span>
                                 <span class="databox-header lightcarbon">@((Model.CountOfWaitingDoctors.HasValue) ? Model.CountOfWaitingDoctors.Value : 0)</span>
                             </a>
@@ -108,7 +108,7 @@
 
         <div class="col-lg-2 col-md-6 col-sm-6 col-xs-12">
             <div class="databox databox-lg databox-halved radius-bordered databox-shadowed databox-vertical">
-                <a href="#">
+                <a asp-action="ListOfDoctorsInfo" asp-area="Admin" asp-controller="Doctors" asp-route-DoctorsState="2">
 
                     <div class="databox-top bg-danger no-padding">
                         <div class="databox-icon">
@@ -119,7 +119,7 @@
                 <div class="databox-bottom bg-white no-padding">
                     <div class="databox-row text-align-center">
                         <div class="databox-cell cell-12 padding-5">
-                            <a href="#">
+                            <a asp-action="ListOfDoctorsInfo" asp-area="Admin" asp-controller="Doctors" asp-route-DoctorsState="2">
                                 <span class="databox-number lightcarbon">تعداد پزشکان تایید نشده </span>
                                 <span class="databox-header lightcarbon">@((Model.CountOfDeclineDoctors.HasValue) ? Model.CountOfDeclineDoctors.Value : 0)</span>
                             </a>
@@ -131,7 +131,7 @@
 
         <div class="col-lg-2 col-md-6 col-sm-6 col-xs-12">
             <div class="databox databox-lg databox-halved radius-bordered databox-shadowed databox-vertical">
-                <a href="#">
+                            <a asp-action="ListOfDoctorsInfo" asp-area="Admin" asp-controller="Doctors" asp-route-DoctorsState="3">
 
                     <div class="databox-top bg-primary no-padding">
                         <div class="databox-icon">
@@ -142,7 +142,7 @@
                 <div class="databox-bottom bg-white no-padding">
                     <div class="databox-row text-align-center">
                         <div class="databox-cell cell-12 padding-5">
-                            <a href="#">
+                            <a asp-action="ListOfDoctorsInfo" asp-area="Admin" asp-controller="Doctors" asp-route-DoctorsState="3">
                                 <span class="databox-number lightcarbon">تعداد پزشکان ثبت نامی جدید </span>
                                 <span class="databox-header lightcarbon">@((Model.CountOfNewRegisterDoctors.HasValue) ? Model.CountOfNewRegisterDoctors.Value : 0)</span>
                             </a>

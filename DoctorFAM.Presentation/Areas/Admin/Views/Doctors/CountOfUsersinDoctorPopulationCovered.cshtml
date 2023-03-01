@@ -1,0 +1,101 @@
+﻿@model DoctorFAM.Domain.ViewModels.Admin.Doctors.UsersInDoctorPopulationCovered.CountOfUsersInDoctorsPopulationCovered
+
+<div class="page-body">
+
+    <div class="row">
+
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <div class="databox databox-lg databox-halved radius-bordered databox-shadowed databox-vertical">
+                <a asp-action="ListOfDoctorsInfo" asp-area="Admin" asp-controller="Doctors" asp-route-DoctorsState="4">
+
+                    <div class="databox-top bg-info no-padding">
+                        <div class="databox-icon">
+                            <i class="glyphicon glyphicon-user"></i>
+                        </div>
+                    </div>
+                </a>
+                <div class="databox-bottom bg-white no-padding">
+                    <div class="databox-row text-align-center">
+                        <div class="databox-cell cell-12 padding-5">
+                            <a asp-action="ListOfDoctorsInfo" asp-area="Admin" asp-controller="Doctors" asp-route-DoctorsState="4">
+                                <span class="databox-number lightcarbon">تعداد کل کاربران  </span>
+                                <span class="databox-header lightcarbon">@Model.CountOfAllUsers</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <div class="databox databox-lg databox-halved radius-bordered databox-shadowed databox-vertical">
+                <a asp-action="ListOfDoctorsInfo" asp-area="Admin" asp-controller="Doctors" asp-route-DoctorsState="0">
+
+                    <div class="databox-top bg-success no-padding">
+                        <div class="databox-icon">
+                            <i class="glyphicon glyphicon-user"></i>
+                        </div>
+                    </div>
+                </a>
+                <div class="databox-bottom bg-white no-padding">
+                    <div class="databox-row text-align-center">
+                        <div class="databox-cell cell-12 padding-5">
+                            <a asp-action="ListOfDoctorsInfo" asp-area="Admin" asp-controller="Doctors" asp-route-DoctorsState="0">
+                                <span class="databox-number lightcarbon"> تعداد کاربران دارای پزشک خانواده</span>
+                                <span class="databox-header lightcarbon">@((Model.CountOfUsersWithDoctorFamily.HasValue) ? Model.CountOfUsersWithDoctorFamily.Value : 0)</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <div class="databox databox-lg databox-halved radius-bordered databox-shadowed databox-vertical">
+                <a asp-action="ListOfDoctorsInfo" asp-area="Admin" asp-controller="Doctors" asp-route-DoctorsState="1">
+
+                    <div class="databox-top bg-warning no-padding">
+                        <div class="databox-icon">
+                            <i class="glyphicon glyphicon-user"></i>
+                        </div>
+                    </div>
+                </a>
+                <div class="databox-bottom bg-white no-padding">
+                    <div class="databox-row text-align-center">
+                        <div class="databox-cell cell-12 padding-5">
+                            <a asp-action="ListOfDoctorsInfo" asp-area="Admin" asp-controller="Doctors" asp-route-DoctorsState="1">
+                                <span class="databox-number lightcarbon">تعداد کاربران در انتظار تایید پزشک  </span>
+                                <span class="databox-header lightcarbon">@((Model.CountOfUsersWaitingForAcceptFromFamilyDoctors.HasValue) ? Model.CountOfUsersWaitingForAcceptFromFamilyDoctors.Value : 0)</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <div class="databox databox-lg databox-halved radius-bordered databox-shadowed databox-vertical">
+                <a asp-action="ListOfDoctorsInfo" asp-area="Admin" asp-controller="Doctors" asp-route-DoctorsState="2">
+
+                    <div class="databox-top bg-danger no-padding">
+                        <div class="databox-icon">
+                            <i class="glyphicon glyphicon-user"></i>
+                        </div>
+                    </div>
+                </a>
+                <div class="databox-bottom bg-white no-padding">
+                    <div class="databox-row text-align-center">
+                        <div class="databox-cell cell-12 padding-5">
+                            <a asp-action="ListOfDoctorsInfo" asp-area="Admin" asp-controller="Doctors" asp-route-DoctorsState="2">
+                                <span class="databox-number lightcarbon">تعداد کاربران فاقد پزشک خانواده </span>
+                                <span class="databox-header lightcarbon">@((Model.CountOfUsersWithoutFamilyDoctors.HasValue) ? Model.CountOfUsersWithoutFamilyDoctors.Value : 0)</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+</div>
