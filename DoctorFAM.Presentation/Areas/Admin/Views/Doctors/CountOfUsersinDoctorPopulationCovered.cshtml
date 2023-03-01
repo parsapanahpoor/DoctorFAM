@@ -1,5 +1,8 @@
 ﻿@model DoctorFAM.Domain.ViewModels.Admin.Doctors.UsersInDoctorPopulationCovered.CountOfUsersInDoctorsPopulationCovered
 
+@section Breadcrumb{
+}
+
 <div class="page-body">
 
     <div class="row">
@@ -19,7 +22,7 @@
                         <div class="databox-cell cell-12 padding-5">
                             <a asp-action="ListOfDoctorsInfo" asp-area="Admin" asp-controller="Doctors" asp-route-DoctorsState="4">
                                 <span class="databox-number lightcarbon">تعداد کل کاربران  </span>
-                                <span class="databox-header lightcarbon">@Model.CountOfAllUsers</span>
+                                <span class="databox-header lightcarbon">@((Model.CountOfAllUsers.HasValue) ? Model.CountOfAllUsers.Value : 0)</span>
                             </a>
                         </div>
                     </div>

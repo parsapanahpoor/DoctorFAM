@@ -261,7 +261,10 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
 
         public async Task<IActionResult> CountOfUsersinDoctorPopulationCovered()
         {
-            return View();
+            //Fill Model 
+            var model = await _doctorsService.FillCountOfUsersInDoctorsPopulationCovered();
+
+            return View(model);
         }
 
         #endregion
