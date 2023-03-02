@@ -14,8 +14,8 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
         private readonly IUserService _userService;
         private readonly IPopulationCoveredService _populationCovered;
 
-        public DoctorsController(IDoctorsService doctorsService , IStringLocalizer<SharedLocalizer.SharedLocalizer> sharedLocalizer
-                                    , IUserService userService , IPopulationCoveredService populationCovered)
+        public DoctorsController(IDoctorsService doctorsService, IStringLocalizer<SharedLocalizer.SharedLocalizer> sharedLocalizer
+                                    , IUserService userService, IPopulationCoveredService populationCovered)
         {
             _doctorsService = doctorsService;
             _sharedLocalizer = sharedLocalizer;
@@ -69,8 +69,8 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
             return View(info);
         }
 
-        [HttpPost , ValidateAntiForgeryToken]
-        public async Task<IActionResult> DoctorsInfoDetail(DoctorsInfoDetailViewModel model , IFormFile? MediacalFile)
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> DoctorsInfoDetail(DoctorsInfoDetailViewModel model, IFormFile? MediacalFile)
         {
             #region Get Doctor By User Id 
 
@@ -110,7 +110,7 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
             {
                 case EditDoctorInfoResult.faild:
                     TempData[ErrorMessage] = "عملیات با شکست مواجه شده است ";
-                    return RedirectToAction("DoctorsInfoDetail", "Doctors", new { area = "Admin" , userId = model.UserId });
+                    return RedirectToAction("DoctorsInfoDetail", "Doctors", new { area = "Admin", userId = model.UserId });
 
                 case EditDoctorInfoResult.NationalId:
                     TempData[ErrorMessage] = "شماره ملی وارد شده در سامانه موجود است. ";
@@ -130,7 +130,7 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
 
         #region Delete Interest To Doctor
 
-        public async Task<IActionResult> DeleteDoctorSelectedInfo(ulong interestId , ulong doctorId , ulong doctorInfoId)
+        public async Task<IActionResult> DeleteDoctorSelectedInfo(ulong interestId, ulong doctorId, ulong doctorInfoId)
         {
             #region Get Doctor By Id
 
@@ -144,19 +144,19 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
             {
                 case Domain.Entities.Doctors.DoctorSelectedInterestResult.Success:
                     TempData[SuccessMessage] = _sharedLocalizer["Operation Successfully"].Value;
-                    return RedirectToAction(nameof(DoctorsInfoDetail) , new { userId = doctor.UserId });
+                    return RedirectToAction(nameof(DoctorsInfoDetail), new { userId = doctor.UserId });
 
                 case Domain.Entities.Doctors.DoctorSelectedInterestResult.Faild:
                     TempData[ErrorMessage] = _sharedLocalizer["The operation has failed"].Value;
-                    return RedirectToAction(nameof(DoctorsInfoDetail) , new { userId = doctor.UserId });
+                    return RedirectToAction(nameof(DoctorsInfoDetail), new { userId = doctor.UserId });
 
                 case Domain.Entities.Doctors.DoctorSelectedInterestResult.ItemNotExist:
                     TempData[WarningMessage] = _sharedLocalizer["You have not selected this item."].Value;
-                    return RedirectToAction(nameof(DoctorsInfoDetail) , new { userId = doctor.UserId });
+                    return RedirectToAction(nameof(DoctorsInfoDetail), new { userId = doctor.UserId });
             }
 
             TempData[ErrorMessage] = _sharedLocalizer["The operation has failed"].Value;
-            return RedirectToAction(nameof(DoctorsInfoDetail) , new { userId = doctor.UserId });
+            return RedirectToAction(nameof(DoctorsInfoDetail), new { userId = doctor.UserId });
         }
 
         #endregion
@@ -168,7 +168,7 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
             #region Get User By Id 
 
             var user = await _userService.GetUserById(userId);
-            if (user == null) return NotFound(); 
+            if (user == null) return NotFound();
 
             #endregion
 
@@ -206,7 +206,7 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
             if (model == null)
             {
                 TempData[ErrorMessage] = "اطلاعاتی برای نمایش یافت نشده است.";
-                return RedirectToAction(nameof(DoctorsInfoDetail) , new { userId = userId});
+                return RedirectToAction(nameof(DoctorsInfoDetail), new { userId = userId });
             }
 
             #endregion
@@ -253,6 +253,18 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
             #endregion
 
             return View(await _doctorsService.ListOfDoctorsPopulationCoveredCountDetail());
+        }
+
+        #endregion
+
+        #region Count Of Users in Doctor Population Covered 
+
+        public async Task<IActionResult> CountOfUsersinDoctorPopulationCovered()
+        {
+            //Fill Model 
+            var model = await _doctorsService.FillCountOfUsersInDoctorsPopulationCovered();
+
+            return View(model);
         }
 
         #endregion

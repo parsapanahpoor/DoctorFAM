@@ -22,6 +22,7 @@ using DoctorFAM.Domain.ViewModels.Laboratory.Employee;
 using DoctorFAM.Domain.ViewModels.Site.Account;
 using DoctorFAM.Domain.ViewModels.UserPanel.Account;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -497,6 +498,21 @@ namespace DoctorFAM.Application.Services.Implementation
         #endregion
 
         #region Site Side
+
+
+        //Is Exist Any Organization With Waiting State From Current User
+        public async Task<bool> IsExistAnyCooperationRequestWithWaitingStateFromCurrentUser(ulong userId)
+        {
+            #region Get Organization by UserId
+
+            var organization = await _organizationService.IsExistAnyWaitingOrganizationWithThisCurrentUser(userId);
+
+            if (organization == true) return true;
+
+            #endregion
+
+            return false;
+        }
 
         //Get User By Username
         public async Task<User?> GetUserByUsername(string userName)

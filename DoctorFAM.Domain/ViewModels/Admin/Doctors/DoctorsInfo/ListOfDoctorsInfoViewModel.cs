@@ -56,6 +56,8 @@ namespace DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo
         WaitingForConfirm,
         [Display(Name = "Rejected")]
         Rejected,
+        [Display(Name = "ثبت نامی جدید")]
+        NewRegister,
         [Display(Name = "All")]
         All
     }

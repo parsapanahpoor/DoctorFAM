@@ -194,6 +194,20 @@ namespace DoctorFAM.Data.Repository
 
         #region Admin And Supporter Side 
 
+        //Count Of Awaiting Family Doctor Requests
+        public async Task<int> CountOfAwaitingFamilyDoctorRequests()
+        {
+            return await _context.UserSelectedFamilyDoctor.Where(p => !p.IsDelete && p.FamilyDoctorRequestState == FamilyDoctorRequestState.WaitingForConfirm)
+                            .CountAsync();
+        }
+
+        //Count Of Accepted Family Doctor Requests
+        public async Task<int> CountOfAcceptedFamilyDoctorRequests()
+        {
+            return await _context.UserSelectedFamilyDoctor.Where(p => !p.IsDelete && p.FamilyDoctorRequestState == FamilyDoctorRequestState.Accepted)
+                            .CountAsync();
+        }
+
         //Get List Of Doctor Population Covered By Doctor Id
         public async Task<List<UserSelectedFamilyDoctor>?> GetListOfDoctorPopulationCoveredByDoctorId(ulong doctorId)
         {

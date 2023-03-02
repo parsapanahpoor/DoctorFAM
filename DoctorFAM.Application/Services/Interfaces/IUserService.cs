@@ -66,6 +66,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         #region Site Side
 
+        //Is Exist Any Organization With Waiting State From Current User
+        Task<bool> IsExistAnyCooperationRequestWithWaitingStateFromCurrentUser(ulong userId);
+
         //Get User By Username
         Task<User?> GetUserByUsername(string userName);
 

@@ -41,6 +41,8 @@ using DoctorFAM.Domain.Entities.Resume;
 using DoctorFAM.Domain.ViewModels.Site.BloodPressure;
 using DoctorFAM.Domain.ViewModels.Admin.Doctors;
 using Microsoft.EntityFrameworkCore;
+using DoctorFAM.Domain.Interfaces.Dapper;
+using DoctorFAM.Domain.ViewModels.Admin.Doctors.UsersInDoctorPopulationCovered;
 
 namespace DoctorFAM.Application.Services.Implementation
 {
@@ -57,10 +59,13 @@ namespace DoctorFAM.Application.Services.Implementation
         private readonly ISMSService _smsservice;
         private readonly IResumeService _resumeService;
         private readonly ISpecialityRepository _specialityRepository;
+        private readonly IUserRepositoryDapper _userRepositoryDapper;
+        private readonly IFamilyDoctorRepository _familyDoctorService;
 
         public DoctorsService(IDoctorsRepository doctorRepository, IUserService userService, IOrganizationService organizationService,
                                 IWorkAddressService workAddress, ILocationRepository locationRepository
-                                    , IReservationService reservationService, ISMSService smsservice, IResumeService resumeService, ISpecialityRepository specialityRepository)
+                                    , IReservationService reservationService, ISMSService smsservice, IResumeService resumeService, ISpecialityRepository specialityRepository
+                                        , IUserRepositoryDapper userRepositoryDapper , IFamilyDoctorRepository familyDoctorService)
         {
             _doctorRepository = doctorRepository;
             _userService = userService;
@@ -71,6 +76,8 @@ namespace DoctorFAM.Application.Services.Implementation
             _smsservice = smsservice;
             _resumeService = resumeService;
             _specialityRepository = specialityRepository;
+            _userRepositoryDapper = userRepositoryDapper;
+            _familyDoctorService = familyDoctorService;
         }
 
         #endregion
@@ -2332,6 +2339,31 @@ namespace DoctorFAM.Application.Services.Implementation
         #endregion
 
         #region Admin Side
+
+        //Count Of Users In Doctors Population Covered
+        public async Task<CountOfUsersInDoctorsPopulationCovered> FillCountOfUsersInDoctorsPopulationCovered()
+        {
+            #region Create Instance
+
+            CountOfUsersInDoctorsPopulationCovered model = new CountOfUsersInDoctorsPopulationCovered();
+
+            #endregion
+
+            //Count Of All Users
+            var usersWithoutDoctors = await _userRepositoryDapper.GetListOfUsersWithoutDoctors();
+            model.CountOfAllUsers = usersWithoutDoctors.Count();
+
+            //Count Of Accepted Family Doctor Requests
+            model.CountOfUsersWithDoctorFamily = await _familyDoctorService.CountOfAcceptedFamilyDoctorRequests(); 
+
+            //Count Of Awaiting Family Doctor Requests
+            model.CountOfUsersWaitingForAcceptFromFamilyDoctors = await _familyDoctorService.CountOfAwaitingFamilyDoctorRequests();
+
+            //Count OF Users Witout Family Doctor Request
+            model.CountOfUsersWithoutFamilyDoctors = model.CountOfAllUsers - (model.CountOfUsersWithDoctorFamily + model.CountOfUsersWaitingForAcceptFromFamilyDoctors);
+
+            return model;
+        }
 
         //Count Of All Doctors 
         public async Task<int> CountOfAllDoctors()

@@ -608,6 +608,17 @@ namespace DoctorFAM.Web.Controllers
                     return Redirect("/UserPanel/Account/EditProfile?FillInfo=true");
                 }
 
+                #region Check That User Has Any Waiting Cooperation Request 
+
+                var checkSattes = await _userService.IsExistAnyCooperationRequestWithWaitingStateFromCurrentUser(user.Id);
+                if (checkSattes)
+                {
+                    TempData[ErrorMessage] = "درحال حاضر اطلاعاتی از شما در سایت موجود است که در دست بررسی می باشد.";
+                    return RedirectToAction("Index", "Home");
+                }
+
+                #endregion
+
                 var res = await _userService.SendCooperationRequestForExistUser(user, model.RoleName);
 
                 if (res)
@@ -615,8 +626,47 @@ namespace DoctorFAM.Web.Controllers
                     //Send Cooperation Request To The Data Base 
                     await _userService.AddCooperationRequest(model.Mobile, model.RoleName, model.Username);
 
-                    TempData[SuccessMessage] = "درخواست ارتقای سطح شما باموفقیت ثبت شده است.";
-                    return RedirectToAction("Index", "Home");
+                    //If User Select Doctor Role 
+                    if (model.RoleName == "doctor")
+                    {
+                        TempData[SuccessMessage] = "درخواست ارتقای سطح شما باموفقیت ثبت شده است.";
+                        return RedirectToAction("Index", "Home", new { area = "Doctor" });
+                    }
+
+                    //If User Select seller Role 
+                    if (model.RoleName == "seller")
+                    {
+                        TempData[SuccessMessage] = "درخواست ارتقای سطح شما باموفقیت ثبت شده است.";
+                        return RedirectToAction("Index", "Home", new { area = "Market" });
+                    }
+
+                    //If User Select Consultant Role 
+                    if (model.RoleName == "Consultant")
+                    {
+                        TempData[SuccessMessage] = "درخواست ارتقای سطح شما باموفقیت ثبت شده است.";
+                        return RedirectToAction("Index", "Home", new { area = "Consultant" });
+                    }
+
+                    //If User Select Nurse Role 
+                    if (model.RoleName == "Nurse")
+                    {
+                        TempData[SuccessMessage] = "درخواست ارتقای سطح شما باموفقیت ثبت شده است.";
+                        return RedirectToAction("Index", "Home", new { area = "Nurse" });
+                    }
+
+                    //If User Select Labratory Role 
+                    if (model.RoleName == "Labratory")
+                    {
+                        TempData[SuccessMessage] = "درخواست ارتقای سطح شما باموفقیت ثبت شده است.";
+                        return RedirectToAction("Index", "Home", new { area = "Laboratory" });
+                    }
+
+                    //If User Select pharmacy Role 
+                    if (model.RoleName == "pharmacy")
+                    {
+                        TempData[SuccessMessage] = "درخواست ارتقای سطح شما باموفقیت ثبت شده است.";
+                        return RedirectToAction("Index", "Home", new { area = "Pharmacy" });
+                    }
                 }
             }
 

@@ -35,6 +35,12 @@ namespace DoctorFAM.Application.Services.Implementation
             await _organization.AddOrganizationMember(member);
         }
 
+        //Is Exist Any Waiting Organization With This Current User 
+        public async Task<bool?> IsExistAnyWaitingOrganizationWithThisCurrentUser(ulong userId)
+        {
+            return await _organization.IsExistAnyWaitingOrganizationWithThisCurrentUser(userId);
+        }
+
         public async Task<Organization?> GetOrganizationByUserId(ulong userId)
         {
             return await _organization.GetOrganizationByUserId(userId);

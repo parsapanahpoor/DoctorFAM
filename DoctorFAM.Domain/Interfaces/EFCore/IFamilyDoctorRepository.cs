@@ -52,6 +52,12 @@ namespace DoctorFAM.Domain.Interfaces
 
         #region Admin And Supporter Side 
 
+        //Count Of Awaiting Family Doctor Requests
+        Task<int> CountOfAwaitingFamilyDoctorRequests();
+
+        //Count Of Accepted Family Doctor Requests
+        Task<int> CountOfAcceptedFamilyDoctorRequests();
+
         //Get List Of Doctor Population Covered By Doctor Id
         Task<List<UserSelectedFamilyDoctor>?> GetListOfDoctorPopulationCoveredByDoctorId(ulong doctorId);
 

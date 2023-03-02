@@ -6,6 +6,7 @@ using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.Doctors;
 using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo;
+using DoctorFAM.Domain.ViewModels.Admin.Doctors.UsersInDoctorPopulationCovered;
 using DoctorFAM.Domain.ViewModels.Admin.FamilyDoctor;
 using DoctorFAM.Domain.ViewModels.Admin.IncomingExcelFile;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo;
@@ -204,6 +205,9 @@ namespace DoctorFAM.Application.Services.Interfaces
         #endregion
 
         #region Admin Side 
+
+        //Count Of Users In Doctors Population Covered
+        Task<CountOfUsersInDoctorsPopulationCovered> FillCountOfUsersInDoctorsPopulationCovered();
 
         //List Of Doctors Population Covered Count Detail
         Task<List<ListOfDoctorsPopulationCoveredCountDetailViewModel>> ListOfDoctorsPopulationCoveredCountDetail();

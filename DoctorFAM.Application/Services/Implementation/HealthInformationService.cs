@@ -15,6 +15,7 @@ using DoctorFAM.Domain.ViewModels.Admin.HealthInformation.RadioFAM.Category;
 using DoctorFAM.Domain.ViewModels.Admin.HealthInformation.TVFAM.Category;
 using DoctorFAM.Domain.ViewModels.Admin.HealthInformation.TVFAM.Video;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.HealthInformation.TVFAM;
+using DoctorFAM.Domain.ViewModels.Site.HealthInformation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -456,7 +457,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
             var selected = await _healthinformationRepository.GetListOfHealthInformationSelectedCategories(healthFAM.Id);
 
-            if (selected  != null && selected.Any())
+            if (selected != null && selected.Any())
             {
                 foreach (var item in selected)
                 {
@@ -536,7 +537,7 @@ namespace DoctorFAM.Application.Services.Implementation
         }
 
         //Create TV FAM video From Doctor Side
-        public async Task<bool> CreateTVFAMvideoFromDoctorSide(CreateTVFAMVideDoctorPanelViewModel model , ulong userId)
+        public async Task<bool> CreateTVFAMvideoFromDoctorSide(CreateTVFAMVideDoctorPanelViewModel model, ulong userId)
         {
             #region Get Owner Organization By EmployeeId 
 
@@ -625,7 +626,7 @@ namespace DoctorFAM.Application.Services.Implementation
         }
 
         //Edit TV FAM Video Doctor Side 
-        public async Task<bool> EditTVFAMVideoDoctorSide(EditTVFAMVideoDoctorPanelViewModel model , ulong ownerId)
+        public async Task<bool> EditTVFAMVideoDoctorSide(EditTVFAMVideoDoctorPanelViewModel model, ulong ownerId)
         {
             #region Get Owner Organization By EmployeeId 
 
@@ -775,7 +776,7 @@ namespace DoctorFAM.Application.Services.Implementation
         }
 
         //Delete Health Information Doctor Panel 
-        public async Task<bool> DeleteTVFAMDoctorPanel(ulong healthInfoId , ulong userId)
+        public async Task<bool> DeleteTVFAMDoctorPanel(ulong healthInfoId, ulong userId)
         {
             #region Get Owner Organization By EmployeeId 
 
@@ -1062,7 +1063,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
                 var source = $"{PathTools.HealthInformationAttachmentFilesServerPath}{model.AttachmentFileName}";
 
-                File.Copy(source , destanation);
+                File.Copy(source, destanation);
             }
 
             #endregion
@@ -1646,6 +1647,33 @@ namespace DoctorFAM.Application.Services.Implementation
         public async Task<List<HealthInformation>?> GetLastest3PodcastForShowInAdminPanel()
         {
             return await _healthinformationRepository.GetLastest3PodcastForShowInAdminPanel();
+        }
+
+        //Get Lastest Radio FAM Podcasts For Show In Landing Page
+        public async Task<List<RadioFAMAPIViewModel>?> GetLastestRadioFAMPodcastsForShowInLandingPage()
+        {
+            var model = await _healthinformationRepository.GetLastestRadioFAMPodcastsForShowInLandingPage();
+
+            #region Initial ReturnModel 
+
+            List<RadioFAMAPIViewModel> returnModel = new List<RadioFAMAPIViewModel>();
+
+            if (model != null && model.Any())
+            {
+                foreach (var item in model)
+                {
+                    RadioFAMAPIViewModel radio = new RadioFAMAPIViewModel();
+
+                    radio.musicName = item.Id.ToString();
+                    radio.musicSrc = $"{PathTools.PodcastsForLandingPageFilesPath}{item.File}";
+
+                    returnModel.Add(radio);
+                }
+            }
+
+            #endregion
+
+            return returnModel;
         }
 
         #endregion
