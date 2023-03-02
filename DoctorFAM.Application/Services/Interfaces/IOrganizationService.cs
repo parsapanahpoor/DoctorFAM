@@ -22,6 +22,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         Task AddOrganizationMember(OrganizationMember member);
 
+        //Is Exist Any Waiting Organization With This Current User 
+        Task<bool?> IsExistAnyWaitingOrganizationWithThisCurrentUser(ulong userId);
+
         Task<Organization?> GetOrganizationByUserId(ulong userId);
 
         Task<Organization?> GetPharmacyOrganizationByUserId(ulong userId);

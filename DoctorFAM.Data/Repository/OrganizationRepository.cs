@@ -48,6 +48,22 @@ namespace DoctorFAM.Data.Repository
             return await _context.Organizations.FirstOrDefaultAsync(p => p.Id == member.OrganizationId && !p.IsDelete);
         }
 
+        //Is Exist Any Waiting Organization With This Current User 
+        public async Task<bool?> IsExistAnyWaitingOrganizationWithThisCurrentUser(ulong userId)
+        {
+            var members = await _context.OrganizationMembers.Where(p => !p.IsDelete && p.UserId == userId).ToListAsync();
+
+            foreach (var item in members)
+            {
+                var organization = await _context.Organizations.FirstOrDefaultAsync(p => !p.IsDelete && p.Id == item.OrganizationId);
+                if (organization == null) return true;
+                if (organization.OrganizationInfoState == Domain.Entities.Doctors.OrganizationInfoState.WatingForConfirm) return true;
+                if (organization.OrganizationInfoState == Domain.Entities.Doctors.OrganizationInfoState.JustRegister) return true;
+            }
+
+            return false;
+        }
+
         public async Task<Organization?> GetPharmacyOrganizationByUserId(ulong userId)
         {
             var member = await _context.OrganizationMembers.Include(p=> p.Organization)

@@ -12,6 +12,9 @@ namespace DoctorFAM.Domain.Interfaces
     {
         #region General
 
+        //Is Exist Any Waiting Organization With This Current User 
+        Task<bool?> IsExistAnyWaitingOrganizationWithThisCurrentUser(ulong userId);
+
         Task<ulong> AddOrganizationWithReturnId(Organization organization);
 
         Task AddOrganizationMember(OrganizationMember member);
