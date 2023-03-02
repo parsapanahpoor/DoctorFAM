@@ -291,20 +291,21 @@
                                 <h6> با استفاده از سرویسهای جانبی سامانه, بدون نیاز به مراجعه به پزشک, پیوسته وضعیت سلامت خود را ارزیابی نمایید. </h6>
                                 <div class="row">
 
-
                                     <div class="col-xl-3  ">
                                         <div class="gauge">
-                                            <canvas data-type="radial-gauge" data-width="280" data-height="280" data-units="GFR"
-                                                    data-title="false" data-value="@GFRResult" data-animate-on-init="true" data-animated-value="true"
-                                                    data-min-value="0" data-max-value="105" data-major-ticks="0,15,30,45,60,75,90,105"
+                                            <canvas data-type="radial-gauge" data-width="280" data-height="280" data-units="BMI"
+                                                    data-title="false" data-value="@bmiResult" data-animate-on-init="true" data-animated-value="true"
+                                                    data-min-value="15" data-max-value="45" data-major-ticks="15,20,25,30,35,40,45"
                                                     data-minor-ticks="5" data-stroke-ticks="false" data-highlights='[
-                        { "from": 0, "to": 15, "color": "rgba(255,0,0)" },
-                        { "from": 15, "to": 30, "color": "rgba(255,90,0)" },
-                        { "from": 30, "to": 45, "color": "rgba(255,150,0)" },
-                        { "from": 45, "to": 60, "color": "rgba(255,170,0)" },
-                        { "from": 60, "to": 75, "color": "rgba(255,215,0)" },
-                        { "from": 75, "to": 90, "color": "rgba(255,255,0)" },
-                        { "from": 90, "to": 105, "color": "rgba(0,255,0)" }
+
+
+
+                         { "from": 15, "to": 20, "color": "rgba(0, 0, 255)" },
+                        { "from": 20, "to": 25, "color": "rgba(0, 255, 0)" },
+                        { "from": 25, "to": 30, "color": "rgba(255,255,0)" },
+                        { "from": 30, "to": 35, "color": "rgba(255,165,0)" },
+                        { "from": 35, "to": 40, "color": "rgba(255,0,0)" },
+                        { "from": 40, "to": 45, "color": "rgba(111,8,36)" }
 
                     ]' data-color-plate="transparent" data-color-major-ticks="black" data-color-minor-ticks="0d0d0d"
                                                     data-color-title="#fff" data-color-units="#000" data-color-numbers="#000"
@@ -312,19 +313,17 @@
                                                     data-animation-rule="bounce" data-animation-duration="500" data-border-outer-width="0"
                                                     data-border-middle-width="0" data-border-inner-width="0"></canvas>
                                         </div>
-
-
                                         <div>
 
                                             <span>
-                                                عملکرد کلیه
+                                                شاخص توده بدنی
                                             </span>
                                         </div>
-                                        <button onclick="ShowGFRModal()" type="button" class="btn-SelfTest" data-toggle="modal" data-target="#exampleModal">
-                                            محاسبه GFR
+                                        <button onclick="ShowBMIModal()" type="button" class="btn-SelfTest" data-toggle="modal" data-target="#exampleModal">
+                                            محاسبه BMI
                                         </button>
-
                                     </div>
+                                  
 
 
                                     <div class="col-md-6  mt-5">
@@ -359,21 +358,23 @@
 
 
 
+                                
+
+
+
                                     <div class="col-xl-3  ">
                                         <div class="gauge">
-                                            <canvas data-type="radial-gauge" data-width="280" data-height="280" data-units="BMI"
-                                                    data-title="false" data-value="@bmiResult" data-animate-on-init="true" data-animated-value="true"
-                                                    data-min-value="15" data-max-value="45" data-major-ticks="15,20,25,30,35,40,45"
+                                            <canvas data-type="radial-gauge" data-width="280" data-height="280" data-units="GFR"
+                                                    data-title="false" data-value="@GFRResult" data-animate-on-init="true" data-animated-value="true"
+                                                    data-min-value="0" data-max-value="105" data-major-ticks="0,15,30,45,60,75,90,105"
                                                     data-minor-ticks="5" data-stroke-ticks="false" data-highlights='[
-
-
-
-                         { "from": 15, "to": 20, "color": "rgba(0, 0, 255)" },
-                        { "from": 20, "to": 25, "color": "rgba(0, 255, 0)" },
-                        { "from": 25, "to": 30, "color": "rgba(255,255,0)" },
-                        { "from": 30, "to": 35, "color": "rgba(255,165,0)" },
-                        { "from": 35, "to": 40, "color": "rgba(255,0,0)" },
-                        { "from": 40, "to": 45, "color": "rgba(111,8,36)" }
+                        { "from": 0, "to": 15, "color": "rgba(255,0,0)" },
+                        { "from": 15, "to": 30, "color": "rgba(255,90,0)" },
+                        { "from": 30, "to": 45, "color": "rgba(255,150,0)" },
+                        { "from": 45, "to": 60, "color": "rgba(255,170,0)" },
+                        { "from": 60, "to": 75, "color": "rgba(255,215,0)" },
+                        { "from": 75, "to": 90, "color": "rgba(255,255,0)" },
+                        { "from": 90, "to": 105, "color": "rgba(0,255,0)" }
 
                     ]' data-color-plate="transparent" data-color-major-ticks="black" data-color-minor-ticks="0d0d0d"
                                                     data-color-title="#fff" data-color-units="#000" data-color-numbers="#000"
@@ -381,15 +382,18 @@
                                                     data-animation-rule="bounce" data-animation-duration="500" data-border-outer-width="0"
                                                     data-border-middle-width="0" data-border-inner-width="0"></canvas>
                                         </div>
+
+
                                         <div>
 
                                             <span>
-                                                شاخص توده بدنی
+                                                عملکرد کلیه
                                             </span>
                                         </div>
-                                        <button onclick="ShowBMIModal()" type="button" class="btn-SelfTest" data-toggle="modal" data-target="#exampleModal">
-                                            محاسبه BMI
+                                        <button onclick="ShowGFRModal()" type="button" class="btn-SelfTest" data-toggle="modal" data-target="#exampleModal">
+                                            محاسبه GFR
                                         </button>
+
                                     </div>
 
 

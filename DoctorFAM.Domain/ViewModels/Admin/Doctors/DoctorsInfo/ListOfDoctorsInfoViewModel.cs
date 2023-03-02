@@ -33,6 +33,16 @@ namespace DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo
 
         public int? MedicalSystemCode { get; set; }
 
+        public int? CountOfAcceptedDoctors { get; set; }
+
+        public int? CountOfNewRegisterDoctors { get; set; }
+
+        public int? CountOfDeclineDoctors { get; set; }
+
+        public int? CountOfWaitingDoctors { get; set; }
+
+        public int? CountOfDeletedDoctors { get; set; }
+
         public DoctorsState DoctorsState { get; set; }
 
         #endregion

@@ -3,6 +3,7 @@ using DoctorFAM.Domain.Entities.FamilyDoctor.ParsaSystem;
 using DoctorFAM.Domain.Entities.FamilyDoctor.VIPSystem;
 using DoctorFAM.Domain.Entities.Interest;
 using DoctorFAM.Domain.Entities.Organization;
+using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.Doctors;
 using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo;
 using DoctorFAM.Domain.ViewModels.Admin.FamilyDoctor;
@@ -157,6 +158,21 @@ namespace DoctorFAM.Application.Services.Interfaces
         Task<RequestForUploadExcelFileDetailAdminSideViewModel?> FillRequestForUploadExcelFileDetailAdminSideViewModel(ulong requestId);
 
         Task<Doctor?> GetDoctorById(ulong doctorId);
+
+        //Count Of Accepted Doctors
+        Task<int?> CountOfAcceptedDoctors();
+
+        //Count Of Decline Doctors
+        Task<int?> CountOfDeclineDoctors();
+
+        //Count Of Waiting Doctors
+        Task<int?> CountOfWaitingDoctors();
+
+        //Count Of New Register Doctors
+        Task<int?> CountOfRegisterDoctors();
+
+        //Count Of Deleted Doctors
+        Task<int?> CountOfDeletedDoctors();
 
         Task<bool> IsExistAnyDoctorByUserId(ulong userId);
 

@@ -11,6 +11,7 @@ using DoctorFAM.Domain.ViewModels.Site.BloodPressure;
 using DoctorFAM.Domain.ViewModels.Site.Diabet;
 using DoctorFAM.Domain.ViewModels.Site.Doctor;
 using DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -212,6 +213,21 @@ namespace DoctorFAM.Domain.Interfaces
 
         //Get List Of Accepted Doctors 
         Task<List<User>> GetListOfAcceptedDoctors();
+
+        //Count Of Accepted Doctors
+        Task<int?> CountOfAcceptedDoctors();
+
+        //Count Of Decline Doctors
+        Task<int?> CountOfDeclineDoctors();
+
+        //Count Of Waiting Doctors
+        Task<int?> CountOfWaitingDoctors();
+
+        //Count Of New Register Doctors
+        Task<int?> CountOfRegisterDoctors();
+
+        //Count Of Deleted Doctors
+        Task<int?> CountOfDeletedDoctors();
 
         Task<ListOfDoctorsInfoViewModel> FilterDoctorsInfoAdminSide(ListOfDoctorsInfoViewModel filter);
 

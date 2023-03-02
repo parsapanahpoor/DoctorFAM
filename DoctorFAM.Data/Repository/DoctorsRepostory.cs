@@ -647,6 +647,55 @@ namespace DoctorFAM.Data.Repository
             return users;
         }
 
+        //Count Of Accepted Doctors
+        public async Task<int?> CountOfAcceptedDoctors()
+        {
+            return await _context.Organizations
+                .Where(s => !s.IsDelete && s.OrganizationType == Domain.Enums.Organization.OrganizationType.DoctorOffice
+                        && s.OrganizationInfoState == OrganizationInfoState.Accepted)
+                .OrderByDescending(s => s.CreateDate)
+                .CountAsync();
+        }
+
+        //Count Of Decline Doctors
+        public async Task<int?> CountOfDeclineDoctors()
+        {
+            return await _context.Organizations
+                .Where(s => !s.IsDelete && s.OrganizationType == Domain.Enums.Organization.OrganizationType.DoctorOffice
+                        && s.OrganizationInfoState == OrganizationInfoState.Rejected)
+                .OrderByDescending(s => s.CreateDate)
+                .CountAsync();
+        }
+
+        //Count Of Waiting Doctors
+        public async Task<int?> CountOfWaitingDoctors()
+        {
+            return await _context.Organizations
+                .Where(s => !s.IsDelete && s.OrganizationType == Domain.Enums.Organization.OrganizationType.DoctorOffice
+                        && s.OrganizationInfoState == OrganizationInfoState.WatingForConfirm)
+                .OrderByDescending(s => s.CreateDate)
+                .CountAsync();
+        }
+
+        //Count Of New Register Doctors
+        public async Task<int?> CountOfRegisterDoctors()
+        {
+            return await _context.Organizations
+                .Where(s => !s.IsDelete && s.OrganizationType == Domain.Enums.Organization.OrganizationType.DoctorOffice
+                        && s.OrganizationInfoState == OrganizationInfoState.JustRegister)
+                .OrderByDescending(s => s.CreateDate)
+                .CountAsync();
+        }
+
+        //Count Of Deleted Doctors
+        public async Task<int?> CountOfDeletedDoctors()
+        {
+            return await _context.Organizations
+                .Where(s => s.IsDelete && s.OrganizationType == Domain.Enums.Organization.OrganizationType.DoctorOffice)
+                .OrderByDescending(s => s.CreateDate)
+                .CountAsync();
+        }
+
         public async Task<ListOfDoctorsInfoViewModel> FilterDoctorsInfoAdminSide(ListOfDoctorsInfoViewModel filter)
         {
             var query = _context.Organizations
@@ -769,7 +818,7 @@ namespace DoctorFAM.Data.Repository
                 Email = p.User.Email,
                 Mobile = p.User.Mobile,
                 FullName = (!string.IsNullOrEmpty(p.User.Username)) ? p.User.Username : "وارد نشده ",
-                NationalCode = p.User.NationalId,
+                NationalCode = (!string.IsNullOrEmpty(p.User.NationalId)) ? p.User.NationalId : "وارد نشده ",
                 FirstName = (!string.IsNullOrEmpty(p.User.FirstName) ) ? p.User.FirstName : "وارد نشده ",
                 LastName = (!string.IsNullOrEmpty(p.User.LastName) ) ? p.User.LastName : "وارد نشده ",
             }).ToListAsync();
