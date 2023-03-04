@@ -56,7 +56,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateTVFAM(CreateTVFAMVideDoctorPanelViewModel model)
+        public async Task<IActionResult> CreateTVFAM(CreateTVFAMVideDoctorPanelViewModel model , IFormFile? ImageName)
         {
             #region Model State Validation 
 
@@ -76,7 +76,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
             #region Create Video 
 
-            var res = await _healthInformationService.CreateTVFAMvideoFromDoctorSide(model, User.GetUserId());
+            var res = await _healthInformationService.CreateTVFAMvideoFromDoctorSide(model, User.GetUserId() , ImageName);
             if (res)
             {
                 TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
@@ -167,7 +167,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditTVFAMVideo(EditTVFAMVideoDoctorPanelViewModel model)
+        public async Task<IActionResult> EditTVFAMVideo(EditTVFAMVideoDoctorPanelViewModel model, IFormFile? Image)
         {
             #region Model State Validation 
 
@@ -187,7 +187,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
             #region Edit TV FAM Video 
 
-            var res = await _healthInformationService.EditTVFAMVideoDoctorSide(model, User.GetUserId());
+            var res = await _healthInformationService.EditTVFAMVideoDoctorSide(model, User.GetUserId(),Image);
             if (res)
             {
                 TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
@@ -251,7 +251,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreatePodcast(CreateTVFAMVideDoctorPanelViewModel model)
+        public async Task<IActionResult> CreatePodcast(CreateTVFAMVideDoctorPanelViewModel model, IFormFile? ImageName)
         {
             #region Model State Validation 
 
@@ -271,7 +271,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
             #region Create Podcast 
 
-            var res = await _healthInformationService.CreatePodcastFromDoctorSide(model, User.GetUserId());
+            var res = await _healthInformationService.CreatePodcastFromDoctorSide(model, User.GetUserId() , ImageName);
             if (res)
             {
                 TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
@@ -314,7 +314,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditPodcast(EditTVFAMVideoDoctorPanelViewModel model)
+        public async Task<IActionResult> EditPodcast(EditTVFAMVideoDoctorPanelViewModel model, IFormFile? Image)
         {
             #region Model State Validation 
 
@@ -334,7 +334,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
             #region Edit Podcast 
 
-            var res = await _healthInformationService.EditPodcastDoctorSide(model, User.GetUserId());
+            var res = await _healthInformationService.EditPodcastDoctorSide(model, User.GetUserId(), Image);
             if (res)
             {
                 TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
@@ -407,13 +407,13 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
             #region Create Podcast 
 
-            var res = await _healthInformationService.CreatePodcastFromDoctorSide(model, User.GetUserId());
-            if (res)
-            {
-                TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+            //var res = await _healthInformationService.CreatePodcastFromDoctorSide(model, User.GetUserId());
+            //if (res)
+            //{
+            //    TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
 
-                return RedirectToAction(nameof(FilterStatus));
-            }
+            //    return RedirectToAction(nameof(FilterStatus));
+            //}
 
             #endregion
 

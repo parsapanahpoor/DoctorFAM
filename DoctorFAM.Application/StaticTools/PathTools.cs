@@ -125,6 +125,12 @@ namespace DoctorFAM.Application.StaticTools
         public static readonly string HealthInformationAttachmentFilesPath = "/content/images/HealthInformationAttachmentFiles/Files/";
         public static readonly string PodcastsForLandingPageFilesPath =  "/content/images/HealthInformationAttachmentFiles/PodcastsForLandingPage/";
 
+        public static readonly string HealthInformationAttachmentFilesImagePath = "/content/images/HealthInformationAttachmentFiles/main/";
+        public static readonly string HealthInformationAttachmentFilesImageServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/HealthInformationAttachmentFiles/main/");
+
+        public static readonly string HealthInformationAttachmentFilesImagePathThumb = "/content/images/HealthInformationAttachmentFiles/thumb/";
+        public static readonly string HealthInformationAttachmentFilesImagePathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/HealthInformationAttachmentFiles/thumb/");
+
         #endregion
 
         #region Honor Image
