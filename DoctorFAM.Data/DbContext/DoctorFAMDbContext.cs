@@ -447,6 +447,8 @@ namespace DoctorFAM.Data.DbContext
 
         public DbSet<ChatGroup> ChatGroups { get; set; }
 
+        public DbSet<ChatGroupMember> ChatGroupMembers { get; set; }
+
         #endregion
 
         #endregion

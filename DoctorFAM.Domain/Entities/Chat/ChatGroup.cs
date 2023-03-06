@@ -18,6 +18,8 @@ namespace DoctorFAM.Domain.Entities.Chat
         [MaxLength(110)]
         public string GroupToken { get; set; }
 
+        public string ImageName { get; set; }
+
         public ulong OwnerId { get; set; }
 
         #endregion
