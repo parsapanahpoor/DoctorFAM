@@ -54,7 +54,38 @@ namespace DoctorFAM.Web.Hubs.Implementation
 
         #region Create Chat Group
 
+        /// <summary>
+        /// You Can Write This Method Via Controller And Send Request From Front End By Ajax To The User 
+        /// </summary>
+        /// <param name="groupName"></param>
+        /// <returns></returns>
 
+        public async Task CreateGroup(string groupName)
+        {
+            #region Create Chat Group 
+
+            #region Get Current User 
+
+            var httpContext = Context.GetHttpContext();
+
+            if (httpContext == null) return;
+
+            // get user id
+            var userId = httpContext.User.GetUserId();
+
+            #endregion
+
+            var group = await _chatService.CreateChatGroupFromUser(groupName, userId);
+
+            if (group == null)
+            {
+                await Clients.Caller.SendAsync("NewGroup", "Error");
+            }
+
+            await Clients.Caller.SendAsync("NewGroup", groupName, group.GroupToken);
+
+            #endregion
+        }
 
         #endregion
     }

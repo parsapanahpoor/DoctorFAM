@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DoctorFAM.Domain.Entities.Chat;
+using DoctorFAM.Domain.ViewModels.ChatRoom;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +12,11 @@ namespace DoctorFAM.Application.Services.Interfaces
     {
         #region Chat Room Area 
 
+        //Create Chat Group From User
+        Task<ChatGroup?> CreateChatGroupFromUser(string groupName, ulong userId);
 
+        //Get List Of User Lists
+        Task<List<ListOfCurrentUserChatRooms>?> GetListOfUserLists(ulong userId);
 
         #endregion
     }

@@ -1,4 +1,8 @@
-﻿@{
+﻿@model List<DoctorFAM.Domain.ViewModels.ChatRoom.ListOfCurrentUserChatRooms>
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.Extensions
+
+@{
     ViewData["Title"] = "دکترفم چت";
 }
 
@@ -30,6 +34,41 @@
 
             var text = $("#messageText").val();
             connection.invoke("SendMessage", text);
+        }
+
+        //#endregion
+
+        //#region Create Group
+
+        connection.on("NewGroup", appendGroup);
+
+        //Add Group To The User Group List
+        function appendGroup(groupName, token) {
+
+            if (groupName === "Error") {
+                ShowMessage("اعلان", "عملیات باشکست مواجه شده است.", "error");
+            } 
+            else {
+                ShowMessage("اعلان", "عملیات باموفقیت انجام شده است.", "success");
+                $(".rooms ul").append(`
+                                     <li data-id='${token}'>
+                                    ${groupName}
+                                    <img src="/img/Default.jpg" />
+                                    <span></span>
+                                </li>
+                                    `);
+                $("#exampleModal").modal('toggle');
+            }
+        }
+
+        //Create Group
+        function insertGroup(event) {
+            event.preventDefault();
+            console.log('send');
+            var text = $("#groupName").val();
+            if (text) {
+                connection.invoke("CreateGroup", text);
+            }
         }
 
         //#endregion
@@ -90,86 +129,50 @@
                     <i class="fa fas fa-search"></i>
                 </form>
             </li>
-            <li>
-                Global
-                <img src="/ChatRoom/img/Default.jpg" />
-                <span>17:20 1400/01/15 </span>
-            </li>
-            <li class="active">
-                علی
-                <img src="/ChatRoom/img/Default.jpg" />
-                <span>17:20 1400/01/15 </span>
 
-            </li>
             <li>
-                رضا
-                <img src="/ChatRoom/img/Default.jpg" />
-                <span>17:20 1400/01/15 </span>
+                <button data-toggle="modal" data-target="#exampleModal" class="btn btn-success btn-block" style="width: 100%">
+                    <i class="fa fa-plus"></i>
+                    ایجاد گروه جدید
+                </button>
             </li>
-            <li>
-                Global
-                <img src="/ChatRoom/img/Default.jpg" />
-                <span>17:20 1400/01/15 </span>
-            </li>
-            <li>
-                علی
-                <img src="/ChatRoom/img/Default.jpg" />
-                <span>17:20 1400/01/15 </span>
 
-            </li>
-            <li>
-                رضا
-                <img src="/ChatRoom/img/Default.jpg" />
-                <span>17:20 1400/01/15 </span>
-            </li>
-            <li>
-                Global
-                <img src="/ChatRoom/img/Default.jpg" />
-                <span>17:20 1400/01/15 </span>
-            </li>
-            <li>
-                علی
-                <img src="/ChatRoom/img/Default.jpg" />
-                <span>17:20 1400/01/15 </span>
+            @if (Model != null && Model.Any())
+            {
+                foreach (var item in Model)
+                {
+                    <li>
+                        @item.ChatGroup.GroupTitle
+                        <img src="/ChatRoom/img/Default.jpg" />
+                        <span>
+                            @((item.Chat != null) ? item.Chat.CreateDate.ToShamsiDateTime() : "-")
+                        </span>
+                    </li>
+                }
+            }
 
-            </li>
-            <li>
-                رضا
-                <img src="/ChatRoom/img/Default.jpg" />
-                <span>17:20 1400/01/15 </span>
-            </li>
-            <li>
-                Global
-                <img src="/ChatRoom/img/Default.jpg" />
-                <span>17:20 1400/01/15 </span>
-            </li>
-            <li>
-                علی
-                <img src="/ChatRoom/img/Default.jpg" />
-                <span>17:20 1400/01/15 </span>
-
-            </li>
-            <li>
-                رضا
-                <img src="/ChatRoom/img/Default.jpg" />
-                <span>17:20 1400/01/15 </span>
-            </li>
-            <li>
-                Global
-                <img src="/ChatRoom/img/Default.jpg" />
-                <span>17:20 1400/01/15 </span>
-            </li>
-            <li>
-                علی
-                <img src="/ChatRoom/img/Default.jpg" />
-                <span>17:20 1400/01/15 </span>
-
-            </li>
-            <li>
-                رضا
-                <img src="/ChatRoom/img/Default.jpg" />
-                <span>17:20 1400/01/15 </span>
-            </li>
         </Ul>
+    </div>
+</div>
+
+
+@*Modal*@
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form class="modal-content" onsubmit="insertGroup(event)">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">ایجاد گروه</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="groupName" class="form-control" placeholder="نام گروه را وارد کنید" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
+                <button type="submit" class="btn btn-success">ایجاد گروه</button>
+            </div>
+        </form>
     </div>
 </div>
