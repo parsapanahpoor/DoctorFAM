@@ -1,4 +1,5 @@
 ﻿using DoctorFAM.Application.Extensions;
+using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Web.Hubs.Interface;
 using Microsoft.AspNetCore.SignalR;
@@ -10,7 +11,12 @@ namespace DoctorFAM.Web.Hubs.Implementation
     {
         #region Ctor 
 
-      
+        private readonly IChatService _chatService;
+
+        public ChatRoomHub(IChatService chatService)
+        {
+            _chatService = chatService;
+        }
 
         #endregion
 
@@ -43,6 +49,12 @@ namespace DoctorFAM.Web.Hubs.Implementation
 
             await Clients.Caller.SendAsync("ReceiveMessage", $"{userName} And {userId} : {text}");
         }
+
+        #endregion
+
+        #region Create Chat Group
+
+
 
         #endregion
     }

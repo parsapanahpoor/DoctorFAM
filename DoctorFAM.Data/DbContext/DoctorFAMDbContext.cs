@@ -4,6 +4,7 @@ using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Advertisement;
 using DoctorFAM.Domain.Entities.ASCVD;
 using DoctorFAM.Domain.Entities.BMI;
+using DoctorFAM.Domain.Entities.Chat;
 using DoctorFAM.Domain.Entities.Consultant;
 using DoctorFAM.Domain.Entities.Contact;
 using DoctorFAM.Domain.Entities.CooperationRequest;
@@ -437,6 +438,14 @@ namespace DoctorFAM.Data.DbContext
         #region Insurance
 
         public DbSet<Insurance> Insurance { get; set; }
+
+        #endregion
+
+        #region Chat 
+
+        public DbSet<Chat> Chats { get; set; }
+
+        public DbSet<ChatGroup> ChatGroups { get; set; }
 
         #endregion
 
