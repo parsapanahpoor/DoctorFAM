@@ -4,6 +4,7 @@ using DoctorFAM.Data.DbContext;
 using DoctorFAM.Domain.SharedResource;
 using DoctorFAM.IoC;
 using DoctorFAM.Web.Hubs;
+using DoctorFAM.Web.Hubs.Implementation;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Localization;
@@ -299,6 +300,7 @@ SiteCurrentContext.Configure(app.Services.GetRequiredService<IHttpContextAccesso
 
 app.UseEndpoints(configure => {
     configure.MapHub<NotificationHub>("/hub/Notification");
+    configure.MapHub<ChatRoomHub>("/hub/ChatRoom");
 });
 
 app.MapControllerRoute(

@@ -1,0 +1,175 @@
+﻿@{
+    ViewData["Title"] = "دکترفم چت";
+}
+
+@section Scripts
+    {
+    <script src="/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
+
+    <script>
+
+        //#region Create Connection
+
+        var connection = new signalR.HubConnectionBuilder()
+            .withUrl("/hub/ChatRoom")
+            .build();
+
+        //#endregion
+
+        //#Send User Writed Message To The Server
+
+        connection.on("ReceiveMessage", receive);
+
+        function receive(text) {
+            console.log(text);
+        }
+
+        //invole = فراخوانی کردن
+        function sendMessage(event) {
+            event.preventDefault();
+
+            var text = $("#messageText").val();
+            connection.invoke("SendMessage", text);
+        }
+
+        //#endregion
+
+        connection.start();
+
+    </script>
+
+}
+
+<div class="row">
+    <div class="col-8 chat-content">
+        <div class="header">
+            <img src="/ChatRoom/img/Default.jpg" />
+            <h2>علی</h2>
+        </div>
+        <div class="chats">
+            <div class="chat-me">
+                <div class="chat">
+                    <p>سلام خوبی چه خبر ؟ </p>
+                    <span>2020/06/05</span>
+                </div>
+            </div>
+            <div class="chat-you">
+                <div class="chat">
+                    <p>سلام ممنون یه خبر خیلییی خوبی دارم برات</p>
+                    <span>2020/06/05</span>
+                </div>
+            </div>
+            <div class="chat-me">
+                <div class="chat">
+                    <p>چی ؟!!</p>
+                    <span>2020/06/05</span>
+                </div>
+            </div>
+            <div class="chat-you">
+                <div class="chat">
+                    <p>توی سایت codeYad دوره SignalR رایگان برگزار شده</p>
+                    <span>2020/06/05</span>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <form onsubmit="sendMessage(event)">
+                <input id="messageText" type="text" class="form-control" placeholder="متن خود را وارد کنید">
+                <button class="btn btn-success">
+                    ارسال
+                    <i class="fa fa-send"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+    <div class="col-4 rooms">
+        <Ul>
+            <li>
+                <form>
+                    <input type="text" placeholder="جستوجو کنید" class="form-control" />
+                    <i class="fa fas fa-search"></i>
+                </form>
+            </li>
+            <li>
+                Global
+                <img src="/ChatRoom/img/Default.jpg" />
+                <span>17:20 1400/01/15 </span>
+            </li>
+            <li class="active">
+                علی
+                <img src="/ChatRoom/img/Default.jpg" />
+                <span>17:20 1400/01/15 </span>
+
+            </li>
+            <li>
+                رضا
+                <img src="/ChatRoom/img/Default.jpg" />
+                <span>17:20 1400/01/15 </span>
+            </li>
+            <li>
+                Global
+                <img src="/ChatRoom/img/Default.jpg" />
+                <span>17:20 1400/01/15 </span>
+            </li>
+            <li>
+                علی
+                <img src="/ChatRoom/img/Default.jpg" />
+                <span>17:20 1400/01/15 </span>
+
+            </li>
+            <li>
+                رضا
+                <img src="/ChatRoom/img/Default.jpg" />
+                <span>17:20 1400/01/15 </span>
+            </li>
+            <li>
+                Global
+                <img src="/ChatRoom/img/Default.jpg" />
+                <span>17:20 1400/01/15 </span>
+            </li>
+            <li>
+                علی
+                <img src="/ChatRoom/img/Default.jpg" />
+                <span>17:20 1400/01/15 </span>
+
+            </li>
+            <li>
+                رضا
+                <img src="/ChatRoom/img/Default.jpg" />
+                <span>17:20 1400/01/15 </span>
+            </li>
+            <li>
+                Global
+                <img src="/ChatRoom/img/Default.jpg" />
+                <span>17:20 1400/01/15 </span>
+            </li>
+            <li>
+                علی
+                <img src="/ChatRoom/img/Default.jpg" />
+                <span>17:20 1400/01/15 </span>
+
+            </li>
+            <li>
+                رضا
+                <img src="/ChatRoom/img/Default.jpg" />
+                <span>17:20 1400/01/15 </span>
+            </li>
+            <li>
+                Global
+                <img src="/ChatRoom/img/Default.jpg" />
+                <span>17:20 1400/01/15 </span>
+            </li>
+            <li>
+                علی
+                <img src="/ChatRoom/img/Default.jpg" />
+                <span>17:20 1400/01/15 </span>
+
+            </li>
+            <li>
+                رضا
+                <img src="/ChatRoom/img/Default.jpg" />
+                <span>17:20 1400/01/15 </span>
+            </li>
+        </Ul>
+    </div>
+</div>

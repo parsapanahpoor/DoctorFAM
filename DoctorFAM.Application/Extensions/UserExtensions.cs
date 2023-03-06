@@ -27,6 +27,20 @@ namespace DoctorFAM.Application.Extensions
             return user.GetUserId();
         }
 
+        public static string GetUsername(this ClaimsPrincipal claimsPrincipal)
+        {
+            var data = claimsPrincipal.Claims.SingleOrDefault(s => s.Type == ClaimTypes.Name);
+
+            return data.ToString();
+        }
+
+        public static string GetUsername(this IPrincipal principal)
+        {
+            var user = (ClaimsPrincipal)principal;
+
+            return user.GetUsername();
+        }
+
         public static string GetUserAvatar(this User user)
         {
             if (!string.IsNullOrEmpty(user.Avatar))

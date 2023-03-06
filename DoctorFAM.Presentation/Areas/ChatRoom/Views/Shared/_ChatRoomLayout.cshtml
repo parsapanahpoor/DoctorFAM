@@ -1,0 +1,23 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <partial name="_ChatRoomHeaderReferences" />
+
+</head>
+
+<body dir="rtl">
+
+    <div class="content">
+        @RenderBody()
+    </div>
+
+        <partial name="_ChatRoomFooterReferences" />
+
+    @await RenderSectionAsync("Scripts", false)
+
+</body>
+
+</html>
