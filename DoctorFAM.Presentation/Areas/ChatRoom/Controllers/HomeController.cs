@@ -1,6 +1,13 @@
 ﻿using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Services.Interfaces;
+using DoctorFAM.Domain.Entities.Account;
+using DoctorFAM.Domain.Entities.Chat;
+using DoctorFAM.Domain.ViewModels.ChatRoom;
+using DoctorFAM.Web.Hubs.Implementation;
+using DoctorFAM.Web.Hubs.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace DoctorFAM.Web.Areas.ChatRoom.Controllers
 {
@@ -10,9 +17,12 @@ namespace DoctorFAM.Web.Areas.ChatRoom.Controllers
 
         private readonly IChatService _chatService;
 
-        public HomeController(IChatService chatService)
+        private IHubContext<ChatRoomHub> _chatRoomHub;
+
+        public HomeController(IChatService chatService, IHubContext<ChatRoomHub> chatHub )
         {
             _chatService = chatService;
+            _chatRoomHub = chatHub;
         }
 
         #endregion
@@ -28,6 +38,30 @@ namespace DoctorFAM.Web.Areas.ChatRoom.Controllers
             #endregion
 
             return View(model);
+        }
+
+        #endregion
+
+        #region Create Group 
+
+        [Authorize]
+        [HttpPost]
+        public async Task CreateGroup([FromForm] CreateGroupViewModel model)
+        {
+            #region Creat Chat Group 
+
+            model.UserId = User.GetUserId();
+
+            var result = await _chatService.CreateChatGroupFromUser(model);
+
+            if (result == null)
+            {
+                await _chatRoomHub.Clients.User(User.GetUserId().ToString()).SendAsync("NewGroup", "ERROR");
+            }
+
+            #endregion
+
+            await _chatRoomHub.Clients.User(User.GetUserId().ToString()).SendAsync("NewGroup", result.GroupTitle, result.GroupToken, result.ImageName);
         }
 
         #endregion

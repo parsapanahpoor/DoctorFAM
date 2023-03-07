@@ -220,5 +220,15 @@ namespace DoctorFAM.Application.StaticTools
         public static readonly string StatusImagePathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/StatusImage/thumb/");
 
         #endregion
+
+        #region Chat Images
+
+        public static readonly string ChatImagesPath = "/content/images/ChatImages/main/";
+        public static readonly string ChatImagesPathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/ChatImages/main/");
+
+        public static readonly string ChatImagesPathThumb = "/content/images/ChatImages/thumb/";
+        public static readonly string ChatImagesPathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/ChatImages/thumb/");
+
+        #endregion
     }
 }

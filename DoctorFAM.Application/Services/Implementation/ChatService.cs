@@ -1,8 +1,11 @@
-﻿using DoctorFAM.Application.Security;
+﻿using DoctorFAM.Application.Extensions;
+using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
+using DoctorFAM.Application.StaticTools;
 using DoctorFAM.Domain.Entities.Chat;
 using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.ChatRoom;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,11 +33,11 @@ namespace DoctorFAM.Application.Services.Implementation
         #region Chat Room Area 
 
         //Create Chat Group From User
-        public async Task<ChatGroup?> CreateChatGroupFromUser(string groupName, ulong userId)
+        public async Task<ChatGroup?> CreateChatGroupFromUser(CreateGroupViewModel incomingModel)
         {
             #region Get User By Id 
 
-            var user = await _userService.GetUserById(userId);
+            var user = await _userService.GetUserById(incomingModel.UserId);
             if (user is null) return null;
 
             #endregion
@@ -44,13 +47,35 @@ namespace DoctorFAM.Application.Services.Implementation
             ChatGroup model = new ChatGroup()
             {
                 CreateDate = DateTime.Now,
-                GroupTitle = groupName.SanitizeText(),
-                OwnerId = userId,
+                GroupTitle = incomingModel.GroupName.SanitizeText(),
+                OwnerId = incomingModel.UserId,
                 GroupToken = Guid.NewGuid().ToString()
             };
 
+            #region Image
+
+            if (incomingModel.ImageFile != null && incomingModel.ImageFile.IsImage())
+            {
+                var imageName = Guid.NewGuid() + Path.GetExtension(incomingModel.ImageFile.FileName);
+                incomingModel.ImageFile.AddImageToServer(imageName, PathTools.ChatImagesPathServer, 400, 300, PathTools.ChatImagesPathThumbServer);
+                model.ImageName = imageName;
+            }
+
+            #endregion
+
             //Add To The Data Base
             await _chatRepository.AddChatGroupToTheDataBase(model);
+
+            #endregion
+
+            #region Add Chat Group Member
+
+            ChatGroupMember member = new ChatGroupMember()
+            {
+                GroupId = model.Id,
+                UserId = incomingModel.UserId,
+                CreateDate = DateTime.Now,
+            };
 
             #endregion
 

@@ -47,6 +47,13 @@ namespace DoctorFAM.Data.Repository
                                                 .OrderByDescending(p => p.CreateDate).ToListAsync();
         }
 
+        //Add Chat Group Member To The Data Base
+        public async Task AddChatGroupMemberToTheDataBase(ChatGroupMember member)
+        {
+            await _context.ChatGroupMembers.AddAsync(member);
+            await _context.SaveChangesAsync();
+        }
+
         #endregion
     }
 }

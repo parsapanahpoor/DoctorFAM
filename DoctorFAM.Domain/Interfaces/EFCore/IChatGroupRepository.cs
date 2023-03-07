@@ -20,6 +20,10 @@ namespace DoctorFAM.Domain.Interfaces.EFCore
         //Get Chat By Chat Group Id
         Task<List<Chat>?> GetChatsListByChatGroupId(ulong chatGroupId);
 
+
+        //Add Chat Group Member To The Data Base
+        Task AddChatGroupMemberToTheDataBase(ChatGroupMember member);
+
         #endregion
     }
 }

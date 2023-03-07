@@ -13,7 +13,7 @@ namespace DoctorFAM.Application.Services.Interfaces
         #region Chat Room Area 
 
         //Create Chat Group From User
-        Task<ChatGroup?> CreateChatGroupFromUser(string groupName, ulong userId);
+        Task<ChatGroup?> CreateChatGroupFromUser(CreateGroupViewModel model);
 
         //Get List Of User Lists
         Task<List<ListOfCurrentUserChatRooms>?> GetListOfUserLists(ulong userId);
