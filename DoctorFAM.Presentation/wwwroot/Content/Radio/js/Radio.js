@@ -8,44 +8,6 @@ let listItemsMusic = document.querySelectorAll(".radio-music-list-item");
 let radioFolder = document.querySelector(".radio-folder i");
 let isPlay = false;
 let musicCounter = 0;
-let audioArray = [
-    {
-        musicName: " 1",
-        musicSrc: "/Content/Radio/music/FirstRadioProgram.m4a",
-    },
-    {
-        musicName: " 2",
-        musicSrc: "/Content/Radio/music/FirstRadioProgram.m4a",
-    },
-    {
-        musicName: " 3",
-        musicSrc: "/Content/Radio/music/FirstRadioProgram.m4a",
-    },
-    {
-        musicName: " 4",
-        musicSrc: "/Content/Radio/music/FirstRadioProgram.m4a",
-    },
-    {
-        musicName: " 5",
-        musicSrc: "/Content/Radio/music/FirstRadioProgram.m4a",
-    },
-    {
-        musicName: " 6",
-        musicSrc: "/Content/Radio/music/FirstRadioProgram.m4a",
-    },
-    {
-        musicName: " 7",
-        musicSrc: "/Content/Radio/music/FirstRadioProgram.m4a",
-    },
-    {
-        musicName: " 8",
-        musicSrc: "/Content/Radio/music/FirstRadioProgram.m4a",
-    },
-    {
-        musicName: " 9",
-        musicSrc: "/Content/Radio/music/FirstRadioProgram.m4a",
-    },
-];
 
 playBtn.addEventListener("click", playMusic);
 nextBtn.addEventListener("click", nextMusic);
@@ -53,7 +15,6 @@ previousBtn.addEventListener("click", previousMusic);
 radioFolder.addEventListener("click", showDropDown);
 window.addEventListener("load", loadMusic);
 
-audio.src = audioArray[musicCounter].musicSrc;
 
 function playMusic() {
     if (isPlay === false) {
@@ -89,19 +50,22 @@ function previousMusic() {
 }
 
 function loadMusic() {
-    for (let i = 4; i > -1; i--) {
-        let musicName = audioArray[i].musicName;
-        let musicSrc = audioArray[i].musicSrc;
-        let musicTemplate = `
-      <div class="radio-music-list-item" onclick="playListMusic(event)">
-        <div class="radio-music-list-name">
-            <span>${musicName}</span>
-        </div>
-        <div class="radio-musix-list-audio" data-audio-src="${musicSrc}" data-id="${i}"></div>
-      </div>
-    `;
-        listItemMusicPopUp.insertAdjacentHTML("afterbegin", musicTemplate);
-    }
+    fetch("https://doctorfam.com/api/v1/RadioFAMAPI/get-LatestPodcasts-ForShowInLanding").then(res => res.json()).then(data => {
+        let audioArray = data.data
+        // audio.src = audioArray[musicCounter].musicSrc;
+
+        audioArray.forEach(function (item, index) {
+            let musicName = audioArray[index].musicName;
+            let musicSrc = audioArray[index].musicSrc;
+            let musicTemplate = `
+            <div class="radio-music-list-item" onclick="playListMusic(event)">
+                <span class="radio-music-list-name">${musicName}</span>
+                <div class="radio-musix-list-audio" data-audio-src="${musicSrc}" data-id="${index}"></div>
+            </div>
+            `;
+            listItemMusicPopUp.insertAdjacentHTML("afterbegin", musicTemplate);
+        })
+    })
 }
 
 function playListMusic(event) {
