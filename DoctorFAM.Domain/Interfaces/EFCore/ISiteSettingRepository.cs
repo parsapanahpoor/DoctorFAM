@@ -1,4 +1,5 @@
 ﻿using Academy.Domain.Entities.SiteSetting;
+using DoctorFAM.Domain.Entities.Drugs;
 using DoctorFAM.Domain.Entities.Insurance;
 using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Entities.SiteSetting;
@@ -59,17 +60,29 @@ namespace DoctorFAM.Domain.Interfaces
         //List Of Insurance
         Task<List<Insurance>?> ListOfInsurance();
 
+        //List Of Insulins
+        Task<List<Insulin>?> ListOfInsulins();
+
         //Get List Of Tariff For Death Certificate Health House Services
         Task<List<TariffForHealthHouseServices>?> GetListOfTariffForDeathCertificateHealthHouseServices();
 
         //Create Data To The Data Base 
         Task CreateInsurance(Insurance entity);
 
+        //Create Insulin Data To The Data Base 
+        Task CreateInsulin(Insulin entity);
+
         //Get Insurance By Id
         Task<Insurance?> GetInsuranceById(ulong id);
 
+        //Get Insulin By Id
+        Task<Insulin?> GetInsulinById(ulong id);
+
         //Update Insurance
         Task UpdateInsurance(Insurance entity);
+
+        //Update Insulin
+        Task UpdateInsuline(Insulin entity);
 
         #endregion
 

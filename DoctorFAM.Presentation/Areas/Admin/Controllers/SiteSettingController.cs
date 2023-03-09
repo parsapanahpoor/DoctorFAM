@@ -1,5 +1,6 @@
 ﻿using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
+using DoctorFAM.Domain.Entities.Drugs;
 using DoctorFAM.Domain.Entities.Insurance;
 using DoctorFAM.Domain.Entities.PeriodicSelfEvaluatuion;
 using DoctorFAM.Domain.ViewModels.Admin.SiteSetting;
@@ -332,6 +333,122 @@ namespace Academy.Web.Areas.Admin.Controllers
             TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
             return View(model);
         }
+
+        #endregion
+
+        #endregion
+
+        #region Drugs 
+
+        #region Insulin 
+
+        #region List 
+
+        [HttpGet]
+        public async Task<IActionResult> ListOfInsulin()
+        {
+            return View(await _siteSettingService.ListOfInsulins());
+        }
+
+        #endregion
+
+        #region Create Insulin 
+
+        [HttpGet]
+        public async Task<IActionResult> CreateInsulin()
+        {
+            return View();
+        }
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateInsulin(string title)
+        {
+            #region Model State Validation 
+
+            if (!ModelState.IsValid)
+            {
+                TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+                return View(title);
+            }
+
+            #endregion
+
+            #region Create Method 
+
+            var res = await _siteSettingService.CreateInsulin(title);
+            if (res)
+            {
+                TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+                return RedirectToAction(nameof(ListOfInsulin));
+            }
+
+            #endregion
+
+            TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+            return View(title);
+        }
+
+        #endregion
+
+        #region Edit 
+
+        [HttpGet]
+        public async Task<IActionResult> EditInsulin(ulong id)
+        {
+            #region Fill Model
+
+            var model = await _siteSettingService.GetInsulinById(id);
+            if (model == null) return NotFound();
+
+            #endregion
+
+            return View(model);
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditInsulin(Insulin model)
+        {
+            #region Model State Validation 
+
+            if (!ModelState.IsValid)
+            {
+                TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+                return View(model);
+            }
+
+            #endregion
+
+            #region Update Method
+
+            var res = await _siteSettingService.UpdateInsuline(model);
+            if (res)
+            {
+                TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+                return RedirectToAction(nameof(ListOfInsulin));
+            }
+
+            #endregion
+
+            TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+            return View(model);
+        }
+
+        #endregion
+
+        #region Delete Insulin
+
+        public async Task<IActionResult> DeleteInsulin(ulong insulinId)
+        {
+            var result = await _siteSettingService.DeleteInsulinFromAdmin(insulinId);
+
+            if (result)
+            {
+                return ApiResponse.SetResponse(ApiResponseStatus.Success, null, "عملیات باموفقیت انجام شده است.");
+            }
+
+            return ApiResponse.SetResponse(ApiResponseStatus.Danger, null,"عملیات باشکست مواجه شده است.");
+        }
+
+        #endregion
 
         #endregion
 

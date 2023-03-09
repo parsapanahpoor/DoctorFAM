@@ -1573,4 +1573,12 @@
 	  </Content>
 	</ItemGroup>
 
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Areas\Admin\Views\SiteSetting\ListOfInsulin.cshtml" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <_ContentIncludedByDefault Remove="Areas\Admin\Views\SiteSetting\ListOfInsulin.cshtml" />
+	</ItemGroup>
+
 </Project>

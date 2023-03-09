@@ -1,7 +1,9 @@
 ﻿using Academy.Domain.Entities.SiteSetting;
+using AngleSharp.Dom;
 using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Data.DbContext;
+using DoctorFAM.Domain.Entities.Drugs;
 using DoctorFAM.Domain.Entities.Insurance;
 using DoctorFAM.Domain.Entities.PeriodicSelfEvaluatuion;
 using DoctorFAM.Domain.Entities.Requests;
@@ -417,6 +419,12 @@ namespace DoctorFAM.Application.Services.Implementation
             return await _siteSettingRepository.ListOfInsurance();
         }
 
+        //List Of Insulins
+        public async Task<List<Insulin>?> ListOfInsulins()
+        {
+            return await _siteSettingRepository.ListOfInsulins();
+        }
+
         //Create Insurance
         public async Task<bool> CreateInsurance(string title)
         {
@@ -435,16 +443,69 @@ namespace DoctorFAM.Application.Services.Implementation
             return true;
         }
 
+        //Create Insulin
+        public async Task<bool> CreateInsulin(string title)
+        {
+            #region Fill Entity
+
+            Insulin entity = new Insulin()
+            {
+                InsulinName = title.SanitizeText()
+            };
+
+            //Create Data To The Data Base 
+            await _siteSettingRepository.CreateInsulin(entity);
+
+            #endregion
+
+            return true;
+        }
+
         //Get Insurance By Id
         public async Task<Insurance?> GetInsuranceById(ulong id)
         {
             return await _siteSettingRepository.GetInsuranceById(id);
         }
 
+        //Get Insulin By Id
+        public async Task<Insulin?> GetInsulinById(ulong id)
+        {
+            return await _siteSettingRepository.GetInsulinById(id);
+        }
+
         //Update Insurance
         public async Task<bool> UpdateInsurance(Insurance entity)
         {
             await _siteSettingRepository.UpdateInsurance(entity);
+
+            return true;
+        }
+
+        //Update Insuline
+        public async Task<bool> UpdateInsuline(Insulin entity)
+        {
+            await _siteSettingRepository.UpdateInsuline(entity);
+
+            return true;
+        }
+
+        //Delete Insuline From Admin 
+        public async Task<bool> DeleteInsulinFromAdmin(ulong insulinId)
+        {
+            #region Get Insulin By Id 
+
+            var insulin = await GetInsulinById(insulinId);
+            if(insulin is null) return false;
+
+            #endregion
+
+            #region Update Insulin 
+
+            insulin.IsDelete = true;
+
+            await _siteSettingRepository.UpdateInsuline(insulin);
+
+            #endregion
 
             return true;
         }
