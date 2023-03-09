@@ -32,6 +32,26 @@ namespace DoctorFAM.Application.Services.Implementation
 
         #region Chat Room Area 
 
+        //Fill Search Chat Room Result View Model 
+        public async Task<List<SearchChatRoomResultViewModel>> FillSearchChatRoomResultViewModel(string title)
+        {
+            //Create Instance
+            List<SearchChatRoomResultViewModel> result = new List<SearchChatRoomResultViewModel>();
+
+            if (string.IsNullOrWhiteSpace(title)) return result;
+
+            //Get Chat Rooms By Title 
+            var groups = await _chatRepository.SearchChatGroupNameWithStringOfTitle(title);
+
+            //Get Users By User name 
+            var users = await _chatRepository.SearchUserNameWithStringOfUsername(title);
+
+            result.AddRange(groups);
+            result.AddRange(users);
+
+            return result;
+        }
+
         //Create Chat Group From User
         public async Task<ChatGroup?> CreateChatGroupFromUser(CreateGroupViewModel incomingModel)
         {

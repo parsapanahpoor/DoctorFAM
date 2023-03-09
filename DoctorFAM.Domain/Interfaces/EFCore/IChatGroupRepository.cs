@@ -1,4 +1,6 @@
 ﻿using DoctorFAM.Domain.Entities.Chat;
+using DoctorFAM.Domain.ViewModels.ChatRoom;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +25,12 @@ namespace DoctorFAM.Domain.Interfaces.EFCore
 
         //Add Chat Group Member To The Data Base
         Task AddChatGroupMemberToTheDataBase(ChatGroupMember member);
+
+        //Search Chat Group Name With String Of Title 
+        Task<List<SearchChatRoomResultViewModel>> SearchChatGroupNameWithStringOfTitle(string title);
+
+        //Search User Name With String Of Title 
+        Task<List<SearchChatRoomResultViewModel>> SearchUserNameWithStringOfUsername(string title);
 
         #endregion
     }

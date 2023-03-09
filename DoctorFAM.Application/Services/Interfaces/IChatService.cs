@@ -18,6 +18,9 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Get List Of User Lists
         Task<List<ListOfCurrentUserChatRooms>?> GetListOfUserLists(ulong userId);
 
+        //Fill Search Chat Room Result View Model 
+        Task<List<SearchChatRoomResultViewModel>> FillSearchChatRoomResultViewModel(string title);
+
         #endregion
     }
 }

@@ -65,5 +65,14 @@ namespace DoctorFAM.Web.Areas.ChatRoom.Controllers
         }
 
         #endregion
+
+        #region Search Chat Groups And Usernames With String of Title 
+
+        public async Task<IActionResult> Search(string title)
+        {
+            return new ObjectResult(await _chatService.FillSearchChatRoomResultViewModel(title));
+        }
+
+        #endregion
     }
 }
