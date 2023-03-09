@@ -10,6 +10,7 @@ using DoctorFAM.Domain.Entities.Contact;
 using DoctorFAM.Domain.Entities.CooperationRequest;
 using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.Entities.Doctors;
+using DoctorFAM.Domain.Entities.Drugs;
 using DoctorFAM.Domain.Entities.DurgAlert;
 using DoctorFAM.Domain.Entities.FamilyDoctor;
 using DoctorFAM.Domain.Entities.FamilyDoctor.ParsaSystem;
@@ -448,6 +449,12 @@ namespace DoctorFAM.Data.DbContext
         public DbSet<ChatGroup> ChatGroups { get; set; }
 
         public DbSet<ChatGroupMember> ChatGroupMembers { get; set; }
+
+        #endregion
+
+        #region Drugs
+
+        public DbSet<Insulin> Insulins { get; set; }
 
         #endregion
 
