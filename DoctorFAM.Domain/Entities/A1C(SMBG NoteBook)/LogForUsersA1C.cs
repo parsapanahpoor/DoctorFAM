@@ -13,7 +13,7 @@ namespace DoctorFAM.Domain.Entities.A1C
 
         public ulong UserId { get; set; }
 
-        public int A1C { get; set; }
+        public decimal A1C { get; set; }
 
         #endregion
     }

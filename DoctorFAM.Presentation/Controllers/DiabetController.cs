@@ -31,11 +31,12 @@ namespace DoctorFAM.Web.Controllers
         private readonly IPeriodicSelftEvaluationService _periodicSelftEvaluationService;
         private readonly ISelfAssessmentService _selfAssessmentService;
         private readonly IASCVDService _ascvdService;
+        private readonly ISMBGNoteBookService _smbgService;
 
         public DiabetController(IBMIService bmiService, ILocationService locationService, IDoctorsService doctorsService
                                     , IMedicalExaminationService medicalExamination, IDrugAlertService drugAlertService
                                         , IPeriodicTestService periodicTestService, IPeriodicSelftEvaluationService periodicSelftEvaluationService
-                                            , ISelfAssessmentService selfAssessmentService, IASCVDService ascvdService)
+                                            , ISelfAssessmentService selfAssessmentService, IASCVDService ascvdService , ISMBGNoteBookService smbg)
         {
             _bmiService = bmiService;
             _locationService = locationService;
@@ -46,6 +47,7 @@ namespace DoctorFAM.Web.Controllers
             _periodicSelftEvaluationService = periodicSelftEvaluationService;
             _selfAssessmentService = selfAssessmentService;
             _ascvdService = ascvdService;
+            _smbgService = smbg;
         }
 
         #endregion
@@ -284,7 +286,6 @@ namespace DoctorFAM.Web.Controllers
         }
 
         #endregion
-
 
         #region Diabet Self Test
 
@@ -876,6 +877,59 @@ namespace DoctorFAM.Web.Controllers
             return View();
         }
 
-        #endregion 
+        #endregion
+
+        #region SMBG Note Book
+
+        #region SMBG Note Book Page
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> SMBGNoteBookPage()
+        {
+            #region Fill Model 
+
+            var model = await _smbgService.FillIndexSMBGPageViewModel(User.GetUserId());
+
+            #endregion
+
+            return View(model);
+        }
+
+        #endregion
+
+        #region Calculate Log For User A1C
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> CalculateLogForUserA1C(decimal a1C)
+        {
+            #region Model State Validation 
+
+            if (!ModelState.IsValid)
+            {
+                TempData[ErrorMessage] = "اطلاعات به درستی وارد نشده است.";
+                return RedirectToAction(nameof(SMBGNoteBookPage));
+            }
+
+            #endregion
+
+            #region Calculate A1C
+
+            var res = await _smbgService.CalculateLogUsersA1C(a1C, User.GetUserId()) ;
+            if (res)
+            {
+                TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+                return RedirectToAction(nameof(SMBGNoteBookPage));
+            }
+
+            #endregion
+
+            return RedirectToAction(nameof(SMBGNoteBookPage));
+        }
+
+        #endregion
+
+        #endregion
     }
 }

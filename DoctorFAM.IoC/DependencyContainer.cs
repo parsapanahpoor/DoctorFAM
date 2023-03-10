@@ -70,6 +70,7 @@ namespace DoctorFAM.IoC
             services.AddScoped <ISelfAssessmentService, SelfAssessmentService>();
             services.AddScoped <IASCVDService, ASCVDService>();
             services.AddScoped <IChatService, ChatService>();
+            services.AddScoped <ISMBGNoteBookService, SMBGNoteBookService>();
 
             #endregion
 
@@ -116,6 +117,7 @@ namespace DoctorFAM.IoC
             services.AddScoped<ISelfAssessmentRepository, SelfAssessmentRepository>();
             services.AddScoped<IASCVDRepository, ASCVDRepository>();
             services.AddScoped<IChatRepository, ChatRepository>();
+            services.AddScoped<ISMBGNoteBookRepository, SMBGNoteBookRepository>();
 
             #endregion
 
