@@ -52,7 +52,7 @@ namespace DoctorFAM.Application.Services.Implementation
         }
 
         //Calculate Log Users A1C 
-        public async Task<bool> CalculateLogUsersA1C(int a1c , ulong userId)
+        public async Task<bool> CalculateLogUsersA1C(decimal a1c , ulong userId)
         {
             #region Get User By User Id 
 

@@ -1,6 +1,7 @@
 ﻿using Academy.Domain.Entities.SiteSetting;
 using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.A1C;
+using DoctorFAM.Domain.Entities.A1C_SMBG_NoteBook_;
 using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Advertisement;
 using DoctorFAM.Domain.Entities.ASCVD;
@@ -62,7 +63,9 @@ namespace DoctorFAM.Data.DbContext
 
         #region DbSets
 
-        #region A1C
+        #region A1C & SMBG
+
+        public DbSet<LogForUsageInsulin> LogForUsageInsulin { get; set; }
 
         public DbSet<LogForUsersA1C> logForUsersA1Cs { get; set; }
 
