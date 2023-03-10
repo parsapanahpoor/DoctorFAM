@@ -48,16 +48,16 @@
 
             if (groupName === "Error") {
                 ShowMessage("اعلان", "عملیات باشکست مواجه شده است.", "error");
-            } 
+            }
             else {
                 ShowMessage("اعلان", "عملیات باموفقیت انجام شده است.", "success");
-                $(".rooms ul").append(`
-                                             <li data-id='${token}'>
-                                            ${groupName}
-                                                    <img src="/content/images/ChatImages/thumb/${imageName}" />
-                                            <span></span>
-                                        </li>
-                                            `);
+                $(".rooms #user_groups ul").append(`
+                                                             <li data-id='${token}'>
+                                                            ${groupName}
+                                                                    <img src="/content/images/ChatImages/thumb/${imageName}" />
+                                                            <span></span>
+                                                        </li>
+                                                            `);
                 $("#exampleModal").modal('toggle');
             }
         }
@@ -78,6 +78,48 @@
                 processData: false,
                 contentType: false
             });
+        }
+
+        //#endregion
+
+        //#region Search
+
+        function search() {
+            var text = $("#search_input").val();
+            if (text) {
+                $("#search_result").show();
+                $("#user_groups").hide();
+                $.ajax({
+                    url: "/ChatRoom/home/Search?title=" + text,
+                    type: "get"
+                }).done(function (data) {
+                    $("#search_result ul").html("");
+                    for (var i in data) {
+                        if (data[i].isUser) {
+                            $("#search_result ul").append(`
+                                                 <li data-user-id='${data[i].token}'>
+                                                            ${data[i].title}
+                                                               <img src="/Content/images/ChatImages/thumb/${data[i].imageName}" />
+                                                            <span></span>
+                                                        </li>
+                                        `);
+                        } else {
+                            $("#search_result ul").append(`
+                                                 <li data-id='${data[i].token}'>
+                                                            ${data[i].title}
+                                                                    <img src="/Content/images/ChatImages/thumb/groups/${data[i].imageName}" />
+                                                            <span></span>
+                                                        </li>
+
+                                        `);
+                        }
+                    }
+
+                });
+            } else {
+                $("#search_result").hide();
+                $("#user_groups").show();
+            }
         }
 
         //#endregion
@@ -134,31 +176,42 @@
         <Ul>
             <li>
                 <form>
-                    <input type="text" placeholder="جستوجو کنید" class="form-control" />
+                    <input type="text" onkeyup="search()" placeholder="جستوجو کنید" id="search_input" class="form-control" />
                     <i class="fa fas fa-search"></i>
                 </form>
             </li>
+            <li id="search_result" style="cursor: none; padding: 0;display: none">
+                <ul>
+                </ul>
 
-            <li>
-                <button data-toggle="modal" data-target="#exampleModal" class="btn btn-success btn-block" style="width: 100%">
-                    <i class="fa fa-plus"></i>
-                    ایجاد گروه جدید
-                </button>
             </li>
 
-            @if (Model != null && Model.Any())
-            {
-                foreach (var item in Model)
-                {
+            <li id="user_groups" style="cursor: none;padding: 0">
+
+                <ul>
                     <li>
-                        @item.ChatGroup.GroupTitle
-                        <img src="@PathTools.ChatImagesPathThumb/@item.ChatGroup.ImageName" />
-                        <span>
-                            @((item.Chat != null) ? item.Chat.CreateDate.ToShamsiDateTime() : "-")
-                        </span>
+                        <button data-toggle="modal" data-target="#exampleModal" class="btn btn-success btn-block" style="width: 100%">
+                            <i class="fa fa-plus"></i>
+                            ایجاد گروه جدید
+                        </button>
                     </li>
-                }
-            }
+
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var item in Model)
+                        {
+                            <li data-id="@item.ChatGroup.GroupToken">
+                                @item.ChatGroup.GroupTitle
+                                <img src="@PathTools.ChatImagesPathThumb/@item.ChatGroup.ImageName" />
+                                <span>
+                                    @((item.Chat != null) ? item.Chat.CreateDate.ToShamsiDateTime() : "-")
+                                </span>
+                            </li>
+                        }
+                    }
+                </ul>
+
+            </li>
 
         </Ul>
     </div>

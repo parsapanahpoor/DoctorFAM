@@ -58,7 +58,7 @@ namespace DoctorFAM.Data.Repository
         //Search Chat Group Name With String Of Title 
         public async Task<List<SearchChatRoomResultViewModel>> SearchChatGroupNameWithStringOfTitle(string title)
         {
-            return await _context.ChatGroups.Where(g => g.GroupTitle.Contains(title)).OrderByDescending(p => p.CreateDate)
+            return await _context.ChatGroups.Where(g => g.IsDelete && g.GroupTitle.Contains(title)).OrderByDescending(p => p.CreateDate)
                 .Select(s => new SearchChatRoomResultViewModel()
                 {
                     ImageName = s.ImageName,
@@ -71,7 +71,7 @@ namespace DoctorFAM.Data.Repository
         //Search User Name With String Of Title 
         public async Task<List<SearchChatRoomResultViewModel>> SearchUserNameWithStringOfUsername(string title)
         {
-            return await _context.Users.Where(g => g.Username.Contains(title)).OrderByDescending(p => p.CreateDate)
+            return await _context.Users.Where(g => g.IsDelete && g.Username.Contains(title)).OrderByDescending(p => p.CreateDate)
                 .Select(s => new SearchChatRoomResultViewModel()
                 {
                     ImageName = (string.IsNullOrEmpty(s.Avatar) ? "DefaultAvatar.png" : s.Avatar),

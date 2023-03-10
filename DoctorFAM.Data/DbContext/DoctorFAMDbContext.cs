@@ -1,5 +1,6 @@
 ﻿using Academy.Domain.Entities.SiteSetting;
 using DoctorFAM.DataLayer.Entities;
+using DoctorFAM.Domain.Entities.A1C;
 using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Advertisement;
 using DoctorFAM.Domain.Entities.ASCVD;
@@ -60,6 +61,12 @@ namespace DoctorFAM.Data.DbContext
         #endregion
 
         #region DbSets
+
+        #region A1C
+
+        public DbSet<LogForUsersA1C> logForUsersA1Cs { get; set; }
+
+        #endregion
 
         #region Account 
 
