@@ -1,5 +1,6 @@
 ﻿using DoctorFAM.Domain.Entities.A1C;
 using DoctorFAM.Domain.Entities.A1C_SMBG_NoteBook_;
+using DoctorFAM.Domain.ViewModels.Site.Diabet.SMBG_NoteBook;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +26,7 @@ namespace DoctorFAM.Domain.Interfaces.EFCore
         List<DateTime>? GetUserInsulineUsagesCreateDates(ulong userId);
 
         //Get List Of User Insulin Usage By Create Date 
-        Task<List<LogForUsageInsulin>> GetListOfUserInsulinUsageByCreateDate(DateTime date, ulong userId);
+        Task<List<LogForFillUsageInsulinSiteSideViewModel>> GetListOfUserInsulinUsageByCreateDate(DateTime date, ulong userId);
 
         #endregion
     }

@@ -74,8 +74,7 @@
 
                     <div class="col-xl-12 col-md-12 p-3" style="border:1px solid #feb2fa; border-radius:8px;">
 
-                        <div class="row text-center  text-align-justify mt-2">
-
+                        <div class="row text-center  text-align-justify mt-2 mb-3">
 
                             <div class="col-md-3 text-center">
                                 <div class=" text-center btn2 m-1" style="background: #f6d516  !important; border-radius:8px;">
@@ -115,6 +114,12 @@
                             </div>
 
                         </div>
+
+                        @if (Model != null)
+                        {
+                            @*Show User Insulin Usage History*@
+                            <partial name="_ShowUserInsulinUsageHistory" model="@Model.ShowUserInsulinUsageHistory" />
+                        }
 
                     </div>
                     <div class="col-xl-3 "></div>

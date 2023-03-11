@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace DoctorFAM.Data.Dapper.Repository
 {
-    public class SMBGNoteBookDapper : DapperContext , ISMBGNoteBookDapper
+    public class SMBGNoteBookDapper : DapperContext, ISMBGNoteBookDapper
     {
         #region Ctor
 
@@ -35,11 +35,12 @@ namespace DoctorFAM.Data.Dapper.Repository
 
             #region Initial Query 
 
-            string Query = @"Select CONVERT(DATE, CreateDate) as CreateDate   
-                             from LogForUsageInsulin
-                             where UserId = @userid
-                             ORDER BY CreateDate DESC";
-
+            string Query = @"select Top 3 * from 
+                                    (
+                                    select distinct CONVERT(DATE, CreateDate) as CreateDate  , UserId  
+                                    from LogForUsageInsulin
+                                    where UserId = @userid
+                                    ) as r ORDER BY CreateDate DESC";
             #endregion
 
             #region Run Query
@@ -48,7 +49,7 @@ namespace DoctorFAM.Data.Dapper.Repository
 
             #endregion
 
-            return model.Select(p=>p.CreateDate).Distinct().ToList();
+            return model.Select(p => p.CreateDate).Distinct().ToList();
         }
 
         #endregion

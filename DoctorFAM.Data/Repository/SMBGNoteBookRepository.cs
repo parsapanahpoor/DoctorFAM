@@ -3,6 +3,7 @@ using DoctorFAM.Domain.Entities.A1C;
 using DoctorFAM.Domain.Entities.A1C_SMBG_NoteBook_;
 using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Interfaces.EFCore;
+using DoctorFAM.Domain.ViewModels.Site.Diabet.SMBG_NoteBook;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -58,12 +59,24 @@ namespace DoctorFAM.Data.Repository
         }
 
         //Get List Of User Insulin Usage By Create Date 
-        public async Task<List<LogForUsageInsulin>> GetListOfUserInsulinUsageByCreateDate(DateTime date , ulong userId)
+        public async Task<List<LogForFillUsageInsulinSiteSideViewModel>> GetListOfUserInsulinUsageByCreateDate(DateTime date , ulong userId)
         {
             return await _context.LogForUsageInsulin.Where(p => !p.IsDelete && p.UserId == userId
                                                            && p.CreateDate.Year == date.Year
                                                            && p.CreateDate.Month == date.Month
-                                                           && p.CreateDate.Day == date.Day).ToListAsync();
+                                                           && p.CreateDate.Day == date.Day)
+                                                           .OrderByDescending(p=> p.CreateDate)
+                                                           .Select( p=> new LogForFillUsageInsulinSiteSideViewModel()
+                                                           {
+                                                               Insulin = _context.Insulins.FirstOrDefault(i=> !i.IsDelete && i.Id == p.InsulinId),
+                                                               BloodSugar = p.BloodSugar,
+                                                               CountOfInsulinUsage = p.CountOfInsulinUsage,
+                                                               TimeOfUsageInsulinState = p.TimeOfUsageInsulinState,
+                                                               TimeOfUsageInsulinType = p.TimeOfUsageInsulinType ,
+                                                               UserId = p.UserId,
+                                                               CreateDate = p.CreateDate,
+                                                           })
+                                                           .ToListAsync();
         }
 
         #endregion

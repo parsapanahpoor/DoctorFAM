@@ -121,6 +121,9 @@ namespace DoctorFAM.Application.Services.Implementation
             //Get User Create Dates
             var createDates =  await _smbgDapper.GetUserInsulineUsagesCreateDates(userId);
 
+            //Create Instance
+            List<ShowUserInsulinUsageHistory> returnModel = new List<ShowUserInsulinUsageHistory>();
+
             if (createDates != null && createDates.Any())
             {
                 foreach (var item in createDates)
@@ -130,8 +133,10 @@ namespace DoctorFAM.Application.Services.Implementation
                     userInsulinUsage.CreateDate = item;
                     userInsulinUsage.LogForUsageInsulin = await _smbgRepository.GetListOfUserInsulinUsageByCreateDate(item, userId);
 
-                    model.ShowUserInsulinUsageHistory.Add(userInsulinUsage);
+                    returnModel.Add(userInsulinUsage);
                 }
+
+                model.ShowUserInsulinUsageHistory = returnModel;
             }
 
             #endregion
