@@ -125,6 +125,7 @@ namespace DoctorFAM.IoC
 
             services.AddScoped<IBMIRepositoryDapper, BMIRepositoryDapper>();
             services.AddScoped<IUserRepositoryDapper, UserRepositoryDapper>();
+            services.AddScoped<ISMBGNoteBookDapper, SMBGNoteBookDapper>();
 
             #endregion
         }

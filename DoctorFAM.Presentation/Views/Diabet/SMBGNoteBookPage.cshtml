@@ -9,6 +9,7 @@
 }
 
 <div class="page-content  formHealth">
+
     <div class="row PageBannerPic text-center  text-align-justify ">
         <div class="col-md-3 page-breadcrumbs">
             <i class="menu-icon fa fa-globe"></i>
@@ -22,6 +23,7 @@
         </div>
         <div class="col-md-3 "></div>
     </div>
+
     <div class="container mt-2">
         <div class="tab-content section-title" id="nav-tabContent">
             <div role="tabpanel" class=" col-md-12 fade show active" id="tab1-1">
@@ -65,6 +67,61 @@
         </div>
     </div>
 
+    <div class="container mt-2">
+        <div class="tab-content section-title" id="nav-tabContent">
+            <div role="tabpanel" class=" col-md-12 fade show active" id="tab1-1">
+                <div class="row">
+
+                    <div class="col-xl-12 col-md-12 p-3" style="border:1px solid #feb2fa; border-radius:8px;">
+
+                        <div class="row text-center  text-align-justify mt-2">
+
+
+                            <div class="col-md-3 text-center">
+                                <div class=" text-center btn2 m-1" style="background: #f6d516  !important; border-radius:8px;">
+
+                                    <a asp-action="CreateUsageOfInsulin" asp-controller="Diabet" asp-area="" asp-route-timeOfUsageInsulinState="0">
+                                        <span class="spCol"> قند قبل و بعد از </span>
+                                        <p class=" text-center  m-3" style="color:white !important; font-size:20px; font-weight:700;">صبحانه</p>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3 text-center">
+                                <div class=" text-center btn2 m-1" style="background: #ff6a00 !important; border-radius:8px;">
+                                    <a asp-action="CreateUsageOfInsulin" asp-controller="Diabet" asp-area="" asp-route-timeOfUsageInsulinState="1">
+                                        <span class="spCol"> قند قبل و بعد از </span>
+                                        <p class=" text-center m-3 " style="color:white !important; font-size:20px; font-weight:700;">نهار</p>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3 text-center">
+                                <div class=" text-center btn2 m-1" style="border:1px solid #00e5ff ; border-radius:8px;">
+                                    <a asp-action="CreateUsageOfInsulin" asp-controller="Diabet" asp-area="" asp-route-timeOfUsageInsulinState="2">
+                                        <span class="spCol"> قند قبل و بعد از </span>
+                                        <p class=" text-center m-3 " style="color:white !important; font-size:20px; font-weight:700;"> شام</p>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3 text-center">
+                                <div class=" text-center btn2 m-1" style="background: #424881    !important; border-radius:8px;">
+                                    <a asp-action="CreateUsageOfInsulin" asp-controller="Diabet" asp-area="" asp-route-timeOfUsageInsulinState="3">
+                                        <span class="spCol"> 3 بامداد </span>
+                                        <p class=" text-center m-3 " style="color:white !important; font-size:20px; font-weight:700;">نیمه شب</p>
+                                    </a>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="col-xl-3 "></div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>
 

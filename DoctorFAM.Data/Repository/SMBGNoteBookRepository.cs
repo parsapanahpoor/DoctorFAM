@@ -1,5 +1,7 @@
 ﻿using DoctorFAM.Data.DbContext;
 using DoctorFAM.Domain.Entities.A1C;
+using DoctorFAM.Domain.Entities.A1C_SMBG_NoteBook_;
+using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Interfaces.EFCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -37,6 +39,31 @@ namespace DoctorFAM.Data.Repository
         {
             await _context.logForUsersA1Cs.AddAsync(model);
             await _context.SaveChangesAsync();
+        }
+
+        //Add Insulin Usage To The Data Base
+        public async Task AddInsulinUsageToTheDataBase(LogForUsageInsulin model)
+        {
+            await _context.LogForUsageInsulin.AddAsync(model);
+            await _context.SaveChangesAsync();
+        }
+
+        //Get User Insuline Usages Create Dates
+        public List<DateTime>? GetUserInsulineUsagesCreateDates(ulong userId)
+        {
+            return  _context.LogForUsageInsulin.Where(p=> !p.IsDelete && p.UserId == userId)
+                         .DistinctBy(p=> p.CreateDate)
+                         .Select(p=> p.CreateDate)
+                         .ToList(); 
+        }
+
+        //Get List Of User Insulin Usage By Create Date 
+        public async Task<List<LogForUsageInsulin>> GetListOfUserInsulinUsageByCreateDate(DateTime date , ulong userId)
+        {
+            return await _context.LogForUsageInsulin.Where(p => !p.IsDelete && p.UserId == userId
+                                                           && p.CreateDate.Year == date.Year
+                                                           && p.CreateDate.Month == date.Month
+                                                           && p.CreateDate.Day == date.Day).ToListAsync();
         }
 
         #endregion
