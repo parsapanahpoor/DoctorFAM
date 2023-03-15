@@ -8,13 +8,7 @@ let listItemsMusic = document.querySelectorAll(".radio-music-list-item");
 let radioFolder = document.querySelector(".radio-folder i");
 let isPlay = false;
 let musicCounter = 0;
-
-playBtn.addEventListener("click", playMusic);
-nextBtn.addEventListener("click", nextMusic);
-previousBtn.addEventListener("click", previousMusic);
-radioFolder.addEventListener("click", showDropDown);
-window.addEventListener("load", loadMusic);
-
+let audioArray;
 
 function playMusic() {
     if (isPlay === false) {
@@ -36,7 +30,6 @@ function nextMusic() {
     musicCounter++;
     audio.src = audioArray[musicCounter].musicSrc;
     playMusic();
-
 }
 
 function previousMusic() {
@@ -49,23 +42,26 @@ function previousMusic() {
     playMusic();
 }
 
-function loadMusic() {
-    fetch("https://doctorfam.com/api/v1/RadioFAMAPI/get-LatestPodcasts-ForShowInLanding").then(res => res.json()).then(data => {
-        let audioArray = data.data
-        // audio.src = audioArray[musicCounter].musicSrc;
-
-        audioArray.forEach(function (item, index) {
-            let musicName = audioArray[index].musicName;
-            let musicSrc = audioArray[index].musicSrc;
-            let musicTemplate = `
-            <div class="radio-music-list-item" onclick="playListMusic(event)">
-                <span class="radio-music-list-name">${musicName}</span>
-                <div class="radio-musix-list-audio" data-audio-src="${musicSrc}" data-id="${index}"></div>
-            </div>
-            `;
-            listItemMusicPopUp.insertAdjacentHTML("afterbegin", musicTemplate);
+async function loadMusic() {
+    await fetch("https://doctorfam.com/api/v1/RadioFAMAPI/get-LatestPodcasts-ForShowInLanding")
+        .then(res => res.json())
+        .then(data => {
+            audioArray = data.data
+            audioArray.forEach(function (item, index) {
+                let musicName = audioArray[index].musicName;
+                let musicSrc = audioArray[index].musicSrc;
+                audio.src = musicSrc
+                let musicTemplate = `
+                <div class="radio-music-list-item" onclick="playListMusic(event)">
+                    <span class="radio-music-list-name">${musicName}</span>
+                    <div class="radio-musix-list-audio" data-audio-src="${musicSrc}" data-id="${index}"></div>
+                </div>
+                `;
+                listItemMusicPopUp.insertAdjacentHTML("afterbegin", musicTemplate);
+            })
         })
-    })
+        .catch(err => console.error(err))
+
 }
 
 function playListMusic(event) {
@@ -81,3 +77,8 @@ function showDropDown() {
     listItemMusicPopUp.classList.toggle("active-popup");
 }
 
+playBtn.addEventListener("click", playMusic);
+nextBtn.addEventListener("click", nextMusic);
+previousBtn.addEventListener("click", previousMusic);
+radioFolder.addEventListener("click", showDropDown);
+window.addEventListener("load", loadMusic);
