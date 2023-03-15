@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace DoctorFAM.Data.Repository
@@ -41,10 +42,18 @@ namespace DoctorFAM.Data.Repository
                                                    .OrderByDescending(p => p.CreateDate).ToListAsync();
         }
 
+        //Get List Of User Chat Groups Id By User Id
+        public async Task<List<ulong>> GetListOfUserChatGroupsIdByUserId(ulong userId)
+        {
+            //Get User Chat Groups 
+            return await _context.ChatGroupMembers.Where(p => !p.IsDelete && p.UserId == userId)
+                                    .Select(p => p.GroupId).ToListAsync();
+        }
+
         //Get Chat By Chat Group Id
         public async Task<List<Chat>?> GetChatsListByChatGroupId(ulong chatGroupId)
         {
-            return await _context.Chats.Where(p => p.IsDelete && p.GroupId == chatGroupId)
+            return await _context.Chats.Where(p => !p.IsDelete && p.GroupId == chatGroupId)
                                                 .OrderByDescending(p => p.CreateDate).ToListAsync();
         }
 
@@ -58,7 +67,7 @@ namespace DoctorFAM.Data.Repository
         //Search Chat Group Name With String Of Title 
         public async Task<List<SearchChatRoomResultViewModel>> SearchChatGroupNameWithStringOfTitle(string title)
         {
-            return await _context.ChatGroups.Where(g => g.IsDelete && g.GroupTitle.Contains(title)).OrderByDescending(p => p.CreateDate)
+            return await _context.ChatGroups.Where(g => !g.IsDelete && g.GroupTitle.Contains(title)).OrderByDescending(p => p.CreateDate)
                 .Select(s => new SearchChatRoomResultViewModel()
                 {
                     ImageName = s.ImageName,
@@ -71,7 +80,7 @@ namespace DoctorFAM.Data.Repository
         //Search User Name With String Of Title 
         public async Task<List<SearchChatRoomResultViewModel>> SearchUserNameWithStringOfUsername(string title)
         {
-            return await _context.Users.Where(g => g.IsDelete && g.Username.Contains(title)).OrderByDescending(p => p.CreateDate)
+            return await _context.Users.Where(g => !g.IsDelete && g.Username.Contains(title)).OrderByDescending(p => p.CreateDate)
                 .Select(s => new SearchChatRoomResultViewModel()
                 {
                     ImageName = (string.IsNullOrEmpty(s.Avatar) ? "DefaultAvatar.png" : s.Avatar),
@@ -79,6 +88,31 @@ namespace DoctorFAM.Data.Repository
                     IsUser = true,
                     Title = s.Username
                 }).ToListAsync();
+        }
+
+        //Get Group By Token 
+        public async Task<ChatGroup?> GetGroupByToken(string token)
+        {
+            return await _context.ChatGroups.FirstOrDefaultAsync(p => !p.IsDelete && p.GroupToken == token);
+        }
+
+        //Get Chat Group By Id 
+        public async Task<ChatGroup?> GetChatGroupById(ulong chatGroupId)
+        {
+            return await _context.ChatGroups.FirstOrDefaultAsync(p => !p.IsDelete && p.Id == chatGroupId);
+        }
+
+        //Is Exist User In Chat Group 
+        public async Task<bool> IsExistUserInChatGroup(ulong chatGroupId , ulong userId)
+        {
+            return await _context.ChatGroupMembers.AnyAsync(p => !p.IsDelete && p.GroupId == chatGroupId && p.UserId == userId);
+        }
+
+        //Join User To The Chat Group 
+        public async Task JoinUserToTheChatGroup(ChatGroupMember member)
+        {
+            await _context.ChatGroupMembers.AddAsync(member);
+            await _context.SaveChangesAsync();
         }
 
         #endregion

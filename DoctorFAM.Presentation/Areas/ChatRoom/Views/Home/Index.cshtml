@@ -21,21 +21,9 @@
 
         //#endregion
 
-        //#Send User Writed Message To The Server
+        //#region Send User Writed Message To The Server
 
         connection.on("ReceiveMessage", receive);
-
-        function receive(text) {
-            console.log(text);
-        }
-
-        //invole = فراخوانی کردن
-        function sendMessage(event) {
-            event.preventDefault();
-
-            var text = $("#messageText").val();
-            connection.invoke("SendMessage", text);
-        }
 
         //#endregion
 
@@ -43,88 +31,26 @@
 
         connection.on("NewGroup", appendGroup);
 
-        //Add Group To The User Group List
-        function appendGroup(groupName, token, imageName) {
-
-            if (groupName === "Error") {
-                ShowMessage("اعلان", "عملیات باشکست مواجه شده است.", "error");
-            }
-            else {
-                ShowMessage("اعلان", "عملیات باموفقیت انجام شده است.", "success");
-                $(".rooms #user_groups ul").append(`
-                                                             <li data-id='${token}'>
-                                                            ${groupName}
-                                                                    <img src="/content/images/ChatImages/thumb/${imageName}" />
-                                                            <span></span>
-                                                        </li>
-                                                            `);
-                $("#exampleModal").modal('toggle');
-            }
-        }
-
-        //Create Group
-        function insertGroup(event) {
-            event.preventDefault();
-            var groupName = event.target[0].value;
-            var imageFile = event.target[1].files[0];
-            var formData = new FormData();
-            formData.append("GroupName", groupName);
-            formData.append("ImageFile", imageFile);
-            $.ajax({
-                url: "/ChatRoom/home/CreateGroup",
-                type: "post",
-                data: formData,
-                encytype: "multipart/form-data",
-                processData: false,
-                contentType: false
-            });
-        }
-
         //#endregion
 
-        //#region Search
+        //#region Join User To the Group
 
-        function search() {
-            var text = $("#search_input").val();
-            if (text) {
-                $("#search_result").show();
-                $("#user_groups").hide();
-                $.ajax({
-                    url: "/ChatRoom/home/Search?title=" + text,
-                    type: "get"
-                }).done(function (data) {
-                    $("#search_result ul").html("");
-                    for (var i in data) {
-                        if (data[i].isUser) {
-                            $("#search_result ul").append(`
-                                                 <li data-user-id='${data[i].token}'>
-                                                            ${data[i].title}
-                                                               <img src="/Content/images/ChatImages/thumb/${data[i].imageName}" />
-                                                            <span></span>
-                                                        </li>
-                                        `);
-                        } else {
-                            $("#search_result ul").append(`
-                                                 <li data-id='${data[i].token}'>
-                                                            ${data[i].title}
-                                                                    <img src="/Content/images/ChatImages/thumb/groups/${data[i].imageName}" />
-                                                            <span></span>
-                                                        </li>
-
-                                        `);
-                        }
-                    }
-
-                });
-            } else {
-                $("#search_result").hide();
-                $("#user_groups").show();
-            }
-        }
+        connection.on("JoinGroup", joined);
 
         //#endregion
 
         connection.start();
+
+        function joined(group, chats) {
+            $(".header").css("display", "block");
+            $(".footer").css("display", "block");
+            $(".header h2").html(group.groupTitle);
+            $(".header img").attr("src", `/content/images/user/thumb/${group.imageName}`);
+        }
+
+        function joinInGroup(token) {
+            connection.invoke("JoinGroup", token);
+        }
 
     </script>
 
@@ -132,37 +58,39 @@
 
 <div class="row">
     <div class="col-8 chat-content">
-        <div class="header">
+        <div class="header" style="display: none">
             <img src="/ChatRoom/img/Default.jpg" />
             <h2>علی</h2>
         </div>
         <div class="chats">
-            <div class="chat-me">
-                <div class="chat">
-                    <p>سلام خوبی چه خبر ؟ </p>
-                    <span>2020/06/05</span>
-                </div>
+
+            @*            <div class="chat-me">
+            <div class="chat">
+            <p>سلام خوبی چه خبر ؟ </p>
+            <span>2020/06/05</span>
+            </div>
             </div>
             <div class="chat-you">
-                <div class="chat">
-                    <p>سلام ممنون یه خبر خیلییی خوبی دارم برات</p>
-                    <span>2020/06/05</span>
-                </div>
+            <div class="chat">
+            <p>سلام ممنون یه خبر خیلییی خوبی دارم برات</p>
+            <span>2020/06/05</span>
+            </div>
             </div>
             <div class="chat-me">
-                <div class="chat">
-                    <p>چی ؟!!</p>
-                    <span>2020/06/05</span>
-                </div>
+            <div class="chat">
+            <p>چی ؟!!</p>
+            <span>2020/06/05</span>
+            </div>
             </div>
             <div class="chat-you">
-                <div class="chat">
-                    <p>توی سایت codeYad دوره SignalR رایگان برگزار شده</p>
-                    <span>2020/06/05</span>
-                </div>
+            <div class="chat">
+            <p>توی سایت codeYad دوره SignalR رایگان برگزار شده</p>
+            <span>2020/06/05</span>
             </div>
+            </div>*@
+
         </div>
-        <div class="footer">
+        <div class="footer" style="display: none">
             <form onsubmit="sendMessage(event)">
                 <input id="messageText" type="text" class="form-control" placeholder="متن خود را وارد کنید">
                 <button class="btn btn-success">
@@ -200,9 +128,9 @@
                     {
                         foreach (var item in Model)
                         {
-                            <li data-id="@item.ChatGroup.GroupToken">
+                            <li onclick="joinInGroup('@item.ChatGroup.GroupToken')">
                                 @item.ChatGroup.GroupTitle
-                                <img src="@PathTools.ChatImagesPathThumb/@item.ChatGroup.ImageName" />
+                                <img src="@PathTools.UserAvatarPathThumb@item.ChatGroup.ImageName" />
                                 <span>
                                     @((item.Chat != null) ? item.Chat.CreateDate.ToShamsiDateTime() : "-")
                                 </span>

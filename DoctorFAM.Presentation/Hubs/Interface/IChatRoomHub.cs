@@ -2,5 +2,6 @@
 {
     public interface IChatRoomHub
     {
+        Task JoinGroup(string token);
     }
 }

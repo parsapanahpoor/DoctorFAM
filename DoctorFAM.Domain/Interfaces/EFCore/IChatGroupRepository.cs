@@ -19,9 +19,11 @@ namespace DoctorFAM.Domain.Interfaces.EFCore
         //Get Current User Chat Rooms By Owner Id
         Task<List<ChatGroup>?> GetCurrentUserChatRoomsByOwnerId(ulong userId);
 
+        //Get List Of User Chat Groups Id By User Id
+        Task<List<ulong>> GetListOfUserChatGroupsIdByUserId(ulong userId);
+
         //Get Chat By Chat Group Id
         Task<List<Chat>?> GetChatsListByChatGroupId(ulong chatGroupId);
-
 
         //Add Chat Group Member To The Data Base
         Task AddChatGroupMemberToTheDataBase(ChatGroupMember member);
@@ -31,6 +33,18 @@ namespace DoctorFAM.Domain.Interfaces.EFCore
 
         //Search User Name With String Of Title 
         Task<List<SearchChatRoomResultViewModel>> SearchUserNameWithStringOfUsername(string title);
+
+        //Get Group By Token 
+        Task<ChatGroup?> GetGroupByToken(string token);
+
+        //Get Chat Group By Id 
+        Task<ChatGroup?> GetChatGroupById(ulong chatGroupId);
+
+        //Is Exist User In Chat Group 
+        Task<bool> IsExistUserInChatGroup(ulong chatGroupId, ulong userId);
+
+        //Join User To The Chat Group 
+        Task JoinUserToTheChatGroup(ChatGroupMember member);
 
         #endregion
     }
