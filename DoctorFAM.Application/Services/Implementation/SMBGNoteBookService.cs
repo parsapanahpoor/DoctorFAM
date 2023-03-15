@@ -24,7 +24,7 @@ namespace DoctorFAM.Application.Services.Implementation
         private readonly IUserService _userService;
         private readonly ISMBGNoteBookDapper _smbgDapper;
 
-        public SMBGNoteBookService(ISMBGNoteBookRepository smbgRepository, IUserService userService , ISiteSettingService siteSettingService
+        public SMBGNoteBookService(ISMBGNoteBookRepository smbgRepository, IUserService userService, ISiteSettingService siteSettingService
                                     , ISMBGNoteBookDapper smbgDapper)
         {
             _smbgRepository = smbgRepository;
@@ -47,26 +47,30 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #endregion
 
-            #region Get Insulin By Id
-
-            var insulin = await _siteSettingService.GetInsulinById(model.InsulinId);
-            if (insulin == null) return false;
-
-            #endregion
-
             #region Fill Model 
 
             LogForUsageInsulin insulinUsage = new LogForUsageInsulin()
             {
                 BloodSugar = model.BloodSugar,
-                InsulinId= model.InsulinId,
-                UserId= model.UserId,
-                CountOfInsulinUsage= model.CountOfInsulinUsage,
+                UserId = model.UserId,
+                CountOfInsulinUsage = model.CountOfInsulinUsage,
                 CreateDate = DateTime.Now,
                 IsDelete = false,
-                TimeOfUsageInsulinState= model.TimeOfUsageInsulinState,
-                TimeOfUsageInsulinType = model.TimeOfUsageInsulinType 
+                TimeOfUsageInsulinState = model.TimeOfUsageInsulinState,
+                TimeOfUsageInsulinType = model.TimeOfUsageInsulinType
             };
+
+            #region Get Insulin By Id
+
+            if (model.InsulinId.HasValue)
+            {
+                var insulin = await _siteSettingService.GetInsulinById(model.InsulinId.Value);
+                if (insulin == null) return false;
+
+                insulinUsage.InsulinId = model.InsulinId.Value;
+            }
+
+            #endregion
 
             //Add Insulin Usage To The Data Base
             await _smbgRepository.AddInsulinUsageToTheDataBase(insulinUsage);
@@ -77,7 +81,7 @@ namespace DoctorFAM.Application.Services.Implementation
         }
 
         //Fill Log For Usage Insulin Site Side View Model
-        public async Task<LogForUsageInsulinSiteSideViewModel?> LogForUsageInsulinSiteSideViewModel(ulong userId , TimeOfUsageInsulinState timeOfUsageInsulinState)
+        public async Task<LogForUsageInsulinSiteSideViewModel?> LogForUsageInsulinSiteSideViewModel(ulong userId, TimeOfUsageInsulinState timeOfUsageInsulinState)
         {
             #region Get User By User Id 
 
@@ -90,7 +94,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
             LogForUsageInsulinSiteSideViewModel model = new LogForUsageInsulinSiteSideViewModel()
             {
-                TimeOfUsageInsulinState= timeOfUsageInsulinState,
+                TimeOfUsageInsulinState = timeOfUsageInsulinState,
                 UserId = userId,
             };
 
@@ -119,7 +123,7 @@ namespace DoctorFAM.Application.Services.Implementation
             #region Fill Show User Insulin Usage History
 
             //Get User Create Dates
-            var createDates =  await _smbgDapper.GetUserInsulineUsagesCreateDates(userId);
+            var createDates = await _smbgDapper.GetUserInsulineUsagesCreateDates(userId);
 
             //Create Instance
             List<ShowUserInsulinUsageHistory> returnModel = new List<ShowUserInsulinUsageHistory>();
@@ -147,7 +151,7 @@ namespace DoctorFAM.Application.Services.Implementation
         }
 
         //Calculate Log Users A1C 
-        public async Task<bool> CalculateLogUsersA1C(decimal a1c , ulong userId)
+        public async Task<bool> CalculateLogUsersA1C(decimal a1c, ulong userId)
         {
             #region Get User By User Id 
 

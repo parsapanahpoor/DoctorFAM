@@ -14,8 +14,7 @@ namespace DoctorFAM.Domain.ViewModels.Site.Diabet.SMBG_NoteBook
 
         public ulong UserId { get; set; }
 
-        [Required(ErrorMessage = "این فیلد الزامی است .")]
-        public ulong InsulinId { get; set; }
+        public ulong? InsulinId { get; set; }
 
         [Required(ErrorMessage = "این فیلد الزامی است .")]
         public int CountOfInsulinUsage { get; set; }
