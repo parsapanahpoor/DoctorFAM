@@ -13,6 +13,9 @@ namespace DoctorFAM.Domain.Interfaces.EFCore
     {
         #region Chat Room Area
 
+        //Add Chat Message To The Data Base 
+        Task AddChatMessageToTheDataBase(Chat chat);
+
         //Add Group To The Data Base 
         Task AddChatGroupToTheDataBase(ChatGroup chatGroup);
 

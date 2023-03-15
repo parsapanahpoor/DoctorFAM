@@ -13,6 +13,9 @@
 
     <script>
 
+        var currentGroupId = 0;
+        var userId = 0;
+
         //#region Create Connection
 
         var connection = new signalR.HubConnectionBuilder()
@@ -20,6 +23,11 @@
             .build();
 
         //#endregion
+
+        connection.on("Welcome",
+            function (id) {
+                userId = id;
+            });
 
         //#region Send User Writed Message To The Server
 
@@ -41,15 +49,84 @@
 
         connection.start();
 
+        function receive(chat) {
+            $("#messageText").val('');
+            if (userId === chat.userId) {
+                $(".chats").append(`
+
+            <div class="chat-me">
+                            <div class="chat">
+                                <p>${chat.chatBody}</p>
+                                <span>${chat.createDate}</span>
+                            </div>
+                        </div>
+                    `);
+            } else {
+                $(".chats").append(`
+
+            <div class="chat-you">
+                            <div class="chat">
+                                <p>${chat.chatBody}</p>
+                                <span>${chat.createDate}</span>
+                            </div>
+                        </div>
+                    `);
+            }
+
+        }
+
+        //#region invole = فراخوانی کردن
+
+        function sendMessage(event) {
+            event.preventDefault();
+
+            var text = $("#messageText").val();
+            if (text) {
+                connection.invoke("SendMessage", text, currentGroupId);
+
+            } else {
+                alert("Error");
+            }
+        }
+
+        //#endregion
+
         function joined(group, chats) {
             $(".header").css("display", "block");
             $(".footer").css("display", "block");
             $(".header h2").html(group.groupTitle);
             $(".header img").attr("src", `/content/images/user/thumb/${group.imageName}`);
+            currentGroupId = group.id;
+
+            $(".chats").html("");
+            for (var i in chats) {
+                var chat = chats[i];
+                if (userId === chat.userId) {
+                    $(".chats").append(`
+
+                                    <div class="chat-me">
+                                                    <div class="chat">
+                                                        <p>${chat.chatBody}</p>
+                                                        <span>${chat.createDate}</span>
+                                                    </div>
+                                                </div>
+                                            `);
+                } else {
+                    $(".chats").append(`
+
+                                    <div class="chat-you">
+                                                    <div class="chat">
+                                                        <p>${chat.chatBody}</p>
+                                                        <span>${chat.createDate}</span>
+                                                    </div>
+                                                </div>
+                                            `);
+                }
+            }
         }
 
         function joinInGroup(token) {
-            connection.invoke("JoinGroup", token);
+            connection.invoke("JoinGroup", token, currentGroupId);
         }
 
     </script>

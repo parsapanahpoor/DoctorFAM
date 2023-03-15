@@ -14,7 +14,7 @@ namespace DoctorFAM.Domain.Entities.A1C_SMBG_NoteBook_
 
         public ulong UserId { get; set; }
 
-        public ulong InsulinId { get; set; }
+        public ulong? InsulinId { get; set; }
 
         public int CountOfInsulinUsage { get; set; }
 

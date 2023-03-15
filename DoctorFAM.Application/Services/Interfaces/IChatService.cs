@@ -12,6 +12,9 @@ namespace DoctorFAM.Application.Services.Interfaces
     {
         #region Chat Room Area 
 
+        //Send Message 
+        Task SendMessage(SendMessageViewModel chat);
+
         //Create Chat Group From User
         Task<ChatGroup?> CreateChatGroupFromUser(CreateGroupViewModel model);
 

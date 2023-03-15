@@ -2,6 +2,8 @@
 {
     public interface IChatRoomHub
     {
-        Task JoinGroup(string token);
+        Task JoinGroup(string token, ulong currentGroupId);
+
+        Task SendMessage(string text, ulong groupId);
     }
 }

@@ -1,6 +1,9 @@
-﻿using DoctorFAM.Application.Extensions;
+﻿using DoctorFAM.Application.Convertors;
+using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.Entities.Account;
+using DoctorFAM.Domain.Entities.Chat;
+using DoctorFAM.Domain.ViewModels.ChatRoom;
 using DoctorFAM.Web.Hubs.Interface;
 using Microsoft.AspNetCore.SignalR;
 using System.Security.Claims;
@@ -20,8 +23,11 @@ namespace DoctorFAM.Web.Hubs.Implementation
 
         #endregion
 
+        #region Base Methods 
+
         public override Task OnConnectedAsync()
         {
+            Clients.Caller.SendAsync("Welcome", Context.User.GetUserId());
             return base.OnConnectedAsync();
         }
 
@@ -30,29 +36,11 @@ namespace DoctorFAM.Web.Hubs.Implementation
             return base.OnDisconnectedAsync(exception);
         }
 
-        #region Send Message 
-
-        public async Task SendMessage(string text)
-        {
-            #region Get Current User 
-
-            var httpContext = Context.GetHttpContext();
-
-            if (httpContext == null) return;
-
-            // get user id
-            var userId = httpContext.User.GetUserId();
-
-            var userName = httpContext.User.GetUsername();
-
-            #endregion
-
-            await Clients.Caller.SendAsync("ReceiveMessage", $"{userName} And {userId} : {text}");
-        }
-
         #endregion
 
-        public async Task JoinGroup(string token)
+        #region Join Group
+
+        public async Task JoinGroup(string token, ulong currentGroupId)
         {
             #region Get Chat Group And Chats 
 
@@ -69,10 +57,40 @@ namespace DoctorFAM.Web.Hubs.Implementation
                     await Clients.Caller.SendAsync("NewGroup", group.ChatGroup.GroupTitle, group.ChatGroup.GroupToken, group.ChatGroup.ImageName);
                 }
 
+                if (currentGroupId > 0) await Groups.RemoveFromGroupAsync(Context.ConnectionId, currentGroupId.ToString());
+
                 await Groups.AddToGroupAsync(Context.ConnectionId, group.ChatGroup.Id.ToString());
                 await Clients.Group(group.ChatGroup.Id.ToString()).SendAsync("JoinGroup", group.ChatGroup, group.Chats);
             }
         }
 
+
+        #endregion
+
+        #region Send Message
+
+        public async Task SendMessage(string text, ulong groupId)
+        {
+            #region Create Instance 
+
+            SendMessageViewModel model = new SendMessageViewModel()
+            {
+                ChatBody = text,
+                GroupId = groupId,
+                UserId = Context.User.GetUserId()
+            };
+
+            #endregion
+
+            //Add Message To The Data Base
+            await _chatService.SendMessage(model);
+
+            //Convert Information For Show True Datas
+            model.CreateDate = DateTime.Now.Date.ToShamsi();
+
+            await Clients.Group(groupId.ToString()).SendAsync("ReceiveMessage", model);
+        }
+
+        #endregion
     }
 }

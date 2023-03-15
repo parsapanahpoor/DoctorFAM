@@ -34,6 +34,25 @@ namespace DoctorFAM.Application.Services.Implementation
 
         #region Chat Room Area 
 
+        //Send Message 
+        public async Task SendMessage(SendMessageViewModel chat)
+        {
+            #region Create Instance
+
+            Chat model = new Chat()
+            {
+                ChatBody = chat.ChatBody.SanitizeText(),
+                CreateDate = DateTime.Now,
+                GroupId = chat.GroupId,
+                UserId = chat.UserId
+            };
+
+            //Add To The Data Base 
+            await _chatRepository.AddChatMessageToTheDataBase(model);
+
+            #endregion
+        }
+
         //Fill Search Chat Room Result View Model 
         public async Task<List<SearchChatRoomResultViewModel>> FillSearchChatRoomResultViewModel(string title)
         {
@@ -186,27 +205,27 @@ namespace DoctorFAM.Application.Services.Implementation
         //Get Chat Group By Id 
         public async Task<ChatGroup?> GetChatGroupById(ulong chatGroupId)
         {
-            return await _chatRepository.GetChatGroupById(chatGroupId);   
+            return await _chatRepository.GetChatGroupById(chatGroupId);
         }
 
         //Is User In Group 
-        public async Task<bool> IsUserInGroup(ulong userId , ulong groupId)
+        public async Task<bool> IsUserInGroup(ulong userId, ulong groupId)
         {
             #region Check That User Is Member Of Chat Group 
 
-            return await _chatRepository.IsExistUserInChatGroup(groupId , userId);
+            return await _chatRepository.IsExistUserInChatGroup(groupId, userId);
 
             #endregion
         }
 
         //Join To The Group 
-        public async Task JoinToTheGroup(ulong userId , ulong groupId)
+        public async Task JoinToTheGroup(ulong userId, ulong groupId)
         {
             #region Create Instance Of Model 
 
             ChatGroupMember model = new ChatGroupMember()
             {
-                UserId = userId ,
+                UserId = userId,
                 GroupId = groupId
             };
 

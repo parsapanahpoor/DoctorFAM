@@ -1,19 +1,6 @@
 ﻿
 
-function receive(text) {
-    console.log(text);
-}
 
-//#region invole = فراخوانی کردن
-
-function sendMessage(event) {
-    event.preventDefault();
-
-    var text = $("#messageText").val();
-    connection.invoke("SendMessage", text);
-}
-
-//#endregion
 
 //#region Add Group To The User Group List
 

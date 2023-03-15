@@ -28,6 +28,13 @@ namespace DoctorFAM.Data.Repository
 
         #region Chat Room Area 
 
+        //Add Chat Message To The Data Base 
+        public async Task AddChatMessageToTheDataBase(Chat chat)
+        {
+            await _context.Chats.AddAsync(chat);
+            await _context.SaveChangesAsync();
+        }
+
         //Add Group To The Data Base 
         public async Task AddChatGroupToTheDataBase(ChatGroup chatGroup)
         {
