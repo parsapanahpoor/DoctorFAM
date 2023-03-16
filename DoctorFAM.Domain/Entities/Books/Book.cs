@@ -22,24 +22,20 @@ namespace DoctorFAM.Domain.Entities.Books
         [MaxLength(600)]
         public string Writer { get; set; }
 
-
         [Display(Name = "مترجم")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         [MaxLength(600)]
         public string Translator { get; set; }
-
 
         [Display(Name = "انتشارات")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         [MaxLength(400)]
         public string Publisher { get; set; }
 
-
         [Display(Name = "سال انتشار")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         [MaxLength(100)]
         public string YearOfPublish { get; set; }
-
 
         [Display(Name = "چکیده کتاب / مجله")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
@@ -63,7 +59,6 @@ namespace DoctorFAM.Domain.Entities.Books
         [Display(Name = "تعداد صفحات")]
         public int PagesNO { get; set; }
 
-
         [Display(Name = "وضعیت")]
         public bool IsActive { get; set; }
 
@@ -74,10 +69,10 @@ namespace DoctorFAM.Domain.Entities.Books
 
         #region Relations
 
-        public ICollection<BookTag> BookTags { get; set; }
+        //public ICollection<BookTag> BookTags { get; set; }
 
+        //public ICollection<BookSelectedCategory> BookSelectedCategories { get; set; }
 
-        public ICollection<BookSelectedCategory> BookSelectedCategories { get; set; }
         #endregion
     }
 }

@@ -19,9 +19,9 @@ namespace DoctorFAM.Domain.Entities.Books
 
         #region Relations
 
-        public BookCategory BookCategory { get; set; }
+        //public BookCategory BookCategory { get; set; }
 
-        public Book Book { get; set; }
+        //public Book Book { get; set; }
 
         #endregion
     }

@@ -39,7 +39,7 @@ namespace DoctorFAM.Domain.Entities.Books
         [ForeignKey("ParentId")]
         public ICollection<BookCategory> Children { get; set; }
 
-        public ICollection<BookSelectedCategory> BookSelectedCategories { get; set; }
+        //public ICollection<BookSelectedCategory> BookSelectedCategories { get; set; }
 
         #endregion
     }

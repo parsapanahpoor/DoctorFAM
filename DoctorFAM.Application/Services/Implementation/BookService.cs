@@ -19,7 +19,7 @@ using DoctorFAM.Domain.ViewModels.Admin.News;
 
 namespace DoctorFAM.Application.Services.Implementation
 {
-    public class BookService: DoctorFAM.Application.Services.Interfaces.IBookService
+    public class BookService : DoctorFAM.Application.Services.Interfaces.IBookService
     {
         #region Constructor
 
@@ -103,7 +103,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #endregion
 
-           
+
 
             await filter.Paging(query);
 
@@ -112,7 +112,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
         public async Task<CreateBookFromAdminPanelResponse> CreateBookFromAdminPanel(CreateBookAdminViewModel model, IFormFile Image, IFormFile BookFile)
         {
-            
+
             #region Check Validation
 
             if (Image == null)
@@ -124,7 +124,7 @@ namespace DoctorFAM.Application.Services.Implementation
             {
                 return CreateBookFromAdminPanelResponse.WriterNotFound;
             }
-            if (BookFile==null)
+            if (BookFile == null)
             {
                 return CreateBookFromAdminPanelResponse.BookFileNotFound;
             }
@@ -132,7 +132,7 @@ namespace DoctorFAM.Application.Services.Implementation
             {
                 return CreateBookFromAdminPanelResponse.TitleNotFound;
             }
-            
+
 
             if (!Image.IsImage())
             {
@@ -147,14 +147,14 @@ namespace DoctorFAM.Application.Services.Implementation
             {
                 Title = model.Title.SanitizeText(),
                 Introduction = model.Introduction.SanitizeText(),
-                Writer=model.Writer.SanitizeText(),
+                Writer = model.Writer.SanitizeText(),
                 Translator = model.Translator.SanitizeText(),
-                Publisher=model.Publisher.SanitizeText(),
-                YearOfPublish=model.YearOfPublish.SanitizeText(),
-                Price=model.Price,
-                PagesNO=model.PagesNO,               
-                IsActive = model.IsActive              
-                
+                Publisher = model.Publisher.SanitizeText(),
+                YearOfPublish = model.YearOfPublish.SanitizeText(),
+                Price = model.Price,
+                PagesNO = model.PagesNO,
+                IsActive = model.IsActive
+
             };
 
             #endregion
@@ -240,44 +240,83 @@ namespace DoctorFAM.Application.Services.Implementation
 
         public async Task<EditBookAdminSideViewModel> FillEditBookAdminSideViewModel(Book Book)
         {
-            var mainCategoryId = await _context.BookSelectedCategory
-                .Include(p => p.BookCategory)
-                .Where(p => !p.IsDelete && p.BookId == Book.Id && p.BookCategory.ParentId == null)
-                .Select(p => p.BookCategoryId)
-                .FirstOrDefaultAsync();
-
-            var subCategory = await _context.BookSelectedCategory
-                .Include(p => p.BookCategory)
-                .Where(p => !p.IsDelete && p.BookId == Book.Id && p.BookCategory.ParentId != null)
-                .Select(p => p.BookCategoryId)
-                .FirstOrDefaultAsync();
+            #region Get List Of Book Selected Tags 
 
             var BookTag = await GetBookTagsByBookId(Book.Id);
+
+            #endregion
+
+            #region Create Instance From Return Model 
 
             EditBookAdminSideViewModel model = new EditBookAdminSideViewModel
             {
                 Title = Book.Title,
                 Introduction = Book.Introduction,
                 Writer = Book.Writer,
-                Translator=Book.Translator,
-                Publisher= Book.Publisher,
-                YearOfPublish= Book.YearOfPublish,
-                PagesNO=    Book.PagesNO,
-                Price=  Book.Price,
-                BookFile=Book.BookFile,
+                Translator = Book.Translator,
+                Publisher = Book.Publisher,
+                YearOfPublish = Book.YearOfPublish,
+                PagesNO = Book.PagesNO,
+                Price = Book.Price,
+                BookFile = Book.BookFile,
                 Image = Book.Image,
-                IsActive = Book.IsActive,               
+                IsActive = Book.IsActive,
                 Id = Book.Id,
-                MainCategory = mainCategoryId,
-                SubCategory = subCategory,
                 BookTag = string.Join(",", BookTag.Select(p => p.Title).ToList())
-               
+
             };
+
+            #region Get Main Category 
+
+            //var mainCategoryId = await _context.BookSelectedCategory
+            // .Include(p => p.BookCategory)
+            // .Where(p => !p.IsDelete && p.BookId == Book.Id && p.BookCategory.ParentId == null)
+            // .Select(p => p.BookCategoryId)
+            // .FirstOrDefaultAsync();
+
+            //Get List OF Book Selected Category Ids 
+            var bookSelectedCategoryIds = await _context.BookSelectedCategory
+             .Where(p => !p.IsDelete && p.BookId == Book.Id)
+             .Select(p => p.BookCategoryId).ToListAsync();
+
+            //Create Instance
+            List<BookCategory> bookCategories = new List<BookCategory>();
+
+            if (bookSelectedCategoryIds != null && bookSelectedCategoryIds.Any())
+            {
+                BookCategory item = new BookCategory();
+
+                foreach (var bookCatgeoryId in bookSelectedCategoryIds)
+                {
+                    item = await _context.BookCategories.FirstOrDefaultAsync(p => !p.IsDelete && p.Id == bookCatgeoryId);
+                    if (item is not null)
+                    {
+                        bookCategories.Add(item);
+                    }
+                }
+            }
+
+            if (bookCategories != null && bookCategories.Any())
+            {
+                if (bookCategories.Any(p => p.ParentId == null))
+                {
+                    model.MainCategory = bookCategories.FirstOrDefault(p => p.ParentId == null).Id;
+                }
+
+                if (bookCategories.Any(p => p.ParentId != null))
+                {
+                    model.SubCategory = bookCategories.FirstOrDefault(p => p.ParentId != null).Id;
+                }
+            }
+
+            #endregion
+
+            #endregion
 
             return model;
         }
 
-        public async Task<EditBookFromAdminPanelResponse> EditBookFromAdminPanel(EditBookAdminSideViewModel model, IFormFile Image , IFormFile BookFile )
+        public async Task<EditBookFromAdminPanelResponse> EditBookFromAdminPanel(EditBookAdminSideViewModel model, IFormFile Image, IFormFile BookFile)
         {
             #region Check Validation
 
@@ -296,10 +335,10 @@ namespace DoctorFAM.Application.Services.Implementation
                 return EditBookFromAdminPanelResponse.ImageNotFound;
             }
 
-            if (BookFile != null )
+            if (BookFile != null)
             {
                 return EditBookFromAdminPanelResponse.BookFileNotFound;
-            } 
+            }
             var Book = await GetBookByIdAsync(model.Id);
 
             if (Book == null)
@@ -319,9 +358,9 @@ namespace DoctorFAM.Application.Services.Implementation
             Book.Price = model.Price;
             Book.PagesNO = model.PagesNO;
             Book.Introduction = model.Introduction.SanitizeText();
-            
+
             Book.IsActive = model.IsActive;
-           
+
 
             #endregion
 
@@ -668,7 +707,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
         public async Task<List<Book>?> LastestBookForShowOnLandingPage()
         {
-                                      
+
             return await _context.Book.Where(p => !p.IsDelete && p.IsActive)
                                 .OrderByDescending(p => p.CreateDate).Take(12).ToListAsync();
         }
