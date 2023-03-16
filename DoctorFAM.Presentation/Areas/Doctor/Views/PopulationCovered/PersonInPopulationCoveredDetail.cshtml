@@ -92,19 +92,24 @@
                             </span>
                             <div class="row mt-2 rowboxspec">
 
-                                <div class="form-group col-md-4 col-sm-12">
+                                <div class="form-group col-md-3 col-sm-12">
                                     <label>@Localizer["User name"]</label>
                                     <input type="text" class="form-control" readonly value="@Model.Patient.Username">
                                 </div>
 
-                                <div class="form-group col-md-4 col-sm-12">
+                                <div class="form-group col-md-3 col-sm-12">
                                     <label>@Localizer["First Name"]</label>
                                     <input type="text" class="form-control" readonly value="@(string.IsNullOrEmpty(Model.Patient.LastName) ? @Localizer["Empty"] : @Model.Patient.FirstName )">
                                 </div>
 
-                                <div class="form-group col-md-4 col-sm-12">
+                                <div class="form-group col-md-3 col-sm-12">
                                     <label>@Localizer["Last Name"]</label>
                                     <input type="text" class="form-control" readonly value="@(string.IsNullOrEmpty(Model.Patient.LastName) ? @Localizer["Empty"] : @Model.Patient.LastName )">
+                                </div>
+
+                                <div class="form-group col-md-3 col-sm-12">
+                                    <label>@Localizer["National Id"]</label>
+                                    <input type="text" class="form-control" readonly value="@(string.IsNullOrEmpty(Model.Patient.NationalId) ? @Localizer["Empty"] : @Model.Patient.NationalId )">
                                 </div>
 
                                 <div class="form-group col-md-3 col-sm-12">

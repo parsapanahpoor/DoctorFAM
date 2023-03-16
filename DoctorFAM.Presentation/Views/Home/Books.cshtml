@@ -1,48 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "کتب و مجلات";
+    ViewBag.Title = "کتب و مجلات";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-
-<section class="section section-featurebox">
-    <div class="container">
-        <div class="section-header text-center">
-            <h2>
-                کتب و مجلات
-            </h2>
-
-        </div>
-        <div class="row justify-content-center">
-            <div class="feature-col-list">
-                <div class="feature-col">                   
-                    <div class="feature-subox d-flex flex-wrap justify-content-center">
-                        <a target="_blank" href="/Content/Books/BasicOfFirstAid.pdf" class=" btn btn-primary ">                           
-                            <img src="~/Content/Books/FirstAid.png" class="img-fluid" alt="Features">
-                            <h4> مبانی کمکهای اولیه</h4>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="feature-col-list">
-                <div class="feature-col">                   
-                    <div class="feature-subox d-flex flex-wrap justify-content-center">
-                        <a target="_blank" href="/Content/Books/ObesityPamphlet.pdf" class=" btn btn-primary ">
-                            <img src="~/Content/Books/ObesityPamphlet.png" class="img-fluid" alt="Features">
-                            <h4> چاقی و اضافه وزن</h4>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="feature-col-list">
-                <div class="feature-col">                    
-                    <div class="feature-subox d-flex flex-wrap justify-content-center">
-                        <a target="_blank" href="/Content/Books/SelfCarePamphlet.pdf" class=" btn btn-primary ">
-                            <img src="~/Content/Books/SelfCarePamphlet.png" class="img-fluid" alt="Features">
-                            <h4> خودمراقبتی در سالمندی</h4>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+@await Component.InvokeAsync("LastestBooksOnLandingPage")

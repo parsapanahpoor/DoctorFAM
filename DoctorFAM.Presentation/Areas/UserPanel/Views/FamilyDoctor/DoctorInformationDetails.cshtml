@@ -163,7 +163,15 @@
 
                                 </div>
 
-                                <a asp-action="ChoosingFamilyDoctor" asp-area="UserPanel" asp-controller="FamilyDoctor" asp-route-doctorUserId="@Model.User.Id" class="btn btn-primary">@Localizer["Choose Doctor"]</a>
+                                <div class="row">
+                                    <div class="col-md-4"></div>
+                                    <div class="col-md-4 text-center justify-content-center ">
+                                        <a asp-action="ChoosingFamilyDoctor" asp-area="UserPanel" asp-controller="FamilyDoctor" asp-route-doctorUserId="@Model.User.Id" class="btn btn-primary col-md-12">@Localizer["Choose Doctor"]</a>
+                                    </div>
+                                    <div class="col-md-4"></div>
+
+                                </div>
+                               
 
                             </div>
 

@@ -1,5 +1,6 @@
 ﻿using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Interfaces;
+using DoctorFAM.Application.Services.Implementation;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Presentation.Models;
 using DoctorFAM.Web.HttpManager;
@@ -21,6 +22,9 @@ namespace DoctorFAM.Web.Controllers
         public ILocationService _locationService;
         private readonly IHubContext<NotificationHub> _notificationHub;
         private readonly IFollowService _followService;
+       
+
+       
 
         public HomeController( ILocationService lcaotionService , IHubContext<NotificationHub> notificationHub
                                 , IFollowService followService)
@@ -303,8 +307,11 @@ namespace DoctorFAM.Web.Controllers
 
         #region Books
 
-        public async Task<IActionResult> Books()
+
+
+        public IActionResult Books()
         {
+            
             return View();
         }
         #endregion

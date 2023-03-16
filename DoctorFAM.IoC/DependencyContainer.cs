@@ -59,7 +59,8 @@ namespace DoctorFAM.IoC
             services.AddScoped<IHealthInformationService, HealthInformationService>();
             services.AddScoped<IResumeService, ResumeService>();
             services.AddScoped<ICustomerAdvertisementService, CustomerAdvertisementService>();
-            services.AddScoped<INewsService, Newservice>();
+            services.AddScoped<INewsService, NewsService>();
+            services.AddScoped<IBookService, BookService>();
             services.AddScoped<IFollowService, FollowService>();
             services.AddScoped<ISpecialityService, SpecialityService>();
             services.AddScoped<IMedicalExaminationService, MedicalExaminationService>();

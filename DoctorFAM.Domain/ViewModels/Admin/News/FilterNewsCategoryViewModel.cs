@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DoctorFAM.Domain.ViewModels.News.Admin
+namespace DoctorFAM.Domain.ViewModels.Admin.News
 {
     public class FilterNewsCategoryViewModel : BasePaging<NewsCategory>
     {
@@ -34,9 +34,9 @@ namespace DoctorFAM.Domain.ViewModels.News.Admin
 
     public enum FilterNewsCatgeoryAdminSideOrder
     {
-        [Display(Name = "تاریخ ثبت نام - نزولی")]
+        [Display(Name = "تاریخ ثبت  - نزولی")]
         CreateDate_Des,
-        [Display(Name = "تاریخ ثبت نام - صعودی ")]
+        [Display(Name = "تاریخ ثبت  - صعودی ")]
         CreateDate_Asc
     }
 

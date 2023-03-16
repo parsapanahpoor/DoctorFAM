@@ -1,9 +1,8 @@
-﻿using Academy.Domain.ViewModels.News.Admin;
-using DoctorFAM.Application.Security;
+﻿using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.ViewModels.Article.Admin;
-using DoctorFAM.Domain.ViewModels.News;
-using DoctorFAM.Domain.ViewModels.News.Admin;
+
+using DoctorFAM.Domain.ViewModels.Admin.News;
 using DoctorFAM.Web.HttpManager;
 using Microsoft.AspNetCore.Mvc;
 

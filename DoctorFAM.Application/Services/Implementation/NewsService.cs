@@ -3,8 +3,6 @@ using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Application.StaticTools;
-using DoctorFAM.Domain.ViewModels.News;
-using DoctorFAM.Domain.ViewModels.News.Admin;
 using DoctorFAM.Domain.ViewModels.Common;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -16,18 +14,19 @@ using System.Text;
 using System.Threading.Tasks;
 using DoctorFAM.Data.DbContext;
 using DoctorFAM.Domain.Entities.News;
-using Academy.Domain.ViewModels.News.Admin;
+using DoctorFAM.Domain.ViewModels.Admin.News;
+
 
 namespace DoctorFAM.Application.Services.Implementation
 {
-    public class Newservice : DoctorFAM.Application.Services.Interfaces.INewsService
+    public class NewsService : DoctorFAM.Application.Services.Interfaces.INewsService
     {
         #region Constructor
 
         private readonly DoctorFAMDbContext _context;
         private readonly IUserService _userService;
 
-        public Newservice(DoctorFAMDbContext context, IUserService userService)
+        public NewsService(DoctorFAMDbContext context, IUserService userService)
         {
             _context = context;
             _userService = userService;
@@ -534,7 +533,7 @@ namespace DoctorFAM.Application.Services.Implementation
         {
             if (category.UniqueName != News.UniqueName && await IsDuplicatedNewsCategory(category.UniqueName))
             {
-                return Domain.ViewModels.News.Admin.EditNewsCategoryResult.CategoryIsExist;
+                return Domain.ViewModels.Admin.News.EditNewsCategoryResult.CategoryIsExist;
             }
 
             News.Title = category.Title.SanitizeText();
@@ -544,7 +543,7 @@ namespace DoctorFAM.Application.Services.Implementation
             _context.NewsCategories.Update(News);
             await _context.SaveChangesAsync();
 
-            return Domain.ViewModels.News.Admin.EditNewsCategoryResult.success;
+            return Domain.ViewModels.Admin.News.EditNewsCategoryResult.success;
         }
 
         public async Task DeleteNewsCategory(NewsCategory cat)
@@ -636,6 +635,7 @@ namespace DoctorFAM.Application.Services.Implementation
                                 .OrderByDescending(p=> p.CreateDate).Take(3).ToListAsync();
         }
 
+     
         #endregion
     }
 }

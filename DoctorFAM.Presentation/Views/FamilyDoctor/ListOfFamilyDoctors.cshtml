@@ -248,13 +248,13 @@
 
                                             </div>
                                         </div>
-                                        <div class="doc-info-right">
+                                        <div class="doc-info-right text-center justify-content-center">
 
                                             @*Followers Detail*@
                                             @await Component.InvokeAsync("DoctorsFollowDetailOnListOfFamilyDoctors" , new{
                                     targetUserId = doctor.User.Id})
 
-                                            <div class="clinic-booking mt-1">
+                                            <div class="clinic-booking mt-1  text-center justify-content-center">
                                                 @if (User.Identity.IsAuthenticated)
                                                 {
                                                     @*Followers Method*@
@@ -263,13 +263,13 @@
                                                 }
                                                 else
                                                 {
-                                                    <div class="doc-info-right clinic-booking mt-3">
+                                                    <div class="doc-info-right clinic-booking mt-3  text-center justify-content-center">
                                                         <a class="view-pro-btn " asp-action="Login" asp-area="" asp-controller="Account">دنبال کردن</a>
                                                     </div>
                                                 }
-                                                <a class="view-pro-btn mt-3" asp-action="DocPage" asp-area="" asp-controller="FocalPoint" asp-route-userId="@doctor.User.Id">مشاهده پروفایل</a>
-                                                <a class="apt-btn" asp-action="DocBooking" asp-controller="FocalPoint" asp-area="" asp-route-userId="@doctor.UserId">رزرو نوبت</a>
-                                                <a asp-action="ChoosingFamilyDoctor" asp-area="UserPanel" asp-controller="FamilyDoctor" asp-route-doctorUserId="@doctor.User.Id" class="apt-btn">انتخاب پزشک خانواده</a>
+                                                <a class="view-pro-btn mt-3  text-center justify-content-center" asp-action="DocPage" asp-area="" asp-controller="FocalPoint" asp-route-userId="@doctor.User.Id">مشاهده پروفایل</a>
+                                                <a class="apt-btn  text-center justify-content-center" asp-action="DocBooking" asp-controller="FocalPoint" asp-area="" asp-route-userId="@doctor.UserId">رزرو نوبت</a>
+                                                <a asp-action="ChoosingFamilyDoctor" asp-area="UserPanel" asp-controller="FamilyDoctor" asp-route-doctorUserId="@doctor.User.Id" class="apt-btn  text-center justify-content-center">انتخاب پزشک خانواده</a>
                                             </div>
                                         </div>
                                     </div>

@@ -1,0 +1,95 @@
+﻿@using DoctorFAM.Domain.ViewModels.Common
+@using DoctorFAM.Application.StaticTools
+@model DoctorFAM.Domain.ViewModels.Admin.Books.CreateBookCategoryViewModel
+
+@{
+    ViewData["Title"] = "افزودن زیر دسته برای " + @ViewBag.ParentTitle;
+}
+
+@section Scripts
+    {
+    <partial name="_JqueryValidation" />
+}
+
+    @section Breadcrumb
+    {
+    <li>
+        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+    </li>
+}
+
+    <form method="post" asp-action="CreateSubCategory" asp-controller="BookCategory" asp-area="Admin">
+        <input asp-for="ParentId" value="@ViewBag.ParentId" type="hidden" />
+        <div class="row">
+            <div class="col-lg-9 col-sm-12">
+                <div class="widget">
+                    <div class="widget-header bordered-bottom bordered-green">
+                        <span class="widget-caption"> @ViewData["Title"] </span>
+                    </div>
+                    <div class="widget-body">
+                        <div>
+
+                            <div class="row">
+                                <div class="form-group col-md-6 col-sm-12">
+                                    <label asp-for="Title"></label>
+                                    <input type="text" class="form-control" asp-for="Title">
+                                    <span class="text-danger" asp-validation-for="Title"></span>
+                                </div>
+
+                                <div class="form-group col-md-6 col-sm-12">
+                                    <label asp-for="UniqueName"></label>
+                                    <input type="text" class="form-control" asp-for="UniqueName">
+                                    <span class="text-danger" asp-validation-for="UniqueName"></span>
+                                </div>
+
+
+                                <div class="clearfix"></div>
+
+                            </div>
+
+                            <hr class="margin-bottom-10 margin-top-10" />
+
+                            <div class="row">
+                                <div class="col-md-12 flex-style">
+                                    <button type="submit" class="btn btn-labeled btn-palegreen">
+                                        <i class="btn-label glyphicon glyphicon-ok"></i>ثبت
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-sm-12">
+                <div class="row">
+
+                    <div class="col-lg-12">
+                        <div class="widget">
+                            <div class="widget-header bordered-bottom bordered-green">
+                                <span class="widget-caption"> وضعیت </span>
+                            </div>
+                            <div class="widget-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+
+                                        <div class="form-group">
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" asp-for="IsActive">
+                                                    <span class="text"> فعال </span>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </form>

@@ -1,9 +1,9 @@
 ﻿@using DoctorFAM.Domain.ViewModels.Common
 @using DoctorFAM.Application.StaticTools
-@model DoctorFAM.Domain.ViewModels.News.Admin.EditNewsAdminSideViewModel
+@model DoctorFAM.Domain.ViewModels.Admin.News.EditNewsAdminSideViewModel
 @using DoctorFAM.Application.Extensions
 @{
-    ViewData["Title"] = "ویرایش خبر ی جدید";
+    ViewData["Title"] = "ویرایش خبر ";
 
     var MainCat = ViewData["MianCategory"] != null ? ViewData["MianCategory"] as List<SelectListViewModel> : null;
     var SubCategoryCategory = ViewData["SubCategoryCategory"] != null ? ViewData["SubCategoryCategory"] as List<SelectListViewModel> : null;

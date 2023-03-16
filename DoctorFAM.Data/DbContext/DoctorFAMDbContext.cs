@@ -21,6 +21,7 @@ using DoctorFAM.Domain.Entities.Laboratory;
 using DoctorFAM.Domain.Entities.Languages;
 using DoctorFAM.Domain.Entities.MarketCategory;
 using DoctorFAM.Domain.Entities.News;
+using DoctorFAM.Domain.Entities.Books;
 using DoctorFAM.Domain.Entities.Notification;
 using DoctorFAM.Domain.Entities.Nurse;
 using DoctorFAM.Domain.Entities.OnlineVisit;
@@ -371,6 +372,18 @@ namespace DoctorFAM.Data.DbContext
         public DbSet<NewsComment> NewsComments { get; set; }
 
         public DbSet<NewsSelectedCategory> NewsSelectedCategory { get; set; }
+
+        #endregion
+
+        #region Books 
+
+        public DbSet<Book> Book { get; set; }
+
+        public DbSet<BookTag> BookTags { get; set; }
+
+        public DbSet<BookCategory> BookCategories { get; set; }       
+
+        public DbSet<BookSelectedCategory> BookSelectedCategory { get; set; }
 
         #endregion
 

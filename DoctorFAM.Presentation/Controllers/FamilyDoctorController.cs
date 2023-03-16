@@ -58,7 +58,7 @@ namespace DoctorFAM.Web.Controllers
 
             #region Paginaition
 
-            int take = 20;
+            int take = 50;
 
             int skip = (filter.PageId.Value - 1) * take;
 

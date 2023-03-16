@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DoctorFAM.Domain.ViewModels.News.Admin
+namespace DoctorFAM.Domain.ViewModels.Admin.News
 {
     public class EditNewsAdminSideViewModel
     {

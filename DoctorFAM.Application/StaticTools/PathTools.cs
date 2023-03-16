@@ -185,6 +185,20 @@ namespace DoctorFAM.Application.StaticTools
 
         #endregion
 
+        #region Books Files
+
+        public static readonly string ImagePath = "/content/Books/main/";
+        public static readonly string ImagePathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/Books/main/");
+
+        public static readonly string ImagePathThumb = "/content/Books/thumb/";
+        public static readonly string ImagePathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/Books/thumb/");
+
+        public static readonly string BookFilePath = "/content/Books/";
+        public static readonly string BookFilePathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/Books/");
+
+
+        #endregion
+
         #region Diabet Consultant Resume Files
 
         public static readonly string DiabetConsultantResumeFilesPath = "/content/images/DiabetConsultantResumeFiles/main/";

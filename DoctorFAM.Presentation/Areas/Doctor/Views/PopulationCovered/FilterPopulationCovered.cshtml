@@ -90,7 +90,10 @@
                                 @Localizer["Avatar"]
                             </th>
                             <th class="tc vm">
-                                @Localizer["Personal Info"]
+                                @Localizer["Mobile"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["NationalId"]
                             </th>
                             <th class="tc vm">
                                 @Localizer["Count Of Population Covered"]
@@ -116,6 +119,12 @@
                                     @if (!string.IsNullOrEmpty(user.Mobile))
                                     {
                                         <p> @user.Mobile</p>
+                                    }
+                                </td>
+                                <td class="tc vm">
+                                    @if (!string.IsNullOrEmpty(user.NationalId))
+                                    {
+                                        <p> @user.NationalId</p>
                                     }
                                 </td>
                                 <td class="tc vm">

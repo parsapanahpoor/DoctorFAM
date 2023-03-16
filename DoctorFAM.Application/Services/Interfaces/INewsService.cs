@@ -1,10 +1,8 @@
 ﻿using DoctorFAM.Domain.Entities.News;
-using DoctorFAM.Domain.ViewModels.News;
-using DoctorFAM.Domain.ViewModels.News.Admin;
 using DoctorFAM.Domain.ViewModels.Common;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Academy.Domain.ViewModels.News.Admin;
+using DoctorFAM.Domain.ViewModels.Admin.News;
 using DoctorFAM.Domain.ViewModels.Article.Admin;
 
 namespace DoctorFAM.Application.Services.Interfaces

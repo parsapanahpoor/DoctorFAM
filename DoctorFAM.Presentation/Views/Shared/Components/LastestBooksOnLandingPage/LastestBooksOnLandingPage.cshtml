@@ -1,0 +1,48 @@
+﻿@model List<DoctorFAM.Domain.Entities.Books.Book>
+@using DoctorFAM.Application.StaticTools
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+
+
+
+
+
+<section class="section section-featurebox">
+    <div class="container">
+        <div class="section-header text-center">
+            <h2>
+                کتب و مجلات
+            </h2>
+
+        </div>
+        @if (Model != null && Model.Any())
+        {
+
+
+            <div class="row">
+
+                @foreach (var item in Model)
+                {
+                    <div class="col-lg-4 col-md-12 md-mt-5">
+                        <div class="post">
+                            <div class="post-image">
+
+                                <a href="@PathTools.BookFilePath@item.BookFile" target="_blank">
+                                    <img class="img-fluid divch rounded w-100" src="@PathTools.ImagePathThumb@item.Image" style="height:230px !important; border:1px solid #fd5b03;" alt="">
+                                    <h4> @item.Title</h4>
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                }
+            </div>
+
+
+        }
+    </div>
+</section>
+
+

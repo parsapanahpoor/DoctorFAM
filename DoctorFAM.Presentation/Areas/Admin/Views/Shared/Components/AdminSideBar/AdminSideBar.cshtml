@@ -103,6 +103,24 @@
             </ul>
         </li>
 
+
+        <li>
+            <a href="#" class="menu-dropdown">
+                <i class="menu-icon glyphicon glyphicon-education"></i>
+                <span class="menu-text"> @SharedLocalizer["Manage Family Doctors"]  </span>
+                <i class="menu-expand"></i>
+            </a>
+
+            <ul class="submenu">
+                <li>
+                    <a asp-controller="FamilyDoctor" asp-action="FilterListOfFamilyDoctorsRequest">
+                        <span class="menu-text"> @SharedLocalizer["List Of Family Doctors"]  </span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+
         <li>
             <a href="#" class="menu-dropdown">
                 <i class="menu-icon glyphicon glyphicon-user"></i>
@@ -183,21 +201,7 @@
             </a>
         </li>
 
-        <li>
-            <a href="#" class="menu-dropdown">
-                <i class="menu-icon glyphicon glyphicon-education"></i>
-                <span class="menu-text"> @SharedLocalizer["Manage Family Doctors"]  </span>
-                <i class="menu-expand"></i>
-            </a>
-
-            <ul class="submenu">
-                <li>
-                    <a asp-controller="FamilyDoctor" asp-action="FilterListOfFamilyDoctorsRequest">
-                        <span class="menu-text"> @SharedLocalizer["List Of Family Doctors"]  </span>
-                    </a>
-                </li>
-            </ul>
-        </li>
+        
 
         <li>
             <a href="#" class="menu-dropdown">
@@ -464,7 +468,28 @@
                 </li>
                 <li>
                     <a asp-action="Index" asp-controller="NewsCategory" asp-area="Admin">
-                        <span class="menu-text"> لیست دسته بندی خبر </span>
+                        <span class="menu-text">  دسته بندی اخبار </span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="#" class="menu-dropdown">
+                <i class="menu-icon  glyphicon glyphicon-file"></i>
+                <span class="menu-text">کتب و مجلات</span>
+                <i class="menu-expand"></i>
+            </a>
+
+            <ul class="submenu">
+                <li>
+                    <a asp-action="Index" asp-controller="Books" asp-area="Admin">
+                        <span class="menu-text"> مدیریت کتب و مجلات </span>
+                    </a>
+                </li>
+                <li>
+                    <a asp-action="Index" asp-controller="BookCategory" asp-area="Admin">
+                        <span class="menu-text">  دسته بندی کتب و مجلات </span>
                     </a>
                 </li>
             </ul>
