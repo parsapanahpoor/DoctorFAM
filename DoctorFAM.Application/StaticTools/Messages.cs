@@ -5,6 +5,13 @@ namespace DoctorFAM.Application.StaticTools;
 
 public static class Messages
 {
+    //Wellcoming Message
+    public static string WellcomingMessage(string userName)
+    {
+        return
+            $"{userName} عزیز خوش آمدید. {Environment.NewLine} {PathTools.SiteFarsiName}";
+    }
+
     //This is for sample
     public static string GetMessageForSetConsultationDate(string date, string time, string phone)
     {

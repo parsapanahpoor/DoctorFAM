@@ -1,5 +1,6 @@
 ﻿using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Services.Interfaces;
+using DoctorFAM.Application.StaticTools;
 using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Chat;
 using DoctorFAM.Domain.ViewModels.ChatRoom;
@@ -16,13 +17,16 @@ namespace DoctorFAM.Web.Areas.ChatRoom.Controllers
         #region Ctor
 
         private readonly IChatService _chatService;
-
+        private readonly IUserService _userService;
         private IHubContext<ChatRoomHub> _chatRoomHub;
+        private readonly ISMSService _smsservice;
 
-        public HomeController(IChatService chatService, IHubContext<ChatRoomHub> chatHub )
+        public HomeController(IChatService chatService, IHubContext<ChatRoomHub> chatHub, IUserService userService, ISMSService smsservice)
         {
             _chatService = chatService;
             _chatRoomHub = chatHub;
+            _userService = userService;
+            _smsservice = smsservice;
         }
 
         #endregion
@@ -31,6 +35,17 @@ namespace DoctorFAM.Web.Areas.ChatRoom.Controllers
 
         public async Task<IActionResult> Index()
         {
+            #region Send SMS
+
+            //Get Current User
+            var user = await _userService.GetUserById(User.GetUserId());
+
+            var message = Messages.WellcomingMessage(user.Username);
+
+            await _smsservice.SendSimpleSMS(user.Mobile, message);
+
+            #endregion
+
             #region Get User Chat Groups 
 
             var model = await _chatService.GetListOfUserLists(User.GetUserId());

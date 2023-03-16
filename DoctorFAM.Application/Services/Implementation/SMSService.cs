@@ -55,7 +55,7 @@ namespace DoctorFAM.Application.Services.Implementation
             Kavenegar.KavenegarApi api = new Kavenegar.KavenegarApi(_configuration["kavenegar:apikey"]);
 
             //var result = await api.Send("10008663", receptor, message);
-            var result = await api.Send("100050004030", receptor, message);
+            var result = await api.Send("90004034", receptor, message);
 
             return result;
         }
