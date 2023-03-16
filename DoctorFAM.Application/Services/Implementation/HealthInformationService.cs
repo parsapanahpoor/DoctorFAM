@@ -1801,7 +1801,8 @@ namespace DoctorFAM.Application.Services.Implementation
                 {
                     RadioFAMAPIViewModel radio = new RadioFAMAPIViewModel();
 
-                    radio.musicName = item.Id.ToString();
+                    radio.musicName = item.Title;
+                    radio.CreateDate = item.CreateDate.ToShamsi();
                     radio.musicSrc = $"{PathTools.PodcastsForLandingPageFilesPath}{item.File}";
 
                     returnModel.Add(radio);

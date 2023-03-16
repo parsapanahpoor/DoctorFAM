@@ -3,9 +3,8 @@ let nextBtn = document.querySelector(".radio-next");
 let previousBtn = document.querySelector(".radio-previous");
 let audio = document.querySelector(".radio-audio audio");
 let radioEqulizer = document.querySelector(".radio-equalizer");
-let listItemMusicPopUp = document.querySelector(".radio-music-list-popup");
-let listItemsMusic = document.querySelectorAll(".radio-music-list-item");
-let radioFolder = document.querySelector(".radio-folder i");
+let musicList = document.querySelector(".music-list > .row");
+let radioPlayIcon = document.querySelector(".radio-play-icon")
 let isPlay = false;
 let musicCounter = 0;
 let audioArray;
@@ -15,10 +14,12 @@ function playMusic() {
         audio.play();
         isPlay = true;
         radioEqulizer.classList.add("active-equlizer");
+        radioPlayIcon.classList.replace("bi-play-fill", "bi-pause-fill")
     } else {
         audio.pause();
         isPlay = false;
         radioEqulizer.classList.remove("active-equlizer");
+        radioPlayIcon.classList.replace("bi-pause-fill", "bi-play-fill")
     }
 }
 
@@ -47,17 +48,20 @@ async function loadMusic() {
         .then(res => res.json())
         .then(data => {
             audioArray = data.data
+            console.log(audioArray);
             audioArray.forEach(function (item, index) {
                 let musicName = audioArray[index].musicName;
                 let musicSrc = audioArray[index].musicSrc;
                 audio.src = musicSrc
                 let musicTemplate = `
-                <div class="radio-music-list-item" onclick="playListMusic(event)">
-                    <span class="radio-music-list-name">${musicName}</span>
-                    <div class="radio-musix-list-audio" data-audio-src="${musicSrc}" data-id="${index}"></div>
+                <div class="col-6">
+                    <li class="music-list-item" onclick="playListMusic(event)">
+                        <span class="music-item-name">${musicName}</span>
+                        <div class="music-item-audio" data-audio-src="${musicSrc}" data-id="${index}"></div>
+                    </li>
                 </div>
                 `;
-                listItemMusicPopUp.insertAdjacentHTML("afterbegin", musicTemplate);
+                musicList.insertAdjacentHTML("beforeend", musicTemplate)
             })
         })
         .catch(err => console.error(err))
@@ -73,12 +77,7 @@ function playListMusic(event) {
     playMusic();
 }
 
-function showDropDown() {
-    listItemMusicPopUp.classList.toggle("active-popup");
-}
-
 playBtn.addEventListener("click", playMusic);
 nextBtn.addEventListener("click", nextMusic);
 previousBtn.addEventListener("click", previousMusic);
-radioFolder.addEventListener("click", showDropDown);
 window.addEventListener("load", loadMusic);

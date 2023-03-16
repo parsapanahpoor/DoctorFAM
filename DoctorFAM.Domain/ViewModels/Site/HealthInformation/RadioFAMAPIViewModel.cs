@@ -14,6 +14,8 @@ namespace DoctorFAM.Domain.ViewModels.Site.HealthInformation
 
         public string musicSrc { get; set; }
 
+        public string CreateDate { get; set; }
+
         #endregion
     }
 }
