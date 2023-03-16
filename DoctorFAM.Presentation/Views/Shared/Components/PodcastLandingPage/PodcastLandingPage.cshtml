@@ -51,32 +51,39 @@
                                     <span class="two"></span>
                                 </div>
                             </div>
-                        <div class="radio-audio">
-                            <audio src="@PathTools.PodcastsForLandingPageFilesPath@Model[0]" preload="none"></audio>
-                        </div>
+                            <div class="radio-audio">
+                                <audio src="" preload="none"></audio>
+                            </div>
                     </div>
-                    <div class="radio-left">
-                        <div class="radio-folder">
-                            <i class="material-icons">folder_open</i>
-                        </div>
-                        <div class="radio-music-list-popup">
-                            <div class="radio-music-list-item">
-                                <a href="#">مشاهده همه</a>
+                        <div class="radio-left">
+                            <div class="radio-controls">
+                                <div class="radio-next">
+                                    <i class="bi bi-chevron-bar-right radio-next-prev-icon"></i>
+                                </div>
+                                <div class="radio-stop-play">
+                                    <i class="bi bi-play-fill radio-play-icon"></i>
+                                </div>
+                                <div class="radio-previous">
+                                    <i class="bi bi-chevron-bar-left radio-next-prev-icon"></i>
+
+                                </div>
                             </div>
                         </div>
-                        <div class="radio-controls">
-                            <div class="radio-next">
-                            </div>
-                            <div class="radio-stop-play">
-                            </div>
-                            <div class="radio-previous">
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+        <ul class="music-list">
+            <div class="row">
+                <!-- <div class="col-6">
+                    <li class="music-list-item" onclick="playListMusic(event)">
+                        <span class="radio-music-list-name">${musicName}</span>
+                        <div class="radio-music-list-audio" data-audio-src="${musicSrc}" data-id="${index}"></div>
+                    </li>
+                </div> -->
+            </div>
+        </ul>
 
         <div class="col-lg-3 col-md-3  text-center">
 

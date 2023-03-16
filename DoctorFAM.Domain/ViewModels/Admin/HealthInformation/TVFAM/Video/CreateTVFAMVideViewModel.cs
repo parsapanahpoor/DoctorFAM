@@ -20,6 +20,8 @@ namespace DoctorFAM.Domain.ViewModels.Admin.HealthInformation.TVFAM.Video
 
         public string AttachmentFileName { get; set; }
 
+        public string? imagename { get; set; }
+
         public string? AuthorName { get; set; }
 
         public string ShortDescription { get; set; }

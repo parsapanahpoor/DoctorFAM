@@ -1,0 +1,457 @@
+﻿@model List<DoctorFAM.Domain.ViewModels.Site.Diabet.SMBG_NoteBook.ShowUserInsulinUsageHistory>
+
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+
+@if (Model != null && Model.Any())
+{
+    <table class="table table-hover table-bordered tc vm text-center align-items-center">
+
+        <tr>
+
+            @foreach (var createDate in Model)
+            {
+
+                <th class=" text-center align-items-center">@createDate.CreateDate.ToShamsi()</th>
+
+            }
+
+        </tr>
+
+        @*صبح ناشتا*@
+
+        <tr class="tc vm text-center align-items-center">
+
+            @foreach (var item1 in Model)
+            {
+                foreach (var item2 in Model.Where(p => p.CreateDate == item1.CreateDate).Select(p => p.LogForUsageInsulin))
+                {
+                    <td class=" text-center align-items-center" style="font-weight: bold;">صبح ناشتا  </td>
+
+                }
+            }
+
+        </tr>
+
+        <tr class="tc vm text-center align-items-center">
+
+            @foreach (var item1 in Model)
+            {
+                foreach (var item2 in Model.Where(p => p.CreateDate == item1.CreateDate).Select(p => p.LogForUsageInsulin))
+                {
+                    var fastingBloodSugar = item2.FirstOrDefault(p => p.TimeOfUsageInsulinState == DoctorFAM.Domain.Enums.SMBG.TimeOfUsageInsulinState.Breakfast
+                    && p.TimeOfUsageInsulinType == DoctorFAM.Domain.Enums.SMBG.TimeOfUsageInsulinType.FastingBloodSugar);
+
+                    <td class=" text-center align-items-center">نوع انسولین : @((fastingBloodSugar is not null && fastingBloodSugar.Insulin is not null) ? fastingBloodSugar.Insulin.InsulinName : "وارد نشده است.") </td>
+                }
+            }
+
+        </tr>
+
+        <tr class="tc vm text-center align-items-center">
+
+            @foreach (var item1 in Model)
+            {
+                foreach (var item2 in Model.Where(p => p.CreateDate == item1.CreateDate).Select(p => p.LogForUsageInsulin))
+                {
+                    var fastingBloodSugar = item2.FirstOrDefault(p => p.TimeOfUsageInsulinState == DoctorFAM.Domain.Enums.SMBG.TimeOfUsageInsulinState.Breakfast
+                    && p.TimeOfUsageInsulinType == DoctorFAM.Domain.Enums.SMBG.TimeOfUsageInsulinType.FastingBloodSugar);
+
+                    <td class=" text-center align-items-center">واحد انسولین : @((fastingBloodSugar is not null) ? fastingBloodSugar.CountOfInsulinUsage : "وارد نشده است.") </td>
+
+                }
+            }
+
+        </tr>
+
+        <tr class="tc vm text-center align-items-center">
+
+            @foreach (var item1 in Model)
+            {
+                foreach (var item2 in Model.Where(p => p.CreateDate == item1.CreateDate).Select(p => p.LogForUsageInsulin))
+                {
+                    var fastingBloodSugar = item2.FirstOrDefault(p => p.TimeOfUsageInsulinState == DoctorFAM.Domain.Enums.SMBG.TimeOfUsageInsulinState.Breakfast
+                    && p.TimeOfUsageInsulinType == DoctorFAM.Domain.Enums.SMBG.TimeOfUsageInsulinType.FastingBloodSugar);
+
+                    <td class=" text-center align-items-center">قند خون : @((fastingBloodSugar is not null) ? fastingBloodSugar.BloodSugar : "وارد نشده است.") </td>
+
+                }
+            }
+
+        </tr>
+
+        @*بعد از صبحانه*@
+
+        <tr class="tc vm text-center align-items-center">
+
+            @foreach (var item1 in Model)
+            {
+                foreach (var item2 in Model.Where(p => p.CreateDate == item1.CreateDate).Select(p => p.LogForUsageInsulin))
+                {
+                    <td class=" text-center align-items-center" style="font-weight: bold;">بعد از صبحانه  </td>
+
+                }
+            }
+
+        </tr>
+
+        <tr class="tc vm text-center align-items-center">
+
+            @foreach (var item1 in Model)
+            {
+                foreach (var item2 in Model.Where(p => p.CreateDate == item1.CreateDate).Select(p => p.LogForUsageInsulin))
+                {
+                    var fastingBloodSugar = item2.FirstOrDefault(p => p.TimeOfUsageInsulinState == DoctorFAM.Domain.Enums.SMBG.TimeOfUsageInsulinState.Breakfast
+                    && p.TimeOfUsageInsulinType == DoctorFAM.Domain.Enums.SMBG.TimeOfUsageInsulinType.TwohoursAfterMeals);
+
+                    <td class=" text-center align-items-center">نوع انسولین : @((fastingBloodSugar is not null && fastingBloodSugar.Insulin is not null) ? fastingBloodSugar.Insulin.InsulinName : "وارد نشده است.") </td>
+                }
+            }
+
+        </tr>
+
+        <tr class="tc vm text-center align-items-center">
+
+            @foreach (var item1 in Model)
+            {
+                foreach (var item2 in Model.Where(p => p.CreateDate == item1.CreateDate).Select(p => p.LogForUsageInsulin))
+                {
+                    var fastingBloodSugar = item2.FirstOrDefault(p => p.TimeOfUsageInsulinState == DoctorFAM.Domain.Enums.SMBG.TimeOfUsageInsulinState.Breakfast
+                    && p.TimeOfUsageInsulinType == DoctorFAM.Domain.Enums.SMBG.TimeOfUsageInsulinType.TwohoursAfterMeals);
+
+                    <td class=" text-center align-items-center">واحد انسولین : @((fastingBloodSugar is not null) ? fastingBloodSugar.CountOfInsulinUsage : "وارد نشده است.") </td>
+
+                }
+            }
+
+        </tr>
+
+        <tr class="tc vm text-center align-items-center">
+
+            @foreach (var item1 in Model)
+            {
+                foreach (var item2 in Model.Where(p => p.CreateDate == item1.CreateDate).Select(p => p.LogForUsageInsulin))
+                {
+                    var fastingBloodSugar = item2.FirstOrDefault(p => p.TimeOfUsageInsulinState == DoctorFAM.Domain.Enums.SMBG.TimeOfUsageInsulinState.Breakfast
+                    && p.TimeOfUsageInsulinType == DoctorFAM.Domain.Enums.SMBG.TimeOfUsageInsulinType.TwohoursAfterMeals);
+
+                    <td class=" text-center align-items-center">قند خون : @((fastingBloodSugar is not null) ? fastingBloodSugar.BloodSugar : "وارد نشده است.") </td>
+
+                }
+            }
+
+        </tr>
+
+        @*قبل از نهار*@
+
+        <tr class="tc vm text-center align-items-center">
+
+            @foreach (var item1 in Model)
+            {
+                foreach (var item2 in Model.Where(p => p.CreateDate == item1.CreateDate).Select(p => p.LogForUsageInsulin))
+                {
+                    <td class=" text-center align-items-center" style="font-weight: bold;">قبل از نهار  </td>
+
+                }
+            }
+
+        </tr>
+
+        <tr class="tc vm text-center align-items-center">
+
+            @foreach (var item1 in Model)
+            {
+                foreach (var item2 in Model.Where(p => p.CreateDate == item1.CreateDate).Select(p => p.LogForUsageInsulin))
+                {
+                    var fastingBloodSugar = item2.FirstOrDefault(p => p.TimeOfUsageInsulinState == DoctorFAM.Domain.Enums.SMBG.TimeOfUsageInsulinState.Lunch
+                    && p.TimeOfUsageInsulinType == DoctorFAM.Domain.Enums.SMBG.TimeOfUsageInsulinType.FastingBloodSugar);
+
+                    <td class=" text-center align-items-center">نوع انسولین : @((fastingBloodSugar is not null && fastingBloodSugar.Insulin is not null) ? fastingBloodSugar.Insulin.InsulinName : "وارد نشده است.") </td>
+                }
+            }
+
+        </tr>
+
+        <tr class="tc vm text-center align-items-center">
+
+            @foreach (var item1 in Model)
+            {
+                foreach (var item2 in Model.Where(p => p.CreateDate == item1.CreateDate).Select(p => p.LogForUsageInsulin))
+                {
+                    var fastingBloodSugar = item2.FirstOrDefault(p => p.TimeOfUsageInsulinState == DoctorFAM.Domain.Enums.SMBG.TimeOfUsageInsulinState.Lunch
+                    && p.TimeOfUsageInsulinType == DoctorFAM.Domain.Enums.SMBG.TimeOfUsageInsulinType.FastingBloodSugar);
+
+                    <td class=" text-center align-items-center">واحد انسولین : @((fastingBloodSugar is not null) ? fastingBloodSugar.CountOfInsulinUsage : "وارد نشده است.") </td>
+
+                }
+            }
+
+        </tr>
+
+        <tr class="tc vm text-center align-items-center">
+
+            @foreach (var item1 in Model)
+            {
+                foreach (var item2 in Model.Where(p => p.CreateDate == item1.CreateDate).Select(p => p.LogForUsageInsulin))
+                {
+                    var fastingBloodSugar = item2.FirstOrDefault(p => p.TimeOfUsageInsulinState == DoctorFAM.Domain.Enums.SMBG.TimeOfUsageInsulinState.Lunch
+                    && p.TimeOfUsageInsulinType == DoctorFAM.Domain.Enums.SMBG.TimeOfUsageInsulinType.FastingBloodSugar);
+
+                    <td class=" text-center align-items-center">قند خون : @((fastingBloodSugar is not null) ? fastingBloodSugar.BloodSugar : "وارد نشده است.") </td>
+
+                }
+            }
+
+        </tr>
+
+        @*بعد از نهار*@
+
+        <tr class="tc vm text-center align-items-center">
+
+            @foreach (var item1 in Model)
+            {
+                foreach (var item2 in Model.Where(p => p.CreateDate == item1.CreateDate).Select(p => p.LogForUsageInsulin))
+                {
+                    <td class=" text-center align-items-center" style="font-weight: bold;">بعد از نهار  </td>
+
+                }
+            }
+
+        </tr>
+
+        <tr class="tc vm text-center align-items-center">
+
+            @foreach (var item1 in Model)
+            {
+                foreach (var item2 in Model.Where(p => p.CreateDate == item1.CreateDate).Select(p => p.LogForUsageInsulin))
+                {
+                    var fastingBloodSugar = item2.FirstOrDefault(p => p.TimeOfUsageInsulinState == DoctorFAM.Domain.Enums.SMBG.TimeOfUsageInsulinState.Lunch
+                    && p.TimeOfUsageInsulinType == DoctorFAM.Domain.Enums.SMBG.TimeOfUsageInsulinType.TwohoursAfterMeals);
+
+                    <td class=" text-center align-items-center">نوع انسولین : @((fastingBloodSugar is not null && fastingBloodSugar.Insulin is not null) ? fastingBloodSugar.Insulin.InsulinName : "وارد نشده است.") </td>
+                }
+            }
+
+        </tr>
+
+        <tr class="tc vm text-center align-items-center">
+
+            @foreach (var item1 in Model)
+            {
+                foreach (var item2 in Model.Where(p => p.CreateDate == item1.CreateDate).Select(p => p.LogForUsageInsulin))
+                {
+                    var fastingBloodSugar = item2.FirstOrDefault(p => p.TimeOfUsageInsulinState == DoctorFAM.Domain.Enums.SMBG.TimeOfUsageInsulinState.Lunch
+                    && p.TimeOfUsageInsulinType == DoctorFAM.Domain.Enums.SMBG.TimeOfUsageInsulinType.TwohoursAfterMeals);
+
+                    <td class=" text-center align-items-center">واحد انسولین : @((fastingBloodSugar is not null) ? fastingBloodSugar.CountOfInsulinUsage : "وارد نشده است.") </td>
+
+                }
+            }
+
+        </tr>
+
+        <tr class="tc vm text-center align-items-center">
+
+            @foreach (var item1 in Model)
+            {
+                foreach (var item2 in Model.Where(p => p.CreateDate == item1.CreateDate).Select(p => p.LogForUsageInsulin))
+                {
+                    var fastingBloodSugar = item2.FirstOrDefault(p => p.TimeOfUsageInsulinState == DoctorFAM.Domain.Enums.SMBG.TimeOfUsageInsulinState.Lunch
+                    && p.TimeOfUsageInsulinType == DoctorFAM.Domain.Enums.SMBG.TimeOfUsageInsulinType.TwohoursAfterMeals);
+
+                    <td class=" text-center align-items-center">قند خون : @((fastingBloodSugar is not null) ? fastingBloodSugar.BloodSugar : "وارد نشده است.") </td>
+
+                }
+            }
+
+        </tr>
+
+        @*قبل از شام*@
+
+        <tr class="tc vm text-center align-items-center">
+
+            @foreach (var item1 in Model)
+            {
+                foreach (var item2 in Model.Where(p => p.CreateDate == item1.CreateDate).Select(p => p.LogForUsageInsulin))
+                {
+                    <td class=" text-center align-items-center" style="font-weight: bold;">قبل از شام  </td>
+
+                }
+            }
+
+        </tr>
+
+        <tr class="tc vm text-center align-items-center">
+
+            @foreach (var item1 in Model)
+            {
+                foreach (var item2 in Model.Where(p => p.CreateDate == item1.CreateDate).Select(p => p.LogForUsageInsulin))
+                {
+                    var fastingBloodSugar = item2.FirstOrDefault(p => p.TimeOfUsageInsulinState == DoctorFAM.Domain.Enums.SMBG.TimeOfUsageInsulinState.Dinner
+                    && p.TimeOfUsageInsulinType == DoctorFAM.Domain.Enums.SMBG.TimeOfUsageInsulinType.FastingBloodSugar);
+
+                    <td class=" text-center align-items-center">نوع انسولین : @((fastingBloodSugar is not null && fastingBloodSugar.Insulin is not null) ? fastingBloodSugar.Insulin.InsulinName : "وارد نشده است.") </td>
+                }
+            }
+
+        </tr>
+
+        <tr class="tc vm text-center align-items-center">
+
+            @foreach (var item1 in Model)
+            {
+                foreach (var item2 in Model.Where(p => p.CreateDate == item1.CreateDate).Select(p => p.LogForUsageInsulin))
+                {
+                    var fastingBloodSugar = item2.FirstOrDefault(p => p.TimeOfUsageInsulinState == DoctorFAM.Domain.Enums.SMBG.TimeOfUsageInsulinState.Dinner
+                    && p.TimeOfUsageInsulinType == DoctorFAM.Domain.Enums.SMBG.TimeOfUsageInsulinType.FastingBloodSugar);
+
+                    <td class=" text-center align-items-center">واحد انسولین : @((fastingBloodSugar is not null) ? fastingBloodSugar.CountOfInsulinUsage : "وارد نشده است.") </td>
+
+                }
+            }
+
+        </tr>
+
+        <tr class="tc vm text-center align-items-center">
+
+            @foreach (var item1 in Model)
+            {
+                foreach (var item2 in Model.Where(p => p.CreateDate == item1.CreateDate).Select(p => p.LogForUsageInsulin))
+                {
+                    var fastingBloodSugar = item2.FirstOrDefault(p => p.TimeOfUsageInsulinState == DoctorFAM.Domain.Enums.SMBG.TimeOfUsageInsulinState.Dinner
+                    && p.TimeOfUsageInsulinType == DoctorFAM.Domain.Enums.SMBG.TimeOfUsageInsulinType.FastingBloodSugar);
+
+                    <td class=" text-center align-items-center">قند خون : @((fastingBloodSugar is not null) ? fastingBloodSugar.BloodSugar : "وارد نشده است.") </td>
+
+                }
+            }
+
+        </tr>
+
+        @*بعد از شام*@
+
+        <tr class="tc vm text-center align-items-center">
+
+            @foreach (var item1 in Model)
+            {
+                foreach (var item2 in Model.Where(p => p.CreateDate == item1.CreateDate).Select(p => p.LogForUsageInsulin))
+                {
+                    <td class=" text-center align-items-center" style="font-weight: bold;">بعد از شام  </td>
+
+                }
+            }
+
+        </tr>
+
+        <tr class="tc vm text-center align-items-center">
+
+            @foreach (var item1 in Model)
+            {
+                foreach (var item2 in Model.Where(p => p.CreateDate == item1.CreateDate).Select(p => p.LogForUsageInsulin))
+                {
+                    var fastingBloodSugar = item2.FirstOrDefault(p => p.TimeOfUsageInsulinState == DoctorFAM.Domain.Enums.SMBG.TimeOfUsageInsulinState.Dinner
+                    && p.TimeOfUsageInsulinType == DoctorFAM.Domain.Enums.SMBG.TimeOfUsageInsulinType.TwohoursAfterMeals);
+
+                    <td class=" text-center align-items-center">نوع انسولین : @((fastingBloodSugar is not null && fastingBloodSugar.Insulin is not null) ? fastingBloodSugar.Insulin.InsulinName : "وارد نشده است.") </td>
+                }
+            }
+
+        </tr>
+
+        <tr class="tc vm text-center align-items-center">
+
+            @foreach (var item1 in Model)
+            {
+                foreach (var item2 in Model.Where(p => p.CreateDate == item1.CreateDate).Select(p => p.LogForUsageInsulin))
+                {
+                    var fastingBloodSugar = item2.FirstOrDefault(p => p.TimeOfUsageInsulinState == DoctorFAM.Domain.Enums.SMBG.TimeOfUsageInsulinState.Dinner
+                    && p.TimeOfUsageInsulinType == DoctorFAM.Domain.Enums.SMBG.TimeOfUsageInsulinType.TwohoursAfterMeals);
+
+                    <td class=" text-center align-items-center">واحد انسولین : @((fastingBloodSugar is not null) ? fastingBloodSugar.CountOfInsulinUsage : "وارد نشده است.") </td>
+
+                }
+            }
+
+        </tr>
+
+        <tr class="tc vm text-center align-items-center">
+
+            @foreach (var item1 in Model)
+            {
+                foreach (var item2 in Model.Where(p => p.CreateDate == item1.CreateDate).Select(p => p.LogForUsageInsulin))
+                {
+                    var fastingBloodSugar = item2.FirstOrDefault(p => p.TimeOfUsageInsulinState == DoctorFAM.Domain.Enums.SMBG.TimeOfUsageInsulinState.Dinner
+                    && p.TimeOfUsageInsulinType == DoctorFAM.Domain.Enums.SMBG.TimeOfUsageInsulinType.TwohoursAfterMeals);
+
+                    <td class=" text-center align-items-center">قند خون : @((fastingBloodSugar is not null) ? fastingBloodSugar.BloodSugar : "وارد نشده است.") </td>
+
+                }
+            }
+
+        </tr>
+
+        @*نیمه شب*@
+
+        <tr class="tc vm text-center align-items-center">
+
+            @foreach (var item1 in Model)
+            {
+                foreach (var item2 in Model.Where(p => p.CreateDate == item1.CreateDate).Select(p => p.LogForUsageInsulin))
+                {
+                    <td class=" text-center align-items-center" style="font-weight: bold;">نیمه شب  </td>
+
+                }
+            }
+
+        </tr>
+
+        <tr class="tc vm text-center align-items-center">
+
+            @foreach (var item1 in Model)
+            {
+                foreach (var item2 in Model.Where(p => p.CreateDate == item1.CreateDate).Select(p => p.LogForUsageInsulin))
+                {
+                    var fastingBloodSugar = item2.FirstOrDefault(p => p.TimeOfUsageInsulinState == DoctorFAM.Domain.Enums.SMBG.TimeOfUsageInsulinState.Midnight
+                    && p.TimeOfUsageInsulinType == null);
+
+                    <td class=" text-center align-items-center">نوع انسولین : @((fastingBloodSugar is not null && fastingBloodSugar.Insulin is not null) ? fastingBloodSugar.Insulin.InsulinName : "وارد نشده است.") </td>
+                }
+            }
+
+        </tr>
+
+        <tr class="tc vm text-center align-items-center">
+
+            @foreach (var item1 in Model)
+            {
+                foreach (var item2 in Model.Where(p => p.CreateDate == item1.CreateDate).Select(p => p.LogForUsageInsulin))
+                {
+                    var fastingBloodSugar = item2.FirstOrDefault(p => p.TimeOfUsageInsulinState == DoctorFAM.Domain.Enums.SMBG.TimeOfUsageInsulinState.Midnight
+                    && p.TimeOfUsageInsulinType == null);
+
+                    <td class=" text-center align-items-center">واحد انسولین : @((fastingBloodSugar is not null) ? fastingBloodSugar.CountOfInsulinUsage : "وارد نشده است.") </td>
+
+                }
+            }
+
+        </tr>
+
+        <tr class="tc vm text-center align-items-center">
+
+            @foreach (var item1 in Model)
+            {
+                foreach (var item2 in Model.Where(p => p.CreateDate == item1.CreateDate).Select(p => p.LogForUsageInsulin))
+                {
+                    var fastingBloodSugar = item2.FirstOrDefault(p => p.TimeOfUsageInsulinState == DoctorFAM.Domain.Enums.SMBG.TimeOfUsageInsulinState.Midnight
+                    && p.TimeOfUsageInsulinType == null);
+
+                    <td class=" text-center align-items-center">قند خون : @((fastingBloodSugar is not null) ? fastingBloodSugar.BloodSugar : "وارد نشده است.") </td>
+
+                }
+            }
+
+        </tr>
+
+    </table>
+}
+

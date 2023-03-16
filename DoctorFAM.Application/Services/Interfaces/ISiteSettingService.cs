@@ -1,4 +1,5 @@
-﻿using DoctorFAM.Domain.Entities.Insurance;
+﻿using DoctorFAM.Domain.Entities.Drugs;
+using DoctorFAM.Domain.Entities.Insurance;
 using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Entities.SiteSetting;
 using DoctorFAM.Domain.ViewModels.Admin.SiteSetting;
@@ -65,14 +66,29 @@ namespace DoctorFAM.Application.Services.Interfaces
         //List Of Insurance
         Task<List<Insurance>?> ListOfInsurance();
 
+        //List Of Insulins
+        Task<List<Insulin>?> ListOfInsulins();
+
         //Create Insurance
         Task<bool> CreateInsurance(string title);
+
+        //Create Insulin
+        Task<bool> CreateInsulin(string title);
 
         //Get Insurance By Id
         Task<Insurance?> GetInsuranceById(ulong id);
 
+        //Get Insulin By Id
+        Task<Insulin?> GetInsulinById(ulong id);
+
         //Update Insurance
         Task<bool> UpdateInsurance(Insurance entity);
+
+        //Update Insuline
+        Task<bool> UpdateInsuline(Insulin entity);
+
+        //Delete Insuline From Admin 
+        Task<bool> DeleteInsulinFromAdmin(ulong insulinId);
 
         #endregion
 

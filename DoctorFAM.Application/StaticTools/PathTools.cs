@@ -125,6 +125,12 @@ namespace DoctorFAM.Application.StaticTools
         public static readonly string HealthInformationAttachmentFilesPath = "/content/images/HealthInformationAttachmentFiles/Files/";
         public static readonly string PodcastsForLandingPageFilesPath =  "/content/images/HealthInformationAttachmentFiles/PodcastsForLandingPage/";
 
+        public static readonly string HealthInformationAttachmentFilesImagePath = "/content/images/HealthInformationAttachmentFiles/main/";
+        public static readonly string HealthInformationAttachmentFilesImageServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/HealthInformationAttachmentFiles/main/");
+
+        public static readonly string HealthInformationAttachmentFilesImagePathThumb = "/content/images/HealthInformationAttachmentFiles/thumb/";
+        public static readonly string HealthInformationAttachmentFilesImagePathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/HealthInformationAttachmentFiles/thumb/");
+
         #endregion
 
         #region Honor Image
@@ -226,6 +232,16 @@ namespace DoctorFAM.Application.StaticTools
 
         public static readonly string StatusImagePathThumb = "/content/images/StatusImage/thumb/";
         public static readonly string StatusImagePathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/StatusImage/thumb/");
+
+        #endregion
+
+        #region Chat Images
+
+        public static readonly string ChatImagesPath = "/content/images/ChatImages/main/";
+        public static readonly string ChatImagesPathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/ChatImages/main/");
+
+        public static readonly string ChatImagesPathThumb = "/content/images/ChatImages/thumb/";
+        public static readonly string ChatImagesPathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/ChatImages/thumb/");
 
         #endregion
     }

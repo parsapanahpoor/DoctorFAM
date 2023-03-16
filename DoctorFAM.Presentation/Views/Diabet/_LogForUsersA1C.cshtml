@@ -1,0 +1,26 @@
+﻿@model List<DoctorFAM.Domain.Entities.A1C.LogForUsersA1C>
+
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+
+@if (Model != null && Model.Any())
+{
+    <table class="table table-hover table-bordered tc vm text-center align-items-center">
+
+        <tr>
+            <th class=" text-center align-items-center">نتیجه ی آزمایش</th>
+            <th class=" text-center align-items-center">تاریخ درج </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr class="tc vm text-center align-items-center">
+
+                <td class=" text-center align-items-center">@item.A1C</td>
+
+                <td class=" text-center align-items-center">@item.CreateDate.ToShamsi()</td>
+
+            </tr>
+        }
+    </table>
+}

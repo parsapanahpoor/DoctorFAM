@@ -1,0 +1,290 @@
+$font-small:11px;
+$font-normal:13.5px;
+$font-big:16px;
+$font-color:#555;
+$dark-color:rgb(32, 32, 32);
+@font-face {
+    font-family: "IRANSans";
+    src: url("../fonts/IRANSansWeb.eot") format("eot"), url("../fonts/IRANSansWeb.woff") format("woff"), url("../fonts/IRANSansWeb.ttf") format("truetype");
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+
+/* Track */
+
+ ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+
+/* Handle */
+
+ ::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+
+/* Handle on hover */
+
+ ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+@font-face {
+    font-family: "iranyekan";
+    src: url("../fonts/iranyekan/eot/iranyekanwebbold.eot") format("eot"), url("../fonts/iranyekan/woff/iranyekanwebbold.woff") format("woff"), url("../fonts/iranyekan/ttf/iranyekanwebbold.ttf") format("truetype");
+    font-weight: bold;
+}
+
+* {
+    font-family: "iranyekan";
+}
+
+@media(max-width:700px) {
+    .footer {
+        input {
+            width: 85% !important;
+        }
+        button {
+            width: 15% !important;
+        }
+    }
+}
+
+.chat-content {
+    position: relative;
+    overflow-x: hidden;
+    padding: 0;
+    background: url('../img/pattern.png'), #f3f7fa;
+    height: 100vh;
+    padding-bottom: 28px;
+    .header {
+        background: rgb(253, 253, 253);
+        border-bottom: 1px solid rgba(128, 128, 128, 0.301);
+        box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.253);
+        padding: 5px;
+        h2 {
+            font-size: 23px;
+            display: inline-block;
+            margin-right: 5px;
+            position: absolute;
+            top: 16px;
+        }
+        img {
+            width: 50px;
+            border-radius: 50%;
+            height: 50px;
+            display: inline-block;
+            box-shadow: 0 0 5px 0 rgba(128, 128, 128, 0.233);
+            border: 1px solid rgba(128, 128, 128, 0.308);
+        }
+    }
+    .chats {
+        padding: 10px 0;
+        height: 100%;
+        overflow-y: auto;
+        .chat-you {
+            position: relative;
+            margin-top: 10px;
+            width: 100%;
+            display: block;
+            height: 80px;
+            text-align: left;
+            .chat {
+                background: white;
+                width: fit-content;
+                border-radius: 0px 40px 40px 0px;
+                padding: 10px 20px;
+                position: absolute;
+                left: 0;
+                P {
+                    margin-bottom: 0;
+                }
+                span {
+                    font-size: $font-small;
+                    color: gray;
+                }
+            }
+        }
+        .chat-me {
+            margin-top: 10px;
+            width: 100%;
+            text-align: right;
+            .chat {
+                background: rgba(1, 145, 1, 0.705);
+                width: fit-content;
+                border-radius: 40px 0px 0px 40px;
+                padding: 10px 20px;
+            }
+            p {
+                color: white;
+                margin-bottom: 5px;
+                font-size: $font-normal;
+            }
+            span {
+                color: rgb(228, 228, 228);
+                font-size: $font-small;
+            }
+        }
+    }
+}
+
+.rooms {
+    overflow-x: hidden;
+    padding: 0;
+    height: 100vh;
+    ul {
+        text-align: left;
+        height: 100%;
+        overflow-y: auto;
+        .active {
+            background: rgba(0, 0, 0, 0.082);
+            &:hover {
+                background: rgba(0, 0, 0, 0.082);
+            }
+        }
+        li {
+            position: relative;
+            padding: 10px;
+            cursor: pointer;
+            border-bottom: 1px solid rgba(128, 128, 128, 0.13);
+            transition: all ease .2s;
+            &:first-child {
+                background: rgba(0, 0, 0, 0.034);
+                form {
+                    input {
+                        font-size: $font-normal;
+                    }
+                    position: relative;
+                    i {
+                        position: absolute;
+                        top: 11px;
+                        left: 12px;
+                        cursor: pointer;
+                        transition: all ease .2s;
+                        &:hover {
+                            color: rgb(7, 118, 161);
+                        }
+                    }
+                }
+            }
+            span {
+                position: absolute;
+                right: 5px;
+                color: rgb(172, 172, 172);
+                top: 17px;
+                font-size: $font-small;
+            }
+            img {
+                width: 30px;
+                border-radius: 50%;
+                height: 30px;
+                box-shadow: 0 0 5px 0 rgba(128, 128, 128, 0.315);
+                margin-right: 8px;
+            }
+            &:hover {
+                background: rgba(0, 0, 0, 0.034);
+            }
+        }
+    }
+}
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 67%;
+    right: 0;
+    input {
+        display: inline;
+        width: 90%;
+        height: 50px;
+        border-radius: 0 !important;
+    }
+    button {
+        display: inline;
+        width: 10%;
+        position: absolute;
+        height: 50px;
+    }
+}
+
+input {
+    &:focus {
+        outline: none;
+        box-shadow: none !important;
+    }
+}
+
+body {
+    color: $font-color;
+    font-size: $font-normal;
+    height: 100%;
+    overflow-x: hidden;
+    width: 100%;
+}
+
+.f-11 {
+    font-size: $font-small !important;
+}
+
+.f-15 {
+    font-size: 15px !important;
+}
+
+.f-25 {
+    font-size: 25px !important;
+}
+
+.f-20 {
+    font-size: 20px !important;
+}
+
+.row {
+    padding: 0;
+    margin: 0;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+}
+
+.btn {
+    font-size: $font-normal;
+    box-shadow: 0 0 5px 0 rgba(22, 22, 22, 0.466);
+    transition: all ease .3s;
+    border-radius: 0px;
+    &:focus {
+        outline: none;
+    }
+    &:hover {
+        transform: translateY(-1px);
+        box-shadow: -4px 3px 5px 0 rgba(22, 22, 22, 0.466);
+    }
+}
+
+a {
+    text-decoration: none;
+}
+
+ul {
+    list-style: none;
+}
+
+//Login
+.auth {
+    width: 40%;
+    background: linear-gradient(rgb(74, 178, 247), rgb(5, 240, 169));
+    box-shadow: 0 0 5px 0 rgba(128, 128, 128, 0.61);
+    padding: 10px;
+    margin: auto;
+    margin-top: 10%;
+    padding-bottom: 20px;
+    border-radius: 20px;
+    h1 {
+        color: white;
+    }
+}

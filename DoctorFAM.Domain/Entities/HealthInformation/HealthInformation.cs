@@ -26,6 +26,8 @@ namespace DoctorFAM.Domain.Entities.HealthInformation
 
         public string File { get; set; }
 
+        public string? Picture { get; set; }
+
         public bool ShowInSite { get; set; }
 
         public bool ShowInDoctorPanel { get; set; }

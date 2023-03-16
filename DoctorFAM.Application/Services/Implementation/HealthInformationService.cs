@@ -7,6 +7,7 @@ using DoctorFAM.Application.StaticTools;
 using DoctorFAM.Data.Migrations;
 using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.HealthInformation;
+using DoctorFAM.Domain.Entities.News;
 using DoctorFAM.Domain.Entities.Nurse;
 using DoctorFAM.Domain.Enums.HealtInformation;
 using DoctorFAM.Domain.Interfaces;
@@ -230,7 +231,7 @@ namespace DoctorFAM.Application.Services.Implementation
         #region Admin Side 
 
         //Create TV FAM video From Admin Side
-        public async Task<bool> CreateTVFAMvideoFromAdminSide(CreateTVFAMVideViewModel model)
+        public async Task<bool> CreateTVFAMvideoFromAdminSide(CreateTVFAMVideViewModel model, IFormFile? Image)
         {
             #region Check Validation
 
@@ -264,6 +265,17 @@ namespace DoctorFAM.Application.Services.Implementation
                 EndDate = (string.IsNullOrEmpty(model.EndDate)) ? null : model.EndDate.ToMiladiDateTime(),
                 ShowInLanding = model.ShowInLanding,
             };
+
+            #region Image
+
+            if (Image != null && Image.IsImage())
+            {
+                var imageName = Guid.NewGuid() + Path.GetExtension(Image.FileName);
+                Image.AddImageToServer(imageName, PathTools.HealthInformationAttachmentFilesImageServer, 400, 300, PathTools.HealthInformationAttachmentFilesImagePathThumbServer);
+                tvFAMVide.Picture = imageName;
+            }
+
+            #endregion
 
             #endregion
 
@@ -364,7 +376,8 @@ namespace DoctorFAM.Application.Services.Implementation
                 ShowInSite = health.ShowInSite,
                 HealthInfoId = health.Id,
                 Permissions = await _healthinformationRepository.GetHealthInformationSelectedCategories(health.Id),
-                ShowInLanding = health.ShowInLanding
+                ShowInLanding = health.ShowInLanding,
+                imagename = (string.IsNullOrEmpty(health.Picture)) ? "NotFound.png" : health.Picture
             };
 
             #endregion
@@ -381,7 +394,7 @@ namespace DoctorFAM.Application.Services.Implementation
         }
 
         //Edit TV FAM Video Admin Side 
-        public async Task<bool> EditTVFAMVideoAdminSide(EditTVFAMVideoModel model)
+        public async Task<bool> EditTVFAMVideoAdminSide(EditTVFAMVideoModel model, IFormFile? Image)
         {
             #region Get TV FAM Video 
 
@@ -418,6 +431,23 @@ namespace DoctorFAM.Application.Services.Implementation
             if (string.IsNullOrEmpty(healthFAM.File) || healthFAM.File != model.AttachmentFileName)
             {
                 healthFAM.File = model.AttachmentFileName;
+            }
+
+            #endregion
+
+            #region  Image
+
+            if (Image != null)
+            {
+                var imageName = Guid.NewGuid() + Path.GetExtension(Image.FileName);
+                Image.AddImageToServer(imageName, PathTools.HealthInformationAttachmentFilesImageServer, 400, 300, PathTools.HealthInformationAttachmentFilesImagePathThumbServer);
+
+                if (!string.IsNullOrEmpty(healthFAM.Picture))
+                {
+                    healthFAM.Picture.DeleteImage(PathTools.HealthInformationAttachmentFilesImageServer, PathTools.HealthInformationAttachmentFilesImagePathThumbServer);
+                }
+
+                healthFAM.Picture = imageName;
             }
 
             #endregion
@@ -506,6 +536,11 @@ namespace DoctorFAM.Application.Services.Implementation
                 healthFAM.File.DeleteFile(PathTools.HealthInformationAttachmentFilesServerPath);
             }
 
+            if (!string.IsNullOrEmpty(healthFAM.Picture))
+            {
+                healthFAM.Picture.DeleteImage(PathTools.HealthInformationAttachmentFilesImageServer, PathTools.HealthInformationAttachmentFilesImagePathThumbServer);
+            }
+
             #endregion
 
             #region Update Health TV FAM Field 
@@ -537,7 +572,7 @@ namespace DoctorFAM.Application.Services.Implementation
         }
 
         //Create TV FAM video From Doctor Side
-        public async Task<bool> CreateTVFAMvideoFromDoctorSide(CreateTVFAMVideDoctorPanelViewModel model, ulong userId)
+        public async Task<bool> CreateTVFAMvideoFromDoctorSide(CreateTVFAMVideDoctorPanelViewModel model, ulong userId, IFormFile? Image)
         {
             #region Get Owner Organization By EmployeeId 
 
@@ -573,6 +608,17 @@ namespace DoctorFAM.Application.Services.Implementation
                 File = model.AttachmentFileName,
                 ShowInDoctorPanel = model.ShowInDoctorPanel,
             };
+
+            #region Image
+
+            if (Image != null && Image.IsImage())
+            {
+                var imageName = Guid.NewGuid() + Path.GetExtension(Image.FileName);
+                Image.AddImageToServer(imageName, PathTools.HealthInformationAttachmentFilesImageServer, 400, 300, PathTools.HealthInformationAttachmentFilesImagePathThumbServer);
+                tvFAMVide.Picture = imageName;
+            }
+
+            #endregion
 
             #endregion
 
@@ -626,7 +672,7 @@ namespace DoctorFAM.Application.Services.Implementation
         }
 
         //Edit TV FAM Video Doctor Side 
-        public async Task<bool> EditTVFAMVideoDoctorSide(EditTVFAMVideoDoctorPanelViewModel model, ulong ownerId)
+        public async Task<bool> EditTVFAMVideoDoctorSide(EditTVFAMVideoDoctorPanelViewModel model, ulong ownerId, IFormFile? Image)
         {
             #region Get Owner Organization By EmployeeId 
 
@@ -649,6 +695,23 @@ namespace DoctorFAM.Application.Services.Implementation
             healthFAM.ShortDescription = model.ShortDescription;
             healthFAM.longDescription = model.longDescription;
             healthFAM.HealtInformationFileState = HealtInformationFileState.WaitingForConfirm;
+
+            #region  Image
+
+            if (Image != null)
+            {
+                var imageName = Guid.NewGuid() + Path.GetExtension(Image.FileName);
+                Image.AddImageToServer(imageName, PathTools.HealthInformationAttachmentFilesImageServer, 400, 300, PathTools.HealthInformationAttachmentFilesImagePathThumbServer);
+
+                if (!string.IsNullOrEmpty(healthFAM.Picture))
+                {
+                    healthFAM.Picture.DeleteImage(PathTools.HealthInformationAttachmentFilesImageServer, PathTools.HealthInformationAttachmentFilesImagePathThumbServer);
+                }
+
+                healthFAM.Picture = imageName;
+            }
+
+            #endregion
 
             #region Attachment File 
 
@@ -759,7 +822,8 @@ namespace DoctorFAM.Application.Services.Implementation
                 HealtInformationFileState = health.HealtInformationFileState,
                 RejectNote = health.RejectNote,
                 HealthInfoId = health.Id,
-                Permissions = await _healthinformationRepository.GetHealthInformationSelectedCategories(health.Id)
+                Permissions = await _healthinformationRepository.GetHealthInformationSelectedCategories(health.Id),
+                imagename = (string.IsNullOrEmpty(health.Picture)) ? "NotFound.png" : health.Picture
             };
 
             #endregion
@@ -797,6 +861,11 @@ namespace DoctorFAM.Application.Services.Implementation
             if (!string.IsNullOrEmpty(healthFAM.File))
             {
                 healthFAM.File.DeleteFile(PathTools.HealthInformationAttachmentFilesServerPath);
+            }
+
+            if (!string.IsNullOrEmpty(healthFAM.Picture))
+            {
+                healthFAM.Picture.DeleteImage(PathTools.HealthInformationAttachmentFilesImageServer, PathTools.HealthInformationAttachmentFilesImagePathThumbServer);
             }
 
             #endregion
@@ -1013,7 +1082,7 @@ namespace DoctorFAM.Application.Services.Implementation
         }
 
         //Create Podcasts From Admin Side
-        public async Task<bool> CreatePodcastsFromAdminSide(CreateTVFAMVideViewModel model)
+        public async Task<bool> CreatePodcastsFromAdminSide(CreateTVFAMVideViewModel model, IFormFile? Image)
         {
             #region Check Validation
 
@@ -1047,6 +1116,17 @@ namespace DoctorFAM.Application.Services.Implementation
                 EndDate = (string.IsNullOrEmpty(model.EndDate)) ? null : model.EndDate.ToMiladiDateTime(),
                 ShowInLanding = model.ShowInLanding
             };
+
+            #region Image
+
+            if (Image != null && Image.IsImage())
+            {
+                var imageName = Guid.NewGuid() + Path.GetExtension(Image.FileName);
+                Image.AddImageToServer(imageName, PathTools.HealthInformationAttachmentFilesImageServer, 400, 300, PathTools.HealthInformationAttachmentFilesImagePathThumbServer);
+                tvFAMVide.Picture = imageName;
+            }
+
+            #endregion
 
             #endregion
 
@@ -1154,6 +1234,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 HealthInfoId = health.Id,
                 Permissions = await _healthinformationRepository.GetPodcastsSelectedCategories(health.Id),
                 ShowInLanding = health.ShowInLanding,
+                imagename = (string.IsNullOrEmpty(health.Picture)) ? "NotFound.png" : health.Picture
             };
 
             #endregion
@@ -1170,7 +1251,7 @@ namespace DoctorFAM.Application.Services.Implementation
         }
 
         //Edit Podcast Admin Side 
-        public async Task<bool> EditPodcastAdminSide(EditTVFAMVideoModel model)
+        public async Task<bool> EditPodcastAdminSide(EditTVFAMVideoModel model, IFormFile? Image)
         {
             #region Get TV FAM Video 
 
@@ -1193,6 +1274,23 @@ namespace DoctorFAM.Application.Services.Implementation
             healthFAM.StartDate = (string.IsNullOrEmpty(model.StartDate)) ? null : model.StartDate.ToMiladiDateTime();
             healthFAM.EndDate = (string.IsNullOrEmpty(model.EndDate)) ? null : model.EndDate.ToMiladiDateTime();
             healthFAM.HealthInformationType = HealthInformationType.RadioFAM;
+
+            #region  Image
+
+            if (Image != null)
+            {
+                var imageName = Guid.NewGuid() + Path.GetExtension(Image.FileName);
+                Image.AddImageToServer(imageName, PathTools.HealthInformationAttachmentFilesImageServer, 400, 300, PathTools.HealthInformationAttachmentFilesImagePathThumbServer);
+
+                if (!string.IsNullOrEmpty(healthFAM.Picture))
+                {
+                    healthFAM.Picture.DeleteImage(PathTools.HealthInformationAttachmentFilesImageServer, PathTools.HealthInformationAttachmentFilesImagePathThumbServer);
+                }
+
+                healthFAM.Picture = imageName;
+            }
+
+            #endregion
 
             #region Attachment File 
 
@@ -1333,6 +1431,11 @@ namespace DoctorFAM.Application.Services.Implementation
                 healthFAM.File.DeleteFile(PathTools.HealthInformationAttachmentFilesServerPath);
             }
 
+            if (!string.IsNullOrEmpty(healthFAM.Picture))
+            {
+                healthFAM.Picture.DeleteImage(PathTools.HealthInformationAttachmentFilesImageServer, PathTools.HealthInformationAttachmentFilesImagePathThumbServer);
+            }
+
             #endregion
 
             #region Update Podcast Field 
@@ -1364,7 +1467,7 @@ namespace DoctorFAM.Application.Services.Implementation
         }
 
         //Create Podcast From Doctor Side
-        public async Task<bool> CreatePodcastFromDoctorSide(CreateTVFAMVideDoctorPanelViewModel model, ulong userId)
+        public async Task<bool> CreatePodcastFromDoctorSide(CreateTVFAMVideDoctorPanelViewModel model, ulong userId, IFormFile? Image)
         {
             #region Get Owner Organization By EmployeeId 
 
@@ -1400,6 +1503,17 @@ namespace DoctorFAM.Application.Services.Implementation
                 File = model.AttachmentFileName,
                 ShowInDoctorPanel = model.ShowInDoctorPanel,
             };
+
+            #endregion
+
+            #region Image
+
+            if (Image != null && Image.IsImage())
+            {
+                var imageName = Guid.NewGuid() + Path.GetExtension(Image.FileName);
+                Image.AddImageToServer(imageName, PathTools.HealthInformationAttachmentFilesImageServer, 400, 300, PathTools.HealthInformationAttachmentFilesImagePathThumbServer);
+                tvFAMVide.Picture = imageName;
+            }
 
             #endregion
 
@@ -1481,7 +1595,8 @@ namespace DoctorFAM.Application.Services.Implementation
                 HealtInformationFileState = health.HealtInformationFileState,
                 RejectNote = health.RejectNote,
                 HealthInfoId = health.Id,
-                Permissions = await _healthinformationRepository.GetPodcastsSelectedCategories(health.Id)
+                Permissions = await _healthinformationRepository.GetPodcastsSelectedCategories(health.Id),
+                imagename = (string.IsNullOrEmpty(health.Picture)) ? "NotFound.png" : health.Picture
             };
 
             #endregion
@@ -1498,7 +1613,7 @@ namespace DoctorFAM.Application.Services.Implementation
         }
 
         //Edit Podcast Doctor Side 
-        public async Task<bool> EditPodcastDoctorSide(EditTVFAMVideoDoctorPanelViewModel model, ulong ownerId)
+        public async Task<bool> EditPodcastDoctorSide(EditTVFAMVideoDoctorPanelViewModel model, ulong ownerId, IFormFile? Image)
         {
             #region Get Owner Organization By EmployeeId 
 
@@ -1521,6 +1636,23 @@ namespace DoctorFAM.Application.Services.Implementation
             healthFAM.ShortDescription = model.ShortDescription;
             healthFAM.longDescription = model.longDescription;
             healthFAM.HealtInformationFileState = HealtInformationFileState.WaitingForConfirm;
+
+            #region  Image
+
+            if (Image != null)
+            {
+                var imageName = Guid.NewGuid() + Path.GetExtension(Image.FileName);
+                Image.AddImageToServer(imageName, PathTools.HealthInformationAttachmentFilesImageServer, 400, 300, PathTools.HealthInformationAttachmentFilesImagePathThumbServer);
+
+                if (!string.IsNullOrEmpty(healthFAM.Picture))
+                {
+                    healthFAM.Picture.DeleteImage(PathTools.HealthInformationAttachmentFilesImageServer, PathTools.HealthInformationAttachmentFilesImagePathThumbServer);
+                }
+
+                healthFAM.Picture = imageName;
+            }
+
+            #endregion
 
             #region Attachment File 
 
@@ -1625,6 +1757,11 @@ namespace DoctorFAM.Application.Services.Implementation
             {
                 healthFAM.File.DeleteFile(PathTools.HealthInformationAttachmentFilesServerPath);
             }
+            
+              if (!string.IsNullOrEmpty(healthFAM.Picture))
+            {
+                healthFAM.Picture.DeleteImage(PathTools.HealthInformationAttachmentFilesImageServer, PathTools.HealthInformationAttachmentFilesImagePathThumbServer);
+            }
 
             #endregion
 
@@ -1664,7 +1801,8 @@ namespace DoctorFAM.Application.Services.Implementation
                 {
                     RadioFAMAPIViewModel radio = new RadioFAMAPIViewModel();
 
-                    radio.musicName = item.Id.ToString();
+                    radio.musicName = item.Title;
+                    radio.CreateDate = item.CreateDate.ToShamsi();
                     radio.musicSrc = $"{PathTools.PodcastsForLandingPageFilesPath}{item.File}";
 
                     returnModel.Add(radio);

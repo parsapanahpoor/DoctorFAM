@@ -19,6 +19,8 @@ namespace DoctorFAM.Domain.ViewModels.DoctorPanel.HealthInformation.TVFAM
 
         public string AttachmentFileName { get; set; }
 
+        public string? imagename { get; set; }
+
         public string ShortDescription { get; set; }
 
         public string longDescription { get; set; }

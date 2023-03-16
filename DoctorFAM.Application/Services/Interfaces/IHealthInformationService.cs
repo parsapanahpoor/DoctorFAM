@@ -4,6 +4,7 @@ using DoctorFAM.Domain.ViewModels.Admin.HealthInformation.TVFAM.Category;
 using DoctorFAM.Domain.ViewModels.Admin.HealthInformation.TVFAM.Video;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.HealthInformation.TVFAM;
 using DoctorFAM.Domain.ViewModels.Site.HealthInformation;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,7 +54,7 @@ namespace DoctorFAM.Application.Services.Interfaces
         #region Admin Side 
 
         //Create TV FAM video From Admin Side
-        Task<bool> CreateTVFAMvideoFromAdminSide(CreateTVFAMVideViewModel model);
+        Task<bool> CreateTVFAMvideoFromAdminSide(CreateTVFAMVideViewModel model, IFormFile? Image);
 
         //Filter Health Information (Video FAM) From Admin Side 
         Task<List<HealthInformation>> FilterTVFAMAdminSide();
@@ -72,10 +73,10 @@ namespace DoctorFAM.Application.Services.Interfaces
         Task<List<HealthInformation>> FilterTVFAMDoctorPanelSide(ulong ownerId);
 
         //Create TV FAM video From Doctor Side
-        Task<bool> CreateTVFAMvideoFromDoctorSide(CreateTVFAMVideDoctorPanelViewModel model, ulong userId);
+        Task<bool> CreateTVFAMvideoFromDoctorSide(CreateTVFAMVideDoctorPanelViewModel model, ulong userId, IFormFile? Image);
 
         //Edit TV FAM Video Doctor Side 
-        Task<bool> EditTVFAMVideoDoctorSide(EditTVFAMVideoDoctorPanelViewModel model, ulong ownerId);
+        Task<bool> EditTVFAMVideoDoctorSide(EditTVFAMVideoDoctorPanelViewModel model, ulong ownerId, IFormFile? Image);
 
         //Fill Edit TVFAM Video Model Doctor Side
         Task<EditTVFAMVideoDoctorPanelViewModel?> FillEditTVFAMVideoModelDoctorSide(ulong tvFAMId, ulong ownerId);
@@ -127,7 +128,7 @@ namespace DoctorFAM.Application.Services.Interfaces
         Task<EditTVFAMVideoModel?> FillEditTVFAMVideoModelAdminSide(ulong tvFAMId);
 
         //Edit TV FAM Video Admin Side 
-        Task<bool> EditTVFAMVideoAdminSide(EditTVFAMVideoModel model);
+        Task<bool> EditTVFAMVideoAdminSide(EditTVFAMVideoModel model, IFormFile? Image);
 
         //Delete Health Information 
         Task<bool> DeleteTVFAM(ulong healthInfoId);
@@ -144,7 +145,7 @@ namespace DoctorFAM.Application.Services.Interfaces
         Task<List<HealthInformation>> FilterPodcastsAdminSide();
 
         //Create Podcasts From Admin Side
-        Task<bool> CreatePodcastsFromAdminSide(CreateTVFAMVideViewModel model);
+        Task<bool> CreatePodcastsFromAdminSide(CreateTVFAMVideViewModel model, IFormFile? Image);
 
         //List OF Podcast Category 
         Task<List<TVFAMCategoryViewModel>> ListOFPodcastsCategory();
@@ -153,7 +154,7 @@ namespace DoctorFAM.Application.Services.Interfaces
         Task<EditTVFAMVideoModel?> FillEditPodcastsModelAdminSide(ulong podcastId);
 
         //Edit Podcast Admin Side 
-        Task<bool> EditPodcastAdminSide(EditTVFAMVideoModel model);
+        Task<bool> EditPodcastAdminSide(EditTVFAMVideoModel model, IFormFile? Image);
 
         //Delete Podcast 
         Task<bool> DeletePodcast(ulong healthInfoId);
@@ -166,13 +167,13 @@ namespace DoctorFAM.Application.Services.Interfaces
         Task<List<HealthInformation>> FilterPodcastDoctorPanelSide(ulong ownerId);
 
         //Create Podcast From Doctor Side
-        Task<bool> CreatePodcastFromDoctorSide(CreateTVFAMVideDoctorPanelViewModel model, ulong userId);
+        Task<bool> CreatePodcastFromDoctorSide(CreateTVFAMVideDoctorPanelViewModel model, ulong userId, IFormFile? Image);
 
         //Fill Edit Podcast Model Doctor Side
         Task<EditTVFAMVideoDoctorPanelViewModel?> FillEditPodcastModelDoctorSide(ulong tvFAMId, ulong ownerId);
 
         //Edit Podcast Doctor Side 
-        Task<bool> EditPodcastDoctorSide(EditTVFAMVideoDoctorPanelViewModel model, ulong ownerId);
+        Task<bool> EditPodcastDoctorSide(EditTVFAMVideoDoctorPanelViewModel model, ulong ownerId, IFormFile? Image);
 
         //Delete Podcast Doctor Panel 
         Task<bool> DeletePodcastDoctorPanel(ulong healthInfoId, ulong userId);

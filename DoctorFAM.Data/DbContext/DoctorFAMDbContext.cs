@@ -1,14 +1,18 @@
 ﻿using Academy.Domain.Entities.SiteSetting;
 using DoctorFAM.DataLayer.Entities;
+using DoctorFAM.Domain.Entities.A1C;
+using DoctorFAM.Domain.Entities.A1C_SMBG_NoteBook_;
 using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Advertisement;
 using DoctorFAM.Domain.Entities.ASCVD;
 using DoctorFAM.Domain.Entities.BMI;
+using DoctorFAM.Domain.Entities.Chat;
 using DoctorFAM.Domain.Entities.Consultant;
 using DoctorFAM.Domain.Entities.Contact;
 using DoctorFAM.Domain.Entities.CooperationRequest;
 using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.Entities.Doctors;
+using DoctorFAM.Domain.Entities.Drugs;
 using DoctorFAM.Domain.Entities.DurgAlert;
 using DoctorFAM.Domain.Entities.FamilyDoctor;
 using DoctorFAM.Domain.Entities.FamilyDoctor.ParsaSystem;
@@ -59,6 +63,14 @@ namespace DoctorFAM.Data.DbContext
         #endregion
 
         #region DbSets
+
+        #region A1C & SMBG
+
+        public DbSet<LogForUsageInsulin> LogForUsageInsulin { get; set; }
+
+        public DbSet<LogForUsersA1C> logForUsersA1Cs { get; set; }
+
+        #endregion
 
         #region Account 
 
@@ -450,6 +462,22 @@ namespace DoctorFAM.Data.DbContext
         #region Insurance
 
         public DbSet<Insurance> Insurance { get; set; }
+
+        #endregion
+
+        #region Chat 
+
+        public DbSet<Chat> Chats { get; set; }
+
+        public DbSet<ChatGroup> ChatGroups { get; set; }
+
+        public DbSet<ChatGroupMember> ChatGroupMembers { get; set; }
+
+        #endregion
+
+        #region Drugs
+
+        public DbSet<Insulin> Insulins { get; set; }
 
         #endregion
 

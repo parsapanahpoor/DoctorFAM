@@ -1,0 +1,25 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <partial name="_ChatRoomHeaderReferences" />
+
+</head>
+
+<body dir="rtl">
+
+    <div class="content">
+        @RenderBody()
+    </div>
+
+    <partial name="_ChatRoomFooterReferences" />
+
+    <script src="~/common/chatroom/chatroomcustom.js"></script>
+
+    @await RenderSectionAsync("Scripts", false)
+
+</body>
+
+</html>

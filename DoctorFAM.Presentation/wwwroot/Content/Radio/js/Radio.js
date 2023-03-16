@@ -3,67 +3,23 @@ let nextBtn = document.querySelector(".radio-next");
 let previousBtn = document.querySelector(".radio-previous");
 let audio = document.querySelector(".radio-audio audio");
 let radioEqulizer = document.querySelector(".radio-equalizer");
-let listItemMusicPopUp = document.querySelector(".radio-music-list-popup");
-let listItemsMusic = document.querySelectorAll(".radio-music-list-item");
-let radioFolder = document.querySelector(".radio-folder i");
+let musicList = document.querySelector(".music-list > .row");
+let radioPlayIcon = document.querySelector(".radio-play-icon")
 let isPlay = false;
 let musicCounter = 0;
-let audioArray = [
-    {
-        musicName: " 1",
-        musicSrc: "/Content/Radio/music/FirstRadioProgram.m4a",
-    },
-    {
-        musicName: " 2",
-        musicSrc: "/Content/Radio/music/FirstRadioProgram.m4a",
-    },
-    {
-        musicName: " 3",
-        musicSrc: "/Content/Radio/music/FirstRadioProgram.m4a",
-    },
-    {
-        musicName: " 4",
-        musicSrc: "/Content/Radio/music/FirstRadioProgram.m4a",
-    },
-    {
-        musicName: " 5",
-        musicSrc: "/Content/Radio/music/FirstRadioProgram.m4a",
-    },
-    {
-        musicName: " 6",
-        musicSrc: "/Content/Radio/music/FirstRadioProgram.m4a",
-    },
-    {
-        musicName: " 7",
-        musicSrc: "/Content/Radio/music/FirstRadioProgram.m4a",
-    },
-    {
-        musicName: " 8",
-        musicSrc: "/Content/Radio/music/FirstRadioProgram.m4a",
-    },
-    {
-        musicName: " 9",
-        musicSrc: "/Content/Radio/music/FirstRadioProgram.m4a",
-    },
-];
-
-playBtn.addEventListener("click", playMusic);
-nextBtn.addEventListener("click", nextMusic);
-previousBtn.addEventListener("click", previousMusic);
-radioFolder.addEventListener("click", showDropDown);
-window.addEventListener("load", loadMusic);
-
-audio.src = audioArray[musicCounter].musicSrc;
+let audioArray;
 
 function playMusic() {
     if (isPlay === false) {
         audio.play();
         isPlay = true;
         radioEqulizer.classList.add("active-equlizer");
+        radioPlayIcon.classList.replace("bi-play-fill", "bi-pause-fill")
     } else {
         audio.pause();
         isPlay = false;
         radioEqulizer.classList.remove("active-equlizer");
+        radioPlayIcon.classList.replace("bi-pause-fill", "bi-play-fill")
     }
 }
 
@@ -75,7 +31,6 @@ function nextMusic() {
     musicCounter++;
     audio.src = audioArray[musicCounter].musicSrc;
     playMusic();
-
 }
 
 function previousMusic() {
@@ -88,20 +43,29 @@ function previousMusic() {
     playMusic();
 }
 
-function loadMusic() {
-    for (let i = 4; i > -1; i--) {
-        let musicName = audioArray[i].musicName;
-        let musicSrc = audioArray[i].musicSrc;
-        let musicTemplate = `
-      <div class="radio-music-list-item" onclick="playListMusic(event)">
-        <div class="radio-music-list-name">
-            <span>${musicName}</span>
-        </div>
-        <div class="radio-musix-list-audio" data-audio-src="${musicSrc}" data-id="${i}"></div>
-      </div>
-    `;
-        listItemMusicPopUp.insertAdjacentHTML("afterbegin", musicTemplate);
-    }
+async function loadMusic() {
+    await fetch("https://doctorfam.com/api/v1/RadioFAMAPI/get-LatestPodcasts-ForShowInLanding")
+        .then(res => res.json())
+        .then(data => {
+            audioArray = data.data
+            console.log(audioArray);
+            audioArray.forEach(function (item, index) {
+                let musicName = audioArray[index].musicName;
+                let musicSrc = audioArray[index].musicSrc;
+                audio.src = musicSrc
+                let musicTemplate = `
+                <div class="col-6">
+                    <li class="music-list-item" onclick="playListMusic(event)">
+                        <span class="music-item-name">${musicName}</span>
+                        <div class="music-item-audio" data-audio-src="${musicSrc}" data-id="${index}"></div>
+                    </li>
+                </div>
+                `;
+                musicList.insertAdjacentHTML("beforeend", musicTemplate)
+            })
+        })
+        .catch(err => console.error(err))
+
 }
 
 function playListMusic(event) {
@@ -113,7 +77,7 @@ function playListMusic(event) {
     playMusic();
 }
 
-function showDropDown() {
-    listItemMusicPopUp.classList.toggle("active-popup");
-}
-
+playBtn.addEventListener("click", playMusic);
+nextBtn.addEventListener("click", nextMusic);
+previousBtn.addEventListener("click", previousMusic);
+window.addEventListener("load", loadMusic);

@@ -1,4 +1,5 @@
-﻿using BusinessPortal.Application.Services.Implementation;
+﻿using AngleSharp.Css.Dom;
+using BusinessPortal.Application.Services.Implementation;
 using DoctorFAM.Application.Interfaces;
 using DoctorFAM.Application.Services;
 using DoctorFAM.Application.Services.Implementation;
@@ -69,6 +70,8 @@ namespace DoctorFAM.IoC
             services.AddScoped <IPeriodicTestService, PeriodicTestService>();
             services.AddScoped <ISelfAssessmentService, SelfAssessmentService>();
             services.AddScoped <IASCVDService, ASCVDService>();
+            services.AddScoped <IChatService, ChatService>();
+            services.AddScoped <ISMBGNoteBookService, SMBGNoteBookService>();
 
             #endregion
 
@@ -114,6 +117,8 @@ namespace DoctorFAM.IoC
             services.AddScoped<IPeriodicTestRepository, PeriodicTestRepository>();
             services.AddScoped<ISelfAssessmentRepository, SelfAssessmentRepository>();
             services.AddScoped<IASCVDRepository, ASCVDRepository>();
+            services.AddScoped<IChatRepository, ChatRepository>();
+            services.AddScoped<ISMBGNoteBookRepository, SMBGNoteBookRepository>();
 
             #endregion
 
@@ -121,6 +126,7 @@ namespace DoctorFAM.IoC
 
             services.AddScoped<IBMIRepositoryDapper, BMIRepositoryDapper>();
             services.AddScoped<IUserRepositoryDapper, UserRepositoryDapper>();
+            services.AddScoped<ISMBGNoteBookDapper, SMBGNoteBookDapper>();
 
             #endregion
         }

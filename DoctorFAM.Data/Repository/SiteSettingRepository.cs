@@ -1,6 +1,7 @@
 ﻿using Academy.Domain.Entities.SiteSetting;
 using DoctorFAM.Data.DbContext;
 using DoctorFAM.DataLayer.Entities;
+using DoctorFAM.Domain.Entities.Drugs;
 using DoctorFAM.Domain.Entities.Insurance;
 using DoctorFAM.Domain.Entities.PeriodicSelfEvaluatuion;
 using DoctorFAM.Domain.Entities.Requests;
@@ -209,10 +210,23 @@ namespace DoctorFAM.Data.Repository
             return await _context.Insurance.Where(p => !p.IsDelete).ToListAsync();
         }
 
+        //List Of Insulins
+        public async Task<List<Insulin>?> ListOfInsulins()
+        {
+            return await _context.Insulins.Where(p => !p.IsDelete).ToListAsync();
+        }
+
         //Create Data To The Data Base 
         public async Task CreateInsurance(Insurance entity)
         {
             await _context.Insurance.AddAsync(entity);
+            await _context.SaveChangesAsync();
+        }
+
+        //Create Insulin Data To The Data Base 
+        public async Task CreateInsulin(Insulin entity)
+        {
+            await _context.Insulins.AddAsync(entity);
             await _context.SaveChangesAsync();
         }
 
@@ -222,10 +236,23 @@ namespace DoctorFAM.Data.Repository
             return await _context.Insurance.FirstOrDefaultAsync(p => !p.IsDelete && p.Id == id);
         }
 
+        //Get Insulin By Id
+        public async Task<Insulin?> GetInsulinById(ulong id)
+        {
+            return await _context.Insulins.FirstOrDefaultAsync(p => !p.IsDelete && p.Id == id);
+        }
+
         //Update Insurance
         public async Task UpdateInsurance(Insurance entity)
         {
             _context.Insurance.Update(entity);
+            await _context.SaveChangesAsync();
+        }
+
+        //Update Insulin
+        public async Task UpdateInsuline(Insulin entity)
+        {
+            _context.Insulins.Update(entity);
             await _context.SaveChangesAsync();
         }
 

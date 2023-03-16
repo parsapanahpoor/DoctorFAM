@@ -243,7 +243,7 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
         }
 
         [HttpPost , ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateTVFAM(CreateTVFAMVideViewModel model)
+        public async Task<IActionResult> CreateTVFAM(CreateTVFAMVideViewModel model, IFormFile? ImageName)
         {
             #region Model State Validation 
 
@@ -263,7 +263,7 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
 
             #region Create Video 
 
-            var res = await _healthInformationService.CreateTVFAMvideoFromAdminSide(model);
+            var res = await _healthInformationService.CreateTVFAMvideoFromAdminSide(model, ImageName);
             if (res)
             {
                 TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
@@ -306,7 +306,7 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditTVFAMVideo(EditTVFAMVideoModel model)
+        public async Task<IActionResult> EditTVFAMVideo(EditTVFAMVideoModel model, IFormFile? Image)
         {
             #region Model State Validation 
 
@@ -326,7 +326,7 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
 
             #region Edit TV FAM Video 
 
-            var res = await _healthInformationService.EditTVFAMVideoAdminSide(model);
+            var res = await _healthInformationService.EditTVFAMVideoAdminSide(model, Image);
             if (res)
             {
                 TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
@@ -624,7 +624,7 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreatePodcasts(CreateTVFAMVideViewModel model)
+        public async Task<IActionResult> CreatePodcasts(CreateTVFAMVideViewModel model, IFormFile? ImageName)
         {
             #region Model State Validation 
 
@@ -644,7 +644,7 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
 
             #region Create Video 
 
-            var res = await _healthInformationService.CreatePodcastsFromAdminSide(model);
+            var res = await _healthInformationService.CreatePodcastsFromAdminSide(model , ImageName);
             if (res)
             {
                 TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
@@ -687,7 +687,7 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditPodcasts(EditTVFAMVideoModel model)
+        public async Task<IActionResult> EditPodcasts(EditTVFAMVideoModel model, IFormFile? ImageName)
         {
             #region Model State Validation 
 
@@ -707,7 +707,7 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
 
             #region Edit Podcasts
 
-            var res = await _healthInformationService.EditPodcastAdminSide(model);
+            var res = await _healthInformationService.EditPodcastAdminSide(model , ImageName);
             if (res)
             {
                 TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";

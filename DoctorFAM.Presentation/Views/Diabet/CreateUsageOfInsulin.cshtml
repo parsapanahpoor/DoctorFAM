@@ -1,0 +1,117 @@
+﻿@model DoctorFAM.Domain.ViewModels.Site.Diabet.SMBG_NoteBook.LogForUsageInsulinSiteSideViewModel
+
+@{
+    ViewData["Title"] = "مصرف دیابت";
+
+    List<DoctorFAM.Domain.Entities.Drugs.Insulin> insulins = ViewBag.Insulin as List<DoctorFAM.Domain.Entities.Drugs.Insulin>;
+    var IsMidnight = ViewBag.IsMidnight;
+}
+
+@section Scripts{
+    <partial name="_JqueryValidation" />
+}
+
+<div class="page-content  formHealth">
+
+    <div class="row PageBannerPic text-center  text-align-justify ">
+        <div class="col-md-3 page-breadcrumbs">
+            <i class="menu-icon fa fa-globe"></i>
+            <a asp-area="" asp-controller="Home" asp-action="Index">  <span class="menu-text"> صفحه اصلی سایت </span></a>
+            <span>/</span>
+            <a asp-area="" asp-controller="Diabet" asp-action="Index">بازگشت به صفحه دیابت</a>
+            <span>/</span>
+            <a asp-area="" asp-controller="Diabet" asp-action="SMBGNoteBookPage">دفتر مجازی دیابت</a>
+        </div>
+        <div class="col-md-6   text-center  text-align-justify M-5 P-5">
+
+            <h2 class="text-center  text-align-justify  ">مصرف دیابت</h2>
+        </div>
+        <div class="col-md-3 "></div>
+    </div>
+
+    <div class="container mt-2">
+        <div class="tab-content section-title" id="nav-tabContent">
+
+            <div role="tabpanel" class=" col-md-12 fade show active" id="tab1-1">
+
+                <div class="row">
+
+                    <div class="col-xl-3 "></div>
+
+                    <div class="col-xl-6 p-3" style="border:1px solid #feb2fa; border-radius:8px;">
+
+                        <form asp-action="CreateUsageOfInsulin" asp-controller="Diabet" asp-area="">
+
+                            <input asp-for="UserId" type="hidden" />
+                            <input asp-for="TimeOfUsageInsulinState" type="hidden" />
+
+                            <div class="row text-center  text-align-justify mt-2">
+
+                                @if (IsMidnight == false)
+                                {
+
+                                    <div class="form-group col-md-12 col-sm-12 ">
+                                        <label class="control-label"> انسولین مصرفی خود را انتخاب کنید</label>
+                                        <select asp-for="InsulinId" class="form-control">
+
+                                            <option value="">انتخاب کنید</option>
+                                            <option value="">عدم تزریق </option>
+
+                                            @if (insulins != null && insulins.Any())
+                                            {
+                                                foreach (var ins in insulins)
+                                                {
+                                                    <option value="@ins.Id">@ins.InsulinName</option>
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+
+                                }
+
+                                <div class="form-group col-md-12 col-sm-12 ">
+                                    <label asp-for="CountOfInsulinUsage">واحد انسولین</label>
+                                    <input type="number" min="0" class="form-control" asp-for="CountOfInsulinUsage">
+                                    <span class="text-danger" asp-validation-for="CountOfInsulinUsage"></span>
+                                </div>
+
+                                @if (IsMidnight == false)
+                                {
+                                    <div class="form-group col-md-12 col-sm-12 ">
+                                        <label class="control-label"> زمان تست قند خون</label>
+                                        <select asp-for="TimeOfUsageInsulinType" class="form-control">
+
+                                            <option>انتخاب کنید</option>
+                                            <option value="0">قبل از غذا</option>
+                                            <option value="1">2 ساعت بعد از غذا</option>
+
+                                        </select>
+                                    </div>
+                                }
+
+                                <div class="form-group col-md-12 col-sm-12 ">
+                                    <label asp-for="BloodSugar"> قند خون</label>
+                                    <input type="number" min="0" class="form-control" asp-for="BloodSugar">
+                                    <span class="text-danger" asp-validation-for="BloodSugar"></span>
+                                </div>
+
+                                <div class="form-group col-md-12 col-sm-12 ">
+
+                                    <input type="submit" value="ثبت" class="btn-Accept" />
+
+                                </div>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                    <div class="col-xl-3 "></div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
