@@ -46,19 +46,9 @@ namespace DoctorFAM.Domain.ViewModels.Admin.Books
         [MaxLength(500)]
         public string Introduction { get; set; }
 
-        [Display(Name = "فایل کتاب / مجله")]
-        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
-        public string BookFile { get; set; }
-
-        [Display(Name = "تصویر")]
-        [MaxLength(200)]
-        [Required]
-        public string Image { get; set; }
-
         [Display(Name = "قیمت")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
-        [MaxLength(500)]
-        public string Price { get; set; }
+        public int Price { get; set; }
 
         [Display(Name = "تعداد صفحات")]
         public int PagesNO { get; set; }

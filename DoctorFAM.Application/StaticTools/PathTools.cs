@@ -193,14 +193,14 @@ namespace DoctorFAM.Application.StaticTools
 
         #region Books Files
 
-        public static readonly string ImagePath = "/content/Books/main/";
-        public static readonly string ImagePathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/Books/main/");
+        public static readonly string BooksImagePath = "/content/images/Books/main/";
+        public static readonly string BooksImagePathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/Books/main/");
 
-        public static readonly string ImagePathThumb = "/content/Books/thumb/";
-        public static readonly string ImagePathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/Books/thumb/");
+        public static readonly string BooksImagePathThumb = "/content/images/Books/thumb/";
+        public static readonly string BooksImagePathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/Books/thumb/");
 
-        public static readonly string BookFilePath = "/content/Books/";
-        public static readonly string BookFilePathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/Books/");
+        public static readonly string BookFilePath = "/content/images/Books/Files/";
+        public static readonly string BookFilePathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/Books/Files/");
 
 
         #endregion

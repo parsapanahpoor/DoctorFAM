@@ -307,8 +307,6 @@ namespace DoctorFAM.Web.Controllers
 
         #region Books
 
-
-
         public IActionResult Books()
         {
             

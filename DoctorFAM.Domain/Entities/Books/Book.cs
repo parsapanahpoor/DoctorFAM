@@ -53,8 +53,7 @@ namespace DoctorFAM.Domain.Entities.Books
 
         [Display(Name = "قیمت")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
-        [MaxLength(500)]
-        public string Price { get; set; }
+        public int Price { get; set; }
 
         [Display(Name = "تعداد صفحات")]
         public int PagesNO { get; set; }

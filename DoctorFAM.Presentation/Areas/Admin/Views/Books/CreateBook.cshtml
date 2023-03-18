@@ -12,10 +12,10 @@
 @section Scripts
     {
     <partial name="_JqueryValidation" />
-<script src="/admin/js/CreateArticle.js"></script>
+    <script src="/admin/js/CreateBooks.js"></script>
 }
 
-    @section Breadcrumb
+@section Breadcrumb
     {
     <li>
         <a href="javascript:void(0)"> @ViewData["Title"] </a>
@@ -23,21 +23,21 @@
 }
 
 <form method="post" asp-action="CreateBook" asp-controller="Books" asp-area="Admin" enctype="multipart/form-data">
-        <div class="row">
-            <div class="col-lg-9 col-sm-12">
-                <div class="widget">
-                    <div class="widget-header bordered-bottom bordered-green">
-                        <span class="widget-caption"> @ViewData["Title"] </span>
-                    </div>
-                    <div class="widget-body">
-                        <div>
+    <div class="row">
+        <div class="col-lg-9 col-sm-12">
+            <div class="widget">
+                <div class="widget-header bordered-bottom bordered-green">
+                    <span class="widget-caption"> @ViewData["Title"] </span>
+                </div>
+                <div class="widget-body">
+                    <div>
 
-                            <div class="row">
-                                <div class="form-group col-md-6 col-sm-12">
-                                    <label asp-for="Title"></label>
-                                    <input type="text" class="form-control" asp-for="Title">
-                                    <span class="text-danger" asp-validation-for="Title"></span>
-                                </div>
+                        <div class="row">
+                            <div class="form-group col-md-12 col-sm-12">
+                                <label asp-for="Title"></label>
+                                <input type="text" class="form-control" asp-for="Title">
+                                <span class="text-danger" asp-validation-for="Title"></span>
+                            </div>
 
                             <div class="form-group col-md-6 col-sm-12">
                                 <label asp-for="Writer"></label>
@@ -76,60 +76,55 @@
                             </div>
 
 
-                                
+                            <div class="clearfix"></div>
 
-                                <div class="clearfix"></div>
+                            <div class="form-group col-md-12 col-sm-12">
+                                <label asp-for="Introduction"></label>
+                                <input type="text" class="form-control" asp-for="Introduction">
+                                <span class="text-danger" asp-validation-for="Introduction"></span>
+                            </div>
 
-                                <div class="form-group col-md-12 col-sm-12">
-                                    <label asp-for="Introduction"></label>
-                                    <input type="text" class="form-control" asp-for="Introduction">
-                                    <span class="text-danger" asp-validation-for="Introduction"></span>
-                                </div>
+                            <div class="clearfix"></div>
 
-                                <div class="clearfix"></div>
-
-                                <div class="form-group col-md-12 col-sm-12">
+                            <div class="form-group col-md-12 col-sm-12">
                                 <label asp-for="BookTag"></label>
                                 <input type="text" class="form-control" class="form-control" tagify="1" asp-for="BookTag">
                                 <span class="text-danger" asp-validation-for="BookTag"></span>
-                                </div>
-
-                                <div class="clearfix"></div>
-
-
-                                
-
                             </div>
 
-                            <hr class="margin-bottom-10 margin-top-10" />
-
-                            <div class="row">
-                                <div class="col-md-12 flex-style">
-                                    <button type="submit" class="btn btn-labeled btn-palegreen">
-                                        <i class="btn-label glyphicon glyphicon-ok"></i>ثبت
-                                    </button>
-                                </div>
-                            </div>
+                            <div class="clearfix"></div>
 
                         </div>
+
+                        <hr class="margin-bottom-10 margin-top-10" />
+
+                        <div class="row">
+                            <div class="col-md-12 flex-style">
+                                <button type="submit" class="btn btn-labeled btn-palegreen">
+                                    <i class="btn-label glyphicon glyphicon-ok"></i>ثبت
+                                </button>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
+        </div>
 
 
-            <div class="col-lg-3 col-sm-12">
-                <div class="row">
+        <div class="col-lg-3 col-sm-12">
+            <div class="row">
 
-                    <div class="col-lg-12">
-                        <div class="widget">
-                            <div class="widget-header bordered-bottom bordered-green">
-                                <span class="widget-caption"> دسته بندی کتاب   </span>
-                            </div>
-                            <div class="widget-body">
-                                <div class="form-group">
-                                    <label asp-for="MainCategory"> سرگروه </label>
-                                    <select asp-for="MainCategory" class="form-control">
-                                        <option value="">انتخاب کنید </option>
+                <div class="col-lg-12">
+                    <div class="widget">
+                        <div class="widget-header bordered-bottom bordered-green">
+                            <span class="widget-caption"> دسته بندی کتاب   </span>
+                        </div>
+                        <div class="widget-body">
+                            <div class="form-group">
+                                <label asp-for="MainCategory"> سرگروه </label>
+                                <select asp-for="MainCategory" class="form-control">
+                                    <option value="">انتخاب کنید </option>
                                     @if (MainCat != null && MainCat.Any())
                                     {
                                         foreach (var cat in MainCat)
@@ -194,11 +189,6 @@
 
                                 @{
                                     var avatarUrl = PathTools.DefaultProductAvatar;
-
-                                    if (Model != null && !string.IsNullOrEmpty(Model.Image))
-                                    {
-                                        avatarUrl = $"{PathTools.ImagePathThumb}{Model.Image}";
-                                    }
                                 }
 
                                 <div class="col-md-12 tc mt-10px">
@@ -215,16 +205,15 @@
                         </div>
                         <div class="widget-body">
                             <div class="row">
-                                
-                                
+
+
                                 <div class="col-md-12">
                                     <label for="FileBook" class="file-input-style">
                                         <i class="glyphicon glyphicon-upload"></i>
                                         <span class="mr-8px"> لطفا یک فایل انتخاب کنید</span>
                                     </label>
                                 </div>
-                                <input type="file" class="form-control" asp-for="BookFile">
-                               
+                                <input type="file" class="form-control" name="BookFile">
 
                             </div>
                         </div>
@@ -249,7 +238,7 @@
                                         </div>
                                     </div>
 
-                                    
+
                                 </div>
                             </div>
                         </div>

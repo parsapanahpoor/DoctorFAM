@@ -1,6 +1,5 @@
 ﻿using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
-using DoctorFAM.Domain.ViewModels.Article.Admin;
 
 using DoctorFAM.Domain.ViewModels.Admin.News;
 using DoctorFAM.Web.HttpManager;

@@ -40,7 +40,11 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> CreateBook()
         {
+            #region Categories
+
             ViewData["MianCategory"] = await _BookService.GetAllMainCategories();
+
+            #endregion
 
             return View();
         }
@@ -49,6 +53,24 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateBook(CreateBookAdminViewModel model,IFormFile Image,  IFormFile BookFile )
         {
+            #region Model State Validation 
+
+            if (!ModelState.IsValid)
+            {
+                #region Categories
+
+                ViewData["MianCategory"] = await _BookService.GetAllMainCategories();
+                ViewData["SubCategoryCategory"] = await _BookService.GetCategoriesChildrent(model.MainCategory);
+
+                #endregion
+
+                return View(model);
+            }
+
+            #endregion
+
+            #region Create Book 
+
             var result = await _BookService.CreateBookFromAdminPanel(model, Image, BookFile);
 
             switch (result)
@@ -72,14 +94,20 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
                 case CreateBookFromAdminPanelResponse.TitleNotFound:
                     TempData[ErrorMessage] = "لطفا عنوان کامل کتاب را وارد کنید  ";
                     break;
-              
+
                 case CreateBookFromAdminPanelResponse.ImageNotFound:
                     TempData[ErrorMessage] = "لطفا تصویر کتاب را انتخاب کنید  ";
                     break;
             }
 
+            #endregion
+
+            #region Categories
+
             ViewData["MianCategory"] = await _BookService.GetAllMainCategories();
             ViewData["SubCategoryCategory"] = await _BookService.GetCategoriesChildrent(model.MainCategory);
+
+            #endregion
 
             return View(model);
         }

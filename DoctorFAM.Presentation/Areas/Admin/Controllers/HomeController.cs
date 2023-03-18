@@ -14,14 +14,16 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
         private readonly IUserService _userService;
         private readonly IDashboardsService _boardsService;
         private readonly INewsService _newsService;
+        private readonly IBookService _bookService;
 
-        public HomeController(IProductService productService , IDashboardsService boardsService, IUserService userService 
-                                , INewsService newsService)
+        public HomeController(IProductService productService , IDashboardsService boardsService, IUserService userService
+                                , INewsService newsService, IBookService bookService)
         {
             _productService = productService;
             _boardsService = boardsService;
             _userService = userService;
             _newsService = newsService;
+            _bookService = bookService;
         }
 
         #endregion
@@ -72,5 +74,15 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
 
         #endregion
 
+        #region Load Books Sub Categories
+
+        public async Task<IActionResult> LoadBooksSubCategories(ulong MainCategoryId)
+        {
+            var result = await _bookService.GetCategoriesChildrent(MainCategoryId);
+
+            return JsonResponseStatus.Success(result);
+        }
+
+        #endregion
     }
 }

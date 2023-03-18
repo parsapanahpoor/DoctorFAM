@@ -112,7 +112,6 @@ namespace DoctorFAM.Application.Services.Implementation
 
         public async Task<CreateBookFromAdminPanelResponse> CreateBookFromAdminPanel(CreateBookAdminViewModel model, IFormFile Image, IFormFile BookFile)
         {
-
             #region Check Validation
 
             if (Image == null)
@@ -124,15 +123,16 @@ namespace DoctorFAM.Application.Services.Implementation
             {
                 return CreateBookFromAdminPanelResponse.WriterNotFound;
             }
+
             if (BookFile == null)
             {
                 return CreateBookFromAdminPanelResponse.BookFileNotFound;
-            }
+            } 
+
             if (string.IsNullOrEmpty(model.Title))
             {
                 return CreateBookFromAdminPanelResponse.TitleNotFound;
             }
-
 
             if (!Image.IsImage())
             {
@@ -154,7 +154,6 @@ namespace DoctorFAM.Application.Services.Implementation
                 Price = model.Price,
                 PagesNO = model.PagesNO,
                 IsActive = model.IsActive
-
             };
 
             #endregion
@@ -162,7 +161,7 @@ namespace DoctorFAM.Application.Services.Implementation
             #region Books Image
 
             var imageName = Guid.NewGuid() + Path.GetExtension(Image.FileName);
-            Image.AddImageToServer(imageName, PathTools.ImagePathServer, 400, 300, PathTools.ImagePathThumbServer);
+            Image.AddImageToServer(imageName, PathTools.BooksImagePathServer, 400, 300, PathTools.BooksImagePathThumbServer);
             Book.Image = imageName;
 
             #endregion
@@ -369,11 +368,11 @@ namespace DoctorFAM.Application.Services.Implementation
             if (Image != null)
             {
                 var imageName = Guid.NewGuid() + Path.GetExtension(Image.FileName);
-                Image.AddImageToServer(imageName, PathTools.ImagePathServer, 400, 300, PathTools.ImagePathThumbServer);
+                Image.AddImageToServer(imageName, PathTools.BooksImagePathServer, 400, 300, PathTools.BooksImagePathThumbServer);
 
                 if (!string.IsNullOrEmpty(Book.Image))
                 {
-                    Book.Image.DeleteImage(PathTools.ImagePathServer, PathTools.ImagePathThumbServer);
+                    Book.Image.DeleteImage(PathTools.BooksImagePathServer, PathTools.BooksImagePathThumbServer);
                 }
 
                 Book.Image = imageName;
@@ -662,16 +661,6 @@ namespace DoctorFAM.Application.Services.Implementation
                 }).ToListAsync();
         }
 
-        public async Task<List<SelectListViewModel>> GetCategoriesChildrent(ulong MainCategoryId)
-        {
-            return await _context.BookCategories.Where(s => s.ParentId.HasValue && s.ParentId.Value == MainCategoryId && !s.IsDelete && s.IsActive)
-                .Select(s => new SelectListViewModel
-                {
-                    Id = s.Id,
-                    Title = s.Title
-                }).ToListAsync();
-        }
-
         public async Task<List<BookCategory>> GetAllParentCategories()
         {
             return await _context.BookCategories.Where(s => s.ParentId == null && !s.IsDelete && s.IsActive)
@@ -699,6 +688,16 @@ namespace DoctorFAM.Application.Services.Implementation
             await SaveChangesAsync();
 
             return true;
+        }
+
+        public async Task<List<SelectListViewModel>> GetCategoriesChildrent(ulong MainCategoryId)
+        {
+            return await _context.BookCategories.Where(s => s.ParentId.HasValue && s.ParentId.Value == MainCategoryId && !s.IsDelete && s.IsActive)
+                .Select(s => new SelectListViewModel
+                {
+                    Id = s.Id,
+                    Title = s.Title
+                }).ToListAsync();
         }
 
         #endregion

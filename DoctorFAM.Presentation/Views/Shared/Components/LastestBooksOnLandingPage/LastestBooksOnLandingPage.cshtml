@@ -3,10 +3,6 @@
 @using DoctorFAM.Application.Extensions
 @using DoctorFAM.Application.Convertors
 
-
-
-
-
 <section class="section section-featurebox">
     <div class="container">
         <div class="section-header text-center">
@@ -28,7 +24,7 @@
                             <div class="post-image">
 
                                 <a href="@PathTools.BookFilePath@item.BookFile" target="_blank">
-                                    <img class="img-fluid divch rounded w-100" src="@PathTools.ImagePathThumb@item.Image" style="height:230px !important; border:1px solid #fd5b03;" alt="">
+                                    <img class="img-fluid divch rounded w-100" src="@PathTools.BooksImagePathThumb@item.Image" style="height:230px !important; border:1px solid #fd5b03;" alt="">
                                     <h4> @item.Title</h4>
                                 </a>
                             </div>
