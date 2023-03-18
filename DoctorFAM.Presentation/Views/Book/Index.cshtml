@@ -3,6 +3,11 @@
 @using DoctorFAM.Application.Extensions
 @using DoctorFAM.Application.Convertors
 
+@{
+    ViewBag.Title = "کتب و مجلات";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
 <section class="section section-featurebox">
     <div class="container">
         <div class="section-header text-center">
@@ -13,7 +18,6 @@
         </div>
         @if (Model != null && Model.Any())
         {
-
 
             <div class="row">
 
@@ -34,8 +38,8 @@
 
 
                 }
-            </div>
 
+            </div>
 
         }
     </div>

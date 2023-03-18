@@ -13,7 +13,7 @@
 @section Scripts
     {
     <partial name="_JqueryValidation" />
-    <script src="/admin/js/EditArticle.js"></script>
+    <script src="/admin/js/CreateBooks.js"></script>
 }
 
     @section Breadcrumb
@@ -26,6 +26,7 @@
     <form method="post" asp-action="EditBook" asp-Controller="Books" asp-area="Admin" enctype="multipart/form-data">
         <input type="hidden" asp-for="Id" />
         <input type="hidden" asp-for="Image" />
+        <input type="hidden" asp-for="BookFile" />
         <div class="row">
             <div class="col-lg-9 col-sm-12">
                 <div class="widget">
@@ -33,85 +34,84 @@
                         <span class="widget-caption"> @ViewData["Title"] </span>
                     </div>
                     <div class="widget-body">
-                        <div>
+                    <div>
 
-                            <div class="row">
-                                <div class="form-group col-md-6 col-sm-12">
-                                    <label asp-for="Title"></label>
-                                    <input type="text" class="form-Control" asp-for="Title">
-                                    <span class="text-danger" asp-validation-for="Title"></span>
-                                </div>
-
-                                    <div class="form-group col-md-6 col-sm-12">
-                                    <label asp-for="Writer"></label>
-                                    <input type="text" class="form-Control" asp-for="Writer">
-                                    <span class="text-danger" asp-validation-for="Writer"></span>
-                                </div>
-                               
-                                <div class="clearfix"></div>
-
-                                <div class="form-group col-md-12 col-sm-12">
-                                    <label asp-for="Translator"></label>
-                                <input type="text" class="form-Control" asp-for="Translator">
-                                <span class="text-danger" asp-validation-for="Translator"></span>
-                                </div>
-
+                        <div class="row">
                             <div class="form-group col-md-12 col-sm-12">
+                                <label asp-for="Title"></label>
+                                <input type="text" class="form-control" asp-for="Title">
+                                <span class="text-danger" asp-validation-for="Title"></span>
+                            </div>
+
+                            <div class="form-group col-md-6 col-sm-12">
+                                <label asp-for="Writer"></label>
+                                <input type="text" class="form-control" asp-for="Writer">
+                                <span class="text-danger" asp-validation-for="Writer"></span>
+                            </div>
+
+                            <div class="form-group col-md-6 col-sm-12">
+                                <label asp-for="Translator"></label>
+                                <input type="text" class="form-control" asp-for="Translator">
+                                <span class="text-danger" asp-validation-for="Translator"></span>
+                            </div>
+
+                            <div class="form-group col-md-6 col-sm-12">
                                 <label asp-for="Publisher"></label>
-                                <input type="text" class="form-Control" asp-for="Publisher">
+                                <input type="text" class="form-control" asp-for="Publisher">
                                 <span class="text-danger" asp-validation-for="Publisher"></span>
                             </div>
 
-                            <div class="form-group col-md-12 col-sm-12">
-                                    <label asp-for="YearOfPublish"></label>
-                                <input type="text" class="form-Control" asp-for="YearOfPublish">
+                            <div class="form-group col-md-6 col-sm-12">
+                                <label asp-for="YearOfPublish"></label>
+                                <input type="text" class="form-control" asp-for="YearOfPublish">
                                 <span class="text-danger" asp-validation-for="YearOfPublish"></span>
-                                </div>
+                            </div>
 
-                                <div class="form-group col-md-12 col-sm-12">
-                                    <label asp-for="Price"></label>
-                                <input type="text" class="form-Control" asp-for="Price">
+                            <div class="form-group col-md-6 col-sm-12">
+                                <label asp-for="Price"></label>
+                                <input type="text" class="form-control" asp-for="Price">
                                 <span class="text-danger" asp-validation-for="Price"></span>
-                                </div>
+                            </div>
 
-                            <div class="form-group col-md-12 col-sm-12">
+                            <div class="form-group col-md-6 col-sm-12">
                                 <label asp-for="PagesNO"></label>
-                                <input type="text" class="form-Control" asp-for="PagesNO">
+                                <input type="text" class="form-control" asp-for="PagesNO">
                                 <span class="text-danger" asp-validation-for="PagesNO"></span>
                             </div>
 
+
+                            <div class="clearfix"></div>
+
                             <div class="form-group col-md-12 col-sm-12">
                                 <label asp-for="Introduction"></label>
-                                <input type="text" class="form-Control" asp-for="Introduction">
+                                <input type="text" class="form-control" asp-for="Introduction">
                                 <span class="text-danger" asp-validation-for="Introduction"></span>
                             </div>
 
-                                <div class="clearfix"></div>
+                            <div class="clearfix"></div>
 
-                                <div class="form-group col-md-12 col-sm-12">
-                                    <label asp-for="BookTag"></label>
-                                    <input type="text" class="form-Control" class="form-Control" tagify="1" asp-for="BookTag">
-                                    <span class="text-danger" asp-validation-for="BookTag"></span>
-                                </div>
-
-                                <div class="clearfix"></div>
-
-                                
-
+                            <div class="form-group col-md-12 col-sm-12">
+                                <label asp-for="BookTag"></label>
+                                <input type="text" class="form-control" class="form-control" tagify="1" asp-for="BookTag">
+                                <span class="text-danger" asp-validation-for="BookTag"></span>
                             </div>
 
-                            <hr class="margin-bottom-10 margin-top-10" />
-
-                            <div class="row">
-                                <div class="col-md-12 flex-style">
-                                    <button type="submit" class="btn btn-labeled btn-warning">
-                                        <i class="btn-label glyphicon glyphicon-ok"></i>ویرایش
-                                    </button>
-                                </div>
-                            </div>
+                            <div class="clearfix"></div>
 
                         </div>
+
+                        <hr class="margin-bottom-10 margin-top-10" />
+
+                        <div class="row">
+                            <div class="col-md-12 flex-style">
+                                <button type="submit" class="btn btn-labeled btn-palegreen">
+                                    <i class="btn-label glyphicon glyphicon-ok"></i>ثبت
+                                </button>
+                            </div>
+                        </div>
+
                     </div>
+                </div>
                 </div>
             </div>
 
@@ -119,16 +119,16 @@
                 <div class="row">
 
 
-                    <div class="col-lg-12">
-                        <div class="widget">
-                            <div class="widget-header bordered-bottom bordered-yellow">
-                                <span class="widget-caption"> دسته بندی کتاب   </span>
-                            </div>
-                            <div class="widget-body">
-                                <div class="form-group">
-                                    <label asp-for="MainCategory"> سرگروه </label>
-                                    <select asp-for="MainCategory" class="form-Control" id="MainCat">
-                                        <option value="">انتخاب کنید </option>
+                <div class="col-lg-12">
+                    <div class="widget">
+                        <div class="widget-header bordered-bottom bordered-green">
+                            <span class="widget-caption"> دسته بندی کتاب   </span>
+                        </div>
+                        <div class="widget-body">
+                            <div class="form-group">
+                                <label asp-for="MainCategory"> سرگروه </label>
+                                <select asp-for="MainCategory" class="form-control">
+                                    <option value="">انتخاب کنید </option>
                                     @if (MainCat != null && MainCat.Any())
                                     {
                                         foreach (var cat in MainCat)
@@ -145,13 +145,12 @@
                                     }
                                 </select>
                                 <span class="text-danger" asp-validation-for="MainCategory"></span>
-
                             </div>
 
                             <div class="form-group">
                                 <label asp-for="SubCategory"> زیرگروه  </label>
-                                <select asp-for="SubCategory" class="form-Control" id="SubCat">
-                                    <option value="" selected="selected">انتخاب کنید </option>
+                                <select asp-for="SubCategory" class="form-control">
+                                    <option value="">انتخاب کنید </option>
                                     @if (SubCategoryCategory != null && SubCategoryCategory.Any())
                                     {
                                         foreach (var sub in SubCategoryCategory)
@@ -167,16 +166,13 @@
                                         }
                                     }
                                 </select>
-
                                 <span class="text-danger" asp-validation-for="SubCategory"></span>
-
                             </div>
 
                         </div>
 
                     </div>
                 </div>
-
                   <div class="col-lg-12">
                     <div class="widget">
                         <div class="widget-header bordered-bottom bordered-green">
@@ -216,17 +212,8 @@
                         </div>
                         <div class="widget-body">
                             <div class="row">
-
-                                <div class="col-md-12">
-                                    <label for="FileBook" class="file-input-style">
-                                        <i class="glyphicon glyphicon-upload"></i>
-                                        <span class="mr-8px"> لطفا یک فایل را انتخاب کنید</span>
-                                    </label>
-                                </div>
-
-                                <input type="file" class="form-control" asp-for="BookFile">
-
-
+                             
+                                    <input type="file" class="form-control" value="@Model.BookFile" asp-for="BookFile">
                             </div>
                         </div>
                     </div>

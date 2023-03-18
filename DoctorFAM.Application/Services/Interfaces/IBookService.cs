@@ -32,7 +32,7 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         Task<EditBookAdminSideViewModel> FillEditBookAdminSideViewModel(Book Book);
 
-        Task<EditBookFromAdminPanelResponse> EditBookFromAdminPanel(EditBookAdminSideViewModel model, IFormFile Image, IFormFile BookFile);
+        Task<EditBookFromAdminPanelResponse> EditBookFromAdminPanel(EditBookAdminSideViewModel model, IFormFile? Image, IFormFile? BookFile);
 
         Task<bool> DeleteBookFromAdminPanel(ulong BookId);
 

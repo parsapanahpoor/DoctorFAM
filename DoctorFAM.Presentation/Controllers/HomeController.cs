@@ -23,9 +23,6 @@ namespace DoctorFAM.Web.Controllers
         private readonly IHubContext<NotificationHub> _notificationHub;
         private readonly IFollowService _followService;
        
-
-       
-
         public HomeController( ILocationService lcaotionService , IHubContext<NotificationHub> notificationHub
                                 , IFollowService followService)
         {
@@ -303,15 +300,6 @@ namespace DoctorFAM.Web.Controllers
             return View();
         }
 
-        #endregion
-
-        #region Books
-
-        public IActionResult Books()
-        {
-            
-            return View();
-        }
         #endregion
 
         #region News

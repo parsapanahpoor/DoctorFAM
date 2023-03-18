@@ -119,6 +119,8 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> EditBook(ulong Id)
         {
+            #region Get Book By Id
+
             var Book = await _BookService.GetBookByIdAsync(Id);
 
             if (Book == null)
@@ -127,10 +129,16 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
                 return RedirectToAction("Index", "Book", new { Areas = "Admin" });
             }
 
+            #endregion
+
+            #region Fill Model
+
             var model = await _BookService.FillEditBookAdminSideViewModel(Book);
 
             ViewData["MianCategory"] = await _BookService.GetAllMainCategories();
             ViewData["SubCategoryCategory"] = await _BookService.GetCategoriesChildrent(model.MainCategory);
+
+            #endregion
 
             return View(model);
         }
@@ -139,13 +147,27 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditBook(EditBookAdminSideViewModel model, IFormFile? Image, IFormFile? BookFile)
         {
+            #region Model State Validation 
+
+            if (!ModelState.IsValid)
+            {
+                ViewData["MianCategory"] = await _BookService.GetAllMainCategories();
+                ViewData["SubCategoryCategory"] = await _BookService.GetCategoriesChildrent(model.MainCategory);
+
+                return View(model);
+            }
+
+            #endregion
+
+            #region Edit Book
+
             var result = await _BookService.EditBookFromAdminPanel(model, Image, BookFile);
 
             switch (result)
             {
                 case EditBookFromAdminPanelResponse.Success:
                     TempData[SuccessMessage] = "عملیات با موفقیت انجام شد .";
-                    return RedirectToAction("Index", "News");
+                    return RedirectToAction("Index", "Books");
 
                 case EditBookFromAdminPanelResponse.Faild:
                     TempData[ErrorMessage] = "درج کتاب با مشکل مواجه شده است ";
@@ -175,6 +197,8 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
                     TempData[ErrorMessage] = "کتاب مورد نظر یافت نشده است   ";
                     break;
             }
+
+            #endregion
 
             ViewData["MianCategory"] = await _BookService.GetAllMainCategories();
             ViewData["SubCategoryCategory"] = await _BookService.GetCategoriesChildrent(model.MainCategory);

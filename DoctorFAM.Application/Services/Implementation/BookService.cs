@@ -315,7 +315,7 @@ namespace DoctorFAM.Application.Services.Implementation
             return model;
         }
 
-        public async Task<EditBookFromAdminPanelResponse> EditBookFromAdminPanel(EditBookAdminSideViewModel model, IFormFile Image, IFormFile BookFile)
+        public async Task<EditBookFromAdminPanelResponse> EditBookFromAdminPanel(EditBookAdminSideViewModel model, IFormFile? Image, IFormFile? BookFile)
         {
             #region Check Validation
 
@@ -334,10 +334,10 @@ namespace DoctorFAM.Application.Services.Implementation
                 return EditBookFromAdminPanelResponse.ImageNotFound;
             }
 
-            if (BookFile != null)
-            {
-                return EditBookFromAdminPanelResponse.BookFileNotFound;
-            }
+            #endregion
+
+            #region Get Book By Id
+
             var Book = await GetBookByIdAsync(model.Id);
 
             if (Book == null)
@@ -357,9 +357,7 @@ namespace DoctorFAM.Application.Services.Implementation
             Book.Price = model.Price;
             Book.PagesNO = model.PagesNO;
             Book.Introduction = model.Introduction.SanitizeText();
-
             Book.IsActive = model.IsActive;
-
 
             #endregion
 
