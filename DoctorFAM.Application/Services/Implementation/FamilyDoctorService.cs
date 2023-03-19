@@ -408,6 +408,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
             request.FamilyDoctorRequestState = userSelectedRequest.FamilyDoctorRequestState;
             request.RejectDescription = userSelectedRequest.RejectDescription;
+            request.IsUserInDoctorPopulationCoveredOutOfDoctorFAM = userSelectedRequest.IsUserInDoctorPopulationCoveredOutOfDoctorFAM;
 
             await _familyDoctor.UpdateUserSelectedFamilyDoctor(request);
 

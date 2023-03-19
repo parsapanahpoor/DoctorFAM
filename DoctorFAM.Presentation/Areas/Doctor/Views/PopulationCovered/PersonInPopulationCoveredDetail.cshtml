@@ -12,40 +12,40 @@
 
 @section Styles
     {
-<style>
+    <style>
 
-    .header-fullname {
-        font: 21px 'YekanBakh-FaNum';
-        margin-top: 27px;
-        display: inline-block;
-    }
+        .header-fullname {
+            font: 21px 'YekanBakh-FaNum';
+            margin-top: 27px;
+            display: inline-block;
+        }
 
-</style>
+    </style>
 }
 
 @section Scripts
     {
-<partial name="_JqueryValidation" />
+    <partial name="_JqueryValidation" />
 
-<script>
-    $("#UserSelectedFamilyDoctorRequest_FamilyDoctorRequestState").on("change",
-        function () {
+    <script>
+        $("#UserSelectedFamilyDoctorRequest_FamilyDoctorRequestState").on("change",
+            function () {
 
-            var selectedAdvertisementStatusValue = $("#UserSelectedFamilyDoctorRequest_FamilyDoctorRequestState :selected").val();
-            if (selectedAdvertisementStatusValue == 1) {
-                $("#RejectDescription-div").removeClass("d-none");
-            } else {
-                $("#RejectDescription-div").addClass("d-none");
-            }
-        });
-</script>
+                var selectedAdvertisementStatusValue = $("#UserSelectedFamilyDoctorRequest_FamilyDoctorRequestState :selected").val();
+                if (selectedAdvertisementStatusValue == 1) {
+                    $("#RejectDescription-div").removeClass("d-none");
+                } else {
+                    $("#RejectDescription-div").addClass("d-none");
+                }
+            });
+    </script>
 }
 
 @section Breadcrumb
     {
-<li>
-    <a href="javascript:void(0)"> @Localizer["User Selected Famili Doctor Request Id"] : @Model.UserSelectedFamilyDoctorRequest.Id </a>
-</li>
+    <li>
+        <a href="javascript:void(0)"> @Localizer["User Selected Famili Doctor Request Id"] : @Model.UserSelectedFamilyDoctorRequest.Id </a>
+    </li>
 }
 
 <div class="row">
@@ -144,7 +144,7 @@
                                             <th class=" text-center align-items-center">تاریخ تولد</th>
                                             <th class=" text-center align-items-center">سن</th>
                                             <th class=" text-center align-items-center">جنسیت</th>
-                                             <th class=" text-center align-items-center">نسبت</th>
+                                            <th class=" text-center align-items-center">نسبت</th>
 
                                         </tr>
 
@@ -157,11 +157,11 @@
                                                 <td class=" text-center align-items-center">@item.NationalId</td>
                                                 <td class=" text-center align-items-center">@item.BirthDay.ToShamsi()</td>
                                                 <td class=" text-center align-items-center">@item.Age</td>
-                                                 
 
-                                                  @if (item.Gender == DoctorFAM.Domain.Enums.Gender.Gender.Female)
+
+                                                @if (item.Gender == DoctorFAM.Domain.Enums.Gender.Gender.Female)
                                                 {
-                                                   <td class=" text-center align-items-center">@SharedLocalizer["Female"]</td>
+                                                    <td class=" text-center align-items-center">@SharedLocalizer["Female"]</td>
                                                 }
                                                 @if (item.Gender == DoctorFAM.Domain.Enums.Gender.Gender.Male)
                                                 {
@@ -225,19 +225,15 @@
                                             <div class="form-group col-md-12 col-sm-12">
                                                 <label>آیا این کاربر خارج از سامانه عضو جمعیت تحت پوشش شماست؟</label>
                                                 <select id="OutOfDoctorFAM" name="OutOfDoctorFAM" class="form-control">
-                                                    @if (Model.UserSelectedFamilyDoctorRequest.FamilyDoctorRequestState == DoctorFAM.Domain.Enums.FamilyDoctor.FamilyDoctorRequestState.WaitingForConfirm)
+                                                    @if (Model.UserSelectedFamilyDoctorRequest.IsUserInDoctorPopulationCoveredOutOfDoctorFAM)
                                                     {
-                                                        <option value="2" selected="selected">@Localizer["Waiting"]</option>
+                                                        <option value="1" selected="selected">بله</option>
+                                                        <option value="0">خیر</option>
                                                     }
-                                                    @if (Model.UserSelectedFamilyDoctorRequest.FamilyDoctorRequestState == DoctorFAM.Domain.Enums.FamilyDoctor.FamilyDoctorRequestState.Accepted)
+                                                    @if (!Model.UserSelectedFamilyDoctorRequest.IsUserInDoctorPopulationCoveredOutOfDoctorFAM)
                                                     {
-                                                        <option value="0" selected="selected">@Localizer["Accepted"]</option>
-                                                        <option value="1">@Localizer["Decline"]</option>
-                                                    }
-                                                    else
-                                                    {
-                                                        <option value="1">@Localizer["Decline"]</option>
-                                                        <option value="0">@Localizer["Accepted"]</option>
+                                                        <option value="0" selected="selected">خیر</option>
+                                                        <option value="1">بله</option>
                                                     }
                                                 </select>
                                             </div>
@@ -247,7 +243,7 @@
                                                 <select id="UserSelectedFamilyDoctorRequest_FamilyDoctorRequestState" name="State" class="form-control">
                                                     @if (Model.UserSelectedFamilyDoctorRequest.FamilyDoctorRequestState == DoctorFAM.Domain.Enums.FamilyDoctor.FamilyDoctorRequestState.WaitingForConfirm)
                                                     {
-                                                         <option value="2" selected="selected">@Localizer["Waiting"]</option>
+                                                        <option value="2" selected="selected">@Localizer["Waiting"]</option>
                                                     }
                                                     @if (Model.UserSelectedFamilyDoctorRequest.FamilyDoctorRequestState == DoctorFAM.Domain.Enums.FamilyDoctor.FamilyDoctorRequestState.Accepted)
                                                     {
@@ -273,7 +269,7 @@
 
                                             <div class="col-md-12">
                                                 <button type="submit" class="btn  btn-labeled btn-success">
-                                                    
+
                                                     @Localizer["Submit State"]
                                                 </button>
                                             </div>

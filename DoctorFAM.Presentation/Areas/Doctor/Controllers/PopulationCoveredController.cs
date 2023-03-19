@@ -83,7 +83,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
         #region Change Population Covered Request State From Doctor
 
-        public async Task<IActionResult> ChangePopulationCoveredRequestStateFromDoctor(ulong Id, FamilyDoctorRequestState State, string? RejectDescription)
+        public async Task<IActionResult> ChangePopulationCoveredRequestStateFromDoctor(ulong Id, FamilyDoctorRequestState State, string? RejectDescription , int OutOfDoctorFAM)
         {
             #region Get User Selected Family Doctor Request 
 
@@ -101,7 +101,8 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
                 DoctorId = request.DoctorId,
                 Id = request.Id,
                 FamilyDoctorRequestState = State,
-                PatientId = request.PatientId
+                PatientId = request.PatientId,
+                IsUserInDoctorPopulationCoveredOutOfDoctorFAM = (OutOfDoctorFAM == 0) ? false : true 
             };
 
             #endregion

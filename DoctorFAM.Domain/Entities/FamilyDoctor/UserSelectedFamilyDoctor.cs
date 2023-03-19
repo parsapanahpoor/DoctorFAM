@@ -22,6 +22,8 @@ namespace DoctorFAM.Domain.Entities.FamilyDoctor
 
         public FamilyDoctorRequestState FamilyDoctorRequestState { get; set; }
 
+        public bool IsUserInDoctorPopulationCoveredOutOfDoctorFAM { get; set; }
+
         #endregion
 
         #region relations
