@@ -198,28 +198,48 @@
                             </div>
                         </div>
                     </div>
-                    <hr />
+
+                </div>
+
+                <div class="col-lg-12">
                     <div class="widget">
                         <div class="widget-header bordered-bottom bordered-green">
-                            <span class="widget-caption"> فایل کتاب </span>
+                            <span class="widget-caption"> فایل ضمیمه </span>
                         </div>
                         <div class="widget-body">
                             <div class="row">
 
+                                <input type="hidden" asp-for="AttachmentFileName">
 
                                 <div class="col-md-12">
-                                    <label for="FileBook" class="file-input-style">
+                                    <label for="courseAttachmentFile" class="file-input-style">
                                         <i class="glyphicon glyphicon-upload"></i>
-                                        <span class="mr-8px"> لطفا یک فایل انتخاب کنید</span>
+                                        <span class="mr-8px">لطفا فایل ضمیمه را انتخاب کنید .</span>
                                     </label>
                                 </div>
-                                <input type="file" class="form-control" name="BookFile">
+
+                                <div class="col-md-12 mt-10px display-none" id="CourseAttachment" inputId="AttachmentFileName" upload-url="@Url.Action("UploadCourseAttachmentFile", "Books", new {area = "Admin"})">
+                                    <div class="progress progress-bordered" style="margin-bottom: 10px !important">
+                                        <div class="progress-bar progress-bar-blue" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                                            <span class="percent"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 mt-10px @((Model != null && !string.IsNullOrEmpty(Model.AttachmentFileName)) ? "" : "display-none")" style="margin-bottom: 5px" id="CourseAttachmentDownloadBox">
+                                    <div class="file-admin-style bg-sky">
+                                        <span> فایل ضمیمه </span>
+                                        <a asp-action="DownloadCourseAttachmentFile" asp-controller="Books" asp-area="Admin" asp-route-fileName="@((Model != null && !string.IsNullOrEmpty(Model.AttachmentFileName)) ? Model.AttachmentFileName : string.Empty)" class="icon-download-style">
+                                            <i class="glyphicon glyphicon-cloud-download"></i>
+                                        </a>
+                                    </div>
+                                </div>
 
                             </div>
                         </div>
                     </div>
-
                 </div>
+
                 <div class="col-lg-12">
                     <div class="widget">
                         <div class="widget-header bordered-bottom bordered-green">
@@ -249,3 +269,6 @@
         </div>
     </div>
 </form>
+
+
+<input type="file" chunk-upload="CourseAttachment" class="display-none" name="courseAttachmentFile" id="courseAttachmentFile" />

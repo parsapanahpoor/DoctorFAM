@@ -5,6 +5,9 @@ using DoctorFAM.Domain.ViewModels.Article.Admin;
 using DoctorFAM.Domain.ViewModels.Admin.Books;
 using DoctorFAM.Web.HttpManager;
 using Microsoft.AspNetCore.Mvc;
+using DoctorFAM.Application.Extensions;
+using DoctorFAM.Application.StaticTools;
+using ZNetCS.AspNetCore.ResumingFileResults.Extensions;
 
 namespace DoctorFAM.Web.Areas.Admin.Controllers
 {
@@ -51,7 +54,7 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateBook(CreateBookAdminViewModel model,IFormFile Image,  IFormFile BookFile )
+        public async Task<IActionResult> CreateBook(CreateBookAdminViewModel model,IFormFile Image)
         {
             #region Model State Validation 
 
@@ -71,7 +74,7 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
 
             #region Create Book 
 
-            var result = await _BookService.CreateBookFromAdminPanel(model, Image, BookFile);
+            var result = await _BookService.CreateBookFromAdminPanel(model, Image);
 
             switch (result)
             {
@@ -114,7 +117,7 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
 
         #endregion
 
-        #region Edit News
+        #region Edit Book
 
         [HttpGet]
         public async Task<IActionResult> EditBook(ulong Id)
@@ -145,7 +148,7 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditBook(EditBookAdminSideViewModel model, IFormFile? Image, IFormFile? BookFile)
+        public async Task<IActionResult> EditBook(EditBookAdminSideViewModel model, IFormFile? Image)
         {
             #region Model State Validation 
 
@@ -161,7 +164,7 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
 
             #region Edit Book
 
-            var result = await _BookService.EditBookFromAdminPanel(model, Image, BookFile);
+            var result = await _BookService.EditBookFromAdminPanel(model, Image);
 
             switch (result)
             {
@@ -221,6 +224,54 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
             }
 
             return JsonResponseStatus.Error();
+        }
+
+        #endregion
+
+        #region Upload Chunk Attachment File
+
+        public IActionResult UploadCourseAttachmentFile(IFormFile? videoFile)
+        {
+            var result = videoFile.AddChunkFileToServer(PathTools.BookAttachmentFilesChunkServerPath,
+                PathTools.BookAttachmentFilesServerPath);
+
+            if (result == null)
+            {
+                return ApiResponse.SetResponse(ApiResponseStatus.Danger, null, "عملیات باشکست مواجه شده است.");
+            }
+            else if (result == string.Empty)
+            {
+                return ApiResponse.SetResponse(ApiResponseStatus.Success, null, "عملیات باموفقیت انجام شده است.");
+            }
+            else
+            {
+                return ApiResponse.SetResponse(ApiResponseStatus.Success, result, "عملیات باموفقیت انجام شده است.");
+            }
+        }
+
+        #endregion
+
+        #region Download Attachment File
+
+        public IActionResult DownloadAttachmentFile(string fileName)
+        {
+            if (string.IsNullOrEmpty(fileName))
+            {
+                return NotFound();
+            }
+
+            var webRoot = PathTools.BookAttachmentFilesServerPath;
+
+            if (!System.IO.File.Exists(Path.Combine(webRoot, fileName)))
+            {
+                return NotFound();
+            }
+
+            var stream = System.IO.File.OpenRead(Path.Combine(webRoot, fileName));
+
+            var download = this.ResumingFile(stream, "application/octet-stream", fileName);
+
+            return download;
         }
 
         #endregion

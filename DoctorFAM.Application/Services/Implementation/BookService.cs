@@ -19,7 +19,7 @@ using DoctorFAM.Domain.ViewModels.Admin.News;
 
 namespace DoctorFAM.Application.Services.Implementation
 {
-    public class BookService : DoctorFAM.Application.Services.Interfaces.IBookService
+    public class BookService : IBookService
     {
         #region Constructor
 
@@ -110,7 +110,7 @@ namespace DoctorFAM.Application.Services.Implementation
             return filter;
         }
 
-        public async Task<CreateBookFromAdminPanelResponse> CreateBookFromAdminPanel(CreateBookAdminViewModel model, IFormFile Image, IFormFile BookFile)
+        public async Task<CreateBookFromAdminPanelResponse> CreateBookFromAdminPanel(CreateBookAdminViewModel model, IFormFile Image)
         {
             #region Check Validation
 
@@ -124,10 +124,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 return CreateBookFromAdminPanelResponse.WriterNotFound;
             }
 
-            if (BookFile == null)
-            {
-                return CreateBookFromAdminPanelResponse.BookFileNotFound;
-            } 
+            if (string.IsNullOrEmpty(model.AttachmentFileName)) return CreateBookFromAdminPanelResponse.BookFileNotFound;
 
             if (string.IsNullOrEmpty(model.Title))
             {
@@ -153,7 +150,8 @@ namespace DoctorFAM.Application.Services.Implementation
                 YearOfPublish = model.YearOfPublish.SanitizeText(),
                 Price = model.Price,
                 PagesNO = model.PagesNO,
-                IsActive = model.IsActive
+                IsActive = model.IsActive,
+                BookFile = model.AttachmentFileName
             };
 
             #endregion
@@ -163,14 +161,6 @@ namespace DoctorFAM.Application.Services.Implementation
             var imageName = Guid.NewGuid() + Path.GetExtension(Image.FileName);
             Image.AddImageToServer(imageName, PathTools.BooksImagePathServer, 400, 300, PathTools.BooksImagePathThumbServer);
             Book.Image = imageName;
-
-            #endregion
-
-            #region Books File
-
-            var fileName = Guid.NewGuid() + Path.GetExtension(BookFile.FileName);
-            Image.AddFileToServer(fileName, PathTools.BookFilePathServer, PathTools.BookFilePathServer);
-            Book.BookFile = fileName;
 
             #endregion
 
@@ -257,7 +247,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 YearOfPublish = Book.YearOfPublish,
                 PagesNO = Book.PagesNO,
                 Price = Book.Price,
-                BookFile = Book.BookFile,
+                AttachmentFileName = Book.BookFile,
                 Image = Book.Image,
                 IsActive = Book.IsActive,
                 Id = Book.Id,
@@ -315,7 +305,7 @@ namespace DoctorFAM.Application.Services.Implementation
             return model;
         }
 
-        public async Task<EditBookFromAdminPanelResponse> EditBookFromAdminPanel(EditBookAdminSideViewModel model, IFormFile? Image, IFormFile? BookFile)
+        public async Task<EditBookFromAdminPanelResponse> EditBookFromAdminPanel(EditBookAdminSideViewModel model, IFormFile? Image)
         {
             #region Check Validation
 
@@ -378,19 +368,18 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #endregion
 
-            #region Book File
+            #region Attachment File 
 
-            if (BookFile != null)
+            if (!string.IsNullOrEmpty(Book.BookFile) &&
+                  !string.IsNullOrEmpty(model.AttachmentFileName) &&
+                        model.AttachmentFileName != Book.BookFile)
             {
-                var bookfileName = Guid.NewGuid() + Path.GetExtension(BookFile.FileName);
-                BookFile.AddFileToServer(bookfileName, PathTools.BookFilePathServer, PathTools.BookFilePathServer);
+                Book.BookFile.DeleteFile(PathTools.BookAttachmentFilesServerPath);
+            }
 
-                if (!string.IsNullOrEmpty(Book.BookFile))
-                {
-                    Book.BookFile.DeleteImage(PathTools.BookFilePathServer, PathTools.BookFilePathServer);
-                }
-
-                Book.BookFile = bookfileName;
+            if (string.IsNullOrEmpty(Book.BookFile) || Book.BookFile != model.AttachmentFileName)
+            {
+                Book.BookFile = model.AttachmentFileName;
             }
 
             #endregion
@@ -708,7 +697,6 @@ namespace DoctorFAM.Application.Services.Implementation
             return await _context.Book.Where(p => !p.IsDelete && p.IsActive)
                                 .OrderByDescending(p => p.CreateDate).Take(12).ToListAsync();
         }
-
 
         #endregion
     }

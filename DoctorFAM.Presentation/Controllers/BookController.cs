@@ -1,5 +1,7 @@
 ﻿using DoctorFAM.Application.Services.Interfaces;
+using DoctorFAM.Application.StaticTools;
 using Microsoft.AspNetCore.Mvc;
+using ZNetCS.AspNetCore.ResumingFileResults.Extensions;
 
 namespace DoctorFAM.Web.Controllers
 {
@@ -31,5 +33,31 @@ namespace DoctorFAM.Web.Controllers
         }
 
         #endregion
+
+        #region Download Attachment File
+
+        public IActionResult DownloadAttachmentFile(string fileName)
+        {
+            if (string.IsNullOrEmpty(fileName))
+            {
+                return NotFound();
+            }
+
+            var webRoot = PathTools.BookAttachmentFilesServerPath;
+
+            if (!System.IO.File.Exists(Path.Combine(webRoot, fileName)))
+            {
+                return NotFound();
+            }
+
+            var stream = System.IO.File.OpenRead(Path.Combine(webRoot, fileName));
+
+            var download = this.ResumingFile(stream, "application/octet-stream", fileName);
+
+            return download;
+        }
+
+        #endregion
+
     }
 }

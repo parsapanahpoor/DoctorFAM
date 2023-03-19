@@ -221,6 +221,27 @@
                                     <div class="widget-body">
 
                                         <div class="row">
+
+                                            <div class="form-group col-md-12 col-sm-12">
+                                                <label>آیا این کاربر خارج از سامانه عضو جمعیت تحت پوشش شماست؟</label>
+                                                <select id="OutOfDoctorFAM" name="OutOfDoctorFAM" class="form-control">
+                                                    @if (Model.UserSelectedFamilyDoctorRequest.FamilyDoctorRequestState == DoctorFAM.Domain.Enums.FamilyDoctor.FamilyDoctorRequestState.WaitingForConfirm)
+                                                    {
+                                                        <option value="2" selected="selected">@Localizer["Waiting"]</option>
+                                                    }
+                                                    @if (Model.UserSelectedFamilyDoctorRequest.FamilyDoctorRequestState == DoctorFAM.Domain.Enums.FamilyDoctor.FamilyDoctorRequestState.Accepted)
+                                                    {
+                                                        <option value="0" selected="selected">@Localizer["Accepted"]</option>
+                                                        <option value="1">@Localizer["Decline"]</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="1">@Localizer["Decline"]</option>
+                                                        <option value="0">@Localizer["Accepted"]</option>
+                                                    }
+                                                </select>
+                                            </div>
+
                                             <div class="form-group col-md-12 col-sm-12">
                                                 <label>@Localizer["State"]</label>
                                                 <select id="UserSelectedFamilyDoctorRequest_FamilyDoctorRequestState" name="State" class="form-control">
@@ -251,7 +272,7 @@
                                             <hr class="margin-bottom-10 margin-top-10" />
 
                                             <div class="col-md-12">
-                                                <button type="submit" class="btn  btn-labeled btn-danger">
+                                                <button type="submit" class="btn  btn-labeled btn-success">
                                                     
                                                     @Localizer["Submit State"]
                                                 </button>

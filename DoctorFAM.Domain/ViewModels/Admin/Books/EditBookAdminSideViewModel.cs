@@ -48,9 +48,7 @@ namespace DoctorFAM.Domain.ViewModels.Admin.Books
         [MaxLength(500)]
         public string Introduction { get; set; }
 
-        [Display(Name = "فایل کتاب / مجله")]
-        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
-        public string BookFile { get; set; }
+        public string AttachmentFileName { get; set; }
 
         [Display(Name = "تصویر")]
         [MaxLength(200)]

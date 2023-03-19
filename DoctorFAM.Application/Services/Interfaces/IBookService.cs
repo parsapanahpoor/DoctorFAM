@@ -28,11 +28,11 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         Task<FilterBookAdminSideViewModel> FilterBookAdminSideViewModel(FilterBookAdminSideViewModel filter);
 
-        Task<CreateBookFromAdminPanelResponse> CreateBookFromAdminPanel(CreateBookAdminViewModel model, IFormFile Image, IFormFile BookFile);
+        Task<CreateBookFromAdminPanelResponse> CreateBookFromAdminPanel(CreateBookAdminViewModel model, IFormFile Image);
 
         Task<EditBookAdminSideViewModel> FillEditBookAdminSideViewModel(Book Book);
 
-        Task<EditBookFromAdminPanelResponse> EditBookFromAdminPanel(EditBookAdminSideViewModel model, IFormFile? Image, IFormFile? BookFile);
+        Task<EditBookFromAdminPanelResponse> EditBookFromAdminPanel(EditBookAdminSideViewModel model, IFormFile? Image);
 
         Task<bool> DeleteBookFromAdminPanel(ulong BookId);
 

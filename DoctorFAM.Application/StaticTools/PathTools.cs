@@ -202,6 +202,10 @@ namespace DoctorFAM.Application.StaticTools
         public static readonly string BookFilePath = "/content/images/Books/Files/";
         public static readonly string BookFilePathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/Books/Files/");
 
+        public static readonly string BookAttachmentFilesServerPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/Books/Files/");
+        public static readonly string BookAttachmentFilesChunkServerPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/Books/Chunks/");
+
+        public static readonly string BookAttachmentFilesPath = "/content/images/Books/Files/";
 
         #endregion
 

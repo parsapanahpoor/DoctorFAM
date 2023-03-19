@@ -28,6 +28,7 @@ namespace DoctorFAM.Domain.ViewModels.Admin.Books
         [MaxLength(600)]
         public string Translator { get; set; }
 
+        public string AttachmentFileName { get; set; }
 
         [Display(Name = "انتشارات")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
