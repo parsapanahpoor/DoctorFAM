@@ -4,11 +4,7 @@ using DoctorFAM.Application.Generators;
 using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Application.StaticTools;
-using DoctorFAM.Data.Migrations;
-using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.HealthInformation;
-using DoctorFAM.Domain.Entities.News;
-using DoctorFAM.Domain.Entities.Nurse;
 using DoctorFAM.Domain.Enums.HealtInformation;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.Interfaces.EFCore;
@@ -18,15 +14,6 @@ using DoctorFAM.Domain.ViewModels.Admin.HealthInformation.TVFAM.Video;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.HealthInformation.TVFAM;
 using DoctorFAM.Domain.ViewModels.Site.HealthInformation;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace DoctorFAM.Application.Services.Implementation
 {
@@ -1132,19 +1119,19 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #region Copy File For Show In Landing Page Records
 
-            if (model.ShowInLanding)
-            {
-                if (!Directory.Exists(PathTools.PodcastsForLandingPageFilesServerPath))
-                {
-                    Directory.CreateDirectory(PathTools.PodcastsForLandingPageFilesServerPath);
-                }
+            //if (model.ShowInLanding)
+            //{
+            //    if (!Directory.Exists(PathTools.PodcastsForLandingPageFilesServerPath))
+            //    {
+            //        Directory.CreateDirectory(PathTools.PodcastsForLandingPageFilesServerPath);
+            //    }
 
-                var destanation = $"{PathTools.PodcastsForLandingPageFilesServerPath}{model.AttachmentFileName}";
+            //    var destanation = $"{PathTools.PodcastsForLandingPageFilesServerPath}{model.AttachmentFileName}";
 
-                var source = $"{PathTools.HealthInformationAttachmentFilesServerPath}{model.AttachmentFileName}";
+            //    var source = $"{PathTools.HealthInformationAttachmentFilesServerPath}{model.AttachmentFileName}";
 
-                File.Copy(source, destanation);
-            }
+            //    File.Copy(source, destanation);
+            //}
 
             #endregion
 
@@ -1294,10 +1281,10 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #region Attachment File 
 
-            if (healthFAM.ShowInLanding && !model.ShowInLanding)
-            {
-                healthFAM.File.DeleteFile(PathTools.PodcastsForLandingPageFilesServerPath);
-            }
+            //if (healthFAM.ShowInLanding && !model.ShowInLanding)
+            //{
+            //    healthFAM.File.DeleteFile(PathTools.PodcastsForLandingPageFilesServerPath);
+            //}
 
             if (!string.IsNullOrEmpty(healthFAM.File) &&
                   !string.IsNullOrEmpty(model.AttachmentFileName) &&
@@ -1307,35 +1294,35 @@ namespace DoctorFAM.Application.Services.Implementation
 
                 if (healthFAM.ShowInLanding && model.ShowInLanding)
                 {
-                    healthFAM.File.DeleteFile(PathTools.PodcastsForLandingPageFilesServerPath);
+                    //healthFAM.File.DeleteFile(PathTools.PodcastsForLandingPageFilesServerPath);
 
-                    if (!Directory.Exists(PathTools.PodcastsForLandingPageFilesServerPath))
-                    {
-                        Directory.CreateDirectory(PathTools.PodcastsForLandingPageFilesServerPath);
-                    }
+                    //if (!Directory.Exists(PathTools.PodcastsForLandingPageFilesServerPath))
+                    //{
+                    //    Directory.CreateDirectory(PathTools.PodcastsForLandingPageFilesServerPath);
+                    //}
 
-                    var destanation = $"{PathTools.PodcastsForLandingPageFilesServerPath}{model.AttachmentFileName}";
+                    //var destanation = $"{PathTools.PodcastsForLandingPageFilesServerPath}{model.AttachmentFileName}";
 
-                    var source = $"{PathTools.HealthInformationAttachmentFilesServerPath}{model.AttachmentFileName}";
+                    //var source = $"{PathTools.HealthInformationAttachmentFilesServerPath}{model.AttachmentFileName}";
 
-                    File.Copy(source, destanation);
+                    //File.Copy(source, destanation);
                 }
             }
 
             //Create Show In Landing File
-            if (model.ShowInLanding && !healthFAM.ShowInLanding)
-            {
-                if (!Directory.Exists(PathTools.PodcastsForLandingPageFilesServerPath))
-                {
-                    Directory.CreateDirectory(PathTools.PodcastsForLandingPageFilesServerPath);
-                }
+            //if (model.ShowInLanding && !healthFAM.ShowInLanding)
+            //{
+            //    if (!Directory.Exists(PathTools.PodcastsForLandingPageFilesServerPath))
+            //    {
+            //        Directory.CreateDirectory(PathTools.PodcastsForLandingPageFilesServerPath);
+            //    }
 
-                var destanation = $"{PathTools.PodcastsForLandingPageFilesServerPath}{model.AttachmentFileName}";
+            //    var destanation = $"{PathTools.PodcastsForLandingPageFilesServerPath}{model.AttachmentFileName}";
 
-                var source = $"{PathTools.HealthInformationAttachmentFilesServerPath}{model.AttachmentFileName}";
+            //    var source = $"{PathTools.HealthInformationAttachmentFilesServerPath}{model.AttachmentFileName}";
 
-                File.Copy(source, destanation);
-            }
+            //    File.Copy(source, destanation);
+            //}
 
             if (string.IsNullOrEmpty(healthFAM.File) || healthFAM.File != model.AttachmentFileName)
             {
@@ -1802,8 +1789,10 @@ namespace DoctorFAM.Application.Services.Implementation
                     RadioFAMAPIViewModel radio = new RadioFAMAPIViewModel();
 
                     radio.musicName = item.Title;
-                    radio.CreateDate = item.CreateDate.ToShamsi();
-                    radio.musicSrc = $"{PathTools.PodcastsForLandingPageFilesPath}{item.File}";
+                    radio.CreateDate = item.CreateDate.ToStringShamsiDate();
+                    radio.musicSrc = $"{PathTools.HealthInformationAttachmentFilesPath}{item.File}";
+                    radio.musicImageSrc = $"{PathTools.HealthInformationAttachmentFilesImagePathThumb}{item.Picture}";
+                    radio.Id = item.Id;
 
                     returnModel.Add(radio);
                 }

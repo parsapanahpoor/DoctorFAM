@@ -10,9 +10,13 @@ namespace DoctorFAM.Domain.ViewModels.Site.HealthInformation
     {
         #region properties
 
+        public ulong Id { get; set; }
+
         public string musicName { get; set; }
 
         public string musicSrc { get; set; }
+
+        public string musicImageSrc { get; set; }
 
         public string CreateDate { get; set; }
 

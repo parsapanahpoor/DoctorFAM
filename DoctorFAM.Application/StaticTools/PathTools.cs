@@ -119,11 +119,11 @@ namespace DoctorFAM.Application.StaticTools
         #region Health Information  Attachment Files
 
         public static readonly string HealthInformationAttachmentFilesServerPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/HealthInformationAttachmentFiles/Files/");
-        public static readonly string PodcastsForLandingPageFilesServerPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/HealthInformationAttachmentFiles/PodcastsForLandingPage/");
+        //public static readonly string PodcastsForLandingPageFilesServerPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/HealthInformationAttachmentFiles/PodcastsForLandingPage/");
         public static readonly string HealthInformationAttachmentFilesChunkServerPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/HealthInformationAttachmentFiles/Chunks/");
 
         public static readonly string HealthInformationAttachmentFilesPath = "/content/images/HealthInformationAttachmentFiles/Files/";
-        public static readonly string PodcastsForLandingPageFilesPath =  "/content/images/HealthInformationAttachmentFiles/PodcastsForLandingPage/";
+        //public static readonly string PodcastsForLandingPageFilesPath =  "/content/images/HealthInformationAttachmentFiles/PodcastsForLandingPage/";
 
         public static readonly string HealthInformationAttachmentFilesImagePath = "/content/images/HealthInformationAttachmentFiles/main/";
         public static readonly string HealthInformationAttachmentFilesImageServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/HealthInformationAttachmentFiles/main/");
