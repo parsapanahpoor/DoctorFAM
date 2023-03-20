@@ -1,4 +1,5 @@
 ﻿using DoctorFAM.Domain.Entities.DurgAlert;
+using DoctorFAM.Domain.ViewModels.BackgroundTasks.DrugAlert;
 using DoctorFAM.Domain.ViewModels.Site.DurgAlert;
 using System;
 using System.Collections.Generic;
@@ -32,6 +33,13 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Fill Show Drug Alert Detail Site Side View Model
         Task<ShowDrugAlertDetailSiteSideViewModel> FillShowDrugAlertDetailSiteSideViewModel(ulong drugId, ulong userId);
+
+        #endregion
+
+        #region Back Ground Task
+
+        //Get List Of Weekly Usage Drugs
+        Task<List<ListOfWeeklyDrugAlertViewModel>> FillListOfWeeklyDrugAlertViewModel();
 
         #endregion
     }

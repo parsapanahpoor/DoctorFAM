@@ -29,7 +29,7 @@ function nextMusic() {
     }
     isPlay = false;
     musicCounter++;
-    audio.src = audioArray[musicCounter].musicSrc;
+    audio.src = "https://doctorfam.com" + audioArray[musicCounter].musicSrc;
     playMusic();
 }
 
@@ -39,7 +39,7 @@ function previousMusic() {
     }
     isPlay = false;
     musicCounter--;
-    audio.src = audioArray[musicCounter].musicSrc;
+    audio.src = "https://doctorfam.com" + audioArray[musicCounter].musicSrc;
     playMusic();
 }
 
@@ -52,12 +52,16 @@ async function loadMusic() {
             audioArray.forEach(function (item, index) {
                 let musicName = audioArray[index].musicName;
                 let musicSrc = audioArray[index].musicSrc;
-                audio.src = musicSrc
+                let musicDate = audioArray[index].createDate;
+                let musicBackground = audioArray[index].musicImageSrc
+                audio.src = `https://doctorfam.com${musicSrc}`
                 let musicTemplate = `
-                <div class="col-6">
+                <div class="col-12">
                     <li class="music-list-item" onclick="playListMusic(event)">
+                        <img src="images/background_3.jpg" class="music-item-image" alt="radio image">
+                        <span class="music-item-date">${musicDate}</span>
                         <span class="music-item-name">${musicName}</span>
-                        <div class="music-item-audio" data-audio-src="${musicSrc}" data-id="${index}"></div>
+                        <div class="music-item-audio" data-audio-src="https://doctorfam.com${musicSrc}" data-id="${index}"></div>
                     </li>
                 </div>
                 `;

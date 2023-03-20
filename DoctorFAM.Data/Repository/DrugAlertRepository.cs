@@ -1,12 +1,8 @@
 ﻿using DoctorFAM.Data.DbContext;
 using DoctorFAM.Domain.Entities.DurgAlert;
 using DoctorFAM.Domain.Interfaces.EFCore;
+using DoctorFAM.Domain.ViewModels.BackgroundTasks.DrugAlert;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DoctorFAM.Data.Repository
 {
@@ -80,6 +76,24 @@ namespace DoctorFAM.Data.Repository
         public void UpdateDrugAlertDetailWithoutSavechanges(DrugAlertDetail alertDetail)
         {
             _context.DrugAlertDetails.Update(alertDetail);
+        }
+
+        #endregion\
+
+        #region Back Ground Task
+
+        //Get List Of Weekly Usage Drugs
+        public async Task<List<ListOfWeeklyDrugAlertViewModel>> FillListOfWeeklyDrugAlertViewModel()
+        {
+            return await _context.DrugAlertDetails.Include(p=> p.DrugAlert).Where(p=> !p.IsDelete && 
+                                                           p.DrugAlert.DrugAlertDurationType == Domain.Enums.DrugAlert.DrugAlertDurationType.Weekly
+                                                           && p.DateTime == DateTime.Now)
+                                                           .Select(p=> new ListOfWeeklyDrugAlertViewModel()
+                                                           {
+                                                               DrugAlertDetail = p,
+                                                               DrugAlert = p.DrugAlert,
+                                                               Mobile = _context.Users.FirstOrDefault(s=> p.IsDelete && s.Id == p.DrugAlert.UserId).Mobile
+                                                           }).ToListAsync();
         }
 
         #endregion

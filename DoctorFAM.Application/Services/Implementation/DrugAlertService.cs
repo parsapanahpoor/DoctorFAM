@@ -4,6 +4,7 @@ using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.Entities.DurgAlert;
 using DoctorFAM.Domain.Interfaces.EFCore;
+using DoctorFAM.Domain.ViewModels.BackgroundTasks.DrugAlert;
 using DoctorFAM.Domain.ViewModels.Site.DurgAlert;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
@@ -355,6 +356,16 @@ namespace DoctorFAM.Application.Services.Implementation
             #endregion
 
             return model;
+        }
+
+        #endregion
+
+        #region Back Ground Task
+
+        //Get List Of Weekly Usage Drugs
+        public async Task<List<ListOfWeeklyDrugAlertViewModel>> FillListOfWeeklyDrugAlertViewModel()
+        {
+            return await _drugAlertRepository.FillListOfWeeklyDrugAlertViewModel();
         }
 
         #endregion

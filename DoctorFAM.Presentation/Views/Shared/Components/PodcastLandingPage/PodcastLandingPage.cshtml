@@ -76,16 +76,16 @@
 
         <ul class="music-list">
             <div class="row">
-                <!-- <div class="col-6">
+              @*  <!-- <div class="col-6">
                     <li class="music-list-item" onclick="playListMusic(event)">
                         <span class="radio-music-list-name">${musicName}</span>
                         <div class="radio-music-list-audio" data-audio-src="${musicSrc}" data-id="${index}"></div>
                     </li>
-                </div> -->
+                </div> -->*@
             </div>
         </ul>
 
-        <div class="col-lg-3 col-md-3  text-center">
+ @*       <div class="col-lg-3 col-md-3  text-center">
 
             <div class="row  p-3 text-center">
                 <div class="col-12 text-center">
@@ -96,9 +96,9 @@
                         @foreach (var radio in Model)
                         {
                             <li class="mb-4">
-                               @* <div class="recent-post-thumb">
+                                <div class="recent-post-thumb">
                                     <img class="img-fluid" src="@radio.OwnerId" alt="">
-                                </div>*@
+                                </div>
                                 <div class="recent-post-desc" style="border:1px solid pink; border-radius:5px;">
                                     <p style="font-size:12px; color:red"> @radio.CreateDate.ToStringShamsiDate() </p>
                                     <a href=""> @radio.Title </a>
@@ -112,7 +112,7 @@
                 </div>
                 
             </div>
-        </div>
+        </div>*@
 
     </div>
 }

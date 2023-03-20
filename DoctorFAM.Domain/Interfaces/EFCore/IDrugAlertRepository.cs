@@ -1,4 +1,5 @@
 ﻿using DoctorFAM.Domain.Entities.DurgAlert;
+using DoctorFAM.Domain.ViewModels.BackgroundTasks.DrugAlert;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -38,6 +39,13 @@ namespace DoctorFAM.Domain.Interfaces.EFCore
 
         //Update Drug Alert Detail Without Savechanges
         void UpdateDrugAlertDetailWithoutSavechanges(DrugAlertDetail alertDetail);
+
+        #endregion
+
+        #region Back Ground Task
+
+        //Get List Of Weekly Usage Drugs
+        Task<List<ListOfWeeklyDrugAlertViewModel>> FillListOfWeeklyDrugAlertViewModel();
 
         #endregion
     }

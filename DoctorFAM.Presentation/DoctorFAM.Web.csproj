@@ -52,7 +52,6 @@
 		<Folder Include="wwwroot\Content\Books\thumb\" />
 		<Folder Include="wwwroot\Content\images\HealthInformationAttachmentFiles\Chunks\" />
 		<Folder Include="wwwroot\Content\images\Ticket\" />
-		<Folder Include="wwwroot\Content\Radio\vendor\" />
 		<Folder Include="Areas\Nurse\Data\" />
 		<Folder Include="Areas\Nurse\Models\" />
 	</ItemGroup>
@@ -1445,9 +1444,9 @@
 		<None Include="wwwroot\Content\plugins\swiper\js\swiper.min.js" />
 		<None Include="wwwroot\Content\plugins\theia-sticky-sidebar\ResizeSensor.js" />
 		<None Include="wwwroot\Content\plugins\theia-sticky-sidebar\theia-sticky-sidebar.js" />
-		<None Include="wwwroot\Content\Radio\css\main.css.map" />
+		<None Include="wwwroot\Content\Radio\fonts\bootstrap-icons.woff2" />
 		<None Include="wwwroot\Content\Radio\js\Radio.js" />
-		<None Include="wwwroot\Content\Radio\scss\main.scss" />
+		<None Include="wwwroot\Content\Radio\js\script_server.js" />
 		<None Include="wwwroot\Content\scss\main.scss" />
 		<None Include="wwwroot\Content\scss\_base.scss" />
 		<None Include="wwwroot\Content\scss\_components.scss" />
