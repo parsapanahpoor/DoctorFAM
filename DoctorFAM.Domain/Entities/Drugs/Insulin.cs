@@ -13,6 +13,10 @@ namespace DoctorFAM.Domain.Entities.Drugs
 
         public string InsulinName { get; set; }
 
+        public bool LongEffect { get; set; }
+
+        public bool ShortEffect { get; set; }
+
         #endregion
 
         #region relations
