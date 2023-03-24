@@ -2,6 +2,7 @@
 using DoctorFAM.Domain.Entities.Insurance;
 using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Entities.SiteSetting;
+using DoctorFAM.Domain.Entities.SiteSetting.Drug;
 using DoctorFAM.Domain.ViewModels.Admin.SiteSetting;
 using DoctorFAM.Domain.ViewModels.Admin.SiteSetting.HealthHouseServiceTariff;
 using Microsoft.EntityFrameworkCore;
@@ -69,11 +70,17 @@ namespace DoctorFAM.Application.Services.Interfaces
         //List Of Insulins
         Task<List<Insulin>?> ListOfInsulins();
 
+        //List Of Short Effect Insulins
+        Task<List<Insulin>?> ListOfShortEffectInsulins();
+
+        //List Of Long Effect Insulins
+        Task<List<Insulin>?> ListOfLongEffectInsulins();
+
         //Create Insurance
         Task<bool> CreateInsurance(string title);
 
         //Create Insulin
-        Task<bool> CreateInsulin(string title);
+        Task<bool> CreateInsulin(CreateInsulinViewModel model);
 
         //Get Insurance By Id
         Task<Insurance?> GetInsuranceById(ulong id);

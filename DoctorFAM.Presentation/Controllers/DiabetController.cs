@@ -949,7 +949,7 @@ namespace DoctorFAM.Web.Controllers
 
             #region View Datas 
 
-            ViewBag.Insulin = await _siteSettingService.ListOfInsulins();
+            ViewBag.Insulin = await _siteSettingService.ListOfShortEffectInsulins();
             ViewBag.IsMidnight = ((int)timeOfUsageInsulinState == 3) ? true : false ;
 
             #endregion
@@ -967,7 +967,7 @@ namespace DoctorFAM.Web.Controllers
             {
                 #region View Datas 
 
-                ViewBag.Insulin = await _siteSettingService.ListOfInsulins();
+                ViewBag.Insulin = await _siteSettingService.ListOfShortEffectInsulins();
                 ViewBag.IsMidnight = ((int)model.TimeOfUsageInsulinState == 3) ? true : false;
 
                 #endregion
@@ -991,7 +991,7 @@ namespace DoctorFAM.Web.Controllers
 
             #region View Datas 
 
-            ViewBag.Insulin = await _siteSettingService.ListOfInsulins();
+            ViewBag.Insulin = await _siteSettingService.ListOfShortEffectInsulins();
             ViewBag.IsMidnight = ((int)model.TimeOfUsageInsulinState == 3) ? true : false;
 
             #endregion

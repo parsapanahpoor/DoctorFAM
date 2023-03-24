@@ -56,6 +56,7 @@
 
                                     <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">#</th>
                                     <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">عنوان</th>
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">نوع</th>
                                     <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending"></th>
 
                                 </tr>
@@ -76,6 +77,25 @@
                                         <td class="center ">
 
                                             @Insulin.InsulinName
+
+                                        </td>
+
+                                        <td class="center ">
+
+                                            @if (Insulin.LongEffect)
+                                            {
+                                                <span class="badge badge-success">طولانی اثر</span>
+                                            }
+
+                                            @if (Insulin.LongEffect && Insulin.ShortEffect)
+                                            {
+                                                <br />
+                                            }
+
+                                            @if (Insulin.ShortEffect)
+                                            {
+                                                <span class="badge badge-success">کوتاه اثر</span>
+                                            }
 
                                         </td>
 

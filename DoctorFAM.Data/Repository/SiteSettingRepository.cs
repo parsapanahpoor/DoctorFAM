@@ -216,6 +216,18 @@ namespace DoctorFAM.Data.Repository
             return await _context.Insulins.Where(p => !p.IsDelete).ToListAsync();
         }
 
+        //List Of Short Effect Insulins
+        public async Task<List<Insulin>?> ListOfShortEffectInsulins()
+        {
+            return await _context.Insulins.Where(p => !p.IsDelete && p.ShortEffect).ToListAsync();
+        }
+
+        //List Of Long Effect Insulins
+        public async Task<List<Insulin>?> ListOfLongEffectInsulins()
+        {
+            return await _context.Insulins.Where(p => !p.IsDelete && p.LongEffect).ToListAsync();
+        }
+
         //Create Data To The Data Base 
         public async Task CreateInsurance(Insurance entity)
         {

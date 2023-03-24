@@ -63,6 +63,12 @@ namespace DoctorFAM.Domain.Interfaces
         //List Of Insulins
         Task<List<Insulin>?> ListOfInsulins();
 
+        //List Of Short Effect Insulins
+        Task<List<Insulin>?> ListOfShortEffectInsulins();
+
+        //List Of Long Effect Insulins
+        Task<List<Insulin>?> ListOfLongEffectInsulins();
+
         //Get List Of Tariff For Death Certificate Health House Services
         Task<List<TariffForHealthHouseServices>?> GetListOfTariffForDeathCertificateHealthHouseServices();
 

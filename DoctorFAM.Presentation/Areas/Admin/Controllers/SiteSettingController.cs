@@ -3,6 +3,7 @@ using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.Entities.Drugs;
 using DoctorFAM.Domain.Entities.Insurance;
 using DoctorFAM.Domain.Entities.PeriodicSelfEvaluatuion;
+using DoctorFAM.Domain.Entities.SiteSetting.Drug;
 using DoctorFAM.Domain.ViewModels.Admin.SiteSetting;
 using DoctorFAM.Domain.ViewModels.Admin.SiteSetting.HealthHouseServiceTariff;
 using DoctorFAM.Web.Areas.Admin.Controllers;
@@ -360,21 +361,21 @@ namespace Academy.Web.Areas.Admin.Controllers
             return View();
         }
         [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateInsulin(string title)
+        public async Task<IActionResult> CreateInsulin(CreateInsulinViewModel model)
         {
             #region Model State Validation 
 
             if (!ModelState.IsValid)
             {
                 TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
-                return View(title);
+                return View(model);
             }
 
             #endregion
 
             #region Create Method 
 
-            var res = await _siteSettingService.CreateInsulin(title);
+            var res = await _siteSettingService.CreateInsulin(model);
             if (res)
             {
                 TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
@@ -384,7 +385,7 @@ namespace Academy.Web.Areas.Admin.Controllers
             #endregion
 
             TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
-            return View(title);
+            return View(model);
         }
 
         #endregion

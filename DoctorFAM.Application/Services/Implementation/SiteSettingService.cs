@@ -8,6 +8,7 @@ using DoctorFAM.Domain.Entities.Insurance;
 using DoctorFAM.Domain.Entities.PeriodicSelfEvaluatuion;
 using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Entities.SiteSetting;
+using DoctorFAM.Domain.Entities.SiteSetting.Drug;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.SiteSetting;
 using DoctorFAM.Domain.ViewModels.Admin.SiteSetting.HealthHouseServiceTariff;
@@ -425,6 +426,18 @@ namespace DoctorFAM.Application.Services.Implementation
             return await _siteSettingRepository.ListOfInsulins();
         }
 
+        //List Of Short Effect Insulins
+        public async Task<List<Insulin>?> ListOfShortEffectInsulins()
+        {
+            return await _siteSettingRepository.ListOfShortEffectInsulins();
+        }
+
+        //List Of Long Effect Insulins
+        public async Task<List<Insulin>?> ListOfLongEffectInsulins()
+        {
+            return await _siteSettingRepository.ListOfLongEffectInsulins();
+        }
+
         //Create Insurance
         public async Task<bool> CreateInsurance(string title)
         {
@@ -444,13 +457,15 @@ namespace DoctorFAM.Application.Services.Implementation
         }
 
         //Create Insulin
-        public async Task<bool> CreateInsulin(string title)
+        public async Task<bool> CreateInsulin(CreateInsulinViewModel model)
         {
             #region Fill Entity
 
             Insulin entity = new Insulin()
             {
-                InsulinName = title.SanitizeText()
+                InsulinName = model.InsulineName.SanitizeText(),
+                LongEffect = model.LongEffect,
+                ShortEffect = model.ShortEffect,
             };
 
             //Create Data To The Data Base 
@@ -484,7 +499,26 @@ namespace DoctorFAM.Application.Services.Implementation
         //Update Insuline
         public async Task<bool> UpdateInsuline(Insulin entity)
         {
-            await _siteSettingRepository.UpdateInsuline(entity);
+            #region Get Insulin By Id
+
+            var insulin = await GetInsulinById(entity.Id);
+            if (insulin is null) return false;
+
+            #endregion
+
+            #region Update Insulin
+
+            insulin.InsulinName = entity.InsulinName;
+            insulin.LongEffect = entity.LongEffect;
+            insulin.ShortEffect= entity.ShortEffect;
+
+            #endregion
+
+            #region Update Insulin
+
+            await _siteSettingRepository.UpdateInsuline(insulin);
+
+            #endregion
 
             return true;
         }
