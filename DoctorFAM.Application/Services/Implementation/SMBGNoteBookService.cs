@@ -6,6 +6,7 @@ using DoctorFAM.Domain.Enums.SMBG;
 using DoctorFAM.Domain.Interfaces.Dapper;
 using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.Site.Diabet.SMBG_NoteBook;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using System;
 using System.Collections.Generic;
@@ -119,6 +120,7 @@ namespace DoctorFAM.Application.Services.Implementation
             #region Fill Log For A1C
 
             model.logForUsersA1c = await _smbgRepository.GetLastestUserA1CByUserId(userId);
+            model.LogForLongEffectInsulinUsage = await _smbgRepository.GetUserLongEffectInsulinUsageToday(userId);
 
             #region Fill Show User Insulin Usage History
 
@@ -150,6 +152,12 @@ namespace DoctorFAM.Application.Services.Implementation
             return model;
         }
 
+        //Fill List Of User A1C Site Side View Model 
+        public async Task<List<ListOfUserA1CSiteSideViewModel>?> FillListOfUserA1CSiteSideViewModel(ulong userId)
+        {
+            return await _smbgRepository.FillListOfUserA1CSiteSideViewModel(userId);
+        }
+
         //Calculate Log Users A1C 
         public async Task<bool> CalculateLogUsersA1C(decimal a1c, ulong userId)
         {
@@ -171,6 +179,46 @@ namespace DoctorFAM.Application.Services.Implementation
 
             //Add To The Data Base 
             await _smbgRepository.CreateLogForUsersA1C(model);
+
+            #endregion
+
+            return true;
+        }
+
+        //Calculate Log For Long Effect Insulin Usage 
+        public async Task<bool> CalculateLogForLongEffectInsulinUsage(ulong insulinId, int countOfUsage, ulong userId)
+        {
+            #region Get User By User Id 
+
+            var user = await _userService.GetUserById(userId);
+            if (user == null) return false;
+
+            #endregion
+
+            #region Get Insulin By Id
+
+            var insulin = await _siteSettingService.GetInsulinById(insulinId);
+            if (insulin == null) return false;
+
+            #endregion
+
+            #region Check That Exist Any Record In Today Date Time 
+
+            var isExist = await _smbgRepository.CheckThatExistAnyLongEffectInsulinUsageOfTodayDateTime(userId, DateTime.Now);
+            if (isExist) return false;
+
+            #endregion
+
+            #region Add To The Data Base
+
+            LogForLongEffectInsulinUsage model = new LogForLongEffectInsulinUsage()
+            {
+                CountOfUsage = countOfUsage,
+                InsulinId = insulinId,
+                UserId = userId
+            };
+
+            await _smbgRepository.AddLogForLongEffectInsulinUsageToTheDataBase(model);
 
             #endregion
 

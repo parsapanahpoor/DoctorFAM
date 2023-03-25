@@ -2,6 +2,8 @@
 
 @{
     ViewData["Title"] = "دفتر مجازی دیابت";
+
+    List<DoctorFAM.Domain.Entities.Drugs.Insulin> insulins = ViewBag.Insulin as List<DoctorFAM.Domain.Entities.Drugs.Insulin>;
 }
 
 @section Scripts{
@@ -28,24 +30,36 @@
         <div class="tab-content section-title" id="nav-tabContent">
             <div role="tabpanel" class=" col-md-12 fade show active" id="tab1-1">
                 <div class="row">
-                    <div class="col-xl-3 "></div>
 
-                    <div class="col-xl-12 p-3" style="border:1px solid #feb2fa; border-radius:8px;">
+                    <div class="col-xl-6 p-3" style="border:1px solid #feb2fa; border-radius:8px;">
 
                         <form asp-action="CalculateLogForUserA1C" asp-controller="Diabet" asp-area="">
 
                             <div class="row text-center  text-align-justify mt-2">
 
-                                <div class="col-md-10">
+                                <div class="col-md-12">
                                     <div class="form-group">
                                         <label class="control-label"><h6>نتیجه ی آخرین آزمایش A1C خود را وارد کنید  </h6></label>
-                                        <input type="number"  step="0.1" min="0"  class="form-control" name="a1C">
                                     </div>
                                 </div>
-                                <div class="col-md-2 mt-3">
-                                    <div class="form-group  mt-4 ">
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input type="number" step="0.1" min="0" placeholder="نتیجه ی آزمایش را وارد کنید" class="form-control" name="a1C">
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
 
                                         <input type="submit" value="ثبت" class="btn-Accept" />
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+
+                                        <a asp-action="ListOfUserA1CUsage" asp-area="" asp-controller="Diabet" class="btn-Accept">لیست نتایج</a>
 
                                     </div>
                                 </div>
@@ -61,7 +75,61 @@
                         }
 
                     </div>
-                    <div class="col-xl-3 "></div>
+
+                    <div class="col-xl-6 p-3" style="border:1px solid #feb2fa; border-radius:8px;">
+
+                        <form asp-action="CalculateLogForLongEffectInsulinUsage" asp-controller="Diabet" asp-area="">
+
+                            <div class="row text-center  text-align-justify mt-2">
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label"><h6> مجموع انسولین طولانی اثر امروز شما چقدر بوده است ؟  </h6></label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <select name="InsulinId" class="form-control">
+
+                                        <option value="">نوع انسولین  مصرفی</option>
+
+                                        @if (insulins != null && insulins.Any())
+                                        {
+                                            foreach (var ins in insulins)
+                                            {
+                                                <option value="@ins.Id">@ins.InsulinName</option>
+                                            }
+                                        }
+
+                                    </select>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <input type="number" min="0" placeholder="واحد مصرفی" class="form-control" name="countOfUsage">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2 ">
+                                    <div class="form-group ">
+
+                                        <input type="submit" value="ثبت" class="btn-Accept" />
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </form>
+
+                        @if (Model != null)
+                        {
+                            @*Log For Long Effect Insulin Usage*@
+                            <partial name="_LogForLongEffectInsulinUsage" model="@Model.LogForLongEffectInsulinUsage" />
+                        }
+
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -129,11 +197,3 @@
     </div>
 
 </div>
-
-
-
-
-
-
-
-

@@ -1,0 +1,27 @@
+﻿@model DoctorFAM.Domain.ViewModels.Site.Diabet.SMBG_NoteBook.LogForLongEffectInsulinUsageSiteSideViewModel
+
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+
+@if (Model != null)
+{
+        <table class="table table-hover table-bordered tc vm text-center align-items-center">
+
+            <tr>
+                <th class=" text-center align-items-center">نوع انسولین</th>
+                <th class=" text-center align-items-center">واحد مصرف</th>
+                <th class=" text-center align-items-center">تاریخ مصرف </th>
+            </tr>
+
+            <tr class="tc vm text-center align-items-center">
+
+                <td class=" text-center align-items-center">@Model.InsulinName</td>
+
+                <td class=" text-center align-items-center">@Model.CountOfUsage</td>
+
+                <td class=" text-center align-items-center">@Model.CreateDateTime.ToShamsi()</td>
+
+            </tr>
+
+        </table>
+}

@@ -17,6 +17,8 @@ namespace DoctorFAM.Domain.ViewModels.Site.Diabet.SMBG_NoteBook
 
         public LogForUsersA1C?  logForUsersA1c{ get; set; }
 
+        public LogForLongEffectInsulinUsageSiteSideViewModel?  LogForLongEffectInsulinUsage{ get; set; }
+
         public List<ShowUserInsulinUsageHistory> ShowUserInsulinUsageHistory { get; set; }
 
         #endregion
@@ -46,6 +48,19 @@ namespace DoctorFAM.Domain.ViewModels.Site.Diabet.SMBG_NoteBook
         public TimeOfUsageInsulinType? TimeOfUsageInsulinType { get; set; }
 
         public DateTime CreateDate { get; set; }
+
+        #endregion
+    }
+
+    public class LogForLongEffectInsulinUsageSiteSideViewModel
+    {
+        #region properties
+
+        public string InsulinName{ get; set; }
+
+        public DateTime CreateDateTime { get; set; }
+
+        public int CountOfUsage { get; set; }
 
         #endregion
     }

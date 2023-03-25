@@ -16,6 +16,15 @@ namespace DoctorFAM.Domain.Interfaces.EFCore
         //Create Log For Users A1C
         Task CreateLogForUsersA1C(LogForUsersA1C model);
 
+        //Add Log For Long Effect Insulin Usage To The Data Base
+        Task AddLogForLongEffectInsulinUsageToTheDataBase(LogForLongEffectInsulinUsage model);
+
+        //Check That Exist Any Long Effect Insulin Usage Of Today Date Time
+        Task<bool> CheckThatExistAnyLongEffectInsulinUsageOfTodayDateTime(ulong userId, DateTime today);
+
+        //Fill List Of User A1C Site Side View Model 
+        Task<List<ListOfUserA1CSiteSideViewModel>?> FillListOfUserA1CSiteSideViewModel(ulong userId);
+
         //Add Insulin Usage To The Data Base
         Task AddInsulinUsageToTheDataBase(LogForUsageInsulin model);
 
@@ -24,6 +33,9 @@ namespace DoctorFAM.Domain.Interfaces.EFCore
 
         //Get Lastest User A1C By User Id
         Task<LogForUsersA1C?> GetLastestUserA1CByUserId(ulong userId);
+
+        //Get User Long Effect Insulin Usage Today
+        Task<LogForLongEffectInsulinUsageSiteSideViewModel?> GetUserLongEffectInsulinUsageToday(ulong userId);
 
         //Get User Insulin Usage Logs
         List<DateTime>? GetUserInsulineUsagesCreateDates(ulong userId);

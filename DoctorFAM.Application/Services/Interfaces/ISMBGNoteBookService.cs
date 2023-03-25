@@ -18,6 +18,12 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Calculate Log Users A1C 
         Task<bool> CalculateLogUsersA1C(decimal a1c, ulong userId);
 
+        //Fill List Of User A1C Site Side View Model 
+        Task<List<ListOfUserA1CSiteSideViewModel>?> FillListOfUserA1CSiteSideViewModel(ulong userId);
+
+        //Calculate Log For Long Effect Insulin Usage 
+        Task<bool> CalculateLogForLongEffectInsulinUsage(ulong insulinId, int countOfUsage, ulong userId);
+
         //Add Usage Insulin Data To The Data Base
         Task<bool> AddUsageInsulinDataToTheDataBase(LogForUsageInsulinSiteSideViewModel model);
 

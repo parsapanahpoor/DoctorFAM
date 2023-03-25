@@ -896,6 +896,8 @@ namespace DoctorFAM.Web.Controllers
 
             var model = await _smbgService.FillIndexSMBGPageViewModel(User.GetUserId());
 
+            ViewBag.Insulin = await _siteSettingService.ListOfLongEffectInsulins();
+
             #endregion
 
             return View(model);
@@ -930,6 +932,49 @@ namespace DoctorFAM.Web.Controllers
 
             #endregion
 
+            return RedirectToAction(nameof(SMBGNoteBookPage));
+        }
+
+        #endregion
+
+        #region List Of User A1C Usage
+
+        [Authorize]
+        public async Task<IActionResult> ListOfUserA1CUsage()
+        {
+            return View(await _smbgService.FillListOfUserA1CSiteSideViewModel(User.GetUserId()));
+        }
+
+        #endregion
+
+        #region Calculate Log For Long Effect Insulin Usage
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> CalculateLogForLongEffectInsulinUsage(ulong InsulinId , int countOfUsage)
+        {
+            #region Model State Validation 
+
+            if (!ModelState.IsValid)
+            {
+                TempData[ErrorMessage] = "اطلاعات به درستی وارد نشده است.";
+                return RedirectToAction(nameof(SMBGNoteBookPage));
+            }
+
+            #endregion
+
+            #region Add To The Data Base 
+
+            var res = await _smbgService.CalculateLogForLongEffectInsulinUsage(InsulinId , countOfUsage , User.GetUserId());
+            if (res)
+            {
+                TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+                return RedirectToAction(nameof(SMBGNoteBookPage));
+            }
+
+            #endregion
+
+            TempData[ErrorMessage] = "در این تاریخ اطلاعاتی وارد شده است.";
             return RedirectToAction(nameof(SMBGNoteBookPage));
         }
 
