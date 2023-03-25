@@ -118,7 +118,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #region Fill Log For A1C
 
-            model.logForUsersA1c = await _smbgRepository.GetLogsOfUserA1CByUserId(userId);
+            model.logForUsersA1c = await _smbgRepository.GetLastestUserA1CByUserId(userId);
 
             #region Fill Show User Insulin Usage History
 

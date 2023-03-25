@@ -35,6 +35,13 @@ namespace DoctorFAM.Data.Repository
                                     .OrderByDescending(p => p.CreateDate).ToListAsync();
         }
 
+        //Get Lastest User A1C By User Id
+        public async Task<LogForUsersA1C?> GetLastestUserA1CByUserId(ulong userId)
+        {
+            return await _context.logForUsersA1Cs.Where(p => !p.IsDelete && p.UserId == userId)
+                                    .OrderByDescending(p => p.CreateDate).Take(1).FirstOrDefaultAsync();
+        }
+
         //Create Log For Users A1C
         public async Task CreateLogForUsersA1C(LogForUsersA1C model)
         {

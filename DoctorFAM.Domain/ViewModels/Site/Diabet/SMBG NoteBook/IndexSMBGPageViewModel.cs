@@ -15,7 +15,7 @@ namespace DoctorFAM.Domain.ViewModels.Site.Diabet.SMBG_NoteBook
     {
         #region properties
 
-        public List<LogForUsersA1C>  logForUsersA1c{ get; set; }
+        public LogForUsersA1C?  logForUsersA1c{ get; set; }
 
         public List<ShowUserInsulinUsageHistory> ShowUserInsulinUsageHistory { get; set; }
 

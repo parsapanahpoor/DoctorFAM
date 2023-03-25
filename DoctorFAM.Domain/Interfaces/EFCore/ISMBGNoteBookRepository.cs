@@ -22,6 +22,9 @@ namespace DoctorFAM.Domain.Interfaces.EFCore
         //Get Logs Of User A1C By User Id
         Task<List<LogForUsersA1C>> GetLogsOfUserA1CByUserId(ulong userId);
 
+        //Get Lastest User A1C By User Id
+        Task<LogForUsersA1C?> GetLastestUserA1CByUserId(ulong userId);
+
         //Get User Insulin Usage Logs
         List<DateTime>? GetUserInsulineUsagesCreateDates(ulong userId);
 
