@@ -28,8 +28,8 @@
                 @foreach (var video in Model)
                 {
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                        <video class="thumbnail" id="videoPreview" data-src="@PathTools.HealthInformationAttachmentFilesPath@video.File"
-                       onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;" style="width:130px !important; height:130px !important;">
+                        <video poster="@PathTools.HealthInformationAttachmentFilesImagePathThumb@video.Picture" class="thumbnail" id="videoPreview" data-src="@PathTools.HealthInformationAttachmentFilesPath@video.File"
+                        style="width:130px !important; height:130px !important;">
 
                             <source src="@PathTools.HealthInformationAttachmentFilesPath@video.File" type="video/mp4">
                         </video>
