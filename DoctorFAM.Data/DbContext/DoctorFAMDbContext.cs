@@ -70,6 +70,8 @@ namespace DoctorFAM.Data.DbContext
 
         public DbSet<LogForUsersA1C> logForUsersA1Cs { get; set; }
 
+        public DbSet<LogForLongEffectInsulinUsage> LogForLongEffectInsulinUsages{ get; set; }
+
         #endregion
 
         #region Account 
