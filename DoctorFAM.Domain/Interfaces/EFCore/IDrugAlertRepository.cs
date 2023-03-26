@@ -47,6 +47,21 @@ namespace DoctorFAM.Domain.Interfaces.EFCore
         //Get List Of Weekly Usage Drugs
         Task<List<ListOfWeeklyDrugAlertViewModel>> FillListOfWeeklyDrugAlertViewModel();
 
+        //Update Drug Alert Detail Whitout Save Changes
+        void UpdateDrugAlertDetailWhitoutSaveChanges(DrugAlertDetail drugAlert);
+
+        //Save Changes 
+        Task Savechanges();
+
+        //Get List Of Monthly Usage Drugs
+        Task<List<ListOfMonthlyDrugAlertViewModel>> FillListOfMonthlyDrugAlertViewModel();
+
+        //Get List Of Yearly Usage Drugs
+        Task<List<ListOfYearlyDrugAlertViewModel>> FillListOfYearlyDrugAlertViewModel();
+
+        //Get List Of Daily Usage Drugs
+        Task<List<ListOfDailyDrugAlertViewModel>> FillListOfDailyDrugAlertViewModel();
+
         #endregion
     }
 }

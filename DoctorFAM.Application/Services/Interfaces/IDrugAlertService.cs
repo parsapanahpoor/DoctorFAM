@@ -39,7 +39,16 @@ namespace DoctorFAM.Application.Services.Interfaces
         #region Back Ground Task
 
         //Get List Of Weekly Usage Drugs
-        Task<List<ListOfWeeklyDrugAlertViewModel>> FillListOfWeeklyDrugAlertViewModel();
+        Task FillListOfWeeklyDrugAlertViewModel();
+
+        //Get List Of Monthly Usage Drugs
+        Task FillListOfMonthlyDrugAlertViewModel();
+
+        //Get List Of Yearly Usage Drugs
+        Task FillListOfYearlyDrugAlertViewModel();
+
+        //Get List Of Daily Usage Drugs
+        Task FillListOfDailyDrugAlertViewModel();
 
         #endregion
     }

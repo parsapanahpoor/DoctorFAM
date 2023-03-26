@@ -25,6 +25,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddHostedService<DeletePastHistoryRequests>();
 
+builder.Services.AddHostedService<SendSMSForWeeklyDrugAlerts>();
+builder.Services.AddHostedService<SendSMSForMonthlyDrugAlerts>();
+builder.Services.AddHostedService<SendSMSForYearlyDrugAlerts>();
+builder.Services.AddHostedService<SendSMSForDailyDrugAlerts>();
+
 #endregion
 
 #region Localizer

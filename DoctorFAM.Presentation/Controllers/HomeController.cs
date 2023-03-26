@@ -22,22 +22,25 @@ namespace DoctorFAM.Web.Controllers
         public ILocationService _locationService;
         private readonly IHubContext<NotificationHub> _notificationHub;
         private readonly IFollowService _followService;
-       
+        private readonly IDrugAlertService _drugAlertService;
+
         public HomeController( ILocationService lcaotionService , IHubContext<NotificationHub> notificationHub
-                                , IFollowService followService)
+                                , IFollowService followService , IDrugAlertService drugAlertService)
         {
             _locationService = lcaotionService;
             _notificationHub = notificationHub;
             _followService = followService;
+            _drugAlertService = drugAlertService;
         }
 
         #endregion
 
         #region Index
 
-        public PartialViewResult Index()
+        public async Task<IActionResult> Index()
         {
-            return PartialView();
+
+            return View();
         }
 
         #endregion

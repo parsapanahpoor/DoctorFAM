@@ -31,7 +31,7 @@ namespace DoctorFAM.Data.Repository
         //Get Drug Alert Detail By ID
         public async Task<DrugAlert?> GetDrugAlertById(ulong drugAlertId)
         {
-            return await _context.DrugAlerts.FirstOrDefaultAsync(p=> !p.IsDelete && p.Id == drugAlertId);
+            return await _context.DrugAlerts.FirstOrDefaultAsync(p => !p.IsDelete && p.Id == drugAlertId);
         }
 
         //create Drug Alert Detail 
@@ -55,8 +55,8 @@ namespace DoctorFAM.Data.Repository
         //Get List Of User Drug Alerts 
         public async Task<List<DrugAlert>?> GetListOfUserDrugAlerts(ulong userId)
         {
-            return await _context.DrugAlerts.Where(p=> !p.IsDelete && p.UserId == userId)
-                                                .OrderByDescending(p=> p.CreateDate).ToListAsync();
+            return await _context.DrugAlerts.Where(p => !p.IsDelete && p.UserId == userId)
+                                                .OrderByDescending(p => p.CreateDate).ToListAsync();
         }
 
         //Get Drug Alerts Detail By Drug Alert Id 
@@ -85,15 +85,71 @@ namespace DoctorFAM.Data.Repository
         //Get List Of Weekly Usage Drugs
         public async Task<List<ListOfWeeklyDrugAlertViewModel>> FillListOfWeeklyDrugAlertViewModel()
         {
-            return await _context.DrugAlertDetails.Include(p=> p.DrugAlert).Where(p=> !p.IsDelete && 
-                                                           p.DrugAlert.DrugAlertDurationType == Domain.Enums.DrugAlert.DrugAlertDurationType.Weekly
-                                                           && p.DateTime == DateTime.Now)
-                                                           .Select(p=> new ListOfWeeklyDrugAlertViewModel()
-                                                           {
-                                                               DrugAlertDetail = p,
-                                                               DrugAlert = p.DrugAlert,
-                                                               Mobile = _context.Users.FirstOrDefault(s=> p.IsDelete && s.Id == p.DrugAlert.UserId).Mobile
-                                                           }).ToListAsync();
+            return await _context.DrugAlertDetails.Include(p => p.DrugAlert).Where(p => !p.IsDelete && p.DrugAlert.DrugAlertDurationType == Domain.Enums.DrugAlert.DrugAlertDurationType.Weekly
+                                                   && p.DateTime.HasValue && p.DateTime.Value.Year == DateTime.Now.Year&& p.DateTime.Value.DayOfYear == DateTime.Now.DayOfYear)
+                                                   .Select(p => new ListOfWeeklyDrugAlertViewModel()
+                                                   {
+                                                       DrugAlertDetail = p,
+                                                       DrugAlert = p.DrugAlert,
+                                                       Mobile = _context.Users.Where(s => !s.IsDelete && s.Id == p.DrugAlert.UserId).Select(p=> p.Mobile).FirstOrDefault(),
+                                                   }).ToListAsync();
+                                                  
+
+        }
+
+        //Get List Of Monthly Usage Drugs
+        public async Task<List<ListOfMonthlyDrugAlertViewModel>> FillListOfMonthlyDrugAlertViewModel()
+        {
+            return await _context.DrugAlertDetails.Include(p => p.DrugAlert).Where(p => !p.IsDelete && p.DrugAlert.DrugAlertDurationType == Domain.Enums.DrugAlert.DrugAlertDurationType.Monthly
+                                                   && p.DateTime.HasValue && p.DateTime.Value.Year == DateTime.Now.Year && p.DateTime.Value.DayOfYear == DateTime.Now.DayOfYear)
+                                                   .Select(p => new ListOfMonthlyDrugAlertViewModel()
+                                                   {
+                                                       DrugAlertDetail = p,
+                                                       DrugAlert = p.DrugAlert,
+                                                       Mobile = _context.Users.Where(s => !s.IsDelete && s.Id == p.DrugAlert.UserId).Select(p => p.Mobile).FirstOrDefault(),
+                                                   }).ToListAsync();
+
+
+        }
+
+        //Get List Of Yearly Usage Drugs
+        public async Task<List<ListOfYearlyDrugAlertViewModel>> FillListOfYearlyDrugAlertViewModel()
+        {
+            return await _context.DrugAlertDetails.Include(p => p.DrugAlert).Where(p => !p.IsDelete && p.DrugAlert.DrugAlertDurationType == Domain.Enums.DrugAlert.DrugAlertDurationType.Yearly
+                                                   && p.DateTime.HasValue && p.DateTime.Value.Year == DateTime.Now.Year && p.DateTime.Value.DayOfYear == DateTime.Now.DayOfYear)
+                                                   .Select(p => new ListOfYearlyDrugAlertViewModel()
+                                                   {
+                                                       DrugAlertDetail = p,
+                                                       DrugAlert = p.DrugAlert,
+                                                       Mobile = _context.Users.Where(s => !s.IsDelete && s.Id == p.DrugAlert.UserId).Select(p => p.Mobile).FirstOrDefault(),
+                                                   }).ToListAsync();
+
+
+        }
+
+        //Get List Of Daily Usage Drugs
+        public async Task<List<ListOfDailyDrugAlertViewModel>> FillListOfDailyDrugAlertViewModel()
+        {
+            return await _context.DrugAlerts.Where(p => !p.IsDelete && p.DrugAlertDurationType == Domain.Enums.DrugAlert.DrugAlertDurationType.Daily)
+                                                   .Select(p => new ListOfDailyDrugAlertViewModel()
+                                                   {
+                                                       DrugAlert = p,
+                                                       Mobile = _context.Users.Where(s => !s.IsDelete && s.Id == p.UserId).Select(p => p.Mobile).FirstOrDefault(),
+                                                   }).ToListAsync();
+
+
+        }
+
+        //Update Drug Alert Detail Whitout Save Changes
+        public void UpdateDrugAlertDetailWhitoutSaveChanges(DrugAlertDetail drugAlert)
+        {
+            _context.DrugAlertDetails.Update(drugAlert);
+        }
+
+        //Save Changes 
+        public async Task Savechanges()
+        {
+            await _context.SaveChangesAsync();
         }
 
         #endregion

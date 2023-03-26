@@ -1,4 +1,5 @@
 ﻿using DoctorFAM.Domain.Entities.Doctors;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
 using SixLabors.ImageSharp.ColorSpaces;
 
 namespace DoctorFAM.Application.StaticTools;
@@ -157,5 +158,12 @@ public static class Messages
     {
         return
                  $"فردی از جمعیت تحت پوشش شما با شماره موبایل : {mobile} و کدملی : {nationalId} عضو سایت شده است.{ Environment.NewLine} این کاربر از جمعیت تحت پوشش شما خارج می گردد . {Environment.NewLine} {PathTools.SiteFarsiName}" ;
+    }
+
+    //Send SMS For Weekly Usage Of Drug 
+    public static string SendSMSForWeeklyUsageOfDrug(string DrugName)
+    {
+        return
+                 $"باعرض سلام . داروهای مصرفی امروز شما : {DrugName} . {Environment.NewLine} {PathTools.SiteFarsiName}";
     }
 }

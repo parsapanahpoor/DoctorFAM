@@ -2,6 +2,8 @@
 using DoctorFAM.Application.Convertors;
 using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
+using DoctorFAM.Application.StaticTools;
+using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.DurgAlert;
 using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.BackgroundTasks.DrugAlert;
@@ -9,12 +11,14 @@ using DoctorFAM.Domain.ViewModels.Site.DurgAlert;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace DoctorFAM.Application.Services.Implementation
 {
@@ -24,11 +28,13 @@ namespace DoctorFAM.Application.Services.Implementation
 
         private readonly IDrugAlertRepository _drugAlertRepository;
         private readonly IUserService _userService;
+        private readonly ISMSService _smsService;
 
-        public DrugAlertService(IDrugAlertRepository drugAlertRepository, IUserService userService)
+        public DrugAlertService(IDrugAlertRepository drugAlertRepository, IUserService userService, ISMSService smsService)
         {
             _drugAlertRepository = drugAlertRepository;
             _userService = userService;
+            _smsService = smsService;
         }
 
         #endregion
@@ -363,9 +369,135 @@ namespace DoctorFAM.Application.Services.Implementation
         #region Back Ground Task
 
         //Get List Of Weekly Usage Drugs
-        public async Task<List<ListOfWeeklyDrugAlertViewModel>> FillListOfWeeklyDrugAlertViewModel()
+        public async Task FillListOfWeeklyDrugAlertViewModel()
         {
-            return await _drugAlertRepository.FillListOfWeeklyDrugAlertViewModel();
+            //Get List Of Data With Conditions
+            var res = await _drugAlertRepository.FillListOfWeeklyDrugAlertViewModel();
+
+            if (res is not null)
+            {
+                foreach (var item in res.DistinctBy(p => p.Mobile))
+                {
+                    #region Send SMS
+
+                    var message = Messages.SendSMSForWeeklyUsageOfDrug(string.Join(",", res.Where(p => p.Mobile == item.Mobile).Select(p => p.DrugAlert.DrugName).ToList()));
+
+                    await _smsService.SendSimpleSMS(item.Mobile, message);
+
+                    #endregion
+                }
+
+                #region Update Record To One Week
+
+                foreach (var item in res)
+                {
+                    if (item.DrugAlertDetail.DateTime.HasValue)
+                    {
+                        item.DrugAlertDetail.DateTime = item.DrugAlertDetail.DateTime.Value.AddDays(7);
+
+                        _drugAlertRepository.UpdateDrugAlertDetailWhitoutSaveChanges(item.DrugAlertDetail);
+                    }
+                }
+
+                await _drugAlertRepository.SaveChanges();
+
+                #endregion
+            }
+        }
+
+        //Get List Of Monthly Usage Drugs
+        public async Task FillListOfMonthlyDrugAlertViewModel()
+        {
+            //Get List Of Data With Conditions
+            var res = await _drugAlertRepository.FillListOfMonthlyDrugAlertViewModel();
+
+            if (res is not null)
+            {
+                foreach (var item in res.DistinctBy(p => p.Mobile))
+                {
+                    #region Send SMS
+
+                    var message = Messages.SendSMSForWeeklyUsageOfDrug(string.Join(",", res.Where(p => p.Mobile == item.Mobile).Select(p => p.DrugAlert.DrugName).ToList()));
+
+                    await _smsService.SendSimpleSMS(item.Mobile, message);
+
+                    #endregion
+                }
+
+                #region Update Record To One Week
+
+                foreach (var item in res)
+                {
+                    if (item.DrugAlertDetail.DateTime.HasValue)
+                    {
+                        item.DrugAlertDetail.DateTime = item.DrugAlertDetail.DateTime.Value.AddMonths(1);
+
+                        _drugAlertRepository.UpdateDrugAlertDetailWhitoutSaveChanges(item.DrugAlertDetail);
+                    }
+                }
+
+                await _drugAlertRepository.SaveChanges();
+
+                #endregion
+            }
+        }
+
+        //Get List Of Yearly Usage Drugs
+        public async Task FillListOfYearlyDrugAlertViewModel()
+        {
+            //Get List Of Data With Conditions
+            var res = await _drugAlertRepository.FillListOfYearlyDrugAlertViewModel();
+
+            if (res is not null)
+            {
+                foreach (var item in res.DistinctBy(p => p.Mobile))
+                {
+                    #region Send SMS
+
+                    var message = Messages.SendSMSForWeeklyUsageOfDrug(string.Join(",", res.Where(p => p.Mobile == item.Mobile).Select(p => p.DrugAlert.DrugName).ToList()));
+
+                    await _smsService.SendSimpleSMS(item.Mobile, message);
+
+                    #endregion
+                }
+
+                #region Update Record To One Week
+
+                foreach (var item in res)
+                {
+                    if (item.DrugAlertDetail.DateTime.HasValue)
+                    {
+                        item.DrugAlertDetail.DateTime = item.DrugAlertDetail.DateTime.Value.AddYears(1);
+
+                        _drugAlertRepository.UpdateDrugAlertDetailWhitoutSaveChanges(item.DrugAlertDetail);
+                    }
+                }
+
+                await _drugAlertRepository.SaveChanges();
+
+                #endregion
+            }
+        }
+
+        //Get List Of Daily Usage Drugs
+        public async Task FillListOfDailyDrugAlertViewModel()
+        {
+            //Get List Of Data With Conditions
+            var res = await _drugAlertRepository.FillListOfDailyDrugAlertViewModel();
+
+            if (res is not null)
+            {
+                foreach (var item in res.DistinctBy(p => p.Mobile))
+                {
+                    #region Send SMS
+
+                    var message = Messages.SendSMSForWeeklyUsageOfDrug(string.Join(",", res.Where(p => p.Mobile == item.Mobile).Select(p => p.DrugAlert.DrugName).ToList()));
+
+                    await _smsService.SendSimpleSMS(item.Mobile, message);
+
+                    #endregion
+                }
+            }
         }
 
         #endregion
