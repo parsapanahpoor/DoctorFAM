@@ -29,7 +29,7 @@ namespace DoctorFAM.Application.Services.Implementation
         private readonly IUserService _userService;
         private readonly ISMSService _smsService;
 
-        public PeriodicTestService(IPeriodicTestRepository periodicTestRepository, IUserService userService , ISMSService smsService)
+        public PeriodicTestService(IPeriodicTestRepository periodicTestRepository, IUserService userService, ISMSService smsService)
         {
             _periodicTestRepository = periodicTestRepository;
             _userService = userService;
@@ -257,9 +257,12 @@ namespace DoctorFAM.Application.Services.Implementation
                 {
                     #region Send SMS
 
-                    var message = Messages.SendSMSForPriodicTestAlarm(item.PeriodicTestType);
+                    if (item.PeriodicTestType is not null && item.Mobile is not null)
+                    {
+                        var message = Messages.SendSMSForPriodicTestAlarm(item.PeriodicTestType);
 
-                    //await _smsService.SendSimpleSMS(item.Mobile, message);
+                        await _smsService.SendSimpleSMS(item.Mobile, message);
+                    }
 
                     #endregion
 

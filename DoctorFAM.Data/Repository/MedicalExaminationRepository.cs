@@ -1,7 +1,10 @@
 ﻿using DoctorFAM.Data.DbContext;
+using DoctorFAM.Domain.Entities.PeriodicTest;
 using DoctorFAM.Domain.Entities.PriodicExamination;
 using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.Admin.MedicalExamination;
+using DoctorFAM.Domain.ViewModels.BackgroundTasks.MedicalExamination;
+using DoctorFAM.Domain.ViewModels.BackgroundTasks.PriodicTest;
 using DoctorFAM.Domain.ViewModels.Common;
 using Microsoft.EntityFrameworkCore;
 
@@ -140,6 +143,42 @@ namespace DoctorFAM.Data.Repository
         #region Doctor Side 
 
 
+
+        #endregion
+
+        #region Background Task
+
+        //Get List Of User Medical Examination For Send SMS One Day Before
+        public async Task<List<SendSMSForMedicalExaminationViewModel>> GetListOfUserMedicalExaminationForSendSMSOneDayBefore()
+        {
+            return await _context.PriodicPatientsExamination.Where(p => !p.IsDelete 
+                                                          && p.NextExaminationDate.Year == DateTime.Now.Year
+                                                          && p.NextExaminationDate.DayOfYear == DateTime.Now.AddDays(1).DayOfYear)
+                                                          .Select(p => new SendSMSForMedicalExaminationViewModel()
+                                                          {
+                                                              MedicalExaminationId = p.Id,
+                                                              MedicalExaminationName = _context.MedicalExaminations.Where(s => !s.IsDelete && s.Id == p.MedicalExaminationId).Select(s => s.MedicalExaminationName).FirstOrDefault(),
+                                                              Mobile = _context.Users.Where(s => !s.IsDelete && s.Id == p.UserId).Select(s => s.Mobile).FirstOrDefault()
+                                                          }).ToListAsync();
+        }
+
+        //Get User Selected Medical Examination By Id
+        public async Task<PriodicPatientsExamination?> GetUserMedicalExaminationById(ulong id)
+        {
+            return await _context.PriodicPatientsExamination.FirstOrDefaultAsync(p => !p.IsDelete && p.Id == id);
+        }
+
+        //Update User Medical Examination Without Save Changes
+        public void UpdateUserMedicalExaminationWithoutSaveChanges(PriodicPatientsExamination model)
+        {
+            _context.PriodicPatientsExamination.Update(model);
+        }
+
+        //Save Chamges 
+        public async Task Savechanges()
+        {
+            await _context.SaveChangesAsync();
+        }
 
         #endregion
     }

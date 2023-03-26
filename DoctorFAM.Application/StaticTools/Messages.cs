@@ -173,4 +173,11 @@ public static class Messages
         return
                  $"باعرض سلام . فردا نوبت آزمایش {priodicTestName} شما می باشد. {Environment.NewLine} {PathTools.SiteFarsiName}";
     }
+
+    //Send SMS For Medical Examination Alarm 
+    public static string SendSMSForMedicalExaminationAlarm(string medicalExaminationName)
+    {
+        return
+                 $"باعرض سلام . فردا نوبت معاینه ی  {medicalExaminationName} شما می باشد. {Environment.NewLine} {PathTools.SiteFarsiName}";
+    }
 }

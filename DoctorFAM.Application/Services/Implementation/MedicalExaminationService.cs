@@ -1,6 +1,8 @@
 ﻿using DoctorFAM.Application.Convertors;
 using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
+using DoctorFAM.Application.StaticTools;
+using DoctorFAM.Data.Repository;
 using DoctorFAM.Domain.Entities.PriodicExamination;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.Interfaces.EFCore;
@@ -257,7 +259,7 @@ namespace DoctorFAM.Application.Services.Implementation
                     {
                         PriodicPatientsExaminations = priodic,
                         Doctors = ((priodic.DoctorUserId.HasValue) ? await _userService.GetUserById(priodic.DoctorUserId.Value) : null)
-                    }); 
+                    });
                 }
             }
 
@@ -308,6 +310,50 @@ namespace DoctorFAM.Application.Services.Implementation
         public async Task<List<PriodicPatientsExamination>?> CheckThatCurrentUserHasAnyPriodicExaminationAfterToday(ulong userId)
         {
             return await _medicalExamination.CheckThatCurrentUserHasAnyPriodicExaminationAfterToday(userId);
+        }
+
+        #endregion
+
+        #region Background Task
+
+        //Send Alert SMS For Medical Examination Alarm
+        public async Task GetListOfUserMedicalExaminationForSendSMSOneDayBefore()
+        {
+            var res = await _medicalExamination.GetListOfUserMedicalExaminationForSendSMSOneDayBefore();
+
+            if (res is not null)
+            {
+                foreach (var item in res)
+                {
+                    #region Send SMS
+
+                    if (item.Mobile is not null && item.MedicalExaminationName is not null)
+                    {
+                        var message = Messages.SendSMSForMedicalExaminationAlarm(item.MedicalExaminationName);
+
+                        await _smsService.SendSimpleSMS(item.Mobile, message);
+                    }
+
+                    #endregion
+
+                    #region Delete Record 
+
+                    if (item.MedicalExaminationId is not null)
+                    {
+                        var record = await _medicalExamination.GetUserMedicalExaminationById(item.MedicalExaminationId.Value);
+                        if (record != null)
+                        {
+                            record.IsDelete = true;
+
+                            _medicalExamination.UpdateUserMedicalExaminationWithoutSaveChanges(record);
+                        }
+                    }
+
+                    #endregion
+                }
+
+                await _medicalExamination.Savechanges();
+            }
         }
 
         #endregion

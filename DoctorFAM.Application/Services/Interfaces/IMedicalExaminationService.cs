@@ -65,5 +65,12 @@ namespace DoctorFAM.Application.Services.Interfaces
         Task<List<PriodicPatientsExamination>?> CheckThatCurrentUserHasAnyPriodicExaminationAfterToday(ulong userId);
 
         #endregion
+
+        #region Background Task
+
+        //Send Alert SMS For Medical Examination Alarm
+        Task GetListOfUserMedicalExaminationForSendSMSOneDayBefore();
+
+        #endregion
     }
 }
