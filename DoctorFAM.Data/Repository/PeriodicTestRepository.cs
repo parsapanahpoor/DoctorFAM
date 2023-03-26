@@ -5,6 +5,7 @@ using DoctorFAM.Domain.Entities.Common;
 using DoctorFAM.Domain.Entities.PeriodicTest;
 using DoctorFAM.Domain.Entities.PriodicExamination;
 using DoctorFAM.Domain.Interfaces.EFCore;
+using DoctorFAM.Domain.ViewModels.BackgroundTasks.PriodicTest;
 using DoctorFAM.Domain.ViewModels.Common;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -12,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace DoctorFAM.Data.Repository
 {
@@ -123,10 +125,46 @@ namespace DoctorFAM.Data.Repository
         //Check That Current User Has Any Priodic Test After Today
         public async Task<List<UserPeriodicTest>?> CheckThatCurrentUserHasAnyPriodicTestAfterToday(ulong userId)
         {
-            return await _context.UserPeriodicTests.Include(p=> p.PeriodicTest)
+            return await _context.UserPeriodicTests.Include(p => p.PeriodicTest)
                                                     .Where(p => !p.IsDelete && p.UserId == userId && (
                                                     (p.SystemOrderForNextTest >= DateTime.Now)
                                                     )).ToListAsync();
+        }
+
+        #endregion
+
+        #region Background Task
+
+        //Get List Of User Periodic test For Send SMS One Day Before
+        public async Task<List<SendSMSForPriodicTestViewModel>> GetListOfUserPeriodictestForSendSMSOneDayBefore()
+        {
+            return await _context.UserPeriodicTests.Where(p => !p.IsDelete && p.DoctorOrderForNextTest.HasValue
+                                                          && p.DoctorOrderForNextTest.Value.Year == DateTime.Now.Year
+                                                          && p.DoctorOrderForNextTest.Value.DayOfYear == DateTime.Now.AddDays(1).DayOfYear)
+                                                          .Select(p => new SendSMSForPriodicTestViewModel()
+                                                          {
+                                                              UserSelectedPriodicTestId = p.Id,
+                                                              PeriodicTestType = _context.PeriodicTests.Where(s => !s.IsDelete && s.Id == p.PeriodicTestId).Select(s => s.Name).FirstOrDefault(),
+                                                              Mobile = _context.Users.Where(s => !s.IsDelete && s.Id == p.UserId).Select(s => s.Mobile).FirstOrDefault()
+                                                          }).ToListAsync();
+        }
+
+        //Get User Selected Priodic Test By Id
+        public async Task<UserPeriodicTest?> GetUserPriodicTestById(ulong id)
+        {
+            return await _context.UserPeriodicTests.FirstOrDefaultAsync(p => !p.IsDelete && p.Id == id);
+        }
+
+        //Update User Priodic Test Without Save Changes
+        public void UpdateUserPriodicTestWithoutSaveChanges(UserPeriodicTest model)
+        {
+            _context.UserPeriodicTests.Update(model);
+        }
+
+        //Save Chamges 
+        public async Task Savechanges()
+        {
+            await _context.SaveChangesAsync();
         }
 
         #endregion

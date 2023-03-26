@@ -30,6 +30,8 @@ builder.Services.AddHostedService<SendSMSForMonthlyDrugAlerts>();
 builder.Services.AddHostedService<SendSMSForYearlyDrugAlerts>();
 builder.Services.AddHostedService<SendSMSForDailyDrugAlerts>();
 
+builder.Services.AddHostedService<SendSMSForPeriodicTestAlert>();
+
 #endregion
 
 #region Localizer

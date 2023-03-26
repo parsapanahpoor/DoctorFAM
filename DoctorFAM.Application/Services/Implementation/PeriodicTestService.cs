@@ -1,18 +1,21 @@
 ﻿using DoctorFAM.Application.Convertors;
 using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
+using DoctorFAM.Application.StaticTools;
 using DoctorFAM.Data.Migrations;
 using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.HealthInformation;
 using DoctorFAM.Domain.Entities.PeriodicTest;
 using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.Admin.PeriodicTest;
+using DoctorFAM.Domain.ViewModels.BackgroundTasks.PriodicTest;
 using DoctorFAM.Domain.ViewModels.Common;
 using DoctorFAM.Domain.ViewModels.Site.PeriodicTest;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -24,11 +27,13 @@ namespace DoctorFAM.Application.Services.Implementation
 
         private readonly IPeriodicTestRepository _periodicTestRepository;
         private readonly IUserService _userService;
+        private readonly ISMSService _smsService;
 
-        public PeriodicTestService(IPeriodicTestRepository periodicTestRepository, IUserService userService)
+        public PeriodicTestService(IPeriodicTestRepository periodicTestRepository, IUserService userService , ISMSService smsService)
         {
             _periodicTestRepository = periodicTestRepository;
             _userService = userService;
+            _smsService = smsService;
         }
 
         #endregion
@@ -235,6 +240,44 @@ namespace DoctorFAM.Application.Services.Implementation
         public async Task<List<UserPeriodicTest>?> CheckThatCurrentUserHasAnyPriodicTestAfterToday(ulong userId)
         {
             return await _periodicTestRepository.CheckThatCurrentUserHasAnyPriodicTestAfterToday(userId);
+        }
+
+        #endregion
+
+        #region Background Task
+
+        //Send Alert SMS For Priodic Test Alarm
+        public async Task GetListOfUserPeriodictestForSendSMSOneDayBefore()
+        {
+            var res = await _periodicTestRepository.GetListOfUserPeriodictestForSendSMSOneDayBefore();
+
+            if (res is not null)
+            {
+                foreach (var item in res)
+                {
+                    #region Send SMS
+
+                    var message = Messages.SendSMSForPriodicTestAlarm(item.PeriodicTestType);
+
+                    //await _smsService.SendSimpleSMS(item.Mobile, message);
+
+                    #endregion
+
+                    #region Delete Record 
+
+                    var record = await _periodicTestRepository.GetUserPriodicTestById(item.UserSelectedPriodicTestId);
+                    if (record != null)
+                    {
+                        record.IsDelete = true;
+
+                        _periodicTestRepository.UpdateUserPriodicTestWithoutSaveChanges(record);
+                    }
+
+                    #endregion
+                }
+
+                await _periodicTestRepository.Savechanges();
+            }
         }
 
         #endregion

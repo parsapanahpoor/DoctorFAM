@@ -166,4 +166,11 @@ public static class Messages
         return
                  $"باعرض سلام . داروهای مصرفی امروز شما : {DrugName} . {Environment.NewLine} {PathTools.SiteFarsiName}";
     }
+
+    //Send SMS For Priodic Test Alarm 
+    public static string SendSMSForPriodicTestAlarm(string priodicTestName)
+    {
+        return
+                 $"باعرض سلام . فردا نوبت آزمایش {priodicTestName} شما می باشد. {Environment.NewLine} {PathTools.SiteFarsiName}";
+    }
 }

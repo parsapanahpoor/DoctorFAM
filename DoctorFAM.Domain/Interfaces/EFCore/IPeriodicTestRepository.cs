@@ -1,4 +1,5 @@
 ﻿using DoctorFAM.Domain.Entities.PeriodicTest;
+using DoctorFAM.Domain.ViewModels.BackgroundTasks.PriodicTest;
 using DoctorFAM.Domain.ViewModels.Common;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -53,6 +54,22 @@ namespace DoctorFAM.Domain.Interfaces.EFCore
 
         //Check That Current User Has Any Priodic Test After Today
         Task<List<UserPeriodicTest>?> CheckThatCurrentUserHasAnyPriodicTestAfterToday(ulong userId);
+
+        #endregion
+
+        #region Background Task
+
+        //Get List Of User Periodic test For Send SMS One Day Before
+        Task<List<SendSMSForPriodicTestViewModel>> GetListOfUserPeriodictestForSendSMSOneDayBefore();
+
+        //Get User Selected Priodic Test By Id
+        Task<UserPeriodicTest?> GetUserPriodicTestById(ulong id);
+
+        //Update User Priodic Test Without Save Changes
+        void UpdateUserPriodicTestWithoutSaveChanges(UserPeriodicTest model);
+
+        //Save Chamges 
+        Task Savechanges();
 
         #endregion
     }

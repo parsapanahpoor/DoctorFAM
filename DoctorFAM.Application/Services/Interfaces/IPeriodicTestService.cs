@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace DoctorFAM.Application.Services.Interfaces
 {
-    public interface IPeriodicTestService 
+    public interface IPeriodicTestService
     {
         #region Site Side 
 
@@ -51,6 +51,13 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Check That Current User Has Any Priodic Test After Today
         Task<List<UserPeriodicTest>?> CheckThatCurrentUserHasAnyPriodicTestAfterToday(ulong userId);
+
+        #endregion
+
+        #region Background Task
+
+        //Send Alert SMS For Priodic Test Alarm
+        Task GetListOfUserPeriodictestForSendSMSOneDayBefore();
 
         #endregion
     }
