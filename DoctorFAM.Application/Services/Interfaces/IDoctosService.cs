@@ -4,6 +4,7 @@ using DoctorFAM.Domain.Entities.FamilyDoctor.ParsaSystem;
 using DoctorFAM.Domain.Entities.FamilyDoctor.VIPSystem;
 using DoctorFAM.Domain.Entities.Interest;
 using DoctorFAM.Domain.Entities.Organization;
+using DoctorFAM.Domain.Enums.DoctorReservation;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.Doctors;
 using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo;
@@ -275,6 +276,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Get Doctr Name With PArt Of Name
         Task<List<string>?> GetListOfDoctorsName(string doctorNamePart);
+
+        //Process Reservation Tariff For Pay From User
+        Task<int?> ProcessReservationTariffForPayFromUser(ulong doctorUserId, ulong userId, DoctorReservationType DoctorReservationType);
 
         #endregion
 

@@ -3383,28 +3383,70 @@ namespace DoctorFAM.Application.Services.Implementation
         }
 
         //Process Reservation Tariff For Pay From User
-        //public async Task<int?> ProcessReservationTariffForPayFromUser(ulong doctorUserId , ulong userId , DoctorReservationType DoctorReservationType)
-        //{
-        //    #region Get User By User Id
+        public async Task<int?> ProcessReservationTariffForPayFromUser(ulong doctorUserId, ulong userId, DoctorReservationType DoctorReservationType)
+        {
+            #region Get User By User Id
 
-        //    var user = await _userService.GetUserById(userId);
-        //    if (user == null) return null;
+            var user = await _userService.GetUserById(userId);
+            if (user == null) return null;
 
-        //    #endregion
+            #endregion
 
-        //    #region Get Current Doctor Office
+            #region Get Current Doctor Office
 
-        //    var doctorOffice = await _organizationService.GetDoctorOrganizationByUserId(doctorUserId);
-        //    if (doctorOffice == null) return null;
-        //    if (doctorOffice.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice ||
-        //        doctorOffice.OrganizationInfoState != OrganizationInfoState.Accepted) return null;
+            var doctorOffice = await _organizationService.GetDoctorOrganizationByUserId(doctorUserId);
+            if (doctorOffice == null) return null;
+            if (doctorOffice.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice ||
+                doctorOffice.OrganizationInfoState != OrganizationInfoState.Accepted) return null;
 
-        //    #endregion
+            #endregion
 
-        //    #region MyRegion
+            #region Get Doctor Reservation Tariff
 
-        //    #endregion
-        //}
+            var reservationTariff = await GetDoctorReservationTariffByDoctorUserId(doctorOffice.OwnerId);
+            if (reservationTariff == null) return null;
+
+            #endregion
+
+            #region Check Doctor Population Covered 
+
+            var populationCovered = await _familyDoctorService.GetUserSelectedFamilyDoctorByUserAndDoctorId(userId, doctorOffice.OwnerId) ;
+
+            //If User Is In Doctor Population Covered 
+            if (populationCovered != null && populationCovered.IsUserInDoctorPopulationCoveredOutOfDoctorFAM)
+            {
+                //If Reservation Type Is In Person 
+                if (DoctorReservationType == DoctorReservationType.Reserved)
+                {
+                    return reservationTariff.InPersonReservationTariffForDoctorPopulationCovered;
+                }
+
+                //If Reservation Type Is Online 
+                if (DoctorReservationType == DoctorReservationType.Onile)
+                {
+                    return reservationTariff.OnlineReservationTariffForDoctorPopulationCovered;
+                }
+            }
+
+            else
+            {
+                //If Reservation Type Is In Person
+                if (DoctorReservationType == DoctorReservationType.Reserved)
+                {
+                    return reservationTariff.InPersonReservationTariffForAnonymousPersons;
+                }
+
+                //If Reservation Type Is Online 
+                if (DoctorReservationType == DoctorReservationType.Onile)
+                {
+                    return reservationTariff.OnlineReservationTariffForAnonymousPersons;
+                }
+            }
+
+            #endregion
+
+            return null;
+        }
 
         #endregion
 

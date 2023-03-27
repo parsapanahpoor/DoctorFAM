@@ -72,15 +72,15 @@ namespace DoctorFAM.Web.Controllers
         [Authorize]
         [HttpGet]
         [CheckUserFillPersonalInformation]
-        public async Task<IActionResult> DocBooking(ulong userId , string? loggedDateTime)
+        public async Task<IActionResult> DocBooking(ulong userId, string? loggedDateTime)
         {
             #region Fill Model
 
-            var model = await _doctorService.FillDoctorReservationDetailForShowSiteSide(userId , loggedDateTime);
+            var model = await _doctorService.FillDoctorReservationDetailForShowSiteSide(userId, loggedDateTime);
             if (model == null)
             {
                 TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
-                return RedirectToAction("Index", "Diabet", new { area = ""});
+                return RedirectToAction("Index", "Diabet", new { area = "" });
             }
 
             #endregion
@@ -98,7 +98,7 @@ namespace DoctorFAM.Web.Controllers
         }
 
         [Authorize]
-        [HttpPost , ValidateAntiForgeryToken]
+        [HttpPost, ValidateAntiForgeryToken]
         [CheckUserFillPersonalInformation]
         public async Task<IActionResult> DocBooking(ShowDoctorReservationDetailViewModel reservationDetail)
         {
@@ -121,7 +121,7 @@ namespace DoctorFAM.Web.Controllers
         #region Choose Type Of Reservation In Model
 
         [HttpGet("/Choose-Type-Of-Reservation")]
-        public async Task<IActionResult> ChooseTypeOfReservationModal(ulong reservationDateTimeId , ulong doctorId)
+        public async Task<IActionResult> ChooseTypeOfReservationModal(ulong reservationDateTimeId, ulong doctorId)
         {
             #region Fill Model
 
@@ -133,7 +133,7 @@ namespace DoctorFAM.Web.Controllers
 
             #endregion
 
-            return PartialView("_ChooseTypeOfReservation" , model);
+            return PartialView("_ChooseTypeOfReservation", model);
         }
 
         #endregion
@@ -157,7 +157,7 @@ namespace DoctorFAM.Web.Controllers
 
             #region Add Reservation Date Time To User Patient
 
-            var resForAdd = await _reservationService.GetReservationDateTimeToUserPatient(model , User.GetUserId());
+            var resForAdd = await _reservationService.GetReservationDateTimeToUserPatient(model, User.GetUserId());
             if (!resForAdd)
             {
                 TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
@@ -168,25 +168,36 @@ namespace DoctorFAM.Web.Controllers
 
             #region Get Reservation Tariff 
 
-            var reservationTariff = await _siteSettingService.GetReservationTariff();
-            if (reservationTariff == 0)
+            if (!model.DoctorReservationType.HasValue)
+            {
+                TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+                return RedirectToAction("Index", "Home");
+            }
+
+            var reservationTariff = await _doctorService.ProcessReservationTariffForPayFromUser(model.DoctorId, User.GetUserId(), model.DoctorReservationType.Value);
+            if (reservationTariff == null)
             {
                 TempData[ErrorMessage] = "لطفا با پشتیبانی تماس بگیرید";
                 return RedirectToAction("Index", "Home");
             }
-
-            //var 
+            
+            if (reservationTariff == 0)
+            {
+                TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+                return RedirectToAction(nameof(DoctorReservationWith0Price) , new { id = model.ReservationDateTimeId });
+            }
 
             #endregion
 
             #region Online Payment
 
-            return RedirectToAction("PaymentMethod", "Payment", new {
+            return RedirectToAction("PaymentMethod", "Payment", new
+            {
                 gatewayType = GatewayType.Zarinpal,
                 amount = reservationTariff,
                 description = "شارژ حساب کاربری برای پرداخت هزینه ی دریافت نوبت",
                 returURL = $"{PathTools.SiteAddress}/DoctorReservationPayment/" + model.ReservationDateTimeId,
-                requestId = model.ReservationDateTimeId
+                requestId = model.ReservationDateTimeId,
             });
 
             #endregion
@@ -210,7 +221,7 @@ namespace DoctorFAM.Web.Controllers
 
             var reservationDateTime = await _reservationService.GetDoctorReservationDateTimeById(id);
 
-            if (reservationDateTime == null || reservationDateTime.DoctorReservationState == Domain.Enums.DoctorReservation.DoctorReservationState.Canceled) return NotFound(); 
+            if (reservationDateTime == null || reservationDateTime.DoctorReservationState == Domain.Enums.DoctorReservation.DoctorReservationState.Canceled) return NotFound();
 
             if (reservationDateTime.DoctorReservationState == Domain.Enums.DoctorReservation.DoctorReservationState.Reserved)
             {
@@ -221,15 +232,22 @@ namespace DoctorFAM.Web.Controllers
                 }
             }
 
+            var reservationDate = await _reservationService.GetReservationDateById(reservationDateTime.DoctorReservationDateId);
+            if (reservationDate == null || !reservationDateTime.DoctorReservationType.HasValue)
+            {
+                TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد";
+                return RedirectToAction("PaymentResult", "Payment", new { IsSuccess = false });
+            }
+
             #endregion
 
             #region Get Reservation Tariff 
 
-            var reservationTariff = await _siteSettingService.GetReservationTariff();
-            if (reservationTariff == 0)
+            var reservationTariff = await _doctorService.ProcessReservationTariffForPayFromUser(reservationDate.UserId, User.GetUserId(), reservationDateTime.DoctorReservationType.Value);
+            if (reservationTariff == null)
             {
                 TempData[ErrorMessage] = "لطفا با پشتیبانی تماس بگیرید";
-                return RedirectToAction("PaymentResult", "Payment", new { IsSuccess = false });
+                return RedirectToAction("Index", "Home");
             }
 
             #endregion
@@ -245,7 +263,7 @@ namespace DoctorFAM.Web.Controllers
                     parameters.authority = HttpContext.Request.Query["Authority"];
                 }
 
-                parameters.amount = reservationTariff.ToString();
+                parameters.amount = reservationTariff.Value.ToString();
                 parameters.merchant_id = PathTools.merchant;
 
                 #endregion
@@ -278,7 +296,7 @@ namespace DoctorFAM.Web.Controllers
                         string refid = jodata["data"]["ref_id"].ToString();
 
                         //Get Wallet Transaction For Validation 
-                        var wallet = await _walletService.FindWalletTransactionForRedirectToTheBankPortal(user.Id , GatewayType.Zarinpal , reservationDateTime.Id , parameters.authority , reservationTariff);
+                        var wallet = await _walletService.FindWalletTransactionForRedirectToTheBankPortal(user.Id, GatewayType.Zarinpal, reservationDateTime.Id, parameters.authority, reservationTariff.Value);
 
                         if (wallet != null)
                         {
@@ -291,7 +309,7 @@ namespace DoctorFAM.Web.Controllers
                             await _walletService.UpdateWalletAndCalculateUserBalanceAfterBankingPayment(wallet);
 
                             //Pay Home Visit Tariff
-                            await _reservationService.PayReservationTariff(User.GetUserId(), reservationTariff);
+                            await _reservationService.PayReservationTariff(User.GetUserId(), reservationTariff.Value);
 
                             #region Send Notification In SignalR
 
@@ -346,6 +364,97 @@ namespace DoctorFAM.Web.Controllers
             }
 
             return NotFound();
+        }
+
+        #endregion
+
+        #region Doctor Reservation With 0 Price 
+
+        public async Task<IActionResult> DoctorReservationWith0Price(ulong id)
+        {
+            #region Get User By User Id
+
+            var user = await _userService.GetUserById(User.GetUserId());
+            if (user == null) NotFound();
+
+            #endregion
+
+            #region Get Reservation Date Time 
+
+            var reservationDateTime = await _reservationService.GetDoctorReservationDateTimeById(id);
+
+            if (reservationDateTime == null || reservationDateTime.DoctorReservationState == Domain.Enums.DoctorReservation.DoctorReservationState.Canceled) return NotFound();
+
+            if (reservationDateTime.DoctorReservationState == Domain.Enums.DoctorReservation.DoctorReservationState.Reserved)
+            {
+                if (reservationDateTime.PatientId != user.Id)
+                {
+                    TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد";
+                    return RedirectToAction("PaymentResult", "Payment", new { IsSuccess = false });
+                }
+            }
+
+            var reservationDate = await _reservationService.GetReservationDateById(reservationDateTime.DoctorReservationDateId);
+            if (reservationDate == null || !reservationDateTime.DoctorReservationType.HasValue)
+            {
+                TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد";
+                return RedirectToAction("PaymentResult", "Payment", new { IsSuccess = false });
+            }
+
+            #endregion
+
+            #region Get Reservation Tariff 
+
+            var reservationTariff = await _doctorService.ProcessReservationTariffForPayFromUser(reservationDate.UserId, User.GetUserId(), reservationDateTime.DoctorReservationType.Value);
+            if (reservationTariff != 0)
+            {
+                TempData[ErrorMessage] = "لطفا با پشتیبانی تماس بگیرید";
+                return RedirectToAction("Index", "Home");
+            }
+
+            #endregion
+
+            //Update Reservation State 
+            await _reservationService.ReserveDoctorReservationDateTimeAfterSuccessPayment(reservationDateTime.Id);
+
+            //Pay Home Visit Tariff
+            await _reservationService.PayReservationTariff(User.GetUserId(), reservationTariff.Value);
+
+            #region Send Notification In SignalR
+
+            //Create Notification For Supporters And Admins
+            var notifyResult = await _notificationService.CreateSupporterNotification(reservationDateTime.Id, Domain.Enums.Notification.SupporterNotificationText.TakeReservation, Domain.Enums.Notification.NotificationTarget.reservation, User.GetUserId());
+
+            //Send Notification For Doctor 
+            await _notificationService.CreateNotificationForDoctorThatReserveHerReservation(reservationDateTime.Id, Domain.Enums.Notification.SupporterNotificationText.TakeReservation, Domain.Enums.Notification.NotificationTarget.reservation, User.GetUserId());
+
+            //Get Current User
+            var currentUser = await _userService.GetUserById(User.GetUserId());
+
+            if (notifyResult)
+            {
+                //Get List Of Admins And Supporter To Send Notification Into Them
+                var users = await _userService.GetAdminsAndSupportersNotificationForSendNotificationInHomePharmacy();
+
+                //Get Doctor For Send Notification  
+                users.Add(await _doctorService.GetDoctroForSendNotificationForTakeReservationNotification(reservationDateTime.Id));
+
+                //Fill Send Supporter Notification ViewModel For Send Notification
+                SendSupporterNotificationViewModel viewModel = new SendSupporterNotificationViewModel()
+                {
+                    CreateNotificationDate = $"{DateTime.Now.ToShamsi()} - {DateTime.Now.Hour}:{DateTime.Now.Minute}",
+                    NotificationText = "دریافت نوبت",
+                    RequestId = reservationDateTime.Id,
+                    Username = User.Identity.Name,
+                    UserImage = currentUser.Avatar
+                };
+
+                await _notificationHub.Clients.Users(users).SendAsync("SendSupporterNotification", viewModel);
+            }
+
+            #endregion
+
+            return RedirectToAction("PaymentResult", "Payment", new { IsSuccess = true, refId = "-" });
         }
 
         #endregion
