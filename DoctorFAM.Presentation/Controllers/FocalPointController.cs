@@ -175,6 +175,8 @@ namespace DoctorFAM.Web.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
+            var 
+
             #endregion
 
             #region Online Payment

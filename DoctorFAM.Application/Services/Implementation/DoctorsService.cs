@@ -46,6 +46,7 @@ using DoctorFAM.Domain.ViewModels.Admin.Doctors.UsersInDoctorPopulationCovered;
 using DoctorFAM.Domain.Entities.DoctorReservation;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
 using System.Formats.Tar;
+using DoctorFAM.Domain.Enums.DoctorReservation;
 
 namespace DoctorFAM.Application.Services.Implementation
 {
@@ -3380,6 +3381,30 @@ namespace DoctorFAM.Application.Services.Implementation
 
             return returnModel;
         }
+
+        //Process Reservation Tariff For Pay From User
+        //public async Task<int?> ProcessReservationTariffForPayFromUser(ulong doctorUserId , ulong userId , DoctorReservationType DoctorReservationType)
+        //{
+        //    #region Get User By User Id
+
+        //    var user = await _userService.GetUserById(userId);
+        //    if (user == null) return null;
+
+        //    #endregion
+
+        //    #region Get Current Doctor Office
+
+        //    var doctorOffice = await _organizationService.GetDoctorOrganizationByUserId(doctorUserId);
+        //    if (doctorOffice == null) return null;
+        //    if (doctorOffice.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice ||
+        //        doctorOffice.OrganizationInfoState != OrganizationInfoState.Accepted) return null;
+
+        //    #endregion
+
+        //    #region MyRegion
+
+        //    #endregion
+        //}
 
         #endregion
 
