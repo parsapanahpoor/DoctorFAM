@@ -251,6 +251,8 @@ namespace DoctorFAM.Data.DbContext
 
         public DbSet<DoctorPersonalBooking> DoctorPersonalBooking { get; set; }
 
+        public DbSet<DoctorsReservationTariffs> DoctorsReservationTariffs { get; set; }
+
         #endregion
 
         #region Notification 
