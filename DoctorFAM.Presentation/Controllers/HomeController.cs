@@ -22,15 +22,13 @@ namespace DoctorFAM.Web.Controllers
         public ILocationService _locationService;
         private readonly IHubContext<NotificationHub> _notificationHub;
         private readonly IFollowService _followService;
-        private readonly IMedicalExaminationService _medicalExaminationService;
 
         public HomeController( ILocationService lcaotionService , IHubContext<NotificationHub> notificationHub
-                                , IFollowService followService , IMedicalExaminationService medicalExaminationService)
+                                , IFollowService followService )
         {
             _locationService = lcaotionService;
             _notificationHub = notificationHub;
             _followService = followService;
-            _medicalExaminationService = medicalExaminationService;
         }
 
         #endregion
@@ -39,8 +37,6 @@ namespace DoctorFAM.Web.Controllers
 
         public async Task<IActionResult> Index()
         {
-            await _medicalExaminationService.GetListOfUserMedicalExaminationForSendSMSOneDayBefore();
-
             return View();
         }
 
