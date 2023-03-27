@@ -9,6 +9,7 @@ using DoctorFAM.Web.Doctor.Controllers;
 using DoctorFAM.Web.HttpManager;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
+using System.ComponentModel.DataAnnotations;
 
 namespace DoctorFAM.Web.Areas.Doctor.Controllers
 {
@@ -18,11 +19,8 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
         #region Ctor
 
         public IDoctorsService _doctorService;
-
         public IStringLocalizer<SharedLocalizer.SharedLocalizer> _sharedLocalizer;
-
         private readonly IOrganizationService _organization;
-
         private readonly ILocationService _locationService;
 
         public DoctorsInfoController(IDoctorsService doctorService, IStringLocalizer<SharedLocalizer.SharedLocalizer> sharedLocalizer
@@ -437,6 +435,70 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
         }
 
         #endregion
+
+        #endregion
+
+        #region Doctors Reservation Tariff
+
+        [HttpGet]
+        public async Task<IActionResult> DoctorsReservationTariff()
+        {
+            #region Fill Model 
+
+            var model = await _doctorService.FillDoctorsReservationTariffDoctorPanelSideViewModel(User.GetUserId());
+            if (model == null) return NotFound();
+
+            #endregion
+
+            #region View Bags
+
+            ViewBag.DoctorOffice = await _organization.GetDoctorOrganizationByUserId(User.GetUserId());
+
+            #endregion
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DoctorsReservationTariff(DoctorsReservationTariffDoctorPanelSideViewModel model)
+        {
+            #region Model State Validation 
+
+            if (!ModelState.IsValid)
+            {
+                #region View Bags
+
+                ViewBag.DoctorOffice = await _organization.GetDoctorOrganizationByUserId(User.GetUserId());
+
+                #endregion
+
+                ViewData[ErrorMessage] = ".اطلاعات وارد شده صحیح نمی باشد";
+                return View(model);
+            }
+
+            #endregion
+
+            #region Add Or Edit Doctor Reservation Tariff
+
+            var res = await _doctorService.AddOrEditDoctorReservationTariffDoctorSide(model);
+            if (res)
+            {
+                ViewData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+                return RedirectToAction(nameof(PageOfManageDoctorInfo));
+            }
+
+            #endregion
+
+            #region View Bags
+
+            ViewBag.DoctorOffice = await _organization.GetDoctorOrganizationByUserId(User.GetUserId());
+
+            #endregion
+
+            ViewData[ErrorMessage] = ".اطلاعات وارد شده صحیح نمی باشد";
+            return View(model);
+        }
 
         #endregion
     }

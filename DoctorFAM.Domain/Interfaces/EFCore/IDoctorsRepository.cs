@@ -1,4 +1,5 @@
 ﻿using DoctorFAM.Domain.Entities.Account;
+using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.FamilyDoctor.ParsaSystem;
 using DoctorFAM.Domain.Entities.FamilyDoctor.VIPSystem;
@@ -159,6 +160,15 @@ namespace DoctorFAM.Domain.Interfaces
         Task<DoctorSideBarViewModel> GetDoctorsSideBarInfo(ulong userId);
 
         Task<DoctorsInfo?> GetDoctorsInformationByUserId(ulong userId);
+
+        //Get Doctor Reservation Tariff By User Id 
+        Task<DoctorsReservationTariffs?> GetDoctorReservationTariffByDoctorUserId(ulong doctorUserId);
+
+        //Add Doctors Reservation Tariff To The Data Base 
+        Task AddDoctorsReservationTariffToTheDataBase(DoctorsReservationTariffs reservationTariffs);
+
+        //Update Doctor Reservation Tariffs
+        Task UpdateDoctorReservationTariffs(DoctorsReservationTariffs reservationTariffs);
 
         Task UpdateDoctorsInfo(DoctorsInfo doctorsInfo);
 
