@@ -29,7 +29,7 @@
 
 }
 
-    @section Breadcrumb
+@section Breadcrumb
     {
     <li>
         <a asp-action="Index" asp-controller="Home" asp-area="Admin"> @Localizer["Docotr Panel"] </a>
@@ -39,23 +39,23 @@
     </li>
 }
 
-    <form method="post" asp-action="DoctorsInfoDetail" asp-controller="Doctors" asp-area="Admin" enctype="multipart/form-data">
-        <div class="row">
-            <div class="col-lg-9 col-sm-12">
-                <div class="row">
+<form method="post" asp-action="DoctorsInfoDetail" asp-controller="Doctors" asp-area="Admin" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-lg-9 col-sm-12">
+            <div class="row">
 
-                    <input type="hidden" asp-for="UserId" />
-                    <input type="hidden" asp-for="Id" />
-                    <input type="hidden" asp-for="MediacalFile" />
-                    <input type="hidden" asp-for="DoctorId" />
+                <input type="hidden" asp-for="UserId" />
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="MediacalFile" />
+                <input type="hidden" asp-for="DoctorId" />
 
-                    <div class="col-lg-12">
-                        <div class="widget">
-                            <div class="widget-header bordered-bottom bordered-green">
-                                <span class="widget-caption"> @Localizer["Doctor Information"] </span>
-                            </div>
-                            <div class="widget-body">
-                                <div class="row">
+                <div class="col-lg-12">
+                    <div class="widget">
+                        <div class="widget-header bordered-bottom bordered-green">
+                            <span class="widget-caption"> @Localizer["Doctor Information"] </span>
+                        </div>
+                        <div class="widget-body">
+                            <div class="row">
 
                                 @if (Model != null)
                                 {
@@ -106,6 +106,47 @@
                                         <input type="text" tagify="1" class="form-control" asp-for="DoctorSkills">
                                         <span class="text-danger" asp-validation-for="DoctorSkills"></span>
                                     </div>
+
+                                    <hr />
+
+                                    @if (Model.InPersonReservationTariffForDoctorPopulationCovered.HasValue
+                                                 && Model.OnlineReservationTariffForDoctorPopulationCovered.HasValue
+                                                 && Model.InPersonReservationTariffForAnonymousPersons.HasValue
+                                                 && Model.OnlineReservationTariffForAnonymousPersons.HasValue)
+                                    {
+                                        <div class="form-group col-md-6 col-sm-12">
+                                            <label asp-for="InPersonReservationTariffForDoctorPopulationCovered">تعرفه ی نوبت حضوری افراد تحت پوشش شما</label>
+                                            <input type="number" class="form-control" asp-for="InPersonReservationTariffForDoctorPopulationCovered">
+                                            <span class="text-danger" asp-validation-for="InPersonReservationTariffForDoctorPopulationCovered"></span>
+                                        </div>
+
+                                        <div class="form-group col-md-6 col-sm-12">
+                                            <label asp-for="OnlineReservationTariffForDoctorPopulationCovered">تعرفه ی نوبت آنلاین افراد تحت پوشش شما</label>
+                                            <input type="number" class="form-control" asp-for="OnlineReservationTariffForDoctorPopulationCovered">
+                                            <span class="text-danger" asp-validation-for="OnlineReservationTariffForDoctorPopulationCovered"></span>
+                                        </div>
+
+                                        <div class="form-group col-md-6 col-sm-12">
+                                            <label asp-for="InPersonReservationTariffForAnonymousPersons">تعرفه ی نوبت حضوری افراد ناشناس</label>
+                                            <input type="number" class="form-control" asp-for="InPersonReservationTariffForAnonymousPersons">
+                                            <span class="text-danger" asp-validation-for="InPersonReservationTariffForAnonymousPersons"></span>
+                                        </div>
+
+                                        <div class="form-group col-md-6 col-sm-12">
+                                            <label asp-for="OnlineReservationTariffForAnonymousPersons">تعرفه ی نوبت آنلاین افراد ناشناس</label>
+                                            <input type="number" class="form-control" asp-for="OnlineReservationTariffForAnonymousPersons">
+                                            <span class="text-danger" asp-validation-for="OnlineReservationTariffForAnonymousPersons"></span>
+                                        </div>
+
+                                    }
+                                    else
+                                    {
+                                        <div class="form-group col-md-12 col-sm-12">
+                                            <div class="form-control" style="color: red;">
+                                                اطلاعات مبلغ تعرفه ای یافت نشده است.
+                                            </div>
+                                        </div>
+                                    }
 
                                     @if (Model.WorkAddresses != null && Model.WorkAddresses.Any())
                                     {
@@ -234,7 +275,7 @@
 
     @if (Model != null)
     {
-            <div class="row">
+        <div class="row">
             <div class="col-lg-9">
                 <div class="widget">
                     <div class="widget-header bordered-bottom bordered-success">

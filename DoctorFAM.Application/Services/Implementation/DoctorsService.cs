@@ -2801,6 +2801,27 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #endregion
 
+            #region Get Doctor Reservation Tariff By doctor UserId
+
+            var reservationTariff = await GetDoctorReservationTariffByDoctorUserId(doctorOffice.OwnerId);
+
+            if (reservationTariff != null)
+            {
+                model.InPersonReservationTariffForDoctorPopulationCovered = reservationTariff.InPersonReservationTariffForDoctorPopulationCovered;
+                model.OnlineReservationTariffForDoctorPopulationCovered = reservationTariff.OnlineReservationTariffForDoctorPopulationCovered;
+                model.InPersonReservationTariffForAnonymousPersons = reservationTariff.InPersonReservationTariffForAnonymousPersons;
+                model.OnlineReservationTariffForAnonymousPersons = reservationTariff.OnlineReservationTariffForAnonymousPersons;
+            }
+            else
+            {
+                model.InPersonReservationTariffForDoctorPopulationCovered = null;
+                model.OnlineReservationTariffForDoctorPopulationCovered = null;
+                model.InPersonReservationTariffForAnonymousPersons = null;
+                model.OnlineReservationTariffForAnonymousPersons = null;
+            }
+
+            #endregion
+
             return model;
         }
 
@@ -2929,6 +2950,23 @@ namespace DoctorFAM.Application.Services.Implementation
             #region Update Method
 
             await _doctorRepository.UpdateDoctorsInfo(info);
+
+            #endregion
+
+            #region Edit Doctor Reservation Tariff
+
+            //Get Doctor Reservation Tariff
+            var reservation = await GetDoctorReservationTariffByDoctorUserId(doctorOffice.OwnerId);
+            if (reservation != null)
+            {
+                reservation.InPersonReservationTariffForDoctorPopulationCovered = model.InPersonReservationTariffForDoctorPopulationCovered.Value;
+                reservation.OnlineReservationTariffForDoctorPopulationCovered = model.OnlineReservationTariffForDoctorPopulationCovered.Value;
+                reservation.OnlineReservationTariffForAnonymousPersons = model.OnlineReservationTariffForAnonymousPersons.Value;
+                reservation.InPersonReservationTariffForAnonymousPersons = model.InPersonReservationTariffForAnonymousPersons.Value;
+
+                //Update Reservation Data 
+                await _doctorRepository.UpdateDoctorReservationTariffs(reservation);
+            }
 
             #endregion
 
