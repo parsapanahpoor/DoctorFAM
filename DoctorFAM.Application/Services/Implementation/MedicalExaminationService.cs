@@ -21,14 +21,16 @@ namespace DoctorFAM.Application.Services.Implementation
         private readonly IUserService _userService;
         private readonly IDoctorsService _doctorService;
         private readonly IOrganizationRepository _organizationRepository;
+        private readonly ISMSService _smsService;
 
         public MedicalExaminationService(IMedicalExaminationRepository medicalExamination, IUserService userService
-                                                , IDoctorsService doctorService, IOrganizationRepository organizationRepository)
+                                                , IDoctorsService doctorService, IOrganizationRepository organizationRepository, ISMSService smsService)
         {
             _medicalExamination = medicalExamination;
             _userService = userService;
             _doctorService = doctorService;
             _organizationRepository = organizationRepository;
+            _smsService = smsService;
         }
 
         #endregion

@@ -31,6 +31,7 @@ builder.Services.AddHostedService<SendSMSForYearlyDrugAlerts>();
 builder.Services.AddHostedService<SendSMSForDailyDrugAlerts>();
 
 builder.Services.AddHostedService<SendSMSForPeriodicTestAlert>();
+builder.Services.AddHostedService<SendSMSForPeriodicExaminationAlarm>();
 
 #endregion
 
