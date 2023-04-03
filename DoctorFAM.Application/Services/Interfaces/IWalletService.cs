@@ -15,6 +15,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         Task<FilterWalletViewModel> FilterWalletsAsync(FilterWalletViewModel filter);
 
+        //Get Wallet Transaction By Reservation Date Time Id
+        Task<Wallet?> GetWalletTransactionByReservationDateTimeId(ulong dateTimeId);
+
         Task<int?> GetSumUserWalletAsync(ulong userId);
 
         Task<AdminEditWalletViewModel?> GetWalletForEditAsync(ulong walletId);

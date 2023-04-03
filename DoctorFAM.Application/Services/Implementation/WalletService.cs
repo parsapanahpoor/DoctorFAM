@@ -29,6 +29,12 @@ namespace DoctorFAM.Application.Services.Implementation
 
         #region Wallet
 
+        //Get Wallet Transaction By Reservation Date Time Id
+        public async Task<Wallet?> GetWalletTransactionByReservationDateTimeId(ulong dateTimeId)
+        {
+            return await _walletRepository.GetWalletTransactionByReservationDateTimeId(dateTimeId);
+        }
+
         public Task<FilterWalletViewModel> FilterWalletsAsync(FilterWalletViewModel filter)
         {
             return _walletRepository.FilterWalletsAsync(filter);
@@ -225,6 +231,5 @@ namespace DoctorFAM.Application.Services.Implementation
         }
 
         #endregion
-
     }
 }

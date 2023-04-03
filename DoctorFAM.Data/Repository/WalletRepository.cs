@@ -27,6 +27,13 @@ namespace DoctorFAM.Data.Repository
 
         #region Wallet
 
+        //Get Wallet Transaction By Reservation Date Time Id
+        public async Task<Wallet?> GetWalletTransactionByReservationDateTimeId(ulong dateTimeId)
+        {
+            return await _context.Wallets.FirstOrDefaultAsync(p => !p.IsDelete && p.RequestId == dateTimeId && p.IsFinally == true
+                                                                && p.PaymentType == PaymentType.Reservation);
+        }
+
         public async Task<FilterWalletViewModel> FilterWalletsAsync(FilterWalletViewModel filter)
         {
             var query = _context.Wallets

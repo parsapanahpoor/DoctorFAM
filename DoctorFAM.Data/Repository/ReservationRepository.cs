@@ -516,6 +516,7 @@ namespace DoctorFAM.Data.Repository
                 .ThenInclude(p => p.User)
                 .Where(p => !p.IsDelete && p.PatientId == filter.UserId)
                 .OrderByDescending(s => s.DoctorReservationDate.ReservationDate)
+                .ThenByDescending(s=> s.Id)
                 .AsQueryable();
 
             #region Status
