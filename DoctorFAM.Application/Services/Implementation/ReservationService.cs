@@ -1191,7 +1191,30 @@ namespace DoctorFAM.Application.Services.Implementation
             return true;
         }
 
-        public async Task<bool> PayReservationTariff(ulong userId, int price)
+        public async Task<bool> ChargeUserWalletForZeroReservationPrice(ulong userId, int price, ulong? requestId)
+        {
+            if (!await _userService.IsExistUserById(userId))
+            {
+                return false;
+            }
+
+            var wallet = new Wallet
+            {
+                UserId = userId,
+                TransactionType = TransactionType.Deposit,
+                GatewayType = GatewayType.Zarinpal,
+                PaymentType = PaymentType.ChargeWallet,
+                Price = price,
+                Description = "شارژ حساب کاربری برای پرداخت هزینه ی دریافت نوبت",
+                IsFinally = true,
+                RequestId = requestId
+            };
+
+            await _walletRepository.CreateWalletAsync(wallet);
+            return true;
+        }
+
+        public async Task<bool> PayReservationTariff(ulong userId, int price, ulong? requestId)
         {
             if (!await _userService.IsExistUserById(userId))
             {
@@ -1206,7 +1229,8 @@ namespace DoctorFAM.Application.Services.Implementation
                 PaymentType = PaymentType.Reservation,
                 Price = price,
                 Description = "پرداخت مبلغ دریافت نوبت",
-                IsFinally = true
+                IsFinally = true,
+                RequestId = requestId
             };
 
             await _walletRepository.CreateWalletAsync(wallet);

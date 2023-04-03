@@ -309,7 +309,7 @@ namespace DoctorFAM.Web.Controllers
                             await _walletService.UpdateWalletAndCalculateUserBalanceAfterBankingPayment(wallet);
 
                             //Pay Home Visit Tariff
-                            await _reservationService.PayReservationTariff(User.GetUserId(), reservationTariff.Value);
+                            await _reservationService.PayReservationTariff(User.GetUserId(), reservationTariff.Value , reservationDateTime.Id);
 
                             #region Send Notification In SignalR
 
@@ -417,8 +417,11 @@ namespace DoctorFAM.Web.Controllers
             //Update Reservation State 
             await _reservationService.ReserveDoctorReservationDateTimeAfterSuccessPayment(reservationDateTime.Id);
 
+            //Charge User Wallet By Zero Price
+            var charge = await _reservationService.ChargeUserWalletForZeroReservationPrice(User.GetUserId(), reservationTariff.Value, reservationDateTime.Id);
+
             //Pay Home Visit Tariff
-            await _reservationService.PayReservationTariff(User.GetUserId(), reservationTariff.Value);
+            var addPay = await _reservationService.PayReservationTariff(User.GetUserId(), reservationTariff.Value , reservationDateTime.Id);
 
             #region Send Notification In SignalR
 
