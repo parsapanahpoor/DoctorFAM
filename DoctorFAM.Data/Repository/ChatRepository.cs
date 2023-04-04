@@ -28,6 +28,29 @@ namespace DoctorFAM.Data.Repository
 
         #region Chat Room Area 
 
+        //Get Chat Group By Group Id 
+        public async Task<List<ChatViewModel>> GetChatGroup(ulong groupId)
+        {
+            return await _context.Chats
+                .Where(g => g.GroupId == groupId)
+                .Select(s => new ChatViewModel()
+                {
+                    UserName = _context.Users.FirstOrDefault(p=> !p.IsDelete && p.Id == s.UserId).Username,
+                    CreateDate = $"{s.CreateDate.Minute}:{s.CreateDate.Hour}",
+                    ChatBody = s.ChatBody,
+                    GroupName = _context.ChatGroups.FirstOrDefault(p=> !p.IsDelete && p.Id == s.GroupId).GroupTitle,
+                    UserId = s.UserId,
+                    GroupId = s.GroupId
+                }).ToListAsync();
+        }
+
+        //Get Groups User Ids For Send Notification 
+        public async Task<List<string>> GetUserIds(ulong groupId)
+        {
+            return await _context.ChatGroupMembers.Where(g => g.GroupId == groupId)
+                                     .Select(s => s.UserId.ToString()).ToListAsync();
+        }
+
         //Add Chat Message To The Data Base 
         public async Task AddChatMessageToTheDataBase(Chat chat)
         {

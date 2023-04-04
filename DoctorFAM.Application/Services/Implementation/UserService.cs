@@ -499,6 +499,11 @@ namespace DoctorFAM.Application.Services.Implementation
 
         #region Site Side
 
+        //Get Username By User ID
+        public async Task<string?> GetUsernameByUserID(ulong userId)
+        {
+            return await _userRepository.GetUsernameByUserID(userId);
+        }
 
         //Is Exist Any Organization With Waiting State From Current User
         public async Task<bool> IsExistAnyCooperationRequestWithWaitingStateFromCurrentUser(ulong userId)

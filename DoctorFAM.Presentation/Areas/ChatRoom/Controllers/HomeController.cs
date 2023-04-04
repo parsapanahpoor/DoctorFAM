@@ -35,16 +35,16 @@ namespace DoctorFAM.Web.Areas.ChatRoom.Controllers
 
         public async Task<IActionResult> Index()
         {
-            #region Send SMS
+            //#region Send SMS
 
-            //Get Current User
-            var user = await _userService.GetUserById(User.GetUserId());
+            ////Get Current User
+            //var user = await _userService.GetUserById(User.GetUserId());
 
-            var message = Messages.WellcomingMessage(user.Username);
+            //var message = Messages.WellcomingMessage(user.Username);
 
-            await _smsservice.SendSimpleSMS(user.Mobile, message);
+            //await _smsservice.SendSimpleSMS(user.Mobile, message);
 
-            #endregion
+            //#endregion
 
             #region Get User Chat Groups 
 

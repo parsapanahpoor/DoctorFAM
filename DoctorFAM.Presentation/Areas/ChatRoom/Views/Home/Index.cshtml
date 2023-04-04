@@ -13,6 +13,16 @@
 
     <script>
 
+        //#region Check Notification Permissions
+
+        $(document).ready(function () {
+            if (Notification.permission !== "granted") {
+                Notification.requestPermission();
+            }
+        });
+
+        //#endregion
+
         var currentGroupId = 0;
         var userId = 0;
 
@@ -47,30 +57,62 @@
 
         //#endregion
 
+        //#region Recevice Notification
+
+        connection.on("ReceiveNotification", sendNotification);
+
+        //#endregion
+
         connection.start();
+
+        //#region Recevice Notification
+
+        function sendNotification(chat) {
+            if (Notification.permission === "granted") {
+                if (currentGroupId !== chat.groupId) {
+
+                    //Play Sound
+                    var audio = {};
+                    audio["walk"] = new Audio();
+                    audio["walk"].src = "/common/sound/RingtoneGram.IR_1643187667_64009.mp3"
+                    audio["walk"].play();
+
+                    var notification = new Notification(chat.groupName,
+                        {
+                            body: chat.chatBody,
+                            icone: 'Site/Manifest/doctorfamLogo512.png',
+                            image: 'Site/Manifest/doctorfamLogo512.png'
+                        });
+                }
+            }
+        }
+
+        //#endregion
 
         function receive(chat) {
             $("#messageText").val('');
             if (userId === chat.userId) {
                 $(".chats").append(`
 
-            <div class="chat-me">
-                            <div class="chat">
-                                <p>${chat.chatBody}</p>
-                                <span>${chat.createDate}</span>
-                            </div>
-                        </div>
-                    `);
+                                                            <div class="chat-me">
+                                                                            <div class="chat">
+                                                                                <span>${chat.userName}</span>
+                                                                                <p>${chat.chatBody}</p>
+                                                                                <span>${chat.createDate}</span>
+                                                                            </div>
+                                                                        </div>
+                                                                    `);
             } else {
                 $(".chats").append(`
 
-            <div class="chat-you">
-                            <div class="chat">
-                                <p>${chat.chatBody}</p>
-                                <span>${chat.createDate}</span>
-                            </div>
-                        </div>
-                    `);
+                                                            <div class="chat-you">
+                                                                            <div class="chat">
+                                                                                 <span>${chat.userName}</span>
+                                                                                <p>${chat.chatBody}</p>
+                                                                                <span>${chat.createDate}</span>
+                                                                            </div>
+                                                                        </div>
+                                                                    `);
             }
 
         }
@@ -104,23 +146,25 @@
                 if (userId === chat.userId) {
                     $(".chats").append(`
 
-                                    <div class="chat-me">
-                                                    <div class="chat">
-                                                        <p>${chat.chatBody}</p>
-                                                        <span>${chat.createDate}</span>
-                                                    </div>
-                                                </div>
-                                            `);
+                                                                                    <div class="chat-me">
+                                                                                                    <div class="chat">
+                                                                                                        <span>${chat.userName}</span>
+                                                                                                        <p>${chat.chatBody}</p>
+                                                                                                        <span>${chat.createDate}</span>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            `);
                 } else {
                     $(".chats").append(`
 
-                                    <div class="chat-you">
-                                                    <div class="chat">
-                                                        <p>${chat.chatBody}</p>
-                                                        <span>${chat.createDate}</span>
-                                                    </div>
-                                                </div>
-                                            `);
+                                                                                    <div class="chat-you">
+                                                                                                    <div class="chat">
+                                                                                                         <span>${chat.userName}</span>
+                                                                                                        <p>${chat.chatBody}</p>
+                                                                                                        <span>${chat.createDate}</span>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            `);
                 }
             }
         }
@@ -141,32 +185,6 @@
             <h2>علی</h2>
         </div>
         <div class="chats">
-
-            @*            <div class="chat-me">
-            <div class="chat">
-            <p>سلام خوبی چه خبر ؟ </p>
-            <span>2020/06/05</span>
-            </div>
-            </div>
-            <div class="chat-you">
-            <div class="chat">
-            <p>سلام ممنون یه خبر خیلییی خوبی دارم برات</p>
-            <span>2020/06/05</span>
-            </div>
-            </div>
-            <div class="chat-me">
-            <div class="chat">
-            <p>چی ؟!!</p>
-            <span>2020/06/05</span>
-            </div>
-            </div>
-            <div class="chat-you">
-            <div class="chat">
-            <p>توی سایت codeYad دوره SignalR رایگان برگزار شده</p>
-            <span>2020/06/05</span>
-            </div>
-            </div>*@
-
         </div>
         <div class="footer" style="display: none">
             <form onsubmit="sendMessage(event)">

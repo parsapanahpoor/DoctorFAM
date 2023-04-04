@@ -12,6 +12,9 @@ namespace DoctorFAM.Application.Services.Interfaces
     {
         #region Chat Room Area 
 
+        //Get Groups User Ids For Send Notification 
+        Task<List<string>> GetUserIds(ulong groupId);
+
         //Send Message 
         Task SendMessage(SendMessageViewModel chat);
 

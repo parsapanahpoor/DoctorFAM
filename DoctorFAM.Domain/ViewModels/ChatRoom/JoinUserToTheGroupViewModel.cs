@@ -13,7 +13,7 @@ namespace DoctorFAM.Domain.ViewModels.ChatRoom
 
         public ChatGroup ChatGroup { get; set; }
 
-        public List<Chat>? Chats { get; set; }
+        public List<ChatViewModel>? Chats { get; set; }
 
         #endregion
     }

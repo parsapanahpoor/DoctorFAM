@@ -13,6 +13,12 @@ namespace DoctorFAM.Domain.Interfaces.EFCore
     {
         #region Chat Room Area
 
+        //Get Chat Group By Group Id 
+        Task<List<ChatViewModel>> GetChatGroup(ulong groupId);
+
+        //Get Groups User Ids For Send Notification 
+        Task<List<string>> GetUserIds(ulong groupId);
+
         //Add Chat Message To The Data Base 
         Task AddChatMessageToTheDataBase(Chat chat);
 

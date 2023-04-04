@@ -34,6 +34,12 @@ namespace DoctorFAM.Application.Services.Implementation
 
         #region Chat Room Area 
 
+        //Get Groups User Ids For Send Notification 
+        public async Task<List<string>> GetUserIds(ulong groupId)
+        {
+            return await _chatRepository.GetUserIds(groupId);
+        }
+
         //Send Message 
         public async Task SendMessage(SendMessageViewModel chat)
         {
@@ -194,7 +200,7 @@ namespace DoctorFAM.Application.Services.Implementation
             JoinUserToTheGroupViewModel model = new JoinUserToTheGroupViewModel()
             {
                 ChatGroup = chatGroup,
-                Chats = chat
+                Chats = await  _chatRepository.GetChatGroup(chatGroup.Id)
             };
 
             #endregion

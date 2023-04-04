@@ -28,6 +28,12 @@ namespace DoctorFAM.Data.Repository
 
         #region Site Side
 
+        //Get Username By User ID
+        public async Task<string?> GetUsernameByUserID(ulong userId)
+        {
+            return await _context.Users.Where(p => !p.IsDelete && p.Id == userId).Select(p => p.Username).FirstOrDefaultAsync();
+        }
+
         //Get User By Username
         public async Task<User?> GetUserByUsername(string userName)
         {

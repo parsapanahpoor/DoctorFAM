@@ -6,6 +6,7 @@ using DoctorFAM.Domain.Entities.Chat;
 using DoctorFAM.Domain.ViewModels.ChatRoom;
 using DoctorFAM.Web.Hubs.Interface;
 using Microsoft.AspNetCore.SignalR;
+using System;
 using System.Security.Claims;
 
 namespace DoctorFAM.Web.Hubs.Implementation
@@ -15,10 +16,12 @@ namespace DoctorFAM.Web.Hubs.Implementation
         #region Ctor 
 
         private readonly IChatService _chatService;
+        private readonly IUserService _userService;
 
-        public ChatRoomHub(IChatService chatService)
+        public ChatRoomHub(IChatService chatService , IUserService userService)
         {
             _chatService = chatService;
+            _userService = userService;
         }
 
         #endregion
@@ -71,6 +74,13 @@ namespace DoctorFAM.Web.Hubs.Implementation
 
         public async Task SendMessage(string text, ulong groupId)
         {
+            #region Get Group By Id
+
+            var group = await _chatService.GetChatGroupById(groupId);
+            if (group == null) return;
+                
+            #endregion
+
             #region Create Instance 
 
             SendMessageViewModel model = new SendMessageViewModel()
@@ -86,9 +96,26 @@ namespace DoctorFAM.Web.Hubs.Implementation
             await _chatService.SendMessage(model);
 
             //Convert Information For Show True Datas
-            model.CreateDate = DateTime.Now.Date.ToShamsi();
+            model.CreateDate = $"{DateTime.Now.Minute}:{DateTime.Now.Hour}";
 
-            await Clients.Group(groupId.ToString()).SendAsync("ReceiveMessage", model);
+            #region Send Notification 
+
+            var chatModel = new ChatViewModel()
+            {
+                ChatBody = text,
+                UserName = await _userService.GetUsernameByUserID(Context.User.GetUserId()),
+                CreateDate = model.CreateDate,
+                UserId = Context.User.GetUserId(),
+                GroupName = group.GroupTitle,
+                GroupId = groupId
+            };
+
+            var userIds = await _chatService.GetUserIds(groupId);
+            await Clients.Users(userIds).SendAsync("ReceiveNotification", chatModel);
+
+            #endregion
+
+            await Clients.Group(groupId.ToString()).SendAsync("ReceiveMessage", chatModel);
         }
 
         #endregion
