@@ -63,7 +63,23 @@
 
         //#endregion
 
-        connection.start();
+        //#region Start Connection 
+
+        async function Start() {
+            try {
+                await connection.start();
+                $(".disConnect").hide();
+
+            } catch (e) {
+                $(".disConnect").show();
+                setTimeout(Start, 6000);
+            }
+        }
+
+        connection.onclose(Start);
+        Start();
+
+        //#endregion 
 
         //#region Recevice Notification
 
@@ -176,6 +192,13 @@
     </script>
 
 }
+
+<div class="disConnect">
+    <div>
+        <p>اتصال شما به سرور قطع شده .</p>
+        <p>درحال برقراری ارتباط ...</p>
+    </div>
+</div>
 
 <div class="row">
     <div class="col-8 chat-content">

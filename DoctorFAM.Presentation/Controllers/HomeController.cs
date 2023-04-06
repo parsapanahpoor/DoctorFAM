@@ -2,9 +2,11 @@
 using DoctorFAM.Application.Interfaces;
 using DoctorFAM.Application.Services.Implementation;
 using DoctorFAM.Application.Services.Interfaces;
+using DoctorFAM.Application.StaticTools;
 using DoctorFAM.Presentation.Models;
 using DoctorFAM.Web.HttpManager;
 using DoctorFAM.Web.Hubs;
+using DoctorFAM.Web.Hubs.Implementation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,13 +24,17 @@ namespace DoctorFAM.Web.Controllers
         public ILocationService _locationService;
         private readonly IHubContext<NotificationHub> _notificationHub;
         private readonly IFollowService _followService;
+        private readonly IUserService _userService;
+        private readonly ISMSService _smsservice;
 
         public HomeController( ILocationService lcaotionService , IHubContext<NotificationHub> notificationHub
-                                , IFollowService followService )
+                                , IFollowService followService, IUserService userService, ISMSService smsservice)
         {
             _locationService = lcaotionService;
             _notificationHub = notificationHub;
             _followService = followService;
+            _userService = userService;
+            _smsservice = smsservice;
         }
 
         #endregion
@@ -307,6 +313,25 @@ namespace DoctorFAM.Web.Controllers
         public IActionResult News()
         {
             return View();
+        }
+
+        #endregion
+
+        #region Test For Send SMS
+
+        [Authorize]
+        public async Task TestForSendSMS()
+        {
+            #region Send SMS
+
+            //Get Current User
+            var user = await _userService.GetUserById(User.GetUserId());
+
+            var message = Messages.WellcomingMessage(user.Username);
+
+            await _smsservice.SendSimpleSMS(user.Mobile, message);
+
+            #endregion
         }
 
         #endregion
