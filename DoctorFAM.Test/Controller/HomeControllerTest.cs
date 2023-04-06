@@ -1,5 +1,6 @@
 using DoctorFAM.Application.Interfaces;
 using DoctorFAM.Application.Services;
+using DoctorFAM.Application.Services.Implementation;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Web.Controllers;
 using DoctorFAM.Web.HttpManager;
@@ -23,7 +24,9 @@ namespace DoctorFAM.Test
             var locationService = new Mock<ILocationService>();
             var notificationHubService = new Mock<IHubContext<NotificationHub>>();
             var followerService = new Mock<IFollowService>();
-            _controller = new HomeController(locationService.Object, notificationHubService.Object , followerService.Object);
+            var userService = new Mock<IUserService>();
+            var smsService = new Mock<SMSService>();
+            _controller = new HomeController(locationService.Object, notificationHubService.Object, followerService.Object, userService.Object, smsService.Object);
         }
 
         #endregion
