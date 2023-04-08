@@ -26,7 +26,7 @@ namespace DoctorFAM.Test
             var followerService = new Mock<IFollowService>();
             var userService = new Mock<IUserService>();
             var smsService = new Mock<SMSService>();
-            _controller = new HomeController(locationService.Object, notificationHubService.Object , followerService.Object , userService.Object , smsService.Object);
+            _controller = new HomeController(locationService.Object, notificationHubService.Object, followerService.Object, userService.Object, smsService.Object);
         }
 
         #endregion

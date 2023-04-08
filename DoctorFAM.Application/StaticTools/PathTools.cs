@@ -241,11 +241,11 @@ namespace DoctorFAM.Application.StaticTools
 
         #region Chat Images
 
-        public static readonly string ChatImagesPath = "/content/images/ChatImages/main/";
-        public static readonly string ChatImagesPathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/ChatImages/main/");
+        public static readonly string ChatImagesPath = "/content/images/user/main/";
+        public static readonly string ChatImagesPathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/user/main/");
 
-        public static readonly string ChatImagesPathThumb = "/content/images/ChatImages/thumb/";
-        public static readonly string ChatImagesPathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/ChatImages/thumb/");
+        public static readonly string ChatImagesPathThumb = "/content/images/user/thumb/";
+        public static readonly string ChatImagesPathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/user/thumb/");
 
         #endregion
     }

@@ -63,6 +63,14 @@
 
         //#endregion
 
+        //#region Join To The Private Group
+
+        function joinInPrivateGroup(receiverId) {
+            connection.invoke("JoinPrivateGroup", receiverId, currentGroupId);
+        }
+
+        //#endregion
+
         //#region Start Connection 
 
         async function Start() {

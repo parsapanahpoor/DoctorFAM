@@ -22,6 +22,10 @@ namespace DoctorFAM.Domain.Entities.Chat
 
         public ulong OwnerId { get; set; }
 
+        public ulong? ReceiverId { get; set; }
+
+        public bool IsPrivate { get; set; }
+
         #endregion
 
         #region relations
