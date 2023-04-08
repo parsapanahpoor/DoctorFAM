@@ -48,6 +48,9 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Join To The Group 
         Task JoinToTheGroup(ulong userId, ulong groupId);
 
+        //Join User To The Chat Group 
+        Task JoinUserToTheChatGroup(List<ChatGroupMember> members);
+
         #endregion
     }
 }

@@ -63,7 +63,7 @@ namespace DoctorFAM.Web.Hubs.Implementation
                 if (currentGroupId > 0) await Groups.RemoveFromGroupAsync(Context.ConnectionId, currentGroupId.ToString());
 
                 await Groups.AddToGroupAsync(Context.ConnectionId, group.ChatGroup.Id.ToString());
-                await Clients.Group(group.ChatGroup.Id.ToString()).SendAsync("JoinGroup", group.ChatGroup, group.Chats);
+                await Clients.Caller.SendAsync("JoinGroup", group.ChatGroup, group.Chats);
             }
         }
 
@@ -134,12 +134,38 @@ namespace DoctorFAM.Web.Hubs.Implementation
 
             var groupDto = await FixGroupModel(group);
 
+            if (!await _chatService.IsUserInGroup(Context.User.GetUserId(), group.ChatGroup.Id))
+            {
+                #region Join Members To This Group 
+
+                List<ChatGroupMember> members = new List<ChatGroupMember>();
+
+                members.Add(new ChatGroupMember()
+                {
+                    CreateDate = DateTime.Now,
+                    GroupId = group.ChatGroup.Id,
+                    UserId = group.ChatGroup.OwnerId,
+                });
+
+                members.Add(new ChatGroupMember()
+                {
+                    CreateDate = DateTime.Now,
+                    GroupId = group.ChatGroup.Id,
+                    UserId = group.ChatGroup.ReceiverId.Value,
+                });
+
+                //Join Members To This Group 
+                await _chatService.JoinUserToTheChatGroup(members);
+
+                #endregion
+
+                await Clients.Caller.SendAsync("NewGroup", groupDto.ChatGroup.GroupTitle, groupDto.ChatGroup.GroupToken, groupDto.ChatGroup.ImageName);
+                await Clients.User(groupDto.ChatGroup.ReceiverId.ToString()).SendAsync("NewGroup", Context.User.GetUsername(), groupDto.ChatGroup.GroupToken, groupDto.ChatGroup.ImageName);
+            }
+
             await Groups.AddToGroupAsync(Context.ConnectionId, group.ChatGroup.Id.ToString());
 
             #endregion
-
-            await Clients.Caller.SendAsync("NewGroup", groupDto.ChatGroup.GroupTitle, groupDto.ChatGroup.GroupToken, groupDto.ChatGroup.ImageName);
-            await Clients.User(groupDto.ChatGroup.ReceiverId.ToString()).SendAsync("NewGroup", groupDto.ChatGroup.GroupTitle, groupDto.ChatGroup.GroupToken, groupDto.ChatGroup.ImageName);
 
             await Clients.Group(group.ChatGroup.Id.ToString()).SendAsync("JoinGroup", groupDto.ChatGroup, groupDto.Chats);
         }

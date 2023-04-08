@@ -51,7 +51,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 var groupCreated = new ChatGroup()
                 {
                     CreateDate = DateTime.Now,
-                    GroupTitle = $"Chat With {receiverId}",
+                    GroupTitle = await _userService.GetUsernameByUserID(receiverId),
                     GroupToken = Guid.NewGuid().ToString(),
                     ImageName = "Default.jpg",
                     IsPrivate = true,
@@ -61,29 +61,6 @@ namespace DoctorFAM.Application.Services.Implementation
 
                 //Add To The Data Base
                 await  _chatRepository.AddChatGroupToTheDataBase(groupCreated);
-
-                #region Join Members To This Group 
-
-                List<ChatGroupMember> members = new List<ChatGroupMember>();
-
-                members.Add(new ChatGroupMember()
-                {
-                    CreateDate = DateTime.Now,
-                    GroupId = groupCreated.Id,
-                    UserId= userId,
-                });
-
-                members.Add(new ChatGroupMember()
-                {
-                    CreateDate = DateTime.Now,
-                    GroupId = groupCreated.Id,
-                    UserId = receiverId,
-                });
-
-                #endregion
-
-                //Join Members To This Group 
-                await _chatRepository.JoinUserToTheChatGroup(members);
 
                 return new JoinUserToTheGroupViewModel()
                 {
@@ -338,6 +315,12 @@ namespace DoctorFAM.Application.Services.Implementation
 
             //Add To The Data Base 
             await _chatRepository.JoinUserToTheChatGroup(model);
+        }
+
+        //Join User To The Chat Group 
+        public async Task JoinUserToTheChatGroup(List<ChatGroupMember> members)
+        {
+            await _chatRepository.JoinUserToTheChatGroup(members);
         }
 
         #endregion
