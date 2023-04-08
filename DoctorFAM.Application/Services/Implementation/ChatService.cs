@@ -34,6 +34,50 @@ namespace DoctorFAM.Application.Services.Implementation
 
         #region Chat Room Area 
 
+        //Join To The Private Group
+        public async Task<JoinUserToTheGroupViewModel?> JoinToThePrivateGroup(ulong userId, ulong receiverId)
+        {
+            #region Get Chat Group
+
+            var group = await _chatRepository.GetGroupByUserIdAndreceiverId(userId , receiverId);
+
+            #endregion
+
+            #region Create Private Group 
+
+            if (group == null)
+            {
+                //Create ChatGroup Instance
+                var groupCreated = new ChatGroup()
+                {
+                    CreateDate = DateTime.Now,
+                    GroupTitle = await _userService.GetUsernameByUserID(receiverId),
+                    GroupToken = Guid.NewGuid().ToString(),
+                    ImageName = "Default.jpg",
+                    IsPrivate = true,
+                    OwnerId = userId,
+                    ReceiverId = receiverId
+                };
+
+                //Add To The Data Base
+                await  _chatRepository.AddChatGroupToTheDataBase(groupCreated);
+
+                return new JoinUserToTheGroupViewModel()
+                {
+                    ChatGroup = await GetChatGroupById(groupCreated.Id),
+                    Chats = await _chatRepository.GetChatGroup(groupCreated.Id)
+                };
+            }
+
+            #endregion
+
+            return new JoinUserToTheGroupViewModel()
+            {
+                ChatGroup = group,
+                Chats = await _chatRepository.GetChatGroup(group.Id)
+            };
+        }
+
         //Get Groups User Ids For Send Notification 
         public async Task<List<string>> GetUserIds(ulong groupId)
         {
@@ -157,13 +201,45 @@ namespace DoctorFAM.Application.Services.Implementation
             foreach (var item in chatGroups)
             {
                 var chatGroup = await GetChatGroupById(item);
+                if (chatGroup is null) return null;
+
                 var chatLists = await _chatRepository.GetChatsListByChatGroupId(item);
 
                 ListOfCurrentUserChatRooms subModel = new ListOfCurrentUserChatRooms()
                 {
                     Chat = chatLists.FirstOrDefault(),
-                    ChatGroup = chatGroup
                 };
+
+                if (!chatGroup.ReceiverId.HasValue)
+                {
+                    subModel.ChatGroup = new ChatGroup()
+                    {
+                        CreateDate = chatGroup.CreateDate,
+                        GroupTitle = chatGroup.GroupTitle,
+                        GroupToken = chatGroup.GroupToken,
+                        Id = chatGroup.Id,
+                        ReceiverId = chatGroup.ReceiverId,
+                        ImageName = chatGroup.ImageName,
+                        IsDelete = chatGroup.IsDelete,
+                        IsPrivate = chatGroup.IsPrivate,
+                        OwnerId = chatGroup.OwnerId
+                    };
+                }
+                else
+                {
+                    subModel.ChatGroup = new ChatGroup()
+                    {
+                        CreateDate = chatGroup.CreateDate,
+                        GroupTitle = chatGroup.GroupTitle,
+                        GroupToken = chatGroup.GroupToken,
+                        Id = chatGroup.Id,
+                        ReceiverId = chatGroup.ReceiverId,
+                        ImageName = (await _userService.GetUserImageNameByUserId(chatGroup.ReceiverId.Value) != null ? await _userService.GetUserImageNameByUserId(chatGroup.ReceiverId.Value) : null),
+                        IsDelete = chatGroup.IsDelete,
+                        IsPrivate = chatGroup.IsPrivate,
+                        OwnerId = chatGroup.OwnerId
+                    };
+                }
 
                 model.Add(subModel);
             }
@@ -239,6 +315,12 @@ namespace DoctorFAM.Application.Services.Implementation
 
             //Add To The Data Base 
             await _chatRepository.JoinUserToTheChatGroup(model);
+        }
+
+        //Join User To The Chat Group 
+        public async Task JoinUserToTheChatGroup(List<ChatGroupMember> members)
+        {
+            await _chatRepository.JoinUserToTheChatGroup(members);
         }
 
         #endregion

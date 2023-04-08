@@ -43,6 +43,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         Task<User?> GetUserById(ulong userId);
 
+        //Get User Avatar Name By User Id
+        Task<string?> GetUserImageNameByUserId(ulong userId);
+
         Task<RegisterUserResult> RegisterUser(RegisterUserViewModel register);
 
         Task<bool> IsExistsUserByEmail(string email);
