@@ -60,7 +60,7 @@ function search() {
             for (var i in data) {
                 if (data[i].isUser) {
                     $("#search_result ul").append(`
-                                         <li onclick="joinInGroup('${data[i].token}')">
+                                 <li onclick="joinInPrivateGroup(${data[i].token})">
                                                                     ${data[i].title}
                                                                <img src="/content/images/user/thumb/${data[i].imageName}" />
                                                             <span></span>
