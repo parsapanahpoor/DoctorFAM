@@ -179,6 +179,19 @@ namespace DoctorFAM.Application.Services.Implementation
                 .FirstOrDefaultAsync(s => s.Id == userId && !s.IsDelete);
         }
 
+        //Get User Avatar Name By User Id
+        public async Task<string?> GetUserImageNameByUserId(ulong userId)
+        {
+            #region Get User By Id 
+
+            var user = await GetUserById(userId);
+            if (user is null) return null;
+
+            #endregion
+
+            return user.Avatar;
+        }
+
         public async Task<RegisterUserResult> RegisterUser(RegisterUserViewModel register)
         {
             //Fix Email Format

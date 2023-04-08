@@ -28,6 +28,15 @@ namespace DoctorFAM.Data.Repository
 
         #region Chat Room Area 
 
+        //Get Group By User Id And receiver Id
+        public async Task<ChatGroup?> GetGroupByUserIdAndreceiverId(ulong userId, ulong receiverId)
+        {
+            return await _context.ChatGroups.FirstOrDefaultAsync(p => !p.IsDelete &&
+                                                                (p.OwnerId == userId && p.ReceiverId == receiverId)
+                                                                ||
+                                                                (p.OwnerId == receiverId && p.ReceiverId == userId));
+        }
+
         //Get Chat Group By Group Id 
         public async Task<List<ChatViewModel>> GetChatGroup(ulong groupId)
         {
@@ -97,7 +106,7 @@ namespace DoctorFAM.Data.Repository
         //Search Chat Group Name With String Of Title 
         public async Task<List<SearchChatRoomResultViewModel>> SearchChatGroupNameWithStringOfTitle(string title)
         {
-            return await _context.ChatGroups.Where(g => !g.IsDelete && g.GroupTitle.Contains(title)).OrderByDescending(p => p.CreateDate)
+            return await _context.ChatGroups.Where(g => !g.IsDelete && !g.IsPrivate && g.GroupTitle.Contains(title)).OrderByDescending(p => p.CreateDate)
                 .Select(s => new SearchChatRoomResultViewModel()
                 {
                     ImageName = s.ImageName,
@@ -142,6 +151,13 @@ namespace DoctorFAM.Data.Repository
         public async Task JoinUserToTheChatGroup(ChatGroupMember member)
         {
             await _context.ChatGroupMembers.AddAsync(member);
+            await _context.SaveChangesAsync();
+        }
+
+        //Join User To The Chat Group 
+        public async Task JoinUserToTheChatGroup(List<ChatGroupMember> members)
+        {
+            await _context.ChatGroupMembers.AddRangeAsync(members);
             await _context.SaveChangesAsync();
         }
 
