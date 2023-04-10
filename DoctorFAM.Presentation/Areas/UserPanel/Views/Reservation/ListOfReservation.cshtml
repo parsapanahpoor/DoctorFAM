@@ -174,7 +174,11 @@
                                     }
                                     @if (date.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.WaitingForComplete)
                                     {
-                                        <a asp-action="PaymentReservation" asp-controller="Reservation" asp-area="UserPanel" asp-route-ReservationId="@date.Id" class="btn btn-danger btn-circle btn-xs"><i class="glyphicon glyphicon-floppy-disk"></i></a>
+                                        <a asp-action="ChooseTypeOfReservation" asp-controller="Reservation" asp-area="UserPanel" asp-route-ReservationDateTimeId="@date.Id" class="btn btn-success btn-circle btn-xs"><i class="glyphicon glyphicon-usd"></i></a>
+                                    }
+                                    @if (date.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.NotReserved)
+                                    {
+                                        <p class="label label-danger">لغو شده </p>
                                     }
                                 </td>
                             </tr>

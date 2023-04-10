@@ -1,10 +1,13 @@
 ﻿using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Services.Implementation;
 using DoctorFAM.Application.Services.Interfaces;
+using DoctorFAM.Application.StaticTools;
+using DoctorFAM.Domain.Entities.Wallet;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment;
 using DoctorFAM.Domain.ViewModels.Site.Reservation;
 using DoctorFAM.Domain.ViewModels.UserPanel.Reservation;
 using DoctorFAM.Web.ActionFilterAttributes;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DoctorFAM.Web.Areas.UserPanel.Controllers
@@ -18,10 +21,13 @@ namespace DoctorFAM.Web.Areas.UserPanel.Controllers
 
         private readonly IFamilyDoctorService _familyDoctorService;
 
-        public ReservationController(IReservationService reservationService, IFamilyDoctorService familyDoctorService)
+        private readonly IDoctorsService _doctorService;
+
+        public ReservationController(IReservationService reservationService, IFamilyDoctorService familyDoctorService , IDoctorsService doctorService)
         {
             _reservationService = reservationService;
             _familyDoctorService = familyDoctorService;
+            _doctorService = doctorService;
         }
 
         #endregion
@@ -109,6 +115,79 @@ namespace DoctorFAM.Web.Areas.UserPanel.Controllers
         }
 
         #endregion
+
+        #endregion
+
+        #region Pay Waiting For Pay Reservations Date Time
+
+        #region Choose Type Of Reservation
+
+        [CheckUserFillPersonalInformation]
+        public async Task<IActionResult> ChooseTypeOfReservation(ulong ReservationDateTimeId)
+        {
+            #region Get Reservation Date Time 
+
+            var reservationDateTime = await _reservationService.GetDoctorReservationDateTimeById(ReservationDateTimeId);
+            if (reservationDateTime == null || reservationDateTime.DoctorReservationState != Domain.Enums.DoctorReservation.DoctorReservationState.WaitingForComplete
+               || reservationDateTime.PatientId != User.GetUserId())
+            {
+                TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+                return RedirectToAction(nameof(ListOfReservation));
+            }
+
+            #endregion
+
+            #region Get Reservation Date 
+
+            var reservationDate = await _reservationService.GetReservationDateById(reservationDateTime.DoctorReservationDateId);
+            if (reservationDate == null)
+            {
+                TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+                return RedirectToAction(nameof(ListOfReservation));
+            }
+
+            #endregion
+
+            #region Get Reservation Tariff 
+
+            if (reservationDateTime.DoctorReservationType == null)
+            {
+                TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+                return RedirectToAction(nameof(ListOfReservation));
+            }
+
+            var reservationTariff = await _doctorService.ProcessReservationTariffForPayFromUser(reservationDate.UserId, User.GetUserId(), reservationDateTime.DoctorReservationType.Value);
+            if (reservationTariff == null)
+            {
+                TempData[ErrorMessage] = "لطفا با پشتیبانی تماس بگیرید";
+                return RedirectToAction(nameof(ListOfReservation));
+            }
+
+            if (reservationTariff == 0)
+            {
+                TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+                return RedirectToAction("DoctorReservationWith0Price", "FocalPoint", new { area= "", id = reservationDateTime.Id });
+            }
+
+            #endregion
+
+            #region Online Payment
+
+            return RedirectToAction("PaymentMethod", "Payment", new
+            {
+                area = "",
+                gatewayType = GatewayType.Zarinpal,
+                amount = reservationTariff,
+                description = "شارژ حساب کاربری برای پرداخت هزینه ی دریافت نوبت",
+                returURL = $"{PathTools.SiteAddress}/DoctorReservationPayment/" + reservationDateTime.Id,
+                requestId = reservationDateTime.Id,
+            });
+
+            #endregion
+        }
+
+        #endregion
+
 
         #endregion
     }

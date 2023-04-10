@@ -1,8 +1,10 @@
-﻿using DoctorFAM.Domain.Entities.Doctors;
+﻿using DoctorFAM.Domain.Entities.DoctorReservation;
+using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.FamilyDoctor.ParsaSystem;
 using DoctorFAM.Domain.Entities.FamilyDoctor.VIPSystem;
 using DoctorFAM.Domain.Entities.Interest;
 using DoctorFAM.Domain.Entities.Organization;
+using DoctorFAM.Domain.Enums.DoctorReservation;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.Doctors;
 using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo;
@@ -145,6 +147,15 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         Task<DoctorsInfo?> GetDoctorsInformationByUserId(ulong userId);
 
+        //Get Doctor Reservation Tariff By User Id 
+        Task<DoctorsReservationTariffs?> GetDoctorReservationTariffByDoctorUserId(ulong doctorUserId);
+
+        //Fill Doctors Reservation Tariff Doctor Panel Side ViewModel
+        Task<DoctorsReservationTariffDoctorPanelSideViewModel?> FillDoctorsReservationTariffDoctorPanelSideViewModel(ulong userId);
+
+        //Add Or Edit Doctor Reservation Tariff Doctor Side 
+        Task<bool> AddOrEditDoctorReservationTariffDoctorSide(DoctorsReservationTariffDoctorPanelSideViewModel inCommingModel);
+
         Task<ManageDoctorsInfoViewModel?> FillManageDoctorsInfoViewModel(ulong userId);
 
         Task<AddOrEditDoctorInfoResult> AddOrEditDoctorInfoDoctorsPanel(ManageDoctorsInfoViewModel model, IFormFile? MediacalFile, IFormFile? UserAvatar);
@@ -265,6 +276,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Get Doctr Name With PArt Of Name
         Task<List<string>?> GetListOfDoctorsName(string doctorNamePart);
+
+        //Process Reservation Tariff For Pay From User
+        Task<int?> ProcessReservationTariffForPayFromUser(ulong doctorUserId, ulong userId, DoctorReservationType DoctorReservationType);
 
         #endregion
 

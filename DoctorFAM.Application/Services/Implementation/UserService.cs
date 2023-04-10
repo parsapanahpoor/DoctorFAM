@@ -179,6 +179,19 @@ namespace DoctorFAM.Application.Services.Implementation
                 .FirstOrDefaultAsync(s => s.Id == userId && !s.IsDelete);
         }
 
+        //Get User Avatar Name By User Id
+        public async Task<string?> GetUserImageNameByUserId(ulong userId)
+        {
+            #region Get User By Id 
+
+            var user = await GetUserById(userId);
+            if (user is null) return null;
+
+            #endregion
+
+            return user.Avatar;
+        }
+
         public async Task<RegisterUserResult> RegisterUser(RegisterUserViewModel register)
         {
             //Fix Email Format
@@ -499,6 +512,11 @@ namespace DoctorFAM.Application.Services.Implementation
 
         #region Site Side
 
+        //Get Username By User ID
+        public async Task<string?> GetUsernameByUserID(ulong userId)
+        {
+            return await _userRepository.GetUsernameByUserID(userId);
+        }
 
         //Is Exist Any Organization With Waiting State From Current User
         public async Task<bool> IsExistAnyCooperationRequestWithWaitingStateFromCurrentUser(ulong userId)

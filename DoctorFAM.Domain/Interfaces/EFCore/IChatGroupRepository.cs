@@ -13,6 +13,15 @@ namespace DoctorFAM.Domain.Interfaces.EFCore
     {
         #region Chat Room Area
 
+        //Get Group By User Id And receiver Id
+        Task<ChatGroup?> GetGroupByUserIdAndreceiverId(ulong userId, ulong receiverId);
+
+        //Get Chat Group By Group Id 
+        Task<List<ChatViewModel>> GetChatGroup(ulong groupId);
+
+        //Get Groups User Ids For Send Notification 
+        Task<List<string>> GetUserIds(ulong groupId);
+
         //Add Chat Message To The Data Base 
         Task AddChatMessageToTheDataBase(Chat chat);
 
@@ -48,6 +57,9 @@ namespace DoctorFAM.Domain.Interfaces.EFCore
 
         //Join User To The Chat Group 
         Task JoinUserToTheChatGroup(ChatGroupMember member);
+
+        //Join User To The Chat Group 
+        Task JoinUserToTheChatGroup(List<ChatGroupMember> members);
 
         #endregion
     }

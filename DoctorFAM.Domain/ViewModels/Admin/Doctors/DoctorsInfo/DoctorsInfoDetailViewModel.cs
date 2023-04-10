@@ -69,6 +69,14 @@ namespace DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo
 
         public List<Entities.Speciality.Speciality>? DoctorsSelectedSpecialities { get; set; }
 
+        public int? InPersonReservationTariffForDoctorPopulationCovered { get; set; }
+
+        public int? OnlineReservationTariffForDoctorPopulationCovered { get; set; }
+
+        public int? InPersonReservationTariffForAnonymousPersons { get; set; }
+
+        public int? OnlineReservationTariffForAnonymousPersons { get; set; }
+
         #endregion
     }
 

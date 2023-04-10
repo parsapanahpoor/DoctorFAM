@@ -2,6 +2,7 @@
 using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Consultant;
+using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.FamilyDoctor.ParsaSystem;
 using DoctorFAM.Domain.Entities.FamilyDoctor.VIPSystem;
@@ -461,6 +462,26 @@ namespace DoctorFAM.Data.Repository
             #endregion
 
             return model;
+        }
+
+        //Get Doctor Reservation Tariff By User Id 
+        public async Task<DoctorsReservationTariffs?> GetDoctorReservationTariffByDoctorUserId(ulong doctorUserId)
+        {
+            return await _context.DoctorsReservationTariffs.FirstOrDefaultAsync(p=> !p.IsDelete && p.DoctorUserId == doctorUserId);
+        }
+
+        //Update Doctor Reservation Tariffs
+        public async Task UpdateDoctorReservationTariffs(DoctorsReservationTariffs reservationTariffs)
+        {
+            _context.DoctorsReservationTariffs.Update(reservationTariffs);
+            await _context.SaveChangesAsync();
+        }
+
+        //Add Doctors Reservation Tariff To The Data Base 
+        public async Task AddDoctorsReservationTariffToTheDataBase(DoctorsReservationTariffs reservationTariffs)
+        {
+            await _context.DoctorsReservationTariffs.AddAsync(reservationTariffs);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<DoctorsInfo?> GetDoctorsInformationByUserId(ulong userId)

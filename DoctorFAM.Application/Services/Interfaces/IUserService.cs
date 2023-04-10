@@ -43,6 +43,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         Task<User?> GetUserById(ulong userId);
 
+        //Get User Avatar Name By User Id
+        Task<string?> GetUserImageNameByUserId(ulong userId);
+
         Task<RegisterUserResult> RegisterUser(RegisterUserViewModel register);
 
         Task<bool> IsExistsUserByEmail(string email);
@@ -65,6 +68,9 @@ namespace DoctorFAM.Application.Services.Interfaces
         #endregion
 
         #region Site Side
+
+        //Get Username By User ID
+        Task<string?> GetUsernameByUserID(ulong userId);
 
         //Is Exist Any Organization With Waiting State From Current User
         Task<bool> IsExistAnyCooperationRequestWithWaitingStateFromCurrentUser(ulong userId);

@@ -43,6 +43,10 @@ using DoctorFAM.Domain.ViewModels.Admin.Doctors;
 using Microsoft.EntityFrameworkCore;
 using DoctorFAM.Domain.Interfaces.Dapper;
 using DoctorFAM.Domain.ViewModels.Admin.Doctors.UsersInDoctorPopulationCovered;
+using DoctorFAM.Domain.Entities.DoctorReservation;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
+using System.Formats.Tar;
+using DoctorFAM.Domain.Enums.DoctorReservation;
 
 namespace DoctorFAM.Application.Services.Implementation
 {
@@ -65,7 +69,7 @@ namespace DoctorFAM.Application.Services.Implementation
         public DoctorsService(IDoctorsRepository doctorRepository, IUserService userService, IOrganizationService organizationService,
                                 IWorkAddressService workAddress, ILocationRepository locationRepository
                                     , IReservationService reservationService, ISMSService smsservice, IResumeService resumeService, ISpecialityRepository specialityRepository
-                                        , IUserRepositoryDapper userRepositoryDapper , IFamilyDoctorRepository familyDoctorService)
+                                        , IUserRepositoryDapper userRepositoryDapper, IFamilyDoctorRepository familyDoctorService)
         {
             _doctorRepository = doctorRepository;
             _userService = userService;
@@ -1511,6 +1515,145 @@ namespace DoctorFAM.Application.Services.Implementation
             return await _doctorRepository.GetDoctorsInformationByUserId(userId);
         }
 
+        //Get Doctor Reservation Tariff By User Id 
+        public async Task<DoctorsReservationTariffs?> GetDoctorReservationTariffByDoctorUserId(ulong doctorUserId)
+        {
+            return await _doctorRepository.GetDoctorReservationTariffByDoctorUserId(doctorUserId);
+        }
+
+        //Fill Doctors Reservation Tariff Doctor Panel Side ViewModel
+        public async Task<DoctorsReservationTariffDoctorPanelSideViewModel?> FillDoctorsReservationTariffDoctorPanelSideViewModel(ulong userId)
+        {
+            #region Check Is User Exist 
+
+            var user = await _userService.GetUserById(userId);
+
+            if (user == null) return null;
+
+            #endregion
+
+            #region Get Current Doctor Office
+
+            var doctorOffice = await _organizationService.GetDoctorOrganizationByUserId(userId);
+            if (doctorOffice == null) return null;
+            if (doctorOffice.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice) return null;
+
+            #endregion
+
+            #region Fill Return Model
+
+            //Get Doctor Reservation Tariff
+            var tariffs = await GetDoctorReservationTariffByDoctorUserId(doctorOffice.OwnerId);
+
+            #region For The First Time
+
+            if (tariffs == null)
+            {
+                DoctorsReservationTariffDoctorPanelSideViewModel returnModel = new DoctorsReservationTariffDoctorPanelSideViewModel()
+                {
+                    DoctorUserId = doctorOffice.OwnerId
+                };
+
+                return returnModel;
+            }
+
+            #endregion
+
+            #region After First Time 
+
+            if (tariffs != null)
+            {
+                DoctorsReservationTariffDoctorPanelSideViewModel returnModel = new DoctorsReservationTariffDoctorPanelSideViewModel()
+                {
+                    DoctorUserId = doctorOffice.OwnerId,
+                    InPersonReservationTariffForAnonymousPersons = tariffs.InPersonReservationTariffForAnonymousPersons,
+                    InPersonReservationTariffForDoctorPopulationCovered = tariffs.InPersonReservationTariffForDoctorPopulationCovered,
+                    OnlineReservationTariffForAnonymousPersons = tariffs.OnlineReservationTariffForAnonymousPersons,
+                    OnlineReservationTariffForDoctorPopulationCovered = tariffs.OnlineReservationTariffForDoctorPopulationCovered
+                };
+
+                return returnModel;
+            }
+
+            #endregion
+
+            #endregion
+
+            return null;
+        }
+
+        //Add Or Edit Doctor Reservation Tariff Doctor Side 
+        public async Task<bool> AddOrEditDoctorReservationTariffDoctorSide(DoctorsReservationTariffDoctorPanelSideViewModel inCommingModel)
+        {
+            #region Check Is User Exist 
+
+            var user = await _userService.GetUserById(inCommingModel.DoctorUserId);
+
+            if (user == null) return false;
+
+            #endregion
+
+            #region Get Current Doctor Office
+
+            var doctorOffice = await _organizationService.GetDoctorOrganizationByUserId(inCommingModel.DoctorUserId);
+            if (doctorOffice == null) return false;
+            if (doctorOffice.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice) return false;
+
+            #endregion
+
+            #region Add Or Edit Doctor Reservation Tariff
+
+            //Get Doctor Reservation Tariff
+            var tariffs = await GetDoctorReservationTariffByDoctorUserId(doctorOffice.OwnerId);
+
+            #region Edit Doctor Organization State 
+
+            doctorOffice.OrganizationInfoState = OrganizationInfoState.WatingForConfirm;
+
+            await _organizationService.UpdateOrganization(doctorOffice);
+
+            #endregion
+
+            #region Add For The First Time
+
+            if (tariffs == null)
+            {
+                //Create Instance
+                DoctorsReservationTariffs model = new DoctorsReservationTariffs()
+                {
+                    DoctorUserId = doctorOffice.OwnerId,
+                    InPersonReservationTariffForAnonymousPersons = inCommingModel.InPersonReservationTariffForAnonymousPersons,
+                    InPersonReservationTariffForDoctorPopulationCovered = inCommingModel.InPersonReservationTariffForDoctorPopulationCovered,
+                    OnlineReservationTariffForAnonymousPersons = inCommingModel.OnlineReservationTariffForAnonymousPersons,
+                    OnlineReservationTariffForDoctorPopulationCovered = inCommingModel.OnlineReservationTariffForDoctorPopulationCovered
+                };
+
+                //Add Data To The Data Base 
+                await _doctorRepository.AddDoctorsReservationTariffToTheDataBase(model);
+            }
+
+            #endregion
+
+            #region Edit Reservation Tarrif 
+
+            if (tariffs != null)
+            {
+                tariffs.InPersonReservationTariffForAnonymousPersons = inCommingModel.InPersonReservationTariffForAnonymousPersons;
+                tariffs.InPersonReservationTariffForDoctorPopulationCovered = inCommingModel.InPersonReservationTariffForDoctorPopulationCovered;
+                tariffs.OnlineReservationTariffForAnonymousPersons = inCommingModel.OnlineReservationTariffForAnonymousPersons;
+                tariffs.OnlineReservationTariffForDoctorPopulationCovered = inCommingModel.OnlineReservationTariffForDoctorPopulationCovered;
+
+                //Update Doctor Reservation Tariffs
+                await _doctorRepository.UpdateDoctorReservationTariffs(tariffs);
+            }
+
+            #endregion
+
+            #endregion
+
+            return true;
+        }
+
         public async Task<ManageDoctorsInfoViewModel?> FillManageDoctorsInfoViewModel(ulong userId)
         {
             #region Check Is User Exist 
@@ -2354,7 +2497,7 @@ namespace DoctorFAM.Application.Services.Implementation
             model.CountOfAllUsers = usersWithoutDoctors.Count();
 
             //Count Of Accepted Family Doctor Requests
-            model.CountOfUsersWithDoctorFamily = await _familyDoctorService.CountOfAcceptedFamilyDoctorRequests(); 
+            model.CountOfUsersWithDoctorFamily = await _familyDoctorService.CountOfAcceptedFamilyDoctorRequests();
 
             //Count Of Awaiting Family Doctor Requests
             model.CountOfUsersWaitingForAcceptFromFamilyDoctors = await _familyDoctorService.CountOfAwaitingFamilyDoctorRequests();
@@ -2526,7 +2669,7 @@ namespace DoctorFAM.Application.Services.Implementation
             model.CountOfNewRegisterDoctors = await CountOfRegisterDoctors();
 
             //List Of Deleted Doctors
-            model.CountOfDeletedDoctors= await CountOfDeletedDoctors();
+            model.CountOfDeletedDoctors = await CountOfDeletedDoctors();
 
             #endregion
 
@@ -2659,6 +2802,27 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #endregion
 
+            #region Get Doctor Reservation Tariff By doctor UserId
+
+            var reservationTariff = await GetDoctorReservationTariffByDoctorUserId(doctorOffice.OwnerId);
+
+            if (reservationTariff != null)
+            {
+                model.InPersonReservationTariffForDoctorPopulationCovered = reservationTariff.InPersonReservationTariffForDoctorPopulationCovered;
+                model.OnlineReservationTariffForDoctorPopulationCovered = reservationTariff.OnlineReservationTariffForDoctorPopulationCovered;
+                model.InPersonReservationTariffForAnonymousPersons = reservationTariff.InPersonReservationTariffForAnonymousPersons;
+                model.OnlineReservationTariffForAnonymousPersons = reservationTariff.OnlineReservationTariffForAnonymousPersons;
+            }
+            else
+            {
+                model.InPersonReservationTariffForDoctorPopulationCovered = null;
+                model.OnlineReservationTariffForDoctorPopulationCovered = null;
+                model.InPersonReservationTariffForAnonymousPersons = null;
+                model.OnlineReservationTariffForAnonymousPersons = null;
+            }
+
+            #endregion
+
             return model;
         }
 
@@ -2787,6 +2951,23 @@ namespace DoctorFAM.Application.Services.Implementation
             #region Update Method
 
             await _doctorRepository.UpdateDoctorsInfo(info);
+
+            #endregion
+
+            #region Edit Doctor Reservation Tariff
+
+            //Get Doctor Reservation Tariff
+            var reservation = await GetDoctorReservationTariffByDoctorUserId(doctorOffice.OwnerId);
+            if (reservation != null)
+            {
+                reservation.InPersonReservationTariffForDoctorPopulationCovered = model.InPersonReservationTariffForDoctorPopulationCovered.Value;
+                reservation.OnlineReservationTariffForDoctorPopulationCovered = model.OnlineReservationTariffForDoctorPopulationCovered.Value;
+                reservation.OnlineReservationTariffForAnonymousPersons = model.OnlineReservationTariffForAnonymousPersons.Value;
+                reservation.InPersonReservationTariffForAnonymousPersons = model.InPersonReservationTariffForAnonymousPersons.Value;
+
+                //Update Reservation Data 
+                await _doctorRepository.UpdateDoctorReservationTariffs(reservation);
+            }
 
             #endregion
 
@@ -3199,6 +3380,72 @@ namespace DoctorFAM.Application.Services.Implementation
             }
 
             return returnModel;
+        }
+
+        //Process Reservation Tariff For Pay From User
+        public async Task<int?> ProcessReservationTariffForPayFromUser(ulong doctorUserId, ulong userId, DoctorReservationType DoctorReservationType)
+        {
+            #region Get User By User Id
+
+            var user = await _userService.GetUserById(userId);
+            if (user == null) return null;
+
+            #endregion
+
+            #region Get Current Doctor Office
+
+            var doctorOffice = await _organizationService.GetDoctorOrganizationByUserId(doctorUserId);
+            if (doctorOffice == null) return null;
+            if (doctorOffice.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice ||
+                doctorOffice.OrganizationInfoState != OrganizationInfoState.Accepted) return null;
+
+            #endregion
+
+            #region Get Doctor Reservation Tariff
+
+            var reservationTariff = await GetDoctorReservationTariffByDoctorUserId(doctorOffice.OwnerId);
+            if (reservationTariff == null) return null;
+
+            #endregion
+
+            #region Check Doctor Population Covered 
+
+            var populationCovered = await _familyDoctorService.GetUserSelectedFamilyDoctorByUserAndDoctorId(userId, doctorOffice.OwnerId) ;
+
+            //If User Is In Doctor Population Covered 
+            if (populationCovered != null && populationCovered.IsUserInDoctorPopulationCoveredOutOfDoctorFAM)
+            {
+                //If Reservation Type Is In Person 
+                if (DoctorReservationType == DoctorReservationType.Reserved)
+                {
+                    return reservationTariff.InPersonReservationTariffForDoctorPopulationCovered;
+                }
+
+                //If Reservation Type Is Online 
+                if (DoctorReservationType == DoctorReservationType.Onile)
+                {
+                    return reservationTariff.OnlineReservationTariffForDoctorPopulationCovered;
+                }
+            }
+
+            else
+            {
+                //If Reservation Type Is In Person
+                if (DoctorReservationType == DoctorReservationType.Reserved)
+                {
+                    return reservationTariff.InPersonReservationTariffForAnonymousPersons;
+                }
+
+                //If Reservation Type Is Online 
+                if (DoctorReservationType == DoctorReservationType.Onile)
+                {
+                    return reservationTariff.OnlineReservationTariffForAnonymousPersons;
+                }
+            }
+
+            #endregion
+
+            return null;
         }
 
         #endregion

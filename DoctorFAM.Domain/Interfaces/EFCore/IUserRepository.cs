@@ -13,6 +13,9 @@ namespace DoctorFAM.Domain.Interfaces
     {
         #region Site Side
 
+        //Get Username By User ID
+        Task<string?> GetUsernameByUserID(ulong userId);
+
         //Get User By Username
         Task<User?> GetUserByUsername(string userName);
 

@@ -1,4 +1,5 @@
 ﻿using DoctorFAM.Data.DbContext;
+using DoctorFAM.Data.Migrations;
 using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.FamilyDoctor;
@@ -27,6 +28,17 @@ namespace DoctorFAM.Data.Repository
         public FamilyDoctorRepository(DoctorFAMDbContext context)
         {
             _context = context;
+        }
+
+        #endregion
+
+        #region Site Side
+
+        //Get User Selected Family Doctor By User And Doctor Id 
+        public async Task<UserSelectedFamilyDoctor?> GetUserSelectedFamilyDoctorByUserAndDoctorId(ulong userId , ulong doctorUserId)
+        {
+            return await _context.UserSelectedFamilyDoctor.FirstOrDefaultAsync(p => !p.IsDelete && p.PatientId == userId && p.DoctorId == doctorUserId
+                                                                               && p.FamilyDoctorRequestState == FamilyDoctorRequestState.Accepted);
         }
 
         #endregion

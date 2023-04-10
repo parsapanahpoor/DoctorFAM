@@ -1092,8 +1092,11 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #region Get Reservation Tariff
 
-            var reservationTariff = await _siteSettingService.GetReservationTariff();
-            if (reservationTariff == 0) return false;
+            var wallet = await _walletService.GetWalletTransactionByReservationDateTimeId(reservationTimeId);
+            if (wallet == null)
+            {
+                return false;
+            }
 
             #endregion
 
@@ -1118,7 +1121,7 @@ namespace DoctorFAM.Application.Services.Implementation
                         Description = "بازگشت هزینه ی نوبت دریافت شده به علت لغو نوبت .",
                         GatewayType = Domain.Entities.Wallet.GatewayType.System,
                         PaymentType = Domain.Entities.Wallet.PaymentType.ChargeWallet,
-                        Price = reservationTariff,
+                        Price = wallet.Price,
                         TransactionType = Domain.Entities.Wallet.TransactionType.Deposit,
                         UserId = patient.Id
                     };
@@ -1191,7 +1194,30 @@ namespace DoctorFAM.Application.Services.Implementation
             return true;
         }
 
-        public async Task<bool> PayReservationTariff(ulong userId, int price)
+        public async Task<bool> ChargeUserWalletForZeroReservationPrice(ulong userId, int price, ulong? requestId)
+        {
+            if (!await _userService.IsExistUserById(userId))
+            {
+                return false;
+            }
+
+            var wallet = new Wallet
+            {
+                UserId = userId,
+                TransactionType = TransactionType.Deposit,
+                GatewayType = GatewayType.Zarinpal,
+                PaymentType = PaymentType.ChargeWallet,
+                Price = price,
+                Description = "شارژ حساب کاربری برای پرداخت هزینه ی دریافت نوبت",
+                IsFinally = true,
+                RequestId = requestId
+            };
+
+            await _walletRepository.CreateWalletAsync(wallet);
+            return true;
+        }
+
+        public async Task<bool> PayReservationTariff(ulong userId, int price, ulong? requestId)
         {
             if (!await _userService.IsExistUserById(userId))
             {
@@ -1206,7 +1232,8 @@ namespace DoctorFAM.Application.Services.Implementation
                 PaymentType = PaymentType.Reservation,
                 Price = price,
                 Description = "پرداخت مبلغ دریافت نوبت",
-                IsFinally = true
+                IsFinally = true,
+                RequestId = requestId
             };
 
             await _walletRepository.CreateWalletAsync(wallet);

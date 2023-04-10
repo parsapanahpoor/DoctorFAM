@@ -68,5 +68,12 @@ namespace DoctorFAM.Domain.Interfaces
         Task<UserSelectedFamilyDoctor?> GetUserSelectedFamilyDoctorByRequestIdWithDoctorAndPatientInformation(ulong requestId);
 
         #endregion
+
+        #region Site Side 
+
+        //Get User Selected Family Doctor By User And Doctor Id 
+        Task<UserSelectedFamilyDoctor?> GetUserSelectedFamilyDoctorByUserAndDoctorId(ulong userId, ulong doctorUserId);
+
+        #endregion
     }
 }

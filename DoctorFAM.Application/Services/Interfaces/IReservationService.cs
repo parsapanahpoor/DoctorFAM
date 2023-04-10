@@ -134,7 +134,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         Task<bool> ChargeUserWallet(ulong userId, int price);
 
-        Task<bool> PayReservationTariff(ulong userId, int price);
+        Task<bool> PayReservationTariff(ulong userId, int price , ulong? requestId);
+
+        Task<bool> ChargeUserWalletForZeroReservationPrice(ulong userId, int price, ulong? requestId);
 
         //Get Reservation Date By Reservation Date And User Id
         Task<DoctorReservationDate?> GetDoctorReservationDateByReservationDateAndUserId(DateTime reservationDate, ulong userId);

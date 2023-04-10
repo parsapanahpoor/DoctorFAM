@@ -12,6 +12,12 @@ namespace DoctorFAM.Application.Services.Interfaces
     {
         #region Chat Room Area 
 
+        //Join To The Private Group
+        Task<JoinUserToTheGroupViewModel?> JoinToThePrivateGroup(ulong userId, ulong receiverId);
+
+        //Get Groups User Ids For Send Notification 
+        Task<List<string>> GetUserIds(ulong groupId);
+
         //Send Message 
         Task SendMessage(SendMessageViewModel chat);
 
@@ -41,6 +47,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Join To The Group 
         Task JoinToTheGroup(ulong userId, ulong groupId);
+
+        //Join User To The Chat Group 
+        Task JoinUserToTheChatGroup(List<ChatGroupMember> members);
 
         #endregion
     }
