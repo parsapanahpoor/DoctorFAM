@@ -11,6 +11,7 @@ using DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment;
 using DoctorFAM.Domain.ViewModels.Supporter.Reservation;
 using DoctorFAM.Domain.ViewModels.UserPanel.Reservation;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -390,62 +391,87 @@ namespace DoctorFAM.Data.Repository
 
             #endregion
 
-            var query = _context.DoctorReservationDateTimes
-                .Include(p => p.DoctorReservationDate)
-                .Where(s => !s.IsDelete && s.DoctorReservationDate.UserId == organization.OwnerId
-                                && s.DoctorReservationDateId == filter.ReservationDateId && s.DoctorReservationState != DoctorReservationState.Canceled)
-                .OrderBy(s => s.StartTime)
-                .AsQueryable();
+            #region Create Instance
 
-            #region Status
-
-            switch (filter.FilterRequestOrder)
-            {
-                case FilterRequestOrder.CreateDate_Des:
-                    break;
-                case FilterRequestOrder.CreateDate_Asc:
-                    query = query.OrderBy(p => p.CreateDate);
-                    break;
-            }
-
-            switch (filter.FilterDoctorReservationState)
-            {
-                case FilterDoctorReservationState.All:
-                    break;
-                case FilterDoctorReservationState.Reserved:
-                    query = query.Where(p => p.DoctorReservationState == DoctorReservationState.Reserved);
-                    break;
-                case FilterDoctorReservationState.NotReserved:
-                    query = query.Where(p => p.DoctorReservationState == DoctorReservationState.NotReserved);
-                    break;
-                case FilterDoctorReservationState.WaitingForComplete:
-                    query = query.Where(p => p.DoctorReservationState == DoctorReservationState.WaitingForComplete);
-                    break;
-            }
-
-            switch (filter.FilterDoctorReservationType)
-            {
-                case FilterDoctorReservationType.All:
-                    break;
-                case FilterDoctorReservationType.Onile:
-                    query = query.Where(p => p.DoctorReservationType == DoctorReservationType.Onile);
-                    break;
-                case FilterDoctorReservationType.Reserved:
-                    query = query.Where(p => p.DoctorReservationType == DoctorReservationType.Reserved);
-                    break;
-            }
+            FilterReservationDateTimeDoctorPAnel model = new FilterReservationDateTimeDoctorPAnel();
 
             #endregion
 
-            #region Filter
+            #region Check Doctor Reservation Date 
 
+            var resOfDoctorReservationDate = await _context.DoctorReservationDates.AnyAsync(p => !p.IsDelete && p.UserId == organization.OwnerId);
+            if (resOfDoctorReservationDate == false) return null;
 
+            model.ReservationDateId = filter.ReservationDateId;
 
             #endregion
 
-            await filter.Paging(query);
+            #region Get Doctor Reservation Date Time
 
-            return filter;
+            var reservationDateTimes = await _context.DoctorReservationDateTimes
+                                                .Where(s => !s.IsDelete && s.DoctorReservationDateId == filter.ReservationDateId
+                                                            && s.DoctorReservationState != DoctorReservationState.Canceled)
+                                                .OrderBy(s => s.StartTime)
+                                                .Select(p => new DoctorReservationDateTimeDoctorSideViewModel()
+                                                {
+                                                    Id = p.Id,
+                                                    DoctorBooking = p.DoctorBooking,
+                                                    DoctorReservationState = p.DoctorReservationState,
+                                                    DoctorReservationType = p.DoctorReservationType,
+                                                    EndTime = p.EndTime,
+                                                    PatientId = p.PatientId,
+                                                    StartTime = p.StartTime,
+                                                }).ToListAsync();
+            #endregion
+
+            #region Fill Return Model 
+
+            List<DoctorReservationDateTimeDoctorSideViewModel> sampleModel = new List<DoctorReservationDateTimeDoctorSideViewModel>();
+
+            if (reservationDateTimes != null && reservationDateTimes.Any())
+            {
+                foreach (var item in reservationDateTimes)
+                {
+                    if (item.PatientId.HasValue)
+                    {
+                        if (item.PatientId.Value == organization.OwnerId && item.DoctorBooking)
+                        {
+                            item.PatientDetail = await _context.DoctorPersonalBooking.Where(p => !p.IsDelete && p.DoctorReservationDateTimeId == item.Id)
+                                                                                      .Select(p => new DoctorReservationDateTimePatientDetailDoctorSideViewModel()
+                                                                                      {
+                                                                                          PatientMobile = p.Mobile,
+                                                                                          PatientUsername = $"{p.FirstName} {p.LastName}"
+                                                                                      }).FirstOrDefaultAsync();
+
+                            //Add To Return Model 
+                            sampleModel.Add(item);
+                        }
+                        else
+                        {
+                            item.PatientDetail = await _context.Users.Where(p => !p.IsDelete && p.Id == item.PatientId.Value)
+                                                                                   .Select(p => new DoctorReservationDateTimePatientDetailDoctorSideViewModel()
+                                                                                   {
+                                                                                       PatientMobile = p.Mobile,
+                                                                                       PatientUsername = (p.FirstName != null && p.LastName != null) ? p.FirstName + p.LastName : "عدم دسترسی"
+                                                                                   }).FirstOrDefaultAsync();
+
+                            //Add To Return Model 
+                            sampleModel.Add(item);
+                        }
+                    }
+                    else
+                    {
+                        //Add To Return Model 
+                        sampleModel.Add(item);
+                    }
+                }
+            }
+
+            model.DoctorReservationDateTimes = sampleModel;
+
+            #endregion
+
+            return model;
         }
 
         public async Task<DoctorReservationDate?> GetReservationDateById(ulong reservationDateId)
@@ -473,7 +499,7 @@ namespace DoctorFAM.Data.Repository
         public async Task<DoctorReservationDateTime?> GetDoctorReservationDateTimeByIncludeRelationWithDoctorBooking(ulong reservationDateTimeId)
         {
             return await _context.DoctorReservationDateTimes.Include(p => p.DoctorPersonalBooking)
-                                                               .Include(p=> p.DoctorReservationDate)
+                                                               .Include(p => p.DoctorReservationDate)
                                                                 .FirstOrDefaultAsync(p => !p.IsDelete && p.Id == reservationDateTimeId);
         }
 
@@ -516,7 +542,7 @@ namespace DoctorFAM.Data.Repository
                 .ThenInclude(p => p.User)
                 .Where(p => !p.IsDelete && p.PatientId == filter.UserId)
                 .OrderByDescending(s => s.DoctorReservationDate.ReservationDate)
-                .ThenByDescending(s=> s.Id)
+                .ThenByDescending(s => s.Id)
                 .AsQueryable();
 
             #region Status
