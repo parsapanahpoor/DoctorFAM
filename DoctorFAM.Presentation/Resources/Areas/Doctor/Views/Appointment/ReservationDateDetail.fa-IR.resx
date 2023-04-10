@@ -118,16 +118,16 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Add New Date Time" xml:space="preserve">
-    <value>افزودن دستی </value>
+    <value>اضافه کردن نوبت (دستی)</value>
   </data>
   <data name="Add Time With System" xml:space="preserve">
-    <value>افزودن کامپیوتری</value>
+    <value>اضافه کردن نوبت (کامپیوتری)</value>
   </data>
   <data name="Delete Filter" xml:space="preserve">
     <value>حذف فیلتر</value>
   </data>
   <data name="Doctor Booking" xml:space="preserve">
-    <value>رزرو مطب</value>
+    <value>توسط منشی</value>
   </data>
   <data name="End Date" xml:space="preserve">
     <value>پایان</value>
@@ -139,7 +139,7 @@
     <value>مراجعه ی حضوری</value>
   </data>
   <data name="Manage Reservation Date Time" xml:space="preserve">
-    <value>مدیریت تایم های نوبت دهی</value>
+    <value>مدیریت زمانهای نوبت دهی</value>
   </data>
   <data name="Not Reserved Yet" xml:space="preserve">
     <value>رزرو نشده</value>
@@ -163,7 +163,7 @@
     <value>جزییات نوبت دهی</value>
   </data>
   <data name="Reservation Portal" xml:space="preserve">
-    <value>درگاه رزرو</value>
+    <value>نحوه اخذ نوبت(سامانه ای- منشی) </value>
   </data>
   <data name="Reserved" xml:space="preserve">
     <value>رزرو شده </value>
@@ -175,12 +175,12 @@
     <value>وضعیت</value>
   </data>
   <data name="Type" xml:space="preserve">
-    <value>نوع</value>
+    <value>نوع(حضوری-آنلاین)</value>
   </data>
   <data name="Waiting For Complete" xml:space="preserve">
     <value>منتظر تکمیل</value>
   </data>
   <data name="Web Site" xml:space="preserve">
-    <value>وب سایت</value>
+    <value>سامانه ای</value>
   </data>
 </root>

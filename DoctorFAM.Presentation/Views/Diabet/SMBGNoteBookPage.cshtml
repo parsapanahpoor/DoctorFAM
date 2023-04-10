@@ -1,7 +1,7 @@
 ﻿@model DoctorFAM.Domain.ViewModels.Site.Diabet.SMBG_NoteBook.IndexSMBGPageViewModel
 
 @{
-    ViewData["Title"] = "دفتر مجازی دیابت";
+    ViewData["Title"] = "دفتر مجازی ثبت قند روزانه";
 
     List<DoctorFAM.Domain.Entities.Drugs.Insulin> insulins = ViewBag.Insulin as List<DoctorFAM.Domain.Entities.Drugs.Insulin>;
 }
@@ -21,7 +21,8 @@
         </div>
         <div class="col-md-6   text-center  text-align-justify M-5 P-5">
 
-            <h2 class="text-center  text-align-justify  ">   دفتر مجازی دیابت</h2>
+            <h2 class="text-center  text-align-justify  ">   دفتر مجازی </h2>
+            <h4 class="text-center  text-align-justify  ">   ثبت قند روزانه </h4>
         </div>
         <div class="col-md-3 "></div>
     </div>
@@ -145,10 +146,10 @@
                         <div class="row text-center  text-align-justify mt-2 mb-3">
 
                             <div class="col-md-3 text-center">
-                                <div class=" text-center btn2 m-1" style="background: #f6d516  !important; border-radius:8px;">
+                                <div class=" text-center btn2 m-1" style="background: #009100  !important; border-radius:8px;">
 
                                     <a asp-action="CreateUsageOfInsulin" asp-controller="Diabet" asp-area="" asp-route-timeOfUsageInsulinState="0">
-                                        <span class="spCol"> قند قبل و بعد از </span>
+                                        <span class="spCol"> ثبت قند قبل و بعد از </span>
                                         <p class=" text-center  m-3" style="color:white !important; font-size:20px; font-weight:700;">صبحانه</p>
                                     </a>
                                 </div>
@@ -157,7 +158,7 @@
                             <div class="col-md-3 text-center">
                                 <div class=" text-center btn2 m-1" style="background: #ff6a00 !important; border-radius:8px;">
                                     <a asp-action="CreateUsageOfInsulin" asp-controller="Diabet" asp-area="" asp-route-timeOfUsageInsulinState="1">
-                                        <span class="spCol"> قند قبل و بعد از </span>
+                                        <span class="spCol"> ثبت قند قبل و بعد از </span>
                                         <p class=" text-center m-3 " style="color:white !important; font-size:20px; font-weight:700;">نهار</p>
                                     </a>
                                 </div>
@@ -166,7 +167,7 @@
                             <div class="col-md-3 text-center">
                                 <div class=" text-center btn2 m-1" style="border:1px solid #00e5ff ; border-radius:8px;">
                                     <a asp-action="CreateUsageOfInsulin" asp-controller="Diabet" asp-area="" asp-route-timeOfUsageInsulinState="2">
-                                        <span class="spCol"> قند قبل و بعد از </span>
+                                        <span class="spCol"> ثبت قند قبل و بعد از </span>
                                         <p class=" text-center m-3 " style="color:white !important; font-size:20px; font-weight:700;"> شام</p>
                                     </a>
                                 </div>
@@ -175,7 +176,7 @@
                             <div class="col-md-3 text-center">
                                 <div class=" text-center btn2 m-1" style="background: #424881    !important; border-radius:8px;">
                                     <a asp-action="CreateUsageOfInsulin" asp-controller="Diabet" asp-area="" asp-route-timeOfUsageInsulinState="3">
-                                        <span class="spCol"> 3 بامداد </span>
+                                        <span class="spCol"> ثبت قند ساعت 3 بامداد </span>
                                         <p class=" text-center m-3 " style="color:white !important; font-size:20px; font-weight:700;">نیمه شب</p>
                                     </a>
                                 </div>
@@ -186,7 +187,7 @@
                         @if (Model != null)
                         {
                             @*Show User Insulin Usage History*@
-                            <partial name="_ShowUserInsulinUsageHistory" model="@Model.ShowUserInsulinUsageHistory" />
+                            <partial name="_SMBGTable" model="@Model.ShowUserInsulinUsageHistory" />
                         }
 
                     </div>

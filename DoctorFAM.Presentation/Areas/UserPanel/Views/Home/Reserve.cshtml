@@ -1,0 +1,59 @@
+﻿@{
+    ViewData["Title"] = "مدیریت نوبتها";
+}
+
+
+
+@section Breadcrumb
+    {
+
+}
+
+
+<div class="page-body">
+
+
+    <div class="row text-center align-Item-center">
+        <div class="col-lg-12 col-sm-12 col-xs-12">
+            <div class="row">
+
+
+
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3  buttons-preview mt-2"></div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3  buttons-preview mt-2">
+                    <div class="bordered-well-container">
+                        <div class="well bordered-top bordered-bottom  bordered-blue">
+                            <a asp-action="ListOfReservation" asp-controller="Reservation" asp-area="UserPanel" class="hover-icon">
+                                <div class="featured-icon">
+                                    <i class="fa fa-file-text-o fa-2x"></i>
+                                </div>
+                                <p class="text-center justify-content-center"> لیست نوبتها  </p>
+                            </a>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3  buttons-preview mt-2">
+                    <div class="bordered-well-container">
+                        <div class="well bordered-top bordered-bottom  bordered-blue">
+                            <a asp-area="UserPanel" asp-controller="FamilyDoctor" asp-action="CheckUserHasFamilyDoctor" class="hover-icon">
+                                <div class="featured-icon">
+                                    <i class="fa fa-plus-square-o fa-2x"></i>
+                                </div>
+                                <p class="text-center justify-content-center"> اخذ نوبت جدید  </p>
+                            </a>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3  buttons-preview mt-2"></div>
+            </div>
+        </div>
+        
+
+    </div>
+
+
+</div>

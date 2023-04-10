@@ -6895,3 +6895,36 @@ doctors intrud*/
     background-repeat: no-repeat;
     background-size: 110% 100%;
 }
+
+
+
+
+.Top-BannerImage {
+    background-image: url('/Content/images/case-studies/Up_Banner.jpg');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+
+
+.newbtn {
+    background: #2264c5;
+    color: #ffffff !important;
+    width: 100% !important;
+    padding: 5px;
+    /* margin-right:3px;*/
+    position: relative;
+    /*display: inline-block;*/
+    cursor: pointer;
+    font-size: 14px !important;
+    text-align: center !important;
+    outline: none;
+    border: 2px solid #2264c5;
+    vertical-align: middle;
+    text-decoration: none;
+}
+
+    .newbtn:hover {
+        background: #fd5b03;
+        border: 1px solid #2264c5;
+    }
+   
