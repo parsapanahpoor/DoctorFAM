@@ -1,5 +1,13 @@
-.radio {
+
+#radio {
     background-color: #141517;
+    /*margin: 100px 15px;*/
+    border-radius: 5px;
+    padding: 12px 7px;
+}
+
+.radio {
+    background-color: #141517 !Important;
     /* border-radius: 5px; */
     padding: 20px 15px;
     position: relative;

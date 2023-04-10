@@ -66,5 +66,13 @@ namespace DoctorFAM.Web.Areas.UserPanel.Controllers
         }
 
         #endregion
+
+        #region Reserve Page 
+        public async Task<IActionResult> Reserve()
+        {
+
+            return View();
+        }
+        #endregion
     }
 }

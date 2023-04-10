@@ -5,115 +5,89 @@
 
 @if (Model != null && Model.Any())
 {
-    <div class="row mt-3 text-center">
-        <div class="col-lg-3 col-md-3">
-            <div class="section-title">
-                <img src="~/Content/Radio/images/icons8.png" />
-                <h6> رادیو فم </h6>
-                <p class="title"> <b>رادیو فم</b> هر روز یک برنامه جدید در زمینه پزشکی و سلامت برای شما مخاطب عزیز ارائه میکند. </p>
+    <div class=" mt-5  pl-3 pr-3">
+        <div class="row mt-3 text-center justify-content-center">
+            <div class="col-lg-3 col-md-3">
+                <div class="section-title">
+                    <img src="~/Content/Radio/images/icons8.png" />
+                    <h6> رادیو فم </h6>
+                    <p class="title"> <b>رادیو فم</b> هر روز یک برنامه جدید در زمینه پزشکی و سلامت برای شما مخاطب عزیز ارائه میکند. </p>
+                </div>
             </div>
-        </div>
 
-    <div class="col-lg-6 col-md-6 text-center">
-        <div id="radio" class="container-fluid">
-            <div class="container">
-                <div class="radio-content">
-                    <div class="radio-right">
-                            <div class="radio-equalizer">
-                                <div id='music-bars' class="">
-                                    <span class="four"></span>
-                                    <span class="three"></span>
-                                    <span class="one"></span>
-                                    <span class="two"></span>
-                                    <span class="four"></span>
-                                    <span class="three"></span>
-                                    <span class="one"></span>
-                                    <span class="two"></span>
-                                    <span class="four"></span>
-                                    <span class="three"></span>
-                                    <span class="one"></span>
-                                    <span class="two"></span>
-                                    <span class="four"></span>
-                                    <span class="three"></span>
-                                    <span class="one"></span>
-                                    <span class="two"></span>
-                                    <span class="four"></span>
-                                    <span class="three"></span>
-                                    <span class="one"></span>
-                                    <span class="two"></span>
-                                    <span class="four"></span>
-                                    <span class="three"></span>
-                                    <span class="one"></span>
-                                    <span class="two"></span>
-                                    <span class="four"></span>
-                                    <span class="three"></span>
-                                    <span class="one"></span>
-                                    <span class="two"></span>
+            <div class="col-lg-6 col-md-6  ">
+                <div id="radio" class="container-fluid">
+                    <div class="container">
+                        <div class="radio-content text-center justify-content-center">
+                            <div class="radio-right text-center justify-content-center">
+                                <div class="radio-equalizer">
+                                    <div id='music-bars' class="">
+                                        <span class="four"></span>
+                                        <span class="three"></span>
+                                        <span class="one"></span>
+                                        <span class="two"></span>
+                                        <span class="four"></span>
+                                        <span class="three"></span>
+                                        <span class="one"></span>
+                                        <span class="two"></span>
+                                        <span class="four"></span>
+                                        <span class="three"></span>
+                                        <span class="one"></span>
+                                        <span class="two"></span>
+                                        <span class="four"></span>
+                                        <span class="three"></span>
+                                        <span class="one"></span>
+                                        <span class="two"></span>
+                                        <span class="four"></span>
+                                        <span class="three"></span>
+                                        <span class="one"></span>
+                                        <span class="two"></span>
+                                        <span class="four"></span>
+                                        <span class="three"></span>
+                                        <span class="one"></span>
+                                        <span class="two"></span>
+                                        <span class="four"></span>
+                                        <span class="three"></span>
+                                        <span class="one"></span>
+                                        <span class="two"></span>
+                                    </div>
+                                </div>
+                                <div class="radio-audio">
+                                    <audio src="" preload="none"></audio>
                                 </div>
                             </div>
-                            <div class="radio-audio">
-                                <audio src="" preload="none"></audio>
-                            </div>
-                    </div>
-                        <div class="radio-left">
-                            <div class="radio-controls">
-                                <div class="radio-next">
-                                    <i class="bi bi-chevron-bar-right radio-next-prev-icon"></i>
-                                </div>
-                                <div class="radio-stop-play">
-                                    <i class="bi bi-play-fill radio-play-icon"></i>
-                                </div>
-                                <div class="radio-previous">
-                                    <i class="bi bi-chevron-bar-left radio-next-prev-icon"></i>
+                            <div class="radio-left text-center justify-content-center">
+                                <div class="radio-controls text-center justify-content-center">
+                                    <div class="radio-next">
+                                        <i class="mt-3 bi bi-chevron-bar-right radio-next-prev-icon"></i>
+                                    </div>
+                                    <div class="radio-stop-play">
+                                        <i class="mt-3 bi bi-play-fill radio-play-icon"></i>
+                                    </div>
+                                    <div class="radio-previous">
+                                        <i class=" mt-3 bi bi-chevron-bar-left radio-next-prev-icon"></i>
 
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-
-        <ul class="music-list">
-            <div class="row">
-              @*  <!-- <div class="col-6">
+            <div class="col-lg-3 col-md-3">
+                <ul class="music-list">
+                    <div class="row">
+                        @*  <!-- <div class="col-6">
                     <li class="music-list-item" onclick="playListMusic(event)">
-                        <span class="radio-music-list-name">${musicName}</span>
-                        <div class="radio-music-list-audio" data-audio-src="${musicSrc}" data-id="${index}"></div>
+                    <span class="radio-music-list-name">${musicName}</span>
+                    <div class="radio-music-list-audio" data-audio-src="${musicSrc}" data-id="${index}"></div>
                     </li>
-                </div> -->*@
+                    </div> -->*@
+                    </div>
+                </ul>
             </div>
-        </ul>
 
- @*       <div class="col-lg-3 col-md-3  text-center">
-
-            <div class="row  p-3 text-center">
-                <div class="col-12 text-center">
-                    <h6> برنامه های هفته جاری </h6>
-                </div>
-                <div class="recent-post">
-                    <ul class="list-unstyled">
-                        @foreach (var radio in Model)
-                        {
-                            <li class="mb-4">
-                                <div class="recent-post-thumb">
-                                    <img class="img-fluid" src="@radio.OwnerId" alt="">
-                                </div>
-                                <div class="recent-post-desc" style="border:1px solid pink; border-radius:5px;">
-                                    <p style="font-size:12px; color:red"> @radio.CreateDate.ToStringShamsiDate() </p>
-                                    <a href=""> @radio.Title </a>
-                                </div>
-                            </li>
-                            
-                        }
-                        
-
-                    </ul>
-                </div>
-                
-            </div>
-        </div>*@
-
+        </div>
     </div>
 }
 

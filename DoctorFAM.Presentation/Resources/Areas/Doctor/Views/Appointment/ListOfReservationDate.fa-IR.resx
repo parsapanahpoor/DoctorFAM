@@ -121,13 +121,13 @@
     <value>افزودن تاریخ جدید </value>
   </data>
   <data name="Count Of Reserved Time" xml:space="preserve">
-    <value>تعداد تایم های رزرو </value>
+    <value>تعداد نوبتهای رزرو شده </value>
   </data>
   <data name="Count Of Times" xml:space="preserve">
-    <value>تعداد تایم ها</value>
+    <value>تعداد نوبتها</value>
   </data>
   <data name="Create Date" xml:space="preserve">
-    <value>تاریخ ایجاد </value>
+    <value>تاریخ ایجاد نوبت </value>
   </data>
   <data name="Date" xml:space="preserve">
     <value>تاریخ</value>
@@ -148,16 +148,16 @@
     <value>لیست تاریخ های نوبت دهی </value>
   </data>
   <data name="Manage Reservation Date Info" xml:space="preserve">
-    <value>مدیریت تاریخ های داده شده </value>
+    <value>مدیریت تاریخ های ایجاد شده </value>
   </data>
   <data name="Order By Create Date" xml:space="preserve">
-    <value>مرتب بر اساس تاریخ درج</value>
+    <value>مرتب سازی بر اساس تاریخ درج</value>
   </data>
   <data name="Order By Reservation Date" xml:space="preserve">
     <value>مرتب سازی براساس تاریخ نوبت</value>
   </data>
   <data name="Possibilities" xml:space="preserve">
-    <value>امکانات</value>
+    <value>جزئیات نوبت دهی</value>
   </data>
   <data name="To Date" xml:space="preserve">
     <value>تا تاریخ</value>

@@ -27,7 +27,7 @@
         <a asp-action="TurnRating" asp-controller="Home" asp-area="Doctor"> نوبت دهی </a>
     </li>
     <li>
-        <a asp-action="AddReservationDateView" asp-controller="Appointment" asp-area="Doctor"> افزودن تاریخ(صفحه قبل) </a>
+        <a asp-action="AddReservationDateView" asp-controller="Appointment" asp-area="Doctor"> ایجاد تاریخ جدید(صفحه قبل) </a>
     </li>
 }
 
@@ -109,9 +109,7 @@
                             <th class="tc vm">
                                 @Localizer["Start Date"]
                             </th>
-                            <th class="tc vm">
-                                @Localizer["End Date"]
-                            </th>
+                           
                             <th class="tc vm">
                                 @Localizer["Status"]
                             </th>
@@ -137,12 +135,7 @@
 
                                     </div>
                                 </td>
-                                <td class="vm">
-                                    <div class="flex-style-center">
-                                        <p> @string.Concat(date.EndTime.Reverse().Skip(3).Reverse()) </p>
-
-                                    </div>
-                                </td>
+                               
                                 <td class="tc vm">
                                     <p>
                                         @if (date.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.NotReserved)
@@ -206,7 +199,7 @@
 
                                     @if (date.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.NotReserved && date.PatientId == null)
                                     {
-                                        <a asp-action="AddPersonalPatientForDoctorBooking" asp-controller="Appointment" asp-area="Doctor" asp-route-ReservationDateTimeId="@date.Id" class="btn btn-success btn-circle btn-xs"><i class="glyphicon glyphicon-user"></i></a>
+                                        <a asp-action="AddPersonalPatientForDoctorBooking" asp-controller="Appointment" asp-area="Doctor" asp-route-ReservationDateTimeId="@date.Id" class="btn btn-success ">نوبت دهی منشی</a>
 
                                         <button onclick="DeleteAjax(@date.Id, '@Url.Action("DeleteReservationDateTime", "Appointment", new {area = "Doctor", Id = date.Id})')" class="btn btn-danger btn-circle btn-xs"><i class="glyphicon glyphicon-trash"></i></button>
                                     }
@@ -221,11 +214,11 @@
                     </tbody>
                 </table>
 
-                <div class="footer tc">
+               @* <div class="footer tc">
 
                     <partial name="_DoctorPanelPaging" model="@Model.GetCurrentPaging()" />
 
-                </div>
+                </div>*@
             }
             else
             {
