@@ -362,7 +362,6 @@ namespace DoctorFAM.Application.Services.Implementation
             #region Get Home Visit Request Detail 
 
             var homeVisitRequestDetail = await GetHomeVisitRequestDetailByRequestId(request.Id);
-            if (homeVisitRequestDetail == null) return 0;
 
             #endregion
 
@@ -386,14 +385,17 @@ namespace DoctorFAM.Application.Services.Implementation
                 cost = cost + (DistanceFromCityTarriff * distancePerTenKilometer);
             }
 
-            if (homeVisitRequestDetail.EmergencyVisit == true)
+            if (homeVisitRequestDetail != null)
             {
-                cost = cost + ((homeVisitTariff * 20) / 100);
-            }
+                if (homeVisitRequestDetail.EmergencyVisit == true)
+                {
+                    cost = cost + ((homeVisitTariff * 20) / 100);
+                }
 
-            if (homeVisitRequestDetail.FemalePhysician == true)
-            {
-                cost = cost + ((homeVisitTariff * 20) / 100);
+                if (homeVisitRequestDetail.FemalePhysician == true)
+                {
+                    cost = cost + ((homeVisitTariff * 20) / 100);
+                }
             }
 
             if (dateTimeDetail.StartTime >= 22 || dateTimeDetail.EndTime <= 8)
