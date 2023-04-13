@@ -57,7 +57,7 @@
 
                             <div class="featured-icon">
 
-                                <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/HomeVisit.jpg" alt="">
+                                <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/HouseVisit-min.png" alt="">
                             </div>
                             <p class="text-white mt-2"> ویزیت در منزل </p>
                         </a>
@@ -67,7 +67,7 @@
 
                             <div class="featured-icon">
 
-                                <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/HouseNurse.jpg" alt="">
+                                <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/HouseNurse-min.png" alt="">
                             </div>
                             <p class="text-white mt-2"> پرستار در منزل </p>
                         </a>
@@ -86,7 +86,7 @@
 
                             <div class="featured-icon">
 
-                                <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/HomeLab.jpg" alt="">
+                                <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/HouseLab-min.png" alt="">
                             </div>
                             <p class="text-white mt-2"> آزمایشگاه در منزل </p>
                         </a>
@@ -105,7 +105,7 @@
 
                             <div class="featured-icon">
 
-                                <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/Death.jpg" alt="">
+                                <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/Death-min.png" alt="">
                             </div>
                             <p class="text-white mt-2"> صدور گواهی فوت </p>
                         </a>
@@ -130,7 +130,7 @@
                             @* <a class=" hover-icon">*@
                             <div class="featured-icon">
 
-                                <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/Diabete.jpg" alt="">
+                                <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/Diabete-min.png" alt="">
                             </div>
                             <p class="text-white mt-2"> دیابت<p>
                         </a>
@@ -140,7 +140,7 @@
                             @* <a class=" hover-icon">*@
                             <div class="featured-icon">
 
-                                <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/Blod.jpg" alt="">
+                                <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/Blod-min.png" alt="">
                             </div>
                             <p class="text-white mt-2"> فشار خون </p>
                         </a>
@@ -150,7 +150,7 @@
                         <a class=" hover-icon">
                             <div class="featured-icon">
 
-                                <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/Cancer.jpg" alt="">
+                                <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/Cancer-min.png" alt="">
                             </div>
                             <p class="text-white mt-2">سرطان</p>
                         </a>
@@ -160,7 +160,7 @@
                         <a class=" hover-icon">
                             <div class="featured-icon">
 
-                                <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/Psyche.jpg" alt="">
+                                <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/Psyche-min.png" alt="">
                             </div>
                             <p class="text-white mt-2"> روان </p>
                         </a>
@@ -207,7 +207,7 @@
 
                             <div class="featured-icon">
 
-                                <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/Equipment.jpg" alt="">
+                                <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/Equipment-min.png" alt="">
                             </div>
                             <p class="text-white mt-2"> تجهیزات پزشکی  </p>
                         </a>
@@ -217,7 +217,7 @@
                         <a class=" hover-icon" asp-action="Cosmetics" asp-controller="Home">
 
                             <div class="featured-icon">
-                                <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/Cosmetics.jpeg" alt="">
+                                <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/Cosmetics-min.png" alt="">
 
                             </div>
                             <p class="text-white mt-2">  آرایشی وبهداشتی </p>
@@ -238,7 +238,7 @@
 
                             <div class="featured-icon">
 
-                                <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/Books.jpg" alt="">
+                                <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/Books-min.png" alt="">
                             </div>
                             <p class="text-white mt-2"> کتب و مجلات </p>
                         </a>
@@ -248,7 +248,7 @@
 
                             <div class="featured-icon">
 
-                                <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/Insurance.jpg" alt="">
+                                <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/Insurance-min.png" alt="">
                             </div>
                             <p class="text-white mt-2"> خدمات بیمه </p>
                         </a>
@@ -369,24 +369,30 @@
 
                 </div>
             </div>
-          
 
-            @*Lastest Podcasts *@
-            @await Component.InvokeAsync("PodcastLandingPage")
 
-           
+            <cache expires-after="@TimeSpan.FromMinutes(1)">
+                @*Lastest Podcasts *@
+                @await Component.InvokeAsync("PodcastLandingPage")
+            </cache>
+
+
+
+
         </div>
         <hr />
-        @*Lastest TVFAM Videos*@
-        @await Component.InvokeAsync("TVFAMLandingPage")
+
+        <cache expires-after="@TimeSpan.FromMinutes(1)">
+            @*Lastest TVFAM Videos*@
+            @await Component.InvokeAsync("TVFAMLandingPage")
+        </cache>
 
     </div>
 
-
-    @*Lastest News For Show in Landing Page*@
-    @await Component.InvokeAsync("LastestNewsOnLandingPage")
-
-
+    <cache expires-after="@TimeSpan.FromDays(1)">
+        @*Lastest News For Show in Landing Page*@
+        @await Component.InvokeAsync("LastestNewsOnLandingPage")
+    </cache>
 
     <section class="dark-bg parallaxie" data-bg-img="/Content/images/bg/slider-1.jpg" data-overlay="6">
         <div class="container">
@@ -427,7 +433,11 @@
                 <div class="col-md-12">
                     <div class="row no-gutters box-shadow">
                         <div class="col-md-5 theme-bg p-5">
-                            @await Component.InvokeAsync("CooperationRequest")
+
+                            <cache expires-after="@TimeSpan.FromDays(1)">
+                                @await Component.InvokeAsync("CooperationRequest")
+                            </cache>
+
                         </div>
                         <div class="col-md-1"></div>
                         <div class="col-lg-6 col-md-12 mt-5">
