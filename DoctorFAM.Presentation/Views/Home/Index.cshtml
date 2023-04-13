@@ -371,7 +371,7 @@
             </div>
 
 
-            <cache expires-after="@TimeSpan.FromMinutes(1)">
+            <cache expires-after="@TimeSpan.FromMinutes(30)">
                 @*Lastest Podcasts *@
                 @await Component.InvokeAsync("PodcastLandingPage")
             </cache>
@@ -382,14 +382,14 @@
         </div>
         <hr />
 
-        <cache expires-after="@TimeSpan.FromMinutes(1)">
+        <cache expires-after="@TimeSpan.FromMinutes(30)">
             @*Lastest TVFAM Videos*@
             @await Component.InvokeAsync("TVFAMLandingPage")
         </cache>
 
     </div>
 
-    <cache expires-after="@TimeSpan.FromDays(1)">
+    <cache expires-after="@TimeSpan.FromHours(5)">
         @*Lastest News For Show in Landing Page*@
         @await Component.InvokeAsync("LastestNewsOnLandingPage")
     </cache>

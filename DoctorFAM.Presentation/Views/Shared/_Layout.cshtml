@@ -21,9 +21,7 @@
     <!-- page wrapper start -->
     <div class="page-wrapper">
 
-        <cache expires-after="@TimeSpan.FromMinutes(30)">
             @await Component.InvokeAsync("SiteSideBar")
-        </cache>
 
         <div>
             @RenderBody()
