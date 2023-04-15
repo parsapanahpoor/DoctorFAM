@@ -141,18 +141,30 @@
 
         }
 
-        //#region invole = فراخوانی کردن
+        //#region ارسال پیام
 
         function sendMessage(event) {
             event.preventDefault();
 
             var text = $("#messageText").val();
-            if (text) {
-                connection.invoke("SendMessage", text, currentGroupId);
 
-            } else {
-                alert("Error");
-            }
+            var file = event.target[1].files[0];
+
+            var formData = new FormData();
+            formData.append("GroupId", currentGroupId);
+            formData.append("FileAttach", file);
+            formData.append("ChatBody", text);
+
+            $.ajax({
+                url: "/ChatRoom/home/SendMessage",
+                type: "post",
+                data: formData,
+                encytype: "multipart/form-data",
+                processData: false,
+                contentType: false
+            }).done(function () {
+                $(".footer form input[type=file]").val('');
+            });
         }
 
         //#endregion
@@ -218,8 +230,12 @@
         <div class="chats">
         </div>
         <div class="footer" style="display: none">
+            <a class="fileUpload">
+                <i class="fa fa-upload"></i>
+            </a>
             <form onsubmit="sendMessage(event)">
                 <input id="messageText" type="text" class="form-control" placeholder="متن خود را وارد کنید">
+                                <input type="file" class="form-control">
                 <button class="btn btn-success">
                     ارسال
                     <i class="fa fa-send"></i>

@@ -19,7 +19,7 @@ namespace DoctorFAM.Application.Services.Interfaces
         Task<List<string>> GetUserIds(ulong groupId);
 
         //Send Message 
-        Task SendMessage(SendMessageViewModel chat);
+        Task<ChatViewModel?> SendMessage(SendMessageViewModel chat);
 
         //Create Chat Group From User
         Task<ChatGroup?> CreateChatGroupFromUser(CreateGroupViewModel model);

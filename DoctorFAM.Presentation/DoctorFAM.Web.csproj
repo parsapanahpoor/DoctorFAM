@@ -850,7 +850,6 @@
 		<None Include="wwwroot\ChatRoom\js\bootstrap.bundle.min.js.map" />
 		<None Include="wwwroot\ChatRoom\js\custom.js" />
 		<None Include="wwwroot\ChatRoom\js\jquery.3.2.1.min.js" />
-		<None Include="wwwroot\ChatRoom\scss\main.scss" />
 		<None Include="wwwroot\common\admindatapicker\kamadatepicker.js" />
 		<None Include="wwwroot\common\admindatapicker\kamadatepicker.min.js" />
 		<None Include="wwwroot\common\AdminPanel\AdminPanelSignalR.js" />
