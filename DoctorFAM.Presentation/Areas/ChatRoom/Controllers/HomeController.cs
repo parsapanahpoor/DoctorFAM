@@ -9,6 +9,7 @@ using DoctorFAM.Web.Hubs.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using System.Text.RegularExpressions;
 
 namespace DoctorFAM.Web.Areas.ChatRoom.Controllers
 {
@@ -86,6 +87,32 @@ namespace DoctorFAM.Web.Areas.ChatRoom.Controllers
         public async Task<IActionResult> Search(string title)
         {
             return new ObjectResult(await _chatService.FillSearchChatRoomResultViewModel(title));
+        }
+
+        #endregion
+
+        #region Send Message 
+
+        [Authorize]
+        [HttpPost]
+        public async Task SendMessage([FromForm] SendMessageViewModel model)
+        {
+            #region Fill Model
+
+            model.UserId = User.GetUserId();
+            model.Username = User.GetUsername();
+
+            #endregion
+
+            #region Send Message To The Data Base
+
+            var result = await _chatService.SendMessage(model);
+
+            #endregion
+
+            var userIds = await _chatService.GetUserIds(model.GroupId);
+            await _chatRoomHub.Clients.Users(userIds).SendAsync("ReceiveNotification", result);
+            await _chatRoomHub.Clients.Group(model.GroupId.ToString()).SendAsync("ReceiveMessage", result);
         }
 
         #endregion

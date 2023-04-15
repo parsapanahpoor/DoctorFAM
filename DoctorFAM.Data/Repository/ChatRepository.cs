@@ -45,11 +45,12 @@ namespace DoctorFAM.Data.Repository
                 .Select(s => new ChatViewModel()
                 {
                     UserName = _context.Users.FirstOrDefault(p=> !p.IsDelete && p.Id == s.UserId).Username,
-                    CreateDate = $"{s.CreateDate.Minute}:{s.CreateDate.Hour}",
+                    CreateDate = $"{s.CreateDate.Hour}:{s.CreateDate.Minute}",
                     ChatBody = s.ChatBody,
                     GroupName = _context.ChatGroups.FirstOrDefault(p=> !p.IsDelete && p.Id == s.GroupId).GroupTitle,
                     UserId = s.UserId,
-                    GroupId = s.GroupId
+                    GroupId = s.GroupId,
+                    FileAttach = s.FileAttach
                 }).ToListAsync();
         }
 
