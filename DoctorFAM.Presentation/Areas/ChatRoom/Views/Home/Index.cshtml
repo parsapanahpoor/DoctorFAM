@@ -71,7 +71,7 @@
 
         //#endregion
 
-        //#region Start Connection 
+        //#region Start Connection
 
         async function Start() {
             try {
@@ -87,7 +87,7 @@
         connection.onclose(Start);
         Start();
 
-        //#endregion 
+        //#endregion
 
         //#region Recevice Notification
 
@@ -116,43 +116,75 @@
         function receive(chat) {
             $("#messageText").val('');
             if (userId === chat.userId) {
-                $(".chats").append(`
-
-                                                            <div class="chat-me">
-                                                                            <div class="chat">
-                                                                                <span>${chat.userName}</span>
-                                                                                <p>${chat.chatBody}</p>
-                                                                                <span>${chat.createDate}</span>
-                                                                            </div>
-                                                                        </div>
-                                                                    `);
+                if (chat.fileAttach) {
+                    $(".chats").append(`
+                                 <div class="chat-me">
+                                     <div class="chat">
+                                          <span>${chat.userName}</span>
+                                                      <p><a href='/Content/ChatRoomFiles/${chat.fileAttach}'  target="_blank">${chat.chatBody}</a><p>
+                                                <span>${chat.createDate}</span>
+                                                 </div>
+                                           </div> `);
+                } else {
+                    $(".chats").append(`
+                                 <div class="chat-me">
+                                     <div class="chat">
+                                          <span>${chat.userName}</span>
+                                              <p>${chat.chatBody}</p>
+                                                <span>${chat.createDate}</span>
+                                                 </div>
+                                           </div>
+                                                            `);
+                }
             } else {
-                $(".chats").append(`
-
-                                                            <div class="chat-you">
-                                                                            <div class="chat">
-                                                                                 <span>${chat.userName}</span>
-                                                                                <p>${chat.chatBody}</p>
-                                                                                <span>${chat.createDate}</span>
-                                                                            </div>
-                                                                        </div>
-                                                                    `);
+                if (chat.fileAttach) {
+                    $(".chats").append(`
+                         <div class="chat-you">
+                             <div class="chat">
+                                  <span>${chat.userName}</span>
+                                                              <p><a href='/Content/ChatRoomFiles/${chat.fileAttach}'  target="_blank">${chat.chatBody}</a><p>
+                                                <span>${chat.createDate}</span>
+                                         </div>
+                                   </div> `);
+                } else {
+                    $(".chats").append(`
+                         <div class="chat-you">
+                             <div class="chat">
+                                  <span>${chat.userName}</span>
+                                      <p>${chat.chatBody}</p>
+                                        <span>${chat.createDate}</span>
+                                         </div>
+                                   </div>
+                                                    `);
+                }
             }
 
         }
 
-        //#region invole = فراخوانی کردن
+        //#region ارسال پیام
 
         function sendMessage(event) {
             event.preventDefault();
 
             var text = $("#messageText").val();
-            if (text) {
-                connection.invoke("SendMessage", text, currentGroupId);
 
-            } else {
-                alert("Error");
-            }
+            var file = event.target[1].files[0];
+
+            var formData = new FormData();
+            formData.append("GroupId", currentGroupId);
+            formData.append("FileAttach", file);
+            formData.append("ChatBody", text);
+
+            $.ajax({
+                url: "/ChatRoom/home/SendMessage",
+                type: "post",
+                data: formData,
+                encytype: "multipart/form-data",
+                processData: false,
+                contentType: false
+            }).done(function () {
+                $(".footer form input[type=file]").val('');
+            });
         }
 
         //#endregion
@@ -168,27 +200,47 @@
             for (var i in chats) {
                 var chat = chats[i];
                 if (userId === chat.userId) {
-                    $(".chats").append(`
-
-                                                                                    <div class="chat-me">
-                                                                                                    <div class="chat">
-                                                                                                        <span>${chat.userName}</span>
-                                                                                                        <p>${chat.chatBody}</p>
-                                                                                                        <span>${chat.createDate}</span>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            `);
+                    if (chat.fileAttach) {
+                        $(".chats").append(`
+                                                 <div class="chat-me">
+                                                     <div class="chat">
+                                                          <span>${chat.userName}</span>
+                                                              <p><a href='/Content/ChatRoomFiles/${chat.fileAttach}'  target="_blank">${chat.chatBody}</a><p>
+                                                                        <span>${chat.createDate}</span>
+                                                                 </div>
+                                                           </div> `);
+                    } else {
+                        $(".chats").append(`
+                                                 <div class="chat-me">
+                                                     <div class="chat">
+                                                          <span>${chat.userName}</span>
+                                                              <p>${chat.chatBody}</p>
+                                                                <span>${chat.createDate}</span>
+                                                                 </div>
+                                                           </div>
+                                                                            `);
+                    }
                 } else {
-                    $(".chats").append(`
-
-                                                                                    <div class="chat-you">
-                                                                                                    <div class="chat">
-                                                                                                         <span>${chat.userName}</span>
-                                                                                                        <p>${chat.chatBody}</p>
-                                                                                                        <span>${chat.createDate}</span>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            `);
+                    if (chat.fileAttach) {
+                        $(".chats").append(`
+                                 <div class="chat-you">
+                                     <div class="chat">
+                                          <span>${chat.userName}</span>
+                                                      <p><a href='/Content/ChatRoomFiles/${chat.fileAttach}'  target="_blank">${chat.chatBody}</a><p>
+                                                <span>${chat.createDate}</span>
+                                                 </div>
+                                           </div> `);
+                    } else {
+                        $(".chats").append(`
+                                 <div class="chat-you">
+                                     <div class="chat">
+                                          <span>${chat.userName}</span>
+                                              <p>${chat.chatBody}</p>
+                                                <span>${chat.createDate}</span>
+                                                 </div>
+                                           </div>
+                                                            `);
+                    }
                 }
             }
         }
@@ -218,8 +270,12 @@
         <div class="chats">
         </div>
         <div class="footer" style="display: none">
+            <a class="fileUpload">
+                <i class="fa fa-upload"></i>
+            </a>
             <form onsubmit="sendMessage(event)">
                 <input id="messageText" type="text" class="form-control" placeholder="متن خود را وارد کنید">
+                <input type="file" class="form-control">
                 <button class="btn btn-success">
                     ارسال
                     <i class="fa fa-send"></i>
