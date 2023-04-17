@@ -109,45 +109,6 @@
 
                                     <hr />
 
-                                    @if (Model.InPersonReservationTariffForDoctorPopulationCovered.HasValue
-                                                 && Model.OnlineReservationTariffForDoctorPopulationCovered.HasValue
-                                                 && Model.InPersonReservationTariffForAnonymousPersons.HasValue
-                                                 && Model.OnlineReservationTariffForAnonymousPersons.HasValue)
-                                    {
-                                        <div class="form-group col-md-6 col-sm-12">
-                                            <label asp-for="InPersonReservationTariffForDoctorPopulationCovered">تعرفه ی نوبت حضوری افراد تحت پوشش شما</label>
-                                            <input type="number" class="form-control" asp-for="InPersonReservationTariffForDoctorPopulationCovered">
-                                            <span class="text-danger" asp-validation-for="InPersonReservationTariffForDoctorPopulationCovered"></span>
-                                        </div>
-
-                                        <div class="form-group col-md-6 col-sm-12">
-                                            <label asp-for="OnlineReservationTariffForDoctorPopulationCovered">تعرفه ی نوبت آنلاین افراد تحت پوشش شما</label>
-                                            <input type="number" class="form-control" asp-for="OnlineReservationTariffForDoctorPopulationCovered">
-                                            <span class="text-danger" asp-validation-for="OnlineReservationTariffForDoctorPopulationCovered"></span>
-                                        </div>
-
-                                        <div class="form-group col-md-6 col-sm-12">
-                                            <label asp-for="InPersonReservationTariffForAnonymousPersons">تعرفه ی نوبت حضوری افراد ناشناس</label>
-                                            <input type="number" class="form-control" asp-for="InPersonReservationTariffForAnonymousPersons">
-                                            <span class="text-danger" asp-validation-for="InPersonReservationTariffForAnonymousPersons"></span>
-                                        </div>
-
-                                        <div class="form-group col-md-6 col-sm-12">
-                                            <label asp-for="OnlineReservationTariffForAnonymousPersons">تعرفه ی نوبت آنلاین افراد ناشناس</label>
-                                            <input type="number" class="form-control" asp-for="OnlineReservationTariffForAnonymousPersons">
-                                            <span class="text-danger" asp-validation-for="OnlineReservationTariffForAnonymousPersons"></span>
-                                        </div>
-
-                                    }
-                                    else
-                                    {
-                                        <div class="form-group col-md-12 col-sm-12">
-                                            <div class="form-control" style="color: red;">
-                                                اطلاعات مبلغ تعرفه ای یافت نشده است.
-                                            </div>
-                                        </div>
-                                    }
-
                                     @if (Model.WorkAddresses != null && Model.WorkAddresses.Any())
                                     {
                                         @foreach (var item in Model.WorkAddresses)
@@ -270,6 +231,92 @@
             }
 
         }
+
+        @if (Model != null)
+        {
+            <div class="row">
+                <div class="col-lg-3 col-sm-12">
+                    <div class="widget">
+                        <div class="widget-header bordered-bottom bordered-success">
+                            <i class="widget-icon fa fa-usd black"></i>
+                            <span class="widget-caption black">مدیریت مالی</span>
+                        </div><!--Widget Header-->
+                        <div class="widget-body">
+                            <div class="row">
+
+                                @if (Model.InPersonReservationTariffForDoctorPopulationCovered.HasValue)
+                                {
+                                    <div class="form-group col-md-12 col-sm-12">
+                                        <label asp-for="InPersonReservationTariffForDoctorPopulationCovered">تعرفه ی نوبت حضوری افراد تحت پوشش شما</label>
+                                        <input type="number" class="form-control" asp-for="InPersonReservationTariffForDoctorPopulationCovered">
+                                        <span class="text-danger" asp-validation-for="InPersonReservationTariffForDoctorPopulationCovered"></span>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="form-group col-md-12 col-sm-12">
+                                        <label asp-for="InPersonReservationTariffForDoctorPopulationCovered">تعرفه ی نوبت حضوری افراد تحت پوشش شما</label>
+                                        <input type="text" style="color:red" placeholder="وارد نشده است" class="form-control">
+                                    </div>
+                                }
+
+                                @if (Model.OnlineReservationTariffForDoctorPopulationCovered.HasValue)
+                                {
+                                    <div class="form-group col-md-12 col-sm-12">
+                                        <label asp-for="OnlineReservationTariffForDoctorPopulationCovered">تعرفه ی نوبت آنلاین افراد تحت پوشش شما</label>
+                                        <input type="number" class="form-control" asp-for="OnlineReservationTariffForDoctorPopulationCovered">
+                                        <span class="text-danger" asp-validation-for="OnlineReservationTariffForDoctorPopulationCovered"></span>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="form-group col-md-12 col-sm-12">
+                                        <label asp-for="OnlineReservationTariffForDoctorPopulationCovered">تعرفه ی نوبت آنلاین افراد تحت پوشش شما</label>
+                                        <input type="text" style="color:red" placeholder="وارد نشده است" class="form-control">
+                                    </div>
+                                }
+
+                                @if (Model.InPersonReservationTariffForAnonymousPersons.HasValue)
+                                {
+                                    <div class="form-group col-md-12 col-sm-12">
+                                        <label asp-for="InPersonReservationTariffForAnonymousPersons">تعرفه ی نوبت حضوری افراد ناشناس</label>
+                                        <input type="number" class="form-control" asp-for="InPersonReservationTariffForAnonymousPersons">
+                                        <span class="text-danger" asp-validation-for="InPersonReservationTariffForAnonymousPersons"></span>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="form-group col-md-12 col-sm-12">
+                                        <label asp-for="InPersonReservationTariffForAnonymousPersons">تعرفه ی نوبت حضوری افراد ناشناس</label>
+                                        <input type="text" style="color:red" placeholder="وارد نشده است" class="form-control">
+                                    </div>
+                                }
+
+                                @if (Model.OnlineReservationTariffForAnonymousPersons.HasValue)
+                                {
+                                    <div class="form-group col-md-12 col-sm-12">
+                                        <label asp-for="OnlineReservationTariffForAnonymousPersons">تعرفه ی نوبت آنلاین افراد ناشناس</label>
+                                        <input type="number" class="form-control" asp-for="OnlineReservationTariffForAnonymousPersons">
+                                        <span class="text-danger" asp-validation-for="OnlineReservationTariffForAnonymousPersons"></span>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="form-group col-md-12 col-sm-12">
+                                        <label asp-for="OnlineReservationTariffForAnonymousPersons">تعرفه ی نوبت آنلاین افراد ناشناس</label>
+                                        <input type="text" style="color:red" placeholder="وارد نشده است" class="form-control">
+                                    </div>
+                                }
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        }
+
 
     </div>
 
