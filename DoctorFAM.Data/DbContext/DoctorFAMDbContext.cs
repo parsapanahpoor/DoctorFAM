@@ -171,6 +171,8 @@ namespace DoctorFAM.Data.DbContext
 
         public DbSet<DoctorsSkils> DoctorSkill { get; set; }
 
+        public DbSet<DoctorsSharePercentageTariffs> DoctorsSharePercentageTariffs { get; set; }
+
         #endregion
 
         #region Pharmacy
