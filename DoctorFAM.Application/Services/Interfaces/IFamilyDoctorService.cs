@@ -2,6 +2,7 @@
 using DoctorFAM.Domain.ViewModels.Admin.FamilyDoctor;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.NavBar;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.PopulationCovered;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.SendSMS;
 using DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor;
 using DoctorFAM.Domain.ViewModels.UserPanel.Reservation;
 using System;
@@ -36,6 +37,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Show Lastest Family Doctor Request In Doctor Panel Nav Bar 
         Task<LastestFamilyDoctorRequestForShowInNavBarViewModel?> ShowLastestFamilyDoctorRequestInDoctorPanelNavBar(ulong userId);
+
+        //List Of Current Doctor Population Covered Users Without Base Paging
+        Task<List<ChooseUsersForSendSMSViewModel>?> ListOfCurrentDoctorPopulationCoveredUsersWithoutBasePaging(ulong doctorUserId);
 
         //Cancel User Selected Family Doctor From User Panel 
         Task<bool> CancelUserSelectedFamilyDoctorFromUserPanel(ulong patientId);

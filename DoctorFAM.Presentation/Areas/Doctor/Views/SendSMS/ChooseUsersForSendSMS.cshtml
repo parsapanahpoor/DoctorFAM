@@ -1,0 +1,152 @@
+﻿@model List<DoctorFAM.Domain.ViewModels.DoctorPanel.SendSMS.ChooseUsersForSendSMSViewModel>
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Domain.ViewModels.Admin
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Domain.ViewModels.Common
+
+@{
+    ViewData["Title"] = "انتخاب کاربر برای ارسال پیامک";
+}
+
+@section Breadcrumb
+    {
+    <li>
+        <a asp-area="Doctor" asp-controller="SendSMS" asp-action="ManageLinks"> پیامک </a>
+    </li>
+}
+
+@section Styles
+    {
+    <link href="/admin/css/dataTables.bootstrap.rtl.css" rel="stylesheet" />
+}
+
+@section Scripts
+    {
+    <script src="~/admin/js/datatable/jquery.dataTables.min.js"></script>
+    <script src="~/admin/js/datatable/ZeroClipboard.js"></script>
+    <script src="~/admin/js/datatable/dataTables.tableTools.min.js"></script>
+    <script src="~/admin/js/datatable/dataTables.bootstrap.min.js"></script>
+    <script src="~/admin/js/datatable/datatables-init.js"></script>
+    <script>
+        InitiateSimpleDataTable.init();
+        InitiateEditableDataTable.init();
+        InitiateExpandableDataTable.init();
+        InitiateSearchableDataTable.init();
+    </script>
+
+    }
+
+<div class="page-body">
+
+    <div class="row ">
+        <div class="col-xs-12 col-md-12">
+            <div class="widget">
+                <div class="widget-header bordered-bottom bordered-yellow">
+                    <span class="widget-caption"> لیست جمعیت تحت پوشش شما</span>
+
+                    <div class="widget-buttons">
+                        <a href="#" data-toggle="maximize">
+                            <i class="fa fa-expand"></i>
+                        </a>
+                        <a href="#" data-toggle="collapse">
+                            <i class="fa fa-minus"></i>
+                        </a>
+                        <a href="#" data-toggle="dispose">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+
+                @if (Model != null && Model.Any())
+                {
+                    <form asp-action="SendSMSToSelectedUsers" asp-controller="IncomeSystem" asp-area="Doctor" id="filter-search" method="get">
+
+                        <div class="widget-body no-padding">
+                            <div id="searchable_wrapper" class="dataTables_wrapper form-inline">
+
+                                <table class="table table-bordered table-hover table-striped dataTable" id="searchable" role="grid" aria-describedby="searchable_info">
+                                    <thead class="bordered-darkorange">
+                                        <tr role="row">
+
+                                            <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">نام کاربری</th>
+                                            <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" aria-sort="ascending">نام و نام خانوادگی</th>
+                                            <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" aria-sort="ascending">موبایل</th>
+                                            <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending"></th>
+
+                                        </tr>
+                                    </thead>
+
+                                    <tfoot>
+                                        <tr>
+                                            <th rowspan="1" colspan="1"></th>
+                                            <th rowspan="1" colspan="1"></th>
+                                            <th rowspan="1" colspan="1"></th>
+                                            <th rowspan="1" colspan="1">
+                                                <button type="submit" class="btn btn-success">
+                                                    ارسال پیامک
+                                                </button>
+                                            </th>
+
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+
+                                        @foreach (var user in Model)
+                                        {
+                                            <tr role="row" class="even responsive">
+
+                                                <td class=" sorting_1">
+                                                    <div class="flex-style-center">
+                                                        <img src="@user.UserAvatar.GetUserAvatar()" class="avatar-style" />
+                                                        <div class="mr-10px">
+                                                            <span> @user.Username </span>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="sorting_1">
+                                                    @if (!string.IsNullOrEmpty(user.FirstName) && !string.IsNullOrEmpty(user.LastName))
+                                                    {
+                                                        <div class="flex-style-center">
+                                                            @user.FirstName @user.LastName
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="flex-style-center">
+                                                            وارد نشده است
+                                                        </div>
+                                                    }
+                                                </td>
+                                                <td class="sorting_1">
+                                                    <div class="flex-style-center">
+                                                        @user.Mobile
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="flex-style-center">
+                                                        <label>
+                                                            <input type="checkbox" name="personsNumber" value="@user.UserId">
+                                                            <span class="text"></span>
+                                                        </label>
+                                                    </div>
+                                                </td>
+
+                                            </tr>
+
+                                        }
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </form>
+                }
+                else
+                {
+                    <partial name="_DoctorPanelNotFoundPartial" />
+                }
+            </div>
+        </div>
+    </div>
+
+</div>

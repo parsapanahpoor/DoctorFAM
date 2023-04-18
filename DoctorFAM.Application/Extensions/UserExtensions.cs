@@ -50,5 +50,15 @@ namespace DoctorFAM.Application.Extensions
 
             return PathTools.DefaultUserAvatar;
         }
+
+        public static string GetUserAvatar(this string userAvatar)
+        {
+            if (!string.IsNullOrEmpty(userAvatar))
+            {
+                return Path.Combine(PathTools.UserAvatarPathThumb, userAvatar);
+            }
+
+            return PathTools.DefaultUserAvatar;
+        }
     }
 }

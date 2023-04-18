@@ -1,6 +1,7 @@
 ﻿using DoctorFAM.Domain.Entities.FamilyDoctor;
 using DoctorFAM.Domain.ViewModels.Admin.FamilyDoctor;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.PopulationCovered;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.SendSMS;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -44,6 +45,12 @@ namespace DoctorFAM.Domain.Interfaces
 
         //List Of Current Doctor Population Covered Users
         Task<ListOfDoctorPopulationCoveredViewModel> FilterCurrentDoctorPopulationCovered(ListOfDoctorPopulationCoveredViewModel filter);
+
+        //List Of Current Doctor Population Covered Users Without Base Paging
+        Task<List<ulong>?> ListOfCurrentDoctorPopulationCoveredUsersWithoutBasePaging(ulong doctorUserId);
+
+        //Fill Choose Users For Send SMS View Model
+        Task<ChooseUsersForSendSMSViewModel?> ChooseUsersForSendSMSViewModel(ulong userId);
 
         //Get Lastest Family Doctor Request For Current Doctor 
         Task<List<UserSelectedFamilyDoctor>> GetLastestFamilyDoctorRequestForCurrentDoctor(ulong doctorId);
