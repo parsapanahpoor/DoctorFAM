@@ -197,11 +197,40 @@ $dark-color:rgb(32, 32, 32);
     bottom: 0;
     width: 67%;
     right: 0;
+    .fileUpload {
+        width: 40px;
+        height: 40px;
+        text-align: center;
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+        transition: all ease .3s;
+        cursor: pointer;
+        &:hover {
+            background: rgb(21, 64, 121);
+        }
+        i {
+            font-size: 20px;
+            color: white;
+            top: 8px;
+            position: relative;
+        }
+        background: rgb(49,
+        101,
+        170);
+        box-shadow: 0 0 5px 0 gray;
+    }
     input {
         display: inline;
         width: 90%;
         height: 50px;
+        padding-right: 50px;
         border-radius: 0 !important;
+    }
+    input[type=file] {
+        display: none;
+        padding-top: 12px !important;
+        padding-right: 55px !important;
     }
     button {
         display: inline;
