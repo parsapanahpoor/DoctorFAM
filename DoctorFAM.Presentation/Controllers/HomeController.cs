@@ -41,7 +41,6 @@ namespace DoctorFAM.Web.Controllers
 
         #region Index
 
-        [ResponseCache(Duration = 86400, Location = ResponseCacheLocation.Client, NoStore = false)]
         public async Task<IActionResult> Index()
         {
             return View();
