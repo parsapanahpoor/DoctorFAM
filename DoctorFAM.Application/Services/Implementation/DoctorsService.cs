@@ -1987,7 +1987,8 @@ namespace DoctorFAM.Application.Services.Implementation
                         Specialty = model.Specialty.SanitizeText(),
                         Gender = model.Gender,
                         GeneralPhone = model.GeneralPhone,
-                        ClinicPhone = model.ClinicPhone
+                        ClinicPhone = model.ClinicPhone,
+                        CountOFFreeSMSForDoctors = await _doctorRepository.GetDoctorsFreeSMSCount()
                     };
 
                     #endregion
@@ -2158,7 +2159,8 @@ namespace DoctorFAM.Application.Services.Implementation
                         NationalCode = model.NationalCode,
                         Specialty = model.Specialty.SanitizeText(),
                         GeneralPhone = model.GeneralPhone,
-                        ClinicPhone = model.ClinicPhone
+                        ClinicPhone = model.ClinicPhone,
+                        CountOFFreeSMSForDoctors = await _doctorRepository.GetDoctorsFreeSMSCount()
                     };
 
                     #endregion
@@ -2769,6 +2771,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 GeneralPhone = info.GeneralPhone,
                 ClinicPhone = info.ClinicPhone,
                 DoctorSkills = string.Join(",", doctorSkills.Select(p => p.DoctorSkil).ToList()),
+                CountOFFreeSMSForDoctors = info.CountOFFreeSMSForDoctors
             };
 
             #endregion
@@ -2894,6 +2897,7 @@ namespace DoctorFAM.Application.Services.Implementation
             info.Gender = model.Gender;
             info.GeneralPhone = model.GeneralPhone;
             info.ClinicPhone = model.ClinicPhone;
+            info.CountOFFreeSMSForDoctors = model.CountOFFreeSMSForDoctors;
 
             #endregion
 

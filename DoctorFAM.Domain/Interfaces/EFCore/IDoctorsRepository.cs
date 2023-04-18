@@ -206,6 +206,9 @@ namespace DoctorFAM.Domain.Interfaces
 
         #region Admin Side 
 
+        //Get Doctor's Free SMS Count
+        Task<int> GetDoctorsFreeSMSCount();
+
         //Update Request Excel File For Compelete From Admin 
          Task UpdateRequestExcelFileForCompeleteFromAdmin(RequestForUploadExcelFileFromDoctorsToSite model);
 

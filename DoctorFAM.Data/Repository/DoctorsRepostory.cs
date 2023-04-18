@@ -604,6 +604,12 @@ namespace DoctorFAM.Data.Repository
 
         #region Admin Side
 
+        //Get Doctor's Free SMS Count
+        public async Task<int> GetDoctorsFreeSMSCount()
+        {
+            return await _context.SiteSettings.Where(p => !p.IsDelete).Select(p => p.CountOFFreeSMSForDoctors).FirstOrDefaultAsync();
+        }
+
         //Update Request Excel File For Compelete From Admin 
         public async Task UpdateRequestExcelFileForCompeleteFromAdmin(RequestForUploadExcelFileFromDoctorsToSite model)
         {
