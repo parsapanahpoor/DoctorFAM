@@ -69,56 +69,6 @@ namespace DoctorFAM.Web.Hubs.Implementation
 
         #endregion
 
-        #region Send Message
-
-        public async Task SendMessage(string text, ulong groupId)
-        {
-            #region Get Group By Id
-
-            var group = await _chatService.GetChatGroupById(groupId);
-            if (group == null) return;
-
-            #endregion
-
-            #region Create Instance 
-
-            SendMessageViewModel model = new SendMessageViewModel()
-            {
-                ChatBody = text,
-                GroupId = groupId,
-                UserId = Context.User.GetUserId()
-            };
-
-            #endregion
-
-            //Add Message To The Data Base
-            await _chatService.SendMessage(model);
-
-            //Convert Information For Show True Datas
-            model.CreateDate = $"{DateTime.Now.Minute}:{DateTime.Now.Hour}";
-
-            #region Send Notification 
-
-            var chatModel = new ChatViewModel()
-            {
-                ChatBody = text,
-                UserName = await _userService.GetUsernameByUserID(Context.User.GetUserId()),
-                CreateDate = model.CreateDate,
-                UserId = Context.User.GetUserId(),
-                GroupName = group.GroupTitle,
-                GroupId = groupId
-            };
-
-            var userIds = await _chatService.GetUserIds(groupId);
-            await Clients.Users(userIds).SendAsync("ReceiveNotification", chatModel);
-
-            #endregion
-
-            await Clients.Group(groupId.ToString()).SendAsync("ReceiveMessage", chatModel);
-        }
-
-        #endregion
-
         #region Join To The Private Group
 
         public async Task JoinPrivateGroup(ulong receiverId, ulong currentGroupId)

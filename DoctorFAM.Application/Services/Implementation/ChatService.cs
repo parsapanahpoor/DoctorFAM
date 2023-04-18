@@ -85,20 +85,72 @@ namespace DoctorFAM.Application.Services.Implementation
         }
 
         //Send Message 
-        public async Task SendMessage(SendMessageViewModel chat)
+        public async Task<ChatViewModel?> SendMessage(SendMessageViewModel chat)
         {
+            #region Get Group By Id 
+
+            var group = await GetChatGroupById(chat.GroupId);
+            if (group == null) return null;
+
+            #endregion
+
             #region Create Instance
 
             Chat model = new Chat()
             {
-                ChatBody = chat.ChatBody.SanitizeText(),
                 CreateDate = DateTime.Now,
                 GroupId = chat.GroupId,
                 UserId = chat.UserId
             };
 
+            #endregion
+
+            #region If AttachMent File was Upoloaded
+
+            if (chat.FileAttach != null)
+            {
+                //Upload File To The Server
+                var fileName = await chat.FileAttach.SaveFile("wwwroot/Content/ChatRoomFiles/");
+
+                //Fill Chat Body
+                model.ChatBody = chat.FileAttach.FileName;
+
+                //Fill Atachment File 
+                model.FileAttach = fileName;
+
+                //Add To The Data Base 
+                await _chatRepository.AddChatMessageToTheDataBase(model);
+
+                return new ChatViewModel()
+                {
+                    UserName = chat.Username,
+                    CreateDate = $"{model.CreateDate.Hour}:{model.CreateDate.Minute}",
+                    ChatBody = model.ChatBody,
+                    GroupName = group.GroupTitle,
+                    GroupId = group.Id,
+                    UserId = chat.UserId,
+                    FileAttach = fileName
+                };
+            }
+
+            #endregion
+
+            #region If Attachment file Was Empty
+
+            model.ChatBody = chat.ChatBody;
+
             //Add To The Data Base 
             await _chatRepository.AddChatMessageToTheDataBase(model);
+
+            return new ChatViewModel()
+            {
+                UserName = " ",
+                CreateDate = $"{model.CreateDate.Hour}:{model.CreateDate.Minute}",
+                ChatBody = model.ChatBody,
+                GroupName = group.GroupTitle,
+                GroupId = group.Id,
+                UserId = chat.UserId
+            };
 
             #endregion
         }

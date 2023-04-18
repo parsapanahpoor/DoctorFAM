@@ -2,7 +2,7 @@
 
 
 @{
-    ViewData["Title"] = "مدیریت نرخ تعرفه ها";
+    ViewData["Title"] = "مدیریت تعرفه های مطب";
 
     var doctorOffice = ViewBag.DoctorOffice as DoctorFAM.Domain.Entities.Organization.Organization;
 }
@@ -62,35 +62,35 @@
                 <div class="col-lg-12">
                     <div class="widget">
                         <div class="widget-header bordered-bottom bordered-green" style="background-color:#d1f4fa">
-                            <span class="widget-caption"> مدیریت نرخ تعرفه های شما  </span>
+                            <span class="widget-caption"> مدیریت تعرفه های مطب  </span>
                         </div>
                         <div class="widget-body" style="background-color:#d1f4fa !important;">
                             <div class="row">
 
                                  <div class="form-group col-md-6 col-sm-12">
                                     <span class="red">*</span>
-                                    <label asp-for="InPersonReservationTariffForDoctorPopulationCovered">تعرفه ی نوبت حضوری افراد تحت پوشش شما(ریال)</label>
+                                    <label asp-for="InPersonReservationTariffForDoctorPopulationCovered">تعرفه ی ویزیت حضوری افراد تحت پوشش (ریال)</label>
                                     <input type="text" class="form-control" asp-for="InPersonReservationTariffForDoctorPopulationCovered">
                                     <span class="text-danger" asp-validation-for="InPersonReservationTariffForDoctorPopulationCovered"></span>
                                 </div>
 
                                 <div class="form-group col-md-6 col-sm-12">
                                     <span class="red">*</span>
-                                    <label asp-for="OnlineReservationTariffForDoctorPopulationCovered">تعرفه ی نوبت آنلاین افراد تحت پوشش شما(ریال)</label>
+                                    <label asp-for="OnlineReservationTariffForDoctorPopulationCovered">تعرفه ی ویزیت آنلاین افراد تحت پوشش (ریال)</label>
                                     <input type="text" class="form-control" asp-for="OnlineReservationTariffForDoctorPopulationCovered">
                                     <span class="text-danger" asp-validation-for="OnlineReservationTariffForDoctorPopulationCovered"></span>
                                 </div>
 
                                 <div class="form-group col-md-6 col-sm-12">
                                     <span class="red">*</span>
-                                    <label asp-for="InPersonReservationTariffForAnonymousPersons">تعرفه ی نوبت حضوری افراد ناشناس(ریال)</label>
+                                    <label asp-for="InPersonReservationTariffForAnonymousPersons">تعرفه ی ویزیت حضوری مراجعات عادی(ریال)</label>
                                     <input type="text" class="form-control" asp-for="InPersonReservationTariffForAnonymousPersons">
                                     <span class="text-danger" asp-validation-for="InPersonReservationTariffForAnonymousPersons"></span>
                                 </div>
 
                                 <div class="form-group col-md-6 col-sm-12">
                                     <span class="red">*</span>
-                                    <label asp-for="OnlineReservationTariffForAnonymousPersons">تعرفه ی نوبت آنلاین افراد ناشناس(ریال)</label>
+                                    <label asp-for="OnlineReservationTariffForAnonymousPersons">تعرفه ی ویزیت آنلاین مراجعات عادی(ریال)</label>
                                     <input type="text" class="form-control" asp-for="OnlineReservationTariffForAnonymousPersons">
                                     <span class="text-danger" asp-validation-for="OnlineReservationTariffForAnonymousPersons"></span>
                                 </div>

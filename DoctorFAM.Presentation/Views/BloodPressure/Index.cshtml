@@ -291,6 +291,83 @@
                                 <h6> با استفاده از سرویسهای جانبی سامانه, بدون نیاز به مراجعه به پزشک, پیوسته وضعیت سلامت خود را ارزیابی نمایید. </h6>
                                 <div class="row">
 
+
+
+
+                                    @* <div class="col-xl-3  ">
+                                    <div class="gauge">
+                                    <canvas data-type="radial-gauge" data-width="280" data-height="280" data-units="ُSelf Assesstment"
+                                    data-title="false" data-value="@selfAssessment" data-animate-on-init="true" data-animated-value="true"
+                                    data-min-value="0" data-max-value="120" data-major-ticks="0,20,40,60,80,100,120"
+                                    data-minor-ticks="5" data-stroke-ticks="false" data-highlights='[
+                                    { "from": 0, "to": 15, "color": "rgba(143,1,1)" },
+                                    { "from": 15, "to": 30, "color": "rgba(247,10,10)" },
+                                    { "from": 30, "to": 45, "color": "rgba(247,125,10)" },
+                                    { "from": 45, "to": 60, "color": "rgba(247,228,10)" },
+                                    { "from": 60, "to": 90, "color": "rgba(69,247,10)" },
+                                    { "from": 90, "to": 120, "color": "rgba(44,171,2)" }
+
+                                    ]' data-color-plate="transparent" data-color-major-ticks="black" data-color-minor-ticks="0d0d0d"
+                                    data-color-title="#fff" data-color-units="#000" data-color-numbers="#000"
+                                    data-color-needle-start="red" data-color-needle-end="red" data-value-box="true"
+                                    data-animation-rule="bounce" data-animation-duration="500" data-border-outer-width="0"
+                                    data-border-middle-width="0" data-border-inner-width="0"></canvas>
+                                    </div>
+
+
+                                    <div>
+
+                                    <span>
+                                    مراقبت دوره ای
+                                    </span>
+                                    </div>
+                                    <button onclick="PriodicSelfEvaluationModal()" type="button" class="btn-SelfTest" data-toggle="modal" data-target="#exampleModal">
+                                    خودارزیابی فشار خون
+                                    </button>
+
+                                    </div>*@
+
+
+
+
+
+
+                                    @*  <div class="col-xl-3  ">
+                                    <div class="gauge">
+                                    <canvas data-type="radial-gauge" data-width="280" data-height="280" data-units="ASCVD"
+                                    data-title="false" data-value="@ascvdPredic" data-animate-on-init="true" data-animated-value="true"
+                                    data-min-value="0" data-max-value="30" data-major-ticks="0,5,7.5,15,20,30"
+                                    data-minor-ticks="5" data-stroke-ticks="false" data-highlights='[
+                                    { "from": 0, "to": 5, "color": "rgba(0,255,0)" },
+                                    { "from": 5, "to": 7.5, "color": "rgba(0,255,0)" },
+                                    { "from": 7.5, "to": 15, "color": "rgba(255,255,0)" },
+                                    { "from": 15, "to": 20, "color": "rgba(255,255,0)" },
+                                    { "from": 20, "to": 30, "color": "rgba(255,255,0)" }
+
+                                    ]' data-color-plate="transparent" data-color-major-ticks="black" data-color-minor-ticks="0d0d0d"
+                                    data-color-title="#fff" data-color-units="#000" data-color-numbers="#000"
+                                    data-color-needle-start="red" data-color-needle-end="red" data-value-box="true"
+                                    data-animation-rule="bounce" data-animation-duration="500" data-border-outer-width="0"
+                                    data-border-middle-width="0" data-border-inner-width="0"></canvas>
+
+
+                                    </div>
+                                    <div>
+
+                                    <span>
+                                    خطرسنجی قلبی عروقی
+                                    </span>
+                                    </div>
+
+                                    <button onclick="ShowASCVDModal()" type="button" class="btn-SelfTest" data-toggle="modal" data-target="#exampleModal">
+                                    محاسبه ASCVD
+                                    </button>
+
+                                    </div>*@
+
+
+
+
                                     <div class="col-xl-3  ">
                                         <div class="gauge">
                                             <canvas data-type="radial-gauge" data-width="280" data-height="280" data-units="BMI"
@@ -307,6 +384,7 @@
                         { "from": 35, "to": 40, "color": "rgba(255,0,0)" },
                         { "from": 40, "to": 45, "color": "rgba(111,8,36)" }
 
+
                     ]' data-color-plate="transparent" data-color-major-ticks="black" data-color-minor-ticks="0d0d0d"
                                                     data-color-title="#fff" data-color-units="#000" data-color-numbers="#000"
                                                     data-color-needle-start="red" data-color-needle-end="red" data-value-box="true"
@@ -314,16 +392,18 @@
                                                     data-border-middle-width="0" data-border-inner-width="0"></canvas>
                                         </div>
                                         <div>
-
-                                            <span>
-                                                شاخص توده بدنی
-                                            </span>
                                         </div>
-                                        <button onclick="ShowBMIModal()" type="button" class="btn-SelfTest" data-toggle="modal" data-target="#exampleModal">
-                                            محاسبه BMI
+                                        <button onclick="ShowBMIModal()" type="button" class="btn-SelfTest text-center justify-content-center" data-toggle="modal" data-target="#exampleModal">
+                                            <p class="text-center justify-content-center">BMI</p>
+                                            <span>
+                                                محاسبه شاخص توده بدنی
+                                            </span>
                                         </button>
                                     </div>
-                                  
+
+
+
+
 
 
                                     <div class="col-md-6  mt-5">
@@ -334,8 +414,8 @@
                                                 <div class=" text-center btn2 m-1" style="border:1px solid #fd5b03; border-radius:8px;">
 
                                                     <a asp-action="PriodicBloodPressureSelfEvaluationModal" asp-area="" asp-controller="BloodPressure">
-                                                        <span class="spCol"> مراقبت دوره ای </span>
-                                                        <p class=" text-center  m-3" style="color:white !important; font-size:20px; font-weight:700;">خودارزیابی فشارخون</p>
+
+                                                        <p class=" text-center  m-3" style="color:white !important; font-size:20px; font-weight:700;">خودارزیابی دوره ای فشار خون</p>
                                                     </a>
                                                 </div>
                                             </div>
@@ -343,9 +423,20 @@
                                             <div class="col-md-2"></div>
                                             <div class="col-md-8 text-center">
                                                 <div class=" text-center btn2 m-1" style="border:1px solid #fd5b03; border-radius:8px;">
+                                                    <a asp-action="#" asp-area="" asp-controller="Diabet">
+                                                        <span class="spCol"> SMBG  </span>
+                                                        <p class=" text-center m-3 " style="color:white !important; font-size:20px; font-weight:700;">دفتر ثبت فشار خون</p>
+                                                    </a>
+                                                </div>
+
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                            <div class="col-md-2"></div>
+                                            <div class="col-md-8 text-center">
+                                                <div class=" text-center btn2 m-1" style="border:1px solid #fd5b03; border-radius:8px;">
                                                     <a asp-action="ASCVD" asp-area="" asp-controller="BloodPressure">
-                                                        <span class="spCol"> خطرسنجی قلبی عروقی </span>
-                                                        <p class=" text-center m-3 " style="color:white !important; font-size:20px; font-weight:700;">محاسبه ASCVD</p>
+                                                        <span class="spCol">  ASCVD   </span>
+                                                        <p class=" text-center m-3 " style="color:white !important; font-size:20px; font-weight:700;">محاسبه خطرسنجی قلبی عروقی</p>
                                                     </a>
                                                 </div>
                                             </div>
@@ -354,11 +445,6 @@
 
 
                                     </div>
-
-
-
-
-                                
 
 
 
@@ -385,16 +471,18 @@
 
 
                                         <div>
-
-                                            <span>
-                                                عملکرد کلیه
-                                            </span>
                                         </div>
-                                        <button onclick="ShowGFRModal()" type="button" class="btn-SelfTest" data-toggle="modal" data-target="#exampleModal">
-                                            محاسبه GFR
+                                        <button onclick="ShowGFRModal()" type="button" class="btn-SelfTest text-center justify-content-center" data-toggle="modal" data-target="#exampleModal">
+                                            <p class="text-center justify-content-center">GFR</p>
+                                            <span>
+                                                محاسبه عملکرد کلیه
+                                            </span>
+
                                         </button>
 
                                     </div>
+
+
 
 
                                 </div>
@@ -402,6 +490,19 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="row text-center justify-content-center mt-3">
+                    <div class="col-md-8 text-center newbtn m-1" style="border:1px solid #fd5b03; border-radius:8px;">
+                        <a asp-action="" asp-area="" asp-controller="">
+                            <p style="color:white !important; font-size:14px; font-weight:500;">درصورت نیاز به مشاوره در خصوص فشار خون همینجا کلیک کنید</p>
+                            <p class=" text-center m-3 " style="color:white !important; font-size:20px; font-weight:700;">
+
+                                مشاور آنلاین دکترفم
+                            </p>
+                        </a>
+                    </div>
+                </div>
+
                 <section class=" mt-3">
                     <div class=" col-md-12 fade show active section-title">
                         <h4 class="title">معرفی </h4>
@@ -418,12 +519,12 @@
                                             </span>
                                         </div>
                                         <div>
-                                            <h2 style="color:#fd5b03 !important;">مشاورین </h2>
-                                            <h2>فشار خون دکترفم </h2>
-                                            <div class="row text-center justify-content-center">
-
-                                                <div class="col-md-12 text-center justify-content-center">
-                                                    <a asp-action="ListOfBloodPressureConsultants" asp-controller="BloodPressure" asp-area="" class="book-now  hover-icon">مشاهده </a>
+                                            <h5 style="color:#fd5b03 !important;">پزشکان مشاور فشارخون </h5>
+                                            <h2> دکترفم </h2>
+                                            <div class="row">
+                                                <div class="col-md-5"></div>
+                                                <div class="col-md-7 text-center justify-content-center">
+                                                    <a asp-action="" asp-controller="" asp-area="" class="book-now  hover-icon">مشاهده </a>
                                                 </div>
                                             </div>
                                         </div>
@@ -441,12 +542,12 @@
                                             </span>
                                         </div>
                                         <div>
-                                            <h2 style="color:#fd5b03 !important;">متخصصین</h2>
-                                            <h2>فشار خون دکترفم </h2>
-                                            <div class="row text-center justify-content-center">
-
-                                                <div class="col-md-12 text-center justify-content-center">
-                                                    <a asp-action="ListOfBloodPressureSpecialities" asp-controller="BloodPressure" asp-area="" class="book-now  hover-icon">مشاهده </a>
+                                            <h5 style="color:#fd5b03 !important;">متخصصین فشار خون</h5>
+                                            <h2> دکترفم </h2>
+                                            <div class="row">
+                                                <div class="col-md-5"></div>
+                                                <div class="col-md-7 text-center justify-content-center">
+                                                    <a asp-action="" asp-controller="" asp-area="" class="book-now  hover-icon">مشاهده </a>
                                                 </div>
                                             </div>
                                         </div>
@@ -463,11 +564,11 @@
                                             </span>
                                         </div>
                                         <div>
-                                            <h2 style="color:#fd5b03 !important;">غرفه</h2>
-                                            <h2>فشار خون دکترفم </h2>
-                                            <div class="row text-center justify-content-center">
-
-                                                <div class="col-md-12 text-center justify-content-center">
+                                            <h5 style="color:#fd5b03 !important;">غرفه فشار خون </h5>
+                                            <h2> دکترفم </h2>
+                                            <div class="row">
+                                                <div class="col-md-5"></div>
+                                                <div class="col-md-7 text-center justify-content-center">
                                                     <a class="book-now  hover-icon" asp-action="CentersIntrud" asp-controller="Home">مشاهده</a>
                                                 </div>
                                             </div>
@@ -581,192 +682,118 @@
     </div>*@
 </div>
 
-<div class="container mt-5  pl-3 pr-3">
+<div class="container mt-5  ">
     <div class="row mt-5 text-center">
         <div class="col-lg-12 col-md-12  text-center ">
             <div class="section-title">
                 <h2 class="title"> آموزشها </h2>
-                <h6>  آنچه برای پیشگیری از ابتلا به فشار خون و یا پس از ابتلا، برای مراقبت و درمان نیاز دارید. </h6>
+                <h6>  آنچه برای پیشگیری از ابتلا به فشارخون و یا پس از ابتلا، برای مراقبت و درمان نیاز دارید. </h6>
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-2 ">
-            <div class="card search-filter">
-                <div class="card-header">
-                    <p class="card-title mb-0" style="font-weight:600 !important;">موضوعات آموزشی</p>
-                </div>
-                <div class="card-body">
-                    <div class="filter-widget">
 
-                        <div>
-                            <label class="custom_check">
-                                <input type="checkbox" name="select_specialist" checked>
-                                <span class="checkmark"></span> بیماری فشارخون
-                            </label>
-                        </div>
-                        <div>
-                            <label class="custom_check">
-                                <input type="checkbox" name="select_specialist" checked>
-                                <span class="checkmark"></span> پیش فشارخون
-                            </label>
-                        </div>
-                        <div>
-                            <label class="custom_check">
-                                <input type="checkbox" name="select_specialist">
-                                <span class="checkmark"></span> فشارخون بارداری
-                            </label>
-                        </div>
-                        <div>
-                            <label class="custom_check">
-                                <input type="checkbox" name="select_specialist">
-                                <span class="checkmark"></span> عوارض فشارخون
-                            </label>
-                        </div>
-                        <div>
-                            <label class="custom_check">
-                                <input type="checkbox" name="select_specialist">
-                                <span class="checkmark"></span> درمان فشارخون
-                            </label>
-                        </div>
-                        <div>
-                            <label class="custom_check">
-                                <input type="checkbox" name="select_specialist">
-                                <span class="checkmark"></span> تغذیه و فشارخون
-                            </label>
-                        </div>
-                        <div>
-                            <label class="custom_check">
-                                <input type="checkbox" name="select_specialist">
-                                <span class="checkmark"></span> ورزش و فشارخون
-                            </label>
-                        </div>
-
-                        <div>
-                            <label class="custom_check">
-                                <input type="checkbox" name="select_specialist">
-                                <span class="checkmark"></span> رمضان و فشارخون
-                            </label>
-                        </div>
-                        <div>
-                            <label class="custom_check">
-                                <input type="checkbox" name="select_specialist">
-                                <span class="checkmark"></span> سالمندی و فشارخون
-                            </label>
-                        </div>
-                        <div>
-                            <label class="custom_check">
-                                <input type="checkbox" name="select_specialist">
-                                <span class="checkmark"></span> بارداری و فشارخون
-                            </label>
-                        </div>
-
-                    </div>
-                    <div class="btn-search mt-2">
-                        <button type="button" class=" btn-Accept w-100">جستجو</button>
-                    </div>
-                </div>
-            </div>
+    <div class="row mt-2">
+        @* <div class="col-md-2 ">
+        <div class="card search-filter">
+        <div class="card-header">
+        <p class="card-title mb-0" style="font-weight:500 !important;">موضوعات آموزشی </p>
         </div>
-        <div class="col-md-8">
-            <div class="row">
-                <div class="col-md-2">
-                </div>
-                <div class="col-md-8 align-items-center text-center">
-                    <div id="radio" class="container-fluid">
-                        <div class="container">
-                            <div class="radio-content">
-                                <div class="radio-right">
-                                    <div class="radio-equalizer">
-                                        <div id='music-bars' class="">
-                                            <span class="four"></span>
-                                            <span class="three"></span>
-                                            <span class="one"></span>
-                                            <span class="two"></span>
-                                            <span class="four"></span>
-                                            <span class="three"></span>
-                                            <span class="one"></span>
-                                            <span class="two"></span>
-                                            <span class="four"></span>
-                                            <span class="three"></span>
-                                            <span class="one"></span>
-                                            <span class="two"></span>
-                                            <span class="four"></span>
-                                            <span class="three"></span>
-                                            <span class="one"></span>
-                                            <span class="two"></span>
-                                            <span class="four"></span>
-                                            <span class="three"></span>
-                                            <span class="one"></span>
-                                            <span class="two"></span>
-                                            <span class="four"></span>
-                                            <span class="three"></span>
-                                            <span class="one"></span>
-                                            <span class="two"></span>
-                                            <span class="four"></span>
-                                            <span class="three"></span>
-                                            <span class="one"></span>
-                                            <span class="two"></span>
-                                        </div>
-                                    </div>
-                                    <div class="radio-audio">
-                                        <audio src="~/Content/Radio/music/experience.mp3" preload="none"></audio>
-                                    </div>
-                                </div>
-                                <div class="radio-left">
-                                    <div class="radio-folder">
-                                        <i class="material-icons">folder_open</i>
-                                    </div>
-                                    <div class="radio-music-list-popup">
-                                        <div class="radio-music-list-item">
-                                            <a href="#">مشاهده همه</a>
-                                        </div>
-                                    </div>
-                                    <div class="radio-controls">
-                                        <div class="radio-next">
-                                        </div>
-                                        <div class="radio-stop-play">
-                                        </div>
-                                        <div class="radio-previous">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-2"></div>
-            </div>
+        <div class="card-body">
+        <div class="filter-widget">
 
-            <div class="row">
-                <div class="col-md-2">
-                </div>
-                <div class="col-md-8 align-items-center">
-                    <div class="video">
-                        <video controls>
-                            <source src="~/Content/Video/Bardari1.mp4" type="video/mp4">
-                        </video>
-                        <div class="overlay">
-                            <img src="~/Content/images/tv-png-18664.png" alt="">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-2"></div>
-            </div>
-            <div class="row ">
-                <div class="col-4"></div>
-                <div class="col-4 mt-4 mb-5 "></div>
-                <div class="col-4"></div>
-            </div>
+        <div>
+        <label class="custom_check">
+        <input type="checkbox" name="select_specialist" checked>
+        <span class="checkmark"></span> بیماری دیابت
+        </label>
         </div>
-        <div class="col-md-2 align-items-center text-center p-2 ">
-            <img src="~/Content/images/bg/BloodPressure-ADS.jpg" style="width:190px !important;" />
+        <div>
+        <label class="custom_check">
+        <input type="checkbox" name="select_specialist" checked>
+        <span class="checkmark"></span> پره دیابت
+        </label>
         </div>
+        <div>
+        <label class="custom_check">
+        <input type="checkbox" name="select_specialist">
+        <span class="checkmark"></span> دیابت بارداری
+        </label>
+        </div>
+        <div>
+        <label class="custom_check">
+        <input type="checkbox" name="select_specialist">
+        <span class="checkmark"></span> عوارض دیابت
+        </label>
+        </div>
+        <div>
+        <label class="custom_check">
+        <input type="checkbox" name="select_specialist">
+        <span class="checkmark"></span> درمان دیابت
+        </label>
+        </div>
+        <div>
+        <label class="custom_check">
+        <input type="checkbox" name="select_specialist">
+        <span class="checkmark"></span> تغذیه و دیابت
+        </label>
+        </div>
+        <div>
+        <label class="custom_check">
+        <input type="checkbox" name="select_specialist">
+        <span class="checkmark"></span> فعالیت بدنی و دیابت
+        </label>
+        </div>
+        <div>
+        <label class="custom_check">
+        <input type="checkbox" name="select_specialist">
+        <span class="checkmark"></span> مسافرت و دیابت
+        </label>
+        </div>
+        <div>
+        <label class="custom_check">
+        <input type="checkbox" name="select_specialist">
+        <span class="checkmark"></span> رمضان و دیابت
+        </label>
+        </div>
+        <div>
+        <label class="custom_check">
+        <input type="checkbox" name="select_specialist">
+        <span class="checkmark"></span> سالمندی و دیابت
+        </label>
+        </div>
+        <div>
+        <label class="custom_check">
+        <input type="checkbox" name="select_specialist">
+        <span class="checkmark"></span> بارداری و دیابت
+        </label>
+        </div>
+        <div>
+        <label class="custom_check">
+        <input type="checkbox" name="select_specialist">
+        <span class="checkmark"></span> پوشاک و دیابت
+        </label>
+        </div>
+        </div>
+        <div class="btn-search">
+        <button type="button" class=" btn-Accept w-100">جستجو</button>
+        </div>
+        </div>
+        </div>
+        </div>*@
+        <div class="col-md-12 mb-5 ">
+            @await Component.InvokeAsync("PodcastLandingPage")
+            <hr />
+            @await Component.InvokeAsync("TVFAMLandingPage")
+        </div>
+        @*  <div class="col-md-2 align-items-center text-center  ">
+        <img src="~/Content/images/bg/Diabet-ADS.jpg" style="width:190px !important;" />
+        </div>*@
     </div>
 
 
 </div>
-
+<div class="row mt-4">
+</div>
 
 @*<section class=" pt-0">
 

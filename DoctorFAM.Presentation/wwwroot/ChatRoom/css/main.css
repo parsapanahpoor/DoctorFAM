@@ -3,25 +3,6 @@
     src: url("../fonts/IRANSansWeb.eot") format("eot"), url("../fonts/IRANSansWeb.woff") format("woff"), url("../fonts/IRANSansWeb.ttf") format("truetype");
 }
 
-.disConnect {
-    position: fixed;
-    display: none;
-    width: 100%;
-    height: 100%;
-    z-index: 10;
-    background: #0000008c;
-}
-
-    .disConnect div {
-        margin: auto;
-        position: relative;
-        top: 10%;
-        width: 40%;
-        background: white;
-        box-shadow: 0 0 5px 0 black;
-        text-align: center;
-    }
-
 ::-webkit-scrollbar {
     width: 5px;
 }
@@ -95,7 +76,7 @@
         }
 
     .chat-content .chats {
-        padding: 32px 0;
+        padding: 10px 0;
         height: 100%;
         overflow-y: auto;
     }
@@ -230,12 +211,43 @@
     right: 0;
 }
 
+    .footer .fileUpload {
+        width: 40px;
+        height: 40px;
+        text-align: center;
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+        transition: all ease .3s;
+        cursor: pointer;
+        background: #3165aa;
+        box-shadow: 0 0 5px 0 gray;
+    }
+
+        .footer .fileUpload:hover {
+            background: #154079;
+        }
+
+        .footer .fileUpload i {
+            font-size: 20px;
+            color: white;
+            top: 8px;
+            position: relative;
+        }
+
     .footer input {
         display: inline;
         width: 90%;
         height: 50px;
+        padding-right: 50px;
         border-radius: 0 !important;
     }
+
+        .footer input[type=file] {
+            display: none;
+            padding-top: 12px !important;
+            padding-right: 55px !important;
+        }
 
     .footer button {
         display: inline;

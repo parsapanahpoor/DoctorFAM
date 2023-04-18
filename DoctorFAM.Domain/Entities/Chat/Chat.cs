@@ -13,6 +13,8 @@ namespace DoctorFAM.Domain.Entities.Chat
 
         public string ChatBody { get; set; }
 
+        public string? FileAttach { get; set; }
+
         public ulong UserId { get; set; }
 
         public ulong GroupId { get; set; }

@@ -22,6 +22,8 @@ namespace DoctorFAM.Domain.ViewModels.ChatRoom
 
         public string CreateDate { get; set; }
 
+        public string? FileAttach { get; set; }
+
         #endregion
     }
 }
