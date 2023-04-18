@@ -30,6 +30,10 @@
 		</PackageReference>
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Entities\SendSMS\FromDoctrors\" />
+	</ItemGroup>
+
 
 
 </Project>
