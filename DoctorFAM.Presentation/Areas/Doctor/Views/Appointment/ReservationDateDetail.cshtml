@@ -71,7 +71,8 @@
                                 <thead class="bordered-darkorange">
                                     <tr role="row">
 
-                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">اطلاعات بیمار</th>
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">نام بیمار</th>
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">موبایل</th>
                                         <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">کد پیگیری</th>
                                         <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">شروع</th>
                                         <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">وضعیت</th>
@@ -92,9 +93,23 @@
                                                 <p>
                                                     @if (reservationdata.PatientId.HasValue && reservationdata.PatientDetail != null)
                                                     {
-                                                        <span class="">نام و نام خانوادگی : @reservationdata.PatientDetail.PatientUsername</span>
-                                                        <hr />
-                                                        <span class="">موبایل : @reservationdata.PatientDetail.PatientMobile</span>
+                                                        <span class=""> @reservationdata.PatientDetail.PatientUsername</span>
+                                                      
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="mr-8px label label-orange">@Localizer["Not Reserved Yet"] </span>
+                                                    }
+
+                                                </p>
+                                            </td>
+
+                                            <td class="center tc vm">
+                                                <p>
+                                                    @if (reservationdata.PatientId.HasValue && reservationdata.PatientDetail != null)
+                                                    {
+                                                       
+                                                        <span class=""> @reservationdata.PatientDetail.PatientMobile</span>
                                                     }
                                                     else
                                                     {

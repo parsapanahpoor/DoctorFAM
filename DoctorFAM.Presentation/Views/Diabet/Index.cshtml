@@ -478,7 +478,7 @@
                                             </span>
                                         </div>
                                         <div>
-                                            <h2 style="color:#fd5b03 !important;">دیابتولوژیست </h2>
+                                            <h4 style="color:#fd5b03 !important;">دیابتولوژیست </h4>
                                             <h2> دکترفم </h2>
                                             <div class="row">
                                                 <div class="col-md-5"></div>
@@ -501,7 +501,7 @@
                                             </span>
                                         </div>
                                         <div>
-                                            <h2 style="color:#fd5b03 !important;">متخصص دیابت</h2>
+                                            <h4 style="color:#fd5b03 !important;">متخصص دیابت</h4>
                                             <h2> دکترفم </h2>
                                             <div class="row">
                                                 <div class="col-md-5"></div>
@@ -523,7 +523,7 @@
                                             </span>
                                         </div>
                                         <div>
-                                            <h2 style="color:#fd5b03 !important;">غرفه دیابت </h2>
+                                            <h4 style="color:#fd5b03 !important;">غرفه دیابت </h4>
                                             <h2> دکترفم </h2>
                                             <div class="row">
                                                 <div class="col-md-5"></div>
@@ -640,7 +640,7 @@
     </div>
     </div>*@
 </div>
-<div class="container mt-5  pl-3 pr-3">
+<div class="container mt-5  ">
     <div class="row mt-5 text-center">
         <div class="col-lg-12 col-md-12  text-center ">
             <div class="section-title">
@@ -649,9 +649,9 @@
             </div>
         </div>
     </div>
-
-    <div class="row">
-        <div class="col-md-2 ">
+   
+    <div class="row mt-2">
+       @* <div class="col-md-2 ">
             <div class="card search-filter">
                 <div class="card-header">
                     <p class="card-title mb-0" style="font-weight:500 !important;">موضوعات آموزشی </p>
@@ -737,37 +737,17 @@
                     </div>
                 </div>
             </div>
+        </div>*@
+        <div class="col-md-12 mb-5 ">
+        @await Component.InvokeAsync("PodcastLandingPage")
+        <hr />
+        @await Component.InvokeAsync("TVFAMLandingPage")
         </div>
-        <div class="col-md-8">
-
-
-
-            <div class="row">
-                <div class="col-md-2">
-                </div>
-                <div class="col-md-8 align-items-center">
-                    <div class="video">
-                        <video controls>
-                            <source src="~/Content/Video/Retinopati-1.mp4" type="video/mp4">
-                        </video>
-                        <div class="overlay">
-                            <img src="~/Content/images/tv-png-18664.png" alt="">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-2"></div>
-            </div>
-            <div class="row ">
-                <div class="col-4"></div>
-                <div class="col-4 mt-4 mb-5 "></div>
-                <div class="col-4"></div>
-            </div>
-        </div>
-        <div class="col-md-2 align-items-center text-center p-2 ">
+      @*  <div class="col-md-2 align-items-center text-center  ">
             <img src="~/Content/images/bg/Diabet-ADS.jpg" style="width:190px !important;" />
-        </div>
+        </div>*@
     </div>
-    @await Component.InvokeAsync("PodcastLandingPage")
+   
 
 </div>
 <div class="row mt-4">

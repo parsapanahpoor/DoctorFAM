@@ -19,7 +19,7 @@ namespace DoctorFAM.Domain.Entities.DoctorReservation
 
         public string Mobile { get; set; }
 
-        public string NationalId { get; set; }
+        public string? NationalId { get; set; }
 
         #endregion
 
