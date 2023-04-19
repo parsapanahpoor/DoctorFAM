@@ -14,7 +14,7 @@
 
                     @if (Model != null && Model.Any())
                     {
-                        <a id="ShowUserCommentInAdminPanel" asp-action="ListOfDoctorsRequestForSendSMS" asp-controller="SendSMS" asp-area="Admin" class="badge badge-info">نمایش همه</a>
+                        <a id="ShowUserCommentInAdminPanel" asp-action="ListOfRequestForSendSMSFromDoctor" asp-controller="SendSMS" asp-area="Admin" class="badge badge-info">نمایش همه</a>
                     }
 
                     <a id="ShowUserCommentInAdminPanelMinus" href="#" data-toggle="collapse">
@@ -32,7 +32,10 @@
                         <thead class="tc vm">
                             <tr class="tc vm">
                                 <th class="tc vm">
-                                    اطلاعات ارسال کننده
+                                    اطلاعات پزشک
+                                </th>
+                                <th class="tc vm">
+                                    تعداد دخواست
                                 </th>
                                 <th class="tc vm">
                                     تاریخ درج
@@ -57,13 +60,19 @@
 
                                     <td class="tc vm">
                                         <div class="tc vm">
+                                            <p id="ArticleTitle">@request.CountOfSMS</p>
+                                        </div>
+                                    </td>
+
+                                    <td class="tc vm">
+                                        <div class="tc vm">
                                             <p id="ArticleTitle">@request.CreateDate.ToShamsi()</p>
                                         </div>
                                     </td>
 
                                     <td class="tc vm">
 
-                                        <a asp-action="RequestDetail" asp-controller="SebdSMS" asp-area="Admin" asp-route-resumeId="@request.RequestId" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+                                        <a asp-action="ShowRequestDetail" asp-controller="SendSMS" asp-area="Admin" asp-route-id="@request.RequestId" class="btn btn-warning btn-circle btn-xs"><i class="glyphicon glyphicon-edit"></i></a>
 
                                     </td>
                                 </tr>

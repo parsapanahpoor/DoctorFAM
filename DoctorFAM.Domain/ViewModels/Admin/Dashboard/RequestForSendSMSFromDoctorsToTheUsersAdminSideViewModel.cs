@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DoctorFAM.Domain.Enums.SendSMS.FromDoctors;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,8 @@ public class RequestForSendSMSFromDoctorsToTheUsersAdminSideViewModel
     public ulong RequestId { get; set; }
 
     public DateTime CreateDate { get; set; }
+
+    public SendSMSFromDoctorState SendSMSFromDoctorState { get; set; }
 
     public DoctorUserInfoForShow DoctorUserInfoForShow { get; set; }
 

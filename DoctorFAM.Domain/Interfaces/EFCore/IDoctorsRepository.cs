@@ -6,6 +6,7 @@ using DoctorFAM.Domain.Entities.FamilyDoctor.VIPSystem;
 using DoctorFAM.Domain.Entities.Interest;
 using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.Entities.SendSMS.FromDoctrors;
+using DoctorFAM.Domain.ViewModels.Admin.Dashboard;
 using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DosctorSideBarInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Employees;
@@ -25,6 +26,12 @@ namespace DoctorFAM.Domain.Interfaces
     public interface IDoctorsRepository
     {
         #region Doctors Panel Side
+
+        //List Of Request For Send SMS From Doctors To Doctors Admin Side
+        Task<List<RequestForSendSMSFromDoctorsToTheUsersAdminSideViewModel>?> ListOfRequestForSendSMSFromDoctorsToDoctorsAdminSide();
+
+        //Reduce Doctor Free SMS Percentage Without Save Changes
+        Task ReduceDoctorFreeSMSPercentageWithoutSaveChanges(ulong doctorId, int smsCount);
 
         //Add Send Request Of SMS From Doctors To The Patient Detail To The Data Base
         Task AddSendRequestOfSMSFromDoctorsToThePatientDetailToTheDataBase(SendRequestOfSMSFromDoctorsToThePatientDetail requestDetail);

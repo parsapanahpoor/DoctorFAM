@@ -6,6 +6,7 @@ using DoctorFAM.Domain.Entities.Interest;
 using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.Enums.DoctorReservation;
 using DoctorFAM.Domain.Interfaces;
+using DoctorFAM.Domain.ViewModels.Admin.Dashboard;
 using DoctorFAM.Domain.ViewModels.Admin.Doctors;
 using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo;
 using DoctorFAM.Domain.ViewModels.Admin.Doctors.UsersInDoctorPopulationCovered;
@@ -34,6 +35,9 @@ namespace DoctorFAM.Application.Services.Interfaces
     public interface IDoctorsService
     {
         #region Doctors Panel Side   
+
+        //List Of Request For Send SMS From Doctors To Doctors Admin Side
+        Task<List<RequestForSendSMSFromDoctorsToTheUsersAdminSideViewModel>?> ListOfRequestForSendSMSFromDoctorsToDoctorsAdminSide();
 
         //Delete Diabet Consultant Resume By Resume Id
         Task<bool> DeleteDiabetConsultantResumeByResumeId(ulong resumeId, ulong userId);

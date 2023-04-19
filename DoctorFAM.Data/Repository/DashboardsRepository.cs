@@ -327,6 +327,7 @@ namespace DoctorFAM.Data.Repository
                                                 CountOfSMS = _context.SendRequestOfSMSFromDoctorsToThePatientDetails.Count(s=> !s.IsDelete && s.SendRequestOfSMSFromDoctorsToThePatientId == p.Id),
                                                 CreateDate = p.CreateDate,
                                                 RequestId = p.Id,
+                                                SendSMSFromDoctorState = p.SendSMSFromDoctorState,
                                                 DoctorUserInfoForShow = _context.Users.Where(s=> !s.IsDelete && s.Id == p.DoctorUserId)
                                                                                 .Select(s=> new DoctorUserInfoForShow()
                                                                                 {

@@ -44,6 +44,9 @@ using DoctorFAM.Domain.ViewModels.Admin.Doctors.UsersInDoctorPopulationCovered;
 using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.Enums.DoctorReservation;
 using DoctorFAM.Domain.Entities.SendSMS.FromDoctrors;
+using DoctorFAM.Domain.ViewModels.Admin;
+using Microsoft.EntityFrameworkCore;
+using DoctorFAM.Domain.ViewModels.Admin.Dashboard;
 
 namespace DoctorFAM.Application.Services.Implementation
 {
@@ -2579,6 +2582,12 @@ namespace DoctorFAM.Application.Services.Implementation
 
                 #endregion
 
+                #region Reduce Percentage Doctor Free SMS Count
+
+                await _doctorRepository.ReduceDoctorFreeSMSPercentageWithoutSaveChanges(doctor.Id , model.PatientId.Count());
+
+                #endregion
+
                 await _doctorRepository.SaveChanges();
             }
 
@@ -2590,6 +2599,12 @@ namespace DoctorFAM.Application.Services.Implementation
         #endregion
 
         #region Admin Side
+
+        //List Of Request For Send SMS From Doctors To Doctors Admin Side
+        public async Task<List<RequestForSendSMSFromDoctorsToTheUsersAdminSideViewModel>?> ListOfRequestForSendSMSFromDoctorsToDoctorsAdminSide()
+        {
+            return await _doctorRepository.ListOfRequestForSendSMSFromDoctorsToDoctorsAdminSide();
+        }
 
         //Count Of Users In Doctors Population Covered
         public async Task<CountOfUsersInDoctorsPopulationCovered> FillCountOfUsersInDoctorsPopulationCovered()
