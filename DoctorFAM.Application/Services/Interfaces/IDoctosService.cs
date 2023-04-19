@@ -213,6 +213,9 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Update Doctor Speciality Selected
         Task<bool> UpdateDoctorSpecialitySelected(List<ulong>? speciallities, ulong userId);
 
+        //Send Request For Send SMS From Doctor Panel To Admin 
+        Task<SendRequestOfSMSFromDoctorsToThePatientResult> SendRequestForSendSMSFromDoctorPanelToAdmin(SendSMSToPatientViewModel model);
+
         #endregion
 
         #region Admin Side 

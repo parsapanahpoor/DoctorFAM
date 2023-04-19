@@ -5,6 +5,7 @@ using DoctorFAM.Domain.Entities.FamilyDoctor.ParsaSystem;
 using DoctorFAM.Domain.Entities.FamilyDoctor.VIPSystem;
 using DoctorFAM.Domain.Entities.Interest;
 using DoctorFAM.Domain.Entities.Organization;
+using DoctorFAM.Domain.Entities.SendSMS.FromDoctrors;
 using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DosctorSideBarInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Employees;
@@ -24,6 +25,18 @@ namespace DoctorFAM.Domain.Interfaces
     public interface IDoctorsRepository
     {
         #region Doctors Panel Side
+
+        //Add Send Request Of SMS From Doctors To The Patient Detail To The Data Base
+        Task AddSendRequestOfSMSFromDoctorsToThePatientDetailToTheDataBase(SendRequestOfSMSFromDoctorsToThePatientDetail requestDetail);
+
+        //Add Send Request Of SMS From Doctors To The Patient
+        Task AddSendRequestOfSMSFromDoctorsToThePatient(SendRequestOfSMSFromDoctorsToThePatient request);
+
+        //Get Count Of Doctor Free SMS Sent
+        Task<int?> GetCountOfDoctorFreeSMSSent(ulong doctorUserId);
+
+        //Get Doctor Free SMS Count By Doctor Id
+        Task<int?> GetDoctorFreeSMSCountByDoctorId(ulong doctorId);
 
         //Update Diabet Consultant Resume 
         Task UpdateDiabetConsultantResume(DiabetConsultantsResume diabet);

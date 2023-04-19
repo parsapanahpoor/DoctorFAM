@@ -37,16 +37,13 @@ using DoctorFAM.Domain.ViewModels.Admin.IncomingExcelFile;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Speciality;
 using System.Data;
 using DoctorFAM.Domain.ViewModels.Site.Diabet;
-using DoctorFAM.Domain.Entities.Resume;
 using DoctorFAM.Domain.ViewModels.Site.BloodPressure;
 using DoctorFAM.Domain.ViewModels.Admin.Doctors;
-using Microsoft.EntityFrameworkCore;
 using DoctorFAM.Domain.Interfaces.Dapper;
 using DoctorFAM.Domain.ViewModels.Admin.Doctors.UsersInDoctorPopulationCovered;
 using DoctorFAM.Domain.Entities.DoctorReservation;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
-using System.Formats.Tar;
 using DoctorFAM.Domain.Enums.DoctorReservation;
+using DoctorFAM.Domain.Entities.SendSMS.FromDoctrors;
 
 namespace DoctorFAM.Application.Services.Implementation
 {
@@ -2481,6 +2478,115 @@ namespace DoctorFAM.Application.Services.Implementation
             return true;
         }
 
+        //Send Request For Send SMS From Doctor Panel To Admin 
+        public async Task<SendRequestOfSMSFromDoctorsToThePatientResult> SendRequestForSendSMSFromDoctorPanelToAdmin(SendSMSToPatientViewModel model)
+        {
+            #region Get Organization
+
+            var organization = await _organizationService.GetDoctorOrganizationByUserId(model.DoctorUserId);
+            if (organization == null || organization.OrganizationInfoState != OrganizationInfoState.Accepted || organization.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice)
+            {
+                return SendRequestOfSMSFromDoctorsToThePatientResult.WrongInformation;
+            }
+
+            #endregion
+
+            #region Gett Doctor
+
+            var doctor = await _doctorRepository.GetDoctorByUserId(organization.OwnerId);
+            if (doctor == null) return SendRequestOfSMSFromDoctorsToThePatientResult.WrongInformation;
+
+            #endregion
+
+            #region Model State Validation 
+
+            if (model == null || model.PatientId.Count() == 0 || !model.PatientId.Any())
+            {
+                return SendRequestOfSMSFromDoctorsToThePatientResult.WrongInformation;
+            }
+
+            if (string.IsNullOrEmpty(model.SMSBody))
+            {
+                return SendRequestOfSMSFromDoctorsToThePatientResult.WrongInformation;
+            }
+
+            //Check Patients Id That Exist In Doctor Population
+            foreach (var item in model.PatientId)
+            {
+                if (!await _userService.IsExistUserById(item))
+                {
+                    return SendRequestOfSMSFromDoctorsToThePatientResult.WrongInformation;
+                }
+            }
+
+            #endregion
+
+            #region Check Doctor Send SMS Count
+
+            //Get Doctor Free SMS Count
+            var doctorFreeSMSCount = await _doctorRepository.GetDoctorFreeSMSCountByDoctorId(doctor.Id);
+            if (doctorFreeSMSCount == null) return SendRequestOfSMSFromDoctorsToThePatientResult.WrongInformation;
+
+            //Get Count Of Doctor Free SMS Sent 
+            var countOFDoctorFreeSentSMS = await _doctorRepository.GetCountOfDoctorFreeSMSSent(organization.OwnerId);
+
+            if (countOFDoctorFreeSentSMS.HasValue && countOFDoctorFreeSentSMS.Value >= doctorFreeSMSCount)
+            {
+                return SendRequestOfSMSFromDoctorsToThePatientResult.HigherThanDoctorFreePercentage;
+            }
+
+            //Check Incoming SMS Right Now
+            if (model.PatientId.Count > doctorFreeSMSCount)
+            {
+                return SendRequestOfSMSFromDoctorsToThePatientResult.HigherThanDoctorFreePercentage;
+            }
+
+            //Insert Free SMS From Doctor 
+            if (countOFDoctorFreeSentSMS.HasValue && countOFDoctorFreeSentSMS.Value <= doctorFreeSMSCount && model.PatientId.Count <= doctorFreeSMSCount)
+            {
+                #region Create SMS 
+
+                //Create Main Request
+                SendRequestOfSMSFromDoctorsToThePatient mainRequest = new SendRequestOfSMSFromDoctorsToThePatient()
+                {
+                    CreateDate = DateTime.Now,
+                    DoctorUserId = organization.OwnerId,
+                    IsDelete = false,
+                    SendSMSFromDoctorState = Domain.Enums.SendSMS.FromDoctors.SendSMSFromDoctorState.WaitingForConfirm,
+                    SMSText = model.SMSBody,
+                };
+
+                #endregion
+
+                //Add Request To The Data Base 
+                await _doctorRepository.AddSendRequestOfSMSFromDoctorsToThePatient(mainRequest);
+
+                #region Create SMS Detail 
+
+                foreach (var userId in model.PatientId)
+                {
+                    SendRequestOfSMSFromDoctorsToThePatientDetail detailRequest = new SendRequestOfSMSFromDoctorsToThePatientDetail()
+                    {
+                        CreateDate = DateTime.Now,
+                        FreeSMS = true,
+                        UserId = userId,
+                        SendRequestOfSMSFromDoctorsToThePatientId = mainRequest.Id
+                    };
+
+                    //Add Request Detail To The Data Base
+                    await _doctorRepository.AddSendRequestOfSMSFromDoctorsToThePatientDetailToTheDataBase(detailRequest);
+                }
+
+                #endregion
+
+                await _doctorRepository.SaveChanges();
+            }
+
+            #endregion
+
+            return SendRequestOfSMSFromDoctorsToThePatientResult.RequestSentSuccesfully;
+        }
+
         #endregion
 
         #region Admin Side
@@ -3414,7 +3520,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #region Check Doctor Population Covered 
 
-            var populationCovered = await _familyDoctorService.GetUserSelectedFamilyDoctorByUserAndDoctorId(userId, doctorOffice.OwnerId) ;
+            var populationCovered = await _familyDoctorService.GetUserSelectedFamilyDoctorByUserAndDoctorId(userId, doctorOffice.OwnerId);
 
             //If User Is In Doctor Population Covered 
             if (populationCovered != null && populationCovered.IsUserInDoctorPopulationCoveredOutOfDoctorFAM)

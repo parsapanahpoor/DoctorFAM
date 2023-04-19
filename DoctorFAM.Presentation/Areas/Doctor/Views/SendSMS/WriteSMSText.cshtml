@@ -1,0 +1,46 @@
+﻿@model DoctorFAM.Domain.ViewModels.DoctorPanel.ParsaSystem.SendSMSToPatientViewModel
+
+@{
+    ViewData["Title"] = "ارسال پیامک برای کاربران";
+}
+
+@section Breadcrumb
+    {
+    <li>
+        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+    </li>
+}
+
+<div class="row">
+    <div class="col-lg-12 col-sm-6 col-xs-12">
+        <div class="widget">
+            <div class="widget-header bordered-bottom bordered-primary">
+                <span class="widget-caption">اطلاعات پیامک</span>
+            </div>
+            <div class="widget-body">
+                <div id="horizontal-form">
+                    <form asp-action="WriteSMSText" asp-area="Doctor" asp-controller="SendSMS" method="post" enctype="multipart/form-data">
+
+                        @foreach (var item in Model.PatientId)
+                        {
+                            <input type="hidden" asp-for="PatientId" value="@item" />
+                        }
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <input type="email" readonly placeholder="تعداد کاربران انتخابی شما : @Model.PatientId.Count()" class="form-control">
+                                <div class="horizontal-space"></div>
+                            </div>
+                        </div>
+
+                        <textarea class="form-control" asp-for="SMSBody" rows="3" placeholder="متن پیامک راسالی شما"></textarea>
+                        <div class="horizontal-space"></div>
+                        <div>
+                            <button type="submit" class="btn btn-success">ارسال</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

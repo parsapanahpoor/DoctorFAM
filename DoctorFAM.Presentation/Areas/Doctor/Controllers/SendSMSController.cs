@@ -12,9 +12,12 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
         private readonly IFamilyDoctorService _familyDoctorService;
 
-        public SendSMSController(IFamilyDoctorService familyDoctorService)
+        private readonly IDoctorsService _doctorService;
+
+        public SendSMSController(IFamilyDoctorService familyDoctorService, IDoctorsService doctorService)
         {
-            _familyDoctorService= familyDoctorService;
+            _familyDoctorService = familyDoctorService;
+            _doctorService = doctorService;
         }
 
         #endregion
@@ -48,7 +51,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
             if (usersId.Count() == 0)
             {
                 TempData[ErrorMessage] = "لطفا بیماران خود را انتخاب کنید.";
-                return RedirectToAction(nameof(usersId));
+                return RedirectToAction(nameof(ChooseUsersForSendSMS));
             }
 
             #endregion
@@ -59,6 +62,45 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
             {
                 PatientId = usersId
             };
+
+            #endregion
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> WriteSMSText(SendSMSToPatientViewModel model)
+        {
+            #region Model State
+
+            model.DoctorUserId = User.GetUserId();
+
+            if (!ModelState.IsValid)
+            {
+                TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد ";
+                return View(model);
+            }
+
+            #endregion
+
+            #region Send SMS
+
+            var res = await _doctorService.SendRequestForSendSMSFromDoctorPanelToAdmin(model);
+
+            switch (res)
+            {
+                case SendRequestOfSMSFromDoctorsToThePatientResult.RequestSentSuccesfully:
+                    TempData[SuccessMessage] = "درخواست باموفقیت ثبت شده است.";
+                    return RedirectToAction("Index", "Home", new { area = "Doctor" });
+
+                case SendRequestOfSMSFromDoctorsToThePatientResult.WrongInformation:
+                    TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+                    break;
+
+                case SendRequestOfSMSFromDoctorsToThePatientResult.HigherThanDoctorFreePercentage:
+                    TempData[ErrorMessage] = "موجودی ارسال پیامک رایگان شما به پایان رسیده است.";
+                    break;
+            }
 
             #endregion
 

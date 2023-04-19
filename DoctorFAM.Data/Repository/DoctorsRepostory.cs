@@ -10,6 +10,7 @@ using DoctorFAM.Domain.Entities.Interest;
 using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.Resume;
+using DoctorFAM.Domain.Entities.SendSMS.FromDoctrors;
 using DoctorFAM.Domain.Entities.WorkAddress;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo;
@@ -48,6 +49,57 @@ namespace DoctorFAM.Data.Repository
         #endregion
 
         #region Doctors Panel Side
+
+        //Add Send Request Of SMS From Doctors To The Patient Detail To The Data Base
+        public async Task AddSendRequestOfSMSFromDoctorsToThePatientDetailToTheDataBase(SendRequestOfSMSFromDoctorsToThePatientDetail requestDetail)
+        {
+             await _context.SendRequestOfSMSFromDoctorsToThePatientDetails.AddAsync(requestDetail);
+        }
+
+        //Add Send Request Of SMS From Doctors To The Patient
+        public async Task AddSendRequestOfSMSFromDoctorsToThePatient(SendRequestOfSMSFromDoctorsToThePatient request)
+        {
+            await _context.SendRequestOfSMSFromDoctorsToThePatients.AddAsync(request);
+            await _context.SaveChangesAsync();
+        }
+
+        //Get Count Of Doctor Free SMS Sent
+        public async Task<int?> GetCountOfDoctorFreeSMSSent(ulong doctorUserId)
+        {
+            #region Get Send Request Of SMS From Doctors To The Patient
+
+            //Get Send Request Of SMS From Doctors To The Patient
+            List<ulong> requests = await _context.SendRequestOfSMSFromDoctorsToThePatients.Where(p => !p.IsDelete && p.DoctorUserId == doctorUserId)
+                                            .Select(p => p.Id).ToListAsync();
+
+            if (requests == null) return null;
+
+            #endregion
+
+            #region Get Count 
+
+            int returnModel = 0;
+
+            foreach (var requestId in requests)
+            {
+                var requestDetails = await _context.SendRequestOfSMSFromDoctorsToThePatientDetails
+                                           .Where(p => !p.IsDelete && p.SendRequestOfSMSFromDoctorsToThePatientId == requestId && p.FreeSMS)
+                                           .CountAsync();
+
+                returnModel = returnModel + requestDetails;
+            }
+
+            #endregion
+
+            return returnModel;
+        }
+
+        //Get Doctor Free SMS Count By Doctor Id
+        public async Task<int?> GetDoctorFreeSMSCountByDoctorId(ulong doctorId)
+        {
+            return await _context.DoctorsInfos.Where(p => !p.IsDelete && p.DoctorId == doctorId)
+                                        .Select(p => p.CountOFFreeSMSForDoctors).FirstOrDefaultAsync();
+        }
 
         //Update Diabet Consultant Resume 
         public async Task UpdateDiabetConsultantResume(DiabetConsultantsResume diabet)
@@ -467,7 +519,7 @@ namespace DoctorFAM.Data.Repository
         //Get Doctor Reservation Tariff By User Id 
         public async Task<DoctorsReservationTariffs?> GetDoctorReservationTariffByDoctorUserId(ulong doctorUserId)
         {
-            return await _context.DoctorsReservationTariffs.FirstOrDefaultAsync(p=> !p.IsDelete && p.DoctorUserId == doctorUserId);
+            return await _context.DoctorsReservationTariffs.FirstOrDefaultAsync(p => !p.IsDelete && p.DoctorUserId == doctorUserId);
         }
 
         //Update Doctor Reservation Tariffs
@@ -654,7 +706,7 @@ namespace DoctorFAM.Data.Repository
         public async Task<List<User>> GetListOfAcceptedDoctors()
         {
             //Get Organizations owner Id
-            var ownerIds = await  _context.Organizations
+            var ownerIds = await _context.Organizations
                 .Where(s => !s.IsDelete && s.OrganizationType == Domain.Enums.Organization.OrganizationType.DoctorOffice)
                 .Select(p => p.OwnerId)
                 .ToListAsync();
@@ -843,15 +895,15 @@ namespace DoctorFAM.Data.Repository
 
             #endregion
 
-            return await query.Select(p=> new ListOfDoctorsInfoForExportExcelFileViewModel()
+            return await query.Select(p => new ListOfDoctorsInfoForExportExcelFileViewModel()
             {
                 OrganizationInfoState = p.OrganizationInfoState,
                 Email = p.User.Email,
                 Mobile = p.User.Mobile,
                 FullName = (!string.IsNullOrEmpty(p.User.Username)) ? p.User.Username : "وارد نشده ",
                 NationalCode = (!string.IsNullOrEmpty(p.User.NationalId)) ? p.User.NationalId : "وارد نشده ",
-                FirstName = (!string.IsNullOrEmpty(p.User.FirstName) ) ? p.User.FirstName : "وارد نشده ",
-                LastName = (!string.IsNullOrEmpty(p.User.LastName) ) ? p.User.LastName : "وارد نشده ",
+                FirstName = (!string.IsNullOrEmpty(p.User.FirstName)) ? p.User.FirstName : "وارد نشده ",
+                LastName = (!string.IsNullOrEmpty(p.User.LastName)) ? p.User.LastName : "وارد نشده ",
             }).ToListAsync();
         }
 
@@ -909,7 +961,7 @@ namespace DoctorFAM.Data.Repository
                 .Where(s => !s.IsDelete && s.OrganizationType == Domain.Enums.Organization.OrganizationType.DoctorOffice && s.OrganizationInfoState == OrganizationInfoState.Accepted)
                 .Include(p => p.User)
                 .OrderByDescending(s => s.CreateDate)
-                .Select(p=> p.User.Username)
+                .Select(p => p.User.Username)
                 .ToListAsync();
         }
 
@@ -1321,7 +1373,7 @@ namespace DoctorFAM.Data.Repository
                     {
                         CityModel.Add(await _context.DoctorsSelectedInterests
                                              .Include(p => p.Doctor).ThenInclude(p => p.User)
-                                                .Where(s => !s.IsDelete && s.Doctor.UserId == address.UserId ).Select(p => p.Doctor).FirstOrDefaultAsync());
+                                                .Where(s => !s.IsDelete && s.Doctor.UserId == address.UserId).Select(p => p.Doctor).FirstOrDefaultAsync());
                     }
                 }
 
@@ -1434,7 +1486,7 @@ namespace DoctorFAM.Data.Repository
 
             #endregion
 
-            return model.DistinctBy(p=> p.UserId).ToList();
+            return model.DistinctBy(p => p.UserId).ToList();
         }
 
         #endregion
