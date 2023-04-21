@@ -12,6 +12,7 @@ using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo;
 using DoctorFAM.Domain.ViewModels.Admin.Doctors.UsersInDoctorPopulationCovered;
 using DoctorFAM.Domain.ViewModels.Admin.FamilyDoctor;
 using DoctorFAM.Domain.ViewModels.Admin.IncomingExcelFile;
+using DoctorFAM.Domain.ViewModels.Admin.SendSMS;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DosctorSideBarInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Employees;
@@ -35,6 +36,9 @@ namespace DoctorFAM.Application.Services.Interfaces
     public interface IDoctorsService
     {
         #region Doctors Panel Side   
+
+        //Get Request For Send SMS From Doctor To Patient By RequestId
+        Task<ShowRequestForSendSMSDetailAdminSideViewModel?> FillShowRequestForSendSMSDetailViewModel(ulong requestId);
 
         //List Of Request For Send SMS From Doctors To Doctors Admin Side
         Task<List<RequestForSendSMSFromDoctorsToTheUsersAdminSideViewModel>?> ListOfRequestForSendSMSFromDoctorsToDoctorsAdminSide();
@@ -219,6 +223,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Send Request For Send SMS From Doctor Panel To Admin 
         Task<SendRequestOfSMSFromDoctorsToThePatientResult> SendRequestForSendSMSFromDoctorPanelToAdmin(SendSMSToPatientViewModel model);
+
+        //Manage Request For Send SMS From Doctor To Patient Admin Side 
+        Task<bool> ManageRequestForSendSMSFromDoctorToPatientAdminSide(ShowRequestForSendSMSDetailAdminSideViewModel model);
 
         #endregion
 

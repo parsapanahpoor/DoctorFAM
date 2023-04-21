@@ -1,6 +1,7 @@
 ﻿using DoctorFAM.Data.DbContext;
 using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Account;
+using DoctorFAM.Domain.Entities.Chat;
 using DoctorFAM.Domain.Entities.Consultant;
 using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.Entities.Doctors;
@@ -17,6 +18,7 @@ using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin;
 using DoctorFAM.Domain.ViewModels.Admin.Dashboard;
 using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo;
+using DoctorFAM.Domain.ViewModels.Admin.SendSMS;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DosctorSideBarInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Employees;
 using DoctorFAM.Domain.ViewModels.Site.BloodPressure;
@@ -55,10 +57,55 @@ namespace DoctorFAM.Data.Repository
 
         #region Doctors Panel Side
 
+        //Update Request For Send SMS From Doctor To Patient
+        public async Task UpdateRequestForSendSMSFromDoctorToPatient(SendRequestOfSMSFromDoctorsToThePatient request)
+        {
+            _context.SendRequestOfSMSFromDoctorsToThePatients.Update(request);
+            await _context.SaveChangesAsync();
+        }
+
+        //Get List User That Doctor Want To Send Them SMS
+        public async Task<List<User>?> GetListUserThatDoctorWantToSendThemSMS(ulong requestDetailId)
+        {
+            #region Get Request Detail 
+
+            List<ulong> userIds = await _context.SendRequestOfSMSFromDoctorsToThePatientDetails.Where(p => !p.IsDelete && p.SendRequestOfSMSFromDoctorsToThePatientId == requestDetailId)
+                                                .Select(p => p.UserId).ToListAsync();
+
+            #endregion
+
+            //Create Instance 
+            List<User> users = new List<User>();
+
+            foreach (var userId in userIds)
+            {
+                var user = await _context.Users.FirstOrDefaultAsync(p => !p.IsDelete && p.Id == userId);
+
+                if (user != null)
+                {
+                    users.Add(user);
+                }
+            }
+
+            return users;
+        }
+
+        //Get Request For Send SMS From Doctor To Patient By RequestId
+        public async Task<SendRequestOfSMSFromDoctorsToThePatient?> GetRequestForSendSMSFromDoctorToPatientByRequestId(ulong requestId)
+        {
+            return await _context.SendRequestOfSMSFromDoctorsToThePatients.FirstOrDefaultAsync(p => !p.IsDelete && p.Id == requestId);
+        }
+
+        //Get Request Detail For Send SMS From Doctor To Patient By Request Id
+        public async Task<List<SendRequestOfSMSFromDoctorsToThePatientDetail>> GetRequestDetailForSendSMSFromDoctorToPatientByRequestId(ulong requestId)
+        {
+            return await _context.SendRequestOfSMSFromDoctorsToThePatientDetails.Where(p => !p.IsDelete && p.SendRequestOfSMSFromDoctorsToThePatientId == requestId).ToListAsync();
+        }
+
         //List Of Request For Send SMS From Doctors To Doctors Admin Side
         public async Task<List<RequestForSendSMSFromDoctorsToTheUsersAdminSideViewModel>?> ListOfRequestForSendSMSFromDoctorsToDoctorsAdminSide()
         {
-            return await _context.SendRequestOfSMSFromDoctorsToThePatients.Where(p => !p.IsDelete && p.SendSMSFromDoctorState == Domain.Enums.SendSMS.FromDoctors.SendSMSFromDoctorState.WaitingForConfirm)
+            return await _context.SendRequestOfSMSFromDoctorsToThePatients.Where(p => !p.IsDelete)
                                        .Select(p => new RequestForSendSMSFromDoctorsToTheUsersAdminSideViewModel()
                                        {
                                            CountOfSMS = _context.SendRequestOfSMSFromDoctorsToThePatientDetails.Count(s => !s.IsDelete && s.SendRequestOfSMSFromDoctorsToThePatientId == p.Id),
@@ -73,6 +120,17 @@ namespace DoctorFAM.Data.Repository
                                                                                Username = s.Username,
                                                                            }).FirstOrDefault(),
                                        }).ToListAsync();
+        }
+
+        //Add Doctor SMS Percentage Without Save Changes
+        public async Task AddDoctorSMSPercentageWithoutSaveChanges(ulong doctorId, int smsCount)
+        {
+            var doctorsInfo = await _context.DoctorsInfos.Where(p => !p.IsDelete && p.DoctorId == doctorId).FirstOrDefaultAsync();
+
+            if (doctorsInfo != null)
+            {
+                doctorsInfo.CountOFFreeSMSForDoctors = doctorsInfo.CountOFFreeSMSForDoctors + smsCount;
+            }
         }
 
         //Reduce Doctor Free SMS Percentage Without Save Changes

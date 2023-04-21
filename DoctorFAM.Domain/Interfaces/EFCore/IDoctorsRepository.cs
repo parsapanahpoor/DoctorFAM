@@ -27,11 +27,26 @@ namespace DoctorFAM.Domain.Interfaces
     {
         #region Doctors Panel Side
 
+        //Update Request For Send SMS From Doctor To Patient
+        Task UpdateRequestForSendSMSFromDoctorToPatient(SendRequestOfSMSFromDoctorsToThePatient request);
+
+        //Get List User That Doctor Want To Send Them SMS
+        Task<List<User>?> GetListUserThatDoctorWantToSendThemSMS(ulong requestDetailId);
+
+        //Get Request For Send SMS From Doctor To Patient By RequestId
+        Task<SendRequestOfSMSFromDoctorsToThePatient?> GetRequestForSendSMSFromDoctorToPatientByRequestId(ulong requestId);
+
+        //Get Request Detail For Send SMS From Doctor To Patient By Request Id
+        Task<List<SendRequestOfSMSFromDoctorsToThePatientDetail>> GetRequestDetailForSendSMSFromDoctorToPatientByRequestId(ulong requestId);
+
         //List Of Request For Send SMS From Doctors To Doctors Admin Side
         Task<List<RequestForSendSMSFromDoctorsToTheUsersAdminSideViewModel>?> ListOfRequestForSendSMSFromDoctorsToDoctorsAdminSide();
 
         //Reduce Doctor Free SMS Percentage Without Save Changes
         Task ReduceDoctorFreeSMSPercentageWithoutSaveChanges(ulong doctorId, int smsCount);
+
+        //Add Doctor SMS Percentage Without Save Changes
+        Task AddDoctorSMSPercentageWithoutSaveChanges(ulong doctorId, int smsCount);
 
         //Add Send Request Of SMS From Doctors To The Patient Detail To The Data Base
         Task AddSendRequestOfSMSFromDoctorsToThePatientDetailToTheDataBase(SendRequestOfSMSFromDoctorsToThePatientDetail requestDetail);
@@ -230,7 +245,7 @@ namespace DoctorFAM.Domain.Interfaces
         Task<int> GetDoctorsFreeSMSCount();
 
         //Update Request Excel File For Compelete From Admin 
-         Task UpdateRequestExcelFileForCompeleteFromAdmin(RequestForUploadExcelFileFromDoctorsToSite model);
+        Task UpdateRequestExcelFileForCompeleteFromAdmin(RequestForUploadExcelFileFromDoctorsToSite model);
 
         //Get Request Excel File By Id 
         Task<RequestForUploadExcelFileFromDoctorsToSite?> GetRequestExcelFileById(ulong requetsId);

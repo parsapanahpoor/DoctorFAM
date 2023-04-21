@@ -1,5 +1,6 @@
 ﻿using DoctorFAM.Domain.Entities.Doctors;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
 using SixLabors.ImageSharp.ColorSpaces;
 
 namespace DoctorFAM.Application.StaticTools;
@@ -179,5 +180,19 @@ public static class Messages
     {
         return
                  $"باعرض سلام . فردا نوبت معاینه ی  {medicalExaminationName} شما می باشد. {Environment.NewLine} {PathTools.SiteFarsiName}";
+    }
+
+    //Send SMS To The Doctor For Accept His Send SMS Request 
+    public static string SendSMSToTheDoctorForAcceptHisSendSMSRequest(string dateTime)
+    {
+        return
+         $" باعرض سلام .{Environment.NewLine} درخواست ارسال پیامک شما برای کاربران سایت تایید و پیامک مورد نظر شما در تاریخ {dateTime} ارسال گردید. {Environment.NewLine} {PathTools.SiteFarsiName}";
+    }
+
+    //Send SMS To The Doctor For Reject His Send SMS Request 
+    public static string SendSMSToTheDoctorForRejectHisSendSMSRequest(string rejectDescription)
+    {
+        return
+         $" باعرض سلام .{Environment.NewLine}  درخواست ارسال پیامک شما به دلیل '{rejectDescription}' رد شده است . {Environment.NewLine} {PathTools.SiteFarsiName}";
     }
 }
