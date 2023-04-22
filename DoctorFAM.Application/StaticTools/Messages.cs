@@ -195,4 +195,11 @@ public static class Messages
         return
          $" باعرض سلام .{Environment.NewLine}  درخواست ارسال پیامک شما به دلیل '{rejectDescription}' رد شده است . {Environment.NewLine} {PathTools.SiteFarsiName}";
     }
+
+    //Send SMS From Doctor To The Patient 
+    public static string SendSMSFromDoctorToThePatient(string textBody)
+    {
+        return
+         $" {textBody} {Environment.NewLine} {PathTools.SiteFarsiName}";
+    }
 }
