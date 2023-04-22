@@ -10,6 +10,7 @@ using DoctorFAM.Domain.ViewModels.Admin.Dashboard;
 using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DosctorSideBarInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Employees;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.SendSMS;
 using DoctorFAM.Domain.ViewModels.Site.BloodPressure;
 using DoctorFAM.Domain.ViewModels.Site.Diabet;
 using DoctorFAM.Domain.ViewModels.Site.Doctor;
@@ -41,6 +42,9 @@ namespace DoctorFAM.Domain.Interfaces
 
         //List Of Request For Send SMS From Doctors To Doctors Admin Side
         Task<List<RequestForSendSMSFromDoctorsToTheUsersAdminSideViewModel>?> ListOfRequestForSendSMSFromDoctorsToDoctorsAdminSide();
+
+        //List Of Doctor Send SMS Request Doctor Side View Model
+        Task<List<ListOfDoctorSendSMSRequestDoctorSideViewModel>?> ListOfDoctorSendSMSRequestDoctorSideViewModel(ulong doctorUserId);
 
         //Reduce Doctor Free SMS Percentage Without Save Changes
         Task ReduceDoctorFreeSMSPercentageWithoutSaveChanges(ulong doctorId, int smsCount);
@@ -285,6 +289,9 @@ namespace DoctorFAM.Domain.Interfaces
         Task<DoctorsInfo?> GetDoctorsInfoById(ulong doctorInfoId);
 
         Task<DoctorsInfo?> GetDoctorsInfoByDoctorId(ulong doctorId);
+
+        //Get Doctor SMS Percentage DoctorsInfo By DoctorId
+        Task<int> GetDoctorSMSPercentageDoctorsInfoByDoctorId(ulong doctorId);
 
         Task<FilterDoctorOfficeEmployeesViewmodel> FilterDoctorOfficeEmployees(FilterDoctorOfficeEmployeesViewmodel filter);
 

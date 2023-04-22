@@ -18,6 +18,8 @@ public class SendSMSToPatientViewModel
     public string SMSBody { get; set; }
 
     public ulong DoctorUserId { get; set; }
+
+    public int CountOfUserPercentageSMS { get; set; }
 }
 
 public enum SendRequestOfSMSFromDoctorsToThePatientResult

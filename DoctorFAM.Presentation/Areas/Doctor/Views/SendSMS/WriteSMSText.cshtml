@@ -21,10 +21,19 @@
                 <div id="horizontal-form">
                     <form asp-action="WriteSMSText" asp-area="Doctor" asp-controller="SendSMS" method="post" enctype="multipart/form-data">
 
+                        <input type="hidden" asp-for="DoctorUserId" />
+
                         @foreach (var item in Model.PatientId)
                         {
                             <input type="hidden" asp-for="PatientId" value="@item" />
                         }
+
+                           <div class="row">
+                            <div class="col-md-12">
+                                <input type="email" readonly placeholder="تعداد پیامک های مجاز شما برای ارسال : @Model.CountOfUserPercentageSMS" class="form-control">
+                                <div class="horizontal-space"></div>
+                            </div>
+                        </div>
 
                         <div class="row">
                             <div class="col-md-12">

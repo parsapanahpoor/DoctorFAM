@@ -1,6 +1,7 @@
 ﻿using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.ParsaSystem;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.SendSMS;
 using DoctorFAM.Web.Doctor.Controllers;
 using Microsoft.AspNetCore.Mvc;
 
@@ -56,12 +57,14 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
             #endregion
 
-            #region Create Model 
+            #region Fill View Model 
 
-            SendSMSToPatientViewModel model = new SendSMSToPatientViewModel()
+            var model = await _doctorService.FillSendSMSToPatientViewModel(User.GetUserId() , usersId);
+            if (model == null)
             {
-                PatientId = usersId
-            };
+                TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+                return RedirectToAction(nameof(ChooseUsersForSendSMS));
+            }
 
             #endregion
 
@@ -72,8 +75,6 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
         public async Task<IActionResult> WriteSMSText(SendSMSToPatientViewModel model)
         {
             #region Model State
-
-            model.DoctorUserId = User.GetUserId();
 
             if (!ModelState.IsValid)
             {
@@ -99,6 +100,73 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
                 case SendRequestOfSMSFromDoctorsToThePatientResult.HigherThanDoctorFreePercentage:
                     TempData[ErrorMessage] = "موجودی ارسال پیامک رایگان شما به پایان رسیده است.";
+                    break;
+            }
+
+            #endregion
+
+            return View(model);
+        }
+
+        #endregion
+
+        #region List OF Current Doctor SMS Requests
+
+        public async Task<IActionResult> ListOFCurrentDoctorSMSRequests()
+        {
+            return View(await _doctorService.ListOfDoctorSendSMSRequestDoctorSideViewModel(User.GetUserId()));
+        }
+
+        #endregion
+
+        #region Show Request Detail
+
+        [HttpGet]
+        public async Task<IActionResult> ShowRequestDetail(ulong id)
+        {
+            #region Fill View Model 
+
+            var model = await _doctorService.SendSMSToPatientDetailDoctorPanelViewModel(id , User.GetUserId());
+            if (model == null)
+            {
+                TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+                return RedirectToAction(nameof(ListOFCurrentDoctorSMSRequests));
+            }
+
+            #endregion
+
+            return View(model);
+        }
+
+        [HttpPost , ValidateAntiForgeryToken]
+        public async Task<IActionResult> ShowRequestDetail(SendSMSToPatientDetailDoctorPanelViewModel model)
+        {
+            #region Model State
+
+            if (!ModelState.IsValid)
+            {
+                TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد ";
+                return View(model);
+            }
+
+            #endregion
+
+            #region Send Request To The Admin 
+
+            var res = await _doctorService.SendRequestForSendSMSFromDoctorPanelToAdmin(model);
+
+            switch (res)
+            {
+                case SendRequestOfSMSFromDoctorsToThePatientResult.RequestSentSuccesfully:
+                    TempData[SuccessMessage] = "درخواست باموفقیت ثبت شده است.";
+                    return RedirectToAction("Index", "Home", new { area = "Doctor" });
+
+                case SendRequestOfSMSFromDoctorsToThePatientResult.WrongInformation:
+                    TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+                    break;
+
+                case SendRequestOfSMSFromDoctorsToThePatientResult.HigherThanDoctorFreePercentage:
+                    TempData[ErrorMessage] = "موجودی ارسال پیامک شما به پایان رسیده است.";
                     break;
             }
 

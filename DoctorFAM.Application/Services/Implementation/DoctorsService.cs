@@ -49,6 +49,7 @@ using Microsoft.EntityFrameworkCore;
 using DoctorFAM.Domain.ViewModels.Admin.Dashboard;
 using DoctorFAM.Domain.ViewModels.Admin.SendSMS;
 using System.Numerics;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.SendSMS;
 
 namespace DoctorFAM.Application.Services.Implementation
 {
@@ -89,6 +90,110 @@ namespace DoctorFAM.Application.Services.Implementation
         #endregion
 
         #region Doctors Panel Side
+
+        //List Of Doctor Send SMS Request Doctor Side View Model
+        public async Task<List<ListOfDoctorSendSMSRequestDoctorSideViewModel>?> ListOfDoctorSendSMSRequestDoctorSideViewModel(ulong userId)
+        {
+            #region Get Organization
+
+            var organization = await _organizationService.GetDoctorOrganizationByUserId(userId);
+            if (organization == null || organization.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice
+                || organization.OrganizationInfoState != OrganizationInfoState.Accepted)
+            {
+                return null;
+            }
+
+            #endregion
+
+            return await _doctorRepository.ListOfDoctorSendSMSRequestDoctorSideViewModel(organization.OwnerId);
+        }
+
+        //Fill Send SMS To Patient Detail Doctor Panel View Model
+        public async Task<SendSMSToPatientDetailDoctorPanelViewModel?> SendSMSToPatientDetailDoctorPanelViewModel(ulong requestId, ulong currentUserId)
+        {
+            #region Get Organization
+
+            var organization = await _organizationService.GetDoctorOrganizationByUserId(currentUserId);
+            if (organization == null || organization.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice
+                || organization.OrganizationInfoState != OrganizationInfoState.Accepted)
+            {
+                return null;
+            }
+
+            #endregion
+
+            #region Get Request For Send SMS From Doctor
+
+            var request = await _doctorRepository.GetRequestForSendSMSFromDoctorToPatientByRequestId(requestId);
+            if (request == null) return null;
+
+            #endregion
+
+            #region Get Doctor By User Id
+
+            var doctor = await GetDoctorByUserId(organization.OwnerId);
+            if (doctor == null) return null;
+
+            #endregion
+
+            #region Get Doctor SMS Percentage
+
+            var smsCount = await _doctorRepository.GetDoctorSMSPercentageDoctorsInfoByDoctorId(doctor.UserId);
+
+            #endregion
+
+            #region Fill Instance
+
+            SendSMSToPatientDetailDoctorPanelViewModel returnModel = new SendSMSToPatientDetailDoctorPanelViewModel()
+            {
+                RejectSMSDescription = request.DeclineDescription,
+                RequestId = request.Id,
+                DoctorUserId = request.DoctorUserId,
+                PatientId = await _doctorRepository.GetListUserThatDoctorWantToSendThemSMS(requestId),
+                SMSBody = request.SMSText,
+                CountOfUserPercentageSMS = smsCount,
+                SendSMSFromDoctorState = request.SendSMSFromDoctorState
+            };
+
+            #endregion
+
+            return returnModel;
+        }
+
+        //Fill Send SMS To Patient View Model
+        public async Task<SendSMSToPatientViewModel?> FillSendSMSToPatientViewModel(ulong userId, List<ulong> usersId)
+        {
+            #region Get Organization
+
+            var organization = await _organizationService.GetDoctorOrganizationByUserId(userId);
+            if (organization == null || organization.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice
+                || organization.OrganizationInfoState != OrganizationInfoState.Accepted)
+            {
+                return null;
+            }
+
+            #endregion
+
+            #region Get Doctor By User Id
+
+            var doctor = await GetDoctorByUserId(userId);
+            if (doctor == null) return null;
+
+            #endregion
+
+            #region Get Doctor SMS Percentage
+
+            var smsCount = await _doctorRepository.GetDoctorSMSPercentageDoctorsInfoByDoctorId(userId);
+
+            #endregion
+
+            return new SendSMSToPatientViewModel()
+            {
+                DoctorUserId = userId,
+                CountOfUserPercentageSMS = smsCount,
+                PatientId = usersId
+            };
+        }
 
         //Get Diabet Consualtant Resume By Id
         public async Task<DiabetConsultantsResume?> GetDiabetConsualtantResumeById(ulong resumeId)
@@ -2496,7 +2601,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #endregion
 
-            #region Gett Doctor
+            #region Get Doctor
 
             var doctor = await _doctorRepository.GetDoctorByUserId(organization.OwnerId);
             if (doctor == null) return SendRequestOfSMSFromDoctorsToThePatientResult.WrongInformation;
@@ -2573,7 +2678,6 @@ namespace DoctorFAM.Application.Services.Implementation
                     SendRequestOfSMSFromDoctorsToThePatientDetail detailRequest = new SendRequestOfSMSFromDoctorsToThePatientDetail()
                     {
                         CreateDate = DateTime.Now,
-                        FreeSMS = true,
                         UserId = userId,
                         SendRequestOfSMSFromDoctorsToThePatientId = mainRequest.Id
                     };
@@ -2587,6 +2691,91 @@ namespace DoctorFAM.Application.Services.Implementation
                 #region Reduce Percentage Doctor Free SMS Count
 
                 await _doctorRepository.ReduceDoctorFreeSMSPercentageWithoutSaveChanges(doctor.Id, model.PatientId.Count());
+
+                #endregion
+
+                await _doctorRepository.SaveChanges();
+            }
+
+            #endregion
+
+            return SendRequestOfSMSFromDoctorsToThePatientResult.RequestSentSuccesfully;
+        }
+
+        //Send Request For Send SMS From Doctor Panel To Admin 
+        public async Task<SendRequestOfSMSFromDoctorsToThePatientResult> SendRequestForSendSMSFromDoctorPanelToAdmin(SendSMSToPatientDetailDoctorPanelViewModel model)
+        {
+            #region Get Organization
+
+            var organization = await _organizationService.GetDoctorOrganizationByUserId(model.DoctorUserId);
+            if (organization == null || organization.OrganizationInfoState != OrganizationInfoState.Accepted || organization.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice)
+            {
+                return SendRequestOfSMSFromDoctorsToThePatientResult.WrongInformation;
+            }
+
+            #endregion
+
+            #region Get Doctor
+
+            var doctor = await _doctorRepository.GetDoctorByUserId(organization.OwnerId);
+            if (doctor == null) return SendRequestOfSMSFromDoctorsToThePatientResult.WrongInformation;
+
+            #endregion
+
+            #region Model State Validation 
+
+            if (string.IsNullOrEmpty(model.SMSBody))
+            {
+                return SendRequestOfSMSFromDoctorsToThePatientResult.WrongInformation;
+            }
+
+            #endregion
+
+            #region Check Doctor Send SMS Count
+
+            //Get Doctor Free SMS Count
+            var doctorFreeSMSCount = await _doctorRepository.GetDoctorFreeSMSCountByDoctorId(doctor.Id);
+            if (doctorFreeSMSCount == null) return SendRequestOfSMSFromDoctorsToThePatientResult.WrongInformation;
+
+            //Get Count Of Doctor Free SMS Sent 
+            var countOFDoctorFreeSentSMS = await _doctorRepository.GetCountOfDoctorFreeSMSSent(organization.OwnerId);
+
+            if (countOFDoctorFreeSentSMS.HasValue && countOFDoctorFreeSentSMS.Value >= doctorFreeSMSCount)
+            {
+                return SendRequestOfSMSFromDoctorsToThePatientResult.HigherThanDoctorFreePercentage;
+            }
+
+            //Insert Free SMS From Doctor 
+            if (countOFDoctorFreeSentSMS.HasValue && countOFDoctorFreeSentSMS.Value <= doctorFreeSMSCount)
+            {
+                #region Get Request For Send SMS From Doctor
+
+                var request = await _doctorRepository.GetRequestForSendSMSFromDoctorToPatientByRequestId(model.RequestId);
+                if (request == null) return SendRequestOfSMSFromDoctorsToThePatientResult.WrongInformation;
+
+                var requestDetail = await _doctorRepository.GetRequestDetailForSendSMSFromDoctorToPatientByRequestId(request.Id);
+                if (requestDetail == null) return SendRequestOfSMSFromDoctorsToThePatientResult.WrongInformation;
+
+                #endregion
+
+                //Check Incoming SMS Right Now
+                if (requestDetail.Count > doctorFreeSMSCount)
+                {
+                    return SendRequestOfSMSFromDoctorsToThePatientResult.HigherThanDoctorFreePercentage;
+                }
+
+                #region Update SMS 
+
+                request.SendSMSFromDoctorState = Domain.Enums.SendSMS.FromDoctors.SendSMSFromDoctorState.WaitingForConfirm;
+
+                #endregion
+
+                //Add Request To The Data Base 
+                await _doctorRepository.UpdateRequestForSendSMSFromDoctorToPatient(request);
+
+                #region Reduce Percentage Doctor Free SMS Count
+
+                await _doctorRepository.ReduceDoctorFreeSMSPercentageWithoutSaveChanges(doctor.Id, requestDetail.Count());
 
                 #endregion
 

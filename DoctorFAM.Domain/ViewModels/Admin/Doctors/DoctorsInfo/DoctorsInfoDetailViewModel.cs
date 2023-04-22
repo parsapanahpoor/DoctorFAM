@@ -77,7 +77,7 @@ namespace DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo
 
         public int? OnlineReservationTariffForAnonymousPersons { get; set; }
 
-        [Display(Name = "تعداد پیامک رایگان برای ارسال از پزشک به بیماران")]
+        [Display(Name = "تعداد پیامک های مجاز برای ارسال از پزشک به بیماران")]
         public int CountOFFreeSMSForDoctors { get; set; }
 
         #endregion

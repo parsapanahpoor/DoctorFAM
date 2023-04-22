@@ -21,6 +21,7 @@ using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo;
 using DoctorFAM.Domain.ViewModels.Admin.SendSMS;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DosctorSideBarInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Employees;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.SendSMS;
 using DoctorFAM.Domain.ViewModels.Site.BloodPressure;
 using DoctorFAM.Domain.ViewModels.Site.Diabet;
 using DoctorFAM.Domain.ViewModels.Site.Doctor;
@@ -122,6 +123,20 @@ namespace DoctorFAM.Data.Repository
                                        }).ToListAsync();
         }
 
+        //List Of Doctor Send SMS Request Doctor Side View Model
+        public async Task<List<ListOfDoctorSendSMSRequestDoctorSideViewModel>?> ListOfDoctorSendSMSRequestDoctorSideViewModel(ulong doctorUserId)
+        {
+            return await _context.SendRequestOfSMSFromDoctorsToThePatients.Where(p => !p.IsDelete && p.DoctorUserId == doctorUserId)
+                                       .Select(p => new ListOfDoctorSendSMSRequestDoctorSideViewModel()
+                                       {
+                                           CountOfSMS = _context.SendRequestOfSMSFromDoctorsToThePatientDetails.Count(s => !s.IsDelete && s.SendRequestOfSMSFromDoctorsToThePatientId == p.Id),
+                                           CreateDate = p.CreateDate,
+                                           RequestId = p.Id,
+                                           SendSMSFromDoctorState = p.SendSMSFromDoctorState,
+                                           Id = p.Id
+                                       }).ToListAsync();
+        }
+
         //Add Doctor SMS Percentage Without Save Changes
         public async Task AddDoctorSMSPercentageWithoutSaveChanges(ulong doctorId, int smsCount)
         {
@@ -177,7 +192,7 @@ namespace DoctorFAM.Data.Repository
             foreach (var requestId in requests)
             {
                 var requestDetails = await _context.SendRequestOfSMSFromDoctorsToThePatientDetails
-                                           .Where(p => !p.IsDelete && p.SendRequestOfSMSFromDoctorsToThePatientId == requestId && p.FreeSMS)
+                                           .Where(p => !p.IsDelete && p.SendRequestOfSMSFromDoctorsToThePatientId == requestId)
                                            .CountAsync();
 
                 returnModel = returnModel + requestDetails;
@@ -1010,6 +1025,13 @@ namespace DoctorFAM.Data.Repository
         public async Task<DoctorsInfo?> GetDoctorsInfoByDoctorId(ulong doctorId)
         {
             return await _context.DoctorsInfos.Include(p => p.Doctor).FirstOrDefaultAsync(p => !p.IsDelete && p.DoctorId == doctorId);
+        }
+
+        //Get Doctor SMS Percentage DoctorsInfo By DoctorId
+        public async Task<int> GetDoctorSMSPercentageDoctorsInfoByDoctorId(ulong doctorId)
+        {
+            return await _context.DoctorsInfos.Where(p => !p.IsDelete && p.DoctorId == doctorId)
+                                    .Select(p => p.CountOFFreeSMSForDoctors).FirstOrDefaultAsync();
         }
 
         #endregion

@@ -15,8 +15,6 @@ namespace DoctorFAM.Domain.Entities.SendSMS.FromDoctrors
 
         public ulong UserId { get; set; }
 
-        public bool FreeSMS { get; set; }
-
         #endregion
 
         #region relations

@@ -18,6 +18,7 @@ using DoctorFAM.Domain.ViewModels.DoctorPanel.DosctorSideBarInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Employees;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.ParsaSystem;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.ParsaSystem.VIPPatient;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.SendSMS;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Speciality;
 using DoctorFAM.Domain.ViewModels.Site.BloodPressure;
 using DoctorFAM.Domain.ViewModels.Site.Diabet;
@@ -36,6 +37,15 @@ namespace DoctorFAM.Application.Services.Interfaces
     public interface IDoctorsService
     {
         #region Doctors Panel Side   
+
+        //Fill Send SMS To Patient Detail Doctor Panel View Model
+        Task<SendSMSToPatientDetailDoctorPanelViewModel?> SendSMSToPatientDetailDoctorPanelViewModel(ulong requestId, ulong currentUserId);
+
+        //List Of Doctor Send SMS Request Doctor Side View Model
+        Task<List<ListOfDoctorSendSMSRequestDoctorSideViewModel>?> ListOfDoctorSendSMSRequestDoctorSideViewModel(ulong userId);
+
+        //Fill Send SMS To Patient View Model
+        Task<SendSMSToPatientViewModel?> FillSendSMSToPatientViewModel(ulong userId, List<ulong> usersId);
 
         //Get Request For Send SMS From Doctor To Patient By RequestId
         Task<ShowRequestForSendSMSDetailAdminSideViewModel?> FillShowRequestForSendSMSDetailViewModel(ulong requestId);
@@ -223,6 +233,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Send Request For Send SMS From Doctor Panel To Admin 
         Task<SendRequestOfSMSFromDoctorsToThePatientResult> SendRequestForSendSMSFromDoctorPanelToAdmin(SendSMSToPatientViewModel model);
+
+        //Send Request For Send SMS From Doctor Panel To Admin 
+        Task<SendRequestOfSMSFromDoctorsToThePatientResult> SendRequestForSendSMSFromDoctorPanelToAdmin(SendSMSToPatientDetailDoctorPanelViewModel model);
 
         //Manage Request For Send SMS From Doctor To Patient Admin Side 
         Task<bool> ManageRequestForSendSMSFromDoctorToPatientAdminSide(ShowRequestForSendSMSDetailAdminSideViewModel model);
