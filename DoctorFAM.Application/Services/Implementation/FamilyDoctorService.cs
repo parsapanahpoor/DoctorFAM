@@ -5,6 +5,7 @@ using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.FamilyDoctor;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.NavBar;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.PopulationCovered;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.SendSMS;
 using DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor;
 using DoctorFAM.Domain.ViewModels.UserPanel.Reservation;
 using Microsoft.AspNetCore.Mvc;
@@ -232,6 +233,39 @@ namespace DoctorFAM.Application.Services.Implementation
         #endregion
 
         #region Doctor Panel 
+
+        //List Of Current Doctor Population Covered Users Without Base Paging
+        public async Task<List<ChooseUsersForSendSMSViewModel>?> ListOfCurrentDoctorPopulationCoveredUsersWithoutBasePaging(ulong doctorUserId)
+        {
+            #region Get List Of Users Id 
+
+            var usersId = await _familyDoctor.ListOfCurrentDoctorPopulationCoveredUsersWithoutBasePaging(doctorUserId);
+            if (usersId == null) return null;
+
+            #endregion
+
+            #region Fill View Model 
+
+            List<ChooseUsersForSendSMSViewModel> returnModel = new List<ChooseUsersForSendSMSViewModel>();
+
+            //Create Instance
+            ChooseUsersForSendSMSViewModel user = new ChooseUsersForSendSMSViewModel();
+
+            foreach (var userId in usersId)
+            {
+                var userFromDataBase = await _familyDoctor.ChooseUsersForSendSMSViewModel(userId);
+                if (userFromDataBase != null)
+                {
+                    user = userFromDataBase;
+
+                    returnModel.Add(userFromDataBase);
+                }
+            }
+
+            #endregion
+
+            return returnModel;
+        }
 
         //Show Lastest Family Doctor Request In Doctor Panel Nav Bar 
         public async Task<LastestFamilyDoctorRequestForShowInNavBarViewModel?> ShowLastestFamilyDoctorRequestInDoctorPanelNavBar(ulong userId)

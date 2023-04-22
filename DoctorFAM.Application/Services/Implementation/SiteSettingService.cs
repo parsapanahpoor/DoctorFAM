@@ -65,6 +65,7 @@ namespace DoctorFAM.Application.Services.Implementation
                     SiteDomain = setting.SiteDomain,
                     OnlineVisitTariff = setting.OnlineVisitTariff,
                     DistanceFromCityTarriff = setting.DistanceFromCityTarriff,
+                    CountOFFreeSMSForDoctors = setting.CountOFFreeSMSForDoctors,
                 };
             }
 
@@ -159,6 +160,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 setting.SiteDomain = editSiteSettingViewModel.SiteDomain;
                 setting.OnlineVisitTariff = editSiteSettingViewModel.HomeVisitTariff.Value;
                 setting.DistanceFromCityTarriff = editSiteSettingViewModel.DistanceFromCityTarriff;
+                setting.CountOFFreeSMSForDoctors = editSiteSettingViewModel.CountOFFreeSMSForDoctors;
             }
 
             await _siteSettingRepository.UpdateSiteSetting(setting);
@@ -241,6 +243,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 SiteDomain = editSiteSettingViewModel.SiteDomain,
                 OnlineVisitTariff = editSiteSettingViewModel.OnlineVisitTariff.Value,
                 DistanceFromCityTarriff = editSiteSettingViewModel.DistanceFromCityTarriff,
+                CountOFFreeSMSForDoctors = editSiteSettingViewModel.CountOFFreeSMSForDoctors
             };
 
             await _siteSettingRepository.AddSiteSetting(newSetting);

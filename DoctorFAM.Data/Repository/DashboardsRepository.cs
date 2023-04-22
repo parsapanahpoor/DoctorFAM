@@ -319,6 +319,26 @@ namespace DoctorFAM.Data.Repository
 
             #endregion
 
+            #region Request For Send SMS From Doctors To The Users Admin Side View Model
+
+            model.RequestForSendSMSFromDoctorsToTheUsersAdminSideViewModel = await _context.SendRequestOfSMSFromDoctorsToThePatients.Where(p=> !p.IsDelete && p.SendSMSFromDoctorState == Domain.Enums.SendSMS.FromDoctors.SendSMSFromDoctorState.WaitingForConfirm)
+                                            .Select(p=> new RequestForSendSMSFromDoctorsToTheUsersAdminSideViewModel()
+                                            {
+                                                CountOfSMS = _context.SendRequestOfSMSFromDoctorsToThePatientDetails.Count(s=> !s.IsDelete && s.SendRequestOfSMSFromDoctorsToThePatientId == p.Id),
+                                                CreateDate = p.CreateDate,
+                                                RequestId = p.Id,
+                                                SendSMSFromDoctorState = p.SendSMSFromDoctorState,
+                                                DoctorUserInfoForShow = _context.Users.Where(s=> !s.IsDelete && s.Id == p.DoctorUserId)
+                                                                                .Select(s=> new DoctorUserInfoForShow()
+                                                                                {
+                                                                                    Mobile = s.Mobile,
+                                                                                    UserAvatar = s.Avatar,
+                                                                                    Username = s.Username,
+                                                                                }).FirstOrDefault(),
+                                            }).ToListAsync();
+
+            #endregion
+
             return model;
         }
 

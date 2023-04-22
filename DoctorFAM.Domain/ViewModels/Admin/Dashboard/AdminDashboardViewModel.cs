@@ -48,6 +48,8 @@ namespace DoctorFAM.Domain.ViewModels.Admin.Dashboard
 
         public List<Organization> ListOfWaitingForAcceptInformationsDoctors { get; set; }
 
+        public List<RequestForSendSMSFromDoctorsToTheUsersAdminSideViewModel>? RequestForSendSMSFromDoctorsToTheUsersAdminSideViewModel { get; set; }
+
         #endregion
     }
 }

@@ -44,6 +44,9 @@ namespace DoctorFAM.Domain.ViewModels.Admin.SiteSetting
 
         [Display(Name = "تعرفه به ازای فاصله از شهر")]
         public int DistanceFromCityTarriff { get; set; }
+
+        [Display(Name = "تعداد پیامک رایگان برای ارسال از پزشک به بیماران")]
+        public int CountOFFreeSMSForDoctors { get; set; }
     }
 
     public enum EditSiteSettingResult

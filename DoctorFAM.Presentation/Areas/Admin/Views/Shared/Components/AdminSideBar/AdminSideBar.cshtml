@@ -553,6 +553,23 @@
 
         <li>
             <a href="#" class="menu-dropdown">
+                <i class="menu-icon  glyphicon glyphicon-envelope"></i>
+                <span class="menu-text"> درخواست های پیامک </span>
+
+                <i class="menu-expand"></i>
+            </a>
+
+            <ul class="submenu">
+                <li>
+                    <a asp-area="Admin" asp-controller="SendSMS" asp-action="ListOfRequestForSendSMSFromDoctor">
+                        <span class="menu-text">لیست درخواست های پیامک </span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="#" class="menu-dropdown">
                 <i class="menu-icon fa fa-buysellads"></i>
                 <span class="menu-text"> @SharedLocalizer["Manage Products"] </span>
 
