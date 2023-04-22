@@ -5,9 +5,12 @@ using DoctorFAM.Domain.Entities.FamilyDoctor.ParsaSystem;
 using DoctorFAM.Domain.Entities.FamilyDoctor.VIPSystem;
 using DoctorFAM.Domain.Entities.Interest;
 using DoctorFAM.Domain.Entities.Organization;
+using DoctorFAM.Domain.Entities.SendSMS.FromDoctrors;
+using DoctorFAM.Domain.ViewModels.Admin.Dashboard;
 using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DosctorSideBarInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Employees;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.SendSMS;
 using DoctorFAM.Domain.ViewModels.Site.BloodPressure;
 using DoctorFAM.Domain.ViewModels.Site.Diabet;
 using DoctorFAM.Domain.ViewModels.Site.Doctor;
@@ -24,6 +27,42 @@ namespace DoctorFAM.Domain.Interfaces
     public interface IDoctorsRepository
     {
         #region Doctors Panel Side
+
+        //Update Request For Send SMS From Doctor To Patient
+        Task UpdateRequestForSendSMSFromDoctorToPatient(SendRequestOfSMSFromDoctorsToThePatient request);
+
+        //Get List User That Doctor Want To Send Them SMS
+        Task<List<User>?> GetListUserThatDoctorWantToSendThemSMS(ulong requestDetailId);
+
+        //Get Request For Send SMS From Doctor To Patient By RequestId
+        Task<SendRequestOfSMSFromDoctorsToThePatient?> GetRequestForSendSMSFromDoctorToPatientByRequestId(ulong requestId);
+
+        //Get Request Detail For Send SMS From Doctor To Patient By Request Id
+        Task<List<SendRequestOfSMSFromDoctorsToThePatientDetail>> GetRequestDetailForSendSMSFromDoctorToPatientByRequestId(ulong requestId);
+
+        //List Of Request For Send SMS From Doctors To Doctors Admin Side
+        Task<List<RequestForSendSMSFromDoctorsToTheUsersAdminSideViewModel>?> ListOfRequestForSendSMSFromDoctorsToDoctorsAdminSide();
+
+        //List Of Doctor Send SMS Request Doctor Side View Model
+        Task<List<ListOfDoctorSendSMSRequestDoctorSideViewModel>?> ListOfDoctorSendSMSRequestDoctorSideViewModel(ulong doctorUserId);
+
+        //Reduce Doctor Free SMS Percentage Without Save Changes
+        Task ReduceDoctorFreeSMSPercentageWithoutSaveChanges(ulong doctorId, int smsCount);
+
+        //Add Doctor SMS Percentage Without Save Changes
+        Task AddDoctorSMSPercentageWithoutSaveChanges(ulong doctorId, int smsCount);
+
+        //Add Send Request Of SMS From Doctors To The Patient Detail To The Data Base
+        Task AddSendRequestOfSMSFromDoctorsToThePatientDetailToTheDataBase(SendRequestOfSMSFromDoctorsToThePatientDetail requestDetail);
+
+        //Add Send Request Of SMS From Doctors To The Patient
+        Task AddSendRequestOfSMSFromDoctorsToThePatient(SendRequestOfSMSFromDoctorsToThePatient request);
+
+        //Get Count Of Doctor Free SMS Sent
+        Task<int?> GetCountOfDoctorFreeSMSSent(ulong doctorUserId);
+
+        //Get Doctor Free SMS Count By Doctor Id
+        Task<int?> GetDoctorFreeSMSCountByDoctorId(ulong doctorId);
 
         //Update Diabet Consultant Resume 
         Task UpdateDiabetConsultantResume(DiabetConsultantsResume diabet);
@@ -206,8 +245,11 @@ namespace DoctorFAM.Domain.Interfaces
 
         #region Admin Side 
 
+        //Get Doctor's Free SMS Count
+        Task<int> GetDoctorsFreeSMSCount();
+
         //Update Request Excel File For Compelete From Admin 
-         Task UpdateRequestExcelFileForCompeleteFromAdmin(RequestForUploadExcelFileFromDoctorsToSite model);
+        Task UpdateRequestExcelFileForCompeleteFromAdmin(RequestForUploadExcelFileFromDoctorsToSite model);
 
         //Get Request Excel File By Id 
         Task<RequestForUploadExcelFileFromDoctorsToSite?> GetRequestExcelFileById(ulong requetsId);
@@ -247,6 +289,9 @@ namespace DoctorFAM.Domain.Interfaces
         Task<DoctorsInfo?> GetDoctorsInfoById(ulong doctorInfoId);
 
         Task<DoctorsInfo?> GetDoctorsInfoByDoctorId(ulong doctorId);
+
+        //Get Doctor SMS Percentage DoctorsInfo By DoctorId
+        Task<int> GetDoctorSMSPercentageDoctorsInfoByDoctorId(ulong doctorId);
 
         Task<FilterDoctorOfficeEmployeesViewmodel> FilterDoctorOfficeEmployees(FilterDoctorOfficeEmployeesViewmodel filter);
 

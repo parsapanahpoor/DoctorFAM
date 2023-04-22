@@ -1,0 +1,99 @@
+﻿@model List<DoctorFAM.Domain.ViewModels.Admin.Dashboard.RequestForSendSMSFromDoctorsToTheUsersAdminSideViewModel>
+
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.Extensions
+
+<div class="col-lg-6 col-md-6 col-xl-12 col-sm-12 col-xs-12">
+
+    <div class="widget">
+        <div class="widget-header">
+            <i class="widget-icon fa fa-comment"></i>
+            <span class="widget-caption"> جدیدترین درخواست های ارسال پیامک پزشکان   </span>
+            <div class="widget-buttons">
+                <div class="row" style="margin-right: -84px;">
+
+                    @if (Model != null && Model.Any())
+                    {
+                        <a id="ShowUserCommentInAdminPanel" asp-action="ListOfRequestForSendSMSFromDoctor" asp-controller="SendSMS" asp-area="Admin" class="badge badge-info">نمایش همه</a>
+                    }
+
+                    <a id="ShowUserCommentInAdminPanelMinus" href="#" data-toggle="collapse">
+                        <i class="fa fa-minus"></i>
+                    </a>
+
+                </div>
+            </div><!--Widget Buttons-->
+        </div><!--Widget Header-->
+        <div class="widget-body" style="max-height: 230px !important; overflow-y: scroll; height:auto;">
+            @if (Model != null && Model.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered tc vm">
+                        <thead class="tc vm">
+                            <tr class="tc vm">
+                                <th class="tc vm">
+                                    اطلاعات پزشک
+                                </th>
+                                <th class="tc vm">
+                                    تعداد دخواست
+                                </th>
+                                <th class="tc vm">
+                                    تاریخ درج
+                                </th>
+                                <th class="tc vm">
+                                    امکانات
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="tc vm">
+                            @foreach (var request in Model)
+                            {
+                                <tr class="tc vm" remove-ajax-item="@request.RequestId">
+                                    <td class="vm">
+                                        <div class="flex-style-center">
+                                            <img src="@request.DoctorUserInfoForShow.UserAvatar.GetUserAvatar()" class="avatar-style" style="border-radius:50px;" />
+                                            <div class="mr-10px">
+                                                <span> @request.DoctorUserInfoForShow.Username </span>
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <td class="tc vm">
+                                        <div class="tc vm">
+                                            <p id="ArticleTitle">@request.CountOfSMS</p>
+                                        </div>
+                                    </td>
+
+                                    <td class="tc vm">
+                                        <div class="tc vm">
+                                            <p id="ArticleTitle">@request.CreateDate.ToShamsi()</p>
+                                        </div>
+                                    </td>
+
+                                    <td class="tc vm">
+
+                                        <a asp-action="ShowRequestDetail" asp-controller="SendSMS" asp-area="Admin" asp-route-id="@request.RequestId" class="btn btn-warning btn-circle btn-xs"><i class="glyphicon glyphicon-edit"></i></a>
+
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+
+
+                <!--Widget Body-->
+            }
+            else
+            {
+                <partial name="_AdminNotFoundPartial" />
+            }
+
+
+        </div>
+    </div>
+</div>
+
+
+

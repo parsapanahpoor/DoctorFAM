@@ -9,6 +9,7 @@ using DoctorFAM.Domain.ViewModels.Admin;
 using DoctorFAM.Domain.ViewModels.Admin.FamilyDoctor;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Employees;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.PopulationCovered;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.SendSMS;
 using DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -35,7 +36,7 @@ namespace DoctorFAM.Data.Repository
         #region Site Side
 
         //Get User Selected Family Doctor By User And Doctor Id 
-        public async Task<UserSelectedFamilyDoctor?> GetUserSelectedFamilyDoctorByUserAndDoctorId(ulong userId , ulong doctorUserId)
+        public async Task<UserSelectedFamilyDoctor?> GetUserSelectedFamilyDoctorByUserAndDoctorId(ulong userId, ulong doctorUserId)
         {
             return await _context.UserSelectedFamilyDoctor.FirstOrDefaultAsync(p => !p.IsDelete && p.PatientId == userId && p.DoctorId == doctorUserId
                                                                                && p.FamilyDoctorRequestState == FamilyDoctorRequestState.Accepted);
@@ -68,9 +69,9 @@ namespace DoctorFAM.Data.Repository
         //Get User Selected Family Doctor By Request Id With Doctor And Patient Information And Not Deleted
         public async Task<UserSelectedFamilyDoctor?> GetUserSelectedFamilyDoctorByRequestIdWithDoctorAndPatientInformation(ulong requestId)
         {
-            return await _context.UserSelectedFamilyDoctor.Include(p=> p.Doctor).Include(p=> p.Patient)
-                                                .ThenInclude(p=> p.PopulationCovered).ThenInclude(p=> p.Insurance)
-                                                        .FirstOrDefaultAsync(p =>p.Id == requestId);
+            return await _context.UserSelectedFamilyDoctor.Include(p => p.Doctor).Include(p => p.Patient)
+                                                .ThenInclude(p => p.PopulationCovered).ThenInclude(p => p.Insurance)
+                                                        .FirstOrDefaultAsync(p => p.Id == requestId);
         }
 
         //Add Family Doctor For This Patient 
@@ -90,7 +91,7 @@ namespace DoctorFAM.Data.Repository
         }
 
         //Get User Selected Family Doctor By Patient Id And Doctor Id With Accepted And Waiting State
-        public async Task<UserSelectedFamilyDoctor?> GetUserSelectedFamilyDoctorByPatientIdAndDoctorIdWithAcceptedAndWaitingState(ulong userId , ulong doctorId)
+        public async Task<UserSelectedFamilyDoctor?> GetUserSelectedFamilyDoctorByPatientIdAndDoctorIdWithAcceptedAndWaitingState(ulong userId, ulong doctorId)
         {
             return await _context.UserSelectedFamilyDoctor.FirstOrDefaultAsync(p => !p.IsDelete && p.DoctorId == doctorId && p.PatientId == userId
                                                              && p.FamilyDoctorRequestState != Domain.Enums.FamilyDoctor.FamilyDoctorRequestState.Decline);
@@ -120,52 +121,8 @@ namespace DoctorFAM.Data.Repository
 
             var query = _context.UserSelectedFamilyDoctor
                 .Include(p => p.Patient)
-                .ThenInclude(p=> p.PopulationCovered)
-                .Where(s => !s.IsDelete && s.DoctorId == doctorOffice.Organization.OwnerId && s.FamilyDoctorRequestState == Domain.Enums.FamilyDoctor.FamilyDoctorRequestState.WaitingForConfirm)
-                .OrderByDescending(s => s.CreateDate)
-                .Select(p=> p.Patient)
-                .AsQueryable();
-
-
-            #region Filter
-
-            if (!string.IsNullOrEmpty(filter.Mobile))
-            {
-                query = query.Where(s => s.Mobile != null && EF.Functions.Like(s.Mobile, $"%{filter.Mobile}%"));
-            }
-
-            if (!string.IsNullOrEmpty(filter.Username))
-            {
-                query = query.Where(s => s.Username.Contains(filter.Username));
-            }
-
-            if (!string.IsNullOrEmpty(filter.NationalId))
-            {
-                query = query.Where(s => s.NationalId.Contains(filter.NationalId));
-            }
-
-            #endregion
-
-            await filter.Paging(query);
-
-            return filter;
-        }
-
-        //List Of Current Doctor Population Covered Users
-        public async Task<ListOfDoctorPopulationCoveredViewModel> FilterCurrentDoctorPopulationCovered(ListOfDoctorPopulationCoveredViewModel filter)
-        {
-            #region Get organization 
-
-            var doctorOffice = await _context.OrganizationMembers.Include(p => p.Organization)
-                                .FirstOrDefaultAsync(p => !p.IsDelete && p.UserId == filter.UserId);
-            if (doctorOffice == null) return null;
-
-            #endregion
-
-            var query = _context.UserSelectedFamilyDoctor
-                .Include(p => p.Patient)
                 .ThenInclude(p => p.PopulationCovered)
-                .Where(s => !s.IsDelete && s.DoctorId == doctorOffice.Organization.OwnerId && s.FamilyDoctorRequestState == Domain.Enums.FamilyDoctor.FamilyDoctorRequestState.Accepted)
+                .Where(s => !s.IsDelete && s.DoctorId == doctorOffice.Organization.OwnerId && s.FamilyDoctorRequestState == Domain.Enums.FamilyDoctor.FamilyDoctorRequestState.WaitingForConfirm)
                 .OrderByDescending(s => s.CreateDate)
                 .Select(p => p.Patient)
                 .AsQueryable();
@@ -195,11 +152,85 @@ namespace DoctorFAM.Data.Repository
             return filter;
         }
 
+        //Fill Choose Users For Send SMS View Model
+        public async Task<ChooseUsersForSendSMSViewModel?> ChooseUsersForSendSMSViewModel(ulong userId)
+        {
+            return await _context.Users.Where(p => !p.IsDelete && p.Id == userId)
+                .Select(p => new ChooseUsersForSendSMSViewModel()
+                {
+                    UserId = p.Id,
+                    Username = p.Username,
+                    FirstName = p.FirstName,
+                    LastName = p.LastName,
+                    Mobile = p.Mobile,
+                    UserAvatar = p.Avatar
+                }).FirstOrDefaultAsync();
+        }
+
+        //List Of Current Doctor Population Covered Users Without Base Paging
+        public async Task<List<ulong>?> ListOfCurrentDoctorPopulationCoveredUsersWithoutBasePaging(ulong doctorUserId)
+        {
+            #region Get organization 
+
+            var doctorOffice = await _context.OrganizationMembers.Include(p => p.Organization)
+                                .FirstOrDefaultAsync(p => !p.IsDelete && p.UserId == doctorUserId);
+            if (doctorOffice == null) return null;
+
+            #endregion
+
+            return await _context.UserSelectedFamilyDoctor.Where(s => !s.IsDelete && s.DoctorId == doctorOffice.Organization.OwnerId
+                                                                 && s.FamilyDoctorRequestState == FamilyDoctorRequestState.Accepted)
+                                                                 .Select(p => p.PatientId).ToListAsync();
+        }
+
+        //List Of Current Doctor Population Covered Users
+        public async Task<ListOfDoctorPopulationCoveredViewModel> FilterCurrentDoctorPopulationCovered(ListOfDoctorPopulationCoveredViewModel filter)
+        {
+            #region Get organization 
+
+            var doctorOffice = await _context.OrganizationMembers.Include(p => p.Organization)
+                                .FirstOrDefaultAsync(p => !p.IsDelete && p.UserId == filter.UserId);
+            if (doctorOffice == null) return null;
+
+            #endregion
+
+            var query = _context.UserSelectedFamilyDoctor
+                .Include(p => p.Patient)
+                .ThenInclude(p => p.PopulationCovered)
+                .Where(s => !s.IsDelete && s.DoctorId == doctorOffice.Organization.OwnerId && s.FamilyDoctorRequestState == Domain.Enums.FamilyDoctor.FamilyDoctorRequestState.Accepted)
+                .OrderByDescending(s => s.CreateDate)
+                .Select(p => p.Patient)
+                .AsQueryable();
+
+            #region Filter
+
+            if (!string.IsNullOrEmpty(filter.Mobile))
+            {
+                query = query.Where(s => s.Mobile != null && EF.Functions.Like(s.Mobile, $"%{filter.Mobile}%"));
+            }
+
+            if (!string.IsNullOrEmpty(filter.Username))
+            {
+                query = query.Where(s => s.Username.Contains(filter.Username));
+            }
+
+            if (!string.IsNullOrEmpty(filter.NationalId))
+            {
+                query = query.Where(s => s.NationalId.Contains(filter.NationalId));
+            }
+
+            #endregion
+
+            await filter.Paging(query);
+
+            return filter;
+        }
+
         //Get Lastest Family Doctor Request For Current Doctor 
         public async Task<List<UserSelectedFamilyDoctor>> GetLastestFamilyDoctorRequestForCurrentDoctor(ulong doctorId)
         {
             return await _context.UserSelectedFamilyDoctor.Where(p => !p.IsDelete && p.DoctorId == doctorId && p.FamilyDoctorRequestState == FamilyDoctorRequestState.WaitingForConfirm)
-                                                                        .OrderByDescending(p=> p.CreateDate).ToListAsync();
+                                                                        .OrderByDescending(p => p.CreateDate).ToListAsync();
         }
 
         #endregion
@@ -233,7 +264,7 @@ namespace DoctorFAM.Data.Repository
         {
             var query = _context.UserSelectedFamilyDoctor
                 .Include(p => p.Patient)
-                .Include(p=> p.Doctor)
+                .Include(p => p.Doctor)
                 .OrderByDescending(s => s.CreateDate)
                 .AsQueryable();
 

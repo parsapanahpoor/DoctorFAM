@@ -6,16 +6,19 @@ using DoctorFAM.Domain.Entities.Interest;
 using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.Enums.DoctorReservation;
 using DoctorFAM.Domain.Interfaces;
+using DoctorFAM.Domain.ViewModels.Admin.Dashboard;
 using DoctorFAM.Domain.ViewModels.Admin.Doctors;
 using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo;
 using DoctorFAM.Domain.ViewModels.Admin.Doctors.UsersInDoctorPopulationCovered;
 using DoctorFAM.Domain.ViewModels.Admin.FamilyDoctor;
 using DoctorFAM.Domain.ViewModels.Admin.IncomingExcelFile;
+using DoctorFAM.Domain.ViewModels.Admin.SendSMS;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DosctorSideBarInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Employees;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.ParsaSystem;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.ParsaSystem.VIPPatient;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.SendSMS;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Speciality;
 using DoctorFAM.Domain.ViewModels.Site.BloodPressure;
 using DoctorFAM.Domain.ViewModels.Site.Diabet;
@@ -34,6 +37,21 @@ namespace DoctorFAM.Application.Services.Interfaces
     public interface IDoctorsService
     {
         #region Doctors Panel Side   
+
+        //Fill Send SMS To Patient Detail Doctor Panel View Model
+        Task<SendSMSToPatientDetailDoctorPanelViewModel?> SendSMSToPatientDetailDoctorPanelViewModel(ulong requestId, ulong currentUserId);
+
+        //List Of Doctor Send SMS Request Doctor Side View Model
+        Task<List<ListOfDoctorSendSMSRequestDoctorSideViewModel>?> ListOfDoctorSendSMSRequestDoctorSideViewModel(ulong userId);
+
+        //Fill Send SMS To Patient View Model
+        Task<SendSMSToPatientViewModel?> FillSendSMSToPatientViewModel(ulong userId, List<ulong> usersId);
+
+        //Get Request For Send SMS From Doctor To Patient By RequestId
+        Task<ShowRequestForSendSMSDetailAdminSideViewModel?> FillShowRequestForSendSMSDetailViewModel(ulong requestId);
+
+        //List Of Request For Send SMS From Doctors To Doctors Admin Side
+        Task<List<RequestForSendSMSFromDoctorsToTheUsersAdminSideViewModel>?> ListOfRequestForSendSMSFromDoctorsToDoctorsAdminSide();
 
         //Delete Diabet Consultant Resume By Resume Id
         Task<bool> DeleteDiabetConsultantResumeByResumeId(ulong resumeId, ulong userId);
@@ -212,6 +230,15 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Update Doctor Speciality Selected
         Task<bool> UpdateDoctorSpecialitySelected(List<ulong>? speciallities, ulong userId);
+
+        //Send Request For Send SMS From Doctor Panel To Admin 
+        Task<SendRequestOfSMSFromDoctorsToThePatientResult> SendRequestForSendSMSFromDoctorPanelToAdmin(SendSMSToPatientViewModel model);
+
+        //Send Request For Send SMS From Doctor Panel To Admin 
+        Task<SendRequestOfSMSFromDoctorsToThePatientResult> SendRequestForSendSMSFromDoctorPanelToAdmin(SendSMSToPatientDetailDoctorPanelViewModel model);
+
+        //Manage Request For Send SMS From Doctor To Patient Admin Side 
+        Task<bool> ManageRequestForSendSMSFromDoctorToPatientAdminSide(ShowRequestForSendSMSDetailAdminSideViewModel model);
 
         #endregion
 

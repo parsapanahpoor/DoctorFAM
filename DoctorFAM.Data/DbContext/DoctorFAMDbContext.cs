@@ -49,6 +49,7 @@ using DoctorFAM.Domain.Enums.PeriodicTestType;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics.Metrics;
 using System.Globalization;
+using DoctorFAM.Domain.Entities.SendSMS.FromDoctrors;
 
 namespace DoctorFAM.Data.DbContext
 {
@@ -482,6 +483,18 @@ namespace DoctorFAM.Data.DbContext
         #region Drugs
 
         public DbSet<Insulin> Insulins { get; set; }
+
+        #endregion
+
+        #region Send SMS 
+
+        #region Send SMS From Doctors
+
+        public DbSet<SendRequestOfSMSFromDoctorsToThePatientDetail> SendRequestOfSMSFromDoctorsToThePatientDetails { get; set; }
+
+        public DbSet<SendRequestOfSMSFromDoctorsToThePatient> SendRequestOfSMSFromDoctorsToThePatients { get; set; }
+
+        #endregion
 
         #endregion
 

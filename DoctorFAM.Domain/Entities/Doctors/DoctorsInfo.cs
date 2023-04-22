@@ -32,6 +32,9 @@ namespace DoctorFAM.Domain.Entities.Doctors
 
         public string? ClinicPhone { get; set; }
 
+        [Display(Name = "تعداد پیامک رایگان برای ارسال از پزشک به بیماران")]
+        public int CountOFFreeSMSForDoctors { get; set; }
+
         #endregion
 
         #region Relations

@@ -8,7 +8,7 @@
     <li class="active">@SharedHtmlLocalizer["Home"]</li>
 }
 
-    @section Styles
+@section Styles
     {
     <style>
 
@@ -37,40 +37,43 @@
     </style>
 }
 
-    <div class="page-body">
+<div class="page-body">
 
-        <div class="row">
+    <div class="row">
 
-            @*Box Of Lastest Requests*@
-            <partial name="_LastestRequestsPartial" model="@Model.AllRecords" />
+        @*Box Of Lastest Requests*@
+        <partial name="_LastestRequestsPartial" model="@Model.AllRecords" />
 
-            @*Box Of Lastest Requests*@
-            <partial name="_TodayReservationReserved" model="@Model.DoctorReservationDateTimes" />
+        @*Box Of Lastest Requests*@
+        <partial name="_TodayReservationReserved" model="@Model.DoctorReservationDateTimes" />
 
-            @*Box Of  Lastest Incoming Doctors Organization Information*@
+        @*Box Of  Lastest Incoming Doctors Organization Information*@
         <partial name="_LastestIncomingDoctorsOrganizationInformation" model="@Model.ListOfWaitingForAcceptInformationsDoctors" />
 
-            @*Box Of  Lastest Request For Excel File*@
-            <partial name="_LastestRequestForExcelFile" model="@Model.LatestRequestForUploadExcelFile" />
+        @*Box Of  Lastest Request For Excel File*@
+        <partial name="_LastestRequestForExcelFile" model="@Model.LatestRequestForUploadExcelFile" />
 
-            @*Box Of  Lastest Customer Advertisements*@
-            <partial name="_LastestCustomerAdvertisements" model="@Model.LastestCustomerAdvertisements" />
+        @*Box Of  Lastest Customer Advertisements*@
+        <partial name="_LastestCustomerAdvertisements" model="@Model.LastestCustomerAdvertisements" />
 
-            @*Box Of  Lastest Arrival Resume*@
-            <partial name="_LastestArrivalResumes" model="@Model.LastestArrivalResumes" />
+        @*Box Of  Lastest Arrival Resume*@
+        <partial name="_LastestArrivalResumes" model="@Model.LastestArrivalResumes" />
 
-            @*Box Of  Tickets List*@
-            <partial name="_LastestTicketsPartial" model="@Model.ListOfLastestTickets" />
+        @*Box Of  Tickets List*@
+        <partial name="_LastestTicketsPartial" model="@Model.ListOfLastestTickets" />
 
-            @*Box Of  Cooperation Request*@
-            <partial name="_LastestCooperationRequest" model="@Model.CooperationRequests" />
+        @*Box Of  Cooperation Request*@
+        <partial name="_LastestCooperationRequest" model="@Model.CooperationRequests" />
 
-            @*Box Of  Lastest TV FAM Incoming Video*@
-            <partial name="_LastestTVFAMIncomingVideo" model="@Model.LastestIncomingTVFAM" />
+        @*Box Of  Lastest TV FAM Incoming Video*@
+        <partial name="_LastestTVFAMIncomingVideo" model="@Model.LastestIncomingTVFAM" />
 
-            @*Box Of  Lastest Pocasts Incoming*@
-            <partial name="_LastestPodcastsIncoming" model="@Model.LastestIncomingRadioFAM" />
+        @*Box Of  Lastest Pocasts Incoming*@
+        <partial name="_LastestPodcastsIncoming" model="@Model.LastestIncomingRadioFAM" />
 
-        </div>
+        @*Box Of  Send Request Of SMS From Doctors To The Patient*@
+        <partial name="_SendRequestOfSMSFromDoctorsToThePatient" model="@Model.RequestForSendSMSFromDoctorsToTheUsersAdminSideViewModel" />
 
     </div>
+
+</div>
