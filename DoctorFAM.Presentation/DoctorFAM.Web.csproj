@@ -53,6 +53,8 @@
 		<Folder Include="wwwroot\Content\images\Ticket\" />
 		<Folder Include="Areas\Nurse\Data\" />
 		<Folder Include="Areas\Nurse\Models\" />
+		<Folder Include="wwwroot\Content\images\Books\Chunks\" />
+		<Folder Include="wwwroot\Content\images\Ticket\" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -1344,6 +1346,14 @@
 		<None Include="wwwroot\Content\Admin\assets\js\validation\bootstrapValidator.min.js.map" />
 		<None Include="wwwroot\Content\Admin\assets\swf\copy_csv_xls.swf" />
 		<None Include="wwwroot\Content\Admin\assets\swf\copy_csv_xls_pdf.swf" />
+		<None Include="wwwroot\Content\Books.zip" />
+		<None Include="wwwroot\Content\Books\74cfbb59-0311-4700-9a39-bee7a15e9e5d.pdf" />
+		<None Include="wwwroot\Content\Books\b6c1ad66-34db-46b6-b951-e9f27e533474.pdf" />
+		<None Include="wwwroot\Content\Books\BasicOfFirstAid.pdf" />
+		<None Include="wwwroot\Content\Books\bea9cbae-525d-4f0f-a90b-d6f85995cda6.pdf" />
+		<None Include="wwwroot\Content\Books\c43c771e-baf5-4987-bf55-525575d7d334.pdf" />
+		<None Include="wwwroot\Content\Books\ObesityPamphlet.pdf" />
+		<None Include="wwwroot\Content\Books\SelfCarePamphlet.pdf" />
 		<None Include="wwwroot\Content\css\main.css.map" />
 		<None Include="wwwroot\Content\Doctor\assets\fonts\Feather144f.svg" />
 		<None Include="wwwroot\Content\Doctor\assets\img\best-doctor-check.svg" />
@@ -1386,12 +1396,19 @@
 		<None Include="wwwroot\Content\fonts\YekanBakhFaNum-Regular.woff2" />
 		<None Include="wwwroot\Content\fonts\YekanBakhFaNum-Thin.woff2" />
 		<None Include="wwwroot\Content\GuidLines\SiteGuid1_1.pdf" />
+		<None Include="wwwroot\Content\images\Books\Files\189c9801-35cd-4c29-a392-84507f1271a7.pdf" />
+		<None Include="wwwroot\Content\images\Books\Files\21f100fc-4f55-43db-b206-2d1b30e8a95f.pdf" />
 		<None Include="wwwroot\Content\images\logo-customizer\radio-svgrepo-com%281%29.svg" />
 		<None Include="wwwroot\Content\images\logo-customizer\radio-svgrepo-com%282%29.svg" />
 		<None Include="wwwroot\Content\images\logo-customizer\radio-svgrepo-com.svg" />
 		<None Include="wwwroot\Content\images\logo-customizer\tv-svgrepo-com.svg" />
 		<None Include="wwwroot\Content\images\Logo\doctorfam-Icon_logo.psd" />
 		<None Include="wwwroot\Content\images\Logo\doctorfam.psd" />
+		<None Include="wwwroot\Content\images\OnlineVisitRequestFile\main\4b8163037d5c4c5396c290edc3e9af53.pdf" />
+		<None Include="wwwroot\Content\images\RequestForUploadExcelFile\0ada915af127482792d4351f3932dcc7.xlsx" />
+		<None Include="wwwroot\Content\images\RequestForUploadExcelFile\2498be3f192e421da60d1b6cad69860a.xlsx" />
+		<None Include="wwwroot\Content\images\RequestForUploadExcelFile\56871c71c39c49c38c354c17215da6e4.xlsx" />
+		<None Include="wwwroot\Content\images\RequestForUploadExcelFile\74b43a9d68f4497d877554109c5f89bf.xlsx" />
 		<None Include="wwwroot\Content\js\color-customize\color-customizer.js" />
 		<None Include="wwwroot\Content\js\gauge\gauge.min.js" />
 		<None Include="wwwroot\Content\js\script.js" />

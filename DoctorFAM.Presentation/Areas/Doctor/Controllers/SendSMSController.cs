@@ -78,8 +78,15 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
             if (!ModelState.IsValid)
             {
+                var returnModel1 = await _doctorService.FillSendSMSToPatientViewModel(User.GetUserId(), model.PatientId);
+                if (returnModel1 == null)
+                {
+                    TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+                    return RedirectToAction(nameof(ChooseUsersForSendSMS));
+                }
+
                 TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد ";
-                return View(model);
+                return View(returnModel1);
             }
 
             #endregion
@@ -105,7 +112,14 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
             #endregion
 
-            return View(model);
+            var returnModel = await _doctorService.FillSendSMSToPatientViewModel(User.GetUserId(), model.PatientId);
+            if (returnModel == null)
+            {
+                TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+                return RedirectToAction(nameof(ChooseUsersForSendSMS));
+            }
+
+            return View(returnModel);
         }
 
         #endregion

@@ -183,7 +183,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #region Get Doctor SMS Percentage
 
-            var smsCount = await _doctorRepository.GetDoctorSMSPercentageDoctorsInfoByDoctorId(userId);
+            var smsCount = await _doctorRepository.GetDoctorSMSPercentageDoctorsInfoByDoctorId(doctor.Id);
 
             #endregion
 
@@ -2637,14 +2637,6 @@ namespace DoctorFAM.Application.Services.Implementation
             var doctorFreeSMSCount = await _doctorRepository.GetDoctorFreeSMSCountByDoctorId(doctor.Id);
             if (doctorFreeSMSCount == null) return SendRequestOfSMSFromDoctorsToThePatientResult.WrongInformation;
 
-            //Get Count Of Doctor Free SMS Sent 
-            var countOFDoctorFreeSentSMS = await _doctorRepository.GetCountOfDoctorFreeSMSSent(organization.OwnerId);
-
-            if (countOFDoctorFreeSentSMS.HasValue && countOFDoctorFreeSentSMS.Value >= doctorFreeSMSCount)
-            {
-                return SendRequestOfSMSFromDoctorsToThePatientResult.HigherThanDoctorFreePercentage;
-            }
-
             //Check Incoming SMS Right Now
             if (model.PatientId.Count > doctorFreeSMSCount)
             {
@@ -2652,7 +2644,7 @@ namespace DoctorFAM.Application.Services.Implementation
             }
 
             //Insert Free SMS From Doctor 
-            if (countOFDoctorFreeSentSMS.HasValue && countOFDoctorFreeSentSMS.Value <= doctorFreeSMSCount && model.PatientId.Count <= doctorFreeSMSCount)
+            if (model.PatientId.Count <= doctorFreeSMSCount)
             {
                 #region Create SMS 
 
@@ -2842,8 +2834,11 @@ namespace DoctorFAM.Application.Services.Implementation
                 {
                     var patient = await _userService.GetUserById(user.UserId);
 
-                    //Send SMS
-                    var result = await _smsservice.SendSimpleSMS(patient.Mobile, model.SMSBody);
+                    if (patient != null)
+                    {
+                        //Send SMS
+                        var result = await _smsservice.SendSimpleSMS(patient.Mobile, Messages.SendSMSFromDoctorToThePatient(model.SMSBody));
+                    }
                 }
             }
             if (model.SendSMSFromDoctorState == Domain.Enums.SendSMS.FromDoctors.SendSMSFromDoctorState.Decline)
