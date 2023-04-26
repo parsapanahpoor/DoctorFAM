@@ -66,6 +66,10 @@ namespace DoctorFAM.Application.Services.Implementation
                     OnlineVisitTariff = setting.OnlineVisitTariff,
                     DistanceFromCityTarriff = setting.DistanceFromCityTarriff,
                     CountOFFreeSMSForDoctors = setting.CountOFFreeSMSForDoctors,
+                    InPersonReservationTariffForAnonymousPersonsSiteShare = setting.InPersonReservationTariffForAnonymousPersonsSiteShare,
+                    InPersonReservationTariffForDoctorPopulationCoveredSiteShare = setting.InPersonReservationTariffForDoctorPopulationCoveredSiteShare,
+                    OnlineReservationTariffForAnonymousPersonsSiteShare = setting.OnlineReservationTariffForAnonymousPersonsSiteShare,
+                    OnlineReservationTariffForDoctorPopulationCoveredSiteShare = setting.OnlineReservationTariffForDoctorPopulationCoveredSiteShare
                 };
             }
 
@@ -161,6 +165,10 @@ namespace DoctorFAM.Application.Services.Implementation
                 setting.OnlineVisitTariff = editSiteSettingViewModel.HomeVisitTariff.Value;
                 setting.DistanceFromCityTarriff = editSiteSettingViewModel.DistanceFromCityTarriff;
                 setting.CountOFFreeSMSForDoctors = editSiteSettingViewModel.CountOFFreeSMSForDoctors;
+                setting.InPersonReservationTariffForAnonymousPersonsSiteShare = editSiteSettingViewModel.InPersonReservationTariffForAnonymousPersonsSiteShare;
+                setting.InPersonReservationTariffForDoctorPopulationCoveredSiteShare = editSiteSettingViewModel.InPersonReservationTariffForDoctorPopulationCoveredSiteShare;
+                setting.OnlineReservationTariffForAnonymousPersonsSiteShare = editSiteSettingViewModel.OnlineReservationTariffForAnonymousPersonsSiteShare;
+                setting.OnlineReservationTariffForDoctorPopulationCoveredSiteShare = editSiteSettingViewModel.OnlineReservationTariffForDoctorPopulationCoveredSiteShare;
             }
 
             await _siteSettingRepository.UpdateSiteSetting(setting);
@@ -243,7 +251,11 @@ namespace DoctorFAM.Application.Services.Implementation
                 SiteDomain = editSiteSettingViewModel.SiteDomain,
                 OnlineVisitTariff = editSiteSettingViewModel.OnlineVisitTariff.Value,
                 DistanceFromCityTarriff = editSiteSettingViewModel.DistanceFromCityTarriff,
-                CountOFFreeSMSForDoctors = editSiteSettingViewModel.CountOFFreeSMSForDoctors
+                CountOFFreeSMSForDoctors = editSiteSettingViewModel.CountOFFreeSMSForDoctors,
+                InPersonReservationTariffForAnonymousPersonsSiteShare = editSiteSettingViewModel.InPersonReservationTariffForAnonymousPersonsSiteShare,
+                InPersonReservationTariffForDoctorPopulationCoveredSiteShare = editSiteSettingViewModel.InPersonReservationTariffForDoctorPopulationCoveredSiteShare,
+                OnlineReservationTariffForAnonymousPersonsSiteShare = editSiteSettingViewModel.OnlineReservationTariffForAnonymousPersonsSiteShare,
+                OnlineReservationTariffForDoctorPopulationCoveredSiteShare = editSiteSettingViewModel.OnlineReservationTariffForDoctorPopulationCoveredSiteShare
             };
 
             await _siteSettingRepository.AddSiteSetting(newSetting);

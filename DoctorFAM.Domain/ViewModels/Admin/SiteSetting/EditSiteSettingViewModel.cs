@@ -47,6 +47,18 @@ namespace DoctorFAM.Domain.ViewModels.Admin.SiteSetting
 
         [Display(Name = "تعداد پیامک رایگان برای ارسال از پزشک به بیماران")]
         public int CountOFFreeSMSForDoctors { get; set; }
+
+        [Display(Name = "سهم وب سایت از نوبت دهی حضوری بیماران تحت پوشش پزشک خانواده")]
+        public int InPersonReservationTariffForDoctorPopulationCoveredSiteShare { get; set; }
+
+        [Display(Name = "سهم وب سایت از نوبت دهی آنلاین بیماران تحت پوشش پزشک خانواده")]
+        public int OnlineReservationTariffForDoctorPopulationCoveredSiteShare { get; set; }
+
+        [Display(Name = "سهم وب سایت از نوبت دهی حضوری بیماران ناشناس")]
+        public int InPersonReservationTariffForAnonymousPersonsSiteShare { get; set; }
+
+        [Display(Name = "سهم وب سایت از نوبت دهی آنلاین بیماران ناشناس")]
+        public int OnlineReservationTariffForAnonymousPersonsSiteShare { get; set; }
     }
 
     public enum EditSiteSettingResult
