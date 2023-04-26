@@ -55,8 +55,25 @@ namespace Academy.Web.Areas.Admin.Controllers
                 case EditSiteSettingResult.Success:
                     TempData[SuccessMessage] = "عملیات با موفقیت انجام شد";
                     return RedirectToAction("EditSiteSetting");
+
                 case EditSiteSettingResult.Fail:
                     TempData[ErrorMessage] = "عملیات با شکست مواجه شد";
+                    break;
+
+                case EditSiteSettingResult.InpersonReservationPopluationCoveredLessThanSiteShare:
+                    TempData[ErrorMessage] = "پزشکی در سایت وجود دارد که تعرفه ی نوبت حضوری افراد تحت پوشش وی کمتر از مقدار وارد شده ی شما است.";
+                    break;
+
+                case EditSiteSettingResult.OnlineReservationPopluationCoveredLessThanSiteShare:
+                    TempData[ErrorMessage] = "پزشکی در سایت وجود دارد که تعرفه ی نوبت آنلاین افراد تحت پوشش وی کمتر از مقدار وارد شده ی شما است.";
+                    break;
+
+                case EditSiteSettingResult.InpersonReservationAnonymousePersoneLessThanSiteShare:
+                    TempData[ErrorMessage] = "پزشکی در سایت وجود دارد که تعرفه ی نوبت حضوری افراد ناشناس وی کمتر از مقدار وارد شده ی شما است.";
+                    break;
+
+                case EditSiteSettingResult.OnlineReservationAnonymousePersoneLessThanSiteShare:
+                    TempData[ErrorMessage] = "پزشکی در سایت وجود دارد که تعرفه ی نوبت آنلاین افراد ناشناس وی کمتر از مقدار وارد شده ی شما است.";
                     break;
             }
 
@@ -185,14 +202,14 @@ namespace Academy.Web.Areas.Admin.Controllers
             #region Fill Model
 
             var model = await _periodicSelftEvaluationService.GetDiabetRiskFactorQuestionById(id);
-            if(model == null) return NotFound();
+            if (model == null) return NotFound();
 
             #endregion
 
             return View(model);
         }
 
-        [HttpPost , ValidateAntiForgeryToken]
+        [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> EditDiabetRiskFactorQuestion(DiabetRiskFactorQuestions model)
         {
             #region Model State Validation 
@@ -446,7 +463,7 @@ namespace Academy.Web.Areas.Admin.Controllers
                 return ApiResponse.SetResponse(ApiResponseStatus.Success, null, "عملیات باموفقیت انجام شده است.");
             }
 
-            return ApiResponse.SetResponse(ApiResponseStatus.Danger, null,"عملیات باشکست مواجه شده است.");
+            return ApiResponse.SetResponse(ApiResponseStatus.Danger, null, "عملیات باشکست مواجه شده است.");
         }
 
         #endregion

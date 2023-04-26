@@ -243,8 +243,8 @@ namespace DoctorFAM.Web.Controllers
 
             #region Get Reservation Tariff 
 
-            var reservationTariff = await _doctorService.ProcessReservationTariffForPayFromUser(reservationDate.UserId, User.GetUserId(), reservationDateTime.DoctorReservationType.Value);
-            if (reservationTariff == null)
+            var reservationTariff = await _doctorService.ProcessReservationTariffForPayFromUserAndIsUserInDoctorPopulationCoveredOrNot(reservationDate.UserId, User.GetUserId(), reservationDateTime.DoctorReservationType.Value);
+            if (reservationTariff.Item1 == 0 && reservationTariff.Item2 == false && reservationTariff.Item3 == false)
             {
                 TempData[ErrorMessage] = "لطفا با پشتیبانی تماس بگیرید";
                 return RedirectToAction("Index", "Home");
@@ -263,7 +263,7 @@ namespace DoctorFAM.Web.Controllers
                     parameters.authority = HttpContext.Request.Query["Authority"];
                 }
 
-                parameters.amount = reservationTariff.Value.ToString();
+                parameters.amount = reservationTariff.Item1.ToString();
                 parameters.merchant_id = PathTools.merchant;
 
                 #endregion
@@ -296,7 +296,7 @@ namespace DoctorFAM.Web.Controllers
                         string refid = jodata["data"]["ref_id"].ToString();
 
                         //Get Wallet Transaction For Validation 
-                        var wallet = await _walletService.FindWalletTransactionForRedirectToTheBankPortal(user.Id, GatewayType.Zarinpal, reservationDateTime.Id, parameters.authority, reservationTariff.Value);
+                        var wallet = await _walletService.FindWalletTransactionForRedirectToTheBankPortal(user.Id, GatewayType.Zarinpal, reservationDateTime.Id, parameters.authority, reservationTariff.Item1);
 
                         if (wallet != null)
                         {
@@ -304,12 +304,14 @@ namespace DoctorFAM.Web.Controllers
                             await _reservationService.ReserveDoctorReservationDateTimeAfterSuccessPayment(reservationDateTime.Id);
 
                             //Charge User Wallet
-                            //await _reservationService.ChargeUserWallet(User.GetUserId(), reservationTariff);
+                            await _reservationService.ChargeUserWallet(User.GetUserId(), reservationTariff.Item1);
 
                             await _walletService.UpdateWalletAndCalculateUserBalanceAfterBankingPayment(wallet);
 
                             //Pay Home Visit Tariff
-                            await _reservationService.PayReservationTariff(User.GetUserId(), reservationTariff.Value , reservationDateTime.Id);
+                            await _reservationService.PayReservationTariff(User.GetUserId(), reservationTariff.Item1 , reservationDateTime.Id);
+
+                            await _reservationService.PayDoctorReservationPayedSharePercentage(reservationDate.UserId , reservationTariff.Item1 , reservationDateTime.Id , reservationTariff.Item2 , reservationDateTime.DoctorReservationType.Value);
 
                             #region Send Notification In SignalR
 

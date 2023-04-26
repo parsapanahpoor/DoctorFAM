@@ -172,7 +172,7 @@ namespace DoctorFAM.Application.Services.Interfaces
         Task<DoctorsReservationTariffDoctorPanelSideViewModel?> FillDoctorsReservationTariffDoctorPanelSideViewModel(ulong userId);
 
         //Add Or Edit Doctor Reservation Tariff Doctor Side 
-        Task<bool> AddOrEditDoctorReservationTariffDoctorSide(DoctorsReservationTariffDoctorPanelSideViewModel inCommingModel);
+        Task<DoctorsReservationTariffDoctorPanelSideViewModelResult> AddOrEditDoctorReservationTariffDoctorSide(DoctorsReservationTariffDoctorPanelSideViewModel inCommingModel);
 
         Task<ManageDoctorsInfoViewModel?> FillManageDoctorsInfoViewModel(ulong userId);
 
@@ -306,6 +306,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Process Reservation Tariff For Pay From User
         Task<int?> ProcessReservationTariffForPayFromUser(ulong doctorUserId, ulong userId, DoctorReservationType DoctorReservationType);
+
+        //Process Reservation Tariff For Pay From User And Is User In Doctor Population Covered Or Not
+        Task<ValueTuple<int, bool , bool>> ProcessReservationTariffForPayFromUserAndIsUserInDoctorPopulationCoveredOrNot(ulong doctorUserId, ulong userId, DoctorReservationType DoctorReservationType);
 
         #endregion
 

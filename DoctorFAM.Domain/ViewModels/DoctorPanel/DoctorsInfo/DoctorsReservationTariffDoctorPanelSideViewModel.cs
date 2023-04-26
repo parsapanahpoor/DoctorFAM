@@ -22,4 +22,14 @@ namespace DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo
 
         #endregion
     }
+
+    public enum DoctorsReservationTariffDoctorPanelSideViewModelResult
+    {
+        success,
+        failure,
+        InpersonReservationPopluationCoveredLessThanSiteShare,
+        OnlineReservationPopluationCoveredLessThanSiteShare,
+        InpersonReservationAnonymousePersoneLessThanSiteShare,
+        OnlineReservationAnonymousePersoneLessThanSiteShare
+    }
 }

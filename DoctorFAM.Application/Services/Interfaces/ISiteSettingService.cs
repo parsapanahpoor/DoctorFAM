@@ -97,6 +97,18 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Delete Insuline From Admin 
         Task<bool> DeleteInsulinFromAdmin(ulong insulinId);
 
+        //Check Field InPerson Reservation Tariff For Doctor Population Covered Site Share By Doctor Percentages
+        Task<bool> CheckFieldOnlineReservationTariffForInPersonReservationTariffForDoctorPopulationCoveredSiteShare(int price);
+
+        //Check Field Online Reservation Tariff For Online Reservation Tariff For Doctor Population Covered Site Share
+        Task<bool> CheckFieldOnlineReservationTariffForOnlineReservationTariffForDoctorPopulationCoveredSiteShare(int price);
+
+        //Check Field Online Reservation Tariff For InPerson Reservation Tariff For Anonymous Persons Site Share
+        Task<bool> CheckFieldOnlineReservationTariffForInPersonReservationTariffForAnonymousPersonsSiteShare(int price);
+
+        //Check Field Online Reservation Tariff For Online Reservation Tariff For Anonymous Persons Site Share
+        Task<bool> CheckFieldOnlineReservationTariffForOnlineReservationTariffForAnonymousPersonsSiteShare(int price);
+
         #endregion
 
         #region Site Side
@@ -117,6 +129,33 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Get Request Selected Tariffs By Request Id 
         Task<List<TariffForHealthHouseServices>> GetTariffBySelectedTariffs(ulong requestId);
+
+        //Get InPerson Reservation Tariff For Doctor Population Covered Site Share
+        Task<int> GetInPersonReservationTariffForDoctorPopulationCoveredSiteShare();
+
+        //Get Online Reservation Tariff For Doctor Population Covered Site Share
+        Task<int> GetOnlineReservationTariffForDoctorPopulationCoveredSiteShare();
+
+        //Get In Person Reservation Tariff For Anonymous Persons Site Share
+        Task<int> GetInPersonReservationTariffForAnonymousPersonsSiteShare();
+
+        //Get Online Reservation Tariff For Anonymous Persons Site Share
+        Task<int> GetOnlineReservationTariffForAnonymousPersonsSiteShare();
+
+        //Add Site Cash Desk
+        Task AddSiteCashDesk(int price);
+
+        //Check Doctor Inserted Tarrif By Site In Field In Person Reservation Tariff For Doctor Population Covered 
+        Task<bool> CheckDoctorInsertedTarrifBySiteInFieldInPersonReservationTariffForDoctorPopulationCovered(int price);
+
+        //Check Doctor Inserted Tarrif By Site In Field Online Reservation Tariff For Doctor Population Covered  
+        Task<bool> CheckDoctorInsertedTarrifBySiteInFieldOnlineReservationTariffForDoctorPopulationCovered(int price);
+
+        //Check Doctor Inserted Tarrif By Site In Field In Person Reservation Tariff For Anonymous Persons 
+        Task<bool> CheckDoctorInsertedTarrifBySiteInFieldInPersonReservationTariffForAnonymousPersons(int price);
+
+        //Check Doctor Inserted Tarrif By Site In Field Online Reservation Tariff For Anonymous Persons 
+        Task<bool> CheckDoctorInsertedTarrifBySiteInFieldOnlineReservationTariffForAnonymousPersons(int price);
 
         #endregion
     }

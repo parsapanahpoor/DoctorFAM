@@ -64,6 +64,10 @@ namespace DoctorFAM.Domain.ViewModels.Admin.SiteSetting
     public enum EditSiteSettingResult
     {
         Success,
-        Fail
+        Fail,
+        InpersonReservationPopluationCoveredLessThanSiteShare,
+        OnlineReservationPopluationCoveredLessThanSiteShare,
+        InpersonReservationAnonymousePersoneLessThanSiteShare,
+        OnlineReservationAnonymousePersoneLessThanSiteShare
     }
 }

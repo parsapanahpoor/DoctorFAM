@@ -68,11 +68,13 @@ namespace DoctorFAM.Application.Services.Implementation
         private readonly ISpecialityRepository _specialityRepository;
         private readonly IUserRepositoryDapper _userRepositoryDapper;
         private readonly IFamilyDoctorRepository _familyDoctorService;
+        private readonly ISiteSettingService _siteSetting;
 
         public DoctorsService(IDoctorsRepository doctorRepository, IUserService userService, IOrganizationService organizationService,
                                 IWorkAddressService workAddress, ILocationRepository locationRepository
                                     , IReservationService reservationService, ISMSService smsservice, IResumeService resumeService, ISpecialityRepository specialityRepository
-                                        , IUserRepositoryDapper userRepositoryDapper, IFamilyDoctorRepository familyDoctorService)
+                                        , IUserRepositoryDapper userRepositoryDapper, IFamilyDoctorRepository familyDoctorService
+                                            , ISiteSettingService siteSetting)
         {
             _doctorRepository = doctorRepository;
             _userService = userService;
@@ -85,6 +87,7 @@ namespace DoctorFAM.Application.Services.Implementation
             _specialityRepository = specialityRepository;
             _userRepositoryDapper = userRepositoryDapper;
             _familyDoctorService = familyDoctorService;
+            _siteSetting = siteSetting;
         }
 
         #endregion
@@ -1690,21 +1693,21 @@ namespace DoctorFAM.Application.Services.Implementation
         }
 
         //Add Or Edit Doctor Reservation Tariff Doctor Side 
-        public async Task<bool> AddOrEditDoctorReservationTariffDoctorSide(DoctorsReservationTariffDoctorPanelSideViewModel inCommingModel)
+        public async Task<DoctorsReservationTariffDoctorPanelSideViewModelResult> AddOrEditDoctorReservationTariffDoctorSide(DoctorsReservationTariffDoctorPanelSideViewModel inCommingModel)
         {
             #region Check Is User Exist 
 
             var user = await _userService.GetUserById(inCommingModel.DoctorUserId);
 
-            if (user == null) return false;
+            if (user == null) return DoctorsReservationTariffDoctorPanelSideViewModelResult.failure;
 
             #endregion
 
             #region Get Current Doctor Office
 
             var doctorOffice = await _organizationService.GetDoctorOrganizationByUserId(inCommingModel.DoctorUserId);
-            if (doctorOffice == null) return false;
-            if (doctorOffice.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice) return false;
+            if (doctorOffice == null) return DoctorsReservationTariffDoctorPanelSideViewModelResult.failure;
+            if (doctorOffice.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice) return DoctorsReservationTariffDoctorPanelSideViewModelResult.failure;
 
             #endregion
 
@@ -1722,6 +1725,30 @@ namespace DoctorFAM.Application.Services.Implementation
             #endregion
 
             #region Add For The First Time
+
+            #region Check Tarrifs From Doctor By Site Percentages
+
+            if (await _siteSetting.CheckDoctorInsertedTarrifBySiteInFieldInPersonReservationTariffForDoctorPopulationCovered(inCommingModel.InPersonReservationTariffForDoctorPopulationCovered))
+            {
+                return DoctorsReservationTariffDoctorPanelSideViewModelResult.InpersonReservationPopluationCoveredLessThanSiteShare;
+            }
+
+            if (await _siteSetting.CheckDoctorInsertedTarrifBySiteInFieldOnlineReservationTariffForDoctorPopulationCovered(inCommingModel.OnlineReservationTariffForDoctorPopulationCovered))
+            {
+                return DoctorsReservationTariffDoctorPanelSideViewModelResult.OnlineReservationPopluationCoveredLessThanSiteShare;
+            }
+
+            if (await _siteSetting.CheckDoctorInsertedTarrifBySiteInFieldInPersonReservationTariffForAnonymousPersons(inCommingModel.InPersonReservationTariffForAnonymousPersons))
+            {
+                return DoctorsReservationTariffDoctorPanelSideViewModelResult.InpersonReservationAnonymousePersoneLessThanSiteShare;
+            }
+
+            if (await _siteSetting.CheckDoctorInsertedTarrifBySiteInFieldOnlineReservationTariffForAnonymousPersons(inCommingModel.OnlineReservationTariffForAnonymousPersons))
+            {
+                return DoctorsReservationTariffDoctorPanelSideViewModelResult.OnlineReservationAnonymousePersoneLessThanSiteShare;
+            }
+
+            #endregion
 
             if (tariffs == null)
             {
@@ -1758,7 +1785,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #endregion
 
-            return true;
+            return DoctorsReservationTariffDoctorPanelSideViewModelResult.success;
         }
 
         public async Task<ManageDoctorsInfoViewModel?> FillManageDoctorsInfoViewModel(ulong userId)
@@ -3870,6 +3897,72 @@ namespace DoctorFAM.Application.Services.Implementation
             #endregion
 
             return null;
+        }
+
+        //Process Reservation Tariff For Pay From User And Is User In Doctor Population Covered Or Not
+        public async Task<ValueTuple<int,bool,bool>> ProcessReservationTariffForPayFromUserAndIsUserInDoctorPopulationCoveredOrNot(ulong doctorUserId, ulong userId, DoctorReservationType DoctorReservationType)
+        {
+            #region Get User By User Id
+
+            var user = await _userService.GetUserById(userId);
+            if (user == null) return ValueTuple.Create(0,false,false);
+
+            #endregion
+
+            #region Get Current Doctor Office
+
+            var doctorOffice = await _organizationService.GetDoctorOrganizationByUserId(doctorUserId);
+            if (doctorOffice == null) return ValueTuple.Create(0, false, false);
+            if (doctorOffice.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice ||
+                doctorOffice.OrganizationInfoState != OrganizationInfoState.Accepted) return ValueTuple.Create(0, false, false);
+
+            #endregion
+
+            #region Get Doctor Reservation Tariff
+
+            var reservationTariff = await GetDoctorReservationTariffByDoctorUserId(doctorOffice.OwnerId);
+            if (reservationTariff == null) return ValueTuple.Create(0, false, false);
+
+            #endregion
+
+            #region Check Doctor Population Covered 
+
+            var populationCovered = await _familyDoctorService.GetUserSelectedFamilyDoctorByUserAndDoctorId(userId, doctorOffice.OwnerId);
+
+            //If User Is In Doctor Population Covered 
+            if (populationCovered != null && populationCovered.IsUserInDoctorPopulationCoveredOutOfDoctorFAM)
+            {
+                //If Reservation Type Is In Person 
+                if (DoctorReservationType == DoctorReservationType.Reserved)
+                {
+                    return ValueTuple.Create(reservationTariff.InPersonReservationTariffForDoctorPopulationCovered, true , true);
+                }
+
+                //If Reservation Type Is Online 
+                if (DoctorReservationType == DoctorReservationType.Onile)
+                {
+                    return ValueTuple.Create(reservationTariff.OnlineReservationTariffForDoctorPopulationCovered, true, true);
+                }
+            }
+
+            else
+            {
+                //If Reservation Type Is In Person
+                if (DoctorReservationType == DoctorReservationType.Reserved)
+                {
+                    return ValueTuple.Create(reservationTariff.InPersonReservationTariffForAnonymousPersons, false , true);
+                }
+
+                //If Reservation Type Is Online 
+                if (DoctorReservationType == DoctorReservationType.Onile)
+                {
+                    return ValueTuple.Create(reservationTariff.OnlineReservationTariffForAnonymousPersons, false , true);
+                }
+            }
+
+            #endregion
+
+            return ValueTuple.Create(0, false , false); 
         }
 
         #endregion
