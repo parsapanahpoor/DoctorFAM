@@ -304,7 +304,7 @@ namespace DoctorFAM.Web.Controllers
                             await _reservationService.ReserveDoctorReservationDateTimeAfterSuccessPayment(reservationDateTime.Id);
 
                             //Charge User Wallet
-                            await _reservationService.ChargeUserWallet(User.GetUserId(), reservationTariff.Item1);
+                            //await _reservationService.ChargeUserWallet(User.GetUserId(), reservationTariff.Item1);
 
                             await _walletService.UpdateWalletAndCalculateUserBalanceAfterBankingPayment(wallet);
 

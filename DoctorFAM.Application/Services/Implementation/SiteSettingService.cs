@@ -69,7 +69,8 @@ namespace DoctorFAM.Application.Services.Implementation
                     InPersonReservationTariffForAnonymousPersonsSiteShare = setting.InPersonReservationTariffForAnonymousPersonsSiteShare,
                     InPersonReservationTariffForDoctorPopulationCoveredSiteShare = setting.InPersonReservationTariffForDoctorPopulationCoveredSiteShare,
                     OnlineReservationTariffForAnonymousPersonsSiteShare = setting.OnlineReservationTariffForAnonymousPersonsSiteShare,
-                    OnlineReservationTariffForDoctorPopulationCoveredSiteShare = setting.OnlineReservationTariffForDoctorPopulationCoveredSiteShare
+                    OnlineReservationTariffForDoctorPopulationCoveredSiteShare = setting.OnlineReservationTariffForDoctorPopulationCoveredSiteShare,
+                    CashDesk = setting.SiteCashDesk
                 };
             }
 
@@ -279,7 +280,8 @@ namespace DoctorFAM.Application.Services.Implementation
                 InPersonReservationTariffForAnonymousPersonsSiteShare = editSiteSettingViewModel.InPersonReservationTariffForAnonymousPersonsSiteShare,
                 InPersonReservationTariffForDoctorPopulationCoveredSiteShare = editSiteSettingViewModel.InPersonReservationTariffForDoctorPopulationCoveredSiteShare,
                 OnlineReservationTariffForAnonymousPersonsSiteShare = editSiteSettingViewModel.OnlineReservationTariffForAnonymousPersonsSiteShare,
-                OnlineReservationTariffForDoctorPopulationCoveredSiteShare = editSiteSettingViewModel.OnlineReservationTariffForDoctorPopulationCoveredSiteShare
+                OnlineReservationTariffForDoctorPopulationCoveredSiteShare = editSiteSettingViewModel.OnlineReservationTariffForDoctorPopulationCoveredSiteShare,
+                SiteCashDesk = 0
             };
 
             await _siteSettingRepository.AddSiteSetting(newSetting);

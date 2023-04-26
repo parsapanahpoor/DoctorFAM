@@ -45,7 +45,8 @@ namespace Academy.Web.Areas.Admin.Controllers
             if (!ModelState.IsValid)
             {
                 TempData[ErrorMessage] = "اطلاعات وارد شده معتبر نمی باشد";
-                return View(siteSetting);
+
+                return View(await _siteSettingService.FillEditSiteSettingViewModel());
             }
 
             var result = await _siteSettingService.EditSiteSetting(siteSetting);
@@ -77,7 +78,7 @@ namespace Academy.Web.Areas.Admin.Controllers
                     break;
             }
 
-            return View(siteSetting);
+            return View(await _siteSettingService.FillEditSiteSettingViewModel());
         }
 
         #endregion
