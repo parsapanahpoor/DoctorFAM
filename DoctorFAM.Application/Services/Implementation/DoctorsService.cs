@@ -3407,6 +3407,26 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #region Edit Doctor Reservation Tariff
 
+            if (model.InPersonReservationTariffForDoctorPopulationCovered.HasValue && await _siteSetting.CheckDoctorInsertedTarrifBySiteInFieldInPersonReservationTariffForDoctorPopulationCovered(model.InPersonReservationTariffForDoctorPopulationCovered.Value))
+            {
+                return EditDoctorInfoResult.InpersonReservationPopluationCoveredLessThanSiteShare;
+            }
+
+            if (model.OnlineReservationTariffForDoctorPopulationCovered.HasValue && await _siteSetting.CheckDoctorInsertedTarrifBySiteInFieldOnlineReservationTariffForDoctorPopulationCovered(model.OnlineReservationTariffForDoctorPopulationCovered.Value))
+            {
+                return EditDoctorInfoResult.OnlineReservationPopluationCoveredLessThanSiteShare;
+            }
+
+            if (model.InPersonReservationTariffForAnonymousPersons.HasValue && await _siteSetting.CheckDoctorInsertedTarrifBySiteInFieldInPersonReservationTariffForAnonymousPersons(model.InPersonReservationTariffForAnonymousPersons.Value))
+            {
+                return EditDoctorInfoResult.InpersonReservationAnonymousePersoneLessThanSiteShare;
+            }
+
+            if (model.OnlineReservationTariffForAnonymousPersons.HasValue && await _siteSetting.CheckDoctorInsertedTarrifBySiteInFieldOnlineReservationTariffForAnonymousPersons(model.OnlineReservationTariffForAnonymousPersons.Value))
+            {
+                return EditDoctorInfoResult.OnlineReservationAnonymousePersoneLessThanSiteShare;
+            }
+
             //Get Doctor Reservation Tariff
             var reservation = await GetDoctorReservationTariffByDoctorUserId(doctorOffice.OwnerId);
             if (reservation != null)

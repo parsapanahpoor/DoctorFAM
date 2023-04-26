@@ -150,19 +150,19 @@ namespace DoctorFAM.Application.Services.Implementation
             }
 
             //Check Field Online Reservation Tariff For Population Persons Site Share By Doctor Percentages 
-            if (await _siteSettingRepository.CheckFieldOnlineReservationTariffForOnlineReservationTariffForDoctorPopulationCoveredSiteShare(editSiteSettingViewModel.InPersonReservationTariffForDoctorPopulationCoveredSiteShare))
+            if (await _siteSettingRepository.CheckFieldOnlineReservationTariffForOnlineReservationTariffForDoctorPopulationCoveredSiteShare(editSiteSettingViewModel.OnlineReservationTariffForDoctorPopulationCoveredSiteShare))
             {
                 return EditSiteSettingResult.OnlineReservationPopluationCoveredLessThanSiteShare;
             }
 
             //Check Field Inpersone Reservation Tariff For Anonymous Persons Site Share By Doctor Percentages 
-            if (await _siteSettingRepository.CheckFieldOnlineReservationTariffForInPersonReservationTariffForAnonymousPersonsSiteShare(editSiteSettingViewModel.InPersonReservationTariffForDoctorPopulationCoveredSiteShare))
+            if (await _siteSettingRepository.CheckFieldOnlineReservationTariffForInPersonReservationTariffForAnonymousPersonsSiteShare(editSiteSettingViewModel.InPersonReservationTariffForAnonymousPersonsSiteShare))
             {
                 return EditSiteSettingResult.InpersonReservationAnonymousePersoneLessThanSiteShare;
             }
 
             //Check Field Online Reservation Tariff For Anonymous Persons Site Share By Doctor Percentages 
-            if (await _siteSettingRepository.CheckFieldOnlineReservationTariffForOnlineReservationTariffForAnonymousPersonsSiteShare(editSiteSettingViewModel.InPersonReservationTariffForDoctorPopulationCoveredSiteShare))
+            if (await _siteSettingRepository.CheckFieldOnlineReservationTariffForOnlineReservationTariffForAnonymousPersonsSiteShare(editSiteSettingViewModel.OnlineReservationTariffForAnonymousPersonsSiteShare))
             {
                 return EditSiteSettingResult.OnlineReservationAnonymousePersoneLessThanSiteShare;
             }

@@ -87,6 +87,10 @@ namespace DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo
     {
         success,
         faild,
-        NationalId
+        NationalId,
+        InpersonReservationPopluationCoveredLessThanSiteShare,
+        OnlineReservationPopluationCoveredLessThanSiteShare,
+        InpersonReservationAnonymousePersoneLessThanSiteShare,
+        OnlineReservationAnonymousePersoneLessThanSiteShare
     }
 }

@@ -491,23 +491,23 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
                 case DoctorsReservationTariffDoctorPanelSideViewModelResult.failure:
                     TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
-                    return View(model);
+                    break;
 
                 case DoctorsReservationTariffDoctorPanelSideViewModelResult.InpersonReservationPopluationCoveredLessThanSiteShare:
                     TempData[ErrorMessage] = "تعرفه ی نوبت حضوری افراد تحت پوشش شما از حداقل مقدار مورد تایید وب سایت کمتر است.";
-                    return View(model);
+                    break;
 
                 case DoctorsReservationTariffDoctorPanelSideViewModelResult.OnlineReservationPopluationCoveredLessThanSiteShare:
                     TempData[ErrorMessage] = "تعرفه ی نوبت آنلاین افراد تحت پوشش شما از حداقل مقدار مورد تایید وب سایت کمتر است.";
-                    return View(model);
+                    break;
 
                 case DoctorsReservationTariffDoctorPanelSideViewModelResult.InpersonReservationAnonymousePersoneLessThanSiteShare:
                     TempData[ErrorMessage] = "تعرفه ی نوبت حضوری افراد ناشناس شما از حداقل مقدار مورد تایید وب سایت کمتر است.";
-                    return View(model);
+                    break;
 
                 case DoctorsReservationTariffDoctorPanelSideViewModelResult.OnlineReservationAnonymousePersoneLessThanSiteShare:
                     TempData[ErrorMessage] = "تعرفه ی نوبت آنلاین افراد ناشناس شما از حداقل مقدار مورد تایید وب سایت کمتر است.";
-                    return View(model);
+                    break;
             }
 
             #endregion
@@ -518,7 +518,6 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
             #endregion
 
-            ViewData[ErrorMessage] = ".اطلاعات وارد شده صحیح نمی باشد";
             return View(model);
         }
 

@@ -1,5 +1,6 @@
 ﻿using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 
@@ -119,6 +120,22 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
                 case EditDoctorInfoResult.success:
                     TempData[SuccessMessage] = "عملیات با موفقیت انجام شد .";
                     return RedirectToAction("ListOfDoctorsInfo", "Doctors", new { area = "Admin" });
+
+                case EditDoctorInfoResult.InpersonReservationPopluationCoveredLessThanSiteShare:
+                    TempData[ErrorMessage] = "تعرفه ی نوبت حضوری افراد تحت پوشش از حداقل مقدار مورد تایید وب سایت کمتر است.";
+                    return RedirectToAction("DoctorsInfoDetail", "Doctors", new { area = "Admin", userId = model.UserId });
+
+                case EditDoctorInfoResult.OnlineReservationPopluationCoveredLessThanSiteShare:
+                    TempData[ErrorMessage] = "تعرفه ی نوبت آنلاین افراد تحت پوشش از حداقل مقدار مورد تایید وب سایت کمتر است.";
+                    return RedirectToAction("DoctorsInfoDetail", "Doctors", new { area = "Admin", userId = model.UserId });
+
+                case EditDoctorInfoResult.InpersonReservationAnonymousePersoneLessThanSiteShare:
+                    TempData[ErrorMessage] = "تعرفه ی نوبت حضوری افراد ناشناس از حداقل مقدار مورد تایید وب سایت کمتر است.";
+                    return RedirectToAction("DoctorsInfoDetail", "Doctors", new { area = "Admin", userId = model.UserId });
+
+                case EditDoctorInfoResult.OnlineReservationAnonymousePersoneLessThanSiteShare:
+                    TempData[ErrorMessage] = "تعرفه ی نوبت آنلاین افراد ناشناس از حداقل مقدار مورد تایید وب سایت کمتر است.";
+                    return RedirectToAction("DoctorsInfoDetail", "Doctors", new { area = "Admin", userId = model.UserId });
             }
 
             #endregion
