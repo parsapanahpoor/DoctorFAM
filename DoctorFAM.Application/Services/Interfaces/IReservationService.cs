@@ -1,6 +1,7 @@
 ﻿using DoctorFAM.Application.Services.Implementation;
 using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.Entities.Wallet;
+using DoctorFAM.Domain.Enums.DoctorReservation;
 using DoctorFAM.Domain.ViewModels.Admin.Reservation;
 using DoctorFAM.Domain.ViewModels.Common;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment;
@@ -152,6 +153,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Reserve Doctor Reservation Date Time After Success Payment
         Task ReserveDoctorReservationDateTimeAfterSuccessPayment(ulong reservationDateTimeId);
+
+        //Pay Doctor Reservation Payed Share Percentage
+        Task<bool> PayDoctorReservationPayedSharePercentage(ulong doctorUserId, int price, ulong requestId, bool isUserInDoctorPopulationCovered, DoctorReservationType doctorReservationType);
 
         #endregion
     }

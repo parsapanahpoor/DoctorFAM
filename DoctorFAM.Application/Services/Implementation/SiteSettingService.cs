@@ -66,6 +66,11 @@ namespace DoctorFAM.Application.Services.Implementation
                     OnlineVisitTariff = setting.OnlineVisitTariff,
                     DistanceFromCityTarriff = setting.DistanceFromCityTarriff,
                     CountOFFreeSMSForDoctors = setting.CountOFFreeSMSForDoctors,
+                    InPersonReservationTariffForAnonymousPersonsSiteShare = setting.InPersonReservationTariffForAnonymousPersonsSiteShare,
+                    InPersonReservationTariffForDoctorPopulationCoveredSiteShare = setting.InPersonReservationTariffForDoctorPopulationCoveredSiteShare,
+                    OnlineReservationTariffForAnonymousPersonsSiteShare = setting.OnlineReservationTariffForAnonymousPersonsSiteShare,
+                    OnlineReservationTariffForDoctorPopulationCoveredSiteShare = setting.OnlineReservationTariffForDoctorPopulationCoveredSiteShare,
+                    CashDesk = setting.SiteCashDesk
                 };
             }
 
@@ -139,6 +144,30 @@ namespace DoctorFAM.Application.Services.Implementation
                 return EditSiteSettingResult.Fail;
             }
 
+            //Check Field In Persone Reservation Tariff For Population Persons Site Share By Doctor Percentages 
+            if (await _siteSettingRepository.CheckFieldOnlineReservationTariffForInPersonReservationTariffForDoctorPopulationCoveredSiteShare(editSiteSettingViewModel.InPersonReservationTariffForDoctorPopulationCoveredSiteShare))
+            {
+                return EditSiteSettingResult.InpersonReservationPopluationCoveredLessThanSiteShare;
+            }
+
+            //Check Field Online Reservation Tariff For Population Persons Site Share By Doctor Percentages 
+            if (await _siteSettingRepository.CheckFieldOnlineReservationTariffForOnlineReservationTariffForDoctorPopulationCoveredSiteShare(editSiteSettingViewModel.OnlineReservationTariffForDoctorPopulationCoveredSiteShare))
+            {
+                return EditSiteSettingResult.OnlineReservationPopluationCoveredLessThanSiteShare;
+            }
+
+            //Check Field Inpersone Reservation Tariff For Anonymous Persons Site Share By Doctor Percentages 
+            if (await _siteSettingRepository.CheckFieldOnlineReservationTariffForInPersonReservationTariffForAnonymousPersonsSiteShare(editSiteSettingViewModel.InPersonReservationTariffForAnonymousPersonsSiteShare))
+            {
+                return EditSiteSettingResult.InpersonReservationAnonymousePersoneLessThanSiteShare;
+            }
+
+            //Check Field Online Reservation Tariff For Anonymous Persons Site Share By Doctor Percentages 
+            if (await _siteSettingRepository.CheckFieldOnlineReservationTariffForOnlineReservationTariffForAnonymousPersonsSiteShare(editSiteSettingViewModel.OnlineReservationTariffForAnonymousPersonsSiteShare))
+            {
+                return EditSiteSettingResult.OnlineReservationAnonymousePersoneLessThanSiteShare;
+            }
+
             #endregion
 
             if (setting == null)
@@ -161,6 +190,10 @@ namespace DoctorFAM.Application.Services.Implementation
                 setting.OnlineVisitTariff = editSiteSettingViewModel.HomeVisitTariff.Value;
                 setting.DistanceFromCityTarriff = editSiteSettingViewModel.DistanceFromCityTarriff;
                 setting.CountOFFreeSMSForDoctors = editSiteSettingViewModel.CountOFFreeSMSForDoctors;
+                setting.InPersonReservationTariffForAnonymousPersonsSiteShare = editSiteSettingViewModel.InPersonReservationTariffForAnonymousPersonsSiteShare;
+                setting.InPersonReservationTariffForDoctorPopulationCoveredSiteShare = editSiteSettingViewModel.InPersonReservationTariffForDoctorPopulationCoveredSiteShare;
+                setting.OnlineReservationTariffForAnonymousPersonsSiteShare = editSiteSettingViewModel.OnlineReservationTariffForAnonymousPersonsSiteShare;
+                setting.OnlineReservationTariffForDoctorPopulationCoveredSiteShare = editSiteSettingViewModel.OnlineReservationTariffForDoctorPopulationCoveredSiteShare;
             }
 
             await _siteSettingRepository.UpdateSiteSetting(setting);
@@ -243,7 +276,12 @@ namespace DoctorFAM.Application.Services.Implementation
                 SiteDomain = editSiteSettingViewModel.SiteDomain,
                 OnlineVisitTariff = editSiteSettingViewModel.OnlineVisitTariff.Value,
                 DistanceFromCityTarriff = editSiteSettingViewModel.DistanceFromCityTarriff,
-                CountOFFreeSMSForDoctors = editSiteSettingViewModel.CountOFFreeSMSForDoctors
+                CountOFFreeSMSForDoctors = editSiteSettingViewModel.CountOFFreeSMSForDoctors,
+                InPersonReservationTariffForAnonymousPersonsSiteShare = editSiteSettingViewModel.InPersonReservationTariffForAnonymousPersonsSiteShare,
+                InPersonReservationTariffForDoctorPopulationCoveredSiteShare = editSiteSettingViewModel.InPersonReservationTariffForDoctorPopulationCoveredSiteShare,
+                OnlineReservationTariffForAnonymousPersonsSiteShare = editSiteSettingViewModel.OnlineReservationTariffForAnonymousPersonsSiteShare,
+                OnlineReservationTariffForDoctorPopulationCoveredSiteShare = editSiteSettingViewModel.OnlineReservationTariffForDoctorPopulationCoveredSiteShare,
+                SiteCashDesk = 0
             };
 
             await _siteSettingRepository.AddSiteSetting(newSetting);
@@ -513,7 +551,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
             insulin.InsulinName = entity.InsulinName;
             insulin.LongEffect = entity.LongEffect;
-            insulin.ShortEffect= entity.ShortEffect;
+            insulin.ShortEffect = entity.ShortEffect;
 
             #endregion
 
@@ -532,7 +570,7 @@ namespace DoctorFAM.Application.Services.Implementation
             #region Get Insulin By Id 
 
             var insulin = await GetInsulinById(insulinId);
-            if(insulin is null) return false;
+            if (insulin is null) return false;
 
             #endregion
 
@@ -545,6 +583,30 @@ namespace DoctorFAM.Application.Services.Implementation
             #endregion
 
             return true;
+        }
+
+        //Check Field InPerson Reservation Tariff For Doctor Population Covered Site Share By Doctor Percentages
+        public async Task<bool> CheckFieldOnlineReservationTariffForInPersonReservationTariffForDoctorPopulationCoveredSiteShare(int price)
+        {
+            return await _siteSettingRepository.CheckFieldOnlineReservationTariffForInPersonReservationTariffForDoctorPopulationCoveredSiteShare(price);
+        }
+
+        //Check Field Online Reservation Tariff For Online Reservation Tariff For Doctor Population Covered Site Share
+        public async Task<bool> CheckFieldOnlineReservationTariffForOnlineReservationTariffForDoctorPopulationCoveredSiteShare(int price)
+        {
+            return await _siteSettingRepository.CheckFieldOnlineReservationTariffForOnlineReservationTariffForDoctorPopulationCoveredSiteShare(price);
+        }
+
+        //Check Field Online Reservation Tariff For InPerson Reservation Tariff For Anonymous Persons Site Share
+        public async Task<bool> CheckFieldOnlineReservationTariffForInPersonReservationTariffForAnonymousPersonsSiteShare(int price)
+        {
+            return await _siteSettingRepository.CheckFieldOnlineReservationTariffForInPersonReservationTariffForAnonymousPersonsSiteShare(price);
+        }
+
+        //Check Field Online Reservation Tariff For Online Reservation Tariff For Anonymous Persons Site Share
+        public async Task<bool> CheckFieldOnlineReservationTariffForOnlineReservationTariffForAnonymousPersonsSiteShare(int price)
+        {
+            return await _siteSettingRepository.CheckFieldOnlineReservationTariffForOnlineReservationTariffForAnonymousPersonsSiteShare(price);
         }
 
         #endregion
@@ -587,6 +649,60 @@ namespace DoctorFAM.Application.Services.Implementation
         public async Task<List<TariffForHealthHouseServices>> GetTariffBySelectedTariffs(ulong requestId)
         {
             return await _siteSettingRepository.GetTariffBySelectedTariffs(requestId);
+        }
+
+        //Get InPerson Reservation Tariff For Doctor Population Covered Site Share
+        public async Task<int> GetInPersonReservationTariffForDoctorPopulationCoveredSiteShare()
+        {
+            return await _siteSettingRepository.GetInPersonReservationTariffForDoctorPopulationCoveredSiteShare();
+        }
+
+        //Get Online Reservation Tariff For Doctor Population Covered Site Share
+        public async Task<int> GetOnlineReservationTariffForDoctorPopulationCoveredSiteShare()
+        {
+            return await _siteSettingRepository.GetOnlineReservationTariffForDoctorPopulationCoveredSiteShare();
+        }
+
+        //Get In Person Reservation Tariff For Anonymous Persons Site Share
+        public async Task<int> GetInPersonReservationTariffForAnonymousPersonsSiteShare()
+        {
+            return await _siteSettingRepository.GetInPersonReservationTariffForAnonymousPersonsSiteShare();
+        }
+
+        //Get Online Reservation Tariff For Anonymous Persons Site Share
+        public async Task<int> GetOnlineReservationTariffForAnonymousPersonsSiteShare()
+        {
+            return await _siteSettingRepository.GetOnlineReservationTariffForAnonymousPersonsSiteShare();
+        }
+
+        //Add Site Cash Desk
+        public async Task AddSiteCashDesk(int price)
+        {
+            await _siteSettingRepository.AddSiteCashDesk(price);
+        }
+
+        //Check Doctor Inserted Tarrif By Site In Field In Person Reservation Tariff For Doctor Population Covered 
+        public async Task<bool> CheckDoctorInsertedTarrifBySiteInFieldInPersonReservationTariffForDoctorPopulationCovered(int price)
+        {
+            return await _siteSettingRepository.CheckDoctorInsertedTarrifBySiteInFieldInPersonReservationTariffForDoctorPopulationCovered(price);
+        }
+
+        //Check Doctor Inserted Tarrif By Site In Field Online Reservation Tariff For Doctor Population Covered  
+        public async Task<bool> CheckDoctorInsertedTarrifBySiteInFieldOnlineReservationTariffForDoctorPopulationCovered(int price)
+        {
+            return await _siteSettingRepository.CheckDoctorInsertedTarrifBySiteInFieldOnlineReservationTariffForDoctorPopulationCovered(price);
+        }
+
+        //Check Doctor Inserted Tarrif By Site In Field In Person Reservation Tariff For Anonymous Persons 
+        public async Task<bool> CheckDoctorInsertedTarrifBySiteInFieldInPersonReservationTariffForAnonymousPersons(int price)
+        {
+            return await _siteSettingRepository.CheckDoctorInsertedTarrifBySiteInFieldInPersonReservationTariffForAnonymousPersons(price);
+        }
+
+        //Check Doctor Inserted Tarrif By Site In Field Online Reservation Tariff For Anonymous Persons 
+        public async Task<bool> CheckDoctorInsertedTarrifBySiteInFieldOnlineReservationTariffForAnonymousPersons(int price)
+        {
+            return await _siteSettingRepository.CheckDoctorInsertedTarrifBySiteInFieldOnlineReservationTariffForAnonymousPersons(price);
         }
 
         #endregion

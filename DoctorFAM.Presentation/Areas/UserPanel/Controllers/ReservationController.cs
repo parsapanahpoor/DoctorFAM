@@ -188,7 +188,6 @@ namespace DoctorFAM.Web.Areas.UserPanel.Controllers
 
         #endregion
 
-
         #endregion
     }
 }
