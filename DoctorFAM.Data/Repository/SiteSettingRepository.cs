@@ -389,10 +389,9 @@ namespace DoctorFAM.Data.Repository
                 cashDesk.SiteCashDesk = cashDesk.SiteCashDesk + price;
 
                 //Update Cash Desk
-                _context.Update(cashDesk);
+                _context.SiteSettings.Update(cashDesk);
                 await _context.SaveChangesAsync();
             }
-
         }
 
         //Check Doctor Inserted Tarrif By Site In Field In Person Reservation Tariff For Doctor Population Covered 
