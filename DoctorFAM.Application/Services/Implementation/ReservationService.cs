@@ -7,6 +7,7 @@ using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.Wallet;
+using DoctorFAM.Domain.Enums.DoctorReservation;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.Reservation;
 using DoctorFAM.Domain.ViewModels.Admin.Wallet;
@@ -1235,6 +1236,63 @@ namespace DoctorFAM.Application.Services.Implementation
                 IsFinally = true,
                 RequestId = requestId
             };
+
+            await _walletRepository.CreateWalletAsync(wallet);
+            return true;
+        }
+
+        //Pay Doctor Reservation Payed Share Percentage
+        public async Task<bool> PayDoctorReservationPayedSharePercentage(ulong doctorUserId , int price , ulong requestId , bool isUserInDoctorPopulationCovered , DoctorReservationType doctorReservationType)
+        {
+            #region Create Wallet
+
+            var wallet = new Wallet
+            {
+                UserId = doctorUserId,
+                TransactionType = TransactionType.Deposit,
+                GatewayType = GatewayType.Zarinpal,
+                PaymentType = PaymentType.ChargeWallet,
+                Description = "واریز مبلغ دریافت نوبت",
+                IsFinally = true,
+                RequestId = requestId
+            };
+
+            #region proccess price 
+
+            int sitePercentage = 0;
+
+            if (isUserInDoctorPopulationCovered == true)
+            {
+                if (doctorReservationType == DoctorReservationType.Reserved)
+                {
+                    sitePercentage = await _siteSettingService.GetInPersonReservationTariffForDoctorPopulationCoveredSiteShare();
+                }
+                if (doctorReservationType == DoctorReservationType.Onile)
+                {
+                    sitePercentage = await _siteSettingService.GetOnlineReservationTariffForDoctorPopulationCoveredSiteShare();
+                }
+            }
+            else
+            {
+                if (doctorReservationType == DoctorReservationType.Reserved)
+                {
+                    sitePercentage = await _siteSettingService.GetInPersonReservationTariffForAnonymousPersonsSiteShare();
+                }
+                if (doctorReservationType == DoctorReservationType.Onile)
+                {
+                    sitePercentage = await _siteSettingService.GetOnlineReservationTariffForAnonymousPersonsSiteShare();
+                }
+            }
+
+            //Add Site Cash Desk
+            await _siteSettingService.AddSiteCashDesk(sitePercentage);
+
+            //Process Doctor Percentage
+            wallet.Price = price - sitePercentage;
+
+            #endregion
+
+            #endregion
 
             await _walletRepository.CreateWalletAsync(wallet);
             return true;

@@ -54,5 +54,8 @@ namespace Academy.Domain.Entities.SiteSetting
 
         [Display(Name = "سهم وب سایت از نوبت دهی آنلاین بیماران ناشناس")]
         public int OnlineReservationTariffForAnonymousPersonsSiteShare { get; set; }
+
+        [Display(Name = "موجودی صندوق سایت")]
+        public int SiteCashDesk { get; set; }
     }
 }
