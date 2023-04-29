@@ -95,7 +95,10 @@ namespace DoctorFAM.Web.Areas.UserPanel.Controllers
 
                 var message = Messages.SendSMSForAcceptHomeVisitRequestFromUser();
 
-                await _smsservice.SendSimpleSMS(request.User.Mobile, message);
+                if (request.Operation != null)
+                {
+                    await _smsservice.SendSimpleSMS(request.Operation.Mobile, message);
+                }
 
                 #endregion
 
@@ -231,7 +234,7 @@ namespace DoctorFAM.Web.Areas.UserPanel.Controllers
 
             #region Validate Request
 
-            var res = await _homeVisitService.RemoveHomeVisitRequestFromUser(request , User.GetUserId());
+            var res = await _homeVisitService.RemoveHomeVisitRequestFromUser(request, User.GetUserId());
             if (res)
             {
                 #region Send SMS

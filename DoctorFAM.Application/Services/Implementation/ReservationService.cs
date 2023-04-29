@@ -733,7 +733,7 @@ namespace DoctorFAM.Application.Services.Implementation
         }
 
         //Check That Is Doctor Reservation Is Doctor Personal Booking 
-        public async Task<bool> CheckThatIsDoctorReservationIsDoctorPersonalBooking(ulong reservationId , ulong userId)
+        public async Task<bool> CheckThatIsDoctorReservationIsDoctorPersonalBooking(ulong reservationId, ulong userId)
         {
             #region Get Organization By User Id 
 
@@ -790,7 +790,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #region Get User By Mobile Number 
 
-            var user = await _userService.GetUserByMobile(model.Mobile);
+            //var user = await _userService.GetUserByMobile(model.Mobile);
 
             #endregion
 
@@ -806,7 +806,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #region Update Doctor Reservation Date Time 
 
-            reservationDateTime.PatientId = ((user != null) ? user.Id : organization.OwnerId);
+            reservationDateTime.PatientId = organization.OwnerId;
             reservationDateTime.DoctorReservationState = Domain.Enums.DoctorReservation.DoctorReservationState.Reserved;
             reservationDateTime.DoctorReservationType = Domain.Enums.DoctorReservation.DoctorReservationType.Reserved;
             reservationDateTime.DoctorBooking = true;
@@ -818,20 +818,18 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #region Doctor Personal Booking 
 
-            if (user == null)
-            {
-                DoctorPersonalBooking booking = new DoctorPersonalBooking()
-                {
-                    DoctorReservationDateTimeId = reservationDateTime.Id,
-                    FirstName = model.FirstName,
-                    LastName = model.LastName,
-                    Mobile = model.Mobile,
-                    NationalId = model.NationalId,
-                };
 
-                //Add Method 
-                await _reservation.AddDoctorPersonalBooking(booking);
-            }
+            DoctorPersonalBooking booking = new DoctorPersonalBooking()
+            {
+                DoctorReservationDateTimeId = reservationDateTime.Id,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                Mobile = model.Mobile,
+                NationalId = model.NationalId,
+            };
+
+            //Add Method 
+            await _reservation.AddDoctorPersonalBooking(booking);
 
             #endregion
 
@@ -1242,7 +1240,7 @@ namespace DoctorFAM.Application.Services.Implementation
         }
 
         //Pay Doctor Reservation Payed Share Percentage
-        public async Task<bool> PayDoctorReservationPayedSharePercentage(ulong doctorUserId , int price , ulong requestId , bool isUserInDoctorPopulationCovered , DoctorReservationType doctorReservationType)
+        public async Task<bool> PayDoctorReservationPayedSharePercentage(ulong doctorUserId, int price, ulong requestId, bool isUserInDoctorPopulationCovered, DoctorReservationType doctorReservationType)
         {
             #region Create Wallet
 
