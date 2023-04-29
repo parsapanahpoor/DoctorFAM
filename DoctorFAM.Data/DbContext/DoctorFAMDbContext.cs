@@ -270,8 +270,15 @@ namespace DoctorFAM.Data.DbContext
 
         #endregion
 
-        #region Online Visit Request Detail
+        #region Online Visit
 
+        public DbSet<OnlineVisitWorkShiftDetail> OnlineVisitWorkShiftDetails { get; set; }
+
+        public DbSet<OnlineVisitDoctorsReservationDate> OnlineVisitDoctorsReservationDates { get; set; }
+
+        public DbSet<OnlineVisitWorkShift> OnlineVisitWorkShift { get; set; }
+
+        //Must Delete
         public DbSet<OnlineVisitRequestDetail> OnlineVisitRequestDetails { get; set; }
 
         #endregion
