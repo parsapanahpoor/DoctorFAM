@@ -268,7 +268,6 @@ namespace DoctorFAM.Application.Services.Implementation
             #region Get Home Visit Request Detail By Request Id
 
             var detail = await _homeVisit.GetHomeVisitRequestDetailByRequestId(requestId);
-            if (detail == null) return null;
 
             #endregion
 
@@ -276,13 +275,16 @@ namespace DoctorFAM.Application.Services.Implementation
 
             var gender = new Gender();
 
-            if (detail.FemalePhysician == true)
+            if (detail != null)
             {
-                gender = Gender.Female;
-            }
-            else
-            {
-                gender = Gender.Male;
+                if (detail.FemalePhysician == true)
+                {
+                    gender = Gender.Female;
+                }
+                else
+                {
+                    gender = Gender.Male;
+                }
             }
 
             var returnValue = await _homeVisit.GetActivatedAndDoctorsInterestHomeVisit(requetsDetail.CountryId, requetsDetail.StateId, requetsDetail.CityId, gender);
