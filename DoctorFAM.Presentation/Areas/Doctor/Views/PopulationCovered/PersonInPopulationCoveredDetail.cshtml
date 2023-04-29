@@ -225,18 +225,26 @@
                                             <div class="form-group col-md-12 col-sm-12 m-3" style=" font-size:16px;">
                                                 <label style="font-size:14px;" class="mt-2">آیا این کاربر خارج از سامانه عضو جمعیت تحت پوشش برنامه پزشک خانواده شماست؟ </label>
                                                 <span style="color:red; font-size:16px; ">پزشک محترم توجه داشته باشید انتخاب این گزینه درنحوه محاسبه حق ویزیت شما موثر است، لطفا با دقت به این سوال پاسخ دهید.</span>
-                                                <select id="OutOfDoctorFAM" name="OutOfDoctorFAM" class="form-control" >
-                                                    @if (Model.UserSelectedFamilyDoctorRequest.IsUserInDoctorPopulationCoveredOutOfDoctorFAM)
+                                                <select id="OutOfDoctorFAM" name="OutOfDoctorFAM" class="form-control">
+
+                                                    @if (Model.UserSelectedFamilyDoctorRequest.FamilyDoctorRequestState == DoctorFAM.Domain.Enums.FamilyDoctor.FamilyDoctorRequestState.WaitingForConfirm )
                                                     {
-                                                        <option value="1" selected="selected" >بله</option>
+                                                        <option value="1" selected="selected">بله</option>
                                                         <option value="0">خیر</option>
                                                     }
-                                                    @if (!Model.UserSelectedFamilyDoctorRequest.IsUserInDoctorPopulationCoveredOutOfDoctorFAM)
-                                                    {
-                                                        <option value="1" selected="selected" >بله</option>
-                                                        <option value="0" >خیر</option>
-                                                        
+                                                    else
+                                                    {    @if (Model.UserSelectedFamilyDoctorRequest.IsUserInDoctorPopulationCoveredOutOfDoctorFAM)
+                                                        {
+                                                            <option value="1" selected="selected">بله</option>
+                                                            <option value="0">خیر</option>
+                                                        }
+                                                        @if (!Model.UserSelectedFamilyDoctorRequest.IsUserInDoctorPopulationCoveredOutOfDoctorFAM)
+                                                        {
+                                                            <option value="0" selected="selected">خیر</option>
+                                                            <option value="1">بله</option>
+                                                        }
                                                     }
+
                                                 </select>
                                             </div>
 
