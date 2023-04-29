@@ -109,7 +109,7 @@ public static class Messages
     public static string SendSMSForLinkOfHomeVisitRequestFromDoctor(string link)
     {
         return
-            $"لطفا از طریق لینک زیر درخواست ویزیت در منزل خود را تایید کنید : {link} . {Environment.NewLine} {PathTools.SiteFarsiName}";
+            $"لطفا از طریق لینک زیر درخواست ویزیت در منزل خود را تایید کنید :{Environment.NewLine} {link} . {Environment.NewLine} {PathTools.SiteFarsiName}";
     }
 
     //Send SMS For Accept Home Visit Request From User   

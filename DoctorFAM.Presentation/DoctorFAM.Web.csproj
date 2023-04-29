@@ -8,6 +8,7 @@
 
 	<ItemGroup>
 	  <Content Remove="Views\OnlineVisit\BankPay.cshtml" />
+	  <Content Remove="wwwroot\admin\js\datatable\datatables-init-AllRecords.js" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -767,6 +768,7 @@
 		<None Include="wwwroot\admin\js\ckEditorReference.js" />
 		<None Include="wwwroot\admin\js\colorpicker\jquery.minicolors.js" />
 		<None Include="wwwroot\admin\js\colorpicker\jquery.minicolors.min.js" />
+		<None Include="wwwroot\admin\js\datatable\datatables-init-AllRecords.js" />
 		<None Include="wwwroot\admin\js\datatable\datatables-init.js" />
 		<None Include="wwwroot\admin\js\datatable\dataTables.bootstrap.js" />
 		<None Include="wwwroot\admin\js\datatable\dataTables.bootstrap.min.js" />
