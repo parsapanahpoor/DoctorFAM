@@ -4,28 +4,8 @@
 
 
 @{
-    ViewData["Title"] = "تیوی فم";
+    ViewData["Title"] = "رادیوفم";
     Layout = "~/Views/Shared/_Layout.cshtml";
-}
-
-@section Scripts
-    {
-
-    <script>
-
-        $(document).on('click', '#videoPreview', function (e) {
-
-            const videoSource = $(this).attr('data-src');
-
-            $('#TVFAM source').attr('src', videoSource);
-            $('#TVFAM')[0].load();
-            $('#TVFAM')[0].play();
-
-        });
-
-
-    </script>
-
 }
 <div class="page-content">
 
@@ -37,7 +17,7 @@
                         <div class="col-md-5">
                             <h5 class="text-capitalize mb-0">  </h5>
                         </div>
-                        <div class="col-md-7 sm-mt-3 d-sm-flex justify-content-md-end align-items-center">
+                        <div class="col-md-12 sm-mt-3 d-sm-flex justify-content-md-end align-items-center">
                             <div class="sort-filter   align-items-center">
                                 <select>
                                     <option> همه موضوعات </option>
@@ -57,13 +37,13 @@
 
                                 </select>
                             </div>
-                            
+                           
                         </div>
                     </div>
-                    @await Component.InvokeAsync("TVFAMLandingPage")
+                    @await Component.InvokeAsync("PodcastLandingPage")
 
                 </div>
-               
+                
             </div>
         </div>
     </section>

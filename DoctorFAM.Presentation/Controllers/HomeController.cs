@@ -126,6 +126,10 @@ namespace DoctorFAM.Web.Controllers
         {
             return View();
         }
+        public IActionResult RadioFamItems()
+        {
+            return View();
+        }
 
         #endregion
 

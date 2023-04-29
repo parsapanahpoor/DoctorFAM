@@ -3,13 +3,13 @@
 @using DoctorFAM.Application.Extensions
 
 @{
-    ViewData["Title"] = "لیست درخواست های ارسال پیامک";
+    ViewData["Title"] = "سابقه پیامکهای ارسالی";
 }
 
 @section Breadcrumb
     {
     <li>
-        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+        <a asp-area="Doctor" asp-controller="Home" asp-action="SendMessage"> پیامک </a>
     </li>
 }
 
