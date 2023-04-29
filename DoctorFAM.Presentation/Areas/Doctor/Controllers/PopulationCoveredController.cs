@@ -119,18 +119,18 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
                 #region Send SMS For Patient
 
-                //if (State == FamilyDoctorRequestState.Accepted)
-                //{
-                //    var message = Messages.SendSMSForAcceptFamilyDoctorRequest();
+                if (State == FamilyDoctorRequestState.Accepted)
+                {
+                    var message = Messages.SendSMSForAcceptFamilyDoctorRequest();
 
-                //    await _smsservice.SendSimpleSMS(patient.Mobile, message);
-                //}
-                //if (State == FamilyDoctorRequestState.Decline)
-                //{
-                //    var message = Messages.SendSMSForDeclineFamilyDoctorRequest();
+                    await _smsservice.SendSimpleSMS(patient.Mobile, message);
+                }
+                if (State == FamilyDoctorRequestState.Decline)
+                {
+                    var message = Messages.SendSMSForDeclineFamilyDoctorRequest();
 
-                //    await _smsservice.SendSimpleSMS(patient.Mobile, message);
-                //}
+                    await _smsservice.SendSimpleSMS(patient.Mobile, message);
+                }
 
                 #endregion
 
