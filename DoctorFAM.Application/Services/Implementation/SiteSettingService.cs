@@ -73,7 +73,8 @@ namespace DoctorFAM.Application.Services.Implementation
                     InPersonReservationTariffForDoctorPopulationCoveredSiteShare = setting.InPersonReservationTariffForDoctorPopulationCoveredSiteShare,
                     OnlineReservationTariffForAnonymousPersonsSiteShare = setting.OnlineReservationTariffForAnonymousPersonsSiteShare,
                     OnlineReservationTariffForDoctorPopulationCoveredSiteShare = setting.OnlineReservationTariffForDoctorPopulationCoveredSiteShare,
-                    CashDesk = setting.SiteCashDesk
+                    CashDesk = setting.SiteCashDesk,
+                    HomeVisitSiteShare = setting.HomeVisitSiteShare
                 };
             }
 
@@ -171,6 +172,12 @@ namespace DoctorFAM.Application.Services.Implementation
                 return EditSiteSettingResult.OnlineReservationAnonymousePersoneLessThanSiteShare;
             }
 
+            //If Home Visit Site Share More Than Home Visit Tarrif
+            if (editSiteSettingViewModel.HomeVisitSiteShare > editSiteSettingViewModel.HomeVisitTariff)
+            {
+                return EditSiteSettingResult.HomeVisitSiteShareMoreThanHomeVisitTarriff;
+            }
+
             #endregion
 
             if (setting == null)
@@ -197,6 +204,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 setting.InPersonReservationTariffForDoctorPopulationCoveredSiteShare = editSiteSettingViewModel.InPersonReservationTariffForDoctorPopulationCoveredSiteShare;
                 setting.OnlineReservationTariffForAnonymousPersonsSiteShare = editSiteSettingViewModel.OnlineReservationTariffForAnonymousPersonsSiteShare;
                 setting.OnlineReservationTariffForDoctorPopulationCoveredSiteShare = editSiteSettingViewModel.OnlineReservationTariffForDoctorPopulationCoveredSiteShare;
+                setting.HomeVisitSiteShare = editSiteSettingViewModel.HomeVisitSiteShare;
             }
 
             await _siteSettingRepository.UpdateSiteSetting(setting);
@@ -284,7 +292,8 @@ namespace DoctorFAM.Application.Services.Implementation
                 InPersonReservationTariffForDoctorPopulationCoveredSiteShare = editSiteSettingViewModel.InPersonReservationTariffForDoctorPopulationCoveredSiteShare,
                 OnlineReservationTariffForAnonymousPersonsSiteShare = editSiteSettingViewModel.OnlineReservationTariffForAnonymousPersonsSiteShare,
                 OnlineReservationTariffForDoctorPopulationCoveredSiteShare = editSiteSettingViewModel.OnlineReservationTariffForDoctorPopulationCoveredSiteShare,
-                SiteCashDesk = 0
+                SiteCashDesk = 0,
+                HomeVisitSiteShare= editSiteSettingViewModel.HomeVisitSiteShare,
             };
 
             await _siteSettingRepository.AddSiteSetting(newSetting);

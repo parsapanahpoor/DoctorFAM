@@ -77,6 +77,10 @@ namespace Academy.Web.Areas.Admin.Controllers
                 case EditSiteSettingResult.OnlineReservationAnonymousePersoneLessThanSiteShare:
                     TempData[ErrorMessage] = "پزشکی در سایت وجود دارد که تعرفه ی نوبت آنلاین افراد ناشناس وی کمتر از مقدار وارد شده ی شما است.";
                     break;
+
+                case EditSiteSettingResult.HomeVisitSiteShareMoreThanHomeVisitTarriff:
+                    TempData[ErrorMessage] = "سهم وب سایت از سرویس وزیت در منزل نباید بیشتر از تعرفه ی ویزیت درمنزل باشد.";
+                    break;
             }
 
             return View(await _siteSettingService.FillEditSiteSettingViewModel());
