@@ -6,6 +6,7 @@ using DoctorFAM.Domain.Entities.PeriodicSelfEvaluatuion;
 using DoctorFAM.Domain.Entities.SiteSetting.Drug;
 using DoctorFAM.Domain.ViewModels.Admin.SiteSetting;
 using DoctorFAM.Domain.ViewModels.Admin.SiteSetting.HealthHouseServiceTariff;
+using DoctorFAM.Domain.ViewModels.Admin.SiteSetting.OnlineVisit;
 using DoctorFAM.Web.Areas.Admin.Controllers;
 using DoctorFAM.Web.HttpManager;
 using Microsoft.AspNetCore.Mvc;
@@ -468,6 +469,57 @@ namespace Academy.Web.Areas.Admin.Controllers
         }
 
         #endregion
+
+        #endregion
+
+        #endregion
+
+        #region Online Visit 
+
+        #region List Of Online Visit Work Shifts
+
+        [HttpGet]
+        public async Task<IActionResult> ListOfOnlineVisitWotkShit()
+        {
+            return View(await _siteSettingService.ListOfOnlineVisitWorkShift());
+        }
+
+        #endregion
+
+        #region Create Online Visit Work Shift 
+
+        [HttpGet]
+        public async Task<IActionResult> CreateOnlineVisitWorkShift()
+        {
+            return View();
+        }
+        [HttpPost,ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateOnlineVisitWorkShift(CreateOnlineVisitWorkShiftAdminSideViewModel model) 
+        {
+            #region Model State Validation 
+
+            if (!ModelState.IsValid)
+            {
+                TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+                return View(model);
+            }
+
+            #endregion
+
+            #region Create Online Visit Work Shift
+
+            var res = await _siteSettingService.CreateOnlineVisitWorkShift(model);
+            if (res)
+            {
+                TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+                return RedirectToAction(nameof(ListOfOnlineVisitWotkShit));
+            }
+
+            #endregion
+
+            TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+            return View(model);
+        }
 
         #endregion
 

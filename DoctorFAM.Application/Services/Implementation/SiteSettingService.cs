@@ -3,8 +3,10 @@ using AngleSharp.Dom;
 using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Data.DbContext;
+using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.Entities.Drugs;
 using DoctorFAM.Domain.Entities.Insurance;
+using DoctorFAM.Domain.Entities.OnlineVisit;
 using DoctorFAM.Domain.Entities.PeriodicSelfEvaluatuion;
 using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Entities.SiteSetting;
@@ -12,6 +14,7 @@ using DoctorFAM.Domain.Entities.SiteSetting.Drug;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.SiteSetting;
 using DoctorFAM.Domain.ViewModels.Admin.SiteSetting.HealthHouseServiceTariff;
+using DoctorFAM.Domain.ViewModels.Admin.SiteSetting.OnlineVisit;
 using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
 using System;
@@ -608,6 +611,81 @@ namespace DoctorFAM.Application.Services.Implementation
         {
             return await _siteSettingRepository.CheckFieldOnlineReservationTariffForOnlineReservationTariffForAnonymousPersonsSiteShare(price);
         }
+
+        #region OnlineVisit
+
+        //List Of Online Visit Work Shift
+        public async Task<List<OnlineVisitWorkShift>> ListOfOnlineVisitWorkShift()
+        {
+            return await _siteSettingRepository.ListOfOnlineVisitWorkShift();
+        }
+
+        //Create Online Visit Work Shift 
+        public async Task<bool> CreateOnlineVisitWorkShift(CreateOnlineVisitWorkShiftAdminSideViewModel model)
+        {
+            #region Add Work Shift 
+
+            OnlineVisitWorkShift workShift = new OnlineVisitWorkShift()
+            {
+                CreateDate = DateTime.Now,
+                EndShiftTime = model.EndShiftTime,
+                PeriodOfShiftTime = model.PeriodOfShiftTime,
+                StartShiftTime = model.StartShiftTime,
+            };
+
+            //Add To The Data Base 
+            await _siteSettingRepository.AddWorkShiftOnlineVisitToTheDataBase(workShift);
+
+            #endregion
+
+            #region Add Work Shift Detail 
+
+            //If Start Time Is Smaller Than End Time 
+            if (model.StartShiftTime >= model.EndShiftTime) return false;
+
+            int hours = model.StartShiftTime;
+            int minute = 0;
+
+            int startTime = model.StartShiftTime;
+            int endTimeComingFromModel = model.EndShiftTime;
+            int periodNumber = model.PeriodOfShiftTime;
+
+            //Diference Between Start Time And End Time 
+            int diference = (endTimeComingFromModel - startTime) * 60;
+
+            // The Number Of Intervals
+            int intervalsCount = diference / periodNumber;
+
+            for (int j = 1; j < intervalsCount; j++)
+            {
+                //Sampling From Shift Date Time 
+                OnlineVisitWorkShiftDetail shiftTime = new OnlineVisitWorkShiftDetail();
+
+                //Sampling From Time DateTime 
+                DateTime time = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, hours, minute, 0);
+                DateTime endTime = time.AddMinutes(periodNumber);
+
+                //Fill Reservation Date Time 
+                shiftTime.StartTime = time.ToString($"{time.Hour.ToString("00")}:{time.Minute.ToString("00")}:00");
+                shiftTime.EndTime = endTime.ToString($"{endTime.Hour.ToString("00")}:{endTime.Minute.ToString("00")}:00");
+                shiftTime.OnlineVisitWorkShiftId = workShift.Id;
+                shiftTime.BusinessKey = j;
+
+                await _siteSettingRepository.AddWorkShiftOnlineVisitDetailToTheDataBase(shiftTime);
+
+                //Update Last Parameters For Proccess Next Reservation Date Time 
+                hours = endTime.Hour;
+                minute = endTime.Minute;
+            }
+
+            await _siteSettingRepository.SaveChanges();
+
+            #endregion
+
+            return true;
+        }
+
+        #endregion
 
         #endregion
 

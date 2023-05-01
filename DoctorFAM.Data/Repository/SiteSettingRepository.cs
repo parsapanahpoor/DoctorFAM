@@ -3,6 +3,7 @@ using DoctorFAM.Data.DbContext;
 using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Drugs;
 using DoctorFAM.Domain.Entities.Insurance;
+using DoctorFAM.Domain.Entities.OnlineVisit;
 using DoctorFAM.Domain.Entities.PeriodicSelfEvaluatuion;
 using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Entities.SiteSetting;
@@ -295,6 +296,35 @@ namespace DoctorFAM.Data.Repository
             return await _context.DoctorsReservationTariffs
                             .AnyAsync(p => !p.IsDelete && p.OnlineReservationTariffForAnonymousPersons < price);
         }
+
+        #region OnlineVisit
+
+        //List Of Online Visit Work Shift
+        public async Task<List<OnlineVisitWorkShift>> ListOfOnlineVisitWorkShift()
+        {
+            return await _context.OnlineVisitWorkShift.AsNoTracking().Where(p => !p.IsDelete).ToListAsync();
+        }
+
+        //Add Work Shift Online Visit To The Data Base 
+        public async Task AddWorkShiftOnlineVisitToTheDataBase(OnlineVisitWorkShift model)
+        {
+            await _context.OnlineVisitWorkShift.AddAsync(model);
+            await _context.SaveChangesAsync();
+        }
+
+        //Add Work Shift Online Visit Detail To The Data Base 
+        public async Task AddWorkShiftOnlineVisitDetailToTheDataBase(OnlineVisitWorkShiftDetail model)
+        {
+            await _context.OnlineVisitWorkShiftDetails.AddAsync(model);
+        }
+
+        //Save Changes
+        public async Task SaveChanges()
+        {
+            await _context.SaveChangesAsync();
+        }
+
+        #endregion
 
         #endregion
 

@@ -1,6 +1,7 @@
 ﻿using Academy.Domain.Entities.SiteSetting;
 using DoctorFAM.Domain.Entities.Drugs;
 using DoctorFAM.Domain.Entities.Insurance;
+using DoctorFAM.Domain.Entities.OnlineVisit;
 using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Entities.SiteSetting;
 using Microsoft.EntityFrameworkCore;
@@ -101,6 +102,22 @@ namespace DoctorFAM.Domain.Interfaces
 
         //Check Field Online Reservation Tariff For Online Reservation Tariff For Anonymous Persons Site Share
         Task<bool> CheckFieldOnlineReservationTariffForOnlineReservationTariffForAnonymousPersonsSiteShare(int price);
+
+        #region OnlineVisit
+
+        //List Of Online Visit Work Shift
+        Task<List<OnlineVisitWorkShift>> ListOfOnlineVisitWorkShift();
+
+        //Add Work Shift Online Visit To The Data Base 
+        Task AddWorkShiftOnlineVisitToTheDataBase(OnlineVisitWorkShift model);
+
+        //Add Work Shift Online Visit Detail To The Data Base 
+        Task AddWorkShiftOnlineVisitDetailToTheDataBase(OnlineVisitWorkShiftDetail model);
+
+        //Save Changes
+        Task SaveChanges();
+
+        #endregion
 
         #endregion
 
