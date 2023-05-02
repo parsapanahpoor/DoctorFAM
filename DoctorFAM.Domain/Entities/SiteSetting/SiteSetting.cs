@@ -57,5 +57,8 @@ namespace Academy.Domain.Entities.SiteSetting
 
         [Display(Name = "موجودی صندوق سایت")]
         public int SiteCashDesk { get; set; }
+
+        [Display(Name = "سهم وب سایت از ویزیت در منزل")]
+        public int HomeVisitSiteShare { get; set; }
     }
 }

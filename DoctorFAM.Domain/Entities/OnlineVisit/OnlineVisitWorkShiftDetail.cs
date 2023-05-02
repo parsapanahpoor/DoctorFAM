@@ -13,9 +13,11 @@ namespace DoctorFAM.Domain.Entities.OnlineVisit
 
         public ulong OnlineVisitWorkShiftId { get; set; }
 
-        public int StartTime { get; set; }
+        public string StartTime { get; set; }
 
-        public int EndTime { get; set; }
+        public string EndTime { get; set; }
+
+        public int BusinessKey { get; set; }
 
         #endregion
 

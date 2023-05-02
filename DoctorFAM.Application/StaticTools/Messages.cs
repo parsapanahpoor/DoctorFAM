@@ -113,10 +113,10 @@ public static class Messages
     }
 
     //Send SMS For Accept Home Visit Request From User   
-    public static string SendSMSForAcceptHomeVisitRequestFromUser()
+    public static string SendSMSForAcceptHomeVisitRequestFromUser(int price)
     {
         return
-            $"باعرض سلام . {Environment.NewLine} درخواست ویزیت درمنزل همراه با اطلاعات شما توسط کاربر تایید گردید . {Environment.NewLine} لطفا در زمان اعلام شده نسبت به اعزام به محل درخواست اقدام فرمایید. {Environment.NewLine} {PathTools.SiteFarsiName}";
+            $"ضمن عرض سلام و خسته نباشید . {Environment.NewLine} اعلام آمادگی شما توسط کاربر تایید شده و مبلغ - ریال به کیف پول شما در سایت واریز شده است. {Environment.NewLine} لطفا در زمان اعلام شده نسبت به اعزام به محل درخواست اقدام فرمایید. {Environment.NewLine} {PathTools.SiteFarsiName}";
     }
 
     //Send SMS For Decline Home Visit Request From User   

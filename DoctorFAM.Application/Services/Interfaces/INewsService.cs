@@ -77,6 +77,8 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         Task<List<News>?> LastestNewForShowOnLandingPage();
 
+        Task<List<News>?> LastestNewForShowOnSite();
+
         #endregion
     }
 }

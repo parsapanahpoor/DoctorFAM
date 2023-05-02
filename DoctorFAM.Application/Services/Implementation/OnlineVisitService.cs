@@ -64,6 +64,8 @@ namespace DoctorFAM.Application.Services.Implementation
 
         #endregion
 
+        #region Old Version
+
         #region Site Side 
 
         //Create Online Visit Request
@@ -470,5 +472,9 @@ namespace DoctorFAM.Application.Services.Implementation
         }
 
         #endregion
+
+        #endregion
+
+       
     }
 }

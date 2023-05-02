@@ -62,6 +62,9 @@ namespace DoctorFAM.Domain.ViewModels.Admin.SiteSetting
 
         [Display(Name = "موجودی حساب سایت")]
         public int? CashDesk { get; set; }
+
+        [Display(Name = "سهم وب سایت از ویزیت در منزل")]
+        public int HomeVisitSiteShare { get; set; }
     }
 
     public enum EditSiteSettingResult
@@ -71,6 +74,7 @@ namespace DoctorFAM.Domain.ViewModels.Admin.SiteSetting
         InpersonReservationPopluationCoveredLessThanSiteShare,
         OnlineReservationPopluationCoveredLessThanSiteShare,
         InpersonReservationAnonymousePersoneLessThanSiteShare,
-        OnlineReservationAnonymousePersoneLessThanSiteShare
+        OnlineReservationAnonymousePersoneLessThanSiteShare,
+        HomeVisitSiteShareMoreThanHomeVisitTarriff
     }
 }

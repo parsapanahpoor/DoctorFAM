@@ -16,6 +16,8 @@ namespace DoctorFAM.Application.Services.Interfaces
 {
     public interface IOnlineVisitService
     {
+        #region Old Version 
+
         #region Site Side 
 
         //Create Online Visit Request
@@ -70,5 +72,9 @@ namespace DoctorFAM.Application.Services.Interfaces
         Task<OnlineVisitRequestDetailAdminSideViewModel?> FillOnlineVisitRequestDetailAdminPanelViewModel(ulong requestId);
 
         #endregion
+
+        #endregion
+
+       
     }
 }

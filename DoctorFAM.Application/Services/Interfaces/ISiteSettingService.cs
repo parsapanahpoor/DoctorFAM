@@ -1,10 +1,12 @@
 ﻿using DoctorFAM.Domain.Entities.Drugs;
 using DoctorFAM.Domain.Entities.Insurance;
+using DoctorFAM.Domain.Entities.OnlineVisit;
 using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Entities.SiteSetting;
 using DoctorFAM.Domain.Entities.SiteSetting.Drug;
 using DoctorFAM.Domain.ViewModels.Admin.SiteSetting;
 using DoctorFAM.Domain.ViewModels.Admin.SiteSetting.HealthHouseServiceTariff;
+using DoctorFAM.Domain.ViewModels.Admin.SiteSetting.OnlineVisit;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -109,9 +111,22 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Check Field Online Reservation Tariff For Online Reservation Tariff For Anonymous Persons Site Share
         Task<bool> CheckFieldOnlineReservationTariffForOnlineReservationTariffForAnonymousPersonsSiteShare(int price);
 
+        #region OnlineVisit
+
+        //List Of Online Visit Work Shift
+        Task<List<OnlineVisitWorkShift>> ListOfOnlineVisitWorkShift();
+
+        //Create Online Visit Work Shift 
+        Task<bool> CreateOnlineVisitWorkShift(CreateOnlineVisitWorkShiftAdminSideViewModel model);
+
+        #endregion
+
         #endregion
 
         #region Site Side
+
+        //Get Site Share Price From Home Visit Tariff With As No Tracking
+        Task<int> GetSiteSharePriceFromHomeVisitTariffWithAsNoTracking();
 
         Task<int> GetDistanceFromCityTarriffCost();
 
