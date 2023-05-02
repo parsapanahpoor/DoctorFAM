@@ -184,6 +184,12 @@ namespace DoctorFAM.Data.Repository
         //List Of Payed Home Visits Requests Doctor Panel Side
         public async Task<ListOfPayedHomeVisitsRequestsDoctorPanelSideViewModel> ListOfPayedHomeVisitsRequestsDoctorPanelSide(ListOfPayedHomeVisitsRequestsDoctorPanelSideViewModel filter)
         {
+            #region Current Date Time
+
+            var dateTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 0, 0);
+
+            #endregion
+
             #region Get Organization 
 
             var organization = await _organizationRepository.GetDoctorOrganizationByUserId(filter.DoctorId);
@@ -221,7 +227,7 @@ namespace DoctorFAM.Data.Repository
                           && s.PaitientRequestDetails.CountryId == workAddress.CountryId
                           && s.PaitientRequestDetails.StateId == workAddress.StateId 
                           && s.PaitientRequestDetails.CityId == workAddress.CityId
-                          && s.PatientRequestDateTimeDetails.SendDate >= DateTime.Now
+                          && DateTime.Compare(s.PatientRequestDateTimeDetails.SendDate  , dateTime) >=0
                           && s.RequestState == RequestState.Paid 
                           && !s.OperationId.HasValue)
              .OrderByDescending(s => s.CreateDate)
