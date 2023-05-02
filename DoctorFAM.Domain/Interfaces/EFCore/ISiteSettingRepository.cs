@@ -1,6 +1,7 @@
 ﻿using Academy.Domain.Entities.SiteSetting;
 using DoctorFAM.Domain.Entities.Drugs;
 using DoctorFAM.Domain.Entities.Insurance;
+using DoctorFAM.Domain.Entities.OnlineVisit;
 using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Entities.SiteSetting;
 using Microsoft.EntityFrameworkCore;
@@ -90,9 +91,40 @@ namespace DoctorFAM.Domain.Interfaces
         //Update Insulin
         Task UpdateInsuline(Insulin entity);
 
+        //Check Field InPerson Reservation Tariff For Doctor Population Covered Site Share By Doctor Percentages
+        Task<bool> CheckFieldOnlineReservationTariffForInPersonReservationTariffForDoctorPopulationCoveredSiteShare(int price);
+
+        //Check Field Online Reservation Tariff For Online Reservation Tariff For Doctor Population Covered Site Share
+        Task<bool> CheckFieldOnlineReservationTariffForOnlineReservationTariffForDoctorPopulationCoveredSiteShare(int price);
+
+        //Check Field Online Reservation Tariff For InPerson Reservation Tariff For Anonymous Persons Site Share
+        Task<bool> CheckFieldOnlineReservationTariffForInPersonReservationTariffForAnonymousPersonsSiteShare(int price);
+
+        //Check Field Online Reservation Tariff For Online Reservation Tariff For Anonymous Persons Site Share
+        Task<bool> CheckFieldOnlineReservationTariffForOnlineReservationTariffForAnonymousPersonsSiteShare(int price);
+
+        #region OnlineVisit
+
+        //List Of Online Visit Work Shift
+        Task<List<OnlineVisitWorkShift>> ListOfOnlineVisitWorkShift();
+
+        //Add Work Shift Online Visit To The Data Base 
+        Task AddWorkShiftOnlineVisitToTheDataBase(OnlineVisitWorkShift model);
+
+        //Add Work Shift Online Visit Detail To The Data Base 
+        Task AddWorkShiftOnlineVisitDetailToTheDataBase(OnlineVisitWorkShiftDetail model);
+
+        //Save Changes
+        Task SaveChanges();
+
+        #endregion
+
         #endregion
 
         #region Site Side
+
+        //Get Site Share Price From Home Visit Tariff With As No Tracking
+        Task<int> GetSiteSharePriceFromHomeVisitTariffWithAsNoTracking();
 
         Task<int> GetDistanceFromCityTarriffCost();
 
@@ -112,6 +144,33 @@ namespace DoctorFAM.Domain.Interfaces
         Task<string?> GetSiteAddressDomain();
 
         Task<int> GetOnlineVisitTariff();
+
+        //Get InPerson Reservation Tariff For Doctor Population Covered Site Share
+        Task<int> GetInPersonReservationTariffForDoctorPopulationCoveredSiteShare();
+
+        //Get Online Reservation Tariff For Doctor Population Covered Site Share
+        Task<int> GetOnlineReservationTariffForDoctorPopulationCoveredSiteShare();
+
+        //Get In Person Reservation Tariff For Anonymous Persons Site Share
+        Task<int> GetInPersonReservationTariffForAnonymousPersonsSiteShare();
+
+        //Get Online Reservation Tariff For Anonymous Persons Site Share
+        Task<int> GetOnlineReservationTariffForAnonymousPersonsSiteShare();
+
+        //Add Site Cash Desk
+        Task AddSiteCashDesk(int price);
+
+        //Check Doctor Inserted Tarrif By Site In Field In Person Reservation Tariff For Doctor Population Covered 
+        Task<bool> CheckDoctorInsertedTarrifBySiteInFieldInPersonReservationTariffForDoctorPopulationCovered(int price);
+
+        //Check Doctor Inserted Tarrif By Site In Field Online Reservation Tariff For Doctor Population Covered  
+        Task<bool> CheckDoctorInsertedTarrifBySiteInFieldOnlineReservationTariffForDoctorPopulationCovered(int price);
+
+        //Check Doctor Inserted Tarrif By Site In Field In Person Reservation Tariff For Anonymous Persons 
+        Task<bool> CheckDoctorInsertedTarrifBySiteInFieldInPersonReservationTariffForAnonymousPersons(int price);
+
+        //Check Doctor Inserted Tarrif By Site In Field Online Reservation Tariff For Anonymous Persons 
+        Task<bool> CheckDoctorInsertedTarrifBySiteInFieldOnlineReservationTariffForAnonymousPersons(int price);
 
         #endregion
     }

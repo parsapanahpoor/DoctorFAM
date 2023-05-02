@@ -3,8 +3,10 @@ using AngleSharp.Dom;
 using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Data.DbContext;
+using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.Entities.Drugs;
 using DoctorFAM.Domain.Entities.Insurance;
+using DoctorFAM.Domain.Entities.OnlineVisit;
 using DoctorFAM.Domain.Entities.PeriodicSelfEvaluatuion;
 using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Entities.SiteSetting;
@@ -12,6 +14,7 @@ using DoctorFAM.Domain.Entities.SiteSetting.Drug;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.SiteSetting;
 using DoctorFAM.Domain.ViewModels.Admin.SiteSetting.HealthHouseServiceTariff;
+using DoctorFAM.Domain.ViewModels.Admin.SiteSetting.OnlineVisit;
 using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
 using System;
@@ -66,6 +69,12 @@ namespace DoctorFAM.Application.Services.Implementation
                     OnlineVisitTariff = setting.OnlineVisitTariff,
                     DistanceFromCityTarriff = setting.DistanceFromCityTarriff,
                     CountOFFreeSMSForDoctors = setting.CountOFFreeSMSForDoctors,
+                    InPersonReservationTariffForAnonymousPersonsSiteShare = setting.InPersonReservationTariffForAnonymousPersonsSiteShare,
+                    InPersonReservationTariffForDoctorPopulationCoveredSiteShare = setting.InPersonReservationTariffForDoctorPopulationCoveredSiteShare,
+                    OnlineReservationTariffForAnonymousPersonsSiteShare = setting.OnlineReservationTariffForAnonymousPersonsSiteShare,
+                    OnlineReservationTariffForDoctorPopulationCoveredSiteShare = setting.OnlineReservationTariffForDoctorPopulationCoveredSiteShare,
+                    CashDesk = setting.SiteCashDesk,
+                    HomeVisitSiteShare = setting.HomeVisitSiteShare
                 };
             }
 
@@ -139,6 +148,36 @@ namespace DoctorFAM.Application.Services.Implementation
                 return EditSiteSettingResult.Fail;
             }
 
+            //Check Field In Persone Reservation Tariff For Population Persons Site Share By Doctor Percentages 
+            if (await _siteSettingRepository.CheckFieldOnlineReservationTariffForInPersonReservationTariffForDoctorPopulationCoveredSiteShare(editSiteSettingViewModel.InPersonReservationTariffForDoctorPopulationCoveredSiteShare))
+            {
+                return EditSiteSettingResult.InpersonReservationPopluationCoveredLessThanSiteShare;
+            }
+
+            //Check Field Online Reservation Tariff For Population Persons Site Share By Doctor Percentages 
+            if (await _siteSettingRepository.CheckFieldOnlineReservationTariffForOnlineReservationTariffForDoctorPopulationCoveredSiteShare(editSiteSettingViewModel.OnlineReservationTariffForDoctorPopulationCoveredSiteShare))
+            {
+                return EditSiteSettingResult.OnlineReservationPopluationCoveredLessThanSiteShare;
+            }
+
+            //Check Field Inpersone Reservation Tariff For Anonymous Persons Site Share By Doctor Percentages 
+            if (await _siteSettingRepository.CheckFieldOnlineReservationTariffForInPersonReservationTariffForAnonymousPersonsSiteShare(editSiteSettingViewModel.InPersonReservationTariffForAnonymousPersonsSiteShare))
+            {
+                return EditSiteSettingResult.InpersonReservationAnonymousePersoneLessThanSiteShare;
+            }
+
+            //Check Field Online Reservation Tariff For Anonymous Persons Site Share By Doctor Percentages 
+            if (await _siteSettingRepository.CheckFieldOnlineReservationTariffForOnlineReservationTariffForAnonymousPersonsSiteShare(editSiteSettingViewModel.OnlineReservationTariffForAnonymousPersonsSiteShare))
+            {
+                return EditSiteSettingResult.OnlineReservationAnonymousePersoneLessThanSiteShare;
+            }
+
+            //If Home Visit Site Share More Than Home Visit Tarrif
+            if (editSiteSettingViewModel.HomeVisitSiteShare > editSiteSettingViewModel.HomeVisitTariff)
+            {
+                return EditSiteSettingResult.HomeVisitSiteShareMoreThanHomeVisitTarriff;
+            }
+
             #endregion
 
             if (setting == null)
@@ -161,6 +200,11 @@ namespace DoctorFAM.Application.Services.Implementation
                 setting.OnlineVisitTariff = editSiteSettingViewModel.HomeVisitTariff.Value;
                 setting.DistanceFromCityTarriff = editSiteSettingViewModel.DistanceFromCityTarriff;
                 setting.CountOFFreeSMSForDoctors = editSiteSettingViewModel.CountOFFreeSMSForDoctors;
+                setting.InPersonReservationTariffForAnonymousPersonsSiteShare = editSiteSettingViewModel.InPersonReservationTariffForAnonymousPersonsSiteShare;
+                setting.InPersonReservationTariffForDoctorPopulationCoveredSiteShare = editSiteSettingViewModel.InPersonReservationTariffForDoctorPopulationCoveredSiteShare;
+                setting.OnlineReservationTariffForAnonymousPersonsSiteShare = editSiteSettingViewModel.OnlineReservationTariffForAnonymousPersonsSiteShare;
+                setting.OnlineReservationTariffForDoctorPopulationCoveredSiteShare = editSiteSettingViewModel.OnlineReservationTariffForDoctorPopulationCoveredSiteShare;
+                setting.HomeVisitSiteShare = editSiteSettingViewModel.HomeVisitSiteShare;
             }
 
             await _siteSettingRepository.UpdateSiteSetting(setting);
@@ -243,7 +287,13 @@ namespace DoctorFAM.Application.Services.Implementation
                 SiteDomain = editSiteSettingViewModel.SiteDomain,
                 OnlineVisitTariff = editSiteSettingViewModel.OnlineVisitTariff.Value,
                 DistanceFromCityTarriff = editSiteSettingViewModel.DistanceFromCityTarriff,
-                CountOFFreeSMSForDoctors = editSiteSettingViewModel.CountOFFreeSMSForDoctors
+                CountOFFreeSMSForDoctors = editSiteSettingViewModel.CountOFFreeSMSForDoctors,
+                InPersonReservationTariffForAnonymousPersonsSiteShare = editSiteSettingViewModel.InPersonReservationTariffForAnonymousPersonsSiteShare,
+                InPersonReservationTariffForDoctorPopulationCoveredSiteShare = editSiteSettingViewModel.InPersonReservationTariffForDoctorPopulationCoveredSiteShare,
+                OnlineReservationTariffForAnonymousPersonsSiteShare = editSiteSettingViewModel.OnlineReservationTariffForAnonymousPersonsSiteShare,
+                OnlineReservationTariffForDoctorPopulationCoveredSiteShare = editSiteSettingViewModel.OnlineReservationTariffForDoctorPopulationCoveredSiteShare,
+                SiteCashDesk = 0,
+                HomeVisitSiteShare= editSiteSettingViewModel.HomeVisitSiteShare,
             };
 
             await _siteSettingRepository.AddSiteSetting(newSetting);
@@ -513,7 +563,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
             insulin.InsulinName = entity.InsulinName;
             insulin.LongEffect = entity.LongEffect;
-            insulin.ShortEffect= entity.ShortEffect;
+            insulin.ShortEffect = entity.ShortEffect;
 
             #endregion
 
@@ -532,7 +582,7 @@ namespace DoctorFAM.Application.Services.Implementation
             #region Get Insulin By Id 
 
             var insulin = await GetInsulinById(insulinId);
-            if(insulin is null) return false;
+            if (insulin is null) return false;
 
             #endregion
 
@@ -547,9 +597,114 @@ namespace DoctorFAM.Application.Services.Implementation
             return true;
         }
 
+        //Check Field InPerson Reservation Tariff For Doctor Population Covered Site Share By Doctor Percentages
+        public async Task<bool> CheckFieldOnlineReservationTariffForInPersonReservationTariffForDoctorPopulationCoveredSiteShare(int price)
+        {
+            return await _siteSettingRepository.CheckFieldOnlineReservationTariffForInPersonReservationTariffForDoctorPopulationCoveredSiteShare(price);
+        }
+
+        //Check Field Online Reservation Tariff For Online Reservation Tariff For Doctor Population Covered Site Share
+        public async Task<bool> CheckFieldOnlineReservationTariffForOnlineReservationTariffForDoctorPopulationCoveredSiteShare(int price)
+        {
+            return await _siteSettingRepository.CheckFieldOnlineReservationTariffForOnlineReservationTariffForDoctorPopulationCoveredSiteShare(price);
+        }
+
+        //Check Field Online Reservation Tariff For InPerson Reservation Tariff For Anonymous Persons Site Share
+        public async Task<bool> CheckFieldOnlineReservationTariffForInPersonReservationTariffForAnonymousPersonsSiteShare(int price)
+        {
+            return await _siteSettingRepository.CheckFieldOnlineReservationTariffForInPersonReservationTariffForAnonymousPersonsSiteShare(price);
+        }
+
+        //Check Field Online Reservation Tariff For Online Reservation Tariff For Anonymous Persons Site Share
+        public async Task<bool> CheckFieldOnlineReservationTariffForOnlineReservationTariffForAnonymousPersonsSiteShare(int price)
+        {
+            return await _siteSettingRepository.CheckFieldOnlineReservationTariffForOnlineReservationTariffForAnonymousPersonsSiteShare(price);
+        }
+
+        #region OnlineVisit
+
+        //List Of Online Visit Work Shift
+        public async Task<List<OnlineVisitWorkShift>> ListOfOnlineVisitWorkShift()
+        {
+            return await _siteSettingRepository.ListOfOnlineVisitWorkShift();
+        }
+
+        //Create Online Visit Work Shift 
+        public async Task<bool> CreateOnlineVisitWorkShift(CreateOnlineVisitWorkShiftAdminSideViewModel model)
+        {
+            #region Add Work Shift 
+
+            OnlineVisitWorkShift workShift = new OnlineVisitWorkShift()
+            {
+                CreateDate = DateTime.Now,
+                EndShiftTime = model.EndShiftTime,
+                PeriodOfShiftTime = model.PeriodOfShiftTime,
+                StartShiftTime = model.StartShiftTime,
+            };
+
+            //Add To The Data Base 
+            await _siteSettingRepository.AddWorkShiftOnlineVisitToTheDataBase(workShift);
+
+            #endregion
+
+            #region Add Work Shift Detail 
+
+            //If Start Time Is Smaller Than End Time 
+            if (model.StartShiftTime >= model.EndShiftTime) return false;
+
+            int hours = model.StartShiftTime;
+            int minute = 0;
+
+            int startTime = model.StartShiftTime;
+            int endTimeComingFromModel = model.EndShiftTime;
+            int periodNumber = model.PeriodOfShiftTime;
+
+            //Diference Between Start Time And End Time 
+            int diference = (endTimeComingFromModel - startTime) * 60;
+
+            // The Number Of Intervals
+            int intervalsCount = diference / periodNumber;
+
+            for (int j = 1; j < intervalsCount; j++)
+            {
+                //Sampling From Shift Date Time 
+                OnlineVisitWorkShiftDetail shiftTime = new OnlineVisitWorkShiftDetail();
+
+                //Sampling From Time DateTime 
+                DateTime time = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, hours, minute, 0);
+                DateTime endTime = time.AddMinutes(periodNumber);
+
+                //Fill Reservation Date Time 
+                shiftTime.StartTime = time.ToString($"{time.Hour.ToString("00")}:{time.Minute.ToString("00")}:00");
+                shiftTime.EndTime = endTime.ToString($"{endTime.Hour.ToString("00")}:{endTime.Minute.ToString("00")}:00");
+                shiftTime.OnlineVisitWorkShiftId = workShift.Id;
+                shiftTime.BusinessKey = j;
+
+                await _siteSettingRepository.AddWorkShiftOnlineVisitDetailToTheDataBase(shiftTime);
+
+                //Update Last Parameters For Proccess Next Reservation Date Time 
+                hours = endTime.Hour;
+                minute = endTime.Minute;
+            }
+
+            await _siteSettingRepository.SaveChanges();
+
+            #endregion
+
+            return true;
+        }
+
+        #endregion
+
         #endregion
 
         #region Site Side
+
+        //Get Site Share Price From Home Visit Tariff With As No Tracking
+        public async Task<int> GetSiteSharePriceFromHomeVisitTariffWithAsNoTracking()
+        {
+            return await _siteSettingRepository.GetSiteSharePriceFromHomeVisitTariffWithAsNoTracking();
+        }
 
         public async Task<bool> IsExistSiteSetting()
         {
@@ -587,6 +742,60 @@ namespace DoctorFAM.Application.Services.Implementation
         public async Task<List<TariffForHealthHouseServices>> GetTariffBySelectedTariffs(ulong requestId)
         {
             return await _siteSettingRepository.GetTariffBySelectedTariffs(requestId);
+        }
+
+        //Get InPerson Reservation Tariff For Doctor Population Covered Site Share
+        public async Task<int> GetInPersonReservationTariffForDoctorPopulationCoveredSiteShare()
+        {
+            return await _siteSettingRepository.GetInPersonReservationTariffForDoctorPopulationCoveredSiteShare();
+        }
+
+        //Get Online Reservation Tariff For Doctor Population Covered Site Share
+        public async Task<int> GetOnlineReservationTariffForDoctorPopulationCoveredSiteShare()
+        {
+            return await _siteSettingRepository.GetOnlineReservationTariffForDoctorPopulationCoveredSiteShare();
+        }
+
+        //Get In Person Reservation Tariff For Anonymous Persons Site Share
+        public async Task<int> GetInPersonReservationTariffForAnonymousPersonsSiteShare()
+        {
+            return await _siteSettingRepository.GetInPersonReservationTariffForAnonymousPersonsSiteShare();
+        }
+
+        //Get Online Reservation Tariff For Anonymous Persons Site Share
+        public async Task<int> GetOnlineReservationTariffForAnonymousPersonsSiteShare()
+        {
+            return await _siteSettingRepository.GetOnlineReservationTariffForAnonymousPersonsSiteShare();
+        }
+
+        //Add Site Cash Desk
+        public async Task AddSiteCashDesk(int price)
+        {
+            await _siteSettingRepository.AddSiteCashDesk(price);
+        }
+
+        //Check Doctor Inserted Tarrif By Site In Field In Person Reservation Tariff For Doctor Population Covered 
+        public async Task<bool> CheckDoctorInsertedTarrifBySiteInFieldInPersonReservationTariffForDoctorPopulationCovered(int price)
+        {
+            return await _siteSettingRepository.CheckDoctorInsertedTarrifBySiteInFieldInPersonReservationTariffForDoctorPopulationCovered(price);
+        }
+
+        //Check Doctor Inserted Tarrif By Site In Field Online Reservation Tariff For Doctor Population Covered  
+        public async Task<bool> CheckDoctorInsertedTarrifBySiteInFieldOnlineReservationTariffForDoctorPopulationCovered(int price)
+        {
+            return await _siteSettingRepository.CheckDoctorInsertedTarrifBySiteInFieldOnlineReservationTariffForDoctorPopulationCovered(price);
+        }
+
+        //Check Doctor Inserted Tarrif By Site In Field In Person Reservation Tariff For Anonymous Persons 
+        public async Task<bool> CheckDoctorInsertedTarrifBySiteInFieldInPersonReservationTariffForAnonymousPersons(int price)
+        {
+            return await _siteSettingRepository.CheckDoctorInsertedTarrifBySiteInFieldInPersonReservationTariffForAnonymousPersons(price);
+        }
+
+        //Check Doctor Inserted Tarrif By Site In Field Online Reservation Tariff For Anonymous Persons 
+        public async Task<bool> CheckDoctorInsertedTarrifBySiteInFieldOnlineReservationTariffForAnonymousPersons(int price)
+        {
+            return await _siteSettingRepository.CheckDoctorInsertedTarrifBySiteInFieldOnlineReservationTariffForAnonymousPersons(price);
         }
 
         #endregion

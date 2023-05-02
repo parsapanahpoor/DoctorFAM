@@ -6,6 +6,7 @@ using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Entities.Wallet;
+using DoctorFAM.Domain.Enums.DoctorReservation;
 using DoctorFAM.Domain.Enums.Gender;
 using DoctorFAM.Domain.Enums.Request;
 using DoctorFAM.Domain.Enums.RequestType;
@@ -16,6 +17,7 @@ using DoctorFAM.Domain.ViewModels.DoctorPanel.HomeVisit;
 using DoctorFAM.Domain.ViewModels.Site.HomeVisitRequest;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
 using DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor;
+using DoctorFAM.Domain.ViewModels.UserPanel.HealthHouse.HomeVisit;
 
 namespace DoctorFAM.Application.Services.Implementation
 {
@@ -268,7 +270,6 @@ namespace DoctorFAM.Application.Services.Implementation
             #region Get Home Visit Request Detail By Request Id
 
             var detail = await _homeVisit.GetHomeVisitRequestDetailByRequestId(requestId);
-            if (detail == null) return null;
 
             #endregion
 
@@ -276,13 +277,16 @@ namespace DoctorFAM.Application.Services.Implementation
 
             var gender = new Gender();
 
-            if (detail.FemalePhysician == true)
+            if (detail != null)
             {
-                gender = Gender.Female;
-            }
-            else
-            {
-                gender = Gender.Male;
+                if (detail.FemalePhysician == true)
+                {
+                    gender = Gender.Female;
+                }
+                else
+                {
+                    gender = Gender.Male;
+                }
             }
 
             var returnValue = await _homeVisit.GetActivatedAndDoctorsInterestHomeVisit(requetsDetail.CountryId, requetsDetail.StateId, requetsDetail.CityId, gender);
@@ -290,6 +294,60 @@ namespace DoctorFAM.Application.Services.Implementation
             #endregion
 
             return returnValue;
+        }
+
+        //Pay Doctor Percentage Share From home Visit Tarrif After Accept From User
+        public async Task<PayDoctorPercentageShareFromhomeVisitTarrifAfterAcceptFromUserResult> PayDoctorPercentageShareFromhomeVisitTarrifAfterAcceptFromUser(ulong requestId , ulong userId , ulong doctorUserId)
+        {
+            #region Find Wallet That User Paied For Home Visit Request Tarrif 
+
+            var price = await _walletRepository.GetHomeVisitTariffWalletByRequestIdAndUserIDAsNoTraking(requestId, userId);
+
+            #endregion
+
+            #region Get Site Share 
+
+            var siteShare = await _siteSettingService.GetSiteSharePriceFromHomeVisitTariffWithAsNoTracking();
+
+            if (siteShare > price)
+            {
+                return new PayDoctorPercentageShareFromhomeVisitTarrifAfterAcceptFromUserResult(false , 0);
+            }
+
+            #endregion
+
+            #region Add To Doctor Wallet
+
+            #region Create Wallet
+
+            var wallet = new Wallet
+            {
+                UserId = doctorUserId,
+                TransactionType = TransactionType.Deposit,
+                GatewayType = GatewayType.Zarinpal,
+                PaymentType = PaymentType.ChargeWallet,
+                Description = "واریز مبلغ سهم پزشک از سرویس ویزیت در منزل",
+                IsFinally = true,
+                RequestId = requestId
+            };
+
+            #region proccess price 
+
+            //Add Site Cash Desk
+            await _siteSettingService.AddSiteCashDesk(siteShare);
+
+            //Process Doctor Percentage
+            wallet.Price = price - siteShare;
+
+            #endregion
+
+            #endregion
+
+            await _walletRepository.CreateWalletAsync(wallet);
+
+            #endregion
+
+            return new PayDoctorPercentageShareFromhomeVisitTarrifAfterAcceptFromUserResult(true, wallet.Price);
         }
 
         #endregion

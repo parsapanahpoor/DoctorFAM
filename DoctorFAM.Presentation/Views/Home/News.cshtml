@@ -1,60 +1,12 @@
-﻿@model List<DoctorFAM.Domain.Entities.News.News>
-@using DoctorFAM.Application.StaticTools
-@using DoctorFAM.Application.Extensions
-@using DoctorFAM.Application.Convertors
-
-
-
-
-@{
-    ViewData["Title"] = "اخبار";
+﻿@{
+    ViewData["Title"] = "اخبار سلامت";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 
-<section class="section section-featurebox">
-    <div class="container">
-        <div class="section-header text-center">
-            <h2>
-                اخبار
-            </h2>
+   
 
-        </div>
-        @if (Model != null && Model.Any())
-        {
+        @await Component.InvokeAsync("LastestNewsOnSite")
 
-            
-            <div class="row">
+   
 
-                @foreach (var item in Model)
-                {
-                    <div class="col-lg-4 col-md-12 md-mt-5">
-                        <div class="post">
-                            <div class="post-image">
-                                <a href="@item.URL" target="_blank">
-                                    <img class="img-fluid divch rounded w-100" src="@PathTools.NewsPathThumb@item.Image" style="height:230px !important; border:1px solid #fd5b03;" alt="">
-                                </a>
-                            </div>
-                            <div class="post-desc">
-                                <div class="post-meta">
-                                    <ul class="list-inline">
-                                        <li>
-                                            <a href="@item.URL" target="_blank"> @item.Title </a>
-                                        </li>
-                                        <li>@item.CreateDate.ToStringShamsiDate() - @item.CreateDate.ToLongTimeString() </li>
-                                    </ul>
-                                </div>
-                                <div class="post-title">
-                                    <h5><a href="@item.URL" target="_blank"> @item.ShortDescription </a></h5>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                }
-            </div>
-
-
-        }
-    </div>
-</section>

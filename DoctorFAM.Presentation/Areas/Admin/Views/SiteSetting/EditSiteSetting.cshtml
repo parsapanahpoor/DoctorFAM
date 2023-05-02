@@ -31,16 +31,31 @@
                         <div class="row">
 
                             <div class="form-group col-md-12">
+                                <label asp-for="CashDesk"></label>
+                                <input type="text" class="form-control" readonly placeholder="@Model.CashDesk.Value.ToString("#,000") ریال" />
+                            </div>
+
+                            <div class="form-group col-md-12">
                                 <label asp-for="SiteDomain"></label>
                                 <input type="text" class="form-control" asp-for="SiteDomain" />
                                 <span class="text-danger" asp-validation-for="SiteDomain"></span>
                             </div>
 
-                            <div class="form-group col-md-3">
+                            <hr />
+
+                            <div class="form-group col-md-6">
                                 <label asp-for="HomeVisitTariff"></label>
                                 <input type="text" class="form-control" asp-for="HomeVisitTariff" />
                                 <span class="text-danger" asp-validation-for="HomeVisitTariff"></span>
                             </div>
+
+                            <div class="form-group col-md-6">
+                                <label asp-for="HomeVisitSiteShare"></label>
+                                <input type="text" class="form-control" asp-for="HomeVisitSiteShare" />
+                                <span class="text-danger" asp-validation-for="HomeVisitSiteShare"></span>
+                            </div>
+
+                            <hr />
 
                             <div class="form-group col-md-3">
                                 <label asp-for="OnlineVisitTariff"></label>
@@ -101,6 +116,34 @@
                                 <input type="text" class="form-control" asp-for="CountOFFreeSMSForDoctors" />
                                 <span class="text-danger" asp-validation-for="CountOFFreeSMSForDoctors"></span>
                             </div>
+
+                            <hr>
+
+                            <div class="form-group col-md-6">
+                                <label asp-for="InPersonReservationTariffForDoctorPopulationCoveredSiteShare"></label>
+                                <input type="text" class="form-control" asp-for="InPersonReservationTariffForDoctorPopulationCoveredSiteShare" />
+                                <span class="text-danger" asp-validation-for="InPersonReservationTariffForDoctorPopulationCoveredSiteShare"></span>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label asp-for="OnlineReservationTariffForDoctorPopulationCoveredSiteShare"></label>
+                                <input type="text" class="form-control" asp-for="OnlineReservationTariffForDoctorPopulationCoveredSiteShare" />
+                                <span class="text-danger" asp-validation-for="OnlineReservationTariffForDoctorPopulationCoveredSiteShare"></span>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label asp-for="InPersonReservationTariffForAnonymousPersonsSiteShare"></label>
+                                <input type="text" class="form-control" asp-for="InPersonReservationTariffForAnonymousPersonsSiteShare" />
+                                <span class="text-danger" asp-validation-for="InPersonReservationTariffForAnonymousPersonsSiteShare"></span>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label asp-for="OnlineReservationTariffForAnonymousPersonsSiteShare"></label>
+                                <input type="text" class="form-control" asp-for="OnlineReservationTariffForAnonymousPersonsSiteShare" />
+                                <span class="text-danger" asp-validation-for="OnlineReservationTariffForAnonymousPersonsSiteShare"></span>
+                            </div>
+
+                            <hr>
 
                             <div class="form-group col-md-12">
                                 <label asp-for="CopyRightText"></label>

@@ -635,7 +635,11 @@ namespace DoctorFAM.Application.Services.Implementation
                                 .OrderByDescending(p=> p.CreateDate).Take(3).ToListAsync();
         }
 
-     
+        public async Task<List<News>?> LastestNewForShowOnSite()
+        {
+            return await _context.News.Where(p => !p.IsDelete && p.IsActive)
+                                .OrderByDescending(p => p.CreateDate).ToListAsync();
+        }
         #endregion
     }
 }

@@ -13,6 +13,8 @@ namespace DoctorFAM.Domain.Interfaces
 {
     public interface IOnlineVisitRepository
     {
+        #region Old Version 
+
         #region Site Side
 
         //Add Online Request Detail 
@@ -49,5 +51,9 @@ namespace DoctorFAM.Domain.Interfaces
         Task<FilterOnlineVisitAdminSideViewModel> FilterOnlineVisitRequestsAdminSide(FilterOnlineVisitAdminSideViewModel filter);
 
         #endregion
+
+        #endregion
+
+        
     }
 }

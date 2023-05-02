@@ -6,6 +6,7 @@ using DoctorFAM.Domain.Entities.PeriodicSelfEvaluatuion;
 using DoctorFAM.Domain.Entities.SiteSetting.Drug;
 using DoctorFAM.Domain.ViewModels.Admin.SiteSetting;
 using DoctorFAM.Domain.ViewModels.Admin.SiteSetting.HealthHouseServiceTariff;
+using DoctorFAM.Domain.ViewModels.Admin.SiteSetting.OnlineVisit;
 using DoctorFAM.Web.Areas.Admin.Controllers;
 using DoctorFAM.Web.HttpManager;
 using Microsoft.AspNetCore.Mvc;
@@ -45,7 +46,8 @@ namespace Academy.Web.Areas.Admin.Controllers
             if (!ModelState.IsValid)
             {
                 TempData[ErrorMessage] = "اطلاعات وارد شده معتبر نمی باشد";
-                return View(siteSetting);
+
+                return View(await _siteSettingService.FillEditSiteSettingViewModel());
             }
 
             var result = await _siteSettingService.EditSiteSetting(siteSetting);
@@ -55,12 +57,33 @@ namespace Academy.Web.Areas.Admin.Controllers
                 case EditSiteSettingResult.Success:
                     TempData[SuccessMessage] = "عملیات با موفقیت انجام شد";
                     return RedirectToAction("EditSiteSetting");
+
                 case EditSiteSettingResult.Fail:
                     TempData[ErrorMessage] = "عملیات با شکست مواجه شد";
                     break;
+
+                case EditSiteSettingResult.InpersonReservationPopluationCoveredLessThanSiteShare:
+                    TempData[ErrorMessage] = "پزشکی در سایت وجود دارد که تعرفه ی نوبت حضوری افراد تحت پوشش وی کمتر از مقدار وارد شده ی شما است.";
+                    break;
+
+                case EditSiteSettingResult.OnlineReservationPopluationCoveredLessThanSiteShare:
+                    TempData[ErrorMessage] = "پزشکی در سایت وجود دارد که تعرفه ی نوبت آنلاین افراد تحت پوشش وی کمتر از مقدار وارد شده ی شما است.";
+                    break;
+
+                case EditSiteSettingResult.InpersonReservationAnonymousePersoneLessThanSiteShare:
+                    TempData[ErrorMessage] = "پزشکی در سایت وجود دارد که تعرفه ی نوبت حضوری افراد ناشناس وی کمتر از مقدار وارد شده ی شما است.";
+                    break;
+
+                case EditSiteSettingResult.OnlineReservationAnonymousePersoneLessThanSiteShare:
+                    TempData[ErrorMessage] = "پزشکی در سایت وجود دارد که تعرفه ی نوبت آنلاین افراد ناشناس وی کمتر از مقدار وارد شده ی شما است.";
+                    break;
+
+                case EditSiteSettingResult.HomeVisitSiteShareMoreThanHomeVisitTarriff:
+                    TempData[ErrorMessage] = "سهم وب سایت از سرویس وزیت در منزل نباید بیشتر از تعرفه ی ویزیت درمنزل باشد.";
+                    break;
             }
 
-            return View(siteSetting);
+            return View(await _siteSettingService.FillEditSiteSettingViewModel());
         }
 
         #endregion
@@ -185,14 +208,14 @@ namespace Academy.Web.Areas.Admin.Controllers
             #region Fill Model
 
             var model = await _periodicSelftEvaluationService.GetDiabetRiskFactorQuestionById(id);
-            if(model == null) return NotFound();
+            if (model == null) return NotFound();
 
             #endregion
 
             return View(model);
         }
 
-        [HttpPost , ValidateAntiForgeryToken]
+        [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> EditDiabetRiskFactorQuestion(DiabetRiskFactorQuestions model)
         {
             #region Model State Validation 
@@ -446,10 +469,61 @@ namespace Academy.Web.Areas.Admin.Controllers
                 return ApiResponse.SetResponse(ApiResponseStatus.Success, null, "عملیات باموفقیت انجام شده است.");
             }
 
-            return ApiResponse.SetResponse(ApiResponseStatus.Danger, null,"عملیات باشکست مواجه شده است.");
+            return ApiResponse.SetResponse(ApiResponseStatus.Danger, null, "عملیات باشکست مواجه شده است.");
         }
 
         #endregion
+
+        #endregion
+
+        #endregion
+
+        #region Online Visit 
+
+        #region List Of Online Visit Work Shifts
+
+        [HttpGet]
+        public async Task<IActionResult> ListOfOnlineVisitWotkShit()
+        {
+            return View(await _siteSettingService.ListOfOnlineVisitWorkShift());
+        }
+
+        #endregion
+
+        #region Create Online Visit Work Shift 
+
+        [HttpGet]
+        public async Task<IActionResult> CreateOnlineVisitWorkShift()
+        {
+            return View();
+        }
+        [HttpPost,ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateOnlineVisitWorkShift(CreateOnlineVisitWorkShiftAdminSideViewModel model) 
+        {
+            #region Model State Validation 
+
+            if (!ModelState.IsValid)
+            {
+                TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+                return View(model);
+            }
+
+            #endregion
+
+            #region Create Online Visit Work Shift
+
+            var res = await _siteSettingService.CreateOnlineVisitWorkShift(model);
+            if (res)
+            {
+                TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+                return RedirectToAction(nameof(ListOfOnlineVisitWotkShit));
+            }
+
+            #endregion
+
+            TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+            return View(model);
+        }
 
         #endregion
 

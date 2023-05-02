@@ -16,7 +16,38 @@
     <div class="row text-center align-Item-center">
         <div class="col-lg-12 col-sm-12 col-xs-12">
             <div class="row">
+                <div class="col-lg-2 col-md-2  buttons-preview mt-2"></div>
+                <div class="col-lg-4 col-md-4  buttons-preview mt-2">
+                    <div class="bordered-well-container">
+                        <div class="well bordered-top bordered-bottom  bordered-blue">
+                            <a class=" hover-icon" asp-area="Doctor" asp-controller="SendSMS" asp-action="ChooseUsersForSendSMS">
+                                <div class="featured-icon">
+                                    <i class="glyphicon glyphicon-folder-open fa-2x"></i>
+                                </div>
+                                <p class="text-center justify-content-center">  درخواست ارسال پیامک  </p>
+                            </a>
+                        </div>
+                    </div>
 
+                </div>
+
+                <div class="col-lg-4 col-md-4 buttons-preview mt-2">
+                    <div class="bordered-well-container">
+                        <div class="well bordered-top bordered-bottom  bordered-blue">
+                            <a class=" hover-icon" asp-area="Doctor" asp-controller="SendSMS" asp-action="ListOFCurrentDoctorSMSRequests">
+                                <div class="featured-icon">
+                                    <i class="fa fa-list fa-2x"></i>
+                                </div>
+                                <p class="text-center justify-content-center">  سابقه پیامک های ارسالی  </p>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-lg-2 col-md-2   mt-2"></div>
+            </div>
+            <hr />
+            <div class="row mt-5">
                 <div class="col-lg-4 col-md-4  buttons-preview mt-2">
                     <div class="bordered-well-container">
                         <div class="well bordered-top bordered-bottom  bordered-blue">
@@ -24,7 +55,7 @@
                                 <div class="featured-icon">
                                     <i class="fa fa-upload fa-2x"></i>
                                 </div>
-                                <p class="text-center justify-content-center" > بارگذاری لیست جمعیت  </p>
+                                <p class="text-center justify-content-center"> بارگذاری لیست جمعیت  </p>
                             </a>
                         </div>
                     </div>
@@ -37,7 +68,7 @@
                                 <div class="featured-icon">
                                     <i class="fa fa-send fa fa-upload fa-2x"></i>
                                 </div>
-                                <p class="text-center justify-content-center" > ارسال پیامک  </p>
+                                <p class="text-center justify-content-center"> ارسال پیامک  </p>
                             </a>
                         </div>
                     </div>
@@ -49,18 +80,20 @@
                         <div class="well bordered-top bordered-bottom  bordered-blue">
                             <a class=" hover-icon" asp-area="Doctor" asp-controller="IncomeSystem" asp-action="ListOfVIPYourUsers">
                                 <div class="featured-icon">
-                                   	<i class="fa fa-send-o fa-2x"></i>  
+                                    <i class="fa fa-send-o fa-2x"></i>
                                 </div>
-                                <p class="text-center justify-content-center" > ارسال پیامک ویژه </p>
+                                <p class="text-center justify-content-center"> ارسال پیامک ویژه </p>
                             </a>
                         </div>
                     </div>
 
                 </div>
 
+
+
             </div>
         </div>
-       
+
 
     </div>
 

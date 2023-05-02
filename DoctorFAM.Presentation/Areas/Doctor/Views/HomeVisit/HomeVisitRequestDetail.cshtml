@@ -104,19 +104,22 @@
                                 </div>
                                 <div class="row">
 
-                                    <div class="form-group col-md-4 col-sm-12">
-                                        <p class="flex-style-center">
-                                            <span> @Localizer["Emergency Request"] </span>
-                                            <span class="mr-8px label @((Model.HomeVisitRequestDetail.EmergencyVisit) ? "label-success" : "label-orange")"> @((Model.HomeVisitRequestDetail.EmergencyVisit) ? @Localizer["Yes"] : @Localizer["No"])</span>
-                                        </p>
-                                    </div>
+                                    @if (Model.HomeVisitRequestDetail != null)
+                                    {
+                                        <div class="form-group col-md-4 col-sm-12">
+                                            <p class="flex-style-center">
+                                                <span> @Localizer["Emergency Request"] </span>
+                                                <span class="mr-8px label @((Model.HomeVisitRequestDetail.EmergencyVisit) ? "label-success" : "label-orange")"> @((Model.HomeVisitRequestDetail.EmergencyVisit) ? @Localizer["Yes"] : @Localizer["No"])</span>
+                                            </p>
+                                        </div>
 
-                                    <div class="form-group col-md-4 col-sm-12">
-                                        <p class="flex-style-center">
-                                            <span> @Localizer["Femail Doctor"] </span>
-                                            <span class="mr-8px label @((Model.HomeVisitRequestDetail.FemalePhysician) ? "label-success" : "label-orange")"> @((Model.HomeVisitRequestDetail.FemalePhysician) ? @Localizer["Yes"] : @Localizer["No"])</span>
-                                        </p>
-                                    </div>
+                                        <div class="form-group col-md-4 col-sm-12">
+                                            <p class="flex-style-center">
+                                                <span> @Localizer["Femail Doctor"] </span>
+                                                <span class="mr-8px label @((Model.HomeVisitRequestDetail.FemalePhysician) ? "label-success" : "label-orange")"> @((Model.HomeVisitRequestDetail.FemalePhysician) ? @Localizer["Yes"] : @Localizer["No"])</span>
+                                            </p>
+                                        </div>
+                                    }
 
                                     @if (Model.TariffsSelected != null && Model.TariffsSelected.Any())
                                     {

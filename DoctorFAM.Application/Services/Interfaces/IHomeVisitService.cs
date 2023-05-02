@@ -8,6 +8,7 @@ using DoctorFAM.Domain.ViewModels.DoctorPanel.HomeVisit;
 using DoctorFAM.Domain.ViewModels.Site.HomeVisitRequest;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
 using DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor;
+using DoctorFAM.Domain.ViewModels.UserPanel.HealthHouse.HomeVisit;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -87,6 +88,9 @@ namespace DoctorFAM.Application.Services.Interfaces
         #endregion
 
         #region User Panel 
+
+        //Pay Doctor Percentage Share From home Visit Tarrif After Accept From User
+        Task<PayDoctorPercentageShareFromhomeVisitTarrifAfterAcceptFromUserResult> PayDoctorPercentageShareFromhomeVisitTarrifAfterAcceptFromUser(ulong requestId, ulong userId, ulong doctorUserId);
 
         //Filter User Home Visit Requests
         Task<Domain.ViewModels.UserPanel.HealthHouse.HomeVisit.FilterHomeVisitViewModel> FilterListOfUserHomeVisitRequest(Domain.ViewModels.UserPanel.HealthHouse.HomeVisit.FilterHomeVisitViewModel filter);

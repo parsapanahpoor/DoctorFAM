@@ -91,11 +91,25 @@ namespace DoctorFAM.Web.Areas.UserPanel.Controllers
             var res = await _homeVisitService.AcceptDoctorRequestFromHomeVisitRequest(request);
             if (res)
             {
+                #region Pay Doctor Share 
+
+                var result = await _homeVisitService.PayDoctorPercentageShareFromhomeVisitTarrifAfterAcceptFromUser(requestId , request.UserId , request.OperationId.Value);
+                if (!result.result)
+                {
+                    TempData[ErrorMessage] = "لطفا در رابطه با پرداخت تعرفه ی  ویزیت در منزل باپشتیبانی تماس گیری فرمایید.";
+                    return RedirectToAction("Index", "Home", new { area = "UserPanel" });
+                }
+
+                #endregion
+
                 #region Send SMS
 
-                var message = Messages.SendSMSForAcceptHomeVisitRequestFromUser();
+                var message = Messages.SendSMSForAcceptHomeVisitRequestFromUser(result.doctorSharePrice);
 
-                await _smsservice.SendSimpleSMS(request.User.Mobile, message);
+                if (request.Operation != null)
+                {
+                    await _smsservice.SendSimpleSMS(request.Operation.Mobile, message);
+                }
 
                 #endregion
 
@@ -231,7 +245,7 @@ namespace DoctorFAM.Web.Areas.UserPanel.Controllers
 
             #region Validate Request
 
-            var res = await _homeVisitService.RemoveHomeVisitRequestFromUser(request , User.GetUserId());
+            var res = await _homeVisitService.RemoveHomeVisitRequestFromUser(request, User.GetUserId());
             if (res)
             {
                 #region Send SMS

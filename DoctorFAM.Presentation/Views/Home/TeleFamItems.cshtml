@@ -4,15 +4,35 @@
 
 
 @{
-    ViewData["Title"] = "محصولات سلامت";
+    ViewData["Title"] = "تیوی فم";
     Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Scripts
+    {
+
+    <script>
+
+        $(document).on('click', '#videoPreview', function (e) {
+
+            const videoSource = $(this).attr('data-src');
+
+            $('#TVFAM source').attr('src', videoSource);
+            $('#TVFAM')[0].load();
+            $('#TVFAM')[0].play();
+
+        });
+
+
+    </script>
+
 }
 <div class="page-content">
 
     <section>
         <div class="container">
             <div class="row">
-                <div class="col-lg-9 col-md-12 order-lg-12">
+                <div class="col-lg-12 col-md-12 order-lg-12">
                     <div class="row  align-items-center">
                         <div class="col-md-5">
                             <h5 class="text-capitalize mb-0">  </h5>
@@ -37,83 +57,13 @@
 
                                 </select>
                             </div>
-                            <div class="view-filter xs-mt-3 p-2">
-                                <a class="active" href="product-grid.html"><i class="fas fa-th-large"></i></a>
-                                <a href="product-list.html"><i class="fas fa-th"></i></a>
-                            </div>
+                            
                         </div>
                     </div>
-                @if (Model != null && Model.Any())
-                    {
-                        <section>
-                            <div class="container">
-                                <div class="row   text-center justify-content-center">
-
-
-                                    @foreach (var video in Model)
-                                    {
-                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                            <video class="thumbnail" id="videoPreview" data-src="@PathTools.HealthInformationAttachmentFilesPath@video.File"
-                                           onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;" >
-
-                                                <source src="@PathTools.HealthInformationAttachmentFilesPath@video.File" type="video/mp4">
-                                            </video>
-                                        </div>
-                                    }
-
-                                </div>
-                            </div>
-
-                        </section>
-
-
-     }              
+                    @await Component.InvokeAsync("TVFAMLandingPage")
 
                 </div>
-                <div class="col-lg-3 col-md-12 order-lg-1 sidebar">
-                    <div class="widget">
-                        <h5 class="widget-title mt-0"> دسته بندی موضوعات </h5>
-                        <ul class="widget-categories list-unstyled">
-                            <li>
-                                <a href="#"><i class="fas fa-angle-left ml-1"></i> همه موضوعات </a>
-                            </li>
-                            <li>
-                                <a href="#"><i class="fas fa-angle-left ml-1"></i> پزشک خانواده </a>
-                            </li>
-                            <li>
-                                <a href="#"><i class="fas fa-angle-left ml-1"></i> دیابت </a>
-                            </li>
-                            <li>
-                                <a href="#"><i class="fas fa-angle-left ml-1"></i> فشار خون </a>
-                            </li>
-                            <li>
-                                <a href="#"><i class="fas fa-angle-left ml-1"></i> تغذیه </a>
-                            </li>
-                            <li>
-                                <a href="#"><i class="fas fa-angle-left ml-1"></i> سالمندان </a>
-                            </li>
-                            <li>
-                                <a href="#"><i class="fas fa-angle-left ml-1"></i> سرطان </a>
-                            </li>
-                            <li>
-                                <a href="#"><i class="fas fa-angle-left ml-1"></i> پوست و زیبایی </a>
-                            </li>
-                            <li>
-                                <a href="#"><i class="fas fa-angle-left ml-1"></i> آزمایشها و پاراکلینیک </a>
-                            </li>
-                            <li>
-                                <a href="#"><i class="fas fa-angle-left ml-1"></i> مادر و کودک </a>
-                            </li>
-                            <li>
-                                <a href="#"><i class="fas fa-angle-left ml-1"></i> طب سنتی </a>
-                            </li>
-                            <li>
-                                <a href="#"><i class="fas fa-angle-left ml-1"></i> روان </a>
-                            </li>
-                        </ul>
-                    </div>
-
-                </div>
+               
             </div>
         </div>
     </section>

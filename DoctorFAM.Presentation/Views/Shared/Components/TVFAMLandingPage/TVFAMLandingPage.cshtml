@@ -1,6 +1,6 @@
 ﻿@model List<DoctorFAM.Domain.Entities.HealthInformation.HealthInformation>
 @using DoctorFAM.Application.StaticTools
-
+@using DoctorFAM.Application.Convertors
 
 @if (Model != null && Model.Any())
 {
@@ -33,9 +33,19 @@
 
                             <source src="@PathTools.HealthInformationAttachmentFilesPath@video.File" type="video/mp4">
                         </video>
+                        <h6>
+                            @video.Title
+                        </h6>
+                       
+                        <span style="font-size:11px;">
+                            @video.CreateDate.ToStringShamsiDate()
+                        </span>
                     </div>
                 }
 
+            </div>
+            <div class="col-lg-12 col-md-12  text-center mt-3">
+                <a asp-action="TeleFamItems" asp-controller="Home" asp-area="" class="btn btn-acc   hover-icon  text-center">آرشیو تیوی فم </a>
             </div>
         </div>
     </div>

@@ -1,10 +1,12 @@
 ﻿using DoctorFAM.Domain.Entities.Drugs;
 using DoctorFAM.Domain.Entities.Insurance;
+using DoctorFAM.Domain.Entities.OnlineVisit;
 using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Entities.SiteSetting;
 using DoctorFAM.Domain.Entities.SiteSetting.Drug;
 using DoctorFAM.Domain.ViewModels.Admin.SiteSetting;
 using DoctorFAM.Domain.ViewModels.Admin.SiteSetting.HealthHouseServiceTariff;
+using DoctorFAM.Domain.ViewModels.Admin.SiteSetting.OnlineVisit;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -97,9 +99,34 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Delete Insuline From Admin 
         Task<bool> DeleteInsulinFromAdmin(ulong insulinId);
 
+        //Check Field InPerson Reservation Tariff For Doctor Population Covered Site Share By Doctor Percentages
+        Task<bool> CheckFieldOnlineReservationTariffForInPersonReservationTariffForDoctorPopulationCoveredSiteShare(int price);
+
+        //Check Field Online Reservation Tariff For Online Reservation Tariff For Doctor Population Covered Site Share
+        Task<bool> CheckFieldOnlineReservationTariffForOnlineReservationTariffForDoctorPopulationCoveredSiteShare(int price);
+
+        //Check Field Online Reservation Tariff For InPerson Reservation Tariff For Anonymous Persons Site Share
+        Task<bool> CheckFieldOnlineReservationTariffForInPersonReservationTariffForAnonymousPersonsSiteShare(int price);
+
+        //Check Field Online Reservation Tariff For Online Reservation Tariff For Anonymous Persons Site Share
+        Task<bool> CheckFieldOnlineReservationTariffForOnlineReservationTariffForAnonymousPersonsSiteShare(int price);
+
+        #region OnlineVisit
+
+        //List Of Online Visit Work Shift
+        Task<List<OnlineVisitWorkShift>> ListOfOnlineVisitWorkShift();
+
+        //Create Online Visit Work Shift 
+        Task<bool> CreateOnlineVisitWorkShift(CreateOnlineVisitWorkShiftAdminSideViewModel model);
+
+        #endregion
+
         #endregion
 
         #region Site Side
+
+        //Get Site Share Price From Home Visit Tariff With As No Tracking
+        Task<int> GetSiteSharePriceFromHomeVisitTariffWithAsNoTracking();
 
         Task<int> GetDistanceFromCityTarriffCost();
 
@@ -117,6 +144,33 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Get Request Selected Tariffs By Request Id 
         Task<List<TariffForHealthHouseServices>> GetTariffBySelectedTariffs(ulong requestId);
+
+        //Get InPerson Reservation Tariff For Doctor Population Covered Site Share
+        Task<int> GetInPersonReservationTariffForDoctorPopulationCoveredSiteShare();
+
+        //Get Online Reservation Tariff For Doctor Population Covered Site Share
+        Task<int> GetOnlineReservationTariffForDoctorPopulationCoveredSiteShare();
+
+        //Get In Person Reservation Tariff For Anonymous Persons Site Share
+        Task<int> GetInPersonReservationTariffForAnonymousPersonsSiteShare();
+
+        //Get Online Reservation Tariff For Anonymous Persons Site Share
+        Task<int> GetOnlineReservationTariffForAnonymousPersonsSiteShare();
+
+        //Add Site Cash Desk
+        Task AddSiteCashDesk(int price);
+
+        //Check Doctor Inserted Tarrif By Site In Field In Person Reservation Tariff For Doctor Population Covered 
+        Task<bool> CheckDoctorInsertedTarrifBySiteInFieldInPersonReservationTariffForDoctorPopulationCovered(int price);
+
+        //Check Doctor Inserted Tarrif By Site In Field Online Reservation Tariff For Doctor Population Covered  
+        Task<bool> CheckDoctorInsertedTarrifBySiteInFieldOnlineReservationTariffForDoctorPopulationCovered(int price);
+
+        //Check Doctor Inserted Tarrif By Site In Field In Person Reservation Tariff For Anonymous Persons 
+        Task<bool> CheckDoctorInsertedTarrifBySiteInFieldInPersonReservationTariffForAnonymousPersons(int price);
+
+        //Check Doctor Inserted Tarrif By Site In Field Online Reservation Tariff For Anonymous Persons 
+        Task<bool> CheckDoctorInsertedTarrifBySiteInFieldOnlineReservationTariffForAnonymousPersons(int price);
 
         #endregion
     }

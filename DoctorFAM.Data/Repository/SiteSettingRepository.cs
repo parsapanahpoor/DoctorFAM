@@ -3,6 +3,7 @@ using DoctorFAM.Data.DbContext;
 using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Drugs;
 using DoctorFAM.Domain.Entities.Insurance;
+using DoctorFAM.Domain.Entities.OnlineVisit;
 using DoctorFAM.Domain.Entities.PeriodicSelfEvaluatuion;
 using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Entities.SiteSetting;
@@ -141,8 +142,8 @@ namespace DoctorFAM.Data.Repository
             return siteSetting.HomePharmacyTariff;
         }
 
-        public async Task<int>GetReservationTariff()
-                {
+        public async Task<int> GetReservationTariff()
+        {
             var siteSetting = await GetSiteSetting();
             if (siteSetting == null) return 0;
 
@@ -157,13 +158,13 @@ namespace DoctorFAM.Data.Repository
         //Get Health House Tariff Service By Id 
         public async Task<TariffForHealthHouseServices?> GetHealthHouseTariffServiceById(ulong id)
         {
-            return await _context.TariffForHealthHouseServices.FirstOrDefaultAsync(p=> !p.IsDelete && p.Id == id);
+            return await _context.TariffForHealthHouseServices.FirstOrDefaultAsync(p => !p.IsDelete && p.Id == id);
         }
 
         //Get List Of Tariff For Health House Services
         public async Task<List<TariffForHealthHouseServices>?> GetListOfTariffForHealthHouseServices()
         {
-            return await _context.TariffForHealthHouseServices.Where(p=> !p.IsDelete ).ToListAsync();
+            return await _context.TariffForHealthHouseServices.Where(p => !p.IsDelete).ToListAsync();
         }
 
         //Get List Of Tariff For Home Visit Health House Services
@@ -201,7 +202,7 @@ namespace DoctorFAM.Data.Repository
         //Is Exist Any Tariff By Id 
         public async Task<bool> IsExistAnyTariffById(ulong tariffId)
         {
-            return await _context.TariffForHealthHouseServices.AnyAsync(p=> !p.IsDelete && p.Id == tariffId);
+            return await _context.TariffForHealthHouseServices.AnyAsync(p => !p.IsDelete && p.Id == tariffId);
         }
 
         //List Of Insurance
@@ -268,9 +269,73 @@ namespace DoctorFAM.Data.Repository
             await _context.SaveChangesAsync();
         }
 
+        //Check Field InPerson Reservation Tariff For Doctor Population Covered Site Share By Doctor Percentages
+        public async Task<bool> CheckFieldOnlineReservationTariffForInPersonReservationTariffForDoctorPopulationCoveredSiteShare(int price)
+        {
+            return await _context.DoctorsReservationTariffs
+                            .AnyAsync(p => !p.IsDelete && p.InPersonReservationTariffForDoctorPopulationCovered < price);
+        }
+
+        //Check Field Online Reservation Tariff For Online Reservation Tariff For Doctor Population Covered Site Share
+        public async Task<bool> CheckFieldOnlineReservationTariffForOnlineReservationTariffForDoctorPopulationCoveredSiteShare(int price)
+        {
+            return await _context.DoctorsReservationTariffs
+                            .AnyAsync(p => !p.IsDelete && p.OnlineReservationTariffForDoctorPopulationCovered < price);
+        }
+
+        //Check Field Online Reservation Tariff For InPerson Reservation Tariff For Anonymous Persons Site Share
+        public async Task<bool> CheckFieldOnlineReservationTariffForInPersonReservationTariffForAnonymousPersonsSiteShare(int price)
+        {
+            return await _context.DoctorsReservationTariffs
+                            .AnyAsync(p => !p.IsDelete && p.InPersonReservationTariffForAnonymousPersons < price);
+        }
+
+        //Check Field Online Reservation Tariff For Online Reservation Tariff For Anonymous Persons Site Share
+        public async Task<bool> CheckFieldOnlineReservationTariffForOnlineReservationTariffForAnonymousPersonsSiteShare(int price)
+        {
+            return await _context.DoctorsReservationTariffs
+                            .AnyAsync(p => !p.IsDelete && p.OnlineReservationTariffForAnonymousPersons < price);
+        }
+
+        #region OnlineVisit
+
+        //List Of Online Visit Work Shift
+        public async Task<List<OnlineVisitWorkShift>> ListOfOnlineVisitWorkShift()
+        {
+            return await _context.OnlineVisitWorkShift.AsNoTracking().Where(p => !p.IsDelete).ToListAsync();
+        }
+
+        //Add Work Shift Online Visit To The Data Base 
+        public async Task AddWorkShiftOnlineVisitToTheDataBase(OnlineVisitWorkShift model)
+        {
+            await _context.OnlineVisitWorkShift.AddAsync(model);
+            await _context.SaveChangesAsync();
+        }
+
+        //Add Work Shift Online Visit Detail To The Data Base 
+        public async Task AddWorkShiftOnlineVisitDetailToTheDataBase(OnlineVisitWorkShiftDetail model)
+        {
+            await _context.OnlineVisitWorkShiftDetails.AddAsync(model);
+        }
+
+        //Save Changes
+        public async Task SaveChanges()
+        {
+            await _context.SaveChangesAsync();
+        }
+
+        #endregion
+
         #endregion
 
         #region Site Side 
+
+        //Get Site Share Price From Home Visit Tariff With As No Tracking
+        public async Task<int> GetSiteSharePriceFromHomeVisitTariffWithAsNoTracking()
+        {
+            return await _context.SiteSettings.AsNoTracking().Where(p => !p.IsDelete)
+                                                        .Select(p => p.HomeVisitSiteShare).FirstOrDefaultAsync();
+        }
 
         public async Task<bool> IsExistSiteSetting()
         {
@@ -318,7 +383,80 @@ namespace DoctorFAM.Data.Repository
         {
             return await _context.RequestSelectedHealthHouseTariff.Include(p => p.TariffForHealthHouseService)
                                         .Where(p => !p.IsDelete && p.RequestId == requestId)
-                                            .Select(p=>p.TariffForHealthHouseService).ToListAsync();
+                                            .Select(p => p.TariffForHealthHouseService).ToListAsync();
+        }
+
+        //Get InPerson Reservation Tariff For Doctor Population Covered Site Share
+        public async Task<int> GetInPersonReservationTariffForDoctorPopulationCoveredSiteShare()
+        {
+            return await _context.SiteSettings.Where(p => !p.IsDelete)
+                         .Select(p => p.InPersonReservationTariffForDoctorPopulationCoveredSiteShare).FirstOrDefaultAsync();
+        }
+
+        //Get Online Reservation Tariff For Doctor Population Covered Site Share
+        public async Task<int> GetOnlineReservationTariffForDoctorPopulationCoveredSiteShare()
+        {
+            return await _context.SiteSettings.Where(p => !p.IsDelete)
+                         .Select(p => p.OnlineReservationTariffForDoctorPopulationCoveredSiteShare).FirstOrDefaultAsync();
+        }
+
+        //Get In Person Reservation Tariff For Anonymous Persons Site Share
+        public async Task<int> GetInPersonReservationTariffForAnonymousPersonsSiteShare()
+        {
+            return await _context.SiteSettings.Where(p => !p.IsDelete)
+                         .Select(p => p.InPersonReservationTariffForAnonymousPersonsSiteShare).FirstOrDefaultAsync();
+        }
+
+        //Get Online Reservation Tariff For Anonymous Persons Site Share
+        public async Task<int> GetOnlineReservationTariffForAnonymousPersonsSiteShare()
+        {
+            return await _context.SiteSettings.Where(p => !p.IsDelete)
+                         .Select(p => p.OnlineReservationTariffForAnonymousPersonsSiteShare).FirstOrDefaultAsync();
+        }
+
+        //Add Site Cash Desk
+        public async Task AddSiteCashDesk(int price)
+        {
+            //Get Site Cash Desk
+            var cashDesk = await _context.SiteSettings.Where(p => !p.IsDelete).FirstOrDefaultAsync();
+
+            if (cashDesk is not null)
+            {
+                //Add price 
+                cashDesk.SiteCashDesk = cashDesk.SiteCashDesk + price;
+
+                //Update Cash Desk
+                _context.SiteSettings.Update(cashDesk);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        //Check Doctor Inserted Tarrif By Site In Field In Person Reservation Tariff For Doctor Population Covered 
+        public async Task<bool> CheckDoctorInsertedTarrifBySiteInFieldInPersonReservationTariffForDoctorPopulationCovered(int price)
+        {
+            return await _context.SiteSettings.AnyAsync(p => !p.IsDelete &&
+                                        p.InPersonReservationTariffForDoctorPopulationCoveredSiteShare > price);
+        }
+
+        //Check Doctor Inserted Tarrif By Site In Field Online Reservation Tariff For Doctor Population Covered  
+        public async Task<bool> CheckDoctorInsertedTarrifBySiteInFieldOnlineReservationTariffForDoctorPopulationCovered(int price)
+        {
+            return await _context.SiteSettings.AnyAsync(p => !p.IsDelete &&
+                                        p.OnlineReservationTariffForDoctorPopulationCoveredSiteShare > price);
+        }
+
+        //Check Doctor Inserted Tarrif By Site In Field In Person Reservation Tariff For Anonymous Persons 
+        public async Task<bool> CheckDoctorInsertedTarrifBySiteInFieldInPersonReservationTariffForAnonymousPersons(int price)
+        {
+            return await _context.SiteSettings.AnyAsync(p => !p.IsDelete &&
+                                        p.InPersonReservationTariffForAnonymousPersonsSiteShare > price);
+        }
+
+        //Check Doctor Inserted Tarrif By Site In Field Online Reservation Tariff For Anonymous Persons 
+        public async Task<bool> CheckDoctorInsertedTarrifBySiteInFieldOnlineReservationTariffForAnonymousPersons(int price)
+        {
+            return await _context.SiteSettings.AnyAsync(p => !p.IsDelete &&
+                                        p.OnlineReservationTariffForAnonymousPersonsSiteShare > price);
         }
 
         #endregion
