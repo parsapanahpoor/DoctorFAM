@@ -214,17 +214,22 @@ namespace DoctorFAM.Data.Repository
 
             var query = _context.Requests
              .Include(p=> p.HomeVisitRequestDetail)
+             .Include(p=> p.PatientRequestDateTimeDetails)
              .Include(p => p.Patient)
              .Include(p => p.User)
-             .Where(s => !s.IsDelete && s.RequestType == Domain.Enums.RequestType.RequestType.HomeVisit && s.PaitientRequestDetails.CountryId == workAddress.CountryId
-                    && s.PaitientRequestDetails.StateId == workAddress.StateId && s.PaitientRequestDetails.CityId == workAddress.CityId
-                    && s.RequestState == Domain.Enums.Request.RequestState.Paid && !s.OperationId.HasValue)
+             .Where(s => !s.IsDelete && s.RequestType == Domain.Enums.RequestType.RequestType.HomeVisit
+                          && s.PaitientRequestDetails.CountryId == workAddress.CountryId
+                          && s.PaitientRequestDetails.StateId == workAddress.StateId 
+                          && s.PaitientRequestDetails.CityId == workAddress.CityId
+                          && s.PatientRequestDateTimeDetails.SendDate >= DateTime.Now
+                          && s.RequestState == RequestState.Paid 
+                          && !s.OperationId.HasValue)
              .OrderByDescending(s => s.CreateDate)
              .AsQueryable();
 
-            if (doctorInfo.Gender == Domain.Enums.Gender.Gender.Male)
+            if (doctorInfo.Gender == Gender.Male)
             {
-                query = query.Where(p => p.HomeVisitRequestDetail.FemalePhysician == false);
+                query = query.Where(p => p.HomeVisitRequestDetail == null || (p.HomeVisitRequestDetail != null && p.HomeVisitRequestDetail.FemalePhysician == false));
             }
 
             #region Status

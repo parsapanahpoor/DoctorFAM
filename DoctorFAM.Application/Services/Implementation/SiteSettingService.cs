@@ -700,6 +700,12 @@ namespace DoctorFAM.Application.Services.Implementation
 
         #region Site Side
 
+        //Get Site Share Price From Home Visit Tariff With As No Tracking
+        public async Task<int> GetSiteSharePriceFromHomeVisitTariffWithAsNoTracking()
+        {
+            return await _siteSettingRepository.GetSiteSharePriceFromHomeVisitTariffWithAsNoTracking();
+        }
+
         public async Task<bool> IsExistSiteSetting()
         {
             return await _siteSettingRepository.IsExistSiteSetting();

@@ -58,6 +58,13 @@ namespace DoctorFAM.Domain.Interfaces
 
         #endregion
 
+        #region Health House
+
+        //Get Home Visit Tariff Wallet By Request Id And User ID As No Traking
+        Task<int> GetHomeVisitTariffWalletByRequestIdAndUserIDAsNoTraking(ulong requestId, ulong userId);
+
+        #endregion
+
         #region Save Changes
 
         Task SaveChangesAsync();

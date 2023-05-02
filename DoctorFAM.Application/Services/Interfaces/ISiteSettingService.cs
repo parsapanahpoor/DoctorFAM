@@ -125,6 +125,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         #region Site Side
 
+        //Get Site Share Price From Home Visit Tariff With As No Tracking
+        Task<int> GetSiteSharePriceFromHomeVisitTariffWithAsNoTracking();
+
         Task<int> GetDistanceFromCityTarriffCost();
 
         Task<bool> IsExistSiteSetting();

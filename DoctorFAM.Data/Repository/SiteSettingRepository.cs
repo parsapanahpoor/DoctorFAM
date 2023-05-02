@@ -330,6 +330,13 @@ namespace DoctorFAM.Data.Repository
 
         #region Site Side 
 
+        //Get Site Share Price From Home Visit Tariff With As No Tracking
+        public async Task<int> GetSiteSharePriceFromHomeVisitTariffWithAsNoTracking()
+        {
+            return await _context.SiteSettings.AsNoTracking().Where(p => !p.IsDelete)
+                                                        .Select(p => p.HomeVisitSiteShare).FirstOrDefaultAsync();
+        }
+
         public async Task<bool> IsExistSiteSetting()
         {
             return await _context.SiteSettings.AnyAsync();

@@ -25,6 +25,18 @@ namespace DoctorFAM.Data.Repository
 
         #endregion
 
+        #region Home Visit
+
+        //Get Home Visit Tariff Wallet By Request Id And User ID As No Traking
+        public async Task<int> GetHomeVisitTariffWalletByRequestIdAndUserIDAsNoTraking(ulong requestId , ulong userId)
+        {
+            return await _context.Wallets.AsNoTracking().Where(p=> !p.IsDelete && p.RequestId == requestId 
+                                                                && p.UserId == userId && p.IsFinally && p.PaymentType == PaymentType.HomeVisit)
+                                                                        .Select(p=> p.Price).FirstOrDefaultAsync();                                         
+        }
+
+        #endregion
+
         #region Wallet
 
         //Get Wallet Transaction By Reservation Date Time Id
