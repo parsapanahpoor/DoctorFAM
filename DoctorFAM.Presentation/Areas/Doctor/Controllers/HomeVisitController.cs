@@ -128,7 +128,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
             {
                 #region Send SMS
 
-                var link = $"{PathTools.SiteFarsiName}/UserPanel/HomeVisit/RequestDetail?requestId={requestId}";
+                var link = $"{PathTools.SiteAddress}/UserPanel/HomeVisit/RequestDetail?requestId={requestId}";
 
                 var message = Messages.SendSMSForAcceptHomeVisitRequestFromDoctor();
                 var messagelink = Messages.SendSMSForLinkOfHomeVisitRequestFromDoctor(link);

@@ -434,11 +434,11 @@ namespace DoctorFAM.Application.Services.Implementation
 
             double cost = homeVisitTariff;
 
-            if (requestPatietnAddressDetail.Distance != null && requestPatietnAddressDetail.Distance != 0)
+            if ( requestPatietnAddressDetail.Distance != 0)
             {
                 var DistanceFromCityTarriff = await _siteSettingService.GetDistanceFromCityTarriffCost();
 
-                var distancePerTenKilometer = DistanceFromCityTarriff / 10;
+                var distancePerTenKilometer = requestPatietnAddressDetail.Distance / 10;
 
                 cost = cost + (DistanceFromCityTarriff * distancePerTenKilometer);
             }
@@ -535,15 +535,13 @@ namespace DoctorFAM.Application.Services.Implementation
 
             double cost = homeVisitTariff;
 
-            if (requestPatietnAddressDetail.Distance != null && requestPatietnAddressDetail.Distance != 0)
+            if (requestPatietnAddressDetail.Distance != 0)
             {
                 var DistanceFromCityTarriff = await _siteSettingService.GetDistanceFromCityTarriffCost();
 
-                var distancePerTenKilometer = DistanceFromCityTarriff / 10;
+                var distancePerTenKilometer = requestPatietnAddressDetail.Distance / 10;
 
                 cost = cost + (DistanceFromCityTarriff * distancePerTenKilometer);
-
-                DistanceFromCityTarriff = (DistanceFromCityTarriff * distancePerTenKilometer);
             }
 
             if (homeVisitRequestDetail != null)
