@@ -37,7 +37,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
 
         public OnlineVisitController(IOnlineVisitService onlineVisitService, ILocationService locationService, IHubContext<NotificationHub> notificationHub
-                                                , INotificationService notificationService, ISMSService smsservice, IRequestService requestService , ITicketService ticketService
+                                                , INotificationService notificationService, ISMSService smsservice, IRequestService requestService, ITicketService ticketService
                                                     , IStringLocalizer<LocationController> localizer, IUserService userService)
         {
             _onlineVisitService = onlineVisitService;
@@ -52,6 +52,8 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
         }
 
         #endregion
+
+        #region Old Methods That Must Remove
 
         #region List Of Online Visit Requests
 
@@ -149,14 +151,14 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
             #region Get Request By Id
 
             var request = await _requestService.GetRequestById(requestId);
-            if(request == null) return NotFound();
+            if (request == null) return NotFound();
 
             #endregion
 
             #region Get Ticket By Request Id
 
             var ticket = await _ticketService.GetTicketByOnlineVisitRequestId(requestId);
-            if(ticket == null) return NotFound();
+            if (ticket == null) return NotFound();
             if (ticket.OwnerId != request.OperationId.Value) return NotFound();
             if (ticket.TargetUserId != request.UserId) return NotFound();
 
@@ -183,12 +185,12 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
             });
         }
 
-        [HttpPost , ValidateAntiForgeryToken]
+        [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> OnlineVisitRequestMessageDetail(AnswerTikcetDoctorViewModel answer)
         {
             #region Get Ticket By Id
 
-            var ticket =  await _ticketService.GetTicketById(answer.TicketId);
+            var ticket = await _ticketService.GetTicketById(answer.TicketId);
             if (ticket == null) return NotFound();
 
             #endregion
@@ -196,7 +198,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
             #region Get Request By Id
 
             var request = await _requestService.GetRequestById(ticket.RequestId.Value);
-            if(request == null) return NotFound();
+            if (request == null) return NotFound();
 
             #endregion
 
@@ -258,7 +260,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
         public async Task<IActionResult> DeleteTicketMessage(ulong messageId)
         {
-            var result = await _ticketService.DeleteTicketMessage(messageId , User.GetUserId());
+            var result = await _ticketService.DeleteTicketMessage(messageId, User.GetUserId());
 
             if (result)
             {
@@ -285,6 +287,10 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
         }
 
         #endregion
+
+        #endregion
+
+
 
     }
 }
