@@ -290,6 +290,37 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
         #endregion
 
+        #region List Of Doctor Selected Date Shift
+
+        [HttpGet]
+        public async Task<IActionResult> ListOfDoctorWorkShifts()
+        {
+            return View();
+        }
+
+        #endregion
+
+        #region Create Doctor Selected Online Visit Shift Date 
+
+        [HttpGet]
+        public async Task<IActionResult> CreateDoctorSelectedOnlineVisitShiftDate()
+        {
+            #region View Bags for View 
+
+            ViewData["availableShifts"] = await _onlineVisitService.SelectListForShowListOfAvailableShifts();
+
+            #endregion
+
+            return View();
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateDoctorSelectedOnlineVisitShiftDate(CreateDoctorSelectedOnlineVisitShiftDateViewModel model)
+        {
+            return View();
+        }
+
+        #endregion
 
 
     }

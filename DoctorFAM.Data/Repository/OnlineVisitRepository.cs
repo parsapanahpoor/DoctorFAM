@@ -7,6 +7,7 @@ using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Enums.Request;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.OnlineVisit;
+using DoctorFAM.Domain.ViewModels.Common;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.HomeVisit;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.UserPanel.OnlineVisit;
@@ -330,9 +331,9 @@ namespace DoctorFAM.Data.Repository
              .ThenInclude(p => p.City)
              .Include(p => p.User)
              .Include(p => p.OnlineVisitRequestDetail)
-             .Include(p=> p.Operation)
+             .Include(p => p.Operation)
              .Where(s => !s.IsDelete && s.RequestType == Domain.Enums.RequestType.RequestType.OnlineVisit)
-             .OrderByDescending(s => s.CreateDate )
+             .OrderByDescending(s => s.CreateDate)
              .AsQueryable();
 
             #region Status
@@ -427,6 +428,28 @@ namespace DoctorFAM.Data.Repository
 
         #endregion
 
+        #region Doctor Panel
 
+        //Select List For Show List Of Avalable Shifts 
+        public async Task<List<SelectListViewModel>> SelectListForShowListOfAvailableShifts()
+        {
+            return await _context.OnlineVisitWorkShift.AsNoTracking().Where(p => !p.IsDelete)
+                                        .OrderBy(p=> p.Id)
+                                        .Select(p => new SelectListViewModel()
+                                        {
+                                            Id = p.Id,
+                                            Title = $"از ساعت {p.StartShiftTime} تا ساعت {p.EndShiftTime}"
+                                        }).ToListAsync();
+        }
+
+        //Add OnlineVisitDoctorsReservationDate To The Data Base 
+        public async Task AddOnlineVisitDoctorsReservationDateToTheDataBase(OnlineVisitDoctorsReservationDate model)
+        {
+            await _context.OnlineVisitDoctorsReservationDates.AddAsync(model);
+            await _context.SaveChangesAsync
+        }
+
+
+        #endregion
     }
 }

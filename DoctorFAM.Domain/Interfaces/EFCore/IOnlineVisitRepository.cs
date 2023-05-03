@@ -1,6 +1,7 @@
 ﻿using DoctorFAM.Domain.Entities.Contact;
 using DoctorFAM.Domain.Entities.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.Admin.OnlineVisit;
+using DoctorFAM.Domain.ViewModels.Common;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.UserPanel.OnlineVisit;
 using System;
@@ -54,6 +55,17 @@ namespace DoctorFAM.Domain.Interfaces
 
         #endregion
 
-        
+        #region Doctor Panel
+
+        //Select List For Show List Of Avalable Shifts 
+        Task<List<SelectListViewModel>> SelectListForShowListOfAvailableShifts();
+
+        //Add OnlineVisitDoctorsReservationDate To The Data Base 
+        Task AddOnlineVisitDoctorsReservationDateToTheDataBase(OnlineVisitDoctorsReservationDate model);
+
+        //Add OnlineVisitDoctorSelectedWorkShift Without Save Changes
+        Task AddOnlineVisitDoctorSelectedWorkShiftWithoutSaveChanges(OnlineVisitDoctorSelectedWorkShift model);
+
+        #endregion
     }
 }

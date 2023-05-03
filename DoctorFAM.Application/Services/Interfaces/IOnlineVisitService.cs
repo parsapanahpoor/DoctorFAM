@@ -2,6 +2,7 @@
 using DoctorFAM.Domain.Entities.Contact;
 using DoctorFAM.Domain.Entities.Wallet;
 using DoctorFAM.Domain.ViewModels.Admin.OnlineVisit;
+using DoctorFAM.Domain.ViewModels.Common;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.Site.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
@@ -75,6 +76,11 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         #endregion
 
-       
+        #region Doctor Panel 
+
+        //Select List For Show List Of Avalable Shifts 
+        Task<List<SelectListViewModel>> SelectListForShowListOfAvailableShifts();
+
+        #endregion
     }
 }

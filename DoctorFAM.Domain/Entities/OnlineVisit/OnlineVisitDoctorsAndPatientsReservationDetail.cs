@@ -17,7 +17,7 @@ namespace DoctorFAM.Domain.Entities.OnlineVisit
         //Navigation Property
         public ulong OnlineVisitWorkShiftDetail { get; set; }
 
-        public ulong PatientUserId { get; set; }
+        public ulong? PatientUserId { get; set; }
 
         #endregion
     }
