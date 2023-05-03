@@ -546,13 +546,14 @@ namespace DoctorFAM.Application.Services.Implementation
                 {
                     OnlineVisitDoctorsReservationDateId = doctorReservationDateSelected.Id,
                     PatientUserId = null,
-
                 };
 
                 #endregion
             }
 
             #endregion
+
+            return CreateDoctorSelectedOnlineVisitShiftDateViewModelResult.Success;
         }
 
         #endregion

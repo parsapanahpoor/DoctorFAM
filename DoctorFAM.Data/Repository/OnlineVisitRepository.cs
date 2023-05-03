@@ -446,9 +446,14 @@ namespace DoctorFAM.Data.Repository
         public async Task AddOnlineVisitDoctorsReservationDateToTheDataBase(OnlineVisitDoctorsReservationDate model)
         {
             await _context.OnlineVisitDoctorsReservationDates.AddAsync(model);
-            await _context.SaveChangesAsync
+            await _context.SaveChangesAsync();
         }
 
+        //Add OnlineVisitDoctorSelectedWorkShift Without Save Changes
+        public async Task AddOnlineVisitDoctorSelectedWorkShiftWithoutSaveChanges(OnlineVisitDoctorSelectedWorkShift model)
+        {
+            await _context.OnlineVisitDoctorSelectedWorkShifts.AddAsync(model);
+        }
 
         #endregion
     }
