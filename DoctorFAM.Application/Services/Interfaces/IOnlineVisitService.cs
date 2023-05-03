@@ -81,6 +81,13 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Select List For Show List Of Avalable Shifts 
         Task<List<SelectListViewModel>> SelectListForShowListOfAvailableShifts();
 
+        //Create Doctor Selected Online Visit Shift Date From Doctor Panel
+        Task<CreateDoctorSelectedOnlineVisitShiftDateViewModelResult> CreateDoctorSelectedOnlineVisitShiftDateFromDoctorPanel(CreateDoctorSelectedOnlineVisitShiftDateViewModel model, ulong memberUserId);
+
+
+        //List Of Work Shift Dates From Doctor Panel 
+        Task<List<ListOfWorkShiftDatesFromDoctorPanelViewModel>?> FillListOfWorkShiftDatesFromDoctorPanelViewModel(ulong memberUserId);
+
         #endregion
     }
 }

@@ -4,6 +4,7 @@ using DoctorFAM.Domain.ViewModels.Admin.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.Common;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.UserPanel.OnlineVisit;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -65,6 +66,21 @@ namespace DoctorFAM.Domain.Interfaces
 
         //Add OnlineVisitDoctorSelectedWorkShift Without Save Changes
         Task AddOnlineVisitDoctorSelectedWorkShiftWithoutSaveChanges(OnlineVisitDoctorSelectedWorkShift model);
+
+        //Get List Of Work Shifts Time Detail Id By Work Shift Id
+        Task<List<ulong>> GetListOfWorkShiftsTimeDetailIdByWorkShiftId(ulong workShiftId);
+
+        //Add OnlineVisitDoctorsAndPatientsReservationDetail To The Data Base Without Save Changes
+        Task AddOnlineVisitDoctorsAndPatientsReservationDetailToTheDataBaseWithoutSaveChanges(OnlineVisitDoctorsAndPatientsReservationDetail model);
+
+        //Save Changes
+        Task SaveChanges();
+
+        //Get Validates Work Shift Dates By Doctor UserId For Show In Doctor Panel 
+        Task<List<ListOfWorkShiftDatesFromDoctorPanelViewModel>> GetValidatesWorkShiftDatesByDoctorUserIdForShowInDoctorPanel(ulong doctorUserId);
+
+        //Is Exist Any Work Shift Date For Current Doctor
+        Task<bool> IsExistAnyWorkShiftDateForCurrentDoctor(ulong doctorUserId, int businessKey);
 
         #endregion
     }

@@ -1,10 +1,7 @@
-﻿@model DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment.FilterReservationDateTimeDoctorPAnel
+﻿@model List<DoctorFAM.Domain.ViewModels.DoctorPanel.OnlineVisit.ListOfWorkShiftDatesFromDoctorPanelViewModel>
 @using DoctorFAM.Application.Extensions
 @using DoctorFAM.Application.Convertors
 @using DoctorFAM.Domain.ViewModels.Common
-@inject IViewLocalizer Localizer
-@inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
-
 
 @{
     ViewData["Title"] = $"لیست شیفت های انتخابی شما";
@@ -33,10 +30,10 @@
 @section Breadcrumb
     {
     <li>
-        <a asp-action="TurnRating" asp-controller="Home" asp-area="Doctor"> نوبت دهی </a>
+        <a asp-action="MedicalRecords" asp-controller="Home" asp-area="Doctor"> اقدامات پزشکی  </a>
     </li>
     <li>
-        <a asp-action="AddReservationDateView" asp-controller="Appointment" asp-area="Doctor"> ایجاد تاریخ جدید(صفحه قبل) </a>
+        <a asp-action="ListOfDoctorWorkShifts" asp-controller="OnlineVisti" asp-area="Doctor"> لیست شیفت های ویزیت آنلاین  </a>
     </li>
 }
 
@@ -47,7 +44,7 @@
 
     <div class="col-lg-6 col-sm-12">
 
-        <a class="col-lg-6 col-sm-12 btn btn-sky w-100 margin-bottom-10" asp-action="AddreservationDateTimeWithComputer"  asp-controller="Appointment" asp-area="Doctor"> @Localizer["Add Time With System"] </a>
+        <a class="col-lg-6 col-sm-12 btn btn-sky w-100 margin-bottom-10" asp-action="CreateDoctorSelectedOnlineVisitShiftDate"  asp-controller="OnlineVisit" asp-area="Doctor"> انتخاب شیفت ویزیت آنلاین شما </a>
 
     </div>
 
@@ -60,7 +57,7 @@
 
             <div id="horizontal-form">
 
-                @if (Model.DoctorReservationDateTimes != null && Model.DoctorReservationDateTimes.Any())
+                @if (Model != null && Model.Any())
                 {
                     <div class="widget-body no-padding">
                         <div id="searchable_wrapper" class="dataTables_wrapper form-inline">
@@ -69,13 +66,9 @@
                                 <thead class="bordered-darkorange">
                                     <tr role="row">
 
-                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">نام بیمار</th>
-                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">موبایل</th>
-                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">کد پیگیری</th>
-                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">شروع</th>
-                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">وضعیت</th>
-                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending"> نوع(حضوری-آنلاین)</th>
-                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending"> نحوه اخذ نوبت(سامانه ای- منشی)</th>
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">کد شیفت</th>
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">تاریخ شیفت</th>
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">تعداد نوبت ها</th>
                                         <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending"> امکانات</th>
 
                                     </tr>
@@ -83,123 +76,31 @@
 
                                 <tbody>
 
-                                    @foreach (var reservationdata in Model.DoctorReservationDateTimes)
+                                    @foreach (var reservationdata in Model.OrderBy(p=> p.BusinessKey))
                                     {
-                                        <tr role="row" class="even responsive" remove-ajax-item="@reservationdata.Id">
+                                        <tr role="row" class="even responsive" remove-ajax-item="@reservationdata.OnlineVisitDoctorsReservationDateId">
 
                                             <td class="center tc vm">
-                                                <p>
-                                                    @if (reservationdata.PatientId.HasValue && reservationdata.PatientDetail != null)
-                                                    {
-                                                        <span class=""> @reservationdata.PatientDetail.PatientUsername</span>
-
-                                                    }
-                                                    else
-                                                    {
-                                                        <span class="mr-8px label label-orange">@Localizer["Not Reserved Yet"] </span>
-                                                    }
-
-                                                </p>
+                                            #@reservationdata.BusinessKey
                                             </td>
 
                                             <td class="center tc vm">
-                                                <p>
-                                                    @if (reservationdata.PatientId.HasValue && reservationdata.PatientDetail != null)
-                                                    {
-
-                                                        <span class=""> @reservationdata.PatientDetail.PatientMobile</span>
-                                                    }
-                                                    else
-                                                    {
-                                                        <span class="mr-8px label label-orange">@Localizer["Not Reserved Yet"] </span>
-                                                    }
+                                                <p class="label label-success">
+                                                    
+                                                    @reservationdata.OnlineVisitShiftDate.ToShamsi()
 
                                                 </p>
                                             </td>
 
                                             <td class="center ">
 
-                                                @reservationdata.Id
-
-                                            </td>
-
-                                            <td class="center ">
-
-                                                @string.Concat(reservationdata.StartTime.Reverse().Skip(3).Reverse())
+                                                @reservationdata.CountOfWorkShifts
 
                                             </td>
 
                                             <td class="center tc vm">
-                                                <p>
-                                                    @if (reservationdata.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.NotReserved)
-                                                    {
-                                                        <span class="mr-8px label label-orange">@Localizer["Not Reserved Yet"] </span>
-                                                    }
 
-                                                    @if (reservationdata.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.Reserved)
-                                                    {
-                                                        <span class="mr-8px label label-success">@Localizer["Reserved"] </span>
-                                                    }
-
-                                                    @if (reservationdata.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.WaitingForComplete)
-                                                    {
-                                                        <span class="mr-8px label label-orange">@Localizer["Waiting For Complete"] </span>
-                                                    }
-                                                </p>
-                                            </td>
-
-                                            <td class="center tc vm">
-                                                <p>
-                                                    @if (reservationdata.DoctorReservationType == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationType.Onile)
-                                                    {
-                                                        <span class="mr-8px label label-info">@Localizer["Online"] </span>
-                                                    }
-
-                                                    @if (reservationdata.DoctorReservationType == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationType.Reserved)
-                                                    {
-                                                        <span class="mr-8px label label-info">@Localizer["In Persone"] </span>
-                                                    }
-
-                                                    @if (reservationdata.DoctorReservationType == null)
-                                                    {
-                                                        <span class="mr-8px label label-orange">@Localizer["Not Reserved Yet"] </span>
-                                                    }
-                                                </p>
-                                            </td>
-
-                                            <td class="center tc vm">
-                                                <p>
-                                                    @if (reservationdata.DoctorBooking)
-                                                    {
-                                                        <span class="mr-8px label label-info">@Localizer["Doctor Booking"] </span>
-                                                    }
-
-                                                    @if (!reservationdata.DoctorBooking)
-                                                    {
-                                                        if (reservationdata.PatientId != null)
-                                                        {
-                                                            <span class="mr-8px label label-info">@Localizer["Web Site"] </span>
-                                                        }
-                                                        else
-                                                        {
-                                                            <span class="mr-8px label label-orange">@Localizer["Not Reserved Yet"] </span>
-                                                        }
-                                                    }
-                                                </p>
-                                            </td>
-
-                                            <td class="center tc vm">
-
-                                                @if (reservationdata.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.NotReserved && reservationdata.PatientId == null)
-                                                {
-                                                    <a asp-action="AddPersonalPatientForDoctorBooking" asp-controller="Appointment" asp-area="Doctor" asp-route-ReservationDateTimeId="@reservationdata.Id" class="btn btn-success ">نوبت دهی منشی</a>
-
-                                                    <button onclick="DeleteAjax(@reservationdata.Id, '@Url.Action("DeleteReservationDateTime", "Appointment", new {area = "Doctor", Id = reservationdata.Id})')" class="btn btn-danger btn-circle btn-xs"><i class="glyphicon glyphicon-trash"></i></button>
-                                                }
-                                                @if (reservationdata.DoctorReservationState != DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.NotReserved && reservationdata.PatientId != null)
-                                                {
-                                                    <a asp-action="ShowPatientDetail" asp-controller="Appointment" asp-area="Doctor" asp-route-ReservationDateTimeId="@reservationdata.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
-                                                }
+                                                    <a asp-action="ShowPatientDetail" asp-controller="OnlineVisit" asp-area="Doctor" asp-route-workShiftId="@reservationdata.OnlineVisitDoctorsReservationDateId" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
 
                                             </td>
 

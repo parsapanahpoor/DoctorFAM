@@ -295,7 +295,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
         [HttpGet]
         public async Task<IActionResult> ListOfDoctorWorkShifts()
         {
-            return View();
+            return View(await _onlineVisitService.FillListOfWorkShiftDatesFromDoctorPanelViewModel(User.GetUserId()));
         }
 
         #endregion
@@ -317,7 +317,36 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateDoctorSelectedOnlineVisitShiftDate(CreateDoctorSelectedOnlineVisitShiftDateViewModel model)
         {
-            return View();
+            #region Add Method 
+
+            var res = await _onlineVisitService.CreateDoctorSelectedOnlineVisitShiftDateFromDoctorPanel(model, User.GetUserId());
+
+            switch (res)
+            {
+                case CreateDoctorSelectedOnlineVisitShiftDateViewModelResult.Success:
+                    TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+                    return RedirectToAction(nameof(ListOfDoctorWorkShifts));
+
+                case CreateDoctorSelectedOnlineVisitShiftDateViewModelResult.LaterSelectedDate:
+                    TempData[ErrorMessage] = "تاریخ وارد شده صحیح نمی باشد.";
+                    break;
+
+                case CreateDoctorSelectedOnlineVisitShiftDateViewModelResult.Faild:
+                    TempData[ErrorMessage] = "عملیات باشکست مواجه شده است.";
+                    break;
+
+                case CreateDoctorSelectedOnlineVisitShiftDateViewModelResult.DuplicateRecord:
+                    TempData[ErrorMessage] = "تاریخ انتخاب شده درگذشته برای شما ثبت شده است.";
+                    break;
+
+                default:
+                    break;
+            }
+
+            #endregion
+
+            ViewData["availableShifts"] = await _onlineVisitService.SelectListForShowListOfAvailableShifts();
+            return View(model);
         }
 
         #endregion

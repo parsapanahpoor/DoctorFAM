@@ -25,6 +25,7 @@ public class CreateDoctorSelectedOnlineVisitShiftDateViewModel
 public enum CreateDoctorSelectedOnlineVisitShiftDateViewModelResult
 {
     LaterSelectedDate,
+    DuplicateRecord,
     Success,
     Faild
 }

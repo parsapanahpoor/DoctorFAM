@@ -434,7 +434,7 @@ namespace DoctorFAM.Data.Repository
         public async Task<List<SelectListViewModel>> SelectListForShowListOfAvailableShifts()
         {
             return await _context.OnlineVisitWorkShift.AsNoTracking().Where(p => !p.IsDelete)
-                                        .OrderBy(p=> p.Id)
+                                        .OrderBy(p => p.Id)
                                         .Select(p => new SelectListViewModel()
                                         {
                                             Id = p.Id,
@@ -453,6 +453,54 @@ namespace DoctorFAM.Data.Repository
         public async Task AddOnlineVisitDoctorSelectedWorkShiftWithoutSaveChanges(OnlineVisitDoctorSelectedWorkShift model)
         {
             await _context.OnlineVisitDoctorSelectedWorkShifts.AddAsync(model);
+        }
+
+        //Get List Of Work Shifts Time Detail Id By Work Shift Id
+        public async Task<List<ulong>> GetListOfWorkShiftsTimeDetailIdByWorkShiftId(ulong workShiftId)
+        {
+            return await _context.OnlineVisitWorkShiftDetails.AsNoTracking().Where(p => !p.IsDelete && p.OnlineVisitWorkShiftId == workShiftId)
+                                                                    .Select(p => p.Id).ToListAsync();
+        }
+
+        //Add OnlineVisitDoctorsAndPatientsReservationDetail To The Data Base Without Save Changes
+        public async Task AddOnlineVisitDoctorsAndPatientsReservationDetailToTheDataBaseWithoutSaveChanges(OnlineVisitDoctorsAndPatientsReservationDetail model)
+        {
+            await _context.OnlineVisitDoctorsAndPatientsReservationDetails.AddAsync(model);
+        }
+
+        //Save Changes
+        public async Task SaveChanges()
+        {
+            await _context.SaveChangesAsync();
+        }
+
+        //Get Validates Work Shift Dates By Doctor UserId For Show In Doctor Panel 
+        public async Task<List<ListOfWorkShiftDatesFromDoctorPanelViewModel>> GetValidatesWorkShiftDatesByDoctorUserIdForShowInDoctorPanel(ulong doctorUserId)
+        {
+            #region Current Date Time
+
+            var dateTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 0, 0);
+
+            #endregion
+
+            return await _context.OnlineVisitDoctorsReservationDates.AsNoTracking()
+                                    .Where(p => !p.IsDelete && DateTime.Compare(p.OnlineVisitShiftDate, dateTime) >= 0)
+                                    .Select( p => new ListOfWorkShiftDatesFromDoctorPanelViewModel()
+                                    {
+                                        OnlineVisitShiftDate= p.OnlineVisitShiftDate,
+                                        BusinessKey = p.BusinessKey,
+                                        OnlineVisitDoctorsReservationDateId = p.Id,
+                                        CountOfWorkShifts = _context.OnlineVisitDoctorSelectedWorkShifts.AsNoTracking()
+                                                                    .Where(s=> !s.IsDelete && s.OnlineVisitDoctorsReservationDateId == p.Id)
+                                                                            .Count()
+                                    }).ToListAsync();
+        }
+
+        //Is Exist Any Work Shift Date For Current Doctor
+        public async Task<bool> IsExistAnyWorkShiftDateForCurrentDoctor(ulong doctorUserId , int businessKey)
+        {
+            return await _context.OnlineVisitDoctorsReservationDates.AsNoTracking()
+                                .AnyAsync(p => !p.IsDelete && p.DoctorUserId == doctorUserId && p.BusinessKey == businessKey);
         }
 
         #endregion

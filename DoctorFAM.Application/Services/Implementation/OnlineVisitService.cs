@@ -500,12 +500,22 @@ namespace DoctorFAM.Application.Services.Implementation
                 return CreateDoctorSelectedOnlineVisitShiftDateViewModelResult.LaterSelectedDate;
             }
 
+            if (model.OnlineVisitWorkShiftDetailId is null)
+            {
+                return CreateDoctorSelectedOnlineVisitShiftDateViewModelResult.Faild;
+            }
+
             #endregion
 
             #region Get Owner Organization Member
 
             ulong organizationOwner = await _organizationService.GetOranizationOwnerIdByMemberUserId(memberUserId);
             if (organizationOwner == 0) return CreateDoctorSelectedOnlineVisitShiftDateViewModelResult.Faild;
+
+            if (await _onlineVisitRepository.IsExistAnyWorkShiftDateForCurrentDoctor(organizationOwner , Convert.ToInt32($"{incomingDate.Year}{incomingDate.Month}{incomingDate.Day}")))
+            {
+                return CreateDoctorSelectedOnlineVisitShiftDateViewModelResult.DuplicateRecord;
+            }
 
             #endregion
 
@@ -542,13 +552,24 @@ namespace DoctorFAM.Application.Services.Implementation
 
                 #region Add Online Visit Doctors And Patients Reservation Detail
 
-                OnlineVisitDoctorsAndPatientsReservationDetail reservationDetail = new OnlineVisitDoctorsAndPatientsReservationDetail()
+                foreach (var reservationTimeDetailId in await _onlineVisitRepository.GetListOfWorkShiftsTimeDetailIdByWorkShiftId(item))
                 {
-                    OnlineVisitDoctorsReservationDateId = doctorReservationDateSelected.Id,
-                    PatientUserId = null,
-                };
+                    OnlineVisitDoctorsAndPatientsReservationDetail reservationDetail = new OnlineVisitDoctorsAndPatientsReservationDetail()
+                    {
+                        OnlineVisitDoctorsReservationDateId = doctorReservationDateSelected.Id,
+                        PatientUserId = null,
+                        OnlineVisitWorkShiftDetail = reservationTimeDetailId
+                    };
+
+                    //Add To The Data Base 
+                    await _onlineVisitRepository.AddOnlineVisitDoctorsAndPatientsReservationDetailToTheDataBaseWithoutSaveChanges(reservationDetail);
+
+                }
 
                 #endregion
+
+                //Save Changes 
+                await _onlineVisitRepository.SaveChanges();
             }
 
             #endregion
@@ -556,7 +577,25 @@ namespace DoctorFAM.Application.Services.Implementation
             return CreateDoctorSelectedOnlineVisitShiftDateViewModelResult.Success;
         }
 
-        #endregion
+        //List Of Work Shift Dates From Doctor Panel 
+        public async Task<List<ListOfWorkShiftDatesFromDoctorPanelViewModel>?> FillListOfWorkShiftDatesFromDoctorPanelViewModel(ulong memberUserId)
+        {
+            #region Current Date Time
 
+            var dateTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 0, 0);
+
+            #endregion
+
+            #region Get Owner Organization Member
+
+            ulong organizationOwner = await _organizationService.GetOranizationOwnerIdByMemberUserId(memberUserId);
+            if (organizationOwner == 0) return null;
+
+            #endregion      
+
+            return await _onlineVisitRepository.GetValidatesWorkShiftDatesByDoctorUserIdForShowInDoctorPanel(organizationOwner);
+        }
+
+        #endregion
     }
 }
