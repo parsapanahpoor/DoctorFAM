@@ -2,6 +2,7 @@
 using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,6 +47,28 @@ namespace DoctorFAM.Application.Services.Implementation
             return await _organization.GetOrganizationByUserId(userId);
         }
 
+        //Get Organization Id By Member User Id
+        public async Task<ulong> GetOrganizationIdByMemberUserId(ulong memberUserId)
+        {
+            return await _organization.GetOrganizationIdByMemberUserId( memberUserId);
+        }
+
+        //Get Organization OwnerId By Organization Id
+        public async Task<ulong> GetOrganizationOwnerIdByOrganizationId(ulong organizationId)
+        {
+            return await _organization.GetOrganizationOwnerIdByOrganizationId( organizationId);
+        }
+
+        //Get Oranization Owner Id By Member User Id 
+        public async Task<ulong> GetOranizationOwnerIdByMemberUserId(ulong memberUserId)
+        {
+            //Get Organization Id 
+            ulong organizationId = await GetOrganizationIdByMemberUserId(memberUserId);
+            if (organizationId == 0) return 0;
+
+            return await GetOrganizationOwnerIdByOrganizationId(organizationId);
+        }
+
         public async Task<Organization?> GetDoctorOrganizationByUserId(ulong userId)
         {
             return await _organization.GetDoctorOrganizationByUserId(userId);
@@ -79,7 +102,7 @@ namespace DoctorFAM.Application.Services.Implementation
             await _organization.UpdateOrganization(organization);
         }
 
-        public async Task<bool> DeleteEmployeeFromDoctorOfficeOrganization(ulong employeeId , ulong userId)
+        public async Task<bool> DeleteEmployeeFromDoctorOfficeOrganization(ulong employeeId, ulong userId)
         {
             #region Get Organization
 
@@ -93,7 +116,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #region Delete Employee From Organization 
 
-            var res = await _organization.DeleteEmployeeFromOrganization(employeeId , organization.Id);
+            var res = await _organization.DeleteEmployeeFromOrganization(employeeId, organization.Id);
             if (res == false) return false;
 
             #endregion

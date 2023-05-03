@@ -1,5 +1,6 @@
 ﻿using DoctorFAM.Domain.Entities.Notification;
 using DoctorFAM.Domain.Enums.Notification;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.Notification;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -101,6 +102,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Get List Of Doctors For Send Notification For Home Visit Notification 
         Task<List<string?>> GetListOfDoctorsForArrivalsHomeVisitRequests(ulong requestId);
+
+        //Get Doctor Notification By Doctor User Id
+        Task<List<ListOFDoctorNotificationForShowInDoctorPanelViewModel>?> GetDoctorNotificationByDoctorUserId(ulong doctorUserId);
 
         #endregion
 

@@ -27,6 +27,15 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         Task<Organization?> GetOrganizationByUserId(ulong userId);
 
+        //Get Organization Id By Member User Id
+        Task<ulong> GetOrganizationIdByMemberUserId(ulong memberUserId);
+
+        //Get Organization OwnerId By Organization Id
+        Task<ulong> GetOrganizationOwnerIdByOrganizationId(ulong organizationId);
+
+        //Get Oranization Owner Id By Member User Id 
+        Task<ulong> GetOranizationOwnerIdByMemberUserId(ulong memberUserId);
+
         Task<Organization?> GetPharmacyOrganizationByUserId(ulong userId);
 
         Task<Organization?> GetDoctorOrganizationByUserId(ulong userId);
