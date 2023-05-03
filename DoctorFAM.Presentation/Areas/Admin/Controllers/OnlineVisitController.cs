@@ -18,7 +18,7 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
         private readonly ILocationService _locationService;
         private readonly IRequestService _requestService;
 
-        public OnlineVisitController(IOnlineVisitService onlineVisitService, ITicketService tikcetService , ILocationService locationService, IRequestService requestService)
+        public OnlineVisitController(IOnlineVisitService onlineVisitService, ITicketService tikcetService, ILocationService locationService, IRequestService requestService)
         {
             _onlineVisitService = onlineVisitService;
             _ticketService = tikcetService;
@@ -27,6 +27,8 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
         }
 
         #endregion
+
+        #region Old Methods
 
         #region Filter Online Reservation Requests
 
@@ -103,6 +105,18 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
             {
                 TicketId = ticket.Id
             });
+        }
+
+        #endregion
+
+        #endregion
+
+        #region List Of Work Shifts
+
+        [HttpGet]
+        public async Task<IActionResult> ListOfWorkShiftsDates()
+        {
+            return View();
         }
 
         #endregion
