@@ -18,6 +18,8 @@ namespace DoctorFAM.Domain.ViewModels.DoctorPanel.OnlineVisit
 
         public int CountOfWorkShifts { get; set; }
 
+        public int CountOfAllShiftTime { get; set; }
+
         #endregion
     }
 }

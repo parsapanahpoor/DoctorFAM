@@ -1,10 +1,12 @@
-﻿@model List<DoctorFAM.Domain.ViewModels.DoctorPanel.OnlineVisit.ListOfWorkShiftDatesFromDoctorPanelViewModel>
+﻿@model List<DoctorFAM.Domain.ViewModels.DoctorPanel.OnlineVisit.WorkShiftDateDetailDoctorPanelViewModel>
 @using DoctorFAM.Application.Extensions
 @using DoctorFAM.Application.Convertors
 @using DoctorFAM.Domain.ViewModels.Common
 
 @{
-    ViewData["Title"] = $"لیست شیفت های انتخابی شما";
+    var reservation = ViewData["workShiftDate"] as DateTime?;
+
+    ViewData["Title"] = $"شیفت های کاری تاریخ : {reservation.Value.ToStringShamsiDate()}";
 }
 
 @section Styles
@@ -39,18 +41,6 @@
 
 <div class="row">
 
-    <div class="col-lg-3 col-sm-12">
-    </div>
-
-    <div class="col-lg-6 col-sm-12">
-
-        <a class="col-lg-6 col-sm-12 btn btn-sky w-100 margin-bottom-10" asp-action="CreateDoctorSelectedOnlineVisitShiftDate"  asp-controller="OnlineVisit" asp-area="Doctor"> انتخاب شیفت ویزیت آنلاین شما </a>
-
-    </div>
-
-    <div class="col-lg-3 col-sm-12">
-    </div>
-
     <div class="col-lg-12 col-sm-12">
 
         <div class="row" style="margin:10px 10px 10px 10px;">
@@ -66,10 +56,9 @@
                                 <thead class="bordered-darkorange">
                                     <tr role="row">
 
-                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">کد شیفت</th>
-                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">تاریخ شیفت</th>
-                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">تعداد شیفت ها</th>
-                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">تعداد کل نوبت ها</th>
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">ساعت شروع شیفت</th>
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">ساعت پایان شیفت </th>
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">تعداد نوبت ها</th>
                                         <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending"> امکانات</th>
 
                                     </tr>
@@ -77,37 +66,36 @@
 
                                 <tbody>
 
-                                    @foreach (var reservationdata in Model.OrderBy(p=> p.BusinessKey))
+                                    @foreach (var reservationdata in Model)
                                     {
                                         <tr role="row" class="even responsive" remove-ajax-item="@reservationdata.OnlineVisitDoctorsReservationDateId">
 
                                             <td class="center tc vm">
-                                            #@reservationdata.BusinessKey
+                                                <p class="label label-primary">
+
+                                                    ساعت  @reservationdata.StartTime
+
+                                                </p>
                                             </td>
 
                                             <td class="center tc vm">
-                                                <p class="label label-success">
-                                                    
-                                                    @reservationdata.OnlineVisitShiftDate.ToShamsi()
+                                                <p class="label label-primary">
+
+                                                    ساعت  @reservationdata.EndTime
 
                                                 </p>
                                             </td>
 
                                             <td class="center ">
 
-                                                @reservationdata.CountOfWorkShifts
-
-                                            </td>
-
-                                            <td class="center ">
-
-                                                @reservationdata.CountOfAllShiftTime
+                                                @reservationdata.CountOfFreeTime
 
                                             </td>
 
                                             <td class="center tc vm">
 
-                                                <a asp-action="WorkShiftDateDetail" asp-controller="OnlineVisit" asp-area="Doctor" asp-route-workShiftId="@reservationdata.OnlineVisitDoctorsReservationDateId" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+                                                <a asp-action="OnlineVisitDoctorAndPatientInformations" asp-controller="OnlineVisit" asp-area="Doctor" asp-route-doctorReservationDateId="@reservationdata.OnlineVisitDoctorsReservationDateId"
+                                                                 asp-route-shiftId="@reservationdata.WorkShiftId"  class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
 
                                             </td>
 

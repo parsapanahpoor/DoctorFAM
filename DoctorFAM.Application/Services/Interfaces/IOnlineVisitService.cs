@@ -84,9 +84,17 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Create Doctor Selected Online Visit Shift Date From Doctor Panel
         Task<CreateDoctorSelectedOnlineVisitShiftDateViewModelResult> CreateDoctorSelectedOnlineVisitShiftDateFromDoctorPanel(CreateDoctorSelectedOnlineVisitShiftDateViewModel model, ulong memberUserId);
 
-
         //List Of Work Shift Dates From Doctor Panel 
         Task<List<ListOfWorkShiftDatesFromDoctorPanelViewModel>?> FillListOfWorkShiftDatesFromDoctorPanelViewModel(ulong memberUserId);
+
+        //Fill Work Shift Date Detail Doctor Panel 
+        Task<List<WorkShiftDateDetailDoctorPanelViewModel>> FillWorkShiftDateDetailDoctorPanel(ulong OnlineVisitDoctorsReservationDateId ,ulong memberUserId);
+
+        //Get Work Shift Date By OnlineVisitDoctorsReservationDateId
+        Task<DateTime> GetWorkShiftDateByOnlineVisitDoctorsReservationDateId(ulong OnlineVisitDoctorsReservationDateId);
+
+        //Fill OnlineVisitDoctorAndPatientInformationsDoctorPanelSideViewModel
+        Task<List<OnlineVisitDoctorAndPatientInformationsDoctorPanelSideViewModel>?> FillOnlineVisitDoctorAndPatientInformationsDoctorPanelSideViewModel(ulong doctorReservationDateId, ulong shiftId, ulong memberId);
 
         #endregion
     }

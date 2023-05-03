@@ -82,6 +82,18 @@ namespace DoctorFAM.Domain.Interfaces
         //Is Exist Any Work Shift Date For Current Doctor
         Task<bool> IsExistAnyWorkShiftDateForCurrentDoctor(ulong doctorUserId, int businessKey);
 
+        //Fill Work Shift Date Detail Doctor Panel 
+        Task<List<WorkShiftDateDetailDoctorPanelViewModel>> FillWorkShiftDateDetailDoctorPanel(ulong OnlineVisitDoctorsReservationDateId);
+
+        //Get Work Shift Date By OnlineVisitDoctorsReservationDateId
+        Task<DateTime> GetWorkShiftDateByOnlineVisitDoctorsReservationDateId(ulong OnlineVisitDoctorsReservationDateId);
+
+        //Is Exist Any OnlineVisitDoctorsReservationDate By Doctor UserId
+        Task<bool> IsExistAnyOnlineVisitDoctorsReservationDateByDoctorUserId(ulong OnlineVisitDoctorsReservationDateId, ulong doctorUserId);
+
+        //Fill OnlineVisitDoctorAndPatientInformationsDoctorPanelSideViewModel
+        Task<List<OnlineVisitDoctorAndPatientInformationsDoctorPanelSideViewModel>?> FillOnlineVisitDoctorAndPatientInformationsDoctorPanelSideViewModel(ulong doctorReservationDateId, ulong shiftId);
+
         #endregion
     }
 }

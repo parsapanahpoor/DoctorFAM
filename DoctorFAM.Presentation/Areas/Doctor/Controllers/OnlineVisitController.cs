@@ -7,6 +7,7 @@ using DoctorFAM.Application.Services.Implementation;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Application.StaticTools;
 using DoctorFAM.Data.Migrations;
+using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.ViewModels.Admin.Reservation;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.OnlineVisit;
@@ -351,6 +352,38 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
         #endregion
 
+        #region Work Shift Date Detail
 
+        [HttpGet]
+        public async Task<IActionResult> WorkShiftDateDetail(ulong workShiftId)
+        {
+            ViewData["workShiftDate"] = await _onlineVisitService.GetWorkShiftDateByOnlineVisitDoctorsReservationDateId(workShiftId);
+
+            return View(await _onlineVisitService.FillWorkShiftDateDetailDoctorPanel(workShiftId , User.GetUserId()));
+        }
+
+        #endregion
+
+        #region Online Visit Doctor And Patients Information 
+
+        [HttpGet]
+        public async Task<IActionResult> OnlineVisitDoctorAndPatientInformations(ulong doctorReservationDateId , ulong shiftId)
+        {
+            ViewData["workShiftDate"] = await _onlineVisitService.GetWorkShiftDateByOnlineVisitDoctorsReservationDateId(doctorReservationDateId);
+
+            #region Fill Model 
+
+            var model = await _onlineVisitService.FillOnlineVisitDoctorAndPatientInformationsDoctorPanelSideViewModel(doctorReservationDateId, shiftId, User.GetUserId());
+            if (model is null)
+            {
+                return NotFound();
+            }
+
+            #endregion
+
+            return View(model);
+        }
+
+        #endregion
     }
 }
