@@ -14,7 +14,7 @@ namespace DoctorFAM.Domain.ViewModels.Admin.OnlineVisit
 
         public int CountOfOnlineDoctors { get; set; }
 
-
+        public int BusinessKey { get; set; }
 
         #endregion
     }

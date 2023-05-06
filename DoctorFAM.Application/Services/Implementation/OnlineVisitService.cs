@@ -24,6 +24,7 @@ using DoctorFAM.Domain.ViewModels.Site.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
 using DoctorFAM.Domain.ViewModels.UserPanel.OnlineVisit;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -558,7 +559,8 @@ namespace DoctorFAM.Application.Services.Implementation
                     {
                         OnlineVisitDoctorsReservationDateId = doctorReservationDateSelected.Id,
                         PatientUserId = null,
-                        OnlineVisitWorkShiftDetail = reservationTimeDetailId
+                        OnlineVisitWorkShiftDetail = reservationTimeDetailId,
+                        OnlineVisitWorkShiftId = item
                     };
 
                     //Add To The Data Base 
@@ -643,6 +645,16 @@ namespace DoctorFAM.Application.Services.Implementation
             #endregion
 
             return await _onlineVisitRepository.FillOnlineVisitDoctorAndPatientInformationsDoctorPanelSideViewModel(doctorReservationDateId, shiftId);
+        }
+
+        #endregion
+
+        #region Admin Side 
+
+        //Fill List Of Work Shifts Dates Admin Side View Model
+        public async Task<List<ListOfWorkShiftsDatesAdminSideViewModel>> FillListOfWorkShiftsDatesAdminSideViewModel()
+        {
+            return await _onlineVisitRepository.FillListOfWorkShiftsDatesAdminSideViewModel();
         }
 
         #endregion

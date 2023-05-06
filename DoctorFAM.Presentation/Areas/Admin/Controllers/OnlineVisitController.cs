@@ -116,7 +116,7 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> ListOfWorkShiftsDates()
         {
-            return View();
+            return View(await _onlineVisitService.FillListOfWorkShiftsDatesAdminSideViewModel());
         }
 
         #endregion

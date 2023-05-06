@@ -97,5 +97,12 @@ namespace DoctorFAM.Application.Services.Interfaces
         Task<List<OnlineVisitDoctorAndPatientInformationsDoctorPanelSideViewModel>?> FillOnlineVisitDoctorAndPatientInformationsDoctorPanelSideViewModel(ulong doctorReservationDateId, ulong shiftId, ulong memberId);
 
         #endregion
+
+        #region Admin Side 
+
+        //Fill List Of Work Shifts Dates Admin Side View Model
+        Task<List<ListOfWorkShiftsDatesAdminSideViewModel>> FillListOfWorkShiftsDatesAdminSideViewModel();
+
+        #endregion
     }
 }

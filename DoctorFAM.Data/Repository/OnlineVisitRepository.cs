@@ -485,7 +485,7 @@ namespace DoctorFAM.Data.Repository
             #endregion
 
             return await _context.OnlineVisitDoctorsReservationDates.AsNoTracking()
-                                    .Where(p => !p.IsDelete && DateTime.Compare(p.OnlineVisitShiftDate, dateTime) >= 0)
+                                    .Where(p => !p.IsDelete && DateTime.Compare(p.OnlineVisitShiftDate, dateTime) >= 0 && p.DoctorUserId == doctorUserId)
                                     .Select(p => new ListOfWorkShiftDatesFromDoctorPanelViewModel()
                                     {
                                         OnlineVisitShiftDate = p.OnlineVisitShiftDate,
@@ -537,24 +537,56 @@ namespace DoctorFAM.Data.Repository
         //Fill OnlineVisitDoctorAndPatientInformationsDoctorPanelSideViewModel
         public async Task<List<OnlineVisitDoctorAndPatientInformationsDoctorPanelSideViewModel>?> FillOnlineVisitDoctorAndPatientInformationsDoctorPanelSideViewModel(ulong doctorReservationDateId, ulong shiftId)
         {
-            return await _context.OnlineVisitWorkShiftDetails.AsNoTracking()
-                                .Where(p => !p.IsDelete && p.OnlineVisitWorkShiftId == shiftId)
+            return await _context.OnlineVisitDoctorsAndPatientsReservationDetails.AsNoTracking()
+                                    .Where(p => !p.IsDelete && p.OnlineVisitDoctorsReservationDateId == doctorReservationDateId && p.OnlineVisitWorkShiftId == shiftId)
                                         .Select(p => new OnlineVisitDoctorAndPatientInformationsDoctorPanelSideViewModel()
                                         {
-                                            StartTime = p.StartTime,
-                                            EndTime = p.EndTime,
-                                            Patient = _context.OnlineVisitDoctorsAndPatientsReservationDetails.AsNoTracking()
-                                                            .Where(s => !s.IsDelete && s.OnlineVisitDoctorsReservationDateId == doctorReservationDateId && s.OnlineVisitWorkShiftDetail == p.Id)
-                                                                    .Select(s => new OnlineVisitPatientInformationDoctorPanelSideViewModel()
-                                                                    {
-                                                                        Mobile = _context.Users.AsNoTracking().Where(u=> !u.IsDelete && u.Id == s.PatientUserId).Select(u=>u.Mobile).FirstOrDefault(),
-                                                                        Username = _context.Users.AsNoTracking().Where(u => !u.IsDelete && u.Id == s.PatientUserId).Select(u => u.Username).FirstOrDefault(),
-                                                                        UserAvatar = _context.Users.AsNoTracking().Where(u => !u.IsDelete && u.Id == s.PatientUserId).Select(u => u.Avatar).FirstOrDefault(),
-                                                                        UserId = _context.Users.AsNoTracking().Where(u => !u.IsDelete && u.Id == s.PatientUserId).Select(u => u.Id).FirstOrDefault()
-                                                                    }).FirstOrDefault(),
+                                            EndTime = _context.OnlineVisitWorkShiftDetails.AsNoTracking()
+                                                            .Where(s => !s.IsDelete && s.Id == p.OnlineVisitWorkShiftDetail)
+                                                                .Select(s => s.EndTime).FirstOrDefault(),
+
+                                            StartTime = _context.OnlineVisitWorkShiftDetails.AsNoTracking()
+                                                            .Where(s => !s.IsDelete && s.Id == p.OnlineVisitWorkShiftDetail)
+                                                                .Select(s => s.StartTime).FirstOrDefault(),
+
+                                            Patient = _context.Users.AsNoTracking().Where(s => !s.IsDelete && s.Id == p.PatientUserId)
+                                                                .Select(s => new OnlineVisitPatientInformationDoctorPanelSideViewModel()
+                                                                {
+                                                                    Mobile = s.Mobile,
+                                                                    UserAvatar = s.Avatar,
+                                                                    UserId = s.Id,
+                                                                    Username = s.Username
+                                                                }).FirstOrDefault()
                                         }).ToListAsync();
         }
 
         #endregion
+
+        #region Admin Side 
+
+        //Fill List Of Work Shifts Dates Admin Side View Model
+        public async Task<List<ListOfWorkShiftsDatesAdminSideViewModel>> FillListOfWorkShiftsDatesAdminSideViewModel()
+        {
+            #region Current Date Time
+
+            var dateTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 0, 0);
+
+            #endregion
+
+            return await _context.OnlineVisitDoctorsReservationDates.AsNoTracking().Where(p => !p.IsDelete && DateTime.Compare(p.OnlineVisitShiftDate, dateTime) >= 0)
+                                            .GroupBy(p => p.OnlineVisitShiftDate)
+                                            .Select(p => new ListOfWorkShiftsDatesAdminSideViewModel()
+                                            {
+                                                WorkShiftDate = p.Select(s => s.OnlineVisitShiftDate).FirstOrDefault(),
+                                                CountOfOnlineDoctors = _context.OnlineVisitDoctorsReservationDates.AsNoTracking()
+                                                                            .Where(s => !s.IsDelete && s.OnlineVisitShiftDate == p.Select(s => s.OnlineVisitShiftDate).FirstOrDefault())
+                                                                                .Count(),
+                                                BusinessKey = p.Select(s => s.BusinessKey).FirstOrDefault(),
+
+                                            }).ToListAsync();
+        }
+
+        #endregion
+
     }
 }
