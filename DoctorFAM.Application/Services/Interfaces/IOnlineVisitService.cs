@@ -103,6 +103,12 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Fill List Of Work Shifts Dates Admin Side View Model
         Task<List<ListOfWorkShiftsDatesAdminSideViewModel>> FillListOfWorkShiftsDatesAdminSideViewModel();
 
+        //Fill ListOfWorkShiftDayDetailViewModel 
+        Task<List<ListOfWorkShiftDayDetailViewModel>?> FillListOfWorkShiftDayDetailViewModel(int businessKey);
+
+        //Fill ListOfDoctorsInSelectedShiftAdminSideViewModel
+        Task<List<ListOfDoctorsInSelectedShiftAdminSideViewModel>> FillListOfDoctorsInSelectedShiftAdminSideViewModel(ulong workShiftId, int dateBusinessKey);
+
         #endregion
     }
 }

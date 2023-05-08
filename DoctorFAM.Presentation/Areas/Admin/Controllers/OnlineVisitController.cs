@@ -120,5 +120,37 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
         }
 
         #endregion
+
+        #region List Of Work Shift Day Detail
+
+        [HttpGet]
+        public async Task<IActionResult> ListOfWorkShiftDayDetail(int workShiftId , string selectedDate)
+        {
+            #region View Bag 
+
+            ViewData["selectedDate"] = selectedDate;
+
+            #endregion
+
+            return View(await _onlineVisitService.FillListOfWorkShiftDayDetailViewModel(workShiftId));
+        }
+
+        #endregion
+
+        #region List Of Doctors In Selected Shift
+
+        [HttpGet]
+        public async Task<IActionResult> ListOfDoctorsInSelectedShift(ulong workShiftId , int dateBusinessKey)
+        {
+            #region Fill Model
+
+            var model = await _onlineVisitService.FillListOfDoctorsInSelectedShiftAdminSideViewModel(workShiftId , dateBusinessKey);
+
+            #endregion
+
+            return View(model);
+        }
+
+        #endregion
     }
 }

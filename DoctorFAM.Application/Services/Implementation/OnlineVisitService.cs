@@ -657,6 +657,49 @@ namespace DoctorFAM.Application.Services.Implementation
             return await _onlineVisitRepository.FillListOfWorkShiftsDatesAdminSideViewModel();
         }
 
+        //Fill ListOfWorkShiftDayDetailViewModel 
+        public async Task<List<ListOfWorkShiftDayDetailViewModel>?> FillListOfWorkShiftDayDetailViewModel(int businessKey)
+        {
+            #region Get Doctors Reservation Dates Id By business Key 
+
+            var doctorsReservationsDate = await _onlineVisitRepository.GetDoctorWorkShiftReservationIdByBusinessKetThatRenderFromDate(businessKey);
+            if (doctorsReservationsDate == null) return null;
+
+            #endregion
+
+            #region Get Doctors Selected Work Shift Dates 
+
+            //Create Instance
+            List<OnlineVisitWorkShift> onlineVisitWorkShifts = new List<OnlineVisitWorkShift>();
+
+            foreach (var item in doctorsReservationsDate)
+            {
+                List<OnlineVisitWorkShift> onlineVisitWork = await _onlineVisitRepository.GetDoctorWorkShiftSelecetedReservationDateByDoctorWorkShiftReservationId(item);
+                if (onlineVisitWork == null) return null;
+
+                onlineVisitWorkShifts.AddRange(onlineVisitWork);
+            }
+
+            #endregion
+
+            var returbModel = onlineVisitWorkShifts.GroupBy(p => p.StartShiftTime)
+                            .Select(p => new ListOfWorkShiftDayDetailViewModel()
+                            {
+                                EndTime = p.FirstOrDefault().EndShiftTime,
+                                StartTime = p.FirstOrDefault().StartShiftTime,
+                                WorkShiftId = p.FirstOrDefault().Id,
+                                DateBusinessKey = businessKey
+                            }).ToList();
+
+            return returbModel;
+        }
+
+        //Fill ListOfDoctorsInSelectedShiftAdminSideViewModel
+        public Task<List<ListOfDoctorsInSelectedShiftAdminSideViewModel>> FillListOfDoctorsInSelectedShiftAdminSideViewModel(ulong workShiftId, int dateBusinessKey)
+        {
+            return _onlineVisitRepository.FillListOfDoctorsInSelectedShiftAdminSideViewModel( workShiftId,  dateBusinessKey);
+        }
+
         #endregion
     }
 }

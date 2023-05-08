@@ -101,6 +101,15 @@ namespace DoctorFAM.Domain.Interfaces
         //Fill List Of Work Shifts Dates Admin Side View Model
         Task<List<ListOfWorkShiftsDatesAdminSideViewModel>> FillListOfWorkShiftsDatesAdminSideViewModel();
 
+        //Get Doctor Work Shift Reservation Id By BusinessKet That Render From Dat
+        Task<List<ulong>> GetDoctorWorkShiftReservationIdByBusinessKetThatRenderFromDate(int businessKey);
+
+        //Get Doctor Work Shift Seleceted Reservation Dates By Doctor Work Shift Reservation Ids
+        Task<List<OnlineVisitWorkShift>?> GetDoctorWorkShiftSelecetedReservationDateByDoctorWorkShiftReservationId(ulong selectedReservationId);
+
+        //Fill ListOfDoctorsInSelectedShiftAdminSideViewModel
+        Task<List<ListOfDoctorsInSelectedShiftAdminSideViewModel>> FillListOfDoctorsInSelectedShiftAdminSideViewModel(ulong workShiftId, int dateBusinessKey);
+
         #endregion
     }
 }
