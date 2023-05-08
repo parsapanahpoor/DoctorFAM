@@ -57,7 +57,6 @@
                                     <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">شروع شیفت</th>
                                     <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">پایان شیفت</th>
                                     <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">مدت زمان هر نوبت</th>
-                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending"></th>
 
                                 </tr>
                             </thead>
@@ -83,13 +82,6 @@
                                         <td class="center ">
 
                                             @shift.PeriodOfShiftTime دقیقه
-
-                                        </td>
-
-                                        <td>
-
-                                            <a asp-action="EditOnlineVisitWorkShift" asp-controller="SiteSetting" asp-area="Admin" asp-route-id="@shift.Id" class="btn btn-warning btn-circle btn-xs"><i class="glyphicon glyphicon-edit"></i></a>
-                                            <button onclick="DeleteAjax(@shift.Id, '@Url.Action("DeleteOnlineVistiWorkShift", "SiteSetting", new {area = "Admin", id = shift.Id})')" class="btn btn-danger btn-circle btn-xs"><i class="glyphicon glyphicon-trash"></i></button>
 
                                         </td>
 

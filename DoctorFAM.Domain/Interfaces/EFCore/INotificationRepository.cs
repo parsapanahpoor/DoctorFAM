@@ -1,4 +1,6 @@
 ﻿using DoctorFAM.Domain.Entities.Notification;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.Notification;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,6 +36,13 @@ namespace DoctorFAM.Domain.Interfaces
 
         //Create Notification For Admin And Supporters
         Task CreateRangeSupporter(SupporterNotification notification);
+
+        #endregion
+
+        #region Doctor Panel 
+
+        //Get Doctor Notification By Doctor User Id
+        Task<List<ListOFDoctorNotificationForShowInDoctorPanelViewModel>?> GetDoctorNotificationByDoctorUserId(ulong doctorUserId);
 
         #endregion
     }

@@ -7,16 +7,15 @@ using System.Threading.Tasks;
 
 namespace DoctorFAM.Domain.Entities.OnlineVisit
 {
-    public sealed class OnlineVisitDoctorsReservationDate : BaseEntity
+    public sealed class OnlineVisitDoctorSelectedWorkShift : BaseEntity
     {
         #region properties
 
         //Navigation Property
-        public ulong DoctorUserId { get; set; }
+        public ulong OnlineVisitDoctorsReservationDateId { get; set; }
 
-        public DateTime OnlineVisitShiftDate { get; set; }
-
-        public int BusinessKey { get; set; }
+        //Navigation Property
+        public ulong OnlineVisitWorkShiftId { get; set; }
 
         #endregion
     }

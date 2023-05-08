@@ -7,6 +7,7 @@ using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Enums.Request;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.OnlineVisit;
+using DoctorFAM.Domain.ViewModels.Common;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.HomeVisit;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.UserPanel.OnlineVisit;
@@ -18,6 +19,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DoctorFAM.Data.Repository
 {
@@ -330,9 +332,9 @@ namespace DoctorFAM.Data.Repository
              .ThenInclude(p => p.City)
              .Include(p => p.User)
              .Include(p => p.OnlineVisitRequestDetail)
-             .Include(p=> p.Operation)
+             .Include(p => p.Operation)
              .Where(s => !s.IsDelete && s.RequestType == Domain.Enums.RequestType.RequestType.OnlineVisit)
-             .OrderByDescending(s => s.CreateDate )
+             .OrderByDescending(s => s.CreateDate)
              .AsQueryable();
 
             #region Status
@@ -427,6 +429,262 @@ namespace DoctorFAM.Data.Repository
 
         #endregion
 
+        #region Doctor Panel
+
+        //Select List For Show List Of Avalable Shifts 
+        public async Task<List<SelectListViewModel>> SelectListForShowListOfAvailableShifts()
+        {
+            return await _context.OnlineVisitWorkShift.AsNoTracking().Where(p => !p.IsDelete)
+                                        .OrderBy(p => p.Id)
+                                        .Select(p => new SelectListViewModel()
+                                        {
+                                            Id = p.Id,
+                                            Title = $"از ساعت {p.StartShiftTime} تا ساعت {p.EndShiftTime}"
+                                        }).ToListAsync();
+        }
+
+        //Add OnlineVisitDoctorsReservationDate To The Data Base 
+        public async Task AddOnlineVisitDoctorsReservationDateToTheDataBase(OnlineVisitDoctorsReservationDate model)
+        {
+            await _context.OnlineVisitDoctorsReservationDates.AddAsync(model);
+            await _context.SaveChangesAsync();
+        }
+
+        //Add OnlineVisitDoctorSelectedWorkShift Without Save Changes
+        public async Task AddOnlineVisitDoctorSelectedWorkShiftWithoutSaveChanges(OnlineVisitDoctorSelectedWorkShift model)
+        {
+            await _context.OnlineVisitDoctorSelectedWorkShifts.AddAsync(model);
+        }
+
+        //Get List Of Work Shifts Time Detail Id By Work Shift Id
+        public async Task<List<ulong>> GetListOfWorkShiftsTimeDetailIdByWorkShiftId(ulong workShiftId)
+        {
+            return await _context.OnlineVisitWorkShiftDetails.AsNoTracking().Where(p => !p.IsDelete && p.OnlineVisitWorkShiftId == workShiftId)
+                                                                    .Select(p => p.Id).ToListAsync();
+        }
+
+        //Add OnlineVisitDoctorsAndPatientsReservationDetail To The Data Base Without Save Changes
+        public async Task AddOnlineVisitDoctorsAndPatientsReservationDetailToTheDataBaseWithoutSaveChanges(OnlineVisitDoctorsAndPatientsReservationDetail model)
+        {
+            await _context.OnlineVisitDoctorsAndPatientsReservationDetails.AddAsync(model);
+        }
+
+        //Save Changes
+        public async Task SaveChanges()
+        {
+            await _context.SaveChangesAsync();
+        }
+
+        //Get Validates Work Shift Dates By Doctor UserId For Show In Doctor Panel 
+        public async Task<List<ListOfWorkShiftDatesFromDoctorPanelViewModel>> GetValidatesWorkShiftDatesByDoctorUserIdForShowInDoctorPanel(ulong doctorUserId)
+        {
+            #region Current Date Time
+
+            var dateTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 0, 0);
+
+            #endregion
+
+            return await _context.OnlineVisitDoctorsReservationDates.AsNoTracking()
+                                    .Where(p => !p.IsDelete && DateTime.Compare(p.OnlineVisitShiftDate, dateTime) >= 0 && p.DoctorUserId == doctorUserId)
+                                    .Select(p => new ListOfWorkShiftDatesFromDoctorPanelViewModel()
+                                    {
+                                        OnlineVisitShiftDate = p.OnlineVisitShiftDate,
+                                        BusinessKey = p.BusinessKey,
+                                        OnlineVisitDoctorsReservationDateId = p.Id,
+                                        CountOfWorkShifts = _context.OnlineVisitDoctorSelectedWorkShifts.AsNoTracking()
+                                                                    .Where(s => !s.IsDelete && s.OnlineVisitDoctorsReservationDateId == p.Id)
+                                                                            .Count(),
+                                        CountOfAllShiftTime = _context.OnlineVisitDoctorsAndPatientsReservationDetails.AsNoTracking()
+                                                                        .Where(s => !p.IsDelete && s.OnlineVisitDoctorsReservationDateId == p.Id).Count()
+                                    }).ToListAsync();
+        }
+
+        //Is Exist Any Work Shift Date For Current Doctor
+        public async Task<bool> IsExistAnyWorkShiftDateForCurrentDoctor(ulong doctorUserId, int businessKey)
+        {
+            return await _context.OnlineVisitDoctorsReservationDates.AsNoTracking()
+                                .AnyAsync(p => !p.IsDelete && p.DoctorUserId == doctorUserId && p.BusinessKey == businessKey);
+        }
+
+        //Fill Work Shift Date Detail Doctor Panel 
+        public async Task<List<WorkShiftDateDetailDoctorPanelViewModel>> FillWorkShiftDateDetailDoctorPanel(ulong OnlineVisitDoctorsReservationDateId)
+        {
+            return await _context.OnlineVisitDoctorSelectedWorkShifts.AsNoTracking().Where(p => !p.IsDelete && p.OnlineVisitDoctorsReservationDateId == OnlineVisitDoctorsReservationDateId)
+                                    .Select(p => new WorkShiftDateDetailDoctorPanelViewModel()
+                                    {
+                                        OnlineVisitDoctorsReservationDateId = p.OnlineVisitDoctorsReservationDateId,
+                                        WorkShiftId = p.OnlineVisitWorkShiftId,
+                                        EndTime = _context.OnlineVisitWorkShift.AsNoTracking().Where(s => !s.IsDelete && s.Id == p.OnlineVisitWorkShiftId).Select(p => p.EndShiftTime).FirstOrDefault(),
+                                        StartTime = _context.OnlineVisitWorkShift.AsNoTracking().Where(s => !s.IsDelete && s.Id == p.OnlineVisitWorkShiftId).Select(p => p.StartShiftTime).FirstOrDefault(),
+                                        CountOfFreeTime = _context.OnlineVisitWorkShiftDetails.AsNoTracking().Count(s => !s.IsDelete && s.OnlineVisitWorkShiftId == p.OnlineVisitWorkShiftId),
+                                    }).ToListAsync();
+        }
+
+        //Get Work Shift Date By OnlineVisitDoctorsReservationDateId
+        public async Task<DateTime> GetWorkShiftDateByOnlineVisitDoctorsReservationDateId(ulong OnlineVisitDoctorsReservationDateId)
+        {
+            return await _context.OnlineVisitDoctorsReservationDates.AsNoTracking().Where(p => !p.IsDelete && p.Id == OnlineVisitDoctorsReservationDateId)
+                                    .Select(p => p.OnlineVisitShiftDate).FirstOrDefaultAsync();
+        }
+
+        //Is Exist Any OnlineVisitDoctorsReservationDate By Doctor UserId
+        public async Task<bool> IsExistAnyOnlineVisitDoctorsReservationDateByDoctorUserId(ulong OnlineVisitDoctorsReservationDateId, ulong doctorUserId)
+        {
+            return await _context.OnlineVisitDoctorsReservationDates.AsNoTracking().AnyAsync(p => !p.IsDelete && p.DoctorUserId == doctorUserId &&
+                                                                                        p.Id == OnlineVisitDoctorsReservationDateId);
+        }
+
+        //Fill OnlineVisitDoctorAndPatientInformationsDoctorPanelSideViewModel
+        public async Task<List<OnlineVisitDoctorAndPatientInformationsDoctorPanelSideViewModel>?> FillOnlineVisitDoctorAndPatientInformationsDoctorPanelSideViewModel(ulong doctorReservationDateId, ulong shiftId)
+        {
+            return await _context.OnlineVisitDoctorsAndPatientsReservationDetails.AsNoTracking()
+                                    .Where(p => !p.IsDelete && p.OnlineVisitDoctorsReservationDateId == doctorReservationDateId && p.OnlineVisitWorkShiftId == shiftId)
+                                        .Select(p => new OnlineVisitDoctorAndPatientInformationsDoctorPanelSideViewModel()
+                                        {
+                                            EndTime = _context.OnlineVisitWorkShiftDetails.AsNoTracking()
+                                                            .Where(s => !s.IsDelete && s.Id == p.OnlineVisitWorkShiftDetail)
+                                                                .Select(s => s.EndTime).FirstOrDefault(),
+
+                                            StartTime = _context.OnlineVisitWorkShiftDetails.AsNoTracking()
+                                                            .Where(s => !s.IsDelete && s.Id == p.OnlineVisitWorkShiftDetail)
+                                                                .Select(s => s.StartTime).FirstOrDefault(),
+
+                                            Patient = _context.Users.AsNoTracking().Where(s => !s.IsDelete && s.Id == p.PatientUserId)
+                                                                .Select(s => new OnlineVisitPatientInformationDoctorPanelSideViewModel()
+                                                                {
+                                                                    Mobile = s.Mobile,
+                                                                    UserAvatar = s.Avatar,
+                                                                    UserId = s.Id,
+                                                                    Username = s.Username
+                                                                }).FirstOrDefault()
+                                        }).ToListAsync();
+        }
+
+        #endregion
+
+        #region Admin Side 
+
+        //Fill List Of Work Shifts Dates Admin Side View Model
+        public async Task<List<ListOfWorkShiftsDatesAdminSideViewModel>> FillListOfWorkShiftsDatesAdminSideViewModel()
+        {
+            #region Current Date Time
+
+            var dateTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 0, 0);
+
+            #endregion
+
+            return await _context.OnlineVisitDoctorsReservationDates.AsNoTracking().Where(p => !p.IsDelete && DateTime.Compare(p.OnlineVisitShiftDate, dateTime) >= 0)
+                                            .GroupBy(p => p.OnlineVisitShiftDate)
+                                            .Select(p => new ListOfWorkShiftsDatesAdminSideViewModel()
+                                            {
+                                                WorkShiftDate = p.Select(s => s.OnlineVisitShiftDate).FirstOrDefault(),
+                                                CountOfOnlineDoctors = _context.OnlineVisitDoctorsReservationDates.AsNoTracking()
+                                                                            .Where(s => !s.IsDelete && s.OnlineVisitShiftDate == p.Select(s => s.OnlineVisitShiftDate).FirstOrDefault())
+                                                                                .Count(),
+                                                BusinessKey = p.Select(s => s.BusinessKey).FirstOrDefault(),
+
+                                            }).ToListAsync();
+        }
+
+        //Get Doctor Work Shift Reservation Id By BusinessKet That Render From Dat
+        public async Task<List<ulong>> GetDoctorWorkShiftReservationIdByBusinessKetThatRenderFromDate(int businessKey)
+        {
+            return await _context.OnlineVisitDoctorsReservationDates.AsNoTracking().Where(p => !p.IsDelete && p.BusinessKey == businessKey)
+                                .Select(p => p.Id).ToListAsync();
+        }
+
+        //Get Doctor Work Shift Seleceted Reservation Dates By Doctor Work Shift Reservation Ids
+        public async Task<List<OnlineVisitWorkShift>?> GetDoctorWorkShiftSelecetedReservationDateByDoctorWorkShiftReservationId(ulong selectedReservationId)
+        {
+            var id = await _context.OnlineVisitDoctorSelectedWorkShifts.AsNoTracking().Where(p => !p.IsDelete && p.OnlineVisitDoctorsReservationDateId == selectedReservationId)
+                                                    .Select(p => p.OnlineVisitWorkShiftId).ToListAsync();
+
+            //Create Return Model 
+            List<OnlineVisitWorkShift> returnModels = new List<OnlineVisitWorkShift>();
+
+            foreach (var item in id)
+            {
+                OnlineVisitWorkShift returnModel = new OnlineVisitWorkShift();
+
+                returnModel = await _context.OnlineVisitWorkShift.AsNoTracking().Where(p => !p.IsDelete && p.Id == item).FirstOrDefaultAsync();
+                if (returnModel is not null)
+                {
+                    returnModels.Add(returnModel);
+                }
+            }
+
+            return returnModels;
+        }
+
+        //Fill ListOfDoctorsInSelectedShiftAdminSideViewModel
+        public Task<List<ListOfDoctorsInSelectedShiftAdminSideViewModel>> FillListOfDoctorsInSelectedShiftAdminSideViewModel(ulong workShiftId, int dateBusinessKey)
+        {
+            var onlineVisitDoctorSelectedDate = _context.OnlineVisitDoctorSelectedWorkShifts.AsNoTracking()
+                                    .Where(p => !p.IsDelete && p.OnlineVisitWorkShiftId == workShiftId);
+
+            var onlineVisitDoctorReservationDate = _context.OnlineVisitDoctorsReservationDates.AsNoTracking()
+                                                                .Where(p => !p.IsDelete && p.BusinessKey == dateBusinessKey);
+
+            var returnModel = onlineVisitDoctorReservationDate.Join(onlineVisitDoctorSelectedDate, r => r.Id, d => d.OnlineVisitDoctorsReservationDateId,
+                (onlineVisitDoctorReservationDate, onlineVisitDoctorSelectedDate)
+                    => new ListOfDoctorsInSelectedShiftAdminSideViewModel()
+                    {
+                        DoctorReservationDateId = onlineVisitDoctorReservationDate.Id,
+                        SelectedDateTime = onlineVisitDoctorReservationDate.OnlineVisitShiftDate,
+                        WorkShiftId = workShiftId,
+                        CountOFAllTimes = _context.OnlineVisitDoctorsAndPatientsReservationDetails.AsNoTracking()
+                                               .Count(p => !p.IsDelete && p.OnlineVisitDoctorsReservationDateId == onlineVisitDoctorReservationDate.Id),
+
+                        CountOfFressTimes = _context.OnlineVisitDoctorsAndPatientsReservationDetails.AsNoTracking()
+                                               .Count(p => !p.IsDelete && p.OnlineVisitDoctorsReservationDateId == onlineVisitDoctorReservationDate.Id && !p.PatientUserId.HasValue),
+
+                        CountOfReservedTimes = _context.OnlineVisitDoctorsAndPatientsReservationDetails.AsNoTracking()
+                                               .Count(p => !p.IsDelete && p.OnlineVisitDoctorsReservationDateId == onlineVisitDoctorReservationDate.Id && p.PatientUserId.HasValue),
+
+                        WorkShiftInfo = _context.OnlineVisitWorkShift.Where(d => !d.IsDelete && d.Id == workShiftId)
+                                                                 .Select(d => d.StartShiftTime.ToString() + " تا " + d.EndShiftTime.ToString()).FirstOrDefault(),
+
+                        DoctorUser = _context.Users.AsNoTracking().Where(u => !u.IsDelete && u.Id == onlineVisitDoctorReservationDate.DoctorUserId)
+                                        .Select(u => new DoctorsInfosInSelectedShiftAdminSide()
+                                        {
+                                            Mobile = u.Mobile,
+                                            UserAvatar = u.Avatar,
+                                            UserId = u.Id,
+                                            Username = u.Username
+                                        }).FirstOrDefault()
+                    }
+                ).ToListAsync();
+
+            return returnModel;
+        }
+
+        //Fill OnlineVisitDoctorAndPatientInformationsAdminPanelSideViewModel
+        public async Task<List<OnlineVisitDoctorAndPatientInformationsAdminPanelSideViewModel>?> FillOnlineVisitDoctorAndPatientInformationsAdminPanelSideViewModel(ulong doctorReservationDateId, ulong shiftId)
+        {
+            return await _context.OnlineVisitDoctorsAndPatientsReservationDetails.AsNoTracking()
+                                    .Where(p => !p.IsDelete && p.OnlineVisitDoctorsReservationDateId == doctorReservationDateId && p.OnlineVisitWorkShiftId == shiftId)
+                                        .Select(p => new OnlineVisitDoctorAndPatientInformationsAdminPanelSideViewModel()
+                                        {
+                                            EndTime = _context.OnlineVisitWorkShiftDetails.AsNoTracking()
+                                                            .Where(s => !s.IsDelete && s.Id == p.OnlineVisitWorkShiftDetail)
+                                                                .Select(s => s.EndTime).FirstOrDefault(),
+
+                                            StartTime = _context.OnlineVisitWorkShiftDetails.AsNoTracking()
+                                                            .Where(s => !s.IsDelete && s.Id == p.OnlineVisitWorkShiftDetail)
+                                                                .Select(s => s.StartTime).FirstOrDefault(),
+
+                                            Patient = _context.Users.AsNoTracking().Where(s => !s.IsDelete && s.Id == p.PatientUserId)
+                                                                .Select(s => new OnlineVisitPatientInformationAdminPanelSideViewModel()
+                                                                {
+                                                                    Mobile = s.Mobile,
+                                                                    UserAvatar = s.Avatar,
+                                                                    UserId = s.Id,
+                                                                    Username = s.Username
+                                                                }).FirstOrDefault()
+                                        }).ToListAsync();
+        }
+
+        #endregion
 
     }
 }

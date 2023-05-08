@@ -7,6 +7,7 @@ using DoctorFAM.Application.Services.Implementation;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Application.StaticTools;
 using DoctorFAM.Data.Migrations;
+using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.ViewModels.Admin.Reservation;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.OnlineVisit;
@@ -37,7 +38,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
 
         public OnlineVisitController(IOnlineVisitService onlineVisitService, ILocationService locationService, IHubContext<NotificationHub> notificationHub
-                                                , INotificationService notificationService, ISMSService smsservice, IRequestService requestService , ITicketService ticketService
+                                                , INotificationService notificationService, ISMSService smsservice, IRequestService requestService, ITicketService ticketService
                                                     , IStringLocalizer<LocationController> localizer, IUserService userService)
         {
             _onlineVisitService = onlineVisitService;
@@ -52,6 +53,8 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
         }
 
         #endregion
+
+        #region Old Methods That Must Remove
 
         #region List Of Online Visit Requests
 
@@ -149,14 +152,14 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
             #region Get Request By Id
 
             var request = await _requestService.GetRequestById(requestId);
-            if(request == null) return NotFound();
+            if (request == null) return NotFound();
 
             #endregion
 
             #region Get Ticket By Request Id
 
             var ticket = await _ticketService.GetTicketByOnlineVisitRequestId(requestId);
-            if(ticket == null) return NotFound();
+            if (ticket == null) return NotFound();
             if (ticket.OwnerId != request.OperationId.Value) return NotFound();
             if (ticket.TargetUserId != request.UserId) return NotFound();
 
@@ -183,12 +186,12 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
             });
         }
 
-        [HttpPost , ValidateAntiForgeryToken]
+        [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> OnlineVisitRequestMessageDetail(AnswerTikcetDoctorViewModel answer)
         {
             #region Get Ticket By Id
 
-            var ticket =  await _ticketService.GetTicketById(answer.TicketId);
+            var ticket = await _ticketService.GetTicketById(answer.TicketId);
             if (ticket == null) return NotFound();
 
             #endregion
@@ -196,7 +199,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
             #region Get Request By Id
 
             var request = await _requestService.GetRequestById(ticket.RequestId.Value);
-            if(request == null) return NotFound();
+            if (request == null) return NotFound();
 
             #endregion
 
@@ -258,7 +261,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
         public async Task<IActionResult> DeleteTicketMessage(ulong messageId)
         {
-            var result = await _ticketService.DeleteTicketMessage(messageId , User.GetUserId());
+            var result = await _ticketService.DeleteTicketMessage(messageId, User.GetUserId());
 
             if (result)
             {
@@ -286,5 +289,101 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
         #endregion
 
+        #endregion
+
+        #region List Of Doctor Selected Date Shift
+
+        [HttpGet]
+        public async Task<IActionResult> ListOfDoctorWorkShifts()
+        {
+            return View(await _onlineVisitService.FillListOfWorkShiftDatesFromDoctorPanelViewModel(User.GetUserId()));
+        }
+
+        #endregion
+
+        #region Create Doctor Selected Online Visit Shift Date 
+
+        [HttpGet]
+        public async Task<IActionResult> CreateDoctorSelectedOnlineVisitShiftDate()
+        {
+            #region View Bags for View 
+
+            ViewData["availableShifts"] = await _onlineVisitService.SelectListForShowListOfAvailableShifts();
+
+            #endregion
+
+            return View();
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateDoctorSelectedOnlineVisitShiftDate(CreateDoctorSelectedOnlineVisitShiftDateViewModel model)
+        {
+            #region Add Method 
+
+            var res = await _onlineVisitService.CreateDoctorSelectedOnlineVisitShiftDateFromDoctorPanel(model, User.GetUserId());
+
+            switch (res)
+            {
+                case CreateDoctorSelectedOnlineVisitShiftDateViewModelResult.Success:
+                    TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+                    return RedirectToAction(nameof(ListOfDoctorWorkShifts));
+
+                case CreateDoctorSelectedOnlineVisitShiftDateViewModelResult.LaterSelectedDate:
+                    TempData[ErrorMessage] = "تاریخ وارد شده صحیح نمی باشد.";
+                    break;
+
+                case CreateDoctorSelectedOnlineVisitShiftDateViewModelResult.Faild:
+                    TempData[ErrorMessage] = "عملیات باشکست مواجه شده است.";
+                    break;
+
+                case CreateDoctorSelectedOnlineVisitShiftDateViewModelResult.DuplicateRecord:
+                    TempData[ErrorMessage] = "تاریخ انتخاب شده درگذشته برای شما ثبت شده است.";
+                    break;
+
+                default:
+                    break;
+            }
+
+            #endregion
+
+            ViewData["availableShifts"] = await _onlineVisitService.SelectListForShowListOfAvailableShifts();
+            return View(model);
+        }
+
+        #endregion
+
+        #region Work Shift Date Detail
+
+        [HttpGet]
+        public async Task<IActionResult> WorkShiftDateDetail(ulong workShiftId)
+        {
+            ViewData["workShiftDate"] = await _onlineVisitService.GetWorkShiftDateByOnlineVisitDoctorsReservationDateId(workShiftId);
+
+            return View(await _onlineVisitService.FillWorkShiftDateDetailDoctorPanel(workShiftId , User.GetUserId()));
+        }
+
+        #endregion
+
+        #region Online Visit Doctor And Patients Information 
+
+        [HttpGet]
+        public async Task<IActionResult> OnlineVisitDoctorAndPatientInformations(ulong doctorReservationDateId , ulong shiftId)
+        {
+            ViewData["workShiftDate"] = await _onlineVisitService.GetWorkShiftDateByOnlineVisitDoctorsReservationDateId(doctorReservationDateId);
+
+            #region Fill Model 
+
+            var model = await _onlineVisitService.FillOnlineVisitDoctorAndPatientInformationsDoctorPanelSideViewModel(doctorReservationDateId, shiftId, User.GetUserId());
+            if (model is null)
+            {
+                return NotFound();
+            }
+
+            #endregion
+
+            return View(model);
+        }
+
+        #endregion
     }
 }

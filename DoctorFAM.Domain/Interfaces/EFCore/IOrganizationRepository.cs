@@ -1,5 +1,6 @@
 ﻿using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Organization;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,12 @@ namespace DoctorFAM.Domain.Interfaces
         Task AddOrganizationMember(OrganizationMember member);
 
         Task<Organization?> GetOrganizationByUserId(ulong userId);
+
+        //Get Organization Id By Member User Id
+        Task<ulong> GetOrganizationIdByMemberUserId(ulong memberUserId);
+
+        //Get Organization OwnerId By Organization Id
+        Task<ulong> GetOrganizationOwnerIdByOrganizationId(ulong organizationId);
 
         Task<Organization?> GetPharmacyOrganizationByUserId(ulong userId);
 

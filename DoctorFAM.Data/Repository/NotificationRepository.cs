@@ -1,6 +1,9 @@
 ﻿using DoctorFAM.Data.DbContext;
+using DoctorFAM.Domain.Entities.Account;
+using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.Notification;
 using DoctorFAM.Domain.Interfaces;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.Notification;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -77,6 +80,32 @@ namespace DoctorFAM.Data.Repository
         public async Task<List<SupporterNotification>?> GetAllOfUnSeenNoficationByReciverId(ulong reciverId)
         {
             return await _context.SupporterNotification.Where(p => p.ReciverId == reciverId && !p.IsDelete && !p.IsSeen).ToListAsync();
+        }
+
+        #endregion
+
+        #region Doctor Panel 
+
+        //Get Doctor Notification By Doctor User Id
+        public async Task<List<ListOFDoctorNotificationForShowInDoctorPanelViewModel>?> GetDoctorNotificationByDoctorUserId(ulong doctorUserId)
+        {
+            return await _context.SupporterNotification.AsNoTracking().Where(p => !p.IsDelete && !p.IsSeen && p.ReciverId == doctorUserId)
+                            .OrderByDescending(p => p.CreateDate) 
+                                .Select(p=> new ListOFDoctorNotificationForShowInDoctorPanelViewModel()
+                                {
+                                    IsSeen= p.IsSeen,
+                                    CreateDate = p.CreateDate,
+                                    SupporterNotificationText = p.SupporterNotificationText,
+                                    User =  _context.Users.AsNoTracking()
+                                            .Where(u=> !u.IsDelete && u.Id == p.UserId)
+                                            .Select(u=> new NotificationSendersInformationsForDoctorPanelViewModel()
+                                            {
+                                                UserAvatar = u.Avatar,
+                                                UserId= u.Id,
+                                                Username = u.Username
+                                            }).FirstOrDefault()
+
+                                }).ToListAsync();
         }
 
         #endregion

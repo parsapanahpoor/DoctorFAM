@@ -1,0 +1,134 @@
+﻿@model List<DoctorFAM.Domain.ViewModels.Admin.OnlineVisit.ListOfDoctorsInSelectedShiftAdminSideViewModel>
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Domain.ViewModels.Common
+
+@{
+    ViewData["Title"] = $"شیفت های کاری تاریخ : {Model.FirstOrDefault().SelectedDateTime.Value.ToShamsi()} - ساعت : {Model.FirstOrDefault().WorkShiftInfo}";
+}
+
+@section Styles
+    {
+    <link href="/admin/css/dataTables.bootstrap.rtl.css" rel="stylesheet" />
+}
+
+@section Scripts
+    {
+    <script src="~/admin/js/datatable/jquery.dataTables.min.js"></script>
+    <script src="~/admin/js/datatable/ZeroClipboard.js"></script>
+    <script src="~/admin/js/datatable/dataTables.tableTools.min.js"></script>
+    <script src="~/admin/js/datatable/dataTables.bootstrap.min.js"></script>
+    <script src="~/admin/js/datatable/datatables-init.js"></script>
+    <script>
+        InitiateSimpleDataTable.init();
+        InitiateEditableDataTable.init();
+        InitiateExpandableDataTable.init();
+        InitiateSearchableDataTable.init();
+    </script>
+}
+
+@section Breadcrumb
+    {
+    <li>
+        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+    </li>
+}
+
+<div class="row">
+
+    <div class="col-lg-12 col-sm-12">
+
+        <div class="row" style="margin:10px 10px 10px 10px;">
+
+            <div id="horizontal-form">
+
+                @if (Model != null && Model.Any())
+                {
+                    <div class="widget-body no-padding">
+                        <div id="searchable_wrapper" class="dataTables_wrapper form-inline">
+
+                            <table class="table table-bordered table-hover table-striped dataTable" id="searchable" role="grid" aria-describedby="searchable_info">
+                                <thead class="bordered-darkorange">
+                                    <tr role="row">
+
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">اطلاعات پزشک</th>
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">موبایل پزشک</th>
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">تعداد کل شیفت ها</th>
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">تعداد شیفت های رزرو شده</th>
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">تعداد شیفت های رزرو نشده</th>
+
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending"> امکانات</th>
+
+                                    </tr>
+
+                                </thead>
+
+                                <tbody>
+
+                                    @foreach (var reservationdata in Model)
+                                    {
+                                        <tr role="row" class="even responsive">
+
+                                            <td class="center ">
+
+                                                <div class="flex-style-center">
+                                                    <img src="@reservationdata.DoctorUser.UserAvatar.GetUserAvatar()" class="avatar-style" style="border-radius:50px;" />
+                                                    <div class="mr-10px">
+                                                        <span> @reservationdata.DoctorUser.Username </span>
+                                                    </div>
+                                                </div>
+
+                                            </td>
+
+                                             <td class="center tc vm">
+
+                                                @reservationdata.DoctorUser.Mobile
+
+                                            </td>
+
+                                            <td class="center tc vm">
+
+                                                @reservationdata.CountOFAllTimes
+
+                                            </td>
+
+                                            <td class="center tc vm">
+
+                                                @reservationdata.CountOfReservedTimes
+
+                                            </td>
+
+                                            <td class="center tc vm">
+
+                                                @reservationdata.CountOfFressTimes
+
+                                            </td>
+
+                                            <td class="center tc vm">
+
+                                                <a asp-action="OnlineVisitDoctorAndPatientInformations" asp-area="Admin" asp-controller="OnlineVisit" asp-route-doctorReservationId="@reservationdata.DoctorReservationDateId"
+                                                   asp-route-shiftWork="@reservationdata.WorkShiftId"
+                                                class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+
+                                            </td>
+
+                                        </tr>
+
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <partial name="_AdminNotFoundPartial" />
+                }
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
