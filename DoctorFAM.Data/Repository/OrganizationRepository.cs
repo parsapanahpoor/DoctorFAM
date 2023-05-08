@@ -48,6 +48,22 @@ namespace DoctorFAM.Data.Repository
             return await _context.Organizations.FirstOrDefaultAsync(p => p.Id == member.OrganizationId && !p.IsDelete);
         }
 
+        //Get Organization Id By Member User Id
+        public async Task<ulong> GetOrganizationIdByMemberUserId(ulong memberUserId)
+        {
+            return await _context.OrganizationMembers.AsNoTracking()
+                                    .Where(p => !p.IsDelete && p.UserId == memberUserId)
+                                           .Select(p=> p.OrganizationId).FirstOrDefaultAsync(); 
+        }
+
+        //Get Organization OwnerId By Organization Id
+        public async Task<ulong> GetOrganizationOwnerIdByOrganizationId(ulong organizationId)
+        {
+            return await _context.Organizations.AsNoTracking()
+                            .Where(p => p.Id == organizationId&& !p.IsDelete)
+                                .Select(p=> p.OwnerId).FirstOrDefaultAsync();
+        }
+
         //Is Exist Any Waiting Organization With This Current User 
         public async Task<bool?> IsExistAnyWaitingOrganizationWithThisCurrentUser(ulong userId)
         {

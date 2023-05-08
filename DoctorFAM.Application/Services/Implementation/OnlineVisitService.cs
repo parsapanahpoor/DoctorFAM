@@ -17,12 +17,14 @@ using DoctorFAM.Domain.Entities.Wallet;
 using DoctorFAM.Domain.Enums.Request;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.OnlineVisit;
+using DoctorFAM.Domain.ViewModels.Common;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.Site.Common;
 using DoctorFAM.Domain.ViewModels.Site.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
 using DoctorFAM.Domain.ViewModels.UserPanel.OnlineVisit;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -283,7 +285,7 @@ namespace DoctorFAM.Application.Services.Implementation
             return true;
         }
 
-        public async Task<bool> ChargeUserWallet(ulong userId, int price , ulong requestId)
+        public async Task<bool> ChargeUserWallet(ulong userId, int price, ulong requestId)
         {
             if (!await _userService.IsExistUserById(userId))
             {
@@ -306,7 +308,7 @@ namespace DoctorFAM.Application.Services.Implementation
             return true;
         }
 
-        public async Task<bool> PayOnlineVisitTariff(ulong userId, int price , ulong requestId)
+        public async Task<bool> PayOnlineVisitTariff(ulong userId, int price, ulong requestId)
         {
             if (!await _userService.IsExistUserById(userId))
             {
@@ -361,8 +363,8 @@ namespace DoctorFAM.Application.Services.Implementation
             if (request == null) return null;
             if (request.RequestType != Domain.Enums.RequestType.RequestType.OnlineVisit) return null;
             if (!request.PatientId.HasValue) return null;
-            if(request.RequestState != RequestState.Paid) return null;
-               
+            if (request.RequestState != RequestState.Paid) return null;
+
             #endregion
 
             #region Fill Model 
@@ -382,7 +384,7 @@ namespace DoctorFAM.Application.Services.Implementation
         }
 
         //Confirm Online Visit Request From Doctor 
-        public async Task<bool> ConfirmOnlineVisitRequestFromDoctor(ulong requestId , ulong userId)
+        public async Task<bool> ConfirmOnlineVisitRequestFromDoctor(ulong requestId, ulong userId)
         {
             #region Get Doctor Organization
 
@@ -429,7 +431,7 @@ namespace DoctorFAM.Application.Services.Implementation
         //Filter User Onlien Visit Requests 
         public async Task<FilterOnlineVisitRequestUserPanelViewModel> FilterOnlineVisitRequestUserPanel(FilterOnlineVisitRequestUserPanelViewModel filter)
         {
-            return await _onlineVisitRepository.FilterOnlineVisitRequestUserPanel(filter); 
+            return await _onlineVisitRepository.FilterOnlineVisitRequestUserPanel(filter);
         }
 
         #endregion
@@ -475,6 +477,235 @@ namespace DoctorFAM.Application.Services.Implementation
 
         #endregion
 
-       
+        #region Doctor Panel 
+
+        //Select List For Show List Of Avalable Shifts 
+        public async Task<List<SelectListViewModel>> SelectListForShowListOfAvailableShifts()
+        {
+            return await _onlineVisitRepository.SelectListForShowListOfAvailableShifts();
+        }
+
+        //Create Doctor Selected Online Visit Shift Date From Doctor Panel
+        public async Task<CreateDoctorSelectedOnlineVisitShiftDateViewModelResult> CreateDoctorSelectedOnlineVisitShiftDateFromDoctorPanel(CreateDoctorSelectedOnlineVisitShiftDateViewModel model, ulong memberUserId)
+        {
+            //Today Date Time
+            DateTime todayDateTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 0, 0);
+
+            //Incoming Date Time To Miladi
+            DateTime incomingDate = model.SelectedDateTime.ToMiladiDateTime();
+
+            #region Check Validation 
+
+            if (DateTime.Compare(incomingDate, todayDateTime) < 0)
+            {
+                return CreateDoctorSelectedOnlineVisitShiftDateViewModelResult.LaterSelectedDate;
+            }
+
+            if (model.OnlineVisitWorkShiftDetailId is null)
+            {
+                return CreateDoctorSelectedOnlineVisitShiftDateViewModelResult.Faild;
+            }
+
+            #endregion
+
+            #region Get Owner Organization Member
+
+            ulong organizationOwner = await _organizationService.GetOranizationOwnerIdByMemberUserId(memberUserId);
+            if (organizationOwner == 0) return CreateDoctorSelectedOnlineVisitShiftDateViewModelResult.Faild;
+
+            if (await _onlineVisitRepository.IsExistAnyWorkShiftDateForCurrentDoctor(organizationOwner, Convert.ToInt32($"{incomingDate.Year}{incomingDate.Month}{incomingDate.Day}")))
+            {
+                return CreateDoctorSelectedOnlineVisitShiftDateViewModelResult.DuplicateRecord;
+            }
+
+            #endregion
+
+            #region Add Online Visit Doctors Reservation Date
+
+            OnlineVisitDoctorsReservationDate doctorReservationDateSelected = new OnlineVisitDoctorsReservationDate()
+            {
+                DoctorUserId = organizationOwner,
+                OnlineVisitShiftDate = model.SelectedDateTime.ToMiladiDateTime(),
+                BusinessKey = Convert.ToInt32($"{incomingDate.Year}{incomingDate.Month}{incomingDate.Day}")
+            };
+
+            //Add To The Data Base 
+            await _onlineVisitRepository.AddOnlineVisitDoctorsReservationDateToTheDataBase(doctorReservationDateSelected);
+
+            #endregion
+
+            #region Add Online Visit Doctor Selected Work Shift Add Online Visit Doctors And Patients Reservation Detail
+
+            foreach (var item in model.OnlineVisitWorkShiftDetailId)
+            {
+                #region Add Online Visit Doctor Selected Work Shift
+
+                OnlineVisitDoctorSelectedWorkShift doctorSelectedWorkShift = new OnlineVisitDoctorSelectedWorkShift()
+                {
+                    OnlineVisitDoctorsReservationDateId = doctorReservationDateSelected.Id,
+                    OnlineVisitWorkShiftId = item
+                };
+
+                //Add doctorSelectedWorkShift
+                await _onlineVisitRepository.AddOnlineVisitDoctorSelectedWorkShiftWithoutSaveChanges(doctorSelectedWorkShift);
+
+                #endregion
+
+                #region Add Online Visit Doctors And Patients Reservation Detail
+
+                foreach (var reservationTimeDetailId in await _onlineVisitRepository.GetListOfWorkShiftsTimeDetailIdByWorkShiftId(item))
+                {
+                    OnlineVisitDoctorsAndPatientsReservationDetail reservationDetail = new OnlineVisitDoctorsAndPatientsReservationDetail()
+                    {
+                        OnlineVisitDoctorsReservationDateId = doctorReservationDateSelected.Id,
+                        PatientUserId = null,
+                        OnlineVisitWorkShiftDetail = reservationTimeDetailId,
+                        OnlineVisitWorkShiftId = item
+                    };
+
+                    //Add To The Data Base 
+                    await _onlineVisitRepository.AddOnlineVisitDoctorsAndPatientsReservationDetailToTheDataBaseWithoutSaveChanges(reservationDetail);
+                }
+
+                #endregion
+
+                //Save Changes 
+                await _onlineVisitRepository.SaveChanges();
+            }
+
+            #endregion
+
+            return CreateDoctorSelectedOnlineVisitShiftDateViewModelResult.Success;
+        }
+
+        //List Of Work Shift Dates From Doctor Panel 
+        public async Task<List<ListOfWorkShiftDatesFromDoctorPanelViewModel>?> FillListOfWorkShiftDatesFromDoctorPanelViewModel(ulong memberUserId)
+        {
+            #region Current Date Time
+
+            var dateTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 0, 0);
+
+            #endregion
+
+            #region Get Owner Organization Member
+
+            ulong organizationOwner = await _organizationService.GetOranizationOwnerIdByMemberUserId(memberUserId);
+            if (organizationOwner == 0) return null;
+
+            #endregion      
+
+            return await _onlineVisitRepository.GetValidatesWorkShiftDatesByDoctorUserIdForShowInDoctorPanel(organizationOwner);
+        }
+
+        //Fill Work Shift Date Detail Doctor Panel 
+        public async Task<List<WorkShiftDateDetailDoctorPanelViewModel>?> FillWorkShiftDateDetailDoctorPanel(ulong OnlineVisitDoctorsReservationDateId, ulong memberUserId)
+        {
+            #region Get Owner Organization Member
+
+            ulong organizationOwner = await _organizationService.GetOranizationOwnerIdByMemberUserId(memberUserId);
+            if (organizationOwner == 0) return null;
+
+            #endregion
+
+            #region Validation For Owner Organization 
+
+            if (!await _onlineVisitRepository.IsExistAnyOnlineVisitDoctorsReservationDateByDoctorUserId(OnlineVisitDoctorsReservationDateId, organizationOwner))
+            {
+                return null;
+            }
+
+            #endregion
+
+            return await _onlineVisitRepository.FillWorkShiftDateDetailDoctorPanel(OnlineVisitDoctorsReservationDateId);
+        }
+
+        //Get Work Shift Date By OnlineVisitDoctorsReservationDateId
+        public async Task<DateTime> GetWorkShiftDateByOnlineVisitDoctorsReservationDateId(ulong OnlineVisitDoctorsReservationDateId)
+        {
+            return await _onlineVisitRepository.GetWorkShiftDateByOnlineVisitDoctorsReservationDateId(OnlineVisitDoctorsReservationDateId);
+        }
+
+        //Fill OnlineVisitDoctorAndPatientInformationsDoctorPanelSideViewModel
+        public async Task<List<OnlineVisitDoctorAndPatientInformationsDoctorPanelSideViewModel>?> FillOnlineVisitDoctorAndPatientInformationsDoctorPanelSideViewModel(ulong doctorReservationDateId, ulong shiftId, ulong memberId)
+        {
+            #region Get Owner Organization Member
+
+            ulong organizationOwner = await _organizationService.GetOranizationOwnerIdByMemberUserId(memberId);
+            if (organizationOwner == 0) return null;
+
+            #endregion
+
+            #region Validation For Owner Organization 
+
+            if (!await _onlineVisitRepository.IsExistAnyOnlineVisitDoctorsReservationDateByDoctorUserId(doctorReservationDateId, organizationOwner))
+            {
+                return null;
+            }
+
+            #endregion
+
+            return await _onlineVisitRepository.FillOnlineVisitDoctorAndPatientInformationsDoctorPanelSideViewModel(doctorReservationDateId, shiftId);
+        }
+
+        #endregion
+
+        #region Admin Side 
+
+        //Fill List Of Work Shifts Dates Admin Side View Model
+        public async Task<List<ListOfWorkShiftsDatesAdminSideViewModel>> FillListOfWorkShiftsDatesAdminSideViewModel()
+        {
+            return await _onlineVisitRepository.FillListOfWorkShiftsDatesAdminSideViewModel();
+        }
+
+        //Fill ListOfWorkShiftDayDetailViewModel 
+        public async Task<List<ListOfWorkShiftDayDetailViewModel>?> FillListOfWorkShiftDayDetailViewModel(int businessKey)
+        {
+            #region Get Doctors Reservation Dates Id By business Key 
+
+            var doctorsReservationsDate = await _onlineVisitRepository.GetDoctorWorkShiftReservationIdByBusinessKetThatRenderFromDate(businessKey);
+            if (doctorsReservationsDate == null) return null;
+
+            #endregion
+
+            #region Get Doctors Selected Work Shift Dates 
+
+            //Create Instance
+            List<OnlineVisitWorkShift> onlineVisitWorkShifts = new List<OnlineVisitWorkShift>();
+
+            foreach (var item in doctorsReservationsDate)
+            {
+                List<OnlineVisitWorkShift> onlineVisitWork = await _onlineVisitRepository.GetDoctorWorkShiftSelecetedReservationDateByDoctorWorkShiftReservationId(item);
+                if (onlineVisitWork == null) return null;
+
+                onlineVisitWorkShifts.AddRange(onlineVisitWork);
+            }
+
+            #endregion
+
+            var returbModel = onlineVisitWorkShifts.GroupBy(p => p.StartShiftTime)
+                            .Select(p => new ListOfWorkShiftDayDetailViewModel()
+                            {
+                                EndTime = p.FirstOrDefault().EndShiftTime,
+                                StartTime = p.FirstOrDefault().StartShiftTime,
+                                WorkShiftId = p.FirstOrDefault().Id,
+                                DateBusinessKey = businessKey
+                            }).ToList();
+
+            return returbModel;
+        }
+
+        //Fill ListOfDoctorsInSelectedShiftAdminSideViewModel
+        public Task<List<ListOfDoctorsInSelectedShiftAdminSideViewModel>> FillListOfDoctorsInSelectedShiftAdminSideViewModel(ulong workShiftId, int dateBusinessKey)
+        {
+            return _onlineVisitRepository.FillListOfDoctorsInSelectedShiftAdminSideViewModel( workShiftId,  dateBusinessKey);
+        }
+
+        //Fill OnlineVisitDoctorAndPatientInformationsAdminPanelSideViewModel
+        public async Task<List<OnlineVisitDoctorAndPatientInformationsAdminPanelSideViewModel>?> FillOnlineVisitDoctorAndPatientInformationsAdminPanelSideViewModel(ulong doctorReservationDateId, ulong shiftId)
+        {
+            return await _onlineVisitRepository.FillOnlineVisitDoctorAndPatientInformationsAdminPanelSideViewModel(doctorReservationDateId, shiftId);
+        }
+
+        #endregion
     }
 }

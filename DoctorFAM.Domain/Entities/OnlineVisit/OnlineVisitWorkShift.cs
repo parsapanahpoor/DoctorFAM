@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DoctorFAM.Domain.Entities.OnlineVisit
 {
-    public class OnlineVisitWorkShift : BaseEntity
+    public sealed class OnlineVisitWorkShift : BaseEntity
     {
         #region propertiers
 

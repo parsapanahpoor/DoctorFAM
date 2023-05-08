@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DoctorFAM.Domain.Entities.Common
 {
-    public class BaseEntity
+    public abstract class BaseEntity
     {
         [Key]
         public ulong Id { get; set; }

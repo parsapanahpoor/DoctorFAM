@@ -6,6 +6,8 @@ using DoctorFAM.Domain.Entities.Notification;
 using DoctorFAM.Domain.Entities.Nurse;
 using DoctorFAM.Domain.Enums.Notification;
 using DoctorFAM.Domain.Interfaces;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.Notification;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -901,7 +903,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
         #endregion
 
-        #region Doctor User Panel 
+        #region Doctor Panel 
 
         //Create Notification For Send Accept Home Visit Request
         public async Task<bool> CreateNotificationForSendAcceptHomeVisitRequest(ulong targetId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId)
@@ -1039,6 +1041,12 @@ namespace DoctorFAM.Application.Services.Implementation
             #endregion
 
             return doctor;
+        }
+
+        //Get Doctor Notification By Doctor User Id
+        public async Task<List<ListOFDoctorNotificationForShowInDoctorPanelViewModel>?> GetDoctorNotificationByDoctorUserId(ulong doctorUserId)
+        {
+            return await _notificationService.GetDoctorNotificationByDoctorUserId(doctorUserId);
         }
 
         #endregion
