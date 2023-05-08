@@ -630,10 +630,19 @@ namespace DoctorFAM.Data.Repository
                     => new ListOfDoctorsInSelectedShiftAdminSideViewModel()
                     {
                         DoctorReservationDateId = onlineVisitDoctorReservationDate.Id,
-                        SelectedDateTime = onlineVisitDoctorReservationDate.OnlineVisitShiftDate.ToString(),
+                        SelectedDateTime = onlineVisitDoctorReservationDate.OnlineVisitShiftDate,
                         WorkShiftId = workShiftId,
+                        CountOFAllTimes = _context.OnlineVisitDoctorsAndPatientsReservationDetails.AsNoTracking()
+                                               .Count(p => !p.IsDelete && p.OnlineVisitDoctorsReservationDateId == onlineVisitDoctorReservationDate.Id),
+
+                        CountOfFressTimes = _context.OnlineVisitDoctorsAndPatientsReservationDetails.AsNoTracking()
+                                               .Count(p => !p.IsDelete && p.OnlineVisitDoctorsReservationDateId == onlineVisitDoctorReservationDate.Id && !p.PatientUserId.HasValue),
+
+                        CountOfReservedTimes = _context.OnlineVisitDoctorsAndPatientsReservationDetails.AsNoTracking()
+                                               .Count(p => !p.IsDelete && p.OnlineVisitDoctorsReservationDateId == onlineVisitDoctorReservationDate.Id && p.PatientUserId.HasValue),
+
                         WorkShiftInfo = _context.OnlineVisitWorkShift.Where(d => !d.IsDelete && d.Id == workShiftId)
-                                                                 .Select(d => d.StartShiftTime.ToString()).FirstOrDefault(),
+                                                                 .Select(d => d.StartShiftTime.ToString() + " تا " + d.EndShiftTime.ToString()).FirstOrDefault(),
 
                         DoctorUser = _context.Users.AsNoTracking().Where(u => !u.IsDelete && u.Id == onlineVisitDoctorReservationDate.DoctorUserId)
                                         .Select(u => new DoctorsInfosInSelectedShiftAdminSide()
@@ -647,6 +656,32 @@ namespace DoctorFAM.Data.Repository
                 ).ToListAsync();
 
             return returnModel;
+        }
+
+        //Fill OnlineVisitDoctorAndPatientInformationsAdminPanelSideViewModel
+        public async Task<List<OnlineVisitDoctorAndPatientInformationsAdminPanelSideViewModel>?> FillOnlineVisitDoctorAndPatientInformationsAdminPanelSideViewModel(ulong doctorReservationDateId, ulong shiftId)
+        {
+            return await _context.OnlineVisitDoctorsAndPatientsReservationDetails.AsNoTracking()
+                                    .Where(p => !p.IsDelete && p.OnlineVisitDoctorsReservationDateId == doctorReservationDateId && p.OnlineVisitWorkShiftId == shiftId)
+                                        .Select(p => new OnlineVisitDoctorAndPatientInformationsAdminPanelSideViewModel()
+                                        {
+                                            EndTime = _context.OnlineVisitWorkShiftDetails.AsNoTracking()
+                                                            .Where(s => !s.IsDelete && s.Id == p.OnlineVisitWorkShiftDetail)
+                                                                .Select(s => s.EndTime).FirstOrDefault(),
+
+                                            StartTime = _context.OnlineVisitWorkShiftDetails.AsNoTracking()
+                                                            .Where(s => !s.IsDelete && s.Id == p.OnlineVisitWorkShiftDetail)
+                                                                .Select(s => s.StartTime).FirstOrDefault(),
+
+                                            Patient = _context.Users.AsNoTracking().Where(s => !s.IsDelete && s.Id == p.PatientUserId)
+                                                                .Select(s => new OnlineVisitPatientInformationAdminPanelSideViewModel()
+                                                                {
+                                                                    Mobile = s.Mobile,
+                                                                    UserAvatar = s.Avatar,
+                                                                    UserId = s.Id,
+                                                                    Username = s.Username
+                                                                }).FirstOrDefault()
+                                        }).ToListAsync();
         }
 
         #endregion

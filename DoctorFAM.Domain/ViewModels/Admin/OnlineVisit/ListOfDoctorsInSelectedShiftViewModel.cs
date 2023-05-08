@@ -16,9 +16,15 @@ public class ListOfDoctorsInSelectedShiftAdminSideViewModel
 
     public string? WorkShiftInfo { get; set; }
 
-    public string? SelectedDateTime { get; set; }
+    public DateTime? SelectedDateTime { get; set; }
 
     public DoctorsInfosInSelectedShiftAdminSide? DoctorUser { get; set; }
+
+    public int CountOfReservedTimes { get; set; }
+
+    public int CountOfFressTimes { get; set; }
+
+    public int CountOFAllTimes { get; set; }
 
     #endregion
 }

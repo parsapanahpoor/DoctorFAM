@@ -2,6 +2,7 @@
 using DoctorFAM.Application.Interfaces;
 using DoctorFAM.Application.Services.Implementation;
 using DoctorFAM.Application.Services.Interfaces;
+using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.ViewModels.Admin.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Tikcet;
@@ -124,7 +125,7 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
         #region List Of Work Shift Day Detail
 
         [HttpGet]
-        public async Task<IActionResult> ListOfWorkShiftDayDetail(int workShiftId , string selectedDate)
+        public async Task<IActionResult> ListOfWorkShiftDayDetail(int workShiftId, string selectedDate)
         {
             #region View Bag 
 
@@ -140,11 +141,33 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers
         #region List Of Doctors In Selected Shift
 
         [HttpGet]
-        public async Task<IActionResult> ListOfDoctorsInSelectedShift(ulong workShiftId , int dateBusinessKey)
+        public async Task<IActionResult> ListOfDoctorsInSelectedShift(ulong workShiftId, int dateBusinessKey)
         {
             #region Fill Model
 
-            var model = await _onlineVisitService.FillListOfDoctorsInSelectedShiftAdminSideViewModel(workShiftId , dateBusinessKey);
+            var model = await _onlineVisitService.FillListOfDoctorsInSelectedShiftAdminSideViewModel(workShiftId, dateBusinessKey);
+
+            #endregion
+
+            return View(model);
+        }
+
+        #endregion
+
+        #region Online Visit Doctor And Patient Informations 
+
+        [HttpGet]
+        public async Task<IActionResult> OnlineVisitDoctorAndPatientInformations(ulong doctorReservationId, ulong WorkShiftId)
+        {
+            ViewData["workShiftDate"] = await _onlineVisitService.GetWorkShiftDateByOnlineVisitDoctorsReservationDateId(doctorReservationId);
+
+            #region Fill Model 
+
+            var model = await _onlineVisitService.FillOnlineVisitDoctorAndPatientInformationsAdminPanelSideViewModel( doctorReservationId, WorkShiftId);
+            if (model is null)
+            {
+                return NotFound();
+            }
 
             #endregion
 

@@ -700,6 +700,12 @@ namespace DoctorFAM.Application.Services.Implementation
             return _onlineVisitRepository.FillListOfDoctorsInSelectedShiftAdminSideViewModel( workShiftId,  dateBusinessKey);
         }
 
+        //Fill OnlineVisitDoctorAndPatientInformationsAdminPanelSideViewModel
+        public async Task<List<OnlineVisitDoctorAndPatientInformationsAdminPanelSideViewModel>?> FillOnlineVisitDoctorAndPatientInformationsAdminPanelSideViewModel(ulong doctorReservationDateId, ulong shiftId)
+        {
+            return await _onlineVisitRepository.FillOnlineVisitDoctorAndPatientInformationsAdminPanelSideViewModel(doctorReservationDateId, shiftId);
+        }
+
         #endregion
     }
 }
