@@ -32,7 +32,7 @@
 
                             <div class="form-group col-md-12">
                                 <label asp-for="CashDesk"></label>
-                                <input type="text" class="form-control" readonly placeholder="@Model.CashDesk.Value.ToString("#,000") ریال" />
+                                <input type="text" class="form-control" readonly placeholder="@((Model.CashDesk.HasValue)? Model.CashDesk.Value.ToString(" #,000")+"ریال "   : "خالی")" />
                             </div>
 
                             <div class="form-group col-md-12">
