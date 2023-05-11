@@ -22,6 +22,8 @@ namespace DoctorFAM.Domain.Entities.OnlineVisit
         //Navigation Property
         public ulong OnlineVisitWorkShiftId { get; set; }
 
+        public bool IsExistAnyRequestForThisShift { get; set; }
+
         #endregion
     }
 }
