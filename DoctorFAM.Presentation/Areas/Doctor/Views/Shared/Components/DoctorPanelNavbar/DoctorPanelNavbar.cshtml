@@ -25,27 +25,15 @@
             </div>
             <!-- /Navbar Barnd -->
             <!-- Sidebar Collapse -->
-            <div class="sidebar-collapse" id="sidebar-collapse">
-                <i class="collapse-icon fa fa-bars"></i>
-            </div>
+            @* <div class="sidebar-collapse" id="sidebar-collapse">
+            <i class="collapse-icon fa fa-bars"></i>
+            </div>*@
             <!-- /Sidebar Collapse -->
             <!-- Account Area and Settings --->
             <div class="navbar-header pull-left">
                 <div class="navbar-account">
                     <ul class="account-area">
 
-                        <!--Notification-->
-                        <li class="marli margin-left-10">
-
-                            <a class="btn btn-success wave in" id="chat-link" title="هشدارها" href="#">
-                                @SharedLocalizer["Notofications"]
-                            </a>
-
-                        </li>
-
-                        @await Component.InvokeAsync("FollowersOnNavbarLayout")
-
-                        @await Component.InvokeAsync("ShowLastestFamilyDoctorRequestInNavbar")
 
 
                         @*<!--Online-->
@@ -90,8 +78,11 @@
 
                         </li>*@
 
+
+
+                        <!--Notification-->
                         <!--Online-->
-                        <li class="marli margin-left-10" id="Online">
+                        <li style="margin-top:20px;" id="Online">
 
                             <a class="dropdown-toggle btn btn-success" href="#">
                                 موجودی : @Model.WalletBalance.ToString("#,000") ریال
@@ -99,7 +90,19 @@
 
                         </li>
 
-                        <li>
+                        <li style="margin-top:20px;">
+
+                            <a class="btn btn-success wave in" id="chat-link" title="هشدارها" href="#">
+                                @SharedLocalizer["Notofications"]
+                            </a>
+
+                        </li>
+
+                        @await Component.InvokeAsync("FollowersOnNavbarLayout")
+
+                        @await Component.InvokeAsync("ShowLastestFamilyDoctorRequestInNavbar")
+
+                        <li class="marli ">
                             <a class="login-area dropdown-toggle" data-toggle="dropdown">
                                 <div class="avatar" title="View your public profile">
                                     <img src="@Model.GetUserAvatar()">
@@ -335,6 +338,8 @@
                             </ul>
                             <!--/Login Area Dropdown-->
                         </li>
+
+
 
                     </ul>
 

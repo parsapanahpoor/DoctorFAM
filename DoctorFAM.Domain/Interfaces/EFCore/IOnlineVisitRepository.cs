@@ -3,6 +3,7 @@ using DoctorFAM.Domain.Entities.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.Admin.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.Common;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.OnlineVisit;
+using DoctorFAM.Domain.ViewModels.Site.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.UserPanel.OnlineVisit;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -112,6 +113,22 @@ namespace DoctorFAM.Domain.Interfaces
 
         //Fill OnlineVisitDoctorAndPatientInformationsAdminPanelSideViewModel
         Task<List<OnlineVisitDoctorAndPatientInformationsAdminPanelSideViewModel>?> FillOnlineVisitDoctorAndPatientInformationsAdminPanelSideViewModel(ulong doctorReservationDateId, ulong shiftId);
+
+        #endregion
+
+        #region Site Side 
+
+        //List Of Work Shift Days
+        Task<List<ListOfDaysForShowSiteSideViewModel>> FillListOfDaysForShowSiteSideViewModel();
+
+        //Get List Of Docotrs Reservation Dates With Date Business Key
+        Task<List<ulong>> GetListOfDocotrsReservationDatesWithDateBusinessKey(int businessKey);
+
+        //Fill ListOfShiftSiteSideViewModel
+        Task<List<ListOfShiftSiteSideViewModel>> FillListOfShiftSiteSideViewModel(ulong listOFDoctorsInThisDay, int businessKey);
+
+        //Get String Of Start Time And End Shift Time
+        string GetStringOfStartTimeAndEndShiftTime(ulong WorkShiftDateTimeId);
 
         #endregion
     }
