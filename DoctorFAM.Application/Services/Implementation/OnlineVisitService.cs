@@ -793,6 +793,25 @@ namespace DoctorFAM.Application.Services.Implementation
             };
         }
 
+        // Add User Online Visit Request To The Data Base 
+        public async Task<ulong> AddUserOnlineVisitRequestToTheDataBase(SelectShiftAndRedirectToBankDTO model)
+        {
+            #region Fill Entity Instance
+
+            OnlineVisitUserRequestDetail entity = new OnlineVisitUserRequestDetail()
+            {
+                DayDatebusinessKey = model.businessKey,
+                UserId = model.UserId,
+                WorkShiftDateId = model.WorkShiftDateId,
+                WorkShiftDateTimeId = model.WorkShiftDateTimeId
+            };
+
+            #endregion
+
+            await _onlineVisitRepository.AddUserOnlineVisitRequestToTheDataBase(entity);
+            return entity.Id;
+        }
+
         #endregion
     }
 }

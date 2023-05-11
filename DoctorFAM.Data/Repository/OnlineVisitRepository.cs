@@ -1,5 +1,6 @@
 ﻿using DoctorFAM.Data.DbContext;
 using DoctorFAM.Data.Migrations;
+using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Contact;
 using DoctorFAM.Domain.Entities.Doctors;
@@ -18,6 +19,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.Intrinsics.Arm;
@@ -763,6 +765,13 @@ namespace DoctorFAM.Data.Repository
             }
 
             return returnModel;
+        }
+
+        //Add User Online Visit Request To The Data Base
+        public async Task AddUserOnlineVisitRequestToTheDataBase(OnlineVisitUserRequestDetail model)
+        {
+            await _context.OnlineVisitUserRequestDetails.AddAsync(model);
+            await _context.SaveChangesAsync();
         }
 
         #endregion

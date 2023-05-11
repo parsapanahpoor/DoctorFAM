@@ -125,6 +125,9 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Select Shift And Redirect To Bank
         Task<SelectShiftAndRedirectToBankResult> SelectShiftAndRedirectToBank(SelectShiftAndRedirectToBankDTO model);
 
+        // Add User Online Visit Request To The Data Base 
+        Task<ulong> AddUserOnlineVisitRequestToTheDataBase(SelectShiftAndRedirectToBankDTO model);
+
         #endregion
     }
 }

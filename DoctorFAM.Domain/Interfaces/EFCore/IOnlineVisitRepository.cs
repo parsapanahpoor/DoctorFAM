@@ -133,6 +133,9 @@ namespace DoctorFAM.Domain.Interfaces
         //Check That Is Exist Free Shift 
         Task<int> CheckThatIsExistFreeShift(ulong WorkShiftDateTimeId, ulong WorkShiftDateId, List<ulong> doctorReservations);
 
+        //Add User Online Visit Request To The Data Base
+        Task AddUserOnlineVisitRequestToTheDataBase(OnlineVisitUserRequestDetail model);
+
         #endregion
     }
 }

@@ -4,6 +4,8 @@ using DoctorFAM.Application.Convertors;
 using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Interfaces;
 using DoctorFAM.Application.Services.Interfaces;
+using DoctorFAM.Application.StaticTools;
+using DoctorFAM.Domain.Entities.Wallet;
 using DoctorFAM.Domain.ViewModels.Site.Notification;
 using DoctorFAM.Domain.ViewModels.Site.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
@@ -411,7 +413,7 @@ public class OnlineVisitController : SiteBaseController
 
     #region Select Shift And Redirect To Bank
 
-    public async Task<IActionResult> SelectShiftAndRedirectToBank(int businessKey , ulong WorkShiftDateTimeId , ulong WorkShiftDateId)
+    public async Task<IActionResult> SelectShiftAndRedirectToBank(int businessKey, ulong WorkShiftDateTimeId, ulong WorkShiftDateId)
     {
         #region Instance Of DTO
 
@@ -431,8 +433,8 @@ public class OnlineVisitController : SiteBaseController
 
         if (res.Result == SelectShiftAndRedirectToBankResultEnum.UserIsNotExist)
         {
-                TempData[ErrorMessage] = "کاربر یافت نشده است.";
-                return RedirectToAction(nameof(ListOfShifts) , new { businessKey = businessKey });
+            TempData[ErrorMessage] = "کاربر یافت نشده است.";
+            return RedirectToAction(nameof(ListOfShifts), new { businessKey = businessKey });
         }
 
         if (res.Result == SelectShiftAndRedirectToBankResultEnum.ProblemWithOnlineVisitTariff)
@@ -449,9 +451,24 @@ public class OnlineVisitController : SiteBaseController
 
         #endregion
 
+        #region Add User Request To Data Base
 
+        var requestId = await _onlineVisitService.AddUserOnlineVisitRequestToTheDataBase(model);
 
-        return View();
+        #endregion
+
+        #region Online Payment
+
+        return RedirectToAction("PaymentMethod", "Payment", new
+        {
+            gatewayType = GatewayType.Zarinpal,
+            amount = res.OnlineVisitTariff,
+            description = "شارژ حساب کاربری برای پرداخت هزینه ی ویزیت در آنلاین",
+            returURL = $"{PathTools.SiteAddress}/OnlineVisitPayment/" + requestId,
+            requestId = requestId
+        });
+
+        #endregion
     }
 
     #endregion
