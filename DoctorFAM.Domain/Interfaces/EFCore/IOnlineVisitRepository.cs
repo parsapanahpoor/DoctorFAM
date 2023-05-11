@@ -130,6 +130,9 @@ namespace DoctorFAM.Domain.Interfaces
         //Get String Of Start Time And End Shift Time
         string GetStringOfStartTimeAndEndShiftTime(ulong WorkShiftDateTimeId);
 
+        //Check That Is Exist Free Shift 
+        Task<int> CheckThatIsExistFreeShift(ulong WorkShiftDateTimeId, ulong WorkShiftDateId, List<ulong> doctorReservations);
+
         #endregion
     }
 }

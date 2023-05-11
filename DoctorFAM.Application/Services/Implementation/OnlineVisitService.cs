@@ -49,10 +49,12 @@ namespace DoctorFAM.Application.Services.Implementation
         private readonly IWalletRepository _walletRepository;
         private readonly IHomePharmacyServicec _homePharmacyService;
         private readonly IOrganizationService _organizationService;
+        private readonly ISiteSettingService _siteSettingService;
 
         public OnlineVisitService(IOnlineVisitRepository onlineVisitRepository, IUserService userService, IRequestService requestService
                                     , IPatientService patientService, ILocationService locationService, IWalletRepository walletRepository
-                                            , IHomePharmacyServicec homePharmacyService, IOrganizationService organizationService)
+                                            , IHomePharmacyServicec homePharmacyService, IOrganizationService organizationService
+                                                , ISiteSettingService siteSettingService)
         {
             _onlineVisitRepository = onlineVisitRepository;
             _userService = userService;
@@ -62,6 +64,7 @@ namespace DoctorFAM.Application.Services.Implementation
             _walletRepository = walletRepository;
             _homePharmacyService = homePharmacyService;
             _organizationService = organizationService;
+            _siteSettingService = siteSettingService;
         }
 
         #endregion
@@ -560,7 +563,8 @@ namespace DoctorFAM.Application.Services.Implementation
                         OnlineVisitDoctorsReservationDateId = doctorReservationDateSelected.Id,
                         PatientUserId = null,
                         OnlineVisitWorkShiftDetail = reservationTimeDetailId,
-                        OnlineVisitWorkShiftId = item
+                        OnlineVisitWorkShiftId = item,
+                        IsExistAnyRequestForThisShift = false
                     };
 
                     //Add To The Data Base 
@@ -737,6 +741,56 @@ namespace DoctorFAM.Application.Services.Implementation
                                        WorkShiftDateTimeId = p.FirstOrDefault().WorkShiftDateTimeId,
                                        WorkShiftDateId = p.FirstOrDefault().WorkShiftDateId
                                    }).ToList();
+        }
+
+        //Select Shift And Redirect To Bank
+        public async Task<SelectShiftAndRedirectToBankResult> SelectShiftAndRedirectToBank(SelectShiftAndRedirectToBankDTO model)
+        {
+            #region Check That Is User Exist 
+
+            var user = await _userService.GetUserById(model.UserId);
+            if (user == null) return new SelectShiftAndRedirectToBankResult()
+            {
+                Result = SelectShiftAndRedirectToBankResultEnum.UserIsNotExist,
+                OnlineVisitTariff = 0
+            };
+
+            #endregion
+
+            #region Check Is Exist Free Shift 
+
+            List<ulong> doctorReservationIds = await _onlineVisitRepository.GetListOfDocotrsReservationDatesWithDateBusinessKey(model.businessKey);
+            if (doctorReservationIds == null) return new SelectShiftAndRedirectToBankResult()
+            {
+                Result = SelectShiftAndRedirectToBankResultEnum.NotExistFreeTime,
+                OnlineVisitTariff = 0
+            };
+
+            int res = await _onlineVisitRepository.CheckThatIsExistFreeShift(model.WorkShiftDateTimeId, model.WorkShiftDateId, doctorReservationIds);
+            if (res == 0) return new SelectShiftAndRedirectToBankResult()
+            {
+                Result = SelectShiftAndRedirectToBankResultEnum.NotExistFreeTime,
+                OnlineVisitTariff = 0
+            };
+
+            #endregion
+
+            #region Get Online Visit Tariff
+
+            int onlineVisitTariff = await _siteSettingService.GetOnlineVisitTariff();
+            if (onlineVisitTariff == 0) return new SelectShiftAndRedirectToBankResult()
+            {
+                Result = SelectShiftAndRedirectToBankResultEnum.ProblemWithOnlineVisitTariff,
+                OnlineVisitTariff = 0
+            };
+
+            #endregion
+
+            return new SelectShiftAndRedirectToBankResult()
+            {
+                Result = SelectShiftAndRedirectToBankResultEnum.Success,
+                OnlineVisitTariff = onlineVisitTariff
+            };
         }
 
         #endregion

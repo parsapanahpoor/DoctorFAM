@@ -122,6 +122,9 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Fill ListOfShiftSiteSideViewModel
         Task<List<ListOfShiftSiteSideViewModel>> FillListOfShiftSiteSideViewModel(int businessKey);
 
+        //Select Shift And Redirect To Bank
+        Task<SelectShiftAndRedirectToBankResult> SelectShiftAndRedirectToBank(SelectShiftAndRedirectToBankDTO model);
+
         #endregion
     }
 }

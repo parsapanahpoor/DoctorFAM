@@ -12,6 +12,7 @@ using DoctorFAM.Web.Hubs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
 
 #endregion
 
@@ -404,6 +405,51 @@ public class OnlineVisitController : SiteBaseController
     public async Task<IActionResult> ListOfShifts(int businessKey)
     {
         return View(await _onlineVisitService.FillListOfShiftSiteSideViewModel(businessKey));
+    }
+
+    #endregion
+
+    #region Select Shift And Redirect To Bank
+
+    public async Task<IActionResult> SelectShiftAndRedirectToBank(int businessKey , ulong WorkShiftDateTimeId , ulong WorkShiftDateId)
+    {
+        #region Instance Of DTO
+
+        SelectShiftAndRedirectToBankDTO model = new SelectShiftAndRedirectToBankDTO()
+        {
+            businessKey = businessKey,
+            UserId = User.GetUserId(),
+            WorkShiftDateId = WorkShiftDateId,
+            WorkShiftDateTimeId = WorkShiftDateTimeId
+        };
+
+        #endregion
+
+        #region Check Validations And Online Visit Tariff
+
+        var res = await _onlineVisitService.SelectShiftAndRedirectToBank(model);
+
+        if (res.Result == SelectShiftAndRedirectToBankResultEnum.UserIsNotExist)
+        {
+                TempData[ErrorMessage] = "کاربر یافت نشده است.";
+                return RedirectToAction(nameof(ListOfShifts) , new { businessKey = businessKey });
+        }
+
+        if (res.Result == SelectShiftAndRedirectToBankResultEnum.ProblemWithOnlineVisitTariff)
+        {
+            TempData[ErrorMessage] = "لطفا با پشتیبانی تماس بگیرید.";
+            return RedirectToAction(nameof(ListOfShifts), new { businessKey = businessKey });
+        }
+
+        if (res.Result == SelectShiftAndRedirectToBankResultEnum.NotExistFreeTime)
+        {
+            TempData[ErrorMessage] = "زمان خالی برای شیفت مورد نظر شما یافت نشده است.";
+            return RedirectToAction(nameof(ListOfShifts), new { businessKey = businessKey });
+        }
+
+        #endregion
+
+        return View();
     }
 
     #endregion
