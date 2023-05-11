@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DoctorFAM.Domain.Entities.Books;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,6 +18,8 @@ namespace DoctorFAM.Domain.ViewModels.Site.OnlineVisit
         public ulong WorkShiftDateTimeId { get; set; }
 
         public ulong WorkShiftDateId { get; set; }
+
+        public bool IsFinaly { get; set; }
 
         #endregion
     }
