@@ -10,13 +10,16 @@ using DoctorFAM.Domain.ViewModels.Admin.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.Common;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.HomeVisit;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.OnlineVisit;
+using DoctorFAM.Domain.ViewModels.Site.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.UserPanel.OnlineVisit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Runtime.Intrinsics.Arm;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -633,13 +636,13 @@ namespace DoctorFAM.Data.Repository
                         SelectedDateTime = onlineVisitDoctorReservationDate.OnlineVisitShiftDate,
                         WorkShiftId = workShiftId,
                         CountOFAllTimes = _context.OnlineVisitDoctorsAndPatientsReservationDetails.AsNoTracking()
-                                               .Count(p => !p.IsDelete && p.OnlineVisitDoctorsReservationDateId == onlineVisitDoctorReservationDate.Id),
+                                               .Count(p => !p.IsDelete && p.OnlineVisitDoctorsReservationDateId == onlineVisitDoctorReservationDate.Id && p.OnlineVisitWorkShiftId == workShiftId),
 
                         CountOfFressTimes = _context.OnlineVisitDoctorsAndPatientsReservationDetails.AsNoTracking()
-                                               .Count(p => !p.IsDelete && p.OnlineVisitDoctorsReservationDateId == onlineVisitDoctorReservationDate.Id && !p.PatientUserId.HasValue),
+                                               .Count(p => !p.IsDelete && p.OnlineVisitDoctorsReservationDateId == onlineVisitDoctorReservationDate.Id && !p.PatientUserId.HasValue && p.OnlineVisitWorkShiftId == workShiftId),
 
                         CountOfReservedTimes = _context.OnlineVisitDoctorsAndPatientsReservationDetails.AsNoTracking()
-                                               .Count(p => !p.IsDelete && p.OnlineVisitDoctorsReservationDateId == onlineVisitDoctorReservationDate.Id && p.PatientUserId.HasValue),
+                                               .Count(p => !p.IsDelete && p.OnlineVisitDoctorsReservationDateId == onlineVisitDoctorReservationDate.Id && p.PatientUserId.HasValue && p.OnlineVisitWorkShiftId == workShiftId),
 
                         WorkShiftInfo = _context.OnlineVisitWorkShift.Where(d => !d.IsDelete && d.Id == workShiftId)
                                                                  .Select(d => d.StartShiftTime.ToString() + " تا " + d.EndShiftTime.ToString()).FirstOrDefault(),
@@ -686,5 +689,58 @@ namespace DoctorFAM.Data.Repository
 
         #endregion
 
+        #region Site Side 
+
+        //List Of Work Shift Days
+        public async Task<List<ListOfDaysForShowSiteSideViewModel>> FillListOfDaysForShowSiteSideViewModel()
+        {
+            #region Current Date Time
+
+            var dateTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 0, 0);
+
+            #endregion
+
+            return await _context.OnlineVisitDoctorsReservationDates.AsNoTracking()
+                                            .Where(p => !p.IsDelete && DateTime.Compare(p.OnlineVisitShiftDate, dateTime) >= 0)
+                                            .GroupBy(p => p.OnlineVisitShiftDate)
+                                            .Select(p => new ListOfDaysForShowSiteSideViewModel()
+                                            {
+                                                WorkShiftDate = p.Select(s => s.OnlineVisitShiftDate).FirstOrDefault(),
+                                                BusinessKey = p.Select(s => s.BusinessKey).FirstOrDefault(),
+
+                                            }).ToListAsync();
+        }
+
+        //Get List Of Docotrs Reservation Dates With Date Business Key
+        public async Task<List<ulong>> GetListOfDocotrsReservationDatesWithDateBusinessKey(int businessKey)
+        {
+            return await _context.OnlineVisitDoctorsReservationDates.AsNoTracking()
+                                                .Where(p => !p.IsDelete && p.BusinessKey == businessKey)
+                                                .Select(p => p.Id).ToListAsync();
+        }
+
+        //Fill ListOfShiftSiteSideViewModel
+        public async Task<List<ListOfShiftSiteSideViewModel>> FillListOfShiftSiteSideViewModel(ulong listOFDoctorsInThisDay , int businessKey)
+        {
+            return await _context.OnlineVisitDoctorsAndPatientsReservationDetails.AsNoTracking()
+                                                .Where(p => !p.IsDelete && p.OnlineVisitDoctorsReservationDateId == listOFDoctorsInThisDay
+                                                        && !p.PatientUserId.HasValue)
+                                                .Select(p => new ListOfShiftSiteSideViewModel()
+                                                {
+                                                    businessKey = businessKey,
+                                                    WorkShiftDateTimeId = p.OnlineVisitWorkShiftDetail,
+                                                    WorkShiftDateId = p.OnlineVisitWorkShiftId
+                                                }).ToListAsync();
+        }
+
+        //Get String Of Start Time And End Shift Time
+        public  string GetStringOfStartTimeAndEndShiftTime(ulong WorkShiftDateTimeId)
+        {
+            return _context.OnlineVisitWorkShiftDetails.AsNoTracking()
+                                                           .Where(d => d.Id == WorkShiftDateTimeId)
+                                                            .Select(d => d.EndTime + " تا " + d.StartTime).FirstOrDefault();
+        }
+
+        #endregion
     }
 }

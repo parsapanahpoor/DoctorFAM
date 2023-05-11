@@ -697,13 +697,46 @@ namespace DoctorFAM.Application.Services.Implementation
         //Fill ListOfDoctorsInSelectedShiftAdminSideViewModel
         public Task<List<ListOfDoctorsInSelectedShiftAdminSideViewModel>> FillListOfDoctorsInSelectedShiftAdminSideViewModel(ulong workShiftId, int dateBusinessKey)
         {
-            return _onlineVisitRepository.FillListOfDoctorsInSelectedShiftAdminSideViewModel( workShiftId,  dateBusinessKey);
+            return _onlineVisitRepository.FillListOfDoctorsInSelectedShiftAdminSideViewModel(workShiftId, dateBusinessKey);
         }
 
         //Fill OnlineVisitDoctorAndPatientInformationsAdminPanelSideViewModel
         public async Task<List<OnlineVisitDoctorAndPatientInformationsAdminPanelSideViewModel>?> FillOnlineVisitDoctorAndPatientInformationsAdminPanelSideViewModel(ulong doctorReservationDateId, ulong shiftId)
         {
             return await _onlineVisitRepository.FillOnlineVisitDoctorAndPatientInformationsAdminPanelSideViewModel(doctorReservationDateId, shiftId);
+        }
+
+        #endregion
+
+        #region Site Side 
+
+        //List Of Work Shift Days
+        public async Task<List<ListOfDaysForShowSiteSideViewModel>> FillListOfDaysForShowSiteSideViewModel()
+        {
+            return await _onlineVisitRepository.FillListOfDaysForShowSiteSideViewModel();
+        }
+
+        //Fill ListOfShiftSiteSideViewModel
+        public async Task<List<ListOfShiftSiteSideViewModel>> FillListOfShiftSiteSideViewModel(int businessKey)
+        {
+            //Create Instance For Return Model
+            List<ListOfShiftSiteSideViewModel> returnModel = new List<ListOfShiftSiteSideViewModel>();
+
+            List<ulong> listOFDoctorsInThisDay = await _onlineVisitRepository.GetListOfDocotrsReservationDatesWithDateBusinessKey(businessKey);
+
+            foreach (var item in listOFDoctorsInThisDay)
+            {
+                returnModel.AddRange(await _onlineVisitRepository.FillListOfShiftSiteSideViewModel(item, businessKey));
+            }
+
+            return returnModel.GroupBy(p => p.WorkShiftDateTimeId)
+                                   .Select(p => new ListOfShiftSiteSideViewModel()
+                                   {
+                                       businessKey = businessKey,
+                                       ShiftTime = _onlineVisitRepository.GetStringOfStartTimeAndEndShiftTime(p.FirstOrDefault().WorkShiftDateTimeId),
+                                       WorkShiftDateTimeId = p.FirstOrDefault().WorkShiftDateTimeId,
+                                       WorkShiftDateId = p.FirstOrDefault().WorkShiftDateId
+                                   }).ToList();
         }
 
         #endregion

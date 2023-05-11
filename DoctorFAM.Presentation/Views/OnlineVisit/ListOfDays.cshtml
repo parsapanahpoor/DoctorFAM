@@ -1,0 +1,49 @@
+﻿@model List<DoctorFAM.Domain.ViewModels.Site.OnlineVisit.ListOfDaysForShowSiteSideViewModel>
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.Utils
+
+@{
+    ViewBag.Title = "تاریخ روز های موجود سیستم";
+}
+
+@section Scripts
+    {
+    <partial name="_JqueryValidation" />
+}
+
+<div class="content">
+    <div class="container">
+        @if (Model != null && Model.Any())
+        {
+            <div class="card booking-schedule schedule-widget" style="margin-top:20px;margin-bottom:20px">
+                <div class="schedule-cont">
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            <div class="time-slot">
+                                <ul class="clearfix">
+
+                                    @foreach (var day in Model)
+                                    {
+                                        <li class="form-group col-md-2 col-sm-12" style="margin-top:10px;">
+                                            <a asp-action="ListOfShifts"
+                                            asp-area=""
+                                            asp-controller="OnlineVisit"
+                                            asp-route-businessKey="@day.BusinessKey"
+                                       style="background-color: #197c66;border: 1px solid #fccf9a;color: #fff;">
+                                                @day.WorkShiftDate.ToShamsi()
+                                            </a>
+                                        </li>
+                                    }
+
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

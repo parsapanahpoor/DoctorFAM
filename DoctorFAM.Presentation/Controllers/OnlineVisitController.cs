@@ -1,9 +1,9 @@
-﻿using DoctorFAM.Application.Convertors;
+﻿#region Usings
+
+using DoctorFAM.Application.Convertors;
 using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Interfaces;
-using DoctorFAM.Application.Services.Implementation;
 using DoctorFAM.Application.Services.Interfaces;
-using DoctorFAM.Domain.Entities.PopulationCovered;
 using DoctorFAM.Domain.ViewModels.Site.Notification;
 using DoctorFAM.Domain.ViewModels.Site.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
@@ -12,238 +12,304 @@ using DoctorFAM.Web.Hubs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
-namespace DoctorFAM.Web.Controllers
+#endregion
+
+namespace DoctorFAM.Web.Controllers;
+
+[Authorize]
+public class OnlineVisitController : SiteBaseController
 {
-    [Authorize]
-    public class OnlineVisitController : SiteBaseController
+    #region ctor
+
+    private readonly IOnlineVisitService _onlineVisitService;
+    private readonly IRequestService _requestService;
+    private readonly IUserService _userService;
+    private readonly IPatientService _patientService;
+    private readonly ILocationService _locationService;
+    private readonly ISiteSettingService _siteSettingService;
+    private readonly IHubContext<NotificationHub> _notificationHub;
+    private readonly INotificationService _notificationService;
+
+    public OnlineVisitController(IOnlineVisitService onlineVisitService, IRequestService requestService,
+                                    IUserService userService, IPatientService patientService, ILocationService locationService
+                                        , ISiteSettingService siteSettingService, IHubContext<NotificationHub> notificationHub
+                                            , INotificationService notificationService)
     {
-        #region ctor
+        _onlineVisitService = onlineVisitService;
+        _requestService = requestService;
+        _userService = userService;
+        _patientService = patientService;
+        _locationService = locationService;
+        _siteSettingService = siteSettingService;
+        _notificationHub = notificationHub;
+        _notificationService = notificationService;
+    }
 
-        private readonly IOnlineVisitService _onlineVisitService;
-        private readonly IRequestService _requestService;
-        private readonly IUserService _userService;
-        private readonly IPatientService _patientService;
-        private readonly ILocationService _locationService;
-        private readonly ISiteSettingService _siteSettingService;
-        private readonly IHubContext<NotificationHub> _notificationHub;
-        private readonly INotificationService _notificationService;
+    #endregion
 
-        public OnlineVisitController(IOnlineVisitService onlineVisitService, IRequestService requestService,
-                                        IUserService userService, IPatientService patientService , ILocationService locationService
-                                            , ISiteSettingService siteSettingService, IHubContext<NotificationHub> notificationHub
-                                                , INotificationService notificationService)
+    #region Last Methods That Must Delete
+
+    #region Home Visit
+
+    [HttpGet]
+    public async Task<IActionResult> OnlineVisit()
+    {
+        return View();
+    }
+
+    [HttpPost, ValidateAntiForgeryToken]
+    public async Task<IActionResult> OnlineVisit(RequestViewModel request)
+    {
+        #region Create New Request
+
+        var requestId = await _onlineVisitService.CreateOnlineVisitRequest(User.GetUserId());
+
+        if (requestId == null) return NotFound();
+
+        #endregion
+
+        return RedirectToAction("PatientDetails", "OnlineVisit", new { requestId = requestId });
+    }
+
+    #endregion
+
+    #region Patient Details
+
+    [HttpGet]
+    public async Task<IActionResult> PatientDetails(ulong requestId)
+    {
+        #region Data Validation
+
+        if (!await _requestService.IsExistRequestByRequestId(requestId)) return NotFound();
+
+        if (!await _userService.IsExistUserById(User.GetUserId())) return NotFound();
+
+        #endregion
+
+        #region Get User By Id 
+
+        var user = await _userService.GetUserById(User.GetUserId());
+
+        #endregion
+
+        #region Page Data
+
+        ViewData["Countries"] = await _locationService.GetAllCountries();
+
+        #endregion
+
+        //Send List Of Insurance To The View
+        ViewBag.Insurances = await _siteSettingService.ListOfInsurance();
+
+        return View(new PatientDetailForOnlineVisitViewModel()
         {
-            _onlineVisitService = onlineVisitService;
-            _requestService = requestService;
-            _userService = userService;
-            _patientService = patientService;
-            _locationService = locationService;
-            _siteSettingService = siteSettingService;
-            _notificationHub = notificationHub;
-            _notificationService = notificationService;
+            RequestId = requestId,
+            UserId = User.GetUserId(),
+            NationalId = !string.IsNullOrEmpty(user.NationalId) ? user.NationalId : null,
+            PatientName = !string.IsNullOrEmpty(user.FirstName) ? user.FirstName : null,
+            PatientLastName = !string.IsNullOrEmpty(user.LastName) ? user.LastName : null,
+        });
+    }
+
+    [HttpPost, ValidateAntiForgeryToken]
+    public async Task<IActionResult> PatientDetails(PatientDetailForOnlineVisitViewModel patient)
+    {
+        #region Page Data
+
+        ViewData["Countries"] = await _locationService.GetAllCountries();
+
+        #endregion
+
+        #region Data Validation
+
+        if (!await _userService.IsExistUserById(User.GetUserId())) return NotFound();
+
+        #endregion
+
+        #region Model State
+
+        if (!ModelState.IsValid)
+        {
+            if (!string.IsNullOrEmpty(patient.RequestDescription))
+            {
+                return NotFound();
+            }
         }
 
         #endregion
 
-        #region Home Visit
+        #region Validate model 
 
-        [HttpGet]
-        public async Task<IActionResult> OnlineVisit()
+        var result = await _onlineVisitService.ValidateCreatePatient(patient);
+
+        switch (result)
         {
-            return View();
-        }
+            case CreatePatientResult.Faild:
+                return NotFound();
 
-        [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> OnlineVisit(RequestViewModel request)
-        {
-            #region Create New Request
+            case CreatePatientResult.RequestIdNotFound:
+                return NotFound();
 
-            var requestId = await _onlineVisitService.CreateOnlineVisitRequest(User.GetUserId());
+            case CreatePatientResult.Success:
 
-            if (requestId == null) return NotFound();
-
-            #endregion
-
-            return RedirectToAction("PatientDetails", "OnlineVisit", new { requestId = requestId });
-        }
-
-        #endregion
-
-        #region Patient Details
-
-        [HttpGet]
-        public async Task<IActionResult> PatientDetails(ulong requestId)
-        {
-            #region Data Validation
-
-            if (!await _requestService.IsExistRequestByRequestId(requestId)) return NotFound();
-
-            if (!await _userService.IsExistUserById(User.GetUserId())) return NotFound();
-
-            #endregion
-
-            #region Get User By Id 
-
-            var user = await _userService.GetUserById(User.GetUserId());
-
-            #endregion
-
-            #region Page Data
-
-            ViewData["Countries"] = await _locationService.GetAllCountries();
-
-            #endregion
-
-            //Send List Of Insurance To The View
-            ViewBag.Insurances = await _siteSettingService.ListOfInsurance();
-
-            return View(new PatientDetailForOnlineVisitViewModel()
-            {
-                RequestId = requestId,
-                UserId = User.GetUserId(),
-                NationalId = !string.IsNullOrEmpty(user.NationalId) ? user.NationalId : null,
-                PatientName = !string.IsNullOrEmpty(user.FirstName) ? user.FirstName : null,
-                PatientLastName = !string.IsNullOrEmpty(user.LastName) ? user.LastName : null,
-            });
-        }
-
-        [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> PatientDetails(PatientDetailForOnlineVisitViewModel patient)
-        {
-            #region Page Data
-
-            ViewData["Countries"] = await _locationService.GetAllCountries();
-
-            #endregion
-
-            #region Data Validation
-
-            if (!await _userService.IsExistUserById(User.GetUserId())) return NotFound();
-
-            #endregion
-
-            #region Model State
-
-            if (!ModelState.IsValid )
-            {
-                if (!string.IsNullOrEmpty(patient.RequestDescription))
+                //Add Patient Detail
+                var patientId = await _onlineVisitService.CreatePatientDetail(patient);
+                if (patientId == 0)
                 {
-                    return NotFound();
+                    TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+                    return RedirectToAction("Index", "Home");
                 }
-            }
 
-            #endregion
+                //Add PatientId To The Request
+                await _requestService.AddPatientIdToRequest(patient.RequestId, patientId);
 
-            #region Validate model 
-
-            var result = await _onlineVisitService.ValidateCreatePatient(patient);
-
-            switch (result)
-            {
-                case CreatePatientResult.Faild:
-                    return NotFound();
-
-                case CreatePatientResult.RequestIdNotFound:
-                    return NotFound();
-
-                case CreatePatientResult.Success:
-
-                    //Add Patient Detail
-                     var patientId = await _onlineVisitService.CreatePatientDetail(patient);
-                    if (patientId == 0)
-                    {
-                        TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
-                        return RedirectToAction("Index" , "Home");
-                    }
-
-                    //Add PatientId To The Request
-                    await _requestService.AddPatientIdToRequest(patient.RequestId, patientId);
-
-                    return RedirectToAction("OnlineVisitRequestDetail", "OnlineVisit", new { requestId = patient.RequestId, patientId = patientId });
-            }
-
-            #endregion
-
-            //Send List Of Insurance To The View
-            ViewBag.Insurances = await _siteSettingService.ListOfInsurance();
-
-            return View(patient);
+                return RedirectToAction("OnlineVisitRequestDetail", "OnlineVisit", new { requestId = patient.RequestId, patientId = patientId });
         }
 
         #endregion
 
-        #region Online Visit Request Detail
+        //Send List Of Insurance To The View
+        ViewBag.Insurances = await _siteSettingService.ListOfInsurance();
 
-        [HttpGet]
-        public async Task<IActionResult> OnlineVisitRequestDetail(ulong requestId, ulong patientId)
+        return View(patient);
+    }
+
+    #endregion
+
+    #region Online Visit Request Detail
+
+    [HttpGet]
+    public async Task<IActionResult> OnlineVisitRequestDetail(ulong requestId, ulong patientId)
+    {
+        #region Is Exist Request & Patient
+
+        if (!await _requestService.IsExistRequestByRequestId(requestId))
         {
-            #region Is Exist Request & Patient
-
-            if (!await _requestService.IsExistRequestByRequestId(requestId))
-            {
-                return NotFound();
-            }
-
-            if (!await _patientService.IsExistPatientById(patientId))
-            {
-                return NotFound();
-            }
-
-            #endregion
-
-            return View();
+            return NotFound();
         }
 
-        [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> OnlineVisitRequestDetail(OnlineVisitRquestDetailViewModel onlineVisitRquestDetail)
+        if (!await _patientService.IsExistPatientById(patientId))
         {
-            #region Model State Validation
+            return NotFound();
+        }
 
-            if (!ModelState.IsValid)
-            {
-                TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
-                return View(onlineVisitRquestDetail);
-            }
+        #endregion
 
-            if (string.IsNullOrEmpty(onlineVisitRquestDetail.OnlineVisitRequestDescription) && onlineVisitRquestDetail.OnlineVisitRequestFile == null)
-            {
-                TempData[ErrorMessage] = "وارد کردن حداقل یکی از اطلاعات الزامی می باشد.";
-                return View(onlineVisitRquestDetail);
-            }
+        return View();
+    }
 
-            #endregion
+    [HttpPost, ValidateAntiForgeryToken]
+    public async Task<IActionResult> OnlineVisitRequestDetail(OnlineVisitRquestDetailViewModel onlineVisitRquestDetail)
+    {
+        #region Model State Validation
 
-            #region Add Online Visit Request Detail
+        if (!ModelState.IsValid)
+        {
+            TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+            return View(onlineVisitRquestDetail);
+        }
 
-            var res = await _onlineVisitService.AddOnlineVisitRequest(onlineVisitRquestDetail , User.GetUserId());
-            if (res)
-            {
-                TempData[SuccessMessage] = "عملیات با موفقیت انجام شده است ";
-                return RedirectToAction("BankPay", "OnlineVisit", new { requestId = onlineVisitRquestDetail.RequestId });
-            }
-
-            #endregion
-
+        if (string.IsNullOrEmpty(onlineVisitRquestDetail.OnlineVisitRequestDescription) && onlineVisitRquestDetail.OnlineVisitRequestFile == null)
+        {
+            TempData[ErrorMessage] = "وارد کردن حداقل یکی از اطلاعات الزامی می باشد.";
             return View(onlineVisitRquestDetail);
         }
 
         #endregion
 
-        #region Bank Redirect
+        #region Add Online Visit Request Detail
 
-        [HttpGet]
-        public async Task<IActionResult> BankPay(ulong requestId)
+        var res = await _onlineVisitService.AddOnlineVisitRequest(onlineVisitRquestDetail, User.GetUserId());
+        if (res)
         {
-            #region Get Request By Id
+            TempData[SuccessMessage] = "عملیات با موفقیت انجام شده است ";
+            return RedirectToAction("BankPay", "OnlineVisit", new { requestId = onlineVisitRquestDetail.RequestId });
+        }
 
-            var request = await _requestService.GetRequestById(requestId);
-            if (request == null) return NotFound();
+        #endregion
+
+        return View(onlineVisitRquestDetail);
+    }
+
+    #endregion
+
+    #region Bank Redirect
+
+    [HttpGet]
+    public async Task<IActionResult> BankPay(ulong requestId)
+    {
+        #region Get Request By Id
+
+        var request = await _requestService.GetRequestById(requestId);
+        if (request == null) return NotFound();
+
+        #endregion
+
+        #region Get Home Visit Tarif 
+
+        var onlineVisitTarif = await _siteSettingService.GetOnlineVisitTariff();
+        if (onlineVisitTarif == 0)
+        {
+            TempData[ErrorMessage] = "لطفا با پشتیبانی تماس بگیرید";
+            return View();
+        }
+
+        #endregion
+
+        #region Get Site Address Domain For Redirect To Bank Portal\
+
+        var siteAddressDomain = await _siteSettingService.GetSiteAddressDomain();
+        if (string.IsNullOrEmpty(siteAddressDomain))
+        {
+            TempData[ErrorMessage] = "امکان اتصال به درگاه بانکی وجود ندارد";
+            return RedirectToAction("Index", "Home");
+        }
+
+        #endregion
+
+        #region Online Payment
+
+        var payment = new ZarinpalSandbox.Payment(onlineVisitTarif);
+
+        var res = payment.PaymentRequest("پرداخت  ", $"{siteAddressDomain}OnlineVisitPayment/" + requestId, "Parsapanahpoor@yahoo.com", "09117878804");
+
+        if (res.Result.Status == 100)
+        {
+            #region Update Request State 
+
+            await _requestService.UpdateRequestStateForTramsferringToTheBankingPortal(request);
 
             #endregion
 
-            #region Get Home Visit Tarif 
+            return Redirect("https://sandbox.zarinpal.com/pg/StartPay/" + res.Result.Authority);
+        }
+
+        #endregion
+
+        return View();
+    }
+
+    #endregion
+
+    #region Home Visit Payment
+
+    [Route("OnlineVisitPayment/{id}")]
+    public async Task<IActionResult> OnlineVisitPayment(ulong id)
+    {
+        #region Get Request 
+
+        var request = await _requestService.GetRequestById(id);
+
+        #endregion
+
+        if (HttpContext.Request.Query["Status"] != "" &&
+            HttpContext.Request.Query["Status"].ToString().ToLower() == "ok"
+            && HttpContext.Request.Query["Authority"] != "")
+        {
+            string authority = HttpContext.Request.Query["Authority"];
+
+            #region Get Online Visit Tarif 
 
             var onlineVisitTarif = await _siteSettingService.GetOnlineVisitTariff();
             if (onlineVisitTarif == 0)
@@ -254,134 +320,91 @@ namespace DoctorFAM.Web.Controllers
 
             #endregion
 
-            #region Get Site Address Domain For Redirect To Bank Portal\
-
-            var siteAddressDomain = await _siteSettingService.GetSiteAddressDomain();
-            if (string.IsNullOrEmpty(siteAddressDomain))
-            {
-                TempData[ErrorMessage] = "امکان اتصال به درگاه بانکی وجود ندارد";
-                return RedirectToAction("Index", "Home");
-            }
-
-            #endregion
-
-            #region Online Payment
-
             var payment = new ZarinpalSandbox.Payment(onlineVisitTarif);
+            var res = payment.Verification(authority).Result;
 
-            var res = payment.PaymentRequest("پرداخت  ", $"{siteAddressDomain}OnlineVisitPayment/" + requestId, "Parsapanahpoor@yahoo.com", "09117878804");
-
-            if (res.Result.Status == 100)
+            if (res.Status == 100)
             {
-                #region Update Request State 
+                ViewBag.code = res.RefId;
+                ViewBag.IsSuccess = true;
 
-                await _requestService.UpdateRequestStateForTramsferringToTheBankingPortal(request);
+                //Update Request State 
+                await _requestService.UpdateRequestStateForPayed(request);
 
-                #endregion
+                //Charge User Wallet
+                await _onlineVisitService.ChargeUserWallet(User.GetUserId(), onlineVisitTarif, request.Id);
 
-                return Redirect("https://sandbox.zarinpal.com/pg/StartPay/" + res.Result.Authority);
-            }
+                //Pay Home Visit Tariff
+                await _onlineVisitService.PayOnlineVisitTariff(User.GetUserId(), onlineVisitTarif, request.Id);
 
-            #endregion
+                #region Send Notification In SignalR
 
-            return View();
-        }
+                //Create Notification For Supporters And Admins
+                var notifyResult = await _notificationService.CreateSupporterNotification(request.Id, Domain.Enums.Notification.SupporterNotificationText.OnlineVisitRequest, Domain.Enums.Notification.NotificationTarget.request, User.GetUserId());
 
-        #endregion
+                //Create Notification For Online Visit Doctors 
+                var onlineVisitResult = await _notificationService.CreateNotificationForOnlineVisitDoctors(request.Id, Domain.Enums.Notification.SupporterNotificationText.OnlineVisitRequest, Domain.Enums.Notification.NotificationTarget.request, User.GetUserId());
 
-        #region Home Visit Payment
+                //Get Current User
+                var currentUser = await _userService.GetUserById(User.GetUserId());
 
-        [Route("OnlineVisitPayment/{id}")]
-        public async Task<IActionResult> OnlineVisitPayment(ulong id)
-        {
-            #region Get Request 
-
-            var request = await _requestService.GetRequestById(id);
-
-            #endregion
-
-            if (HttpContext.Request.Query["Status"] != "" &&
-                HttpContext.Request.Query["Status"].ToString().ToLower() == "ok"
-                && HttpContext.Request.Query["Authority"] != "")
-            {
-                string authority = HttpContext.Request.Query["Authority"];
-
-                #region Get Online Visit Tarif 
-
-                var onlineVisitTarif = await _siteSettingService.GetOnlineVisitTariff();
-                if (onlineVisitTarif == 0)
+                if (notifyResult && onlineVisitResult)
                 {
-                    TempData[ErrorMessage] = "لطفا با پشتیبانی تماس بگیرید";
-                    return View();
-                }
+                    //Get List Of Admins And Supporter To Send Notification Into Them
+                    var users = await _userService.GetAdminsAndSupportersNotificationForSendNotificationInOnlineVisit();
 
-                #endregion
+                    //Get Doctor For Send Notification  
+                    users.AddRange(await _onlineVisitService.GetListOfDoctorsForArrivalsOnlineVisitRequests());
 
-                var payment = new ZarinpalSandbox.Payment(onlineVisitTarif);
-                var res = payment.Verification(authority).Result;
-
-                if (res.Status == 100)
-                {
-                    ViewBag.code = res.RefId;
-                    ViewBag.IsSuccess = true;
-
-                    //Update Request State 
-                    await _requestService.UpdateRequestStateForPayed(request);
-
-                    //Charge User Wallet
-                    await _onlineVisitService.ChargeUserWallet(User.GetUserId(), onlineVisitTarif , request.Id);
-
-                    //Pay Home Visit Tariff
-                    await _onlineVisitService.PayOnlineVisitTariff(User.GetUserId(), onlineVisitTarif , request.Id);
-
-                    #region Send Notification In SignalR
-
-                    //Create Notification For Supporters And Admins
-                    var notifyResult = await _notificationService.CreateSupporterNotification(request.Id, Domain.Enums.Notification.SupporterNotificationText.OnlineVisitRequest, Domain.Enums.Notification.NotificationTarget.request, User.GetUserId());
-
-                    //Create Notification For Online Visit Doctors 
-                    var onlineVisitResult = await _notificationService.CreateNotificationForOnlineVisitDoctors(request.Id , Domain.Enums.Notification.SupporterNotificationText.OnlineVisitRequest , Domain.Enums.Notification.NotificationTarget.request, User.GetUserId());
-
-                    //Get Current User
-                    var currentUser = await _userService.GetUserById(User.GetUserId());
-
-                    if (notifyResult && onlineVisitResult)
+                    //Fill Send Supporter Notification ViewModel For Send Notification
+                    SendSupporterNotificationViewModel viewModel = new SendSupporterNotificationViewModel()
                     {
-                        //Get List Of Admins And Supporter To Send Notification Into Them
-                        var users = await _userService.GetAdminsAndSupportersNotificationForSendNotificationInOnlineVisit();
+                        CreateNotificationDate = $"{DateTime.Now.ToShamsi()} - {DateTime.Now.Hour}:{DateTime.Now.Minute}",
+                        NotificationText = "درخواست برای ویزیت آنلاین",
+                        RequestId = request.Id,
+                        Username = User.Identity.Name,
+                        UserImage = currentUser.Avatar
+                    };
 
-                        //Get Doctor For Send Notification  
-                        users.AddRange(await _onlineVisitService.GetListOfDoctorsForArrivalsOnlineVisitRequests());
-
-                        //Fill Send Supporter Notification ViewModel For Send Notification
-                        SendSupporterNotificationViewModel viewModel = new SendSupporterNotificationViewModel()
-                        {
-                            CreateNotificationDate = $"{DateTime.Now.ToShamsi()} - {DateTime.Now.Hour}:{DateTime.Now.Minute}",
-                            NotificationText = "درخواست برای ویزیت آنلاین",
-                            RequestId = request.Id,
-                            Username = User.Identity.Name,
-                            UserImage = currentUser.Avatar
-                        };
-
-                        await _notificationHub.Clients.Users(users).SendAsync("SendSupporterNotification", viewModel);
-                    }
-
-                    #endregion
-
-                    TempData[SuccessMessage] = "لطفا تا تایید پزشک صبور باشید.این فرایند حداکثر تا 30دقیقه زمان خواهد برد.";
-
-                    return View();
+                    await _notificationHub.Clients.Users(users).SendAsync("SendSupporterNotification", viewModel);
                 }
 
-            }
-            else
-            {
-                await _requestService.UpdateRequestStateForNotPayed(request);
+                #endregion
+
+                TempData[SuccessMessage] = "لطفا تا تایید پزشک صبور باشید.این فرایند حداکثر تا 30دقیقه زمان خواهد برد.";
+
+                return View();
             }
 
-            return View();
+        }
+        else
+        {
+            await _requestService.UpdateRequestStateForNotPayed(request);
         }
 
-        #endregion
+        return View();
     }
+
+    #endregion
+
+    #endregion
+
+    #region List OF Days
+
+    public async Task<IActionResult> ListOfDays()
+    {
+        return View(await _onlineVisitService.FillListOfDaysForShowSiteSideViewModel());
+    }
+
+    #endregion
+
+    #region List Of Shifts
+
+    [HttpGet]
+    public async Task<IActionResult> ListOfShifts(int businessKey)
+    {
+        return View(await _onlineVisitService.FillListOfShiftSiteSideViewModel(businessKey));
+    }
+
+    #endregion
 }
