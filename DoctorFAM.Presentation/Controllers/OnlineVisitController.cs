@@ -387,7 +387,7 @@ public class OnlineVisitController : SiteBaseController
 
     #region Online Visit Payment 
 
-    [Route("HomeVisitPayment/{id}")]
+    [Route("OnlineVisitPayment/{id}")]
     public async Task<IActionResult> OnlineVisitPayment(ulong id)
     {
         #region Get User By User Id

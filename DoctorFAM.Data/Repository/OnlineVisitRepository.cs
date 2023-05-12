@@ -784,6 +784,8 @@ namespace DoctorFAM.Data.Repository
         //Update Online Visit User Request Detail To Finaly
         public async Task UpdateOnlineVisitUserRequestDetailToFinaly(OnlineVisitUserRequestDetail model)
         {
+            model.IsFinaly = true;
+
             _context.OnlineVisitUserRequestDetails.Update(model);
             await _context.SaveChangesAsync();
         }
@@ -819,7 +821,7 @@ namespace DoctorFAM.Data.Repository
             {
                 var reservationTime = await _context.OnlineVisitDoctorsAndPatientsReservationDetails.AsNoTracking()
                                                         .FirstOrDefaultAsync(p => !p.IsDelete 
-                                                                && p.Id == item 
+                                                                && p.OnlineVisitDoctorsReservationDateId == item 
                                                                 && !p.PatientUserId.HasValue
                                                                 && !p.IsExistAnyRequestForThisShift
                                                                 && p.OnlineVisitWorkShiftDetail == shiftTimeId
