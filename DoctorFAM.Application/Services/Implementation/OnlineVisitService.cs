@@ -25,6 +25,9 @@ using DoctorFAM.Domain.ViewModels.Site.Patient;
 using DoctorFAM.Domain.ViewModels.UserPanel.OnlineVisit;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -33,6 +36,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using Request = DoctorFAM.DataLayer.Entities.Request;
 
 namespace DoctorFAM.Application.Services.Implementation
@@ -810,6 +814,67 @@ namespace DoctorFAM.Application.Services.Implementation
 
             await _onlineVisitRepository.AddUserOnlineVisitRequestToTheDataBase(entity);
             return entity.Id;
+        }
+
+        //Get Online Visit User Request Detail By Id And User Id
+        public async Task<OnlineVisitUserRequestDetail?> GetOnlineVisitUserRequestDetailByIdAndUserId(ulong id, ulong userId)
+        {
+            return await _onlineVisitRepository.GetOnlineVisitUserRequestDetailByIdAndUserId(id, userId);
+        }
+
+        //Update Online Visit User Request Detail To Finaly
+        public async Task UpdateOnlineVisitUserRequestDetailToFinaly(ulong id, ulong userId)
+        {
+            var model = await _onlineVisitRepository.GetOnlineVisitUserRequestDetailByIdAndUserId(id, userId);
+
+            if (model is not null)
+            {
+                await _onlineVisitRepository.UpdateOnlineVisitUserRequestDetailToFinaly(model);
+            }
+        }
+
+        //Pay Online Visit Tariff
+        public async Task<bool> PayOnlineVisitTariff(ulong userId, int price, ulong? requestId)
+        {
+            var wallet = new Wallet
+            {
+                UserId = userId,
+                TransactionType = TransactionType.Withdraw,
+                GatewayType = GatewayType.Zarinpal,
+                PaymentType = PaymentType.OnlineVisit,
+                Price = price,
+                Description = "پرداخت مبلغ ویزیت آنلاین",
+                IsFinally = true,
+                RequestId = requestId
+            };
+
+            await _walletRepository.CreateWalletAsync(wallet);
+            return true;
+        }
+
+        //Get List Of Doctor For Send Them Notification By Online Visit 
+        public async Task<List<string>> GetListOfDoctorForSendThemNotificationByOnlineVisit(int businessKey, ulong workshiftId , ulong workShiftTimeId)
+        {
+            List<string> returnModel = new List<string>();
+
+            //Get Online Visti Doctors And Patient Details
+            var doctorsReservationId = await  _onlineVisitRepository.GetListOfOnlineVisitDoctorsReservationByWorkShiftIdAndWorkShiftTimeId(workshiftId , workShiftTimeId);
+
+            foreach (var item in doctorsReservationId)
+            {
+                var doctorUserId = await _onlineVisitRepository.GetDoctorsIdByOnlineVisitDoctorsReservationIdAndDateBusinessKey(item , businessKey);
+                if (doctorUserId.HasValue && doctorUserId != 0) returnModel.Add(doctorUserId.Value.ToString());
+            }
+
+            return returnModel;
+        }
+
+        //Update Randome Record Of Reservation Doctor And Patient For Exist Request For Select
+        public async Task UpdateRandomeRecordOfReservationDoctorAndPatientForExistRequestForSelect(int businessKey , ulong workShiftId , ulong workShiftTimeId)
+        {
+            List<ulong> doctorReservationIds = await _onlineVisitRepository.GetListOfDocotrsReservationDatesWithDateBusinessKey(businessKey);
+
+            await _onlineVisitRepository.UpdateRandomeRecordOfReservationDoctorAndPatientForExistRequestForSelect(doctorReservationIds , workShiftTimeId , workShiftId);
         }
 
         #endregion

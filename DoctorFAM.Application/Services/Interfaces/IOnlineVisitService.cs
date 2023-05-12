@@ -1,5 +1,6 @@
 ﻿using DoctorFAM.Application.Services.Implementation;
 using DoctorFAM.Domain.Entities.Contact;
+using DoctorFAM.Domain.Entities.OnlineVisit;
 using DoctorFAM.Domain.Entities.Wallet;
 using DoctorFAM.Domain.ViewModels.Admin.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.Common;
@@ -127,6 +128,21 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         // Add User Online Visit Request To The Data Base 
         Task<ulong> AddUserOnlineVisitRequestToTheDataBase(SelectShiftAndRedirectToBankDTO model);
+
+        //Get Online Visit User Request Detail By Id And User Id
+        Task<OnlineVisitUserRequestDetail?> GetOnlineVisitUserRequestDetailByIdAndUserId(ulong id, ulong userId);
+
+        //Update Online Visit User Request Detail To Finaly
+        Task UpdateOnlineVisitUserRequestDetailToFinaly(ulong id, ulong userId);
+
+        //Pay Online Visit Tariff
+        Task<bool> PayOnlineVisitTariff(ulong userId, int price, ulong? requestId);
+
+        //Get List Of Doctor For Send Them Notification By Online Visit 
+        Task<List<string>> GetListOfDoctorForSendThemNotificationByOnlineVisit(int businessKey, ulong workshiftId, ulong workShiftTimeId);
+
+        //Update Randome Record Of Reservation Doctor And Patient For Exist Request For Select
+        Task UpdateRandomeRecordOfReservationDoctorAndPatientForExistRequestForSelect(int businessKey, ulong workShiftId, ulong workShiftTimeId);
 
         #endregion
     }

@@ -136,6 +136,24 @@ namespace DoctorFAM.Domain.Interfaces
         //Add User Online Visit Request To The Data Base
         Task AddUserOnlineVisitRequestToTheDataBase(OnlineVisitUserRequestDetail model);
 
+        //Get Online Visit User Request Detail By Id And User Id
+        Task<OnlineVisitUserRequestDetail?> GetOnlineVisitUserRequestDetailByIdAndUserId(ulong id, ulong userId);
+
+        //Update Online Visit User Request Detail To Finaly
+        Task UpdateOnlineVisitUserRequestDetailToFinaly(OnlineVisitUserRequestDetail model);
+
+        //Get Online Visit Doctor Reservations By Date BusinessKey
+        Task<List<OnlineVisitDoctorsReservationDate>> GetOnlineVisitDoctorReservationsByDateBusinessKey(int businessKey);
+
+        //Get List Of Online Visit Doctors Reservation By Work Shift Id And Work Shift Time Id
+        Task<List<ulong>> GetListOfOnlineVisitDoctorsReservationByWorkShiftIdAndWorkShiftTimeId(ulong workShiftId, ulong workShiftTimeId);
+
+        //Get Doctors Id By Online Visit Doctors Reservation Id And Date Business Key
+        Task<ulong?> GetDoctorsIdByOnlineVisitDoctorsReservationIdAndDateBusinessKey(ulong id, int dateBusinessKey);
+
+        //Update Randome Record Of Reservation Doctor And Patient For Exist Request For Select
+        Task UpdateRandomeRecordOfReservationDoctorAndPatientForExistRequestForSelect(List<ulong> onlineVisitDoctorReservationId, ulong shiftTimeId, ulong shiftDateId);
+
         #endregion
     }
 }

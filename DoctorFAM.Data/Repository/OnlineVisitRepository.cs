@@ -774,6 +774,69 @@ namespace DoctorFAM.Data.Repository
             await _context.SaveChangesAsync();
         }
 
+        //Get Online Visit User Request Detail By Id And User Id
+        public async Task<OnlineVisitUserRequestDetail?> GetOnlineVisitUserRequestDetailByIdAndUserId(ulong id , ulong userId)
+        {
+            return await _context.OnlineVisitUserRequestDetails.AsNoTracking()
+                                    .FirstOrDefaultAsync(p=> !p.IsDelete && p.UserId == userId && p.Id == id);
+        }
+
+        //Update Online Visit User Request Detail To Finaly
+        public async Task UpdateOnlineVisitUserRequestDetailToFinaly(OnlineVisitUserRequestDetail model)
+        {
+            _context.OnlineVisitUserRequestDetails.Update(model);
+            await _context.SaveChangesAsync();
+        }
+
+        //Get Online Visit Doctor Reservations By Date BusinessKey
+        public async Task<List<OnlineVisitDoctorsReservationDate>> GetOnlineVisitDoctorReservationsByDateBusinessKey(int businessKey)
+        {
+            return await _context.OnlineVisitDoctorsReservationDates.AsNoTracking()
+                                     .Where(p => !p.IsDelete && p.BusinessKey == businessKey).ToListAsync();
+        }
+
+        //Get List Of Online Visit Doctors Reservation By Work Shift Id And Work Shift Time Id
+        public async Task<List<ulong>> GetListOfOnlineVisitDoctorsReservationByWorkShiftIdAndWorkShiftTimeId(ulong workShiftId , ulong workShiftTimeId)
+        {
+            return await _context.OnlineVisitDoctorsAndPatientsReservationDetails.AsNoTracking()
+                                   .Where(p => !p.IsDelete && p.OnlineVisitWorkShiftDetail == workShiftTimeId && p.OnlineVisitWorkShiftId == workShiftId
+                                            && !p.PatientUserId.HasValue)
+                                   .Select(p => p.OnlineVisitDoctorsReservationDateId).ToListAsync();
+        }
+
+        //Get Doctors Id By Online Visit Doctors Reservation Id And Date Business Key
+        public async Task<ulong?> GetDoctorsIdByOnlineVisitDoctorsReservationIdAndDateBusinessKey(ulong id , int dateBusinessKey)
+        {
+            return await _context.OnlineVisitDoctorsReservationDates.AsNoTracking()
+                                    .Where(p => !p.IsDelete && p.BusinessKey == dateBusinessKey && p.Id == id)
+                                        .Select(p => p.DoctorUserId).FirstOrDefaultAsync();
+        }
+
+        //Update Randome Record Of Reservation Doctor And Patient For Exist Request For Select
+        public async Task UpdateRandomeRecordOfReservationDoctorAndPatientForExistRequestForSelect(List<ulong> onlineVisitDoctorReservationId , ulong shiftTimeId , ulong shiftDateId)
+        {
+            foreach (var item in onlineVisitDoctorReservationId)
+            {
+                var reservationTime = await _context.OnlineVisitDoctorsAndPatientsReservationDetails.AsNoTracking()
+                                                        .FirstOrDefaultAsync(p => !p.IsDelete 
+                                                                && p.Id == item 
+                                                                && !p.PatientUserId.HasValue
+                                                                && !p.IsExistAnyRequestForThisShift
+                                                                && p.OnlineVisitWorkShiftDetail == shiftTimeId
+                                                                && p.OnlineVisitWorkShiftId == shiftDateId);
+
+                if (reservationTime != null)
+                {
+                    reservationTime.IsExistAnyRequestForThisShift = true;
+
+                    _context.OnlineVisitDoctorsAndPatientsReservationDetails.Update(reservationTime);
+                    await _context.SaveChangesAsync();
+
+                    return;
+                }
+            }
+        }
+
         #endregion
     }
 }

@@ -5,6 +5,7 @@ using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Interfaces;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Application.StaticTools;
+using DoctorFAM.Domain.DTOs.ZarinPal;
 using DoctorFAM.Domain.Entities.Wallet;
 using DoctorFAM.Domain.ViewModels.Site.Notification;
 using DoctorFAM.Domain.ViewModels.Site.OnlineVisit;
@@ -15,6 +16,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.Text;
 
 #endregion
 
@@ -33,11 +37,12 @@ public class OnlineVisitController : SiteBaseController
     private readonly ISiteSettingService _siteSettingService;
     private readonly IHubContext<NotificationHub> _notificationHub;
     private readonly INotificationService _notificationService;
+    private readonly IWalletService _walletService;
 
     public OnlineVisitController(IOnlineVisitService onlineVisitService, IRequestService requestService,
                                     IUserService userService, IPatientService patientService, ILocationService locationService
                                         , ISiteSettingService siteSettingService, IHubContext<NotificationHub> notificationHub
-                                            , INotificationService notificationService)
+                                            , INotificationService notificationService, IWalletService walletService)
     {
         _onlineVisitService = onlineVisitService;
         _requestService = requestService;
@@ -47,6 +52,7 @@ public class OnlineVisitController : SiteBaseController
         _siteSettingService = siteSettingService;
         _notificationHub = notificationHub;
         _notificationService = notificationService;
+        _walletService = walletService;
     }
 
     #endregion
@@ -295,101 +301,6 @@ public class OnlineVisitController : SiteBaseController
 
     #endregion
 
-    #region Home Visit Payment
-
-    [Route("OnlineVisitPayment/{id}")]
-    public async Task<IActionResult> OnlineVisitPayment(ulong id)
-    {
-        #region Get Request 
-
-        var request = await _requestService.GetRequestById(id);
-
-        #endregion
-
-        if (HttpContext.Request.Query["Status"] != "" &&
-            HttpContext.Request.Query["Status"].ToString().ToLower() == "ok"
-            && HttpContext.Request.Query["Authority"] != "")
-        {
-            string authority = HttpContext.Request.Query["Authority"];
-
-            #region Get Online Visit Tarif 
-
-            var onlineVisitTarif = await _siteSettingService.GetOnlineVisitTariff();
-            if (onlineVisitTarif == 0)
-            {
-                TempData[ErrorMessage] = "لطفا با پشتیبانی تماس بگیرید";
-                return View();
-            }
-
-            #endregion
-
-            var payment = new ZarinpalSandbox.Payment(onlineVisitTarif);
-            var res = payment.Verification(authority).Result;
-
-            if (res.Status == 100)
-            {
-                ViewBag.code = res.RefId;
-                ViewBag.IsSuccess = true;
-
-                //Update Request State 
-                await _requestService.UpdateRequestStateForPayed(request);
-
-                //Charge User Wallet
-                await _onlineVisitService.ChargeUserWallet(User.GetUserId(), onlineVisitTarif, request.Id);
-
-                //Pay Home Visit Tariff
-                await _onlineVisitService.PayOnlineVisitTariff(User.GetUserId(), onlineVisitTarif, request.Id);
-
-                #region Send Notification In SignalR
-
-                //Create Notification For Supporters And Admins
-                var notifyResult = await _notificationService.CreateSupporterNotification(request.Id, Domain.Enums.Notification.SupporterNotificationText.OnlineVisitRequest, Domain.Enums.Notification.NotificationTarget.request, User.GetUserId());
-
-                //Create Notification For Online Visit Doctors 
-                var onlineVisitResult = await _notificationService.CreateNotificationForOnlineVisitDoctors(request.Id, Domain.Enums.Notification.SupporterNotificationText.OnlineVisitRequest, Domain.Enums.Notification.NotificationTarget.request, User.GetUserId());
-
-                //Get Current User
-                var currentUser = await _userService.GetUserById(User.GetUserId());
-
-                if (notifyResult && onlineVisitResult)
-                {
-                    //Get List Of Admins And Supporter To Send Notification Into Them
-                    var users = await _userService.GetAdminsAndSupportersNotificationForSendNotificationInOnlineVisit();
-
-                    //Get Doctor For Send Notification  
-                    users.AddRange(await _onlineVisitService.GetListOfDoctorsForArrivalsOnlineVisitRequests());
-
-                    //Fill Send Supporter Notification ViewModel For Send Notification
-                    SendSupporterNotificationViewModel viewModel = new SendSupporterNotificationViewModel()
-                    {
-                        CreateNotificationDate = $"{DateTime.Now.ToShamsi()} - {DateTime.Now.Hour}:{DateTime.Now.Minute}",
-                        NotificationText = "درخواست برای ویزیت آنلاین",
-                        RequestId = request.Id,
-                        Username = User.Identity.Name,
-                        UserImage = currentUser.Avatar
-                    };
-
-                    await _notificationHub.Clients.Users(users).SendAsync("SendSupporterNotification", viewModel);
-                }
-
-                #endregion
-
-                TempData[SuccessMessage] = "لطفا تا تایید پزشک صبور باشید.این فرایند حداکثر تا 30دقیقه زمان خواهد برد.";
-
-                return View();
-            }
-
-        }
-        else
-        {
-            await _requestService.UpdateRequestStateForNotPayed(request);
-        }
-
-        return View();
-    }
-
-    #endregion
-
     #endregion
 
     #region List OF Days
@@ -463,12 +374,157 @@ public class OnlineVisitController : SiteBaseController
         {
             gatewayType = GatewayType.Zarinpal,
             amount = res.OnlineVisitTariff,
-            description = "شارژ حساب کاربری برای پرداخت هزینه ی ویزیت در آنلاین",
+            description = "شارژ حساب کاربری برای پرداخت هزینه ی ویزیت آنلاین",
             returURL = $"{PathTools.SiteAddress}/OnlineVisitPayment/" + requestId,
-            requestId = requestId
+            requestId = requestId,
+            
         });
 
         #endregion
+    }
+
+    #endregion
+
+    #region Online Visit Payment 
+
+    [Route("HomeVisitPayment/{id}")]
+    public async Task<IActionResult> OnlineVisitPayment(ulong id)
+    {
+        #region Get User By User Id
+
+        var user = await _userService.GetUserById(User.GetUserId());
+        if (user == null) NotFound();
+
+        #endregion
+
+        #region Get Online Visit User Request Detail
+
+        var onlineVisitRequestDetail = await _onlineVisitService.GetOnlineVisitUserRequestDetailByIdAndUserId(id, User.GetUserId()) ;
+        if(onlineVisitRequestDetail == null || onlineVisitRequestDetail.IsFinaly) { TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد."; return RedirectToAction(nameof(ListOfDays)); }
+
+        #endregion
+
+        #region Get Online Visit Reservation Tariff
+
+        int onlineVisitTariff = await _siteSettingService.GetOnlineVisitTariff();
+        if (onlineVisitTariff == 0)
+        {
+            TempData[ErrorMessage] = "لطفا با پشتیبانی تماس بگیرید";
+            return RedirectToAction("Index", "Home");
+        }
+
+        #endregion
+
+        try
+        {
+            #region Fill Parametrs
+
+            VerifyParameters parameters = new VerifyParameters();
+
+            if (HttpContext.Request.Query["Authority"] != "")
+            {
+                parameters.authority = HttpContext.Request.Query["Authority"];
+            }
+
+            parameters.amount = onlineVisitTariff.ToString();
+            parameters.merchant_id = PathTools.merchant;
+
+            #endregion
+
+            using (HttpClient client = new HttpClient())
+            {
+                #region Verify Payment
+
+                var json = JsonConvert.SerializeObject(parameters);
+
+                HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = await client.PostAsync(URLs.verifyUrl, content);
+
+                string responseBody = await response.Content.ReadAsStringAsync();
+
+                JObject jodata = JObject.Parse(responseBody);
+
+                string data = jodata["data"].ToString();
+
+                JObject jo = JObject.Parse(responseBody);
+
+                string errors = jo["errors"].ToString();
+
+                #endregion
+
+                if (data != "[]")
+                {
+                    //Authority Code
+                    string refid = jodata["data"]["ref_id"].ToString();
+
+                    //Get Wallet Transaction For Validation 
+                    var wallet = await _walletService.FindWalletTransactionForRedirectToTheBankPortal(user.Id, GatewayType.Zarinpal, onlineVisitRequestDetail.Id, parameters.authority, onlineVisitTariff);
+
+                    if (wallet != null)
+                    {
+                        //Update Online Visit User Request Detail 
+                        await _onlineVisitService.UpdateOnlineVisitUserRequestDetailToFinaly(id , user.Id);
+
+                        //Charge User Wallet
+                        await _walletService.UpdateWalletAndCalculateUserBalanceAfterBankingPayment(wallet);
+
+                        //Pay Online Visit Tariff
+                        await _onlineVisitService.PayOnlineVisitTariff(User.GetUserId(), onlineVisitTariff, id);
+
+                        //Update Randome Record Of Reservation Doctor And Patient For Exist Request For Select
+                        await _onlineVisitService.UpdateRandomeRecordOfReservationDoctorAndPatientForExistRequestForSelect(onlineVisitRequestDetail.DayDatebusinessKey, onlineVisitRequestDetail.WorkShiftDateId, onlineVisitRequestDetail.WorkShiftDateTimeId);
+
+                        #region Send Notification In SignalR
+
+                        //Create Notification For Supporters And Admins
+                        var notifyResult = await _notificationService.CreateSupporterNotification(id, Domain.Enums.Notification.SupporterNotificationText.OnlineVisitRequest, Domain.Enums.Notification.NotificationTarget.request, User.GetUserId());
+
+                        //Send Notification For Doctor 
+                        await _notificationService.CreateNotificationForDoctorThatReserveHerReservation(id, Domain.Enums.Notification.SupporterNotificationText.OnlineVisitRequest, Domain.Enums.Notification.NotificationTarget.request, User.GetUserId());
+
+                        if (notifyResult)
+                        {
+                            //Get List Of Admins And Supporter To Send Notification Into Them
+                            var users = await _userService.GetAdminsAndSupportersNotificationForSendNotificationInOnlineVisit();
+
+                            //Get Doctor For Send Notification  
+                            users.AddRange(await _onlineVisitService.GetListOfDoctorForSendThemNotificationByOnlineVisit(onlineVisitRequestDetail.DayDatebusinessKey , onlineVisitRequestDetail.WorkShiftDateId, onlineVisitRequestDetail.WorkShiftDateTimeId));
+
+                            //Fill Send Supporter Notification ViewModel For Send Notification
+                            SendSupporterNotificationViewModel viewModel = new SendSupporterNotificationViewModel()
+                            {
+                                CreateNotificationDate = $"{DateTime.Now.ToShamsi()} - {DateTime.Now.Hour}:{DateTime.Now.Minute}",
+                                NotificationText = "درخواست ویزیت آنلاین",
+                                RequestId = id,
+                                Username = User.Identity.Name,
+                                UserImage = user.Avatar
+                            };
+
+                            await _notificationHub.Clients.Users(users).SendAsync("SendSupporterNotification", viewModel);
+                        }
+
+                        #endregion
+
+                        return RedirectToAction("PaymentResult", "Payment", new { IsSuccess = true, refId = refid });
+                    }
+                }
+                else if (errors != "[]")
+                {
+                    string errorscode = jo["errors"]["code"].ToString();
+
+                    return BadRequest($"error code {errorscode}");
+
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+
+            throw ex;
+        }
+
+        return NotFound();
     }
 
     #endregion

@@ -19,8 +19,6 @@ namespace DoctorFAM.Domain.ViewModels.Site.OnlineVisit
 
         public ulong WorkShiftDateId { get; set; }
 
-        public bool IsFinaly { get; set; }
-
         #endregion
     }
 }
