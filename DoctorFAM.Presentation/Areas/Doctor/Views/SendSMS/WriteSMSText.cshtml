@@ -11,11 +11,22 @@
     </li>
 }
 
+@section Scripts{
+    <script>
+
+        function countChar(val) {
+            var len = val.value.length;
+            $('#charNum').text(len);
+        };
+
+    </script>
+}
+
 <div class="row">
     <div class="col-lg-12 col-sm-6 col-xs-12">
         <div class="widget">
             <div class="widget-header bordered-bottom bordered-primary">
-                <span class="widget-caption">اطلاعات پیامک</span>
+                <span class="widget-caption">اطلاعات پیامک </span>
             </div>
             <div class="widget-body">
                 <div id="horizontal-form">
@@ -28,10 +39,14 @@
                             <input type="hidden" asp-for="PatientId" value="@item" />
                         }
 
-                           <div class="row">
-                            <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-6">
                                 <input type="email" readonly placeholder="تعداد پیامک های مجاز شما برای ارسال : @Model.CountOfUserPercentageSMS" class="form-control">
                                 <div class="horizontal-space"></div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div id="charNum" class="form-control">تعداد کاراکترهای نوشته شده (به ازای هر 70 کاراکتر یک پیامک ارسال می گردد.) : 0</div>
                             </div>
                         </div>
 
@@ -42,7 +57,7 @@
                             </div>
                         </div>
 
-                        <textarea class="form-control" asp-for="SMSBody" rows="3" placeholder="متن پیامک راسالی شما"></textarea>
+                        <textarea class="form-control" asp-for="SMSBody" rows="3" onkeyup="countChar(this)" placeholder="متن پیامک راسالی شما"></textarea>
                         <div class="horizontal-space"></div>
                         <div>
                             <button type="submit" class="btn btn-success">ارسال</button>
