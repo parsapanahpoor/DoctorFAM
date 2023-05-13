@@ -1,252 +1,245 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace DoctorFAM.Application.StaticTools;
 
-namespace DoctorFAM.Application.StaticTools
+public static class PathTools
 {
-    public static class PathTools
-    {
-        #region Site
+    #region Site
 
-        public static string SiteFarsiName = "دکتر فم";
-        public static string SiteAddress = "https://doctorfam.com";
-        public static string merchant = "300608fa-d6d7-40cc-b70c-7229d28299c6";
+    public static string SiteFarsiName = "دکتر فم";
+    public static string SiteAddress = "https://doctorfam.com";
+    public static string merchant = "300608fa-d6d7-40cc-b70c-7229d28299c6";
 
-        public static readonly string SiteLogo = "/content/images/site/logo/main/";
-        public static readonly string SiteLogoServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/site/logo/main/");
+    public static readonly string SiteLogo = "/content/images/site/logo/main/";
+    public static readonly string SiteLogoServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/site/logo/main/");
 
-        public static readonly string DefaultSiteLogo = "/content/images/site/logo/default/logo.png";
-        public static readonly string SiteLogoThumb = "/content/images/site/logo/thumb/";
-        public static readonly string SiteLogoThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/site/logo/thumb/");
+    public static readonly string DefaultSiteLogo = "/content/images/site/logo/default/logo.png";
+    public static readonly string SiteLogoThumb = "/content/images/site/logo/thumb/";
+    public static readonly string SiteLogoThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/site/logo/thumb/");
 
-        public static readonly string EmailBanner = "/content/images/site/emailBanner/main/";
-        public static readonly string EmailBannerServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/site/emailBanner/main/");
+    public static readonly string EmailBanner = "/content/images/site/emailBanner/main/";
+    public static readonly string EmailBannerServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/site/emailBanner/main/");
 
-        public static readonly string EmailBannerThumb = "/content/images/site/emailBanner/thumb/";
-        public static readonly string EmailBannerThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/site/emailBanner/thumb/");
+    public static readonly string EmailBannerThumb = "/content/images/site/emailBanner/thumb/";
+    public static readonly string EmailBannerThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/site/emailBanner/thumb/");
 
-        #endregion
+    #endregion
 
-        #region Drug Prescription
+    #region Drug Prescription
 
-        public static readonly string DrugPrescriptionPath = "/content/images/DrugPrescription/main/";
-        public static readonly string DrugPrescriptionPathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/DrugPrescription/main/");
+    public static readonly string DrugPrescriptionPath = "/content/images/DrugPrescription/main/";
+    public static readonly string DrugPrescriptionPathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/DrugPrescription/main/");
 
-        public static readonly string DrugPrescriptionPathThumb = "/content/images/DrugPrescription/thumb/";
-        public static readonly string DrugPrescriptionPathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/DrugPrescription/thumb/");
+    public static readonly string DrugPrescriptionPathThumb = "/content/images/DrugPrescription/thumb/";
+    public static readonly string DrugPrescriptionPathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/DrugPrescription/thumb/");
 
-        #endregion
+    #endregion
 
-        #region Online Visit Request File
+    #region Online Visit Request File
 
-        public static readonly string OnlineVisitRequestFilePath = "/content/images/OnlineVisitRequestFile/main/";
-        public static readonly string OnlineVisitRequestFilePathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/OnlineVisitRequestFile/main/");
+    public static readonly string OnlineVisitRequestFilePath = "/content/images/OnlineVisitRequestFile/main/";
+    public static readonly string OnlineVisitRequestFilePathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/OnlineVisitRequestFile/main/");
 
-        #endregion
+    #endregion
 
-        #region Ticket File
+    #region Ticket File
 
-        public static readonly string TicketFilePath = "/content/images/Ticket/main/";
-        public static readonly string TicketFilePathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/Ticket/main/");
+    public static readonly string TicketFilePath = "/content/images/Ticket/main/";
+    public static readonly string TicketFilePathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/Ticket/main/");
 
-        #endregion
+    #endregion
 
-        #region UserAvatar
+    #region UserAvatar
 
-        public static readonly string UserAvatarPath = "/content/images/user/main/";
-        public static readonly string UserAvatarPathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/user/main/");
+    public static readonly string UserAvatarPath = "/content/images/user/main/";
+    public static readonly string UserAvatarPathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/user/main/");
 
-        public static readonly string UserAvatarPathThumb = "/content/images/user/thumb/";
-        public static readonly string UserAvatarPathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/user/thumb/");
+    public static readonly string UserAvatarPathThumb = "/content/images/user/thumb/";
+    public static readonly string UserAvatarPathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/user/thumb/");
 
-        public static readonly string DefaultUserAvatar = "/content/images/user/DefaultAvatar.png";
+    public static readonly string DefaultUserAvatar = "/content/images/user/DefaultAvatar.png";
 
-        #endregion
+    #endregion
 
-        #region Ckeditor
+    #region Ckeditor
 
-        public static readonly string UploadCkEditorImagePath = "/content/upload/ckeditor/images/";
-        public static readonly string UploadCkEditorImagePathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/upload/ckeditor/images/");
+    public static readonly string UploadCkEditorImagePath = "/content/upload/ckeditor/images/";
+    public static readonly string UploadCkEditorImagePathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/upload/ckeditor/images/");
 
-        #endregion
+    #endregion
 
-        #region Doctor Information
+    #region Doctor Information
 
-        public static readonly string DefaultMediacalFile = "/content/images/MediacalFile/DefaultMediacalFile.png";
+    public static readonly string DefaultMediacalFile = "/content/images/MediacalFile/DefaultMediacalFile.png";
 
-        public static readonly string MediacalFilePath = "/content/images/MediacalFile/main/";
-        public static readonly string MediacalFilePathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/MediacalFile/main/");
+    public static readonly string MediacalFilePath = "/content/images/MediacalFile/main/";
+    public static readonly string MediacalFilePathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/MediacalFile/main/");
 
-        public static readonly string MediacalFilePathThumb = "/content/images/MediacalFile/thumb/";
-        public static readonly string MediacalFilePathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/MediacalFile/thumb/");
+    public static readonly string MediacalFilePathThumb = "/content/images/MediacalFile/thumb/";
+    public static readonly string MediacalFilePathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/MediacalFile/thumb/");
 
-        #endregion
+    #endregion
 
-        #region Lab Prescription
+    #region Lab Prescription
 
-        public static readonly string LabPrescriptionPath = "/content/images/LabPrescription/main/";
-        public static readonly string LabPrescriptionPathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/LabPrescription/main/");
+    public static readonly string LabPrescriptionPath = "/content/images/LabPrescription/main/";
+    public static readonly string LabPrescriptionPathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/LabPrescription/main/");
 
-        public static readonly string LabPrescriptionPathThumb = "/content/images/LabPrescription/thumb/";
-        public static readonly string LabPrescriptionPathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/LabPrescription/thumb/");
+    public static readonly string LabPrescriptionPathThumb = "/content/images/LabPrescription/thumb/";
+    public static readonly string LabPrescriptionPathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/LabPrescription/thumb/");
 
-        #endregion
+    #endregion
 
-        #region Products
+    #region Products
 
-        public static readonly string ProductsPath = "/content/images/Products/main/";
-        public static readonly string ProductsPathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/Products/main/");
+    public static readonly string ProductsPath = "/content/images/Products/main/";
+    public static readonly string ProductsPathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/Products/main/");
 
-        public static readonly string ProductsPathThumb = "/content/images/Products/thumb/";
-        public static readonly string ProductsPathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/Products/thumb/");
+    public static readonly string ProductsPathThumb = "/content/images/Products/thumb/";
+    public static readonly string ProductsPathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/Products/thumb/");
 
-        public static readonly string DefaultProductAvatar = "/content/images/no-image.png";
+    public static readonly string DefaultProductAvatar = "/content/images/no-image.png";
 
-        #endregion
+    #endregion
 
-        #region Product Gallery
+    #region Product Gallery
 
-        public static readonly string ProductsGalleryPath = "/content/images/Products/Gallery/main/";
-        public static readonly string ProductsGalleryPathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/Products/Gallery/main/");
+    public static readonly string ProductsGalleryPath = "/content/images/Products/Gallery/main/";
+    public static readonly string ProductsGalleryPathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/Products/Gallery/main/");
 
-        public static readonly string ProductsGalleryPathThumb = "/content/images/Products/Gallery/thumb/";
-        public static readonly string ProductsGalleryPathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/Products/Gallery/thumb/");
+    public static readonly string ProductsGalleryPathThumb = "/content/images/Products/Gallery/thumb/";
+    public static readonly string ProductsGalleryPathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/Products/Gallery/thumb/");
 
-        #endregion
+    #endregion
 
-        #region Health Information  Attachment Files
+    #region Health Information  Attachment Files
 
-        public static readonly string HealthInformationAttachmentFilesServerPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/HealthInformationAttachmentFiles/Files/");
-        //public static readonly string PodcastsForLandingPageFilesServerPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/HealthInformationAttachmentFiles/PodcastsForLandingPage/");
-        public static readonly string HealthInformationAttachmentFilesChunkServerPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/HealthInformationAttachmentFiles/Chunks/");
+    public static readonly string HealthInformationAttachmentFilesServerPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/HealthInformationAttachmentFiles/Files/");
+    //public static readonly string PodcastsForLandingPageFilesServerPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/HealthInformationAttachmentFiles/PodcastsForLandingPage/");
+    public static readonly string HealthInformationAttachmentFilesChunkServerPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/HealthInformationAttachmentFiles/Chunks/");
 
-        public static readonly string HealthInformationAttachmentFilesPath = "/content/images/HealthInformationAttachmentFiles/Files/";
-        //public static readonly string PodcastsForLandingPageFilesPath =  "/content/images/HealthInformationAttachmentFiles/PodcastsForLandingPage/";
+    public static readonly string HealthInformationAttachmentFilesPath = "/content/images/HealthInformationAttachmentFiles/Files/";
+    //public static readonly string PodcastsForLandingPageFilesPath =  "/content/images/HealthInformationAttachmentFiles/PodcastsForLandingPage/";
 
-        public static readonly string HealthInformationAttachmentFilesImagePath = "/content/images/HealthInformationAttachmentFiles/main/";
-        public static readonly string HealthInformationAttachmentFilesImageServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/HealthInformationAttachmentFiles/main/");
+    public static readonly string HealthInformationAttachmentFilesImagePath = "/content/images/HealthInformationAttachmentFiles/main/";
+    public static readonly string HealthInformationAttachmentFilesImageServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/HealthInformationAttachmentFiles/main/");
 
-        public static readonly string HealthInformationAttachmentFilesImagePathThumb = "/content/images/HealthInformationAttachmentFiles/thumb/";
-        public static readonly string HealthInformationAttachmentFilesImagePathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/HealthInformationAttachmentFiles/thumb/");
+    public static readonly string HealthInformationAttachmentFilesImagePathThumb = "/content/images/HealthInformationAttachmentFiles/thumb/";
+    public static readonly string HealthInformationAttachmentFilesImagePathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/HealthInformationAttachmentFiles/thumb/");
 
-        #endregion
+    #endregion
 
-        #region Honor Image
+    #region Honor Image
 
-        public static readonly string HonorPath = "/content/images/Honor/main/";
-        public static readonly string HonorPathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/Honor/main/");
+    public static readonly string HonorPath = "/content/images/Honor/main/";
+    public static readonly string HonorPathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/Honor/main/");
 
-        public static readonly string HonorPathThumb = "/content/images/Honor/thumb/";
-        public static readonly string HonorPathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/Honor/thumb/");
+    public static readonly string HonorPathThumb = "/content/images/Honor/thumb/";
+    public static readonly string HonorPathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/Honor/thumb/");
 
-        #endregion
+    #endregion
 
-        #region Certificate Image
+    #region Certificate Image
 
-        public static readonly string CertificatePath = "/content/images/Certificate/main/";
-        public static readonly string CertificatePathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/Certificate/main/");
+    public static readonly string CertificatePath = "/content/images/Certificate/main/";
+    public static readonly string CertificatePathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/Certificate/main/");
 
-        public static readonly string CertificatePathThumb = "/content/images/Certificate/thumb/";
-        public static readonly string CertificatePathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/Certificate/thumb/");
+    public static readonly string CertificatePathThumb = "/content/images/Certificate/thumb/";
+    public static readonly string CertificatePathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/Certificate/thumb/");
 
-        #endregion
+    #endregion
 
-        #region Gallery Image
+    #region Gallery Image
 
-        public static readonly string ResumeGalleryPath = "/content/images/ResumeGallery/main/";
-        public static readonly string ResumeGalleryPathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/ResumeGallery/main/");
+    public static readonly string ResumeGalleryPath = "/content/images/ResumeGallery/main/";
+    public static readonly string ResumeGalleryPathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/ResumeGallery/main/");
 
-        public static readonly string ResumeGalleryPathThumb = "/content/images/ResumeGallery/thumb/";
-        public static readonly string ResumeGalleryPathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/ResumeGallery/thumb/");
+    public static readonly string ResumeGalleryPathThumb = "/content/images/ResumeGallery/thumb/";
+    public static readonly string ResumeGalleryPathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/ResumeGallery/thumb/");
 
-        #endregion
+    #endregion
 
-        #region Excel File
+    #region Excel File
 
-        public static readonly string RequestExcelFilePath = "/content/images/RequestForUploadExcelFile/";
+    public static readonly string RequestExcelFilePath = "/content/images/RequestForUploadExcelFile/";
 
-        public static readonly string RequestExcelFilePathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/RequestForUploadExcelFile/");
+    public static readonly string RequestExcelFilePathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/RequestForUploadExcelFile/");
 
-        #endregion
+    #endregion
 
-        #region Customer Advertisement File 
+    #region Customer Advertisement File 
 
-        public static readonly string CustomerAdvertisementPath = "/content/images/CustomerAdvertisement/main/";
-        public static readonly string CustomerAdvertisementPathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/CustomerAdvertisement/main/");
+    public static readonly string CustomerAdvertisementPath = "/content/images/CustomerAdvertisement/main/";
+    public static readonly string CustomerAdvertisementPathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/CustomerAdvertisement/main/");
 
-        public static readonly string CustomerAdvertisementPathThumb = "/content/images/CustomerAdvertisement/thumb/";
-        public static readonly string CustomerAdvertisementPathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/CustomerAdvertisement/thumb/");
+    public static readonly string CustomerAdvertisementPathThumb = "/content/images/CustomerAdvertisement/thumb/";
+    public static readonly string CustomerAdvertisementPathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/CustomerAdvertisement/thumb/");
 
-        #endregion
+    #endregion
 
-        #region News Image
+    #region News Image
 
-        public static readonly string NewsPath = "/content/images/News/main/";
-        public static readonly string NewsPathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/News/main/");
+    public static readonly string NewsPath = "/content/images/News/main/";
+    public static readonly string NewsPathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/News/main/");
 
-        public static readonly string NewsPathThumb = "/content/images/News/thumb/";
-        public static readonly string NewsPathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/News/thumb/");
+    public static readonly string NewsPathThumb = "/content/images/News/thumb/";
+    public static readonly string NewsPathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/News/thumb/");
 
-        #endregion
+    #endregion
 
-        #region Books Files
+    #region Books Files
 
-        public static readonly string BooksImagePath = "/content/images/Books/main/";
-        public static readonly string BooksImagePathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/Books/main/");
+    public static readonly string BooksImagePath = "/content/images/Books/main/";
+    public static readonly string BooksImagePathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/Books/main/");
 
-        public static readonly string BooksImagePathThumb = "/content/images/Books/thumb/";
-        public static readonly string BooksImagePathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/Books/thumb/");
+    public static readonly string BooksImagePathThumb = "/content/images/Books/thumb/";
+    public static readonly string BooksImagePathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/Books/thumb/");
 
-        public static readonly string BookFilePath = "/content/images/Books/Files/";
-        public static readonly string BookFilePathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/Books/Files/");
+    public static readonly string BookFilePath = "/content/images/Books/Files/";
+    public static readonly string BookFilePathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/Books/Files/");
 
-        public static readonly string BookAttachmentFilesServerPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/Books/Files/");
-        public static readonly string BookAttachmentFilesChunkServerPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/Books/Chunks/");
+    public static readonly string BookAttachmentFilesServerPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/Books/Files/");
+    public static readonly string BookAttachmentFilesChunkServerPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/Books/Chunks/");
 
-        public static readonly string BookAttachmentFilesPath = "/content/images/Books/Files/";
+    public static readonly string BookAttachmentFilesPath = "/content/images/Books/Files/";
 
-        #endregion
+    #endregion
 
-        #region Diabet Consultant Resume Files
+    #region Diabet Consultant Resume Files
 
-        public static readonly string DiabetConsultantResumeFilesPath = "/content/images/DiabetConsultantResumeFiles/main/";
-        public static readonly string DiabetConsultantResumeFilesPathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/DiabetConsultantResumeFiles/main/");
+    public static readonly string DiabetConsultantResumeFilesPath = "/content/images/DiabetConsultantResumeFiles/main/";
+    public static readonly string DiabetConsultantResumeFilesPathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/DiabetConsultantResumeFiles/main/");
 
-        public static readonly string DiabetConsultantResumeFilesPathThumb = "/content/images/DiabetConsultantResumeFiles/thumb/";
-        public static readonly string DiabetConsultantResumeFilesPathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/DiabetConsultantResumeFiles/thumb/");
+    public static readonly string DiabetConsultantResumeFilesPathThumb = "/content/images/DiabetConsultantResumeFiles/thumb/";
+    public static readonly string DiabetConsultantResumeFilesPathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/DiabetConsultantResumeFiles/thumb/");
 
-        #endregion
+    #endregion
 
-        #region Blood Pressure Consultant Resume Files
+    #region Blood Pressure Consultant Resume Files
 
-        public static readonly string BloodPressureConsultantResumeFilesPath = "/content/images/BloodPressureConsultantResumeFiles/main/";
-        public static readonly string BloodPressureConsultantResumeFilesPathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/BloodPressureConsultantResumeFiles/main/");
+    public static readonly string BloodPressureConsultantResumeFilesPath = "/content/images/BloodPressureConsultantResumeFiles/main/";
+    public static readonly string BloodPressureConsultantResumeFilesPathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/BloodPressureConsultantResumeFiles/main/");
 
-        public static readonly string BloodPressureConsultantResumeFilesPathThumb = "/content/images/BloodPressureConsultantResumeFiles/thumb/";
-        public static readonly string BloodPressureConsultantResumeFilesPathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/BloodPressureConsultantResumeFiles/thumb/");
+    public static readonly string BloodPressureConsultantResumeFilesPathThumb = "/content/images/BloodPressureConsultantResumeFiles/thumb/";
+    public static readonly string BloodPressureConsultantResumeFilesPathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/BloodPressureConsultantResumeFiles/thumb/");
 
-        #endregion
+    #endregion
 
-        #region Status Image 
+    #region Status Image 
 
-        public static readonly string StatusImagePath = "/content/images/StatusImage/main/";
-        public static readonly string StatusImagePathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/StatusImage/main/");
+    public static readonly string StatusImagePath = "/content/images/StatusImage/main/";
+    public static readonly string StatusImagePathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/StatusImage/main/");
 
-        public static readonly string StatusImagePathThumb = "/content/images/StatusImage/thumb/";
-        public static readonly string StatusImagePathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/StatusImage/thumb/");
+    public static readonly string StatusImagePathThumb = "/content/images/StatusImage/thumb/";
+    public static readonly string StatusImagePathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/StatusImage/thumb/");
 
-        #endregion
+    #endregion
 
-        #region Chat Images
+    #region Chat Images
 
-        public static readonly string ChatImagesPath = "/content/images/user/main/";
-        public static readonly string ChatImagesPathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/user/main/");
+    public static readonly string ChatImagesPath = "/content/images/user/main/";
+    public static readonly string ChatImagesPathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/user/main/");
 
-        public static readonly string ChatImagesPathThumb = "/content/images/user/thumb/";
-        public static readonly string ChatImagesPathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/user/thumb/");
+    public static readonly string ChatImagesPathThumb = "/content/images/user/thumb/";
+    public static readonly string ChatImagesPathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/user/thumb/");
 
-        #endregion
-    }
+    #endregion
 }

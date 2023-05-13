@@ -1,4 +1,6 @@
 ﻿using DoctorFAM.Data.DbContext;
+using DoctorFAM.Data.Migrations;
+using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Contact;
 using DoctorFAM.Domain.Entities.Doctors;
@@ -17,11 +19,13 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.Intrinsics.Arm;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Xsl;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DoctorFAM.Data.Repository
@@ -724,7 +728,7 @@ namespace DoctorFAM.Data.Repository
         {
             return await _context.OnlineVisitDoctorsAndPatientsReservationDetails.AsNoTracking()
                                                 .Where(p => !p.IsDelete && p.OnlineVisitDoctorsReservationDateId == listOFDoctorsInThisDay
-                                                        && !p.PatientUserId.HasValue)
+                                                        && !p.PatientUserId.HasValue && !p.IsExistAnyRequestForThisShift)
                                                 .Select(p => new ListOfShiftSiteSideViewModel()
                                                 {
                                                     businessKey = businessKey,
@@ -739,6 +743,100 @@ namespace DoctorFAM.Data.Repository
             return _context.OnlineVisitWorkShiftDetails.AsNoTracking()
                                                            .Where(d => d.Id == WorkShiftDateTimeId)
                                                             .Select(d => d.EndTime + " تا " + d.StartTime).FirstOrDefault();
+        }
+
+        //Check That Is Exist Free Shift 
+        public async Task<int> CheckThatIsExistFreeShift(ulong WorkShiftDateTimeId , ulong WorkShiftDateId, List<ulong> doctorReservations)
+        {
+            int returnModel = 0;
+
+            foreach (var item in doctorReservations)
+            {
+                var doctorAndPatientDetail = await _context.OnlineVisitDoctorsAndPatientsReservationDetails.AsNoTracking()
+                                                    .AnyAsync(p => !p.IsDelete && p.OnlineVisitDoctorsReservationDateId == item
+                                                            && p.OnlineVisitWorkShiftId == WorkShiftDateId
+                                                            && p.OnlineVisitWorkShiftDetail == WorkShiftDateTimeId
+                                                            && !p.PatientUserId.HasValue && !p.IsExistAnyRequestForThisShift);
+
+                if (doctorAndPatientDetail)
+                {
+                    returnModel = returnModel + 1;
+                }
+            }
+
+            return returnModel;
+        }
+
+        //Add User Online Visit Request To The Data Base
+        public async Task AddUserOnlineVisitRequestToTheDataBase(OnlineVisitUserRequestDetail model)
+        {
+            await _context.OnlineVisitUserRequestDetails.AddAsync(model);
+            await _context.SaveChangesAsync();
+        }
+
+        //Get Online Visit User Request Detail By Id And User Id
+        public async Task<OnlineVisitUserRequestDetail?> GetOnlineVisitUserRequestDetailByIdAndUserId(ulong id , ulong userId)
+        {
+            return await _context.OnlineVisitUserRequestDetails.AsNoTracking()
+                                    .FirstOrDefaultAsync(p=> !p.IsDelete && p.UserId == userId && p.Id == id);
+        }
+
+        //Update Online Visit User Request Detail To Finaly
+        public async Task UpdateOnlineVisitUserRequestDetailToFinaly(OnlineVisitUserRequestDetail model)
+        {
+            model.IsFinaly = true;
+
+            _context.OnlineVisitUserRequestDetails.Update(model);
+            await _context.SaveChangesAsync();
+        }
+
+        //Get Online Visit Doctor Reservations By Date BusinessKey
+        public async Task<List<OnlineVisitDoctorsReservationDate>> GetOnlineVisitDoctorReservationsByDateBusinessKey(int businessKey)
+        {
+            return await _context.OnlineVisitDoctorsReservationDates.AsNoTracking()
+                                     .Where(p => !p.IsDelete && p.BusinessKey == businessKey).ToListAsync();
+        }
+
+        //Get List Of Online Visit Doctors Reservation By Work Shift Id And Work Shift Time Id
+        public async Task<List<ulong>> GetListOfOnlineVisitDoctorsReservationByWorkShiftIdAndWorkShiftTimeId(ulong workShiftId , ulong workShiftTimeId)
+        {
+            return await _context.OnlineVisitDoctorsAndPatientsReservationDetails.AsNoTracking()
+                                   .Where(p => !p.IsDelete && p.OnlineVisitWorkShiftDetail == workShiftTimeId && p.OnlineVisitWorkShiftId == workShiftId
+                                            && !p.PatientUserId.HasValue)
+                                   .Select(p => p.OnlineVisitDoctorsReservationDateId).ToListAsync();
+        }
+
+        //Get Doctors Id By Online Visit Doctors Reservation Id And Date Business Key
+        public async Task<ulong?> GetDoctorsIdByOnlineVisitDoctorsReservationIdAndDateBusinessKey(ulong id , int dateBusinessKey)
+        {
+            return await _context.OnlineVisitDoctorsReservationDates.AsNoTracking()
+                                    .Where(p => !p.IsDelete && p.BusinessKey == dateBusinessKey && p.Id == id)
+                                        .Select(p => p.DoctorUserId).FirstOrDefaultAsync();
+        }
+
+        //Update Randome Record Of Reservation Doctor And Patient For Exist Request For Select
+        public async Task UpdateRandomeRecordOfReservationDoctorAndPatientForExistRequestForSelect(List<ulong> onlineVisitDoctorReservationId , ulong shiftTimeId , ulong shiftDateId)
+        {
+            foreach (var item in onlineVisitDoctorReservationId)
+            {
+                var reservationTime = await _context.OnlineVisitDoctorsAndPatientsReservationDetails.AsNoTracking()
+                                                        .FirstOrDefaultAsync(p => !p.IsDelete 
+                                                                && p.OnlineVisitDoctorsReservationDateId == item 
+                                                                && !p.PatientUserId.HasValue
+                                                                && !p.IsExistAnyRequestForThisShift
+                                                                && p.OnlineVisitWorkShiftDetail == shiftTimeId
+                                                                && p.OnlineVisitWorkShiftId == shiftDateId);
+
+                if (reservationTime != null)
+                {
+                    reservationTime.IsExistAnyRequestForThisShift = true;
+
+                    _context.OnlineVisitDoctorsAndPatientsReservationDetails.Update(reservationTime);
+                    await _context.SaveChangesAsync();
+
+                    return;
+                }
+            }
         }
 
         #endregion

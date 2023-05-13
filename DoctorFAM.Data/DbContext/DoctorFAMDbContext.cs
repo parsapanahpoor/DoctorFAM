@@ -290,6 +290,8 @@ public class DoctorFAMDbContext : Microsoft.EntityFrameworkCore.DbContext
 
     public DbSet<OnlineVisitDoctorSelectedWorkShift> OnlineVisitDoctorSelectedWorkShifts { get; set; }
 
+    public DbSet<OnlineVisitUserRequestDetail> OnlineVisitUserRequestDetails { get; set; }
+
     #endregion
 
     #region Ticket 

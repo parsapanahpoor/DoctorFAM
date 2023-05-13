@@ -74,7 +74,7 @@ namespace DoctorFAM.Domain.Interfaces
         //Get List Of Admins and Supporters User Id For Send Notification For Home Pharmacy
         Task<List<string>?> GetAdminsAndSupportersNotificationForSendNotificationInHomePharmacy();
 
-        //Get List Of Admins and Supporters User Id For Send Notification For Online Request
+        //Get List Of Admins and Supporters User Id For Send Notification For Online Visit
         Task<List<string>?> GetAdminsAndSupportersNotificationForSendNotificationInOnlineVisit();
 
         //Get List Of Admins 

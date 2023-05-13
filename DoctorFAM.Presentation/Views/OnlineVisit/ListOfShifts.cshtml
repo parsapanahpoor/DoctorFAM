@@ -27,11 +27,13 @@
                                     @foreach (var shiftTime in Model)
                                     {
                                         <li class="form-group col-md-2 col-sm-12" style="margin-top:10px;">
-                                            <a
-                                                asp-action="ListOfShifts"
-                                                asp-area=""
-                                                asp-controller="OnlineVisit"
-                                                style="background-color: #197c66;border: 1px solid #fccf9a;color: #fff;">
+                                            <a asp-action="SelectShiftAndRedirectToBank"
+                                               asp-area=""
+                                               asp-controller="OnlineVisit"
+                                               asp-route-businessKey="@shiftTime.businessKey"
+                                               asp-route-WorkShiftDateTimeId="@shiftTime.WorkShiftDateTimeId"
+                                               asp-route-WorkShiftDateId="@shiftTime.WorkShiftDateId"
+                                               style="background-color: #197c66;border: 1px solid #fccf9a;color: #fff;">
                                                 @shiftTime.ShiftTime
                                             </a>
                                         </li>

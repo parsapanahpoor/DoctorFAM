@@ -2660,18 +2660,21 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #region Check Doctor Send SMS Count
 
+            //Get Count Of SMS For Send
+            int smsCount = ((model.SMSBody.Count() / 70) +1) * model.PatientId.Count;
+
             //Get Doctor Free SMS Count
             var doctorFreeSMSCount = await _doctorRepository.GetDoctorFreeSMSCountByDoctorId(doctor.Id);
             if (doctorFreeSMSCount == null) return SendRequestOfSMSFromDoctorsToThePatientResult.WrongInformation;
 
             //Check Incoming SMS Right Now
-            if (model.PatientId.Count > doctorFreeSMSCount)
+            if (smsCount > doctorFreeSMSCount)
             {
                 return SendRequestOfSMSFromDoctorsToThePatientResult.HigherThanDoctorFreePercentage;
             }
 
             //Insert Free SMS From Doctor 
-            if (model.PatientId.Count <= doctorFreeSMSCount)
+            if (smsCount <= doctorFreeSMSCount)
             {
                 #region Create SMS 
 
@@ -2709,7 +2712,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
                 #region Reduce Percentage Doctor Free SMS Count
 
-                await _doctorRepository.ReduceDoctorFreeSMSPercentageWithoutSaveChanges(doctor.Id, model.PatientId.Count());
+                await _doctorRepository.ReduceDoctorFreeSMSPercentageWithoutSaveChanges(doctor.Id, smsCount);
 
                 #endregion
 

@@ -367,3 +367,4 @@ FodyWeavers.xsd
 /DoctorFAM.Presentation/wwwroot/Content/images
 /DoctorFAM.Presentation/wwwroot/Content/Radio/images/icons8.png
 /DoctorFAM.Presentation/wwwroot/Content/ChatRoomFiles
+/DoctorFAM.Data/Repository/UserRepository.cs
