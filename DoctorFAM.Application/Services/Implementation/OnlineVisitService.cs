@@ -25,6 +25,9 @@ using DoctorFAM.Domain.ViewModels.Site.Patient;
 using DoctorFAM.Domain.ViewModels.UserPanel.OnlineVisit;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -33,6 +36,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using Request = DoctorFAM.DataLayer.Entities.Request;
 
 namespace DoctorFAM.Application.Services.Implementation
@@ -49,10 +53,12 @@ namespace DoctorFAM.Application.Services.Implementation
         private readonly IWalletRepository _walletRepository;
         private readonly IHomePharmacyServicec _homePharmacyService;
         private readonly IOrganizationService _organizationService;
+        private readonly ISiteSettingService _siteSettingService;
 
         public OnlineVisitService(IOnlineVisitRepository onlineVisitRepository, IUserService userService, IRequestService requestService
                                     , IPatientService patientService, ILocationService locationService, IWalletRepository walletRepository
-                                            , IHomePharmacyServicec homePharmacyService, IOrganizationService organizationService)
+                                            , IHomePharmacyServicec homePharmacyService, IOrganizationService organizationService
+                                                , ISiteSettingService siteSettingService)
         {
             _onlineVisitRepository = onlineVisitRepository;
             _userService = userService;
@@ -62,6 +68,7 @@ namespace DoctorFAM.Application.Services.Implementation
             _walletRepository = walletRepository;
             _homePharmacyService = homePharmacyService;
             _organizationService = organizationService;
+            _siteSettingService = siteSettingService;
         }
 
         #endregion
@@ -560,7 +567,8 @@ namespace DoctorFAM.Application.Services.Implementation
                         OnlineVisitDoctorsReservationDateId = doctorReservationDateSelected.Id,
                         PatientUserId = null,
                         OnlineVisitWorkShiftDetail = reservationTimeDetailId,
-                        OnlineVisitWorkShiftId = item
+                        OnlineVisitWorkShiftId = item,
+                        IsExistAnyRequestForThisShift = false
                     };
 
                     //Add To The Data Base 
@@ -737,6 +745,136 @@ namespace DoctorFAM.Application.Services.Implementation
                                        WorkShiftDateTimeId = p.FirstOrDefault().WorkShiftDateTimeId,
                                        WorkShiftDateId = p.FirstOrDefault().WorkShiftDateId
                                    }).ToList();
+        }
+
+        //Select Shift And Redirect To Bank
+        public async Task<SelectShiftAndRedirectToBankResult> SelectShiftAndRedirectToBank(SelectShiftAndRedirectToBankDTO model)
+        {
+            #region Check That Is User Exist 
+
+            var user = await _userService.GetUserById(model.UserId);
+            if (user == null) return new SelectShiftAndRedirectToBankResult()
+            {
+                Result = SelectShiftAndRedirectToBankResultEnum.UserIsNotExist,
+                OnlineVisitTariff = 0
+            };
+
+            #endregion
+
+            #region Check Is Exist Free Shift 
+
+            List<ulong> doctorReservationIds = await _onlineVisitRepository.GetListOfDocotrsReservationDatesWithDateBusinessKey(model.businessKey);
+            if (doctorReservationIds == null) return new SelectShiftAndRedirectToBankResult()
+            {
+                Result = SelectShiftAndRedirectToBankResultEnum.NotExistFreeTime,
+                OnlineVisitTariff = 0
+            };
+
+            int res = await _onlineVisitRepository.CheckThatIsExistFreeShift(model.WorkShiftDateTimeId, model.WorkShiftDateId, doctorReservationIds);
+            if (res == 0) return new SelectShiftAndRedirectToBankResult()
+            {
+                Result = SelectShiftAndRedirectToBankResultEnum.NotExistFreeTime,
+                OnlineVisitTariff = 0
+            };
+
+            #endregion
+
+            #region Get Online Visit Tariff
+
+            int onlineVisitTariff = await _siteSettingService.GetOnlineVisitTariff();
+            if (onlineVisitTariff == 0) return new SelectShiftAndRedirectToBankResult()
+            {
+                Result = SelectShiftAndRedirectToBankResultEnum.ProblemWithOnlineVisitTariff,
+                OnlineVisitTariff = 0
+            };
+
+            #endregion
+
+            return new SelectShiftAndRedirectToBankResult()
+            {
+                Result = SelectShiftAndRedirectToBankResultEnum.Success,
+                OnlineVisitTariff = onlineVisitTariff
+            };
+        }
+
+        // Add User Online Visit Request To The Data Base 
+        public async Task<ulong> AddUserOnlineVisitRequestToTheDataBase(SelectShiftAndRedirectToBankDTO model)
+        {
+            #region Fill Entity Instance
+
+            OnlineVisitUserRequestDetail entity = new OnlineVisitUserRequestDetail()
+            {
+                DayDatebusinessKey = model.businessKey,
+                UserId = model.UserId,
+                WorkShiftDateId = model.WorkShiftDateId,
+                WorkShiftDateTimeId = model.WorkShiftDateTimeId
+            };
+
+            #endregion
+
+            await _onlineVisitRepository.AddUserOnlineVisitRequestToTheDataBase(entity);
+            return entity.Id;
+        }
+
+        //Get Online Visit User Request Detail By Id And User Id
+        public async Task<OnlineVisitUserRequestDetail?> GetOnlineVisitUserRequestDetailByIdAndUserId(ulong id, ulong userId)
+        {
+            return await _onlineVisitRepository.GetOnlineVisitUserRequestDetailByIdAndUserId(id, userId);
+        }
+
+        //Update Online Visit User Request Detail To Finaly
+        public async Task UpdateOnlineVisitUserRequestDetailToFinaly(ulong id, ulong userId)
+        {
+            var model = await _onlineVisitRepository.GetOnlineVisitUserRequestDetailByIdAndUserId(id, userId);
+
+            if (model is not null)
+            {
+                await _onlineVisitRepository.UpdateOnlineVisitUserRequestDetailToFinaly(model);
+            }
+        }
+
+        //Pay Online Visit Tariff
+        public async Task<bool> PayOnlineVisitTariff(ulong userId, int price, ulong? requestId)
+        {
+            var wallet = new Wallet
+            {
+                UserId = userId,
+                TransactionType = TransactionType.Withdraw,
+                GatewayType = GatewayType.Zarinpal,
+                PaymentType = PaymentType.OnlineVisit,
+                Price = price,
+                Description = "پرداخت مبلغ ویزیت آنلاین",
+                IsFinally = true,
+                RequestId = requestId
+            };
+
+            await _walletRepository.CreateWalletAsync(wallet);
+            return true;
+        }
+
+        //Get List Of Doctor For Send Them Notification By Online Visit 
+        public async Task<List<string>> GetListOfDoctorForSendThemNotificationByOnlineVisit(int businessKey, ulong workshiftId , ulong workShiftTimeId)
+        {
+            List<string> returnModel = new List<string>();
+
+            //Get Online Visti Doctors And Patient Details
+            var doctorsReservationId = await  _onlineVisitRepository.GetListOfOnlineVisitDoctorsReservationByWorkShiftIdAndWorkShiftTimeId(workshiftId , workShiftTimeId);
+
+            foreach (var item in doctorsReservationId)
+            {
+                var doctorUserId = await _onlineVisitRepository.GetDoctorsIdByOnlineVisitDoctorsReservationIdAndDateBusinessKey(item , businessKey);
+                if (doctorUserId.HasValue && doctorUserId != 0) returnModel.Add(doctorUserId.Value.ToString());
+            }
+
+            return returnModel;
+        }
+
+        //Update Randome Record Of Reservation Doctor And Patient For Exist Request For Select
+        public async Task UpdateRandomeRecordOfReservationDoctorAndPatientForExistRequestForSelect(int businessKey , ulong workShiftId , ulong workShiftTimeId)
+        {
+            List<ulong> doctorReservationIds = await _onlineVisitRepository.GetListOfDocotrsReservationDatesWithDateBusinessKey(businessKey);
+
+            await _onlineVisitRepository.UpdateRandomeRecordOfReservationDoctorAndPatientForExistRequestForSelect(doctorReservationIds , workShiftTimeId , workShiftId);
         }
 
         #endregion
