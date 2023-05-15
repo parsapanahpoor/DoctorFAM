@@ -51,6 +51,9 @@ namespace DoctorFAM.Domain.Interfaces
 
         #region User Panel 
 
+        //Get Home Laboratory Request Detail Price By Request Id
+        Task<HomeLaboratoryRequestPrice?> GetHomeLaboratoryRequestPriceByRequestId(ulong requestId);
+
         Task<ListOfHomeLaboratoryUserPanelSideViewModel> ListOfUserHomeLaboratoryRequest(ListOfHomeLaboratoryUserPanelSideViewModel filter);
 
         #endregion

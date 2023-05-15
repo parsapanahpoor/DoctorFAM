@@ -144,14 +144,14 @@
                                         <p class="label label-primary"> پیش فاکتور </p>
                                     }
 
-                                       @if (request.RequestState == RequestState.Finalized)
+                                       @if (request.RequestState == RequestState.AcceptFromCustomer)
                                     {
-                                        <p class="label label-success"> نهایی شده </p>
+                                        <p class="label label-success"> تایید شده توسط کاربر</p>
                                     }
 
-                                    @if (request.RequestState == RequestState.Canceled)
+                                    @if (request.RequestState == RequestState.RejectFromCustomer)
                                     {
-                                        <p class="label label-danger"> رد شده </p>
+                                        <span class="mr-8px label label-danger"> رد شده از طرف کاربر   </span>
                                     }
                                 </td>
                                 <td class="tc vm">

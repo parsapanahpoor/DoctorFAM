@@ -303,5 +303,59 @@ public class HealthHouseController : UserBaseController
 
     #endregion
 
+    #region Show Home Laboratory Invoice 
+
+    [HttpGet]
+    public async Task<IActionResult> ShowHomeLaboratoryInvoice(ulong requestId)
+    {
+        return View(await _homeLaboratoryServices.FillHomeLaboratoryInvoiceDetailPage(requestId , User.GetUserId())) ;
+    }
+
+    #endregion
+
+    #region Accept Home Laboratory Invoice
+
+    [HttpGet]
+    public async Task<IActionResult> AcceptHomeLaboratoryInvoice(ulong requestId)
+    {
+        #region Accept Request
+
+        var res = await _homeLaboratoryServices.AcceptHomeLaboratoryInvoice(requestId , User.GetUserId());
+        if (res)
+        {
+            TempData[SuccessMessage] = "عملیات با موفقیت انجام شده است.";
+            return RedirectToAction(nameof(ListOfUserHomeLaboratoryRequest));
+        }
+
+        #endregion
+
+        TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+        return RedirectToAction(nameof(ListOfUserHomeLaboratoryRequest));
+    }
+
+    #endregion
+
+    #region Decline Home Laboratory Invoice
+
+    [HttpGet]
+    public async Task<IActionResult> DeclineHomeLaboratoryInvoice(ulong requestId)
+    {
+        #region Accept Request
+
+        var res = await _homeLaboratoryServices.DeclineHomeLaboratoryInvoice(requestId, User.GetUserId());
+        if (res)
+        {
+            TempData[SuccessMessage] = "عملیات با موفقیت انجام شده است.";
+            return RedirectToAction(nameof(ListOfUserHomeLaboratoryRequest));
+        }
+
+        #endregion
+
+        TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+        return RedirectToAction(nameof(ListOfUserHomeLaboratoryRequest));
+    }
+
+    #endregion
+
     #endregion
 }

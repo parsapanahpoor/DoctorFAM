@@ -66,6 +66,15 @@ public interface IHomeLaboratoryServices
 
     Task<ListOfHomeLaboratoryUserPanelSideViewModel> ListOfUserHomeLaboratoryRequest(ListOfHomeLaboratoryUserPanelSideViewModel filter);
 
+    //Fill Home Laboratory Invoice Detail Page
+    Task<HomeLaboratoryInvoiceUserPanelSideViewModel?> FillHomeLaboratoryInvoiceDetailPage(ulong requestId, ulong userId);
+
+    //Accept Home Laboratory Invoice
+    Task<bool> AcceptHomeLaboratoryInvoice(ulong requestId, ulong userId);
+
+    //Decline Home Laboratory Invoice
+    Task<bool> DeclineHomeLaboratoryInvoice(ulong requestId, ulong userId);
+
     #endregion
 
     #region Home Laboratory Side 

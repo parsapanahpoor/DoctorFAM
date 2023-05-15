@@ -208,6 +208,14 @@ namespace DoctorFAM.Data.Repository
 
         #region User Panel 
 
+        //Get Home Laboratory Request Detail Price By Request Id
+        public async Task<HomeLaboratoryRequestPrice?> GetHomeLaboratoryRequestPriceByRequestId(ulong requestId)
+        {
+            return await _context.HomeLaboratoryRequestPrice.AsNoTracking()
+                                    .Where(p => !p.IsDelete && p.HomeLaboratoryRequestId == requestId)
+                                        .FirstOrDefaultAsync();
+        }
+
         public async Task<ListOfHomeLaboratoryUserPanelSideViewModel> ListOfUserHomeLaboratoryRequest(ListOfHomeLaboratoryUserPanelSideViewModel filter)
         {
             var query = _context.Requests

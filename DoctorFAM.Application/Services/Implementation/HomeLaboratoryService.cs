@@ -22,6 +22,8 @@ using DoctorFAM.Domain.Enums.RequestType;
 using DoctorFAM.Domain.ViewModels.UserPanel.HealthHouse.HomeLaboratory;
 using DoctorFAM.Domain.ViewModels.Laboratory.HomeLaboratory;
 using DoctorFAM.Data.Repository;
+using DoctorFAM.Domain.Entities.Account;
+using DoctorFAM.Data.Migrations;
 
 #endregion
 
@@ -657,6 +659,114 @@ public class HomeLaboratoryService : IHomeLaboratoryServices
         return await _homeLaboratory.ListOfUserHomeLaboratoryRequest(filter);
     }
 
+    //Fill Home Laboratory Invoice Detail Page
+    public async Task<HomeLaboratoryInvoiceUserPanelSideViewModel?> FillHomeLaboratoryInvoiceDetailPage(ulong requestId , ulong userId)
+    {
+        #region Get Request By Id 
+
+        var homeLaboratoryRequest = await _homeLaboratory.GetHomeLaboratoryRequestById(requestId);
+        if (homeLaboratoryRequest == null || homeLaboratoryRequest.UserId != userId
+            || homeLaboratoryRequest.RequestType != RequestType.HomeLab) return null;
+
+        #endregion
+
+        #region Get Home Laboratory Request Price
+
+        //Get Home Laboratory Request Price
+        HomeLaboratoryRequestPrice? homeLaboratoryRequestPrice = await _homeLaboratory.GetHomeLaboratoryRequestPriceByRequestId(requestId);
+
+        if (homeLaboratoryRequestPrice == null)
+        {
+            return null;
+        }
+        else
+        {
+            return new HomeLaboratoryInvoiceUserPanelSideViewModel()
+            {
+                InvoicePicFileName = homeLaboratoryRequestPrice.InvoicePicture,
+                Price = homeLaboratoryRequestPrice.Price,
+                RequestId = requestId,
+                IsFinalize = ((homeLaboratoryRequest.RequestState == Domain.Enums.Request.RequestState.AcceptFromCustomer
+                               || homeLaboratoryRequest.RequestState == Domain.Enums.Request.RequestState.Canceled)
+                               ? true : false)
+            };
+        }
+
+        #endregion
+
+        return null;
+    }
+
+    //Accept Home Laboratory Invoice
+    public async Task<bool> AcceptHomeLaboratoryInvoice(ulong requestId , ulong userId)
+    {
+        #region Get Request By Id 
+
+        var request = await _homeLaboratory.GetHomeLaboratoryRequestById(requestId);
+        if (request == null || request.UserId != userId || !request.OperationId.HasValue
+            || request.RequestType != RequestType.HomeLab
+            || request.RequestState != Domain.Enums.Request.RequestState.ConfirmFromDestinationAndWaitingForIssuanceOfDraftInvoice) return false; ;
+
+        #endregion
+
+        #region Update Request 
+
+        request.RequestState = Domain.Enums.Request.RequestState.AcceptFromCustomer;
+
+        await _requestService.UpdateRequest(request);
+
+        #endregion
+
+        #region Send SMS For Customer User 
+
+        var message = Messages.FinalizeHomeLaboratoryFromUser();
+
+        //Get Laboratory Owner Id
+        var opertion = await _userService.GetUserById(request.OperationId.Value);
+        if (opertion == null) return false;
+
+        await _smsService.SendSimpleSMS(opertion.Mobile, message);
+
+        #endregion
+
+        return true;
+    }
+
+    //Decline Home Laboratory Invoice
+    public async Task<bool> DeclineHomeLaboratoryInvoice(ulong requestId, ulong userId)
+    {
+        #region Get Request By Id 
+
+        var request = await _homeLaboratory.GetHomeLaboratoryRequestById(requestId);
+        if (request == null || request.UserId != userId || !request.OperationId.HasValue
+            || request.RequestType != RequestType.HomeLab
+            || request.RequestState != Domain.Enums.Request.RequestState.ConfirmFromDestinationAndWaitingForIssuanceOfDraftInvoice) return false; ;
+
+        #endregion
+
+        #region Update Request 
+
+        request.RequestState = Domain.Enums.Request.RequestState.RejectFromCustomer;
+
+        await _requestService.UpdateRequest(request);
+
+        #endregion
+
+        #region Send SMS For Customer User 
+
+        var message = Messages.RejectHomeLaboratoryFromUser();
+
+        //Get Laboratory Owner Id
+        var opertion = await _userService.GetUserById(request.OperationId.Value);
+        if (opertion == null) return false;
+
+        await _smsService.SendSimpleSMS(opertion.Mobile, message);
+
+        #endregion
+
+        return true;
+    }
+
     #endregion
 
     #region Laboratory Side
@@ -753,7 +863,7 @@ public class HomeLaboratoryService : IHomeLaboratoryServices
 
         #region Send SMS For Customer User 
 
-        var message = Messages.SendSMSForAccepteHomeLaboratoryRequestFromLaboratory();
+        var message = Messages.WaitingForConfitmInvoiceFromPatient();
 
         //await _smsService.SendSimpleSMS(request.User.Mobile, message);
 

@@ -1,9 +1,4 @@
-﻿using DoctorFAM.Domain.Entities.Doctors;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
-using SixLabors.ImageSharp.ColorSpaces;
-
-namespace DoctorFAM.Application.StaticTools;
+﻿namespace DoctorFAM.Application.StaticTools;
 
 public static class Messages
 {
@@ -215,5 +210,19 @@ public static class Messages
     {
         return
             $"باعرض سلام . {Environment.NewLine}  پیش فاکتور درخواست شما ایجاد گردیده است . خواهشمندیم جهت تایید یا رد آن اقدام فرمایید. {Environment.NewLine} {PathTools.SiteFarsiName}";
+    }
+
+    //Finalize Home Laboratory From User
+    public static string FinalizeHomeLaboratoryFromUser()
+    {
+        return
+            $"باعرض سلام . {Environment.NewLine}  پیش فاکتور شما از سمت درخواست کننده تایید گردید . خواهشمندیم اقدام های مورد نیاز را انجام دهید . {Environment.NewLine} {PathTools.SiteFarsiName}";
+    }
+
+    //Reject Home Laboratory From User
+    public static string RejectHomeLaboratoryFromUser()
+    {
+        return
+            $"باعرض سلام . {Environment.NewLine}  پیش فاکتور شما از سمت درخواست کننده رد گردیده است  . {Environment.NewLine} {PathTools.SiteFarsiName}";
     }
 }

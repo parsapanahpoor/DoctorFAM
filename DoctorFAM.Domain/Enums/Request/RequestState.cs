@@ -34,6 +34,8 @@ namespace DoctorFAM.Domain.Enums.Request
         DeliveryToCourierAndSending,
         [Display(Name = "Accept From Customer")]
         AcceptFromCustomer,
+        [Display(Name = "Reject From Customer")]
+        RejectFromCustomer,
         [Display(Name = "Waiting For Accept From Customer")]
         WaitingForAcceptFromCustomer,
         [Display(Name = "Canceled Request")]

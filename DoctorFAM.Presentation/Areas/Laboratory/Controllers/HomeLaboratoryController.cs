@@ -130,7 +130,7 @@ namespace DoctorFAM.Web.Areas.Laboratory.Controllers
             if (request.RequestState == Domain.Enums.Request.RequestState.Finalized
                 || request.RequestState == Domain.Enums.Request.RequestState.WaitingForConfirmFromDestination)
             {
-                return RedirectToAction(nameof(InvoiceFinalization), new { requestId = requestId });
+                return RedirectToAction(nameof(AcceptHomeLaboratoryRequestFromLaboratory), new { requestId = requestId });
             }
 
             #endregion
