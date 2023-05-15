@@ -1,6 +1,7 @@
 ﻿using DoctorFAM.Data.DbContext;
 using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Laboratory;
+using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Enums.Request;
@@ -231,11 +232,12 @@ namespace DoctorFAM.Data.Repository
                                     .FirstOrDefaultAsync(p => p.Id == requestId && !p.IsDelete);
         }
 
-        //Get Home Laboratory Request Detail By Request Id 
-        public async Task<List<HomeLaboratoryRequestDetail>?> GetHomeLaboratoryRequestDetailByRequestId(ulong requestId)
+        //Get Home Laboratory Request Detail Price By Orgenization OwnerId and Request Id
+        public async Task<HomeLaboratoryRequestPrice?> GetHomeLaboratoryRequestPriceByOrgenizationOwnerIdandRequestId(ulong requestId ,  ulong organizationOwnerId )
         {
-            return await _context.HomeLaboratoryRequestDetails.AsNoTracking()
-                                .Where(p => !p.IsDelete && p.RequestId == requestId).ToListAsync();
+            return await _context.HomeLaboratoryRequestPrice.AsNoTracking()
+                                    .Where(p => !p.IsDelete && p.LaboratoryOwnerId == organizationOwnerId && p.HomeLaboratoryRequestId == requestId)
+                                        .FirstOrDefaultAsync();
         }
 
         #endregion

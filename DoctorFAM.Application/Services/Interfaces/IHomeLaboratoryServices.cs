@@ -2,6 +2,7 @@
 using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.ViewModels.Admin.HealthHouse.HomeLabratory;
+using DoctorFAM.Domain.ViewModels.Laboratory.HomeLaboratory;
 using DoctorFAM.Domain.ViewModels.Site.Common;
 using DoctorFAM.Domain.ViewModels.Site.HomeLaboratory;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
@@ -69,6 +70,13 @@ namespace DoctorFAM.Application.Services.Interfaces
         #region User Panel 
 
         Task<ListOfHomeLaboratoryUserPanelSideViewModel> ListOfUserHomeLaboratoryRequest(ListOfHomeLaboratoryUserPanelSideViewModel filter);
+
+        #endregion
+
+        #region Home Laboratory Side 
+
+        // Fill Home Laboratory Pharmacy Invoice Page
+        Task<HomeLaboratoryInvoiceLaboratorySideViewModel?> FillHomeLaboratoryPharmacyInvoicePage(ulong requestId, ulong organizationOwnerId);
 
         #endregion
     }

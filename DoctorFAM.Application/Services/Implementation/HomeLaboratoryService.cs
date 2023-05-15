@@ -22,7 +22,6 @@ using DoctorFAM.Domain.Enums.RequestType;
 using DoctorFAM.Domain.ViewModels.UserPanel.HealthHouse.HomeLaboratory;
 using DoctorFAM.Domain.Entities.Pharmacy;
 using DoctorFAM.Domain.ViewModels.Laboratory.HomeLaboratory;
-using AngleSharp.Io;
 using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.ViewModels.Pharmacy.HomePharmacy;
 
@@ -660,7 +659,7 @@ public class HomeLaboratoryService : IHomeLaboratoryServices
     #region Laboratory Side
 
     // Fill Home Laboratory Pharmacy Invoice Page
-    public async Task<List<HomeLaboratoryInvoiceLaboratorySideViewModel>?> FillHomeLaboratoryPharmacyInvoicePage(ulong requestId, ulong organizationOwnerId)
+    public async Task<HomeLaboratoryInvoiceLaboratorySideViewModel?> FillHomeLaboratoryPharmacyInvoicePage(ulong requestId, ulong organizationOwnerId)
     {
         #region Get Request By Id 
 
@@ -680,19 +679,15 @@ public class HomeLaboratoryService : IHomeLaboratoryServices
 
         #region Fill Return Model 
 
-        //Get Home Laboratory Request Detail By Request Id
-        List<HomeLaboratoryRequestDetail> requetsDetail = await _homeLaboratory.GetHomeLaboratoryRequestDetailByRequestId(requestId);
+        //Get Home Laboratory Request Price
+        HomeLaboratoryRequestPrice? homeLaboratoryRequestPrice = await _homeLaboratory.GetHomeLaboratoryRequestPriceByOrgenizationOwnerIdandRequestId(requestId , organizationOwnerId);
 
-        List<HomeLaboratoryInvoiceLaboratorySideViewModel> model = new List<HomeLaboratoryInvoiceLaboratorySideViewModel>();
-
-        if (requetsDetail is not null)
+        return new HomeLaboratoryInvoiceLaboratorySideViewModel()
         {
-            foreach (var item in requetsDetail)
-            {
-
-            }
-        }
-
+            InvoicePicFileName = ((homeLaboratoryRequestPrice != null && !string.IsNullOrEmpty(homeLaboratoryRequestPrice.InvoicePicture)) ? homeLaboratoryRequestPrice.InvoicePicture : null ),
+            Price = ((homeLaboratoryRequestPrice != null) ? homeLaboratoryRequestPrice.Price : null),
+            RequestId = requestId
+        };
 
         #endregion
     }

@@ -25,9 +25,10 @@ namespace DoctorFAM.Web.Areas.Laboratory.Controllers
         private readonly IUserService _userService;
         private readonly IHubContext<NotificationHub> _notificationHub;
         private readonly ISMSService _smsService;
+        private readonly IHomeLaboratoryServices _homeLaboratoryServices;
 
         public HomeLaboratoryController(ILaboratoryService laboratoryService, IRequestService requestService, INotificationService notificationService
-            , IOrganizationService organizationService, IUserService userService, IHubContext<NotificationHub> notificationHub, ISMSService smsService)
+            , IOrganizationService organizationService, IUserService userService, IHubContext<NotificationHub> notificationHub, ISMSService smsService, IHomeLaboratoryServices homeLaboratoryServices)
         {
             _laboratoryService = laboratoryService;
             _requestService = requestService;
@@ -36,6 +37,7 @@ namespace DoctorFAM.Web.Areas.Laboratory.Controllers
             _userService = userService;
             _notificationHub = notificationHub;
             _smsService = smsService;
+            _homeLaboratoryServices = homeLaboratoryServices;
         }
 
         #endregion
@@ -158,18 +160,10 @@ namespace DoctorFAM.Web.Areas.Laboratory.Controllers
 
             #region Fill Model
 
-            var model = await _pharmacyService.FillHomePharmcyInvoicePageModel(requestId, User.GetUserId());
+            var model = await _homeLaboratoryServices.FillHomeLaboratoryPharmacyInvoicePage(requestId, currentOrganization.OwnerId);
             if (model == null) return NotFound();
 
             #endregion
-
-            ViewBag.RequestId = requestId;
-            ViewBag.TotalPrice = await _pharmacyService.GetSumOfInvoiceHomePharmacyRequestDetailPricing(requestId, User.GetUserId());
-            var TransferingPrice = await _requestService.GetRequestTransferingPriceFromOperator(User.GetUserId(), requestId);
-            if (TransferingPrice != null)
-            {
-                ViewBag.TransferingPrice = TransferingPrice.Price;
-            }
 
             return View(model);
         }

@@ -58,8 +58,8 @@ namespace DoctorFAM.Domain.Interfaces
         //Get Home Laboratory Request ById
         Task<Request?> GetHomeLaboratoryRequestById(ulong requestId);
 
-        //Get Home Laboratory Request Detail By Request Id 
-        Task<List<HomeLaboratoryRequestDetail>?> GetHomeLaboratoryRequestDetailByRequestId(ulong requestId);
+        //Get Home Laboratory Request Detail Price By Orgenization OwnerId and Request Id
+        Task<HomeLaboratoryRequestPrice?> GetHomeLaboratoryRequestPriceByOrgenizationOwnerIdandRequestId(ulong requestId, ulong organizationOwnerId);
 
         #endregion
     }

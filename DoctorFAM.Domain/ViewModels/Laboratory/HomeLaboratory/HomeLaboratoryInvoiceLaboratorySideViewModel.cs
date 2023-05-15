@@ -1,7 +1,9 @@
 ﻿using DoctorFAM.Domain.Entities.Laboratory;
 using DoctorFAM.Domain.Entities.Pharmacy;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,13 +14,15 @@ namespace DoctorFAM.Domain.ViewModels.Laboratory.HomeLaboratory
     {
         #region properties
 
-        public HomeLaboratoryRequestDetail HomeLaboratoryRequestDetail { get; set; }
+        public ulong RequestId { get; set; }
 
+        [Required(ErrorMessage = "این فیلد الزامی است .")]
         public int? Price { get; set; }
 
-        public string? DrugNameFromPharmacy { get; set; }
+        [Required(ErrorMessage = "این فیلد الزامی است .")]
+        public IFormFile InvoicePicture { get; set; }
 
-        public ulong? PricingId { get; set; }
+        public string? InvoicePicFileName { get; set; }
 
         #endregion
     }
