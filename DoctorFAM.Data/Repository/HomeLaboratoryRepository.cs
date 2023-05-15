@@ -221,5 +221,23 @@ namespace DoctorFAM.Data.Repository
         }
 
         #endregion
+
+        #region Laboratory Side
+
+        //Get Home Laboratory Request ById
+        public async Task<Request?> GetHomeLaboratoryRequestById(ulong requestId)
+        {
+            return await _context.Requests.AsNoTracking()
+                                    .FirstOrDefaultAsync(p => p.Id == requestId && !p.IsDelete);
+        }
+
+        //Get Home Laboratory Request Detail By Request Id 
+        public async Task<List<HomeLaboratoryRequestDetail>?> GetHomeLaboratoryRequestDetailByRequestId(ulong requestId)
+        {
+            return await _context.HomeLaboratoryRequestDetails.AsNoTracking()
+                                .Where(p => !p.IsDelete && p.RequestId == requestId).ToListAsync();
+        }
+
+        #endregion
     }
 }

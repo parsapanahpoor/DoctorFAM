@@ -202,4 +202,11 @@ public static class Messages
         return
          $" {textBody} {Environment.NewLine} {PathTools.SiteFarsiName}";
     }
+
+    //The invoice of your Home LAboratory request has been provided by the Laboratory.
+    public static string SendSMSForAccepteHomeLaboratoryRequestFromLaboratory()
+    {
+        return
+            $"باعرض سلام . {Environment.NewLine} درخواست آزمایشگاه در منزل شما از سمت آزمایشگاه قبول شده است . لطفا تا ارائه ی پیش فاکتور صبور باشید. {Environment.NewLine} {PathTools.SiteFarsiName}";
+    }
 }

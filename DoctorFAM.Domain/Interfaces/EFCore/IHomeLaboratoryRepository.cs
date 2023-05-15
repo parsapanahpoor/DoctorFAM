@@ -52,5 +52,15 @@ namespace DoctorFAM.Domain.Interfaces
         Task<ListOfHomeLaboratoryUserPanelSideViewModel> ListOfUserHomeLaboratoryRequest(ListOfHomeLaboratoryUserPanelSideViewModel filter);
 
         #endregion
+
+        #region Laboratory side 
+
+        //Get Home Laboratory Request ById
+        Task<Request?> GetHomeLaboratoryRequestById(ulong requestId);
+
+        //Get Home Laboratory Request Detail By Request Id 
+        Task<List<HomeLaboratoryRequestDetail>?> GetHomeLaboratoryRequestDetailByRequestId(ulong requestId);
+
+        #endregion
     }
 }
