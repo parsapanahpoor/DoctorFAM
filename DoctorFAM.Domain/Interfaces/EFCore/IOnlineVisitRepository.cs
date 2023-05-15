@@ -62,6 +62,9 @@ namespace DoctorFAM.Domain.Interfaces
         //Select List For Show List Of Avalable Shifts 
         Task<List<SelectListViewModel>> SelectListForShowListOfAvailableShifts();
 
+        //Show List Of Available Shifts For Select
+        Task<List<ListOfAvailableShiftForSelectViewModel>?> ShowListOfAvailableShiftsForSelect();
+
         //Add OnlineVisitDoctorsReservationDate To The Data Base 
         Task AddOnlineVisitDoctorsReservationDateToTheDataBase(OnlineVisitDoctorsReservationDate model);
 
