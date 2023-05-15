@@ -209,4 +209,11 @@ public static class Messages
         return
             $"باعرض سلام . {Environment.NewLine} درخواست آزمایشگاه در منزل شما از سمت آزمایشگاه قبول شده است . لطفا تا ارائه ی پیش فاکتور صبور باشید. {Environment.NewLine} {PathTools.SiteFarsiName}";
     }
+
+    //Waiting For Confitm Invoice From Patient
+    public static string WaitingForConfitmInvoiceFromPatient()
+    {
+        return
+            $"باعرض سلام . {Environment.NewLine}  پیش فاکتور درخواست شما ایجاد گردیده است . خواهشمندیم جهت تایید یا رد آن اقدام فرمایید. {Environment.NewLine} {PathTools.SiteFarsiName}";
+    }
 }

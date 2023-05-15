@@ -79,7 +79,7 @@
                                         }
                                         @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.ConfirmFromDestinationAndWaitingForIssuanceOfDraftInvoice)
                                         {
-                                            <span class="mr-8px label label-info"> تایید شده توسط مقصد و درانتظار صدور فاکتور  </span>
+                                            <span class="mr-8px label label-info"> پیش فاکتور  </span>
                                         }
                                         @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.AwaitingThePaymentOfTheInvoiceAmount)
                                         {
@@ -156,7 +156,10 @@
                                     }
                                 </td>
                                 <td class="tc vm">
-                                  
+                                    @if (request.RequestState == RequestState.ConfirmFromDestinationAndWaitingForIssuanceOfDraftInvoice)
+                                    {
+                                        
+                                    }
                                 </td>
                             </tr>
                         }

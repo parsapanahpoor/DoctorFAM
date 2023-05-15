@@ -53,6 +53,17 @@ namespace DoctorFAM.Web.Areas.Laboratory.Controllers
 
         #endregion
 
+        #region List Of Your Home Laboratory Request
+
+        [HttpGet]
+        public async Task<IActionResult> ListOfYourHomeLaboratoryRequests(FilterListOfHomeLaboratoryRequestViewModel model)
+        {
+            model.UserId = User.GetUserId();
+            return View(await _homeLaboratoryServices.FilterListOfYourHomeLaboratoryRequestLaboratorySide(model));
+        }
+
+        #endregion
+
         #region Home Laboratory Request Detail 
 
         public async Task<IActionResult> HomeLaboratoryRequestDetail(ulong requestId)
@@ -106,7 +117,7 @@ namespace DoctorFAM.Web.Areas.Laboratory.Controllers
             var request = await _requestService.GetRequestById(requestId);
 
             if (request == null) return NotFound();
-            if (request.RequestType != Domain.Enums.RequestType.RequestType.HomeDrog) return NotFound();
+            if (request.RequestType != Domain.Enums.RequestType.RequestType.HomeLab) return NotFound();
             if (request.OperationId.HasValue && request.OperationId.Value != currentOrganization.OwnerId) return NotFound();
             if (!request.PatientId.HasValue) return NotFound();
 
@@ -162,6 +173,47 @@ namespace DoctorFAM.Web.Areas.Laboratory.Controllers
 
             var model = await _homeLaboratoryServices.FillHomeLaboratoryPharmacyInvoicePage(requestId, currentOrganization.OwnerId);
             if (model == null) return NotFound();
+
+            #endregion
+
+            return View(model);
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> AcceptHomeLaboratoryRequestFromLaboratory(HomeLaboratoryInvoiceLaboratorySideViewModel model ,IFormFile? UserAvatar)
+        {
+            #region Model State Validation
+
+            if (!ModelState.IsValid) 
+            {
+                TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+                return View(model);
+            }
+
+            #endregion
+
+            #region Add PRice To The Request 
+
+            var res = await _homeLaboratoryServices.AddHomeLaboratoryRequestPriceFromLaboratory(model , User.GetUserId() , UserAvatar);
+
+            switch (res)
+            {
+                case AddHomeLaboratoryInvoiceLaboratorySideResult.Success:
+                    TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+                    TempData[InfoMessage] = "خواهشمندیم تا تایید از طرف کاربر شکیبا باشید.";
+                    return RedirectToAction(nameof(AcceptHomeLaboratoryRequestFromLaboratory) , new { requestId = model.RequestId });
+
+                case AddHomeLaboratoryInvoiceLaboratorySideResult.Faild:
+                    TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+                    break;
+
+                case AddHomeLaboratoryInvoiceLaboratorySideResult.ImageNotFound:
+                    TempData[ErrorMessage] = "تصویر پیش فاکتور باید وارد گردد.";
+                    break;
+
+                default:
+                    break;
+            }
 
             #endregion
 

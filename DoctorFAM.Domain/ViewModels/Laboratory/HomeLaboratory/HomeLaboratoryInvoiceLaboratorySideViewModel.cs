@@ -1,29 +1,26 @@
-﻿using DoctorFAM.Domain.Entities.Laboratory;
-using DoctorFAM.Domain.Entities.Pharmacy;
-using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace DoctorFAM.Domain.ViewModels.Laboratory.HomeLaboratory
+namespace DoctorFAM.Domain.ViewModels.Laboratory.HomeLaboratory;
+
+public class HomeLaboratoryInvoiceLaboratorySideViewModel
 {
-    public class HomeLaboratoryInvoiceLaboratorySideViewModel
-    {
-        #region properties
+    #region properties
 
-        public ulong RequestId { get; set; }
+    public ulong RequestId { get; set; }
 
-        [Required(ErrorMessage = "این فیلد الزامی است .")]
-        public int? Price { get; set; }
+    [Required(ErrorMessage = "این فیلد الزامی است .")]
+    public int? Price { get; set; }
 
-        [Required(ErrorMessage = "این فیلد الزامی است .")]
-        public IFormFile InvoicePicture { get; set; }
+    public string? InvoicePicFileName { get; set; }
 
-        public string? InvoicePicFileName { get; set; }
+    public bool IsFinalized { get; set; }
 
-        #endregion
-    }
+    #endregion
+}
+
+public enum AddHomeLaboratoryInvoiceLaboratorySideResult
+{
+    Success,
+    Faild,
+    ImageNotFound
 }

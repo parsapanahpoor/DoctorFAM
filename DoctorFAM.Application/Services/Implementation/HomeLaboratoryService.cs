@@ -20,10 +20,8 @@ using DoctorFAM.Domain.ViewModels.Admin.HealthHouse.HomeLabratory;
 using DoctorFAM.Domain.Entities.Wallet;
 using DoctorFAM.Domain.Enums.RequestType;
 using DoctorFAM.Domain.ViewModels.UserPanel.HealthHouse.HomeLaboratory;
-using DoctorFAM.Domain.Entities.Pharmacy;
 using DoctorFAM.Domain.ViewModels.Laboratory.HomeLaboratory;
-using DoctorFAM.Domain.Entities.Organization;
-using DoctorFAM.Domain.ViewModels.Pharmacy.HomePharmacy;
+using DoctorFAM.Data.Repository;
 
 #endregion
 
@@ -41,9 +39,12 @@ public class HomeLaboratoryService : IHomeLaboratoryServices
     private readonly IWalletRepository _walletRepository;
     private readonly IPopulationCoveredRepository _populationCovered;
     private readonly ISiteSettingService _siteSettingService;
+    private readonly IOrganizationService _organizationService;
+    private readonly ISMSService _smsService;
 
     public HomeLaboratoryService(IHomeLaboratoryRepository homeLaboratory, IUserService userService, IRequestService requestService, IPatientService patientService, ILocationService locationService
-                                    , IWalletRepository walletRepository, IPopulationCoveredRepository populationCovered, ISiteSettingService siteSettingService)
+                                    , IWalletRepository walletRepository, IPopulationCoveredRepository populationCovered, ISiteSettingService siteSettingService
+                                        , IOrganizationService organizationService, ISMSService smsService)
     {
         _homeLaboratory = homeLaboratory;
         _userService = userService;
@@ -53,6 +54,8 @@ public class HomeLaboratoryService : IHomeLaboratoryServices
         _walletRepository = walletRepository;
         _populationCovered = populationCovered;
         _siteSettingService = siteSettingService;
+        _organizationService = organizationService;
+        _smsService = smsService;
     }
 
     #endregion
@@ -686,10 +689,98 @@ public class HomeLaboratoryService : IHomeLaboratoryServices
         {
             InvoicePicFileName = ((homeLaboratoryRequestPrice != null && !string.IsNullOrEmpty(homeLaboratoryRequestPrice.InvoicePicture)) ? homeLaboratoryRequestPrice.InvoicePicture : null ),
             Price = ((homeLaboratoryRequestPrice != null) ? homeLaboratoryRequestPrice.Price : null),
-            RequestId = requestId
+            RequestId = requestId,
+            IsFinalized = ((homeLaboratoryRequestPrice != null) ? true: false),
         };
 
         #endregion
+    }
+
+    //Add Home Laboratory Request Price From Laboratory
+    public async Task<AddHomeLaboratoryInvoiceLaboratorySideResult> AddHomeLaboratoryRequestPriceFromLaboratory(HomeLaboratoryInvoiceLaboratorySideViewModel model , ulong userId , IFormFile? UserAvatar)
+    {
+        #region If Exist Any Price
+
+        if (await _homeLaboratory.IsExistAnyPriceForRequestFromCurrentLaboratory(model.RequestId , userId))
+        {
+            return AddHomeLaboratoryInvoiceLaboratorySideResult.Faild;
+        }
+
+        #endregion
+
+        #region Get Organization By Member User ID
+
+        //Get Current Organization
+        var currentOrganization = await _organizationService.GetOrganizationByUserId(userId);
+        if (currentOrganization == null) return AddHomeLaboratoryInvoiceLaboratorySideResult.Faild;
+
+        #endregion
+
+        #region Get Request By Request Id
+
+        var request = await _homeLaboratory.GetHomeLaboratoryRequestById(model.RequestId);
+
+        if (request == null) return AddHomeLaboratoryInvoiceLaboratorySideResult.Faild;
+        if (request.RequestType != RequestType.HomeLab) return AddHomeLaboratoryInvoiceLaboratorySideResult.Faild;
+        if (request.OperationId.HasValue && request.OperationId.Value != currentOrganization.OwnerId) return AddHomeLaboratoryInvoiceLaboratorySideResult.Faild;
+        if (!request.PatientId.HasValue) return AddHomeLaboratoryInvoiceLaboratorySideResult.Faild;
+        if (request.RequestState !=Domain.Enums.Request.RequestState.ConfirmFromDestinationAndWaitingForIssuanceOfDraftInvoice) return AddHomeLaboratoryInvoiceLaboratorySideResult.Faild;
+        if (!model.Price.HasValue) return AddHomeLaboratoryInvoiceLaboratorySideResult.Faild;
+
+        #endregion
+
+        #region Add Home Laboratory Request Price
+
+        HomeLaboratoryRequestPrice requestPrice = new HomeLaboratoryRequestPrice()
+        {
+            CreateDate = DateTime.Now,
+            HomeLaboratoryRequestId= model.RequestId,
+            LaboratoryOwnerId = userId,    
+            Price = model.Price.Value,            
+        };
+
+        if (UserAvatar == null) return AddHomeLaboratoryInvoiceLaboratorySideResult.ImageNotFound;
+
+        //Add Invoice Picture
+        var imageName = CodeGenerator.GenerateUniqCode() + Path.GetExtension(UserAvatar.FileName);
+        UserAvatar.AddImageToServer(imageName, PathTools.HomeLaboratoryInvoicePathServer, 270, 270, PathTools.HomeLaboratoryInvoicePathThumbServer);
+        requestPrice.InvoicePicture = imageName;
+
+        //Add Request Price And Update Request State
+        await _homeLaboratory.AddHomeLaboratoryRequestPrice(requestPrice);
+
+        #endregion
+
+        #region Send SMS For Customer User 
+
+        var message = Messages.SendSMSForAccepteHomeLaboratoryRequestFromLaboratory();
+
+        //await _smsService.SendSimpleSMS(request.User.Mobile, message);
+
+        #endregion
+
+        return AddHomeLaboratoryInvoiceLaboratorySideResult.Success;
+    }
+
+    //Update Request For Awaiting For Confirm From Patient
+    public async Task UpdateRequestForAwaitingForConfirmFromPatient(ulong requestId)
+    {
+        await _homeLaboratory.UpdateRequestForAwaitingForConfirmFromPatient(requestId);
+    }
+
+    //Filter List Of Your Home Laboratory Request Laboratory Side
+    public async Task<FilterListOfHomeLaboratoryRequestViewModel> FilterListOfYourHomeLaboratoryRequestLaboratorySide(FilterListOfHomeLaboratoryRequestViewModel filter)
+    {
+        #region Get Organization 
+
+        var organization = await _organizationService.GetLaboratoryOrganizationByUserId(filter.UserId);
+        if (organization == null) return null;
+
+        filter.LaboratoryOwnerId = organization.OwnerId;
+
+        #endregion
+
+        return await _homeLaboratory.FilterListOfYourHomeLaboratoryRequestLaboratorySide(filter);
     }
 
     #endregion
