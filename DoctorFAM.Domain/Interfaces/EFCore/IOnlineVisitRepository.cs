@@ -1,162 +1,173 @@
-﻿using DoctorFAM.Domain.Entities.Contact;
+﻿#region usings
+
 using DoctorFAM.Domain.Entities.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.Admin.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.Common;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.Site.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.UserPanel.OnlineVisit;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace DoctorFAM.Domain.Interfaces
+#endregion
+
+namespace DoctorFAM.Domain.Interfaces;
+
+public interface IOnlineVisitRepository
 {
-    public interface IOnlineVisitRepository
-    {
-        #region Old Version 
+    #region Old Version 
 
-        #region Site Side
+    #region Site Side
 
-        //Add Online Request Detail 
-        Task AddOnlineRequestDetail(OnlineVisitRequestDetail model);
+    //Add Online Request Detail 
+    Task AddOnlineRequestDetail(OnlineVisitRequestDetail model);
 
-        //Get Activated And Online Visit Interests Online Visit For Send Correct Notification For Arrival Online Visit Request 
-        Task<List<string?>> GetActivatedAndDoctorsInterestOnlineVisit();
+    //Get Activated And Online Visit Interests Online Visit For Send Correct Notification For Arrival Online Visit Request 
+    Task<List<string?>> GetActivatedAndDoctorsInterestOnlineVisit();
 
-        //Filter Online Visit Requests 
-        Task<FilterOnlineVisitViewModel> FilterOnlineVisitRequests(FilterOnlineVisitViewModel filter);
+    //Filter Online Visit Requests 
+    Task<FilterOnlineVisitViewModel> FilterOnlineVisitRequests(FilterOnlineVisitViewModel filter);
 
-        //Get Online Visit Request Detail 
-        Task<OnlineVisitRequestDetail?> GetOnlineVisitRequestDetail(ulong requestId);
+    //Get Online Visit Request Detail 
+    Task<OnlineVisitRequestDetail?> GetOnlineVisitRequestDetail(ulong requestId);
 
-        #endregion
+    #endregion
 
-        #region Doctor Side
+    #region Doctor Side
 
-        //Filter Your Online Visit Request 
-        Task<FilterOnlineVisitViewModel?> FilterYourOnlineVisitRequest(FilterOnlineVisitViewModel filter);
+    //Filter Your Online Visit Request 
+    Task<FilterOnlineVisitViewModel?> FilterYourOnlineVisitRequest(FilterOnlineVisitViewModel filter);
 
-        #endregion
+    #endregion
 
-        #region User Panel Side 
+    #region User Panel Side 
 
-        //Filter User Onlien Visit Requests 
-        Task<FilterOnlineVisitRequestUserPanelViewModel> FilterOnlineVisitRequestUserPanel(FilterOnlineVisitRequestUserPanelViewModel filter);
+    //Filter User Onlien Visit Requests 
+    Task<FilterOnlineVisitRequestUserPanelViewModel> FilterOnlineVisitRequestUserPanel(FilterOnlineVisitRequestUserPanelViewModel filter);
 
-        #endregion
+    #endregion
 
-        #region Admin And Supporter Side 
+    #region Admin And Supporter Side 
 
-        //Filter Online Visit Requests Admin Side 
-        Task<FilterOnlineVisitAdminSideViewModel> FilterOnlineVisitRequestsAdminSide(FilterOnlineVisitAdminSideViewModel filter);
+    //Filter Online Visit Requests Admin Side 
+    Task<FilterOnlineVisitAdminSideViewModel> FilterOnlineVisitRequestsAdminSide(FilterOnlineVisitAdminSideViewModel filter);
 
-        #endregion
+    #endregion
 
-        #endregion
+    #endregion
 
-        #region Doctor Panel
+    #region Doctor Panel
 
-        //Select List For Show List Of Avalable Shifts 
-        Task<List<SelectListViewModel>> SelectListForShowListOfAvailableShifts();
+    //Fill Online Visit User Request Detail Doctor Side ViewModel
+    Task<OnlineVisitUserRequestDetailDoctorSideViewModel?> FillOnlineVisitUserRequestDetailDoctorSideViewModel(ulong requestId);
 
-        //Show List Of Available Shifts For Select
-        Task<List<ListOfAvailableShiftForSelectViewModel>?> ShowListOfAvailableShiftsForSelect();
+    //Get Online Visit User Request Detail By Id
+    Task<OnlineVisitUserRequestDetail?> GetOnlineVisitUserRequestDetailById(ulong requestId);
 
-        //Add OnlineVisitDoctorsReservationDate To The Data Base 
-        Task AddOnlineVisitDoctorsReservationDateToTheDataBase(OnlineVisitDoctorsReservationDate model);
+    //Get Online Visit User Request Detail For Show In List Of Doctors Lastest Request
+    Task<ListOfLastestOnlineVisitRequestDoctorSideViewModel?> GetOnlineVisitUserRequestDetailForShowInListOfDoctorsLastestRequest(DateTime dateTime, int businessKey, ulong workShiftId);
 
-        //Add OnlineVisitDoctorSelectedWorkShift Without Save Changes
-        Task AddOnlineVisitDoctorSelectedWorkShiftWithoutSaveChanges(OnlineVisitDoctorSelectedWorkShift model);
+    //Get List Of Doctor Selected Shift Ids By Doctor Reservation Id
+    Task<List<ulong>> GetListOfDoctorSelectedShiftIdsByDoctorReservationId(ulong doctorReservationId);
 
-        //Get List Of Work Shifts Time Detail Id By Work Shift Id
-        Task<List<ulong>> GetListOfWorkShiftsTimeDetailIdByWorkShiftId(ulong workShiftId);
+    //Get List Of Doctor Online Visti Reservation Id By Doctor User Id
+    Task<List<OnlineVisitDoctorsReservationDate>> GetListOfDoctorOnlineVistiReservationIdByDoctorUserId(ulong doctorUserId);
 
-        //Add OnlineVisitDoctorsAndPatientsReservationDetail To The Data Base Without Save Changes
-        Task AddOnlineVisitDoctorsAndPatientsReservationDetailToTheDataBaseWithoutSaveChanges(OnlineVisitDoctorsAndPatientsReservationDetail model);
+    //Select List For Show List Of Avalable Shifts 
+    Task<List<SelectListViewModel>> SelectListForShowListOfAvailableShifts();
 
-        //Save Changes
-        Task SaveChanges();
+    //Show List Of Available Shifts For Select
+    Task<List<ListOfAvailableShiftForSelectViewModel>?> ShowListOfAvailableShiftsForSelect();
 
-        //Get Validates Work Shift Dates By Doctor UserId For Show In Doctor Panel 
-        Task<List<ListOfWorkShiftDatesFromDoctorPanelViewModel>> GetValidatesWorkShiftDatesByDoctorUserIdForShowInDoctorPanel(ulong doctorUserId);
+    //Add OnlineVisitDoctorsReservationDate To The Data Base 
+    Task AddOnlineVisitDoctorsReservationDateToTheDataBase(OnlineVisitDoctorsReservationDate model);
 
-        //Is Exist Any Work Shift Date For Current Doctor
-        Task<bool> IsExistAnyWorkShiftDateForCurrentDoctor(ulong doctorUserId, int businessKey);
+    //Add OnlineVisitDoctorSelectedWorkShift Without Save Changes
+    Task AddOnlineVisitDoctorSelectedWorkShiftWithoutSaveChanges(OnlineVisitDoctorSelectedWorkShift model);
 
-        //Fill Work Shift Date Detail Doctor Panel 
-        Task<List<WorkShiftDateDetailDoctorPanelViewModel>> FillWorkShiftDateDetailDoctorPanel(ulong OnlineVisitDoctorsReservationDateId);
+    //Get List Of Work Shifts Time Detail Id By Work Shift Id
+    Task<List<ulong>> GetListOfWorkShiftsTimeDetailIdByWorkShiftId(ulong workShiftId);
 
-        //Get Work Shift Date By OnlineVisitDoctorsReservationDateId
-        Task<DateTime> GetWorkShiftDateByOnlineVisitDoctorsReservationDateId(ulong OnlineVisitDoctorsReservationDateId);
+    //Add OnlineVisitDoctorsAndPatientsReservationDetail To The Data Base Without Save Changes
+    Task AddOnlineVisitDoctorsAndPatientsReservationDetailToTheDataBaseWithoutSaveChanges(OnlineVisitDoctorsAndPatientsReservationDetail model);
 
-        //Is Exist Any OnlineVisitDoctorsReservationDate By Doctor UserId
-        Task<bool> IsExistAnyOnlineVisitDoctorsReservationDateByDoctorUserId(ulong OnlineVisitDoctorsReservationDateId, ulong doctorUserId);
+    //Save Changes
+    Task SaveChanges();
 
-        //Fill OnlineVisitDoctorAndPatientInformationsDoctorPanelSideViewModel
-        Task<List<OnlineVisitDoctorAndPatientInformationsDoctorPanelSideViewModel>?> FillOnlineVisitDoctorAndPatientInformationsDoctorPanelSideViewModel(ulong doctorReservationDateId, ulong shiftId);
+    //Get Validates Work Shift Dates By Doctor UserId For Show In Doctor Panel 
+    Task<List<ListOfWorkShiftDatesFromDoctorPanelViewModel>> GetValidatesWorkShiftDatesByDoctorUserIdForShowInDoctorPanel(ulong doctorUserId);
 
-        #endregion
+    //Is Exist Any Work Shift Date For Current Doctor
+    Task<bool> IsExistAnyWorkShiftDateForCurrentDoctor(ulong doctorUserId, int businessKey);
 
-        #region Admin Side 
+    //Fill Work Shift Date Detail Doctor Panel 
+    Task<List<WorkShiftDateDetailDoctorPanelViewModel>> FillWorkShiftDateDetailDoctorPanel(ulong OnlineVisitDoctorsReservationDateId);
 
-        //Fill List Of Work Shifts Dates Admin Side View Model
-        Task<List<ListOfWorkShiftsDatesAdminSideViewModel>> FillListOfWorkShiftsDatesAdminSideViewModel();
+    //Get Work Shift Date By OnlineVisitDoctorsReservationDateId
+    Task<DateTime> GetWorkShiftDateByOnlineVisitDoctorsReservationDateId(ulong OnlineVisitDoctorsReservationDateId);
 
-        //Get Doctor Work Shift Reservation Id By BusinessKet That Render From Dat
-        Task<List<ulong>> GetDoctorWorkShiftReservationIdByBusinessKetThatRenderFromDate(int businessKey);
+    //Is Exist Any OnlineVisitDoctorsReservationDate By Doctor UserId
+    Task<bool> IsExistAnyOnlineVisitDoctorsReservationDateByDoctorUserId(ulong OnlineVisitDoctorsReservationDateId, ulong doctorUserId);
 
-        //Get Doctor Work Shift Seleceted Reservation Dates By Doctor Work Shift Reservation Ids
-        Task<List<OnlineVisitWorkShift>?> GetDoctorWorkShiftSelecetedReservationDateByDoctorWorkShiftReservationId(ulong selectedReservationId);
+    //Fill OnlineVisitDoctorAndPatientInformationsDoctorPanelSideViewModel
+    Task<List<OnlineVisitDoctorAndPatientInformationsDoctorPanelSideViewModel>?> FillOnlineVisitDoctorAndPatientInformationsDoctorPanelSideViewModel(ulong doctorReservationDateId, ulong shiftId);
 
-        //Fill ListOfDoctorsInSelectedShiftAdminSideViewModel
-        Task<List<ListOfDoctorsInSelectedShiftAdminSideViewModel>> FillListOfDoctorsInSelectedShiftAdminSideViewModel(ulong workShiftId, int dateBusinessKey);
+    #endregion
 
-        //Fill OnlineVisitDoctorAndPatientInformationsAdminPanelSideViewModel
-        Task<List<OnlineVisitDoctorAndPatientInformationsAdminPanelSideViewModel>?> FillOnlineVisitDoctorAndPatientInformationsAdminPanelSideViewModel(ulong doctorReservationDateId, ulong shiftId);
+    #region Admin Side 
 
-        #endregion
+    //Fill List Of Work Shifts Dates Admin Side View Model
+    Task<List<ListOfWorkShiftsDatesAdminSideViewModel>> FillListOfWorkShiftsDatesAdminSideViewModel();
 
-        #region Site Side 
+    //Get Doctor Work Shift Reservation Id By BusinessKet That Render From Dat
+    Task<List<ulong>> GetDoctorWorkShiftReservationIdByBusinessKetThatRenderFromDate(int businessKey);
 
-        //List Of Work Shift Days
-        Task<List<ListOfDaysForShowSiteSideViewModel>> FillListOfDaysForShowSiteSideViewModel();
+    //Get Doctor Work Shift Seleceted Reservation Dates By Doctor Work Shift Reservation Ids
+    Task<List<OnlineVisitWorkShift>?> GetDoctorWorkShiftSelecetedReservationDateByDoctorWorkShiftReservationId(ulong selectedReservationId);
 
-        //Get List Of Docotrs Reservation Dates With Date Business Key
-        Task<List<ulong>> GetListOfDocotrsReservationDatesWithDateBusinessKey(int businessKey);
+    //Fill ListOfDoctorsInSelectedShiftAdminSideViewModel
+    Task<List<ListOfDoctorsInSelectedShiftAdminSideViewModel>> FillListOfDoctorsInSelectedShiftAdminSideViewModel(ulong workShiftId, int dateBusinessKey);
 
-        //Fill ListOfShiftSiteSideViewModel
-        Task<List<ListOfShiftSiteSideViewModel>> FillListOfShiftSiteSideViewModel(ulong listOFDoctorsInThisDay, int businessKey);
+    //Fill OnlineVisitDoctorAndPatientInformationsAdminPanelSideViewModel
+    Task<List<OnlineVisitDoctorAndPatientInformationsAdminPanelSideViewModel>?> FillOnlineVisitDoctorAndPatientInformationsAdminPanelSideViewModel(ulong doctorReservationDateId, ulong shiftId);
 
-        //Get String Of Start Time And End Shift Time
-        string GetStringOfStartTimeAndEndShiftTime(ulong WorkShiftDateTimeId);
+    #endregion
 
-        //Check That Is Exist Free Shift 
-        Task<int> CheckThatIsExistFreeShift(ulong WorkShiftDateTimeId, ulong WorkShiftDateId, List<ulong> doctorReservations);
+    #region Site Side 
 
-        //Add User Online Visit Request To The Data Base
-        Task AddUserOnlineVisitRequestToTheDataBase(OnlineVisitUserRequestDetail model);
+    //List Of Work Shift Days
+    Task<List<ListOfDaysForShowSiteSideViewModel>> FillListOfDaysForShowSiteSideViewModel();
 
-        //Get Online Visit User Request Detail By Id And User Id
-        Task<OnlineVisitUserRequestDetail?> GetOnlineVisitUserRequestDetailByIdAndUserId(ulong id, ulong userId);
+    //Get List Of Docotrs Reservation Dates With Date Business Key
+    Task<List<ulong>> GetListOfDocotrsReservationDatesWithDateBusinessKey(int businessKey);
 
-        //Update Online Visit User Request Detail To Finaly
-        Task UpdateOnlineVisitUserRequestDetailToFinaly(OnlineVisitUserRequestDetail model);
+    //Fill ListOfShiftSiteSideViewModel
+    Task<List<ListOfShiftSiteSideViewModel>> FillListOfShiftSiteSideViewModel(ulong listOFDoctorsInThisDay, int businessKey);
 
-        //Get Online Visit Doctor Reservations By Date BusinessKey
-        Task<List<OnlineVisitDoctorsReservationDate>> GetOnlineVisitDoctorReservationsByDateBusinessKey(int businessKey);
+    //Get String Of Start Time And End Shift Time
+    string GetStringOfStartTimeAndEndShiftTime(ulong WorkShiftDateTimeId);
 
-        //Get List Of Online Visit Doctors Reservation By Work Shift Id And Work Shift Time Id
-        Task<List<ulong>> GetListOfOnlineVisitDoctorsReservationByWorkShiftIdAndWorkShiftTimeId(ulong workShiftId, ulong workShiftTimeId);
+    //Check That Is Exist Free Shift 
+    Task<int> CheckThatIsExistFreeShift(ulong WorkShiftDateTimeId, ulong WorkShiftDateId, List<ulong> doctorReservations);
 
-        //Get Doctors Id By Online Visit Doctors Reservation Id And Date Business Key
-        Task<ulong?> GetDoctorsIdByOnlineVisitDoctorsReservationIdAndDateBusinessKey(ulong id, int dateBusinessKey);
+    //Add User Online Visit Request To The Data Base
+    Task AddUserOnlineVisitRequestToTheDataBase(OnlineVisitUserRequestDetail model);
 
-        //Update Randome Record Of Reservation Doctor And Patient For Exist Request For Select
-        Task UpdateRandomeRecordOfReservationDoctorAndPatientForExistRequestForSelect(List<ulong> onlineVisitDoctorReservationId, ulong shiftTimeId, ulong shiftDateId);
+    //Get Online Visit User Request Detail By Id And User Id
+    Task<OnlineVisitUserRequestDetail?> GetOnlineVisitUserRequestDetailByIdAndUserId(ulong id, ulong userId);
 
-        #endregion
-    }
+    //Update Online Visit User Request Detail To Finaly
+    Task UpdateOnlineVisitUserRequestDetailToFinaly(OnlineVisitUserRequestDetail model);
+
+    //Get Online Visit Doctor Reservations By Date BusinessKey
+    Task<List<OnlineVisitDoctorsReservationDate>> GetOnlineVisitDoctorReservationsByDateBusinessKey(int businessKey);
+
+    //Get List Of Online Visit Doctors Reservation By Work Shift Id And Work Shift Time Id
+    Task<List<ulong>> GetListOfOnlineVisitDoctorsReservationByWorkShiftIdAndWorkShiftTimeId(ulong workShiftId, ulong workShiftTimeId);
+
+    //Get Doctors Id By Online Visit Doctors Reservation Id And Date Business Key
+    Task<ulong?> GetDoctorsIdByOnlineVisitDoctorsReservationIdAndDateBusinessKey(ulong id, int dateBusinessKey);
+
+    //Update Randome Record Of Reservation Doctor And Patient For Exist Request For Select
+    Task UpdateRandomeRecordOfReservationDoctorAndPatientForExistRequestForSelect(List<ulong> onlineVisitDoctorReservationId, ulong shiftTimeId, ulong shiftDateId);
+
+    #endregion
 }

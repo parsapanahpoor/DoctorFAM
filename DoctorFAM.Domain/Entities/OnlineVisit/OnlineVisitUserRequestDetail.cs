@@ -21,6 +21,8 @@ namespace DoctorFAM.Domain.Entities.OnlineVisit
 
         public bool IsFinaly { get; set; }
 
+        public bool IsTakenFromDoctor { get; set; }
+
         #endregion
     }
 }

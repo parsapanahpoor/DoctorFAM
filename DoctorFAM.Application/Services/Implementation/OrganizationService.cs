@@ -47,6 +47,12 @@ namespace DoctorFAM.Application.Services.Implementation
             return await _organization.GetOrganizationByUserId(userId);
         }
 
+        //Get Organization Owner Id By Organization Member User Id With As No Tracking
+        public async Task<ulong?> GetOrganizationOwnerIdByOrganizationMemberUserIdWithAsNoTracking(ulong memberUserId)
+        {
+            return await _organization.GetOrganizationOwnerIdByOrganizationMemberUserIdWithAsNoTracking(memberUserId);
+        }
+
         //Get Organization Id By Member User Id
         public async Task<ulong> GetOrganizationIdByMemberUserId(ulong memberUserId)
         {
