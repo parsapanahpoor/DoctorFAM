@@ -13,6 +13,8 @@ namespace DoctorFAM.Domain.Enums.Notification
         HomePharmacyCreateFromUser,
         [Display(Name = "Approval of the request from the pharmacy")]
         ApprovalOfTheRequestFromThePharmacy,
+        [Display(Name = "Approval of the request from the Laboratory")]
+        ApprovalOfTheRequestFromTheLaboratory,
         [Display(Name = "Providing an invoice from the pharmacy")]
         ProvidingAnInvoiceFromThePharmacy,
         [Display(Name = "Accept Invoice From Customer")]

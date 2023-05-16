@@ -450,6 +450,18 @@ namespace DoctorFAM.Data.Repository
                                         }).ToListAsync();
         }
 
+        //Show List Of Available Shifts For Select
+        public async Task<List<ListOfAvailableShiftForSelectViewModel>?> ShowListOfAvailableShiftsForSelect()
+        {
+            return await _context.OnlineVisitWorkShift.AsNoTracking().Where(p => !p.IsDelete)
+                                    .OrderBy(p => p.Id)
+                                    .Select(p => new ListOfAvailableShiftForSelectViewModel()
+                                    {
+                                        ShiftName = $"از ساعت {p.StartShiftTime} تا ساعت {p.EndShiftTime}",
+                                        ShiftId = p.Id
+                                    }).ToListAsync();
+        }
+
         //Add OnlineVisitDoctorsReservationDate To The Data Base 
         public async Task AddOnlineVisitDoctorsReservationDateToTheDataBase(OnlineVisitDoctorsReservationDate model)
         {
