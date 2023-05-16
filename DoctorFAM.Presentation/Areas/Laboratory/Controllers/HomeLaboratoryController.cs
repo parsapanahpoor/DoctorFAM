@@ -162,7 +162,7 @@ namespace DoctorFAM.Web.Areas.Laboratory.Controllers
 
                 var message = Messages.SendSMSForAccepteHomeLaboratoryRequestFromLaboratory();
 
-                //await _smsService.SendSimpleSMS(request.User.Mobile, message);
+                await _smsService.SendSimpleSMS(request.User.Mobile, message);
 
                 #endregion
             }
@@ -192,7 +192,7 @@ namespace DoctorFAM.Web.Areas.Laboratory.Controllers
 
             #endregion
 
-            #region Add PRice To The Request 
+            #region Add Price To The Request 
 
             var res = await _homeLaboratoryServices.AddHomeLaboratoryRequestPriceFromLaboratory(model , User.GetUserId() , UserAvatar);
 

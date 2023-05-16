@@ -865,7 +865,7 @@ public class HomeLaboratoryService : IHomeLaboratoryServices
 
         var message = Messages.WaitingForConfitmInvoiceFromPatient();
 
-        //await _smsService.SendSimpleSMS(request.User.Mobile, message);
+        await _smsService.SendSimpleSMS(request.User.Mobile, message);
 
         #endregion
 
