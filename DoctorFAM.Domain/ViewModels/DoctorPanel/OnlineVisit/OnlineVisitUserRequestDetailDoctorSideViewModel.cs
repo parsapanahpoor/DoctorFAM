@@ -16,6 +16,10 @@ namespace DoctorFAM.Domain.ViewModels.DoctorPanel.OnlineVisit
 
         public DateTime OnlineVisitRequestDate { get; set; }
 
+        public ulong RequestId { get; set; }
+
+        public bool IsRequestTakenByDoctor { get; set; }
+
         #endregion
     }
 }

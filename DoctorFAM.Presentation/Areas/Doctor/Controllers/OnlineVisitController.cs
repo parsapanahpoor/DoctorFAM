@@ -406,4 +406,21 @@ public class OnlineVisitController : DoctorBaseController
     }
 
     #endregion
+
+    #region Confirm Online Visit Request
+
+    [HttpGet]
+    public async Task<IActionResult> ConfirmOnlineVisitRequest(ulong requestId , int businessKey)
+    {
+        var res = await _onlineVisitService.ConfirmOnlineVisitRequestFromDoctor(requestId , User.GetUserId() , businessKey);
+        if (res)
+        {
+            TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+            return RedirectToAction(nameof(ListOfLastestOnlineVisitRequestDoctorSideViewModel));
+        }
+
+        return View();
+    }
+
+    #endregion
 }

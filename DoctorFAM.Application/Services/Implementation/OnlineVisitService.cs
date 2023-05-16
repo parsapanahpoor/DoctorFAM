@@ -471,6 +471,66 @@ public class OnlineVisitService : IOnlineVisitService
 
     #region Doctor Panel 
 
+    //Confirm Online Visit Request From Doctor
+    public async Task<bool> ConfirmOnlineVisitRequestFromDoctor(ulong requestId , ulong doctorMemberId , int businessKey)
+    {
+        #region Get Doctor Organization OwnerId
+
+        var doctorUserId = await _organizationService.GetOrganizationOwnerIdByOrganizationMemberUserIdWithAsNoTracking(doctorMemberId); ;
+        if (doctorUserId == null) return false;
+
+        #endregion
+
+        #region Get Online Visit Doctor Reservation 
+
+        var onlineVisitDoctorReservationId = await _onlineVisitRepository.GetOnlineVisitDoctorReservationByBusinessKeyAndDoctorUserId(doctorUserId.Value, businessKey);
+        if (onlineVisitDoctorReservationId == 0) return false;
+
+        #endregion
+
+        #region Get Online Request By Id
+
+        var request = await _onlineVisitRepository.GetOnlineVisitUserRequestDetailById(requestId);
+        if (request == null) return false;
+
+        #endregion
+
+        #region Get Doctor And Patient Request Detail By Doctor User Id And Shift Id And Shift Time Id
+
+        var doctorAndPatientRequestDetail = await _onlineVisitRepository.GetDoctorAndPatientRequestDetailByDoctorUserIdAndShiftIdAndShiftTimeId(onlineVisitDoctorReservationId , request.WorkShiftDateId , request.WorkShiftDateTimeId);
+        if (doctorAndPatientRequestDetail == null) return false;
+
+        #endregion
+
+        #region Check Validation 
+
+        if (!request.IsFinaly) return false;
+        if(request.IsTakenFromDoctor) return false;
+
+        #endregion
+
+        #region Update Request
+
+        request.IsTakenFromDoctor = true;
+
+        _onlineVisitRepository.UpdateOnlineVisitRequestWithoutSaveChanges(request);
+
+        #endregion
+
+        #region Update Doctor And Patient Record
+
+        doctorAndPatientRequestDetail.PatientUserId = request.UserId;
+
+        _onlineVisitRepository.UpdateDoctorAndPatientRecordWithoutSaveChanges(doctorAndPatientRequestDetail);
+
+        #endregion
+
+        //Save Changes 
+        await _onlineVisitRepository.SaveChanges();
+
+        return true;
+    }
+
     //Fill Show Online Visit Request Detail View Model
     public async Task<OnlineVisitUserRequestDetailDoctorSideViewModel?> FillShowOnlineVisitRequestDetail(ulong onlineVisitRequestId)
     {

@@ -12,6 +12,9 @@ using DoctorFAM.Domain.ViewModels.Site.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.UserPanel.OnlineVisit;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Globalization;
+using DoctorFAM.Domain.Entities.Patient;
 
 #endregion
 
@@ -425,6 +428,41 @@ public class OnlineVisitRepository : IOnlineVisitRepository
 
     #region Doctor Panel
 
+    //Save Changes
+    public async Task Savechanges()
+    {
+        await _context.SaveChangesAsync();
+    }
+
+    //Update Doctor And Patient Record
+    public void UpdateDoctorAndPatientRecordWithoutSaveChanges(OnlineVisitDoctorsAndPatientsReservationDetail request)
+    {
+        _context.OnlineVisitDoctorsAndPatientsReservationDetails.Update(request);
+    }
+
+    //Update Online Visit Request Without Save Changes 
+    public void UpdateOnlineVisitRequestWithoutSaveChanges(OnlineVisitUserRequestDetail request)
+    {
+        _context.OnlineVisitUserRequestDetails.Update(request);
+    }
+
+    //Get Online Visit Doctor Reservation Id By Business Key And Doctor User Id
+    public async Task<ulong> GetOnlineVisitDoctorReservationByBusinessKeyAndDoctorUserId(ulong doctorUserId , int businessKey)
+    {
+        return await _context.OnlineVisitDoctorsReservationDates.AsNoTracking()
+                                    .Where(p => !p.IsDelete && p.DoctorUserId == doctorUserId && p.BusinessKey == businessKey)
+                                    .Select(p => p.Id)
+                                    .FirstOrDefaultAsync();
+    }
+
+    //Get Doctor And Patient Request Detail By Doctor User Id And Shift Id And Shift Time Id
+    public async Task<OnlineVisitDoctorsAndPatientsReservationDetail?> GetDoctorAndPatientRequestDetailByDoctorUserIdAndShiftIdAndShiftTimeId(ulong doctorReservationId , ulong shiftId , ulong shiftTimeId)
+    {
+        return await _context.OnlineVisitDoctorsAndPatientsReservationDetails.AsNoTracking()
+                                        .FirstOrDefaultAsync(p => !p.IsDelete && p.OnlineVisitDoctorsReservationDateId == doctorReservationId && p.OnlineVisitWorkShiftDetail == shiftTimeId && p.OnlineVisitWorkShiftId == shiftTimeId
+                                                                && !p.PatientUserId.HasValue);
+    }
+
     //Get Online Visit User Request Detail By Id
     public async Task<OnlineVisitUserRequestDetail?> GetOnlineVisitUserRequestDetailById(ulong requestId)
     {
@@ -447,7 +485,9 @@ public class OnlineVisitRepository : IOnlineVisitRepository
             WorkShiftTime = await _context.OnlineVisitWorkShiftDetails.AsNoTracking()
                                         .Where(p => !p.IsDelete && p.Id == request.WorkShiftDateTimeId)
                                         .Select(p => p.StartTime + " تا " + p.EndTime).FirstOrDefaultAsync(),
-            OnlineVisitRequestDate = DateTime.Parse(request.DayDatebusinessKey.ToString())
+            OnlineVisitRequestDate =await  _context.OnlineVisitDoctorsReservationDates.AsNoTracking().Where(p=>!p.IsDelete && p.BusinessKey == request.DayDatebusinessKey).Select(p=> p.OnlineVisitShiftDate).FirstOrDefaultAsync(),
+            RequestId = request.Id,
+            IsRequestTakenByDoctor = request.IsTakenFromDoctor
         };
     }
 

@@ -6,6 +6,7 @@ using DoctorFAM.Domain.ViewModels.Common;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.Site.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.UserPanel.OnlineVisit;
+using Microsoft.EntityFrameworkCore;
 
 #endregion
 
@@ -55,6 +56,21 @@ public interface IOnlineVisitRepository
     #endregion
 
     #region Doctor Panel
+
+    //Save Changes
+    Task Savechanges();
+
+    //Update Doctor And Patient Record
+    void UpdateDoctorAndPatientRecordWithoutSaveChanges(OnlineVisitDoctorsAndPatientsReservationDetail request);
+
+    //Update Online Visit Request Without Save Changes 
+    void UpdateOnlineVisitRequestWithoutSaveChanges(OnlineVisitUserRequestDetail request);
+
+    //Get Doctor And Patient Request Detail By Doctor User Id And Shift Id And Shift Time Id
+    Task<OnlineVisitDoctorsAndPatientsReservationDetail?> GetDoctorAndPatientRequestDetailByDoctorUserIdAndShiftIdAndShiftTimeId(ulong doctorReservationId, ulong shiftId, ulong shiftTimeId);
+
+    //Get Online Visit Doctor Reservation Id By Business Key And Doctor User Id
+    Task<ulong> GetOnlineVisitDoctorReservationByBusinessKeyAndDoctorUserId(ulong doctorUserId, int businessKey);
 
     //Fill Online Visit User Request Detail Doctor Side ViewModel
     Task<OnlineVisitUserRequestDetailDoctorSideViewModel?> FillOnlineVisitUserRequestDetailDoctorSideViewModel(ulong requestId);
