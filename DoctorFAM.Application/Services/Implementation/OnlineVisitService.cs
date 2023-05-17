@@ -6,6 +6,7 @@ using DoctorFAM.Application.Interfaces;
 using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Application.StaticTools;
+using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.OnlineVisit;
 using DoctorFAM.Domain.Entities.Patient;
@@ -474,6 +475,37 @@ public class OnlineVisitService : IOnlineVisitService
     #endregion
 
     #region Doctor Panel 
+
+    //Show Online Visit User Request Detail
+    public async Task<OnlineVisitUserRequestDetailDoctorSideViewModel?> ShowOnlineVisitUserRequestDetail(ulong doctorAndPatientRequestId , ulong memberUserId)
+    {
+        #region Get Doctor Organization OwnerId
+
+        var doctorUserId = await _organizationService.GetOrganizationOwnerIdByOrganizationMemberUserIdWithAsNoTracking(memberUserId);
+        if (doctorUserId == null) return null;
+
+        #endregion
+
+        #region Fill Model 
+
+        var model = await _onlineVisitRepository.ShowOnlineVisitUserRequestDetail(doctorAndPatientRequestId);
+        if (model == null) return null;
+
+        #endregion
+
+        #region Get Online Visit Doctor Reservation Date
+
+        var doctorReservationDate = await _onlineVisitRepository.GetOnlineVisitDoctorReservationDateById(model.RequestId);
+        if(doctorReservationDate == null) return null;
+        if (doctorReservationDate.DoctorUserId != doctorUserId) return null;
+
+        #endregion
+
+        model.BusinessKey = doctorReservationDate.BusinessKey;
+        model.OnlineVisitRequestDate = doctorReservationDate.OnlineVisitShiftDate;
+
+        return model;
+    }
 
     //Confirm Online Visit Request From Doctor
     public async Task<bool> ConfirmOnlineVisitRequestFromDoctor(ulong requestId , ulong doctorMemberId , int businessKey)

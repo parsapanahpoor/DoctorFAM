@@ -57,6 +57,12 @@ public interface IOnlineVisitRepository
 
     #region Doctor Panel
 
+    //Show Online Visit User Request Detail
+    Task<OnlineVisitUserRequestDetailDoctorSideViewModel?> ShowOnlineVisitUserRequestDetail(ulong doctorAndPatientRequestId);
+
+    //Get Online Visit Doctor Reservation Date By Id
+    Task<OnlineVisitDoctorsReservationDate?> GetOnlineVisitDoctorReservationDateById(ulong id);
+
     //Save Changes
     Task Savechanges();
 

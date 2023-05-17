@@ -75,6 +75,9 @@ public interface IOnlineVisitService
 
     #region Doctor Panel 
 
+    //Show Online Visit User Request Detail
+    Task<OnlineVisitUserRequestDetailDoctorSideViewModel?> ShowOnlineVisitUserRequestDetail(ulong doctorAndPatientRequestId, ulong memberUserId);
+
     //Confirm Online Visit Request From Doctor
     Task<bool> ConfirmOnlineVisitRequestFromDoctor(ulong requestId, ulong doctorMemberId, int businessKey);
 

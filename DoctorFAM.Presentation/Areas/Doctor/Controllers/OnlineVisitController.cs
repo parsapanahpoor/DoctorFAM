@@ -6,6 +6,7 @@ using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Interfaces;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Application.StaticTools;
+using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Tikcet;
 using DoctorFAM.Domain.ViewModels.Site.Notification;
@@ -383,6 +384,16 @@ public class OnlineVisitController : DoctorBaseController
         #endregion
 
         return View(model);
+    }
+
+    #endregion
+
+    #region Show Online Visit User Request Detail
+
+    [HttpGet]
+    public async Task<IActionResult> ShowOnlineVisitUserRequestDetail(ulong doctorReservationRequestDetailId)
+    {
+        return View(await _onlineVisitService.ShowOnlineVisitUserRequestDetail(doctorReservationRequestDetailId , User.GetUserId()));
     }
 
     #endregion
