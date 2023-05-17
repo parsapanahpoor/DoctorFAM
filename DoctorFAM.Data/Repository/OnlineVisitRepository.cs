@@ -447,11 +447,10 @@ public class OnlineVisitRepository : IOnlineVisitRepository
     }
 
     //Get Online Visit Doctor Reservation Id By Business Key And Doctor User Id
-    public async Task<ulong> GetOnlineVisitDoctorReservationByBusinessKeyAndDoctorUserId(ulong doctorUserId , int businessKey)
+    public async Task<OnlineVisitDoctorsReservationDate> GetOnlineVisitDoctorReservationByBusinessKeyAndDoctorUserId(ulong doctorUserId , int businessKey)
     {
         return await _context.OnlineVisitDoctorsReservationDates.AsNoTracking()
                                     .Where(p => !p.IsDelete && p.DoctorUserId == doctorUserId && p.BusinessKey == businessKey)
-                                    .Select(p => p.Id)
                                     .FirstOrDefaultAsync();
     }
 
@@ -459,8 +458,8 @@ public class OnlineVisitRepository : IOnlineVisitRepository
     public async Task<OnlineVisitDoctorsAndPatientsReservationDetail?> GetDoctorAndPatientRequestDetailByDoctorUserIdAndShiftIdAndShiftTimeId(ulong doctorReservationId , ulong shiftId , ulong shiftTimeId)
     {
         return await _context.OnlineVisitDoctorsAndPatientsReservationDetails.AsNoTracking()
-                                        .FirstOrDefaultAsync(p => !p.IsDelete && p.OnlineVisitDoctorsReservationDateId == doctorReservationId && p.OnlineVisitWorkShiftDetail == shiftTimeId && p.OnlineVisitWorkShiftId == shiftTimeId
-                                                                && !p.PatientUserId.HasValue);
+                                        .FirstOrDefaultAsync(p => !p.IsDelete && p.OnlineVisitDoctorsReservationDateId == doctorReservationId && p.OnlineVisitWorkShiftDetail == shiftTimeId && p.OnlineVisitWorkShiftId == shiftId
+                                                                && p.PatientUserId == null);
     }
 
     //Get Online Visit User Request Detail By Id
@@ -504,7 +503,7 @@ public class OnlineVisitRepository : IOnlineVisitRepository
                                     WorkShift = _context.OnlineVisitWorkShift.Where(s => !s.IsDelete && s.Id == workShiftId)
                                                             .Select(s => s.StartShiftTime + "-" + s.EndShiftTime)
                                                             .FirstOrDefault(),
-                                    WorkShiftTime = _context.OnlineVisitWorkShiftDetails.Where(s => !s.IsDelete && s.OnlineVisitWorkShiftId == workShiftId)
+                                    WorkShiftTime = _context.OnlineVisitWorkShiftDetails.Where(s => !s.IsDelete && s.OnlineVisitWorkShiftId == workShiftId && s.Id == p.WorkShiftDateTimeId)
                                                         .Select(s => s.StartTime + " تا " + s.EndTime).FirstOrDefault(),
                                     User = _context.Users.AsNoTracking().Where(s => !s.IsDelete && s.Id == p.UserId)
                                                         .Select(s => new OnlineVisitRequestUser()

@@ -39,11 +39,13 @@ public class OnlineVisitService : IOnlineVisitService
     private readonly IHomePharmacyServicec _homePharmacyService;
     private readonly IOrganizationService _organizationService;
     private readonly ISiteSettingService _siteSettingService;
+    private readonly ISMSService _smsService;
+    private readonly IChatService _chatService;
 
     public OnlineVisitService(IOnlineVisitRepository onlineVisitRepository, IUserService userService, IRequestService requestService
                                 , IPatientService patientService, ILocationService locationService, IWalletRepository walletRepository
                                         , IHomePharmacyServicec homePharmacyService, IOrganizationService organizationService
-                                            , ISiteSettingService siteSettingService)
+                                            , ISiteSettingService siteSettingService, ISMSService smsService, IChatService chatService)
     {
         _onlineVisitRepository = onlineVisitRepository;
         _userService = userService;
@@ -54,6 +56,8 @@ public class OnlineVisitService : IOnlineVisitService
         _homePharmacyService = homePharmacyService;
         _organizationService = organizationService;
         _siteSettingService = siteSettingService;
+        _smsService = smsService;
+        _chatService = chatService;
     }
 
     #endregion
@@ -476,7 +480,7 @@ public class OnlineVisitService : IOnlineVisitService
     {
         #region Get Doctor Organization OwnerId
 
-        var doctorUserId = await _organizationService.GetOrganizationOwnerIdByOrganizationMemberUserIdWithAsNoTracking(doctorMemberId); ;
+        var doctorUserId = await _organizationService.GetOrganizationOwnerIdByOrganizationMemberUserIdWithAsNoTracking(doctorMemberId); 
         if (doctorUserId == null) return false;
 
         #endregion
@@ -484,7 +488,7 @@ public class OnlineVisitService : IOnlineVisitService
         #region Get Online Visit Doctor Reservation 
 
         var onlineVisitDoctorReservationId = await _onlineVisitRepository.GetOnlineVisitDoctorReservationByBusinessKeyAndDoctorUserId(doctorUserId.Value, businessKey);
-        if (onlineVisitDoctorReservationId == 0) return false;
+        if (onlineVisitDoctorReservationId == null) return false;
 
         #endregion
 
@@ -497,7 +501,7 @@ public class OnlineVisitService : IOnlineVisitService
 
         #region Get Doctor And Patient Request Detail By Doctor User Id And Shift Id And Shift Time Id
 
-        var doctorAndPatientRequestDetail = await _onlineVisitRepository.GetDoctorAndPatientRequestDetailByDoctorUserIdAndShiftIdAndShiftTimeId(onlineVisitDoctorReservationId , request.WorkShiftDateId , request.WorkShiftDateTimeId);
+        var doctorAndPatientRequestDetail = await _onlineVisitRepository.GetDoctorAndPatientRequestDetailByDoctorUserIdAndShiftIdAndShiftTimeId(onlineVisitDoctorReservationId.Id , request.WorkShiftDateId , request.WorkShiftDateTimeId);
         if (doctorAndPatientRequestDetail == null) return false;
 
         #endregion
@@ -525,8 +529,28 @@ public class OnlineVisitService : IOnlineVisitService
 
         #endregion
 
-        //Save Changes 
-        await _onlineVisitRepository.SaveChanges();
+        #region Create Chat Room
+
+        var chatGroupId = await _chatService.CreateOnlineVisitChatRoom(doctorUserId.Value, request.UserId, onlineVisitDoctorReservationId.OnlineVisitShiftDate.ToShamsi());
+
+        #endregion
+
+        #region Join Members to the Chat Group 
+
+        await _chatService.OnlineVisitJoinMembersToTheGroup(chatGroupId , doctorUserId.Value, request.UserId);
+
+        #endregion
+
+        #region Send SMS For User
+
+        //Get User By Id 
+        var userMobile = await _userService.GetUserMobileByUserIdWithAsNoTracking(request.UserId);
+
+        var message = Messages.ConfirmOnlineVisitRequestFromDoctor($"{PathTools.SiteAddress}/Chatroom");
+
+        await _smsService.SendSimpleSMS(userMobile , message);
+
+        #endregion
 
         return true;
     }

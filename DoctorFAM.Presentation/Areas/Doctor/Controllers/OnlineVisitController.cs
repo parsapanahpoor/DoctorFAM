@@ -416,7 +416,7 @@ public class OnlineVisitController : DoctorBaseController
         if (res)
         {
             TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
-            return RedirectToAction(nameof(ListOfLastestOnlineVisitRequestDoctorSideViewModel));
+            return RedirectToAction("Index" , "Home" , new { area = "ChatRoom" });
         }
 
         return View();

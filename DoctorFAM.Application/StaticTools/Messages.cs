@@ -206,10 +206,13 @@ public static class Messages
     }
 
     //Waiting For Confitm Invoice From Patient
-    public static string WaitingForConfitmInvoiceFromPatient()
+    public static string WaitingForConfitmInvoiceFromPatient(string link)
     {
         return
-            $"باعرض سلام . {Environment.NewLine}  پیش فاکتور درخواست شما ایجاد گردیده است . خواهشمندیم جهت تایید یا رد آن اقدام فرمایید. {Environment.NewLine} {PathTools.SiteFarsiName}";
+            $"باعرض سلام . {Environment.NewLine}  پیش فاکتور درخواست شما ایجاد گردیده است ." +
+            $" خواهشمندیم جهت تایید یا رد آن از طریق لینک زیر اقدام فرمایید. " +
+            $"{link}" +
+            $"{Environment.NewLine} {PathTools.SiteFarsiName}";
     }
 
     //Finalize Home Laboratory From User
@@ -224,5 +227,16 @@ public static class Messages
     {
         return
             $"باعرض سلام . {Environment.NewLine}  پیش فاکتور شما از سمت درخواست کننده رد گردیده است  . {Environment.NewLine} {PathTools.SiteFarsiName}";
+    }
+
+    //Confirm Online Visit Request From Doctor  
+    public static string ConfirmOnlineVisitRequestFromDoctor(string link)
+    {
+        return
+            $"باعرض سلام . {Environment.NewLine}" +
+            $"درخواست ویزیت آنلاین شما از طرف پزشک تایید شده است. {Environment.NewLine}" +
+            $"شما می توانید در زمان تعیین شده از طریق پیام رسان سلامت داکتر فم با پزشک خود ارتباط برقرار کنید . {Environment.NewLine}" +
+            $"لینک دسترسی : {link}" +
+            $"{Environment.NewLine} {PathTools.SiteFarsiName}";
     }
 }
