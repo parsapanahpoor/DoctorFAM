@@ -1,29 +1,31 @@
-﻿using DoctorFAM.Domain.Entities.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿#region Usings
 
-namespace DoctorFAM.Domain.Entities.OnlineVisit
+using DoctorFAM.Domain.Entities.Common;
+using System.ComponentModel.DataAnnotations;
+
+#endregion
+
+namespace DoctorFAM.Domain.Entities.OnlineVisit;
+
+public sealed class OnlineVisitDoctorsAndPatientsReservationDetail : BaseEntity
 {
-    public sealed class OnlineVisitDoctorsAndPatientsReservationDetail : BaseEntity
-    {
-        #region properties
+    #region properties
 
-        //Navigation Property
-        public ulong OnlineVisitDoctorsReservationDateId { get; set; }
+    //Navigation Property
+    public ulong OnlineVisitDoctorsReservationDateId { get; set; }
 
-        //Navigation Property
-        public ulong OnlineVisitWorkShiftDetail { get; set; }
+    //Navigation Property
+    public ulong OnlineVisitWorkShiftDetail { get; set; }
 
-        public ulong? PatientUserId { get; set; }
+    public ulong? PatientUserId { get; set; }
 
-        //Navigation Property
-        public ulong OnlineVisitWorkShiftId { get; set; }
+    //Navigation Property
+    public ulong OnlineVisitWorkShiftId { get; set; }
 
-        public bool IsExistAnyRequestForThisShift { get; set; }
+    public bool IsExistAnyRequestForThisShift { get; set; }
 
-        #endregion
-    }
+    //[Timestamp]
+    //public byte[] Timestamp { get; set; }
+
+    #endregion
 }

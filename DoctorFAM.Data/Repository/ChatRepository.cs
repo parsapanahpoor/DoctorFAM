@@ -75,6 +75,12 @@ namespace DoctorFAM.Data.Repository
             await _context.SaveChangesAsync();
         }
 
+        //Add Group To The Data Base Without Save Changes
+        public async Task AddChatGroupToTheDataBaseWithoutSaveChanges(ChatGroup chatGroup)
+        {
+            await _context.ChatGroups.AddAsync(chatGroup);
+        }
+
         //Get Current User Chat Rooms By Owner Id
         public async Task<List<ChatGroup>?> GetCurrentUserChatRoomsByOwnerId(ulong userId)
         {

@@ -25,6 +25,9 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Is Exist Any Waiting Organization With This Current User 
         Task<bool?> IsExistAnyWaitingOrganizationWithThisCurrentUser(ulong userId);
 
+        //Get Organization Owner Id By Organization Member User Id With As No Tracking
+        Task<ulong?> GetOrganizationOwnerIdByOrganizationMemberUserIdWithAsNoTracking(ulong memberUserId);
+
         Task<Organization?> GetOrganizationByUserId(ulong userId);
 
         //Get Organization Id By Member User Id

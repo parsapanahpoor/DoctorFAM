@@ -1,4 +1,6 @@
-﻿using DoctorFAM.Domain.Entities.Account;
+﻿#region usings
+
+using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.ViewModels.Account;
 using DoctorFAM.Domain.ViewModels.Admin;
 using DoctorFAM.Domain.ViewModels.Admin.Account;
@@ -7,198 +9,196 @@ using DoctorFAM.Domain.ViewModels.Laboratory.Employee;
 using DoctorFAM.Domain.ViewModels.Site.Account;
 using DoctorFAM.Domain.ViewModels.UserPanel.Account;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+namespace DoctorFAM.Application.Services.Interfaces;
 
-namespace DoctorFAM.Application.Services.Interfaces
+#endregion
+
+public interface IUserService
 {
-    public interface IUserService
-    {
-        #region Authorize
+    #region Authorize
 
-        //Get User Roles 
-        Task<List<string>?> GetUserRoles(ulong userId);
+    //Get User Mobile With As No Tracking
+    Task<string?> GetUserMobileByUserIdWithAsNoTracking(ulong userId);
 
-        //Add Cooperation Request
-        Task AddCooperationRequest(string mobile, string RoleTitle, string UserName);
+    //Get User Roles 
+    Task<List<string>?> GetUserRoles(ulong userId);
 
-        //Check That Has User Fill Personal Information 
-        Task<bool> CheckThatHasUserFillPersonalInformation(ulong userId);
+    //Add Cooperation Request
+    Task AddCooperationRequest(string mobile, string RoleTitle, string UserName);
 
-        //Add User Role 
-        Task AddUserRole(UserRole userRole);
+    //Check That Has User Fill Personal Information 
+    Task<bool> CheckThatHasUserFillPersonalInformation(ulong userId);
 
-        //Register Nurse
-        Task RegisterNurse(string mobile);
+    //Add User Role 
+    Task AddUserRole(UserRole userRole);
 
-        //Filter User In Modal
-        Task<Domain.ViewModels.UserPanel.FilterUserViewModel> FilterUsersInModal(Domain.ViewModels.UserPanel.FilterUserViewModel filter);
+    //Register Nurse
+    Task RegisterNurse(string mobile);
 
-        Task ResendActivationCodeSMS(string Mobile);
+    //Filter User In Modal
+    Task<Domain.ViewModels.UserPanel.FilterUserViewModel> FilterUsersInModal(Domain.ViewModels.UserPanel.FilterUserViewModel filter);
 
-        Task<bool> IsExistUserById(ulong userId);
+    Task ResendActivationCodeSMS(string Mobile);
 
-        Task<User?> GetUserById(ulong userId);
+    Task<bool> IsExistUserById(ulong userId);
 
-        //Get User Avatar Name By User Id
-        Task<string?> GetUserImageNameByUserId(ulong userId);
+    Task<User?> GetUserById(ulong userId);
 
-        Task<RegisterUserResult> RegisterUser(RegisterUserViewModel register);
+    //Get User Avatar Name By User Id
+    Task<string?> GetUserImageNameByUserId(ulong userId);
 
-        Task<bool> IsExistsUserByEmail(string email);
+    Task<RegisterUserResult> RegisterUser(RegisterUserViewModel register);
 
-        Task<bool> IsExistUserByMobile(string mobile);
+    Task<bool> IsExistsUserByEmail(string email);
 
-        Task<LoginResult> CheckUserForLogin(LoginUserViewModel login);
+    Task<bool> IsExistUserByMobile(string mobile);
 
-        Task<User?> GetUserByMobile(string mobile);
+    Task<LoginResult> CheckUserForLogin(LoginUserViewModel login);
 
-        Task<bool> AccountActivation(string emailActivationCode);
+    Task<User?> GetUserByMobile(string mobile);
 
-        Task<User> GetUserByEmailActivationCode(string emailActivationCode);
+    Task<bool> AccountActivation(string emailActivationCode);
 
-        Task<ResetPasswordResult> ResetUserPassword(ResetPasswordViewModel pass, string mobile);
+    Task<User> GetUserByEmailActivationCode(string emailActivationCode);
 
-        //Send Cooperation Request For Exist User
-        Task<bool> SendCooperationRequestForExistUser(User user, string roleName);
+    Task<ResetPasswordResult> ResetUserPassword(ResetPasswordViewModel pass, string mobile);
 
-        #endregion
+    //Send Cooperation Request For Exist User
+    Task<bool> SendCooperationRequestForExistUser(User user, string roleName);
 
-        #region Site Side
+    #endregion
 
-        //Get Username By User ID
-        Task<string?> GetUsernameByUserID(ulong userId);
+    #region Site Side
 
-        //Is Exist Any Organization With Waiting State From Current User
-        Task<bool> IsExistAnyCooperationRequestWithWaitingStateFromCurrentUser(ulong userId);
+    //Get Username By User ID
+    Task<string?> GetUsernameByUserID(ulong userId);
 
-        //Get User By Username
-        Task<User?> GetUserByUsername(string userName);
+    //Is Exist Any Organization With Waiting State From Current User
+    Task<bool> IsExistAnyCooperationRequestWithWaitingStateFromCurrentUser(ulong userId);
 
-        //Validate For NAtional Id 
-        Task<bool> IsValidNationalIdForUserEditByAdmin(string mobile, ulong userId);
+    //Get User By Username
+    Task<User?> GetUserByUsername(string userName);
 
-        //Register Labratory
-        Task LabratoryConsultant(string mobile);
+    //Validate For NAtional Id 
+    Task<bool> IsValidNationalIdForUserEditByAdmin(string mobile, ulong userId);
 
-        Task RegisterDoctors(string mobile);
+    //Register Labratory
+    Task LabratoryConsultant(string mobile);
 
-        Task RegisterPharmacy(string mobile);
+    Task RegisterDoctors(string mobile);
 
-        Task RegisterSeller(string mobile);
+    Task RegisterPharmacy(string mobile);
 
-        Task<ActiveMobileByActivationCodeResult> ActiveUserMobile(ActiveMobileByActivationCodeViewModel activeMobileByActivationCodeViewModel);
+    Task RegisterSeller(string mobile);
 
-        Task<ForgotPasswordResult> RecoverUserPassword(ForgetPasswordViewModel forgot);
+    Task<ActiveMobileByActivationCodeResult> ActiveUserMobile(ActiveMobileByActivationCodeViewModel activeMobileByActivationCodeViewModel);
 
-        #endregion
+    Task<ForgotPasswordResult> RecoverUserPassword(ForgetPasswordViewModel forgot);
 
-        #region Admin
+    #endregion
 
-        //Count Of Users 
-        Task<int> CountOfUsers();
+    #region Admin
 
-        //Get List Of Admins and Supporters User Id For Send Notification For Death Certificate
-        Task<List<string>?> GetAdminsAndSupportersNotificationForSendNotificationInDeathCertificate();
+    //Count Of Users 
+    Task<int> CountOfUsers();
 
-        //Get Death Certificate Supporters
-        Task<List<User>?> GetDeathCertificateSupporters();
+    //Get List Of Admins and Supporters User Id For Send Notification For Death Certificate
+    Task<List<string>?> GetAdminsAndSupportersNotificationForSendNotificationInDeathCertificate();
 
-        //Get Home Visit Supporters
-        Task<List<User>?> GetHomeVisitSupporters();
+    //Get Death Certificate Supporters
+    Task<List<User>?> GetDeathCertificateSupporters();
 
-        //Get List Of Admins About Send Notification For Arrival New Nurses Inormations
-        Task<List<string>?> GetListOfAdminsAboutSendNotificationForArrivalNewNursesInormations();
+    //Get Home Visit Supporters
+    Task<List<User>?> GetHomeVisitSupporters();
 
-        //Get Online Visit Supporters
-        Task<List<User>?> GetOnlineVisitSupporters();
+    //Get List Of Admins About Send Notification For Arrival New Nurses Inormations
+    Task<List<string>?> GetListOfAdminsAboutSendNotificationForArrivalNewNursesInormations();
 
-        //Get Home Nurse Supporters
-        Task<List<User>?> GetHomeNurseSupporters();
+    //Get Online Visit Supporters
+    Task<List<User>?> GetOnlineVisitSupporters();
 
-        //Get List Of Admins and Supporters User Id For Send Notification For Online Request
-        Task<List<string>?> GetAdminsAndSupportersNotificationForSendNotificationInOnlineVisit();
+    //Get Home Nurse Supporters
+    Task<List<User>?> GetHomeNurseSupporters();
 
-        //Get List Of Admins and Supporters User Id For Send Notification For Home Visit
-        Task<List<string>?> GetAdminsAndSupportersNotificationForSendNotificationInHomeVisit();
+    //Get List Of Admins and Supporters User Id For Send Notification For Online Request
+    Task<List<string>?> GetAdminsAndSupportersNotificationForSendNotificationInOnlineVisit();
 
-        //Get List Of Admins and Supporters User Id For Send Notification For Home Laboratory
-        Task<List<string>?> GetAdminsAndSupportersNotificationForSendNotificationInHomeLaboratory();
+    //Get List Of Admins and Supporters User Id For Send Notification For Home Visit
+    Task<List<string>?> GetAdminsAndSupportersNotificationForSendNotificationInHomeVisit();
 
-        //Get List Of Admins and Supporters User Id For Send Notification For Home Pharmacy
-        Task<List<string>?> GetAdminsAndSupportersNotificationForSendNotificationInHomePharmacy();
+    //Get List Of Admins and Supporters User Id For Send Notification For Home Laboratory
+    Task<List<string>?> GetAdminsAndSupportersNotificationForSendNotificationInHomeLaboratory();
 
-        //Get List Of Admins 
-        Task<List<User>?> GetListOfAdmins();
+    //Get List Of Admins and Supporters User Id For Send Notification For Home Pharmacy
+    Task<List<string>?> GetAdminsAndSupportersNotificationForSendNotificationInHomePharmacy();
 
-        //Get List Of Supporters
-        Task<List<User>?> GetListOfSupporters();
+    //Get List Of Admins 
+    Task<List<User>?> GetListOfAdmins();
 
-        //Get Home Pharmacy Supporters
-        Task<List<User>?> GetHomePharmacySupporters();
+    //Get List Of Supporters
+    Task<List<User>?> GetListOfSupporters();
 
-        //Update User 
-        Task UpdateUser(User user);
+    //Get Home Pharmacy Supporters
+    Task<List<User>?> GetHomePharmacySupporters();
 
-        Task<FilterUserViewModel> FilterUsers(FilterUserViewModel filter);
+    //Update User 
+    Task UpdateUser(User user);
 
-        Task<bool> ChangePasswordInAdmin(ChangePasswordInAdminViewModel passwordViewModel);
+    Task<FilterUserViewModel> FilterUsers(FilterUserViewModel filter);
 
-        Task<AdminEditUserInfoViewModel> FillAdminEditUserInfoViewModel(ulong userId);
+    Task<bool> ChangePasswordInAdmin(ChangePasswordInAdminViewModel passwordViewModel);
 
-        Task<bool> IsValidMobileForUserEditByAdmin(string mobile, ulong userId);
+    Task<AdminEditUserInfoViewModel> FillAdminEditUserInfoViewModel(ulong userId);
 
-        Task<bool> IsValidEmailForUserEditByAdmin(string email, ulong userId);
+    Task<bool> IsValidMobileForUserEditByAdmin(string mobile, ulong userId);
 
-        Task<AdminEditUserInfoResult> EditUserInfo(AdminEditUserInfoViewModel edit, IFormFile? UserAvatar);
+    Task<bool> IsValidEmailForUserEditByAdmin(string email, ulong userId);
 
-        //Register Consultant
-        Task RegisterConsultant(string mobile);
+    Task<AdminEditUserInfoResult> EditUserInfo(AdminEditUserInfoViewModel edit, IFormFile? UserAvatar);
 
-        //Get List Of Admins About Send Notification For Arrival New Consultant Inormations
-        Task<List<string>?> GetListOfAdminsAboutSendNotificationForArrivalNewConsultantInormations();
+    //Register Consultant
+    Task RegisterConsultant(string mobile);
 
-        //Create User From Laboratory Panel
-        Task<AddNewUserResult> CreateUserFromLaboratoryPanel(AddLaboratoryEmployeeViewModel user, IFormFile? avatar, ulong MasterId);
+    //Get List Of Admins About Send Notification For Arrival New Consultant Inormations
+    Task<List<string>?> GetListOfAdminsAboutSendNotificationForArrivalNewConsultantInormations();
 
-        #endregion
+    //Create User From Laboratory Panel
+    Task<AddNewUserResult> CreateUserFromLaboratoryPanel(AddLaboratoryEmployeeViewModel user, IFormFile? avatar, ulong MasterId);
 
-        #region User Panel
+    #endregion
 
-        Task<AddNewUserResult> CreateUserFromDoctorPanel(AddEmployeeViewModel user, IFormFile? avatar, ulong MasterId);
+    #region User Panel
 
-        Task<UserPanelEditUserInfoViewModel> FillUserPanelEditUserInfoViewModel(ulong userId);
+    Task<AddNewUserResult> CreateUserFromDoctorPanel(AddEmployeeViewModel user, IFormFile? avatar, ulong MasterId);
 
-        Task<UserPanelEditUserInfoResult> EditUserInfoInUserPanel(UserPanelEditUserInfoViewModel edit, IFormFile? UserAvatar);
+    Task<UserPanelEditUserInfoViewModel> FillUserPanelEditUserInfoViewModel(ulong userId);
 
-        Task<ChangeUserPasswordResponse> ChangeUserPasswordAsync(ulong userId, ChangeUserPasswordViewModel model);
+    Task<UserPanelEditUserInfoResult> EditUserInfoInUserPanel(UserPanelEditUserInfoViewModel edit, IFormFile? UserAvatar);
 
-        //Get List Of Admins and Supporters 
-        Task<List<string>?> GetAllAdminsAndSupportersNotification();
+    Task<ChangeUserPasswordResponse> ChangeUserPasswordAsync(ulong userId, ChangeUserPasswordViewModel model);
 
-        //Is Exist Any User By National Id 
-        Task<bool> IsExistAnyUserByNationalId(string nationalId);
+    //Get List Of Admins and Supporters 
+    Task<List<string>?> GetAllAdminsAndSupportersNotification();
 
-        #endregion
+    //Is Exist Any User By National Id 
+    Task<bool> IsExistAnyUserByNationalId(string nationalId);
 
-        #region Cooperation Request 
+    #endregion
 
-        //Get Cooperation Request By Id
-        Task<DoctorFAM.Domain.Entities.CooperationRequest.CooperationRequest?> GetCooperationRequestById(ulong requestCooperationId);
+    #region Cooperation Request 
 
-        //Seen Cooperation Requests
-        Task<bool> SeenCooperationRequests(ulong cooperationRequestId);
+    //Get Cooperation Request By Id
+    Task<DoctorFAM.Domain.Entities.CooperationRequest.CooperationRequest?> GetCooperationRequestById(ulong requestCooperationId);
 
-        //List Of Cooperation Requests
-        Task<List<DoctorFAM.Domain.Entities.CooperationRequest.CooperationRequest>> ListOfCooperationRequests();
+    //Seen Cooperation Requests
+    Task<bool> SeenCooperationRequests(ulong cooperationRequestId);
 
+    //List Of Cooperation Requests
+    Task<List<DoctorFAM.Domain.Entities.CooperationRequest.CooperationRequest>> ListOfCooperationRequests();
 
-        //Delete Cooperation Requests
-        Task<bool> DeleteCooperationRequests(ulong cooperationRequestId);
 
-        #endregion
-    }
+    //Delete Cooperation Requests
+    Task<bool> DeleteCooperationRequests(ulong cooperationRequestId);
+
+    #endregion
 }
