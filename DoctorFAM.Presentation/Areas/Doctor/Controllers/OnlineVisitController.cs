@@ -430,7 +430,8 @@ public class OnlineVisitController : DoctorBaseController
             return RedirectToAction("Index" , "Home" , new { area = "ChatRoom" });
         }
 
-        return View();
+        TempData[ErrorMessage] = "خطای ناشناخته ای رخ داده است.";
+        return View(nameof(ListOfLastestOnlineVisitRequestDoctorSideViewModel));
     }
 
     #endregion

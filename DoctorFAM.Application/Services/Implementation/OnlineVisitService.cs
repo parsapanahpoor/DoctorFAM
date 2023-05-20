@@ -564,6 +564,7 @@ public class OnlineVisitService : IOnlineVisitService
         #region Create Chat Room
 
         var chatGroupId = await _chatService.CreateOnlineVisitChatRoom(doctorUserId.Value, request.UserId, onlineVisitDoctorReservationId.OnlineVisitShiftDate.ToShamsi());
+        if (chatGroupId == 0) return false;
 
         #endregion
 
