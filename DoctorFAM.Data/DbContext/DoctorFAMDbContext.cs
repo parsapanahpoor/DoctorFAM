@@ -201,6 +201,8 @@ public class DoctorFAMDbContext : Microsoft.EntityFrameworkCore.DbContext
 
     public DbSet<HomeLaboratoryRequestDetail> HomeLaboratoryRequestDetails { get; set; }
 
+    public DbSet<HomeLaboratoryRequestPrice> HomeLaboratoryRequestPrice { get; set; }
+
     #endregion
 
     #region Products

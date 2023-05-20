@@ -325,11 +325,11 @@
 
                                     @if (ViewBag.IsThisRequestForThisLaboratory == true)
                                     {
-                                        <a asp-action="AcceptHomePharmacyRequestFromPharmacy" asp-area="Laboratory" asp-controller="HomePharmacy" asp-route-requestId="@Model.Request.Id" class="btn btn-primary">@Localizer["نمایش فاکتور"]</a>
+                                        <a asp-action="AcceptHomeLaboratoryRequestFromLaboratory" asp-controller="HomeLaboratory" asp-area="Laboratory" asp-route-requestId="@Model.Request.Id" class="btn btn-primary">@Localizer["نمایش فاکتور"]</a>
                                     }
                                     else
                                     {
-                                        <a asp-action="AcceptHomePharmacyRequestFromPharmacy" asp-area="Laboratory" asp-controller="HomePharmacy" asp-route-requestId="@Model.Request.Id" class="btn btn-primary">@Localizer["پذیرفتن درخواست"]</a>
+                                        <a asp-action="AcceptHomeLaboratoryRequestFromLaboratory" asp-controller="HomeLaboratory" asp-area="Laboratory" asp-route-requestId="@Model.Request.Id" class="btn btn-primary">@Localizer["پذیرفتن درخواست"]</a>
                                     }
                                 </div>
                             </div>

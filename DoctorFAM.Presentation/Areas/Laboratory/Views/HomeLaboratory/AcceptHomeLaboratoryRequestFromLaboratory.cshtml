@@ -1,0 +1,121 @@
+﻿@model DoctorFAM.Domain.ViewModels.Laboratory.HomeLaboratory.HomeLaboratoryInvoiceLaboratorySideViewModel
+
+@using DoctorFAM.Domain.Enums
+@using DoctorFAM.Application.StaticTools
+@using DoctorFAM.Domain.ViewModels.Common
+
+@{
+    ViewData["Title"] = "تکمیل پیش فاکتور";
+}
+
+@section Scripts
+    {
+    <partial name="_JqueryValidation" />
+}
+
+@section Breadcrumb
+    {
+    <li>
+        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+    </li>
+}
+
+<form method="post" asp-action="AcceptHomeLaboratoryRequestFromLaboratory" asp-controller="HomeLaboratory" asp-area="Laboratory" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-lg-9 col-sm-12">
+            <div class="row">
+
+                <input type="hidden" asp-for="RequestId" />
+
+                <div class="col-lg-12">
+                    <div class="widget">
+                        <div class="widget-header bordered-bottom bordered-green" style="background-color:#d1f4fa">
+                            <span class="widget-caption"> اطلاعات پیش فاکتور </span>
+                        </div>
+                        <div class="widget-body" style="background-color:#d1f4fa !important;">
+                            <div class="row">
+
+                                @if (!Model.IsFinalized)
+                                {
+                                    <div class="form-group col-md-12 col-sm-12">
+                                        <span class="red">*</span>
+                                        <label asp-for="Price">جمع کل مبلغ فاکتور</label>
+                                        <input type="text" class="form-control" asp-for="Price">
+                                        <span class="text-danger" asp-validation-for="Price"></span>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="form-group col-md-12 col-sm-12">
+                                        <label asp-for="Price">جمع کل مبلغ فاکتور</label>
+                                        <input readonly type="text" class="form-control" asp-for="Price">
+                                        <span class="text-danger" asp-validation-for="Price"></span>
+                                    </div>
+                                }
+
+                                @if (!Model.IsFinalized)
+                                {
+                                    <div class="col-md-12 flex-style">
+                                        <button type="submit" class="btn btn-labeled btn-palegreen">
+                                            <i class="btn-label glyphicon glyphicon-ok"></i>ثبت
+                                        </button>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-md-12 flex-style">
+                                        <a asp-action="HomeLaboratoryRequestDetail" asp-controller="HomeLaboratory" asp-area="Laboratory" asp-route-requestId="@Model.RequestId" class="btn btn-labeled btn-primary">
+                                            <i class="btn-label glyphicon glyphicon-ok"></i>بازگشت
+                                        </a>
+                                    </div>
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-sm-12">
+            <div class="row">
+
+                <div class="col-lg-12">
+                    <div class="widget">
+                        <div class="widget-header bordered-bottom bordered-green">
+                            <span class="widget-caption"> تصویر پیش فاکتور </span>
+                        </div>
+                        <div class="widget-body">
+                            <div class="row">
+
+                                <input type="file" class="display-none" name="UserAvatar" id="UserAvatar" ImageInput="1" accept=".jpg,.jpeg,.png" />
+
+                                <div class="col-md-12">
+                                    <label for="UserAvatar" class="file-input-style">
+                                        <i class="glyphicon glyphicon-upload"></i>
+                                        <span class="mr-8px"> لطفا تصویر مورد نظر را انتخاب کنید</span>
+                                    </label>
+                                </div>
+
+                                @{
+                                    var avatarUrl = PathTools.DefaultUserAvatar;
+
+                                    if (Model != null && !string.IsNullOrEmpty(Model.InvoicePicFileName))
+                                    {
+                                        avatarUrl = $"{PathTools.HomeLaboratoryInvoicePathThumb}{Model.InvoicePicFileName}";
+                                    }
+                                }
+
+                                <div class="col-md-12 tc mt-10px">
+                                    <img src="@avatarUrl" class="image-style" ImageFile="1" />
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

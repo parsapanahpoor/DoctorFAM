@@ -24,7 +24,7 @@
                             <div class="">
                             <ul class="clearfix" style="list-style:none; ">
 
-                                    @foreach (var shiftTime in Model)
+                                    @foreach (var shiftTime in Model.OrderBy(p=> p.WorkShiftDateTimeId))
                                     {
                                     <li class="form-group col-md-2 col-sm-12" style="margin-top:10px; display:inline-block;">
                                             <a asp-action="SelectShiftAndRedirectToBank"
