@@ -959,17 +959,17 @@ public class OnlineVisitRepository : IOnlineVisitRepository
         {
             var reservationTime = await _context.OnlineVisitDoctorsAndPatientsReservationDetails.AsNoTracking()
                                                     .FirstOrDefaultAsync(p => !p.IsDelete
-                                                            && p.OnlineVisitDoctorsReservationDateId == item
-                                                            && !p.PatientUserId.HasValue
-                                                            && !p.IsExistAnyRequestForThisShift
-                                                            && p.OnlineVisitWorkShiftDetail == shiftTimeId
-                                                            && p.OnlineVisitWorkShiftId == shiftDateId);
+                                                                            && p.OnlineVisitDoctorsReservationDateId == item
+                                                                            && !p.PatientUserId.HasValue
+                                                                            && !p.IsExistAnyRequestForThisShift
+                                                                            && p.OnlineVisitWorkShiftDetail == shiftTimeId
+                                                                            && p.OnlineVisitWorkShiftId == shiftDateId);
 
             if (reservationTime != null)
             {
                 reservationTime.IsExistAnyRequestForThisShift = true;
-
                 _context.OnlineVisitDoctorsAndPatientsReservationDetails.Update(reservationTime);
+
                 await _context.SaveChangesAsync();
 
                 return;

@@ -235,7 +235,7 @@ public static class Messages
         return
             $"باعرض سلام . {Environment.NewLine}" +
             $"درخواست ویزیت آنلاین شما از طرف پزشک تایید شده است. {Environment.NewLine}" +
-            $"شما می توانید در زمان تعیین شده از طریق پیام رسان سلامت داکتر فم با پزشک خود ارتباط برقرار کنید . {Environment.NewLine}" +
+            $"شما می توانید در زمان تعیین شده از طریق پیام رسان سلامت دکترفم با پزشک خود ارتباط برقرار کنید . {Environment.NewLine}" +
             $"لینک دسترسی : {link}" +
             $"{Environment.NewLine} {PathTools.SiteFarsiName}";
     }
