@@ -308,7 +308,7 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
         {
             #region View Bags for View 
 
-            ViewData["availableShifts"] = await _onlineVisitService.SelectListForShowListOfAvailableShifts();
+            ViewData["availableShiftsCheckBox"] = await _onlineVisitService.ShowListOfAvailableShiftsForSelect();
 
             #endregion
 
@@ -316,8 +316,10 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateDoctorSelectedOnlineVisitShiftDate(CreateDoctorSelectedOnlineVisitShiftDateViewModel model)
+        public async Task<IActionResult> CreateDoctorSelectedOnlineVisitShiftDate(CreateDoctorSelectedOnlineVisitShiftDateViewModel model , List<ulong> usersId)
         {
+            model.OnlineVisitWorkShiftDetailId = usersId;
+
             #region Add Method 
 
             var res = await _onlineVisitService.CreateDoctorSelectedOnlineVisitShiftDateFromDoctorPanel(model, User.GetUserId());
@@ -346,7 +348,8 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
             #endregion
 
-            ViewData["availableShifts"] = await _onlineVisitService.SelectListForShowListOfAvailableShifts();
+            ViewData["availableShiftsCheckBox"] = await _onlineVisitService.ShowListOfAvailableShiftsForSelect();
+
             return View(model);
         }
 

@@ -492,6 +492,12 @@ namespace DoctorFAM.Application.Services.Implementation
             return await _onlineVisitRepository.SelectListForShowListOfAvailableShifts();
         }
 
+        //Show List Of Available Shifts For Select
+        public async Task<List<ListOfAvailableShiftForSelectViewModel>?> ShowListOfAvailableShiftsForSelect()
+        {
+            return await _onlineVisitRepository.ShowListOfAvailableShiftsForSelect();
+        }
+
         //Create Doctor Selected Online Visit Shift Date From Doctor Panel
         public async Task<CreateDoctorSelectedOnlineVisitShiftDateViewModelResult> CreateDoctorSelectedOnlineVisitShiftDateFromDoctorPanel(CreateDoctorSelectedOnlineVisitShiftDateViewModel model, ulong memberUserId)
         {

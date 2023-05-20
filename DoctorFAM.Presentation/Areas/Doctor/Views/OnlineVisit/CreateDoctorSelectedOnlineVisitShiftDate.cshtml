@@ -2,12 +2,13 @@
 
 @using DoctorFAM.Domain.ViewModels.Common
 @using DoctorFAM.Application.StaticTools
+@using DoctorFAM.Domain.ViewModels.DoctorPanel.OnlineVisit
 
 @{
     ViewData["Title"] = "انتخاب شیفت ویزیت آنلاین شما";
 }
 @{
-    var availableShifts = ViewData["availableShifts"] != null ? ViewData["availableShifts"] as List<SelectListViewModel> : null;
+    var availableShiftsCheckBox = ViewData["availableShiftsCheckBox"] != null ? ViewData["availableShiftsCheckBox"] as List<ListOfAvailableShiftForSelectViewModel> : null;
 }
 
 @section Scripts
@@ -47,20 +48,21 @@
                                     <span class="text-danger" asp-validation-for="SelectedDateTime"></span>
 
                                     <hr />
-                                    <label> شیفت های مورد نظر شما </label>
-                                    <select multiple asp-for="OnlineVisitWorkShiftDetailId" class="form-control">
-                                        <option value=""> لطفا شیفت های مورد نظرتان را انتخاب کنید </option>
 
-                                        @if (availableShifts is not null)
-                                        {
-                                            foreach (var item in availableShifts)
+                                    @if (availableShiftsCheckBox is not null)
+                                    {
+                                        <div class="flex-style-center">
+                                            @foreach (var item in availableShiftsCheckBox)
                                             {
-                                                <option value="@item.Id"> @item.Title </option>
+                                                <label>
+                                                    <input type="checkbox" name="usersId" value="@item.ShiftId">
+                                                    <span class="text">@item.ShiftName</span>
+                                                </label>
                                             }
-                                        }
-
-                                    </select>
+                                        </div>
+                                    }
                                     <hr />
+
                                     <button type="submit" class="btn btn-success">ثبت</button>
                                 </div>
 
