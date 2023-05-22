@@ -13,34 +13,34 @@
 
 @section Scripts
     {
-<partial name="_JqueryValidation" />
+    <partial name="_JqueryValidation" />
 
-<script>
+    <script>
 
-    //#region Choose Reservation Type
+        //#region Choose Reservation Type
 
-    function ChooseReservationType(reservationDateTimeId,doctorId) {
-        $.ajax({
-            url: "/Choose-Type-Of-Reservation",
-            type: "get",
-            data: {
-                reservationDateTimeId: reservationDateTimeId,
-                doctorId : doctorId
-            },
-            success: function (response) {
-                $("#modal-body").html(response);
+        function ChooseReservationType(reservationDateTimeId, doctorId) {
+            $.ajax({
+                url: "/Choose-Type-Of-Reservation",
+                type: "get",
+                data: {
+                    reservationDateTimeId: reservationDateTimeId,
+                    doctorId: doctorId
+                },
+                success: function (response) {
+                    $("#modal-body").html(response);
 
-                $('#ChooseReservationType').data('validator', null);
-                $.validator.unobtrusive.parse('#ChooseReservationType');
+                    $('#ChooseReservationType').data('validator', null);
+                    $.validator.unobtrusive.parse('#ChooseReservationType');
 
-                $("#exampleModal").modal("show");
-            }
-        });
-    }
+                    $("#exampleModal").modal("show");
+                }
+            });
+        }
 
-    //#endregion
+        //#endregion
 
-</script>
+    </script>
 
 }
 
@@ -87,8 +87,6 @@
             <div class="row">
                 <div class="col-12 col-sm-12 col-md-12 text-center ">
                     <h5 class="mb-1"> @((Model.DoctorReservationDate != null) ? Model.DoctorReservationDate.ReservationDate.ToStringShamsiDate() : "کاربر گرامی برای اخذ نوبت ابتدا یک تاریخ را از قسمت زیر انتخاب نمایید:")</h5>
-                    @*                        <p class="text-muted">دوشنبه</p>
-                    *@
                 </div>
             </div>
             <div class="row mt-2">
@@ -117,32 +115,32 @@
 
         @if (doctorDaysList != null)
         {
-                    
-               @*         <div class="card booking-schedule schedule-widget">
-                <div class="schedule-cont">*@
-                    <div class="row">
-                        <div class="col-md-12">
 
-                          @*  <div class="time-slot">*@
-                                <ul class="clearfix"  style="list-style:none;">
+            @*         <div class="card booking-schedule schedule-widget">
+        <div class="schedule-cont">*@
+            <div class="row">
+                <div class="col-md-12">
 
-                                    @foreach (var day in doctorDaysList)
-                                    {
+                    @*  <div class="time-slot">*@
+                    <ul class="clearfix" style="list-style:none;">
 
-                                        <li class="form-group col-md-12 col-sm-12" style="margin-top:10px;">
-                                            <a asp-action="DocBooking" asp-area="" asp-controller="FocalPoint" asp-route-userId="@Model.UserId" asp-route-loggedDateTime="@day.ReservationDate.ToShamsi()" style="background-color: #197c66;border: 1px solid #fccf9a;color: #fff; padding:8px;">
-                                                @day.ReservationDate.ToStringShamsiDate()
-                                                </a>
-                                            </li>
-                                    }
+                        @foreach (var day in doctorDaysList)
+                        {
 
-                                </ul>
-                           @* </div>*@
+                            <li class="form-group col-md-12 col-sm-12" style="margin-top:10px;">
+                                <a asp-action="DocBooking" asp-area="" asp-controller="FocalPoint" asp-route-userId="@Model.UserId" asp-route-loggedDateTime="@day.ReservationDate.ToShamsi()" style="background-color: #197c66;border: 1px solid #fccf9a;color: #fff; padding:8px;">
+                                    @day.ReservationDate.ToStringShamsiDate()
+                                </a>
+                            </li>
+                        }
 
-                        </div>
-                    </div>
-               @* </div>
-            </div>*@
+                    </ul>
+                    @* </div>*@
+
+                </div>
+            </div>
+            @* </div>
+        </div>*@
 
 
         }
@@ -180,6 +178,40 @@
                                         }
                                     }
 
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        }
+
+        @if (Model.ListOfReservationDateAndReservationDateTime != null && Model.ListOfReservationDateAndReservationDateTime.Any())
+        {
+            <div class="card m-3 p-3">
+                <div class="schedule-cont">
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            <div class="time-slot">
+                                <ul class="clearfix">
+                                    @foreach (var reserve in Model.ListOfReservationDateAndReservationDateTime)
+                                    {  
+                                        <span>@reserve.DoctorReservationDate.ReservationDate.ToStringShamsiDate()</span>
+                                        <hr />
+
+                                        @foreach (var reserveTime in reserve.DoctorReservationDateTimes)
+                                        {
+                                            <li class="form-group col-md-12 col-sm-12" style="margin-top:10px;">
+                                                <button onclick="ChooseReservationType(@reserveTime.Id,@Model.UserId)" type="button" class="timing" data-toggle="modal" data-target="#exampleModal" style="background-color: #197c66;border: 1px solid #fccf9a;color: #fff;">
+                                                    ساعت <span> @string.Concat(reserveTime.StartTime.Reverse().Skip(3).Reverse()) </span>
+                                                </button>
+                                            </li>
+                                        }
+
+                                    }
                                 </ul>
                             </div>
 
