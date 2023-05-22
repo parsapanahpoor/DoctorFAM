@@ -105,7 +105,10 @@
 
                                             <td class="center tc vm">
 
-                                                <a href="#" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+                                                @if (reservationdata.Patient is not null)
+                                                {
+                                                                                       <a asp-action="AccountDetail" asp-controller="Account" asp-area="Admin" asp-route-id="@reservationdata.Patient.UserId" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+                                                }
 
                                             </td>
 

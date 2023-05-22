@@ -201,6 +201,8 @@ public class DoctorFAMDbContext : Microsoft.EntityFrameworkCore.DbContext
 
     public DbSet<HomeLaboratoryRequestDetail> HomeLaboratoryRequestDetails { get; set; }
 
+    public DbSet<HomeLaboratoryRequestPrice> HomeLaboratoryRequestPrice { get; set; }
+
     #endregion
 
     #region Products
@@ -1725,6 +1727,18 @@ public class DoctorFAMDbContext : Microsoft.EntityFrameworkCore.DbContext
         });
 
         #endregion
+
+        #endregion
+
+        #region Time Stamp
+
+        modelBuilder.Entity<OnlineVisitDoctorsAndPatientsReservationDetail>()
+                        .Property(p => p.Timestamp)
+                        .IsRowVersion();
+
+        modelBuilder.Entity<OnlineVisitUserRequestDetail>()
+                       .Property(p => p.Timestamp)
+                       .IsRowVersion();
 
         #endregion
 

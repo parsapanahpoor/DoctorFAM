@@ -1,0 +1,134 @@
+﻿@model DoctorFAM.Domain.ViewModels.UserPanel.HealthHouse.HomeLaboratory.HomeLaboratoryInvoiceUserPanelSideViewModel
+
+@using DoctorFAM.Domain.Enums
+@using DoctorFAM.Application.StaticTools
+@using DoctorFAM.Domain.ViewModels.Common
+
+@{
+    ViewData["Title"] = " پیش فاکتور";
+}
+
+@section Scripts
+    {
+    <partial name="_JqueryValidation" />
+}
+
+@section Breadcrumb
+    {
+    <li>
+        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+    </li>
+}
+
+@if (Model == null)
+{
+    <div class="col-lg-12 col-sm-12 col-xs-12">
+        <div class="widget">
+            <div class="widget-header bg-warning">
+                <span class="widget-caption">عدم وجود پیش فاکتور </span>
+                <div class="widget-buttons">
+                    <a href="#" data-toggle="config">
+                        <i class="fa fa-cog"></i>
+                    </a>
+                    <a href="#" data-toggle="maximize">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a href="#" data-toggle="collapse">
+                        <i class="fa fa-minus"></i>
+                    </a>
+                    <a href="#" data-toggle="dispose">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div><!--Widget Buttons-->
+            </div><!--Widget Header-->
+            <div class="widget-body bg-warning">
+                <p> با عرض سلام و ادب خدمت شما. درحال حاضر پیش فاکتور از سمت آزمایشگاه وارد نشده است. لطفا تا ارائه ی پیش فاکتور شکیبا باشید. </p>
+            </div><!--Widget Body-->
+        </div><!--Widget-->
+    </div>
+}
+else
+{
+    <div class="row">
+        <div class="col-lg-9 col-sm-12">
+            <div class="row">
+
+
+                <div class="col-lg-12">
+                    <div class="widget">
+                        <div class="widget-header bordered-bottom bordered-green" style="background-color:#d1f4fa">
+                            <span class="widget-caption"> اطلاعات پیش فاکتور </span>
+                        </div>
+                        <div class="widget-body" style="background-color:#d1f4fa !important;">
+                            <div class="row">
+
+                                <div class="form-group col-md-12 col-sm-12">
+                                    <label asp-for="Price">جمع کل مبلغ فاکتور</label>
+                                    <input readonly type="text" class="form-control" asp-for="Price">
+                                    <span class="text-danger" asp-validation-for="Price"></span>
+                                </div>
+
+                                @if (!Model.IsFinalize)
+                                {
+                                    <div class="col-md-6 flex-style">
+                                        <a asp-action="AcceptHomeLaboratoryInvoice" asp-controller="HealthHouse" asp-area="Userpanel" asp-route-requestId="@Model.RequestId" class="btn btn-labeled btn-success">
+                                            <i class="btn-label glyphicon glyphicon-ok"></i>تایید فاکتور
+                                        </a>
+                                    </div>
+
+                                    <div class="col-md-6 flex-style">
+                                        <a asp-action="DeclineHomeLaboratoryInvoice" asp-controller="HealthHouse" asp-area="Userpanel" asp-route-requestId="@Model.RequestId" class="btn btn-labeled btn-danger">
+                                            <i class="btn-label glyphicon glyphicon-ok"></i>رد فاکتور
+                                        </a>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-md-12 flex-style">
+                                        <a asp-action="ListOfUserHomeLaboratoryRequest" asp-controller="HealthHouse" asp-area="UserPanel" class="btn btn-labeled btn-primary">
+                                            <i class="btn-label glyphicon glyphicon-ok"></i>بازگشت
+                                        </a>
+                                    </div>
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-sm-12">
+            <div class="row">
+
+                <div class="col-lg-12">
+                    <div class="widget">
+                        <div class="widget-header bordered-bottom bordered-green">
+                            <span class="widget-caption"> تصویر پیش فاکتور </span>
+                        </div>
+                        <div class="widget-body">
+                            <div class="row">
+
+
+                                @{
+                                    var avatarUrl = PathTools.DefaultUserAvatar;
+
+                                    if (Model != null && !string.IsNullOrEmpty(Model.InvoicePicFileName))
+                                    {
+                                        avatarUrl = $"{PathTools.HomeLaboratoryInvoicePathThumb}{Model.InvoicePicFileName}";
+                                    }
+                                }
+
+                                <div class="col-md-12 tc mt-10px">
+                                    <a target="_blank" href="@PathTools.SiteAddress/@avatarUrl"><img src="@avatarUrl" class="image-style" ImageFile="1" /></a>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

@@ -463,6 +463,9 @@ public class OnlineVisitController : SiteBaseController
 
                     if (wallet != null)
                     {
+                        //Update Randome Record Of Reservation Doctor And Patient For Exist Request For Select
+                        await _onlineVisitService.UpdateRandomeRecordOfReservationDoctorAndPatientForExistRequestForSelect(onlineVisitRequestDetail.DayDatebusinessKey, onlineVisitRequestDetail.WorkShiftDateId, onlineVisitRequestDetail.WorkShiftDateTimeId);
+
                         //Update Online Visit User Request Detail 
                         await _onlineVisitService.UpdateOnlineVisitUserRequestDetailToFinaly(id , user.Id);
 
@@ -471,9 +474,6 @@ public class OnlineVisitController : SiteBaseController
 
                         //Pay Online Visit Tariff
                         await _onlineVisitService.PayOnlineVisitTariff(User.GetUserId(), onlineVisitTariff, id);
-
-                        //Update Randome Record Of Reservation Doctor And Patient For Exist Request For Select
-                        await _onlineVisitService.UpdateRandomeRecordOfReservationDoctorAndPatientForExistRequestForSelect(onlineVisitRequestDetail.DayDatebusinessKey, onlineVisitRequestDetail.WorkShiftDateId, onlineVisitRequestDetail.WorkShiftDateTimeId);
 
                         #region Send Notification In SignalR
 

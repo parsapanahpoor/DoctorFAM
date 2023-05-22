@@ -1,5 +1,5 @@
 ﻿@model DoctorFAM.Domain.ViewModels.DoctorPanel.ParsaSystem.SendSMSToPatientViewModel
-
+@*currnet version*@
 @{
     ViewData["Title"] = "ارسال پیامک برای کاربران";
 }
@@ -7,7 +7,7 @@
 @section Breadcrumb
     {
     <li>
-        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+        <a asp-area="Doctor" asp-controller="SendSMS" asp-action="ChooseUsersForSendSMS"> انتخاب کاربر </a>
     </li>
 }
 
@@ -40,24 +40,26 @@
                         }
 
                         <div class="row">
-                            <div class="col-md-6">
-                                <input type="email" readonly placeholder="تعداد پیامک های مجاز شما برای ارسال : @Model.CountOfUserPercentageSMS" class="form-control">
+                            <div class="col-md-8">
+                                <input type="email" readonly placeholder="تعداد پیامک های مجاز  برای ارسال : (@Model.CountOfUserPercentageSMS) پیامک" class="form-control">
                                 <div class="horizontal-space"></div>
                             </div>
-
                             <div class="col-md-6">
-                                <div id="charNum" class="form-control">تعداد کاراکترهای نوشته شده (به ازای هر 70 کاراکتر یک پیامک ارسال می گردد.) : 0</div>
+                                <p style="color:red; font-size:12px;">تعداد کاراکترهای تایپ شده (هر 70 کاراکتر (شامل فاصله و سطر جدید و همه علائم...) یک پیامک محاسبه میشود.) </p>
+                            </div>
+                            <div class="col-md-2">
+                                <div id="charNum" class="form-control">  0</div>
                             </div>
                         </div>
 
-                        <div class="row">
+                        <div class="row mt-2">
                             <div class="col-md-12">
-                                <input type="email" readonly placeholder="تعداد کاربران انتخابی شما : @Model.PatientId.Count()" class="form-control">
+                                <input type="email" readonly placeholder="تعداد کاربران انتخابی  : (@Model.PatientId.Count()) نفر" class="form-control">
                                 <div class="horizontal-space"></div>
                             </div>
                         </div>
 
-                        <textarea class="form-control" asp-for="SMSBody" rows="3" onkeyup="countChar(this)" placeholder="متن پیامک راسالی شما"></textarea>
+                        <textarea class="form-control" asp-for="SMSBody" rows="4" onkeyup="countChar(this)" placeholder="متن پیامک ارسالی "></textarea>
                         <div class="horizontal-space"></div>
                         <div>
                             <button type="submit" class="btn btn-success">ارسال</button>

@@ -27,16 +27,19 @@ namespace DoctorFAM.Domain.Enums.Request
         ConfirmFromDestinationAndWaitingForIssuanceOfDraftInvoice,
         [Display(Name = "Awaiting The Payment Of The Invoice Amount")]
         AwaitingThePaymentOfTheInvoiceAmount,
+        AwaitingForConfirmInvoiceFromPatient,
         [Display(Name = "Preparing The Order")]
         PreparingTheOrder,
         [Display(Name = "Delivery To Courier And Sending")]
         DeliveryToCourierAndSending,
         [Display(Name = "Accept From Customer")]
         AcceptFromCustomer,
+        [Display(Name = "Reject From Customer")]
+        RejectFromCustomer,
         [Display(Name = "Waiting For Accept From Customer")]
         WaitingForAcceptFromCustomer,
         [Display(Name = "Canceled Request")]
-        Canceled
+        Canceled,
     }
 
     public enum RequestStateForFilterAdminSide

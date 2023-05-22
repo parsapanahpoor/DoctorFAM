@@ -3792,7 +3792,8 @@ namespace DoctorFAM.Application.Services.Implementation
                 UserId = userId,
                 LoggedDateTime = loggedDateTime,
                 DoctorReservationDate = ((!string.IsNullOrEmpty(loggedDateTime) ? await _reservationService.GetDoctorReservationDateByReservationDateAndUserId(loggedDateTime, userId) : null)),
-                DoctorReservationDateTimes = ((!string.IsNullOrEmpty(loggedDateTime) ? await _reservationService.GetDoctorReservationDateByReservationDateTimeAndUserId(loggedDateTime, userId) : null))
+                DoctorReservationDateTimes = ((!string.IsNullOrEmpty(loggedDateTime) ? await _reservationService.GetDoctorReservationDateByReservationDateTimeAndUserId(loggedDateTime, userId) : null)),
+                ListOfReservationDateAndReservationDateTime = await _reservationService.GetListOfDoctorReservationDateAndDoctorReservationDateTimeForShowSiteSide(organization.OwnerId)
             };
 
             DoctorPageInReservationViewModel childModel = new DoctorPageInReservationViewModel()
