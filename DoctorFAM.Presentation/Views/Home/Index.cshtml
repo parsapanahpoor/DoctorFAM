@@ -31,12 +31,21 @@
 
             <div class="d-flex align-items-center">
 
-                <div class="container">
-                    <h2 class="hColorFontt"> پزشکان عمومی و خانواده </h2>
-                    <div class="col-md-4 pricing-btn text-center">
-                        <a asp-action="ListOfFamilyDoctors" asp-controller="FamilyDoctor" asp-area="" class="pricing-btn default-btn">مشاهده </a>
+                <div class="container ">
+                    <div class="row">
+                        <div class="col-md-4 text-center justify-content-center ">
+                            <h2 class="hColorFontt"> ویزیت آنلاین فوری </h2>
+                            <h4 class=" text-center justify-content-center" style="color:white;"> (فم آنلاین) </h4>
+                        </div>
+
+                        <div class="col-md-8"></div>
                     </div>
+
+
                 </div>
+            </div>
+            <div class="col-md-12 pricing-btn text-center justify-content-center mt-2">
+                <a asp-action="ListOfDays" asp-controller="OnlineVisit" asp-area="" class="pricing-btn default-btn"><h6 style="color:white;">نوبت بگیرید و منتظر تماس پزشک باشید</h6>  </a>
             </div>
         </div>
 
@@ -275,25 +284,42 @@
 
         </div>
     </section>
-    <section class="patient-select mt-5">
+  @*14010230*@
+    <section class="patient-select ">
         <div class="container">
             <div class="row">
-                <div class="col-md-6">
-                    <div class="select-box aos m-3" data-aos="fade-up">
+                <div class="col-md-6 ">
+                    <div class="select-box aos " data-aos="fade-up">
                         <div class="d-flex align-items-center">
-                            <div class="image-holder">
-                                <span>
-                                    <img src="~/Content/Doctor/assets/img/icons/doct-01.png" alt="" />
-                                </span>
-                            </div>
-                            <div>
-                                <h2> پزشکان و دندانپزشکان</h2>
-                                <p>پزشک و یا دندانپزشک مورد نظر خود را جستجو و اطلاعات خود را تکمیل نمایید. </p>
+
+                            <div class="col-12">
+                                <h2> پزشکان، دندانپزشکان و کارشناسان</h2>
                                 <div class="row">
-                                    <div class="col-md-5"></div>
-                                    <div class="col-md-7 text-center justify-content-center">
-                                        <a class="book-now  hover-icon" asp-action="ListOfFamilyDoctors" asp-controller="FamilyDoctor" asp-area="">مشاهده</a>
-                                        @*<a class="book-now  hover-icon" asp-action="DoctorIntrud" asp-controller="Home">مشاهده</a>*@
+
+                                    <div class="col-md-12 text-center justify-content-center">
+                                        <div class="row">
+                                            <div class="col-md-4 Job-btn mt-1 ">
+                                                <a asp-action="ListOfFamilyDoctors" asp-controller="FamilyDoctor" asp-area="" class="Job-btn2">متخصصین</a>
+                                            </div>
+                                            <div class="col-md-4 Job-btn mt-1  ">
+                                                <a  asp-action="ListOfFamilyDoctors" asp-controller="FamilyDoctor" asp-area="" class="Job-btn2">پزشکان عمومی و خانواده</a>
+                                            </div>
+                                            <div class="col-md-4 Job-btn mt-1 ">
+                                                <a asp-action="ListOfFamilyDoctors" asp-controller="FamilyDoctor" asp-area="" class="Job-btn2">دندانپزشکان</a>
+                                            </div>
+                                            <div class="col-md-4 Job-btn mt-1 ">
+                                                <a  asp-action="ListOfFamilyDoctors" asp-controller="FamilyDoctor" asp-area="" class="Job-btn2">کارشناسان روان</a>
+                                            </div>
+                                            <div class="col-md-4 Job-btn mt-1 ">
+                                                <a asp-action="ListOfFamilyDoctors" asp-controller="FamilyDoctor" asp-area="" class="Job-btn2">کارشناسان تغذیه</a>
+                                            </div>
+                                        </div>
+
+                                        
+                                        
+                                        
+                                        
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -302,21 +328,41 @@
                 </div>
 
 
-                <div class="col-md-6">
-                    <div class="select-box theme aos m-3" data-aos="fade-up">
+                <div class="col-md-6 ">
+                    <div class="select-box theme aos " data-aos="fade-up">
                         <div class="d-flex align-items-center">
-                            <div class="image-holder">
-                                <span>
-                                    <img src="~/Content/Doctor/assets/img/icons/doct-02.png" alt="" />
-                                </span>
-                            </div>
-                            <div>
-                                <h2> مراکز تشخیصی و درمانی</h2>
-                                <p>مرکز تشخیصی و درمانی مورد نظر خود را بیابید و اطلاعات مورد نیازتان را جویا شوید. </p>
+
+                            <div class="col-12">
+                                <h2> داروخانه ها و مراکز تشخیصی و درمانی</h2>
                                 <div class="row">
-                                    <div class="col-md-5"></div>
-                                    <div class="col-md-7 text-center justify-content-center">
-                                        <a class="book-now  hover-icon" asp-action="CentersIntrud" asp-controller="Home">مشاهده</a>
+
+                                    <div class="col-md-12 text-center justify-content-center ">
+                                        <div class="row">
+                                            <div class="col-md-4 Job-btn mt-1 ">
+                                                <a asp-action="DrugStores" asp-controller="Home" asp-area="" class="Job-btn2">داروخانه </a>
+                                            </div>
+                                            <div class="col-md-4 Job-btn mt-1  ">
+                                                <a asp-action="Laboratory" asp-controller="Home" asp-area="" class="Job-btn2">آزمایشگاه</a>
+                                            </div>
+                                            <div class="col-md-4 Job-btn mt-1 ">
+                                                <a asp-action="ListOfFamilyDoctors" asp-controller="FamilyDoctor" asp-area="" class="Job-btn2">فیزیوتراپی</a>
+                                            </div>
+                                            <div class="col-md-4 Job-btn mt-1 ">
+                                                <a asp-action="ListOfFamilyDoctors" asp-controller="FamilyDoctor" asp-area="" class="Job-btn2">تصویربرداری</a>
+                                            </div>
+                                            <div class="col-md-4 Job-btn mt-1 ">
+                                                <a asp-action="ListOfFamilyDoctors" asp-controller="FamilyDoctor" asp-area="" class="Job-btn2">بینایی سنجی</a>
+                                            </div>
+                                            <div class="col-md-4 Job-btn mt-1 ">
+                                                <a asp-action="ListOfFamilyDoctors" asp-controller="FamilyDoctor" asp-area="" class="Job-btn2">شنوایی سنجی</a>
+                                            </div>
+                                        </div>
+
+
+
+
+
+
                                     </div>
                                 </div>
                             </div>
@@ -327,7 +373,9 @@
             </div>
         </div>
     </section>
-    <div class="container">
+
+
+    @*<div class="container">
         <div class="row mt-3 text-center justify-content-center">
 
             <div class="col-md-3 text-center align-items-center">
@@ -356,7 +404,7 @@
             </div>
 
         </div>
-    </div>
+    </div>*@
 
 
 
@@ -388,7 +436,7 @@
             @*Lastest TVFAM Videos*@
             @await Component.InvokeAsync("TVFAMLandingPage")
         </cache>
-       
+
 
     </div>
 
@@ -468,27 +516,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="item">
-                                    <div class="post">
-                                        <div class="post-image">
-                                            <img class="img-fluid rounded w-100" src="~/Content/images/case-studies/ADS-2.jpg" alt="">
-                                        </div>
-                                        <div class="post-desc">
-                                            @*<div class="post-meta">
-                                            <ul class="list-inline">
-                                            <li>
-                                            عرضه کنندگان محصولات و تجهیزات پزشکی
-                                            </li>
-
-                                            </ul>
-                                            </div>*@
-                                            <div class="post-title  text-center">
-                                                <h4><a asp-action="CreateAdvertisement" asp-controller="CustomerAdvertisement" asp-area="UserPanel" class="btn btn-acc   hover-icon  text-center ">  پذیرش تبلیغات از سراسر کشور </a></h4>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
+                                
                             </div>
                         </div>
                     </div>

@@ -863,7 +863,9 @@ public class HomeLaboratoryService : IHomeLaboratoryServices
 
         #region Send SMS For Customer User 
 
-        var message = Messages.WaitingForConfitmInvoiceFromPatient();
+        var link = $"{PathTools.SiteAddress}/UserPanel/HealthHouse/ShowHomeLaboratoryInvoice?requestId={model.RequestId}";
+
+        var message = Messages.WaitingForConfitmInvoiceFromPatient(link);
 
         await _smsService.SendSimpleSMS(request.User.Mobile, message);
 

@@ -13,20 +13,20 @@
 }
 
 <div class="content">
+    <section class="section section-featurebox">
     <div class="container">
         @if (Model != null && Model.Any())
         {
-            <div class="card booking-schedule schedule-widget" style="margin-top:20px;margin-bottom:20px">
-                <div class="schedule-cont">
+            
                     <div class="row">
                         <div class="col-md-12">
 
-                            <div class="time-slot">
-                                <ul class="clearfix">
+                            <div class="">
+                            <ul class="clearfix" style="list-style:none; ">
 
-                                    @foreach (var shiftTime in Model)
+                                    @foreach (var shiftTime in Model.OrderBy(p=> p.WorkShiftDateTimeId))
                                     {
-                                        <li class="form-group col-md-2 col-sm-12" style="margin-top:10px;">
+                                    <li class="form-group col-md-2 col-sm-12" style="margin-top:10px; display:inline-block;">
                                             <a asp-action="SelectShiftAndRedirectToBank"
                                                asp-area=""
                                                asp-controller="OnlineVisit"
@@ -44,8 +44,9 @@
 
                         </div>
                     </div>
-                </div>
-            </div>
+            
         }
     </div>
+
+    </section>
 </div>

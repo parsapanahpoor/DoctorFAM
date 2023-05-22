@@ -9,7 +9,7 @@
 @section Breadcrumb
     {
     <li>
-        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+        <a asp-area="Doctor" asp-controller="SendSMS" asp-action="ListOFCurrentDoctorSMSRequests"> سابقه پیامکهای ارسالی </a>
     </li>
 }
 
@@ -93,7 +93,7 @@
 
                                         <div class="form-group col-md-12 ">
                                             <label>متن پیامک</label>
-                                            <textarea asp-for="SMSBody" rows="10" class="form-control" placeholder="">@Model.SMSBody</textarea>
+                                            <textarea asp-for="SMSBody" rows="5" class="form-control" placeholder="">@Model.SMSBody</textarea>
                                         </div>
 
                                         <hr class="margin-bottom-10 margin-top-10" />
@@ -126,7 +126,7 @@
 
                             <div class="form-group col-md-12 @(Model != null && Model.SendSMSFromDoctorState == DoctorFAM.Domain.Enums.SendSMS.FromDoctors.SendSMSFromDoctorState.Decline ?"":"d-none")" id="RejectDescription-div">
                                 <label>متن پیامک</label>
-                                            <textarea asp-for="SMSBody" rows="10" class="form-control" placeholder="">@Model.SMSBody</textarea>
+                                            <textarea asp-for="SMSBody" rows="5" class="form-control" placeholder="">@Model.SMSBody</textarea>
                                 <span asp-validation-for="SMSBody" class="text-danger"></span>
                             </div>
 
@@ -136,7 +136,11 @@
                                     <div class="form-group col-md-12 col-sm-12">
                                         این درخواست تایید شده و پیامک های آن نیز ارسال گردیده است.
                                     </div>
-
+                                    <hr/>
+                                    <div class="form-group col-md-12 ">
+                                        <label>متن پیامک</label>
+                                        <textarea asp-for="SMSBody" rows="5" class="form-control" placeholder="">@Model.SMSBody</textarea>
+                                    </div>
                                 </div>
                             </div>
                         </div>
