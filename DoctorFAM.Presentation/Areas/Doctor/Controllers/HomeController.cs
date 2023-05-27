@@ -123,6 +123,27 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
         }
         #endregion
 
+        #region Home visit  Page 
+        public async Task<IActionResult> HomeVisit()
+        {
+            return View(await _doctorService.GetDoctorsSideBarInfo(User.GetUserId()));
+        }
+        #endregion
+
+        #region Death Certificate  Page 
+        public async Task<IActionResult> DeathCertificate()
+        {
+            return View(await _doctorService.GetDoctorsSideBarInfo(User.GetUserId()));
+        }
+        #endregion
+
+        #region Visit OnLine  Page 
+        public async Task<IActionResult> VisitOnLine()
+        {
+            return View(await _doctorService.GetDoctorsSideBarInfo(User.GetUserId()));
+        }
+        #endregion
+
         #region Media Manage  Page 
         public async Task<IActionResult> MediaManage()
         {

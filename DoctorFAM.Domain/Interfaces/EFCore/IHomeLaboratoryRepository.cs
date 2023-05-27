@@ -72,11 +72,18 @@ namespace DoctorFAM.Domain.Interfaces
         //Add Home Laboratory Request Price Without Save Changes
         Task AddHomeLaboratoryRequestPrice(HomeLaboratoryRequestPrice requestPrice);
 
+        //Update Home Laboratory Request Price Without
+        Task EditHomeLaboratoryRequestPrice(HomeLaboratoryRequestPrice requestPrice);
+
         //Get Home Laboratory Request ById With As No Tracking
         Task<Request?> GetHomeLaboratoryRequestByIdWithAsNoTracking(ulong requestId);
 
         //Is Exist Any Price For Request From Current Laboratory
         Task<bool> IsExistAnyPriceForRequestFromCurrentLaboratory(ulong requestId, ulong laboratoryOwnerUserId);
+
+
+        //Get Home Laboratory Request Price By Id
+        Task<HomeLaboratoryRequestPrice?> GetHomeLaboratoryRequestPriceById(ulong homelaboratoryRequestPriceId, ulong laboratoryOwnerUserId);
 
         //Update Home Laboratory Request 
         void UpdateHomeLaboratoryRequest(Request request);

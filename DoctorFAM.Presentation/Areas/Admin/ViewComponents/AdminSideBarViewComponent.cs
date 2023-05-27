@@ -8,10 +8,12 @@ namespace DoctorFAM.Web.Areas.Admin.ViewComponents
         #region Ctor
 
         private readonly ITicketService _ticketService;
+        private readonly IOnlineVisitService _onlineVisitService;
 
-        public AdminSideBarViewComponent(ITicketService ticketService)
+        public AdminSideBarViewComponent(ITicketService ticketService, IOnlineVisitService onlineVisitService)
         {
             _ticketService = ticketService;
+            _onlineVisitService = onlineVisitService;
         }
 
         #endregion
@@ -21,6 +23,7 @@ namespace DoctorFAM.Web.Areas.Admin.ViewComponents
             #region ViewBags
 
             ViewBag.TicketCounts = await _ticketService.GetWaitingForResponseTicektsCountForAdminAnSupporters();
+            ViewData["CountOfUserOnlineRequests"] = await _onlineVisitService.CountOfWaitingUserRequests();
 
             #endregion
 

@@ -40,6 +40,8 @@ namespace DoctorFAM.Domain.Enums.Request
         WaitingForAcceptFromCustomer,
         [Display(Name = "Canceled Request")]
         Canceled,
+        [Display(Name = "Request For Edit Invoice")]
+        RequestForEditInvoice
     }
 
     public enum RequestStateForFilterAdminSide

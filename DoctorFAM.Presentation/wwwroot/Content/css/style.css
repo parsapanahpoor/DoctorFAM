@@ -2295,6 +2295,29 @@ Pricing Area CSS
             margin-right: 5px;
         }
 
+
+.clinic-services2 {
+    color: #272b41;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    font-size: 13px;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+
+    .clinic-services2 span {
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        display: inline-block;
+        font-size: 16px;
+        padding: 3px 10px;
+    }
+
+        .clinic-services2 span + span {
+            margin-right: 5px;
+        }
+
 .clini-infos {
     margin-bottom: 15px;
 }
@@ -2952,10 +2975,10 @@ Pricing Area CSS
 }
 
 .time-slot li {
-    float: left;
+    float: right;
     padding-left: 5px;
     padding-right: 5px;
-    width: 14.28%;
+   /* width: 14.28%;*/
 }
 
     .time-slot li .timing {
@@ -6961,3 +6984,86 @@ doctors intrud*/
         vertical-align: middle;
         text-decoration: none;
     }
+.Job-btn3 {
+    background: #fd5b03;
+    color: #ffffff !important;
+    padding: 12px;
+    font-weight: 700;
+    font-size: 16px;
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    outline: none;
+    border: 1px solid #fd5b03;
+    vertical-align: middle;
+    text-decoration: none;
+    border-radius: 5px;
+   
+}
+    .Job-btn3:hover {
+        border: 1px solid #2264c5;
+    }
+
+.Notbtn {
+    background: #ff1d19;
+    color: #ffffff;
+    padding: 14px 20px;
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    outline: none;
+    border: 1px solid #ff1d19;
+    vertical-align: middle;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.Notbtn2 {
+    background: #0071DC;
+    color: #ffffff;
+    padding: 14px 20px;
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    outline: none;
+    border: 1px solid #197c66;
+    vertical-align: middle;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+    .Notbtn2:hover {
+        background: #39de65;
+    }
+    .NobatLI {
+        margin-top: 10px;
+        background-color: #0071DC;
+        border: 1px solid #5f6368;
+        padding: 5px !important;
+    }
+        .NobatLI:hover {
+           
+           
+            border: 1px solid #000000;
+            
+        }
+
+.NobatLi_Danger {
+    margin-top: 10px;
+    background-color: #ff1d19;
+    border: 1px solid #dfdcdc;
+    padding: 5px !important;
+}
+.Doc_name_Div {
+    background:#eeeff7;
+    padding:5px;
+    margin:3px;
+    border-radius:5px;
+   
+}
+
+.Doc_Banner_Div {
+    background-color: #aee5f775;
+    border-bottom: 1px solid #2264c5;
+    
+}

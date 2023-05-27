@@ -811,6 +811,12 @@ public class OnlineVisitService : IOnlineVisitService
 
     #region Admin Side 
 
+    //Count Of Waiting User Request
+    public async Task<int> CountOfWaitingUserRequests()
+    {
+        return await _onlineVisitRepository.CountOfWaitingUserRequests();
+    }
+
     //Fill List Of Work Shifts Dates Admin Side View Model
     public async Task<List<ListOfWorkShiftsDatesAdminSideViewModel>> FillListOfWorkShiftsDatesAdminSideViewModel()
     {

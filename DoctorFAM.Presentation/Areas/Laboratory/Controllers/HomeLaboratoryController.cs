@@ -1,16 +1,17 @@
-﻿using DoctorFAM.Application.Convertors;
+﻿#region Usings
+
+using DoctorFAM.Application.Convertors;
 using DoctorFAM.Application.Extensions;
-using DoctorFAM.Application.Services.Implementation;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Application.StaticTools;
-using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.ViewModels.Laboratory.HomeLaboratory;
 using DoctorFAM.Domain.ViewModels.Site.Notification;
 using DoctorFAM.Web.Hubs;
 using DoctorFAM.Web.Laboratory.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
-using System.Runtime.CompilerServices;
+
+#endregion
 
 namespace DoctorFAM.Web.Areas.Laboratory.Controllers
 {

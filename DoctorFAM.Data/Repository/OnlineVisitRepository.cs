@@ -1,7 +1,6 @@
 ﻿#region Usings
 
 using DoctorFAM.Data.DbContext;
-using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.OnlineVisit;
 using DoctorFAM.Domain.Enums.Request;
 using DoctorFAM.Domain.Interfaces;
@@ -11,10 +10,6 @@ using DoctorFAM.Domain.ViewModels.DoctorPanel.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.Site.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.UserPanel.OnlineVisit;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using System.Globalization;
-using DoctorFAM.Domain.Entities.Patient;
 
 #endregion
 
@@ -709,6 +704,14 @@ public class OnlineVisitRepository : IOnlineVisitRepository
 
     #region Admin Side 
 
+    //Count Of Waiting User Request
+    public async Task<int> CountOfWaitingUserRequests()
+    {
+        return await _context.OnlineVisitUserRequestDetails.AsNoTracking()
+                                .CountAsync(p=> !p.IsDelete && p.DayDatebusinessKey >= Convert.ToInt64(DateTime.Now)
+                                            && p.IsFinaly && !p.IsTakenFromDoctor);
+    }
+
     //Fill List Of Work Shifts Dates Admin Side View Model
     public async Task<List<ListOfWorkShiftsDatesAdminSideViewModel>> FillListOfWorkShiftsDatesAdminSideViewModel()
     {
@@ -880,7 +883,7 @@ public class OnlineVisitRepository : IOnlineVisitRepository
     {
         return _context.OnlineVisitWorkShiftDetails.AsNoTracking()
                                                        .Where(d => d.Id == WorkShiftDateTimeId)
-                                                        .Select(d => d.EndTime + " تا " + d.StartTime).FirstOrDefault();
+                                                        .Select(d =>  d.StartTime).FirstOrDefault();
     }
 
     //Check That Is Exist Free Shift 

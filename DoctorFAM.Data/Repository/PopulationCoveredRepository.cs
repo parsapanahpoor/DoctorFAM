@@ -72,6 +72,9 @@ namespace DoctorFAM.Data.Repository
             if (user == null) return true;
             if (user.UserId == userId) return true;
 
+            var realUser = await _context.Users.AsNoTracking().AnyAsync(p => !p.IsDelete && p.NationalId == nationalId); 
+            if (!realUser) return true;
+
             return false;
         }
 
