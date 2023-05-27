@@ -1,80 +1,80 @@
-﻿using DoctorFAM.Domain.Entities.Wallet;
+﻿#region Usings
+
+using DoctorFAM.Domain.Entities.Wallet;
 using DoctorFAM.Domain.ViewModels.Admin.Wallet;
 using DoctorFAM.Domain.ViewModels.UserPanel.Wallet;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace DoctorFAM.Domain.Interfaces
+#endregion
+
+namespace DoctorFAM.Domain.Interfaces;
+
+public interface IWalletRepository
 {
-    public interface IWalletRepository
-    {
-        #region Wallet
+    #region Wallet
 
-        Task<FilterWalletViewModel> FilterWalletsAsync(FilterWalletViewModel filter);
+    Task<FilterWalletViewModel> FilterWalletsAsync(FilterWalletViewModel filter);
 
-        //Get Wallet Transaction By Reservation Date Time Id
-        Task<Wallet?> GetWalletTransactionByReservationDateTimeId(ulong dateTimeId);
+    //Get Wallet Transaction By Reservation Date Time Id
+    Task<Wallet?> GetWalletTransactionByReservationDateTimeId(ulong dateTimeId);
 
-        Task<Wallet?> GetWalletByWalletIdAsync(ulong walletId);
+    Task<Wallet?> GetWalletByWalletIdAsync(ulong walletId);
 
-        Task<int> GetSumUserWalletAsync(ulong userId);
+    Task<int> GetSumUserWalletAsync(ulong userId);
 
-        Task<AdminEditWalletViewModel?> GetWalletForEditAsync(ulong walletId);
+    Task<AdminEditWalletViewModel?> GetWalletForEditAsync(ulong walletId);
 
-        Task CreateWalletAsync(Wallet wallet);
+    Task CreateWalletAsync(Wallet wallet);
 
-        Task EditWalletAsync(Wallet wallet);
+    Task EditWalletAsync(Wallet wallet);
 
-        Task ConfirmPayment(ulong payId, string authority, string refId);
+    Task ConfirmPayment(ulong payId, string authority, string refId);
 
-        Task<Wallet> GetWalletById(ulong id);
+    Task<Wallet> GetWalletById(ulong id);
 
-        Task<ulong> CreateWallet(Wallet charge);
+    Task<ulong> CreateWallet(Wallet charge);
 
-        Task<int> GetUserTotalDepositTransactions(ulong userId);
+    Task<int> GetUserTotalDepositTransactions(ulong userId);
 
-        Task<int> GetUserTotalWithdrawTransactions(ulong userId);
+    Task<int> GetUserTotalWithdrawTransactions(ulong userId);
 
-        Task<int> GetUserWalletBalance(ulong userId);
+    Task<int> GetUserWalletBalance(ulong userId);
 
-        //Get Home Visit Transaction For Cancelation Home Visit Request 
-        Task<Wallet?> GetHomeVisitTransactionForCancelationHomeVisitRequest(ulong requestId);
+    //Get Home Visit Transaction For Cancelation Home Visit Request 
+    Task<Wallet?> GetHomeVisitTransactionForCancelationHomeVisitRequest(ulong requestId);
 
-        //Create Wallet Without Calculate
-        Task CreateWalletWithoutCalculate(Wallet wallet);
+    //Create Wallet Without Calculate
+    Task CreateWalletWithoutCalculate(Wallet wallet);
 
-        //Create Wallet Data
-        Task CreateWalletData(WalletData walletData);
+    //Create Wallet Data
+    Task CreateWalletData(WalletData walletData);
 
-        //Find Wallet Transaction For Redirect To The Bank Portal 
-        Task<Wallet?> FindWalletTransactionForRedirectToTheBankPortal(ulong userId, GatewayType gateway, ulong? requestId, string authority, int amount);
+    //Find Wallet Transaction For Redirect To The Bank Portal 
+    Task<Wallet?> FindWalletTransactionForRedirectToTheBankPortal(ulong userId, GatewayType gateway, ulong? requestId, string authority, int amount);
 
-        //Update Wallet With Calculate Balance
-        Task UpdateWalletWithCalculateBalance(Wallet wallet);
+    //Update Wallet With Calculate Balance
+    Task UpdateWalletWithCalculateBalance(Wallet wallet);
 
-        #endregion
+    #endregion
 
-        #region Health House
+    #region Health House
 
-        //Get Home Visit Tariff Wallet By Request Id And User ID As No Traking
-        Task<int> GetHomeVisitTariffWalletByRequestIdAndUserIDAsNoTraking(ulong requestId, ulong userId);
+    //Get Home Visit Tariff Wallet By Request Id And User ID As No Traking
+    Task<int> GetHomeVisitTariffWalletByRequestIdAndUserIDAsNoTraking(ulong requestId, ulong userId);
 
-        #endregion
+    #endregion
 
-        #region Save Changes
+    #region Save Changes
 
-        Task SaveChangesAsync();
+    Task SaveChangesAsync();
 
-        #endregion
+    #endregion
 
-        #region User Panel 
+    #region User Panel 
 
-        Task<FilterWalletUserPnelViewModel> FilterWalletsAsyncUserPanel(FilterWalletUserPnelViewModel filter);
+    Task<FilterWalletUserPnelViewModel> FilterWalletsAsyncUserPanel(FilterWalletUserPnelViewModel filter);
 
-        #endregion
-    }
+    //Get Transaction For Home Laboratory 
+    Task<int> GetTransactionForHomeLaboratory(ulong userId, ulong requestId);
+
+    #endregion
 }

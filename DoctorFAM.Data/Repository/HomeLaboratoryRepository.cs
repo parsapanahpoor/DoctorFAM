@@ -1,12 +1,14 @@
 ﻿using DoctorFAM.Data.DbContext;
 using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Laboratory;
+using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Enums.Request;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.HealthHouse.HomeLabratory;
 using DoctorFAM.Domain.ViewModels.Admin.HealthHouse.HomePharmacy;
+using DoctorFAM.Domain.ViewModels.Laboratory.HomeLaboratory;
 using DoctorFAM.Domain.ViewModels.UserPanel.HealthHouse.HomeLaboratory;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -206,6 +208,14 @@ namespace DoctorFAM.Data.Repository
 
         #region User Panel 
 
+        //Get Home Laboratory Request Detail Price By Request Id
+        public async Task<HomeLaboratoryRequestPrice?> GetHomeLaboratoryRequestPriceByRequestId(ulong requestId)
+        {
+            return await _context.HomeLaboratoryRequestPrice.AsNoTracking()
+                                    .Where(p => !p.IsDelete && p.HomeLaboratoryRequestId == requestId)
+                                        .FirstOrDefaultAsync();
+        }
+
         public async Task<ListOfHomeLaboratoryUserPanelSideViewModel> ListOfUserHomeLaboratoryRequest(ListOfHomeLaboratoryUserPanelSideViewModel filter)
         {
             var query = _context.Requests
@@ -214,6 +224,138 @@ namespace DoctorFAM.Data.Repository
              .Where(s => !s.IsDelete && s.RequestType == Domain.Enums.RequestType.RequestType.HomeLab && s.UserId == filter.UserId)
              .OrderByDescending(s => s.CreateDate)
              .AsQueryable();
+
+            await filter.Paging(query);
+
+            return filter;
+        }
+
+        #endregion
+
+        #region Laboratory Side
+
+        //Get Home Laboratory Request ById
+        public async Task<Request?> GetHomeLaboratoryRequestById(ulong requestId)
+        {
+            return await _context.Requests.FirstOrDefaultAsync(p => p.Id == requestId && !p.IsDelete);
+        }
+
+        //Get Home Laboratory Request ById With As No Tracking
+        public async Task<Request?> GetHomeLaboratoryRequestByIdWithAsNoTracking(ulong requestId)
+        {
+            return await _context.Requests.AsNoTracking()
+                                             .FirstOrDefaultAsync(p => p.Id == requestId && !p.IsDelete);
+        }
+
+        //Get Home Laboratory Request Detail Price By Orgenization OwnerId and Request Id
+        public async Task<HomeLaboratoryRequestPrice?> GetHomeLaboratoryRequestPriceByOrgenizationOwnerIdandRequestId(ulong requestId ,  ulong organizationOwnerId )
+        {
+            return await _context.HomeLaboratoryRequestPrice.AsNoTracking()
+                                    .Where(p => !p.IsDelete && p.LaboratoryOwnerId == organizationOwnerId && p.HomeLaboratoryRequestId == requestId)
+                                        .FirstOrDefaultAsync();
+        }
+
+        //Add Home Laboratory Request Price Without Save Changes
+        public async Task AddHomeLaboratoryRequestPriceWithoutSaveChanges(HomeLaboratoryRequestPrice requestPrice)
+        {
+            await _context.HomeLaboratoryRequestPrice.AddAsync(requestPrice);
+        }
+
+        //Add Home Laboratory Request Price Without Save Changes
+        public async Task AddHomeLaboratoryRequestPrice(HomeLaboratoryRequestPrice requestPrice)
+        {
+            await _context.HomeLaboratoryRequestPrice.AddAsync(requestPrice);
+            await _context.SaveChangesAsync();
+        }
+
+        //Update Home Laboratory Request Price Without
+        public async Task EditHomeLaboratoryRequestPrice(HomeLaboratoryRequestPrice requestPrice)
+        {
+            _context.HomeLaboratoryRequestPrice.Update(requestPrice);
+            await _context.SaveChangesAsync();
+        }
+
+        //Is Exist Any Price For Request From Current Laboratory
+        public async Task<bool> IsExistAnyPriceForRequestFromCurrentLaboratory(ulong requestId , ulong laboratoryOwnerUserId)
+        {
+            return await _context.HomeLaboratoryRequestPrice.AnyAsync(p => !p.IsDelete && p.HomeLaboratoryRequestId == requestId
+                                                                            && p.LaboratoryOwnerId == laboratoryOwnerUserId);
+        }
+
+        //Get Home Laboratory Request Price By Id
+        public async Task<HomeLaboratoryRequestPrice?> GetHomeLaboratoryRequestPriceById(ulong homelaboratoryRequestPriceId, ulong laboratoryOwnerUserId)
+        {
+            return await _context.HomeLaboratoryRequestPrice.AsNoTracking()
+                                            .FirstOrDefaultAsync(p => !p.IsDelete && p.Id == homelaboratoryRequestPriceId && p.LaboratoryOwnerId == laboratoryOwnerUserId);
+                                            
+        }
+
+        //Update Home Laboratory Request 
+        public void UpdateHomeLaboratoryRequest(Request request)
+        {
+            _context.Requests.Update(request);
+        }
+
+        //Save Changes
+        public async Task Savechanges()
+        {
+            await _context.SaveChangesAsync();
+        }
+
+        //Update Request For Awaiting For Confirm From Patient
+        public async Task UpdateRequestForAwaitingForConfirmFromPatient(ulong requestId)
+        {
+            var request = await _context.Requests.FirstOrDefaultAsync(p => p.Id == requestId && !p.IsDelete);
+                                             
+            request.RequestState = RequestState.AwaitingForConfirmInvoiceFromPatient;
+            
+            _context.Requests.Update(request);
+            await _context.SaveChangesAsync();
+        }
+
+        //Filter List Of Your Home Laboratory Request Laboratory Side
+        public async Task<FilterListOfHomeLaboratoryRequestViewModel> FilterListOfYourHomeLaboratoryRequestLaboratorySide(FilterListOfHomeLaboratoryRequestViewModel filter)
+        {
+            var query = _context.Requests
+             .Include(p => p.PatientRequestDateTimeDetails)
+             .Include(p => p.Patient)
+             .Include(p => p.User)
+             .Include(p => p.PaitientRequestDetails)
+             .Where(s => !s.IsDelete && s.RequestType == Domain.Enums.RequestType.RequestType.HomeLab && s.OperationId == filter.LaboratoryOwnerId )                    
+             .OrderByDescending(s => s.CreateDate)
+             .AsQueryable();
+
+            #region Status
+
+            switch (filter.FilterRequestLaboratorySideOrder)
+            {
+                case FilterRequestAdminSideOrder.CreateDate_Des:
+                    break;
+                case FilterRequestAdminSideOrder.CreateDate_Asc:
+                    query = query.OrderBy(p => p.CreateDate);
+                    break;
+            }
+
+            #endregion
+
+            #region Filter
+
+            if (!string.IsNullOrEmpty(filter.Username))
+            {
+                query = query.Where(s => EF.Functions.Like(s.User.Username, $"%{filter.Username}%"));
+            }
+
+            if (!string.IsNullOrEmpty(filter.FirstName))
+            {
+                query = query.Where(s => EF.Functions.Like(s.User.FirstName, $"%{filter.FirstName}%"));
+            }
+
+            if (!string.IsNullOrEmpty(filter.LastName))
+            {
+                query = query.Where(s => EF.Functions.Like(s.User.LastName, $"%{filter.LastName}%"));
+            }
+
+            #endregion
 
             await filter.Paging(query);
 

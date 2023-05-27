@@ -11,7 +11,7 @@ namespace DoctorFAM.Domain.Enums.SendSMS.FromDoctors
     {
 
         [Display(Name = "در انتظار تایید")] WaitingForConfirm = 1,
-        [Display(Name = "تایید شده و ارسال شده")] AcceptAndSent = 2,
+        [Display(Name = "تایید و ارسال ")] AcceptAndSent = 2,
         [Display(Name = "رد درخواست")] Decline = 3,
     }
 }

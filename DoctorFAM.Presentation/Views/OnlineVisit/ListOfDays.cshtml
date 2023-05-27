@@ -13,37 +13,59 @@
 }
 
 <div class="content">
-    <div class="container">
-        @if (Model != null && Model.Any())
-        {
-            <div class="card booking-schedule schedule-widget" style="margin-top:20px;margin-bottom:20px">
-                <div class="schedule-cont">
-                    <div class="row">
-                        <div class="col-md-12">
+    <div class="row" style="background-color: #aee5f7; border-bottom:1px solid #2264c5;  ">
+        <div class="row text-center justify-content-center p-3">
+            <div class="col-md-12 text-center justify-content-center">
+                <h5>کاربر گرامی، جهت ویزیت آنلاین، از طریق پزشکان دکترفم، تاریخ  مورد نظر خود را از لیست زیر انتخاب نمایید:</h5>
+                <h6>پزشک آنلاین، در ساعت مقرر، با یکی از روشهای متنی یا تلفنی با شما تماس میگیرد.</h6>
+            </div>
+            <div class="col-md-12 text-center justify-content-center">
+                <p>برقراری ارتباط از سوی پزشک، ممکن است تا حدود ده دقیقه با تاخیر همراه باشد.</p>
+            </div>
+            <div class="col-md-12 text-center justify-content-center" style="color:red">
+                <span>در انتخاب زمان ویزیت دقت فرمایید. درصورت انصراف از ویزیت، فقط تا دو ساعت قبل از نوبت انتخاب شده، هزینه پرداختی، به کیف پول شما عودت داده می شود.</span>
+            </div>
+        </div>
 
-                            <div class="time-slot">
-                                <ul class="clearfix">
+    </div>
 
-                                    @foreach (var day in Model)
-                                    {
-                                        <li class="form-group col-md-2 col-sm-12" style="margin-top:10px;">
-                                            <a asp-action="ListOfShifts"
-                                            asp-area=""
-                                            asp-controller="OnlineVisit"
-                                            asp-route-businessKey="@day.BusinessKey"
-                                       style="background-color: #197c66;border: 1px solid #fccf9a;color: #fff;">
-                                                @day.WorkShiftDate.ToShamsi()
-                                            </a>
-                                        </li>
-                                    }
+    <section class="section section-featurebox">
 
-                                </ul>
-                            </div>
 
-                        </div>
+
+
+
+        <div class="container">
+
+            @if (Model != null && Model.Any())
+            {
+
+                <div class="row">
+                    <div class="col-md-12">
+
+
+                        <ul class="clearfix" style="list-style:none;">
+
+                            @foreach (var day in Model)
+                            {
+                                <li class="text-center justify-content-center form-group col-md-2 col-sm-12" style="margin-top:10px; background-color: #197c66;border: 1px solid #fccf9a;color: #fff; padding:5px !important;">
+                                    <a asp-action="ListOfShifts"
+                               asp-area=""
+                               asp-controller="OnlineVisit"
+                               asp-route-businessKey="@day.BusinessKey"
+                                       style="color: #fff;">
+                                        @day.WorkShiftDate.ToStringShamsiDate()
+                                    </a>
+                                </li>
+                            }
+
+                        </ul>
+
+
                     </div>
                 </div>
-            </div>
-        }
-    </div>
+
+            }
+        </div>
+    </section>
 </div>

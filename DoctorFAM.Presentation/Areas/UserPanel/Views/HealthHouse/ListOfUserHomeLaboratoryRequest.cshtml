@@ -16,30 +16,30 @@
 
 }
 
-    @section Scripts
+@section Scripts
     {
     <partial name="_JqueryValidation" />
 }
 
-    @section Breadcrumb
+@section Breadcrumb
     {
     <li>
         <a href="javascript:void(0)"> @ViewData["Title"] </a>
     </li>
 }
-    <form asp-action="ListOfUserHomeLaboratoryRequest" asp-controller="HealthHouse" asp-area="UserPanel" id="filter-search" method="get">
-        <input type="hidden" asp-for="Page" />
-    </form>
+<form asp-action="ListOfUserHomeLaboratoryRequest" asp-controller="HealthHouse" asp-area="UserPanel" id="filter-search" method="get">
+    <input type="hidden" asp-for="Page" />
+</form>
 
-    <div class="row">
-        <div class="col-lg-12 col-sm-12">
-            <div class="well with-header with-footer table-responsive">
-                <div class="header bordered-azure">
-                    <div class="flex-style">
-                        <span>@ViewData["Title"]</span>
-                        <span>@Model.GetShownEntitiesPagesTitle()</span>
-                    </div>
+<div class="row">
+    <div class="col-lg-12 col-sm-12">
+        <div class="well with-header with-footer table-responsive">
+            <div class="header bordered-azure">
+                <div class="flex-style">
+                    <span>@ViewData["Title"]</span>
+                    <span>@Model.GetShownEntitiesPagesTitle()</span>
                 </div>
+            </div>
 
             @if (Model.Entities != null && Model.Entities.Any())
             {
@@ -79,7 +79,7 @@
                                         }
                                         @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.ConfirmFromDestinationAndWaitingForIssuanceOfDraftInvoice)
                                         {
-                                            <span class="mr-8px label label-info"> تایید شده توسط مقصد و درانتظار صدور فاکتور  </span>
+                                            <span class="mr-8px label label-info"> پیش فاکتور  </span>
                                         }
                                         @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.AwaitingThePaymentOfTheInvoiceAmount)
                                         {
@@ -107,7 +107,7 @@
                                         }
                                         @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.Finalized)
                                         {
-                                            <span class="mr-8px label label-success" style="    background-image: linear-gradient(#ff00cc, #333399) !important;"> @Localizer["Finalized"] </span>
+                                            <span class="mr-8px label label-success" style="    background-image: linear-gradient(#ff00cc, #333399) !important;"> نهایی شده </span>
                                         }
                                         @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.WaitingForAcceptFromCustomer)
                                         {
@@ -133,6 +133,14 @@
                                         {
                                             <span class="mr-8px label label-warning"> درانتظار تکمیل اطلاعات توسط   </span>
                                         }
+                                        @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.RejectFromCustomer)
+                                        {
+                                            <span class="mr-8px label label-danger"> رد شده از طرف کاربر   </span>
+                                        }
+                                        @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.RequestForEditInvoice)
+                                        {
+                                            <span class="mr-8px label label-warning"> درخواست برای ویرایش     </span>
+                                        }
                                     </p>
                                 </td>
                                 <td class="tc vm">
@@ -156,7 +164,10 @@
                                     }
                                 </td>
                                 <td class="tc vm">
-                                  
+                                    @if (request.RequestState == RequestState.ConfirmFromDestinationAndWaitingForIssuanceOfDraftInvoice)
+                                    {
+                                        <a asp-action="ShowHomeLaboratoryInvoice" asp-controller="HealthHouse" asp-area="UserPanel" asp-route-requestId="@request.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+                                    }
                                 </td>
                             </tr>
                         }

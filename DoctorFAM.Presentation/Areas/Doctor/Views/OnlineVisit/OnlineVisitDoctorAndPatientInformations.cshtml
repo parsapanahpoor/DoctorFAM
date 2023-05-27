@@ -21,6 +21,7 @@
     <script src="~/admin/js/datatable/dataTables.tableTools.min.js"></script>
     <script src="~/admin/js/datatable/dataTables.bootstrap.min.js"></script>
     <script src="~/admin/js/datatable/datatables-init.js"></script>
+    <script src="~/admin/js/datatable/datatables-init-AllRecords.js"></script>
     <script>
         InitiateSimpleDataTable.init();
         InitiateEditableDataTable.init();
@@ -32,7 +33,7 @@
 @section Breadcrumb
     {
     <li>
-        <a asp-action="MedicalRecords" asp-controller="Home" asp-area="Doctor"> اقدامات پزشکی  </a>
+        <a asp-action="VisitOnLine" asp-area="Doctor" asp-controller="Home"> ویزیت آنلاین </a>
     </li>
     <li>
         <a asp-action="ListOfDoctorWorkShifts" asp-controller="OnlineVisit" asp-area="Doctor"> لیست شیفت های ویزیت آنلاین  </a>
@@ -73,7 +74,7 @@
 
                                             <td class="center ">
 
-                                                @if (reservationdata.Patient is not null )
+                                                @if (reservationdata.Patient is not null)
                                                 {
                                                     <div class="flex-style-center">
                                                         <img src="@reservationdata.Patient.UserAvatar.GetUserAvatar()" class="avatar-style" style="border-radius:50px;" />
@@ -108,7 +109,28 @@
 
                                             <td class="center tc vm">
 
-                                                <a href="#" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+                                                @if (reservationdata.Patient is not null)
+                                                {
+                                                    <a class="btn btn-azure btn-circle btn-xs"
+                                           asp-action="ShowOnlineVisitUserRequestDetail"
+                                           asp-area="Doctor"
+                                           asp-controller="OnlineVisit"
+                                           asp-route-doctorReservationRequestDetailId="@reservationdata.Id">
+                                                        <i class="glyphicon glyphicon-eye-open"></i>
+                                                    </a>
+
+                                                    <a class="btn btn-azure btn-circle btn-xs"
+                                           style="background-image: linear-gradient(#ff00cc, #333399) !important;"
+                                           asp-action="Index"
+                                           asp-area="ChatRoom"
+                                           asp-controller="Home">
+                                                        <i class="fa fa-comments-o"></i>
+                                                    </a>
+                                                }
+                                                else
+                                                {
+                                                    <span class="mr-8px label label-orange">رزرو نشده است. </span>
+                                                }
 
                                             </td>
 

@@ -650,13 +650,13 @@ namespace DoctorFAM.Application.Services.Implementation
             #region Add Work Shift Detail 
 
             //If Start Time Is Smaller Than End Time 
-            if (model.StartShiftTime >= model.EndShiftTime) return false;
+            if (model.EndShiftTime != 0 && model.StartShiftTime >= model.EndShiftTime) return false;
 
             int hours = model.StartShiftTime;
             int minute = 0;
 
             int startTime = model.StartShiftTime;
-            int endTimeComingFromModel = model.EndShiftTime;
+            int endTimeComingFromModel = ((model.EndShiftTime == 0) ? 24 : model.EndShiftTime);
             int periodNumber = model.PeriodOfShiftTime;
 
             //Diference Between Start Time And End Time 
@@ -665,7 +665,7 @@ namespace DoctorFAM.Application.Services.Implementation
             // The Number Of Intervals
             int intervalsCount = diference / periodNumber;
 
-            for (int j = 1; j < intervalsCount; j++)
+            for (int j = 1; j <= intervalsCount; j++)
             {
                 //Sampling From Shift Date Time 
                 OnlineVisitWorkShiftDetail shiftTime = new OnlineVisitWorkShiftDetail();

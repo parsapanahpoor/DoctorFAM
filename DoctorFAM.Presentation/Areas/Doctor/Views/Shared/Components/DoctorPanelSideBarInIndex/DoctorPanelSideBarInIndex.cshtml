@@ -36,7 +36,7 @@
                             <p class="text-center justify-content-center" style="font-size:12PX;">  جمعیت پزشک </p>
                         </div>
                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview">
-                            <a asp-area="Doctor" asp-controller="Home" asp-action="MedicalRecords" class="btn btn-success  btn-circle btn-lg"><i class="fa fa-heartbeat"></i></a>
+                            <a  class="btn btn-success  btn-circle btn-lg"><i class="fa fa-heartbeat"></i></a>
                             <p class="text-center justify-content-center" style="font-size:12PX;"> اقدامات پزشکی </p>
                         </div>
                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview">
@@ -77,16 +77,31 @@
                         </div>
                     </div>
                 </div>
-               @* <div class="col-lg-6 col-sm-6 col-xs-12">
+                <div class="col-lg-6 col-sm-6 col-xs-12">
                     <div class="row">
-
+                        @if (Model.HomeVisit == true)
+                        {
                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview">
-                            <a asp-area="Doctor" asp-controller="SendSMS" asp-action="ManageLinks" class="btn btn-primary  btn-circle btn-lg"><i class="glyphicon glyphicon-envelope"></i></a>
-                            <p class="text-center justify-content-center" style="font-size:12PX;"> ارسال پیامک </p>
+                                <a asp-area="Doctor" asp-controller="Home" asp-action="HomeVisit" class="btn btn-warning  btn-circle btn-lg"><i class="fa fa-medkit "></i></a>
+                            <p class="text-center justify-content-center" style="font-size:12PX;">  ویزیت درمنزل </p>
                         </div>
-                     
+                         }
+                        @if (Model.DeathCertificate == true)
+                        {
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview">
+                                <a asp-area="Doctor" asp-controller="Home" asp-action="DeathCertificate" class="btn btn-success  btn-circle btn-lg"><i class="fa fa-ambulance "></i></a>
+                            <p class="text-center justify-content-center" style="font-size:12PX;">  گواهی فوت </p>
+                        </div>
+                        }
+                        @if (Model.OnlineVisit == true)
+                        {
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview">
+                                <a asp-area="Doctor" asp-controller="Home" asp-action="VisitOnLine" class="btn btn-danger  btn-circle btn-lg"><i class="fa fa-headphones "></i></a>
+                            <p class="text-center justify-content-center" style="font-size:12PX;"> ویزیت آنلاین </p>
+                        </div>
+                        }
                     </div>
-                </div>*@
+                </div>
             </div>
 
         </div>
@@ -108,7 +123,7 @@
                             <p class="text-center justify-content-center" style="font-size:12PX;">نوبت دهی</p>
                         </div>
                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview">
-                            <a asp-area="Doctor" asp-controller="Home" asp-action="MedicalRecords" class="btn btn-success  btn-circle btn-lg"><i class="fa fa-heartbeat"></i></a>
+                            <a  class="btn btn-success  btn-circle btn-lg"><i class="fa fa-heartbeat"></i></a>
                             <p class="text-center justify-content-center" style="font-size:12PX;"> اقدامات پزشکی </p>
                         </div>
                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview">

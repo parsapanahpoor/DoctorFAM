@@ -15,6 +15,7 @@ public record SelectShiftAndRedirectToBankDTO
     public ulong WorkShiftDateId { get; set; }
 
     public ulong UserId { get; set; }
+
 }
 
 

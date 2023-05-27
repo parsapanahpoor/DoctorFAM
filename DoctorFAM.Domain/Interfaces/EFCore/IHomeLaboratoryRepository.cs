@@ -3,7 +3,9 @@ using DoctorFAM.Domain.Entities.Laboratory;
 using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.ViewModels.Admin.HealthHouse.HomeLabratory;
+using DoctorFAM.Domain.ViewModels.Laboratory.HomeLaboratory;
 using DoctorFAM.Domain.ViewModels.UserPanel.HealthHouse.HomeLaboratory;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,7 +51,51 @@ namespace DoctorFAM.Domain.Interfaces
 
         #region User Panel 
 
+        //Get Home Laboratory Request Detail Price By Request Id
+        Task<HomeLaboratoryRequestPrice?> GetHomeLaboratoryRequestPriceByRequestId(ulong requestId);
+
         Task<ListOfHomeLaboratoryUserPanelSideViewModel> ListOfUserHomeLaboratoryRequest(ListOfHomeLaboratoryUserPanelSideViewModel filter);
+
+        #endregion
+
+        #region Laboratory side 
+
+        //Get Home Laboratory Request ById
+        Task<Request?> GetHomeLaboratoryRequestById(ulong requestId);
+
+        //Get Home Laboratory Request Detail Price By Orgenization OwnerId and Request Id
+        Task<HomeLaboratoryRequestPrice?> GetHomeLaboratoryRequestPriceByOrgenizationOwnerIdandRequestId(ulong requestId, ulong organizationOwnerId);
+
+        //Add Home Laboratory Request Price Without Save Changes
+        Task AddHomeLaboratoryRequestPriceWithoutSaveChanges(HomeLaboratoryRequestPrice requestPrice);
+
+        //Add Home Laboratory Request Price Without Save Changes
+        Task AddHomeLaboratoryRequestPrice(HomeLaboratoryRequestPrice requestPrice);
+
+        //Update Home Laboratory Request Price Without
+        Task EditHomeLaboratoryRequestPrice(HomeLaboratoryRequestPrice requestPrice);
+
+        //Get Home Laboratory Request ById With As No Tracking
+        Task<Request?> GetHomeLaboratoryRequestByIdWithAsNoTracking(ulong requestId);
+
+        //Is Exist Any Price For Request From Current Laboratory
+        Task<bool> IsExistAnyPriceForRequestFromCurrentLaboratory(ulong requestId, ulong laboratoryOwnerUserId);
+
+
+        //Get Home Laboratory Request Price By Id
+        Task<HomeLaboratoryRequestPrice?> GetHomeLaboratoryRequestPriceById(ulong homelaboratoryRequestPriceId, ulong laboratoryOwnerUserId);
+
+        //Update Home Laboratory Request 
+        void UpdateHomeLaboratoryRequest(Request request);
+
+        //Save Changes
+        Task Savechanges();
+
+        //Update Request For Awaiting For Confirm From Patient
+        Task UpdateRequestForAwaitingForConfirmFromPatient(ulong requestId);
+
+        //Filter List Of Your Home Laboratory Request Laboratory Side
+        Task<FilterListOfHomeLaboratoryRequestViewModel> FilterListOfYourHomeLaboratoryRequestLaboratorySide(FilterListOfHomeLaboratoryRequestViewModel filter);
 
         #endregion
     }

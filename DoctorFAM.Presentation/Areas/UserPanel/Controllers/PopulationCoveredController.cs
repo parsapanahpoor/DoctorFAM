@@ -74,9 +74,11 @@ namespace DoctorFAM.Web.Areas.UserPanel.Controllers
                 case CreatePopulationCoveredUserPanelResult.Success:
                     TempData[SuccessMessage] = _localizer["Mission Accomplished"].Value;
                     return RedirectToAction(nameof(ListOfPopulationCovered));
+
                 case CreatePopulationCoveredUserPanelResult.Faild:
                     TempData[ErrorMessage] = _localizer["The operation failed"].Value;
                     break;
+
                 case CreatePopulationCoveredUserPanelResult.NationalIdIsExist:
                     TempData[ErrorMessage] = _localizer["National Id Is Exist"].Value;
                     break;
