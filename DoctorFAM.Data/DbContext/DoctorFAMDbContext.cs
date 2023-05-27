@@ -1730,6 +1730,18 @@ public class DoctorFAMDbContext : Microsoft.EntityFrameworkCore.DbContext
 
         #endregion
 
+        #region Time Stamp
+
+        modelBuilder.Entity<OnlineVisitDoctorsAndPatientsReservationDetail>()
+                        .Property(p => p.Timestamp)
+                        .IsRowVersion();
+
+        modelBuilder.Entity<OnlineVisitUserRequestDetail>()
+                       .Property(p => p.Timestamp)
+                       .IsRowVersion();
+
+        #endregion
+
         base.OnModelCreating(modelBuilder);
     }
 

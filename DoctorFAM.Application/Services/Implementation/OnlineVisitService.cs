@@ -564,6 +564,7 @@ public class OnlineVisitService : IOnlineVisitService
         #region Create Chat Room
 
         var chatGroupId = await _chatService.CreateOnlineVisitChatRoom(doctorUserId.Value, request.UserId, onlineVisitDoctorReservationId.OnlineVisitShiftDate.ToShamsi());
+        if (chatGroupId == 0) return false;
 
         #endregion
 
@@ -809,6 +810,12 @@ public class OnlineVisitService : IOnlineVisitService
     #endregion
 
     #region Admin Side 
+
+    //Count Of Waiting User Request
+    public async Task<int> CountOfWaitingUserRequests()
+    {
+        return await _onlineVisitRepository.CountOfWaitingUserRequests();
+    }
 
     //Fill List Of Work Shifts Dates Admin Side View Model
     public async Task<List<ListOfWorkShiftsDatesAdminSideViewModel>> FillListOfWorkShiftsDatesAdminSideViewModel()

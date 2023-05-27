@@ -15,6 +15,8 @@ public class HomeLaboratoryInvoiceLaboratorySideViewModel
 
     public bool IsFinalized { get; set; }
 
+    public ulong? HomeLaboratoryPriceId { get; set; }
+
     #endregion
 }
 

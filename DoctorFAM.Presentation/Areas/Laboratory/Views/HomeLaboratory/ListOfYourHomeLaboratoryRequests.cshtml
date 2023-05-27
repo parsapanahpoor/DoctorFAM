@@ -144,7 +144,7 @@
                                         <p class="label label-primary"> پیش فاکتور </p>
                                     }
 
-                                       @if (request.RequestState == RequestState.AcceptFromCustomer)
+                                    @if (request.RequestState == RequestState.AcceptFromCustomer)
                                     {
                                         <p class="label label-success"> تایید شده توسط کاربر</p>
                                     }
@@ -152,6 +152,11 @@
                                     @if (request.RequestState == RequestState.RejectFromCustomer)
                                     {
                                         <span class="mr-8px label label-danger"> رد شده از طرف کاربر   </span>
+                                    }
+
+                                    @if (request.RequestState == RequestState.RequestForEditInvoice)
+                                    {
+                                        <span class="mr-8px label label-warning"> درخواست بازبینی   </span>
                                     }
                                 </td>
                                 <td class="tc vm">

@@ -13,6 +13,9 @@ namespace DoctorFAM.Domain.Interfaces.EFCore
     {
         #region Chat Room Area
 
+        //Save Changes Async 
+        Task SaveChangesAsync();
+
         //Get Group By User Id And receiver Id
         Task<ChatGroup?> GetGroupByUserIdAndreceiverId(ulong userId, ulong receiverId);
 

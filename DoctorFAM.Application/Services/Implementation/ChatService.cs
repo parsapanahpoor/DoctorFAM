@@ -8,6 +8,7 @@ using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Chat;
 using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.ChatRoom;
+using Microsoft.EntityFrameworkCore;
 
 #endregion
 
@@ -394,7 +395,21 @@ public class ChatService : IChatService
         //Add To The Data Base
         await _chatRepository.AddChatGroupToTheDataBase(groupCreated);
 
-        return groupCreated.Id;
+        while (groupCreated.Id == 0)
+        {
+            try
+            {
+                await _chatRepository.SaveChangesAsync();
+
+                return groupCreated.Id;
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                return 0;
+            }
+        }
+
+        return 0;
     }
 
     //Online Visit Join Members To The Group

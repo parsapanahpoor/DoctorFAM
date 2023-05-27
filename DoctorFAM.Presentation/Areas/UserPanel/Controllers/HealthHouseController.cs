@@ -8,6 +8,7 @@ using DoctorFAM.Domain.ViewModels.UserPanel.HealthHouse;
 using DoctorFAM.Domain.ViewModels.UserPanel.HealthHouse.HomeLaboratory;
 using DoctorFAM.Domain.ViewModels.UserPanel.HealthHouse.HomeNurse;
 using DoctorFAM.Web.ActionFilterAttributes;
+using DoctorFAM.Web.HttpManager;
 using DoctorFAM.Web.Hubs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -340,12 +341,32 @@ public class HealthHouseController : UserBaseController
     [HttpGet]
     public async Task<IActionResult> DeclineHomeLaboratoryInvoice(ulong requestId)
     {
-        #region Accept Request
+        #region Reject Request
 
         var res = await _homeLaboratoryServices.DeclineHomeLaboratoryInvoice(requestId, User.GetUserId());
         if (res)
         {
-            TempData[SuccessMessage] = "عملیات با موفقیت انجام شده است.";
+            return ApiResponse.SetResponse(ApiResponseStatus.Success, null, "عملیات باموفقیت انجام شده است.");
+        }
+
+        #endregion
+
+        return ApiResponse.SetResponse(ApiResponseStatus.Danger, null, "عملیات باشکست مواجه شده است.");
+    }
+
+    #endregion
+
+    #region Request For Edit Home Laboratory
+
+    [HttpGet]
+    public async Task<IActionResult> EditHomeLaboratoryInvoice(ulong requestId)
+    {
+        #region Accept Request
+
+        var res = await _homeLaboratoryServices.EditHomeLaboratoryInvoice(requestId, User.GetUserId());
+        if (res)
+        {
+            TempData[SuccessMessage] = "درخواست بازنگری پیش فاکتور باموفقیت صادر شده است.";
             return RedirectToAction(nameof(ListOfUserHomeLaboratoryRequest));
         }
 

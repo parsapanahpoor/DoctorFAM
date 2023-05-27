@@ -1,6 +1,7 @@
 ﻿#region Usings
 
 using DoctorFAM.Domain.Entities.Common;
+using System.ComponentModel.DataAnnotations;
 
 #endregion
 
@@ -21,6 +22,9 @@ public sealed class  OnlineVisitUserRequestDetail : BaseEntity
     public bool IsFinaly { get; set; }
 
     public bool IsTakenFromDoctor { get; set; }
+
+    [Timestamp]
+    public byte[] Timestamp { get; set; }
 
     #endregion
 }

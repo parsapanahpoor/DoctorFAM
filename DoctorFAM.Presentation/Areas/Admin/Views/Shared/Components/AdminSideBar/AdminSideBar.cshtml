@@ -1,4 +1,8 @@
 ﻿
+@{
+    var CountOfUserOnlineRequests = ViewData["CountOfUserOnlineRequests"] ;
+}
+
 <div class="page-sidebar" id="sidebar">
     <div class="sidebar-header-wrapper">
         <input type="text" class="searchinput" />
@@ -226,6 +230,7 @@
             <a href="#" class="menu-dropdown">
                 <i class="menu-icon glyphicon glyphicon-thumbs-up"></i>
                 <span class="menu-text">ویزیت آنلاین</span>
+                                        <p class="badge badge-warning">@CountOfUserOnlineRequests</p>
                 <i class="menu-expand"></i>
             </a>
 

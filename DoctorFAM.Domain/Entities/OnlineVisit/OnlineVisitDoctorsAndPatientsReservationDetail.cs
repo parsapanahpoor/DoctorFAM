@@ -24,8 +24,8 @@ public sealed class OnlineVisitDoctorsAndPatientsReservationDetail : BaseEntity
 
     public bool IsExistAnyRequestForThisShift { get; set; }
 
-    //[Timestamp]
-    //public byte[] Timestamp { get; set; }
+    [Timestamp]
+    public byte[] Timestamp { get; set; }
 
     #endregion
 }
