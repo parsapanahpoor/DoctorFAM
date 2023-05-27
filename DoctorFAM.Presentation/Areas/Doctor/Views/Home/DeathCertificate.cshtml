@@ -1,0 +1,58 @@
+﻿@model DoctorFAM.Domain.ViewModels.DoctorPanel.DosctorSideBarInfo.DoctorSideBarViewModel
+
+@{
+    ViewData["Title"] = "صدور گواهی فوت";
+}
+
+@section Breadcrumb
+    {
+
+}
+
+
+<div class="page-body">
+
+
+    <div class="row text-center align-Item-center">
+        <div class="col-lg-12 col-sm-12 col-xs-12">
+            <div class="row">
+            
+                @if (Model.DeathCertificate == true)
+                {
+                    <div class="col-lg-4 col-md-4   buttons-preview mt-2"> </div>
+                    <div class="col-lg-4 col-md-4   buttons-preview mt-2">
+                        <div class="bordered-well-container">
+                            <div class="well bordered-top bordered-bottom  bordered-blue">
+
+                                <div class="featured-icon">
+                                    <i class="fa fa-ambulance fa-2x"></i>
+                                </div>
+                                <p class="text-center justify-content-center"> صدور گواهی فوت  </p>
+
+                            </div>
+                            <a asp-action="ListOfDeathCertificateRequests" asp-area="Doctor" asp-controller="DeathCertificate">
+                                <div class="well  bordered-bottom  bordered-pink">
+                                    <p class="text-center justify-content-center" style="font-size:12px !important;"> جدیدترین درخواستها  </p>
+                                </div>
+                            </a>
+                            <a asp-action="ListOfYourDeathCertificateRequests" asp-area="Doctor" asp-controller="DeathCertificate">
+                                <div class="well  bordered-bottom  bordered-palegreen">
+                                    <p class="text-center justify-content-center" style="font-size:12px !important;"> درخواستهای پذیرفته شده  </p>
+                                </div>
+                            </a>
+                        </div>
+
+                    </div>
+                    <div class="col-lg-4 col-md-4   buttons-preview mt-2"> </div>
+                }
+
+             
+
+            </div>
+        </div>
+
+
+    </div>
+
+
+</div>

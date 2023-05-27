@@ -880,7 +880,7 @@ public class OnlineVisitRepository : IOnlineVisitRepository
     {
         return _context.OnlineVisitWorkShiftDetails.AsNoTracking()
                                                        .Where(d => d.Id == WorkShiftDateTimeId)
-                                                        .Select(d => d.EndTime + " تا " + d.StartTime).FirstOrDefault();
+                                                        .Select(d =>  d.StartTime).FirstOrDefault();
     }
 
     //Check That Is Exist Free Shift 
