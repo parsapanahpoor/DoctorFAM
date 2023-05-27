@@ -1183,7 +1183,6 @@ public class UserService : IUserService
 
         #endregion
 
-
         #region Add User Roles
 
         if (edit.UserRoles != null && edit.UserRoles.Any())

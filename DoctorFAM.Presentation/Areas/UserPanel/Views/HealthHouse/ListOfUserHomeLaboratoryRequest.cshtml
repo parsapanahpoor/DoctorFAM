@@ -137,6 +137,10 @@
                                         {
                                             <span class="mr-8px label label-danger"> رد شده از طرف کاربر   </span>
                                         }
+                                        @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.RequestForEditInvoice)
+                                        {
+                                            <span class="mr-8px label label-warning"> درخواست برای ویرایش     </span>
+                                        }
                                     </p>
                                 </td>
                                 <td class="tc vm">

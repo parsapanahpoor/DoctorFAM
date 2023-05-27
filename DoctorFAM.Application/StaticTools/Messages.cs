@@ -222,6 +222,13 @@ public static class Messages
             $"باعرض سلام . {Environment.NewLine}  پیش فاکتور شما از سمت درخواست کننده تایید گردید . خواهشمندیم اقدام های مورد نیاز را انجام دهید . {Environment.NewLine} {PathTools.SiteFarsiName}";
     }
 
+    //Request For Edit Home Laboratory From User
+    public static string RequestFortEditHomeLaboratoryFromUser()
+    {
+        return
+            $"باعرض سلام . {Environment.NewLine}  کاربر مورد نظر درخواست بازنگری در پیش فاکتور صادر شده از سمت شما را داده است.  {Environment.NewLine} {PathTools.SiteFarsiName}";
+    }
+
     //Reject Home Laboratory From User
     public static string RejectHomeLaboratoryFromUser()
     {

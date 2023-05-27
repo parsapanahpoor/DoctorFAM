@@ -27,17 +27,17 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.get(url).then(res => {
+                        console.log(res.status);
                         if (removeElementId !== null &&
                             removeElementId !== undefined &&
                             removeElementId !== '' &&
-                            res.status === "Success") {
-                            ShowMessage("اعلان", "عملیات با موفقیت انجام شد", "success");
-                            $('[remove-ajax-item=' + removeElementId + ']').fadeOut(1000);
-                        } else if (removeElementId !== null &&
-                            removeElementId !== undefined &&
-                            removeElementId !== '' &&
-                            res.status === "Error") {
+                            res.status === "Danger") {
                             ShowMessage("اعلان", "عملیات با شکست مواجه شد", "error");
+                            window.location.replace("@PathTools.SiteAddress/UserPanel/HealthHouse/ListOfUserHomeLaboratoryRequest");
+                        }
+                        else {
+                            ShowMessage("اعلان", "عملیات با موفقیت انجام شد", "success");
+                            window.location.replace("@PathTools.SiteAddress/UserPanel/HealthHouse/ListOfUserHomeLaboratoryRequest");
                         }
                     });
                 }
@@ -104,18 +104,24 @@ else
 
                                 @if (!Model.IsFinalize)
                                 {
-                                    <div class="col-md-6 flex-style">
+                                    <div class="col-md-4 flex-style">
                                         <a asp-action="AcceptHomeLaboratoryInvoice" asp-controller="HealthHouse" asp-area="Userpanel" asp-route-requestId="@Model.RequestId" class="btn btn-labeled btn-success">
                                             <i class="btn-label glyphicon glyphicon-ok"></i>تایید فاکتور
                                         </a>
                                     </div>
 
-                                    <div class="col-md-6 flex-style">
+                                    <div class="col-md-4 flex-style">
 
                                         <button onclick="RejectRequest(@Model.RequestId, '@Url.Action("DeclineHomeLaboratoryInvoice", "HealthHouse", new { area = "UserPanel", requestId = Model.RequestId })')" class="btn btn-labeled btn-danger">
                                             <i class="btn-label glyphicon glyphicon-ok"></i>رد فاکتور
                                         </button>
 
+                                    </div>
+
+                                    <div class="col-md-4 flex-style">
+                                        <a asp-action="EditHomeLaboratoryInvoice" asp-controller="HealthHouse" asp-area="Userpanel" asp-route-requestId="@Model.RequestId" class="btn btn-labeled btn-warning">
+                                            <i class="btn-label glyphicon glyphicon-ok"></i>درخواست ویرایش
+                                        </a>
                                     </div>
                                 }
                                 else
@@ -157,7 +163,7 @@ else
                                 }
 
                                 <div class="col-md-12 tc mt-10px">
-                                    <a target="_blank" href="@PathTools.SiteAddress/@avatarUrl"><img src="@avatarUrl" class="image-style" ImageFile="1" /></a>
+                                    <a target="_blank" href="@PathTools.SiteAddress@avatarUrl"><img src="@avatarUrl" class="image-style" ImageFile="1" /></a>
                                 </div>
 
                             </div>

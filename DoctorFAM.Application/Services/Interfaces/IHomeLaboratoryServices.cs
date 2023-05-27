@@ -75,6 +75,9 @@ public interface IHomeLaboratoryServices
     //Decline Home Laboratory Invoice
     Task<bool> DeclineHomeLaboratoryInvoice(ulong requestId, ulong userId);
 
+    //Edit Home Laboratory Invoice
+    Task<bool> EditHomeLaboratoryInvoice(ulong requestId, ulong userId);
+
     #endregion
 
     #region Home Laboratory Side 

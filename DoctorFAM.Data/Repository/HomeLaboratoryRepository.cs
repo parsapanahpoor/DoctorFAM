@@ -268,11 +268,26 @@ namespace DoctorFAM.Data.Repository
             await _context.SaveChangesAsync();
         }
 
+        //Update Home Laboratory Request Price Without
+        public async Task EditHomeLaboratoryRequestPrice(HomeLaboratoryRequestPrice requestPrice)
+        {
+            _context.HomeLaboratoryRequestPrice.Update(requestPrice);
+            await _context.SaveChangesAsync();
+        }
+
         //Is Exist Any Price For Request From Current Laboratory
         public async Task<bool> IsExistAnyPriceForRequestFromCurrentLaboratory(ulong requestId , ulong laboratoryOwnerUserId)
         {
             return await _context.HomeLaboratoryRequestPrice.AnyAsync(p => !p.IsDelete && p.HomeLaboratoryRequestId == requestId
                                                                             && p.LaboratoryOwnerId == laboratoryOwnerUserId);
+        }
+
+        //Get Home Laboratory Request Price By Id
+        public async Task<HomeLaboratoryRequestPrice?> GetHomeLaboratoryRequestPriceById(ulong homelaboratoryRequestPriceId, ulong laboratoryOwnerUserId)
+        {
+            return await _context.HomeLaboratoryRequestPrice.AsNoTracking()
+                                            .FirstOrDefaultAsync(p => !p.IsDelete && p.Id == homelaboratoryRequestPriceId && p.LaboratoryOwnerId == laboratoryOwnerUserId);
+                                            
         }
 
         //Update Home Laboratory Request 

@@ -660,13 +660,14 @@ public class HomeLaboratoryService : IHomeLaboratoryServices
     }
 
     //Fill Home Laboratory Invoice Detail Page
-    public async Task<HomeLaboratoryInvoiceUserPanelSideViewModel?> FillHomeLaboratoryInvoiceDetailPage(ulong requestId , ulong userId)
+    public async Task<HomeLaboratoryInvoiceUserPanelSideViewModel?> FillHomeLaboratoryInvoiceDetailPage(ulong requestId, ulong userId)
     {
         #region Get Request By Id 
 
         var homeLaboratoryRequest = await _homeLaboratory.GetHomeLaboratoryRequestById(requestId);
         if (homeLaboratoryRequest == null || homeLaboratoryRequest.UserId != userId
-            || homeLaboratoryRequest.RequestType != RequestType.HomeLab) return null;
+            || homeLaboratoryRequest.RequestType != RequestType.HomeLab
+            || homeLaboratoryRequest.RequestState == Domain.Enums.Request.RequestState.RequestForEditInvoice) return null;
 
         #endregion
 
@@ -698,7 +699,7 @@ public class HomeLaboratoryService : IHomeLaboratoryServices
     }
 
     //Accept Home Laboratory Invoice
-    public async Task<bool> AcceptHomeLaboratoryInvoice(ulong requestId , ulong userId)
+    public async Task<bool> AcceptHomeLaboratoryInvoice(ulong requestId, ulong userId)
     {
         #region Get Request By Id 
 
@@ -732,13 +733,50 @@ public class HomeLaboratoryService : IHomeLaboratoryServices
         return true;
     }
 
+    //Edit Home Laboratory Invoice
+    public async Task<bool> EditHomeLaboratoryInvoice(ulong requestId, ulong userId)
+    {
+        #region Get Request By Id 
+
+        var request = await _homeLaboratory.GetHomeLaboratoryRequestById(requestId);
+        if (request == null || request.UserId != userId || !request.OperationId.HasValue
+            || request.RequestType != RequestType.HomeLab
+            || request.RequestState != Domain.Enums.Request.RequestState.ConfirmFromDestinationAndWaitingForIssuanceOfDraftInvoice) return false; ;
+
+        #endregion
+
+        #region Update Request 
+
+        request.RequestState = Domain.Enums.Request.RequestState.RequestForEditInvoice;
+
+        await _requestService.UpdateRequest(request);
+
+        #endregion
+
+        #region Send SMS For Customer User 
+
+        var message = Messages.RequestFortEditHomeLaboratoryFromUser();
+
+        //Get Laboratory Owner Id
+        var opertion = await _userService.GetUserById(request.OperationId.Value);
+        if (opertion == null) return false;
+
+        await _smsService.SendSimpleSMS(opertion.Mobile, message);
+
+        #endregion
+
+        return true;
+    }
+
     //Decline Home Laboratory Invoice
     public async Task<bool> DeclineHomeLaboratoryInvoice(ulong requestId, ulong userId)
     {
         #region Get Request By Id 
 
         var request = await _homeLaboratory.GetHomeLaboratoryRequestById(requestId);
-        if (request == null || request.UserId != userId || !request.OperationId.HasValue
+        if (request == null
+            || request.UserId != userId
+            || !request.OperationId.HasValue
             || request.RequestType != RequestType.HomeLab
             || request.RequestState != Domain.Enums.Request.RequestState.ConfirmFromDestinationAndWaitingForIssuanceOfDraftInvoice) return false; ;
 
@@ -754,7 +792,7 @@ public class HomeLaboratoryService : IHomeLaboratoryServices
 
         #region Wallet
 
-        var parmentBalance = await _walletRepository.GetTransactionForHomeLaboratory(userId , requestId);
+        var parmentBalance = await _walletRepository.GetTransactionForHomeLaboratory(userId, requestId);
 
         //Charge User Wallet
         var wallet = new Wallet
@@ -816,31 +854,23 @@ public class HomeLaboratoryService : IHomeLaboratoryServices
         #region Fill Return Model 
 
         //Get Home Laboratory Request Price
-        HomeLaboratoryRequestPrice? homeLaboratoryRequestPrice = await _homeLaboratory.GetHomeLaboratoryRequestPriceByOrgenizationOwnerIdandRequestId(requestId , organizationOwnerId);
+        HomeLaboratoryRequestPrice? homeLaboratoryRequestPrice = await _homeLaboratory.GetHomeLaboratoryRequestPriceByOrgenizationOwnerIdandRequestId(requestId, organizationOwnerId);
 
         return new HomeLaboratoryInvoiceLaboratorySideViewModel()
         {
-            InvoicePicFileName = ((homeLaboratoryRequestPrice != null && !string.IsNullOrEmpty(homeLaboratoryRequestPrice.InvoicePicture)) ? homeLaboratoryRequestPrice.InvoicePicture : null ),
+            InvoicePicFileName = ((homeLaboratoryRequestPrice != null && !string.IsNullOrEmpty(homeLaboratoryRequestPrice.InvoicePicture)) ? homeLaboratoryRequestPrice.InvoicePicture : null),
             Price = ((homeLaboratoryRequestPrice != null) ? homeLaboratoryRequestPrice.Price : null),
             RequestId = requestId,
-            IsFinalized = ((homeLaboratoryRequestPrice != null) ? true: false),
+            IsFinalized = ((homeLaboratoryRequest.RequestState != Domain.Enums.Request.RequestState.ConfirmFromDestinationAndWaitingForIssuanceOfDraftInvoice) ? true : false),
+            HomeLaboratoryPriceId = ((homeLaboratoryRequestPrice == null) ? null : homeLaboratoryRequestPrice.Id)
         };
 
         #endregion
     }
 
     //Add Home Laboratory Request Price From Laboratory
-    public async Task<AddHomeLaboratoryInvoiceLaboratorySideResult> AddHomeLaboratoryRequestPriceFromLaboratory(HomeLaboratoryInvoiceLaboratorySideViewModel model , ulong userId , IFormFile? UserAvatar)
+    public async Task<AddHomeLaboratoryInvoiceLaboratorySideResult> AddHomeLaboratoryRequestPriceFromLaboratory(HomeLaboratoryInvoiceLaboratorySideViewModel model, ulong userId, IFormFile? UserAvatar)
     {
-        #region If Exist Any Price
-
-        if (await _homeLaboratory.IsExistAnyPriceForRequestFromCurrentLaboratory(model.RequestId , userId))
-        {
-            return AddHomeLaboratoryInvoiceLaboratorySideResult.Faild;
-        }
-
-        #endregion
-
         #region Get Organization By Member User ID
 
         //Get Current Organization
@@ -857,30 +887,68 @@ public class HomeLaboratoryService : IHomeLaboratoryServices
         if (request.RequestType != RequestType.HomeLab) return AddHomeLaboratoryInvoiceLaboratorySideResult.Faild;
         if (request.OperationId.HasValue && request.OperationId.Value != currentOrganization.OwnerId) return AddHomeLaboratoryInvoiceLaboratorySideResult.Faild;
         if (!request.PatientId.HasValue) return AddHomeLaboratoryInvoiceLaboratorySideResult.Faild;
-        if (request.RequestState !=Domain.Enums.Request.RequestState.ConfirmFromDestinationAndWaitingForIssuanceOfDraftInvoice) return AddHomeLaboratoryInvoiceLaboratorySideResult.Faild;
+        if (request.RequestState != Domain.Enums.Request.RequestState.ConfirmFromDestinationAndWaitingForIssuanceOfDraftInvoice) return AddHomeLaboratoryInvoiceLaboratorySideResult.Faild;
         if (!model.Price.HasValue) return AddHomeLaboratoryInvoiceLaboratorySideResult.Faild;
+
+        #endregion
+
+        #region Update Home Laboratory Request Price By Id 
+
+        if (model.HomeLaboratoryPriceId.HasValue)
+        {
+            var lastRequestPrice = await _homeLaboratory.GetHomeLaboratoryRequestPriceById(model.HomeLaboratoryPriceId.Value, currentOrganization.OwnerId);
+            if (lastRequestPrice == null) return AddHomeLaboratoryInvoiceLaboratorySideResult.Faild;
+            else
+            {
+                #region Update Home Laboratory Request Price
+
+                lastRequestPrice.Price = model.Price.Value;
+
+                if (UserAvatar == null) return AddHomeLaboratoryInvoiceLaboratorySideResult.ImageNotFound;
+
+                if (UserAvatar != null)
+                {
+                    if (!string.IsNullOrEmpty(lastRequestPrice.InvoicePicture))
+                    {
+                        lastRequestPrice.InvoicePicture.DeleteImage(PathTools.UserAvatarPathServer, PathTools.UserAvatarPathThumbServer);
+                    }
+
+                    var lastimageName = CodeGenerator.GenerateUniqCode() + Path.GetExtension(UserAvatar.FileName);
+                    UserAvatar.AddImageToServer(lastimageName, PathTools.HomeLaboratoryInvoicePathServer, 270, 270, PathTools.HomeLaboratoryInvoicePathThumbServer);
+                    lastRequestPrice.InvoicePicture = lastimageName;
+                }
+
+                //Add Request Price And Update Request State
+                await _homeLaboratory.EditHomeLaboratoryRequestPrice(lastRequestPrice);
+
+                #endregion
+            }
+        }
 
         #endregion
 
         #region Add Home Laboratory Request Price
 
-        HomeLaboratoryRequestPrice requestPrice = new HomeLaboratoryRequestPrice()
+        else
         {
-            CreateDate = DateTime.Now,
-            HomeLaboratoryRequestId= model.RequestId,
-            LaboratoryOwnerId = userId,    
-            Price = model.Price.Value,            
-        };
+            HomeLaboratoryRequestPrice requestPrice = new HomeLaboratoryRequestPrice()
+            {
+                CreateDate = DateTime.Now,
+                HomeLaboratoryRequestId = model.RequestId,
+                LaboratoryOwnerId = userId,
+                Price = model.Price.Value,
+            };
 
-        if (UserAvatar == null) return AddHomeLaboratoryInvoiceLaboratorySideResult.ImageNotFound;
+            if (UserAvatar == null) return AddHomeLaboratoryInvoiceLaboratorySideResult.ImageNotFound;
 
-        //Add Invoice Picture
-        var imageName = CodeGenerator.GenerateUniqCode() + Path.GetExtension(UserAvatar.FileName);
-        UserAvatar.AddImageToServer(imageName, PathTools.HomeLaboratoryInvoicePathServer, 270, 270, PathTools.HomeLaboratoryInvoicePathThumbServer);
-        requestPrice.InvoicePicture = imageName;
+            //Add Invoice Picture
+            var imageName = CodeGenerator.GenerateUniqCode() + Path.GetExtension(UserAvatar.FileName);
+            UserAvatar.AddImageToServer(imageName, PathTools.HomeLaboratoryInvoicePathServer, 270, 270, PathTools.HomeLaboratoryInvoicePathThumbServer);
+            requestPrice.InvoicePicture = imageName;
 
-        //Add Request Price And Update Request State
-        await _homeLaboratory.AddHomeLaboratoryRequestPrice(requestPrice);
+            //Add Request Price And Update Request State
+            await _homeLaboratory.AddHomeLaboratoryRequestPrice(requestPrice);
+        }
 
         #endregion
 
