@@ -112,6 +112,9 @@ public interface IOnlineVisitService
 
     #region Admin Side 
 
+    //Count Of Waiting User Request
+    Task<int> CountOfWaitingUserRequests();
+
     //Fill List Of Work Shifts Dates Admin Side View Model
     Task<List<ListOfWorkShiftsDatesAdminSideViewModel>> FillListOfWorkShiftsDatesAdminSideViewModel();
 

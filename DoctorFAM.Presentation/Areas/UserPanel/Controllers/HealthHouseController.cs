@@ -340,7 +340,7 @@ public class HealthHouseController : UserBaseController
     [HttpGet]
     public async Task<IActionResult> DeclineHomeLaboratoryInvoice(ulong requestId)
     {
-        #region Accept Request
+        #region Reject Request
 
         var res = await _homeLaboratoryServices.DeclineHomeLaboratoryInvoice(requestId, User.GetUserId());
         if (res)

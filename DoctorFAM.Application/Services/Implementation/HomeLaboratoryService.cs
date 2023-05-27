@@ -752,6 +752,28 @@ public class HomeLaboratoryService : IHomeLaboratoryServices
 
         #endregion
 
+        #region Wallet
+
+        var parmentBalance = await _walletRepository.GetTransactionForHomeLaboratory(userId , requestId);
+
+        //Charge User Wallet
+        var wallet = new Wallet
+        {
+            UserId = userId,
+            TransactionType = TransactionType.Deposit,
+            GatewayType = GatewayType.Zarinpal,
+            PaymentType = PaymentType.ChargeWallet,
+            Price = parmentBalance,
+            Description = "شارژ حساب کاربری برای رد درخواست آزمایشگاه در منزل",
+            IsFinally = true,
+            RequestId = requestId
+        };
+
+        //Add Wallet
+        await _walletRepository.CreateWalletAsync(wallet);
+
+        #endregion
+
         #region Send SMS For Customer User 
 
         var message = Messages.RejectHomeLaboratoryFromUser();
@@ -763,6 +785,7 @@ public class HomeLaboratoryService : IHomeLaboratoryServices
         await _smsService.SendSimpleSMS(opertion.Mobile, message);
 
         #endregion
+
 
         return true;
     }

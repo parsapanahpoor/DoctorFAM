@@ -11,6 +11,40 @@
 @section Scripts
     {
     <partial name="_JqueryValidation" />
+
+    <script>
+
+        function RejectRequest(removeElementId, url) {
+            Swal.fire({
+                title: 'اعلان',
+                text: "متن توضیح برای رد درخواست",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'بله',
+                cancelButtonText: 'خیر',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.get(url).then(res => {
+                        if (removeElementId !== null &&
+                            removeElementId !== undefined &&
+                            removeElementId !== '' &&
+                            res.status === "Success") {
+                            ShowMessage("اعلان", "عملیات با موفقیت انجام شد", "success");
+                            $('[remove-ajax-item=' + removeElementId + ']').fadeOut(1000);
+                        } else if (removeElementId !== null &&
+                            removeElementId !== undefined &&
+                            removeElementId !== '' &&
+                            res.status === "Error") {
+                            ShowMessage("اعلان", "عملیات با شکست مواجه شد", "error");
+                        }
+                    });
+                }
+            });
+        }
+
+    </script>
 }
 
 @section Breadcrumb
@@ -77,9 +111,11 @@ else
                                     </div>
 
                                     <div class="col-md-6 flex-style">
-                                        <a asp-action="DeclineHomeLaboratoryInvoice" asp-controller="HealthHouse" asp-area="Userpanel" asp-route-requestId="@Model.RequestId" class="btn btn-labeled btn-danger">
+
+                                        <button onclick="RejectRequest(@Model.RequestId, '@Url.Action("DeclineHomeLaboratoryInvoice", "HealthHouse", new { area = "UserPanel", requestId = Model.RequestId })')" class="btn btn-labeled btn-danger">
                                             <i class="btn-label glyphicon glyphicon-ok"></i>رد فاکتور
-                                        </a>
+                                        </button>
+
                                     </div>
                                 }
                                 else
