@@ -488,6 +488,8 @@ public class DoctorFAMDbContext : Microsoft.EntityFrameworkCore.DbContext
 
     public DbSet<Insurance> Insurance { get; set; }
 
+    public DbSet<SupplementrayInsurance> SupplementrayInsurance { get; set; }
+
     #endregion
 
     #region Chat 

@@ -1,4 +1,6 @@
-﻿using DoctorFAM.DataLayer.Entities;
+﻿#region Usings
+
+using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Common;
 using DoctorFAM.Domain.Entities.Insurance;
@@ -13,45 +15,48 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DoctorFAM.Domain.Entities.Patient
+#endregion
+
+namespace DoctorFAM.Domain.Entities.Patient;
+
+public class Patient :BaseEntity
 {
-    public class Patient :BaseEntity
-    {
-        #region properties
+    #region properties
 
-        public ulong UserId { get; set; }
+    public ulong UserId { get; set; }
 
-        public ulong? InsuranceId { get; set; }
+    public ulong? InsuranceId { get; set; }
 
-        public string PatientName { get; set; }
+    public ulong? SupplementaryInsuranceId { get; set; }
 
-        public string PatientLastName { get; set; }
+    public string PatientName { get; set; }
 
-        public string NationalId { get; set; }
+    public string PatientLastName { get; set; }
 
-        public Gender Gender { get; set; }
+    public string NationalId { get; set; }
 
-        public int Age { get; set; }
+    public Gender Gender { get; set; }
 
-        public InsuranceType InsuranceType { get; set; }
+    public int Age { get; set; }
 
-        public string RequestDescription { get; set; }
+    public InsuranceType InsuranceType { get; set; }
 
-        public ulong? RequestId { get; set; }
+    public string RequestDescription { get; set; }
 
-        #endregion
+    public ulong? RequestId { get; set; }
 
-        #region Relation 
+    #endregion
 
-        [ForeignKey("RequestId")]
-        public Request Request { get; set; }
+    #region Relation 
 
-        public User User { get; set; }
+    [ForeignKey("RequestId")]
+    public Request Request { get; set; }
 
-        public ICollection<PaitientRequestDetail> PaitientRequestDetails { get; set; }
+    public User User { get; set; }
 
-        public Insurance.Insurance Insurance { get; set; }
+    public ICollection<PaitientRequestDetail> PaitientRequestDetails { get; set; }
 
-        #endregion
-    }
+    public Insurance.Insurance Insurance { get; set; }
+
+    #endregion
 }
