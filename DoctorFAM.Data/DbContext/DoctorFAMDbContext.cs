@@ -488,7 +488,7 @@ public class DoctorFAMDbContext : Microsoft.EntityFrameworkCore.DbContext
 
     public DbSet<Insurance> Insurance { get; set; }
 
-    public DbSet<SupplementrayInsurance> SupplementrayInsurance { get; set; }
+    public DbSet<SupplementrayInsurance> SupplementrayInsurances { get; set; }
 
     #endregion
 

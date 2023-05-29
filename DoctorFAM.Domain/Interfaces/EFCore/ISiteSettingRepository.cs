@@ -61,6 +61,12 @@ namespace DoctorFAM.Domain.Interfaces
         //List Of Insurance
         Task<List<Insurance>?> ListOfInsurance();
 
+        //List Of Supplementary Insurance
+        Task<List<SupplementrayInsurance>?> ListOfSupplementaryInsurance();
+
+        //List Of Supplementray Insurance
+        Task<List<SupplementrayInsurance>?> ListOfSuplementaryInsurance();
+
         //List Of Insulins
         Task<List<Insulin>?> ListOfInsulins();
 
@@ -76,17 +82,26 @@ namespace DoctorFAM.Domain.Interfaces
         //Create Data To The Data Base 
         Task CreateInsurance(Insurance entity);
 
+        //Create Data To The Data Base 
+        Task CreateSupplementaryInsurance(SupplementrayInsurance entity);
+
         //Create Insulin Data To The Data Base 
         Task CreateInsulin(Insulin entity);
 
         //Get Insurance By Id
         Task<Insurance?> GetInsuranceById(ulong id);
 
+        //Get Supplementary Insurance By Id
+        Task<SupplementrayInsurance?> GetSupplementaryInsuranceById(ulong id);
+
         //Get Insulin By Id
         Task<Insulin?> GetInsulinById(ulong id);
 
         //Update Insurance
         Task UpdateInsurance(Insurance entity);
+
+        //Update Supplementary Insurance
+        Task UpdateSupplementaryInsurance(SupplementrayInsurance entity);
 
         //Update Insulin
         Task UpdateInsuline(Insulin entity);

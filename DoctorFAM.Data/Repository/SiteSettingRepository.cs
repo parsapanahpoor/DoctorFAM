@@ -211,6 +211,20 @@ namespace DoctorFAM.Data.Repository
             return await _context.Insurance.Where(p => !p.IsDelete).ToListAsync();
         }
 
+        //List Of Supplementary Insurance
+        public async Task<List<SupplementrayInsurance>?> ListOfSupplementaryInsurance()
+        {
+            return await _context.SupplementrayInsurances
+                                .AsNoTracking().Where(p => !p.IsDelete).ToListAsync();
+        }
+
+        //List Of Supplementray Insurance
+        public async Task<List<SupplementrayInsurance>?> ListOfSuplementaryInsurance()
+        {
+            return await _context.SupplementrayInsurances.AsNoTracking()
+                                        .Where(p => !p.IsDelete).ToListAsync();
+        }
+
         //List Of Insulins
         public async Task<List<Insulin>?> ListOfInsulins()
         {
@@ -236,6 +250,13 @@ namespace DoctorFAM.Data.Repository
             await _context.SaveChangesAsync();
         }
 
+        //Create Data To The Data Base 
+        public async Task CreateSupplementaryInsurance(SupplementrayInsurance entity)
+        {
+            await _context.SupplementrayInsurances.AddAsync(entity);
+            await _context.SaveChangesAsync();
+        }
+
         //Create Insulin Data To The Data Base 
         public async Task CreateInsulin(Insulin entity)
         {
@@ -249,6 +270,13 @@ namespace DoctorFAM.Data.Repository
             return await _context.Insurance.FirstOrDefaultAsync(p => !p.IsDelete && p.Id == id);
         }
 
+        //Get Supplementary Insurance By Id
+        public async Task<SupplementrayInsurance?> GetSupplementaryInsuranceById(ulong id)
+        {
+            return await _context.SupplementrayInsurances.AsNoTracking()
+                                        .FirstOrDefaultAsync(p => !p.IsDelete && p.Id == id);
+        }
+
         //Get Insulin By Id
         public async Task<Insulin?> GetInsulinById(ulong id)
         {
@@ -259,6 +287,13 @@ namespace DoctorFAM.Data.Repository
         public async Task UpdateInsurance(Insurance entity)
         {
             _context.Insurance.Update(entity);
+            await _context.SaveChangesAsync();
+        }
+
+        //Update Supplementary Insurance
+        public async Task UpdateSupplementaryInsurance(SupplementrayInsurance entity)
+        {
+            _context.SupplementrayInsurances.Update(entity);
             await _context.SaveChangesAsync();
         }
 

@@ -69,6 +69,12 @@ namespace DoctorFAM.Application.Services.Interfaces
         //List Of Insurance
         Task<List<Insurance>?> ListOfInsurance();
 
+        //List Of Supplementary Insurance
+        Task<List<SupplementrayInsurance>?> ListOfSupplementaryInsurance();
+
+        //List Of Supplementray Insurance
+        Task<List<SupplementrayInsurance>?> ListOfSuplementaryInsurance();
+
         //List Of Insulins
         Task<List<Insulin>?> ListOfInsulins();
 
@@ -81,17 +87,26 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Create Insurance
         Task<bool> CreateInsurance(string title);
 
+        //Create Supplementary Insurance
+        Task<bool> CreateSupplementaryInsurance(string title);
+
         //Create Insulin
         Task<bool> CreateInsulin(CreateInsulinViewModel model);
 
         //Get Insurance By Id
         Task<Insurance?> GetInsuranceById(ulong id);
 
+        //Get Supplementary Insurance By Id
+        Task<SupplementrayInsurance?> GetSupplementaryInsuranceById(ulong id);
+
         //Get Insulin By Id
         Task<Insulin?> GetInsulinById(ulong id);
 
         //Update Insurance
         Task<bool> UpdateInsurance(Insurance entity);
+
+        //Update Supplementary Insurance
+        Task<bool> UpdateSupplementaryInsurance(SupplementrayInsurance entity);
 
         //Update Insuline
         Task<bool> UpdateInsuline(Insulin entity);

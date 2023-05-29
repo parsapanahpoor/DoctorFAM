@@ -1,10 +1,10 @@
-﻿using DoctorFAM.Application.Convertors;
+﻿#region Usings
+
+using DoctorFAM.Application.Convertors;
 using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Interfaces;
-using DoctorFAM.Application.Services.Implementation;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Application.StaticTools;
-using DoctorFAM.Data.DbContext;
 using DoctorFAM.Domain.DTOs.ZarinPal;
 using DoctorFAM.Domain.Entities.Wallet;
 using DoctorFAM.Domain.Enums.RequestType;
@@ -18,11 +18,12 @@ using DoctorFAM.Web.HttpManager;
 using DoctorFAM.Web.Hubs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Text;
+
+#endregion
 
 namespace DoctorFAM.Web.Controllers
 {
@@ -120,6 +121,9 @@ namespace DoctorFAM.Web.Controllers
                 //Send List Of Insurance To The View
                 ViewBag.Insurances = await _siteSettingService.ListOfInsurance();
 
+                //Send List Of Supplementary Insurance To The View
+                ViewBag.SupplementaryInsurances = await _siteSettingService.ListOfSupplementaryInsurance();
+
                 //Fill Page Model From Selected Population Covered Data
                 var mode = await _homeLaboratory.FillPatientViewModelFromSelectedPopulationCoveredData(populationCoveredId.Value, requestId, User.GetUserId());
                 if (mode == null) return NotFound();
@@ -137,6 +141,9 @@ namespace DoctorFAM.Web.Controllers
 
             //Send List Of Insurance To The View
             ViewBag.Insurances = await _siteSettingService.ListOfInsurance();
+
+            //Send List Of Supplementary Insurance To The View
+            ViewBag.SupplementaryInsurances = await _siteSettingService.ListOfSupplementaryInsurance();
 
             return View(new PatientViewModel()
             {
@@ -177,6 +184,9 @@ namespace DoctorFAM.Web.Controllers
                 //Send List Of Insurance To The View
                 ViewBag.Insurances = await _siteSettingService.ListOfInsurance();
 
+                //Send List Of Supplementary Insurance To The View
+                ViewBag.SupplementaryInsurances = await _siteSettingService.ListOfSupplementaryInsurance();
+
                 return View(patient);
             }
 
@@ -209,6 +219,9 @@ namespace DoctorFAM.Web.Controllers
 
             //Send List Of Insurance To The View
             ViewBag.Insurances = await _siteSettingService.ListOfInsurance();
+
+            //Send List Of Supplementary Insurance To The View
+            ViewBag.SupplementaryInsurances = await _siteSettingService.ListOfSupplementaryInsurance();
 
             return View(patient);
         }

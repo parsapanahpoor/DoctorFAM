@@ -473,6 +473,18 @@ namespace DoctorFAM.Application.Services.Implementation
             return await _siteSettingRepository.ListOfInsurance();
         }
 
+        //List Of Supplementary Insurance
+        public async Task<List<SupplementrayInsurance>?> ListOfSupplementaryInsurance()
+        {
+            return await _siteSettingRepository.ListOfSupplementaryInsurance();
+        }
+
+        //List Of Supplementray Insurance
+        public async Task<List<SupplementrayInsurance>?> ListOfSuplementaryInsurance()
+        {
+            return await _siteSettingRepository.ListOfSuplementaryInsurance();
+        }
+
         //List Of Insulins
         public async Task<List<Insulin>?> ListOfInsulins()
         {
@@ -509,6 +521,24 @@ namespace DoctorFAM.Application.Services.Implementation
             return true;
         }
 
+        //Create Supplementary Insurance
+        public async Task<bool> CreateSupplementaryInsurance(string title)
+        {
+            #region Fill Entity
+
+            SupplementrayInsurance entity = new SupplementrayInsurance()
+            {
+                Title = title.SanitizeText()
+            };
+
+            //Create Data To The Data Base 
+            await _siteSettingRepository.CreateSupplementaryInsurance(entity);
+
+            #endregion
+
+            return true;
+        }
+
         //Create Insulin
         public async Task<bool> CreateInsulin(CreateInsulinViewModel model)
         {
@@ -535,6 +565,12 @@ namespace DoctorFAM.Application.Services.Implementation
             return await _siteSettingRepository.GetInsuranceById(id);
         }
 
+        //Get Supplementary Insurance By Id
+        public async Task<SupplementrayInsurance?> GetSupplementaryInsuranceById(ulong id)
+        {
+            return await _siteSettingRepository.GetSupplementaryInsuranceById(id);
+        }
+
         //Get Insulin By Id
         public async Task<Insulin?> GetInsulinById(ulong id)
         {
@@ -545,6 +581,14 @@ namespace DoctorFAM.Application.Services.Implementation
         public async Task<bool> UpdateInsurance(Insurance entity)
         {
             await _siteSettingRepository.UpdateInsurance(entity);
+
+            return true;
+        }
+
+        //Update Supplementary Insurance
+        public async Task<bool> UpdateSupplementaryInsurance(SupplementrayInsurance entity)
+        {
+            await _siteSettingRepository.UpdateSupplementaryInsurance(entity);
 
             return true;
         }

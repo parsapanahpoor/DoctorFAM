@@ -190,6 +190,13 @@ public class HomeLaboratoryService : IHomeLaboratoryServices
 
         #endregion
 
+        #region Get Supplementary Insurance By Id
+
+        var supplementaryInsurance = await _siteSettingService.GetSupplementaryInsuranceById(patient.SupplementaryInsuranceId);
+        if (supplementaryInsurance is null) return 0;
+
+        #endregion
+
         #region Fill Entity
 
         Patient model = new Patient
@@ -202,12 +209,13 @@ public class HomeLaboratoryService : IHomeLaboratoryServices
             PatientName = patient.PatientName.SanitizeText(),
             PatientLastName = patient.PatientLastName.SanitizeText(),
             RequestDescription = patient.RequestDescription.SanitizeText(),
-            UserId = patient.UserId
+            UserId = patient.UserId,
+            SupplementaryInsuranceId = supplementaryInsurance.Id,
         };
 
         #endregion
 
-        #region MyRegion
+        #region Add Patient To The Data Base
 
         await _patientService.AddPatient(model);
 
