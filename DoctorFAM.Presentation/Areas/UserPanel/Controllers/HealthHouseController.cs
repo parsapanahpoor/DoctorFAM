@@ -374,5 +374,22 @@ public class HealthHouseController : UserBaseController
 
     #endregion
 
+    #region Show Home Laboratory Request Result
+
+    [HttpGet]
+    public async Task<IActionResult> ShowHomeLaboratoryRequestResult(ulong requestId)
+    {
+        #region Show Home Laboratory Request Result
+
+        var model = await _homeLaboratoryServices.FillShowHomeLaboratoryRequestResultLaboratorySideViewModel(requestId, User.GetUserId()));
+        if (model == null) return NotFound();
+
+        #endregion
+
+        return View(model);
+    }
+
+    #endregion
+
     #endregion
 }

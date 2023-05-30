@@ -273,8 +273,32 @@ public class HomeLaboratoryController : LaboratoryBaseController
     [HttpGet]
     public async Task<IActionResult> SendResultForUser(ulong requestId)
     {
+        #region Fill View Model 
 
-        return View();
+        var model = await _homeLaboratoryServices.FillHomeLaboratoryRequestResultLaboratorySideViewModel(requestId , User.GetUserId());
+        if (model == null) return NotFound();
+
+        #endregion
+
+        return View(model);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> SendResultForUser(HomeLaboratoryRequestResultLaboratorySideViewModel model, IFormFile? UserAvatar)
+    {
+        #region Fill View Model 
+
+        var res = await _homeLaboratoryServices.SendHomeLaboratoryRequestResultFromLaboratory(model.RequestId, User.GetUserId() , UserAvatar);
+        if (res)
+        {
+            TempData[SuccessMessage] = "عملیات با موفقیت انجام شذه است. ";
+            return RedirectToAction(nameof(SendResultForUser), new { requestId = model.RequestId });
+        }
+
+        #endregion
+
+        TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+        return RedirectToAction(nameof(HomeLaboratoryRequestDetail), new { requestId = model.RequestId });
     }
 
     #endregion

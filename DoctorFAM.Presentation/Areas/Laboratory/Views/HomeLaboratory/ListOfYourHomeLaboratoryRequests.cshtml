@@ -155,8 +155,21 @@
                                     @if (request.RequestState == RequestState.DeliveryToCourierAndSending)
                                     {
                                         <div class="row">
-                                            <p class="label label-success"> ارسال نمونه گیر </p>
-                                            <p class="label label-success">  درحال آماده سازی نتیجه</p>
+                                            <p class="label label-success"> درحال دریافت نمونه </p>
+                                        </div>
+                                    }
+
+                                    @if (request.RequestState == RequestState.PreparingTheOrder)
+                                    {
+                                        <div class="row">
+                                            <p class="label label-success"> درحال آماده سازی نتیجه </p>
+                                        </div>
+                                    }
+
+                                    @if (request.RequestState == RequestState.FinishService)
+                                    {
+                                        <div class="row">
+                                            <p class="label label-primary"> اتمام سرویس </p>
                                         </div>
                                     }
 

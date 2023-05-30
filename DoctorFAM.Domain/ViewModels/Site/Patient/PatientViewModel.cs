@@ -45,8 +45,7 @@ public class PatientViewModel
     public ulong InsuranceId { get; set; }
 
     [Display(Name = "نوع بیمه ی تکمیلی")]
-    [Required(ErrorMessage = "لطفا{0} را وارد نمایید...")]
-    public ulong SupplementaryInsuranceId { get; set; }
+    public ulong? SupplementaryInsuranceId { get; set; }
 
     [Display(Name = "علت درخواست/ علایم بیمار")]
     [Required(ErrorMessage = "لطفا{0} را وارد نمایید...")]

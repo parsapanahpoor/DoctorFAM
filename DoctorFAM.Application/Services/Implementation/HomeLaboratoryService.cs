@@ -22,6 +22,7 @@ using DoctorFAM.Domain.Enums.RequestType;
 using DoctorFAM.Domain.ViewModels.UserPanel.HealthHouse.HomeLaboratory;
 using DoctorFAM.Domain.ViewModels.Laboratory.HomeLaboratory;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
+using DoctorFAM.Domain.Entities.Account;
 
 #endregion
 
@@ -190,8 +191,11 @@ public class HomeLaboratoryService : IHomeLaboratoryServices
 
         #region Get Supplementary Insurance By Id
 
-        var supplementaryInsurance = await _siteSettingService.GetSupplementaryInsuranceById(patient.SupplementaryInsuranceId);
-        if (supplementaryInsurance is null) return 0;
+        if (patient.SupplementaryInsuranceId.HasValue)
+        {
+            var supplementaryInsurance = await _siteSettingService.GetSupplementaryInsuranceById(patient.SupplementaryInsuranceId.Value);
+            if (supplementaryInsurance is null) return 0;
+        }
 
         #endregion
 
@@ -208,7 +212,7 @@ public class HomeLaboratoryService : IHomeLaboratoryServices
             PatientLastName = patient.PatientLastName.SanitizeText(),
             RequestDescription = patient.RequestDescription.SanitizeText(),
             UserId = patient.UserId,
-            SupplementaryInsuranceId = supplementaryInsurance.Id,
+            SupplementaryInsuranceId = (patient.SupplementaryInsuranceId.HasValue) ? patient.SupplementaryInsuranceId.Value : null,
         };
 
         #endregion
@@ -660,6 +664,43 @@ public class HomeLaboratoryService : IHomeLaboratoryServices
 
     #region User Panel
 
+    //Fill ShowHomeLaboratoryRequestResultLaboratorySideViewModel
+    public async Task<ShowHomeLaboratoryRequestResultLaboratorySideViewModel?> FillShowHomeLaboratoryRequestResultLaboratorySideViewModel(ulong requestId , ulong userId)
+    {
+        #region Get Request By Id 
+
+        var request = await _homeLaboratory.GetHomeLaboratoryRequestById(requestId);
+        if (request == null
+            || request.UserId != userId
+            || !request.OperationId.HasValue
+            || request.RequestType != RequestType.HomeLab
+            || request.RequestState != Domain.Enums.Request.RequestState.FinishService) return null;
+
+        #endregion
+
+        #region Get Request Price 
+
+        var requestPrice = await _homeLaboratory.GetHomeLaboratoryRequestPriceByRequestId(requestId);
+        if (requestPrice == null) return null;
+
+        #endregion
+
+        #region Get Home Laboratory Request Result
+
+        var requestResult = await _homeLaboratory.GetHomeLaboratoryRequestResultPictur(requestId);
+
+        #endregion
+
+        return new ShowHomeLaboratoryRequestResultLaboratorySideViewModel()
+        {
+             RequestId = requestId,
+             ResultImage = (!string.IsNullOrEmpty(requestResult)) ? requestResult : null,
+             ResultInDoctorFAMPanel = requestPrice.SendResultInDoctorFAMPanel,
+              ResultInSocialMedia = requestPrice.SenResultInSocialMedias,
+              ResultInVisitInPerson = requestPrice.SendResultWithVisitInPerson              
+        };
+    }
+
     public async Task<ListOfHomeLaboratoryUserPanelSideViewModel> ListOfUserHomeLaboratoryRequest(ListOfHomeLaboratoryUserPanelSideViewModel filter)
     {
         return await _homeLaboratory.ListOfUserHomeLaboratoryRequest(filter);
@@ -709,7 +750,7 @@ public class HomeLaboratoryService : IHomeLaboratoryServices
         #region Get Request By Id 
 
         var request = await _homeLaboratory.GetHomeLaboratoryRequestById(model.RequestId);
-        if (request == null 
+        if (request == null
             || request.UserId != userId
             || !request.OperationId.HasValue
             || request.RequestType != RequestType.HomeLab
@@ -720,8 +761,8 @@ public class HomeLaboratoryService : IHomeLaboratoryServices
         #region Model State Validation 
 
         if (!model.SenResultInSocialMedias
-            &&!model.SendResultWithVisitInPerson
-            &&!model.SendResultInDoctorFAMPanel)
+            && !model.SendResultWithVisitInPerson
+            && !model.SendResultInDoctorFAMPanel)
         {
             return false;
         }
@@ -864,6 +905,103 @@ public class HomeLaboratoryService : IHomeLaboratoryServices
 
     #region Laboratory Side
 
+    //Send Home Laboratory Request Result From LAboratory
+    public async Task<bool> SendHomeLaboratoryRequestResultFromLaboratory(ulong requestId, ulong userId, IFormFile? UserAvatar)
+    {
+        #region Get Organization OwnerId 
+
+        ulong? orgaizationOwnerId = await _organizationService.GetOrganizationOwnerIdByOrganizationMemberUserIdWithAsNoTracking(userId);
+        if (orgaizationOwnerId == null || orgaizationOwnerId == 0) return false;
+
+        #endregion
+
+        #region Get Request By Id
+
+        var request = await _requestService.GetRequestById(requestId);
+        if (request == null) return false;
+        if (request.OperationId is null || request.OperationId != orgaizationOwnerId) return false;
+        if (request.RequestState != Domain.Enums.Request.RequestState.PreparingTheOrder) return false;
+        if (await _homeLaboratory.IsExistAnyHomeLaboratoryRequestResult(requestId)) return false;
+
+        #endregion
+
+        #region Fill Entity
+
+        HomeLaboratoruRequestResult model = new HomeLaboratoruRequestResult()
+        {
+            RequestId = requestId,
+        };
+
+        if (UserAvatar == null) return false;
+
+        //Add Invoice Picture
+        var imageName = CodeGenerator.GenerateUniqCode() + Path.GetExtension(UserAvatar.FileName);
+        UserAvatar.AddImageToServer(imageName, PathTools.HomeLaboratoryResultPathServer, 270, 270, PathTools.HomeLaboratoryResultPathThumbServer);
+        model.ResultPicture = imageName;
+
+        //Add Request Price And Update Request State
+        await _homeLaboratory.AddHomeLaboratoryRequestResultToTheDataBase(model);
+
+        //Update Request
+        request.RequestState = Domain.Enums.Request.RequestState.FinishService;
+
+        await _requestService.UpdateRequest(request);
+
+        #endregion
+
+        #region Send SMS For Customer User 
+
+        var message = Messages.FinalizeHomeLaboratoryRequestResult();
+
+        await _smsService.SendSimpleSMS(request.User.Mobile, message);
+
+        #endregion
+
+        return true;
+    }
+
+    //Fill Home Laboratory Request Result Laboratory Side ViewModel
+    public async Task<HomeLaboratoryRequestResultLaboratorySideViewModel?> FillHomeLaboratoryRequestResultLaboratorySideViewModel(ulong requestId, ulong userId)
+    {
+        #region Get Organization OwnerId 
+
+        ulong? orgaizationOwnerId = await _organizationService.GetOrganizationOwnerIdByOrganizationMemberUserIdWithAsNoTracking(userId);
+        if (orgaizationOwnerId == null || orgaizationOwnerId == 0) return null;
+
+        #endregion
+
+        #region Get Request By Id
+
+        var request = await _requestService.GetRequestById(requestId);
+        if (request == null) return null;
+        if (request.OperationId is null || request.OperationId != orgaizationOwnerId) return null;
+
+        #endregion
+
+        #region Get Home Laboratory Request Detail 
+
+        var requestDetail = await _homeLaboratory.GetHomeLaboratoryRequestPriceByRequestId(requestId);
+        if (requestDetail == null) return null;
+
+        #endregion
+
+        #region Fill
+
+        HomeLaboratoryRequestResultLaboratorySideViewModel model = new HomeLaboratoryRequestResultLaboratorySideViewModel()
+        {
+            RequestId = requestId,
+            ResultPic = await _homeLaboratory.GetHomeLaboratoryRequestResultPictur(requestId),
+            Finalize = (await _homeLaboratory.IsExistAnyHomeLaboratoryRequestResult(requestId)) ? true : false,
+            ResultInDoctorFAMPanel = requestDetail.SendResultInDoctorFAMPanel,
+            ResultInSocialMedia = requestDetail.SenResultInSocialMedias,
+            ResultInVisitInPerson = requestDetail.SendResultWithVisitInPerson
+        };
+
+        #endregion
+
+        return model;
+    }
+
     //Waiting For Initial Result
     public async Task<bool> WaitingForInitialResult(ulong reqiuestId, ulong userId)
     {
@@ -900,7 +1038,7 @@ public class HomeLaboratoryService : IHomeLaboratoryServices
     }
 
     //Sending A Sampler
-    public async Task<bool> SendingASampler(ulong reqiuestId , ulong userId)
+    public async Task<bool> SendingASampler(ulong reqiuestId, ulong userId)
     {
         #region Get Organization OwnerId 
 

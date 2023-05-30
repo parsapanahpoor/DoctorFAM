@@ -263,4 +263,11 @@ public static class Messages
         return
             $"باعرض سلام . {Environment.NewLine}  نمونه توسط آزمایشگاه دریافت شده است . لطفا تا اعلام نتیجه توسط آزمایشگاه شکیبا باشید. {Environment.NewLine} {PathTools.SiteFarsiName}";
     }
+
+    //Finalize Home Laboratory Request Result
+    public static string FinalizeHomeLaboratoryRequestResult()
+    {
+        return
+            $"باعرض سلام . {Environment.NewLine}  نتیجه ی آزمایش شما آماده شده است و توسط روش انتخابی برای شما ارسال گردید. {Environment.NewLine} {PathTools.SiteFarsiName}";
+    }
 }

@@ -61,6 +61,15 @@ public interface IHomeLaboratoryRepository
 
     #region Laboratory side 
 
+    //Add Home Laboratory Request Result To The Data Base
+    Task AddHomeLaboratoryRequestResultToTheDataBase(HomeLaboratoruRequestResult result);
+
+    //Is Exist Any Home Laboratory Request Result
+    Task<bool> IsExistAnyHomeLaboratoryRequestResult(ulong requestId);
+
+    //Get Home Laboratory Request Result Pictur By ID 
+    Task<string?> GetHomeLaboratoryRequestResultPictur(ulong requestId);
+
     //Get Home Laboratory Request ById
     Task<Request?> GetHomeLaboratoryRequestById(ulong requestId);
 

@@ -64,6 +64,9 @@ public interface IHomeLaboratoryServices
 
     #region User Panel 
 
+    //Fill ShowHomeLaboratoryRequestResultLaboratorySideViewModel
+    Task<ShowHomeLaboratoryRequestResultLaboratorySideViewModel?> FillShowHomeLaboratoryRequestResultLaboratorySideViewModel(ulong requestId, ulong userId);
+
     Task<ListOfHomeLaboratoryUserPanelSideViewModel> ListOfUserHomeLaboratoryRequest(ListOfHomeLaboratoryUserPanelSideViewModel filter);
 
     //Fill Home Laboratory Invoice Detail Page
@@ -81,6 +84,12 @@ public interface IHomeLaboratoryServices
     #endregion
 
     #region Home Laboratory Side 
+
+    //Send Home Laboratory Request Result From LAboratory
+    Task<bool> SendHomeLaboratoryRequestResultFromLaboratory(ulong requestId, ulong userId, IFormFile? UserAvatar);
+
+    //Fill Home Laboratory Request Result Laboratory Side ViewModel
+    Task<HomeLaboratoryRequestResultLaboratorySideViewModel?> FillHomeLaboratoryRequestResultLaboratorySideViewModel(ulong requestId, ulong userId);
 
     //Waiting For Initial Result
     Task<bool> WaitingForInitialResult(ulong reqiuestId, ulong userId);

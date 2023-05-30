@@ -41,7 +41,8 @@ namespace DoctorFAM.Domain.Enums.Request
         [Display(Name = "Canceled Request")]
         Canceled,
         [Display(Name = "Request For Edit Invoice")]
-        RequestForEditInvoice
+        RequestForEditInvoice,
+        FinishService
     }
 
     public enum RequestStateForFilterAdminSide

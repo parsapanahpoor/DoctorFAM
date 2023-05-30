@@ -1,4 +1,5 @@
 ﻿using DoctorFAM.Data.DbContext;
+using DoctorFAM.Data.Migrations;
 using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Laboratory;
 using DoctorFAM.Domain.Entities.Patient;
@@ -232,6 +233,28 @@ public class HomeLaboratoryRepository : IHomeLaboratoryRepository
     #endregion
 
     #region Laboratory Side
+
+    //Add Home Laboratory Request Result To The Data Base
+    public async Task AddHomeLaboratoryRequestResultToTheDataBase(HomeLaboratoruRequestResult result)
+    {
+        await _context.HomeLaboratoruRequestResults.AddAsync(result);
+    }
+
+    //Is Exist Any Home Laboratory Request Result
+    public async Task<bool> IsExistAnyHomeLaboratoryRequestResult(ulong requestId)
+    {
+        return await _context.HomeLaboratoruRequestResults.AsNoTracking()
+                                .AnyAsync(p => !p.IsDelete && p.RequestId == requestId);
+    }
+
+    //Get Home Laboratory Request Result Pictur By ID 
+    public async Task<string?> GetHomeLaboratoryRequestResultPictur(ulong requestId)
+    {
+        return await _context.HomeLaboratoruRequestResults.AsNoTracking()
+                            .Where(p => !p.IsDelete && p.RequestId == requestId)
+                            .Select(p => p.ResultPicture)
+                            .FirstOrDefaultAsync();
+    }
 
     //Get Home Laboratory Request ById
     public async Task<Request?> GetHomeLaboratoryRequestById(ulong requestId)

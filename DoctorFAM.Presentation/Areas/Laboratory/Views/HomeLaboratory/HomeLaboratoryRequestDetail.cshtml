@@ -348,6 +348,12 @@
                                         {
                                             <a asp-action="WaitingForInitialResult" asp-controller="HomeLaboratory" asp-area="Laboratory" asp-route-requestId="@Model.Request.Id" class="btn btn-primary">@Localizer["درحال آماده سازری نتیجه"]</a>
                                         }
+
+                                        @if (Model.Request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.PreparingTheOrder
+                                            || Model.Request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.FinishService)
+                                        {
+                                            <a asp-action="SendResultForUser" asp-controller="HomeLaboratory" asp-area="Laboratory" asp-route-requestId="@Model.Request.Id" class="btn btn-primary">@Localizer["نتیجه ی آزمایش"]</a>
+                                        }
                                     }
                                     else
                                     {
