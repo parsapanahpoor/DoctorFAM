@@ -312,16 +312,12 @@ public class HealthHouseController : UserBaseController
         return View(await _homeLaboratoryServices.FillHomeLaboratoryInvoiceDetailPage(requestId , User.GetUserId())) ;
     }
 
-    #endregion
-
-    #region Accept Home Laboratory Invoice
-
-    [HttpGet]
-    public async Task<IActionResult> AcceptHomeLaboratoryInvoice(ulong requestId)
+    [HttpPost]
+    public async Task<IActionResult> ShowHomeLaboratoryInvoice(HomeLaboratoryInvoiceUserPanelSideViewModel model)
     {
         #region Accept Request
 
-        var res = await _homeLaboratoryServices.AcceptHomeLaboratoryInvoice(requestId , User.GetUserId());
+        var res = await _homeLaboratoryServices.AcceptHomeLaboratoryInvoice(model, User.GetUserId());
         if (res)
         {
             TempData[SuccessMessage] = "عملیات با موفقیت انجام شده است.";

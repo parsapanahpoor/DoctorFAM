@@ -146,7 +146,18 @@
 
                                     @if (request.RequestState == RequestState.AcceptFromCustomer)
                                     {
-                                        <p class="label label-success"> تایید شده توسط کاربر</p>
+                                        <div class="row">
+                                            <p class="label label-success"> تایید شده توسط کاربر </p>
+                                            <p class="label label-success">  در انتظار ارسال نمونه گیر</p>
+                                        </div>
+                                    }
+
+                                    @if (request.RequestState == RequestState.DeliveryToCourierAndSending)
+                                    {
+                                        <div class="row">
+                                            <p class="label label-success"> ارسال نمونه گیر </p>
+                                            <p class="label label-success">  درحال آماده سازی نتیجه</p>
+                                        </div>
                                     }
 
                                     @if (request.RequestState == RequestState.RejectFromCustomer)

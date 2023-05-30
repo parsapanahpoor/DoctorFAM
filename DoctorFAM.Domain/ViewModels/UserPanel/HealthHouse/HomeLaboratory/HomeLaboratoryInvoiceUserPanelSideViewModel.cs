@@ -23,5 +23,11 @@ public class HomeLaboratoryInvoiceUserPanelSideViewModel
 
     public bool IsFinalize { get; set; }
 
+    public bool SenResultInSocialMedias { get; set; }
+
+    public bool SendResultWithVisitInPerson { get; set; }
+
+    public bool SendResultInDoctorFAMPanel { get; set; }
+
     #endregion
 }

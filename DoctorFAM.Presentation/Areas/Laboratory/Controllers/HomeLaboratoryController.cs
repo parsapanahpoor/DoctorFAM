@@ -4,6 +4,7 @@ using DoctorFAM.Application.Convertors;
 using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Application.StaticTools;
+using DoctorFAM.Data.Migrations;
 using DoctorFAM.Domain.ViewModels.Laboratory.HomeLaboratory;
 using DoctorFAM.Domain.ViewModels.Site.Notification;
 using DoctorFAM.Web.Hubs;
@@ -219,6 +220,61 @@ public class HomeLaboratoryController : LaboratoryBaseController
         #endregion
 
         return View(model);
+    }
+
+    #endregion
+
+    #region Sending A Sampler
+
+    [HttpGet]
+    public async Task<IActionResult> SendingASampler(ulong requestId)
+    {
+        #region Sending Sampler Method 
+
+        var res = await _homeLaboratoryServices.SendingASampler(requestId , User.GetUserId());
+        if (res)
+        {
+            TempData[SuccessMessage] = "لطفا در زمان مورد نظر نسبت به ارسال نمونه گیر اقدام فرمایید ";
+            return RedirectToAction(nameof(HomeLaboratoryRequestDetail), new { requestId = requestId });
+        }
+
+        #endregion
+
+        TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+        return RedirectToAction(nameof(HomeLaboratoryRequestDetail), new { requestId = requestId });
+    }
+
+    #endregion
+
+    #region Waiting For Initial Result
+
+    [HttpGet]
+    public async Task<IActionResult> WaitingForInitialResult(ulong requestId)
+    {
+        #region Wating For Initial Result
+
+        var res = await _homeLaboratoryServices.WaitingForInitialResult(requestId, User.GetUserId());
+        if (res)
+        {
+            TempData[SuccessMessage] = "خواهشمندیم پس از آماده سازی نتیجه توسط یکی روش های انتخابی کاربر نتیجه ی آزمایش را برای وی ارسال فرمایید. ";
+            return RedirectToAction(nameof(HomeLaboratoryRequestDetail), new { requestId = requestId });
+        }
+
+        #endregion
+
+        TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+        return RedirectToAction(nameof(HomeLaboratoryRequestDetail), new { requestId = requestId });
+    }
+
+    #endregion
+
+    #region Send Result For User
+
+    [HttpGet]
+    public async Task<IActionResult> SendResultForUser(ulong requestId)
+    {
+
+        return View();
     }
 
     #endregion

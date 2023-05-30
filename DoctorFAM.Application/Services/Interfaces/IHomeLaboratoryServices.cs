@@ -70,7 +70,7 @@ public interface IHomeLaboratoryServices
     Task<HomeLaboratoryInvoiceUserPanelSideViewModel?> FillHomeLaboratoryInvoiceDetailPage(ulong requestId, ulong userId);
 
     //Accept Home Laboratory Invoice
-    Task<bool> AcceptHomeLaboratoryInvoice(ulong requestId, ulong userId);
+    Task<bool> AcceptHomeLaboratoryInvoice(HomeLaboratoryInvoiceUserPanelSideViewModel model, ulong userId);
 
     //Decline Home Laboratory Invoice
     Task<bool> DeclineHomeLaboratoryInvoice(ulong requestId, ulong userId);
@@ -81,6 +81,12 @@ public interface IHomeLaboratoryServices
     #endregion
 
     #region Home Laboratory Side 
+
+    //Waiting For Initial Result
+    Task<bool> WaitingForInitialResult(ulong reqiuestId, ulong userId);
+
+    //Sending A Sampler
+    Task<bool> SendingASampler(ulong reqiuestId, ulong userId);
 
     // Fill Home Laboratory Pharmacy Invoice Page
     Task<HomeLaboratoryInvoiceLaboratorySideViewModel?> FillHomeLaboratoryPharmacyInvoicePage(ulong requestId, ulong organizationOwnerId);

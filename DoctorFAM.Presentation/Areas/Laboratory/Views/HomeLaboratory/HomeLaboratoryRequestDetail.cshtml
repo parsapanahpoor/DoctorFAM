@@ -339,11 +339,21 @@
                                     @if (ViewBag.IsThisRequestForThisLaboratory == true)
                                     {
                                         <a asp-action="AcceptHomeLaboratoryRequestFromLaboratory" asp-controller="HomeLaboratory" asp-area="Laboratory" asp-route-requestId="@Model.Request.Id" class="btn btn-primary">@Localizer["نمایش فاکتور"]</a>
+                                        @if (Model.Request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.AcceptFromCustomer)
+                                        {
+                                            <a asp-action="SendingASampler" asp-controller="HomeLaboratory" asp-area="Laboratory" asp-route-requestId="@Model.Request.Id" class="btn btn-primary">@Localizer["اعزام نمونه گیر"]</a>
+                                        }
+
+                                        @if (Model.Request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.DeliveryToCourierAndSending)
+                                        {
+                                            <a asp-action="WaitingForInitialResult" asp-controller="HomeLaboratory" asp-area="Laboratory" asp-route-requestId="@Model.Request.Id" class="btn btn-primary">@Localizer["درحال آماده سازری نتیجه"]</a>
+                                        }
                                     }
                                     else
                                     {
                                         <a asp-action="AcceptHomeLaboratoryRequestFromLaboratory" asp-controller="HomeLaboratory" asp-area="Laboratory" asp-route-requestId="@Model.Request.Id" class="btn btn-primary">@Localizer["پذیرفتن درخواست"]</a>
                                     }
+
                                 </div>
                             </div>
                         </div>
