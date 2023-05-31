@@ -87,11 +87,11 @@
                                         }
                                         @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.DeliveryToCourierAndSending)
                                         {
-                                            <span class="mr-8px label label-info"> در حال ارسال  </span>
+                                            <span class="mr-8px label label-info"> نمونه گیری  </span>
                                         }
                                         @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.PreparingTheOrder)
                                         {
-                                            <span class="mr-8px label label-info"> در انتظار آماده سازی </span>
+                                            <span class="mr-8px label label-info"> درانتظار نتیجه ی آزمایش </span>
                                         }
                                         @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.SelectedFromDoctor)
                                         {
@@ -141,6 +141,10 @@
                                         {
                                             <span class="mr-8px label label-warning"> درخواست برای ویرایش     </span>
                                         }
+                                        @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.FinishService)
+                                        {
+                                            <span class="mr-8px label label-primary"> پایان یافته  </span>
+                                        }
                                     </p>
                                 </td>
                                 <td class="tc vm">
@@ -167,6 +171,10 @@
                                     @if (request.RequestState == RequestState.ConfirmFromDestinationAndWaitingForIssuanceOfDraftInvoice)
                                     {
                                         <a asp-action="ShowHomeLaboratoryInvoice" asp-controller="HealthHouse" asp-area="UserPanel" asp-route-requestId="@request.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+                                    }
+                                    @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.FinishService)
+                                    {
+                                        <a asp-action="ShowHomeLaboratoryRequestResult" asp-controller="HealthHouse" asp-area="UserPanel" asp-route-requestId="@request.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
                                     }
                                 </td>
                             </tr>

@@ -64,13 +64,16 @@ public interface IHomeLaboratoryServices
 
     #region User Panel 
 
+    //Fill ShowHomeLaboratoryRequestResultLaboratorySideViewModel
+    Task<ShowHomeLaboratoryRequestResultLaboratorySideViewModel?> FillShowHomeLaboratoryRequestResultLaboratorySideViewModel(ulong requestId, ulong userId);
+
     Task<ListOfHomeLaboratoryUserPanelSideViewModel> ListOfUserHomeLaboratoryRequest(ListOfHomeLaboratoryUserPanelSideViewModel filter);
 
     //Fill Home Laboratory Invoice Detail Page
     Task<HomeLaboratoryInvoiceUserPanelSideViewModel?> FillHomeLaboratoryInvoiceDetailPage(ulong requestId, ulong userId);
 
     //Accept Home Laboratory Invoice
-    Task<bool> AcceptHomeLaboratoryInvoice(ulong requestId, ulong userId);
+    Task<bool> AcceptHomeLaboratoryInvoice(HomeLaboratoryInvoiceUserPanelSideViewModel model, ulong userId);
 
     //Decline Home Laboratory Invoice
     Task<bool> DeclineHomeLaboratoryInvoice(ulong requestId, ulong userId);
@@ -81,6 +84,18 @@ public interface IHomeLaboratoryServices
     #endregion
 
     #region Home Laboratory Side 
+
+    //Send Home Laboratory Request Result From LAboratory
+    Task<bool> SendHomeLaboratoryRequestResultFromLaboratory(ulong requestId, ulong userId, IFormFile? UserAvatar);
+
+    //Fill Home Laboratory Request Result Laboratory Side ViewModel
+    Task<HomeLaboratoryRequestResultLaboratorySideViewModel?> FillHomeLaboratoryRequestResultLaboratorySideViewModel(ulong requestId, ulong userId);
+
+    //Waiting For Initial Result
+    Task<bool> WaitingForInitialResult(ulong reqiuestId, ulong userId);
+
+    //Sending A Sampler
+    Task<bool> SendingASampler(ulong reqiuestId, ulong userId);
 
     // Fill Home Laboratory Pharmacy Invoice Page
     Task<HomeLaboratoryInvoiceLaboratorySideViewModel?> FillHomeLaboratoryPharmacyInvoicePage(ulong requestId, ulong organizationOwnerId);
@@ -93,6 +108,9 @@ public interface IHomeLaboratoryServices
 
     //Filter List Of Your Home Laboratory Request Laboratory Side
     Task<FilterListOfHomeLaboratoryRequestViewModel> FilterListOfYourHomeLaboratoryRequestLaboratorySide(FilterListOfHomeLaboratoryRequestViewModel filter);
+
+    //Filter List Of Your Home Laboratory Request Laboratory Side
+    Task<FilterListOfHomeLaboratoryRequestViewModel> FilterListOfYourHomeLaboratoryRequestHistoryLaboratorySide(FilterListOfHomeLaboratoryRequestViewModel filter);
 
     #endregion
 }

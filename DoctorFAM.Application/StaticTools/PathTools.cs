@@ -252,4 +252,14 @@ public static class PathTools
     public static readonly string HomeLaboratoryInvoicePathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/HomeLaboratoryInvoice/thumb/");
 
     #endregion
+
+    #region Home Laboratory Result
+
+    public static readonly string HomeLaboratoryResultPath = "/content/images/HomeLaboratoryResult/main/";
+    public static readonly string HomeLaboratoryResultPathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/HomeLaboratoryResult/main/");
+
+    public static readonly string HomeLaboratoryResultPathThumb = "/content/images/HomeLaboratoryResult/thumb/";
+    public static readonly string HomeLaboratoryResultPathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/HomeLaboratoryResult/thumb/");
+
+    #endregion
 }

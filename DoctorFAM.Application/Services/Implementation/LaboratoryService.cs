@@ -1,32 +1,17 @@
-﻿using DoctorFAM.Application.Generators;
-using DoctorFAM.Application.Security;
+﻿using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
-using DoctorFAM.Application.StaticTools;
-using DoctorFAM.Data.DbContext;
-using DoctorFAM.Data.Repository;
 using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.Laboratory;
 using DoctorFAM.Domain.Entities.Organization;
-using DoctorFAM.Domain.Entities.Pharmacy;
 using DoctorFAM.Domain.Entities.WorkAddress;
 using DoctorFAM.Domain.Interfaces;
-using DoctorFAM.Domain.ViewModels.Admin.Consultant;
 using DoctorFAM.Domain.ViewModels.Admin.HealthHouse.HomeLabratory;
 using DoctorFAM.Domain.ViewModels.Admin.Laboratory;
-using DoctorFAM.Domain.ViewModels.DoctorPanel.Employees;
 using DoctorFAM.Domain.ViewModels.Laboratory.Employee;
 using DoctorFAM.Domain.ViewModels.Laboratory.HomeLaboratory;
 using DoctorFAM.Domain.ViewModels.Laboratory.LaboratoryInfo;
 using DoctorFAM.Domain.ViewModels.Laboratory.LaboratorySideBar;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Razor;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DoctorFAM.Application.Services.Implementation
 {
@@ -41,17 +26,20 @@ namespace DoctorFAM.Application.Services.Implementation
         private readonly IRequestService _requestService;
         private readonly IPatientService _patientService;
         private readonly IHomeLaboratoryServices _homeLaboratoryServices;
+        private readonly ISiteSettingService _siteSettingService;
 
         public LaboratoryService(ILaboratoryRepository laboratoryRepository, IOrganizationService organizationService, IUserService userService, IWorkAddressService workAddressService
-                                    , IRequestService requestService , IPatientService patientService , IHomeLaboratoryServices homeLaboratoryServices)
+                                    , IRequestService requestService, IPatientService patientService, IHomeLaboratoryServices homeLaboratoryServices
+                                            , ISiteSettingService siteSettingService)
         {
             _laboratoryRepository = laboratoryRepository;
             _organizationService = organizationService;
             _userService = userService;
             _workAddressService = workAddressService;
-            _requestService = requestService;   
+            _requestService = requestService;
             _patientService = patientService;
-            _homeLaboratoryServices= homeLaboratoryServices;
+            _homeLaboratoryServices = homeLaboratoryServices;
+            _siteSettingService = siteSettingService;
         }
 
         #endregion
@@ -634,8 +622,13 @@ namespace DoctorFAM.Application.Services.Implementation
                 HomeLaboratoryRequestDetail = await GetHomeLaboratoryRequestDetailByRequestId(request.Id),
                 PatientRequestDetail = await _laboratoryRepository.GetRequestPatientDetailByRequestId(request.Id),
                 PatientRequestDateTimeDetail = await _laboratoryRepository.GetRequestDateTimeDetailByRequestDetailId(request.Id),
-                Request = request
+                Request = request,
             };
+
+            if (model.Patient is not null && model.Patient.SupplementaryInsuranceId.HasValue)
+            {
+                model.SupplementaryInsurance = await _siteSettingService.GetSupplementaryInsuranceNameById(model.Patient.SupplementaryInsuranceId.Value);
+            }
 
             #endregion
 

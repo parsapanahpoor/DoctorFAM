@@ -1,0 +1,106 @@
+﻿@model DoctorFAM.Domain.ViewModels.UserPanel.HealthHouse.HomeLaboratory.ShowHomeLaboratoryRequestResultLaboratorySideViewModel
+
+@using DoctorFAM.Domain.Enums
+@using DoctorFAM.Application.StaticTools
+@using DoctorFAM.Domain.ViewModels.Common
+
+@{
+    ViewData["Title"] = "نتیجه ی آزمایش";
+}
+
+@section Scripts
+    {
+    <partial name="_JqueryValidation" />
+}
+
+@section Breadcrumb
+    {
+    <li>
+        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+    </li>
+}
+
+<div class="col-lg-12 col-sm-12">
+    <div class="row">
+
+        <div class="col-lg-6 col-sm-12">
+            <div class="row">
+
+
+                <div class="col-lg-12 col-sm-12">
+                    <div class="widget">
+                        <div class="widget-header bordered-bottom bordered-green" style="background-color:#d1f4fa">
+                            <span class="widget-caption"> اطلاعات  </span>
+                        </div>
+
+
+
+                        <div class="widget-body" style="background-color:#d1f4fa !important;">
+                            <div class="row">
+
+                                <div class="form-group col-md-12 col-sm-12">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" asp-for="ResultInDoctorFAMPanel">
+                                            <span class="text"> دریافت نتیجه به وسیله ی درج در سامانه  </span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-md-12 col-sm-12">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" asp-for="ResultInVisitInPerson">
+                                            <span class="text"> دریافت نتیجه به وسیله ی مراجعه ی حضوری متقضی  </span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-md-12 col-sm-12">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" asp-for="ResultInSocialMedia">
+                                            <span class="text"> دریافت نتیجه از طریق شبکه های اجتماعی  </span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="col-lg-6 col-sm-12">
+            <div class="widget">
+                <div class="widget-header bordered-bottom bordered-green">
+                    <span class="widget-caption"> تصویر نتیجه ی آزمایش </span>
+                </div>
+                <div class="widget-body">
+                    <div class="row">
+
+
+                        @{
+                            var avatarUrl = PathTools.DefaultUserAvatar;
+
+                            if (Model != null && !string.IsNullOrEmpty(Model.ResultImage))
+                            {
+                                avatarUrl = $"{PathTools.HomeLaboratoryResultPathThumb}{Model.ResultImage}";
+                            }
+                        }
+
+                        <div class="col-md-12 tc mt-10px">
+                            <a target="_blank" href="@PathTools.SiteAddress@avatarUrl"><img src="@avatarUrl" class="image-style" ImageFile="1" /></a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

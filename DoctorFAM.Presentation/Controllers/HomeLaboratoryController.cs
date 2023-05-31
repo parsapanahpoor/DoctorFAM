@@ -1,10 +1,10 @@
-﻿using DoctorFAM.Application.Convertors;
+﻿#region Usings
+
+using DoctorFAM.Application.Convertors;
 using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Interfaces;
-using DoctorFAM.Application.Services.Implementation;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Application.StaticTools;
-using DoctorFAM.Data.DbContext;
 using DoctorFAM.Domain.DTOs.ZarinPal;
 using DoctorFAM.Domain.Entities.Wallet;
 using DoctorFAM.Domain.Enums.RequestType;
@@ -18,11 +18,13 @@ using DoctorFAM.Web.HttpManager;
 using DoctorFAM.Web.Hubs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Text;
+
+#endregion
 
 namespace DoctorFAM.Web.Controllers
 {
@@ -48,7 +50,7 @@ namespace DoctorFAM.Web.Controllers
                                 , ISiteSettingService siteSettingService, IPopulationCoveredService populationCovered
                                     , IWalletService walletService, IHubContext<NotificationHub> notificationHub
                                                 , INotificationService notificationService)
-        
+
         {
             _homeLaboratory = homeLaboratory;
             _requestService = requestService;
@@ -120,6 +122,9 @@ namespace DoctorFAM.Web.Controllers
                 //Send List Of Insurance To The View
                 ViewBag.Insurances = await _siteSettingService.ListOfInsurance();
 
+                //Send List Of Supplementary Insurance To The View
+                ViewBag.SupplementaryInsurances = await _siteSettingService.ListOfSupplementaryInsurance();
+
                 //Fill Page Model From Selected Population Covered Data
                 var mode = await _homeLaboratory.FillPatientViewModelFromSelectedPopulationCoveredData(populationCoveredId.Value, requestId, User.GetUserId());
                 if (mode == null) return NotFound();
@@ -137,6 +142,9 @@ namespace DoctorFAM.Web.Controllers
 
             //Send List Of Insurance To The View
             ViewBag.Insurances = await _siteSettingService.ListOfInsurance();
+
+            //Send List Of Supplementary Insurance To The View
+            ViewBag.SupplementaryInsurances = await _siteSettingService.ListOfSupplementaryInsurance();
 
             return View(new PatientViewModel()
             {
@@ -162,8 +170,8 @@ namespace DoctorFAM.Web.Controllers
             if (!await _userService.IsExistUserById(User.GetUserId())) return NotFound();
             if (User.GetUserId() != patient.UserId) return NotFound();
 
-            #endregion       
-            
+            #endregion
+
             #region Request Validation 
 
             if (!await _requestService.RequestValidatorWhileCompeleteSteps(patient.RequestId, User.GetUserId(), null, RequestType.HomeLab)) return NotFound();
@@ -174,10 +182,16 @@ namespace DoctorFAM.Web.Controllers
 
             if (!ModelState.IsValid)
             {
-                //Send List Of Insurance To The View
-                ViewBag.Insurances = await _siteSettingService.ListOfInsurance();
+                if (patient.SupplementaryInsuranceId != null)
+                {
+                    //Send List Of Insurance To The View
+                    ViewBag.Insurances = await _siteSettingService.ListOfInsurance();
 
-                return View(patient);
+                    //Send List Of Supplementary Insurance To The View
+                    ViewBag.SupplementaryInsurances = await _siteSettingService.ListOfSupplementaryInsurance();
+
+                    return View(patient);
+                }
             }
 
             #endregion
@@ -209,6 +223,9 @@ namespace DoctorFAM.Web.Controllers
 
             //Send List Of Insurance To The View
             ViewBag.Insurances = await _siteSettingService.ListOfInsurance();
+
+            //Send List Of Supplementary Insurance To The View
+            ViewBag.SupplementaryInsurances = await _siteSettingService.ListOfSupplementaryInsurance();
 
             return View(patient);
         }
@@ -581,7 +598,7 @@ namespace DoctorFAM.Web.Controllers
                             var notifyResult = await _notificationService.CreateSupporterNotification(request.Id, Domain.Enums.Notification.SupporterNotificationText.NewArrivalHomeLaboratoryRequest, Domain.Enums.Notification.NotificationTarget.request, User.GetUserId());
 
                             //Create Notification For Laboratories
-                             await _notificationService.CreateNotificationForLaboratoriesFromHomeLabpratoryRequest(request.Id, Domain.Enums.Notification.SupporterNotificationText.NewArrivalHomeLaboratoryRequest, Domain.Enums.Notification.NotificationTarget.request, User.GetUserId());
+                            await _notificationService.CreateNotificationForLaboratoriesFromHomeLabpratoryRequest(request.Id, Domain.Enums.Notification.SupporterNotificationText.NewArrivalHomeLaboratoryRequest, Domain.Enums.Notification.NotificationTarget.request, User.GetUserId());
 
                             //Get Current User
                             var currentUser = await _userService.GetUserById(User.GetUserId());
@@ -625,7 +642,7 @@ namespace DoctorFAM.Web.Controllers
             {
                 throw ex;
             }
-             
+
             return NotFound();
         }
 

@@ -203,6 +203,8 @@ public class DoctorFAMDbContext : Microsoft.EntityFrameworkCore.DbContext
 
     public DbSet<HomeLaboratoryRequestPrice> HomeLaboratoryRequestPrice { get; set; }
 
+    public DbSet<HomeLaboratoruRequestResult> HomeLaboratoruRequestResults { get; set; }
+
     #endregion
 
     #region Products
@@ -487,6 +489,8 @@ public class DoctorFAMDbContext : Microsoft.EntityFrameworkCore.DbContext
     #region Insurance
 
     public DbSet<Insurance> Insurance { get; set; }
+
+    public DbSet<SupplementrayInsurance> SupplementrayInsurances { get; set; }
 
     #endregion
 

@@ -1,4 +1,6 @@
-﻿using DoctorFAM.Domain.Entities.Drugs;
+﻿#region Usings
+
+using DoctorFAM.Domain.Entities.Drugs;
 using DoctorFAM.Domain.Entities.Insurance;
 using DoctorFAM.Domain.Entities.OnlineVisit;
 using DoctorFAM.Domain.Entities.Requests;
@@ -7,171 +9,184 @@ using DoctorFAM.Domain.Entities.SiteSetting.Drug;
 using DoctorFAM.Domain.ViewModels.Admin.SiteSetting;
 using DoctorFAM.Domain.ViewModels.Admin.SiteSetting.HealthHouseServiceTariff;
 using DoctorFAM.Domain.ViewModels.Admin.SiteSetting.OnlineVisit;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace DoctorFAM.Application.Services.Interfaces
+#endregion
+
+namespace DoctorFAM.Application.Services.Interfaces;
+
+public interface ISiteSettingService
 {
-    public interface ISiteSettingService
-    {
-        #region Site Setting
+    #region Site Setting
 
-        Task<int> GetOnlineVisitTariff();
+    Task<int> GetOnlineVisitTariff();
 
-        Task<EditSiteSettingViewModel> FillEditSiteSettingViewModel();
+    Task<EditSiteSettingViewModel> FillEditSiteSettingViewModel();
 
-        Task<EditSiteSettingResult> EditSiteSetting(EditSiteSettingViewModel editSiteSettingViewModel);
+    Task<EditSiteSettingResult> EditSiteSetting(EditSiteSettingViewModel editSiteSettingViewModel);
 
-        Task<EditSiteSettingResult> CreateSiteSetting(EditSiteSettingViewModel editSiteSettingViewModel);
+    Task<EditSiteSettingResult> CreateSiteSetting(EditSiteSettingViewModel editSiteSettingViewModel);
 
-        Task<int> GetHomeVisitTariff();
+    Task<int> GetHomeVisitTariff();
 
-        Task<int> GetHomeNurseTariff();
+    Task<int> GetHomeNurseTariff();
 
-        Task<int> GetDeathCertificateTariff();
+    Task<int> GetDeathCertificateTariff();
 
-        Task<int> GetHomeLaboratoryTariff();
+    Task<int> GetHomeLaboratoryTariff();
 
-        Task<int> GetHomePatientTransportTariff();
+    Task<int> GetHomePatientTransportTariff();
 
-        Task<int> GetHomePahrmacyTariff();
+    Task<int> GetHomePahrmacyTariff();
 
-        Task<int> GetReservationTariff();
+    Task<int> GetReservationTariff();
 
-        //Get Health House Tariff Service By Id 
-        Task<TariffForHealthHouseServices?> GetHealthHouseTariffServiceById(ulong id);
+    //Get Health House Tariff Service By Id 
+    Task<TariffForHealthHouseServices?> GetHealthHouseTariffServiceById(ulong id);
 
-        //Get List Of Tariff For Death Certificate Health House Services
-        Task<List<TariffForHealthHouseServices>?> GetListOfTariffForDeathCertificateHealthHouseServices();
+    //Get List Of Tariff For Death Certificate Health House Services
+    Task<List<TariffForHealthHouseServices>?> GetListOfTariffForDeathCertificateHealthHouseServices();
 
-        //Fill Add Or Edit Tariff For Health House Services View Model
-        Task<AddOrEditTariffForHealthHouseServicesViewModel?> FillAddOrEditTariffForHealthHouseServicesViewModel(ulong id);
+    //Fill Add Or Edit Tariff For Health House Services View Model
+    Task<AddOrEditTariffForHealthHouseServicesViewModel?> FillAddOrEditTariffForHealthHouseServicesViewModel(ulong id);
 
-        //Get List Of Tariff For Health House Services
-        Task<List<TariffForHealthHouseServices>?> GetListOfTariffForHealthHouseServices();
+    //Get List Of Tariff For Health House Services
+    Task<List<TariffForHealthHouseServices>?> GetListOfTariffForHealthHouseServices();
 
-        //Add Or Edit Tariff For Health House Services
-        Task<bool> AddOrEditTariffForHealthHouseServices(AddOrEditTariffForHealthHouseServicesViewModel model);
+    //Add Or Edit Tariff For Health House Services
+    Task<bool> AddOrEditTariffForHealthHouseServices(AddOrEditTariffForHealthHouseServicesViewModel model);
 
-        //Get List Of Tariff For Home Visit Health House Services
-        Task<List<TariffForHealthHouseServices>?> GetListOfTariffForHomeVisitHealthHouseServices();
+    //Get List Of Tariff For Home Visit Health House Services
+    Task<List<TariffForHealthHouseServices>?> GetListOfTariffForHomeVisitHealthHouseServices();
 
-        //Get List Of Tariff For Home Nurse Health House Services
-        Task<List<TariffForHealthHouseServices>?> GetListOfTariffForHomeNurseHealthHouseServices();
+    //Get List Of Tariff For Home Nurse Health House Services
+    Task<List<TariffForHealthHouseServices>?> GetListOfTariffForHomeNurseHealthHouseServices();
 
-        //Is Exist Any Tariff By Id 
-        Task<bool> IsExistAnyTariffById(ulong tariffId);
+    //Is Exist Any Tariff By Id 
+    Task<bool> IsExistAnyTariffById(ulong tariffId);
 
-        //List Of Insurance
-        Task<List<Insurance>?> ListOfInsurance();
+    //List Of Insurance
+    Task<List<Insurance>?> ListOfInsurance();
 
-        //List Of Insulins
-        Task<List<Insulin>?> ListOfInsulins();
+    //List Of Supplementary Insurance
+    Task<List<SupplementrayInsurance>?> ListOfSupplementaryInsurance();
 
-        //List Of Short Effect Insulins
-        Task<List<Insulin>?> ListOfShortEffectInsulins();
+    //List Of Supplementray Insurance
+    Task<List<SupplementrayInsurance>?> ListOfSuplementaryInsurance();
 
-        //List Of Long Effect Insulins
-        Task<List<Insulin>?> ListOfLongEffectInsulins();
+    //List Of Insulins
+    Task<List<Insulin>?> ListOfInsulins();
 
-        //Create Insurance
-        Task<bool> CreateInsurance(string title);
+    //List Of Short Effect Insulins
+    Task<List<Insulin>?> ListOfShortEffectInsulins();
 
-        //Create Insulin
-        Task<bool> CreateInsulin(CreateInsulinViewModel model);
+    //List Of Long Effect Insulins
+    Task<List<Insulin>?> ListOfLongEffectInsulins();
 
-        //Get Insurance By Id
-        Task<Insurance?> GetInsuranceById(ulong id);
+    //Create Insurance
+    Task<bool> CreateInsurance(string title);
 
-        //Get Insulin By Id
-        Task<Insulin?> GetInsulinById(ulong id);
+    //Create Supplementary Insurance
+    Task<bool> CreateSupplementaryInsurance(string title);
 
-        //Update Insurance
-        Task<bool> UpdateInsurance(Insurance entity);
+    //Create Insulin
+    Task<bool> CreateInsulin(CreateInsulinViewModel model);
 
-        //Update Insuline
-        Task<bool> UpdateInsuline(Insulin entity);
+    //Get Insurance By Id
+    Task<Insurance?> GetInsuranceById(ulong id);
 
-        //Delete Insuline From Admin 
-        Task<bool> DeleteInsulinFromAdmin(ulong insulinId);
+    //Get Supplementary Insurance By Id
+    Task<SupplementrayInsurance?> GetSupplementaryInsuranceById(ulong id);
 
-        //Check Field InPerson Reservation Tariff For Doctor Population Covered Site Share By Doctor Percentages
-        Task<bool> CheckFieldOnlineReservationTariffForInPersonReservationTariffForDoctorPopulationCoveredSiteShare(int price);
+    //Get Insulin By Id
+    Task<Insulin?> GetInsulinById(ulong id);
 
-        //Check Field Online Reservation Tariff For Online Reservation Tariff For Doctor Population Covered Site Share
-        Task<bool> CheckFieldOnlineReservationTariffForOnlineReservationTariffForDoctorPopulationCoveredSiteShare(int price);
+    //Update Insurance
+    Task<bool> UpdateInsurance(Insurance entity);
 
-        //Check Field Online Reservation Tariff For InPerson Reservation Tariff For Anonymous Persons Site Share
-        Task<bool> CheckFieldOnlineReservationTariffForInPersonReservationTariffForAnonymousPersonsSiteShare(int price);
+    //Update Supplementary Insurance
+    Task<bool> UpdateSupplementaryInsurance(SupplementrayInsurance entity);
 
-        //Check Field Online Reservation Tariff For Online Reservation Tariff For Anonymous Persons Site Share
-        Task<bool> CheckFieldOnlineReservationTariffForOnlineReservationTariffForAnonymousPersonsSiteShare(int price);
+    //Update Insuline
+    Task<bool> UpdateInsuline(Insulin entity);
 
-        #region OnlineVisit
+    //Delete Insuline From Admin 
+    Task<bool> DeleteInsulinFromAdmin(ulong insulinId);
 
-        //List Of Online Visit Work Shift
-        Task<List<OnlineVisitWorkShift>> ListOfOnlineVisitWorkShift();
+    //Check Field InPerson Reservation Tariff For Doctor Population Covered Site Share By Doctor Percentages
+    Task<bool> CheckFieldOnlineReservationTariffForInPersonReservationTariffForDoctorPopulationCoveredSiteShare(int price);
 
-        //Create Online Visit Work Shift 
-        Task<bool> CreateOnlineVisitWorkShift(CreateOnlineVisitWorkShiftAdminSideViewModel model);
+    //Check Field Online Reservation Tariff For Online Reservation Tariff For Doctor Population Covered Site Share
+    Task<bool> CheckFieldOnlineReservationTariffForOnlineReservationTariffForDoctorPopulationCoveredSiteShare(int price);
 
-        #endregion
+    //Check Field Online Reservation Tariff For InPerson Reservation Tariff For Anonymous Persons Site Share
+    Task<bool> CheckFieldOnlineReservationTariffForInPersonReservationTariffForAnonymousPersonsSiteShare(int price);
 
-        #endregion
+    //Check Field Online Reservation Tariff For Online Reservation Tariff For Anonymous Persons Site Share
+    Task<bool> CheckFieldOnlineReservationTariffForOnlineReservationTariffForAnonymousPersonsSiteShare(int price);
 
-        #region Site Side
+    #region OnlineVisit
 
-        //Get Site Share Price From Home Visit Tariff With As No Tracking
-        Task<int> GetSiteSharePriceFromHomeVisitTariffWithAsNoTracking();
+    //List Of Online Visit Work Shift
+    Task<List<OnlineVisitWorkShift>> ListOfOnlineVisitWorkShift();
 
-        Task<int> GetDistanceFromCityTarriffCost();
+    //Create Online Visit Work Shift 
+    Task<bool> CreateOnlineVisitWorkShift(CreateOnlineVisitWorkShiftAdminSideViewModel model);
 
-        Task<bool> IsExistSiteSetting();
+    #endregion
 
-        Task<int> GetSMSTimer();
+    #endregion
 
-        Task<string?> GetSiteAddressDomain();
+    #region Site Side
 
-        //Add Request Selected Healt House Tariff Without Savechanges
-        Task AddRequestSelectedHealtHouseTariffWithoutSavechanges(RequestSelectedHealthHouseTariff model);
+    //Get Supplementary Insurance Name By Id 
+    Task<string?> GetSupplementaryInsuranceNameById(ulong id);
 
-        //Get Request Selected Tariffs By Request Id 
-        Task<List<RequestSelectedHealthHouseTariff>> GetRequestSelectedTariffsByRequestId(ulong requestId);
+    //Get Site Share Price From Home Visit Tariff With As No Tracking
+    Task<int> GetSiteSharePriceFromHomeVisitTariffWithAsNoTracking();
 
-        //Get Request Selected Tariffs By Request Id 
-        Task<List<TariffForHealthHouseServices>> GetTariffBySelectedTariffs(ulong requestId);
+    Task<int> GetDistanceFromCityTarriffCost();
 
-        //Get InPerson Reservation Tariff For Doctor Population Covered Site Share
-        Task<int> GetInPersonReservationTariffForDoctorPopulationCoveredSiteShare();
+    Task<bool> IsExistSiteSetting();
 
-        //Get Online Reservation Tariff For Doctor Population Covered Site Share
-        Task<int> GetOnlineReservationTariffForDoctorPopulationCoveredSiteShare();
+    Task<int> GetSMSTimer();
 
-        //Get In Person Reservation Tariff For Anonymous Persons Site Share
-        Task<int> GetInPersonReservationTariffForAnonymousPersonsSiteShare();
+    Task<string?> GetSiteAddressDomain();
 
-        //Get Online Reservation Tariff For Anonymous Persons Site Share
-        Task<int> GetOnlineReservationTariffForAnonymousPersonsSiteShare();
+    //Add Request Selected Healt House Tariff Without Savechanges
+    Task AddRequestSelectedHealtHouseTariffWithoutSavechanges(RequestSelectedHealthHouseTariff model);
 
-        //Add Site Cash Desk
-        Task AddSiteCashDesk(int price);
+    //Get Request Selected Tariffs By Request Id 
+    Task<List<RequestSelectedHealthHouseTariff>> GetRequestSelectedTariffsByRequestId(ulong requestId);
 
-        //Check Doctor Inserted Tarrif By Site In Field In Person Reservation Tariff For Doctor Population Covered 
-        Task<bool> CheckDoctorInsertedTarrifBySiteInFieldInPersonReservationTariffForDoctorPopulationCovered(int price);
+    //Get Request Selected Tariffs By Request Id 
+    Task<List<TariffForHealthHouseServices>> GetTariffBySelectedTariffs(ulong requestId);
 
-        //Check Doctor Inserted Tarrif By Site In Field Online Reservation Tariff For Doctor Population Covered  
-        Task<bool> CheckDoctorInsertedTarrifBySiteInFieldOnlineReservationTariffForDoctorPopulationCovered(int price);
+    //Get InPerson Reservation Tariff For Doctor Population Covered Site Share
+    Task<int> GetInPersonReservationTariffForDoctorPopulationCoveredSiteShare();
 
-        //Check Doctor Inserted Tarrif By Site In Field In Person Reservation Tariff For Anonymous Persons 
-        Task<bool> CheckDoctorInsertedTarrifBySiteInFieldInPersonReservationTariffForAnonymousPersons(int price);
+    //Get Online Reservation Tariff For Doctor Population Covered Site Share
+    Task<int> GetOnlineReservationTariffForDoctorPopulationCoveredSiteShare();
 
-        //Check Doctor Inserted Tarrif By Site In Field Online Reservation Tariff For Anonymous Persons 
-        Task<bool> CheckDoctorInsertedTarrifBySiteInFieldOnlineReservationTariffForAnonymousPersons(int price);
+    //Get In Person Reservation Tariff For Anonymous Persons Site Share
+    Task<int> GetInPersonReservationTariffForAnonymousPersonsSiteShare();
 
-        #endregion
-    }
+    //Get Online Reservation Tariff For Anonymous Persons Site Share
+    Task<int> GetOnlineReservationTariffForAnonymousPersonsSiteShare();
+
+    //Add Site Cash Desk
+    Task AddSiteCashDesk(int price);
+
+    //Check Doctor Inserted Tarrif By Site In Field In Person Reservation Tariff For Doctor Population Covered 
+    Task<bool> CheckDoctorInsertedTarrifBySiteInFieldInPersonReservationTariffForDoctorPopulationCovered(int price);
+
+    //Check Doctor Inserted Tarrif By Site In Field Online Reservation Tariff For Doctor Population Covered  
+    Task<bool> CheckDoctorInsertedTarrifBySiteInFieldOnlineReservationTariffForDoctorPopulationCovered(int price);
+
+    //Check Doctor Inserted Tarrif By Site In Field In Person Reservation Tariff For Anonymous Persons 
+    Task<bool> CheckDoctorInsertedTarrifBySiteInFieldInPersonReservationTariffForAnonymousPersons(int price);
+
+    //Check Doctor Inserted Tarrif By Site In Field Online Reservation Tariff For Anonymous Persons 
+    Task<bool> CheckDoctorInsertedTarrifBySiteInFieldOnlineReservationTariffForAnonymousPersons(int price);
+
+    #endregion
 }
