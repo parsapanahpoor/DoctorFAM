@@ -109,5 +109,8 @@ public interface IHomeLaboratoryServices
     //Filter List Of Your Home Laboratory Request Laboratory Side
     Task<FilterListOfHomeLaboratoryRequestViewModel> FilterListOfYourHomeLaboratoryRequestLaboratorySide(FilterListOfHomeLaboratoryRequestViewModel filter);
 
+    //Filter List Of Your Home Laboratory Request Laboratory Side
+    Task<FilterListOfHomeLaboratoryRequestViewModel> FilterListOfYourHomeLaboratoryRequestHistoryLaboratorySide(FilterListOfHomeLaboratoryRequestViewModel filter);
+
     #endregion
 }

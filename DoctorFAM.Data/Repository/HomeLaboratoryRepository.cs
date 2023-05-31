@@ -343,8 +343,63 @@ public class HomeLaboratoryRepository : IHomeLaboratoryRepository
          .Include(p => p.Patient)
          .Include(p => p.User)
          .Include(p => p.PaitientRequestDetails)
-         .Where(s => !s.IsDelete && s.RequestType == Domain.Enums.RequestType.RequestType.HomeLab && s.OperationId == filter.LaboratoryOwnerId)
+         .Where(s => !s.IsDelete && s.RequestType == Domain.Enums.RequestType.RequestType.HomeLab && s.OperationId == filter.LaboratoryOwnerId
+                && (s.RequestState == RequestState.ConfirmFromDestinationAndWaitingForIssuanceOfDraftInvoice
+                    || s.RequestState == RequestState.AcceptFromCustomer
+                    || s.RequestState == RequestState.DeliveryToCourierAndSending
+                    || s.RequestState == RequestState.PreparingTheOrder
+                    || s.RequestState == RequestState.RequestForEditInvoice))
          .OrderByDescending(s => s.CreateDate)
+         .AsQueryable();
+
+        #region Status
+
+        switch (filter.FilterRequestLaboratorySideOrder)
+        {
+            case FilterRequestAdminSideOrder.CreateDate_Des:
+                break;
+            case FilterRequestAdminSideOrder.CreateDate_Asc:
+                query = query.OrderBy(p => p.CreateDate);
+                break;
+        }
+
+        #endregion
+
+        #region Filter
+
+        if (!string.IsNullOrEmpty(filter.Username))
+        {
+            query = query.Where(s => EF.Functions.Like(s.User.Username, $"%{filter.Username}%"));
+        }
+
+        if (!string.IsNullOrEmpty(filter.FirstName))
+        {
+            query = query.Where(s => EF.Functions.Like(s.User.FirstName, $"%{filter.FirstName}%"));
+        }
+
+        if (!string.IsNullOrEmpty(filter.LastName))
+        {
+            query = query.Where(s => EF.Functions.Like(s.User.LastName, $"%{filter.LastName}%"));
+        }
+
+        #endregion
+
+        await filter.Paging(query);
+
+        return filter;
+    }
+
+    //Filter List Of Your Home Laboratory Request Laboratory Side
+    public async Task<FilterListOfHomeLaboratoryRequestViewModel> FilterListOfYourHomeLaboratoryRequestHistoryLaboratorySide(FilterListOfHomeLaboratoryRequestViewModel filter)
+    {
+        var query = _context.Requests
+         .Include(p => p.PatientRequestDateTimeDetails)
+         .Include(p => p.Patient)
+         .Include(p => p.User)
+         .Include(p => p.PaitientRequestDetails)
+         .Where(s => !s.IsDelete && s.RequestType == Domain.Enums.RequestType.RequestType.HomeLab && s.OperationId == filter.LaboratoryOwnerId
+                && (s.RequestState == RequestState.FinishService
+                    || s.RequestState == RequestState.RejectFromCustomer)).OrderByDescending(s => s.CreateDate)
          .AsQueryable();
 
         #region Status

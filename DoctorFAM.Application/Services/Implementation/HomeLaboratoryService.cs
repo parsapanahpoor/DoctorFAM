@@ -665,7 +665,7 @@ public class HomeLaboratoryService : IHomeLaboratoryServices
     #region User Panel
 
     //Fill ShowHomeLaboratoryRequestResultLaboratorySideViewModel
-    public async Task<ShowHomeLaboratoryRequestResultLaboratorySideViewModel?> FillShowHomeLaboratoryRequestResultLaboratorySideViewModel(ulong requestId , ulong userId)
+    public async Task<ShowHomeLaboratoryRequestResultLaboratorySideViewModel?> FillShowHomeLaboratoryRequestResultLaboratorySideViewModel(ulong requestId, ulong userId)
     {
         #region Get Request By Id 
 
@@ -693,11 +693,11 @@ public class HomeLaboratoryService : IHomeLaboratoryServices
 
         return new ShowHomeLaboratoryRequestResultLaboratorySideViewModel()
         {
-             RequestId = requestId,
-             ResultImage = (!string.IsNullOrEmpty(requestResult)) ? requestResult : null,
-             ResultInDoctorFAMPanel = requestPrice.SendResultInDoctorFAMPanel,
-              ResultInSocialMedia = requestPrice.SenResultInSocialMedias,
-              ResultInVisitInPerson = requestPrice.SendResultWithVisitInPerson              
+            RequestId = requestId,
+            ResultImage = (!string.IsNullOrEmpty(requestResult)) ? requestResult : null,
+            ResultInDoctorFAMPanel = requestPrice.SendResultInDoctorFAMPanel,
+            ResultInSocialMedia = requestPrice.SenResultInSocialMedias,
+            ResultInVisitInPerson = requestPrice.SendResultWithVisitInPerson
         };
     }
 
@@ -927,20 +927,21 @@ public class HomeLaboratoryService : IHomeLaboratoryServices
 
         #region Fill Entity
 
-        HomeLaboratoruRequestResult model = new HomeLaboratoruRequestResult()
+        if (UserAvatar != null)
         {
-            RequestId = requestId,
-        };
+            HomeLaboratoruRequestResult model = new HomeLaboratoruRequestResult()
+            {
+                RequestId = requestId,
+            };
 
-        if (UserAvatar == null) return false;
+            //Add Invoice Picture
+            var imageName = CodeGenerator.GenerateUniqCode() + Path.GetExtension(UserAvatar.FileName);
+            UserAvatar.AddImageToServer(imageName, PathTools.HomeLaboratoryResultPathServer, 270, 270, PathTools.HomeLaboratoryResultPathThumbServer);
+            model.ResultPicture = imageName;
 
-        //Add Invoice Picture
-        var imageName = CodeGenerator.GenerateUniqCode() + Path.GetExtension(UserAvatar.FileName);
-        UserAvatar.AddImageToServer(imageName, PathTools.HomeLaboratoryResultPathServer, 270, 270, PathTools.HomeLaboratoryResultPathThumbServer);
-        model.ResultPicture = imageName;
-
-        //Add Request Price And Update Request State
-        await _homeLaboratory.AddHomeLaboratoryRequestResultToTheDataBase(model);
+            //Add Request Price And Update Request State
+            await _homeLaboratory.AddHomeLaboratoryRequestResultToTheDataBase(model);
+        }
 
         //Update Request
         request.RequestState = Domain.Enums.Request.RequestState.FinishService;
@@ -1224,6 +1225,21 @@ public class HomeLaboratoryService : IHomeLaboratoryServices
         #endregion
 
         return await _homeLaboratory.FilterListOfYourHomeLaboratoryRequestLaboratorySide(filter);
+    }
+
+    //Filter List Of Your Home Laboratory Request Laboratory Side
+    public async Task<FilterListOfHomeLaboratoryRequestViewModel> FilterListOfYourHomeLaboratoryRequestHistoryLaboratorySide(FilterListOfHomeLaboratoryRequestViewModel filter)
+    {
+        #region Get Organization 
+
+        var organization = await _organizationService.GetLaboratoryOrganizationByUserId(filter.UserId);
+        if (organization == null) return null;
+
+        filter.LaboratoryOwnerId = organization.OwnerId;
+
+        #endregion
+
+        return await _homeLaboratory.FilterListOfYourHomeLaboratoryRequestHistoryLaboratorySide(filter);
     }
 
     #endregion

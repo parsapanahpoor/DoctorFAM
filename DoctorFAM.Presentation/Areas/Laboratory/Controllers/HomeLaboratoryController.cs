@@ -66,6 +66,17 @@ public class HomeLaboratoryController : LaboratoryBaseController
 
     #endregion
 
+    #region List Of Your Home Laboratory Request History
+
+    [HttpGet]
+    public async Task<IActionResult> ListOfYourHomeLaboratoryRequestsHistory(FilterListOfHomeLaboratoryRequestViewModel model)
+    {
+        model.UserId = User.GetUserId();
+        return View(await _homeLaboratoryServices.FilterListOfYourHomeLaboratoryRequestHistoryLaboratorySide(model));
+    }
+
+    #endregion
+
     #region Home Laboratory Request Detail 
 
     public async Task<IActionResult> HomeLaboratoryRequestDetail(ulong requestId)

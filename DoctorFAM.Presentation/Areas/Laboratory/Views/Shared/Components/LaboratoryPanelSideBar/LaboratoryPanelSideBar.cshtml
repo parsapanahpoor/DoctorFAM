@@ -33,13 +33,19 @@
 
                     <li>
                         <a asp-area="Laboratory" asp-controller="HomeLaboratory" asp-action="ListOfHomeLaboratoryRequest">
-                            <span class="menu-text">لیست درخواست های آزمایشگاه </span>
+                            <span class="menu-text">جدیدترین درخواست ها </span>
                         </a>
                     </li>
 
                     <li>
                         <a asp-area="Laboratory" asp-controller="HomeLaboratory" asp-action="ListOfYourHomeLaboratoryRequests">
-                            <span class="menu-text">لیست درخواست های شما </span>
+                            <span class="menu-text">درخواست های درحال اجرا </span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a asp-area="Laboratory" asp-controller="HomeLaboratory" asp-action="ListOfYourHomeLaboratoryRequestsHistory">
+                            <span class="menu-text">درخواست های گذشته </span>
                         </a>
                     </li>
                 </ul>

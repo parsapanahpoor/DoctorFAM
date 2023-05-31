@@ -381,7 +381,7 @@ public class HealthHouseController : UserBaseController
     {
         #region Show Home Laboratory Request Result
 
-        var model = await _homeLaboratoryServices.FillShowHomeLaboratoryRequestResultLaboratorySideViewModel(requestId, User.GetUserId()));
+        var model = await _homeLaboratoryServices.FillShowHomeLaboratoryRequestResultLaboratorySideViewModel(requestId, User.GetUserId());
         if (model == null) return NotFound();
 
         #endregion
