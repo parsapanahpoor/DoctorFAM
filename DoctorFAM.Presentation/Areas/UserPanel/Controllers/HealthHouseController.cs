@@ -312,16 +312,12 @@ public class HealthHouseController : UserBaseController
         return View(await _homeLaboratoryServices.FillHomeLaboratoryInvoiceDetailPage(requestId , User.GetUserId())) ;
     }
 
-    #endregion
-
-    #region Accept Home Laboratory Invoice
-
-    [HttpGet]
-    public async Task<IActionResult> AcceptHomeLaboratoryInvoice(ulong requestId)
+    [HttpPost]
+    public async Task<IActionResult> ShowHomeLaboratoryInvoice(HomeLaboratoryInvoiceUserPanelSideViewModel model)
     {
         #region Accept Request
 
-        var res = await _homeLaboratoryServices.AcceptHomeLaboratoryInvoice(requestId , User.GetUserId());
+        var res = await _homeLaboratoryServices.AcceptHomeLaboratoryInvoice(model, User.GetUserId());
         if (res)
         {
             TempData[SuccessMessage] = "عملیات با موفقیت انجام شده است.";
@@ -374,6 +370,23 @@ public class HealthHouseController : UserBaseController
 
         TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
         return RedirectToAction(nameof(ListOfUserHomeLaboratoryRequest));
+    }
+
+    #endregion
+
+    #region Show Home Laboratory Request Result
+
+    [HttpGet]
+    public async Task<IActionResult> ShowHomeLaboratoryRequestResult(ulong requestId)
+    {
+        #region Show Home Laboratory Request Result
+
+        var model = await _homeLaboratoryServices.FillShowHomeLaboratoryRequestResultLaboratorySideViewModel(requestId, User.GetUserId());
+        if (model == null) return NotFound();
+
+        #endregion
+
+        return View(model);
     }
 
     #endregion

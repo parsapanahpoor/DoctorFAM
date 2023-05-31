@@ -200,7 +200,7 @@
 
                                                                     </td>
                                                                 }
-                                                                @if (!string.IsNullOrEmpty(item.ExperimentName) && !string.IsNullOrEmpty(item.ExperimentImage) )
+                                                                @if (!string.IsNullOrEmpty(item.ExperimentName) && !string.IsNullOrEmpty(item.ExperimentImage))
                                                                 {
                                                                     <td class=" text-center align-items-center">
 
@@ -284,10 +284,23 @@
                                             <input type="text" class="form-control" readonly value="@Model.Patient.Age">
                                         </div>
 
-                                        <div class="form-group col-md-6 col-sm-12">
+                                        <div class="form-group col-md-3 col-sm-12">
                                             <label>@Localizer["بیمه"]</label>
 
                                             <input type="text" class="form-control" readonly value="@Model.Patient.Insurance.Title">
+
+                                        </div>
+
+                                        <div class="form-group col-md-3 col-sm-12">
+                                            <label>@Localizer["بیمه ی تکمیلی"]</label>
+                                            @if (!string.IsNullOrEmpty(Model.SupplementaryInsurance))
+                                            {
+                                                <input type="text" class="form-control" readonly value="@Model.SupplementaryInsurance">
+                                            }
+                                            else
+                                            {
+                                                <input type="text" class="form-control" readonly value="وارد نشده است">
+                                            }
 
                                         </div>
 
@@ -326,11 +339,27 @@
                                     @if (ViewBag.IsThisRequestForThisLaboratory == true)
                                     {
                                         <a asp-action="AcceptHomeLaboratoryRequestFromLaboratory" asp-controller="HomeLaboratory" asp-area="Laboratory" asp-route-requestId="@Model.Request.Id" class="btn btn-primary">@Localizer["نمایش فاکتور"]</a>
+                                        @if (Model.Request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.AcceptFromCustomer)
+                                        {
+                                            <a asp-action="SendingASampler" asp-controller="HomeLaboratory" asp-area="Laboratory" asp-route-requestId="@Model.Request.Id" class="btn btn-primary">@Localizer["اعزام نمونه گیر"]</a>
+                                        }
+
+                                        @if (Model.Request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.DeliveryToCourierAndSending)
+                                        {
+                                            <a asp-action="WaitingForInitialResult" asp-controller="HomeLaboratory" asp-area="Laboratory" asp-route-requestId="@Model.Request.Id" class="btn btn-primary">@Localizer["درحال آماده سازری نتیجه"]</a>
+                                        }
+
+                                        @if (Model.Request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.PreparingTheOrder
+                                            || Model.Request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.FinishService)
+                                        {
+                                            <a asp-action="SendResultForUser" asp-controller="HomeLaboratory" asp-area="Laboratory" asp-route-requestId="@Model.Request.Id" class="btn btn-primary">@Localizer["نتیجه ی آزمایش"]</a>
+                                        }
                                     }
                                     else
                                     {
                                         <a asp-action="AcceptHomeLaboratoryRequestFromLaboratory" asp-controller="HomeLaboratory" asp-area="Laboratory" asp-route-requestId="@Model.Request.Id" class="btn btn-primary">@Localizer["پذیرفتن درخواست"]</a>
                                     }
+
                                 </div>
                             </div>
                         </div>

@@ -8,7 +8,8 @@
     ViewData["Title"] = "ثبت مشخصات متقاضی";
 
      var population = ViewBag.PopulationCovered as List<DoctorFAM.Domain.Entities.PopulationCovered.PopulationCovered>;
-         List<Insurance> insurances = ViewBag.Insurances as List<Insurance>;
+     List<Insurance> insurances = ViewBag.Insurances as List<Insurance>;
+    List<SupplementrayInsurance> supplementaryInsurances = ViewBag.SupplementaryInsurances as List<SupplementrayInsurance>;
 }
 
 @section Styles
@@ -128,7 +129,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="form-group">
                         <span style="color:red;">*</span>
                         <label asp-for="Age" class="control-label"></label>
@@ -136,7 +137,7 @@
                         <span asp-validation-for="Age" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="form-group">
                         <span style="color:red;">*</span>
                         <label asp-for="Gender" class="control-label"></label>
@@ -144,7 +145,7 @@
                         <span asp-validation-for="Gender" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="form-group">
                         <span style="color:red;">*</span>
                         <label asp-for="InsuranceId" class="control-label"></label>
@@ -169,6 +170,32 @@
 
                         </select>
                         <span class="text-danger" asp-validation-for="InsuranceId"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label asp-for="SupplementaryInsuranceId" class="control-label"></label>
+                        <select asp-for="SupplementaryInsuranceId" class="form-control">
+
+                            <option>لطفا بیمه ی تکمیلی مورد نظر را انتخاب کنید</option>
+
+                            @if (supplementaryInsurances != null && supplementaryInsurances.Any())
+                            {
+                                foreach (var item in supplementaryInsurances)
+                                {
+                                    if (Model.SupplementaryInsuranceId == item.Id)
+                                    {
+                                        <option value="@item.Id" selected="selected">@item.Title</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@item.Id">@item.Title</option>
+                                    }
+                                }
+                            }
+
+                        </select>
                     </div>
                 </div>
             </div>

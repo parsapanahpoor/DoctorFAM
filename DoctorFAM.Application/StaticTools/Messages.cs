@@ -1,4 +1,7 @@
-﻿namespace DoctorFAM.Application.StaticTools;
+﻿using DoctorFAM.Domain.Entities.Laboratory;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
+
+namespace DoctorFAM.Application.StaticTools;
 
 public static class Messages
 {
@@ -245,5 +248,26 @@ public static class Messages
             $"شما می توانید در زمان تعیین شده از طریق پیام رسان سلامت دکترفم با پزشک خود ارتباط برقرار کنید . {Environment.NewLine}" +
             $"لینک دسترسی : {link}" +
             $"{Environment.NewLine} {PathTools.SiteFarsiName}";
+    }
+
+    //Sending Sampler From Laboratory
+    public static string SendingSamplerFromLaboratory()
+    {
+        return
+            $"باعرض سلام . {Environment.NewLine}  درخواست آزمایشگاه در منزل شما در مرحله ی ارسال نمونه گیر می باشد . لزا تا زمان فرا رسیدن نمونه گیر در تاریخ و ساعت درخواستی شما شکیبا باشید. {Environment.NewLine} {PathTools.SiteFarsiName}";
+    }
+
+    //Preparing The Order For Home Laboratory Request From Laboratory
+    public static string PreparingTheOrderForHomeLaboratoryRequestFromLaboratory()
+    {
+        return
+            $"باعرض سلام . {Environment.NewLine}  نمونه توسط آزمایشگاه دریافت شده است . لطفا تا اعلام نتیجه توسط آزمایشگاه شکیبا باشید. {Environment.NewLine} {PathTools.SiteFarsiName}";
+    }
+
+    //Finalize Home Laboratory Request Result
+    public static string FinalizeHomeLaboratoryRequestResult()
+    {
+        return
+            $"باعرض سلام . {Environment.NewLine}  نتیجه ی آزمایش شما آماده شده است و توسط روش انتخابی برای شما ارسال گردید. {Environment.NewLine} {PathTools.SiteFarsiName}";
     }
 }
