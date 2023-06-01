@@ -753,43 +753,14 @@ public class DoctorFAMDbContext : Microsoft.EntityFrameworkCore.DbContext
             ParentId = 17
         });
 
-        #endregion
-
-        #region query filter
-
-        modelBuilder.Entity<LocationInfo>().HasQueryFilter(e => e.LanguageId == culture);
-
-        modelBuilder.Entity<CategoryInfo>().HasQueryFilter(e => e.LanguageId == culture);
-
-        modelBuilder.Entity<DoctorsInterestInfo>().HasQueryFilter(e => e.LanguageId == culture);
-
-        modelBuilder.Entity<PharmacyInterestInfo>().HasQueryFilter(e => e.LanguageId == culture);
-
-        modelBuilder.Entity<TVFAMCategoryInfo>().HasQueryFilter(e => e.LanguageId == culture);
-
-        modelBuilder.Entity<RadioFAMCategoryInfo>().HasQueryFilter(e => e.LanguageId == culture);
-
-        modelBuilder.Entity<SpecialtiyInfo>().HasQueryFilter(e => e.LanguageId == culture);
-
-        #endregion
-
-        #region Email Setting Seed Data
-
-        var date = new DateTime(2022, 03, 01);
-
-        modelBuilder.Entity<EmailSetting>().HasData(new EmailSetting
+        modelBuilder.Entity<Role>().HasData(new Role
         {
-            Id = 1,
-            Password = "Reza@83040697",
+            Id = 19,
+            Title = "دندان پزشک",
+            RoleUniqueName = "Dentist",
+            CreateDate = DateTime.Now,
             IsDelete = false,
-            CreateDate = date,
-            IsDefaultEmail = true,
-            DisplayName = "DoctorFAm",
-            From = "maghsoudlou.reza@gmail.com",
-            Smtp = "smtp.gmail.com",
-            EnableSsL = true,
-            Port = 587,
-            UserName = "DoctorFAm"
+            ParentId = null
         });
 
         #endregion
@@ -1734,6 +1705,27 @@ public class DoctorFAMDbContext : Microsoft.EntityFrameworkCore.DbContext
 
         #endregion
 
+        #region Email Setting Seed Data
+
+        var date = new DateTime(2022, 03, 01);
+
+        modelBuilder.Entity<EmailSetting>().HasData(new EmailSetting
+        {
+            Id = 1,
+            Password = "Reza@83040697",
+            IsDelete = false,
+            CreateDate = date,
+            IsDefaultEmail = true,
+            DisplayName = "DoctorFAm",
+            From = "maghsoudlou.reza@gmail.com",
+            Smtp = "smtp.gmail.com",
+            EnableSsL = true,
+            Port = 587,
+            UserName = "DoctorFAm"
+        });
+
+        #endregion
+
         #region Time Stamp
 
         modelBuilder.Entity<OnlineVisitDoctorsAndPatientsReservationDetail>()
@@ -1745,6 +1737,25 @@ public class DoctorFAMDbContext : Microsoft.EntityFrameworkCore.DbContext
                        .IsRowVersion();
 
         #endregion
+
+        #region query filter
+
+        modelBuilder.Entity<LocationInfo>().HasQueryFilter(e => e.LanguageId == culture);
+
+        modelBuilder.Entity<CategoryInfo>().HasQueryFilter(e => e.LanguageId == culture);
+
+        modelBuilder.Entity<DoctorsInterestInfo>().HasQueryFilter(e => e.LanguageId == culture);
+
+        modelBuilder.Entity<PharmacyInterestInfo>().HasQueryFilter(e => e.LanguageId == culture);
+
+        modelBuilder.Entity<TVFAMCategoryInfo>().HasQueryFilter(e => e.LanguageId == culture);
+
+        modelBuilder.Entity<RadioFAMCategoryInfo>().HasQueryFilter(e => e.LanguageId == culture);
+
+        modelBuilder.Entity<SpecialtiyInfo>().HasQueryFilter(e => e.LanguageId == culture);
+
+        #endregion
+
 
         base.OnModelCreating(modelBuilder);
     }
