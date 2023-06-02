@@ -49,6 +49,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         Task<bool> IsExistAnyDoctorOfficeEmployeeByUserId(ulong userId);
 
+        //Get Dentist Organization OwnerId By User Id
+        Task<ulong> GetDentistOrganizationOwnerIdByUserId(ulong userId);
+
         //Is Exist Any Dentist Office Employee By User Id
         Task<bool> IsExistAnyDentistOfficeEmployeeByUserId(ulong userId);
 

@@ -72,6 +72,8 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         Task<List<string>?> GetUserRoleses(ulong userId);
 
+        Task<List<string>?> GetUserRolesesWithAsNoTracking(ulong userId);
+
         #endregion
     }
 }

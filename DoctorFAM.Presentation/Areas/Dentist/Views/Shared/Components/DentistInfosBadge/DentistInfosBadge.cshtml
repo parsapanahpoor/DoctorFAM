@@ -1,0 +1,54 @@
+﻿
+@model string
+
+@if (Model == "NewUser")
+{
+    <li>
+        <a asp-area="Dentist" asp-controller="DentistsInfo" asp-action="PageOfManageDentistInfo">
+            <i class="menu-icon glyphicon glyphicon-education"></i>
+            <span class="menu-text">@SharedLocalizer["اطلاعات دندان پزشک"]</span>
+            <div class="badge badge-warning" id="DentistInfoState">
+                @SharedLocalizer["ثبت نام جدید"]
+            </div>
+        </a>
+    </li>
+}
+
+@if (Model == "WatingForConfirm")
+{
+    <li>
+        <a asp-area="Dentist" asp-controller="DentistsInfo" asp-action="PageOfManageDentistInfo">
+            <i class="menu-icon glyphicon glyphicon-education"></i>
+            <span class="menu-text">@SharedLocalizer["اطلاعات دندان پزشک"]</span>
+            <div class="badge badge-warning" id="DoctorInfoState">
+                @SharedLocalizer["درانتطار"]
+            </div>
+        </a>
+    </li>
+}
+
+@if (Model == "Rejected")
+{
+    <li>
+        <a asp-area="Dentist" asp-controller="DentistsInfo" asp-action="PageOfManageDentistInfo">
+            <i class="menu-icon glyphicon glyphicon-education"></i>
+            <span class="menu-text">@SharedLocalizer["اطلاعات دندان پزشک"]</span>
+            <div class="badge badge-danger" id="DoctorInfoState">
+                @SharedLocalizer["رد شده"]
+            </div>
+        </a>
+    </li>
+}
+
+@if (Model == "Accepted")
+{
+    <li>
+        <a asp-area="Dentist" asp-controller="DentistsInfo" asp-action="PageOfManageDentistInfo">
+            <i class="menu-icon glyphicon glyphicon-education"></i>
+            <span class="menu-text">@SharedLocalizer["اطلاعات دندان پزشک"]</span>
+            <div class="badge badge-success" id="DoctorInfoState">
+                @SharedLocalizer["تایید شده"]
+            </div>
+        </a>
+    </li>
+    }

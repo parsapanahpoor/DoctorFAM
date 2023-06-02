@@ -25,7 +25,7 @@ namespace BusinessPortal.Application.Services.Implementation
         public DoctorFAMDbContext _context { get; set; }
         public IDoctorsService _doctorsService;
 
-        public PermissionService(DoctorFAMDbContext context , IUserService userServie , IDoctorsService doctorsService)
+        public PermissionService(DoctorFAMDbContext context, IUserService userServie, IDoctorsService doctorsService)
         {
             _context = context;
             _userService = userServie;
@@ -161,7 +161,7 @@ namespace BusinessPortal.Application.Services.Implementation
 
         public async Task<FilterRolesViewModel> FilterRoles(FilterRolesViewModel filter)
         {
-            var query = _context.Roles.Include(p=> p.Parent).Where(s => !s.IsDelete).AsQueryable();
+            var query = _context.Roles.Include(p => p.Parent).Where(s => !s.IsDelete).AsQueryable();
 
             #region Filter
 
@@ -305,7 +305,7 @@ namespace BusinessPortal.Application.Services.Implementation
             //Delete User Role 
             var userRoles = await _context.UserRoles.Where(p => !p.IsDelete && p.RoleId == role.Id).ToListAsync();
 
-            if (userRoles != null || userRoles.Any()) 
+            if (userRoles != null || userRoles.Any())
             {
                 foreach (var item in userRoles)
                 {
@@ -392,6 +392,112 @@ namespace BusinessPortal.Application.Services.Implementation
             if (userRoles.Any() && userRoles.Contains("Labratory"))
             {
                 returnModel.Add("Labratory");
+            }
+
+            #endregion
+
+            return returnModel;
+        }
+
+        public async Task<List<string>?> GetUserRolesesWithAsNoTracking(ulong userId)
+        {
+            List<string> returnModel = new List<string>();
+
+            #region Get User 
+
+            if (await _context.Users.AsNoTracking().AnyAsync(p => !p.IsDelete && p.Id == userId && p.IsAdmin))
+            {
+                returnModel.Add("Admin");
+            }
+
+            #endregion
+
+            #region Get All Of User Roles
+
+            List<ulong>? userSelectedRoles = await _context.UserRoles
+                                          .AsNoTracking()
+                                          .Where(p => p.UserId == userId && !p.IsDelete)
+                                          .Select(p => p.RoleId)
+                                          .ToListAsync();
+
+            if (userSelectedRoles is not null && userSelectedRoles.Any())
+            {
+                foreach (var roleId in userSelectedRoles)
+                {
+                    string? roleName = await _context.Roles
+                                                     .AsNoTracking()
+                                                     .Where(p => !p.IsDelete && p.Id == roleId)
+                                                     .Select(p => p.RoleUniqueName)
+                                                     .FirstOrDefaultAsync();
+
+                    if (!string.IsNullOrEmpty(roleName))
+                    {
+                        #region check user Role
+
+                        if (roleName == "Admin")
+                        {
+                            returnModel.Add("Admin");
+                        }
+
+                        if (roleName == "Doctor")
+                        {
+                            returnModel.Add("Doctor");
+                        }
+
+                        if (roleName == "Support")
+                        {
+                            returnModel.Add("Support");
+                        }
+
+                        if (roleName == "Seller")
+                        {
+                            returnModel.Add("Seller");
+                        }
+
+                        if (roleName == "Pharmacy")
+                        {
+                            returnModel.Add("Pharmacy");
+                        }
+
+                        if (roleName == "Nurse")
+                        {
+                            returnModel.Add("Nurse");
+                        }
+
+                        if (roleName == "Consultant")
+                        {
+                            returnModel.Add("Consultant");
+                        }
+
+                        if (roleName == "DoctorOfficeEmployee")
+                        {
+                            returnModel.Add("DoctorOfficeEmployee");
+                        }
+
+                        if (roleName == "LaboratoryOfficeEmployee")
+                        {
+                            returnModel.Add("LaboratoryOfficeEmployee");
+                        }
+
+                        if (roleName == "Labratory")
+                        {
+                            returnModel.Add("Labratory");
+                        }
+
+                        if (roleName == "Dentist")
+                        {
+                            returnModel.Add("Dentist");
+                        }
+
+                        if (roleName == "DentistOfficeEmployee")
+                        {
+                            returnModel.Add("DentistOfficeEmployee");
+                        }
+
+                        #endregion
+                    }
+                }
+
             }
 
             #endregion

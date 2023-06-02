@@ -38,7 +38,9 @@ namespace DoctorFAM.Data.Repository
         //Get Resume By User Id 
         public async Task<Resume?> GetResumeByUserId(ulong userId)
         {
-            return await _context.Resumes.FirstOrDefaultAsync(p => !p.IsDelete && p.UserId == userId);
+            return await _context.Resumes
+                                 .AsNoTracking()
+                                 .FirstOrDefaultAsync(p => !p.IsDelete && p.UserId == userId);
         }
 
         //Add Resume To Data Base 

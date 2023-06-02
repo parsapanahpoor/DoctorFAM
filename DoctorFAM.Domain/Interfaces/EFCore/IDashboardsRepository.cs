@@ -1,5 +1,8 @@
-﻿using DoctorFAM.Domain.ViewModels.Admin.Dashboard;
+﻿#region Usings
+
+using DoctorFAM.Domain.ViewModels.Admin.Dashboard;
 using DoctorFAM.Domain.ViewModels.Consultant.Dashboard;
+using DoctorFAM.Domain.ViewModels.Dentist.Dashboard;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Dashbaord;
 using DoctorFAM.Domain.ViewModels.Nurse.NurseDashboard;
 using DoctorFAM.Domain.ViewModels.Supporter;
@@ -10,45 +13,52 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DoctorFAM.Domain.Interfaces
+#endregion
+
+namespace DoctorFAM.Domain.Interfaces;
+
+public interface IDashboardsRepository
 {
-    public interface IDashboardsRepository
-    {
-        #region Supporter Dashboard
+    #region Supporter Dashboard
 
-        Task<SuppoeterDashboardViewModel> FillSuppoeterDashboardViewModel();
+    Task<SuppoeterDashboardViewModel> FillSuppoeterDashboardViewModel();
 
-        #endregion
+    #endregion
 
-        #region Admin  Dashboard
+    #region Admin  Dashboard
 
-        Task<AdminDashboardViewModel> FillAdminDashboardViewModel();
+    Task<AdminDashboardViewModel> FillAdminDashboardViewModel();
 
-        #endregion
+    #endregion
 
-        #region User Panel Dashboard 
+    #region User Panel Dashboard 
 
-        Task<HomeDashboardViewModel> FillUserPanelDashboardViewModel(ulong userId);
+    Task<HomeDashboardViewModel> FillUserPanelDashboardViewModel(ulong userId);
 
-        #endregion
+    #endregion
 
-        #region Doctor Panel 
+    #region Doctor Panel 
 
-        Task<DoctorPanelDashboardViewModel?> FillDoctorPanelDashboardViewModel(ulong userId);
+    Task<DoctorPanelDashboardViewModel?> FillDoctorPanelDashboardViewModel(ulong userId);
 
-        #endregion
+    #endregion
 
-        #region Nurse Panel 
+    #region Nurse Panel 
 
-        //Fill Nurse Panel Dashboard
-        Task<NurseDashboardViewModel> FillNurseDashboardViewModel(ulong nurseId);
+    //Fill Nurse Panel Dashboard
+    Task<NurseDashboardViewModel> FillNurseDashboardViewModel(ulong nurseId);
 
-        #endregion
+    #endregion
 
-        #region Consultant Panel 
+    #region Consultant Panel 
 
-        Task<ConsultantPanelDashboardViewModel?> FillConsultantPanelDashboardViewModel(ulong userId);
+    Task<ConsultantPanelDashboardViewModel?> FillConsultantPanelDashboardViewModel(ulong userId);
 
-        #endregion
-    }
+    #endregion
+
+    #region Dentist Panel 
+
+    Task<DentistPanelDashboardViewModel?> FillDentistPanelDashboardViewModel(ulong userId);
+
+    #endregion
 }
