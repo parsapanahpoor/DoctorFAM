@@ -52,6 +52,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Diagnostics.Metrics;
 using System.Globalization;
 using DoctorFAM.Domain.Entities.SendSMS.FromDoctrors;
+using DoctorFAM.Domain.Entities.Dentist;
 
 
 #endregion
@@ -164,6 +165,14 @@ public class DoctorFAMDbContext : Microsoft.EntityFrameworkCore.DbContext
     #region Pharmacy
 
     public DbSet<HomePharmacyRequestDetail> HomePharmacyRequestDetails { get; set; }
+
+    #endregion
+
+    #region Dentist
+
+    public DbSet<Dentist> Dentist { get; set; }
+
+    public DbSet<DentistsInfo> DentistInfo { get; set; }
 
     #endregion
 

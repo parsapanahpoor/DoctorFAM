@@ -36,6 +36,9 @@
 	<ItemGroup>
 		<Folder Include="Areas\Admin\Data\" />
 		<Folder Include="Areas\Admin\Models\" />
+		<Folder Include="Areas\Dentist\Data\" />
+		<Folder Include="Areas\Dentist\Models\" />
+		<Folder Include="Areas\Dentist\Views\" />
 		<Folder Include="Areas\Laboratory\Data\" />
 		<Folder Include="Areas\Laboratory\Models\" />
 		<Folder Include="Areas\Market\Data\" />

@@ -85,6 +85,9 @@ public interface IUserService
     //Register Labratory
     Task LabratoryConsultant(string mobile);
 
+    //Register Dentist
+    Task DentistConsultant(string mobile);
+
     Task RegisterDoctors(string mobile);
 
     Task RegisterPharmacy(string mobile);

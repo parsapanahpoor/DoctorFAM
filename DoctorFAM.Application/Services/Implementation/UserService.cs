@@ -359,6 +359,9 @@ public class UserService : IUserService
 
             //If User Select pharmacy Role While User Has pharmacy Role
             if (roleName == "pharmacy" && userRoles.Contains(6)) return false;
+
+            //If User Select Dentist Role While User Has Dentist Role
+            if (roleName == "Dentist" && userRoles.Contains(19)) return false;
         }
 
         #endregion
@@ -431,6 +434,18 @@ public class UserService : IUserService
             var userRole = new UserRole()
             {
                 RoleId = 6,
+                UserId = user.Id
+            };
+
+            await _userRepository.AddUserRole(userRole);
+        }
+
+        //Add Dentist Role To The User
+        if (roleName == "Dentist")
+        {
+            var userRole = new UserRole()
+            {
+                RoleId = 19,
                 UserId = user.Id
             };
 
@@ -664,6 +679,30 @@ public class UserService : IUserService
         var userRole = new UserRole()
         {
             RoleId = 16,
+            UserId = user.Id
+        };
+
+        await _context.UserRoles.AddAsync(userRole);
+
+        await _context.SaveChangesAsync();
+
+        #endregion
+    }
+
+    //Register Dentist
+    public async Task DentistConsultant(string mobile)
+    {
+        #region Get User By Mobile
+
+        var user = await GetUserByMobile(mobile);
+
+        #endregion
+
+        #region Add Dentist Role To User
+
+        var userRole = new UserRole()
+        {
+            RoleId = 19,
             UserId = user.Id
         };
 

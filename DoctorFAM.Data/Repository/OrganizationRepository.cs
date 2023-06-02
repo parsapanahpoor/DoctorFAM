@@ -168,6 +168,21 @@ namespace DoctorFAM.Data.Repository
                                     .AnyAsync(p => p.UserId == userId && !p.IsDelete && p.Organization.OrganizationType == Domain.Enums.Organization.OrganizationType.DoctorOffice);
         }
 
+        //Is Exist Any Dentist Office Employee By User Id
+        public async Task<bool> IsExistAnyDentistOfficeEmployeeByUserId(ulong userId)
+        {
+            ulong? organizationId = await _context.OrganizationMembers.AsNoTracking()
+                                                             .Where(p => !p.IsDelete && p.UserId == userId)
+                                                             .Select(p=> p.OrganizationId)
+                                                             .FirstOrDefaultAsync();
+
+            //If User Is Not Exist
+            if(organizationId == null || organizationId == 0) return false;
+
+            return await _context.Organizations.AsNoTracking()
+                                    .AnyAsync(p => !p.IsDelete && p.Id == organizationId && p.OrganizationType == Domain.Enums.Organization.OrganizationType.DentistOffice);
+        }
+
         //Check Is Exist Any Nurse By This User Id
         public async Task<bool> IsExistAnyNurseByUserId(ulong userId)
         {
