@@ -1,8 +1,11 @@
 ﻿#region Usings
 
 using DoctorFAM.Domain.Entities.Dentist;
+using DoctorFAM.Domain.ViewModels.Admin.Dentist;
+using DoctorFAM.Domain.ViewModels.Dentist.DentistsInfo;
 using DoctorFAM.Domain.ViewModels.Dentist.NavBar;
 using DoctorFAM.Domain.ViewModels.Dentist.SideBar;
+using Microsoft.AspNetCore.Http;
 
 #endregion
 
@@ -29,6 +32,25 @@ public interface IDentistService
 
     //Get Doctors Information By UserId
     Task<DentistsInfo?> GetDentistsInformationByUserId(ulong userId);
+
+    //Fill Manage Dentists Info ViewModel
+    Task<ManageDentistsInfoViewModel?> FillManageDentistsInfoViewModel(ulong userId);
+
+    //Get Dentist Id By User Id
+    Task<ulong> GetDentistIdByUserId(ulong userId);
+
+    //Get List Of Dentist Skills By Dentist Id
+    Task<List<DentistsSkills>> GetListOfDentistSkillsByDentistUserId(ulong dentistUserID);
+
+    //Add Or Edit Dentist Info Dentist Panel 
+    Task<AddOrEditDentitstInfoResult> AddOrEditDentistInfoDentistsPanel(ManageDentistsInfoViewModel model, IFormFile? MediacalFile, IFormFile? UserAvatar);
+
+    #endregion
+
+    #region Admin Side 
+
+    //Get List Of Dentist For Show Admin Panel 
+    Task<List<ListOfDentistAdminSideViewModel>?> GetListOfDentistForShowAdminPanel();
 
     #endregion
 }

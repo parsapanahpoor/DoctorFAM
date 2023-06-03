@@ -1,9 +1,11 @@
 ﻿#region Usings
 
 using DoctorFAM.Application.Extensions;
+using DoctorFAM.Application.Interfaces;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.Interfaces.EFCore;
+using DoctorFAM.Domain.ViewModels.Dentist.DentistsInfo;
 using DoctorFAM.Web.Areas.Dentist.ActionFilterAttributes;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,11 +20,13 @@ public class DentistsInfoController : DentistBaseController
 
     private readonly IDentistService _dentistService;
     private readonly IOrganizationService _organizationService;
+    private readonly ILocationService _locationService;
 
-    public DentistsInfoController(IDentistService dentistService, IOrganizationService organizationService)
+    public DentistsInfoController(IDentistService dentistService, IOrganizationService organizationService , ILocationService locationService)
     {
         _dentistService = dentistService;
         _organizationService = organizationService;
+        _locationService = locationService;
     }
 
     #endregion
@@ -50,8 +54,7 @@ public class DentistsInfoController : DentistBaseController
     {
         #region Fill Model 
 
-        var model = await _doctorService.FillManageDoctorsInfoViewModel(User.GetUserId());
-
+        var model = await _dentistService.FillManageDentistsInfoViewModel(User.GetUserId());
         if (model == null) return NotFound();
 
         ViewData["Countries"] = await _locationService.GetAllCountries();
@@ -68,11 +71,116 @@ public class DentistsInfoController : DentistBaseController
     }
 
     [HttpPost, ValidateAntiForgeryToken]
-    public async Task<IActionResult> ManageDentistsInfo(ManageDoctorsInfoViewModel model, IFormFile? MediacalFile, IFormFile? UserAvatar)
+    public async Task<IActionResult> ManageDentistsInfo(ManageDentistsInfoViewModel model, IFormFile? MediacalFile, IFormFile? UserAvatar)
     {
+        #region Model State Validation
+
+        if (!ModelState.IsValid)
+        {
+            #region Fill Model 
+
+            var returnModel1 = await _dentistService.FillManageDentistsInfoViewModel(User.GetUserId());
+            if (returnModel1 == null) return NotFound();
+
+            ViewData["Countries"] = await _locationService.GetAllCountries();
+
+            if (returnModel1.CityId.HasValue && returnModel1.StateId.HasValue && returnModel1.CountryId.HasValue)
+            {
+                ViewData["States"] = await _locationService.GetStateChildren(returnModel1.CountryId.Value);
+                ViewData["Cities"] = await _locationService.GetStateChildren(returnModel1.StateId.Value);
+            }
+
+            #endregion
+
+            TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+            return View(returnModel1);
+        }
+
+        if (!string.IsNullOrEmpty(model.WorkAddress) && (!model.CountryId.HasValue || !model.StateId.HasValue || !model.CityId.HasValue))
+        {
+            #region Fill Model 
+
+            var returnModel2 = await _dentistService.FillManageDentistsInfoViewModel(User.GetUserId());
+            if (returnModel2 == null) return NotFound();
+
+            ViewData["Countries"] = await _locationService.GetAllCountries();
+
+            if (returnModel2.CityId.HasValue && returnModel2.StateId.HasValue && returnModel2.CountryId.HasValue)
+            {
+                ViewData["States"] = await _locationService.GetStateChildren(returnModel2.CountryId.Value);
+                ViewData["Cities"] = await _locationService.GetStateChildren(returnModel2.StateId.Value);
+            }
+
+            #endregion
+
+            TempData[ErrorMessage] = "خواهشمندیم اطلاعات آدرس را به طور کامل وارد نمایید.";
+            return View(returnModel2);
+        }
+
+        if ((model.CountryId.HasValue || model.CityId.HasValue || model.StateId.HasValue) && string.IsNullOrEmpty(model.WorkAddress))
+        {
+            #region Fill Model 
+
+            var returnModel3 = await _dentistService.FillManageDentistsInfoViewModel(User.GetUserId());
+            if (returnModel3 == null) return NotFound();
+
+            ViewData["Countries"] = await _locationService.GetAllCountries();
+
+            if (returnModel3.CityId.HasValue && returnModel3.StateId.HasValue && returnModel3.CountryId.HasValue)
+            {
+                ViewData["States"] = await _locationService.GetStateChildren(returnModel3.CountryId.Value);
+                ViewData["Cities"] = await _locationService.GetStateChildren(returnModel3.StateId.Value);
+            }
+
+            #endregion
+
+            TempData[ErrorMessage] = "خواهشمندیم اطلاعات آدرس را به طور کامل وارد نمایید.";
+            return View(returnModel3);
+        }
+
+        #endregion
+
+        #region Add Or Edit Dentist Information
+
+        var result = await _dentistService.AddOrEditDentistInfoDentistsPanel(model, MediacalFile, UserAvatar );
+
+        switch (result)
+        {
+            case AddOrEditDentitstInfoResult.FileNotUploaded:
+                TempData[ErrorMessage] = "لطفا مدرک تحصیلی خود را آپلود کنید.";
+                break;
+
+            case AddOrEditDentitstInfoResult.Faild:
+                TempData[ErrorMessage] = "عملیات شکست خورده است";
+                return RedirectToAction(nameof(ManageDentistsInfo));
+
+            case AddOrEditDentitstInfoResult.Success:
+                TempData[SuccessMessage] = "عملیات با موفقیت";
+                return RedirectToAction("Index", "Home", new { area = "Dentist" });
+
+            case AddOrEditDentitstInfoResult.NotValidImage:
+                TempData[ErrorMessage] = "تصویر معتبر نیست";
+                break;
+
+            case AddOrEditDentitstInfoResult.NationalId:
+                TempData[ErrorMessage] = "شناسه ملی معتبر نیست";
+                break;
+
+            case AddOrEditDentitstInfoResult.NotValidNationalId:
+                TempData[ErrorMessage] = "ملی وارد شده در حال حاضر در سایت موجود است";
+                break;
+
+            case AddOrEditDentitstInfoResult.NotValidEmail:
+                TempData[ErrorMessage] = "ایمیل وارد شده از قبل در سایت موجود است";
+                break;
+        }
+
+        #endregion
+
         #region Fill Model 
 
-        var returnModel = await _doctorService.FillManageDoctorsInfoViewModel(User.GetUserId());
+        var returnModel = await _dentistService.FillManageDentistsInfoViewModel(User.GetUserId());
+        if (returnModel == null) return NotFound();
 
         ViewData["Countries"] = await _locationService.GetAllCountries();
 
@@ -82,86 +190,10 @@ public class DentistsInfoController : DentistBaseController
             ViewData["Cities"] = await _locationService.GetStateChildren(returnModel.StateId.Value);
         }
 
-        if (returnModel == null) return NotFound();
-
-        #endregion
-
-        #region Erorr
-
-        //If Users Id Are Confilited with each other 
-        if (model.UserId != returnModel.UserId)
-        {
-            TempData[ErrorMessage] = "اطلاعات وارد شده با یکدیگر مغایرت دارند ";
-            return View(returnModel);
-        }
-
-        #endregion
-
-        #region Model State Validation
-
-        if (!ModelState.IsValid)
-        {
-            TempData[ErrorMessage] = _sharedLocalizer["The input values ​​are not valid"].Value;
-            return View(returnModel);
-        }
-
-        if (!string.IsNullOrEmpty(model.WorkAddress) && (!model.CountryId.HasValue || !model.StateId.HasValue || !model.CityId.HasValue))
-        {
-            TempData[ErrorMessage] = _sharedLocalizer["You Must enter All Of Address Fields"].Value;
-            return View(returnModel);
-        }
-
-        if ((model.CountryId.HasValue || model.CityId.HasValue || model.StateId.HasValue) && string.IsNullOrEmpty(model.WorkAddress))
-        {
-            TempData[ErrorMessage] = _sharedLocalizer["You Must enter All Of Address Fields"].Value;
-            return View(returnModel);
-        }
-
-        if ((model.CountryId.HasValue || model.CityId.HasValue || model.StateId.HasValue) && string.IsNullOrEmpty(model.WorkAddress))
-        {
-            TempData[ErrorMessage] = _sharedLocalizer["You Must enter All Of Address Fields"].Value;
-            return View(returnModel);
-        }
-
-        #endregion
-
-        #region Add Or Edit Doctors Information
-
-        var result = await _doctorService.AddOrEditDoctorInfoDoctorsPanel(model, MediacalFile, UserAvatar);
-
-        switch (result)
-        {
-            case AddOrEditDoctorInfoResult.FileNotUploaded:
-                TempData[ErrorMessage] = _sharedLocalizer["Please upload your educational certificate or license"].Value;
-                break;
-
-            case AddOrEditDoctorInfoResult.Faild:
-                TempData[ErrorMessage] = _sharedLocalizer["The operation has failed"].Value;
-                return RedirectToAction("ManageDoctorsInfo", "DoctorsInfo", new { area = "Doctor" });
-
-            case AddOrEditDoctorInfoResult.Success:
-                TempData[SuccessMessage] = _sharedLocalizer["Operation Successfully"].Value;
-                return RedirectToAction("Index", "Home", new { area = "Doctor" });
-
-            case AddOrEditDoctorInfoResult.NotValidImage:
-                TempData[ErrorMessage] = _sharedLocalizer["Image Is Not Valid ."].Value;
-                break;
-
-            case AddOrEditDoctorInfoResult.NationalId:
-                TempData[ErrorMessage] = _sharedLocalizer["National Id Is Not Valid"].Value;
-                break;
-
-            case AddOrEditDoctorInfoResult.NotValidNationalId:
-                TempData[ErrorMessage] = _sharedLocalizer["The entered National is already available on the site"].Value;
-                break;
-
-            case AddOrEditDoctorInfoResult.NotValidEmail:
-                TempData[ErrorMessage] = _sharedLocalizer["The entered email is already available on the site"].Value;
-                break;
-        }
-
         #endregion
 
         return View(returnModel);
     }
+
+    #endregion
 }

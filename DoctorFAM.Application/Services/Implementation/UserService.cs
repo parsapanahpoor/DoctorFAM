@@ -903,6 +903,12 @@ public class UserService : IUserService
         await _context.SaveChangesAsync();
     }
 
+    //Update User Without Save Changes
+    public async Task UpdateUserWithoutSaveChanges(User user)
+    {
+        _context.Users.Update(user);
+    }
+
     //Filter User In Modal
     public async Task<Domain.ViewModels.UserPanel.FilterUserViewModel> FilterUsersInModal(Domain.ViewModels.UserPanel.FilterUserViewModel filter)
     {

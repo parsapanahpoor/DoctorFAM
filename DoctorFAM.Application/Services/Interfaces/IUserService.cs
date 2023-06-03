@@ -150,6 +150,9 @@ public interface IUserService
     //Update User 
     Task UpdateUser(User user);
 
+    //Update User Without Save Changes
+    Task UpdateUserWithoutSaveChanges(User user);
+
     Task<FilterUserViewModel> FilterUsers(FilterUserViewModel filter);
 
     Task<bool> ChangePasswordInAdmin(ChangePasswordInAdminViewModel passwordViewModel);
