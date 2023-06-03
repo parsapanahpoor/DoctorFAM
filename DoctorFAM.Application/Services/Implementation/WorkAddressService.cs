@@ -39,6 +39,11 @@ namespace DoctorFAM.Application.Services.Implementation
             return await _workAddress.GetUserWorkAddressById(userid);
         }
 
+        public async Task<WorkAddress?> GetUserWorkAddressByIdWithAsNoTracking(ulong userid)
+        {
+            return await _workAddress.GetUserWorkAddressByIdWithAsNoTracking(userid);
+        }
+        
         public async Task UpdateUserWorkAddress(WorkAddress workAddress)
         {
             await _workAddress.UpdateUserWorkAddress(workAddress);

@@ -41,6 +41,13 @@ namespace DoctorFAM.Data.Repository
             return await  _context.WorkAddresses.FirstOrDefaultAsync(p => !p.IsDelete && p.UserId == userid);
         }
 
+        public async Task<WorkAddress?> GetUserWorkAddressByIdWithAsNoTracking(ulong userid)
+        {
+            return await _context.WorkAddresses
+                                 .AsNoTracking()
+                                 .FirstOrDefaultAsync(p => !p.IsDelete && p.UserId == userid);
+        }
+
         public async Task UpdateUserWorkAddress(WorkAddress workAddress)
         {
             _context.WorkAddresses.Update(workAddress);

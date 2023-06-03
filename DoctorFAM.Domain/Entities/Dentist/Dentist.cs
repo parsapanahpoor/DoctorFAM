@@ -14,5 +14,4 @@ public sealed class Dentist : BaseEntity
     public ulong UserId { get; set; }
 
     #endregion
-
 }

@@ -80,6 +80,12 @@ namespace DoctorFAM.Application.Services.Implementation
             return await _organization.GetDoctorOrganizationByUserId(userId);
         }
 
+        //Get Dentist Organization By Member User Id
+        public async Task<Organization?> GetDentistOrganizationByUserId(ulong userId)
+        {
+            return await _organization.GetDentistOrganizationByUserId(userId);
+        }
+
         //Get Nurse Organization By User Id
         public async Task<Organization?> GetNurseOrganizationByUserId(ulong userId)
         {

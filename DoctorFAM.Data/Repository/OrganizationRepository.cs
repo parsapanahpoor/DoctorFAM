@@ -5,6 +5,7 @@ using DoctorFAM.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -112,6 +113,29 @@ namespace DoctorFAM.Data.Repository
                                 .FirstOrDefaultAsync(p => !p.IsDelete && p.UserId == userId && p.Organization.OrganizationType == Domain.Enums.Organization.OrganizationType.DoctorOffice);
 
             return await _context.Organizations.FirstOrDefaultAsync(p => p.Id == member.OrganizationId && !p.IsDelete && p.OrganizationType == Domain.Enums.Organization.OrganizationType.DoctorOffice);
+        }
+
+        //Get Dentist Organization By Member User Id
+        public async Task<Organization?> GetDentistOrganizationByUserId(ulong userId)
+        {
+            List<ulong>? organizationIds = await _context.OrganizationMembers
+                                                         .AsNoTracking()
+                                                         .Where(p => !p.IsDelete && p.UserId == userId)
+                                                         .Select(p => p.OrganizationId)
+                                                         .ToListAsync();
+
+            if (organizationIds is not null && organizationIds.Any())
+            {
+                foreach (var organizationId in organizationIds)
+                {
+                    if (await _context.Organizations.AsNoTracking().AnyAsync(p=> !p.IsDelete && p.Id == organizationId && p.OrganizationType == Domain.Enums.Organization.OrganizationType.DentistOffice))
+                    {
+                        return await _context.Organizations.FirstOrDefaultAsync(p => !p.IsDelete && p.Id == organizationId && p.OrganizationType == Domain.Enums.Organization.OrganizationType.DentistOffice);
+                    }
+                }
+            }
+
+            return null;
         }
 
         //Get Dentist Organization OwnerId By User Id

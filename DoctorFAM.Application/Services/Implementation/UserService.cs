@@ -179,6 +179,14 @@ public class UserService : IUserService
             .FirstOrDefaultAsync(s => s.Id == userId && !s.IsDelete);
     }
 
+    //Get User By Id With As No Tracking
+    public async Task<User?> GetUserByIdWithAsNoTracking(ulong userId)
+    {
+        return await _context.Users
+                             .AsNoTracking()
+                             .FirstOrDefaultAsync(s => s.Id == userId && !s.IsDelete);
+    }
+
     //Get User Avatar Name By User Id
     public async Task<string?> GetUserImageNameByUserId(ulong userId)
     {

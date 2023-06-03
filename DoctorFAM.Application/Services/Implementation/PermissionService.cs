@@ -589,6 +589,22 @@ namespace BusinessPortal.Application.Services.Implementation
             return false;
         }
 
+        //Check Is User Has Permission To Dentist Panel 
+        public async Task<bool> IsUserDentistOrDentistEmployee(ulong userId)
+        {
+            var result = await GetUserRoleses(userId);
+
+            if (result == null || !result.Any()) return false;
+
+            if (result.Contains("Admin")) return true;
+
+            if (result.Contains("Dentist")) return true;
+
+            if (result.Contains("DoctorOfficeEmployee")) return true;
+
+            return false;
+        }
+
         public async Task<bool> IsUserDoctorOrDoctorEmployee(ulong userId)
         {
             var result = await GetUserRoleses(userId);

@@ -21,6 +21,8 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         Task<WorkAddress?> GetLastWorkAddressByUserId(ulong userId);
 
+        Task<WorkAddress?> GetUserWorkAddressByIdWithAsNoTracking(ulong userid);
+
         #endregion
     }
 }

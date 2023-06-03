@@ -35,6 +35,9 @@ namespace DoctorFAM.Domain.Interfaces
 
         Task<Organization?> GetDoctorOrganizationByUserId(ulong userId);
 
+        //Get Dentist Organization By Member User Id
+        Task<Organization?> GetDentistOrganizationByUserId(ulong userId);
+
         //Get Dentist Organization OwnerId By User Id
         Task<ulong> GetDentistOrganizationOwnerIdByUserId(ulong userId);
 

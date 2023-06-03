@@ -174,6 +174,8 @@ public class DoctorFAMDbContext : Microsoft.EntityFrameworkCore.DbContext
 
     public DbSet<DentistsInfo> DentistInfo { get; set; }
 
+    public DbSet<DentistsSkills> DentistsSkills { get; set; }
+
     #endregion
 
     #region Doctors

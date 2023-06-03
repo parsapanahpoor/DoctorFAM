@@ -110,5 +110,21 @@ public class DentistRepoistory : IDentistRepoistory
         return model;
     }
 
+    //Is Exist Any Dentist Info By UserId
+    public async Task<bool> IsExistAnyDentistInfoByUserId(ulong userId)
+    {
+        return await _context.DentistInfo
+                             .AsNoTracking()
+                             .AnyAsync(p => !p.IsDelete && p.UserId == userId);
+    }
+
+    //Get Doctors Information By UserId
+    public async Task<DentistsInfo?> GetDentistsInformationByUserId(ulong userId)
+    {
+        return await _context.DentistInfo
+                             .AsNoTracking() 
+                             .FirstOrDefaultAsync(p => p.UserId == userId && !p.IsDelete);
+    }
+
     #endregion
 }

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace DoctorFAM.Web.Areas.Dentist.ActionFilterAttributes;
 
-public class CheckUserHasPermission : ActionFilterAttribute
+public class IsUserDentist : ActionFilterAttribute
 {
     public override void OnActionExecuting(ActionExecutingContext context)
     {
@@ -16,11 +16,11 @@ public class CheckUserHasPermission : ActionFilterAttribute
 
         base.OnActionExecuting(context);
 
-        var hasUserAnyRole = service.IsUserDentistOrDentistEmployee(context.HttpContext.User.GetUserId()).Result;
+        var hasUserAnyRole = service.IsUserDentist(context.HttpContext.User.GetUserId()).Result;
 
         if (!hasUserAnyRole)
         {
-            context.HttpContext.Response.Redirect("/");
+            context.HttpContext.Response.Redirect("/Dentist/Home/Index?employeeHasNotPermission=true");
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿#region Usings
 
+using DoctorFAM.Domain.Entities.Dentist;
 using DoctorFAM.Domain.ViewModels.Dentist.NavBar;
 using DoctorFAM.Domain.ViewModels.Dentist.SideBar;
 
@@ -22,6 +23,12 @@ public interface IDentistService
 
     //Fill Dentist Side Bar Panel 
     Task<DentistSideBarViewModel> GetDentistSideBarInfo(ulong userId);
+
+    //Is Exist Any Dentist Info By UserId
+    Task<bool> IsExistAnyDentistInfoByUserId(ulong userId);
+
+    //Get Doctors Information By UserId
+    Task<DentistsInfo?> GetDentistsInformationByUserId(ulong userId);
 
     #endregion
 }

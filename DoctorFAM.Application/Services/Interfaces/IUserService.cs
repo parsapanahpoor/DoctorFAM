@@ -44,6 +44,9 @@ public interface IUserService
 
     Task<User?> GetUserById(ulong userId);
 
+    //Get User By Id With As No Tracking
+    Task<User?> GetUserByIdWithAsNoTracking(ulong userId);
+
     //Get User Avatar Name By User Id
     Task<string?> GetUserImageNameByUserId(ulong userId);
 

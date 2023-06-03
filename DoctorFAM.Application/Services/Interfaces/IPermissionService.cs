@@ -57,6 +57,9 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Check Is User Has Permission To Dentist Panel 
         Task<bool> IsUserDentist(ulong userId);
 
+        //Check Is User Has Permission To Dentist Panel 
+        Task<bool> IsUserDentistOrDentistEmployee(ulong userId);
+
         Task<bool> IsUserPharmacy(ulong userId);
 
         Task<bool> IsUserSupporter(ulong userId);

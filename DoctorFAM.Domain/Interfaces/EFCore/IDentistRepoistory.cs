@@ -24,5 +24,11 @@ public interface IDentistRepoistory
     //Fill Dentist Side Bar Panel 
     Task<DentistSideBarViewModel> GetDentistSideBarInfo(ulong userId);
 
+    //Is Exist Any Dentist Info By UserId
+    Task<bool> IsExistAnyDentistInfoByUserId(ulong userId);
+
+    //Get Doctors Information By UserId
+    Task<DentistsInfo?> GetDentistsInformationByUserId(ulong userId);
+
     #endregion
 }
