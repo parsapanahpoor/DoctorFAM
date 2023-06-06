@@ -121,7 +121,7 @@
                                 <li class="nav-item " data-toggle="hover">
                                     <a class="nav-link " href="/Home/ContactUs"> تماس با ما </a>
                                 </li>
-                               
+
                                 <li class="nav-item " data-toggle="hover">
 
                                     <a class="nav-link active" href="/Home/SiteGuid"> <span>راهنمای سامانه</span> </a>
@@ -235,6 +235,7 @@
                                                                 <a asp-action="Index" asp-area="UserPanel" asp-controller="Home" class="dropdown-item dropdown-itemuserpanel">ورود به صفحه شخصی</a>
 
                                                                 <a asp-action="Index" asp-area="Doctor" asp-controller="Home" class="dropdown-item ">  پنل پزشک</a>
+                                                                <a asp-action="Index" asp-area="Dentist" asp-controller="Home" class="dropdown-item ">  پنل دندان پزشک</a>
                                                                 <a asp-action="Index" asp-area="Nurse" asp-controller="Home" class="dropdown-item "> پنل پرستار</a>
                                                                 <a asp-action="Index" asp-area="Laboratory" asp-controller="Home" class="dropdown-item ">  پنل آزمایشگاه</a>
                                                                 <a asp-action="Index" asp-area="Pharmacy" asp-controller="Home" class="dropdown-item ">  پنل داروخانه</a>
@@ -304,6 +305,16 @@
                                                                 @if (ViewBag.Consultant == true)
                                                                 {
                                                                     <a asp-action="Index" asp-area="Consultant" asp-controller="Home" class="dropdown-item "> پنل مشاور</a>
+                                                                }
+
+                                                                @if (ViewBag.Dentist == true)
+                                                                {
+                                                                    <a asp-action="Index" asp-area="Dentist" asp-controller="Home" class="dropdown-item ">  پنل دندان پزشک</a>
+                                                                }
+
+                                                                @if (ViewBag.DentistOfficeEmployee == true)
+                                                                {
+                                                                    <a asp-action="Index" asp-area="Dentist" asp-controller="Home" class="dropdown-item ">  پنل دندان پزشک</a>
                                                                 }
 
                                                                 <a asp-action="Index" asp-area="Chatroom" asp-controller="Home" class="dropdown-item dropdown-itemuserpanel" style="color: green;">ورود به پیام رسان</a>

@@ -1,0 +1,114 @@
+﻿@using DoctorFAM.Application.StaticTools
+@model DoctorFAM.Domain.ViewModels.DoctorPanel.Employees.AddEmployeeViewModel
+
+@{
+    ViewData["Title"] = @Localizer["ایجاد کارمند جدید"];
+}
+
+@section Breadcrumb
+    {
+    <li>
+        <a asp-action="FilterEmployees" asp-area="Dentist" asp-controller="Account"> کارکنان </a>
+    </li>
+}
+
+@section Scripts
+    {
+    <partial name="_JqueryValidation" />
+
+    <script>
+
+        function CheckEmployeeIsExist(mobile) {
+
+            $.ajax({
+                url: "/CheckEmployeeIsExistInDentistPanel/" + mobile,
+                type: "get",
+                data: {
+
+                },
+                success: function (response) {
+                    if (response.status === "Danger") {
+                        ShowMessage("اعلان", "اکنون می توانید برای منشی خود رمز انتخاب کنید .", "warning");
+                    } else {
+                        $("#NormalModalBody").html(response);
+
+                        $("#NormalModal").modal("show");
+                    }
+                }
+            });
+        }
+
+    </script>
+}
+
+<form asp-action="AddNewUser" enctype="multipart/form-data" method="post">
+
+    <div class="col-lg-9 col-sm-9 col-xs-12">
+        <div id="settings" class="tab-pane  active">
+            <div class="widget-header bordered-bottom bordered-sky">
+                <span class="widget-caption"> @Localizer["ایجاد کارمند جدید"] </span>
+            </div>
+            <div class="widget-body">
+                <div class="row">
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label asp-for="Mobile">موبایل</label>
+                            <input asp-for="Mobile" class="form-control" placeholder="@Localizer["موبایل"]" onblur="CheckEmployeeIsExist(this.value)" />
+                            <span class="text-danger" asp-validation-for="Mobile"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label asp-for="Password">@Localizer["رمز عبور"]</label>
+                            <input asp-for="Password" class="form-control" placeholder="@Localizer["رمز عبور"]" />
+
+                            <span class="text-danger" asp-validation-for="Password"></span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div>
+                    <button type="submit" class="btn btn-labeled btn-palegreen">
+                        <i class="btn-label glyphicon glyphicon-ok"></i>@Localizer["ثبت"]
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-sm-12">
+        <div class="row">
+
+            <div class="col-lg-12">
+                <div class="widget">
+                    <div class="widget-header bordered-bottom bordered-green">
+                        <span class="widget-caption"> @Localizer["آواتار کاربر"] </span>
+                    </div>
+                    <div class="widget-body">
+                        <div class="row">
+
+                            <input type="file" class="display-none" name="UserAvatar" id="UserAvatar" ImageInput="1" accept=".jpg,.jpeg,.png" />
+
+                            <div class="col-md-12">
+                                <label for="UserAvatar" class="file-input-style">
+                                    <i class="glyphicon glyphicon-upload"></i>
+                                    <span class="mr-8px"> @Localizer["لطفا تصویر مورد نظر را انتخاب کنید"]</span>
+                                </label>
+                            </div>
+
+                            <div class="col-md-12 tc mt-10px">
+                                <img src="/admin/img/avatars/avatar.png" class="image-style" ImageFile="1" />
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
+

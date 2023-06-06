@@ -1,0 +1,78 @@
+﻿@model DoctorFAM.Domain.Entities.Account.User
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Domain.ViewModels.Common
+
+<div class="row">
+
+    <div class="col-lg-9 col-sm-9 col-xs-12">
+        <div id="settings" class="tab-pane  active">
+            <div class="widget-header bordered-bottom bordered-sky">
+                <span class="widget-caption"> @Localizer["کاربر یافت شد"] </span>
+            </div>
+            <div class="widget-body">
+                <div class="row">
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label asp-for="FirstName">@Localizer["نام"]</label>
+                            <input asp-for="FirstName" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label asp-for="LastName">@Localizer["نام خانوادگی"]</label>
+                            <input asp-for="LastName" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label asp-for="NationalId">@Localizer["کدملی"]</label>
+                            <input asp-for="NationalId" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label asp-for="Mobile">موبایل</label>
+                            <input asp-for="Mobile" class="form-control" />
+                        </div>
+                    </div>
+
+                </div>
+
+                <div>
+                    <a asp-action="SelectExistUserForThisOrganization" asp-area="Dentist" asp-controller="Account" asp-route-userId="@Model.Id" class="btn btn-labeled btn-palegreen">
+                        <i class="btn-label glyphicon glyphicon-ok"></i>@Localizer["ثبت"]
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-sm-12">
+        <div class="row">
+
+            <div class="col-lg-12">
+                <div class="widget">
+                    <div class="widget-header bordered-bottom bordered-sky">
+                        <span class="widget-caption"> @Localizer["آواتار کاربر"] </span>
+                    </div>
+                    <div class="widget-body">
+                        <div class="row">
+
+                            <div class="col-md-12 tc mt-10px">
+                                <img src="@Model.GetUserAvatar()" class="image-style" ImageFile="1" />
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+

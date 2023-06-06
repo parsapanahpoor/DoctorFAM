@@ -70,12 +70,12 @@ namespace DoctorFAM.Application.Services.Implementation
         {
             #region Get Owner Organization By EmployeeId 
 
-            var organization = await _organizationService.GetOrganizationByUserId(userId);
-            if (organization == null) return null;
+            ulong organization = await _organizationService.GetOranizationOwnerIdByMemberUserId(userId);
+            if (organization == 0) return null;
 
             #endregion
 
-            return await _resumeRepository.GetResumeByUserId(organization.OwnerId);
+            return await _resumeRepository.GetResumeByUserId(organization);
         }
 
         //Check Taht Is Exist Resume For This User

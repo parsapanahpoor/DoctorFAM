@@ -44,6 +44,9 @@ public interface IUserService
 
     Task<User?> GetUserById(ulong userId);
 
+    //Get User By Id With As No Tracking
+    Task<User?> GetUserByIdWithAsNoTracking(ulong userId);
+
     //Get User Avatar Name By User Id
     Task<string?> GetUserImageNameByUserId(ulong userId);
 
@@ -84,6 +87,9 @@ public interface IUserService
 
     //Register Labratory
     Task LabratoryConsultant(string mobile);
+
+    //Register Dentist
+    Task DentistConsultant(string mobile);
 
     Task RegisterDoctors(string mobile);
 
@@ -144,6 +150,9 @@ public interface IUserService
     //Update User 
     Task UpdateUser(User user);
 
+    //Update User Without Save Changes
+    Task UpdateUserWithoutSaveChanges(User user);
+
     Task<FilterUserViewModel> FilterUsers(FilterUserViewModel filter);
 
     Task<bool> ChangePasswordInAdmin(ChangePasswordInAdminViewModel passwordViewModel);
@@ -182,6 +191,9 @@ public interface IUserService
 
     //Is Exist Any User By National Id 
     Task<bool> IsExistAnyUserByNationalId(string nationalId);
+
+    //Create User From Dentist Panel
+    Task<AddNewUserResult> CreateUserFromDentistPanel(AddEmployeeViewModel user, IFormFile? avatar, ulong MasterId);
 
     #endregion
 

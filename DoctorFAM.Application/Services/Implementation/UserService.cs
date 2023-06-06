@@ -179,6 +179,14 @@ public class UserService : IUserService
             .FirstOrDefaultAsync(s => s.Id == userId && !s.IsDelete);
     }
 
+    //Get User By Id With As No Tracking
+    public async Task<User?> GetUserByIdWithAsNoTracking(ulong userId)
+    {
+        return await _context.Users
+                             .AsNoTracking()
+                             .FirstOrDefaultAsync(s => s.Id == userId && !s.IsDelete);
+    }
+
     //Get User Avatar Name By User Id
     public async Task<string?> GetUserImageNameByUserId(ulong userId)
     {
@@ -359,6 +367,9 @@ public class UserService : IUserService
 
             //If User Select pharmacy Role While User Has pharmacy Role
             if (roleName == "pharmacy" && userRoles.Contains(6)) return false;
+
+            //If User Select Dentist Role While User Has Dentist Role
+            if (roleName == "Dentist" && userRoles.Contains(19)) return false;
         }
 
         #endregion
@@ -431,6 +442,18 @@ public class UserService : IUserService
             var userRole = new UserRole()
             {
                 RoleId = 6,
+                UserId = user.Id
+            };
+
+            await _userRepository.AddUserRole(userRole);
+        }
+
+        //Add Dentist Role To The User
+        if (roleName == "Dentist")
+        {
+            var userRole = new UserRole()
+            {
+                RoleId = 19,
                 UserId = user.Id
             };
 
@@ -674,6 +697,30 @@ public class UserService : IUserService
         #endregion
     }
 
+    //Register Dentist
+    public async Task DentistConsultant(string mobile)
+    {
+        #region Get User By Mobile
+
+        var user = await GetUserByMobile(mobile);
+
+        #endregion
+
+        #region Add Dentist Role To User
+
+        var userRole = new UserRole()
+        {
+            RoleId = 19,
+            UserId = user.Id
+        };
+
+        await _context.UserRoles.AddAsync(userRole);
+
+        await _context.SaveChangesAsync();
+
+        #endregion
+    }
+
     public async Task RegisterPharmacy(string mobile)
     {
         #region Get User By Mobile
@@ -854,6 +901,12 @@ public class UserService : IUserService
     {
         _context.Users.Update(user);
         await _context.SaveChangesAsync();
+    }
+
+    //Update User Without Save Changes
+    public async Task UpdateUserWithoutSaveChanges(User user)
+    {
+        _context.Users.Update(user);
     }
 
     //Filter User In Modal
@@ -1240,6 +1293,81 @@ public class UserService : IUserService
     #endregion
 
     #region User Panel
+
+    //Create User From Dentist Panel
+    public async Task<AddNewUserResult> CreateUserFromDentistPanel(AddEmployeeViewModel user, IFormFile? avatar, ulong MasterId)
+    {
+        #region Model State Validation 
+
+        if (await IsExistUserByMobile(user.Mobile))
+        {
+            return AddNewUserResult.DuplicateMobileNumber;
+        }
+
+        #endregion
+
+        #region Add New User
+
+        var newUser = new User()
+        {
+            CreateDate = DateTime.Now,
+            Mobile = user.Mobile.SanitizeText(),
+            Password = PasswordHasher.EncodePasswordMd5(user.Password.SanitizeText()),
+            IsAdmin = false,
+            EmailActivationCode = CodeGenerator.GenerateUniqCode(),
+            MobileActivationCode = CodeGenerator.GenerateUniqCode(),
+            IsEmailConfirm = false,
+            IsMobileConfirm = false,
+            Username = user.Mobile.SanitizeText(),
+        };
+
+        if (avatar != null && avatar.IsImage())
+        {
+            var imageName = CodeGenerator.GenerateUniqCode() + Path.GetExtension(avatar.FileName);
+            avatar.AddImageToServer(imageName, PathTools.UserAvatarPathServer, 270, 270, PathTools.UserAvatarPathThumbServer);
+            newUser.Avatar = imageName;
+        }
+
+        await _context.Users.AddAsync(newUser);
+        await _context.SaveChangesAsync();
+
+        #endregion
+
+        #region Get Organization By User Id 
+
+        var organization = await _organizationService.GetDentistOrganizationByUserId(MasterId);
+        if (organization == null) return AddNewUserResult.DuplicateMobileNumber;
+
+        #endregion
+
+        #region Add New Organization Member
+
+        OrganizationMember member = new OrganizationMember()
+        {
+            UserId = newUser.Id,
+            OrganizationId = organization.Id
+        };
+
+        await _context.OrganizationMembers.AddAsync(member);
+        await _context.SaveChangesAsync();
+
+        #endregion
+
+        #region Add User Role
+
+        UserRole userRole = new UserRole()
+        {
+            RoleId = 20,
+            UserId = newUser.Id,
+        };
+
+        await _context.UserRoles.AddAsync(userRole);
+        await _context.SaveChangesAsync();
+
+        #endregion
+
+        return AddNewUserResult.Success;
+    }
 
     public async Task<AddNewUserResult> CreateUserFromDoctorPanel(AddEmployeeViewModel user, IFormFile? avatar, ulong MasterId)
     {

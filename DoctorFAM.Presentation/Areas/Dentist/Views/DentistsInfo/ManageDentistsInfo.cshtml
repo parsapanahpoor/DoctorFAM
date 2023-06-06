@@ -1,0 +1,376 @@
+﻿@using DoctorFAM.Domain.Enums
+@using DoctorFAM.Application.StaticTools
+@using DoctorFAM.Domain.ViewModels.Common
+@model DoctorFAM.Domain.ViewModels.Dentist.DentistsInfo.ManageDentistsInfoViewModel
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
+
+@{
+    ViewData["Title"] = @Localizer["اطلاعات پزشکی"];
+}
+
+@{
+    var countries = ViewData["Countries"] != null ? ViewData["Countries"] as List<SelectListViewModel> : null;
+    var states = ViewData["States"] != null ? ViewData["States"] as List<SelectListViewModel> : null;
+    var cities = ViewData["Cities"] != null ? ViewData["Cities"] as List<SelectListViewModel> : null;
+}
+
+@section Scripts
+    {
+    <partial name="_JqueryValidation" />
+
+    <script>
+
+        function ChangeUsername() {
+
+            var firstName = $('#FirstName').val();
+            var lastName = $('#LastName').val();
+
+            $('#username').val(firstName + ' ' + lastName);
+        }
+
+    </script>
+
+}
+
+@section Breadcrumb
+    {
+    <li>
+        <a asp-action="PageOfManageDentistInfo" asp-controller="DentistsInfo" asp-area="Dentist"> @Localizer["مدیریت اطلاعات دندان پزشک"] </a>
+    </li>
+
+}
+
+<form method="post" asp-action="ManageDentistsInfo" asp-controller="DentistsInfo" asp-area="Dentist" enctype="multipart/form-data">
+
+    <div class="row">
+
+        @if (!string.IsNullOrEmpty(Model.RejectDescription) && Model.DoctorsInfosType == DoctorFAM.Domain.Entities.Doctors.OrganizationInfoState.Rejected)
+        {
+            <div class="col-lg-12 col-sm-12 col-xs-12">
+                <div class="widget">
+                    <div class="widget-header bg-red">
+                        <span class="widget-caption">@Localizer["پیام پشتیبانی"] </span>
+                        <div class="widget-buttons">
+                            <a href="#" data-toggle="config">
+                                <i class="fa fa-cog"></i>
+                            </a>
+                            <a href="#" data-toggle="maximize">
+                                <i class="fa fa-expand"></i>
+                            </a>
+                            <a href="#" data-toggle="collapse">
+                                <i class="fa fa-minus"></i>
+                            </a>
+                            <a href="#" data-toggle="dispose">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div><!--Widget Buttons-->
+                    </div><!--Widget Header-->
+                    <div class="widget-body bg-red">
+                        <p> @Model.RejectDescription </p>
+                    </div><!--Widget Body-->
+                </div><!--Widget-->
+            </div>
+        }
+
+    </div>
+
+    <div class="row">
+        <div class="col-lg-9 col-sm-12">
+            <div class="row">
+
+                <input type="hidden" asp-for="UserId" />
+                <input type="hidden" asp-for="MediacalFile" />
+
+                <div class="col-lg-12">
+                    <div class="widget">
+                        <div class="widget-header bordered-bottom bordered-green" style="background-color:#d1f4fa">
+                            <span class="widget-caption"> @Localizer["اطلاعات پزشک"] </span>
+                        </div>
+                        <div class="widget-body" style="background-color:#d1f4fa !important;">
+                            <div class="row">
+
+                                <div class="form-group col-md-4 col-sm-12">
+                                    <span class="red">*</span>
+                                    <label asp-for="FirstName"></label>
+                                    <input type="text" class="form-control" onblur="ChangeUsername()" asp-for="FirstName">
+                                    <span class="text-danger" asp-validation-for="FirstName"></span>
+                                </div>
+
+                                <div class="form-group col-md-4 col-sm-12">
+                                    <span class="red">*</span>
+                                    <label asp-for="LastName"></label>
+                                    <input type="text" class="form-control" onblur="ChangeUsername()" asp-for="LastName">
+                                    <span class="text-danger" asp-validation-for="LastName"></span>
+                                </div>
+
+                                <div class="form-group col-md-4 col-sm-12">
+                                    <span class="red">*</span>
+                                    <label asp-for="FatherName"></label>
+                                    <input type="text" class="form-control" asp-for="FatherName">
+                                    <span class="text-danger" asp-validation-for="FatherName"></span>
+                                </div>
+
+                                <div class="form-group col-md-6 col-sm-12">
+                                    @*<label asp-for="Mobile"></label>*@
+
+                                    <label>موبایل(نام کاربری)</label>
+                                    <div class="form-control disabled"> @Model.Mobile </div>
+                                </div>
+
+                                <div class="form-group col-md-6 col-sm-12">
+                                    @*<label asp-for="username"></label>*@
+
+                                    <label>نام پزشک در سامانه</label>
+                                    <input type="text" class="form-control" readonly asp-for="username">
+                                    <span class="text-danger" asp-validation-for="username"></span>
+                                </div>
+
+
+                                <div class="form-group col-md-6 col-sm-12">
+                                    <span class="red">*</span>
+                                    <label asp-for="NationalCode"></label>
+                                    <input type="text" class="form-control" asp-for="NationalCode">
+                                    <span class="text-danger" asp-validation-for="NationalCode"></span>
+                                </div>
+
+                                <div class="form-group col-md-6 col-sm-12">
+                                    <span class="red">*</span>
+                                    <label asp-for="MedicalSystemCode"></label>
+                                    <input type="text" class="form-control" asp-for="MedicalSystemCode">
+                                    <span class="text-danger" asp-validation-for="MedicalSystemCode"></span>
+                                </div>
+
+                                <div class="form-group col-md-6 col-sm-12">
+                                    <span class="red">*</span>
+                                    <label asp-for="BithDay"></label>
+                                    <input asp-for="BithDay" class="form-control" autocomplete="off" AdminDatePicker="1" />
+                                    <span class="text-danger" asp-validation-for="BithDay"></span>
+                                </div>
+
+                                <div class="form-group col-md-6 col-sm-12">
+                                    <span class="red">*</span>
+                                    <label asp-for="Gender"></label>
+                                    <select asp-for="Gender" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.Gender.Gender))"></select>
+                                    <span class="text-danger" asp-validation-for="Gender"></span>
+                                </div>
+
+                                <div class="form-group col-md-6 col-sm-12">
+                                    <span class="red">*</span>
+                                    <label asp-for="Education"></label>
+                                    <input type="text" class="form-control" asp-for="Education">
+                                    <span class="text-danger" asp-validation-for="Education"></span>
+                                </div>
+
+                                <div class="form-group col-md-6 col-sm-12">
+                                    <span class="red">*</span>
+                                    <label asp-for="Specialty"></label>
+                                    <input type="text" class="form-control" asp-for="Specialty">
+                                    <span class="text-danger" asp-validation-for="Specialty"></span>
+                                </div>
+
+                                <div class="form-group col-md-12 col-sm-12">
+
+                                    @*<label asp-for="DoctorSkills"></label>*@
+                                    <label>مهارتها و علاقمندیهای حرفه ای</label>
+                                    <input type="text" tagify="1" class="form-control" asp-for="DoctorSkills">
+                                    <span class="text-danger" asp-validation-for="DoctorSkills"></span>
+                                </div>
+
+                                <div class="form-group col-md-12 col-sm-12">
+                                    <span class="red">*</span>
+                                    <label asp-for="Email"></label>
+                                    <input type="text" class="form-control" asp-for="Email">
+                                    <span class="text-danger" asp-validation-for="Email"></span>
+                                </div>
+
+                                <div class="form-group col-md-4 col-sm-12">
+                                    <label asp-for="GeneralPhone"></label>
+                                    <input type="text" class="form-control" asp-for="GeneralPhone">
+                                    <span class="text-danger" asp-validation-for="GeneralPhone"></span>
+                                </div>
+
+                                <div class="form-group col-md-4 col-sm-12">
+                                    @*<label asp-for="HomePhoneNumber"></label>*@
+                                    <span class="red">*</span>
+                                    <label>تلفن منزل</label>
+                                    <input type="text" class="form-control" asp-for="HomePhoneNumber">
+                                    <span class="text-danger" asp-validation-for="HomePhoneNumber"></span>
+                                </div>
+
+                                <div class="form-group col-md-4 col-sm-12">
+                                    <label>تلفن مطب</label>
+
+                                    <input type="text" class="form-control" asp-for="ClinicPhone">
+                                    <span class="text-danger" asp-validation-for="ClinicPhone"></span>
+                                </div>
+
+                                <div class="form-group col-md-4 col-sm-12">
+                                    <label asp-for="CountryId"></label>
+                                    <select class="form-control" asp-for="CountryId">
+                                        <option value=""> لطفا یک کشور را انتخاب کنید </option>
+                                        @if (countries != null && countries.Any())
+                                        {
+                                            foreach (var country in countries)
+                                            {
+                                                if (Model != null && Model.CountryId == country.Id)
+                                                {
+                                                    <option value="@country.Id" selected="selected"> @country.Title </option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@country.Id"> @country.Title </option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    <span class="text-danger" asp-validation-for="CountryId"></span>
+                                </div>
+
+                                <div class="form-group col-md-4 col-sm-12">
+                                    <label asp-for="StateId"></label>
+                                    <select class="form-control" asp-for="StateId">
+                                        <option value=""> لطفا یک استان را انتخاب کنید </option>
+                                        @if (states != null && states.Any())
+                                        {
+                                            foreach (var state in states)
+                                            {
+                                                if (Model != null && Model.StateId == state.Id)
+                                                {
+                                                    <option value="@state.Id" selected="selected"> @state.Title </option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@state.Id"> @state.Title </option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    <span class="text-danger" asp-validation-for="StateId"></span>
+                                </div>
+
+                                <div class="form-group col-md-4 col-sm-12">
+                                    <label asp-for="CityId"></label>
+                                    <select asp-for="CityId" class="form-control">
+                                        <option value=""> لطفا یک شهر را انتخاب کنید </option>
+                                        @if (cities != null && cities.Any())
+                                        {
+                                            foreach (var city in cities)
+                                            {
+                                                if (Model != null && Model.CityId == city.Id)
+                                                {
+                                                    <option value="@city.Id" selected="selected"> @city.Title </option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@city.Id"> @city.Title </option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    <span class="text-danger" asp-validation-for="CityId"></span>
+                                </div>
+
+                                <div class="form-group col-md-12 col-sm-12">
+                                    <span class="red">*</span>
+                                    <label>آدرس مطب یا محل کار</label>
+                                    <textarea type="text" class="form-control" asp-for="WorkAddress">@Model.WorkAddress</textarea>
+                                    <span class="text-danger" asp-validation-for="WorkAddress"></span>
+                                </div>
+
+                                <hr class="margin-bottom-10 margin-top-10" />
+
+                                <div class="col-md-12 flex-style">
+                                    <button type="submit" class="btn btn-labeled btn-palegreen">
+                                        <i class="btn-label glyphicon glyphicon-ok"></i>@Localizer["ثبت"]
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-sm-12">
+            <div class="row">
+
+                <div class="col-lg-12 col-sm-12">
+                    <div class="widget">
+                        <div class="widget-header bordered-bottom bordered-green">
+                            <span class="widget-caption"> @Localizer["مدرک تحصیلی یا مجوز پزشکی"]</span>
+                        </div>
+                        <div class="widget-body">
+                            <div class="row">
+
+                                <input type="file" class="display-none" name="MediacalFile" id="UserAvatar1" ImageInput="1" accept=".jpg,.jpeg,.png" />
+
+                                <div class="col-md-12">
+                                    <label for="UserAvatar1" class="file-input-style">
+                                        <i class="glyphicon glyphicon-upload"></i>
+                                        <span class="mr-8px">
+                                            @Localizer["لطفا گواهی تحصیلی یا مجوز خود را آپلود کنید."]</span>
+                                    </label>
+                                </div>
+
+                                @{
+                                    var MediacalFileUrl = PathTools.DefaultMediacalFile;
+
+                                    if (Model != null && !string.IsNullOrEmpty(Model.MediacalFile))
+                                    {
+                                        MediacalFileUrl = $"{PathTools.MediacalFilePathThumb}{Model.MediacalFile}";
+                                    }
+                                }
+
+                                <div class="col-md-12 tc mt-10px">
+                                    <img src="@MediacalFileUrl" class="image-style" ImageFile="1" />
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-12 col-sm-12">
+                    <div class="widget">
+                        <div class="widget-header bordered-bottom bordered-green">
+                            <span class="widget-caption"> @Localizer["آواتار کاربر"] </span>
+                        </div>
+                        <div class="widget-body">
+                            <div class="row">
+
+                                <input type="file" class="display-none" name="UserAvatar" id="UserAvatar2" ImageInput="2" accept=".jpg,.jpeg,.png" />
+
+                                <div class="col-md-12">
+                                    <label for="UserAvatar2" class="file-input-style">
+                                        <i class="glyphicon glyphicon-upload"></i>
+                                        <span class="mr-8px"> @Localizer["لطفاً آواتار کاربر را انتخاب کنید"]</span>
+                                    </label>
+                                </div>
+
+                                @{
+                                    var avatarUrl = PathTools.DefaultUserAvatar;
+
+                                    if (Model != null && !string.IsNullOrEmpty(Model.AvatarName))
+                                    {
+                                        avatarUrl = $"{PathTools.UserAvatarPathThumb}{Model.AvatarName}";
+                                    }
+                                }
+
+                                <div class="col-md-12 tc mt-10px">
+                                    <img src="@avatarUrl" class="image-style" ImageFile="2" />
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+</form>
