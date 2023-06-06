@@ -18,6 +18,9 @@ public interface IReservationService
 {
     #region Doctor Panel
 
+    //List Of Doctor Reservation Date After Date Time Now In Dentist Panel
+    Task<List<DoctorReservationDate>> ListOfDoctorReservationDateAfterDateTimeNowInDentistPanel(ulong userId);
+
     //List Of Doctor Reservation Date After Date Time Now
     Task<List<DoctorReservationDate>> ListOfDoctorReservationDateAfterDateTimeNow(ulong userId);
 
@@ -41,10 +44,19 @@ public interface IReservationService
 
     Task<FilterAppointmentViewModel> FilterDoctorReservationDateSide(FilterAppointmentViewModel filter);
 
+    //This Is Filter For Reservation Date From Today By Dentist Panel
+    Task<FilterAppointmentViewModel?> FilterDoctorReservationDateSideByDentistPanel(FilterAppointmentViewModel filter);
+
     //Add Reservation Date 
     Task<bool> AddReservationDate(AddReservationDateViewModel model, ulong userId);
 
+    //Add Reservation Date From Dentist Panel
+    Task<bool> AddReservationDateFromDentistPanel(AddReservationDateViewModel model, ulong organizationOwnerId);
+
     Task<FilterAppointmentViewModel> FiltrDoctorReservationDateHistory(FilterAppointmentViewModel filter);
+
+    //This Is History Of All Records That In Reservation Date By User Id ByDentistPanel 
+    Task<FilterAppointmentViewModel?> FiltrDoctorReservationDateHistoryByDentistPanel(FilterAppointmentViewModel filter);
 
     Task<List<DoctorReservationDateTime>?> GetListOfReservationDateTimesByReservationDateId(ulong reservationDateId);
 
@@ -53,6 +65,9 @@ public interface IReservationService
     Task<DoctorReservationDate?> GetReservationDateById(ulong reservationDateId);
 
     Task<bool> DeleteReservationDate(ulong reservationDateId, ulong userId);
+
+    //Delete Reservation Date From Dentist Panel
+    Task<bool> DeleteReservationDateFromDentistPanel(ulong reservationDateId, ulong userId);
 
     Task<AddReservationDateTimeViewModel?> FillAddReservationDateTime(ulong reservationDateId, ulong userId);
 

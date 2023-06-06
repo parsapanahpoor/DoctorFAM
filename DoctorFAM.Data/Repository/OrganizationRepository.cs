@@ -138,6 +138,33 @@ namespace DoctorFAM.Data.Repository
             return null;
         }
 
+        //Get Dentist Organization Id By Member User Id
+        public async Task<ulong> GetDentistOrganizationIdByUserId(ulong userId)
+        {
+            List<ulong>? organizationIds = await _context.OrganizationMembers
+                                                         .AsNoTracking()
+                                                         .Where(p => !p.IsDelete && p.UserId == userId)
+                                                         .Select(p => p.OrganizationId)
+                                                         .ToListAsync();
+
+            if (organizationIds is not null && organizationIds.Any())
+            {
+                foreach (var organizationId in organizationIds)
+                {
+                    if (await _context.Organizations.AsNoTracking().AnyAsync(p => !p.IsDelete && p.Id == organizationId && p.OrganizationType == Domain.Enums.Organization.OrganizationType.DentistOffice))
+                    {
+                        return await _context.Organizations
+                                             .AsNoTracking()
+                                             .Where(p => !p.IsDelete && p.Id == organizationId && p.OrganizationType == Domain.Enums.Organization.OrganizationType.DentistOffice)
+                                             .Select(p=> p.Id)
+                                             .FirstOrDefaultAsync();
+                    }
+                }
+            }
+
+            return 0;
+        }
+
         //Get Dentist Organization OwnerId By User Id
         public async Task<ulong> GetDentistOrganizationOwnerIdByUserId(ulong userId)
         {
@@ -204,6 +231,25 @@ namespace DoctorFAM.Data.Repository
             var userRole = await _context.UserRoles.FirstOrDefaultAsync(p => !p.IsDelete && p.UserId == employeeId && p.RoleId == 5);
             if (userRole == null) return false;
             
+            userRole.IsDelete = true;
+
+            _context.UserRoles.Update(userRole);
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
+        //Delete Employee From Dentist Organization
+        public async Task<bool> DeleteEmployeeFromDentistOrganization(ulong employeeId, ulong organizationId)
+        {
+            var organizationMember = await _context.OrganizationMembers.FirstOrDefaultAsync(p => !p.IsDelete && p.UserId == employeeId && p.OrganizationId == organizationId);
+            if (organizationMember == null) return false;
+
+            _context.OrganizationMembers.Remove(organizationMember);
+
+            var userRole = await _context.UserRoles.FirstOrDefaultAsync(p => !p.IsDelete && p.UserId == employeeId && p.RoleId == 20);
+            if (userRole == null) return false;
+
             userRole.IsDelete = true;
 
             _context.UserRoles.Update(userRole);

@@ -38,12 +38,18 @@ namespace DoctorFAM.Domain.Interfaces
         //Get Dentist Organization By Member User Id
         Task<Organization?> GetDentistOrganizationByUserId(ulong userId);
 
+        //Get Dentist Organization Id By Member User Id
+        Task<ulong> GetDentistOrganizationIdByUserId(ulong userId);
+
         //Get Dentist Organization OwnerId By User Id
         Task<ulong> GetDentistOrganizationOwnerIdByUserId(ulong userId);
 
         Task UpdateOrganization(Organization organization);
 
         Task<bool> DeleteEmployeeFromOrganization(ulong employeeId, ulong organizationId);
+
+        //Delete Employee From Dentist Organization
+        Task<bool> DeleteEmployeeFromDentistOrganization(ulong employeeId, ulong organizationId);
 
         Task<bool> IsExistAnyDoctorOfficeEmployeeByUserId(ulong userId);
 

@@ -1294,6 +1294,81 @@ public class UserService : IUserService
 
     #region User Panel
 
+    //Create User From Dentist Panel
+    public async Task<AddNewUserResult> CreateUserFromDentistPanel(AddEmployeeViewModel user, IFormFile? avatar, ulong MasterId)
+    {
+        #region Model State Validation 
+
+        if (await IsExistUserByMobile(user.Mobile))
+        {
+            return AddNewUserResult.DuplicateMobileNumber;
+        }
+
+        #endregion
+
+        #region Add New User
+
+        var newUser = new User()
+        {
+            CreateDate = DateTime.Now,
+            Mobile = user.Mobile.SanitizeText(),
+            Password = PasswordHasher.EncodePasswordMd5(user.Password.SanitizeText()),
+            IsAdmin = false,
+            EmailActivationCode = CodeGenerator.GenerateUniqCode(),
+            MobileActivationCode = CodeGenerator.GenerateUniqCode(),
+            IsEmailConfirm = false,
+            IsMobileConfirm = false,
+            Username = user.Mobile.SanitizeText(),
+        };
+
+        if (avatar != null && avatar.IsImage())
+        {
+            var imageName = CodeGenerator.GenerateUniqCode() + Path.GetExtension(avatar.FileName);
+            avatar.AddImageToServer(imageName, PathTools.UserAvatarPathServer, 270, 270, PathTools.UserAvatarPathThumbServer);
+            newUser.Avatar = imageName;
+        }
+
+        await _context.Users.AddAsync(newUser);
+        await _context.SaveChangesAsync();
+
+        #endregion
+
+        #region Get Organization By User Id 
+
+        var organization = await _organizationService.GetDentistOrganizationByUserId(MasterId);
+        if (organization == null) return AddNewUserResult.DuplicateMobileNumber;
+
+        #endregion
+
+        #region Add New Organization Member
+
+        OrganizationMember member = new OrganizationMember()
+        {
+            UserId = newUser.Id,
+            OrganizationId = organization.Id
+        };
+
+        await _context.OrganizationMembers.AddAsync(member);
+        await _context.SaveChangesAsync();
+
+        #endregion
+
+        #region Add User Role
+
+        UserRole userRole = new UserRole()
+        {
+            RoleId = 20,
+            UserId = newUser.Id,
+        };
+
+        await _context.UserRoles.AddAsync(userRole);
+        await _context.SaveChangesAsync();
+
+        #endregion
+
+        return AddNewUserResult.Success;
+    }
+
     public async Task<AddNewUserResult> CreateUserFromDoctorPanel(AddEmployeeViewModel user, IFormFile? avatar, ulong MasterId)
     {
         #region Model State Validation 

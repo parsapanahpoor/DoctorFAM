@@ -1,8 +1,10 @@
 ﻿#region Usings
 
 using DoctorFAM.Domain.Entities.Dentist;
+using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.ViewModels.Admin.Dentist;
 using DoctorFAM.Domain.ViewModels.Dentist.DentistsInfo;
+using DoctorFAM.Domain.ViewModels.Dentist.Employees;
 using DoctorFAM.Domain.ViewModels.Dentist.NavBar;
 using DoctorFAM.Domain.ViewModels.Dentist.SideBar;
 using Microsoft.AspNetCore.Http;
@@ -14,6 +16,12 @@ namespace DoctorFAM.Domain.Interfaces.EFCore;
 public interface IDentistService
 {
     #region Dentist Panel 
+
+    //Add Exist User To The Dentist Organization 
+    Task<bool> AddExistUserToTheDentistOrganization(ulong userId, ulong doctorId);
+
+    //Filter Dentist Office Employees 
+    Task<FilterDentistOfficeEmployeesViewmodel> FilterDentistOfficeEmployees(FilterDentistOfficeEmployeesViewmodel filter);
 
     //Is Exist Any Dentist By User Id
     Task<bool> IsExistAnyDentistByUserId(ulong userId);
@@ -51,6 +59,15 @@ public interface IDentistService
 
     //Get List Of Dentist For Show Admin Panel 
     Task<List<ListOfDentistAdminSideViewModel>?> GetListOfDentistForShowAdminPanel();
+
+    //Get Dentist Reservation Tariff By User Id 
+    Task<DoctorsReservationTariffs?> GetDentistReservationTariffByDentistUserId(ulong DentistUserId);
+
+    //Fill Dentists Info Detail View Model
+    Task<DentistsInfoDetailViewModel?> FillDentistsInfoDetailViewModel(ulong userId);
+
+    //Edit Doctor Info Admin Side
+    Task<EditDentistInfoResult> EditDoctorInfoAdminSide(DentistsInfoDetailViewModel model, IFormFile? MediacalFile);
 
     #endregion
 }

@@ -86,6 +86,12 @@ namespace DoctorFAM.Application.Services.Implementation
             return await _organization.GetDentistOrganizationByUserId(userId);
         }
 
+        //Get Dentist Organization Id By Member User Id
+        public async Task<ulong> GetDentistOrganizationIdByUserId(ulong userId)
+        {
+            return await _organization.GetDentistOrganizationIdByUserId(userId);
+        }
+
         //Get Nurse Organization By User Id
         public async Task<Organization?> GetNurseOrganizationByUserId(ulong userId)
         {
@@ -129,6 +135,29 @@ namespace DoctorFAM.Application.Services.Implementation
             #region Delete Employee From Organization 
 
             var res = await _organization.DeleteEmployeeFromOrganization(employeeId, organization.Id);
+            if (res == false) return false;
+
+            #endregion
+
+            return true;
+        }
+
+        //Delete Employee From Dentist Office Organization
+        public async Task<bool> DeleteEmployeeFromDentistOfficeOrganization(ulong employeeId, ulong userId)
+        {
+            #region Get Organization
+
+            var organization = await GetOrganizationByUserId(userId);
+            if (organization == null) return false;
+
+            //Owner Can Not Be Deleted
+            if (organization.OwnerId == employeeId) return false;
+
+            #endregion
+
+            #region Delete Employee From Organization 
+
+            var res = await _organization.DeleteEmployeeFromDentistOrganization(employeeId, organization.Id);
             if (res == false) return false;
 
             #endregion

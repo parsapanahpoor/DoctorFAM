@@ -29,7 +29,7 @@ namespace DoctorFAM.Web.Areas.Admin.ViewComponents
 
             if (User.Identity.IsAuthenticated)
             {
-                var userRole = await _permissionService.GetUserRoleses(User.GetUserId());
+                var userRole = await _permissionService.GetUserRolesesWithAsNoTracking(User.GetUserId());
 
                 if (userRole == null) ViewBag.User = true;
 

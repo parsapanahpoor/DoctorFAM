@@ -1,7 +1,9 @@
 ﻿#region Usings
 
 using DoctorFAM.Domain.Entities.Dentist;
+using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.ViewModels.Admin.Dentist;
+using DoctorFAM.Domain.ViewModels.Dentist.Employees;
 using DoctorFAM.Domain.ViewModels.Dentist.NavBar;
 using DoctorFAM.Domain.ViewModels.Dentist.SideBar;
 
@@ -58,12 +60,21 @@ public interface IDentistRepoistory
     //Add Dentist Info Without Save Changes
     Task AddDentistInfoWithoutSaveChanges(DentistsInfo info);
 
+    //Filter Dentist Office Employees 
+    Task<FilterDentistOfficeEmployeesViewmodel> FilterDentistOfficeEmployees(FilterDentistOfficeEmployeesViewmodel filter);
+
     #endregion
 
     #region Admin Side 
 
     //Get List Of Dentist For Show Admin Panel 
     Task<List<ListOfDentistAdminSideViewModel>?> GetListOfDentistForShowAdminPanel();
+
+    //Get Dentist Reservation Tariff By User Id 
+    Task<DoctorsReservationTariffs?> GetDentistReservationTariffByDentistUserId(ulong DentistUserId);
+
+    //Update Dentist Reservation Tariffs
+    Task UpdateDentistReservationTariffs(DoctorsReservationTariffs reservationTariffs);
 
     #endregion
 }

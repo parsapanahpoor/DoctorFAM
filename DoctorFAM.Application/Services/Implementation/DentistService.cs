@@ -1,19 +1,25 @@
 ﻿#region Usings
 
+using Academy.Domain.Entities.SiteSetting;
 using DoctorFAM.Application.Convertors;
 using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Generators;
 using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Application.StaticTools;
+using DoctorFAM.Data.Repository;
+using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Dentist;
+using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.Entities.WorkAddress;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.Admin.Dentist;
+using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo;
 using DoctorFAM.Domain.ViewModels.Dentist.DentistsInfo;
+using DoctorFAM.Domain.ViewModels.Dentist.Employees;
 using DoctorFAM.Domain.ViewModels.Dentist.NavBar;
 using DoctorFAM.Domain.ViewModels.Dentist.SideBar;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo;
@@ -33,19 +39,82 @@ public class DentistService : IDentistService
     private readonly IOrganizationService _organizationService;
     private readonly IUserService _userService;
     private readonly IWorkAddressService _workAddressService;
+    private readonly ISiteSettingService _siteSetting;
 
     public DentistService(IDentistRepoistory dentistRepoistory, IOrganizationService organizationService, IUserService userService
-                            , IWorkAddressService workAddressService)
+                            , IWorkAddressService workAddressService, ISiteSettingService siteSetting)
     {
         _dentistRepository = dentistRepoistory;
         _organizationService = organizationService;
         _userService = userService;
         _workAddressService = workAddressService;
+        _siteSetting = siteSetting;
     }
 
     #endregion
 
     #region Dentist Panel 
+
+    //Add Exist User To The Dentist Organization 
+    public async Task<bool> AddExistUserToTheDentistOrganization(ulong userId, ulong doctorId)
+    {
+        #region Check Is Exist Any User By This User Id
+
+        var user = await _userService.GetUserById(userId);
+        if (user == null) return false;
+
+        #endregion
+
+        #region Check That Has User Any Organization 
+
+        var userOrganization = await _organizationService.GetOrganizationByUserId(userId);
+        if (userOrganization != null) return false;
+
+        #endregion
+
+        #region Get Current Doctor Organization
+
+        var organization = await _organizationService.GetDentistOrganizationByUserId(doctorId);
+        if (organization == null) return false;
+
+        #endregion
+
+        #region Add User To The Doctor Organization 
+
+        #region Add New Organization Member
+
+        OrganizationMember member = new OrganizationMember()
+        {
+            UserId = user.Id,
+            OrganizationId = organization.Id
+        };
+
+        await _organizationService.AddOrganizationMember(member);
+
+        #endregion
+
+        #region Add User Role
+
+        UserRole userRole = new UserRole()
+        {
+            RoleId = 20,
+            UserId = user.Id,
+        };
+
+        await _userService.AddUserRole(userRole);
+
+        #endregion
+
+        #endregion
+
+        return true;
+    }
+
+    //Filter Dentist Office Employees 
+    public async Task<FilterDentistOfficeEmployeesViewmodel> FilterDentistOfficeEmployees(FilterDentistOfficeEmployeesViewmodel filter)
+    {
+        return await _dentistRepository.FilterDentistOfficeEmployees(filter);
+    }
 
     //Is Exist Any Dentist By User Id
     public async Task<bool> IsExistAnyDentistByUserId(ulong userId)
@@ -717,6 +786,262 @@ public class DentistService : IDentistService
     public async Task<List<ListOfDentistAdminSideViewModel>?> GetListOfDentistForShowAdminPanel()
     {
         return await _dentistRepository.GetListOfDentistForShowAdminPanel();
+    }
+
+    //Get Dentist Reservation Tariff By User Id 
+    public async Task<DoctorsReservationTariffs?> GetDentistReservationTariffByDentistUserId(ulong DentistUserId)
+    {
+        return await _dentistRepository.GetDentistReservationTariffByDentistUserId(DentistUserId);
+    }
+
+    //Fill Dentists Info Detail View Model
+    public async Task<DentistsInfoDetailViewModel?> FillDentistsInfoDetailViewModel(ulong userId)
+    {
+        #region Get Dentist Info
+
+        //Get Dentist Info By Id
+        var info = await _dentistRepository.GetDentistsInformationByUserId(userId);
+        if (info == null) return null;
+
+        #endregion
+
+        #region Get Dentist Info
+
+        var dentistId = await GetDentistIdByUserId(info.UserId);
+        if (dentistId == 0) return null;
+
+        #endregion
+
+        #region Get Current Dentist Office
+
+        var dentistOffice = await _organizationService.GetDentistOrganizationByUserId(info.UserId);
+        if (dentistOffice == null) return null;
+
+        #endregion
+
+        #region Get Dentist Skill By Doctor Id
+
+        var dentistSkills = await _dentistRepository.GetListOfDentistSkillsByDentistUserId(info.UserId);
+
+        #endregion
+
+        #region Fill View Model
+
+        DentistsInfoDetailViewModel model = new DentistsInfoDetailViewModel()
+        {
+            UserId = info.UserId,
+            NationalCode = info.NationalCode,
+            MedicalSystemCode = info.MedicalSystemCode,
+            Education = info.Education,
+            Specialty = info.Specialty,
+            MediacalFile = info.MediacalFile,
+            RejectDescription = dentistOffice.RejectDescription,
+            DoctorsInfosType = dentistOffice.OrganizationInfoState,
+            Id = info.Id,
+            DentistId = dentistId,
+            Gender = info.Gender,
+            GeneralPhone = info.GeneralPhone,
+            ClinicPhone = info.ClinicPhone,
+            DoctorSkills = string.Join(",", dentistSkills.Select(p => p.DentistSkill).ToList()),
+            CountOFFreeSMSForDoctors = info.CountOFFreeSMSForDoctors
+        };
+
+        #endregion
+
+        #region Get Dentist Work Addresses
+
+        model.WorkAddresses = await _workAddressService.GetUserWorkAddressesByUserId(info.UserId);
+
+        #endregion
+
+        #region Get Doctor Reservation Tariff By doctor UserId
+
+        var reservationTariff = await GetDentistReservationTariffByDentistUserId(dentistOffice.OwnerId);
+
+        if (reservationTariff != null)
+        {
+            model.InPersonReservationTariffForDoctorPopulationCovered = reservationTariff.InPersonReservationTariffForDoctorPopulationCovered;
+            model.OnlineReservationTariffForDoctorPopulationCovered = reservationTariff.OnlineReservationTariffForDoctorPopulationCovered;
+            model.InPersonReservationTariffForAnonymousPersons = reservationTariff.InPersonReservationTariffForAnonymousPersons;
+            model.OnlineReservationTariffForAnonymousPersons = reservationTariff.OnlineReservationTariffForAnonymousPersons;
+        }
+        else
+        {
+            model.InPersonReservationTariffForDoctorPopulationCovered = null;
+            model.OnlineReservationTariffForDoctorPopulationCovered = null;
+            model.InPersonReservationTariffForAnonymousPersons = null;
+            model.OnlineReservationTariffForAnonymousPersons = null;
+        }
+
+        #endregion
+
+        return model;
+    }
+
+    //Edit Doctor Info Admin Side
+    public async Task<EditDentistInfoResult> EditDoctorInfoAdminSide(DentistsInfoDetailViewModel model, IFormFile? MediacalFile)
+    {
+        #region Get User By User Id
+
+        var user = await _userService.GetUserById(model.UserId);
+
+        if (user == null) return EditDentistInfoResult.faild;
+        if (string.IsNullOrEmpty(model.NationalCode))return EditDentistInfoResult.NationalId;
+        if (!string.IsNullOrEmpty(model.NationalCode) && !await _userService.IsValidNationalIdForUserEditByAdmin(model.NationalCode, user.Id))
+        {
+            return EditDentistInfoResult.NationalId;
+        }
+
+        #endregion
+
+        #region Get Dentist Info By Id
+
+        //Get Dentist Info By Id
+        var info = await _dentistRepository.GetDentistsInformationByUserId(model.Id);
+        if (info == null) return EditDentistInfoResult.faild;
+
+        #endregion
+
+        #region Get Dentist By Id 
+
+        var dentistId = await GetDentistIdByUserId(model.UserId);
+
+        #endregion
+
+        #region Get Current Dentist Office
+
+        var dentistOffice = await _organizationService.GetDentistOrganizationByUserId(model.UserId);
+        if (dentistOffice == null) return EditDentistInfoResult.faild;
+
+        #endregion
+
+        #region Update Doctor 
+
+        dentistOffice.OrganizationInfoState = model.DoctorsInfosType;
+        dentistOffice.RejectDescription = model.RejectDescription;
+
+        if (model.DoctorsInfosType == OrganizationInfoState.Accepted)
+        {
+            dentistOffice.RejectDescription = null;
+        }
+
+        await _organizationService.UpdateOrganization(dentistOffice);
+
+        #endregion
+
+        #region Edit Doctor Info 
+
+        #region Edit Properties
+
+        info.MedicalSystemCode = model.MedicalSystemCode;
+        info.Specialty = model.Specialty;
+        info.Education = model.Education;
+        info.NationalCode = model.NationalCode;
+        info.Gender = model.Gender;
+        info.GeneralPhone = model.GeneralPhone;
+        info.ClinicPhone = model.ClinicPhone;
+        info.CountOFFreeSMSForDoctors = model.CountOFFreeSMSForDoctors;
+
+        #endregion
+
+        #region Update User
+
+        user.NationalId = model.NationalCode.SanitizeText();
+        user.ExtraPhoneNumber = model.GeneralPhone.SanitizeText();
+
+        await _userService.UpdateUser(user);
+
+        #endregion
+
+        #region Doctor Selected Skils
+
+        var doctorSkills = await GetListOfDentistSkillsByDentistUserId(model.UserId);
+
+        if (doctorSkills.Any())
+        {
+             _dentistRepository.RemoveDentistSkillsWithoutSaveChanges(doctorSkills);
+        }
+
+        if (!string.IsNullOrEmpty(model.DoctorSkills))
+        {
+            var skills = model.DoctorSkills.Split(',').ToList();
+
+            foreach (var item in skills)
+            {
+                var skill = new DentistsSkills
+                {
+                    UserId = model.UserId,
+                    DentistSkill = item
+                };
+                await _dentistRepository.AddDentistSkillsWithoutSaveChanges(skill);
+            }
+        }
+
+        #endregion
+
+        #region Edit Medical File 
+
+        if (MediacalFile != null)
+        {
+            if (!string.IsNullOrEmpty(info.MediacalFile))
+            {
+                info.MediacalFile.DeleteImage(PathTools.MediacalFilePathServer, PathTools.MediacalFilePathThumbServer);
+            }
+
+            var imageName = CodeGenerator.GenerateUniqCode() + Path.GetExtension(MediacalFile.FileName);
+            MediacalFile.AddImageToServer(imageName, PathTools.MediacalFilePathServer, 270, 270, PathTools.MediacalFilePathThumbServer);
+            info.MediacalFile = imageName;
+        }
+
+        #endregion
+
+        #region Update Method
+
+         _dentistRepository.UpdateDentistInfosWithoutSaveChanges(info);
+        await _dentistRepository.SaveChanges();
+
+        #endregion
+
+        #region Edit Dentist Reservation Tariff
+
+        if (model.InPersonReservationTariffForDoctorPopulationCovered.HasValue && await _siteSetting.CheckDoctorInsertedTarrifBySiteInFieldInPersonReservationTariffForDoctorPopulationCovered(model.InPersonReservationTariffForDoctorPopulationCovered.Value))
+        {
+            return EditDentistInfoResult.InpersonReservationPopluationCoveredLessThanSiteShare;
+        }
+
+        if (model.OnlineReservationTariffForDoctorPopulationCovered.HasValue && await _siteSetting.CheckDoctorInsertedTarrifBySiteInFieldOnlineReservationTariffForDoctorPopulationCovered(model.OnlineReservationTariffForDoctorPopulationCovered.Value))
+        {
+            return EditDentistInfoResult.OnlineReservationPopluationCoveredLessThanSiteShare;
+        }
+
+        if (model.InPersonReservationTariffForAnonymousPersons.HasValue && await _siteSetting.CheckDoctorInsertedTarrifBySiteInFieldInPersonReservationTariffForAnonymousPersons(model.InPersonReservationTariffForAnonymousPersons.Value))
+        {
+            return EditDentistInfoResult.InpersonReservationAnonymousePersoneLessThanSiteShare;
+        }
+
+        if (model.OnlineReservationTariffForAnonymousPersons.HasValue && await _siteSetting.CheckDoctorInsertedTarrifBySiteInFieldOnlineReservationTariffForAnonymousPersons(model.OnlineReservationTariffForAnonymousPersons.Value))
+        {
+            return EditDentistInfoResult.OnlineReservationAnonymousePersoneLessThanSiteShare;
+        }
+
+        //Get Doctor Reservation Tariff
+        var reservation = await GetDentistReservationTariffByDentistUserId(dentistOffice.OwnerId);
+        if (reservation != null)
+        {
+            reservation.InPersonReservationTariffForDoctorPopulationCovered = model.InPersonReservationTariffForDoctorPopulationCovered.Value;
+            reservation.OnlineReservationTariffForDoctorPopulationCovered = model.OnlineReservationTariffForDoctorPopulationCovered.Value;
+            reservation.OnlineReservationTariffForAnonymousPersons = model.OnlineReservationTariffForAnonymousPersons.Value;
+            reservation.InPersonReservationTariffForAnonymousPersons = model.InPersonReservationTariffForAnonymousPersons.Value;
+
+            //Update Reservation Data 
+            await _dentistRepository.UpdateDentistReservationTariffs(reservation);
+        }
+
+        #endregion
+
+        #endregion
+
+        return EditDentistInfoResult.success;
     }
 
     #endregion

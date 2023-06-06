@@ -192,6 +192,9 @@ public interface IUserService
     //Is Exist Any User By National Id 
     Task<bool> IsExistAnyUserByNationalId(string nationalId);
 
+    //Create User From Dentist Panel
+    Task<AddNewUserResult> CreateUserFromDentistPanel(AddEmployeeViewModel user, IFormFile? avatar, ulong MasterId);
+
     #endregion
 
     #region Cooperation Request 

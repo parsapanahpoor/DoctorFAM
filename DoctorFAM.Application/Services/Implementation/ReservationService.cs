@@ -3,6 +3,7 @@
 using DoctorFAM.Application.Convertors;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.Entities.Account;
+using DoctorFAM.Domain.Entities.Dentist;
 using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.Entities.Wallet;
 using DoctorFAM.Domain.Enums.DoctorReservation;
@@ -203,15 +204,33 @@ public class ReservationService : IReservationService
         return await _reservation.FilterDoctorReservationDateSide(filter);
     }
 
+    //This Is Filter For Reservation Date From Today By Dentist Panel
+    public async Task<FilterAppointmentViewModel?> FilterDoctorReservationDateSideByDentistPanel(FilterAppointmentViewModel filter)
+    {
+        return await _reservation.FilterDoctorReservationDateSideByDentistPanel(filter);
+    }
+
     //List Of Doctor Reservation Date After Date Time Now
     public async Task<List<DoctorReservationDate>> ListOfDoctorReservationDateAfterDateTimeNow(ulong userId)
     {
         return await _reservation.ListOfDoctorReservationDateAfterDateTimeNow(userId);
     }
 
+    //List Of Doctor Reservation Date After Date Time Now In Dentist Panel
+    public async Task<List<DoctorReservationDate>> ListOfDoctorReservationDateAfterDateTimeNowInDentistPanel(ulong userId)
+    {
+        return await _reservation.ListOfDoctorReservationDateAfterDateTimeNowInDentistPanel(userId);
+    }
+
     public async Task<FilterAppointmentViewModel> FiltrDoctorReservationDateHistory(FilterAppointmentViewModel filter)
     {
         return await _reservation.FiltrDoctorReservationDateHistory(filter);
+    }
+
+    //This Is History Of All Records That In Reservation Date By User Id ByDentistPanel 
+    public async Task<FilterAppointmentViewModel?> FiltrDoctorReservationDateHistoryByDentistPanel(FilterAppointmentViewModel filter)
+    {
+        return await _reservation.FiltrDoctorReservationDateHistoryByDentistPanel(filter);
     }
 
     //Add Reservation Date 
@@ -298,6 +317,93 @@ public class ReservationService : IReservationService
                 reservationTime.EndTime = endTime.ToString($"{endTime.Hour.ToString("00")}:{endTime.Minute.ToString("00")}:00");
                 reservationTime.DoctorReservationDateId = reservation.Id;
                 reservationTime.DoctorReservationState = Domain.Enums.DoctorReservation.DoctorReservationState.NotReserved;
+                if (doctorOffice != null) reservationTime.WorkAddressId = doctorOffice.Id;
+
+                await _reservation.AddReservationDateTime(reservationTime);
+
+                //Update Last Parameters For Proccess Next Reservation Date Time 
+                hours = endTime.Hour;
+                minute = endTime.Minute;
+            }
+
+            await _reservation.Savechanges();
+        }
+
+        #endregion
+
+        return true;
+    }
+
+    //Add Reservation Date From Dentist Panel
+    public async Task<bool> AddReservationDateFromDentistPanel(AddReservationDateViewModel model, ulong organizationOwnerId)
+    {
+        #region Is Exist Any Reservastion Date 
+
+        if (await _reservation.IsExistAnyDuplicateReservationDate(model.ReservationDate.ToMiladiDateTime(), organizationOwnerId))
+        {
+            return false;
+        }
+
+        #endregion
+
+        #region Fill Entity
+
+        DoctorReservationDate reservation = new DoctorReservationDate()
+        {
+            UserId = organizationOwnerId,
+            CreateDate = DateTime.Now,
+            ReservationDate = model.ReservationDate.ToMiladiDateTime()
+        };
+
+        #endregion
+
+        #region Add Reservation Date Method
+
+        await _reservation.AddDoctorReservationDate(reservation);
+
+        #endregion
+
+        #region Get Doctor Office Address
+
+        var doctorOffice = await _workAddress.GetLastWorkAddressByUserId(organizationOwnerId);
+
+        #endregion
+
+        #region If Add Reservation Date State Is computerized
+
+        //Check That Fields Are Not Empty
+        if (model.AddReservationDateState == AddReservationDateState.computerized && model.StartTime.HasValue && model.EndTime.HasValue && model.PeriodNumber.HasValue)
+        {
+            //If Start Time Is Smaller Than End Time 
+            if (model.StartTime.Value >= model.EndTime.Value) return false;
+
+            int hours = model.StartTime.Value;
+            int minute = 0;
+
+            int startTime = model.StartTime.Value;
+            int endTimeComingFromModel = model.EndTime.Value;
+            int periodNumber = model.PeriodNumber.Value;
+
+            //Diference Between Start Time And End Time 
+            int diference = (endTimeComingFromModel - startTime) * 60;
+
+            // The Number Of Intervals
+            int intervalsCount = diference / periodNumber;
+
+            for (int i = 0; i < intervalsCount; i++)
+            {
+                //Sampling From Reservation Date Time 
+                DoctorReservationDateTime reservationTime = new DoctorReservationDateTime();
+
+                //Sampling From Time DateTime 
+                DateTime time = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, hours, minute, 0);
+                DateTime endTime = time.AddMinutes(periodNumber);
+
+                //Fill Reservation Date Time 
+                reservationTime.StartTime = time.ToString($"{time.Hour.ToString("00")}:{time.Minute.ToString("00")}:00");
+                reservationTime.EndTime = endTime.ToString($"{endTime.Hour.ToString("00")}:{endTime.Minute.ToString("00")}:00");
+                reservationTime.DoctorReservationDateId = reservation.Id;
+                reservationTime.DoctorReservationState = DoctorReservationState.NotReserved;
                 if (doctorOffice != null) reservationTime.WorkAddressId = doctorOffice.Id;
 
                 await _reservation.AddReservationDateTime(reservationTime);
@@ -440,15 +546,8 @@ public class ReservationService : IReservationService
     {
         #region Get Organization by UserId
 
-        var organization = await _organizationService.GetDoctorOrganizationByUserId(userId);
+        var organization = await _organizationService.GetOrganizationByUserId(userId);
         if (organization == null) return false;
-
-        #endregion
-
-        #region Get Doctor By Owner Id
-
-        var doctor = await _doctorsRepository.GetDoctorByUserId(organization.OwnerId);
-        if (doctor == null) return false;
 
         #endregion
 
@@ -456,6 +555,43 @@ public class ReservationService : IReservationService
 
         var reservation = await _reservation.GetReservationDateById(reservationDateId);
         if (reservation == null) return false;
+        if (organization.OwnerId != reservation.UserId) return false;
+
+        #endregion
+
+        #region Get Reservation Date Times 
+
+        var list = await _reservation.GetListOfReservationDateTimesByReservationDateId(reservationDateId);
+        if (list != null && list.Any()) return false;
+
+        #endregion
+
+        #region Delete Reservation Date 
+
+        reservation.IsDelete = true;
+
+        await _reservation.UpdateReservationDate(reservation);
+
+        #endregion
+
+        return true;
+    }
+
+    //Delete Reservation Date From Dentist Panel
+    public async Task<bool> DeleteReservationDateFromDentistPanel(ulong reservationDateId, ulong userId)
+    {
+        #region Get Organization by UserId
+
+        var organization = await _organizationService.GetDentistOrganizationByUserId(userId);
+        if (organization == null) return false;
+
+        #endregion
+
+        #region Get Reservation Id
+
+        var reservation = await _reservation.GetReservationDateById(reservationDateId);
+        if (reservation == null) return false;
+        if (organization.OwnerId != reservation.UserId) return false;
 
         #endregion
 

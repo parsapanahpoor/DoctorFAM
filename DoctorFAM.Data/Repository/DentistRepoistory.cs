@@ -2,13 +2,16 @@
 
 using DoctorFAM.Data.DbContext;
 using DoctorFAM.Domain.Entities.Dentist;
+using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.Admin.Dentist;
+using DoctorFAM.Domain.ViewModels.Dentist.Employees;
 using DoctorFAM.Domain.ViewModels.Dentist.NavBar;
 using DoctorFAM.Domain.ViewModels.Dentist.SideBar;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DosctorSideBarInfo;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.Employees;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Net.NetworkInformation;
@@ -197,6 +200,46 @@ public class DentistRepoistory : IDentistRepoistory
         await _context.DentistInfo.AddAsync(info);
     }
 
+    //Filter Dentist Office Employees 
+    public async Task<FilterDentistOfficeEmployeesViewmodel> FilterDentistOfficeEmployees(FilterDentistOfficeEmployeesViewmodel filter)
+    {
+        #region Get organization 
+
+        var dentistPOffice = await _context.Organizations
+                                           .AsNoTracking()
+                                           .Where(p => !p.IsDelete && p.OwnerId == filter.userId && p.OrganizationType == Domain.Enums.Organization.OrganizationType.DentistOffice)
+                                           .Select(p=> p.Id)
+                                           .FirstOrDefaultAsync();
+
+        if (dentistPOffice == 0) return null;
+
+        #endregion
+
+        var query = _context.OrganizationMembers
+            .Include(p => p.User)
+            .Where(s => !s.IsDelete && s.OrganizationId == dentistPOffice)
+            .OrderByDescending(s => s.CreateDate)
+            .AsQueryable();
+
+
+        #region Filter
+
+        if (!string.IsNullOrEmpty(filter.Mobile))
+        {
+            query = query.Where(s => s.User.Mobile != null && EF.Functions.Like(s.User.Mobile, $"%{filter.Mobile}%"));
+        }
+
+        if (!string.IsNullOrEmpty(filter.Username))
+        {
+            query = query.Where(s => s.User.Username.Contains(filter.Username));
+        }
+
+        #endregion
+
+        await filter.Paging(query);
+
+        return filter;
+    }
 
     #endregion
 
@@ -230,6 +273,21 @@ public class DentistRepoistory : IDentistRepoistory
                                                 .FirstOrDefault()
                              })
                              .ToListAsync();
+    }
+
+    //Get Dentist Reservation Tariff By User Id 
+    public async Task<DoctorsReservationTariffs?> GetDentistReservationTariffByDentistUserId(ulong DentistUserId)
+    {
+        return await _context.DoctorsReservationTariffs
+                             .AsNoTracking()
+                             .FirstOrDefaultAsync(p => !p.IsDelete && p.DoctorUserId == DentistUserId);
+    }
+
+    //Update Dentist Reservation Tariffs
+    public async Task UpdateDentistReservationTariffs(DoctorsReservationTariffs reservationTariffs)
+    {
+        _context.DoctorsReservationTariffs.Update(reservationTariffs);
+        await _context.SaveChangesAsync();
     }
 
     #endregion

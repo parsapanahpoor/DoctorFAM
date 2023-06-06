@@ -16,6 +16,9 @@ public interface IReservationRepository
 {
     #region Doctor Panel 
 
+    //List Of Doctor Reservation Date After Date Time Now In Dentist Panel
+    Task<List<DoctorReservationDate>> ListOfDoctorReservationDateAfterDateTimeNowInDentistPanel(ulong userId);
+
     //List Of Doctor Reservation Date After Date Time Now
     Task<List<DoctorReservationDate>> ListOfDoctorReservationDateAfterDateTimeNow(ulong userId);
 
@@ -44,6 +47,12 @@ public interface IReservationRepository
     Task<bool> IsExistAnyDuplicateReservationDate(DateTime date, ulong userId);
 
     Task<FilterAppointmentViewModel> FilterDoctorReservationDateSide(FilterAppointmentViewModel filter);
+
+    //This Is Filter For Reservation Date From Today By Dentist Panel
+    Task<FilterAppointmentViewModel?> FilterDoctorReservationDateSideByDentistPanel(FilterAppointmentViewModel filter);
+
+    //This Is History Of All Records That In Reservation Date By User Id ByDentistPanel 
+    Task<FilterAppointmentViewModel?> FiltrDoctorReservationDateHistoryByDentistPanel(FilterAppointmentViewModel filter);
 
     Task AddDoctorReservationDate(DoctorReservationDate doctorReservationDate);
 
