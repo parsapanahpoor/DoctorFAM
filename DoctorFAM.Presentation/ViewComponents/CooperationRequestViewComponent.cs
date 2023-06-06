@@ -1,46 +1,49 @@
-﻿using DoctorFAM.Application.Extensions;
+﻿#region Usings
+
+using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.ViewModels.Site.CooperationRequest;
 using Microsoft.AspNetCore.Mvc;
 
-namespace DoctorFAM.Web.ViewComponents
+#endregion
+
+namespace DoctorFAM.Web.ViewComponents;
+
+public class CooperationRequestViewComponent : ViewComponent
 {
-    public class CooperationRequestViewComponent : ViewComponent
+    #region Ctor
+
+    private readonly IUserService _userService;
+
+    public CooperationRequestViewComponent(IUserService userService)
     {
-        #region Ctor
+        _userService = userService;
+    }
 
-        private readonly IUserService _userService;
+    #endregion
 
-        public CooperationRequestViewComponent(IUserService userService)
+    public async Task<IViewComponentResult> InvokeAsync()
+    {
+        //If User Is Authenticated
+        #region Render Model 
+
+        if (User.Identity.IsAuthenticated)
         {
-            _userService = userService;
-        }
+            var user = await _userService.GetUserById(User.GetUserId());
+            if (user != null)
+            {
+                SendCooperationRequestViewModel model = new SendCooperationRequestViewModel()
+                {
+                    Mobile = user.Mobile,
+                    Username = user.Username
+                };
 
+                return View("CooperationRequest" , model);
+            }
+        }
+      
         #endregion
 
-        public async Task<IViewComponentResult> InvokeAsync()
-        {
-            //If User Is Authenticated
-            #region Render Model 
-
-            if (User.Identity.IsAuthenticated)
-            {
-                var user = await _userService.GetUserById(User.GetUserId());
-                if (user != null)
-                {
-                    SendCooperationRequestViewModel model = new SendCooperationRequestViewModel()
-                    {
-                        Mobile = user.Mobile,
-                        Username = user.Username
-                    };
-
-                    return View("CooperationRequest" , model);
-                }
-            }
-          
-            #endregion
-
-            return View("CooperationRequest");
-        }
+        return View("CooperationRequest");
     }
 }

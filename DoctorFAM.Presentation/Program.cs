@@ -1,3 +1,5 @@
+#region Usings
+
 using DoctorFAM.Application.SiteServices;
 using DoctorFAM.BackgroundTask;
 using DoctorFAM.Data.DbContext;
@@ -16,6 +18,8 @@ using Newtonsoft.Json.Serialization;
 using System.Globalization;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
+
+#endregion
 
 var builder = WebApplication.CreateBuilder(args);
 

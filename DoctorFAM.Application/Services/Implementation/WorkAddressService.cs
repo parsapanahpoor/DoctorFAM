@@ -1,6 +1,7 @@
 ﻿using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.Entities.WorkAddress;
 using DoctorFAM.Domain.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,14 +35,30 @@ namespace DoctorFAM.Application.Services.Implementation
             await _workAddress.AddWorkAddress(workAddress);
         }
 
+        public async Task AddWorkAddressWithoutSaveChanges(WorkAddress workAddress)
+        {
+            await _workAddress.AddWorkAddressWithoutSaveChanges(workAddress);
+        }
+
         public async Task<WorkAddress?> GetUserWorkAddressById(ulong userid)
         {
             return await _workAddress.GetUserWorkAddressById(userid);
         }
 
+        public async Task<WorkAddress?> GetUserWorkAddressByIdWithAsNoTracking(ulong userid)
+        {
+            return await _workAddress.GetUserWorkAddressByIdWithAsNoTracking(userid);
+        }
+        
         public async Task UpdateUserWorkAddress(WorkAddress workAddress)
         {
             await _workAddress.UpdateUserWorkAddress(workAddress);
+        }
+
+        //Update User Work Address Without Save Changes
+        public async Task UpdateUserWorkAddressWithoutSaveChanges(WorkAddress workAddress)
+        {
+            await _workAddress.UpdateUserWorkAddressWithoutSaveChanges(workAddress);
         }
 
         public async Task<WorkAddress?> GetLastWorkAddressByUserId(ulong userId)

@@ -54,6 +54,12 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         Task<bool> IsUserDoctorOrDoctorEmployee(ulong userId);
 
+        //Check Is User Has Permission To Dentist Panel 
+        Task<bool> IsUserDentist(ulong userId);
+
+        //Check Is User Has Permission To Dentist Panel 
+        Task<bool> IsUserDentistOrDentistEmployee(ulong userId);
+
         Task<bool> IsUserPharmacy(ulong userId);
 
         Task<bool> IsUserSupporter(ulong userId);
@@ -68,6 +74,8 @@ namespace DoctorFAM.Application.Services.Interfaces
         Task<List<Role>> GetListOfLaboratoryRoles();
 
         Task<List<string>?> GetUserRoleses(ulong userId);
+
+        Task<List<string>?> GetUserRolesesWithAsNoTracking(ulong userId);
 
         #endregion
     }

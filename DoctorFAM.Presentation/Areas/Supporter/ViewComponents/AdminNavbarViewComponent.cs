@@ -25,7 +25,7 @@ namespace DoctorFAM.Web.Areas.Supporter.ViewComponents
 
             if (User.Identity.IsAuthenticated)
             {
-                var userRole = await _permissionService.GetUserRoleses(User.GetUserId());
+                var userRole = await _permissionService.GetUserRolesesWithAsNoTracking(User.GetUserId());
 
                 if (userRole == null) ViewBag.User = true;
 
@@ -50,6 +50,10 @@ namespace DoctorFAM.Web.Areas.Supporter.ViewComponents
                     if (userRole.Contains("LaboratoryOfficeEmployee")) ViewBag.LaboratoryOfficeEmployee = true;
 
                     if (userRole.Contains("Labratory")) ViewBag.Labratory = true;
+
+                    if (userRole.Contains("Dentist")) ViewBag.Dentist = true;
+
+                    if (userRole.Contains("DentistOfficeEmployee")) ViewBag.Dentist = true;
                 }
 
             }

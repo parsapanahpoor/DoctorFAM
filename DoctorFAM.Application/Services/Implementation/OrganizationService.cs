@@ -80,6 +80,18 @@ namespace DoctorFAM.Application.Services.Implementation
             return await _organization.GetDoctorOrganizationByUserId(userId);
         }
 
+        //Get Dentist Organization By Member User Id
+        public async Task<Organization?> GetDentistOrganizationByUserId(ulong userId)
+        {
+            return await _organization.GetDentistOrganizationByUserId(userId);
+        }
+
+        //Get Dentist Organization Id By Member User Id
+        public async Task<ulong> GetDentistOrganizationIdByUserId(ulong userId)
+        {
+            return await _organization.GetDentistOrganizationIdByUserId(userId);
+        }
+
         //Get Nurse Organization By User Id
         public async Task<Organization?> GetNurseOrganizationByUserId(ulong userId)
         {
@@ -130,6 +142,29 @@ namespace DoctorFAM.Application.Services.Implementation
             return true;
         }
 
+        //Delete Employee From Dentist Office Organization
+        public async Task<bool> DeleteEmployeeFromDentistOfficeOrganization(ulong employeeId, ulong userId)
+        {
+            #region Get Organization
+
+            var organization = await GetOrganizationByUserId(userId);
+            if (organization == null) return false;
+
+            //Owner Can Not Be Deleted
+            if (organization.OwnerId == employeeId) return false;
+
+            #endregion
+
+            #region Delete Employee From Organization 
+
+            var res = await _organization.DeleteEmployeeFromDentistOrganization(employeeId, organization.Id);
+            if (res == false) return false;
+
+            #endregion
+
+            return true;
+        }
+
         //Delete Employee From Laboratory Office Organization
         public async Task<bool> DeleteEmployeeFromLaboratoryOfficeOrganization(ulong employeeId, ulong userId)
         {
@@ -156,6 +191,18 @@ namespace DoctorFAM.Application.Services.Implementation
         public async Task<bool> IsExistAnyDoctorOfficeEmployeeByUserId(ulong userId)
         {
             return await _organization.IsExistAnyDoctorOfficeEmployeeByUserId(userId);
+        }
+
+        //Get Dentist Organization OwnerId By User Id
+        public async Task<ulong> GetDentistOrganizationOwnerIdByUserId(ulong userId)
+        {
+            return await _organization.GetDentistOrganizationOwnerIdByUserId(userId);
+        }
+
+        //Is Exist Any Dentist Office Employee By User Id
+        public async Task<bool> IsExistAnyDentistOfficeEmployeeByUserId(ulong userId)
+        {
+            return await _organization.IsExistAnyDentistOfficeEmployeeByUserId(userId);
         }
 
         //Check Is Exist Any Nurse By This User Id

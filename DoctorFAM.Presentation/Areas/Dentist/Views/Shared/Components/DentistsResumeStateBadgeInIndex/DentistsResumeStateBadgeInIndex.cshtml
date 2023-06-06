@@ -1,0 +1,49 @@
+﻿@model DoctorFAM.Domain.Entities.Resume.Resume
+
+@if (Model != null)
+{
+    @if (Model.ResumeState == DoctorFAM.Domain.Enums.ResumeState.ResumeState.Accepted)
+    {
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3  buttons-preview">
+            @*<div class="badge badge-success">
+                @SharedLocalizer["Accepted"]
+            </div>*@
+            <a asp-area="Dentist" asp-controller="Resume" asp-action="PageOfResume" class="btn btn-warning  btn-circle btn-lg"><i class="fa fa-file-text-o"></i></a>
+            <p class="text-center justify-content-center" style="font-size:12PX;">  رزومه پزشک  </p>
+        </div>
+    }
+
+    @if (Model.ResumeState == DoctorFAM.Domain.Enums.ResumeState.ResumeState.WaitingForConfirm)
+    {
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3  buttons-preview">
+           @* <div class="badge badge-warning">
+                @SharedLocalizer["Waiting"]
+            </div>*@
+            <a asp-area="Dentist" asp-controller="Resume" asp-action="PageOfResume" class="btn btn-warning  btn-circle btn-lg">@SharedLocalizer["درانتظار"]</a>
+            <p class="text-center justify-content-center" style="font-size:12PX;">  رزومه پزشک  </p>
+        </div>
+    }
+
+    @if (Model.ResumeState == DoctorFAM.Domain.Enums.ResumeState.ResumeState.Decline)
+    {
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3  buttons-preview">
+           @* <div class="badge badge-danger">
+                @SharedLocalizer["Decline"]
+            </div>*@
+            <a asp-area="Dentist" asp-controller="Resume" asp-action="PageOfResume" class="btn btn-warning  btn-circle btn-lg">@SharedLocalizer["رد شده"]</a>
+            <p class="text-center justify-content-center" style="font-size:12PX;">  رزومه پزشک  </p>
+        </div>
+    }
+}
+else
+{
+    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3  buttons-preview">
+        @*<div class="badge badge-warning">
+            @SharedLocalizer["Waiting"]
+        </div>*@
+        <a asp-area="Dentist" asp-controller="Resume" asp-action="PageOfResume" class="btn btn-warning  btn-circle btn-lg">@SharedLocalizer["درانتظار"]</a>
+        <p class="text-center justify-content-center" style="font-size:12PX;">  رزومه پزشک  </p>
+    </div>
+}
+
+

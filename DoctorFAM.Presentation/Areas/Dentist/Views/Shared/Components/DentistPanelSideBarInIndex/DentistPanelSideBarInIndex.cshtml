@@ -1,0 +1,94 @@
+﻿@model DoctorFAM.Domain.ViewModels.Dentist.SideBar.DentistSideBarViewModel
+
+@{
+    bool doctorLogin = ViewBag.DentistIncoming;
+}
+
+@if (Model.DentistInfoState == "Accepted")
+{
+    if (doctorLogin)
+    {
+        <div class="page-body">
+
+            <div class="row text-center align-Item-center">
+                <div class="col-lg-12 col-sm-12 col-xs-12">
+                    <div class="row">
+
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3  buttons-preview text-center justify-content-center">
+                            <a asp-area="Dentist" asp-controller="Home" asp-action="Index_Sec" class="btn btn-success  btn-circle btn-lg"><i class="glyphicon glyphicon-th"></i></a>
+                            <p class="text-center justify-content-center" style="font-size:12PX;"> داشبورد </p>
+                        </div>
+
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3  buttons-preview  text-center justify-content-center">
+                            <a asp-area="Dentist" asp-controller="Appointment" asp-action="TurnRating" class="btn btn-info  btn-circle btn-lg"><i class="fa fa-check-square-o"></i></a>
+                            <p class="text-center justify-content-center" style="font-size:12PX;">نوبت دهی</p>
+                        </div>
+
+                        @await Component.InvokeAsync("DentistsResumeStateBadgeInIndex")
+
+                        @await Component.InvokeAsync("DentistsInfosBadgeIndexView")
+
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3  buttons-preview">
+                            <a asp-area="Dentist" asp-controller="Account" asp-action="FilterEmployees" class="btn btn-info  btn-circle btn-lg"><i class="fa fa-user-plus"></i></a>
+                            <p class="text-center justify-content-center" style="font-size:12PX;"> کارکنان </p>
+                        </div>
+
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3  buttons-preview">
+                            <a asp-area="Chatroom" asp-controller="Home" asp-action="Index" class="btn btn-warning  btn-circle btn-lg"
+                       style="background-image: linear-gradient(#ff00cc, #333399) !important;"><i class="fa fa-comments-o"></i></a>
+                            <p class="text-center justify-content-center" style="font-size:12PX;"> پیام رسان </p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    }
+    else
+    {
+        <div class="page-body">
+
+            <div class="row text-center align-Item-center">
+                <div class="col-lg-12 col-sm-12 col-xs-12">
+                    <div class="row">
+
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview text-center justify-content-center">
+                            <a asp-area="Dentist" asp-controller="Home" asp-action="Index_Sec" class="btn btn-success  btn-circle btn-lg"><i class="glyphicon glyphicon-th"></i></a>
+                            <p class="text-center justify-content-center" style="font-size:12PX;"> داشبورد </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    }
+}
+
+@if (Model.DentistInfoState != "Accepted")
+{
+    <div class="page-body">
+
+        <div class="row text-center align-Item-center">
+            <div class="col-lg-12 col-sm-12 col-xs-12">
+                <div class="row">
+
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview text-center justify-content-center">
+                        <a asp-area="Dentist" asp-controller="Home" asp-action="Index_Sec" class="btn btn-success  btn-circle btn-lg"><i class="glyphicon glyphicon-th"></i></a>
+                        <p class="text-center justify-content-center" style="font-size:12PX;"> داشبورد </p>
+                    </div>
+
+                    @await Component.InvokeAsync("DentistsInfosBadgeIndexView")
+
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview">
+                        <a asp-area="Dentist" asp-controller="Ticket" asp-action="FilterTickets" class="btn btn-info  btn-circle btn-lg"><i class="fa fa-ticket"></i></a>
+                        <p class="text-center justify-content-center" style="font-size:12PX;"> تیکت پشتیبانی </p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+}

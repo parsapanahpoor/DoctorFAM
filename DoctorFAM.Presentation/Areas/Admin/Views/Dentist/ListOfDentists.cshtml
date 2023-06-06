@@ -1,0 +1,165 @@
+﻿@model List<DoctorFAM.Domain.ViewModels.Admin.Dentist.ListOfDentistAdminSideViewModel>
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.Extensions
+
+@{
+    ViewData["Title"] = "لیست دندان پزشکان";
+}
+
+@section Breadcrumb
+    {
+    <li>
+        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+    </li>
+}
+
+@section Styles
+    {
+    <link href="/admin/css/dataTables.bootstrap.rtl.css" rel="stylesheet" />
+}
+
+@section Scripts
+    {
+    <script src="~/admin/js/datatable/jquery.dataTables.min.js"></script>
+    <script src="~/admin/js/datatable/ZeroClipboard.js"></script>
+    <script src="~/admin/js/datatable/dataTables.tableTools.min.js"></script>
+    <script src="~/admin/js/datatable/dataTables.bootstrap.min.js"></script>
+    <script src="~/admin/js/datatable/datatables-init.js"></script>
+    <script>
+        InitiateSimpleDataTable.init();
+        InitiateEditableDataTable.init();
+        InitiateExpandableDataTable.init();
+        InitiateSearchableDataTable.init();
+    </script>
+
+    }
+
+<div class="page-body">
+
+    <div class="row">
+
+        <div id="horizontal-form">
+
+            @if (Model != null && Model.Any())
+            {
+
+                <div class="widget-body no-padding">
+                    <div id="searchable_wrapper" class="dataTables_wrapper form-inline">
+
+                        <table class="table table-bordered table-hover table-striped dataTable" id="searchable" role="grid" aria-describedby="searchable_info">
+                            <thead class="bordered-darkorange">
+                                <tr role="row">
+
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">آواتار</th>
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" aria-sort="ascending">اطلاعات فردی</th>
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Platform: activate to sort column ascending">وضعیت </th>
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Platform: activate to sort column ascending">دسترسی </th>
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending">امکانات</th>
+
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                @foreach (var dentist in Model)
+                                {
+                                    <tr role="row" class="even responsive" remove-ajax-item="@dentist.User.UserId">
+
+                                        <td class="center ">
+
+                                            <div class="flex-style-center">
+                                                <img src="@dentist.User.UserAvatar.GetUserAvatar()" class="avatar-style" />
+                                                <div class="mr-10px">
+                                                    <span> @dentist.User.Username </span>
+                                                    <hr class="margin-7" />
+                                                    <span>@Localizer["تاریخ ثبت نام"] : @dentist.User.RegisterDate.ToShamsi()</span>
+                                                </div>
+                                            </div>
+                                        </td>
+
+                                        <td class="center ">
+
+                                            <p>
+                                                @Localizer["ایمیل"] :
+                                                @if (dentist.User.Email == null)
+                                                {
+                                                    <span class="mr-8px label label-orange">@Localizer["خالی"] </span>
+                                                }
+                                                else
+                                                {
+                                                    @dentist.User.Email
+                                                }
+                                            </p>
+                                            @if (!string.IsNullOrEmpty(dentist.User.Mobile))
+                                            {
+                                                <hr class="margin-7" />
+                                                <p>@Localizer["موبایل"] : @dentist.User.Mobile</p>
+                                            }
+                                        </td>
+
+                                        <td class="sorting_1">
+                                            <p class="flex-style-center">
+                                                <span> @Localizer["وضعیت ایمیل"] </span>
+                                                <span class="mr-8px label @((dentist.User.EmailState) ? "label-success" : "label-orange")">@((dentist.User.EmailState) ? @Localizer["فعال"] : @Localizer["غیر فعال"])</span>
+                                            </p>
+                                            <hr class="margin-7" />
+                                            <p class="flex-style-center">
+                                                <span> @Localizer["وضعیت موبایل"] </span>
+                                                <span class="mr-8px label @((dentist.User.MobileState) ? "label-success" : "label-orange")">@((dentist.User.MobileState) ? @Localizer["فعال"] : @Localizer["غیر فعال"])</span>
+                                            </p>
+                                        </td>
+
+                                        <td class="sorting_1">
+                                            <p class="flex-style-center">
+                                                <span> @Localizer["وضعیت پزشک"] </span>
+                                                @if (dentist.organizationmState == DoctorFAM.Domain.Entities.Doctors.OrganizationInfoState.Accepted)
+                                                {
+                                                    <span class="mr-8px label label-success"> @Localizer["تایید شده"] </span>
+                                                }
+                                                @if (dentist.organizationmState == DoctorFAM.Domain.Entities.Doctors.OrganizationInfoState.Rejected)
+                                                {
+                                                    <span class="mr-8px label label-danger"> @Localizer["رد شده"] </span>
+                                                }
+                                                @if (dentist.organizationmState == DoctorFAM.Domain.Entities.Doctors.OrganizationInfoState.WatingForConfirm)
+                                                {
+                                                    <span class="mr-8px label label-warning"> @Localizer["در انتظار بررسی"] </span>
+                                                }
+                                                @if (dentist.organizationmState == DoctorFAM.Domain.Entities.Doctors.OrganizationInfoState.JustRegister)
+                                                {
+                                                    <span class="mr-8px label label-warning"> @Localizer["ثبت نام جدید"] </span>
+                                                }
+                                            </p>
+                                            <hr class="margin-7" />
+
+                                            <p class="flex-style-center">
+                                                <span> @Localizer["دسترسی سایت"] </span>
+                                                <span class="mr-8px label @((!dentist.User.MobileState) ? "label-success" : "label-orange")">@((!dentist.User.MobileState) ? @Localizer["فعال"] : @Localizer["غیر فعال"])</span>
+                                            </p>
+                                        </td>
+
+                                        <td>
+                                            <a asp-action="DentistsInfoDetail" asp-controller="Dentist" asp-area="Admin" asp-route-userId="@dentist.User.UserId" class="btn btn-warning btn-circle btn-xs"><i class="glyphicon glyphicon-edit"></i></a>
+                                            <a asp-action="ShowDentistInfoDetail" asp-controller="Dentist" asp-area="Admin" asp-route-userId="@dentist.User.UserId" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+                                            <a asp-action="DeclineDentistInformation" asp-controller="Dentist" Area="Admin" asp-route-userId="@dentist.User.UserId" class="btn btn-danger btn-circle btn-xs"><i class="glyphicon glyphicon-remove"></i></a>
+                                        </td>
+
+                                    </tr>
+
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <partial name="_AdminNotFoundPartial" />
+            }
+
+        </div>
+    </div>
+
+</div>
+
+

@@ -1,5 +1,7 @@
 ﻿@using DoctorFAM.Application.Extensions
 @model DoctorFAM.Domain.Entities.Account.User
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
 
 @{
     var currentCulture = ApplicationCultures.GetCurrentCulture();
@@ -19,10 +21,7 @@
             <div class="navbar-header @(currentCulture.IsRtl ? "pull-right":"pull-left")">
                 <a href="/Home" class="navbar-brand">
                     <small>
-
                         <img class="logoImage text-center align-items-center" src="/Content/images/Logo/doctorfamTes.png" alt="دکترفم">
-
-                        @*<img src="/admin/img/logo-rtl.png" alt="" />*@
                     </small>
                 </a>
             </div>
@@ -35,7 +34,24 @@
             <!-- Account Area and Settings --->
             <div class="navbar-header pull-left">
                 <div class="navbar-account">
-                    <ul class="account-area mt-3">
+                    <ul class="account-area">
+
+                        @* <!--Online-->
+                        <li class="marli margin-left-10" id="Online">
+
+                        <a class="dropdown-toggle btn btn-success" href="#">
+                        آنلاین
+                        </a>
+
+                        </li>
+                        <!--Offline-->
+                        <li class="marli margin-left-10 " id="disConnect">
+
+                        <a class="dropdown-toggle btn btn-danger" href="#">
+                        آفلاین
+                        </a>
+
+                        </li>*@
 
                         <!--Notification-->
                         <li class="marli margin-left-10">
@@ -46,49 +62,36 @@
 
                         </li>
 
-                        <!--Online-->
-                        <li class="marli margin-left-10" id="Online">
 
-                            <a class="dropdown-toggle btn btn-success" href="#">
-                                آنلاین
-                            </a>
 
+
+
+                        @*<li class="marli margin-left-10">
+
+                        <a class="dropdown-toggle btn btn-primary " data-toggle="dropdown" title="انتخاب زبان" href="#">
+                        <i class="fa fa-angle-down"></i>
+                        انتخاب زبان
+                        </a>
+                        <!--Tasks Dropdown-->
+                        <ul class="pull-right dropdown-menu dropdown-tasks dropdown-arrow ">
+
+                        @foreach (var language in ApplicationCultures.CultureItems)
+                        {
+                        <li>
+                        <a asp-area="" asp-controller="Home" asp-action="ChangeLanguage" asp-route-culture="@language.CultureKey">
+                        <div class="clearfix">
+                        <span class="pull-right">@language.Title</span>
+                        <span class="pull-left">@language.CultureKey</span>
+                        </div>
+                        </a>
                         </li>
+                        }
+                        </ul>
 
-                        <!--Offline-->
-                        <li class="marli margin-left-10 " id="disConnect">
+                        </li>*@
 
-                            <a class="dropdown-toggle btn btn-danger" href="#">
-                                آفلاین
-                            </a>
 
-                        </li>
-
-                        <li class="marli margin-left-10">
-
-                            <a class="dropdown-toggle btn btn-primary " data-toggle="dropdown" title="انتخاب زبان" href="#">
-                                <i class="fa fa-angle-down"></i>
-                                انتخاب زبان
-                            </a>
-                            <!--Tasks Dropdown-->
-                            <ul class="pull-right dropdown-menu dropdown-tasks dropdown-arrow ">
-
-                                @foreach (var language in ApplicationCultures.CultureItems)
-                                {
-                                    <li>
-                                        <a asp-area="" asp-controller="Home" asp-action="ChangeLanguage" asp-route-culture="@language.CultureKey">
-                                            <div class="clearfix">
-                                                <span class="pull-right">@language.Title</span>
-                                                <span class="pull-left">@language.CultureKey</span>
-                                            </div>
-                                        </a>
-                                    </li>
-                                }
-                            </ul>
-
-                        </li>
-
-                         <li>
+                        <li>
                             <a class="login-area dropdown-toggle" data-toggle="dropdown">
                                 <div class="avatar" title="View your public profile">
                                     <img src="@Model.GetUserAvatar()">
@@ -171,6 +174,15 @@
                                         <a asp-action="Index" asp-area="Supporter" asp-controller="Home">
                                             <div class="clearfix">
                                                 <span class="pull-right">پنل پشتیبان</span>
+                                                <span class="pull-left">></span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+
+                                        <a asp-action="Index" asp-area="dentist" asp-controller="Home">
+                                            <div class="clearfix">
+                                                <span class="pull-right">پنل دندان پزشک </span>
                                                 <span class="pull-left">></span>
                                             </div>
                                         </a>
@@ -308,9 +320,21 @@
                                             </a>
                                         </li>
                                     }
+
+                                    @if (ViewBag.Dentist == true)
+                                    {
+                                        <li>
+
+                                            <a asp-action="Index" asp-area="dentist" asp-controller="Home">
+                                                <div class="clearfix">
+                                                    <span class="pull-right">پنل دندان پزشک</span>
+                                                    <span class="pull-left">></span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    }
                                 }
-                                   
-                                
+
                                 <li>
                                     <a asp-area="UserPanel" asp-controller="Account" asp-action="ChangePassword">
                                         <span class="menu-text">@SharedLocalizer["Change Password"]</span>
@@ -326,12 +350,13 @@
                             <!--/Login Area Dropdown-->
                         </li>
 
+
                     </ul>
 
-                    <!-- Settings -->
+
                 </div>
             </div>
-            <!-- /Account Area and Settings -->
+
         </div>
     </div>
 </div>

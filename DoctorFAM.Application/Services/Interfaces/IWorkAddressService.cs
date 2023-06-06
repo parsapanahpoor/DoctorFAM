@@ -15,11 +15,18 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         Task AddWorkAddress(WorkAddress workAddress);
 
+        Task AddWorkAddressWithoutSaveChanges(WorkAddress workAddress);
+
         Task<WorkAddress?> GetUserWorkAddressById(ulong userid);
 
         Task UpdateUserWorkAddress(WorkAddress workAddress);
 
+        //Update User Work Address Without Save Changes
+        Task UpdateUserWorkAddressWithoutSaveChanges(WorkAddress workAddress);
+
         Task<WorkAddress?> GetLastWorkAddressByUserId(ulong userId);
+
+        Task<WorkAddress?> GetUserWorkAddressByIdWithAsNoTracking(ulong userid);
 
         #endregion
     }

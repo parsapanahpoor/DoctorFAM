@@ -1,5 +1,6 @@
 ﻿using DoctorFAM.Domain.ViewModels.Admin.Dashboard;
 using DoctorFAM.Domain.ViewModels.Consultant.Dashboard;
+using DoctorFAM.Domain.ViewModels.Dentist.Dashboard;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Dashbaord;
 using DoctorFAM.Domain.ViewModels.Nurse.NurseDashboard;
 using DoctorFAM.Domain.ViewModels.Supporter;
@@ -48,6 +49,12 @@ namespace DoctorFAM.Application.Services.Interfaces
         #region Consultant Panel 
 
         Task<ConsultantPanelDashboardViewModel?> FillConsultantPanelDashboardViewModel(ulong userId);
+
+        #endregion
+
+        #region Dentist Panel 
+
+        Task<DentistPanelDashboardViewModel?> FillDentistPanelDashboardViewModel(ulong userId);
 
         #endregion
     }

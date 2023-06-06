@@ -36,15 +36,34 @@ namespace DoctorFAM.Data.Repository
             await _context.SaveChangesAsync();
         }
 
+        //Add Work Address Without Save Changes
+        public async Task AddWorkAddressWithoutSaveChanges(WorkAddress workAddress)
+        {
+            await _context.WorkAddresses.AddAsync(workAddress);
+        }
+
         public async Task<WorkAddress?> GetUserWorkAddressById(ulong userid)
         {
             return await  _context.WorkAddresses.FirstOrDefaultAsync(p => !p.IsDelete && p.UserId == userid);
+        }
+
+        public async Task<WorkAddress?> GetUserWorkAddressByIdWithAsNoTracking(ulong userid)
+        {
+            return await _context.WorkAddresses
+                                 .AsNoTracking()
+                                 .FirstOrDefaultAsync(p => !p.IsDelete && p.UserId == userid);
         }
 
         public async Task UpdateUserWorkAddress(WorkAddress workAddress)
         {
             _context.WorkAddresses.Update(workAddress);
             await _context.SaveChangesAsync();
+        }
+
+        //Update User Work Address Without Save Changes
+        public async Task UpdateUserWorkAddressWithoutSaveChanges(WorkAddress workAddress)
+        {
+            _context.WorkAddresses.Update(workAddress);
         }
 
         public async Task<WorkAddress?> GetLastWorkAddressByUserId(ulong userId)

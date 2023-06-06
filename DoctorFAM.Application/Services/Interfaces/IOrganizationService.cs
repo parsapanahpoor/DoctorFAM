@@ -43,11 +43,23 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         Task<Organization?> GetDoctorOrganizationByUserId(ulong userId);
 
+        //Get Dentist Organization By Member User Id
+        Task<Organization?> GetDentistOrganizationByUserId(ulong userId);
+
+        //Get Dentist Organization Id By Member User Id
+        Task<ulong> GetDentistOrganizationIdByUserId(ulong userId);
+
         Task UpdateOrganization(Organization organization);
 
         Task<bool> DeleteEmployeeFromDoctorOfficeOrganization(ulong employeeId, ulong userId);
 
         Task<bool> IsExistAnyDoctorOfficeEmployeeByUserId(ulong userId);
+
+        //Get Dentist Organization OwnerId By User Id
+        Task<ulong> GetDentistOrganizationOwnerIdByUserId(ulong userId);
+
+        //Is Exist Any Dentist Office Employee By User Id
+        Task<bool> IsExistAnyDentistOfficeEmployeeByUserId(ulong userId);
 
         //Check Is Exist Any Laboratory By This User Id
         Task<bool> IsExistAnyLaboratoryByUserId(ulong userId);
@@ -71,6 +83,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Delete Employee From Laboratory Office Organization
         Task<bool> DeleteEmployeeFromLaboratoryOfficeOrganization(ulong employeeId, ulong userId);
+
+        //Delete Employee From Dentist Office Organization
+        Task<bool> DeleteEmployeeFromDentistOfficeOrganization(ulong employeeId, ulong userId);
 
         #endregion
     }

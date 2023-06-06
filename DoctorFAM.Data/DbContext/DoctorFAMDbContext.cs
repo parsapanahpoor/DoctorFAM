@@ -52,6 +52,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Diagnostics.Metrics;
 using System.Globalization;
 using DoctorFAM.Domain.Entities.SendSMS.FromDoctrors;
+using DoctorFAM.Domain.Entities.Dentist;
 
 
 #endregion
@@ -164,6 +165,16 @@ public class DoctorFAMDbContext : Microsoft.EntityFrameworkCore.DbContext
     #region Pharmacy
 
     public DbSet<HomePharmacyRequestDetail> HomePharmacyRequestDetails { get; set; }
+
+    #endregion
+
+    #region Dentist
+
+    public DbSet<Dentist> Dentist { get; set; }
+
+    public DbSet<DentistsInfo> DentistInfo { get; set; }
+
+    public DbSet<DentistsSkills> DentistsSkills { get; set; }
 
     #endregion
 
@@ -753,43 +764,24 @@ public class DoctorFAMDbContext : Microsoft.EntityFrameworkCore.DbContext
             ParentId = 17
         });
 
-        #endregion
-
-        #region query filter
-
-        modelBuilder.Entity<LocationInfo>().HasQueryFilter(e => e.LanguageId == culture);
-
-        modelBuilder.Entity<CategoryInfo>().HasQueryFilter(e => e.LanguageId == culture);
-
-        modelBuilder.Entity<DoctorsInterestInfo>().HasQueryFilter(e => e.LanguageId == culture);
-
-        modelBuilder.Entity<PharmacyInterestInfo>().HasQueryFilter(e => e.LanguageId == culture);
-
-        modelBuilder.Entity<TVFAMCategoryInfo>().HasQueryFilter(e => e.LanguageId == culture);
-
-        modelBuilder.Entity<RadioFAMCategoryInfo>().HasQueryFilter(e => e.LanguageId == culture);
-
-        modelBuilder.Entity<SpecialtiyInfo>().HasQueryFilter(e => e.LanguageId == culture);
-
-        #endregion
-
-        #region Email Setting Seed Data
-
-        var date = new DateTime(2022, 03, 01);
-
-        modelBuilder.Entity<EmailSetting>().HasData(new EmailSetting
+        modelBuilder.Entity<Role>().HasData(new Role
         {
-            Id = 1,
-            Password = "Reza@83040697",
+            Id = 19,
+            Title = "دندان پزشک",
+            RoleUniqueName = "Dentist",
+            CreateDate = DateTime.Now,
             IsDelete = false,
-            CreateDate = date,
-            IsDefaultEmail = true,
-            DisplayName = "DoctorFAm",
-            From = "maghsoudlou.reza@gmail.com",
-            Smtp = "smtp.gmail.com",
-            EnableSsL = true,
-            Port = 587,
-            UserName = "DoctorFAm"
+            ParentId = null
+        });
+
+        modelBuilder.Entity<Role>().HasData(new Role
+        {
+            Id = 20,
+            Title = "DentistOfficeEmployee",
+            RoleUniqueName = "DentistOfficeEmployee",
+            CreateDate = DateTime.Now,
+            IsDelete = false,
+            ParentId = null
         });
 
         #endregion
@@ -1734,6 +1726,27 @@ public class DoctorFAMDbContext : Microsoft.EntityFrameworkCore.DbContext
 
         #endregion
 
+        #region Email Setting Seed Data
+
+        var date = new DateTime(2022, 03, 01);
+
+        modelBuilder.Entity<EmailSetting>().HasData(new EmailSetting
+        {
+            Id = 1,
+            Password = "Reza@83040697",
+            IsDelete = false,
+            CreateDate = date,
+            IsDefaultEmail = true,
+            DisplayName = "DoctorFAm",
+            From = "maghsoudlou.reza@gmail.com",
+            Smtp = "smtp.gmail.com",
+            EnableSsL = true,
+            Port = 587,
+            UserName = "DoctorFAm"
+        });
+
+        #endregion
+
         #region Time Stamp
 
         modelBuilder.Entity<OnlineVisitDoctorsAndPatientsReservationDetail>()
@@ -1745,6 +1758,25 @@ public class DoctorFAMDbContext : Microsoft.EntityFrameworkCore.DbContext
                        .IsRowVersion();
 
         #endregion
+
+        #region query filter
+
+        modelBuilder.Entity<LocationInfo>().HasQueryFilter(e => e.LanguageId == culture);
+
+        modelBuilder.Entity<CategoryInfo>().HasQueryFilter(e => e.LanguageId == culture);
+
+        modelBuilder.Entity<DoctorsInterestInfo>().HasQueryFilter(e => e.LanguageId == culture);
+
+        modelBuilder.Entity<PharmacyInterestInfo>().HasQueryFilter(e => e.LanguageId == culture);
+
+        modelBuilder.Entity<TVFAMCategoryInfo>().HasQueryFilter(e => e.LanguageId == culture);
+
+        modelBuilder.Entity<RadioFAMCategoryInfo>().HasQueryFilter(e => e.LanguageId == culture);
+
+        modelBuilder.Entity<SpecialtiyInfo>().HasQueryFilter(e => e.LanguageId == culture);
+
+        #endregion
+
 
         base.OnModelCreating(modelBuilder);
     }
