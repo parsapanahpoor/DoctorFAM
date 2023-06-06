@@ -61,8 +61,6 @@ public class ReservationRepository : IReservationRepository
             .OrderBy(s => s.ReservationDate)
             .ToListAsync();
 
-        #region Status
-
         return query;
     }
 
@@ -83,8 +81,6 @@ public class ReservationRepository : IReservationRepository
                                            && s.ReservationDate.DayOfYear >= DateTime.Now.DayOfYear)))
             .OrderBy(s => s.ReservationDate)
             .ToListAsync();
-
-        #region Status
 
         return query;
     }
@@ -626,7 +622,7 @@ public class ReservationRepository : IReservationRepository
     {
         #region Get Owner Organization By EmployeeId 
 
-        var organization = await _organizationRepository.GetOrganizationByUserId(filter.UserId);
+        var organization = await _organizationRepository.GetDentistOrganizationByUserId(filter.UserId);
         if (organization == null) return null;
 
         #endregion
@@ -714,7 +710,6 @@ public class ReservationRepository : IReservationRepository
         return model;
     }
 
-
     public async Task<DoctorReservationDate?> GetReservationDateById(ulong reservationDateId)
     {
         return await _context.DoctorReservationDates.FirstOrDefaultAsync(p => !p.IsDelete && p.Id == reservationDateId);
@@ -762,8 +757,6 @@ public class ReservationRepository : IReservationRepository
     {
         return await _context.DoctorPersonalBooking.FirstOrDefaultAsync(p => !p.IsDelete && p.DoctorReservationDateTimeId == doctorReservationDateTimeId);
     }
-
-    #endregion
 
     #endregion
 

@@ -578,7 +578,7 @@ namespace BusinessPortal.Application.Services.Implementation
         //Check Is User Has Permission To Dentist Panel 
         public async Task<bool> IsUserDentist(ulong userId)
         {
-            var result = await GetUserRoleses(userId);
+            var result = await GetUserRolesesWithAsNoTracking(userId);
 
             if (result == null || !result.Any()) return false;
 

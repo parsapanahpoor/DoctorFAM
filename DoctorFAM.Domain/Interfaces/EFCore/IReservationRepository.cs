@@ -62,6 +62,9 @@ public interface IReservationRepository
 
     Task<FilterReservationDateTimeDoctorPAnel> FilterReservationDateTimeDoctorSide(FilterReservationDateTimeDoctorPAnel filter);
 
+    //Filter Reservation Date Time Dentist Side
+    Task<FilterReservationDateTimeDoctorPAnel?> FilterReservationDateTimeDentistSide(FilterReservationDateTimeDoctorPAnel filter);
+
     Task<DoctorReservationDate?> GetReservationDateById(ulong reservationDateId);
 
     Task UpdateReservationDate(DoctorReservationDate date);

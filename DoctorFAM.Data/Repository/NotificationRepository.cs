@@ -120,6 +120,7 @@ public class NotificationRepository : INotificationRepository
                                                        Username = s.Username
                                                    }).FirstOrDefault()
                                 })
+                                .Take(10)
                                 .ToListAsync();
     }
 

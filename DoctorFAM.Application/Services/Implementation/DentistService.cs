@@ -897,7 +897,7 @@ public class DentistService : IDentistService
         #region Get Dentist Info By Id
 
         //Get Dentist Info By Id
-        var info = await _dentistRepository.GetDentistsInformationByUserId(model.Id);
+        var info = await _dentistRepository.GetDentistsInformationByUserId(model.UserId);
         if (info == null) return EditDentistInfoResult.faild;
 
         #endregion

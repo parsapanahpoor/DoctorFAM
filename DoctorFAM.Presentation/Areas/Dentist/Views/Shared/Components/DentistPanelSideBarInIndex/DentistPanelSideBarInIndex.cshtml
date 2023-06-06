@@ -19,6 +19,11 @@
                             <p class="text-center justify-content-center" style="font-size:12PX;"> داشبورد </p>
                         </div>
 
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3  buttons-preview  text-center justify-content-center">
+                            <a asp-area="Dentist" asp-controller="Appointment" asp-action="TurnRating" class="btn btn-info  btn-circle btn-lg"><i class="fa fa-check-square-o"></i></a>
+                            <p class="text-center justify-content-center" style="font-size:12PX;">نوبت دهی</p>
+                        </div>
+
                         @await Component.InvokeAsync("DentistsResumeStateBadgeInIndex")
 
                         @await Component.InvokeAsync("DentistsInfosBadgeIndexView")
