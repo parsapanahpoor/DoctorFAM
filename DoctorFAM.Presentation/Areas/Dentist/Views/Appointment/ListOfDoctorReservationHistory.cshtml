@@ -7,7 +7,7 @@
 
 
 @{
-    ViewData["Title"] = @Localizer["لیست تاریخ نوبت دهی"];
+    ViewData["Title"] = @Localizer["لیست نوبت های وارد شده"];
 }
 
 @section Styles
@@ -28,16 +28,13 @@
 
 <div class="row">
     <div class="col-lg-3 col-sm-12">
-
-        <a class="btn btn-sky w-100 margin-bottom-10" asp-action="AddReservationDateView" asp-controller="Appointment" asp-area="Dentist"> @Localizer["افزودن تاریخ جدید"] </a>
-
         <div class="widget">
             <div class="widget-header bordered-bottom bordered-green">
-                <span class="widget-caption"> @Localizer["مدیریت اطلاعات نوبت دهی "] </span>
+                <span class="widget-caption"> @Localizer["مدیریت اطلاعات نوبت دهی"] </span>
             </div>
             <div class="widget-body">
                 <div>
-                    <form asp-action="ListOfReservationDate" asp-controller="Appointment" asp-area="Dentist" id="filter-search" method="get">
+                    <form asp-action="ListOfDoctorReservationHistory" asp-controller="Appointment" asp-area="Dentist" id="filter-search" method="get">
 
                         <input type="hidden" asp-for="Page" />
 
@@ -48,16 +45,16 @@
 
                         <div class="form-group">
                             <label asp-for="ToDate"> @Localizer["تا تاریخ"] </label>
-                            <input type="text" class="form-control" AdminDatePicker="2" asp-for="ToDate">
+                            <input type="text" class="form-control" AdminDatePicker="1" asp-for="ToDate">
                         </div>
 
                         <div class="form-group">
-                            <label asp-for="FilterReservationOrder"> @Localizer["مرتب سازی نزولی"] </label>
+                            <label asp-for="FilterReservationOrder"> @Localizer["مرتب سازی بر اساس تاریخ نوبت"] </label>
                             <select asp-for="FilterReservationOrder" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.DoctorReservation.FilterReservationOrder))"></select>
                         </div>
 
                         <div class="form-group">
-                            <label asp-for="FilterRequestOrder"> @Localizer["مرتب سازی بر اساس تاریخ"] </label>
+                            <label asp-for="FilterRequestOrder"> @Localizer["مرتب سازی براساس تاریخ ایجاد"] </label>
                             <select asp-for="FilterRequestOrder" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.Request.FilterRequestOrder))"></select>
                         </div>
 
@@ -71,7 +68,7 @@
 
                                 @if (Context.Request.QueryString.HasValue)
                                 {
-                                    <a asp-action="ListOfReservationDate" asp-controller="Appointment" asp-area="Dentist" class="btn btn-labeled w-100 btn-darkorange ">
+                                    <a asp-action="ListOfDoctorReservationHistory" asp-controller="Appointment" asp-area="Dentist" class="btn btn-labeled w-100 btn-darkorange ">
                                         <i class="btn-label glyphicon glyphicon-remove"></i>@Localizer["حذف فیلتر"]
                                     </a>
                                 }
@@ -89,7 +86,6 @@
                 <div class="flex-style">
                     <span>@ViewData["Title"]</span>
                     <span class="red">(@Model.GetShownEntitiesPagesTitle() روز)</span>
-
                 </div>
             </div>
 
@@ -105,7 +101,7 @@
                                 @Localizer["تعداد نوبت ها"]
                             </th>
                             <th class="tc vm">
-                                @Localizer["نوبت های رزرو شده "]
+                                @Localizer["تعداد نوبت های رزرو شده"]
                             </th>
                             <th class="tc vm">
                                 @Localizer["تاریخ ایجاد"]
@@ -121,7 +117,7 @@
                             <tr class="tc vm" remove-ajax-item="@date.Id">
                                 <td class="vm">
                                     <div class="flex-style-center">
-                                        <p> @date.ReservationDate.ToStringShamsiDate() </p>
+                                        <p> @date.ReservationDate.ToShamsi() </p>
                                     </div>
                                 </td>
 
@@ -133,7 +129,7 @@
                                         }
                                         else
                                         {
-                                            <span class="mr-8px label label-info">@date.DoctorReservationDateTimes.Count(p=> !p.IsDelete &&  p.DoctorReservationState != DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.Canceled) </span>
+                                            <span class="mr-8px label label-info">@date.DoctorReservationDateTimes.Count(p=> p.DoctorReservationState != DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.Canceled) </span>
                                         }
                                     </p>
                                 </td>
@@ -146,7 +142,7 @@
                                         }
                                         else
                                         {
-                                            <span class="mr-8px label label-success">@date.DoctorReservationDateTimes.Count(p=>!p.IsDelete &&  p.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.Reserved) </span>
+                                            <span class="mr-8px label label-success">@date.DoctorReservationDateTimes.Count(p=> p.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.Reserved) </span>
                                         }
                                     </p>
                                 </td>
@@ -161,7 +157,7 @@
                                     <a asp-action="ReservationDateDetail" asp-controller="Appointment" asp-area="Dentist" asp-route-ReservationDateId="@date.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
                                     @if (date.DoctorReservationDateTimes.Any() == false)
                                     {
-                                        <button onclick="DeleteAjax(@date.Id, '@Url.Action("DeleteReservationDate", "Appointment", new {area = "Dentist", Id = date.Id})')" class="btn btn-danger btn-circle btn-xs"><i class="glyphicon glyphicon-trash"></i></button>
+                                        <button onclick="DeleteAjax(@date.Id, '@Url.Action("DeleteReservationDate", "Appointment", new {area = "Doctor", Id = date.Id})')" class="btn btn-danger btn-circle btn-xs"><i class="glyphicon glyphicon-trash"></i></button>
                                     }
                                 </td>
                             </tr>
@@ -169,11 +165,11 @@
                     </tbody>
                 </table>
 
-                @*    <div class="footer tc">
+                <div class="footer tc">
 
-            <partial name="_DoctorPanelPaging" model="@Model.GetCurrentPaging()" />
+                    <partial name="_DentistPanelPaging" model="@Model.GetCurrentPaging()" />
 
-            </div>*@
+                </div>
             }
             else
             {
