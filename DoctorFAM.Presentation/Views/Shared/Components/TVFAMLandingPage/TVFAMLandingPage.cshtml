@@ -12,7 +12,7 @@
                 <p class="title"> در  <b>تی وی فم</b>  تماشاگر دانستنیهای علمی در زمینه پزشکی و سلامت باشید. </p>
             </div>
         </div>
-        <div class="col-lg-6 col-md-6">
+        <div class="col-lg-6 col-md-6 ">
             <div class="video">
                 <video id="TVFAM" controls>
                     <source src="~/Content/Video/Bardari1.mp4" type="video/mp4">
@@ -22,12 +22,12 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-3 col-md-3">
-            <div class="row text-center">
+        <div class="col-lg-3 col-md-3 text-center justify-content-center">
+            <div class="row text-center justify-content-center">
 
                 @foreach (var video in Model)
                 {
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-center justify-content-center mt-5">
                         <video poster="@PathTools.HealthInformationAttachmentFilesImagePathThumb@video.Picture" class="thumbnail" id="videoPreview" data-src="@PathTools.HealthInformationAttachmentFilesPath@video.File"
                         style="width:130px !important; height:130px !important;">
 
@@ -45,7 +45,7 @@
 
             </div>
             <div class="col-lg-12 col-md-12  text-center mt-3">
-                <a asp-action="TeleFamItems" asp-controller="Home" asp-area="" class="btn btn-acc   hover-icon  text-center">آرشیو تیوی فم </a>
+                <a asp-action="TeleFamItems" asp-controller="Home" asp-area="" class="btn btn-acc   hover-icon  text-center">آرشیو تی وی فم </a>
             </div>
         </div>
     </div>

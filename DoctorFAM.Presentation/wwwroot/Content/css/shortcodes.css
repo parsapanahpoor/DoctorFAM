@@ -1611,7 +1611,7 @@
 .featured-item .featured-icon {
   display      : inline-block;
   overflow     : hidden;
-  font-size    : 16px;
+  font-size    : 60px;
   font-weight:500;
   
 }
@@ -1626,7 +1626,9 @@
 }
 
 .featured-title h5 {
-  margin-bottom : 15px;
+    margin-bottom : 15px;
+    font-size: 16PX;
+    line-height: .1 !important;
 }
 
 .dark-bg .featured-title h5,
@@ -1638,9 +1640,9 @@
 }
 
 .featured-item:hover .featured-icon i {
-  -webkit-animation: toTopFromBottom 0.9s forwards;
+ /* -webkit-animation: toTopFromBottom 0.9s forwards;
   -moz-animation   : toTopFromBottom 0.9s forwards;
-  animation        : toTopFromBottom 0.9s forwards;
+  animation        : toTopFromBottom 0.9s forwards;*/
   color            : #fd5b03;
 }
 
