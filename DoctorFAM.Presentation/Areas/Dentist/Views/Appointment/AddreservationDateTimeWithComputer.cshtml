@@ -1,0 +1,116 @@
+﻿@model DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment.AddReservationDateTimeWithComputerViewModel
+
+@{
+    ViewData["Title"] = @Localizer["افزودن زمان نوبت دهی "];
+}
+
+@section Scripts
+    {
+    <partial name="_JqueryValidation" />
+}
+
+@section Breadcrumb
+    {
+    <li>
+        <a asp-action="TurnRating" asp-controller="Home" asp-area="Dentist"> نوبت دهی </a>
+    </li>
+}
+
+<div class="row">
+    <div class="col-lg-12 col-sm-12">
+
+        <div class="widget">
+            <div class="widget-header bordered-bottom bordered-green">
+                <span class="widget-caption"> @Localizer["افزودن زمان نوبت دهی"] </span>
+            </div>
+            <div class="widget-body">
+                <div>
+
+                    <form asp-action="AddreservationDateTimeWithComputer" asp-controller="Appointment" asp-area="Dentist" method="post">
+                        <input asp-for="ReservationDateId" type="hidden" />
+                        <div class="modal-body">
+                            <div class="row">
+
+                                <div class="form-group col-md-4 col-sm-12">
+                                    <label asp-for="StartTime"></label>
+                                    <select class="form-control" asp-for="StartTime">
+
+                                        <option value=""> @Localizer["لطفا زمان شروع را انتخاب کنید"] </option>
+                                        <option value="7"> 07:00 </option>
+                                        <option value="8"> 08:00 </option>
+                                        <option value="9"> 09:00 </option>
+                                        <option value="10"> 10:00 </option>
+                                        <option value="11"> 11:00 </option>
+                                        <option value="12"> 12:00 </option>
+                                        <option value="13"> 13:00 </option>
+                                        <option value="14"> 14:00 </option>
+                                        <option value="15"> 15:00 </option>
+                                        <option value="16"> 16:00 </option>
+                                        <option value="17"> 17:00 </option>
+                                        <option value="18"> 18:00 </option>
+                                        <option value="19"> 19:00 </option>
+                                        <option value="20"> 20:00 </option>
+                                        <option value="21"> 21:00 </option>
+                                        <option value="22"> 22:00 </option>
+                                        <option value="23"> 23:00 </option>
+                                        <option value="24"> 24:00 </option>
+
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-md-4 col-sm-12">
+                                    <label asp-for="EndTime"></label>
+                                    <select class="form-control" asp-for="EndTime">
+
+                                        <option value=""> @Localizer["لطفا زمان پایان را انتخاب کنید"] </option>
+                                        <option value="7"> 07:00 </option>
+                                        <option value="8"> 08:00 </option>
+                                        <option value="9"> 09:00 </option>
+                                        <option value="10"> 10:00 </option>
+                                        <option value="11"> 11:00 </option>
+                                        <option value="12"> 12:00 </option>
+                                        <option value="13"> 13:00 </option>
+                                        <option value="14"> 14:00 </option>
+                                        <option value="15"> 15:00 </option>
+                                        <option value="16"> 16:00 </option>
+                                        <option value="17"> 17:00 </option>
+                                        <option value="18"> 18:00 </option>
+                                        <option value="19"> 19:00 </option>
+                                        <option value="20"> 20:00 </option>
+                                        <option value="21"> 21:00 </option>
+                                        <option value="22"> 22:00 </option>
+                                        <option value="23"> 23:00 </option>
+                                        <option value="24"> 24:00 </option>
+
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-md-4 col-sm-12">
+                                    <label asp-for="PeriodNumber"> @Localizer["بازه ی زمانی شیفت"] </label>
+                                    <select class="form-control" asp-for="PeriodNumber">
+
+                                        <option value=""> لطفا بازه ی زمانی را انتخاب کنید </option>
+                                        <option value="10"> 10 دقیقه </option>
+                                        <option value="15"> 15 دقیقه </option>
+                                        <option value="20"> 20 دقیقه </option>
+                                        <option value="30"> 30 دقیقه </option>
+
+                                    </select>
+                                </div>
+
+                                <div class="clearfix"></div>
+
+                                <div class="form-group col-md-12">
+                                    <button type="submit" class="btn btn-success">@SharedLocalizer["ثیت"]</button>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
