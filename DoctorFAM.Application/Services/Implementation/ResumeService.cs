@@ -146,16 +146,9 @@ namespace DoctorFAM.Application.Services.Implementation
         //Get User About Me Resume By Resume Id 
         public async Task<ResumeAboutMe?> GetUserAboutMeResumeByResumeId(ulong resumeId)
         {
-            #region Get Resume 
-
-            var resume = await _resumeRepository.GetResuemById(resumeId);
-            if (resume == null) return null;
-
-            #endregion
-
             #region Get About Me 
 
-            var aboutMe = await _resumeRepository.GetUserAboutMeResumeByResumeId(resume.Id);
+            var aboutMe = await _resumeRepository.GetUserAboutMeResumeByResumeId(resumeId);
             if (aboutMe == null) return null;
 
             #endregion
