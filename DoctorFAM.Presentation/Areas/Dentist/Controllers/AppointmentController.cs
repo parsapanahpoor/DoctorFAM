@@ -13,7 +13,7 @@ namespace DoctorFAM.Web.Areas.Dentist.Controllers;
 
 #endregion
 
-public class AppointmentController : AdminBaseController
+public class AppointmentController : DentistBaseController
 {
     #region ctor
 
