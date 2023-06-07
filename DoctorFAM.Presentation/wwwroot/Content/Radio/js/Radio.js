@@ -56,7 +56,7 @@ async function loadMusic() {
                 let musicBackground = audioArray[index].musicImageSrc
                 audio.src = `https://doctorfam.com${musicSrc}`
                 let musicTemplate = `
-                <div class="col-6">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 mt-2">
                     <li class="music-list-item" onclick="playListMusic(event)">
                         <img src="images/background_3.jpg" class="music-item-image" alt="radio image">
                         <span class="music-item-name">${musicName}</span>
