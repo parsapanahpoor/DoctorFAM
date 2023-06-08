@@ -1,0 +1,120 @@
+﻿@model DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Certificate.EditCertificateDoctorPanelViewModel
+
+@using DoctorFAM.Domain.Enums
+@using DoctorFAM.Application.StaticTools
+@using DoctorFAM.Domain.ViewModels.Common
+
+@{
+    ViewData["Title"] = "ویرایش رزومه ی گواهینامه";
+}
+
+@section Scripts
+    {
+    <partial name="_JqueryValidation" />
+
+}
+
+    @section Breadcrumb
+    {
+    <li>
+        <a asp-action="PageOfResume" asp-controller="Resume" asp-area="Dentist"> مدیریت رزومه  </a>
+    </li>
+    
+}
+
+    <form method="post" asp-action="EditCertificate" asp-controller="Resume" asp-area="Dentist" enctype="multipart/form-data">
+        <input asp-for="Id" type="hidden">
+        <input asp-for="ImageName" type="hidden">
+        <div class="row">
+            <div class="col-lg-9 col-sm-12">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="widget">
+                            <div class="widget-header bordered-bottom bordered-green" style="background-color:#d1f4fa">
+                                <span class="widget-caption"> ویرایش رزومه ی گواهینامه </span>
+                            </div>
+                            <div class="widget-body" style="background-color:#d1f4fa !important;">
+                                <div class="row">
+
+                                    <div class="form-group col-md-6 col-sm-12">
+                                        <label> عنوان</label>
+                                        <input type="text" class="form-control" asp-for="CertificateTitle">
+                                        <span class="text-danger" asp-validation-for="CertificateTitle"></span>
+                                    </div>
+
+                                    <div class="form-group col-md-6 col-sm-12">
+                                        <label> صادر کننده  </label>
+                                        <input type="text" class="form-control"  asp-for="ExporterRefrence">
+                                        <span class="text-danger" asp-validation-for="ExporterRefrence"></span>
+                                    </div>
+
+                                    <div class="form-group col-md-6 col-sm-12">
+                                        <label>تاریخ اعتبار </label>
+                                        <input type="text" class="form-control" DatePicker="2" asp-for="ValidityDate">
+                                        <span class="text-danger" asp-validation-for="ValidityDate"></span>
+                                    </div>
+
+                                    <div class="form-group col-md-6 col-sm-12">
+                                        <label>تاریخ صدور </label>
+                                        <input type="text" class="form-control" DatePicker="1" asp-for="IssueDate">
+                                        <span class="text-danger" asp-validation-for="IssueDate"></span>
+                                    </div>
+
+                                    <hr class="margin-bottom-10 margin-top-10" />
+
+                                    <div class="col-md-12 flex-style">
+                                        <button type="submit" class="btn btn-labeled btn-palegreen">
+                                            <i class="btn-label glyphicon glyphicon-ok"></i>ثبت
+                                        </button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-sm-12">
+                <div class="row">
+
+                    <div class="col-lg-12">
+                        <div class="widget">
+                            <div class="widget-header bordered-bottom bordered-green">
+                                <span class="widget-caption"> تصویر افتخار</span>
+                            </div>
+                            <div class="widget-body">
+                                <div class="row">
+
+                                    <input type="file" class="display-none" name="image" id="UserAvatar" ImageInput="1" accept=".jpg,.jpeg,.png" />
+
+                                    <div class="col-md-12">
+                                        <label for="UserAvatar" class="file-input-style">
+                                            <i class="glyphicon glyphicon-upload"></i>
+                                            <span class="mr-8px"> لطفا تصویر مورد نطر را وارد کنید </span>
+                                        </label>
+                                    </div>
+
+                                    @{
+                                    var avatarUrl = PathTools.DefaultProductAvatar;
+
+                                    if (Model.ImageName != null && !string.IsNullOrEmpty(Model.ImageName))
+                                    {
+                                        avatarUrl = $"{PathTools.CertificatePathThumb}{Model.ImageName}";
+                                    }
+                                }
+
+                                <div class="col-md-12 tc mt-10px">
+                                    <img src="@avatarUrl" class="image-style" ImageFile="1" />
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</form>

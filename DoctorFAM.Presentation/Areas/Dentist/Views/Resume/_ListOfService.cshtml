@@ -1,0 +1,56 @@
+﻿@model List<DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Service.ServiceResumeInDoctorPanelViewModel>
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.Utils
+
+<div class="form-title">
+    بخش خدمات
+
+    <a asp-action="CreateService" asp-area="Dentist" asp-controller="Resume" style="margin-right: 10px;" class="btn btn-success mr-4">افزودن اطلاعات</a>
+</div>
+
+
+@if (Model != null && Model.Any())
+{
+    foreach (var work in Model)
+    {
+        <ul class="timeline animated fadeInDown">
+
+            <li>
+                @*  <div class="timeline-datetime">
+                    <a asp-action="EditService" asp-area="Dentist" asp-controller="Resume" asp-route-id="@work.Id" style="margin-right: 10px;" class="btn btn-primary mr-4">ویرایش</a>
+                    <a asp-action="DeleteService" asp-area="Dentist" asp-controller="Resume" asp-route-id="@work.Id" style="margin-right: 10px;" class="btn btn-danger mr-4">حذف</a>
+                    </div>*@
+                <div class="timeline-badge blue">
+                    <i class="fa fa-thumb-tack"></i>
+                </div>
+                <div class="timeline-panel">
+                    <div class="timeline-header bordered-bottom bordered-blue">
+                        @if (!string.IsNullOrEmpty(work.ServiceTitle))
+                        {
+                            <span class="timeline-title">
+                                @work.ServiceTitle
+                            </span>
+                        }
+                    </div>
+                    <div class="timeline-body">
+                        <div class="row ">
+                            <div class="col-md-12 ">
+
+                                <a asp-action="EditService" asp-area="Dentist" asp-controller="Resume" asp-route-id="@work.Id" class="tmlnbutton2 "><i class="fa fa-edit warning"></i></a>
+                                <a asp-action="DeleteService" asp-area="Dentist" asp-controller="Resume" asp-route-id="@work.Id" class="tmlnbuttondelete2"><i class="fa fa-trash-o danger"></i></a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </li>
+        </ul>
+    }
+}
+else
+{
+    <div class="alert alert-info fade in">
+        @SharedLocalizer["Not Found"]
+    </div>
+}
