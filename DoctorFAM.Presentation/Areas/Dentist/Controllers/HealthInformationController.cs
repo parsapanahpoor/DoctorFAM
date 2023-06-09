@@ -4,21 +4,19 @@ using CRM.Web.Areas.Admin.Controllers;
 using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Application.StaticTools;
-using DoctorFAM.Domain.ViewModels.Admin.HealthInformation.TVFAM.Video;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.HealthInformation.TVFAM;
-using DoctorFAM.Web.Areas.Doctor.ActionFilterAttributes;
-using DoctorFAM.Web.Doctor.Controllers;
+using DoctorFAM.Web.Areas.Dentist.ActionFilterAttributes;
 using DoctorFAM.Web.HttpManager;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using ZNetCS.AspNetCore.ResumingFileResults.Extensions;
 
-namespace DoctorFAM.Web.Areas.Doctor.Controllers;
+namespace DoctorFAM.Web.Areas.Dentist.Controllers;
 
 #endregion
 
-[CheckDoctorsInfo]
-public class HealthInformationController : DoctorBaseController
+[CheckDentistsInfo]
+public class HealthInformationController : DentistBaseController
 {
     #region Ctor 
 
@@ -30,6 +28,15 @@ public class HealthInformationController : DoctorBaseController
     {
         _healthInformationService = healthInformationService;
         _localizer = localizer;
+    }
+
+    #endregion
+
+    #region Media Manage  Page 
+
+    public async Task<IActionResult> MediaManage()
+    {
+        return View();
     }
 
     #endregion
@@ -60,7 +67,7 @@ public class HealthInformationController : DoctorBaseController
     }
 
     [HttpPost, ValidateAntiForgeryToken]
-    public async Task<IActionResult> CreateTVFAM(CreateTVFAMVideDoctorPanelViewModel model , IFormFile? ImageName)
+    public async Task<IActionResult> CreateTVFAM(CreateTVFAMVideDoctorPanelViewModel model, IFormFile? ImageName)
     {
         #region Model State Validation 
 
@@ -80,7 +87,7 @@ public class HealthInformationController : DoctorBaseController
 
         #region Create Video 
 
-        var res = await _healthInformationService.CreateTVFAMvideoFromDoctorSide(model, User.GetUserId() , ImageName);
+        var res = await _healthInformationService.CreateTVFAMvideoFromDoctorSide(model, User.GetUserId(), ImageName);
         if (res)
         {
             TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
@@ -191,7 +198,7 @@ public class HealthInformationController : DoctorBaseController
 
         #region Edit TV FAM Video 
 
-        var res = await _healthInformationService.EditTVFAMVideoDoctorSide(model, User.GetUserId(),Image);
+        var res = await _healthInformationService.EditTVFAMVideoDoctorSide(model, User.GetUserId(), Image);
         if (res)
         {
             TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
@@ -275,7 +282,7 @@ public class HealthInformationController : DoctorBaseController
 
         #region Create Podcast 
 
-        var res = await _healthInformationService.CreatePodcastFromDoctorSide(model, User.GetUserId() , ImageName);
+        var res = await _healthInformationService.CreatePodcastFromDoctorSide(model, User.GetUserId(), ImageName);
         if (res)
         {
             TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
@@ -370,58 +377,6 @@ public class HealthInformationController : DoctorBaseController
         }
 
         return ApiResponse.SetResponse(ApiResponseStatus.Danger, null, _localizer["The operation failed"].Value);
-    }
-
-    #endregion
-
-    #endregion
-
-    #region Status
-
-    #region Filter Status
-
-    [HttpGet]
-    public async Task<IActionResult> FilterStatus()
-    {
-        return View(await _healthInformationService.FilterStatusDoctorPanelSide(User.GetUserId()));
-    }
-
-    #endregion
-
-    #region Create Status
-
-    [HttpGet]
-    public async Task<IActionResult> CreateStatus()
-    {
-        return View();
-    }
-
-    [HttpPost, ValidateAntiForgeryToken]
-    public async Task<IActionResult> CreateStatus(CreateTVFAMVideDoctorPanelViewModel model)
-    {
-        #region Model State Validation 
-
-        if (!ModelState.IsValid)
-        {
-            TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
-            return View(model);
-        }
-
-        #endregion
-
-        #region Create Podcast 
-
-        //var res = await _healthInformationService.CreatePodcastFromDoctorSide(model, User.GetUserId());
-        //if (res)
-        //{
-        //    TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
-
-        //    return RedirectToAction(nameof(FilterStatus));
-        //}
-
-        #endregion
-
-        return View(model);
     }
 
     #endregion

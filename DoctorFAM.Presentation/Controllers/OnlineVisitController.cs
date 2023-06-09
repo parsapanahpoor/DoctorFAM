@@ -481,7 +481,7 @@ public class OnlineVisitController : SiteBaseController
                         var notifyResult = await _notificationService.CreateSupporterNotification(id, Domain.Enums.Notification.SupporterNotificationText.OnlineVisitRequest, Domain.Enums.Notification.NotificationTarget.request, User.GetUserId());
 
                         //Send Notification For Doctor 
-                        await _notificationService.CreateNotificationForDoctorThatReserveHerReservation(id, Domain.Enums.Notification.SupporterNotificationText.OnlineVisitRequest, Domain.Enums.Notification.NotificationTarget.request, User.GetUserId());
+                        //await _notificationService.CreateNotificationForDoctorThatReserveHerReservation(id, Domain.Enums.Notification.SupporterNotificationText.OnlineVisitRequest, Domain.Enums.Notification.NotificationTarget.request, User.GetUserId());
 
                         if (notifyResult)
                         {

@@ -495,19 +495,19 @@ public class NotificationService : INotificationService
 
         #region Check target 
 
-        //If Target is Request
-        if (notification == NotificationTarget.request)
-        {
-            var request = await _requestService.GetRequestById(targetId);
-            if (request == null) return false;
-        }
+        ////If Target is Request
+        //if (notification == NotificationTarget.request)
+        //{
+        //    var request = await _requestService.GetRequestById(targetId);
+        //    if (request == null) return false;
+        //}
 
-        //If Target Is Reservation
-        if (notification == NotificationTarget.reservation)
-        {
-            var reservation = await _reservationService.GetDoctorReservationDateTimeById(targetId);
-            if (reservation == null) return false;
-        }
+        ////If Target Is Reservation
+        //if (notification == NotificationTarget.reservation)
+        //{
+        //    var reservation = await _reservationService.GetDoctorReservationDateTimeById(targetId);
+        //    if (reservation == null) return false;
+        //}
 
         #endregion
 

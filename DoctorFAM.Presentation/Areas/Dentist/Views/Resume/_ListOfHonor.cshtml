@@ -1,0 +1,57 @@
+﻿@model List<DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Honor.HonorResumeInDoctorPanelViewModel>
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.Utils
+@using DoctorFAM.Application.StaticTools
+
+<div class="form-title">
+    بخش افتخارات
+
+    <a asp-action="CreateHonor" asp-area="Dentist" asp-controller="Resume" style="margin-right: 10px;" class="btn btn-success mr-4">افزودن اطلاعات</a>
+</div>
+
+
+@if (Model != null && Model.Any())
+{
+    foreach (var work in Model)
+    {
+        <ul class="timeline animated fadeInDown ">
+
+            <li class="mt-4">
+                @*<div class="timeline-datetime">
+                    <a asp-action="EditHonor" asp-area="Dentist" asp-controller="Resume" asp-route-id="@work.Id" style="margin-right: 10px;" class="btn btn-primary mr-4">ویرایش</a>
+                    <a asp-action="DeleteHonor" asp-area="Dentist" asp-controller="Resume" asp-route-id="@work.Id" style="margin-right: 10px;" class="btn btn-danger mr-4">حذف</a>
+                    </div>*@
+                <div class="timeline-badge " style="height:0px !important;width:0px !important">
+                    <a href="@PathTools.HonorPathThumb@work.ImageName" target="_blank">  <img style="border-radius: 50px;height: 70px;" src="@PathTools.HonorPathThumb@work.ImageName" /></a>
+                </div>
+                <div class="timeline-panel">
+                    <div class="timeline-header bordered-bottom bordered-blue">
+                        @if (!string.IsNullOrEmpty(work.HonorTitle))
+                        {
+                            <span class="timeline-title">
+                                @work.HonorTitle
+                            </span>
+                        }
+                    </div>
+                    <div class="timeline-body">
+                        <p> @((string.IsNullOrEmpty(work.Description)) ? "وارد نشده" : work.Description)</p>
+
+                        <div class="row ">
+                            <div class="col-md-12 ">
+                                <a asp-action="EditHonor" asp-area="Dentist" asp-controller="Resume" asp-route-id="@work.Id" class="tmlnbutton2 "><i class="fa fa-edit warning"></i></a>
+                                <a asp-action="DeleteHonor" asp-area="Dentist" asp-controller="Resume" asp-route-id="@work.Id" class="tmlnbuttondelete2"><i class="fa fa-trash-o danger"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    }
+}
+else
+{
+    <div class="alert alert-info fade in">
+        @SharedLocalizer["Not Found"]
+    </div>
+}

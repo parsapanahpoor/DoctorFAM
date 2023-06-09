@@ -4,6 +4,7 @@ using DoctorFAM.Application.Generators;
 using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Application.StaticTools;
+using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.HealthInformation;
 using DoctorFAM.Domain.Enums.HealtInformation;
 using DoctorFAM.Domain.Interfaces;
@@ -550,12 +551,12 @@ namespace DoctorFAM.Application.Services.Implementation
         {
             #region Get Owner Organization By EmployeeId 
 
-            var organization = await _organizationRepository.GetDoctorOrganizationByUserId(ownerId);
-            if (organization == null) return null;
+            var organizationOwnerId = await _organizationRepository.GetOrganizationOwnerIdByOrganizationMemberUserIdWithAsNoTracking(ownerId);
+            if (organizationOwnerId == null) return null;
 
             #endregion
 
-            return await _healthinformationRepository.FilterTVFAMDoctorPanelSide(organization.OwnerId);
+            return await _healthinformationRepository.FilterTVFAMDoctorPanelSide(organizationOwnerId.Value);
         }
 
         //Create TV FAM video From Doctor Side
@@ -563,8 +564,8 @@ namespace DoctorFAM.Application.Services.Implementation
         {
             #region Get Owner Organization By EmployeeId 
 
-            var organization = await _organizationRepository.GetDoctorOrganizationByUserId(userId);
-            if (organization == null) return false;
+            var organizationOwnerId = await _organizationRepository.GetOrganizationOwnerIdByOrganizationMemberUserIdWithAsNoTracking(userId);
+            if (organizationOwnerId == null) return false;
 
             #endregion
 
@@ -587,7 +588,7 @@ namespace DoctorFAM.Application.Services.Implementation
             HealthInformation tvFAMVide = new HealthInformation()
             {
                 Title = model.Title.SanitizeText(),
-                OwnerId = organization.OwnerId,
+                OwnerId = organizationOwnerId.Value,
                 longDescription = model.longDescription.SanitizeText(),
                 ShortDescription = model.ShortDescription.SanitizeText(),
                 HealthInformationType = HealthInformationType.TVFAM,
@@ -663,8 +664,8 @@ namespace DoctorFAM.Application.Services.Implementation
         {
             #region Get Owner Organization By EmployeeId 
 
-            var organization = await _organizationRepository.GetDoctorOrganizationByUserId(ownerId);
-            if (organization == null) return false;
+            var organizationOwnerId = await _organizationRepository.GetOrganizationOwnerIdByOrganizationMemberUserIdWithAsNoTracking(ownerId);
+            if (organizationOwnerId == null) return false;
 
             #endregion
 
@@ -672,7 +673,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
             var healthFAM = await _healthinformationRepository.GetHealthInformationById(model.HealthInfoId);
             if (healthFAM == null) return false;
-            if (healthFAM.OwnerId != organization.OwnerId) return false;
+            if (healthFAM.OwnerId != organizationOwnerId) return false;
 
             #endregion
 
@@ -785,8 +786,8 @@ namespace DoctorFAM.Application.Services.Implementation
         {
             #region Get Owner Organization By EmployeeId 
 
-            var organization = await _organizationRepository.GetDoctorOrganizationByUserId(ownerId);
-            if (organization == null) return null;
+            var organizationOwnerId = await _organizationRepository.GetOrganizationOwnerIdByOrganizationMemberUserIdWithAsNoTracking(ownerId);
+            if (organizationOwnerId == null) return null;
 
             #endregion
 
@@ -794,7 +795,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
             var health = await GetHealthInformationById(tvFAMId);
             if (health == null) return null;
-            if (health.OwnerId != organization.OwnerId) return null;
+            if (health.OwnerId != organizationOwnerId) return null;
 
             #endregion
 
@@ -831,15 +832,15 @@ namespace DoctorFAM.Application.Services.Implementation
         {
             #region Get Owner Organization By EmployeeId 
 
-            var organization = await _organizationRepository.GetDoctorOrganizationByUserId(userId);
-            if (organization == null) return false;
+            var organizationOwnerId = await _organizationRepository.GetOrganizationOwnerIdByOrganizationMemberUserIdWithAsNoTracking(userId);
+            if (organizationOwnerId == null) return false;
 
             #endregion
 
             #region Get TV FAM
 
             var healthFAM = await _healthinformationRepository.GetHealthInformationById(healthInfoId);
-            if (healthFAM == null || healthFAM.OwnerId != organization.OwnerId) return false;
+            if (healthFAM == null || healthFAM.OwnerId != organizationOwnerId) return false;
 
             #endregion
 
@@ -1445,12 +1446,12 @@ namespace DoctorFAM.Application.Services.Implementation
         {
             #region Get Owner Organization By EmployeeId 
 
-            var organization = await _organizationRepository.GetDoctorOrganizationByUserId(ownerId);
-            if (organization == null) return null;
+            var organizationOwnerId = await _organizationRepository.GetOrganizationOwnerIdByOrganizationMemberUserIdWithAsNoTracking(ownerId);
+            if (organizationOwnerId == null) return null;
 
             #endregion
 
-            return await _healthinformationRepository.FilterPodcastoctorPanelSide(organization.OwnerId);
+            return await _healthinformationRepository.FilterPodcastoctorPanelSide(organizationOwnerId.Value);
         }
 
         //Create Podcast From Doctor Side
@@ -1458,8 +1459,8 @@ namespace DoctorFAM.Application.Services.Implementation
         {
             #region Get Owner Organization By EmployeeId 
 
-            var organization = await _organizationRepository.GetDoctorOrganizationByUserId(userId);
-            if (organization == null) return false;
+            var organizationOwnerId = await _organizationRepository.GetOrganizationOwnerIdByOrganizationMemberUserIdWithAsNoTracking(userId);
+            if (organizationOwnerId == null) return false;
 
             #endregion
 
@@ -1482,7 +1483,7 @@ namespace DoctorFAM.Application.Services.Implementation
             HealthInformation tvFAMVide = new HealthInformation()
             {
                 Title = model.Title.SanitizeText(),
-                OwnerId = organization.OwnerId,
+                OwnerId = organizationOwnerId,
                 longDescription = model.longDescription.SanitizeText(),
                 ShortDescription = model.ShortDescription.SanitizeText(),
                 HealthInformationType = HealthInformationType.RadioFAM,
@@ -1558,8 +1559,8 @@ namespace DoctorFAM.Application.Services.Implementation
         {
             #region Get Owner Organization By EmployeeId 
 
-            var organization = await _organizationRepository.GetDoctorOrganizationByUserId(ownerId);
-            if (organization == null) return null;
+            var organizationOwnerId = await _organizationRepository.GetOrganizationOwnerIdByOrganizationMemberUserIdWithAsNoTracking(ownerId);
+            if (organizationOwnerId == null) return null;
 
             #endregion
 
@@ -1567,7 +1568,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
             var health = await GetHealthInformationById(tvFAMId);
             if (health == null) return null;
-            if (health.OwnerId != organization.OwnerId) return null;
+            if (health.OwnerId != organizationOwnerId) return null;
 
             #endregion
 
@@ -1604,8 +1605,8 @@ namespace DoctorFAM.Application.Services.Implementation
         {
             #region Get Owner Organization By EmployeeId 
 
-            var organization = await _organizationRepository.GetDoctorOrganizationByUserId(ownerId);
-            if (organization == null) return false;
+            var organizationOwnerId = await _organizationRepository.GetOrganizationOwnerIdByOrganizationMemberUserIdWithAsNoTracking(ownerId);
+            if (organizationOwnerId == null) return false;
 
             #endregion
 
@@ -1613,7 +1614,7 @@ namespace DoctorFAM.Application.Services.Implementation
 
             var healthFAM = await _healthinformationRepository.GetHealthInformationById(model.HealthInfoId);
             if (healthFAM == null) return false;
-            if (healthFAM.OwnerId != organization.OwnerId) return false;
+            if (healthFAM.OwnerId != organizationOwnerId) return false;
 
             #endregion
 

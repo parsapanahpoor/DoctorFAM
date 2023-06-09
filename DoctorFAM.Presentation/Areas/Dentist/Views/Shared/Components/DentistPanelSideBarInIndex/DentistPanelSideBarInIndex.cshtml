@@ -14,14 +14,14 @@
                 <div class="col-lg-12 col-sm-12 col-xs-12">
                     <div class="row">
 
-                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3  buttons-preview text-center justify-content-center">
-                            <a asp-area="Dentist" asp-controller="Home" asp-action="Index_Sec" class="btn btn-success  btn-circle btn-lg"><i class="glyphicon glyphicon-th"></i></a>
-                            <p class="text-center justify-content-center" style="font-size:12PX;"> داشبورد </p>
-                        </div>
-
                         <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3  buttons-preview  text-center justify-content-center">
                             <a asp-area="Dentist" asp-controller="Appointment" asp-action="TurnRating" class="btn btn-info  btn-circle btn-lg"><i class="fa fa-check-square-o"></i></a>
                             <p class="text-center justify-content-center" style="font-size:12PX;">نوبت دهی</p>
+                        </div>
+
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3  buttons-preview">
+                            <a asp-area="Dentist" asp-controller="HealthInformation" asp-action="MediaManage" class="btn btn-info  btn-circle btn-lg"><i class="fa fa-film"></i></a>
+                            <p class="text-center justify-content-center" style="font-size:12PX;"> مدیریت مدیا </p>
                         </div>
 
                         @await Component.InvokeAsync("DentistsResumeStateBadgeInIndex")
@@ -31,6 +31,11 @@
                         <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3  buttons-preview">
                             <a asp-area="Dentist" asp-controller="Account" asp-action="FilterEmployees" class="btn btn-info  btn-circle btn-lg"><i class="fa fa-user-plus"></i></a>
                             <p class="text-center justify-content-center" style="font-size:12PX;"> کارکنان </p>
+                        </div>
+
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3  buttons-preview">
+                            <a asp-area="Dentist" asp-controller="Ticket" asp-action="FilterTickets" class="btn btn-info  btn-circle btn-lg"><i class="fa fa-ticket"></i></a>
+                            <p class="text-center justify-content-center" style="font-size:12PX;"> تیکت پشتیبانی </p>
                         </div>
 
                         <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3  buttons-preview">
