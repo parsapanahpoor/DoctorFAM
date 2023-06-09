@@ -1,0 +1,104 @@
+﻿@model DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Honor.CreateHonorDoctorPanel
+
+@using DoctorFAM.Domain.Enums
+@using DoctorFAM.Application.StaticTools
+@using DoctorFAM.Domain.ViewModels.Common
+
+@{
+    ViewData["Title"] = "ثبت رزومه ی افتخارات";
+}
+
+@section Scripts
+    {
+    <partial name="_JqueryValidation" />
+
+}
+
+    @section Breadcrumb
+    {
+    <li>
+        <a asp-action="PageOfResume" asp-controller="Resume" asp-area="Dentist"> مدیریت رزومه </a>
+    </li>
+    
+}
+
+    <form method="post" asp-action="CreateHonor" asp-controller="Resume" asp-area="Dentist" enctype="multipart/form-data">
+
+        <div class="row">
+            <div class="col-lg-9 col-sm-12">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="widget">
+                            <div class="widget-header bordered-bottom bordered-green" style="background-color:#d1f4fa">
+                                <span class="widget-caption"> افزودن رزومه ی افتخارات </span>
+                            </div>
+                            <div class="widget-body" style="background-color:#d1f4fa !important;">
+                                <div class="row">
+
+                                    <div class="form-group col-md-6 col-sm-12">
+                                        <label> عنوان</label>
+                                        <input type="text" class="form-control" asp-for="HonorTitle">
+                                        <span class="text-danger" asp-validation-for="HonorTitle"></span>
+                                    </div>
+
+                                    <div class="form-group col-md-6 col-sm-12">
+                                        <label> تاریخ </label>
+                                        <input type="text" class="form-control" DatePicker="1" asp-for="HonorDate">
+                                        <span class="text-danger" asp-validation-for="HonorDate"></span>
+                                    </div>
+
+                                    <div class="form-group col-md-12 col-sm-12">
+                                        <label>توضیح </label>
+                                        <input type="text" class="form-control" asp-for="Description">
+                                        <span class="text-danger" asp-validation-for="Description"></span>
+                                    </div>
+
+                                    <hr class="margin-bottom-10 margin-top-10" />
+
+                                    <div class="col-md-12 flex-style">
+                                        <button type="submit" class="btn btn-labeled btn-palegreen">
+                                            <i class="btn-label glyphicon glyphicon-ok"></i>ثبت
+                                        </button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-sm-12">
+                <div class="row">
+
+                    <div class="col-lg-12">
+                        <div class="widget">
+                            <div class="widget-header bordered-bottom bordered-green">
+                                <span class="widget-caption"> تصویر افتخار</span>
+                            </div>
+                            <div class="widget-body">
+                                <div class="row">
+
+                                    <input type="file" class="display-none" name="image" id="UserAvatar" ImageInput="1" accept=".jpg,.jpeg,.png" />
+
+                                    <div class="col-md-12">
+                                        <label for="UserAvatar" class="file-input-style">
+                                            <i class="glyphicon glyphicon-upload"></i>
+                                            <span class="mr-8px"> لطفا تصویر مورد نطر را وارد کنید </span>
+                                        </label>
+                                    </div>
+
+                                <div class="col-md-12 tc mt-10px">
+                                    <img src="@PathTools.DefaultUserAvatar" class="image-style" ImageFile="1" />
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        </div>
+    </form>

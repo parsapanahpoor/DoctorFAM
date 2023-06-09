@@ -191,7 +191,7 @@ public class SiteSettingService : ISiteSettingService
             setting.ReservationTarrif = editSiteSettingViewModel.ReservationTariff.Value;
             setting.SendSMSTimer = editSiteSettingViewModel.SendSMSTime.Value;
             setting.SiteDomain = editSiteSettingViewModel.SiteDomain;
-            setting.OnlineVisitTariff = editSiteSettingViewModel.HomeVisitTariff.Value;
+            setting.OnlineVisitTariff = editSiteSettingViewModel.OnlineVisitTariff.Value;
             setting.DistanceFromCityTarriff = editSiteSettingViewModel.DistanceFromCityTarriff;
             setting.CountOFFreeSMSForDoctors = editSiteSettingViewModel.CountOFFreeSMSForDoctors;
             setting.InPersonReservationTariffForAnonymousPersonsSiteShare = editSiteSettingViewModel.InPersonReservationTariffForAnonymousPersonsSiteShare;

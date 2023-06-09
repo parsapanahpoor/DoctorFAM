@@ -10,17 +10,16 @@ using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Honor;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Service;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.WorkHistory;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.WorkingAddress;
-using DoctorFAM.Web.Areas.Doctor.ActionFilterAttributes;
-using DoctorFAM.Web.Doctor.Controllers;
+using DoctorFAM.Web.Areas.Dentist.ActionFilterAttributes;
 using Microsoft.AspNetCore.Mvc;
 
-namespace DoctorFAM.Web.Areas.Doctor.Controllers;
+namespace DoctorFAM.Web.Areas.Dentist.Controllers;
 
 #endregion
 
-[CheckDoctorsInfo]
+[CheckDentistsInfo]
 [CheckResumeIsExist]
-public class ResumeController : DoctorBaseController
+public class ResumeController : DentistBaseController
 {
     #region Ctor 
 
@@ -46,8 +45,8 @@ public class ResumeController : DoctorBaseController
 
     #region Show About Me In Modal 
 
-    [HttpGet("/Show-About-Me-In-Modal")]
-    public async Task<IActionResult> ShowAboutMeInModal()
+    [HttpGet("/Show-About-Me-In-Dentist-Panel-Modal")]
+    public async Task<IActionResult> ShowAboutMeInModalDentistPanel()
     {
         #region Get Model Body
 
@@ -55,7 +54,7 @@ public class ResumeController : DoctorBaseController
 
         #endregion
 
-        return PartialView("_ShowAboutMeInModal", model);
+        return PartialView("_ShowAboutMeInDentistPanelModal", model);
     }
 
     #endregion
@@ -141,8 +140,8 @@ public class ResumeController : DoctorBaseController
     {
         #region Fill Model
 
-        var model = await _resumeService.FillEditEducationDoctorPanelViewModel(id , User.GetUserId());
-        if (model == null) 
+        var model = await _resumeService.FillEditEducationDoctorPanelViewModel(id, User.GetUserId());
+        if (model == null)
         {
             TempData[ErrorMessage] = "اطلاعات وارد شده معتبر نمی باشد";
             return RedirectToAction(nameof(PageOfResume));
@@ -168,7 +167,7 @@ public class ResumeController : DoctorBaseController
 
         #region Edit Education
 
-        var res = await _resumeService.EditEducationFromDoctorPanel(model , User.GetUserId()) ;
+        var res = await _resumeService.EditEducationFromDoctorPanel(model, User.GetUserId());
         if (res)
         {
             TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
@@ -189,7 +188,7 @@ public class ResumeController : DoctorBaseController
     {
         #region Delete Education
 
-        var res = await _resumeService.DeleteEducation(id , User.GetUserId());
+        var res = await _resumeService.DeleteEducation(id, User.GetUserId());
         if (res)
         {
             TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
@@ -329,7 +328,7 @@ public class ResumeController : DoctorBaseController
     }
 
     [HttpPost, ValidateAntiForgeryToken]
-    public async Task<IActionResult> CreateHonor(CreateHonorDoctorPanel model , IFormFile image)
+    public async Task<IActionResult> CreateHonor(CreateHonorDoctorPanel model, IFormFile image)
     {
         #region Model State Validation 
 
@@ -343,7 +342,7 @@ public class ResumeController : DoctorBaseController
 
         #region Create Education Resume 
 
-        var res = await _resumeService.CreateResumeHonorFromDoctorSide(model, User.GetUserId() , image);
+        var res = await _resumeService.CreateResumeHonorFromDoctorSide(model, User.GetUserId(), image);
         if (res)
         {
             TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
@@ -378,7 +377,7 @@ public class ResumeController : DoctorBaseController
     }
 
     [HttpPost, ValidateAntiForgeryToken]
-    public async Task<IActionResult> EditHonor(EditHonorDoctorPanelViewModel model , IFormFile? image)
+    public async Task<IActionResult> EditHonor(EditHonorDoctorPanelViewModel model, IFormFile? image)
     {
         #region Model State Validation 
 
@@ -392,7 +391,7 @@ public class ResumeController : DoctorBaseController
 
         #region Edit Work History
 
-        var res = await _resumeService.EditHonorFromDoctorPanel(model, User.GetUserId() , image);
+        var res = await _resumeService.EditHonorFromDoctorPanel(model, User.GetUserId(), image);
         if (res)
         {
             TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
