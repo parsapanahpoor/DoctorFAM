@@ -348,12 +348,6 @@ public class OnlineVisitController : SiteBaseController
             return RedirectToAction(nameof(ListOfShifts), new { businessKey = businessKey });
         }
 
-        if (res.Result == SelectShiftAndRedirectToBankResultEnum.ProblemWithOnlineVisitTariff)
-        {
-            TempData[ErrorMessage] = "لطفا با پشتیبانی تماس بگیرید.";
-            return RedirectToAction(nameof(ListOfShifts), new { businessKey = businessKey });
-        }
-
         if (res.Result == SelectShiftAndRedirectToBankResultEnum.NotExistFreeTime)
         {
             TempData[ErrorMessage] = "زمان خالی برای شیفت مورد نظر شما یافت نشده است.";
@@ -365,6 +359,10 @@ public class OnlineVisitController : SiteBaseController
         #region Add User Request To Data Base
 
         var requestId = await _onlineVisitService.AddUserOnlineVisitRequestToTheDataBase(model);
+        if (res.Result == SelectShiftAndRedirectToBankResultEnum.ProblemWithOnlineVisitTariff)
+        {
+            return RedirectToAction(nameof(OnlineVisitPaymentWithZeroPayment), new { id = requestId });
+        }
 
         #endregion
 
@@ -377,7 +375,7 @@ public class OnlineVisitController : SiteBaseController
             description = "شارژ حساب کاربری برای پرداخت هزینه ی ویزیت آنلاین",
             returURL = $"{PathTools.SiteAddress}/OnlineVisitPayment/" + requestId,
             requestId = requestId,
-            
+
         });
 
         #endregion
@@ -399,8 +397,8 @@ public class OnlineVisitController : SiteBaseController
 
         #region Get Online Visit User Request Detail
 
-        var onlineVisitRequestDetail = await _onlineVisitService.GetOnlineVisitUserRequestDetailByIdAndUserId(id, User.GetUserId()) ;
-        if(onlineVisitRequestDetail == null || onlineVisitRequestDetail.IsFinaly) { TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد."; return RedirectToAction(nameof(ListOfDays)); }
+        var onlineVisitRequestDetail = await _onlineVisitService.GetOnlineVisitUserRequestDetailByIdAndUserId(id, User.GetUserId());
+        if (onlineVisitRequestDetail == null || onlineVisitRequestDetail.IsFinaly) { TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد."; return RedirectToAction(nameof(ListOfDays)); }
 
         #endregion
 
@@ -467,7 +465,7 @@ public class OnlineVisitController : SiteBaseController
                         await _onlineVisitService.UpdateRandomeRecordOfReservationDoctorAndPatientForExistRequestForSelect(onlineVisitRequestDetail.DayDatebusinessKey, onlineVisitRequestDetail.WorkShiftDateId, onlineVisitRequestDetail.WorkShiftDateTimeId);
 
                         //Update Online Visit User Request Detail 
-                        await _onlineVisitService.UpdateOnlineVisitUserRequestDetailToFinaly(id , user.Id);
+                        await _onlineVisitService.UpdateOnlineVisitUserRequestDetailToFinaly(id, user.Id);
 
                         //Charge User Wallet
                         await _walletService.UpdateWalletAndCalculateUserBalanceAfterBankingPayment(wallet);
@@ -489,7 +487,7 @@ public class OnlineVisitController : SiteBaseController
                             var users = await _userService.GetAdminsAndSupportersNotificationForSendNotificationInOnlineVisit();
 
                             //Get Doctor For Send Notification  
-                            users.AddRange(await _onlineVisitService.GetListOfDoctorForSendThemNotificationByOnlineVisit(onlineVisitRequestDetail.DayDatebusinessKey , onlineVisitRequestDetail.WorkShiftDateId, onlineVisitRequestDetail.WorkShiftDateTimeId));
+                            users.AddRange(await _onlineVisitService.GetListOfDoctorForSendThemNotificationByOnlineVisit(onlineVisitRequestDetail.DayDatebusinessKey, onlineVisitRequestDetail.WorkShiftDateId, onlineVisitRequestDetail.WorkShiftDateTimeId));
 
                             //Fill Send Supporter Notification ViewModel For Send Notification
                             SendSupporterNotificationViewModel viewModel = new SendSupporterNotificationViewModel()
@@ -525,6 +523,80 @@ public class OnlineVisitController : SiteBaseController
         }
 
         return NotFound();
+    }
+
+    #endregion
+
+    #region Online Visit Payment With Zero Payment
+
+    public async Task<IActionResult> OnlineVisitPaymentWithZeroPayment(ulong id)
+    {
+        #region Get User By User Id
+
+        var user = await _userService.GetUserById(User.GetUserId());
+        if (user == null) NotFound();
+
+        #endregion
+
+        #region Get Online Visit User Request Detail
+
+        var onlineVisitRequestDetail = await _onlineVisitService.GetOnlineVisitUserRequestDetailByIdAndUserId(id, User.GetUserId());
+        if (onlineVisitRequestDetail == null || onlineVisitRequestDetail.IsFinaly) { TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد."; return RedirectToAction(nameof(ListOfDays)); }
+
+        #endregion
+
+        #region Get Online Visit Reservation Tariff
+
+        int onlineVisitTariff = await _siteSettingService.GetOnlineVisitTariff();
+        if (onlineVisitTariff != 0)
+        {
+            TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+            return RedirectToAction("Index", "Home");
+        }
+
+        #endregion
+
+        //Update Randome Record Of Reservation Doctor And Patient For Exist Request For Select
+        await _onlineVisitService.UpdateRandomeRecordOfReservationDoctorAndPatientForExistRequestForSelect(onlineVisitRequestDetail.DayDatebusinessKey, onlineVisitRequestDetail.WorkShiftDateId, onlineVisitRequestDetail.WorkShiftDateTimeId);
+
+        //Update Online Visit User Request Detail 
+        await _onlineVisitService.UpdateOnlineVisitUserRequestDetailToFinaly(id, user.Id);
+
+        //Pay Online Visit Tariff
+        await _onlineVisitService.PayOnlineVisitTariff(User.GetUserId(), onlineVisitTariff, id);
+
+        #region Send Notification In SignalR
+
+        //Create Notification For Supporters And Admins
+        var notifyResult = await _notificationService.CreateSupporterNotification(id, Domain.Enums.Notification.SupporterNotificationText.OnlineVisitRequest, Domain.Enums.Notification.NotificationTarget.request, User.GetUserId());
+
+        //Send Notification For Doctor 
+        //await _notificationService.CreateNotificationForDoctorThatReserveHerReservation(id, Domain.Enums.Notification.SupporterNotificationText.OnlineVisitRequest, Domain.Enums.Notification.NotificationTarget.request, User.GetUserId());
+
+        if (notifyResult)
+        {
+            //Get List Of Admins And Supporter To Send Notification Into Them
+            var users = await _userService.GetAdminsAndSupportersNotificationForSendNotificationInOnlineVisit();
+
+            //Get Doctor For Send Notification  
+            users.AddRange(await _onlineVisitService.GetListOfDoctorForSendThemNotificationByOnlineVisit(onlineVisitRequestDetail.DayDatebusinessKey, onlineVisitRequestDetail.WorkShiftDateId, onlineVisitRequestDetail.WorkShiftDateTimeId));
+
+            //Fill Send Supporter Notification ViewModel For Send Notification
+            SendSupporterNotificationViewModel viewModel = new SendSupporterNotificationViewModel()
+            {
+                CreateNotificationDate = $"{DateTime.Now.ToShamsi()} - {DateTime.Now.Hour}:{DateTime.Now.Minute}",
+                NotificationText = "درخواست ویزیت آنلاین",
+                RequestId = id,
+                Username = User.Identity.Name,
+                UserImage = user.Avatar
+            };
+
+            await _notificationHub.Clients.Users(users).SendAsync("SendSupporterNotification", viewModel);
+        }
+
+        #endregion
+
+        return RedirectToAction("PaymentResult", "Payment", new { IsSuccess = true, refId = "-" });
     }
 
     #endregion
