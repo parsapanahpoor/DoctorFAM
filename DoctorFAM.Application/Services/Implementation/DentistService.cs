@@ -23,6 +23,7 @@ using DoctorFAM.Domain.ViewModels.Dentist.Employees;
 using DoctorFAM.Domain.ViewModels.Dentist.NavBar;
 using DoctorFAM.Domain.ViewModels.Dentist.SideBar;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo;
+using DoctorFAM.Domain.ViewModels.Site;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
@@ -1042,6 +1043,16 @@ public class DentistService : IDentistService
         #endregion
 
         return EditDentistInfoResult.success;
+    }
+
+    #endregion
+
+    #region Site Side 
+
+    //List Of Dentist Site Side 
+    public async Task<List<ListOfDentistShowSiteSideViewModel>> ListOfDentistSiteSide()
+    {
+        return await _dentistRepository.ListOfDentistSiteSide();
     }
 
     #endregion

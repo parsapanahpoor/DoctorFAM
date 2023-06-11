@@ -7,6 +7,7 @@ using DoctorFAM.Domain.ViewModels.Dentist.DentistsInfo;
 using DoctorFAM.Domain.ViewModels.Dentist.Employees;
 using DoctorFAM.Domain.ViewModels.Dentist.NavBar;
 using DoctorFAM.Domain.ViewModels.Dentist.SideBar;
+using DoctorFAM.Domain.ViewModels.Site;
 using Microsoft.AspNetCore.Http;
 
 #endregion
@@ -68,6 +69,13 @@ public interface IDentistService
 
     //Edit Doctor Info Admin Side
     Task<EditDentistInfoResult> EditDoctorInfoAdminSide(DentistsInfoDetailViewModel model, IFormFile? MediacalFile);
+
+    #endregion
+
+    #region Site Side 
+
+    //List Of Dentist Site Side 
+    Task<List<ListOfDentistShowSiteSideViewModel>> ListOfDentistSiteSide();
 
     #endregion
 }
