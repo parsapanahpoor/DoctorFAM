@@ -1,0 +1,41 @@
+﻿@model List<DoctorFAM.Domain.ViewModels.Site.Doctor.Resume.WorkHistory.WorkHistoryResumeInSitePanelViewModel>
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.Extensions
+
+<div class="col-md-5  divst1">
+    <div class="widget experience-widget">
+        <h4 class="widget-title"> سوابق کاری </h4>
+        <div class="experience-box">
+            @if (Model != null && Model.Any())
+            {
+                <ul class="experience-list">
+                    @foreach (var item in Model)
+                    {
+                        <li>
+                            <div class="experience-user">
+                                <div class="before-circle"></div>
+                            </div>
+                            <div class="experience-content">
+                                  <div class="timeline-content">
+                                    @if (!string.IsNullOrEmpty(item.WorkAddress))
+                                    {
+                                        <a href="#/" class="name">@item.WorkAddress</a>
+                                    }
+                                    @if (!string.IsNullOrEmpty(item.JobPosition))
+                                    {
+                                        <div>@item.JobPosition</div>
+                                    }
+                                    @if (item.StartDate != null && item.EndDate != null)
+                                    {
+                                        <span class="time">@item.StartDate.Value.ToShamsi() - @item.EndDate.Value.ToShamsi()</span>
+                                    }
+                                </div>
+                            </div>
+                        </li>
+                    }
+
+                </ul>
+            }
+        </div>
+    </div>
+</div>

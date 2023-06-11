@@ -1,0 +1,21 @@
+﻿@model List<DoctorFAM.Domain.ViewModels.Site.Doctor.Resume.Service.ServiceResumeInSitePanelViewModel>
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.Extensions
+
+
+<div class="col-md-10 divst1">
+    <div class="service-list">
+        <h4>خدمات</h4>
+
+        @if (Model != null && Model.Any())
+        {
+            <ul class="clearfix">
+                @foreach (var item in Model)
+                {
+                    <li>@item.ServiceTitle</li>
+                }
+            </ul>
+        }
+
+    </div>
+</div>

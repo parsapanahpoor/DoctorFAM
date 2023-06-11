@@ -39,6 +39,8 @@ public class DentistController : SiteBaseController
 
     #endregion
 
+    #region Reservation
+
     #region Dentist Reservation Detail 
 
     [Authorize]
@@ -90,4 +92,22 @@ public class DentistController : SiteBaseController
 
     #endregion
 
+
+    #endregion
+
+    #region Dentist Page 
+
+    public async Task<IActionResult> DentistPage(ulong userId)
+    {
+        #region Fill Page Model 
+
+        var model = await _dentistService.FillDentistPageDetailInReservationPage(userId);
+        if (model == null) return NotFound();
+
+        #endregion
+
+        return View(model);
+    }
+
+    #endregion
 }

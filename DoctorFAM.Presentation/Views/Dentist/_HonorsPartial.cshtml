@@ -1,0 +1,43 @@
+﻿@model List<DoctorFAM.Domain.ViewModels.Site.Doctor.Resume.Honor.HonorResumeInSitePanelViewModel>
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.Extensions
+
+
+<div class="col-md-10  divst1">
+    <div class="widget awards-widget">
+        <h4 class="widget-title">جوایز و افتخارات</h4>
+        <div class="experience-box">
+            @if (Model != null && Model.Any())
+            {
+                <ul class="experience-list">
+
+                    @foreach (var item in Model)
+                    {
+                        <li>
+                            <div class="experience-user">
+                                <div class="before-circle"></div>
+                            </div>
+                            <div class="experience-content">
+                                <div class="timeline-content">
+                                    @if (item.HonorDate != null)
+                                    {
+                                        <p class="exp-year">@item.HonorDate.ToShamsi()</p>
+                                    }
+                                    @if (!string.IsNullOrEmpty(item.HonorTitle))
+                                    {
+                                        <h4 class="exp-title">@item.HonorTitle</h4>
+                                    }
+                                    @if (!string.IsNullOrEmpty(item.Description))
+                                    {
+                                        <p>@item.Description </p>
+                                    }
+                                </div>
+                            </div>
+                        </li>
+                    }
+
+                </ul>
+            }
+        </div>
+    </div>
+</div>
