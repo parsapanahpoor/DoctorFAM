@@ -1,0 +1,11 @@
+﻿@model DoctorFAM.Domain.ViewModels.Site.Doctor.Resume.ResumeAboutMeSitePanelViewModel
+
+@if (Model != null)
+{
+    <div class="widget about-widget">
+        <h4 class="widget-title"> درباره من </h4>
+        <p>  
+            @Model.Text
+        </p>
+    </div>
+}

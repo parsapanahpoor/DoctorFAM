@@ -1,0 +1,53 @@
+﻿@model List<DoctorFAM.Domain.ViewModels.Site.Doctor.Resume.WorkingAddress.WorkingAddressResumeInSitePanelViewModel>
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.Extensions
+
+
+@if (Model != null && Model.Any())
+{
+    foreach (var item in Model)
+    {
+        <div role="tabpanel" id="doc_locations" class="tab-pane fade">
+
+            <div class="location-list">
+                <div class="row divst1">
+
+                    <div class="col-md-6">
+                        <div class="clinic-content">
+
+                            @if (!string.IsNullOrEmpty(item.WorkingAddressTitle))
+                            {
+                                <h4 class="clinic-name"><a href="#">@item.WorkingAddressTitle</a></h4>
+                            }
+                            @if (!string.IsNullOrEmpty(item.WorkingAddress))
+                            {
+                                <p>@item.WorkingAddress</p>
+                            }
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="clinic-timing">
+                            <div>
+                                <p class="timings-days">
+                                    @if (!string.IsNullOrEmpty(item.Days))
+                                    {
+                                        <span> @item.Days </span>
+                                    }
+                                </p>
+                                <p class="timings-times">
+                                    @if (!string.IsNullOrEmpty(item.Times))
+                                    {
+                                        <span>@item.Times </span>
+                                    }
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    }
+}
