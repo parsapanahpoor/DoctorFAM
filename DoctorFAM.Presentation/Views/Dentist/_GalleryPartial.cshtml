@@ -1,0 +1,24 @@
+﻿@model List<DoctorFAM.Domain.ViewModels.Site.Doctor.Resume.Gallery.GalleryResumeInSitePanelViewModel>
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.StaticTools
+
+@if (Model != null && Model.Any())
+{
+    <ul class="clinic-gallery">
+        @foreach (var item in Model)
+        {
+            <li>
+               @* <a href="@PathTools.ResumeGalleryPathThumb@item.ImageName" data-fancybox="gallery">
+                    <img src="@PathTools.ResumeGalleryPathThumb@item.ImageName" alt="Feature">
+                </a>*@
+
+
+                <a href="@PathTools.ResumeGalleryPath@item.ImageName" data-fancybox="gallery">
+                    <img src="@PathTools.ResumeGalleryPath@item.ImageName" alt="Feature">
+                </a>
+            </li>
+        }
+    </ul>
+}
+

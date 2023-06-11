@@ -81,5 +81,8 @@ public interface IDentistService
     //Fill Dentist Reservation Detail For Show Site Side View Model
     Task<ShowDentistReservationDetailViewModel?> FillDentistReservationDetailForShowSiteSide(ulong userId, string? loggedDateTime);
 
+    //Fill Dentist Page In Reservation Page 
+    Task<DentistPageInReservationViewModel?> FillDentistPageDetailInReservationPage(ulong userId);
+
     #endregion
 }
