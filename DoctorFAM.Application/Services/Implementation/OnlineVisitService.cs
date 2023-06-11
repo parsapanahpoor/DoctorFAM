@@ -1,5 +1,6 @@
 ﻿#region Usings
 
+using AngleSharp.Text;
 using DoctorFAM.Application.Convertors;
 using DoctorFAM.Application.Generators;
 using DoctorFAM.Application.Interfaces;
