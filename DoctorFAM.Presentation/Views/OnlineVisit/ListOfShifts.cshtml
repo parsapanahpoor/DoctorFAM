@@ -34,27 +34,30 @@
     </div>
     <section class="section section-featurebox">
     <div class="container">
+           
         @if (Model != null && Model.Any())
         {
-            
+                if (ViewBag.businessKey == Convert.ToInt32($"{DateTime.Now.Year}{DateTime.Now.Month}{DateTime.Now.Day}"))
+                {
                     <div class="row">
                         <div class="col-md-12">
 
                             <div class="">
-                            <ul class="clearfix" style="list-style:none; ">
+                                <ul class="clearfix" style="list-style:none; ">
 
-                                @foreach (var shiftTime in Model.Where(p => int.Parse(p.ShiftTime.Substring(0, 5).Remove(2, 1)) >= int.Parse(DateTime.Now.Hour.ToString("00")+DateTime.Now.Minute.ToString("00"))).OrderBy(p => p.WorkShiftDateTimeId))
+                                    @foreach (var shiftTime in Model.Where(p => int.Parse(p.ShiftTime.Substring(0, 5).Remove(2, 1)) >= int.Parse(DateTime.Now.Hour.ToString("00") + DateTime.Now.Minute.ToString("00"))).OrderBy(p => p.WorkShiftDateTimeId))
                                     {
-                                    <li class="text-center justify-content-center form-group col-md-2 col-sm-12" style="margin-top:10px; padding:5px !important; background-color: #197c66; border: 1px solid #fccf9a;color: #fff;  display:inline-block;">
+
+                                        <li class="text-center justify-content-center form-group col-md-2 col-sm-12" style="margin-top:10px; padding:5px !important; background-color: #197c66; border: 1px solid #fccf9a;color: #fff;  display:inline-block;">
                                             <a asp-action="SelectShiftAndRedirectToBank"
-                                               asp-area=""
-                                               asp-controller="OnlineVisit"
-                                               asp-route-businessKey="@shiftTime.businessKey"
-                                               asp-route-WorkShiftDateTimeId="@shiftTime.WorkShiftDateTimeId"
-                                               asp-route-WorkShiftDateId="@shiftTime.WorkShiftDateId"
-                                           style="color: #fff; ">
-                                              
-                                            ساعت <span> @string.Concat(shiftTime.ShiftTime.Reverse().Skip(3).Reverse()) </span>
+                                   asp-area=""
+                                   asp-controller="OnlineVisit"
+                                   asp-route-businessKey="@shiftTime.businessKey"
+                                   asp-route-WorkShiftDateTimeId="@shiftTime.WorkShiftDateTimeId"
+                                   asp-route-WorkShiftDateId="@shiftTime.WorkShiftDateId"
+                                   style="color: #fff; ">
+
+                                                ساعت <span> @string.Concat(shiftTime.ShiftTime.Reverse().Skip(3).Reverse()) </span>
                                             </a>
                                         </li>
                                     }
@@ -64,7 +67,39 @@
 
                         </div>
                     </div>
-            
+
+                }
+                else
+                {
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            <div class="">
+                                <ul class="clearfix" style="list-style:none; ">
+
+                                    @foreach (var shiftTime in Model)
+                                    {
+
+                                        <li class="text-center justify-content-center form-group col-md-2 col-sm-12" style="margin-top:10px; padding:5px !important; background-color: #197c66; border: 1px solid #fccf9a;color: #fff;  display:inline-block;">
+                                            <a asp-action="SelectShiftAndRedirectToBank"
+                                   asp-area=""
+                                   asp-controller="OnlineVisit"
+                                   asp-route-businessKey="@shiftTime.businessKey"
+                                   asp-route-WorkShiftDateTimeId="@shiftTime.WorkShiftDateTimeId"
+                                   asp-route-WorkShiftDateId="@shiftTime.WorkShiftDateId"
+                                   style="color: #fff; ">
+
+                                                ساعت <span> @string.Concat(shiftTime.ShiftTime.Reverse().Skip(3).Reverse()) </span>
+                                            </a>
+                                        </li>
+                                    }
+
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
+                }
         }
     </div>
 
