@@ -24,6 +24,9 @@ using DoctorFAM.Domain.ViewModels.Dentist.NavBar;
 using DoctorFAM.Domain.ViewModels.Dentist.SideBar;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo;
 using DoctorFAM.Domain.ViewModels.Site;
+using DoctorFAM.Domain.ViewModels.Site.Dentist;
+using DoctorFAM.Domain.ViewModels.Site.Doctor;
+using DoctorFAM.Domain.ViewModels.Site.Reservation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
@@ -41,15 +44,17 @@ public class DentistService : IDentistService
     private readonly IUserService _userService;
     private readonly IWorkAddressService _workAddressService;
     private readonly ISiteSettingService _siteSetting;
+    private readonly IReservationService _reservationService;
 
     public DentistService(IDentistRepoistory dentistRepoistory, IOrganizationService organizationService, IUserService userService
-                            , IWorkAddressService workAddressService, ISiteSettingService siteSetting)
+                            , IWorkAddressService workAddressService, ISiteSettingService siteSetting, IReservationService reservationService)
     {
         _dentistRepository = dentistRepoistory;
         _organizationService = organizationService;
         _userService = userService;
         _workAddressService = workAddressService;
         _siteSetting = siteSetting;
+        _reservationService = reservationService;
     }
 
     #endregion
@@ -1053,6 +1058,59 @@ public class DentistService : IDentistService
     public async Task<List<ListOfDentistShowSiteSideViewModel>> ListOfDentistSiteSide()
     {
         return await _dentistRepository.ListOfDentistSiteSide();
+    }
+
+    //Fill Dentist Reservation Detail For Show Site Side View Model
+    public async Task<ShowDentistReservationDetailViewModel?> FillDentistReservationDetailForShowSiteSide(ulong userId, string? loggedDateTime)
+    {
+        #region Get Doctor User By User Id
+
+        User user = await _userService.GetUserById(userId);
+        if (user == null) { return null; }
+
+        #endregion
+
+        #region Validate Doctor 
+
+        var organization = await _organizationService.GetOrganizationByUserId(userId);
+        if (organization == null) return null;
+        if (organization.OrganizationType != Domain.Enums.Organization.OrganizationType.DentistOffice) return null;
+        if (organization.OrganizationInfoState != OrganizationInfoState.Accepted) return null;
+
+        #endregion
+
+        #region Get Doctor Personal Info 
+
+        var doctorPersonalInfo = await _dentistRepository.GetDentistsInformationByUserId(user.Id);
+        if (doctorPersonalInfo == null) return null;
+
+        #endregion
+
+        #region Fill Model 
+
+        ShowDentistReservationDetailViewModel model = new ShowDentistReservationDetailViewModel()
+        {
+            UserId = userId,
+            LoggedDateTime = loggedDateTime,
+            DoctorReservationDate = ((!string.IsNullOrEmpty(loggedDateTime) ? await _reservationService.GetDoctorReservationDateByReservationDateAndUserId(loggedDateTime, userId) : null)),
+            DoctorReservationDateTimes = ((!string.IsNullOrEmpty(loggedDateTime) ? await _reservationService.GetDoctorReservationDateByReservationDateTimeAndUserId(loggedDateTime, userId) : null)),
+            ListOfReservationDateAndReservationDateTime = await _reservationService.GetListOfDoctorReservationDateAndDoctorReservationDateTimeForShowSiteSide(organization.OwnerId)
+        };
+
+        DoctorPageInReservationViewModel childModel = new DoctorPageInReservationViewModel()
+        {
+            UserId = userId,
+            Username = user.Username,
+            UserAvatar = user.Avatar,
+            Education = doctorPersonalInfo.Education,
+            Specialist = doctorPersonalInfo.Specialty,
+        };
+
+        model.DoctorPageInReservationViewModel = childModel;
+
+        #endregion
+
+        return model;
     }
 
     #endregion

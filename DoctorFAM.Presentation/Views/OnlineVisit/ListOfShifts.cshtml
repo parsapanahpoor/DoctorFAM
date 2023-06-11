@@ -43,7 +43,7 @@
                             <div class="">
                             <ul class="clearfix" style="list-style:none; ">
 
-                                    @foreach (var shiftTime in Model.OrderBy(p=> p.WorkShiftDateTimeId))
+                                @foreach (var shiftTime in Model.Where(p => int.Parse(p.ShiftTime.Substring(0, 5).Remove(2, 1)) >= int.Parse(DateTime.Now.Hour.ToString("00")+DateTime.Now.Minute.ToString("00"))).OrderBy(p => p.WorkShiftDateTimeId))
                                     {
                                     <li class="text-center justify-content-center form-group col-md-2 col-sm-12" style="margin-top:10px; padding:5px !important; background-color: #197c66; border: 1px solid #fccf9a;color: #fff;  display:inline-block;">
                                             <a asp-action="SelectShiftAndRedirectToBank"

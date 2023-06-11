@@ -8,6 +8,7 @@ using DoctorFAM.Domain.ViewModels.Dentist.Employees;
 using DoctorFAM.Domain.ViewModels.Dentist.NavBar;
 using DoctorFAM.Domain.ViewModels.Dentist.SideBar;
 using DoctorFAM.Domain.ViewModels.Site;
+using DoctorFAM.Domain.ViewModels.Site.Dentist;
 using Microsoft.AspNetCore.Http;
 
 #endregion
@@ -76,6 +77,9 @@ public interface IDentistService
 
     //List Of Dentist Site Side 
     Task<List<ListOfDentistShowSiteSideViewModel>> ListOfDentistSiteSide();
+
+    //Fill Dentist Reservation Detail For Show Site Side View Model
+    Task<ShowDentistReservationDetailViewModel?> FillDentistReservationDetailForShowSiteSide(ulong userId, string? loggedDateTime);
 
     #endregion
 }
