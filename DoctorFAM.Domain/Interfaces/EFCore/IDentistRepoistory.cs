@@ -6,6 +6,7 @@ using DoctorFAM.Domain.ViewModels.Admin.Dentist;
 using DoctorFAM.Domain.ViewModels.Dentist.Employees;
 using DoctorFAM.Domain.ViewModels.Dentist.NavBar;
 using DoctorFAM.Domain.ViewModels.Dentist.SideBar;
+using DoctorFAM.Domain.ViewModels.Site;
 
 #endregion
 
@@ -75,6 +76,13 @@ public interface IDentistRepoistory
 
     //Update Dentist Reservation Tariffs
     Task UpdateDentistReservationTariffs(DoctorsReservationTariffs reservationTariffs);
+
+    #endregion
+
+    #region Site Side 
+
+    //List Of Dentist Site Side 
+    Task<List<ListOfDentistShowSiteSideViewModel>> ListOfDentistSiteSide();
 
     #endregion
 }

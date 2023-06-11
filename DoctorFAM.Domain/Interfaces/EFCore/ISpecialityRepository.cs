@@ -1,5 +1,6 @@
 ﻿using DoctorFAM.Domain.Entities.Speciality;
 using DoctorFAM.Domain.ViewModels.Admin.Speciality;
+using DoctorFAM.Domain.ViewModels.Site.Specialists;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -70,6 +71,13 @@ namespace DoctorFAM.Domain.Interfaces.EFCore
 
         //Add Doctor Selected Speciality
         Task AddDoctorSelectedSpeciality(DoctorSelectedSpeciality speciality);
+
+        #endregion
+
+        #region Site Side 
+
+        //List Of Specialists Site Side 
+        Task<List<ListOfSpecialistsSiteSideViewModel>> ListOfSpecialistsSiteSide();
 
         #endregion
     }

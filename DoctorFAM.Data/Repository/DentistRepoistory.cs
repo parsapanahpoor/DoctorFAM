@@ -12,6 +12,7 @@ using DoctorFAM.Domain.ViewModels.Dentist.NavBar;
 using DoctorFAM.Domain.ViewModels.Dentist.SideBar;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DosctorSideBarInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Employees;
+using DoctorFAM.Domain.ViewModels.Site;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Net.NetworkInformation;
@@ -143,7 +144,7 @@ public class DentistRepoistory : IDentistRepoistory
     public async Task<DentistsInfo?> GetDentistsInformationByUserId(ulong userId)
     {
         return await _context.DentistInfo
-                             .AsNoTracking() 
+                             .AsNoTracking()
                              .FirstOrDefaultAsync(p => p.UserId == userId && !p.IsDelete);
     }
 
@@ -151,7 +152,7 @@ public class DentistRepoistory : IDentistRepoistory
     public async Task<List<DentistsSkills>> GetListOfDentistSkillsByDentistUserId(ulong dentistUserId)
     {
         return await _context.DentistsSkills
-                             .AsNoTracking() 
+                             .AsNoTracking()
                              .Where(p => p.UserId == dentistUserId && !p.IsDelete)
                              .ToListAsync();
     }
@@ -208,7 +209,7 @@ public class DentistRepoistory : IDentistRepoistory
         var dentistPOffice = await _context.Organizations
                                            .AsNoTracking()
                                            .Where(p => !p.IsDelete && p.OwnerId == filter.userId && p.OrganizationType == Domain.Enums.Organization.OrganizationType.DentistOffice)
-                                           .Select(p=> p.Id)
+                                           .Select(p => p.Id)
                                            .FirstOrDefaultAsync();
 
         if (dentistPOffice == 0) return null;
@@ -250,15 +251,15 @@ public class DentistRepoistory : IDentistRepoistory
     {
         return await _context.Organizations
                              .AsNoTracking()
-                             .Where(p=> !p.IsDelete && p.OrganizationType == Domain.Enums.Organization.OrganizationType.DentistOffice)
-                             .OrderByDescending(p=> p.CreateDate)
-                             .Select(p=> new ListOfDentistAdminSideViewModel()
+                             .Where(p => !p.IsDelete && p.OrganizationType == Domain.Enums.Organization.OrganizationType.DentistOffice)
+                             .OrderByDescending(p => p.CreateDate)
+                             .Select(p => new ListOfDentistAdminSideViewModel()
                              {
                                  organizationmState = p.OrganizationInfoState,
                                  User = _context.Users
                                                 .AsNoTracking()
-                                                .Where(s=> !s.IsDelete && s.Id == p.OwnerId)
-                                                .Select(s=> new DentistUsersAdminSideViewModel()
+                                                .Where(s => !s.IsDelete && s.Id == p.OwnerId)
+                                                .Select(s => new DentistUsersAdminSideViewModel()
                                                 {
                                                     ActiveSatte = s.IsMobileConfirm,
                                                     Email = s.Email,
@@ -288,6 +289,55 @@ public class DentistRepoistory : IDentistRepoistory
     {
         _context.DoctorsReservationTariffs.Update(reservationTariffs);
         await _context.SaveChangesAsync();
+    }
+
+    #endregion
+
+    #region Site Side 
+
+    //List Of Dentist Site Side 
+    public async Task<List<ListOfDentistShowSiteSideViewModel>> ListOfDentistSiteSide()
+    {
+        #region Get Dentists Validate Organizations
+
+        List<ulong> dentistOwnersId = await _context.Organizations
+                                            .AsNoTracking()
+                                            .Where(p => !p.IsDelete && p.OrganizationType == Domain.Enums.Organization.OrganizationType.DentistOffice
+                                                    && p.OrganizationInfoState == OrganizationInfoState.Accepted)
+                                            .Select(p => p.OwnerId)
+                                            .ToListAsync();
+
+        #endregion
+
+        #region Fill View Model 
+
+        List<ListOfDentistShowSiteSideViewModel> model = new List<ListOfDentistShowSiteSideViewModel>();
+
+        if (dentistOwnersId != null && dentistOwnersId.Any())
+        {
+            foreach (var dentistUserId in dentistOwnersId)
+            {
+                ListOfDentistShowSiteSideViewModel modelChild = new ListOfDentistShowSiteSideViewModel()
+                {
+                    DentistUserInfos = await _context.Users
+                                                     .AsNoTracking()
+                                                     .Where(p => !p.IsDelete && p.Id == dentistUserId)
+                                                     .Select(p => new DentistUserInfoForShowInListOFDentsits()
+                                                     {
+                                                         DoctorUsername = p.Username,
+                                                         UserAvatar = p.Avatar,
+                                                         UserId = p.Id
+                                                     })
+                                                     .FirstOrDefaultAsync(),
+                };
+
+                model.Add(modelChild);
+            }
+        }
+
+        #endregion
+
+        return model;
     }
 
     #endregion

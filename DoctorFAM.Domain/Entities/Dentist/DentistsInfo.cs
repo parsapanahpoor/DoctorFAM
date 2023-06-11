@@ -12,7 +12,6 @@ namespace DoctorFAM.Domain.Entities.Dentist;
 
 public class DentistsInfo : BaseEntity
 {
-
     #region properties
 
     public ulong UserId { get; set; }

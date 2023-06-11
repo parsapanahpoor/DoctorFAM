@@ -1,4 +1,4 @@
-﻿@model List<DoctorFAM.Domain.ViewModels.Site.ListOfDentistShowSiteSideViewModel>
+﻿@model List<DoctorFAM.Domain.ViewModels.Site.Specialists.ListOfSpecialistsSiteSideViewModel>
 
 @using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo
 @using DoctorFAM.Application.Extensions
@@ -9,7 +9,7 @@
 @inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
 
 @{
-    ViewBag.Title = "معرفی دندان پزشکان";
+    ViewBag.Title = "معرفی پزشکان متخصص";
 }
 
 
@@ -39,13 +39,13 @@
                                     <div class="doctor-widget">
                                         <div class="doc-info-left">
                                             <div class="doctor-img">
-                                                <a asp-action="DocPage" asp-area="" asp-controller="FocalPoint" asp-route-userId="@doctor.DentistUserInfos.UserId">
-                                                    <img src="/content/images/user/@((string.IsNullOrEmpty(doctor.DentistUserInfos.UserAvatar)) ? "DefaultAvatar.png" : $"thumb/{doctor.DentistUserInfos.UserAvatar}")" class="img-fluid" alt="User Image">
+                                                <a asp-action="DocPage" asp-area="" asp-controller="FocalPoint" asp-route-userId="@doctor.DoctorUserInfo.UserId">
+                                                    <img src="/content/images/user/@((string.IsNullOrEmpty(doctor.DoctorUserInfo.UserAvatar)) ? "DefaultAvatar.png" : $"thumb/{doctor.DoctorUserInfo.UserAvatar}")" class="img-fluid" alt="User Image">
                                                 </a>
                                             </div>
                                             <div class="doc-info-cont">
-                                                <h4 class="doc-name"><a asp-action="DocPage" asp-area="" asp-controller="FocalPoint" asp-route-userId="@doctor.DentistUserInfos.UserId">پزشک:دکتر  @doctor.DentistUserInfos.DoctorUsername</a></h4>
-                                         
+                                                <h4 class="doc-name"><a asp-action="DocPage" asp-area="" asp-controller="FocalPoint" asp-route-userId="@doctor.DoctorUserInfo.UserId">پزشک:دکتر  @doctor.DoctorUserInfo.Username</a></h4>
+
                                                 <div class="rating">
                                                     <i class="fas fa-star filled"></i>
                                                     <i class="fas fa-star filled"></i>
@@ -67,10 +67,11 @@
 
                                             @*Followers Detail*@
                                             @await Component.InvokeAsync("DoctorsFollowDetailOnListOfFamilyDoctors" , new{
-                                    targetUserId = doctor.DentistUserInfos.UserId})
+                                    targetUserId = doctor.DoctorUserInfo.UserId})
 
                                             <div class="clinic-booking mt-1  text-center justify-content-center">
-                                                <a class="apt-btn  text-center justify-content-center" asp-action="DentistBooking" asp-controller="Dentist" asp-area="" asp-route-userId="@doctor.DentistUserInfos.UserId">رزرو نوبت</a>
+                                                <a class="view-pro-btn mt-3  text-center justify-content-center" asp-action="DocPage" asp-area="" asp-controller="FocalPoint" asp-route-userId="@doctor.DoctorUserInfo.UserId">مشاهده پروفایل</a>
+                                                <a class="apt-btn  text-center justify-content-center" asp-action="DocBooking" asp-controller="FocalPoint" asp-area="" asp-route-userId="@doctor.DoctorUserInfo.UserId">رزرو نوبت</a>
                                             </div>
                                         </div>
                                     </div>
