@@ -196,4 +196,88 @@ public class DentistsInfoController : DentistBaseController
     }
 
     #endregion
+
+    #region Dentist Reservation Tariff
+
+    [HttpGet]
+    public async Task<IActionResult> DentistsReservationTariff()
+    {
+        #region Fill Model 
+
+        var model = await _dentistService.FillDentistReservationTariffDentistPanelSideViewModel(User.GetUserId());
+        if (model == null) return NotFound();
+
+        #endregion
+
+        #region View Bags
+
+        ViewBag.DoctorOffice = await _organizationService.GetDentistOrganizationByUserId(User.GetUserId());
+
+        #endregion
+
+        return View(model);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DentistsReservationTariff(DentistReservationTariffDentistPanelSideViewModel model)
+    {
+        #region Model State Validation 
+
+        if (!ModelState.IsValid)
+        {
+            #region View Bags
+
+            ViewBag.DoctorOffice = await _organizationService.GetDentistOrganizationByUserId(User.GetUserId());
+
+            #endregion
+
+            ViewData[ErrorMessage] = ".اطلاعات وارد شده صحیح نمی باشد";
+            return View(model);
+        }
+
+        #endregion
+
+        #region Add Or Edit Doctor Reservation Tariff
+
+        var res = await _dentistService.AddOrEditDoctorReservationTariffDoctorSide(model);
+        switch (res)
+        {
+            case DentistReservationTariffDentistPanelSideViewModelResult.success:
+                TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+                return RedirectToAction(nameof(PageOfManageDentistInfo));
+
+            case DentistReservationTariffDentistPanelSideViewModelResult.failure:
+                TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+                break;
+
+            case DentistReservationTariffDentistPanelSideViewModelResult.InpersonReservationPopluationCoveredLessThanSiteShare:
+                TempData[ErrorMessage] = "تعرفه ی نوبت حضوری افراد تحت پوشش شما از حداقل مقدار مورد تایید وب سایت کمتر است.";
+                break;
+
+            case DentistReservationTariffDentistPanelSideViewModelResult.OnlineReservationPopluationCoveredLessThanSiteShare:
+                TempData[ErrorMessage] = "تعرفه ی نوبت آنلاین افراد تحت پوشش شما از حداقل مقدار مورد تایید وب سایت کمتر است.";
+                break;
+
+            case DentistReservationTariffDentistPanelSideViewModelResult.InpersonReservationAnonymousePersoneLessThanSiteShare:
+                TempData[ErrorMessage] = "تعرفه ی نوبت حضوری افراد ناشناس شما از حداقل مقدار مورد تایید وب سایت کمتر است.";
+                break;
+
+            case DentistReservationTariffDentistPanelSideViewModelResult.OnlineReservationAnonymousePersoneLessThanSiteShare:
+                TempData[ErrorMessage] = "تعرفه ی نوبت آنلاین افراد ناشناس شما از حداقل مقدار مورد تایید وب سایت کمتر است.";
+                break;
+        }
+
+        #endregion
+
+        #region View Bags
+
+        ViewBag.DoctorOffice = await _organizationService.GetDentistOrganizationByUserId(User.GetUserId());
+
+        #endregion
+
+        return View(model);
+    }
+
+    #endregion
 }

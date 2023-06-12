@@ -317,6 +317,7 @@ public class OnlineVisitController : SiteBaseController
     [HttpGet]
     public async Task<IActionResult> ListOfShifts(int businessKey)
     {
+        ViewBag.businessKey = businessKey;
         return View(await _onlineVisitService.FillListOfShiftSiteSideViewModel(businessKey));
     }
 

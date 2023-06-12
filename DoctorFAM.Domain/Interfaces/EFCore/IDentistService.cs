@@ -19,6 +19,12 @@ public interface IDentistService
 {
     #region Dentist Panel 
 
+    //Add Or Edit Dentist Reservation Tariff Dentist Side 
+    Task<DentistReservationTariffDentistPanelSideViewModelResult> AddOrEditDoctorReservationTariffDoctorSide(DentistReservationTariffDentistPanelSideViewModel inCommingModel);
+
+    //Fill Dentist Reservation Tariff Dentist Panel Side ViewModel
+    Task<DentistReservationTariffDentistPanelSideViewModel?> FillDentistReservationTariffDentistPanelSideViewModel(ulong userId);
+
     //Add Exist User To The Dentist Organization 
     Task<bool> AddExistUserToTheDentistOrganization(ulong userId, ulong doctorId);
 

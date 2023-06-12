@@ -75,6 +75,163 @@ public class DentistService : IDentistService
 
     #region Dentist Panel 
 
+    //Add Or Edit Dentist Reservation Tariff Dentist Side 
+    public async Task<DentistReservationTariffDentistPanelSideViewModelResult> AddOrEditDoctorReservationTariffDoctorSide(DentistReservationTariffDentistPanelSideViewModel inCommingModel)
+    {
+        #region Check Is User Exist 
+
+        var user = await _userService.GetUserById(inCommingModel.DoctorUserId);
+
+        if (user == null) return DentistReservationTariffDentistPanelSideViewModelResult.failure;
+
+        #endregion
+
+        #region Get Current Dentist Office
+
+        var dentistOffice = await _organizationService.GetDentistOrganizationByUserId(inCommingModel.DoctorUserId);
+        if (dentistOffice == null ) return DentistReservationTariffDentistPanelSideViewModelResult.failure;
+
+        #endregion
+
+        #region Add Or Edit Dentist Reservation Tariff
+
+        //Get Dentist Reservation Tariff
+        var tariffs = await _dentistRepository.GetDentistReservationTariffByDentistUserId(dentistOffice.OwnerId);
+
+        #region Edit Dentist Organization State 
+
+        dentistOffice.OrganizationInfoState = OrganizationInfoState.WatingForConfirm;
+
+        await _organizationService.UpdateOrganization(dentistOffice);
+
+        #endregion
+
+        #region Add For The First Time
+
+        #region Check Tarrifs From Doctor By Site Percentages
+
+        if (await _siteSetting.CheckDoctorInsertedTarrifBySiteInFieldInPersonReservationTariffForDoctorPopulationCovered(inCommingModel.InPersonReservationTariffForDoctorPopulationCovered))
+        {
+            return DentistReservationTariffDentistPanelSideViewModelResult.InpersonReservationPopluationCoveredLessThanSiteShare;
+        }
+
+        if (await _siteSetting.CheckDoctorInsertedTarrifBySiteInFieldOnlineReservationTariffForDoctorPopulationCovered(inCommingModel.OnlineReservationTariffForDoctorPopulationCovered))
+        {
+            return DentistReservationTariffDentistPanelSideViewModelResult.OnlineReservationPopluationCoveredLessThanSiteShare;
+        }
+
+        if (await _siteSetting.CheckDoctorInsertedTarrifBySiteInFieldInPersonReservationTariffForAnonymousPersons(inCommingModel.InPersonReservationTariffForAnonymousPersons))
+        {
+            return DentistReservationTariffDentistPanelSideViewModelResult.InpersonReservationAnonymousePersoneLessThanSiteShare;
+        }
+
+        if (await _siteSetting.CheckDoctorInsertedTarrifBySiteInFieldOnlineReservationTariffForAnonymousPersons(inCommingModel.OnlineReservationTariffForAnonymousPersons))
+        {
+            return DentistReservationTariffDentistPanelSideViewModelResult.OnlineReservationAnonymousePersoneLessThanSiteShare;
+        }
+
+        #endregion
+
+        if (tariffs == null)
+        {
+            //Create Instance
+            DoctorsReservationTariffs model = new DoctorsReservationTariffs()
+            {
+                DoctorUserId = dentistOffice.OwnerId,
+                InPersonReservationTariffForAnonymousPersons = inCommingModel.InPersonReservationTariffForAnonymousPersons,
+                InPersonReservationTariffForDoctorPopulationCovered = inCommingModel.InPersonReservationTariffForDoctorPopulationCovered,
+                OnlineReservationTariffForAnonymousPersons = inCommingModel.OnlineReservationTariffForAnonymousPersons,
+                OnlineReservationTariffForDoctorPopulationCovered = inCommingModel.OnlineReservationTariffForDoctorPopulationCovered
+            };
+
+            //Add Data To The Data Base 
+            await _dentistRepository.AddDentistsReservationTariffToTheDataBase(model);
+        }
+
+        #endregion
+
+        #region Edit Reservation Tarrif 
+
+        if (tariffs != null)
+        {
+            tariffs.InPersonReservationTariffForAnonymousPersons = inCommingModel.InPersonReservationTariffForAnonymousPersons;
+            tariffs.InPersonReservationTariffForDoctorPopulationCovered = inCommingModel.InPersonReservationTariffForDoctorPopulationCovered;
+            tariffs.OnlineReservationTariffForAnonymousPersons = inCommingModel.OnlineReservationTariffForAnonymousPersons;
+            tariffs.OnlineReservationTariffForDoctorPopulationCovered = inCommingModel.OnlineReservationTariffForDoctorPopulationCovered;
+
+            //Update Dentist Reservation Tariffs
+            await _dentistRepository.UpdateDentistReservationTariffs(tariffs);
+        }
+
+        #endregion
+
+        #endregion
+
+        return DentistReservationTariffDentistPanelSideViewModelResult.success;
+    }
+
+    //Fill Dentist Reservation Tariff Dentist Panel Side ViewModel
+    public async Task<DentistReservationTariffDentistPanelSideViewModel?> FillDentistReservationTariffDentistPanelSideViewModel(ulong userId)
+    {
+        #region Check Is User Exist 
+
+        var user = await _userService.GetUserById(userId);
+
+        if (user == null) return null;
+
+        #endregion
+
+        #region Get Current Dentist Office
+
+        var dentistOffice = await _organizationService.GetDentistOrganizationOwnerIdByUserId(userId);
+        if (dentistOffice == null || dentistOffice == 0) return null;
+
+        #endregion
+
+        #region Fill Return Model
+
+        //Get Doctor Reservation Tariff
+        var tariffs = await _dentistRepository.GetDentistReservationTariffByDentistUserId(dentistOffice);
+
+        #region For The First Time
+
+        if (tariffs == null)
+        {
+            DentistReservationTariffDentistPanelSideViewModel returnModel = new DentistReservationTariffDentistPanelSideViewModel()
+            {
+                DoctorUserId = dentistOffice,
+                OnlineReservationTariffForDoctorPopulationCovered = await _siteSetting.GetOnlineReservationTariffForDoctorPopulationCoveredSiteShare() + 1000,
+                InPersonReservationTariffForDoctorPopulationCovered = await _siteSetting.GetInPersonReservationTariffForDoctorPopulationCoveredSiteShare() + 1000,
+            };
+
+            return returnModel;
+        }
+
+        #endregion
+
+        #region After First Time 
+
+        if (tariffs != null)
+        {
+            DentistReservationTariffDentistPanelSideViewModel returnModel = new DentistReservationTariffDentistPanelSideViewModel()
+            {
+                DoctorUserId = dentistOffice,
+                InPersonReservationTariffForAnonymousPersons = tariffs.InPersonReservationTariffForAnonymousPersons,
+                InPersonReservationTariffForDoctorPopulationCovered = tariffs.InPersonReservationTariffForDoctorPopulationCovered,
+                OnlineReservationTariffForAnonymousPersons = tariffs.OnlineReservationTariffForAnonymousPersons,
+                OnlineReservationTariffForDoctorPopulationCovered = tariffs.OnlineReservationTariffForDoctorPopulationCovered
+            };
+
+            return returnModel;
+        }
+
+        #endregion
+
+        #endregion
+
+        return null;
+    }
+
     //Add Exist User To The Dentist Organization 
     public async Task<bool> AddExistUserToTheDentistOrganization(ulong userId, ulong doctorId)
     {

@@ -1900,13 +1900,13 @@ public class ReservationService : IReservationService
         var reservationDateTime = await _reservation.GetDoctorReservationDateTimeById(model.ReservationDateTimeId);
         if (reservationDateTime == null) return false;
         if (reservationDateTime.DoctorReservationDate.UserId != model.DoctorId) return false;
-        if (reservationDateTime.DoctorReservationState != Domain.Enums.DoctorReservation.DoctorReservationState.NotReserved) return false;
+        if (reservationDateTime.DoctorReservationState != DoctorReservationState.NotReserved) return false;
 
         #endregion
 
         #region Update Method 
 
-        reservationDateTime.DoctorReservationState = Domain.Enums.DoctorReservation.DoctorReservationState.WaitingForComplete;
+        reservationDateTime.DoctorReservationState = DoctorReservationState.WaitingForComplete;
         reservationDateTime.PatientId = patientId;
         reservationDateTime.DoctorReservationType = model.DoctorReservationType;
 
