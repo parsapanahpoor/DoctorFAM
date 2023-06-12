@@ -37,6 +37,21 @@ public class DentistRepoistory : IDentistRepoistory
 
     #region Dentist Panel 
 
+    //Add Dentist Reservation Tariff To The Data Base 
+    public async Task AddDentistsReservationTariffToTheDataBase(DoctorsReservationTariffs reservationTariffs)
+    {
+        await _context.DoctorsReservationTariffs.AddAsync(reservationTariffs);
+        await _context.SaveChangesAsync();
+    }
+
+    //Get Dentist Reservation Tariff By User Id 
+    public async Task<DoctorsReservationTariffs?> GetDentistReservationTariffByDentistUserId(ulong dentistUserId)
+    {
+        return await _context.DoctorsReservationTariffs
+                             .AsNoTracking()
+                             .FirstOrDefaultAsync(p => !p.IsDelete && p.DoctorUserId == dentistUserId);
+    }
+
     //Save Changes
     public async Task SaveChanges()
     {
@@ -274,14 +289,6 @@ public class DentistRepoistory : IDentistRepoistory
                                                 .FirstOrDefault()
                              })
                              .ToListAsync();
-    }
-
-    //Get Dentist Reservation Tariff By User Id 
-    public async Task<DoctorsReservationTariffs?> GetDentistReservationTariffByDentistUserId(ulong DentistUserId)
-    {
-        return await _context.DoctorsReservationTariffs
-                             .AsNoTracking()
-                             .FirstOrDefaultAsync(p => !p.IsDelete && p.DoctorUserId == DentistUserId);
     }
 
     //Update Dentist Reservation Tariffs
