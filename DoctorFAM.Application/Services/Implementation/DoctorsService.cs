@@ -3869,10 +3869,9 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #region Get Current Doctor Office
 
-            var doctorOffice = await _organizationService.GetDoctorOrganizationByUserId(doctorUserId);
+            var doctorOffice = await _organizationService.GetOrganizationByUserId(doctorUserId);
             if (doctorOffice == null) return null;
-            if (doctorOffice.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice ||
-                doctorOffice.OrganizationInfoState != OrganizationInfoState.Accepted) return null;
+            if (doctorOffice.OrganizationInfoState != OrganizationInfoState.Accepted) return null;
 
             #endregion
 
@@ -3935,10 +3934,9 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #region Get Current Doctor Office
 
-            var doctorOffice = await _organizationService.GetDoctorOrganizationByUserId(doctorUserId);
+            var doctorOffice = await _organizationService.GetOrganizationByUserId(doctorUserId);
             if (doctorOffice == null) return ValueTuple.Create(0, false, false);
-            if (doctorOffice.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice ||
-                doctorOffice.OrganizationInfoState != OrganizationInfoState.Accepted) return ValueTuple.Create(0, false, false);
+            if (doctorOffice.OrganizationInfoState != OrganizationInfoState.Accepted) return ValueTuple.Create(0, false, false);
 
             #endregion
 

@@ -1,0 +1,103 @@
+﻿@model DoctorFAM.Domain.ViewModels.Dentist.DentistsInfo.DentistReservationTariffDentistPanelSideViewModel
+
+@{
+    ViewData["Title"] = "مدیریت تعرفه";
+
+    var doctorOffice = ViewBag.DoctorOffice as DoctorFAM.Domain.Entities.Organization.Organization;
+}
+
+@section Scripts
+    {
+    <partial name="_JqueryValidation" />
+}
+
+@section Breadcrumb
+    {
+    <li>
+        <a asp-action="PageOfManageDentistInfo" asp-controller="DentistsInfo" asp-area="Dentist"> @Localizer["مدیریت اطلاعات دندانپزشک"] </a>
+    </li>
+}
+
+<div class="row">
+
+    @if (!string.IsNullOrEmpty(doctorOffice.RejectDescription) && doctorOffice.OrganizationInfoState == DoctorFAM.Domain.Entities.Doctors.OrganizationInfoState.Rejected)
+    {
+        <div class="col-lg-12 col-sm-12 col-xs-12">
+            <div class="widget">
+                <div class="widget-header bg-red">
+                    <span class="widget-caption">پیام پشتیبانی </span>
+                    <div class="widget-buttons">
+                        <a href="#" data-toggle="config">
+                            <i class="fa fa-cog"></i>
+                        </a>
+                        <a href="#" data-toggle="maximize">
+                            <i class="fa fa-expand"></i>
+                        </a>
+                        <a href="#" data-toggle="collapse">
+                            <i class="fa fa-minus"></i>
+                        </a>
+                        <a href="#" data-toggle="dispose">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div><!--Widget Buttons-->
+                </div><!--Widget Header-->
+                <div class="widget-body bg-red">
+                    <p> @doctorOffice.RejectDescription </p>
+                </div><!--Widget Body-->
+            </div><!--Widget-->
+        </div>
+    }
+
+</div>
+
+<form method="post" asp-action="DentistsReservationTariff" asp-controller="DentistsInfo" asp-area="Dentist">
+
+    <div class="row">
+        <div class="col-lg-12 col-sm-12">
+            <div class="row">
+
+                <input type="hidden" asp-for="DoctorUserId" />
+                <input type="hidden" asp-for="InPersonReservationTariffForDoctorPopulationCovered" />
+                <input type="hidden" asp-for="OnlineReservationTariffForDoctorPopulationCovered" />
+
+                <div class="col-lg-12">
+                    <div class="widget">
+                        <div class="widget-header bordered-bottom bordered-green" style="background-color:#d1f4fa">
+                            <span class="widget-caption"> مدیریت تعرفه های مطب  </span>
+                        </div>
+                        <div class="widget-body" style="background-color:#d1f4fa !important;">
+                            <div class="row">
+
+                                <div class="form-group col-md-6 col-sm-12">
+                                    <span class="red">*</span>
+                                    <label asp-for="InPersonReservationTariffForAnonymousPersons">تعرفه ی ویزیت حضوری (ریال)</label>
+                                    <input type="text" class="form-control" asp-for="InPersonReservationTariffForAnonymousPersons">
+                                    <span class="text-danger" asp-validation-for="InPersonReservationTariffForAnonymousPersons"></span>
+                                </div>
+
+                                <div class="form-group col-md-6 col-sm-12">
+                                    <span class="red">*</span>
+                                    <label asp-for="OnlineReservationTariffForAnonymousPersons">تعرفه ی ویزیت آنلاین (ریال)</label>
+                                    <input type="text" class="form-control" asp-for="OnlineReservationTariffForAnonymousPersons">
+                                    <span class="text-danger" asp-validation-for="OnlineReservationTariffForAnonymousPersons"></span>
+                                </div>
+
+                                <hr class="margin-bottom-10 margin-top-10" />
+
+                                <div class="col-md-12 flex-style">
+                                    <button type="submit" class="btn btn-labeled btn-palegreen">
+                                        <i class="btn-label glyphicon glyphicon-ok"></i>ثبت
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</form>
+

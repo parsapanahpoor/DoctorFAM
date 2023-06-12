@@ -94,7 +94,7 @@
                             {
 
                                 <li class="form-group col-md-2 col-sm-12" style="margin-top:10px; background-color: #197c66;border: 1px solid #fccf9a;color: #fff; padding:5px !important;">
-                                    <a asp-action="DocBooking" asp-area="" asp-controller="FocalPoint" asp-route-userId="@Model.UserId" asp-route-loggedDateTime="@day.ReservationDate.ToShamsi()" style="color: #fff;">
+                                    <a asp-action="DentistBooking" asp-area="" asp-controller="Dentist" asp-route-userId="@Model.UserId" asp-route-loggedDateTime="@day.ReservationDate.ToShamsi()" style="color: #fff;">
                                         @day.ReservationDate.ToStringShamsiDate()
                                     </a>
                                 </li>
@@ -158,7 +158,7 @@
     <div class="row text-center justify-content-center">
         <div class="col-md-3"></div>
         <div class=" col-md-6 text-center justify-content-center ">
-            <a asp-action="DocBooking" asp-area="" asp-controller="FocalPoint" asp-route-userId="@Model.UserId" class="btn btn-primary col-md-12 btn-Accept"> نمایش تاریخهایی که پزشک برای اخذ نوبت فعال کرده است </a>
+            <a asp-action="DentistBooking" asp-area="" asp-controller="Dentist" asp-route-userId="@Model.UserId" class="btn btn-primary col-md-12 btn-Accept"> نمایش تاریخهایی که پزشک برای اخذ نوبت فعال کرده است </a>
         </div>
         <div class="col-md-3"></div>
 
@@ -171,7 +171,7 @@
                 <h6>در صورتیکه تاریخهای موجود در لیست بالا برای شما مناسب نیست،  با کلیک بر روی این دکمه تاریخ مورد نظر خود را بیابید:</h6>
             </div>
             <div class="col-md-12 text-center justify-contnet-center">
-                <form asp-action="DocBooking" asp-area="" asp-controller="FocalPoint" method="post">
+                <form asp-action="DentistBooking" asp-area="" asp-controller="Dentist" method="post">
                     <input type="hidden" asp-for="UserId" />
 
                     @*<h5> @((Model.DoctorReservationDate != null) ? Model.DoctorReservationDate.ReservationDate.ToStringShamsiDate() : "")</h5>*@

@@ -16,6 +16,12 @@ public interface IDentistRepoistory
 {
     #region Dentist Panel
 
+    //Add Dentist Reservation Tariff To The Data Base 
+    Task AddDentistsReservationTariffToTheDataBase(DoctorsReservationTariffs reservationTariffs);
+
+    //Get Dentist Reservation Tariff By User Id 
+    Task<DoctorsReservationTariffs?> GetDentistReservationTariffByDentistUserId(ulong dentistUserId);
+
     //Save Changes
     Task SaveChanges();
 
@@ -70,9 +76,6 @@ public interface IDentistRepoistory
 
     //Get List Of Dentist For Show Admin Panel 
     Task<List<ListOfDentistAdminSideViewModel>?> GetListOfDentistForShowAdminPanel();
-
-    //Get Dentist Reservation Tariff By User Id 
-    Task<DoctorsReservationTariffs?> GetDentistReservationTariffByDentistUserId(ulong DentistUserId);
 
     //Update Dentist Reservation Tariffs
     Task UpdateDentistReservationTariffs(DoctorsReservationTariffs reservationTariffs);
