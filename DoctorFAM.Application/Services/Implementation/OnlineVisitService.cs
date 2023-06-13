@@ -873,6 +873,12 @@ public class OnlineVisitService : IOnlineVisitService
         return await _onlineVisitRepository.FillOnlineVisitDoctorAndPatientInformationsAdminPanelSideViewModel(doctorReservationDateId, shiftId);
     }
 
+    //List Of Online Visit Requests History
+    public async Task<List<ListOfOnlineVisitRequestsAdminSideViewModel>?> ListOfOnlineVisitRequestsHistory()
+    {
+        return await _onlineVisitRepository.ListOfOnlineVisitRequestsHistory();
+    }
+
     #endregion
 
     #region Site Side 
