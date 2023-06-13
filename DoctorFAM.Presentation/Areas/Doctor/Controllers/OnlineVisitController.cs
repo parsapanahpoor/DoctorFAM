@@ -16,10 +16,9 @@ using DoctorFAM.Web.Hubs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Localization;
+namespace DoctorFAM.Web.Areas.Doctor.Controllers;
 
 #endregion
-
-namespace DoctorFAM.Web.Areas.Doctor.Controllers;
 
 public class OnlineVisitController : DoctorBaseController
 {
