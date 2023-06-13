@@ -175,4 +175,14 @@ public class OnlineVisitController : AdminBaseController
     }
 
     #endregion
+
+    #region List Of Online Visit Request History 
+
+    [HttpGet]
+    public async Task<IActionResult> ListOfOnlineVisitRequestsHistory()
+    {
+        return View(await _onlineVisitService.ListOfOnlineVisitRequestsHistory());
+    }
+
+    #endregion
 }

@@ -1,0 +1,136 @@
+﻿@model List<DoctorFAM.Domain.ViewModels.Admin.OnlineVisit.ListOfOnlineVisitRequestsAdminSideViewModel>
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.Extensions
+
+@{
+    ViewData["Title"] = "تاریخچه ی درخواست های ویزیت آنلاین";
+}
+
+@section Breadcrumb
+    {
+    <li>
+        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+    </li>
+}
+
+@section Styles
+    {
+    <link href="/admin/css/dataTables.bootstrap.rtl.css" rel="stylesheet" />
+}
+
+@section Scripts
+    {
+    <script src="~/admin/js/datatable/jquery.dataTables.min.js"></script>
+    <script src="~/admin/js/datatable/ZeroClipboard.js"></script>
+    <script src="~/admin/js/datatable/dataTables.tableTools.min.js"></script>
+    <script src="~/admin/js/datatable/dataTables.bootstrap.min.js"></script>
+    <script src="~/admin/js/datatable/datatables-init.js"></script>
+    <script>
+        InitiateSimpleDataTable.init();
+        InitiateEditableDataTable.init();
+        InitiateExpandableDataTable.init();
+        InitiateSearchableDataTable.init();
+    </script>
+
+    }
+
+<div class="page-body">
+
+    <div class="row">
+
+        <div id="horizontal-form">
+
+            @if (Model != null && Model.Any())
+            {
+
+                <div class="widget-body no-padding">
+                    <div id="searchable_wrapper" class="dataTables_wrapper form-inline">
+
+                        <table class="table table-bordered table-hover table-striped dataTable" id="searchable" role="grid" aria-describedby="searchable_info">
+                            <thead class="bordered-darkorange">
+                                <tr role="row">
+
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">اطلاعات کاربری</th>
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" aria-sort="ascending">موبایل کاربر</th>
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Platform: activate to sort column ascending">شیفت درخواستی  </th>
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Platform: activate to sort column ascending">تاریخ درخواستی  </th>
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Platform: activate to sort column ascending">تاریخ ایجاد درخواست  </th>
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Platform: activate to sort column ascending">وضعیت  </th>
+
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                @foreach (var onlineVisit in Model)
+                                {
+                                    <tr role="row" class="even responsive" remove-ajax-item="@onlineVisit.User.UserId">
+
+                                        <td class="center ">
+
+                                            <div class="flex-style-center">
+                                                <img src="@onlineVisit.User.UserAvatar.GetUserAvatar()" class="avatar-style" />
+                                                <div class="mr-10px">
+                                                    <span> @onlineVisit.User.Username </span>
+                                                </div>
+                                            </div>
+                                        </td>
+
+                                        <td class="center ">
+
+                                            @onlineVisit.User.Mobile
+
+                                        </td>
+
+                                        <td class="sorting_1">
+                                            @onlineVisit.WorkShiftTime
+                                        </td>
+
+                                        <td class="sorting_1">
+                                           @onlineVisit.DateTime.ToShamsi()
+                                        </td>
+
+                                        <td class="sorting_1">
+                                            @onlineVisit.CreateDate.ToShamsi()
+                                        </td>
+
+                                        <td class="sorting_1">
+                                            @if (onlineVisit.IsFinaly)
+                                            {
+                                                <p class="badge badge-success">پرداخت شده</p>
+                                            }
+                                            else
+                                            {
+                                                <p class="badge badge-danger">پرداخت نشده</p>
+                                            }
+                                            <hr class="margin-7" />
+                                            @if (onlineVisit.IsTakenFromDoctor)
+                                            {
+                                                <p class="badge badge-success">انتخاب شده توسط پزشک</p>
+                                            }
+                                            else
+                                            {
+                                                <p class="badge badge-danger">درانتظار انتخاب پزشک</p>
+                                            }
+                                        </td>
+
+                                    </tr>
+
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <partial name="_AdminNotFoundPartial" />
+            }
+
+        </div>
+    </div>
+
+</div>
+
+

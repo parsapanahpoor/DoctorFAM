@@ -127,6 +127,9 @@ public interface IOnlineVisitService
     //Fill OnlineVisitDoctorAndPatientInformationsAdminPanelSideViewModel
     Task<List<OnlineVisitDoctorAndPatientInformationsAdminPanelSideViewModel>?> FillOnlineVisitDoctorAndPatientInformationsAdminPanelSideViewModel(ulong doctorReservationDateId, ulong shiftId);
 
+    //List Of Online Visit Requests History
+    Task<List<ListOfOnlineVisitRequestsAdminSideViewModel>?> ListOfOnlineVisitRequestsHistory();
+
     #endregion
 
     #region Site Side 
