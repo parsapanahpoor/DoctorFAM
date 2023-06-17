@@ -93,7 +93,7 @@
                             @foreach (var day in doctorDaysList)
                             {
 
-                                <li class="form-group col-md-2 col-sm-12" style="margin-top:10px; background-color: #197c66;border: 1px solid #fccf9a;color: #fff; padding:5px !important;">
+                                <li class="form-group col-md-2 col-sm-12 Notbtn2" >
                                     <a asp-action="DocBooking" asp-area="" asp-controller="FocalPoint" asp-route-userId="@Model.UserId" asp-route-loggedDateTime="@day.ReservationDate.ToShamsi()" style="color: #fff;">
                                         @day.ReservationDate.ToStringShamsiDate()
                                     </a>
