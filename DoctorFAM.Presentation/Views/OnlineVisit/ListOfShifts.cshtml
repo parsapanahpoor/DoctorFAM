@@ -39,16 +39,19 @@
         {
                 if (ViewBag.businessKey == Convert.ToInt32($"{DateTime.Now.Year}{DateTime.Now.Month}{DateTime.Now.Day}"))
                 {
+                    <div class="card booking-schedule schedule-widget">
+                    <div class="schedule-cont">
+                    
                     <div class="row">
                         <div class="col-md-12">
 
-                            <div class="">
+                            <div class="time-slot">
                                 <ul class="clearfix" style="list-style:none; ">
 
                                     @foreach (var shiftTime in Model.Where(p => int.Parse(p.ShiftTime.Substring(0, 5).Remove(2, 1)) >= int.Parse(DateTime.Now.Hour.ToString("00") + DateTime.Now.Minute.ToString("00"))).OrderBy(p => p.WorkShiftDateTimeId))
                                     {
 
-                                        <li class="text-center justify-content-center form-group col-md-2 col-sm-12" style="margin-top:10px; padding:5px !important; background-color: #197c66; border: 1px solid #fccf9a;color: #fff;  display:inline-block;">
+                                                <li class="text-center justify-content-center form-group col-lg-1 col-md-1 col-sm-3 col-xs-3 Notbtn2" style="margin:15px !important;">
                                             <a asp-action="SelectShiftAndRedirectToBank"
                                    asp-area=""
                                    asp-controller="OnlineVisit"
@@ -67,21 +70,25 @@
 
                         </div>
                     </div>
-
+                    </div>
+                    </div>
                 }
                 else
                 {
+                <div class="card booking-schedule schedule-widget">
+                    <div class="schedule-cont">
+
                     <div class="row">
                         <div class="col-md-12">
 
-                            <div class="">
+                                    <div class="time-slot">
                                 <ul class="clearfix" style="list-style:none; ">
 
                                     @foreach (var shiftTime in Model)
                                     {
 
-                                        <li class="text-center justify-content-center form-group col-md-2 col-sm-12" style="margin-top:10px; padding:5px !important; background-color: #197c66; border: 1px solid #fccf9a;color: #fff;  display:inline-block;">
-                                            <a asp-action="SelectShiftAndRedirectToBank"
+                                                <li class="text-center justify-content-center form-group col-lg-1 col-md-1 col-sm-3 col-xs-3 Notbtn2" style="margin:15px !important;">
+                                                    <a asp-action="SelectShiftAndRedirectToBank"
                                    asp-area=""
                                    asp-controller="OnlineVisit"
                                    asp-route-businessKey="@shiftTime.businessKey"
@@ -98,6 +105,9 @@
                             </div>
 
                         </div>
+                    </div>
+
+                    </div>
                     </div>
                 }
         }
