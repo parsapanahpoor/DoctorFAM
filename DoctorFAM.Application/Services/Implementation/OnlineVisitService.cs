@@ -477,6 +477,19 @@ public class OnlineVisitService : IOnlineVisitService
 
     #region Doctor Panel 
 
+    //List Of Doctor Online Visti Request For Show In ViewComponent
+    public async Task<List<ListOfLastestOnlineVisitRequestDoctorSideViewModel>?> ListOfDoctorOnlineVistiRequestForShowInViewComponent(ulong memberUserId)
+    {
+        #region Get Organization 
+
+        var ownerId = await _organizationService.GetOrganizationOwnerIdByOrganizationMemberUserIdWithAsNoTracking(memberUserId);
+        if (ownerId == null) return null;
+
+        #endregion
+
+        return await _onlineVisitRepository.ListOfDoctorOnlineVistiRequestForShowInViewComponent(ownerId.Value);
+    }
+
     //Show Online Visit User Request Detail
     public async Task<OnlineVisitUserRequestDetailDoctorSideViewModel?> ShowOnlineVisitUserRequestDetail(ulong doctorAndPatientRequestId , ulong memberUserId)
     {

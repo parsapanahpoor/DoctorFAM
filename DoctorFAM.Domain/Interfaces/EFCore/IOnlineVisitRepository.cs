@@ -57,6 +57,9 @@ public interface IOnlineVisitRepository
 
     #region Doctor Panel
 
+    //List Of Doctor Online Visti Request For Show In ViewComponent
+    Task<List<ListOfLastestOnlineVisitRequestDoctorSideViewModel>?> ListOfDoctorOnlineVistiRequestForShowInViewComponent(ulong doctorUserId);
+
     //Show Online Visit User Request Detail
     Task<OnlineVisitUserRequestDetailDoctorSideViewModel?> ShowOnlineVisitUserRequestDetail(ulong doctorAndPatientRequestId);
 

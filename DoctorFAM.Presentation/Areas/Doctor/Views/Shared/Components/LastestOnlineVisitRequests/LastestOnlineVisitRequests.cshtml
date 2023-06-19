@@ -3,47 +3,16 @@
 @using DoctorFAM.Application.Convertors
 @using DoctorFAM.Domain.ViewModels.Common
 
-@{
-    ViewData["Title"] = "لیست جدیدترین درخواست های ویزیت آنلاین";
-}
+@if (Model != null && Model.Any())
+{
 
-@section Styles
-    {
-    <link href="/admin/css/dataTables.bootstrap.rtl.css" rel="stylesheet" />
-}
+        <div class="col-lg-6 col-sm-12">
 
-@section Scripts
-    {
-    <script src="~/admin/js/datatable/jquery.dataTables.min.js"></script>
-    <script src="~/admin/js/datatable/ZeroClipboard.js"></script>
-    <script src="~/admin/js/datatable/dataTables.tableTools.min.js"></script>
-    <script src="~/admin/js/datatable/dataTables.bootstrap.min.js"></script>
-    <script src="~/admin/js/datatable/datatables-init.js"></script>
-    <script>
-        InitiateSimpleDataTable.init();
-        InitiateEditableDataTable.init();
-        InitiateExpandableDataTable.init();
-        InitiateSearchableDataTable.init();
-    </script>
-}
+            <div class="row" style="margin:10px 10px 10px 10px;">
 
-@section Breadcrumb
-    {
-    <li>
-        <a asp-action="VisitOnLine" asp-area="Doctor" asp-controller="Home"> ویزیت آنلاین </a>
-    </li>
-}
+                <div id="horizontal-form">
 
-<div class="row">
 
-    <div class="col-lg-12 col-sm-12">
-
-        <div class="row" style="margin:10px 10px 10px 10px;">
-
-            <div id="horizontal-form">
-
-                @if (Model != null && Model.Any())
-                {
                     <div class="widget-body no-padding">
                         <div id="searchable_wrapper" class="dataTables_wrapper form-inline">
 
@@ -55,7 +24,6 @@
                                         <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">تاریخ ویزیت </th>
                                         <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">شیفت </th>
                                         <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">زمان ویزیت</th>
-                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">تاریخ ایجاد</th>
 
                                         <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending"> امکانات</th>
 
@@ -100,12 +68,6 @@
 
                                             <td class="center tc vm">
 
-                                                @onlineVisit.RequestCreateDate.ToShamsi()
-
-                                            </td>
-
-                                            <td class="center tc vm">
-
                                                 <a asp-action="ShowOnlineVisitRequestDetail" asp-area="Doctor" asp-controller="OnlineVisit"
                                            asp-route-onlineVisitRequestId="@onlineVisit.UserRequestId"
                                            class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
@@ -124,15 +86,11 @@
                             </table>
                         </div>
                     </div>
-                }
-                else
-                {
-                    <partial name="_DoctorPanelNotFoundPartial" />
-                }
 
+
+                </div>
             </div>
-        </div>
 
-    </div>
-</div>
+        </div>
+}
 
