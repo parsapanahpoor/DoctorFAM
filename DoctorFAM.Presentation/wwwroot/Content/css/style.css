@@ -6924,8 +6924,17 @@ doctors intrud*/
     background-size: 110% 100%;
 }
 
+.CancerBannerPic {
+    background-image: linear-gradient(rgba(255,255,255,10),rgba(255,255,255,0.3)), url('/Content/images/PagesPic/CancerBanner.jpg');
+    background-repeat: no-repeat;
+    background-size: 110% 100%;
+}
 
-
+.PsychBannerPic {
+    background-image: linear-gradient(rgba(255,255,255,10),rgba(255,255,255,0.3)), url('/Content/images/PagesPic/PsychBanner.jpg');
+    background-repeat: no-repeat;
+    background-size: 110% 100%;
+}
 
 .Top-BannerImage {
     background-image: url('/Content/images/case-studies/Up_Banner.jpg');
