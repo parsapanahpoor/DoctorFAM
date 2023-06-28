@@ -1,96 +1,103 @@
-﻿using DoctorFAM.Domain.Entities.Consultant;
+﻿#region Usings
+
+using DoctorFAM.Domain.Entities.Consultant;
 using DoctorFAM.Domain.ViewModels.Admin.Consultant;
 using DoctorFAM.Domain.ViewModels.Consultant.ConsultantRequest;
 using DoctorFAM.Domain.ViewModels.Consultant.ConsultantSideBar;
+using DoctorFAM.Domain.ViewModels.Consultant.NavBar;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DoctorFAM.Domain.Interfaces
+namespace DoctorFAM.Domain.Interfaces;
+
+#endregion
+
+public interface IConsultantRepository
 {
-    public interface IConsultantRepository
-    {
-        #region Consultant Panel
+    #region Consultant Panel
 
-        //Get User Selected Consultant By Patient And Consultant Id
-        Task<UserSelectedConsultant?> GetUserSelectedConsultantByPatientAndConsultantId(ulong patientId, ulong consultantId);
+    //Fill Consultant NavBar Info 
+    Task<ConsultantPanelNavNarViewModel?> FillConsultantPanelNavNarViewModel(ulong userId);
 
-        //Get User Selected Consultant By Request Id
-        Task<UserSelectedConsultant?> GetUserSelectedConsultantByRequestId(ulong requestId);
+    //Get User Selected Consultant By Patient And Consultant Id
+    Task<UserSelectedConsultant?> GetUserSelectedConsultantByPatientAndConsultantId(ulong patientId, ulong consultantId);
 
-        //List Of Your Consultant Population Covered Users
-        Task<ListOfConsultantPopulationCoveredViewModel> FilterYourListOfConsultantPopulationCoveredViewModel(ListOfConsultantPopulationCoveredViewModel filter);
+    //Get User Selected Consultant By Request Id
+    Task<UserSelectedConsultant?> GetUserSelectedConsultantByRequestId(ulong requestId);
 
-        //List Of Consultant Population Covered Users
-        Task<ListOfConsultantPopulationCoveredViewModel> FilterListOfConsultantPopulationCoveredViewModel(ListOfConsultantPopulationCoveredViewModel filter);
+    //List Of Your Consultant Population Covered Users
+    Task<ListOfConsultantPopulationCoveredViewModel> FilterYourListOfConsultantPopulationCoveredViewModel(ListOfConsultantPopulationCoveredViewModel filter);
 
-        //Fill Consultant Side Bar Panel
-        Task<ConsultantSideBarViewModel> GetConsultantSideBarInfo(ulong userId);
+    //List Of Consultant Population Covered Users
+    Task<ListOfConsultantPopulationCoveredViewModel> FilterListOfConsultantPopulationCoveredViewModel(ListOfConsultantPopulationCoveredViewModel filter);
 
-        //Is Exist Any Consultant By This User Id 
-        Task<bool> IsExistAnyConsultantByUserId(ulong userId);
+    //Fill Consultant Side Bar Panel
+    Task<ConsultantSideBarViewModel> GetConsultantSideBarInfo(ulong userId);
 
-        //Add Consultant To Data Base
-        Task<ulong> AddConsultant(Consultant consultant);
+    //Is Exist Any Consultant By This User Id 
+    Task<bool> IsExistAnyConsultantByUserId(ulong userId);
 
-        //Get Consultant By User Id
-        Task<Consultant?> GetConsultantByUserId(ulong userId);
+    //Add Consultant To Data Base
+    Task<ulong> AddConsultant(Consultant consultant);
 
-        //Get Consultant Information By User Id
-        Task<ConsultantInfo?> GetConsultantInformationByUserId(ulong userId);
+    //Get Consultant By User Id
+    Task<Consultant?> GetConsultantByUserId(ulong userId);
 
-        //Check Is Exist Consultant Info By User ID
-        Task<bool> IsExistAnyConsultantInfoByUserId(ulong userId);
+    //Get Consultant Information By User Id
+    Task<ConsultantInfo?> GetConsultantInformationByUserId(ulong userId);
 
-        //Update Consultant Info 
-        Task UpdateConsultantInfo(ConsultantInfo consultantInfo);
+    //Check Is Exist Consultant Info By User ID
+    Task<bool> IsExistAnyConsultantInfoByUserId(ulong userId);
 
-        //Add Consultant Info
-        Task AddConsultantInfo(ConsultantInfo consultantInfo);
+    //Update Consultant Info 
+    Task UpdateConsultantInfo(ConsultantInfo consultantInfo);
 
-        //Filter Consultant Info Admin Side
-        Task<ListOfConsultantInfoViewModel> FilterConsultantInfoAdminSide(ListOfConsultantInfoViewModel filter);
+    //Add Consultant Info
+    Task AddConsultantInfo(ConsultantInfo consultantInfo);
 
-        //Get User Selected Consultant By Patient Id And Consultant Id With Accepted And Waiting State
-        Task<UserSelectedConsultant?> GetUserSelectedConsultantByPatientIdAndConsultantWithAcceptedAndWaitingState(ulong userId, ulong consultantId);
+    //Filter Consultant Info Admin Side
+    Task<ListOfConsultantInfoViewModel> FilterConsultantInfoAdminSide(ListOfConsultantInfoViewModel filter);
 
-        #endregion
+    //Get User Selected Consultant By Patient Id And Consultant Id With Accepted And Waiting State
+    Task<UserSelectedConsultant?> GetUserSelectedConsultantByPatientIdAndConsultantWithAcceptedAndWaitingState(ulong userId, ulong consultantId);
 
-        #region Admin Side 
+    #endregion
 
-        //Filter Consultant Requests Admin Side 
-        Task<FilterConsultantAdminSideViewModel> FilterConsultantAdminSideViewModel(FilterConsultantAdminSideViewModel filter);
+    #region Admin Side 
 
-        //Get Consultant Info By Nurse Id
-        Task<ConsultantInfo?> GetConsultantInfoByConsultantId(ulong consultantId);
+    //Filter Consultant Requests Admin Side 
+    Task<FilterConsultantAdminSideViewModel> FilterConsultantAdminSideViewModel(FilterConsultantAdminSideViewModel filter);
 
-        //Get Consultant By Consultant Id
-        Task<Consultant?> GetConsultantById(ulong consultantId);
+    //Get Consultant Info By Nurse Id
+    Task<ConsultantInfo?> GetConsultantInfoByConsultantId(ulong consultantId);
 
-        //Get Consultant Info By Nurse Info Id
-        Task<ConsultantInfo?> GetConsultantInfoById(ulong consultantInfoId);
+    //Get Consultant By Consultant Id
+    Task<Consultant?> GetConsultantById(ulong consultantId);
 
-        #endregion
+    //Get Consultant Info By Nurse Info Id
+    Task<ConsultantInfo?> GetConsultantInfoById(ulong consultantInfoId);
 
-        #region User Panel 
+    #endregion
 
-        //Get User Selected Consultant 
-        Task<UserSelectedConsultant?> GetUserSelectedConsultantByUserId(ulong userId);
+    #region User Panel 
 
-        //Get List Of Consultant
-        Task<List<Consultant>?> FilterConsultantUserPanelSide(FilterConsultantUserPanelSideViewModel filter);
+    //Get User Selected Consultant 
+    Task<UserSelectedConsultant?> GetUserSelectedConsultantByUserId(ulong userId);
 
-        //Remove Consultant For This Patient 
-        Task RemoveConsultantForThisPatient(UserSelectedConsultant consultant);
+    //Get List Of Consultant
+    Task<List<Consultant>?> FilterConsultantUserPanelSide(FilterConsultantUserPanelSideViewModel filter);
 
-        //Add Consultant For This Patient 
-        Task AddConsultantForThisPatient(UserSelectedConsultant consultant);
+    //Remove Consultant For This Patient 
+    Task RemoveConsultantForThisPatient(UserSelectedConsultant consultant);
 
-        //Update User Selected Consultant 
-        Task UpdateUserSelectedConsultant(UserSelectedConsultant userSelectedConsultant);
+    //Add Consultant For This Patient 
+    Task AddConsultantForThisPatient(UserSelectedConsultant consultant);
 
-        #endregion
-    }
+    //Update User Selected Consultant 
+    Task UpdateUserSelectedConsultant(UserSelectedConsultant userSelectedConsultant);
+
+    #endregion
 }

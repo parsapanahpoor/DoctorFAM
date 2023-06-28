@@ -5,6 +5,7 @@ using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.Notification;
 using DoctorFAM.Domain.Interfaces;
+using DoctorFAM.Domain.ViewModels.Consultant.Notification;
 using DoctorFAM.Domain.ViewModels.Dentist.Notification;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Notification;
 using Microsoft.EntityFrameworkCore;
@@ -148,6 +149,41 @@ public class NotificationRepository : INotificationRepository
                                         }).FirstOrDefault()
 
                             }).ToListAsync();
+    }
+
+    #endregion
+
+    #region Consultant Panel 
+
+    //Get User Notifications
+    public async Task<List<ConsultantPanelNotificationViewModel>?> GetListOfConsultantPanelNotificationByUserId(ulong userId)
+    {
+        return await _context.SupporterNotification
+                                .AsNoTracking()
+                                .Where(p => !p.IsDelete && !p.IsSeen && p.ReciverId == userId)
+                                .OrderByDescending(p => p.CreateDate)
+                                .Select(p => new ConsultantPanelNotificationViewModel()
+                                {
+                                    IsHealthHouseRequest = p.IsHealthHouseRequest,
+                                    IsSeen = p.IsSeen,
+                                    IsTicket = p.IsTicket,
+                                    ReciverId = p.ReciverId,
+                                    SupporterNotificationText = p.SupporterNotificationText,
+                                    TargetId = p.TargetId,
+                                    CreateDate = p.CreateDate,
+                                    User = _context.Users
+                                                   .AsNoTracking()
+                                                   .Where(s => !s.IsDelete && s.Id == p.UserId)
+                                                   .Select(s => new ConsultantPanelNotificationUsersInfoViewModel()
+                                                   {
+                                                       Mobile = s.Mobile,
+                                                       UserAvatar = s.Avatar,
+                                                       UserId = s.Id,
+                                                       Username = s.Username
+                                                   }).FirstOrDefault()
+                                })
+                                .Take(10)
+                                .ToListAsync();
     }
 
     #endregion

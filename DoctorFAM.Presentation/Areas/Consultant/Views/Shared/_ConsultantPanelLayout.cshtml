@@ -29,8 +29,12 @@ Purchase: https://wrapbootstrap.com/theme/beyondadmin-adminapp-angularjs-mvc-WB0
                 <div class="page-breadcrumbs">
                     <ul class="breadcrumb">
                         <li>
-                            <i class="fa fa-home"></i>
-                            <a asp-area="Consultant" asp-controller="Home" asp-action="Index">@SharedLocalizer["Home"]</a>
+                            <i class="menu-icon fa fa-globe"></i>
+                            <a asp-area="" asp-controller="Home" asp-action="Index">  <span class="menu-text"> صفحه اصلی سایت </span></a>
+                        </li>
+
+                        <li>
+                            <a asp-area="Consultant" asp-controller="Home" asp-action="Index">پنل مشاور</a>
                         </li>
                         @RenderSection("Breadcrumb", true)
                     </ul>

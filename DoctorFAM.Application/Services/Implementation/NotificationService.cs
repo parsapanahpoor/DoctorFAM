@@ -8,6 +8,7 @@ using DoctorFAM.Domain.Entities.Notification;
 using DoctorFAM.Domain.Entities.Nurse;
 using DoctorFAM.Domain.Enums.Notification;
 using DoctorFAM.Domain.Interfaces;
+using DoctorFAM.Domain.ViewModels.Consultant.Notification;
 using DoctorFAM.Domain.ViewModels.Dentist.Notification;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Notification;
 using Microsoft.EntityFrameworkCore;
@@ -1141,6 +1142,16 @@ public class NotificationService : INotificationService
     public async Task<List<DentistPanelNotificationViewModel>?> GetListOfDentistPanelNotificationByUserId(ulong userId)
     {
         return await _notificationService.GetListOfDentistPanelNotificationByUserId(userId);
+    }
+
+    #endregion
+
+    #region Consultant Panel 
+
+    //Get User Notifications
+    public async Task<List<ConsultantPanelNotificationViewModel>?> GetListOfConsultantPanelNotificationByUserId(ulong userId)
+    {
+        return await _notificationService.GetListOfConsultantPanelNotificationByUserId(userId);
     }
 
     #endregion
