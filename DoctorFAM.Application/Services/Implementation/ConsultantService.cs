@@ -1,19 +1,26 @@
 ﻿#region Usigns
 
+using DoctorFAM.Application.Extensions;
+using DoctorFAM.Application.Generators;
 using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
+using DoctorFAM.Application.StaticTools;
 using DoctorFAM.Domain.Entities.Consultant;
 using DoctorFAM.Domain.Entities.Doctors;
+using DoctorFAM.Domain.Entities.Interest;
 using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.Entities.WorkAddress;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.Consultant;
 using DoctorFAM.Domain.ViewModels.Consultant.ConsultantInfo;
+using DoctorFAM.Domain.ViewModels.Consultant.ConsultantInfo.Interest;
 using DoctorFAM.Domain.ViewModels.Consultant.ConsultantRequest;
 using DoctorFAM.Domain.ViewModels.Consultant.ConsultantSideBar;
 using DoctorFAM.Domain.ViewModels.Consultant.NavBar;
 using DoctorFAM.Domain.ViewModels.Dentist.NavBar;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo;
 using DoctorFAM.Domain.ViewModels.UserPanel.Consultant;
+using Microsoft.AspNetCore.Http;
 
 namespace DoctorFAM.Application.Services.Implementation;
 
@@ -28,15 +35,17 @@ public class ConsultantService : IConsultantService
     private readonly IUserService _userService;
     private readonly IWorkAddressService _workAddressService;
     private readonly IPopulationCoveredService _populationCoveredService;
+    private readonly IDoctorsRepository _doctorsRepository;
 
     public ConsultantService(IConsultantRepository consultantRepository, IOrganizationService organizationService, IUserService userService
-                                , IWorkAddressService workAddressService, IPopulationCoveredService populationCoveredService)
+                                , IWorkAddressService workAddressService, IPopulationCoveredService populationCoveredService, IDoctorsRepository doctorsRepository)
     {
         _consultantRepository = consultantRepository;
         _organizationService = organizationService;
         _userService = userService;
         _workAddressService = workAddressService;
         _populationCoveredService = populationCoveredService;
+        _doctorsRepository = doctorsRepository;
     }
 
     #endregion
@@ -619,6 +628,486 @@ public class ConsultantService : IConsultantService
     public async Task<UserSelectedConsultant?> GetUserSelectedConsultantByPatientAndConsultantId(ulong patientId, ulong consultantId)
     {
         return await _consultantRepository.GetUserSelectedConsultantByPatientAndConsultantId(patientId , consultantId);
+    }
+
+    public async Task<ConsultantInterestsViewModel> FillConsultantInterestViewModelFromConsultantPanel(ulong userId)
+    {
+        ConsultantInterestsViewModel model = new ConsultantInterestsViewModel();
+
+        #region Get Consultant Interests List 
+
+        model.DoctorInterests = await _consultantRepository.GetConsultantInterestsInfo();
+
+        #endregion
+
+        #region Get Consultant Selected Interests 
+
+        var doctor = await GetConsultantByUserId(userId);
+
+        model.DoctorSelectedInterests = await _consultantRepository.GetConsultantSelectedInterests(doctor.Id);
+
+        #endregion
+
+        return model;
+    }
+
+    //Add  Consultant Selected Interest
+    public async Task<DoctorSelectedInterestResult> AddConsultantSelectedInterest(ulong interestId, ulong userId)
+    {
+        #region Get Consultant
+
+        var doctor = await GetConsultantByUserId(userId);
+        if (doctor == null) return DoctorSelectedInterestResult.Faild;
+
+        #endregion
+
+        #region Get Current Consultant Office
+
+        var doctorOffice = await _organizationService.GetConsultantOrganizationByUserId(userId);
+        if (doctorOffice == null) return DoctorSelectedInterestResult.Faild;
+        if (doctorOffice.OrganizationType != Domain.Enums.Organization.OrganizationType.Consultant) return DoctorSelectedInterestResult.Faild;
+
+        #endregion
+
+        #region Is Exist interest For Consultant
+
+        if (await _consultantRepository.IsExistInterestForConsultant(interestId, doctor.Id))
+        {
+            return DoctorSelectedInterestResult.ItemIsExist;
+        }
+
+        #endregion
+
+        #region Is Exist Interest By Id
+
+        if (!await _consultantRepository.IsExistInterestById(interestId))
+        {
+            return DoctorSelectedInterestResult.Faild;
+        }
+
+        #endregion
+
+        #region If Interest Is Family Consultant 
+
+        //If Select Family Consultant That Consultant Must Have Address And Location 
+
+        #region Get Consultant Locations And Address
+
+        var workAddress = await _workAddressService.GetLastWorkAddressByUserId(doctorOffice.OwnerId);
+
+        //Doctor Selected Family Doctor And Not Insert Office Location And Address
+        if (workAddress == null && interestId == 3)
+        {
+            return DoctorSelectedInterestResult.YouMustInsertLocationAndAddress;
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Fill Entity
+
+        DoctorsSelectedInterests model = new DoctorsSelectedInterests
+        {
+            DoctorId = doctor.Id,
+            InterestId = interestId
+        };
+
+        #endregion
+
+        #region Add Method
+
+        await _consultantRepository.AddDoctorSelectedInterest(model);
+
+        #endregion
+
+        #region Update Doctor Office State 
+
+        //Update Doctor Office State 
+        doctorOffice.OrganizationInfoState = OrganizationInfoState.WatingForConfirm;
+
+        await _organizationService.UpdateOrganization(doctorOffice);
+
+        #endregion
+
+        return DoctorSelectedInterestResult.Success;
+    }
+
+    //Delete Consultant Selected Interest Consultant Panel
+    public async Task<DoctorSelectedInterestResult> DeleteConsultantSelectedInterestConsultantPanel(ulong interestId, ulong userId)
+    {
+        #region Get Consultant
+
+        var doctor = await GetConsultantByUserId(userId);
+        if (doctor == null) return DoctorSelectedInterestResult.Faild;
+
+        #endregion
+
+        #region Get Interest 
+
+        var interest = await _consultantRepository.GetConsultantSelectedInterestByConsultantIdAndInetestId(interestId, doctor.Id);
+        if (interest == null) return DoctorSelectedInterestResult.ItemNotExist;
+
+        #endregion
+
+        #region Get Consultant Selected Interest
+
+        var selectedItem = await _consultantRepository.GetConsultantSelectedInterestByConsultantIdAndInetestId(interestId, doctor.Id);
+        if (selectedItem == null) return DoctorSelectedInterestResult.ItemNotExist;
+
+        #endregion
+
+        #region Remove item
+
+        await _consultantRepository.DeleteConsultantSelectedInterest(selectedItem);
+
+        #endregion
+
+        return DoctorSelectedInterestResult.Success;
+    }
+
+    //Fill Diabet Consultatn Resume View Model
+    public async Task<UploadDiabetConsultatntDoctorSideViewModel?> FillDiabetConsultatnResumeViewModel(ulong userId)
+    {
+        #region Gett Consultatn
+
+        var doctor = await GetConsultantByUserId(userId);
+        if (doctor == null) return null;
+
+        #endregion
+
+        #region Get Organization
+
+        var organization = await _organizationService.GetConsultantOrganizationByUserId(userId);
+        if (organization == null || organization.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice)
+        {
+            return null;
+        }
+
+        #endregion
+
+        #region Fill Model 
+
+        return new UploadDiabetConsultatntDoctorSideViewModel()
+        {
+            DiabetConsultantsResumes = await _doctorsRepository.GetDoctorDiabetConsultantResumesByDoctorUserId(organization.OwnerId)
+        };
+
+        #endregion
+    }
+
+    //Get Consultatn Diabet Consultant Resumes By Consultatn User Id 
+    public async Task<List<DiabetConsultantsResume>?> GetConsultatnDiabetConsultantResumesByConsultatnUserId(ulong doctorUserId)
+    {
+        #region Get Consultatn
+
+        var doctor = await GetConsultantByUserId(doctorUserId);
+        if (doctor == null) return null;
+
+        #endregion
+
+        #region Get Organization
+
+        var organization = await _organizationService.GetConsultantOrganizationByUserId(doctorUserId);
+        if (organization == null || organization.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice)
+        {
+            return null;
+        }
+
+        #endregion
+
+        return await _doctorsRepository.GetDoctorDiabetConsultantResumesByDoctorUserId(organization.OwnerId);
+    }
+
+    //Upload Consultatn Diabet Consultant Resume File 
+    public async Task<bool> UploadConsultatnDiabetConsultantResumeFile(ulong userId, string? description, IFormFile? resumePicture)
+    {
+        #region Get Consultatn
+
+        var doctor = await GetConsultantByUserId(userId);
+        if (doctor == null) return false;
+
+        #endregion
+
+        #region Get Organization
+
+        var organization = await _organizationService.GetConsultantOrganizationByUserId(userId);
+        if (organization == null || organization.OrganizationType != Domain.Enums.Organization.OrganizationType.Consultant)
+        {
+            return false;
+        }
+
+        #endregion
+
+        #region Upload Resume 
+
+        DiabetConsultantsResume model = new DiabetConsultantsResume()
+        {
+            CreateDate = DateTime.Now,
+            Description = description,
+            UserId = organization.OwnerId,
+            IsDelete = false,
+        };
+
+        #region Resume File  
+
+        if (resumePicture != null)
+        {
+            var imageName = CodeGenerator.GenerateUniqCode() + Path.GetExtension(resumePicture.FileName);
+            resumePicture.AddImageToServer(imageName, PathTools.DiabetConsultantResumeFilesPathServer, 270, 270, PathTools.DiabetConsultantResumeFilesPathThumbServer);
+            model.ResumePicture = imageName;
+        }
+
+        #endregion
+
+        //Add To The Data Base 
+        await _doctorsRepository.UploadResumeFroDiabetConsultant(model);
+
+        #endregion
+
+        #region Update Organization 
+
+        organization.OrganizationInfoState = OrganizationInfoState.WatingForConfirm;
+
+        //Update MEthod 
+        await _organizationService.UpdateOrganization(organization);
+
+        #endregion
+
+        return true;
+    }
+
+    //Delete Diabet Consultant Resume By Resume Id
+    public async Task<bool> DeleteDiabetConsultantResumeByResumeId(ulong resumeId, ulong userId)
+    {
+        #region Get Consultant
+
+        var doctor = await GetConsultantByUserId(userId);
+        if (doctor == null) return false;
+
+        #endregion
+
+        #region Get Organization
+
+        var organization = await _organizationService.GetConsultantOrganizationByUserId(userId);
+        if (organization == null || organization.OrganizationType != Domain.Enums.Organization.OrganizationType.Consultant)
+        {
+            return false;
+        }
+
+        #endregion
+
+        #region Get Diabet Consultant Resume By Id 
+
+        var resume = await _doctorsRepository.GetDiabetConsualtantResumeById(resumeId);
+        if (resume == null) return false;
+        if (resume.UserId != organization.OwnerId) return false;
+
+        #endregion
+
+        #region Delete Resume
+
+        resume.IsDelete = true;
+
+        #region Resume File 
+
+        if (resume.ResumePicture != null)
+        {
+            if (!string.IsNullOrEmpty(resume.ResumePicture))
+            {
+                resume.ResumePicture.DeleteImage(PathTools.DiabetConsultantResumeFilesPathServer, PathTools.DiabetConsultantResumeFilesPathThumbServer);
+            }
+        }
+
+        #endregion
+
+        //Update Diabet Consultant Resume 
+        await _doctorsRepository.UpdateDiabetConsultantResume(resume);
+
+        #endregion
+
+        #region Update Organization 
+
+        organization.OrganizationInfoState = OrganizationInfoState.WatingForConfirm;
+
+        //Update Method 
+        await _organizationService.UpdateOrganization(organization);
+
+        #endregion
+
+        return true;
+    }
+
+    //Fill Blood Pressure Consultatn Resume View Model
+    public async Task<UploadBloodPressureConsultatntDoctorSideViewModel?> FillBloodPressureConsultatnResumeViewModel(ulong userId)
+    {
+        #region Gett Doctor
+
+        var doctor = await GetConsultantByUserId(userId);
+        if (doctor == null) return null;
+
+        #endregion
+
+        #region Get Organization
+
+        var organization = await _organizationService.GetConsultantOrganizationByUserId(userId);
+        if (organization == null || organization.OrganizationType != Domain.Enums.Organization.OrganizationType.Consultant)
+        {
+            return null;
+        }
+
+        #endregion
+
+        #region Fill Model 
+
+        return new UploadBloodPressureConsultatntDoctorSideViewModel()
+        {
+            BloodPressureConsultantResume = await _doctorsRepository.GetDoctorBloodPressureConsultantResumesByDoctorUserId(organization.OwnerId)
+        };
+
+        #endregion
+    }
+
+    //Get Consultant Blood Pressure Consultant Resumes By Doctor User Id 
+    public async Task<List<BloodPressureConsultantResume>?> GetConsultantBloodPressureConsultantResumesByDoctorUserId(ulong doctorUserId)
+    {
+        #region Get Consultant
+
+        var doctor = await GetConsultantByUserId(doctorUserId);
+        if (doctor == null) return null;
+
+        #endregion
+
+        #region Get Organization
+
+        var organization = await _organizationService.GetConsultantOrganizationByUserId(doctorUserId);
+        if (organization == null || organization.OrganizationType != Domain.Enums.Organization.OrganizationType.Consultant)
+        {
+            return null;
+        }
+
+        #endregion
+
+        return await _doctorsRepository.GetDoctorBloodPressureConsultantResumesByDoctorUserId(organization.OwnerId);
+    }
+
+    //Upload Consultant Blood Pressure Consultant Resume File 
+    public async Task<bool> UploadConsultantBloodPressureConsultantResumeFile(ulong userId, string? description, IFormFile? resumePicture)
+    {
+        #region Gett Doctor
+
+        var doctor = await GetConsultantByUserId(userId);
+        if (doctor == null) return false;
+
+        #endregion
+
+        #region Get Organization
+
+        var organization = await _organizationService.GetConsultantOrganizationByUserId(userId);
+        if (organization == null || organization.OrganizationType != Domain.Enums.Organization.OrganizationType.Consultant)
+        {
+            return false;
+        }
+
+        #endregion
+
+        #region Upload Resume 
+
+        BloodPressureConsultantResume model = new BloodPressureConsultantResume()
+        {
+            CreateDate = DateTime.Now,
+            Description = description,
+            UserId = organization.OwnerId,
+            IsDelete = false,
+        };
+
+        #region Resume File  
+
+        if (resumePicture != null)
+        {
+            var imageName = CodeGenerator.GenerateUniqCode() + Path.GetExtension(resumePicture.FileName);
+            resumePicture.AddImageToServer(imageName, PathTools.BloodPressureConsultantResumeFilesPathServer, 270, 270, PathTools.BloodPressureConsultantResumeFilesPathThumbServer);
+            model.ResumePicture = imageName;
+        }
+
+        #endregion
+
+        //Add To The Data Base 
+        await _doctorsRepository.UploadResumeFroBloodPressureConsultant(model);
+
+        #endregion
+
+        #region Update Organization 
+
+        organization.OrganizationInfoState = OrganizationInfoState.WatingForConfirm;
+
+        //Update MEthod 
+        await _organizationService.UpdateOrganization(organization);
+
+        #endregion
+
+        return true;
+    }
+
+    //Delete Blood Pressure Consultant Resume By Resume Id
+    public async Task<bool> DeleteBloodPressureConsultantResumeByResumeId(ulong resumeId, ulong userId)
+    {
+        #region Get Consultant
+
+        var doctor = await GetConsultantByUserId(userId);
+        if (doctor == null) return false;
+
+        #endregion
+
+        #region Get Organization
+
+        var organization = await _organizationService.GetConsultantOrganizationByUserId(userId);
+        if (organization == null || organization.OrganizationType != Domain.Enums.Organization.OrganizationType.Consultant)
+        {
+            return false;
+        }
+
+        #endregion
+
+        #region Get Blood Pressure Consultant Resume By Id 
+
+        var resume = await _doctorsRepository.GetBloodPressureConsualtantResumeById(resumeId);
+        if (resume == null) return false;
+        if (resume.UserId != organization.OwnerId) return false;
+
+        #endregion
+
+        #region Delete Resume
+
+        resume.IsDelete = true;
+
+        #region Resume File 
+
+        if (resume.ResumePicture != null)
+        {
+            if (!string.IsNullOrEmpty(resume.ResumePicture))
+            {
+                resume.ResumePicture.DeleteImage(PathTools.BloodPressureConsultantResumeFilesPathServer, PathTools.BloodPressureConsultantResumeFilesPathThumbServer);
+            }
+        }
+
+        #endregion
+
+        //Update Blood Pressure Consultant Resume 
+        await _doctorsRepository.UpdateBloodPressureConsultantResume(resume);
+
+        #endregion
+
+        #region Update Organization 
+
+        organization.OrganizationInfoState = OrganizationInfoState.WatingForConfirm;
+
+        //Update Method 
+        await _organizationService.UpdateOrganization(organization);
+
+        #endregion
+
+        return true;
     }
 
     #endregion

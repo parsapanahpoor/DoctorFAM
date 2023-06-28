@@ -1,12 +1,17 @@
 ﻿#region Usings
 
 using DoctorFAM.Domain.Entities.Consultant;
+using DoctorFAM.Domain.Entities.Doctors;
+using DoctorFAM.Domain.Entities.Interest;
 using DoctorFAM.Domain.ViewModels.Admin.Consultant;
 using DoctorFAM.Domain.ViewModels.Consultant.ConsultantInfo;
+using DoctorFAM.Domain.ViewModels.Consultant.ConsultantInfo.Interest;
 using DoctorFAM.Domain.ViewModels.Consultant.ConsultantRequest;
 using DoctorFAM.Domain.ViewModels.Consultant.ConsultantSideBar;
 using DoctorFAM.Domain.ViewModels.Consultant.NavBar;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo;
 using DoctorFAM.Domain.ViewModels.UserPanel.Consultant;
+using Microsoft.AspNetCore.Http;
 
 namespace DoctorFAM.Application.Services.Interfaces;
 
@@ -63,6 +68,38 @@ public interface IConsultantService
 
     //Get User Selected Consultant By Patient Id And Consultant Id With Accepted And Waiting State
     Task<UserSelectedConsultant?> GetUserSelectedConsultantByPatientIdAndConsultantIdWithAcceptedAndWaitingState(ulong userId, ulong consultant);
+
+    Task<ConsultantInterestsViewModel> FillConsultantInterestViewModelFromConsultantPanel(ulong userId);
+
+    //Add  Consultant Selected Interest
+    Task<DoctorSelectedInterestResult> AddConsultantSelectedInterest(ulong interestId, ulong userId);
+
+    //Delete Consultant Selected Interest Consultant Panel
+    Task<DoctorSelectedInterestResult> DeleteConsultantSelectedInterestConsultantPanel(ulong interestId, ulong userId);
+
+    //Fill Diabet Consultatn Resume View Model
+    Task<UploadDiabetConsultatntDoctorSideViewModel?> FillDiabetConsultatnResumeViewModel(ulong userId);
+
+    //Get Consultatn Diabet Consultant Resumes By Consultatn User Id 
+    Task<List<DiabetConsultantsResume>?> GetConsultatnDiabetConsultantResumesByConsultatnUserId(ulong doctorUserId);
+
+    //Upload Consultatn Diabet Consultant Resume File 
+    Task<bool> UploadConsultatnDiabetConsultantResumeFile(ulong userId, string? description, IFormFile? resumePicture);
+
+    //Delete Diabet Consultant Resume By Resume Id
+    Task<bool> DeleteDiabetConsultantResumeByResumeId(ulong resumeId, ulong userId);
+
+    //Fill Blood Pressure Consultatn Resume View Model
+    Task<UploadBloodPressureConsultatntDoctorSideViewModel?> FillBloodPressureConsultatnResumeViewModel(ulong userId);
+
+    //Get Consultant Blood Pressure Consultant Resumes By Doctor User Id 
+    Task<List<BloodPressureConsultantResume>?> GetConsultantBloodPressureConsultantResumesByDoctorUserId(ulong doctorUserId);
+
+    //Upload Consultant Blood Pressure Consultant Resume File 
+    Task<bool> UploadConsultantBloodPressureConsultantResumeFile(ulong userId, string? description, IFormFile? resumePicture);
+
+    //Delete Blood Pressure Consultant Resume By Resume Id
+    Task<bool> DeleteBloodPressureConsultantResumeByResumeId(ulong resumeId, ulong userId);
 
     #endregion
 

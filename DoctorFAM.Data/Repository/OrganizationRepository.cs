@@ -320,6 +320,29 @@ namespace DoctorFAM.Data.Repository
                                     .Where(p => !p.IsDelete && p.OrganizationId == organizationId).Select(p => p.User).ToListAsync();
         }
 
+        //Get Consultant Organization OwnerId By User Id
+        public async Task<ulong> GetConsultantOrganizationOwnerIdByUserId(ulong userId)
+        {
+            List<ulong>? organizationIds = await _context.OrganizationMembers.AsNoTracking()
+                                                    .Where(p => !p.IsDelete && p.UserId == userId)
+                                                    .Select(p => p.OrganizationId)
+                                                    .ToListAsync();
+
+            if (organizationIds == null) return 0;
+
+            foreach (var organizationId in organizationIds)
+            {
+                if (await _context.Organizations.AsNoTracking().AnyAsync(p => !p.IsDelete && p.Id == organizationId && p.OrganizationType == Domain.Enums.Organization.OrganizationType.Consultant))
+                {
+                    return await _context.Organizations.AsNoTracking().Where(p => !p.IsDelete && p.Id == organizationId && p.OrganizationType == Domain.Enums.Organization.OrganizationType.Consultant)
+                                            .Select(p => p.OwnerId)
+                                            .FirstOrDefaultAsync();
+                }
+            }
+
+            return 0;
+        }
+
         #endregion
     }
 }

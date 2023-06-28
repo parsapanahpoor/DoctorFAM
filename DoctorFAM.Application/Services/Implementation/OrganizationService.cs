@@ -199,6 +199,12 @@ namespace DoctorFAM.Application.Services.Implementation
             return await _organization.GetDentistOrganizationOwnerIdByUserId(userId);
         }
 
+        //Get Consultant Organization OwnerId By User Id
+        public async Task<ulong> GetConsultanttOrganizationOwnerIdByUserId(ulong userId)
+        {
+            return await _organization.GetConsultantOrganizationOwnerIdByUserId(userId);
+        }
+
         //Is Exist Any Dentist Office Employee By User Id
         public async Task<bool> IsExistAnyDentistOfficeEmployeeByUserId(ulong userId)
         {

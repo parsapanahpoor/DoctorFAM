@@ -3,6 +3,7 @@
 using DoctorFAM.Data.DbContext;
 using DoctorFAM.Domain.Entities.Consultant;
 using DoctorFAM.Domain.Entities.Doctors;
+using DoctorFAM.Domain.Entities.Interest;
 using DoctorFAM.Domain.Enums.Request;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.Consultant;
@@ -152,29 +153,49 @@ public class ConsultantRepository : IConsultantRepository
 
     //Fill Consultant Side Bar Panel
     public async Task<ConsultantSideBarViewModel> GetConsultantSideBarInfo(ulong userId)
-    {
-        #region Get Doctor Office
-
-        var OrganitionMember = await _context.OrganizationMembers.Include(p => p.Organization)
-                                            .FirstOrDefaultAsync(p => !p.IsDelete && p.UserId == userId && p.Organization.OrganizationType == Domain.Enums.Organization.OrganizationType.Consultant);
-
-        #endregion
-
+    {  
         ConsultantSideBarViewModel model = new ConsultantSideBarViewModel();
 
-        #region Consultant State 
+        #region Get Consultant Office
 
-        //If Consultant Registers Now
-        if (OrganitionMember.Organization.OrganizationInfoState == OrganizationInfoState.JustRegister) model.ConsultantInfoState = "NewUser";
+        var organizationIds = await _context.OrganizationMembers
+                                           .AsNoTracking()
+                                           .Where(p => !p.IsDelete && p.UserId == userId)
+                                           .Select(p => p.OrganizationId)
+                                           .ToListAsync();
 
-        //If Consultant State Is WatingForConfirm
-        if (OrganitionMember.Organization.OrganizationInfoState == OrganizationInfoState.WatingForConfirm) model.ConsultantInfoState = "WatingForConfirm";
+        if (organizationIds is not null && organizationIds.Any())
+        {
+            foreach (var organizationId in organizationIds)
+            {
+                if (await _context.Organizations.AsNoTracking().AnyAsync(p => !p.IsDelete && p.Id == organizationId && p.OrganizationType == Domain.Enums.Organization.OrganizationType.Consultant))
+                {
+                    OrganizationInfoState state = await _context.Organizations
+                                                                .AsNoTracking()
+                                                                .Where(p => !p.IsDelete && p.Id == organizationId && p.OrganizationType == Domain.Enums.Organization.OrganizationType.Consultant)
+                                                                .Select(p => p.OrganizationInfoState)
+                                                                .FirstOrDefaultAsync();
 
-        //If Consultant State Is Rejected
-        if (OrganitionMember.Organization.OrganizationInfoState == OrganizationInfoState.Rejected) model.ConsultantInfoState = "Rejected";
+                    #region Consultant State 
 
-        //If Consultant State Is Accepted
-        if (OrganitionMember.Organization.OrganizationInfoState == OrganizationInfoState.Accepted) model.ConsultantInfoState = "Accepted";
+                    //If Dentist Registers Now
+                    if (state == OrganizationInfoState.JustRegister) model.ConsultantInfoState = "NewUser";
+
+                    //If Dentist State Is WatingForConfirm
+                    if (state == OrganizationInfoState.WatingForConfirm) model.ConsultantInfoState = "WatingForConfirm";
+
+                    //If Dentist State Is Rejected
+                    if (state == OrganizationInfoState.Rejected) model.ConsultantInfoState = "Rejected";
+
+                    //If Dentist State Is Accepted
+                    if (state == OrganizationInfoState.Accepted) model.ConsultantInfoState = "Accepted";
+
+                    #endregion
+
+                    return model;
+                }
+            }
+        }
 
         #endregion
 
@@ -199,7 +220,61 @@ public class ConsultantRepository : IConsultantRepository
     //Get Consultant By User Id
     public async Task<Consultant?> GetConsultantByUserId(ulong userId)
     {
-        return await _context.consultant.Include(p => p.User).FirstOrDefaultAsync(p => !p.IsDelete && p.UserId == userId);
+        return await _context.consultant
+                             .Include(p => p.User)
+                             .FirstOrDefaultAsync(p => !p.IsDelete && p.UserId == userId);
+    }
+
+    public async Task<List<DoctorsInterestInfo>> GetConsultantSelectedInterests(ulong doctorId)
+    {
+        var interest = await _context.DoctorsSelectedInterests
+                                     .Include(p => p.Interest)
+                                     .ThenInclude(p => p.InterestInfo)
+                                     .Where(p => !p.IsDelete && p.DoctorId == doctorId)
+                                     .Select(p => p.Interest)
+                                     .ToListAsync();
+
+        List<DoctorsInterestInfo> model = new List<DoctorsInterestInfo>();
+
+        foreach (var item in interest)
+        {
+            foreach (var interestInfo in await _context.InterestInfos.Where(p => !p.IsDelete && p.InterestId == item.Id).ToListAsync())
+            {
+                model.Add(interestInfo);
+            }
+        }
+
+        return model;
+    }
+
+    public async Task AddDoctorSelectedInterest(DoctorsSelectedInterests doctorsSelectedInterests)
+    {
+        await _context.DoctorsSelectedInterests.AddAsync(doctorsSelectedInterests);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task DeleteConsultantSelectedInterest(DoctorsSelectedInterests item)
+    {
+        _context.DoctorsSelectedInterests.Remove(item);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task<DoctorsSelectedInterests?> GetConsultantSelectedInterestByConsultantIdAndInetestId(ulong interestId, ulong doctorId)
+    {
+        return await _context.DoctorsSelectedInterests
+                             .FirstOrDefaultAsync(p => !p.IsDelete && p.InterestId == interestId && p.DoctorId == doctorId);
+    }
+
+    public async Task<bool> IsExistInterestForConsultant(ulong interestId, ulong doctorId)
+    {
+        return await _context.DoctorsSelectedInterests
+                             .AnyAsync(p => !p.IsDelete && p.DoctorId == doctorId && p.InterestId == interestId);
+    }
+
+    public async Task<bool> IsExistInterestById(ulong interestId)
+    {
+        return await _context.Interests
+                             .AnyAsync(p => !p.IsDelete && p.Id == interestId);
     }
 
     //Get Consultant Information By User Id
@@ -233,6 +308,14 @@ public class ConsultantRepository : IConsultantRepository
     {
         return await _context.UserSelectedConsultants.FirstOrDefaultAsync(p => !p.IsDelete && p.ConsultantId == consultantId && p.PatientId == userId
                                                          && p.ConsultantRequestState != Domain.Enums.FamilyDoctor.FamilyDoctorRequestState.Decline);
+    }
+
+    public async Task<List<DoctorsInterestInfo>> GetConsultantInterestsInfo()
+    {
+        return await _context.InterestInfos
+                             .Include(p => p.Interest)
+                             .Where(p => !p.IsDelete)
+                             .ToListAsync();
     }
 
     #endregion

@@ -1,6 +1,8 @@
 ﻿#region Usings
 
 using DoctorFAM.Domain.Entities.Consultant;
+using DoctorFAM.Domain.Entities.Doctors;
+using DoctorFAM.Domain.Entities.Interest;
 using DoctorFAM.Domain.ViewModels.Admin.Consultant;
 using DoctorFAM.Domain.ViewModels.Consultant.ConsultantRequest;
 using DoctorFAM.Domain.ViewModels.Consultant.ConsultantSideBar;
@@ -46,8 +48,20 @@ public interface IConsultantRepository
     //Get Consultant By User Id
     Task<Consultant?> GetConsultantByUserId(ulong userId);
 
+    Task<List<DoctorsInterestInfo>> GetConsultantSelectedInterests(ulong doctorId);
+
     //Get Consultant Information By User Id
     Task<ConsultantInfo?> GetConsultantInformationByUserId(ulong userId);
+
+    Task<bool> IsExistInterestForConsultant(ulong interestId, ulong doctorId);
+
+    Task AddDoctorSelectedInterest(DoctorsSelectedInterests doctorsSelectedInterests);
+
+    Task<DoctorsSelectedInterests?> GetConsultantSelectedInterestByConsultantIdAndInetestId(ulong interestId, ulong doctorId);
+
+    Task DeleteConsultantSelectedInterest(DoctorsSelectedInterests item);
+
+    Task<bool> IsExistInterestById(ulong interestId);
 
     //Check Is Exist Consultant Info By User ID
     Task<bool> IsExistAnyConsultantInfoByUserId(ulong userId);
@@ -63,6 +77,8 @@ public interface IConsultantRepository
 
     //Get User Selected Consultant By Patient Id And Consultant Id With Accepted And Waiting State
     Task<UserSelectedConsultant?> GetUserSelectedConsultantByPatientIdAndConsultantWithAcceptedAndWaitingState(ulong userId, ulong consultantId);
+
+    Task<List<DoctorsInterestInfo>> GetConsultantInterestsInfo();
 
     #endregion
 

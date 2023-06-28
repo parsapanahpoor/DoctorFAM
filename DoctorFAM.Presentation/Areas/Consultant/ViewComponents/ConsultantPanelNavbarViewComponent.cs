@@ -16,11 +16,14 @@ public class ConsultantPanelNavbarViewComponent : ViewComponent
 
     private readonly IUserService _userService;
     private readonly IPermissionService _permissionService;
+    private readonly IConsultantService _consultantService;
 
-    public ConsultantPanelNavbarViewComponent(IUserService userService, IPermissionService permissionService)
+    public ConsultantPanelNavbarViewComponent(IUserService userService, IPermissionService permissionService
+        , IConsultantService consultantService)
     {
         _userService = userService;
         _permissionService = permissionService;
+        _consultantService = consultantService;
     }
 
     #endregion
@@ -66,7 +69,7 @@ public class ConsultantPanelNavbarViewComponent : ViewComponent
 
         #endregion
 
-        var user = await _userService.GetUserById(User.GetUserId());
+        var user = await _consultantService.FillConsultantPanelNavNarViewModel(User.GetUserId());
 
         return View("ConsultantPanelNavbar", user);
     }

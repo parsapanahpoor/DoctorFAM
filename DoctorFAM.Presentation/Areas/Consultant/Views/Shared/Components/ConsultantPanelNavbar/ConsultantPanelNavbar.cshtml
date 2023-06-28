@@ -1,7 +1,5 @@
 ﻿@using DoctorFAM.Application.Extensions
-@model DoctorFAM.Domain.Entities.Account.User
-@inject IViewLocalizer Localizer
-@inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
+@model DoctorFAM.Domain.ViewModels.Consultant.NavBar.ConsultantPanelNavNarViewModel
 
 @{
     var currentCulture = ApplicationCultures.GetCurrentCulture();
@@ -26,14 +24,19 @@
                 </a>
             </div>
             <!-- /Navbar Barnd -->
-          
+            <!-- Sidebar Collapse -->
+            @* <div class="sidebar-collapse" id="sidebar-collapse">
+            <i class="collapse-icon fa fa-bars"></i>
+            </div>*@
             <!-- /Sidebar Collapse -->
             <!-- Account Area and Settings --->
             <div class="navbar-header pull-left">
                 <div class="navbar-account">
                     <ul class="account-area">
 
-                        @* <!--Online-->
+
+
+                        @*<!--Online-->
                         <li class="marli margin-left-10" id="Online">
 
                         <a class="dropdown-toggle btn btn-success" href="#">
@@ -41,6 +44,7 @@
                         </a>
 
                         </li>
+
                         <!--Offline-->
                         <li class="marli margin-left-10 " id="disConnect">
 
@@ -49,19 +53,6 @@
                         </a>
 
                         </li>*@
-
-                        <!--Notification-->
-                        <li class="marli margin-left-10">
-
-                            <a class="btn btn-success wave in" id="chat-link" title="Chat" href="#">
-                                @SharedLocalizer["Notofications"]
-                            </a>
-
-                        </li>
-
-
-
-
 
                         @*<li class="marli margin-left-10">
 
@@ -88,10 +79,29 @@
                         </li>*@
 
 
-                        <li>
+
+                        <!--Notification-->
+                        <!--Online-->
+                        <li style="margin-top:20px;" id="Online">
+
+                            <a class="dropdown-toggle btn btn-success" href="#">
+                                موجودی : @Model.UserBalance.ToString("#,000") ریال
+                            </a>
+
+                        </li>
+
+                        <li style="margin-top:20px;">
+
+                            <a class="btn btn-success wave in" id="chat-link" title="هشدارها" href="#">
+                                @SharedLocalizer["Notofications"]
+                            </a>
+
+                        </li>
+
+                        <li class="marli ">
                             <a class="login-area dropdown-toggle" data-toggle="dropdown">
                                 <div class="avatar" title="View your public profile">
-                                    <img src="@Model.GetUserAvatar()">
+                                    <img src="@Model.UserAvatar.GetUserAvatar()">
                                 </div>
                                 <section>
                                     <h2><span class="profile"><span>@Model.Username </span></span></h2>
@@ -177,9 +187,9 @@
                                     </li>
                                     <li>
 
-                                        <a asp-action="Index" asp-area="dentist" asp-controller="Home">
+                                        <a asp-action="Index" asp-area="Dentist" asp-controller="Home">
                                             <div class="clearfix">
-                                                <span class="pull-right">پنل دندان پزشک </span>
+                                                <span class="pull-right">پنل دندانپزشک</span>
                                                 <span class="pull-left">></span>
                                             </div>
                                         </a>
@@ -317,14 +327,25 @@
                                             </a>
                                         </li>
                                     }
+                                    @if (ViewBag.DentistOfficeEmployee == true)
+                                    {
+                                        <li>
 
+                                            <a asp-action="Index" asp-area="Dentist" asp-controller="Home">
+                                                <div class="clearfix">
+                                                    <span class="pull-right">پنل دندانپزشک</span>
+                                                    <span class="pull-left">></span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    }
                                     @if (ViewBag.Dentist == true)
                                     {
                                         <li>
 
-                                            <a asp-action="Index" asp-area="dentist" asp-controller="Home">
+                                            <a asp-action="Index" asp-area="Dentist" asp-controller="Home">
                                                 <div class="clearfix">
-                                                    <span class="pull-right">پنل دندان پزشک</span>
+                                                    <span class="pull-right">پنل دندانپزشک</span>
                                                     <span class="pull-left">></span>
                                                 </div>
                                             </a>
@@ -333,10 +354,11 @@
                                 }
 
                                 <li>
-                                    <a asp-area="UserPanel" asp-controller="Account" asp-action="ChangePassword">
+                                    <a asp-area="Dentist" asp-controller="Account" asp-action="ChangePassword">
                                         <span class="menu-text">@SharedLocalizer["Change Password"]</span>
                                     </a>
                                 </li>
+
                                 <!--/Theme Selector Area-->
                                 <li class="dropdown-footer @(isRtl ? "text-right": "")">
                                     <a asp-area="" asp-controller="Account" asp-action="Logout">
@@ -347,9 +369,7 @@
                             <!--/Login Area Dropdown-->
                         </li>
 
-
                     </ul>
-
 
                 </div>
             </div>
