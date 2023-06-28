@@ -779,7 +779,7 @@ public class ConsultantService : IConsultantService
         #region Get Organization
 
         var organization = await _organizationService.GetConsultantOrganizationByUserId(userId);
-        if (organization == null || organization.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice)
+        if (organization == null || organization.OrganizationType != Domain.Enums.Organization.OrganizationType.Consultant)
         {
             return null;
         }
@@ -809,7 +809,7 @@ public class ConsultantService : IConsultantService
         #region Get Organization
 
         var organization = await _organizationService.GetConsultantOrganizationByUserId(doctorUserId);
-        if (organization == null || organization.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice)
+        if (organization == null || organization.OrganizationType != Domain.Enums.Organization.OrganizationType.Consultant)
         {
             return null;
         }
