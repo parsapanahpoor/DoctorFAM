@@ -101,6 +101,12 @@ public interface IConsultantService
     //Delete Blood Pressure Consultant Resume By Resume Id
     Task<bool> DeleteBloodPressureConsultantResumeByResumeId(ulong resumeId, ulong userId);
 
+    //Fill Consultant Reservation Tariff Consultant Panel Side ViewModel
+    Task<ConsultantReservationTariffConsultantPanelSideViewModel?> FillConsultantReservationTariffConsultantPanelSideViewModel(ulong userId);
+
+    //Add Or Edit Consultant Reservation Tariff Consultant Side 
+    Task<ConsultantReservationTariffConsultantPanelSideViewModelResult> AddOrEditConsultantReservationTariffConsultantSide(ConsultantReservationTariffConsultantPanelSideViewModel inCommingModel);
+
     #endregion
 
     #region Admin  Side 
@@ -122,6 +128,9 @@ public interface IConsultantService
 
     //Edit Consultant Info From Admin Panel
     Task<EditConsultantInfoResult> EditConsultantInfoAdminSide(ConsultantInfoDetailViewModel model);
+
+    //Get Consultant Diabet Consultant Resumes By Consultant User Id 
+    Task<List<DiabetConsultantsResume>?> GetConsultantDiabetConsultantResumesByConsultantUserId(ulong doctorUserId);
 
     #endregion
 

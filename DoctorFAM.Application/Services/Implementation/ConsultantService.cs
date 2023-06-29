@@ -1,17 +1,20 @@
 ﻿#region Usigns
 
+using Academy.Domain.Entities.SiteSetting;
 using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Generators;
 using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Application.StaticTools;
 using DoctorFAM.Domain.Entities.Consultant;
+using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.Interest;
 using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.Entities.WorkAddress;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.Consultant;
+using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo;
 using DoctorFAM.Domain.ViewModels.Consultant.ConsultantInfo;
 using DoctorFAM.Domain.ViewModels.Consultant.ConsultantInfo.Interest;
 using DoctorFAM.Domain.ViewModels.Consultant.ConsultantRequest;
@@ -21,6 +24,7 @@ using DoctorFAM.Domain.ViewModels.Dentist.NavBar;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo;
 using DoctorFAM.Domain.ViewModels.UserPanel.Consultant;
 using Microsoft.AspNetCore.Http;
+using System.Numerics;
 
 namespace DoctorFAM.Application.Services.Implementation;
 
@@ -36,9 +40,11 @@ public class ConsultantService : IConsultantService
     private readonly IWorkAddressService _workAddressService;
     private readonly IPopulationCoveredService _populationCoveredService;
     private readonly IDoctorsRepository _doctorsRepository;
+    private readonly ISiteSettingService _siteSettingService;
 
     public ConsultantService(IConsultantRepository consultantRepository, IOrganizationService organizationService, IUserService userService
-                                , IWorkAddressService workAddressService, IPopulationCoveredService populationCoveredService, IDoctorsRepository doctorsRepository)
+                                , IWorkAddressService workAddressService, IPopulationCoveredService populationCoveredService, IDoctorsRepository doctorsRepository
+                                    , ISiteSettingService siteSettingService)
     {
         _consultantRepository = consultantRepository;
         _organizationService = organizationService;
@@ -46,6 +52,7 @@ public class ConsultantService : IConsultantService
         _workAddressService = workAddressService;
         _populationCoveredService = populationCoveredService;
         _doctorsRepository = doctorsRepository;
+        _siteSettingService = siteSettingService;
     }
 
     #endregion
@@ -1110,6 +1117,163 @@ public class ConsultantService : IConsultantService
         return true;
     }
 
+    //Fill Consultant Reservation Tariff Consultant Panel Side ViewModel
+    public async Task<ConsultantReservationTariffConsultantPanelSideViewModel?> FillConsultantReservationTariffConsultantPanelSideViewModel(ulong userId)
+    {
+        #region Check Is User Exist 
+
+        var user = await _userService.GetUserById(userId);
+
+        if (user == null) return null;
+
+        #endregion
+
+        #region Get Current Consultant Office
+
+        var consultantOffice = await _organizationService.GetConsultanttOrganizationOwnerIdByUserId(userId);
+        if (consultantOffice == null) return null;
+
+        #endregion
+
+        #region Fill Return Model
+
+        //Get Consultant Reservation Tariff
+        var tariffs = await _consultantRepository.GetConsultantReservationConsultantByDentistUserId(consultantOffice);
+
+        #region For The First Time
+
+        if (tariffs == null)
+        {
+            ConsultantReservationTariffConsultantPanelSideViewModel returnModel = new ConsultantReservationTariffConsultantPanelSideViewModel()
+            {
+                DoctorUserId = consultantOffice,
+                OnlineReservationTariffForDoctorPopulationCovered = await _siteSettingService.GetOnlineReservationTariffForDoctorPopulationCoveredSiteShare() + 1000,
+                InPersonReservationTariffForDoctorPopulationCovered = await _siteSettingService.GetInPersonReservationTariffForDoctorPopulationCoveredSiteShare() + 1000,
+            };
+
+            return returnModel;
+        }
+
+        #endregion
+
+        #region After First Time 
+
+        if (tariffs != null)
+        {
+            ConsultantReservationTariffConsultantPanelSideViewModel returnModel = new ConsultantReservationTariffConsultantPanelSideViewModel()
+            {
+                DoctorUserId = consultantOffice,
+                InPersonReservationTariffForAnonymousPersons = tariffs.InPersonReservationTariffForAnonymousPersons,
+                InPersonReservationTariffForDoctorPopulationCovered = tariffs.InPersonReservationTariffForDoctorPopulationCovered,
+                OnlineReservationTariffForAnonymousPersons = tariffs.OnlineReservationTariffForAnonymousPersons,
+                OnlineReservationTariffForDoctorPopulationCovered = tariffs.OnlineReservationTariffForDoctorPopulationCovered
+            };
+
+            return returnModel;
+        }
+
+        #endregion
+
+        #endregion
+
+        return null;
+    }
+
+    //Add Or Edit Consultant Reservation Tariff Consultant Side 
+    public async Task<ConsultantReservationTariffConsultantPanelSideViewModelResult> AddOrEditConsultantReservationTariffConsultantSide(ConsultantReservationTariffConsultantPanelSideViewModel inCommingModel)
+    {
+        #region Check Is User Exist 
+
+        var user = await _userService.GetUserById(inCommingModel.DoctorUserId);
+
+        if (user == null) return ConsultantReservationTariffConsultantPanelSideViewModelResult.failure;
+
+        #endregion
+
+        #region Get Current Consultant Office
+
+        var dentistOffice = await _organizationService.GetConsultantOrganizationByUserId(inCommingModel.DoctorUserId);
+        if (dentistOffice == null) return ConsultantReservationTariffConsultantPanelSideViewModelResult.failure;
+
+        #endregion
+
+        #region Add Or Edit Consultant Reservation Tariff
+
+        //Get Consultant Reservation Tariff
+        var tariffs = await _consultantRepository.GetConsultantReservationTariffByConsultantUserId(dentistOffice.OwnerId);
+
+        #region Edit Consultant Organization State 
+
+        dentistOffice.OrganizationInfoState = OrganizationInfoState.WatingForConfirm;
+
+        await _organizationService.UpdateOrganization(dentistOffice);
+
+        #endregion
+
+        #region Add For The First Time
+
+        #region Check Tarrifs From Consultant By Site Percentages
+
+        if (await _siteSettingService.CheckDoctorInsertedTarrifBySiteInFieldInPersonReservationTariffForDoctorPopulationCovered(inCommingModel.InPersonReservationTariffForDoctorPopulationCovered))
+        {
+            return ConsultantReservationTariffConsultantPanelSideViewModelResult.InpersonReservationPopluationCoveredLessThanSiteShare;
+        }
+
+        if (await _siteSettingService.CheckDoctorInsertedTarrifBySiteInFieldOnlineReservationTariffForDoctorPopulationCovered(inCommingModel.OnlineReservationTariffForDoctorPopulationCovered))
+        {
+            return ConsultantReservationTariffConsultantPanelSideViewModelResult.OnlineReservationPopluationCoveredLessThanSiteShare;
+        }
+
+        if (await _siteSettingService.CheckDoctorInsertedTarrifBySiteInFieldInPersonReservationTariffForAnonymousPersons(inCommingModel.InPersonReservationTariffForAnonymousPersons))
+        {
+            return ConsultantReservationTariffConsultantPanelSideViewModelResult.InpersonReservationAnonymousePersoneLessThanSiteShare;
+        }
+
+        if (await _siteSettingService.CheckDoctorInsertedTarrifBySiteInFieldOnlineReservationTariffForAnonymousPersons(inCommingModel.OnlineReservationTariffForAnonymousPersons))
+        {
+            return ConsultantReservationTariffConsultantPanelSideViewModelResult.OnlineReservationAnonymousePersoneLessThanSiteShare;
+        }
+
+        #endregion
+
+        if (tariffs == null)
+        {
+            //Create Instance
+            DoctorsReservationTariffs model = new DoctorsReservationTariffs()
+            {
+                DoctorUserId = dentistOffice.OwnerId,
+                InPersonReservationTariffForAnonymousPersons = inCommingModel.InPersonReservationTariffForAnonymousPersons,
+                InPersonReservationTariffForDoctorPopulationCovered = inCommingModel.InPersonReservationTariffForDoctorPopulationCovered,
+                OnlineReservationTariffForAnonymousPersons = inCommingModel.OnlineReservationTariffForAnonymousPersons,
+                OnlineReservationTariffForDoctorPopulationCovered = inCommingModel.OnlineReservationTariffForDoctorPopulationCovered
+            };
+
+            //Add Data To The Data Base 
+            await _consultantRepository.AddConsultantReservationTariffToTheDataBase(model);
+        }
+
+        #endregion
+
+        #region Edit Reservation Tarrif 
+
+        if (tariffs != null)
+        {
+            tariffs.InPersonReservationTariffForAnonymousPersons = inCommingModel.InPersonReservationTariffForAnonymousPersons;
+            tariffs.InPersonReservationTariffForDoctorPopulationCovered = inCommingModel.InPersonReservationTariffForDoctorPopulationCovered;
+            tariffs.OnlineReservationTariffForAnonymousPersons = inCommingModel.OnlineReservationTariffForAnonymousPersons;
+            tariffs.OnlineReservationTariffForDoctorPopulationCovered = inCommingModel.OnlineReservationTariffForDoctorPopulationCovered;
+
+            //Update Consultant Reservation Tariffs
+            await _consultantRepository.UpdateConsultantReservationTariffs(tariffs);
+        }
+
+        #endregion
+
+        #endregion
+
+        return ConsultantReservationTariffConsultantPanelSideViewModelResult.success;
+    }
+
     #endregion
 
     #region Admin Side 
@@ -1187,6 +1351,7 @@ public class ConsultantService : IConsultantService
             ConsultantInfosType = consultantOffice.OrganizationInfoState,
             Id = info.Id,
             ConsultantId = consultant.Id,
+            DoctorsInterests = await _consultantRepository.GetConsultantSelectedInterests(consultant.Id),
         };
 
         #endregion
@@ -1194,6 +1359,27 @@ public class ConsultantService : IConsultantService
         #region Get Nurse Work Addresses
 
         model.WorkAddresses = await _workAddressService.GetUserWorkAddressesByUserId(consultant.UserId);
+
+        #endregion
+
+        #region Get Doctor Reservation Tariff By doctor UserId
+
+        var reservationTariff = await _consultantRepository.GetConsultantReservationTariffByConsultantUserId(consultantOffice.OwnerId);
+
+        if (reservationTariff != null)
+        {
+            model.InPersonReservationTariffForDoctorPopulationCovered = reservationTariff.InPersonReservationTariffForDoctorPopulationCovered;
+            model.OnlineReservationTariffForDoctorPopulationCovered = reservationTariff.OnlineReservationTariffForDoctorPopulationCovered;
+            model.InPersonReservationTariffForAnonymousPersons = reservationTariff.InPersonReservationTariffForAnonymousPersons;
+            model.OnlineReservationTariffForAnonymousPersons = reservationTariff.OnlineReservationTariffForAnonymousPersons;
+        }
+        else
+        {
+            model.InPersonReservationTariffForDoctorPopulationCovered = null;
+            model.OnlineReservationTariffForDoctorPopulationCovered = null;
+            model.InPersonReservationTariffForAnonymousPersons = null;
+            model.OnlineReservationTariffForAnonymousPersons = null;
+        }
 
         #endregion
 
@@ -1255,6 +1441,43 @@ public class ConsultantService : IConsultantService
 
         #endregion
 
+        #region Edit Consultant Reservation Tariff
+
+        if (model.InPersonReservationTariffForDoctorPopulationCovered.HasValue && await _siteSettingService.CheckDoctorInsertedTarrifBySiteInFieldInPersonReservationTariffForDoctorPopulationCovered(model.InPersonReservationTariffForDoctorPopulationCovered.Value))
+        {
+            return EditConsultantInfoResult.InpersonReservationPopluationCoveredLessThanSiteShare;
+        }
+
+        if (model.OnlineReservationTariffForDoctorPopulationCovered.HasValue && await _siteSettingService.CheckDoctorInsertedTarrifBySiteInFieldOnlineReservationTariffForDoctorPopulationCovered(model.OnlineReservationTariffForDoctorPopulationCovered.Value))
+        {
+            return EditConsultantInfoResult.OnlineReservationPopluationCoveredLessThanSiteShare;
+        }
+
+        if (model.InPersonReservationTariffForAnonymousPersons.HasValue && await _siteSettingService.CheckDoctorInsertedTarrifBySiteInFieldInPersonReservationTariffForAnonymousPersons(model.InPersonReservationTariffForAnonymousPersons.Value))
+        {
+            return EditConsultantInfoResult.InpersonReservationAnonymousePersoneLessThanSiteShare;
+        }
+
+        if (model.OnlineReservationTariffForAnonymousPersons.HasValue && await _siteSettingService.CheckDoctorInsertedTarrifBySiteInFieldOnlineReservationTariffForAnonymousPersons(model.OnlineReservationTariffForAnonymousPersons.Value))
+        {
+            return EditConsultantInfoResult.OnlineReservationAnonymousePersoneLessThanSiteShare;
+        }
+
+        //Get Consultant Reservation Tariff
+        var reservation = await _consultantRepository.GetConsultantReservationTariffByConsultantUserId(consultantOffice.OwnerId);
+        if (reservation != null)
+        {
+            reservation.InPersonReservationTariffForDoctorPopulationCovered = model.InPersonReservationTariffForDoctorPopulationCovered.Value;
+            reservation.OnlineReservationTariffForDoctorPopulationCovered = model.OnlineReservationTariffForDoctorPopulationCovered.Value;
+            reservation.OnlineReservationTariffForAnonymousPersons = model.OnlineReservationTariffForAnonymousPersons.Value;
+            reservation.InPersonReservationTariffForAnonymousPersons = model.InPersonReservationTariffForAnonymousPersons.Value;
+
+            //Update Reservation Data 
+            await _consultantRepository.UpdateConsultantReservationTariffs(reservation);
+        }
+
+        #endregion
+
         #endregion
 
         return EditConsultantInfoResult.success;
@@ -1264,6 +1487,12 @@ public class ConsultantService : IConsultantService
     public async Task<FilterConsultantAdminSideViewModel> FilterConsultantAdminSideViewModel(FilterConsultantAdminSideViewModel filter)
     {
         return await _consultantRepository.FilterConsultantAdminSideViewModel(filter);
+    }
+
+    //Get Consultant Diabet Consultant Resumes By Consultant User Id 
+    public async Task<List<DiabetConsultantsResume>?> GetConsultantDiabetConsultantResumesByConsultantUserId(ulong doctorUserId)
+    {
+        return await _consultantRepository.GetConsultantDiabetConsultantResumesByConsultantUserId(doctorUserId);
     }
 
     #endregion

@@ -5,7 +5,9 @@ using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Interfaces;
 using DoctorFAM.Application.Services.Implementation;
 using DoctorFAM.Application.Services.Interfaces;
+using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.Consultant.ConsultantInfo;
+using DoctorFAM.Domain.ViewModels.Dentist.DentistsInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo;
 using DoctorFAM.Domain.ViewModels.Nurse.NurseInfo;
 using DoctorFAM.Domain.ViewModels.Site.Notification;
@@ -425,6 +427,90 @@ public class ConsultantInfoController : ConsultantBaseController
     #endregion
 
     #endregion
+
+    #endregion
+
+    #region Consultant Reservation Tariff
+
+    [HttpGet]
+    public async Task<IActionResult> ConsultantReservationTariff()
+    {
+        #region Fill Model 
+
+        var model = await _consultantService.FillConsultantReservationTariffConsultantPanelSideViewModel(User.GetUserId());
+        if (model == null) return NotFound();
+
+        #endregion
+
+        #region View Bags
+
+        ViewBag.DoctorOffice = await _organization.GetConsultantOrganizationByUserId(User.GetUserId());
+
+        #endregion
+
+        return View(model);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ConsultantReservationTariff(ConsultantReservationTariffConsultantPanelSideViewModel model)
+    {
+        #region Model State Validation 
+
+        if (!ModelState.IsValid)
+        {
+            #region View Bags
+
+            ViewBag.DoctorOffice = await _organization.GetConsultantOrganizationByUserId(User.GetUserId());
+
+            #endregion
+
+            ViewData[ErrorMessage] = ".اطلاعات وارد شده صحیح نمی باشد";
+            return View(model);
+        }
+
+        #endregion
+
+        #region Add Or Edit Consultant Reservation Tariff
+
+        var res = await _consultantService.AddOrEditConsultantReservationTariffConsultantSide(model);
+        switch (res)
+        {
+            case ConsultantReservationTariffConsultantPanelSideViewModelResult.success:
+                TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+                return RedirectToAction(nameof(PageOfManageConsultantInfo));
+
+            case ConsultantReservationTariffConsultantPanelSideViewModelResult.failure:
+                TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+                break;
+
+            case ConsultantReservationTariffConsultantPanelSideViewModelResult.InpersonReservationPopluationCoveredLessThanSiteShare:
+                TempData[ErrorMessage] = "تعرفه ی نوبت حضوری افراد تحت پوشش شما از حداقل مقدار مورد تایید وب سایت کمتر است.";
+                break;
+
+            case ConsultantReservationTariffConsultantPanelSideViewModelResult.OnlineReservationPopluationCoveredLessThanSiteShare:
+                TempData[ErrorMessage] = "تعرفه ی نوبت آنلاین افراد تحت پوشش شما از حداقل مقدار مورد تایید وب سایت کمتر است.";
+                break;
+
+            case ConsultantReservationTariffConsultantPanelSideViewModelResult.InpersonReservationAnonymousePersoneLessThanSiteShare:
+                TempData[ErrorMessage] = "تعرفه ی نوبت حضوری افراد ناشناس شما از حداقل مقدار مورد تایید وب سایت کمتر است.";
+                break;
+
+            case ConsultantReservationTariffConsultantPanelSideViewModelResult.OnlineReservationAnonymousePersoneLessThanSiteShare:
+                TempData[ErrorMessage] = "تعرفه ی نوبت آنلاین افراد ناشناس شما از حداقل مقدار مورد تایید وب سایت کمتر است.";
+                break;
+        }
+
+        #endregion
+
+        #region View Bags
+
+        ViewBag.DoctorOffice = await _organization.GetConsultantOrganizationByUserId(User.GetUserId());
+
+        #endregion
+
+        return View(model);
+    }
 
     #endregion
 }

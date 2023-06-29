@@ -2,6 +2,7 @@
 
 using DoctorFAM.Data.DbContext;
 using DoctorFAM.Domain.Entities.Consultant;
+using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.Interest;
 using DoctorFAM.Domain.Enums.Request;
@@ -315,6 +316,45 @@ public class ConsultantRepository : IConsultantRepository
         return await _context.InterestInfos
                              .Include(p => p.Interest)
                              .Where(p => !p.IsDelete)
+                             .ToListAsync();
+    }
+
+    //Get Consultant Reservation Tariff By User Id 
+    public async Task<DoctorsReservationTariffs?> GetConsultantReservationConsultantByDentistUserId(ulong consultantUserId)
+    {
+        return await _context.DoctorsReservationTariffs
+                             .AsNoTracking()
+                             .FirstOrDefaultAsync(p => !p.IsDelete && p.DoctorUserId == consultantUserId);
+    }
+
+    //Get Consultant Reservation Tariff By User Id 
+    public async Task<DoctorsReservationTariffs?> GetConsultantReservationTariffByConsultantUserId(ulong consultantUserId)
+    {
+        return await _context.DoctorsReservationTariffs
+                             .AsNoTracking()
+                             .FirstOrDefaultAsync(p => !p.IsDelete && p.DoctorUserId == consultantUserId);
+    }
+
+    //Add Consultant Reservation Tariff To The Data Base 
+    public async Task AddConsultantReservationTariffToTheDataBase(DoctorsReservationTariffs reservationTariffs)
+    {
+        await _context.DoctorsReservationTariffs.AddAsync(reservationTariffs);
+        await _context.SaveChangesAsync();
+    }
+
+    //Update Consultant Reservation Tariffs
+    public async Task UpdateConsultantReservationTariffs(DoctorsReservationTariffs reservationTariffs)
+    {
+        _context.DoctorsReservationTariffs.Update(reservationTariffs);
+        await _context.SaveChangesAsync();
+    }
+
+    //Get Consultant Diabet Consultant Resumes By Consultant User Id 
+    public async Task<List<DiabetConsultantsResume>?> GetConsultantDiabetConsultantResumesByConsultantUserId(ulong doctorUserId)
+    {
+        return await _context.DiabetConsultantsResumes
+                             .Where(p => !p.IsDelete && p.UserId == doctorUserId)
+                             .OrderByDescending(p => p.CreateDate)
                              .ToListAsync();
     }
 

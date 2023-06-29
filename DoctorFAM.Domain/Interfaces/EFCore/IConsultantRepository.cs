@@ -1,6 +1,7 @@
 ﻿#region Usings
 
 using DoctorFAM.Domain.Entities.Consultant;
+using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.Interest;
 using DoctorFAM.Domain.ViewModels.Admin.Consultant;
@@ -80,6 +81,24 @@ public interface IConsultantRepository
 
     Task<List<DoctorsInterestInfo>> GetConsultantInterestsInfo();
 
+    //Get Consultant Reservation Tariff By User Id 
+    Task<DoctorsReservationTariffs?> GetConsultantReservationConsultantByDentistUserId(ulong consultantUserId);
+
+    //Get Consultant Reservation Tariff By User Id 
+    Task<DoctorsReservationTariffs?> GetConsultantReservationTariffByConsultantUserId(ulong consultantUserId);
+
+    //Add Consultant Reservation Tariff To The Data Base 
+    Task AddConsultantReservationTariffToTheDataBase(DoctorsReservationTariffs reservationTariffs);
+
+    //Update Consultant Reservation Tariffs
+    Task UpdateConsultantReservationTariffs(DoctorsReservationTariffs reservationTariffs);
+
+    //Get Consultant By Id
+    Task<Consultant?> GetConsultantById(ulong doctorId);
+
+    //Get Consultant Diabet Consultant Resumes By Consultant User Id 
+    Task<List<DiabetConsultantsResume>?> GetConsultantDiabetConsultantResumesByConsultantUserId(ulong doctorUserId);
+
     #endregion
 
     #region Admin Side 
@@ -89,9 +108,6 @@ public interface IConsultantRepository
 
     //Get Consultant Info By Nurse Id
     Task<ConsultantInfo?> GetConsultantInfoByConsultantId(ulong consultantId);
-
-    //Get Consultant By Consultant Id
-    Task<Consultant?> GetConsultantById(ulong consultantId);
 
     //Get Consultant Info By Nurse Info Id
     Task<ConsultantInfo?> GetConsultantInfoById(ulong consultantInfoId);

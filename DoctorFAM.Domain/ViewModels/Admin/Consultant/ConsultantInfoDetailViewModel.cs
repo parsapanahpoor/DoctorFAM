@@ -1,4 +1,5 @@
 ﻿using DoctorFAM.Domain.Entities.Doctors;
+using DoctorFAM.Domain.Entities.Interest;
 using DoctorFAM.Domain.Entities.WorkAddress;
 using System;
 using System.Collections.Generic;
@@ -37,12 +38,27 @@ namespace DoctorFAM.Domain.ViewModels.Admin.Consultant
 
         public OrganizationInfoState ConsultantInfosType { get; set; }
 
+        public int? InPersonReservationTariffForDoctorPopulationCovered { get; set; }
+
+        public int? OnlineReservationTariffForDoctorPopulationCovered { get; set; }
+
+        public int? InPersonReservationTariffForAnonymousPersons { get; set; }
+
+        public int? OnlineReservationTariffForAnonymousPersons { get; set; }
+
+        public List<DoctorsInterestInfo>? DoctorsInterests { get; set; }
+
         #endregion
     }
 
     public enum EditConsultantInfoResult
     {
         success,
-        faild
+        faild,
+        NationalId,
+        InpersonReservationPopluationCoveredLessThanSiteShare,
+        OnlineReservationPopluationCoveredLessThanSiteShare,
+        InpersonReservationAnonymousePersoneLessThanSiteShare,
+        OnlineReservationAnonymousePersoneLessThanSiteShare
     }
 }

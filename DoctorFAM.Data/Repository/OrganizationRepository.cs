@@ -200,10 +200,24 @@ namespace DoctorFAM.Data.Repository
         //Get Consultant Organization by User Id
         public async Task<Organization?> GetConsultantOrganizationByUserId(ulong userId)
         {
-            var member = await _context.OrganizationMembers.Include(p => p.Organization)
-                                .FirstOrDefaultAsync(p => !p.IsDelete && p.UserId == userId && p.Organization.OrganizationType == Domain.Enums.Organization.OrganizationType.Consultant);
+            List<ulong>? organizationIds = await _context.OrganizationMembers
+                                                                     .AsNoTracking()
+                                                                     .Where(p => !p.IsDelete && p.UserId == userId)
+                                                                     .Select(p => p.OrganizationId)
+                                                                     .ToListAsync();
 
-            return await _context.Organizations.FirstOrDefaultAsync(p => p.Id == member.OrganizationId && !p.IsDelete && p.OrganizationType == Domain.Enums.Organization.OrganizationType.Consultant);
+            if (organizationIds is not null && organizationIds.Any())
+            {
+                foreach (var organizationId in organizationIds)
+                {
+                    if (await _context.Organizations.AsNoTracking().AnyAsync(p => !p.IsDelete && p.Id == organizationId && p.OrganizationType == Domain.Enums.Organization.OrganizationType.Consultant))
+                    {
+                        return await _context.Organizations.FirstOrDefaultAsync(p => !p.IsDelete && p.Id == organizationId && p.OrganizationType == Domain.Enums.Organization.OrganizationType.Consultant);
+                    }
+                }
+            }
+
+            return null;
         }
 
         //Get Laboratory Organization by User Id
@@ -324,9 +338,9 @@ namespace DoctorFAM.Data.Repository
         public async Task<ulong> GetConsultantOrganizationOwnerIdByUserId(ulong userId)
         {
             List<ulong>? organizationIds = await _context.OrganizationMembers.AsNoTracking()
-                                                    .Where(p => !p.IsDelete && p.UserId == userId)
-                                                    .Select(p => p.OrganizationId)
-                                                    .ToListAsync();
+                                                     .Where(p => !p.IsDelete && p.UserId == userId)
+                                                     .Select(p => p.OrganizationId)
+                                                     .ToListAsync();
 
             if (organizationIds == null) return 0;
 
