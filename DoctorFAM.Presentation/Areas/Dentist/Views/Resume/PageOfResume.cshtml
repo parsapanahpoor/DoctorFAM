@@ -45,7 +45,7 @@
 
     <div class="row">
 
-    @if (Model != null && !string.IsNullOrEmpty(Model.Resume.RejectedNote) && Model.Resume.ResumeState == DoctorFAM.Domain.Enums.ResumeState.ResumeState.Decline)
+    @if (Model != null && Model.Resume != null && !string.IsNullOrEmpty(Model.Resume.RejectedNote) && Model.Resume.ResumeState == DoctorFAM.Domain.Enums.ResumeState.ResumeState.Decline)
     {
         <div class="col-lg-12 col-sm-12 col-xs-12">
             <div class="widget">
@@ -87,8 +87,25 @@
                     <div class="col-lg-10 col-md-8 col-sm-12 profile-info">
                         <div class="header-fullname">@Model.User.Username</div>
 
+                    @if (Model.ResumeAboutMeDoctorPanelViewModel != null)
+                    {
                         @*Box Of About Me Resume Part*@
                         <partial name="_AboutMe" model="@Model.ResumeAboutMeDoctorPanelViewModel" />
+                    }
+                    else
+                    {
+                        <p onclick="ShowAboutMe()" style="margin-top: -30px;" class="btn btn-palegreen btn-sm  btn-follow">
+                            <i class="fa fa-check"></i>
+                            درباره ی من
+                        </p>
+                        <div class="header-information" style="margin-top: 20px;">
+
+                            <p class="btn btn-danger btn-sm  ">
+                                وارد نشده است
+                            </p>
+
+                        </div>
+                    }
 
                     </div>
 

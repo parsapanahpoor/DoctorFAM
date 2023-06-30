@@ -680,6 +680,15 @@ namespace DoctorFAM.Application.Services.Implementation
 
             if (resume == null)
             {
+                Resume newResume = new Resume()
+                {
+                     UserId = organization.OwnerId,
+                     ResumeState = Domain.Enums.ResumeState.ResumeState.WaitingForConfirm,
+                     RejectedNote = null
+                };
+
+                await _resumeRepository.CreateResume(newResume);
+
                 return new ManageResumeDoctorPanelViewModel()
                 {
                     User = user
