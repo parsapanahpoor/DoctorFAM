@@ -1,0 +1,96 @@
+﻿@model DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Education.CreateEducationDoctorPanel
+
+@using DoctorFAM.Domain.Enums
+@using DoctorFAM.Application.StaticTools
+@using DoctorFAM.Domain.ViewModels.Common
+
+@{
+    ViewData["Title"]= "ثبت رزومه ی تحصیلی";
+}
+
+@section Scripts
+    {
+<partial name="_JqueryValidation" />
+
+}
+
+@section Breadcrumb
+    {
+<li>
+    <a asp-action="PageOfResume" asp-controller="Resume" asp-area="Consultant"> مدیریت رزومه </a>
+</li>
+
+}
+
+    <form method="post" asp-action="CreateEducation" asp-controller="Resume" asp-area="Consultant" enctype="multipart/form-data">
+
+    <div class="row">
+        <div class="col-lg-12 col-sm-12" >
+            <div class="row">
+                <div class="col-lg-12" >
+                    <div class="widget" >
+                        <div class="widget-header bordered-bottom bordered-green" style="background-color:#d1f4fa">
+                                <span class="widget-caption"> افزودن رزومه ی تحصیلی </span>
+                        </div>
+                        <div class="widget-body" style="background-color:#d1f4fa !important;">
+                            <div class="row" >
+
+                                <div class="form-group col-md-4 col-sm-12">
+                                    <label>نام محل تحصیل </label>
+                                    <input type="text" class="form-control" asp-for="UnivercityName">
+                                    <span class="text-danger" asp-validation-for="UnivercityName"></span>
+                                </div>
+
+                                    <div class="form-group col-md-4 col-sm-12">
+                                        <label>رشته ی تحصیلی </label>
+                                        <input type="text" class="form-control" asp-for="FieldOfStudy">
+                                        <span class="text-danger" asp-validation-for="FieldOfStudy"></span>
+                                    </div>
+
+                                    <div class="form-group col-md-4 col-sm-12">
+                                        <label>گرایش </label>
+                                        <input type="text" class="form-control" asp-for="Orientation">
+                                        <span class="text-danger" asp-validation-for="Orientation"></span>
+                                    </div>
+
+                                     <div class="form-group col-md-6 col-sm-12">
+                                        <label>تاریخ شروع </label>
+                                        <input type="text" class="form-control" DatePicker="1" asp-for="StartDate">
+                                        <span class="text-danger" asp-validation-for="StartDate"></span>
+                                    </div>
+
+                                    <div class="form-group col-md-6 col-sm-12">
+                                        <label>تاریخ پایان </label>
+                                        <input type="text" class="form-control" DatePicker="2" asp-for="EndDate">
+                                        <span class="text-danger" asp-validation-for="EndDate"></span>
+                                    </div>
+
+                                    <div class="form-group col-md-6 col-sm-12">
+                                        <label>کشور </label>
+                                        <input type="text" class="form-control"  asp-for="CountryName">
+                                        <span class="text-danger" asp-validation-for="CountryName"></span>
+                                    </div>
+
+                                    <div class="form-group col-md-6 col-sm-12">
+                                        <label>شهر </label>
+                                        <input type="text" class="form-control" asp-for="CityName">
+                                        <span class="text-danger" asp-validation-for="CityName"></span>
+                                    </div>
+
+                                <hr class="margin-bottom-10 margin-top-10" />
+
+                                <div class="col-md-12 flex-style">
+                                    <button type="submit" class="btn btn-labeled btn-palegreen">
+                                        <i class="btn-label glyphicon glyphicon-ok"></i>ثبت
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</form>

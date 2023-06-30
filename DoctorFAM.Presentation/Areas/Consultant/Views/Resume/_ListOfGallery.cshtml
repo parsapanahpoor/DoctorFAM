@@ -1,0 +1,49 @@
+﻿@model List<DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Gallery.GalleryResumeInDoctorPanelViewModel>
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.Utils
+@using DoctorFAM.Application.StaticTools
+
+<div class="form-title">
+    بخش تصاویر
+
+    <a asp-action="CreateGallery" asp-area="Consultant" asp-controller="Resume" style="margin-right: 10px;" class="btn btn-success mr-4">افزودن تصویر</a>
+</div>
+
+@if (Model != null && Model.Any())
+{
+    foreach (var gallery in Model)
+    {
+        <ul class="timeline animated fadeInDown">
+
+            <li>
+                @*<div class="timeline-datetime">
+                    <a asp-action="EditGallery" asp-area="Consultant" asp-controller="Resume" asp-route-id="@gallery.Id" style="margin-right: 10px;" class="btn btn-primary mr-4">ویرایش</a>
+                    <a asp-action="DeleteGallery" asp-area="Consultant" asp-controller="Resume" asp-route-id="@gallery.Id" style="margin-right: 10px;" class="btn btn-danger mr-4">حذف</a>
+                </div>*@
+                <div class="timeline-badge">
+                    <i class="fa fa-picture-o "></i>
+                    
+                    <a asp-action="EditGallery" asp-area="Consultant" asp-controller="Resume" asp-route-id="@gallery.Id"  class="tmlnbutton "><i class="fa fa-edit warning"></i></a>
+                    
+                    <a asp-action="DeleteGallery" asp-area="Consultant" asp-controller="Resume" asp-route-id="@gallery.Id"  class="tmlnbuttondelete "><i class="fa fa-trash-o danger"></i></a>
+                </div>
+                <div class="timeline-panel">
+                    <div class="timeline-body">
+                        <div class="tl-wide text-center" style="padding: 5px; margin-top:10px; margin-bottom: 10px;">
+                          <a href="@PathTools.ResumeGalleryPathThumb@gallery.ImageName" target="_blank">  <img src="@PathTools.ResumeGalleryPathThumb@gallery.ImageName" alt="" style="max-height: 158px;max-width: 100%;"></a>
+                       
+                      </div>
+                        <i class="text-muted text-sm">@gallery.Title</i>
+                    </div>
+                </div>
+            </li>
+
+        </ul>
+    }
+}else
+{
+    <div class="alert alert-info fade in">
+        @SharedLocalizer["Not Found"]
+    </div>
+}

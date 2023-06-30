@@ -45,7 +45,7 @@
 
     <div class="row">
 
-    @if (!string.IsNullOrEmpty(Model.Resume.RejectedNote) && Model.Resume.ResumeState == DoctorFAM.Domain.Enums.ResumeState.ResumeState.Decline)
+    @if (Model != null && !string.IsNullOrEmpty(Model.Resume.RejectedNote) && Model.Resume.ResumeState == DoctorFAM.Domain.Enums.ResumeState.ResumeState.Decline)
     {
         <div class="col-lg-12 col-sm-12 col-xs-12">
             <div class="widget">
