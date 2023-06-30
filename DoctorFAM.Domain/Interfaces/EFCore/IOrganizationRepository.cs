@@ -25,6 +25,9 @@ namespace DoctorFAM.Domain.Interfaces
         //Get Organization Owner Id By Organization Member User Id With As No Tracking
         Task<ulong?> GetOrganizationOwnerIdByOrganizationMemberUserIdWithAsNoTracking(ulong memberUserId);
 
+        //Get Organization By User Id With As No Tracking
+        Task<Organization?> GetOrganizationByUserIdWithAsNoTracking(ulong userId);
+
         //Get Organization Id By Member User Id
         Task<ulong> GetOrganizationIdByMemberUserId(ulong memberUserId);
 
@@ -37,6 +40,9 @@ namespace DoctorFAM.Domain.Interfaces
 
         //Get Dentist Organization By Member User Id
         Task<Organization?> GetDentistOrganizationByUserId(ulong userId);
+
+        //Get Consultant Organization By Member User Id
+        Task<Organization?> GetConsultantOrganizationByUserId(ulong userId);
 
         //Get Dentist Organization Id By Member User Id
         Task<ulong> GetDentistOrganizationIdByUserId(ulong userId);
@@ -72,9 +78,6 @@ namespace DoctorFAM.Domain.Interfaces
 
         //Get Nurse Organization by User Id
         Task<Organization?> GetNurseOrganizationByUserId(ulong userId);
-
-        //Get Consultant Organization by User Id
-        Task<Organization?> GetConsultantOrganizationByUserId(ulong userId);
 
         //Check Is Exist Any Laboratory By This User Id
         Task<bool> IsExistAnyLaboratoryByUserId(ulong userId);

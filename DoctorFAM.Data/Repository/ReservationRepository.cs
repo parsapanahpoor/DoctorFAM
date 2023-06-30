@@ -48,7 +48,7 @@ public class ReservationRepository : IReservationRepository
     {
         #region Get Owner Organization By EmployeeId 
 
-        var organization = await _organizationRepository.GetOrganizationByUserId(userId);
+        var organization = await _organizationRepository.GetOrganizationByUserIdWithAsNoTracking(userId);
         if (organization == null) return null;
 
         #endregion
@@ -149,13 +149,6 @@ public class ReservationRepository : IReservationRepository
 
         var organization = await _organizationRepository.GetOrganizationByUserId(filter.UserId);
         if (organization == null) return null;
-
-        #endregion
-
-        #region Check Doctor Is Valid
-
-        var doctor = await _doctorRepository.GetDoctorByUserId(organization.OwnerId);
-        if (doctor == null) return null;
 
         #endregion
 
@@ -445,14 +438,6 @@ public class ReservationRepository : IReservationRepository
         if (organization == null) return null;
 
         #endregion
-
-        #region Check Doctor Is Valid
-
-        var doctor = await _doctorRepository.GetDoctorByUserId(organization.OwnerId);
-        if (doctor == null) return null;
-
-        #endregion
-
 
         var query = _context.DoctorReservationDates
             .Include(p => p.DoctorReservationDateTimes)

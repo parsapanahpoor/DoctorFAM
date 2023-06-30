@@ -49,6 +49,22 @@ namespace DoctorFAM.Data.Repository
             return await _context.Organizations.FirstOrDefaultAsync(p => p.Id == member.OrganizationId && !p.IsDelete);
         }
 
+        //Get Organization By User Id With As No Tracking
+        public async Task<Organization?> GetOrganizationByUserIdWithAsNoTracking(ulong userId)
+        {
+            var memberOrganizationId = await _context.OrganizationMembers
+                                       .AsNoTracking()
+                                       .Where(p => !p.IsDelete && p.UserId == userId)
+                                       .Select(p=> p.OrganizationId)
+                                       .FirstOrDefaultAsync();
+
+            if (memberOrganizationId == null) return null;
+
+            return await _context.Organizations
+                                 .AsNoTracking()
+                                 .FirstOrDefaultAsync(p => p.Id == memberOrganizationId && !p.IsDelete);
+        }
+
         //Get Organization Owner Id By Organization Member User Id With As No Tracking
         public async Task<ulong?> GetOrganizationOwnerIdByOrganizationMemberUserIdWithAsNoTracking(ulong memberUserId)
         {

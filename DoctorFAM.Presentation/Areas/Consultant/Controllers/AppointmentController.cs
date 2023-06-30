@@ -1,24 +1,21 @@
-﻿#region Userings
+﻿#region Usings
 
 using DoctorFAM.Application.Convertors;
 using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Services.Interfaces;
-using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment;
-using DoctorFAM.Web.Areas.Doctor.ActionFilterAttributes;
-using DoctorFAM.Web.Doctor.Controllers;
+using DoctorFAM.Web.Consultant.Controllers;
 using DoctorFAM.Web.HttpManager;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
-using System.Threading.Tasks;
+
+namespace DoctorFAM.Web.Areas.Consultant.Controllers;
 
 #endregion
 
-namespace DoctorFAM.Web.Areas.Doctor.Controllers;
-
-public class AppointmentController : DoctorBaseController
+public class AppointmentController : ConsultantBaseController
 {
-    #region ctor
+    #region Ctor
 
     private readonly IReservationService _reservatioService;
 
@@ -35,6 +32,16 @@ public class AppointmentController : DoctorBaseController
 
     #endregion
 
+    #region Turn rating Page 
+
+    public async Task<IActionResult> TurnRating()
+    {
+
+        return View();
+    }
+
+    #endregion
+
     #region Reservation Date
 
     #region List Of Futear Reservation Date  
@@ -47,22 +54,12 @@ public class AppointmentController : DoctorBaseController
 
     #endregion
 
-    #region List Of Doctor Reservation History  
+    #region List Of Consultant Reservation History  
 
     public async Task<IActionResult> ListOfDoctorReservationHistory(FilterAppointmentViewModel filter)
     {
         filter.UserId = User.GetUserId();
         return View(await _reservatioService.FiltrDoctorReservationDateHistory(filter));
-    }
-
-    #endregion
-
-    #region Add New Reservation Date Modal This In Not Work Yet
-
-    [HttpGet("Show-AddReservationDate-Modal")]
-    public async Task<IActionResult> AddReservationDateModal()
-    {
-        return PartialView("_AddReservationDateModal");
     }
 
     #endregion
@@ -94,7 +91,7 @@ public class AppointmentController : DoctorBaseController
 
             #endregion
 
-            TempData[ErrorMessage] = _sharedLocalizer["The operation has failed"].Value;
+            TempData[ErrorMessage] = _sharedLocalizer["عملیات باشکست مواجه شده است."].Value;
             return View(model);
         }
 
@@ -102,20 +99,20 @@ public class AppointmentController : DoctorBaseController
 
         #region Get Owner Organization By EmployeeId 
 
-        var organization = await _organizationService.GetDoctorOrganizationByUserId(User.GetUserId());
-        if (organization == null) return NotFound();
+        var organizationOwnerId = await _organizationService.GetConsultanttOrganizationOwnerIdByUserId(User.GetUserId());
+        if (organizationOwnerId == null) return NotFound();
 
         #endregion
 
         #region Add Reservation Date 
 
-        var result = await _reservatioService.AddReservationDate(model, organization.OwnerId);
+        var result = await _reservatioService.AddReservationDate(model, organizationOwnerId);
 
         if (result)
         {
-            TempData[SuccessMessage] = _sharedLocalizer["Operation Successfully"].Value;
+            TempData[SuccessMessage] = _sharedLocalizer["عملیات باموفقیت انجام شده است."].Value;
 
-            var reservationDate = await _reservatioService.GetDoctorReservationDateByDate(model.ReservationDate.ToMiladiDateTime(), organization.OwnerId);
+            var reservationDate = await _reservatioService.GetDoctorReservationDateByDate(model.ReservationDate.ToMiladiDateTime(), organizationOwnerId);
 
             if (reservationDate != null)
             {
@@ -133,7 +130,7 @@ public class AppointmentController : DoctorBaseController
 
         #endregion
 
-        TempData[ErrorMessage] = _sharedLocalizer["The operation has failed"].Value;
+        TempData[ErrorMessage] = _sharedLocalizer["عملیات باشکست مواجه شده است."].Value;
         return View(model);
 
         #endregion
@@ -149,10 +146,10 @@ public class AppointmentController : DoctorBaseController
 
         if (result)
         {
-            return ApiResponse.SetResponse(ApiResponseStatus.Success, null, _sharedLocalizer["Operation Successfully"].Value);
+            return ApiResponse.SetResponse(ApiResponseStatus.Success, null, _sharedLocalizer["عملیات باموفقیت انجام شده است."].Value);
         }
 
-        return ApiResponse.SetResponse(ApiResponseStatus.Danger, null, _sharedLocalizer["The operation has failed"].Value);
+        return ApiResponse.SetResponse(ApiResponseStatus.Danger, null, _sharedLocalizer["عملیات باشکست مواجه شده است."].Value);
     }
 
     #endregion
@@ -198,27 +195,26 @@ public class AppointmentController : DoctorBaseController
 
         if (!ModelState.IsValid)
         {
-            TempData[ErrorMessage] = _sharedLocalizer["The input values ​​are not valid"].Value;
+            TempData[ErrorMessage] = _sharedLocalizer["اطلاعات وارد شده صحیح نمی باشد."].Value;
             return View(model);
         }
 
         #endregion
 
-
         #region Get Owner Organization By EmployeeId 
 
-        var organization = await _organizationService.GetDoctorOrganizationByUserId(User.GetUserId());
-        if (organization == null) return NotFound();
+        var organizationOwnerId = await _organizationService.GetConsultanttOrganizationOwnerIdByUserId(User.GetUserId());
+        if (organizationOwnerId == null) return NotFound();
 
         #endregion
 
         #region Add Reservation Date Time Method
 
-        var res = await _reservatioService.AddReservationDateTimeDoctorPanel(model, organization.OwnerId);
+        var res = await _reservatioService.AddReservationDateTimeDoctorPanel(model, organizationOwnerId);
 
         if (res)
         {
-            TempData[SuccessMessage] = _sharedLocalizer["Operation Successfully"].Value;
+            TempData[SuccessMessage] = _sharedLocalizer["عملیات باموفقیت انجام شده است."].Value;
             return RedirectToAction(nameof(ReservationDateDetail), new { ReservationDateId = model.ReservationDateId });
         }
 
@@ -228,7 +224,7 @@ public class AppointmentController : DoctorBaseController
 
         #endregion
 
-        TempData[ErrorMessage] = _sharedLocalizer["The operation has failed"].Value;
+        TempData[ErrorMessage] = _sharedLocalizer["عملیات باشکست مواجه شده است."].Value;
         return View(model);
     }
 
@@ -241,14 +237,14 @@ public class AppointmentController : DoctorBaseController
     {
         #region Get Owner Organization By EmployeeId 
 
-        var organization = await _organizationService.GetDoctorOrganizationByUserId(User.GetUserId());
-        if (organization == null) return NotFound();
+        var organizationOwnerId = await _organizationService.GetConsultanttOrganizationOwnerIdByUserId(User.GetUserId());
+        if (organizationOwnerId == null) return NotFound();
 
         #endregion
 
         #region Fill Model 
 
-        var model = await _reservatioService.FillAddReservationDateTimeWithComputerViewModel(reservationDateId, organization.OwnerId);
+        var model = await _reservatioService.FillAddReservationDateTimeWithComputerViewModel(reservationDateId, organizationOwnerId);
         if (model == null) return NotFound();
 
         #endregion
@@ -271,24 +267,24 @@ public class AppointmentController : DoctorBaseController
 
         #region Get Owner Organization By EmployeeId 
 
-        var organization = await _organizationService.GetDoctorOrganizationByUserId(User.GetUserId());
-        if (organization == null) return NotFound();
+        var organizationOwnerId = await _organizationService.GetConsultanttOrganizationOwnerIdByUserId(User.GetUserId());
+        if (organizationOwnerId == null) return NotFound();
 
         #endregion
 
         #region Add Methods
 
-        var result = await _reservatioService.AddReservationDateTimeWithCoputer(model, organization.OwnerId);
+        var result = await _reservatioService.AddReservationDateTimeWithCoputer(model, organizationOwnerId);
 
         if (result)
         {
-            TempData[SuccessMessage] = _sharedLocalizer["Operation Successfully"].Value;
+            TempData[SuccessMessage] = _sharedLocalizer["عملیات باموفقیت انجام شده است."].Value;
             return RedirectToAction(nameof(ReservationDateDetail), new { ReservationDateId = model.ReservationDateId });
         }
 
         #endregion
 
-        TempData[ErrorMessage] = _sharedLocalizer["The operation has failed"].Value;
+        TempData[ErrorMessage] = _sharedLocalizer["عملیات باشکست مواجه شده است."].Value;
         return View(model);
     }
 
@@ -300,19 +296,19 @@ public class AppointmentController : DoctorBaseController
     {
         #region Get Owner Organization By EmployeeId 
 
-        var organization = await _organizationService.GetDoctorOrganizationByUserId(User.GetUserId());
-        if (organization == null) return NotFound();
+        var organizationOwnerId = await _organizationService.GetConsultanttOrganizationOwnerIdByUserId(User.GetUserId());
+        if (organizationOwnerId == null) return NotFound();
 
         #endregion
 
-        var result = await _reservatioService.DeleteReservationDateTime(Id, organization.OwnerId);
+        var result = await _reservatioService.DeleteReservationDateTime(Id, organizationOwnerId);
 
         if (result)
         {
-            return ApiResponse.SetResponse(ApiResponseStatus.Success, null, _sharedLocalizer["Operation Successfully"].Value);
+            return ApiResponse.SetResponse(ApiResponseStatus.Success, null, _sharedLocalizer["عملیات باموفقیت انجام شده است."].Value);
         }
 
-        return ApiResponse.SetResponse(ApiResponseStatus.Danger, null, _sharedLocalizer["The operation has failed"].Value);
+        return ApiResponse.SetResponse(ApiResponseStatus.Danger, null, _sharedLocalizer["عملیات باشکست مواجه شده است."].Value);
     }
 
     #endregion
@@ -323,21 +319,21 @@ public class AppointmentController : DoctorBaseController
     {
         #region Get Owner Organization By EmployeeId 
 
-        var organization = await _organizationService.GetDoctorOrganizationByUserId(User.GetUserId());
-        if (organization == null) return NotFound();
+        var organizationOwnerId = await _organizationService.GetConsultanttOrganizationOwnerIdByUserId(User.GetUserId());
+        if (organizationOwnerId == null) return NotFound();
 
         #endregion
 
         #region Fill Model
 
-        var res = await _reservatioService.ShowPatientDetailViewModel(ReservationDateTimeId, organization.OwnerId);
+        var res = await _reservatioService.ShowPatientDetailViewModel(ReservationDateTimeId, organizationOwnerId);
         if (res == null) return NotFound();
 
         #endregion
 
         #region Check Doctor Booking 
 
-        if (await _reservatioService.CheckThatIsDoctorReservationIsDoctorPersonalBooking(ReservationDateTimeId , organization.OwnerId))
+        if (await _reservatioService.CheckThatIsDoctorReservationIsDoctorPersonalBooking(ReservationDateTimeId, organizationOwnerId))
         {
             ViewBag.DoctorBooking = true;
         }
@@ -356,14 +352,14 @@ public class AppointmentController : DoctorBaseController
     {
         #region Get Owner Organization By EmployeeId 
 
-        var organization = await _organizationService.GetDoctorOrganizationByUserId(User.GetUserId());
-        if (organization == null) return NotFound();
+        var organizationOwnerId = await _organizationService.GetConsultanttOrganizationOwnerIdByUserId(User.GetUserId());
+        if (organizationOwnerId == null) return NotFound();
 
         #endregion
 
         #region Check Doctor Reservation Date Time 
 
-        var res = await _reservatioService.FillDoctorPersonalBooking(ReservationDateTimeId , organization.OwnerId);
+        var res = await _reservatioService.FillDoctorPersonalBooking(ReservationDateTimeId, organizationOwnerId);
         if (res == null) return NotFound();
 
         #endregion
@@ -371,19 +367,19 @@ public class AppointmentController : DoctorBaseController
         return View(res);
     }
 
-    [HttpPost , ValidateAntiForgeryToken]
+    [HttpPost, ValidateAntiForgeryToken]
     public async Task<IActionResult> AddPersonalPatientForDoctorBooking(DoctorPersonalBookingViewModel model)
     {
         #region Get Owner Organization By EmployeeId 
 
-        var organization = await _organizationService.GetDoctorOrganizationByUserId(User.GetUserId());
-        if (organization == null) return NotFound();
+        var organizationOwnerId = await _organizationService.GetConsultanttOrganizationOwnerIdByUserId(User.GetUserId());
+        if (organizationOwnerId == null) return NotFound();
 
         #endregion
 
         #region Check Doctor Reservation Date Time 
 
-        var res = await _reservatioService.FillDoctorPersonalBooking(model.DoctorReservationDateTimeId, organization.OwnerId);
+        var res = await _reservatioService.FillDoctorPersonalBooking(model.DoctorReservationDateTimeId, organizationOwnerId);
         if (res == null) return NotFound();
 
         #endregion
@@ -400,7 +396,7 @@ public class AppointmentController : DoctorBaseController
 
         #region Add Patient To Doctor Booking 
 
-        var result = await _reservatioService.AddPatientToDoctorBooking(model , organization.OwnerId);
+        var result = await _reservatioService.AddPatientToDoctorBooking(model, organizationOwnerId);
         if (result)
         {
             //Get Doctor Reservation Date Time By ID 
@@ -408,7 +404,7 @@ public class AppointmentController : DoctorBaseController
             if (reservationDateTime == null) return NotFound();
 
             TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
-            return RedirectToAction(nameof(ReservationDateDetail) , new { ReservationDateId = reservationDateTime.DoctorReservationDateId });
+            return RedirectToAction(nameof(ReservationDateDetail), new { ReservationDateId = reservationDateTime.DoctorReservationDateId });
         }
 
         #endregion
@@ -418,74 +414,6 @@ public class AppointmentController : DoctorBaseController
     }
 
     #endregion
-
-    #endregion
-
-    #region Cancel Reservation 
-
-    [HttpGet]
-    public async Task<IActionResult> CancelReservationRequest()
-    {
-        #region Fill Model
-
-        ViewBag.ReservationDate = await _reservatioService.GetReservationsForAddCancelRequest(User.GetUserId());
-
-        #endregion
-
-        return View();
-    }
-
-    [HttpPost, ValidateAntiForgeryToken]
-    public async Task<IActionResult> CancelReservationRequest(CancelReservationRequestViewModel model)
-    {
-        #region Fill Model
-
-        ViewBag.ReservationDate = await _reservatioService.GetReservationsForAddCancelRequest(User.GetUserId());
-
-        #endregion
-
-        #region Model State Validations
-
-        if (model.ReservationDateId == null)
-        {
-            TempData[ErrorMessage] = _sharedLocalizer["لطفا تاریخ مورد نظر خود را انتخاب کنید ."].Value;
-            return View(model);
-        }
-
-        if (model.ReservationDateTimeId == null)
-        {
-            TempData[ErrorMessage] = _sharedLocalizer["لطفا حداقل یکی از نوبت ها را انتخاب کنید ."].Value;
-            return View(model);
-        }
-
-        #endregion
-
-        #region Cancel Reservation Date Request Method 
-
-        var res = await _reservatioService.CreateCancelReservationRequestFromDoctorPanel(model, User.GetUserId());
-
-        if (res)
-        {
-            TempData[SuccessMessage] = _sharedLocalizer["Operation Successfully"].Value;
-            return RedirectToAction("Index", "Home", new { area = "Doctor" });
-        }
-
-        #endregion
-
-        TempData[ErrorMessage] = _sharedLocalizer["The operation has failed"].Value;
-        return View();
-    }
-
-    #endregion
-
-    #region Load Reservation Date Time 
-
-    public async Task<IActionResult> LoadReservationDateTime(ulong reservationDateId)
-    {
-        var result = await _reservatioService.GetReservationDateTimeByReservationDateIdSelectList(reservationDateId, User.GetUserId());
-
-        return JsonResponseStatus.Success(result);
-    }
 
     #endregion
 }
