@@ -1,0 +1,75 @@
+﻿
+@{
+    ViewData["Title"] = "مدیریت مدیا";
+}
+
+
+
+@section Breadcrumb
+    {
+
+}
+
+
+<div class="page-body">
+
+
+    <div class="row text-center align-Item-center">
+        <div class="col-lg-12 col-sm-12 col-xs-12">
+            <div class="row">
+
+                <div class="col-lg-6 col-md-6  buttons-preview mt-2">
+                    <div class="bordered-well-container">
+                        <div class="well bordered-top bordered-bottom  bordered-blue">
+
+                            <div class="featured-icon">
+                                <i class="glyphicon glyphicon-facetime-video fa-2x"></i>
+                            </div>
+                            <p class="text-center justify-content-center"> ویدئو کلیپ  </p>
+
+                        </div>
+                        <a asp-action="FilterVideos" asp-controller="HealthInformation" asp-area="Consultant">
+                            <div class="well  bordered-bottom  bordered-pink">
+                                <p class="text-center justify-content-center" style="font-size:12px !important;"> لیست ویدئوها  </p>
+                            </div>
+                        </a>
+                        <a asp-action="CreateTVFAM" asp-controller="HealthInformation" asp-area="Consultant">
+                            <div class="well  bordered-bottom  bordered-palegreen">
+                                <p class="text-center justify-content-center" style="font-size:12px !important;"> افزودن ویدئو جدید  </p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6   buttons-preview mt-2">
+                    <div class="bordered-well-container">
+                        <div class="well bordered-top bordered-bottom  bordered-blue">
+
+                            <div class="featured-icon">
+                                <i class="glyphicon glyphicon-volume-up fa-2x"></i>
+                            </div>
+                            <p class="text-center justify-content-center"> فایل صوتی  </p>
+
+                        </div>
+                        <a asp-action="FilterPodcast" asp-controller="HealthInformation" asp-area="Consultant">
+                            <div class="well  bordered-bottom  bordered-pink">
+                                <p class="text-center justify-content-center" style="font-size:12px !important;"> لیست پادکستها  </p>
+                            </div>
+                        </a>
+                        <a asp-action="CreatePodcast" asp-controller="HealthInformation" asp-area="Consultant">
+                            <div class="well  bordered-bottom  bordered-palegreen">
+                                <p class="text-center justify-content-center" style="font-size:12px !important;"> افزودت پادکست جدید  </p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+
+
+    </div>
+
+
+</div>
