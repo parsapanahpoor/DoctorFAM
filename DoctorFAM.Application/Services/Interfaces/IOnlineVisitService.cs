@@ -75,6 +75,9 @@ public interface IOnlineVisitService
 
     #region Doctor Panel 
 
+    //List Of Doctor Online Visti Request For Show In ViewComponent
+    Task<List<ListOfLastestOnlineVisitRequestDoctorSideViewModel>?> ListOfDoctorOnlineVistiRequestForShowInViewComponent(ulong memberUserId);
+
     //Show Online Visit User Request Detail
     Task<OnlineVisitUserRequestDetailDoctorSideViewModel?> ShowOnlineVisitUserRequestDetail(ulong doctorAndPatientRequestId, ulong memberUserId);
 
@@ -86,6 +89,9 @@ public interface IOnlineVisitService
 
     //List Of Lastest Online Visit Request Doctor Side View Model
     Task<List<ListOfLastestOnlineVisitRequestDoctorSideViewModel>?> ListOfLastestOnlineVisitRequestDoctorSideViewModel(ulong memberUserId);
+
+    //Get List Of Work Shift Time Ids By Work Shift Id
+    Task<List<ulong>> GetListOfWorkShiftTimeIdsByWorkShiftId(ulong workShiftId);
 
     //Select List For Show List Of Avalable Shifts 
     Task<List<SelectListViewModel>> SelectListForShowListOfAvailableShifts();

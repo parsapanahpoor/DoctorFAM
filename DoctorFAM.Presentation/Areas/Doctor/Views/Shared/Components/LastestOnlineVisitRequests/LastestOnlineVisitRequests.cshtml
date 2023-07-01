@@ -1,0 +1,96 @@
+﻿@model List<DoctorFAM.Domain.ViewModels.DoctorPanel.OnlineVisit.ListOfLastestOnlineVisitRequestDoctorSideViewModel>
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Domain.ViewModels.Common
+
+@if (Model != null && Model.Any())
+{
+
+        <div class="col-lg-6 col-sm-12">
+
+            <div class="row" style="margin:10px 10px 10px 10px;">
+
+                <div id="horizontal-form">
+
+
+                    <div class="widget-body no-padding">
+                        <div id="searchable_wrapper" class="dataTables_wrapper form-inline">
+
+                            <table class="table table-bordered table-hover table-striped dataTable" id="searchable" role="grid" aria-describedby="searchable_info">
+                                <thead class="bordered-darkorange">
+                                    <tr role="row">
+
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">اطلاعات درخواست دهنده</th>
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">تاریخ ویزیت </th>
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">شیفت </th>
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">زمان ویزیت</th>
+
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending"> امکانات</th>
+
+                                    </tr>
+
+                                </thead>
+
+                                <tbody>
+
+                                    @foreach (var onlineVisit in Model.OrderByDescending(p => p.UserRequestId))
+                                    {
+                                        <tr role="row" class="even responsive">
+
+                                            <td class="center ">
+
+                                                <div class="flex-style-center">
+                                                    <img src="@onlineVisit.User.UserAvatar.GetUserAvatar()" class="avatar-style" style="border-radius:50px;" />
+                                                    <div class="mr-10px">
+                                                        <span> @onlineVisit.User.Username </span>
+                                                    </div>
+                                                </div>
+
+                                            </td>
+
+                                            <td class="center tc vm">
+
+                                                @onlineVisit.WorkShiftDate.ToShamsi()
+
+                                            </td>
+
+                                            <td class="center tc vm">
+
+                                                @onlineVisit.WorkShift
+
+                                            </td>
+
+                                            <td class="center tc vm">
+
+                                                @onlineVisit.WorkShiftTime
+
+                                            </td>
+
+                                            <td class="center tc vm">
+
+                                                <a asp-action="ShowOnlineVisitRequestDetail" asp-area="Doctor" asp-controller="OnlineVisit"
+                                           asp-route-onlineVisitRequestId="@onlineVisit.UserRequestId"
+                                           class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+
+                                                <a asp-action="ConfirmOnlineVisitRequest" asp-area="Doctor" asp-controller="OnlineVisit"
+                                           asp-route-requestId="@onlineVisit.UserRequestId"
+                                           asp-route-businessKey="@onlineVisit.BusinessKey" class="btn btn-success btn-circle btn-xs"><i class="glyphicon glyphicon-check"></i></a>
+
+                                            </td>
+
+                                        </tr>
+
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+        </div>
+}
+

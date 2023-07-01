@@ -1,0 +1,192 @@
+﻿@model DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo.UploadDiabetConsultatntDoctorSideViewModel
+@using DoctorFAM.Domain.Enums
+@using DoctorFAM.Application.StaticTools
+@using DoctorFAM.Domain.ViewModels.Common
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.Extensions
+
+@{
+    ViewData["Title"] = "آپلود رزومه ی شما";
+}
+
+@section Scripts
+    {
+    <partial name="_JqueryValidation" />
+
+}
+
+@section Breadcrumb
+    {
+    <li>
+        <a asp-action="DoctorInterests" asp-controller="ConsultantInfo" asp-area="Consultant"> مدیریت اطلاعات مشاور  </a>
+    </li>
+
+}
+
+<form method="post" asp-action="UploadResumeForDiabetConsultants" asp-controller="ConsultantInfo" asp-area="Consultant" enctype="multipart/form-data">
+
+    <div class="row">
+
+        <div class="col-lg-12 col-sm-12 col-xs-12">
+            <div class="widget">
+                <div class="widget-header bg-warning">
+                    <span class="widget-caption">راهنمایی پشتیبانی  </span>
+                    <div class="widget-buttons">
+                        <a href="#" data-toggle="config">
+                            <i class="fa fa-cog"></i>
+                        </a>
+                        <a href="#" data-toggle="maximize">
+                            <i class="fa fa-expand"></i>
+                        </a>
+                        <a href="#" data-toggle="collapse">
+                            <i class="fa fa-minus"></i>
+                        </a>
+                        <a href="#" data-toggle="dispose">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div><!--Widget Buttons-->
+                </div><!--Widget Header-->
+                <div class="widget-body bg-warning">
+                    <p> لطفا اطلاعات مربوط به تاریخچه ی فعالیت های خود در زمینه ی دیابت را وارد نمایید . </p>
+                </div><!--Widget Body-->
+            </div><!--Widget-->
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-lg-9 col-sm-12">
+            <div class="row">
+
+                <div class="col-lg-12">
+                    <div class="widget">
+                        <div class="widget-header bordered-bottom bordered-green" style="background-color:#d1f4fa">
+                            <span class="widget-caption"> آپلود رزومه های دیابت شما </span>
+                        </div>
+                        <div class="widget-body" style="background-color:#d1f4fa !important;">
+                            <div class="row">
+
+                                <div class="form-group col-md-12 col-sm-12">
+                                    <label>توضیح</label>
+                                    <textarea type="text" class="form-control" asp-for="Description"></textarea>
+                                    <span class="text-danger" asp-validation-for="Description"></span>
+                                </div>
+
+                                <hr class="margin-bottom-10 margin-top-10" />
+
+                                <div class="col-md-12 flex-style">
+                                    <button type="submit" class="btn btn-labeled btn-palegreen">
+                                        <i class="btn-label glyphicon glyphicon-ok"></i>ثبت
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-sm-12">
+            <div class="row">
+
+                <div class="col-lg-12 col-sm-12">
+                    <div class="widget">
+                        <div class="widget-header bordered-bottom bordered-green">
+                            <span class="widget-caption"> تصویر مدارک شما</span>
+                        </div>
+                        <div class="widget-body">
+                            <div class="row">
+
+                                <input type="file" class="display-none" name="MediacalFile" id="UserAvatar1" ImageInput="1" accept=".jpg,.jpeg,.png" />
+
+                                <div class="col-md-12">
+                                    <label for="UserAvatar1" class="file-input-style">
+                                        <i class="glyphicon glyphicon-upload"></i>
+                                        <span class="mr-8px"> لطفا تصویر مدرک خود را وارد کنید</span>
+                                    </label>
+                                </div>
+
+                                @{
+                                    var MediacalFileUrl = PathTools.DefaultMediacalFile;
+                                }
+
+                                <div class="col-md-12 tc mt-10px">
+                                    <img src="@MediacalFileUrl" class="image-style" ImageFile="1" />
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="col-lg-12 col-sm-12">
+            <div class="well with-header with-footer table-responsive">
+                <div class="header bordered-azure">
+                    <div class="flex-style">
+                        <span> لیست رزومه های دیابت شما </span>
+                    </div>
+                </div>
+
+                @if (Model.DiabetConsultantsResumes != null && Model.DiabetConsultantsResumes.Any())
+                {
+                    <table class="table table-hover table-bordered tc vm">
+                        <thead class="tc vm">
+                            <tr class="tc vm">
+                                <th class="tc vm">
+                                    تصویر رزومه
+                                </th>
+                                <th class="tc vm">
+                                    تاریخ درج
+                                </th>
+                                <th class="tc vm">
+                                    امکانات
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="tc vm">
+                            @foreach (var resume in Model.DiabetConsultantsResumes)
+                            {
+                                <tr class="tc vm" remove-ajax-item="@resume.Id">
+                                    <td class="vm">
+                                        <div class="flex-style-center">
+                                            @if (string.IsNullOrEmpty(resume.ResumePicture))
+                                            {
+                                                <span class="badge badge-warning">وارد نشده است.</span>
+                                            }
+                                            else
+                                            {
+                                                <img src="@PathTools.DiabetConsultantResumeFilesPathThumb/@resume.ResumePicture" class="avatar-style" />
+                                            }
+                                        </div>
+                                    </td>
+                                    <td class="tc vm">
+                                        <p> @resume.CreateDate.ToShamsi() </p>
+                                    </td>
+                                    <td class="tc vm">
+                                        <a asp-route-resumeId="@resume.Id" asp-action="DeleteDiabetConsultantResume" asp-controller="ConsultantInfo" asp-area="Consultant" class="btn btn-danger btn-circle btn-xs"><i class="glyphicon glyphicon-remove"></i></a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                }
+                else
+                {
+                    <partial name="_ConsultantPanelNotFoundPartial" />
+                }
+            </div>
+        </div>
+    </div>
+
+</form>
+

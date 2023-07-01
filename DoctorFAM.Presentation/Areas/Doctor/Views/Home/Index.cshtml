@@ -7,11 +7,13 @@
 }
 
 @section Breadcrumb {
-    
+
 }
 
-    @section Styles
+@section Styles
     {
+    <link href="/admin/css/dataTables.bootstrap.rtl.css" rel="stylesheet" />
+
     <style>
 
         .databox-bottom {
@@ -39,9 +41,29 @@
     </style>
 }
 
+@section Scripts
+    {
+    <script src="~/admin/js/datatable/jquery.dataTables.min.js"></script>
+    <script src="~/admin/js/datatable/ZeroClipboard.js"></script>
+    <script src="~/admin/js/datatable/dataTables.tableTools.min.js"></script>
+    <script src="~/admin/js/datatable/dataTables.bootstrap.min.js"></script>
+    <script src="~/admin/js/datatable/datatables-init.js"></script>
+    <script>
+        InitiateSimpleDataTable.init();
+        InitiateEditableDataTable.init();
+        InitiateExpandableDataTable.init();
+        InitiateSearchableDataTable.init();
+    </script>
+}
+
 @await Component.InvokeAsync("DoctorsInfos")
 
 @await Component.InvokeAsync("DoctorPanelSideBarInIndex")
+
+<hr />
+
+@await Component.InvokeAsync("LastestOnlineVisitRequests")
+@await Component.InvokeAsync("ListOfDoctorOnlineVistiRequestForShowIn")
 
 
 

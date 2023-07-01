@@ -1,0 +1,280 @@
+﻿@model DoctorFAM.Domain.ViewModels.DoctorPanel.HealthInformation.TVFAM.EditTVFAMVideoDoctorPanelViewModel
+
+@using DoctorFAM.Application.StaticTools
+@using DoctorFAM.Domain.Entities.HealthInformation
+@using DoctorFAM.Web.Culture
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = "ویرایش پادکست";
+
+    List<DoctorFAM.Domain.ViewModels.Admin.HealthInformation.TVFAM.Category.TVFAMCategoryViewModel> permissions = ViewBag.Categories as List<DoctorFAM.Domain.ViewModels.Admin.HealthInformation.TVFAM.Category.TVFAMCategoryViewModel>;
+}
+
+@section Scripts
+    {
+<partial name="_JqueryValidation" />
+}
+
+@section Breadcrumb
+    {
+<li>
+    <a asp-action="MediaManage" asp-area="Consultant" asp-controller="Home"> مدیریت مدیا </a>
+</li>
+<li>
+    <a asp-area="Consultant" asp-controller="HealthInformation" asp-action="FilterPodcast"> مدیریت پادکستها  </a>
+
+</li>
+}
+
+<div class="row">
+
+    @if (!string.IsNullOrEmpty(Model.RejectNote) && Model.HealtInformationFileState == DoctorFAM.Domain.Enums.HealtInformation.HealtInformationFileState.Rejected)
+    {
+        <div class="col-lg-12 col-sm-12 col-xs-12">
+            <div class="widget">
+                <div class="widget-header bg-red">
+                    <span class="widget-caption">@Localizer["پیام پشتیبانی"] </span>
+                    <div class="widget-buttons">
+                        <a href="#" data-toggle="config">
+                            <i class="fa fa-cog"></i>
+                        </a>
+                        <a href="#" data-toggle="maximize">
+                            <i class="fa fa-expand"></i>
+                        </a>
+                        <a href="#" data-toggle="collapse">
+                            <i class="fa fa-minus"></i>
+                        </a>
+                        <a href="#" data-toggle="dispose">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div><!--Widget Buttons-->
+            </div><!--Widget Header-->
+            <div class="widget-body bg-red">
+                    <p> @Model.RejectNote </p>
+                </div><!--Widget Body-->
+        </div><!--Widget-->
+    </div>
+    }
+
+</div>
+
+<form method="post" asp-action="EditPodcast" asp-controller="HealthInformation" asp-area="Consultant" enctype="multipart/form-data">
+    <input asp-for="HealthInfoId" type="hidden" />
+    <input type="hidden" asp-for="imagename" />
+
+    <div class="row">
+        <div class="col-lg-9 col-sm-12">
+            <div class="widget">
+                <div class="widget-header bordered-bottom bordered-green">
+                    <span class="widget-caption"> @ViewData["Title"] </span>
+                </div>
+                <div class="widget-body">
+                    <div>
+
+                        <div class="row">
+                            <div class="form-group col-md-12 col-sm-12">
+                                <label asp-for="Title">عنوان</label>
+                                <input type="text" class="form-control" asp-for="Title">
+                                <span class="text-danger" asp-validation-for="Title"></span>
+                            </div>
+
+                            <div class="clearfix"></div>
+
+                            <div class="form-group col-md-12 col-sm-12">
+                                <label asp-for="ShortDescription">توضیح مختصر</label>
+                                <input type="text" class="form-control" asp-for="ShortDescription">
+                                <span class="text-danger" asp-validation-for="ShortDescription"></span>
+                            </div>
+
+                            <div class="clearfix"></div>
+
+                            <div class="form-group col-md-12 col-sm-12">
+                                <label asp-for="Tags">تگ </label>
+                                <input type="text" class="form-control" tagify="1" asp-for="Tags">
+                                <span class="text-danger" asp-validation-for="Tags"></span>
+                            </div>
+
+                            <div class="clearfix"></div>
+
+                            <div class="form-group col-md-12">
+                                <label asp-for="longDescription">توضیح کامل</label>
+                                <textarea class="form-control" ckeditor="1" asp-for="longDescription"></textarea>
+                                <span class="text-danger" asp-validation-for="longDescription"></span>
+
+                            </div>
+
+                        </div>
+
+                        <hr class="margin-bottom-10 margin-top-10" />
+
+                        <div class="row">
+                            <div class="col-md-12 flex-style">
+                                <button type="submit" class="btn btn-labeled btn-palegreen">
+                                    <i class="btn-label glyphicon glyphicon-ok"></i>ثبت
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-lg-3 col-sm-12">
+            <div class="row">
+
+                <div class="col-lg-12">
+                    <div class="widget">
+                        <div class="widget-header bordered-bottom bordered-blue flex-style">
+                            <span class="widget-caption"> انتخاب دسته بندی</span>
+                        </div>
+                        <div class="widget-body @((permissions != null && permissions.Any()) ? "no-padding" : "")">
+
+                            @if (permissions != null && permissions.Any())
+                            {
+                                <div class="panel-group accordion">
+                                    @foreach (var permission in permissions.Where(s => s.ParentId == null))
+                                    {
+                                        var isPermissionSelected = Model != null && Model.Permissions != null && Model.Permissions.Any(s => s == permission.CatgeoryId);
+
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a class="accordion-toggle @((isPermissionSelected) ? "" : "collapsed")" data-toggle="collapse" href="#permission-@permission.CatgeoryId" aria-expanded="@((isPermissionSelected) ? "true" : "false")">
+                                                        @permission.CategoryName
+                                                    </a>
+                                                </h4>
+                                            </div>
+                                            <div id="permission-@permission.CatgeoryId" class="panel-collapse collapse @((isPermissionSelected) ? "in" : "")" aria-expanded="@((isPermissionSelected) ? "true" : "false")" style="height: @((isPermissionSelected) ? "auto" : "0")">
+                                                <div class="panel-body" style="padding: 5px 15px 0 15px !important">
+
+                                                    <span class="label-style">سرگروه</span>
+
+                                                    <div class="form-group">
+                                                        <div class="checkbox">
+                                                            <label>
+                                                                <input type="checkbox" value="@permission.CatgeoryId" name="Permissions" data-id="@permission.CatgeoryId" @((isPermissionSelected) ? "checked" : "")>
+                                                                <span class="text"> @permission.CategoryName </span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+
+                                                    @if (permissions.Any(s => s.ParentId.HasValue && s.ParentId.Value == permission.CatgeoryId))
+                                                    {
+                                                        <hr style="margin-top: 10px !important; margin-bottom: 10px !important" />
+
+                                                        <span class="label-style">زیر گروه</span>
+
+                                                        @foreach (var subPermission in permissions.Where(s => s.ParentId.HasValue && s.ParentId.Value == permission.CatgeoryId))
+                                                        {
+                                                            var isSubPermissionSelected = Model != null && Model.Permissions != null && Model.Permissions.Any(s => s == subPermission.CatgeoryId);
+
+                                                            <div class="form-group">
+                                                                <div class="checkbox">
+                                                                    <label>
+                                                                        <input type="checkbox" value="@subPermission.CatgeoryId" name="Permissions" data-id="@subPermission.CatgeoryId" data-parentId="@permission.CatgeoryId" @((isSubPermissionSelected) ? "checked" : "")>
+                                                                        <span class="text"> @subPermission.CategoryName </span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                    }
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                            else
+                            {
+                                <partial name="_ConsultantPanelNotFoundPartial" />
+                            }
+
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-lg-12">
+                    <div class="widget">
+                        <div class="widget-header bordered-bottom bordered-green">
+                        </div>
+                        <div class="widget-body">
+                            <div class="row">
+
+                                <input type="hidden" asp-for="AttachmentFileName">
+
+                                <div class="col-md-12">
+                                    <label for="courseAttachmentFile" class="file-input-style">
+                                        <i class="glyphicon glyphicon-upload"></i>
+                                        <span class="mr-8px">لطفا فایل ضمیمه را انتخاب کنید .</span>
+                                    </label>
+                                </div>
+
+                                <div class="col-md-12 mt-10px display-none" id="CourseAttachment" inputId="AttachmentFileName" upload-url="@Url.Action("UploadCourseAttachmentFile", "HealthInformation", new {area = "Consultant"})">
+                                    <div class="progress progress-bordered" style="margin-bottom: 10px !important">
+                                        <div class="progress-bar progress-bar-blue" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                                            <span class="percent"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 mt-10px @((Model != null && !string.IsNullOrEmpty(Model.AttachmentFileName)) ? "" : "display-none")" style="margin-bottom: 5px" id="CourseAttachmentDownloadBox">
+                                    <div style="border-radius:10px" class="file-admin-style bg-sky">
+                                        <span> فایل ضمیمه </span>
+                                        <a asp-action="DownloadAttachmentFile" asp-controller="HealthInformation" asp-area="Consultant" asp-route-fileName="@((Model != null && !string.IsNullOrEmpty(Model.AttachmentFileName)) ? Model.AttachmentFileName : string.Empty)" class="icon-download-style">
+                                            <i class="glyphicon glyphicon-cloud-download"></i>
+                                        </a>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-12">
+                    <div class="widget">
+                        <div class="widget-header bordered-bottom bordered-green">
+                            <span class="widget-caption"> تصویر  </span>
+                        </div>
+                        <div class="widget-body">
+                            <div class="row">
+
+                                <input type="file" class="display-none" name="Image" id="UserAvatar" ImageInput="1" accept=".jpg,.jpeg,.png" />
+
+                                <div class="col-md-12">
+                                    <label for="UserAvatar" class="file-input-style">
+                                        <i class="glyphicon glyphicon-upload"></i>
+                                        <span class="mr-8px"> لطفا یک تصویر را انتخاب کنید</span>
+                                    </label>
+                                </div>
+
+                                @{
+                                    var avatarUrl = PathTools.DefaultProductAvatar;
+
+                                    if (Model != null && !string.IsNullOrEmpty(Model.imagename))
+                                    {
+                                        avatarUrl = $"{PathTools.HealthInformationAttachmentFilesImagePathThumb}{Model.imagename}";
+                                    }
+                                }
+
+                                <div class="col-md-12 tc mt-10px">
+                                    <img src="@avatarUrl" class="image-style" ImageFile="1" />
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</form>
+
+<input type="file" chunk-upload="CourseAttachment" class="display-none" name="courseAttachmentFile" id="courseAttachmentFile" />
+

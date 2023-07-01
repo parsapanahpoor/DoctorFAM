@@ -1,28 +1,37 @@
-﻿using DoctorFAM.Application.Extensions;
+﻿#region Usings
+
+using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
-namespace DoctorFAM.Web.Areas.Consultant.ViewComponents
+namespace DoctorFAM.Web.Areas.Consultant.ViewComponents;
+
+#endregion
+
+public class ConsultantPanelChatBarViewComponent : ViewComponent
 {
-    public class ConsultantPanelChatBarViewComponent : ViewComponent
+    #region Ctor
+
+    private readonly INotificationService _notificationService;
+    private readonly IOrganizationService _organizationService;
+
+    public ConsultantPanelChatBarViewComponent(INotificationService notificationService, IOrganizationService organizationService)
     {
-        #region Ctor
+        _notificationService = notificationService;
+        _organizationService = organizationService;
+    }
 
-        private readonly INotificationService _notificationService;
-        private readonly IOrganizationService _organizationService;
+    #endregion
 
-        public ConsultantPanelChatBarViewComponent(INotificationService notificationService, IOrganizationService organizationService)
-        {
-            _notificationService = notificationService;
-            _organizationService = organizationService;
-        }
+    public async Task<IViewComponentResult> InvokeAsync()
+    {
+        #region Get Organziation 
+
+        ulong organizationOwmerId = await _organizationService.GetOranizationOwnerIdByMemberUserId(User.GetUserId());
 
         #endregion
 
-        public async Task<IViewComponentResult> InvokeAsync()
-        {
-            var model = await _notificationService.GetListOfSupporterNotificationByUserId(User.GetUserId());
-            return View("ConsultantPanelChatBar", model);
-        }
+        var model = await _notificationService.GetListOfConsultantPanelNotificationByUserId(organizationOwmerId);
+        return View("ConsultantPanelChatBar", model);
     }
 }

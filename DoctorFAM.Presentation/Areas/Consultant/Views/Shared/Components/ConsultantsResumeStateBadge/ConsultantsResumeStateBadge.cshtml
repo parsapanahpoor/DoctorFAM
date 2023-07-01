@@ -1,0 +1,57 @@
+﻿@model DoctorFAM.Domain.Entities.Resume.Resume
+
+@if (Model != null)
+{
+    @if (Model.ResumeState == DoctorFAM.Domain.Enums.ResumeState.ResumeState.Accepted)
+    {
+        <li>
+            <a asp-action="PageOfResume" asp-controller="Resume" asp-area="Consultant">
+                <i class="menu-icon glyphicon glyphicon-education"></i>
+                <span class="menu-text">@SharedLocalizer["مدریت رزومه"]</span>
+                <div class="badge badge-success" id="DoctorInfoState">
+                    @SharedLocalizer["تایید شده"]
+                </div>
+            </a>
+        </li>
+    }
+
+    @if (Model.ResumeState == DoctorFAM.Domain.Enums.ResumeState.ResumeState.WaitingForConfirm)
+    {
+        <li>
+            <a asp-action="PageOfResume" asp-controller="Resume" asp-area="Consultant">
+                <i class="menu-icon glyphicon glyphicon-education"></i>
+                <span class="menu-text">@SharedLocalizer["مدریت رزومه"]</span>
+                <div class="badge badge-warning" id="DoctorInfoState">
+                    @SharedLocalizer["درانتظار"]
+                </div>
+            </a>
+        </li>
+    }
+
+    @if (Model.ResumeState == DoctorFAM.Domain.Enums.ResumeState.ResumeState.Decline)
+    {
+        <li>
+            <a asp-action="PageOfResume" asp-controller="Resume" asp-area="Consultant">
+                <i class="menu-icon glyphicon glyphicon-education"></i>
+                <span class="menu-text">@SharedLocalizer["مدریت رزومه"]</span>
+                <div class="badge badge-danger" id="DoctorInfoState">
+                    @SharedLocalizer["رد شده"]
+                </div>
+            </a>
+        </li>
+    }
+}
+else
+{
+    <li>
+        <a asp-action="PageOfResume" asp-controller="Resume" asp-area="Consultant">
+            <i class="menu-icon glyphicon glyphicon-education"></i>
+            <span class="menu-text">@SharedLocalizer["مدریت رزومه"]</span>
+            <div class="badge badge-warning" id="DoctorInfoState">
+                @SharedLocalizer["درانتظار"]
+            </div>
+        </a>
+    </li>
+}
+
+
