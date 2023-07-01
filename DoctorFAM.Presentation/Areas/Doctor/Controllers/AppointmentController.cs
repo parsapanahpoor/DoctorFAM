@@ -109,7 +109,7 @@ public class AppointmentController : DoctorBaseController
 
         #region Add Reservation Date 
 
-        var result = await _reservatioService.AddReservationDate(model, User.GetUserId());
+        var result = await _reservatioService.AddReservationDate(model, organization.OwnerId);
 
         if (result)
         {
@@ -204,9 +204,17 @@ public class AppointmentController : DoctorBaseController
 
         #endregion
 
+
+        #region Get Owner Organization By EmployeeId 
+
+        var organization = await _organizationService.GetDoctorOrganizationByUserId(User.GetUserId());
+        if (organization == null) return NotFound();
+
+        #endregion
+
         #region Add Reservation Date Time Method
 
-        var res = await _reservatioService.AddReservationDateTimeDoctorPanel(model, User.GetUserId());
+        var res = await _reservatioService.AddReservationDateTimeDoctorPanel(model, organization.OwnerId);
 
         if (res)
         {
@@ -261,9 +269,16 @@ public class AppointmentController : DoctorBaseController
 
         #endregion
 
+        #region Get Owner Organization By EmployeeId 
+
+        var organization = await _organizationService.GetDoctorOrganizationByUserId(User.GetUserId());
+        if (organization == null) return NotFound();
+
+        #endregion
+
         #region Add Methods
 
-        var result = await _reservatioService.AddReservationDateTimeWithCoputer(model, User.GetUserId());
+        var result = await _reservatioService.AddReservationDateTimeWithCoputer(model, organization.OwnerId);
 
         if (result)
         {
@@ -283,7 +298,14 @@ public class AppointmentController : DoctorBaseController
 
     public async Task<IActionResult> DeleteReservationDateTime(ulong Id)
     {
-        var result = await _reservatioService.DeleteReservationDateTime(Id, User.GetUserId());
+        #region Get Owner Organization By EmployeeId 
+
+        var organization = await _organizationService.GetDoctorOrganizationByUserId(User.GetUserId());
+        if (organization == null) return NotFound();
+
+        #endregion
+
+        var result = await _reservatioService.DeleteReservationDateTime(Id, organization.OwnerId);
 
         if (result)
         {
@@ -299,16 +321,23 @@ public class AppointmentController : DoctorBaseController
 
     public async Task<IActionResult> ShowPatientDetail(ulong ReservationDateTimeId)
     {
+        #region Get Owner Organization By EmployeeId 
+
+        var organization = await _organizationService.GetDoctorOrganizationByUserId(User.GetUserId());
+        if (organization == null) return NotFound();
+
+        #endregion
+
         #region Fill Model
 
-        var res = await _reservatioService.ShowPatientDetailViewModel(ReservationDateTimeId, User.GetUserId());
+        var res = await _reservatioService.ShowPatientDetailViewModel(ReservationDateTimeId, organization.OwnerId);
         if (res == null) return NotFound();
 
         #endregion
 
         #region Check Doctor Booking 
 
-        if (await _reservatioService.CheckThatIsDoctorReservationIsDoctorPersonalBooking(ReservationDateTimeId , User.GetUserId()))
+        if (await _reservatioService.CheckThatIsDoctorReservationIsDoctorPersonalBooking(ReservationDateTimeId , organization.OwnerId))
         {
             ViewBag.DoctorBooking = true;
         }
@@ -325,9 +354,16 @@ public class AppointmentController : DoctorBaseController
     [HttpGet]
     public async Task<IActionResult> AddPersonalPatientForDoctorBooking(ulong ReservationDateTimeId)
     {
+        #region Get Owner Organization By EmployeeId 
+
+        var organization = await _organizationService.GetDoctorOrganizationByUserId(User.GetUserId());
+        if (organization == null) return NotFound();
+
+        #endregion
+
         #region Check Doctor Reservation Date Time 
 
-        var res = await _reservatioService.FillDoctorPersonalBooking(ReservationDateTimeId , User.GetUserId());
+        var res = await _reservatioService.FillDoctorPersonalBooking(ReservationDateTimeId , organization.OwnerId);
         if (res == null) return NotFound();
 
         #endregion
@@ -338,9 +374,16 @@ public class AppointmentController : DoctorBaseController
     [HttpPost , ValidateAntiForgeryToken]
     public async Task<IActionResult> AddPersonalPatientForDoctorBooking(DoctorPersonalBookingViewModel model)
     {
+        #region Get Owner Organization By EmployeeId 
+
+        var organization = await _organizationService.GetDoctorOrganizationByUserId(User.GetUserId());
+        if (organization == null) return NotFound();
+
+        #endregion
+
         #region Check Doctor Reservation Date Time 
 
-        var res = await _reservatioService.FillDoctorPersonalBooking(model.DoctorReservationDateTimeId, User.GetUserId());
+        var res = await _reservatioService.FillDoctorPersonalBooking(model.DoctorReservationDateTimeId, organization.OwnerId);
         if (res == null) return NotFound();
 
         #endregion
@@ -357,7 +400,7 @@ public class AppointmentController : DoctorBaseController
 
         #region Add Patient To Doctor Booking 
 
-        var result = await _reservatioService.AddPatientToDoctorBooking(model , User.GetUserId());
+        var result = await _reservatioService.AddPatientToDoctorBooking(model , organization.OwnerId);
         if (result)
         {
             //Get Doctor Reservation Date Time By ID 

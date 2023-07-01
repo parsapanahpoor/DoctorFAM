@@ -49,6 +49,22 @@ namespace DoctorFAM.Data.Repository
             return await _context.Organizations.FirstOrDefaultAsync(p => p.Id == member.OrganizationId && !p.IsDelete);
         }
 
+        //Get Organization By User Id With As No Tracking
+        public async Task<Organization?> GetOrganizationByUserIdWithAsNoTracking(ulong userId)
+        {
+            var memberOrganizationId = await _context.OrganizationMembers
+                                       .AsNoTracking()
+                                       .Where(p => !p.IsDelete && p.UserId == userId)
+                                       .Select(p=> p.OrganizationId)
+                                       .FirstOrDefaultAsync();
+
+            if (memberOrganizationId == null) return null;
+
+            return await _context.Organizations
+                                 .AsNoTracking()
+                                 .FirstOrDefaultAsync(p => p.Id == memberOrganizationId && !p.IsDelete);
+        }
+
         //Get Organization Owner Id By Organization Member User Id With As No Tracking
         public async Task<ulong?> GetOrganizationOwnerIdByOrganizationMemberUserIdWithAsNoTracking(ulong memberUserId)
         {
@@ -200,10 +216,24 @@ namespace DoctorFAM.Data.Repository
         //Get Consultant Organization by User Id
         public async Task<Organization?> GetConsultantOrganizationByUserId(ulong userId)
         {
-            var member = await _context.OrganizationMembers.Include(p => p.Organization)
-                                .FirstOrDefaultAsync(p => !p.IsDelete && p.UserId == userId && p.Organization.OrganizationType == Domain.Enums.Organization.OrganizationType.Consultant);
+            List<ulong>? organizationIds = await _context.OrganizationMembers
+                                                                     .AsNoTracking()
+                                                                     .Where(p => !p.IsDelete && p.UserId == userId)
+                                                                     .Select(p => p.OrganizationId)
+                                                                     .ToListAsync();
 
-            return await _context.Organizations.FirstOrDefaultAsync(p => p.Id == member.OrganizationId && !p.IsDelete && p.OrganizationType == Domain.Enums.Organization.OrganizationType.Consultant);
+            if (organizationIds is not null && organizationIds.Any())
+            {
+                foreach (var organizationId in organizationIds)
+                {
+                    if (await _context.Organizations.AsNoTracking().AnyAsync(p => !p.IsDelete && p.Id == organizationId && p.OrganizationType == Domain.Enums.Organization.OrganizationType.Consultant))
+                    {
+                        return await _context.Organizations.FirstOrDefaultAsync(p => !p.IsDelete && p.Id == organizationId && p.OrganizationType == Domain.Enums.Organization.OrganizationType.Consultant);
+                    }
+                }
+            }
+
+            return null;
         }
 
         //Get Laboratory Organization by User Id
@@ -318,6 +348,29 @@ namespace DoctorFAM.Data.Repository
         {
             return await _context.OrganizationMembers.Include(p => p.User)
                                     .Where(p => !p.IsDelete && p.OrganizationId == organizationId).Select(p => p.User).ToListAsync();
+        }
+
+        //Get Consultant Organization OwnerId By User Id
+        public async Task<ulong> GetConsultantOrganizationOwnerIdByUserId(ulong userId)
+        {
+            List<ulong>? organizationIds = await _context.OrganizationMembers.AsNoTracking()
+                                                     .Where(p => !p.IsDelete && p.UserId == userId)
+                                                     .Select(p => p.OrganizationId)
+                                                     .ToListAsync();
+
+            if (organizationIds == null) return 0;
+
+            foreach (var organizationId in organizationIds)
+            {
+                if (await _context.Organizations.AsNoTracking().AnyAsync(p => !p.IsDelete && p.Id == organizationId && p.OrganizationType == Domain.Enums.Organization.OrganizationType.Consultant))
+                {
+                    return await _context.Organizations.AsNoTracking().Where(p => !p.IsDelete && p.Id == organizationId && p.OrganizationType == Domain.Enums.Organization.OrganizationType.Consultant)
+                                            .Select(p => p.OwnerId)
+                                            .FirstOrDefaultAsync();
+                }
+            }
+
+            return 0;
         }
 
         #endregion

@@ -26,6 +26,12 @@ namespace DoctorFAM.Application.Services.Implementation
 
         #region General
 
+        //Get Nurse Organization by User Id
+        public async Task<Organization?> GetConsultantOrganizationByUserId(ulong userId)
+        {
+            return await _organization.GetConsultantOrganizationByUserId(userId);
+        }
+
         public async Task<ulong> AddOrganizationWithReturnId(Organization organization)
         {
             return await _organization.AddOrganizationWithReturnId(organization);
@@ -96,12 +102,6 @@ namespace DoctorFAM.Application.Services.Implementation
         public async Task<Organization?> GetNurseOrganizationByUserId(ulong userId)
         {
             return await _organization.GetNurseOrganizationByUserId(userId);
-        }
-
-        //Get Consultant Organization by User Id
-        public async Task<Organization?> GetConsultantOrganizationByUserId(ulong userId)
-        {
-            return await _organization.GetConsultantOrganizationByUserId(userId);
         }
 
         //Get Laboratory Organization by User Id
@@ -197,6 +197,12 @@ namespace DoctorFAM.Application.Services.Implementation
         public async Task<ulong> GetDentistOrganizationOwnerIdByUserId(ulong userId)
         {
             return await _organization.GetDentistOrganizationOwnerIdByUserId(userId);
+        }
+
+        //Get Consultant Organization OwnerId By User Id
+        public async Task<ulong> GetConsultanttOrganizationOwnerIdByUserId(ulong userId)
+        {
+            return await _organization.GetConsultantOrganizationOwnerIdByUserId(userId);
         }
 
         //Is Exist Any Dentist Office Employee By User Id

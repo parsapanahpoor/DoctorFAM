@@ -1,0 +1,207 @@
+﻿@model DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.ManageResumeDoctorPanelViewModel
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Generators
+
+@{
+    ViewData["Title"] = "صفحه ی رزومه ";
+}
+
+@section Styles
+    {
+
+}
+
+@section Scripts
+    {
+        <script>
+
+            //#region About Me
+
+            function ShowAboutMe() {
+                $.ajax({
+                    url: "/Show-About-Me-In-Consultant-Panel-Modal",
+                    type: "get",
+                    data: {
+
+                    },
+                    success: function (response) {
+                        $("#LargeModalBody").html(response);
+
+                        $("#LargeModal").modal("show");
+                    }
+                });
+            }
+
+                   //#endregion
+
+        </script>
+}
+
+@section Breadcrumb
+    {
+
+}
+
+    <div class="row">
+
+    @if (Model != null && Model.Resume != null && !string.IsNullOrEmpty(Model.Resume.RejectedNote) && Model.Resume.ResumeState == DoctorFAM.Domain.Enums.ResumeState.ResumeState.Decline)
+    {
+            <div class="col-lg-12 col-sm-12 col-xs-12">
+                <div class="widget">
+                    <div class="widget-header bg-red">
+                        <span class="widget-caption">پیام پشتیبانی </span>
+                        <div class="widget-buttons">
+                            <a href="#" data-toggle="config">
+                                <i class="fa fa-cog"></i>
+                            </a>
+                            <a href="#" data-toggle="maximize">
+                                <i class="fa fa-expand"></i>
+                            </a>
+                            <a href="#" data-toggle="collapse">
+                                <i class="fa fa-minus"></i>
+                            </a>
+                            <a href="#" data-toggle="dispose">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div><!--Widget Buttons-->
+                    </div><!--Widget Header-->
+                    <div class="widget-body bg-red">
+                        <p> @Model.Resume.RejectedNote </p>
+                    </div><!--Widget Body-->
+                </div><!--Widget-->
+            </div>
+    }
+
+</div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="profile-container">
+
+                <div class="profile-header row">
+
+                    <div class="col-lg-2 col-md-4 col-sm-12 text-center">
+                        <img src="@Model.User.GetUserAvatar()" alt="" class="header-avatar">
+                    </div>
+                    <div class="col-lg-10 col-md-8 col-sm-12 profile-info">
+                        <div class="header-fullname">@Model.User.Username</div>
+
+                    @if (Model.ResumeAboutMeDoctorPanelViewModel != null)
+                    {
+                        @*Box Of About Me Resume Part*@
+                            <partial name="_AboutMe" model="@Model.ResumeAboutMeDoctorPanelViewModel" />
+                    }
+                    else
+                    {
+                                <p onclick="ShowAboutMe()" style="margin-top: -30px;" class="btn btn-palegreen btn-sm  btn-follow">
+            <i class="fa fa-check"></i>
+            درباره ی من
+        </p>
+    <div class="header-information" style="margin-top: 20px;">
+
+            <p class="btn btn-danger btn-sm  ">
+                وارد نشده است
+            </p>
+
+    </div>
+                    }
+
+                    </div>
+
+                </div>
+
+                <div class="profile-body">
+                    <div class="col-lg-12">
+                        <div class="tabbable">
+                            <ul class="nav nav-tabs tabs-flat  nav-justified" id="myTab11">
+
+                                <li class="active">
+                                    <a data-toggle="tab" href="#overview" aria-expanded="true">
+                                         تصاویر
+                                    </a>
+                                </li>
+
+                                <li class="tab-red">
+                                    <a data-toggle="tab" href="#timeline" aria-expanded="false">
+                                        تحصیلات
+                                    </a>
+                                </li>
+
+                                <li class="tab-palegreen">
+                                    <a data-toggle="tab" id="contacttab" href="#contacts" aria-expanded="false">
+                                        سوابق کاری
+                                    </a>
+                                </li>
+
+                                <li class="tab-yellow">
+                                    <a data-toggle="tab" href="#settings" aria-expanded="false">
+                                        افتخارات
+                                    </a>
+                                </li>
+
+                                <li class="tab-yellow">
+                                    <a data-toggle="tab" href="#setting" aria-expanded="false">
+                                        خدمات
+                                    </a>
+                                </li>
+
+                                <li class="tab-yellow">
+                                    <a data-toggle="tab" href="#settin" aria-expanded="false">
+                                         محل کار
+                                    </a>
+                                </li>
+
+                                <li class="tab-yellow">
+                                    <a data-toggle="tab" href="#setti" aria-expanded="false">
+                                        گواهینامه 
+                                    </a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content tabs-flat">
+                                <div id="overview" class="tab-pane active">
+                                @*Box Of Galley Part*@
+                                    <partial name="_ListOfGallery" model="@Model.GalleryResume" />
+                                </div>
+
+                                <div id="timeline" class="tab-pane">
+
+                                @*Box Of Education Info Part*@
+                                    <partial name="_ListOfEducationInfos" model="@Model.EducationResume" />
+
+                                </div>
+
+                                <div id="contacts" class="tab-pane">
+                                @*Box Of Work History Part*@
+                                    <partial name="_ListOfWorkHistory" model="@Model.WorkHistoryResume" />
+                                </div>
+
+                                <div id="settings" class="tab-pane">
+                                @*Box Of Honor Part*@
+                                    <partial name="_ListOfHonor" model="@Model.HonorResume" />
+                                </div>
+
+                                <div id="setting" class="tab-pane">
+                                @*Box Of Servicec Part*@
+                                    <partial name="_ListOfService" model="@Model.ServiceResume" />
+                                </div>
+
+                                <div id="settin" class="tab-pane">
+                                @*Box Of Working Address Part*@
+                                    <partial name="_ListOfWorkingAddress" model="@Model.WorkingAddressResume" />
+                                </div>
+
+                                <div id="setti" class="tab-pane">
+                                @*Box Of Certificate Part*@
+                                    <partial name="_ListOfCertificate" model="@Model.CertificateResume" />
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

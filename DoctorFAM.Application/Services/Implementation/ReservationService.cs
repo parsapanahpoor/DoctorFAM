@@ -257,26 +257,12 @@ public class ReservationService : IReservationService
     //Add Reservation Date 
     public async Task<bool> AddReservationDate(AddReservationDateViewModel model, ulong userId)
     {
-        #region Get Owner Organization By EmployeeId 
-
-        var organization = await _organizationService.GetDoctorOrganizationByUserId(userId);
-        if (organization == null) return false;
-
-        #endregion
-
         #region Is Exist Any Reservastion Date 
 
-        if (await _reservation.IsExistAnyDuplicateReservationDate(model.ReservationDate.ToMiladiDateTime(), organization.OwnerId))
+        if (await _reservation.IsExistAnyDuplicateReservationDate(model.ReservationDate.ToMiladiDateTime(), userId))
         {
             return false;
         }
-
-        #endregion
-
-        #region Check Doctor Is Valid
-
-        var doctor = await _doctorsRepository.GetDoctorByUserId(organization.OwnerId);
-        if (doctor == null) return false;
 
         #endregion
 
@@ -284,7 +270,7 @@ public class ReservationService : IReservationService
 
         DoctorReservationDate reservation = new DoctorReservationDate()
         {
-            UserId = organization.OwnerId,
+            UserId = userId,
             CreateDate = DateTime.Now,
             ReservationDate = model.ReservationDate.ToMiladiDateTime()
         };
@@ -299,7 +285,7 @@ public class ReservationService : IReservationService
 
         #region Get Doctor Office Address
 
-        var doctorOffice = await _workAddress.GetLastWorkAddressByUserId(organization.OwnerId);
+        var doctorOffice = await _workAddress.GetLastWorkAddressByUserId(userId);
 
         #endregion
 
@@ -445,31 +431,17 @@ public class ReservationService : IReservationService
     //Add Reservation Date Time With Coputer   
     public async Task<bool> AddReservationDateTimeWithCoputer(AddReservationDateTimeWithComputerViewModel model, ulong userId)
     {
-        #region Get Owner Organization By EmployeeId 
-
-        var organization = await _organizationService.GetDoctorOrganizationByUserId(userId);
-        if (organization == null) return false;
-
-        #endregion
-
         #region Get Reservation Date  
 
         var reservationDate = await _reservation.GetReservationDateById(model.ReservationDateId);
         if (reservationDate == null) return false;
-        if (reservationDate.UserId != organization.OwnerId) return false;
-
-        #endregion
-
-        #region Check Doctor Is Valid
-
-        var doctor = await _doctorsRepository.GetDoctorByUserId(organization.OwnerId);
-        if (doctor == null) return false;
+        if (reservationDate.UserId != userId) return false;
 
         #endregion
 
         #region Get Doctor Office Address
 
-        var doctorOffice = await _workAddress.GetLastWorkAddressByUserId(organization.OwnerId);
+        var doctorOffice = await _workAddress.GetLastWorkAddressByUserId(userId);
 
         #endregion
 
@@ -741,18 +713,10 @@ public class ReservationService : IReservationService
 
     public async Task<AddReservationDateTimeViewModel?> FillAddReservationDateTime(ulong reservationDateId, ulong userId)
     {
-        #region Get Organization By User Id 
-
-        var organization = await _organizationService.GetDoctorOrganizationByUserId(userId);
-        if (organization == null) return null;
-
-        #endregion
-
         #region Get Reservation By Id 
 
         var reservationDate = await _reservation.GetReservationDateById(reservationDateId);
         if (reservationDate == null) return null;
-        if (reservationDate.UserId != organization.OwnerId) return null;
 
         #endregion
 
@@ -800,24 +764,17 @@ public class ReservationService : IReservationService
 
     public async Task<bool> AddReservationDateTimeDoctorPanel(AddReservationDateTimeViewModel model, ulong userId)
     {
-        #region Get Organization By User Id 
-
-        var organization = await _organizationService.GetDoctorOrganizationByUserId(userId);
-        if (organization == null) return false;
-
-        #endregion
-
         #region Get Reservation By Id 
 
         var reservationDate = await _reservation.GetReservationDateById(model.ReservationDateId);
         if (reservationDate == null) return false;
-        if (reservationDate.UserId != organization.OwnerId) return false;
+        if (reservationDate.UserId != userId) return false;
 
         #endregion
 
         #region Get Doctor Office Address
 
-        var doctorOffice = await _workAddress.GetLastWorkAddressByUserId(organization.OwnerId);
+        var doctorOffice = await _workAddress.GetLastWorkAddressByUserId(userId);
 
         #endregion
 
@@ -895,18 +852,11 @@ public class ReservationService : IReservationService
 
     public async Task<bool> DeleteReservationDateTime(ulong reservationDateTimeId, ulong userId)
     {
-        #region Get Organization By User Id 
-
-        var organization = await _organizationService.GetDoctorOrganizationByUserId(userId);
-        if (organization == null) return false;
-
-        #endregion
-
         #region Get Reservation Date Time By Id
 
         var reservationDateTime = await _reservation.GetDoctorReservationDateTimeById(reservationDateTimeId);
         if (reservationDateTime == null) return false;
-        if (reservationDateTime.DoctorReservationDate.UserId != organization.OwnerId) return false;
+        if (reservationDateTime.DoctorReservationDate.UserId != userId) return false;
 
         //If This Time Was Reserved Cannot Be Delete
         if (reservationDateTime.DoctorReservationState != Domain.Enums.DoctorReservation.DoctorReservationState.NotReserved) return false;
@@ -966,20 +916,6 @@ public class ReservationService : IReservationService
     //Check Doctor Reservation Date Time Validation For Add Doctor Personal Patient (Doctor Booking)
     public async Task<DoctorPersonalBookingViewModel?> FillDoctorPersonalBooking(ulong reservationDateTimeId, ulong userId)
     {
-        #region Get Organization By User Id 
-
-        var organization = await _organizationService.GetDoctorOrganizationByUserId(userId);
-        if (organization == null) return null;
-
-        #endregion
-
-        #region Get Doctor By Owner Id
-
-        var doctor = await _doctorsRepository.GetDoctorByUserId(organization.OwnerId);
-        if (doctor == null) return null;
-
-        #endregion
-
         #region Get Reservation Date Time By Id
 
         var reservationDateTime = await _reservation.GetDoctorReservationDateTimeById(reservationDateTimeId);
@@ -993,7 +929,7 @@ public class ReservationService : IReservationService
 
         var reservationDate = await _reservation.GetReservationDateById(reservationDateTime.DoctorReservationDateId);
         if (reservationDate == null) return null;
-        if (reservationDate.UserId != organization.OwnerId) return null;
+        if (reservationDate.UserId != userId) return null;
 
         #endregion
 
@@ -1062,20 +998,6 @@ public class ReservationService : IReservationService
 
     public async Task<ShowPatientDetailViewModel?> ShowPatientDetailViewModel(ulong reservationDateTimeId, ulong userId)
     {
-        #region Get Organization By User Id 
-
-        var organization = await _organizationService.GetDoctorOrganizationByUserId(userId);
-        if (organization == null) return null;
-
-        #endregion
-
-        #region Get Doctor By Owner Id
-
-        var doctor = await _doctorsRepository.GetDoctorByUserId(organization.OwnerId);
-        if (doctor == null) return null;
-
-        #endregion
-
         #region Get Reservation Date Time By Id
 
         var reservationDateTime = await _reservation.GetDoctorReservationDateTimeByIncludeRelationWithDoctorBooking(reservationDateTimeId);
@@ -1090,7 +1012,7 @@ public class ReservationService : IReservationService
 
         var reservationDate = await _reservation.GetReservationDateById(reservationDateTime.DoctorReservationDateId);
         if (reservationDate == null) return null;
-        if (reservationDate.UserId != organization.OwnerId) return null;
+        if (reservationDate.UserId != userId) return null;
 
         #endregion
 
@@ -1169,13 +1091,6 @@ public class ReservationService : IReservationService
     //Check That Is Doctor Reservation Is Doctor Personal Booking 
     public async Task<bool> CheckThatIsDoctorReservationIsDoctorPersonalBooking(ulong reservationId, ulong userId)
     {
-        #region Get Organization By User Id 
-
-        var organization = await _organizationService.GetDoctorOrganizationByUserId(userId);
-        if (organization == null) return false;
-
-        #endregion
-
         #region Get Reservation Date Time By Id
 
         var reservationDateTime = await _reservation.GetDoctorReservationDateTimeByIncludeRelationWithDoctorBooking(reservationId);
@@ -1186,7 +1101,7 @@ public class ReservationService : IReservationService
 
         #region return Result 
 
-        if (reservationDateTime.PatientId == organization.OwnerId)
+        if (reservationDateTime.PatientId == userId)
         {
             return true;
         }
@@ -1229,20 +1144,6 @@ public class ReservationService : IReservationService
     //Add Patient To Doctor Booking 
     public async Task<bool> AddPatientToDoctorBooking(DoctorPersonalBookingViewModel model, ulong userId)
     {
-        #region Get Organization By User Id 
-
-        var organization = await _organizationService.GetDoctorOrganizationByUserId(userId);
-        if (organization == null) return false;
-
-        #endregion
-
-        #region Get Doctor By Owner Id
-
-        var doctor = await _doctorsRepository.GetDoctorByUserId(organization.OwnerId);
-        if (doctor == null) return false;
-
-        #endregion
-
         #region Get Reservation Date Time By Id
 
         var reservationDateTime = await _reservation.GetDoctorReservationDateTimeById(model.DoctorReservationDateTimeId);
@@ -1262,7 +1163,7 @@ public class ReservationService : IReservationService
 
         var reservationDate = await _reservation.GetReservationDateById(reservationDateTime.DoctorReservationDateId);
         if (reservationDate == null) return false;
-        if (reservationDate.UserId != organization.OwnerId) return false;
+        if (reservationDate.UserId != userId) return false;
 
         #endregion
 
@@ -1270,7 +1171,7 @@ public class ReservationService : IReservationService
 
         #region Update Doctor Reservation Date Time 
 
-        reservationDateTime.PatientId = organization.OwnerId;
+        reservationDateTime.PatientId = userId;
         reservationDateTime.DoctorReservationState = Domain.Enums.DoctorReservation.DoctorReservationState.Reserved;
         reservationDateTime.DoctorReservationType = Domain.Enums.DoctorReservation.DoctorReservationType.Reserved;
         reservationDateTime.DoctorBooking = true;

@@ -1,4 +1,4 @@
-﻿@model List<DoctorFAM.Domain.Entities.Notification.SupporterNotification>
+﻿@model List<DoctorFAM.Domain.ViewModels.Consultant.Notification.ConsultantPanelNotificationViewModel>
 @using DoctorFAM.Application.Extensions
 @using DoctorFAM.Application.Convertors
 @using DoctorFAM.Domain.ViewModels.Common
@@ -14,7 +14,7 @@
                 </a>
             </div>
             <div class="col-md-6">
-                <a asp-action="SeenNotificationsByUserId" asp-area="Doctor" asp-controller="Notification" style="margin:0px 0px 0px 0px" class="col-md-12 btn btn-labeled btn-danger">
+                <a asp-action="SeenNotificationsByUserId" asp-area="Consultant" asp-controller="Notification" style="margin:0px 0px 0px 0px" class="col-md-12 btn btn-labeled btn-danger">
                     <i class="btn-label glyphicon glyphicon-trash"></i>پاک کردن
                 </a>
             </div>
@@ -27,7 +27,7 @@
                 {
                     <li class="contact" style="pointer-events:none">
                         <div class="contact-avatar">
-                            <img src="@item.User.GetUserAvatar()" />
+                            <img src="@item.User.UserAvatar.GetUserAvatar()" />
                         </div>
                         <div class="contact-info">
 

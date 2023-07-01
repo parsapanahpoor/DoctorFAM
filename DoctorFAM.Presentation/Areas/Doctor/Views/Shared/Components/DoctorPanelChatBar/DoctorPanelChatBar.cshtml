@@ -1,4 +1,4 @@
-﻿@model List<DoctorFAM.Domain.Entities.Notification.SupporterNotification>
+﻿@model List<DoctorFAM.Domain.ViewModels.Doctor.Notification.DoctorPanelNotificationViewModel>
 @using DoctorFAM.Application.Extensions
 @using DoctorFAM.Application.Convertors
 @using DoctorFAM.Domain.ViewModels.Common
@@ -27,7 +27,7 @@
                 {
                     <li class="contact" style="pointer-events:none">
                         <div class="contact-avatar">
-                            <img src="@item.User.GetUserAvatar()" />
+                            <img src="@item.User.UserAvatar.GetUserAvatar()" />
                         </div>
                         <div class="contact-info">
 

@@ -776,10 +776,13 @@ public class ResumeController : DentistBaseController
 
         var gallery = await _resumeService.GetUserGalleryByUserId(User.GetUserId());
 
-        if (gallery.Count() >= 5)
+        if (gallery != null)
         {
-            TempData[ErrorMessage] = "بیشتر از 5 تصویر نمی توان وارد کرد.";
-            return RedirectToAction(nameof(PageOfResume));
+            if (gallery.Count() >= 5)
+            {
+                TempData[ErrorMessage] = "بیشتر از 5 تصویر نمی توان وارد کرد.";
+                return RedirectToAction(nameof(PageOfResume));
+            }
         }
 
         #endregion
@@ -794,10 +797,13 @@ public class ResumeController : DentistBaseController
 
         var gallery = await _resumeService.GetUserGalleryByUserId(User.GetUserId());
 
-        if (gallery.Count() >= 5)
+        if (gallery != null)
         {
-            TempData[ErrorMessage] = "بیشتر از 5 تصویر نمی توان وارد کرد.";
-            return RedirectToAction(nameof(PageOfResume));
+            if (gallery.Count() >= 5)
+            {
+                TempData[ErrorMessage] = "بیشتر از 5 تصویر نمی توان وارد کرد.";
+                return RedirectToAction(nameof(PageOfResume));
+            }
         }
 
         #endregion

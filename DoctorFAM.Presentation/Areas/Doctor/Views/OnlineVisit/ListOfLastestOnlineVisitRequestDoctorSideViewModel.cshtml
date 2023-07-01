@@ -110,6 +110,10 @@
                                            asp-route-onlineVisitRequestId="@onlineVisit.UserRequestId"
                                            class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
 
+                                                <a asp-action="ConfirmOnlineVisitRequest" asp-area="Doctor" asp-controller="OnlineVisit"
+                                           asp-route-requestId="@onlineVisit.UserRequestId"
+                                           asp-route-businessKey="@onlineVisit.BusinessKey" class="btn btn-success btn-circle btn-xs"><i class="glyphicon glyphicon-check"></i></a>
+
                                             </td>
 
                                         </tr>
