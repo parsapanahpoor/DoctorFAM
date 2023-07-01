@@ -1,0 +1,58 @@
+﻿@model List<DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Certificate.CertificateResumeInDoctorPanelViewModel>
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.Utils
+@using DoctorFAM.Application.StaticTools
+
+<div class="form-title">
+    بخش گواهینامه
+
+    <a asp-action="CreateCertificate" asp-area="Consultant" asp-controller="Resume" style="margin-right: 10px;" class="btn btn-success mr-4">افزودن اطلاعات</a>
+</div>
+
+
+@if (Model != null && Model.Any())
+{
+    foreach (var Certificate in Model)
+    {
+        <ul class="timeline animated fadeInDown">
+
+            <li>
+                @*<div class="timeline-datetime">
+                    <a asp-action="EditCertificate" asp-area="Consultant" asp-controller="Resume" asp-route-id="@Certificate.Id" style="margin-right: 10px;" class="btn btn-primary mr-4">ویرایش</a>
+                    <a asp-action="DeleteCertificate" asp-area="Consultant" asp-controller="Resume" asp-route-id="@Certificate.Id" style="margin-right: 10px;" class="btn btn-danger mr-4">حذف</a>
+                </div>*@
+                <div class="timeline-badge " style="height:0px !important;width:0px !important">
+                   <a href="@PathTools.CertificatePathThumb@Certificate.ImageName" target="_blank" ><img style="border-radius: 50px;height: 70px;" src="@PathTools.CertificatePathThumb@Certificate.ImageName" /></a>
+                </div>
+                <div class="timeline-panel">
+                    <div class="timeline-header bordered-bottom bordered-blue">
+                        @if (!string.IsNullOrEmpty(Certificate.CertificateTitle))
+                        {
+                            <span class="timeline-title">
+                                @Certificate.CertificateTitle
+                            </span>
+                        }
+                    </div>
+                    <div class="timeline-body">
+                        <p> @((string.IsNullOrEmpty(Certificate.ExporterRefrence)) ? "وارد نشده" : Certificate.ExporterRefrence)</p>
+                        <div class="row ">
+                            <div class="col-md-12 ">
+
+                                <a asp-action="EditCertificate" asp-area="Consultant" asp-controller="Resume" asp-route-id="@Certificate.Id" class="tmlnbutton2 "><i class="fa fa-edit warning"></i></a>
+                                <a asp-action="DeleteCertificate" asp-area="Consultant" asp-controller="Resume" asp-route-id="@Certificate.Id" class="tmlnbuttondelete2"><i class="fa fa-trash-o danger"></i></a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </li>
+        </ul>
+    }
+}
+else
+{
+    <div class="alert alert-info fade in">
+        @SharedLocalizer["Not Found"]
+    </div>
+}

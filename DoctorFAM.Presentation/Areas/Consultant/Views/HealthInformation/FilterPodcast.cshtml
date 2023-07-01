@@ -1,0 +1,148 @@
+﻿@model List<DoctorFAM.Domain.Entities.HealthInformation.HealthInformation>
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.Extensions
+
+@{
+    ViewData["Title"] = "لیست پادکست دانستنیهای سلامت";
+}
+
+@section Breadcrumb
+    {
+    <li>
+        <a asp-action="MediaManage" asp-area="Consultant" asp-controller="Home"> مدیریت مدیا </a>
+    </li>
+}
+
+    @section Styles
+    {
+    <link href="/admin/css/dataTables.bootstrap.rtl.css" rel="stylesheet" />
+}
+
+    @section Scripts
+    {
+    <script src="~/admin/js/datatable/jquery.dataTables.min.js"></script>
+    <script src="~/admin/js/datatable/ZeroClipboard.js"></script>
+    <script src="~/admin/js/datatable/dataTables.tableTools.min.js"></script>
+    <script src="~/admin/js/datatable/dataTables.bootstrap.min.js"></script>
+    <script src="~/admin/js/datatable/datatables-init.js"></script>
+    <script>
+        InitiateSimpleDataTable.init();
+        InitiateEditableDataTable.init();
+        InitiateExpandableDataTable.init();
+        InitiateSearchableDataTable.init();
+    </script>
+
+    }
+
+    <div class="page-body">
+
+        <div class="row">
+
+            <div id="horizontal-form">
+
+            @if (Model != null && Model.Any())
+            {
+
+                <div class="widget-body no-padding">
+                    <div id="searchable_wrapper" class="dataTables_wrapper form-inline">
+
+                        <table class="table table-bordered table-hover table-striped dataTable" id="searchable" role="grid" aria-describedby="searchable_info">
+                            <thead class="bordered-darkorange">
+                                <tr role="row">
+
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">تهیه کننده</th>
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" aria-sort="ascending">عنوان</th>
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" aria-sort="ascending">تاریخ نمایش</th>
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Platform: activate to sort column ascending">وضعیت</th>
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending">تاریخ درج</th>
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending"></th>
+
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                @foreach (var tvFAM in Model)
+                                {
+                                    <tr role="row" class="even responsive" remove-ajax-item="@tvFAM.Id">
+
+                                        <td class=" sorting_1">
+                                            <div class="flex-style-center">
+                                                @if (tvFAM.OwnerId.HasValue)
+                                                {
+                                                    <img src="@tvFAM.User.GetUserAvatar()" class="avatar-style" style="border-radius:50px" />
+                                                    <div class="mr-10px">
+                                                        <span> @tvFAM.User.Username </span>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <span class="label label-success">ادمین سایت </span>
+                                                }
+
+                                            </div>
+                                        </td>
+                                        <td class="sorting_1">
+                                            @tvFAM.Title
+                                        </td>
+                                        <td class="sorting_1">
+                                            @if (tvFAM.ShowInfinity)
+                                            {
+                                                <span class="label label-primary">نمایش همیشگی</span>
+                                            }
+                                            else
+                                            {
+                                                <span>شروع : @((tvFAM.StartDate != null) ? tvFAM.StartDate.Value.ToShamsi() : "وارد نشده")</span>
+                                                <br />
+                                                <span>پایان : @((tvFAM.EndDate != null) ? tvFAM.EndDate.Value.ToShamsi() : "وارد نشده")</span>
+                                            }
+                                        </td>
+                                        <td class="sorting_1">
+                                            <div class="row" style="width: 100%;margin: auto;text-aling">
+                                                @if (tvFAM.HealtInformationFileState == DoctorFAM.Domain.Enums.HealtInformation.HealtInformationFileState.Accepted)
+                                                {
+                                                    <span class=" label label-success"> تایید شده </span>
+                                                }
+
+                                                @if (tvFAM.HealtInformationFileState == DoctorFAM.Domain.Enums.HealtInformation.HealtInformationFileState.Rejected)
+                                                {
+                                                    <span class=" label label-orange"> تایید نشده</span>
+                                                }
+
+                                                @if (tvFAM.HealtInformationFileState == DoctorFAM.Domain.Enums.HealtInformation.HealtInformationFileState.WaitingForConfirm)
+                                                {
+                                                    <span class=" label label-warning"> در انتظار</span>
+                                                }
+                                            </div>
+                                        </td>
+
+                                        <td class="center ">
+
+                                            @tvFAM.CreateDate.ToShamsi()
+
+                                        </td>
+                                        <td>
+                                            <a asp-action="EditPodcast" asp-controller="HealthInformation" asp-area="Consultant" asp-route-id="@tvFAM.Id" class="btn btn-warning btn-circle btn-xs"><i class="glyphicon glyphicon-edit"></i></a>
+                                            <button onclick="DeleteAjax(@tvFAM.Id, '@Url.Action("DeletePodcast", "HealthInformation", new { area = "Consultant", id = tvFAM.Id })')" class="btn btn-danger btn-circle btn-xs"><i class="glyphicon glyphicon-trash"></i></button>
+                                        </td>
+
+                                    </tr>
+
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <partial name="_ConsultantPanelNotFoundPartial" />
+            }
+
+        </div>
+    </div>
+
+</div>
+
+

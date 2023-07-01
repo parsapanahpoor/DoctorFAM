@@ -68,6 +68,7 @@
 		<None Include="Areas\ChatRoom\Views\Home\Privacy.cshtml" />
 		<None Include="Areas\ChatRoom\Views\Shared\_ChatRoomLayout.cshtml" />
 		<None Include="Areas\ChatRoom\Views\Shared\_ValidationScriptsPartial.cshtml" />
+		<None Include="Areas\Doctor\Views\Shared\Components\LastestOnlineVisitRequests\LastestOnlineVisitRequests.cshtml" />
 		<None Include="Areas\UserPanel\Views\Wallet\Index.cshtml" />
 		<None Include="Views\Account\ActiveUserByMobileActivationCode.cshtml" />
 		<None Include="Views\Account\ForgotPassword.cshtml" />

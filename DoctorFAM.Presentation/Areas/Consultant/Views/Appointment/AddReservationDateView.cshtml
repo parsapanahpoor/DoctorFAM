@@ -1,0 +1,188 @@
+﻿@model DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment.AddReservationDateViewModel
+@using DoctorFAM.Application.Convertors
+
+@{
+    ViewData["Title"] = @Localizer["افزودن تاریخ نوبت دهی "];
+}
+
+@{
+    var reserve = ViewBag.DoctorReservationDate as List<DoctorFAM.Domain.Entities.DoctorReservation.DoctorReservationDate>;
+}
+
+@section Scripts
+    {
+    <partial name="_JqueryValidation" />
+
+    <script>
+        $("#AddReservationDateState").on("change",
+            function () {
+
+                var Value = $("#AddReservationDateState :selected").val();
+                if (Value == 0) {
+                    $("#StartDate-div").removeClass("d-none");
+                    $("#EndDate-div").removeClass("d-none");
+                    $("#PeriodTime-div").removeClass("d-none");
+                } else {
+                    $("#StartDate-div").addClass("d-none");
+                    $("#EndDate-div").addClass("d-none");
+                    $("#PeriodTime-div").addClass("d-none");
+                }
+            });
+    </script>
+
+}
+
+@section Breadcrumb
+    {
+    <li>
+        <a asp-action="TurnRating" asp-controller="Home" asp-area="Consultant"> نوبت دهی </a>
+    </li>
+}
+
+<div class="row">
+    <div class="col-lg-12 col-sm-12">
+
+        <div class="widget">
+            <div class="widget-header bordered-bottom bordered-green">
+                <span class="widget-caption"> @Localizer["افزودن تاریخ جدید"] </span>
+            </div>
+            <div class="widget-body">
+                <div>
+
+                    <form asp-action="AddReservationDateView" asp-controller="Appointment" asp-area="Consultant" method="post">
+                        <div class="modal-body">
+                            <div class="row">
+
+                                <div class="form-group col-md-6 col-sm-12">
+                                    <label asp-for="ReservationDate"></label>
+                                    <input type="text" class="form-control" AdminDatePicker="1" style="z-index:9999!important;" asp-for="ReservationDate">
+                                    <span class="text-danger" asp-validation-for="ReservationDate"></span>
+                                </div>
+
+                                <div class="form-group col-md-6 col-sm-12">
+                                    <label asp-for="AddReservationDateState"> @Localizer["افزودن تاریخ نوبت دهی "]</label>
+                                    <select asp-for="AddReservationDateState" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment.AddReservationDateState))"></select>
+                                    <span class="text-danger" asp-validation-for="AddReservationDateState"></span>
+                                </div>
+
+                                <div class="clearfix"></div>
+
+                                <div class="form-group col-md-4 col-sm-12 " id="StartDate-div">
+                                    <label asp-for="StartTime"></label>
+                                    <select class="form-control" asp-for="StartTime">
+
+                                        <option value=""> @Localizer["لطفا زمان شروع نوبت را انتخاب کنید"] </option>
+                                        <option value="7"> 07:00 </option>
+                                        <option value="8"> 08:00 </option>
+                                        <option value="9"> 09:00 </option>
+                                        <option value="10"> 10:00 </option>
+                                        <option value="11"> 11:00 </option>
+                                        <option value="12"> 12:00 </option>
+                                        <option value="13"> 13:00 </option>
+                                        <option value="14"> 14:00 </option>
+                                        <option value="15"> 15:00 </option>
+                                        <option value="16"> 16:00 </option>
+                                        <option value="17"> 17:00 </option>
+                                        <option value="18"> 18:00 </option>
+                                        <option value="19"> 19:00 </option>
+                                        <option value="20"> 20:00 </option>
+                                        <option value="21"> 21:00 </option>
+                                        <option value="22"> 22:00 </option>
+                                        <option value="23"> 23:00 </option>
+                                        <option value="24"> 24:00 </option>
+
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-md-4 col-sm-12 " id="EndDate-div">
+                                    <label asp-for="EndTime"></label>
+                                    <select class="form-control" asp-for="EndTime">
+
+                                        <option value=""> @Localizer["لطفا زمان پایان نوبت را انتخاب کنید"] </option>
+                                        <option value="7"> 07:00 </option>
+                                        <option value="8"> 08:00 </option>
+                                        <option value="9"> 09:00 </option>
+                                        <option value="10"> 10:00 </option>
+                                        <option value="11"> 11:00 </option>
+                                        <option value="12"> 12:00 </option>
+                                        <option value="13"> 13:00 </option>
+                                        <option value="14"> 14:00 </option>
+                                        <option value="15"> 15:00 </option>
+                                        <option value="16"> 16:00 </option>
+                                        <option value="17"> 17:00 </option>
+                                        <option value="18"> 18:00 </option>
+                                        <option value="19"> 19:00 </option>
+                                        <option value="20"> 20:00 </option>
+                                        <option value="21"> 21:00 </option>
+                                        <option value="22"> 22:00 </option>
+                                        <option value="23"> 23:00 </option>
+                                        <option value="24"> 24:00 </option>
+
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-md-4 col-sm-12 " id="PeriodTime-div">
+                                    <label asp-for="PeriodNumber"> @Localizer["بازه ی زمانی هر شیفت"] </label>
+                                    <select class="form-control" asp-for="PeriodNumber">
+
+                                        <option value=""> لطفا بازه ی زمانی را انتخاب کنید </option>
+                                        <option value="10"> 10 دقیقه </option>
+                                        <option value="15"> 15 دقیقه </option>
+                                        <option value="20"> 20 دقیقه </option>
+                                        <option value="30"> 30 دقیقه </option>
+
+                                    </select>
+                                </div>
+
+                                <div class="clearfix"></div>
+
+                                <div class="form-group col-md-12">
+                                    <button type="submit" class="btn btn-success">@SharedLocalizer["ثبت"]</button>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@if (reserve != null && reserve.Any())
+{
+    <div class="row">
+        <div class="col-lg-12 col-sm-12">
+
+            <div class="widget">
+                <div class="widget-header bordered-bottom bordered-green">
+                    <span class="widget-caption"> @Localizer["لیست شیفت های شما"] </span>
+                </div>
+                <div class="widget-body">
+                    <div>
+                        <div class="modal-body">
+                            <div class="row">
+
+                                @foreach (var item in reserve)
+                                {
+                                    <div class="form-group col-md-2 col-sm-12">
+                                        <div class="form-control">
+                                            <a asp-action="ReservationDateDetail" asp-controller="Appointment" asp-area="Consultant" asp-route-ReservationDateId="@item.Id">
+                                                @item.ReservationDate.ToShamsi()
+                                            </a>
+                                        </div>
+                                    </div>
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}

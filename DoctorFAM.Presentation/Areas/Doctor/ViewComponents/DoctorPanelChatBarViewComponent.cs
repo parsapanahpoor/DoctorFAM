@@ -1,8 +1,12 @@
-﻿using DoctorFAM.Application.Extensions;
+﻿#region Usings
+
+using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CRM.Web.Areas.DoctorPanel.ViewComponents;
+
+#endregion
 
 public class DoctorPanelChatBarViewComponent : ViewComponent
 {
@@ -27,7 +31,7 @@ public class DoctorPanelChatBarViewComponent : ViewComponent
 
         #endregion
 
-        var model = await _notificationService.GetListOfSupporterNotificationByUserId(organizationOwmerId);
+        var model = await _notificationService.GetListOfDoctorPanelNotificationByUserId(organizationOwmerId);
         return View("DoctorPanelChatBar", model);
     }
 }

@@ -8,7 +8,7 @@
 @using Microsoft.AspNetCore.Mvc.Localization
 
 @{
-    ViewData["Title"] = @Localizer["Manage Consultant Informations"];
+    ViewData["Title"] = @Localizer["مدیریت اطلاعات مشاور"];
 
     var ConsultantOffice = ViewBag.ConsultantOffice as DoctorFAM.Domain.Entities.Organization.Organization;
 }
@@ -20,9 +20,6 @@
 
     @section Breadcrumb
     {
-    <li>
-        <a asp-action="Index" asp-controller="Home" asp-area="Consultant"> @Localizer["Consultant Panel"] </a>
-    </li>
     <li>
         <a href="javascript:void(0)"> @ViewData["Title"] </a>
     </li>
@@ -76,7 +73,7 @@
             @if (CultureInfo.CurrentCulture.Name == "fa-IR" || CultureInfo.CurrentCulture.Name == "ar-SA")
             {
 
-                <div class="col-lg-6 col-sm-6 col-xs-12">
+                <div class="col-lg-12 col-sm-12 col-xs-12">
                     <div class="databox databox-lg radius-bordered databox-shadowed databox-graded">
                         <div class="bg-palegreen databox-right">
                             <div class="databox-piechart">
@@ -91,6 +88,46 @@
                             <div class="databox-text darkgray">@Localizer["including national ID and ID of the medical and..."] </div>
                             <div class="databox-stat bg-green radius-bordered">
                                 <a style="color:white;" asp-action="ManageConsultantInfo" asp-area="Consultant" asp-controller="ConsultantInfo" class="stat-text">@Localizer["Edit"]</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-12 col-sm-12 col-xs-12">
+                    <div class="databox databox-lg radius-bordered databox-shadowed databox-graded">
+                        <div class="bg-warning databox-right">
+                            <div class="databox-piechart">
+                                <div data-toggle="easypiechart" class="easyPieChart" data-barcolor="#fff" data-linecap="butt" data-percent="50" data-animate="500" data-linewidth="3" data-size="60" data-trackcolor="#aadc95" style="width: 60px; height: 60px; line-height: 60px;">
+                                    <i class="glyphicon glyphicon-usd"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="databox-left">
+                            <span class="databox-number blue"> مدیریت تعرفه ی نوبت دهی </span>
+                            <div class="databox-text darkgray">مبلغ تعرفه های شما و نوبت دهی شما  </div>
+                            <div class="databox-stat bg-info radius-bordered">
+                                <a style="color:white;" asp-action="ConsultantReservationTariff" asp-area="Consultant" asp-controller="ConsultantInfo" class="stat-text">ویرایش</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-12 col-sm-12 col-xs-12">
+                    <div class="databox databox-lg radius-bordered databox-shadowed databox-graded">
+                        <div class="bg-info databox-right">
+                            <div class="databox-piechart">
+                                <div data-toggle="easypiechart" class="easyPieChart" data-barcolor="#fff" data-linecap="butt" data-percent="50" data-animate="500" data-linewidth="3" data-size="60" data-trackcolor="#aadc95" style="width: 60px; height: 60px; line-height: 60px;">
+                                    <i class="glyphicon glyphicon-check"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="databox-left">
+                            <span class="databox-number blue"> @Localizer["زمینه های فعالیتی شما در دکترفم"] </span>
+                            <div class="databox-text darkgray">@Localizer["دیابت و روان و فشارخون و ..."]  </div>
+                            <div class="databox-stat bg-info radius-bordered">
+                                <a style="color:white;" asp-action="DoctorInterests" asp-area="Consultant" asp-controller="ConsultantInfo" class="stat-text">@Localizer["Edit"]</a>
                             </div>
                         </div>
                     </div>
@@ -113,6 +150,46 @@
                             <div class="databox-text darkgray">@Localizer["including national ID and ID of the medical and..."] </div>
                             <div class="databox-stat bg-green radius-bordered">
                                 <a style="color:white;" asp-action="ManageConsultantInfo" asp-area="Consultant" asp-controller="ConsultantInfo" class="stat-text">@Localizer["Edit"]</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-12 col-sm-12 col-xs-12">
+                    <div class="databox databox-lg radius-bordered databox-shadowed databox-graded">
+                        <div class="bg-warning databox-right">
+                            <div class="databox-piechart">
+                                <div data-toggle="easypiechart" class="easyPieChart" data-barcolor="#fff" data-linecap="butt" data-percent="50" data-animate="500" data-linewidth="3" data-size="60" data-trackcolor="#aadc95" style="width: 60px; height: 60px; line-height: 60px;">
+                                    <i class="glyphicon glyphicon-usd"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="databox-left">
+                            <span class="databox-number blue"> مدیریت تعرفه ی نوبت دهی </span>
+                            <div class="databox-text darkgray">مبلغ تعرفه های شما و نوبت دهی شما  </div>
+                            <div class="databox-stat bg-info radius-bordered">
+                                <a style="color:white;" asp-action="ConsultantReservationTariff" asp-area="Consultant" asp-controller="ConsultantInfo" class="stat-text">ویرایش</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-12 col-sm-12 col-xs-12">
+                    <div class="databox databox-lg radius-bordered databox-shadowed databox-graded">
+                        <div class="bg-info databox-right">
+                            <div class="databox-piechart">
+                                <div data-toggle="easypiechart" class="easyPieChart" data-barcolor="#fff" data-linecap="butt" data-percent="50" data-animate="500" data-linewidth="3" data-size="60" data-trackcolor="#aadc95" style="width: 60px; height: 60px; line-height: 60px;">
+                                    <i class="glyphicon glyphicon-check"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="databox-left">
+                            <span class="databox-number blue"> @Localizer["زمینه های فعالیتی شما در دکترفم"] </span>
+                            <div class="databox-text darkgray">@Localizer["دیابت و روان و فشارخون و ..."]  </div>
+                            <div class="databox-stat bg-info radius-bordered">
+                                <a style="color:white;" asp-action="DoctorInterests" asp-area="Consultant" asp-controller="ConsultantInfo" class="stat-text">@Localizer["Edit"]</a>
                             </div>
                         </div>
                     </div>

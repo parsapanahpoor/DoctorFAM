@@ -16,6 +16,8 @@ public class ListOfLastestOnlineVisitRequestDoctorSideViewModel
 
 	public string? WorkShift { get; set; }
 
+	public int BusinessKey { get; set; }
+
 	#endregion
 }
 
