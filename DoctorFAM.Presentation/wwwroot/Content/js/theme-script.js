@@ -153,12 +153,12 @@ function bannerslider() {
     var $carousel = $(this);
     $carousel.owlCarousel({
       items: 1,
-      loop: true,
+      loop: false,
       rtl: true,
       dots: $carousel.data("dots"),
       nav: $carousel.data("nav"),
       animateIn: 'pulse',
-      autoplay: true,
+      autoplay: false,
       autoplayTimeout: 6000,
       navText: ['<span class="fas fa-chevron-left"><span>', '<span class="fas fa-chevron-right"></span>'],
     });
@@ -176,7 +176,7 @@ function owlcarousel() {
       items: $carousel.data("items"),
       slideBy: $carousel.data("slideby"),
       center: $carousel.data("center"),
-      loop: true,
+      loop: false,
       rtl: true,
       margin: $carousel.data("margin"),
       dots: $carousel.data("dots"),

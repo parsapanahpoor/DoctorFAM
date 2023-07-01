@@ -67,9 +67,13 @@
 		<None Include="Areas\Admin\Views\Ticket\TicketDetail.cshtml" />
 		<None Include="Areas\ChatRoom\Views\Home\Index.cshtml" />
 		<None Include="Areas\ChatRoom\Views\Home\Privacy.cshtml" />
+		<None Include="Areas\ChatRoom\Views\Shared\_ChatRoomFooterReferences.cshtml" />
+		<None Include="Areas\ChatRoom\Views\Shared\_ChatRoomHeaderReferences.cshtml" />
 		<None Include="Areas\ChatRoom\Views\Shared\_ChatRoomLayout.cshtml" />
+		<None Include="Areas\ChatRoom\Views\Shared\_Notification.cshtml" />
 		<None Include="Areas\ChatRoom\Views\Shared\_ValidationScriptsPartial.cshtml" />
-		<None Include="Areas\Doctor\Views\Shared\Components\LastestOnlineVisitRequests\LastestOnlineVisitRequests.cshtml" />
+		<None Include="Areas\ChatRoom\Views\_ViewImports.cshtml" />
+		<None Include="Areas\ChatRoom\Views\_ViewStart.cshtml" />
 		<None Include="Areas\UserPanel\Views\Wallet\Index.cshtml" />
 		<None Include="Views\Account\ActiveUserByMobileActivationCode.cshtml" />
 		<None Include="Views\Account\ForgotPassword.cshtml" />
@@ -857,6 +861,7 @@
 		<None Include="wwwroot\ChatRoom\js\bootstrap.bundle.min.js.map" />
 		<None Include="wwwroot\ChatRoom\js\custom.js" />
 		<None Include="wwwroot\ChatRoom\js\jquery.3.2.1.min.js" />
+		<None Include="wwwroot\ChatRoom\scss\main.scss" />
 		<None Include="wwwroot\common\admindatapicker\kamadatepicker.js" />
 		<None Include="wwwroot\common\admindatapicker\kamadatepicker.min.js" />
 		<None Include="wwwroot\common\AdminPanel\AdminPanelSignalR.js" />
