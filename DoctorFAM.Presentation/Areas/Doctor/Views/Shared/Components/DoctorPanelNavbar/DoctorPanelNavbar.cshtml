@@ -52,15 +52,29 @@
                         </a>
 
                         </li>*@
+                       
+                        <li class="marli" id="Online">
 
-                        <!--Notification-->
-                        <li class="marli margin-left-10">
-
-                            <a class="btn btn-success wave in" id="chat-link" title="Chat" href="#">
-                                @SharedLocalizer["Notofications"]
+                            <a title="موجودی کیف پول" href="#">
+                                <i class="icon glyphicon glyphicon-piggy-bank"></i>
+                                @*<Span class=" badge" style="background-color: #fb6e52 !important; font-size:13px !important;">@Model.WalletBalance.ToString("#,000") ریال</Span>*@
+                                <Span class=" badgeSPP">@Model.WalletBalance.ToString("#,000") ریال</Span>
+                                
                             </a>
 
                         </li>
+                        <!--Notification-->
+                        <li class="marli ">
+
+                            <a  id="chat-link" title="اعلانها" href="#">
+                                <i class="icon glyphicon glyphicon-bell"></i>
+                                <span class="badge">7</span>
+                                @*@SharedLocalizer["Notofications"]*@
+                            </a>
+
+                        </li>
+
+                        
                         @await Component.InvokeAsync("FollowersOnNavbarLayout")
 
                         @await Component.InvokeAsync("ShowLastestFamilyDoctorRequestInNavbar")

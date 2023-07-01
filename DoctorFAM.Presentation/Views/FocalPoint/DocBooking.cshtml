@@ -48,7 +48,7 @@
 <div class="">
 
 
-    <div class="row Doc_Banner_Div " >
+    <div class="row Doc_Banner_Div ">
         <div class="container">
             <div class="col-md-4 text-center justify-content-center mt-2">
 
@@ -65,93 +65,68 @@
                     <div class="col-md-5"></div>
                     <div class="col-md-7" style="border-right:1px solid #cccccc;">
                         <p class="text-center justify-content-center clinic-services2 ">نوع ویزیت: آنلاین - حضوری</p>
-                     </div>
+                    </div>
                 </div>
 
                 @*<p class="text-center justify-content-center clinic-services2">   @((!string.IsNullOrEmpty(Model.DoctorPageInReservationViewModel.Education)) ? Model.DoctorPageInReservationViewModel.Education : null) </p>*@
 
-               
+
             </div>
             <div class="col-md-8 text-center justify-content-center "></div>
         </div>
     </div>
     <div class="col-md-12 text-center justify-content-center p-5">
-        <h5>  کاربر گرامی، جهت اخذ نوبت، تاریخ و سپس ساعت مورد نظر خود را از لیست زیر انتخاب نمایید:</h5>
+        <h5>  کاربر گرامی، جهت اخذ نوبت، تاریخ و ساعت مورد نظر خود را از لیست زیر انتخاب نمایید:</h5>
 
-        <div class="container">
+        @if (Model.ListOfReservationDateAndReservationDateTime != null && Model.ListOfReservationDateAndReservationDateTime.Any())
+        {
+            <div class=" mt-5">
+                <div class="row text-center justify-contnet-center">
+                    <div class="card m-1 p-1">
+                        <div class="schedule-cont">
+                            <div class="row">
+                                <div class="col-md-12">
 
-
-
-            @if (doctorDaysList != null)
-            {
-
-                <div class="row">
-                    <div class="col-md-12">
-
-                        <ul class="clearfix" style="list-style:none;">
-
-                            @foreach (var day in doctorDaysList)
-                            {
-
-                                <li class="form-group col-md-2 col-sm-12 Notbtn2" >
-                                    <a asp-action="DocBooking" asp-area="" asp-controller="FocalPoint" asp-route-userId="@Model.UserId" asp-route-loggedDateTime="@day.ReservationDate.ToShamsi()" style="color: #fff;">
-                                        @day.ReservationDate.ToStringShamsiDate()
-                                    </a>
-                                </li>
-                            }
-
-                        </ul>
-
-                    </div>
-                </div>
-
-
-
-            }
-
-            @if (Model.DoctorReservationDateTimes != null && Model.DoctorReservationDateTimes.Any())
-            {
-                <div class="card booking-schedule schedule-widget">
-                    <div class="schedule-cont">
-                        <div class="row">
-                            <div class="col-md-12">
-
-                                <div class="time-slot">
-                                    <ul class="clearfix">
-
-                                        @foreach (var item in Model.DoctorReservationDateTimes)
-                                        {
-
-                                            @if (item.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.Reserved
-                                           || item.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.WaitingForComplete)
+                                    <div class="time-slot">
+                                        <ul class="clearfix">
+                                            @foreach (var reserve in Model.ListOfReservationDateAndReservationDateTime)
                                             {
-                                                <li class=" text-center justify-content-center form-group col-md-2 col-sm-12">
-                                                    <div class="Notbtn" style="color: #fff;">
-                                                        ساعت <span> @string.Concat(item.StartTime.Reverse().Skip(3).Reverse()) </span>
+                                                <div class="row">
+                                                    <div class="col-md-2 col-sm-12  mt-4 mb-3 ">
+                                                        <span class=" NotbtnDay">@reserve.DoctorReservationDate.ReservationDate.ToStringShamsiDate()</span>
                                                     </div>
-                                                </li>
-                                            }
-                                            @if (item.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.NotReserved)
-                                            {
-                                                <li class=" text-center justify-content-center form-group col-md-2 col-sm-12">
-                                                    <button onclick="ChooseReservationType(@item.Id,@Model.UserId)" type="button" class="Notbtn2" data-toggle="modal" data-target="#exampleModal" style="color: #fff;">
-                                                        ساعت <span> @string.Concat(item.StartTime.Reverse().Skip(3).Reverse()) </span>
-                                                    </button>
-                                                </li>
-                                            }
-                                        }
+                                                    <div class="col-md-10 col-sm-10">
+                                                        <div class="owl-carousel" data-items="6" data-lg-items="6" data-md-items="6" data-margin="1" data-sm-items="2" data-xs-items="2" data-autoplay="false">
 
-                                    </ul>
+                                                            @foreach (var reserveTime in reserve.DoctorReservationDateTimes)
+                                                            {
+                                                                <div class="item m-2">
+                                                                   
+                                                                        <button onclick="ChooseReservationType(@reserveTime.Id,@Model.UserId)" type="button" class="Notbtn2" data-toggle="modal" data-target="#exampleModal">
+                                                                            ساعت <span> @string.Concat(reserveTime.StartTime.Reverse().Skip(3).Reverse()) </span>
+                                                                        </button>
+                                                                    
+                                                                </div>
+
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            }
+                                        </ul>
+                                    </div>
+
                                 </div>
-
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-            }
+        }
 
-        </div>
+
 
 
     </div>
@@ -194,44 +169,6 @@
         </div>
     </div>
 
-
-    @if (Model.ListOfReservationDateAndReservationDateTime != null && Model.ListOfReservationDateAndReservationDateTime.Any())
-    {
-            <div class="container mt-5">
-        <div class="row text-center justify-contnet-center">
-        <div class="card m-3 p-3">
-            <div class="schedule-cont">
-                <div class="row">
-                    <div class="col-md-12">
-
-                        <div class="time-slot">
-                            <ul class="clearfix">
-                                @foreach (var reserve in Model.ListOfReservationDateAndReservationDateTime)
-                                {
-                                    <span>@reserve.DoctorReservationDate.ReservationDate.ToStringShamsiDate()</span>
-                                    <hr />
-
-                                    @foreach (var reserveTime in reserve.DoctorReservationDateTimes)
-                                    {
-                                        <li class="form-group col-md-12 col-sm-12" style="margin-top:10px;">
-                                            <button onclick="ChooseReservationType(@reserveTime.Id,@Model.UserId)" type="button" class="timing" data-toggle="modal" data-target="#exampleModal" style="background-color: #197c66;border: 1px solid #fccf9a;color: #fff;">
-                                                ساعت <span> @string.Concat(reserveTime.StartTime.Reverse().Skip(3).Reverse()) </span>
-                                            </button>
-                                        </li>
-                                    }
-
-                                }
-                            </ul>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-        </div>
-        </div>
-
-    }
 
 </div>
 

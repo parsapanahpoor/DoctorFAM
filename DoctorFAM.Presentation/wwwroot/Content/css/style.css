@@ -111,6 +111,7 @@ body {
     color      : #5f6368;
     overflow-x : hidden;
     top        : inherit !important;
+    cursor:pointer !important;
 }
 
 .page-wrapper {
@@ -7048,6 +7049,22 @@ doctors intrud*/
     .Notbtn2:hover {
         background: #39de65;
     }
+
+.NotbtnDay {
+    background: #13bf2c;
+    color: #ffffff;
+    padding :12px 16px;
+    font-size:13px !important;
+    cursor: pointer;
+    outline: none;
+    text-align:center;
+    vertical-align: middle;
+    text-decoration: none;
+    border-radius: 5px;
+    
+}
+
+   
     .NobatLI {
         margin-top: 10px;
         background-color: #0071DC;
@@ -7084,4 +7101,10 @@ doctors intrud*/
 .img-st {
     max-width: 100%;
     height: auto
+}
+.famOnlinecolor {
+    color: #fd5b03;
+}
+.famOnlinecolor:hover {
+    color:white;
 }
