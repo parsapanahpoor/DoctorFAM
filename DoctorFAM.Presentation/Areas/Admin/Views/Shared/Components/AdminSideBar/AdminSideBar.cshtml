@@ -181,14 +181,19 @@
         <li>
             <a href="#" class="menu-dropdown">
                 <i class="menu-icon glyphicon glyphicon-user"></i>
-                <span class="menu-text"> @SharedLocalizer["Manage Consultant"]  </span>
+                <span class="menu-text"> @SharedLocalizer["مدیریت مشاوران"]  </span>
                 <i class="menu-expand"></i>
             </a>
 
             <ul class="submenu">
                 <li>
                     <a asp-controller="Consultant" asp-action="ListOfConsultantInfoViewModel">
-                        <span class="menu-text"> @SharedLocalizer["Manage Consultant Info"]  </span>
+                        <span class="menu-text"> @SharedLocalizer["لیست مشاوران"]  </span>
+                    </a>
+                </li>
+                <li>
+                    <a asp-action="ListOfDoctorsThatHasSendResume" asp-controller="Resume" asp-area="Admin">
+                        <span class="menu-text"> مدیریت رزومه ها </span>
                     </a>
                 </li>
             </ul>

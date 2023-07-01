@@ -1,0 +1,78 @@
+﻿@model DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.WorkingAddress.EditWorkingAddressDoctorPanelViewModel
+
+@using DoctorFAM.Domain.Enums
+@using DoctorFAM.Application.StaticTools
+@using DoctorFAM.Domain.ViewModels.Common
+
+@{
+    ViewData["Title"] = "ویرایش رزومه ی آدرس محل کار";
+}
+
+@section Scripts
+    {
+    <partial name="_JqueryValidation" />
+
+}
+
+    @section Breadcrumb
+    {
+    <li>
+        <a asp-action="PageOfResume" asp-controller="Resume" asp-area="Consultant"> مدیریت رزومه  </a>
+    </li>
+    
+}
+
+    <form method="post" asp-action="EditWorkingAddress" asp-controller="Resume" asp-area="Consultant" enctype="multipart/form-data">
+        <input asp-for="Id" type="hidden">
+        <div class="row">
+            <div class="col-lg-12 col-sm-12">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="widget">
+                            <div class="widget-header bordered-bottom bordered-green" style="background-color:#d1f4fa">
+                                <span class="widget-caption"> ویرایش رزومه ی آدرس محل کار </span>
+                            </div>
+                            <div class="widget-body" style="background-color:#d1f4fa !important;">
+                                <div class="row">
+
+                                    <div class="form-group col-md-12 col-sm-12">
+                                        <label> عنوان محل کار</label>
+                                        <input type="text" class="form-control" asp-for="WorkingAddressTitle">
+                                        <span class="text-danger" asp-validation-for="WorkingAddressTitle"></span>
+                                    </div>
+
+                                    <div class="form-group col-md-6 col-sm-12">
+                                        <label> روزهای فعالیت</label>
+                                        <input type="text" class="form-control" asp-for="Days">
+                                        <span class="text-danger" asp-validation-for="Days"></span>
+                                    </div>
+
+                                    <div class="form-group col-md-6 col-sm-12">
+                                        <label> زمان فعالیت </label>
+                                        <input type="text" class="form-control" asp-for="Times">
+                                        <span class="text-danger" asp-validation-for="Times"></span>
+                                    </div>
+
+                                    <div class="form-group col-md-12 col-sm-12">
+                                        <label> آدرس محل کار</label>
+                                        <textarea type="text" class="form-control" asp-for="WorkingAddress"></textarea>
+                                        <span class="text-danger" asp-validation-for="WorkingAddress"></span>
+                                    </div>
+
+                                    <hr class="margin-bottom-10 margin-top-10" />
+
+                                    <div class="col-md-12 flex-style">
+                                        <button type="submit" class="btn btn-labeled btn-palegreen">
+                                            <i class="btn-label glyphicon glyphicon-ok"></i>ثبت
+                                        </button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </form>

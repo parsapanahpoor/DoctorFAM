@@ -1,0 +1,227 @@
+﻿@model DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment.FilterReservationDateTimeDoctorPAnel
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Domain.ViewModels.Common
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
+
+
+@{
+    var reservation = ViewBag.reservationDate as DoctorFAM.Domain.Entities.DoctorReservation.DoctorReservationDate;
+
+    ViewData["Title"] = $"{reservation.ReservationDate.ToStringShamsiDate()}";
+
+}
+
+@section Styles
+    {
+    <link href="/admin/css/dataTables.bootstrap.rtl.css" rel="stylesheet" />
+}
+
+@section Scripts
+    {
+    <script src="~/admin/js/datatable/jquery.dataTables.min.js"></script>
+    <script src="~/admin/js/datatable/ZeroClipboard.js"></script>
+    <script src="~/admin/js/datatable/dataTables.tableTools.min.js"></script>
+    <script src="~/admin/js/datatable/dataTables.bootstrap.min.js"></script>
+    <script src="~/admin/js/datatable/datatables-init.js"></script>
+    <script>
+        InitiateSimpleDataTable.init();
+        InitiateEditableDataTable.init();
+        InitiateExpandableDataTable.init();
+        InitiateSearchableDataTable.init();
+    </script>
+}
+
+@section Breadcrumb
+    {
+    <li>
+        <a asp-action="TurnRating" asp-controller="Home" asp-area="Consultant"> نوبت دهی </a>
+    </li>
+    <li>
+        <a asp-action="AddReservationDateView" asp-controller="Appointment" asp-area="Consultant"> ایجاد تاریخ جدید(صفحه قبل) </a>
+    </li>
+}
+
+<div class="row">
+    <div class="col-lg-6 col-sm-12">
+
+        <a class="col-lg-6 col-sm-12 btn btn-sky w-100 margin-bottom-10" asp-action="AddreservationDateTimeWithComputer" asp-route-reservationDateId="@Model.ReservationDateId" asp-controller="Appointment" asp-area="Consultant"> @Localizer["افزودن شیفت کامپیوتری"] </a>
+
+    </div>
+
+    <div class="col-lg-6 col-sm-12">
+
+        <a class="col-lg-6 col-sm-12 btn btn-sky w-100 margin-bottom-10" asp-action="AddReservationDateTime" asp-route-reservationDateId="@Model.ReservationDateId" asp-controller="Appointment" asp-area="Consultant">   @Localizer["افزودن شیفت دستی"]</a>
+
+    </div>
+
+    <div class="col-lg-12 col-sm-12">
+
+        <div class="row" style="margin:10px 10px 10px 10px;">
+
+            <div id="horizontal-form">
+
+                @if (Model.DoctorReservationDateTimes != null && Model.DoctorReservationDateTimes.Any())
+                {
+                    <div class="widget-body no-padding">
+                        <div id="searchable_wrapper" class="dataTables_wrapper form-inline">
+
+                            <table class="table table-bordered table-hover table-striped dataTable" id="searchable" role="grid" aria-describedby="searchable_info">
+                                <thead class="bordered-darkorange">
+                                    <tr role="row">
+
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">نام بیمار</th>
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">موبایل</th>
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">کد پیگیری</th>
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">شروع</th>
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">وضعیت</th>
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending"> نوع(حضوری-آنلاین)</th>
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending"> نحوه اخذ نوبت(سامانه ای- منشی)</th>
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending"> امکانات</th>
+
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+
+                                    @foreach (var reservationdata in Model.DoctorReservationDateTimes)
+                                    {
+                                        <tr role="row" class="even responsive" remove-ajax-item="@reservationdata.Id">
+
+                                            <td class="center tc vm">
+                                                <p>
+                                                    @if (reservationdata.PatientId.HasValue && reservationdata.PatientDetail != null)
+                                                    {
+                                                        <span class=""> @reservationdata.PatientDetail.PatientUsername</span>
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="mr-8px label label-orange">@Localizer["رزرو نشده"] </span>
+                                                    }
+
+                                                </p>
+                                            </td>
+
+                                            <td class="center tc vm">
+                                                <p>
+                                                    @if (reservationdata.PatientId.HasValue && reservationdata.PatientDetail != null)
+                                                    {
+
+                                                        <span class=""> @reservationdata.PatientDetail.PatientMobile</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="mr-8px label label-orange">@Localizer["رزرو نشده"] </span>
+                                                    }
+
+                                                </p>
+                                            </td>
+
+                                            <td class="center ">
+
+                                                @reservationdata.Id
+
+                                            </td>
+
+                                            <td class="center ">
+
+                                                @string.Concat(reservationdata.StartTime.Reverse().Skip(3).Reverse())
+
+                                            </td>
+
+                                            <td class="center tc vm">
+                                                <p>
+                                                    @if (reservationdata.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.NotReserved)
+                                                    {
+                                                        <span class="mr-8px label label-orange">@Localizer["رزرو نشده"] </span>
+                                                    }
+
+                                                    @if (reservationdata.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.Reserved)
+                                                    {
+                                                        <span class="mr-8px label label-success">@Localizer["رزرو شده"] </span>
+                                                    }
+
+                                                    @if (reservationdata.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.WaitingForComplete)
+                                                    {
+                                                        <span class="mr-8px label label-orange">@Localizer["درانتظار رزرو"] </span>
+                                                    }
+                                                </p>
+                                            </td>
+
+                                            <td class="center tc vm">
+                                                <p>
+                                                    @if (reservationdata.DoctorReservationType == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationType.Onile)
+                                                    {
+                                                        <span class="mr-8px label label-info">@Localizer["آنلاین"] </span>
+                                                    }
+
+                                                    @if (reservationdata.DoctorReservationType == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationType.Reserved)
+                                                    {
+                                                        <span class="mr-8px label label-info">@Localizer["حضوری"] </span>
+                                                    }
+
+                                                    @if (reservationdata.DoctorReservationType == null)
+                                                    {
+                                                        <span class="mr-8px label label-orange">@Localizer["رزرو نشده"] </span>
+                                                    }
+                                                </p>
+                                            </td>
+
+                                            <td class="center tc vm">
+                                                <p>
+                                                    @if (reservationdata.DoctorBooking)
+                                                    {
+                                                        <span class="mr-8px label label-info">@Localizer["رزرو دفتری"] </span>
+                                                    }
+
+                                                    @if (!reservationdata.DoctorBooking)
+                                                    {
+                                                        if (reservationdata.PatientId != null)
+                                                        {
+                                                            <span class="mr-8px label label-info">@Localizer["از طریق سایت"] </span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span class="mr-8px label label-orange">@Localizer["رزرو نشده"] </span>
+                                                        }
+                                                    }
+                                                </p>
+                                            </td>
+
+                                            <td class="center tc vm">
+
+                                                @if (reservationdata.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.NotReserved && reservationdata.PatientId == null)
+                                                {
+                                                    <a asp-action="AddPersonalPatientForDoctorBooking" asp-controller="Appointment" asp-area="Consultant" asp-route-ReservationDateTimeId="@reservationdata.Id" class="btn btn-success ">نوبت دهی منشی</a>
+
+                                                    <button onclick="DeleteAjax(@reservationdata.Id, '@Url.Action("DeleteReservationDateTime", "Appointment", new {area = "Consultant", Id = reservationdata.Id})')" class="btn btn-danger btn-circle btn-xs"><i class="glyphicon glyphicon-trash"></i></button>
+                                                }
+                                                @if (reservationdata.DoctorReservationState != DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.NotReserved && reservationdata.PatientId != null)
+                                                {
+                                                    <a asp-action="ShowPatientDetail" asp-controller="Appointment" asp-area="Consultant" asp-route-ReservationDateTimeId="@reservationdata.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+                                                }
+
+                                            </td>
+
+                                        </tr>
+
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <partial name="_ConsultantPanelNotFoundPartial" />
+                }
+
+            </div>
+        </div>
+
+    </div>
+</div>
+

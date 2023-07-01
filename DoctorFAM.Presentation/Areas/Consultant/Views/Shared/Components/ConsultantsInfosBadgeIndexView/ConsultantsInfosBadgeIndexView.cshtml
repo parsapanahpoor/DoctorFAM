@@ -1,0 +1,45 @@
+﻿@model string
+
+@if (Model == "NewUser")
+{
+    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3  buttons-preview">
+        @* <div class="badge badge-warning">
+    @SharedLocalizer["Waiting"]
+    </div>*@
+        <a asp-area="Consultant" asp-controller="ConsultantInfo" asp-action="PageOfManageConsultantInfo" class="btn btn-warning  btn-circle btn-lg"> <span style="margin-top:50% !important; ">@SharedLocalizer["Waiting"]</span></a>
+        <p class="text-center justify-content-center" style="font-size:12PX;"> اطلاعات مشاور  </p>
+    </div>
+}
+
+@if (Model == "WatingForConfirm")
+{
+    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3  buttons-preview">
+        @*<div class="badge badge-warning">
+    @SharedLocalizer["Waiting"]
+    </div>*@
+        <a asp-area="Consultant" asp-controller="ConsultantInfo" asp-action="PageOfManageConsultantInfo" class="btn btn-warning  btn-circle btn-lg"> <span style="margin-top:50%!important; ">@SharedLocalizer["Waiting"]</span></a>
+        <p class="text-center justify-content-center" style="font-size:12PX;"> اطلاعات مشاور  </p>
+    </div>
+}
+
+@if (Model == "Rejected")
+{
+    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3  buttons-preview">
+        @*<div class="badge badge-danger">
+    @SharedLocalizer["Decline"]
+    </div>*@
+        <a asp-area="Consultant" asp-controller="ConsultantInfo" asp-action="PageOfManageConsultantInfo" class="btn btn-danger  btn-circle btn-lg">@SharedLocalizer["Decline"]</a>
+        <p class="text-center justify-content-center" style="font-size:12PX;"> اطلاعات مشاور  </p>
+    </div>
+}
+
+@if (Model == "Accepted")
+{
+    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3  buttons-preview">
+        @* <div class="badge badge-success">
+    @SharedLocalizer["Accepted"]
+    </div>*@
+        <a asp-area="Consultant" asp-controller="ConsultantInfo" asp-action="PageOfManageConsultantInfo" class="btn btn-success  btn-circle btn-lg"><i class="fa fa-table"></i></a>
+        <p class="text-center justify-content-center" style="font-size:12PX;"> اطلاعات مشاور  </p>
+    </div>
+}

@@ -1,0 +1,18 @@
+﻿@model DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.ResumeAboutMeDoctorPanelViewModel
+
+    <p onclick="ShowAboutMe()" style="margin-top: -30px;" class="btn btn-palegreen btn-sm  btn-follow">
+        <i class="fa fa-check"></i>
+        درباره ی من
+    </p>
+<div class="header-information" style="margin-top: 20px;">
+    @if (string.IsNullOrEmpty(Model.Text))
+    {
+        <p class="btn btn-danger btn-sm  ">
+            وارد نشده است
+        </p>
+    }
+    else
+    {
+        @Model.Text
+    }
+</div>

@@ -17777,3 +17777,24 @@ height:calc(100vh - 90px);
   border-bottom: 6px solid #d73d32;
 }
 /*# sourceMappingURL=beyond.rtl.css.map */
+
+
+.SpanSpp {
+    display: block;
+    width: 33px;
+    height: 23px;
+    margin: 0;
+    padding: 0;
+    -webkit-border-radius: 0;
+    -webkit-background-clip: padding-box;
+    -moz-border-radius: 0;
+    -moz-background-clip: padding;
+    border-radius: 0;
+    background-clip: padding-box;
+    position: relative;
+    -webkit-transition: all ease 0.1s;
+    -moz-transition: all ease 0.1s;
+    -o-transition: all ease 0.1s;
+    transition: all ease 0.1s;
+    color:#fb6e52;
+}

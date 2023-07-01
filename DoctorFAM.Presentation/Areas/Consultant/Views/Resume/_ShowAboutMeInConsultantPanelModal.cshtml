@@ -1,0 +1,19 @@
+﻿@model DoctorFAM.Domain.Entities.Resume.ResumeAboutMe
+
+<form method="post" asp-action="CreateAboutMe" asp-controller="Resume" asp-area="Consultant">
+    <div class="row">
+
+        <div class="form-group col-md-12 col-sm-12">
+            <label asp-for="AboutMeText">متن درباره ی من </label>
+            <textarea type="text" class="form-control" ckeditor="1" asp-for="AboutMeText"> @Model.AboutMeText </textarea>
+            <span class="text-danger" asp-validation-for="AboutMeText"></span>
+        </div>
+
+        <div class="col-md-12 flex-style">
+            <button type="submit" class="btn btn-labeled btn-palegreen">
+                <i class="btn-label glyphicon glyphicon-ok"></i>ثبت
+            </button>
+        </div>
+
+    </div>
+</form>

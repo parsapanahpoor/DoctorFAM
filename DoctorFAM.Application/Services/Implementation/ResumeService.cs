@@ -670,7 +670,30 @@ namespace DoctorFAM.Application.Services.Implementation
             #region Get Resume By User Id
 
             var resume = await GetResumeByUserId(userId);
-            if (resume == null) return null;
+
+            #endregion
+
+            #region Get User By Id
+
+            var user = await _userService.GetUserById(organization.OwnerId);
+            if (user == null) return null;
+
+            if (resume == null)
+            {
+                Resume newResume = new Resume()
+                {
+                     UserId = organization.OwnerId,
+                     ResumeState = Domain.Enums.ResumeState.ResumeState.WaitingForConfirm,
+                     RejectedNote = null
+                };
+
+                await _resumeRepository.CreateResume(newResume);
+
+                return new ManageResumeDoctorPanelViewModel()
+                {
+                    User = user
+                };
+            }
 
             #endregion
 
@@ -682,9 +705,6 @@ namespace DoctorFAM.Application.Services.Implementation
             };
 
             #region Fill User Property 
-
-            var user = await _userService.GetUserById(organization.OwnerId);
-            if (user == null) return null;
 
             model.User = user;
 
