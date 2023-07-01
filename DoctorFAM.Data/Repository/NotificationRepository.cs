@@ -7,6 +7,7 @@ using DoctorFAM.Domain.Entities.Notification;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Consultant.Notification;
 using DoctorFAM.Domain.ViewModels.Dentist.Notification;
+using DoctorFAM.Domain.ViewModels.Doctor.Notification;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Notification;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -61,7 +62,8 @@ public class NotificationRepository : INotificationRepository
     {
         return await _context.SupporterNotification.Include(p=> p.User)
             .Where(p=> !p.IsDelete && !p.IsSeen && p.ReciverId == userId)
-                                .OrderByDescending(p=> p.CreateDate).ToListAsync();
+                                .OrderByDescending(p=> p.CreateDate)
+                                .Take(10).ToListAsync();
     }
 
     //Get Supporter Notification By Id
@@ -149,6 +151,37 @@ public class NotificationRepository : INotificationRepository
                                         }).FirstOrDefault()
 
                             }).ToListAsync();
+    }
+
+    //Get User Notifications
+    public async Task<List<DoctorPanelNotificationViewModel>?> GetListOfDoctorPanelNotificationByUserId(ulong userId)
+    {
+        return await _context.SupporterNotification
+                             .AsNoTracking()
+                             .Where(p => !p.IsDelete && !p.IsSeen && p.ReciverId == userId)
+                             .OrderByDescending(p => p.CreateDate)
+                             .Select(p => new DoctorPanelNotificationViewModel()
+                             {
+                                 IsHealthHouseRequest = p.IsHealthHouseRequest,
+                                 IsSeen = p.IsSeen,
+                                 IsTicket = p.IsTicket,
+                                 ReciverId = p.ReciverId,
+                                 SupporterNotificationText = p.SupporterNotificationText,
+                                 TargetId = p.TargetId,
+                                 CreateDate = p.CreateDate,
+                                 User = _context.Users
+                                                .AsNoTracking()
+                                                .Where(s => !s.IsDelete && s.Id == p.UserId)
+                                                .Select(s => new DoctorPanelNotificationUsersInfoViewModel()
+                                                {
+                                                    Mobile = s.Mobile,
+                                                    UserAvatar = s.Avatar,
+                                                    UserId = s.Id,
+                                                    Username = s.Username
+                                                }).FirstOrDefault()
+                             })
+                             .Take(10)
+                             .ToListAsync();
     }
 
     #endregion

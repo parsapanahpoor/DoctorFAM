@@ -88,10 +88,13 @@ public interface IOnlineVisitRepository
     Task<OnlineVisitUserRequestDetail?> GetOnlineVisitUserRequestDetailById(ulong requestId);
 
     //Get Online Visit User Request Detail For Show In List Of Doctors Lastest Request
-    Task<ListOfLastestOnlineVisitRequestDoctorSideViewModel?> GetOnlineVisitUserRequestDetailForShowInListOfDoctorsLastestRequest(DateTime dateTime, int businessKey, ulong workShiftId);
+    Task<ListOfLastestOnlineVisitRequestDoctorSideViewModel?> GetOnlineVisitUserRequestDetailForShowInListOfDoctorsLastestRequest(DateTime dateTime, int businessKey, ulong workShiftId , ulong workShiftTimeId);
 
     //Get List Of Doctor Selected Shift Ids By Doctor Reservation Id
     Task<List<ulong>> GetListOfDoctorSelectedShiftIdsByDoctorReservationId(ulong doctorReservationId);
+
+    //Get List Of Work Shift Time Ids By Work Shift Id
+    Task<List<ulong>> GetListOfWorkShiftTimeIdsByWorkShiftId(ulong workShiftId);
 
     //Get List Of Doctor Online Visti Reservation Id By Doctor User Id
     Task<List<OnlineVisitDoctorsReservationDate>> GetListOfDoctorOnlineVistiReservationIdByDoctorUserId(ulong doctorUserId);

@@ -10,6 +10,7 @@ using DoctorFAM.Domain.ViewModels.DoctorPanel.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.Site.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.UserPanel.OnlineVisit;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 #endregion
 
@@ -540,12 +541,12 @@ public class OnlineVisitRepository : IOnlineVisitRepository
     }
 
     //Get Online Visit User Request Detail For Show In List Of Doctors Lastest Request
-    public async Task<ListOfLastestOnlineVisitRequestDoctorSideViewModel?> GetOnlineVisitUserRequestDetailForShowInListOfDoctorsLastestRequest(DateTime dateTime, int businessKey, ulong workShiftId)
+    public async Task<ListOfLastestOnlineVisitRequestDoctorSideViewModel?> GetOnlineVisitUserRequestDetailForShowInListOfDoctorsLastestRequest(DateTime dateTime, int businessKey, ulong workShiftId , ulong workShiftTimeId)
     {
         return await _context.OnlineVisitUserRequestDetails
                                .AsNoTracking()
                                .Where(p => !p.IsDelete && p.IsFinaly && !p.IsTakenFromDoctor
-                                       && p.DayDatebusinessKey == businessKey && p.WorkShiftDateId == workShiftId)
+                                       && p.DayDatebusinessKey == businessKey && p.WorkShiftDateId == workShiftId && p.WorkShiftDateTimeId == workShiftTimeId)
                                .Select(p => new ListOfLastestOnlineVisitRequestDoctorSideViewModel()
                                {
                                    BusinessKey = businessKey,
@@ -575,6 +576,16 @@ public class OnlineVisitRepository : IOnlineVisitRepository
                                 .Where(p => !p.IsDelete && p.OnlineVisitDoctorsReservationDateId == doctorReservationId)
                                 .Select(p => p.OnlineVisitWorkShiftId)
                                 .ToListAsync();
+    }
+
+    //Get List Of Work Shift Time Ids By Work Shift Id
+    public async Task<List<ulong>> GetListOfWorkShiftTimeIdsByWorkShiftId(ulong workShiftId)
+    {
+        return await _context.OnlineVisitWorkShiftDetails
+                             .AsNoTracking()
+                             .Where(p => !p.IsDelete && p.OnlineVisitWorkShiftId == workShiftId)
+                             .Select(p => p.Id)
+                             .ToListAsync();
     }
 
     //Get List Of Doctor Online Visti Reservation Id By Doctor User Id

@@ -491,7 +491,7 @@ public class OnlineVisitService : IOnlineVisitService
     }
 
     //Show Online Visit User Request Detail
-    public async Task<OnlineVisitUserRequestDetailDoctorSideViewModel?> ShowOnlineVisitUserRequestDetail(ulong doctorAndPatientRequestId , ulong memberUserId)
+    public async Task<OnlineVisitUserRequestDetailDoctorSideViewModel?> ShowOnlineVisitUserRequestDetail(ulong doctorAndPatientRequestId, ulong memberUserId)
     {
         #region Get Doctor Organization OwnerId
 
@@ -510,7 +510,7 @@ public class OnlineVisitService : IOnlineVisitService
         #region Get Online Visit Doctor Reservation Date
 
         var doctorReservationDate = await _onlineVisitRepository.GetOnlineVisitDoctorReservationDateById(model.RequestId);
-        if(doctorReservationDate == null) return null;
+        if (doctorReservationDate == null) return null;
         if (doctorReservationDate.DoctorUserId != doctorUserId) return null;
 
         #endregion
@@ -522,11 +522,11 @@ public class OnlineVisitService : IOnlineVisitService
     }
 
     //Confirm Online Visit Request From Doctor
-    public async Task<bool> ConfirmOnlineVisitRequestFromDoctor(ulong requestId , ulong doctorMemberId , int businessKey)
+    public async Task<bool> ConfirmOnlineVisitRequestFromDoctor(ulong requestId, ulong doctorMemberId, int businessKey)
     {
         #region Get Doctor Organization OwnerId
 
-        var doctorUserId = await _organizationService.GetOrganizationOwnerIdByOrganizationMemberUserIdWithAsNoTracking(doctorMemberId); 
+        var doctorUserId = await _organizationService.GetOrganizationOwnerIdByOrganizationMemberUserIdWithAsNoTracking(doctorMemberId);
         if (doctorUserId == null) return false;
 
         #endregion
@@ -547,7 +547,7 @@ public class OnlineVisitService : IOnlineVisitService
 
         #region Get Doctor And Patient Request Detail By Doctor User Id And Shift Id And Shift Time Id
 
-        var doctorAndPatientRequestDetail = await _onlineVisitRepository.GetDoctorAndPatientRequestDetailByDoctorUserIdAndShiftIdAndShiftTimeId(onlineVisitDoctorReservationId.Id , request.WorkShiftDateId , request.WorkShiftDateTimeId);
+        var doctorAndPatientRequestDetail = await _onlineVisitRepository.GetDoctorAndPatientRequestDetailByDoctorUserIdAndShiftIdAndShiftTimeId(onlineVisitDoctorReservationId.Id, request.WorkShiftDateId, request.WorkShiftDateTimeId);
         if (doctorAndPatientRequestDetail == null) return false;
 
         #endregion
@@ -555,7 +555,7 @@ public class OnlineVisitService : IOnlineVisitService
         #region Check Validation 
 
         if (!request.IsFinaly) return false;
-        if(request.IsTakenFromDoctor) return false;
+        if (request.IsTakenFromDoctor) return false;
 
         #endregion
 
@@ -584,7 +584,7 @@ public class OnlineVisitService : IOnlineVisitService
 
         #region Join Members to the Chat Group 
 
-        await _chatService.OnlineVisitJoinMembersToTheGroup(chatGroupId , doctorUserId.Value, request.UserId);
+        await _chatService.OnlineVisitJoinMembersToTheGroup(chatGroupId, doctorUserId.Value, request.UserId);
 
         #endregion
 
@@ -595,7 +595,7 @@ public class OnlineVisitService : IOnlineVisitService
 
         var message = Messages.ConfirmOnlineVisitRequestFromDoctor($"{PathTools.SiteAddress}/Chatroom");
 
-        await _smsService.SendSimpleSMS(userMobile , message);
+        await _smsService.SendSimpleSMS(userMobile, message);
 
         #endregion
 
@@ -811,14 +811,28 @@ public class OnlineVisitService : IOnlineVisitService
 
             foreach (var workShiftId in doctorSelectedWorkShiftIds)
             {
-                var model = await _onlineVisitRepository.GetOnlineVisitUserRequestDetailForShowInListOfDoctorsLastestRequest(doctorReservation.OnlineVisitShiftDate, doctorReservation.BusinessKey, workShiftId);
-                if (model != null) returnModel.Add(model);
+                List<ulong> doctorSelectedWorkShiftTimeIds = await _onlineVisitRepository.GetListOfWorkShiftTimeIdsByWorkShiftId(workShiftId);
+
+                if (doctorSelectedWorkShiftTimeIds != null && doctorSelectedWorkShiftTimeIds.Any())
+                {
+                    foreach (var workShiftTimeId in doctorSelectedWorkShiftTimeIds)
+                    {
+                        var model = await _onlineVisitRepository.GetOnlineVisitUserRequestDetailForShowInListOfDoctorsLastestRequest(doctorReservation.OnlineVisitShiftDate, doctorReservation.BusinessKey, workShiftId , workShiftTimeId);
+                        if (model != null) returnModel.Add(model);
+                    }
+                }
             }
         }
 
         #endregion
 
         return returnModel;
+    }
+
+    //Get List Of Work Shift Time Ids By Work Shift Id
+    public async Task<List<ulong>> GetListOfWorkShiftTimeIdsByWorkShiftId(ulong workShiftId)
+    {
+        return await _onlineVisitRepository.GetListOfWorkShiftTimeIdsByWorkShiftId(workShiftId);
     }
 
     #endregion

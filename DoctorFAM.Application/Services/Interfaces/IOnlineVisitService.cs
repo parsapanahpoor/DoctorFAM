@@ -90,6 +90,9 @@ public interface IOnlineVisitService
     //List Of Lastest Online Visit Request Doctor Side View Model
     Task<List<ListOfLastestOnlineVisitRequestDoctorSideViewModel>?> ListOfLastestOnlineVisitRequestDoctorSideViewModel(ulong memberUserId);
 
+    //Get List Of Work Shift Time Ids By Work Shift Id
+    Task<List<ulong>> GetListOfWorkShiftTimeIdsByWorkShiftId(ulong workShiftId);
+
     //Select List For Show List Of Avalable Shifts 
     Task<List<SelectListViewModel>> SelectListForShowListOfAvailableShifts();
 

@@ -4,6 +4,7 @@ using DoctorFAM.Domain.Entities.Notification;
 using DoctorFAM.Domain.Enums.Notification;
 using DoctorFAM.Domain.ViewModels.Consultant.Notification;
 using DoctorFAM.Domain.ViewModels.Dentist.Notification;
+using DoctorFAM.Domain.ViewModels.Doctor.Notification;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Notification;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -112,6 +113,9 @@ public interface INotificationService
 
     //Get Doctor Notification By Doctor User Id
     Task<List<ListOFDoctorNotificationForShowInDoctorPanelViewModel>?> GetDoctorNotificationByDoctorUserId(ulong doctorUserId);
+
+    //Get User Notifications
+    Task<List<DoctorPanelNotificationViewModel>?> GetListOfDoctorPanelNotificationByUserId(ulong userId);
 
     #endregion
 
