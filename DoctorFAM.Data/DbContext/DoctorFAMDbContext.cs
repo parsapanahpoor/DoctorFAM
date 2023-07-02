@@ -794,42 +794,54 @@ public class DoctorFAMDbContext : Microsoft.EntityFrameworkCore.DbContext
         {
             Id = 1,
             CreateDate = DateTime.Now,
-            IsDelete = false
+            IsDelete = false,
+            DoctorPanelSide = true,
+            ConsultantPanelSide = true
         });
 
         modelBuilder.Entity<DoctorsInterest>().HasData(new DoctorsInterest
         {
             Id = 2,
             CreateDate = DateTime.Now,
-            IsDelete = false
+            IsDelete = false,
+            DoctorPanelSide = true,
+            ConsultantPanelSide = true
         });
 
         modelBuilder.Entity<DoctorsInterest>().HasData(new DoctorsInterest
         {
             Id = 3,
             CreateDate = DateTime.Now,
-            IsDelete = false
+            IsDelete = false,
+            DoctorPanelSide = true,
+            ConsultantPanelSide = true
         });
 
         modelBuilder.Entity<DoctorsInterest>().HasData(new DoctorsInterest
         {
             Id = 4,
             CreateDate = DateTime.Now,
-            IsDelete = false
+            IsDelete = false,
+            DoctorPanelSide = true,
+            ConsultantPanelSide = true
         });
 
         modelBuilder.Entity<DoctorsInterest>().HasData(new DoctorsInterest
         {
             Id = 5,
             CreateDate = DateTime.Now,
-            IsDelete = false
+            IsDelete = false,
+            DoctorPanelSide = true,
+            ConsultantPanelSide = true
         });
 
         modelBuilder.Entity<DoctorsInterest>().HasData(new DoctorsInterest
         {
             Id = 6,
             CreateDate = DateTime.Now,
-            IsDelete = false
+            IsDelete = false,
+            DoctorPanelSide = true,
+            ConsultantPanelSide = true
         });
 
         #endregion

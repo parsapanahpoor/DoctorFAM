@@ -35,5 +35,8 @@ public interface IInterestRepository
 
     Task DeleteInterest(DoctorsInterest interest);
 
+    //Update Interest Without Save changes
+    void UpdateInterestWithoutSavechanges(DoctorsInterest interest);
+
     #endregion
 }

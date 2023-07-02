@@ -136,5 +136,11 @@ public class InterestRepository : IInterestRepository
         await _context.SaveChangesAsync();
     }
 
+    //Update Interest Without Save changes
+    public void UpdateInterestWithoutSavechanges(DoctorsInterest interest)
+    {
+        _context.Interests.Update(interest);
+    }
+
     #endregion
 }

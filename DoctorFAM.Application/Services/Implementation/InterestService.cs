@@ -37,7 +37,9 @@ public class InterestService : IInterestService
 
         var mainInterest = new DoctorsInterest()
         {
-            IsDelete = false
+            IsDelete = false,
+            DoctorPanelSide = interest.DoctorPanel,
+            ConsultantPanelSide = interest.ConsultantPanel,
         };
 
         var interestId = await _interestRepository.AddInterestToTheDataBase(mainInterest);
@@ -85,6 +87,16 @@ public class InterestService : IInterestService
         var interest = await _interestRepository.GetInterestById(interstViewModel.Id);
 
         if (interest == null) return EditInterestResult.Fail;
+
+        #endregion
+
+        #region Update Interest
+
+        interest.DoctorPanelSide = interstViewModel.DoctorPanelSide;
+        interest.ConsultantPanelSide = interstViewModel.ConsultantPanelSide;
+
+        //Update Method
+        _interestRepository.UpdateInterestWithoutSavechanges(interest);
 
         #endregion
 
