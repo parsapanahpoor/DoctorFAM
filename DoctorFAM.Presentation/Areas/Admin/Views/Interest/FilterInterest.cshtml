@@ -1,0 +1,120 @@
+﻿@model DoctorFAM.Domain.ViewModels.Admin.Interest.FilterInterestAdminSideViewModel
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
+
+@{
+    ViewData["Title"] = @Localizer["لیست علاقه مندی ها"];
+}
+
+@section Scripts
+    {
+    <partial name="_AdminSweetAlertLocalizer" />
+}
+
+@section Breadcrumb
+    {
+    <li>
+        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+    </li>
+}
+
+<div class="row">
+    <div class="col-lg-3 col-sm-12">
+
+        <a class="btn btn-sky w-100 margin-bottom-10" asp-action="CreateInterest" asp-controller="Interest" asp-area="Admin">@Localizer["افزودن علاقه مندی جدید"]</a>
+
+        <div class="widget">
+            <div class="widget-header bordered-bottom bordered-green">
+                <span class="widget-caption"> @Localizer["فیلتر علاقه مندی ها"] </span>
+
+            </div>
+            <div class="widget-body">
+                <div>
+                    <form asp-action="FilterInterest" asp-controller="Interest" asp-area="Admin" id="filter-search" method="get">
+                        <input type="hidden" asp-for="Page" />
+
+                        <div class="form-group">
+                            <label>@Localizer["Title"] </label>
+                            <input type="text" class="form-control" asp-for="Title">
+                        </div>
+
+                        <hr />
+
+                        <div class="row">
+                            <div class="col-md-12 flex-style">
+                                <button type="submit" class="btn btn-labeled w-100 btn-palegreen">
+                                    <i class="btn-label glyphicon glyphicon-filter"></i>@Localizer["ثبت فیلتر"]
+                                </button>
+
+                                @if (Context.Request.QueryString.HasValue)
+                                {
+                                    <a asp-action="FilterInterest" asp-controller="Interest" asp-area="Admin" class="btn btn-labeled w-100 btn-darkorange">
+                                        <i class="btn-label glyphicon glyphicon-remove"></i>@Localizer["حذف فیلتر"]
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-9 col-sm-12">
+        <div class="well with-header with-footer table-responsive">
+            <div class="header bordered-azure">
+                <div class="flex-style">
+                    <span> @Localizer["لیست علاقه مندی ها"] </span>
+
+                    <span>@Model.GetShownEntitiesPagesTitle()</span>
+                </div>
+            </div>
+
+            @if (Model.Entities != null && Model.Entities.Any())
+            {
+                <table class="table table-hover table-bordered tc vm margin-bottom-30">
+                    <thead class="tc vm">
+                        <tr class="tc vm">
+                            <th class="tc vm">
+                                @Localizer["کد "]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["عنوان "]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["امکانات"]
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="tc vm">
+                        @foreach (var interest in Model.Entities)
+                        {
+                            <tr class="tc vm" remove-ajax-item="@interest.Id">
+                                <td class="tc vm">
+                                    <p> @interest.Interest.Id</p>
+                                </td>
+                                <td class="tc vm">
+                                    <p> @interest.Title </p>
+                                </td>
+                                <td class="tc vm">
+                                    <a asp-action="EditInterest" asp-controller="Interest" asp-area="Admin" asp-route-interestId="@interest.Interest.Id" class="btn btn-warning btn-circle btn-xs"><i class="glyphicon glyphicon-edit"></i></a>
+@*                                    <button onclick="DeleteAjax(@interest.Id, '@Url.Action("DeleteInterest", "Interest", new {area = "Admin", interestId = interest.Interest.Id})')" class="btn btn-danger btn-circle btn-xs"><i class="glyphicon glyphicon-trash"></i></button>
+*@                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <div class="footer tc">
+
+                    <partial name="_AdminPaging" model="@Model.GetCurrentPaging()" />
+
+                </div>
+            }
+            else
+            {
+                <partial name="_AdminNotFoundPartial" />
+            }
+        </div>
+    </div>
+</div>
