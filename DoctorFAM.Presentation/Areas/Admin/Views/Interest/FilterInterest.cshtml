@@ -82,6 +82,9 @@
                                 @Localizer["عنوان "]
                             </th>
                             <th class="tc vm">
+                                @Localizer["نمایش "]
+                            </th>
+                            <th class="tc vm">
                                 @Localizer["امکانات"]
                             </th>
                         </tr>
@@ -97,9 +100,20 @@
                                     <p> @interest.Title </p>
                                 </td>
                                 <td class="tc vm">
+                                    @if (interest.Interest.DoctorPanelSide)
+                                    {
+                                        <p class="badge badge-primary"> نمایش در پنل پزشک </p>
+                                    }
+                                    @if (interest.Interest.ConsultantPanelSide)
+                                    {
+                                        <p class="badge badge-primary"> نمایش در پنل مشاور </p>
+                                    }
+                                </td>
+                                <td class="tc vm">
                                     <a asp-action="EditInterest" asp-controller="Interest" asp-area="Admin" asp-route-interestId="@interest.Interest.Id" class="btn btn-warning btn-circle btn-xs"><i class="glyphicon glyphicon-edit"></i></a>
-@*                                    <button onclick="DeleteAjax(@interest.Id, '@Url.Action("DeleteInterest", "Interest", new {area = "Admin", interestId = interest.Interest.Id})')" class="btn btn-danger btn-circle btn-xs"><i class="glyphicon glyphicon-trash"></i></button>
-*@                                </td>
+                                    @*                                    <button onclick="DeleteAjax(@interest.Id, '@Url.Action("DeleteInterest", "Interest", new {area = "Admin", interestId = interest.Interest.Id})')" class="btn btn-danger btn-circle btn-xs"><i class="glyphicon glyphicon-trash"></i></button>
+                            *@
+                                </td>
                             </tr>
                         }
                     </tbody>

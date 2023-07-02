@@ -275,7 +275,7 @@ public class ConsultantRepository : IConsultantRepository
     public async Task<bool> IsExistInterestById(ulong interestId)
     {
         return await _context.Interests
-                             .AnyAsync(p => !p.IsDelete && p.Id == interestId);
+                             .AnyAsync(p => !p.IsDelete && p.Id == interestId && p.ConsultantPanelSide);
     }
 
     //Get Consultant Information By User Id
@@ -315,7 +315,7 @@ public class ConsultantRepository : IConsultantRepository
     {
         return await _context.InterestInfos
                              .Include(p => p.Interest)
-                             .Where(p => !p.IsDelete)
+                             .Where(p => !p.IsDelete && p.Interest.ConsultantPanelSide)
                              .ToListAsync();
     }
 

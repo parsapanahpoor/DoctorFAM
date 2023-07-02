@@ -89,6 +89,8 @@ public class InterestRepository : IInterestRepository
                         .Where(p => p.Id == interestId && !p.IsDelete).Select(p => new EditInterestViewModel()
                         {
                             Id = p.Id,
+                            ConsultantPanelSide = p.ConsultantPanelSide,
+                            DoctorPanelSide = p.DoctorPanelSide,
                             CurrentInfos = p.InterestInfo.AsQueryable().IgnoreQueryFilters().ToList()
                         }).FirstOrDefaultAsync();
     }
