@@ -61,6 +61,16 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Get User With Role Wallet Balancec
         Task<int> GetUserWithRoleWalletBalancec(ulong userId);
 
+        //Add Withdraw Wallet Request For Users Has Role 
+        Task<CreateWithdrawRequestDoctorPanelSideResult> AddWithdrawWalletRequestForUsersHasRole(CreateWithdrawRequestDoctorPanelSideViewModel model, ulong userId);
+
+        #endregion
+
+        #region Admin Side 
+
+        //List Of Wallet Withdraw Requests Admin Side ViewModel
+        Task<List<ListOfWalletWithdrawRequestsAdminSideViewModel>> FillListOfWalletWithdrawRequestsAdminSideViewModel();
+
         #endregion
     }
 }

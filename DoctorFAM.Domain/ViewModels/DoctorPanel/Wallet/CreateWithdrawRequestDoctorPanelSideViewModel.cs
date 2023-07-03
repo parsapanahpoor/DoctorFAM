@@ -21,3 +21,10 @@ public class CreateWithdrawRequestDoctorPanelSideViewModel
 
     #endregion
 }
+
+public enum CreateWithdrawRequestDoctorPanelSideResult
+{
+    success, 
+    faild,
+    NotEnoughCredit
+}

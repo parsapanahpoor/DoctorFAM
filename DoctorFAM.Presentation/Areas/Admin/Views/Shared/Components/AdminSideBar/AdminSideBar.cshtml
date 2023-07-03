@@ -1,4 +1,4 @@
-﻿
+﻿@model DoctorFAM.Domain.ViewModels.Admin.SideBar.AdminSideBarViewModel
 @{
     var CountOfUserOnlineRequests = ViewData["CountOfUserOnlineRequests"] ;
 }
@@ -224,14 +224,30 @@
         </li>
 
         <li>
-            <a asp-controller="Wallet" asp-action="Index">
+            <a href="#" class="menu-dropdown">
                 <i class="menu-icon glyphicon glyphicon-usd"></i>
                 <span class="menu-text"> @SharedLocalizer["Wallet list"]  </span>
+                <p class="badge badge-warning">@Model.LastestWithdrawRequest</p>
+
                 <i class="menu-expand"></i>
             </a>
-        </li>
 
-        
+            <ul class="submenu">
+
+                <li>
+                    <a asp-controller="Wallet" asp-action="Index">
+                        <span class="menu-text"> @SharedLocalizer["Wallet list"]  </span>
+                    </a>
+                </li>
+
+                <li>
+                    <a asp-controller="Wallet" asp-action="ListOfWalletWithdrawRequests">
+                        <span class="menu-text"> @SharedLocalizer["لیست درخواست های برداشت "]  </span>
+                    </a>
+                </li>
+
+            </ul>
+        </li>
 
         <li>
             <a href="#" class="menu-dropdown">

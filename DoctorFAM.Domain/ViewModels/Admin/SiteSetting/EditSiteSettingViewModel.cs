@@ -65,6 +65,9 @@ namespace DoctorFAM.Domain.ViewModels.Admin.SiteSetting
 
         [Display(Name = "سهم وب سایت از ویزیت در منزل")]
         public int HomeVisitSiteShare { get; set; }
+
+        [Display(Name = "مبلغ غیرقابل برداشت از کیف پول")]
+        public int WalletLockPrice { get; set; }
     }
 
     public enum EditSiteSettingResult

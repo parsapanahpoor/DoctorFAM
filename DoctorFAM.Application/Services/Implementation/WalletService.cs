@@ -20,12 +20,15 @@ namespace DoctorFAM.Application.Services.Implementation
         private readonly IWalletRepository _walletRepository;
         private readonly IUserRepository _userRepository;
         private readonly IOrganizationService _organizationService;
+        private readonly ISiteSettingService _siteSettingService;
 
-        public WalletService(IWalletRepository walletRepository, IUserRepository userRepository, IOrganizationService organizationService)
+        public WalletService(IWalletRepository walletRepository, IUserRepository userRepository, IOrganizationService organizationService ,
+                                ISiteSettingService siteSettingService)
         {
             _walletRepository = walletRepository;
             _userRepository = userRepository;
             _organizationService = organizationService;
+            _siteSettingService = siteSettingService;
         }
 
         #endregion
@@ -248,6 +251,79 @@ namespace DoctorFAM.Application.Services.Implementation
             #endregion
 
             return await _walletRepository.ListOfDoctorWithdrawRequestViewModel(ownerId.Value);
+        }
+
+        //Get User With Role Wallet Balancec
+        public async Task<int> GetUserWithRoleWalletBalancec(ulong userId)
+        {
+            #region Get Organization Owner Id by User Id
+
+            ulong? ownerId = await _organizationService.GetOrganizationOwnerIdByOrganizationMemberUserIdWithAsNoTracking(userId);
+            if (ownerId == null) { return 0; }
+
+            #endregion
+
+            return await _walletRepository.GetUserWalletBalance(ownerId.Value);
+        }
+
+        //Add Withdraw Wallet Request For Users Has Role 
+        public async Task<CreateWithdrawRequestDoctorPanelSideResult> AddWithdrawWalletRequestForUsersHasRole(CreateWithdrawRequestDoctorPanelSideViewModel model , ulong userId)
+        {
+            #region Get Organization Owner Id by User Id
+
+            ulong? ownerId = await _organizationService.GetOrganizationOwnerIdByOrganizationMemberUserIdWithAsNoTracking(userId);
+            if (ownerId == null) { return 0; }
+
+            #endregion
+
+            #region Get User Wallet Balance
+
+            int userWalletBalance = await _walletRepository.GetUserWalletBalance(ownerId.Value);
+            if (userWalletBalance <= model.Price) return CreateWithdrawRequestDoctorPanelSideResult.NotEnoughCredit;
+
+            #endregion
+
+            #region Get Site Lock Price 
+
+            int lockPrice = await _siteSettingService.GetWithdrawLockPrice();
+
+            #endregion
+
+            #region Validation 
+
+            if (lockPrice >= userWalletBalance) return CreateWithdrawRequestDoctorPanelSideResult.NotEnoughCredit; 
+
+            if ((lockPrice + model.Price) > userWalletBalance) return CreateWithdrawRequestDoctorPanelSideResult.NotEnoughCredit;
+
+            #endregion
+
+            #region Intiial Request 
+
+            WalletWithdrawRequests walletWithdrawRequests = new WalletWithdrawRequests()
+            {
+                Price = (model.FullAccountWithdraw) ? userWalletBalance - lockPrice : model.Price,
+                Receipt = null,
+                RejectDescription = null,
+                UserId = ownerId.Value,
+                RequestState = Domain.Enums.Wallet.WalletWithdrawRequestState.Waiting
+            };
+
+            //Add To The Data Base
+            await _walletRepository.AddWithdrawWalletRequest(walletWithdrawRequests);
+
+            #endregion
+
+            return CreateWithdrawRequestDoctorPanelSideResult.success;
+        }
+
+        #endregion
+
+        #region Admin Side 
+
+        //List Of Wallet Withdraw Requests Admin Side ViewModel
+        public async Task<List<ListOfWalletWithdrawRequestsAdminSideViewModel>> FillListOfWalletWithdrawRequestsAdminSideViewModel()
+        {
+            return await _walletRepository.FillListOfWalletWithdrawRequestsAdminSideViewModel();
         }
 
         #endregion

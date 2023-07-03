@@ -441,5 +441,44 @@ public class WalletRepository : IWalletRepository
                              .ToListAsync();
     }
 
+    //Add Withdraw Wallet Request
+    public async Task AddWithdrawWalletRequest(WalletWithdrawRequests request)
+    {
+        await _context.WalletWithdrawRequests.AddAsync(request);
+        await _context.SaveChangesAsync();
+    }
+
+    #endregion
+
+    #region Admin Side 
+
+    //List Of Wallet Withdraw Requests Admin Side ViewModel
+    public async Task<List<ListOfWalletWithdrawRequestsAdminSideViewModel>> FillListOfWalletWithdrawRequestsAdminSideViewModel()
+    {
+        return await _context.WalletWithdrawRequests
+                             .AsNoTracking()
+                             .Where(p => !p.IsDelete)
+                             .Select(p => new ListOfWalletWithdrawRequestsAdminSideViewModel()
+                             {
+                                 CreateDate = p.CreateDate,
+                                 Price = p.Price,
+                                 RequestId= p.Id,
+                                 RequestState = p.RequestState,
+                                 User = _context.Users
+                                                .AsNoTracking()
+                                                .Where(s=> !s.IsDelete && s.Id == p.UserId)
+                                                .Select(s=> new UserWlletWithdrawRequestsAdminSideViewModel()
+                                                {
+                                                    Mobile = s.Mobile,
+                                                    UserId = s.Id,
+                                                    Username = s.Username,
+                                                    UserAvatar = s.Avatar
+                                                })
+                                                .FirstOrDefault()
+                             })
+                             .OrderByDescending(p => p.CreateDate)
+                             .ToListAsync();
+    }
+
     #endregion
 }

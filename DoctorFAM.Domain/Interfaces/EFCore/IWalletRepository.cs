@@ -85,5 +85,15 @@ public interface IWalletRepository
     //List Of Doctor Withdraw Request View Model
     Task<List<ListOfDoctorWithdrawRequestViewModel>?> ListOfDoctorWithdrawRequestViewModel(ulong userId);
 
+    //Add Withdraw Wallet Request
+    Task AddWithdrawWalletRequest(WalletWithdrawRequests request);
+
+    #endregion
+
+    #region Admin Side 
+
+    //List Of Wallet Withdraw Requests Admin Side ViewModel
+    Task<List<ListOfWalletWithdrawRequestsAdminSideViewModel>> FillListOfWalletWithdrawRequestsAdminSideViewModel();
+
     #endregion
 }
