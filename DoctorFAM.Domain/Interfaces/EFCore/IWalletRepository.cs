@@ -2,7 +2,9 @@
 
 using DoctorFAM.Domain.Entities.Wallet;
 using DoctorFAM.Domain.ViewModels.Admin.Wallet;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.Wallet;
 using DoctorFAM.Domain.ViewModels.UserPanel.Wallet;
+using Microsoft.EntityFrameworkCore;
 
 #endregion
 
@@ -75,6 +77,13 @@ public interface IWalletRepository
 
     //Get Transaction For Home Laboratory 
     Task<int> GetTransactionForHomeLaboratory(ulong userId, ulong requestId);
+
+    #endregion
+
+    #region Doctor Panel
+
+    //List Of Doctor Withdraw Request View Model
+    Task<List<ListOfDoctorWithdrawRequestViewModel>?> ListOfDoctorWithdrawRequestViewModel(ulong userId);
 
     #endregion
 }

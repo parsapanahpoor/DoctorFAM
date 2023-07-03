@@ -101,7 +101,7 @@ public class DoctorFAMDbContext : Microsoft.EntityFrameworkCore.DbContext
 
     public DbSet<WalletData> WalletData { get; set; }
 
-    public WalletWithdrawRequests WalletWithdrawRequests { get; set; }
+    public DbSet<WalletWithdrawRequests> WalletWithdrawRequests { get; set; }
 
     #endregion
 

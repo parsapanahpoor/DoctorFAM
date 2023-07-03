@@ -1,5 +1,7 @@
-﻿using DoctorFAM.Domain.Entities.Wallet;
+﻿using DoctorFAM.Application.Services.Implementation;
+using DoctorFAM.Domain.Entities.Wallet;
 using DoctorFAM.Domain.ViewModels.Admin.Wallet;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.Wallet;
 using DoctorFAM.Domain.ViewModels.UserPanel.Wallet;
 using System;
 using System.Collections.Generic;
@@ -48,6 +50,16 @@ namespace DoctorFAM.Application.Services.Interfaces
         #region User Panel 
 
         Task<FilterWalletUserPnelViewModel> FilterWalletsAsyncUserPanel(FilterWalletUserPnelViewModel filter);
+
+        #endregion
+
+        #region General
+
+        //List Of User With Role Withdraw Request View Model
+        Task<List<ListOfDoctorWithdrawRequestViewModel>?> ListOfDoctorWithdrawRequestViewModel(ulong userId);
+
+        //Get User With Role Wallet Balancec
+        Task<int> GetUserWithRoleWalletBalancec(ulong userId);
 
         #endregion
     }

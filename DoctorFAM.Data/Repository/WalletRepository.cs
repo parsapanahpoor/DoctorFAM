@@ -1,9 +1,11 @@
 ﻿#region Usings
 
 using DoctorFAM.Data.DbContext;
+using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Wallet;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.Wallet;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.Wallet;
 using DoctorFAM.Domain.ViewModels.UserPanel.Wallet;
 using Microsoft.EntityFrameworkCore;
 
@@ -416,6 +418,28 @@ public class WalletRepository : IWalletRepository
         return filter;
     }
 
+
+    #endregion
+
+    #region General
+
+    //List Of User With Role Withdraw Request View Model
+    public async Task<List<ListOfDoctorWithdrawRequestViewModel>?> ListOfDoctorWithdrawRequestViewModel(ulong userId)
+    {
+        return await _context.WalletWithdrawRequests
+                             .AsNoTracking()
+                             .Where(p => !p.IsDelete && p.UserId == userId)
+                             .Select(p => new ListOfDoctorWithdrawRequestViewModel()
+                             {
+                                 CreateDate = p.CreateDate,
+                                 Price = p.Price,
+                                 RequestState = p.RequestState,
+                                 UserId = p.UserId,
+                                 RequestId = p.Id
+                             })
+                             .OrderByDescending(p=> p.CreateDate)
+                             .ToListAsync();
+    }
 
     #endregion
 }
