@@ -3,6 +3,8 @@ using DoctorFAM.Domain.Entities.Wallet;
 using DoctorFAM.Domain.ViewModels.Admin.Wallet;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Wallet;
 using DoctorFAM.Domain.ViewModels.UserPanel.Wallet;
+using DoctorFAM.Domain.ViewModels.Wallet;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -55,6 +57,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         #region General
 
+        //Get Withdraw Wallet Request By Id 
+        Task<WalletWithdrawRequests?> GetWithdrawWalletRequestById(ulong requestId);
+
         //List Of User With Role Withdraw Request View Model
         Task<List<ListOfDoctorWithdrawRequestViewModel>?> ListOfDoctorWithdrawRequestViewModel(ulong userId);
 
@@ -64,12 +69,22 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Add Withdraw Wallet Request For Users Has Role 
         Task<CreateWithdrawRequestDoctorPanelSideResult> AddWithdrawWalletRequestForUsersHasRole(CreateWithdrawRequestDoctorPanelSideViewModel model, ulong userId);
 
+        //Fill Withdraw Request Detail ViewModel
+        Task<WithdrawRequestDetailViewModel?> WithdrawRequestDetailViewModel(ulong requestId, ulong userId);
+
         #endregion
 
         #region Admin Side 
 
         //List Of Wallet Withdraw Requests Admin Side ViewModel
         Task<List<ListOfWalletWithdrawRequestsAdminSideViewModel>> FillListOfWalletWithdrawRequestsAdminSideViewModel();
+
+        //Fill Withdraw Request Detail Admin ViewModel
+        Task<WithdrawRequestDetailAdminViewModel> FillWithdrawRequestDetailAdminViewModel(ulong requestId);
+
+        //Edit Wallet Withdraw Request From Admin Panel
+
+        Task<bool> EditWalletWithdrawRequestFromAdminPanel(WithdrawRequestDetailAdminViewModel model, IFormFile? receiptImage);
 
         #endregion
     }

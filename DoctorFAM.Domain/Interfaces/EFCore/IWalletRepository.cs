@@ -4,6 +4,7 @@ using DoctorFAM.Domain.Entities.Wallet;
 using DoctorFAM.Domain.ViewModels.Admin.Wallet;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Wallet;
 using DoctorFAM.Domain.ViewModels.UserPanel.Wallet;
+using DoctorFAM.Domain.ViewModels.Wallet;
 using Microsoft.EntityFrameworkCore;
 
 #endregion
@@ -88,12 +89,24 @@ public interface IWalletRepository
     //Add Withdraw Wallet Request
     Task AddWithdrawWalletRequest(WalletWithdrawRequests request);
 
+    //Fill Withdraw Request Detail ViewModel
+    Task<WithdrawRequestDetailViewModel?> WithdrawRequestDetailViewModel(ulong requestId);
+
     #endregion
 
     #region Admin Side 
 
     //List Of Wallet Withdraw Requests Admin Side ViewModel
     Task<List<ListOfWalletWithdrawRequestsAdminSideViewModel>> FillListOfWalletWithdrawRequestsAdminSideViewModel();
+
+    //Fill Withdraw Request Detail Admin ViewModel
+    Task<WithdrawRequestDetailAdminViewModel?> FillWithdrawRequestDetailAdminViewModel(ulong requestId);
+
+    //Get Withdraw Wallet Request By Id 
+    Task<WalletWithdrawRequests?> GetWithdrawWalletRequestById(ulong requestId);
+
+    //Update Withdraw Wallet Request 
+    Task UpdateWithdrawWalletRequest(WalletWithdrawRequests request);
 
     #endregion
 }

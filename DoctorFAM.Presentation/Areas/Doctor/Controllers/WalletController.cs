@@ -100,4 +100,17 @@ public class WalletController : DoctorBaseController
     }
 
     #endregion
+
+    #region Withdraw Request Detail
+
+    [HttpGet]
+    public async Task<IActionResult> WithdrawRequestDetail(ulong requestId)
+    {
+        var model = await _walletService.WithdrawRequestDetailViewModel(requestId , User.GetUserId());
+        if (model == null) return NotFound();
+
+        return View(model);
+    }
+
+    #endregion
 }

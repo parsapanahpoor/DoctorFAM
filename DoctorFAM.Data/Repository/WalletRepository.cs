@@ -1,12 +1,14 @@
 ﻿#region Usings
 
 using DoctorFAM.Data.DbContext;
+using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Wallet;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.Wallet;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Wallet;
 using DoctorFAM.Domain.ViewModels.UserPanel.Wallet;
+using DoctorFAM.Domain.ViewModels.Wallet;
 using Microsoft.EntityFrameworkCore;
 
 #endregion
@@ -29,11 +31,11 @@ public class WalletRepository : IWalletRepository
     #region Home Visit
 
     //Get Home Visit Tariff Wallet By Request Id And User ID As No Traking
-    public async Task<int> GetHomeVisitTariffWalletByRequestIdAndUserIDAsNoTraking(ulong requestId , ulong userId)
+    public async Task<int> GetHomeVisitTariffWalletByRequestIdAndUserIDAsNoTraking(ulong requestId, ulong userId)
     {
-        return await _context.Wallets.AsNoTracking().Where(p=> !p.IsDelete && p.RequestId == requestId 
+        return await _context.Wallets.AsNoTracking().Where(p => !p.IsDelete && p.RequestId == requestId
                                                             && p.UserId == userId && p.IsFinally && p.PaymentType == PaymentType.HomeVisit)
-                                                                    .Select(p=> p.Price).FirstOrDefaultAsync();                                         
+                                                                    .Select(p => p.Price).FirstOrDefaultAsync();
     }
 
     #endregion
@@ -183,7 +185,7 @@ public class WalletRepository : IWalletRepository
     //Find Wallet Transaction For Redirect To The Bank Portal 
     public async Task<Wallet?> FindWalletTransactionForRedirectToTheBankPortal(ulong userId, GatewayType gateway, ulong? requestId, string authority, int amount)
     {
-        return await _context.Wallets.Include(p => p.WalletData).FirstOrDefaultAsync(p => !p.IsDelete && !p.IsFinally && p.UserId == userId && p.GatewayType == gateway 
+        return await _context.Wallets.Include(p => p.WalletData).FirstOrDefaultAsync(p => !p.IsDelete && !p.IsFinally && p.UserId == userId && p.GatewayType == gateway
                                                                                             && p.WalletData.TrackingCode == authority &&
                                                                                                     p.RequestId == requestId && p.Price == amount);
     }
@@ -319,7 +321,7 @@ public class WalletRepository : IWalletRepository
     #region User Panel 
 
     //Get Transaction For Home Laboratory 
-    public async Task<int> GetTransactionForHomeLaboratory(ulong userId , ulong requestId)
+    public async Task<int> GetTransactionForHomeLaboratory(ulong userId, ulong requestId)
     {
         return await _context.Wallets.AsNoTracking()
             .Where(p => !p.IsDelete && p.IsFinally && p.TransactionType == TransactionType.Withdraw
@@ -330,7 +332,7 @@ public class WalletRepository : IWalletRepository
     public async Task<FilterWalletUserPnelViewModel> FilterWalletsAsyncUserPanel(FilterWalletUserPnelViewModel filter)
     {
         var query = _context.Wallets
-            .Include(w => w.User).Where(w => w.IsFinally && w.UserId == filter.UserId) 
+            .Include(w => w.User).Where(w => w.IsFinally && w.UserId == filter.UserId)
             .AsQueryable();
 
         #region Order
@@ -437,7 +439,7 @@ public class WalletRepository : IWalletRepository
                                  UserId = p.UserId,
                                  RequestId = p.Id
                              })
-                             .OrderByDescending(p=> p.CreateDate)
+                             .OrderByDescending(p => p.CreateDate)
                              .ToListAsync();
     }
 
@@ -446,6 +448,33 @@ public class WalletRepository : IWalletRepository
     {
         await _context.WalletWithdrawRequests.AddAsync(request);
         await _context.SaveChangesAsync();
+    }
+
+    //Fill Withdraw Request Detail ViewModel
+    public async Task<WithdrawRequestDetailViewModel?> WithdrawRequestDetailViewModel(ulong requestId)
+    {
+        return await _context.WalletWithdrawRequests
+                             .AsNoTracking()
+                             .Where(p => !p.IsDelete && p.Id == requestId)
+                             .Select(p => new WithdrawRequestDetailViewModel()
+                             {
+                                 Price = p.Price,
+                                 Receipt = p.Receipt,
+                                 RejectDescription = p.RejectDescription,
+                                 RequestId = requestId,
+                                 SiteWithdrawLockPrice = _context.SiteSettings
+                                                                 .AsNoTracking()
+                                                                 .Where(s => !s.IsDelete)
+                                                                 .Select(s => s.WalletLockPrice)
+                                                                 .FirstOrDefault(),
+                                 UserWalletBalance = _context.Users
+                                                             .AsNoTracking()
+                                                             .Where(s => !s.IsDelete && s.Id == p.UserId)
+                                                             .Select(s => s.WalletBalance)
+                                                             .FirstOrDefault(),
+                                 RequestState = p.RequestState
+                             })
+                             .FirstOrDefaultAsync();
     }
 
     #endregion
@@ -462,12 +491,12 @@ public class WalletRepository : IWalletRepository
                              {
                                  CreateDate = p.CreateDate,
                                  Price = p.Price,
-                                 RequestId= p.Id,
+                                 RequestId = p.Id,
                                  RequestState = p.RequestState,
                                  User = _context.Users
                                                 .AsNoTracking()
-                                                .Where(s=> !s.IsDelete && s.Id == p.UserId)
-                                                .Select(s=> new UserWlletWithdrawRequestsAdminSideViewModel()
+                                                .Where(s => !s.IsDelete && s.Id == p.UserId)
+                                                .Select(s => new UserWlletWithdrawRequestsAdminSideViewModel()
                                                 {
                                                     Mobile = s.Mobile,
                                                     UserId = s.Id,
@@ -478,6 +507,54 @@ public class WalletRepository : IWalletRepository
                              })
                              .OrderByDescending(p => p.CreateDate)
                              .ToListAsync();
+    }
+
+    //Fill Withdraw Request Detail Admin ViewModel
+    public async Task<WithdrawRequestDetailAdminViewModel?> FillWithdrawRequestDetailAdminViewModel(ulong requestId)
+    {
+        return await _context.WalletWithdrawRequests
+                             .AsNoTracking()
+                             .Where(p => !p.IsDelete && p.Id == requestId)
+                             .Select(p => new WithdrawRequestDetailAdminViewModel()
+                             {
+                                 Price = p.Price,
+                                 Receipt = p.Receipt,
+                                 RejectDescription = p.RejectDescription,
+                                 RequestId = p.Id,
+                                 RequestState = p.RequestState,
+                                 SiteWithdrawLockPrice = _context.SiteSettings
+                                                                 .AsNoTracking()
+                                                                 .Where(s => !s.IsDelete)
+                                                                 .Select(s => s.WalletLockPrice)
+                                                                 .FirstOrDefault(),
+                                 UserInfo = _context.Users
+                                                .AsNoTracking()
+                                                .Where(s => !s.IsDelete && s.Id == p.UserId)
+                                                .Select(s => new UserWithdrawRequestDetailAdminViewModel()
+                                                {
+                                                    UserId = s.Id,
+                                                    Mobile = s.Mobile,
+                                                    Username = s.Username,
+                                                    UserWalletBalance = s.WalletBalance,
+                                                })
+                                                .FirstOrDefault(),
+                             })
+                             .FirstOrDefaultAsync();
+    }
+
+    //Get Withdraw Wallet Request By Id 
+    public async Task<WalletWithdrawRequests?> GetWithdrawWalletRequestById(ulong requestId)
+    {
+        return await _context.WalletWithdrawRequests
+                             .AsNoTracking()
+                             .FirstOrDefaultAsync(p => !p.IsDelete && p.Id == requestId);
+    }
+
+    //Update Withdraw Wallet Request 
+    public async Task UpdateWithdrawWalletRequest(WalletWithdrawRequests request)
+    {
+        _context.WalletWithdrawRequests.Update(request);
+        await _context.SaveChangesAsync();
     }
 
     #endregion

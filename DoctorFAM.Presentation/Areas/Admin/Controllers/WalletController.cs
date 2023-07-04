@@ -180,9 +180,40 @@ public class WalletController : AdminBaseController
     #region Withdraw Request Detail
 
     [HttpGet]
-    public async Task<IActionResult> WithdrawRequestDetail()
+    public async Task<IActionResult> WithdrawRequestDetail(ulong requestId)
     {
-        return View();
+        var model = await _walletService.FillWithdrawRequestDetailAdminViewModel(requestId);
+        if (model == null) return NotFound();
+
+        return View(model);
+    }
+
+    [HttpPost , ValidateAntiForgeryToken]
+    public async Task<IActionResult> WithdrawRequestDetail(WithdrawRequestDetailAdminViewModel model , IFormFile? receiptImage)
+    {
+        #region Model State Validation 
+
+        if (!ModelState.IsValid) 
+        {
+            TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد";
+            return View(await _walletService.FillWithdrawRequestDetailAdminViewModel(model.RequestId));
+        }
+
+        #endregion
+
+        #region Update Request
+
+        var res = await _walletService.EditWalletWithdrawRequestFromAdminPanel(model , receiptImage);
+        if (res)
+        {
+            TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+            return RedirectToAction(nameof(ListOfWalletWithdrawRequests));
+        }
+
+        #endregion
+
+        TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد";
+        return View(await _walletService.FillWithdrawRequestDetailAdminViewModel(model.RequestId));
     }
 
     #endregion
