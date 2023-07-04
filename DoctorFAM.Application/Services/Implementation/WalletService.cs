@@ -306,9 +306,8 @@ namespace DoctorFAM.Application.Services.Implementation
             #region Validation 
 
             if (lockPrice >= userWalletBalance) return CreateWithdrawRequestDoctorPanelSideResult.NotEnoughCredit;
-
+            if (model.Price >= userWalletBalance) return CreateWithdrawRequestDoctorPanelSideResult.NotEnoughCredit;
             if ((lockPrice + model.Price) > userWalletBalance) return CreateWithdrawRequestDoctorPanelSideResult.NotEnoughCredit;
-
             if ((userWalletBalance - lockPrice) < model.Price) return CreateWithdrawRequestDoctorPanelSideResult.NotEnoughCredit;
 
             #endregion
@@ -387,6 +386,7 @@ namespace DoctorFAM.Application.Services.Implementation
             int sitePriceLock = await _siteSettingService.GetWithdrawLockPrice();
 
             if (userWalletBalance <= sitePriceLock) return false;
+            if (userWalletBalance <= requestWallet.Price) return false;
             if (userWalletBalance < (sitePriceLock + requestWallet.Price)) return false;
             if((userWalletBalance - sitePriceLock) < requestWallet.Price) return false;
 
