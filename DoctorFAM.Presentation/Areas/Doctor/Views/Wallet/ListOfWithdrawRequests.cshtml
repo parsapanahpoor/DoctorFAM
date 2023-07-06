@@ -1,0 +1,142 @@
+﻿@model List<DoctorFAM.Domain.ViewModels.DoctorPanel.Wallet.ListOfDoctorWithdrawRequestViewModel>
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Domain.ViewModels.Common
+
+@{
+    ViewData["Title"] = "لیست درخواست های مالی";
+}
+
+@section Styles
+    {
+    <link href="/admin/css/dataTables.bootstrap.rtl.css" rel="stylesheet" />
+}
+
+@section Scripts
+    {
+    <script src="~/admin/js/datatable/jquery.dataTables.min.js"></script>
+    <script src="~/admin/js/datatable/ZeroClipboard.js"></script>
+    <script src="~/admin/js/datatable/dataTables.tableTools.min.js"></script>
+    <script src="~/admin/js/datatable/dataTables.bootstrap.min.js"></script>
+    <script src="~/admin/js/datatable/datatables-init.js"></script>
+    <script>
+        InitiateSimpleDataTable.init();
+        InitiateEditableDataTable.init();
+        InitiateExpandableDataTable.init();
+        InitiateSearchableDataTable.init();
+    </script>
+}
+
+@section Breadcrumb
+    {
+    <li>
+        <a asp-action="Wallet" asp-area="Doctor" asp-controller="Home"> بخش مالی </a>
+    </li>
+   
+}
+
+<div class="row">
+
+    <div class="col-lg-3 col-sm-12">
+    </div>
+
+    <div class="col-lg-6 col-sm-12">
+
+        <a class="col-lg-6 col-sm-12 btn btn-sky w-100 margin-bottom-10" asp-action="CreateWithdrawRequest"  asp-controller="Wallet" asp-area="Doctor"> ایجاد درخواست برداشت وجه </a>
+
+    </div>
+
+    <div class="col-lg-3 col-sm-12">
+    </div>
+
+    <div class="col-lg-12 col-sm-12">
+
+        <div class="row" style="margin:10px 10px 10px 10px;">
+
+            <div id="horizontal-form">
+
+                @if (Model != null && Model.Any())
+                {
+                    <div class="widget-body no-padding">
+                        <div id="searchable_wrapper" class="dataTables_wrapper form-inline">
+
+                            <table class="table table-bordered table-hover table-striped dataTable" id="searchable" role="grid" aria-describedby="searchable_info">
+                                <thead class="bordered-darkorange">
+                                    <tr role="row">
+
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">کد درخواست</th>
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">مبلغ درخواست</th>
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">وضعیت درخواست</th>
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">تاریخ ایجاد درخواست</th>
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending"> امکانات</th>
+
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+
+                                    @foreach (var wallet in Model)
+                                    {
+                                        <tr role="row" class="even responsive" remove-ajax-item="@wallet.RequestId">
+
+                                            <td class="center tc vm">
+                                            #@wallet.RequestId
+                                            </td>
+
+                                            <td class="center tc vm">
+                                                <p class="label label-success">
+                                                    
+                                                    @wallet.Price.ToString("#,000") ریال
+
+                                                </p>
+                                            </td>
+
+                                            <td class="center ">
+
+                                                @if (wallet.RequestState == DoctorFAM.Domain.Enums.Wallet.WalletWithdrawRequestState.Waiting)
+                                                {
+                                                    <p class="badge badge-warning"> درحال بررسی</p>
+                                                }
+                                                @if (wallet.RequestState == DoctorFAM.Domain.Enums.Wallet.WalletWithdrawRequestState.SuccessWithdraw)
+                                                {
+                                                    <p class="badge badge-success"> پرداخت شده</p>
+                                                }
+                                                @if (wallet.RequestState == DoctorFAM.Domain.Enums.Wallet.WalletWithdrawRequestState.Reject)
+                                                {
+                                                    <p class="badge badge-danger"> رد شده</p>
+                                                }
+
+                                            </td>
+
+                                            <td class="center ">
+
+                                                @wallet.CreateDate.ToShamsi()
+
+                                            </td>
+
+                                            <td class="center tc vm">
+
+                                                <a asp-action="WithdrawRequestDetail" asp-controller="Wallet" asp-area="Doctor" asp-route-requestId="@wallet.RequestId" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+
+                                            </td>
+
+                                        </tr>
+
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <partial name="_DoctorPanelNotFoundPartial" />
+                }
+
+            </div>
+        </div>
+
+    </div>
+</div>
+

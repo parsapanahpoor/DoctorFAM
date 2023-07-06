@@ -262,4 +262,14 @@ public static class PathTools
     public static readonly string HomeLaboratoryResultPathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/HomeLaboratoryResult/thumb/");
 
     #endregion
+
+    #region Wallet Withdraw Receipt
+
+    public static readonly string ReceiptPath = "/content/images/Receipt/main/";
+    public static readonly string ReceiptPathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/Receipt/main/");
+
+    public static readonly string ReceiptPathThumb = "/content/images/Receipt/thumb/";
+    public static readonly string ReceiptPathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/Receipt/thumb/");
+
+    #endregion
 }

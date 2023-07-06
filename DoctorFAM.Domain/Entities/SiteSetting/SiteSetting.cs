@@ -60,5 +60,8 @@ namespace Academy.Domain.Entities.SiteSetting
 
         [Display(Name = "سهم وب سایت از ویزیت در منزل")]
         public int HomeVisitSiteShare { get; set; }
+
+        [Display(Name = "مبلغ غیرقابل برداشت")]
+        public int WalletLockPrice { get; set; }
     }
 }

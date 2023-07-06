@@ -457,7 +457,7 @@ public class OnlineVisitRepository : IOnlineVisitRepository
                                                             .Select(s => s.StartShiftTime + "-" + s.EndShiftTime)
                                                             .FirstOrDefault(),
                                                    WorkShiftTime = _context.OnlineVisitWorkShiftDetails.Where(s => !s.IsDelete && s.OnlineVisitWorkShiftId == p.OnlineVisitWorkShiftId && s.Id == p.OnlineVisitWorkShiftDetail)
-                                                        .Select(s => s.StartTime + " تا " + s.EndTime).FirstOrDefault(),
+                                                        .Select(s => s.StartTime.Substring(0, s.StartTime.Length - 3)).FirstOrDefault(),
                                                    User = _context.Users.AsNoTracking().Where(s => !s.IsDelete && s.Id == p.PatientUserId)
                                                         .Select(s => new OnlineVisitRequestUser()
                                                         {
@@ -557,7 +557,7 @@ public class OnlineVisitRepository : IOnlineVisitRepository
                                                            .Select(s => s.StartShiftTime + "-" + s.EndShiftTime)
                                                            .FirstOrDefault(),
                                    WorkShiftTime = _context.OnlineVisitWorkShiftDetails.Where(s => !s.IsDelete && s.OnlineVisitWorkShiftId == workShiftId && s.Id == p.WorkShiftDateTimeId)
-                                                       .Select(s => s.StartTime + " تا " + s.EndTime).FirstOrDefault(),
+                                                       .Select(s => s.StartTime.Substring(0 ,s.StartTime.Length - 3)).FirstOrDefault(),
                                    User = _context.Users.AsNoTracking().Where(s => !s.IsDelete && s.Id == p.UserId)
                                                        .Select(s => new OnlineVisitRequestUser()
                                                        {

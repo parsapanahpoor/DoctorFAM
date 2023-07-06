@@ -336,6 +336,15 @@ public class SiteSettingRepository : ISiteSettingRepository
                         .AnyAsync(p => !p.IsDelete && p.OnlineReservationTariffForAnonymousPersons < price);
     }
 
+    //Get Withdraw Lock Price
+    public async Task<int> GetWithdrawLockPrice()
+    {
+        return await _context.SiteSettings
+                             .Where(p => !p.IsDelete)
+                             .Select(p => p.WalletLockPrice)
+                             .FirstOrDefaultAsync();
+    }
+
     #region OnlineVisit
 
     //List Of Online Visit Work Shift
