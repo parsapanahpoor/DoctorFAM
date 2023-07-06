@@ -116,6 +116,9 @@ public interface ISiteSettingRepository
     //Check Field Online Reservation Tariff For Online Reservation Tariff For Anonymous Persons Site Share
     Task<bool> CheckFieldOnlineReservationTariffForOnlineReservationTariffForAnonymousPersonsSiteShare(int price);
 
+    //Get Withdraw Lock Price
+    Task<int> GetWithdrawLockPrice();
+
     #region OnlineVisit
 
     //List Of Online Visit Work Shift

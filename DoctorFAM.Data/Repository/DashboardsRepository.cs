@@ -6,6 +6,7 @@ using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.Dashboard;
 using DoctorFAM.Domain.ViewModels.Admin.IncomingExcelFile;
+using DoctorFAM.Domain.ViewModels.Admin.SideBar;
 using DoctorFAM.Domain.ViewModels.Consultant.Dashboard;
 using DoctorFAM.Domain.ViewModels.Dentist.Dashboard;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Dashbaord;
@@ -159,7 +160,24 @@ public class DashboardsRepository : IDashboardsRepository
 
     #endregion
 
-    #region Supporter
+    #region Admin
+
+    //Fill Admin Side Bar View Model
+    public async Task<AdminSideBarViewModel> FillAdminSideBarViewModel()
+    {
+        AdminSideBarViewModel model = new AdminSideBarViewModel();
+
+        #region Lastest Waiting Withdraw Request
+
+        model.LastestWithdrawRequest = await _context.WalletWithdrawRequests
+                                                     .AsNoTracking()
+                                                     .Where(p => !p.IsDelete && p.RequestState == Domain.Enums.Wallet.WalletWithdrawRequestState.Waiting)
+                                                     .CountAsync();
+
+        #endregion
+
+        return model;
+    }
 
     public async Task<AdminDashboardViewModel> FillAdminDashboardViewModel()
     {

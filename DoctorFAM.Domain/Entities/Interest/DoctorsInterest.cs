@@ -13,7 +13,9 @@ namespace DoctorFAM.Domain.Entities.Interest
     {
         #region properties
 
+        public bool DoctorPanelSide { get; set; }
 
+        public bool ConsultantPanelSide { get; set; }
 
         #endregion
 

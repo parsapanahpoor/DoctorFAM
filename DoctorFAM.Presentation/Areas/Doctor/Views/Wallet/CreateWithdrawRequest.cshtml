@@ -1,0 +1,91 @@
+﻿@using DoctorFAM.Domain.ViewModels.Common
+@model DoctorFAM.Domain.ViewModels.DoctorPanel.Wallet.CreateWithdrawRequestDoctorPanelSideViewModel
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
+
+@{
+    ViewData["Title"] = "ایجاد درخواست برداشت مبلغ";
+
+    int? UserWalletBalance = ViewData["UserWalletBalance"] as Int32?;
+
+    int? SiteLockPrice = ViewData["SiteLockPrice"] as Int32?;
+
+    var canWithdraw = UserWalletBalance - SiteLockPrice;
+}
+
+
+@section Scripts
+    {
+    <partial name="_JqueryValidation" />
+}
+
+@section breadcrumb
+    {
+
+    <li>
+        <a asp-action="ListOfWithdrawRequests" asp-controller="Wallet" asp-area="Doctor"> لیست درخواست های برداشت حساب </a>
+    </li>
+
+}
+
+<form method="post" asp-action="CreateWithdrawRequest" asp-controller="Wallet" asp-area="Doctor">
+    <div class="row">
+        <div class="col-lg-12 col-sm-12">
+            <div class="widget">
+                <div class="widget-header bordered-bottom bordered-green">
+                    <span class="widget-caption"> @ViewData["Title"] </span>
+                </div>
+                <div class="widget-body">
+                    <div>
+
+                        <div class="row">
+
+                            <div class="form-group col-md-6 col-sm-12">
+                                <label asp-for="Price">موجودی کیف پول شما</label>
+                                <input type="text" readonly class="form-control" value="@UserWalletBalance.Value.ToString("#,000") ریال">
+                            </div>
+
+                            <div class="form-group col-md-6 col-sm-12">
+                                <label >حداکثر مبلغ قابل برداشت</label>
+                                <input type="text" readonly  class="form-control" value="@canWithdraw.Value.ToString("#,000") ریال ">
+                            </div>
+
+                            <div class="clearfix"></div>
+                            <hr class="margin-bottom-10 margin-top-10" />
+
+                            <div class="form-group col-md-12 col-sm-12">
+                                <label asp-for="Price">مبلغ درخواستی</label>
+                                <input type="text" class="form-control" asp-for="Price" value="0">
+                                <span class="text-danger" asp-validation-for="Price"></span>
+                            </div>
+
+                            <div class="form-group col-md-12 col-sm-12">
+
+                                <div class="form-group">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" asp-for="FullAccountWithdraw">
+                                            <span class="text"> برداشت حداکثر موجودی کیف پول </span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12 flex-style">
+                                <button type="submit" class="btn btn-labeled btn-palegreen">
+                                    <i class="btn-label glyphicon glyphicon-ok"></i>@Localizer["ثبت"]
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</form>

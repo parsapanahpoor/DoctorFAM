@@ -36,4 +36,7 @@ public enum PaymentType
 
     [Display(Name = "OnlineVisit")]
     OnlineVisit = 10,
+
+    [Display(Name = "WithdrawMoney")]
+    WithdrawMoney = 11,
 }

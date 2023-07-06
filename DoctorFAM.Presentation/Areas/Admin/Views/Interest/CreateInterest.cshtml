@@ -1,0 +1,114 @@
+﻿@model DoctorFAM.Domain.ViewModels.Admin.Interest.CreateInterestViewModel
+
+@using DoctorFAM.Domain.Entities.States
+@using DoctorFAM.Web.Culture
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = @Localizer["افزودن علاقه مندی"];
+}
+
+@section Scripts
+    {
+    <partial name="_JqueryValidation" />
+}
+
+@section Breadcrumb
+    {
+    <li>
+        <a asp-area="Admin" asp-controller="Interest" asp-action="FilterInterest"> @Localizer["مدیریت علاقه مندی "] / </a>
+        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+    </li>
+}
+
+<form method="post" asp-action="CreateInterest" asp-controller="Interest" asp-area="Admin">
+    <div class="row">
+        <div class="col-lg-9 col-sm-12">
+            <div class="widget">
+                <div class="widget-header bordered-bottom bordered-green">
+                    <span class="widget-caption"> @Localizer["افزودن علاقه مندی"]  </span>
+
+                </div>
+                <div class="widget-body">
+                    <div>
+                        @{
+                            int i = 0;
+                        }
+                        @foreach (var language in ApplicationCultures.CultureItems)
+                        {
+                            <div class="card">
+                                <div class="card-body">
+                                    <input type="hidden" asp-for="InterestInfo[i].Culture" value="@language.CultureKey" />
+                                    <h5 class="mb-4">
+                                        @Localizer["اطلاعات علاقه مندی"] ( @language.Title )
+                                    </h5>
+                                    <div class="form-group">
+                                        <label>@Localizer["عنوان علاقه مندی"]</label>
+                                        <input class="form-control" asp-for="InterestInfo[i].Title" />
+                                        <span asp-validation-for="InterestInfo[i].Title" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr class="margin-bottom-10 margin-top-10" />
+
+                            <br />
+                            i++;
+                        }
+
+                        <div class="row">
+                            <div class="col-md-12 flex-style">
+                                <button type="submit" class="btn btn-labeled btn-palegreen">
+                                    <i class="btn-label glyphicon glyphicon-ok"></i>@Localizer["ثبت"]
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-sm-12">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="widget">
+                        <div class="widget-header bordered-bottom bordered-green">
+                            <span class="widget-caption"> وضعیت نمایش </span>
+                        </div>
+                        <div class="widget-body">
+                            <div class="row">
+                                <div class="col-md-12">
+
+                                    <div class="form-group">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" asp-for="DoctorPanel">
+                                                <span class="text"> @SharedLocalizer["نمایش در پنل پزشک"] </span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" asp-for="ConsultantPanel">
+                                                <span class="text"> @SharedLocalizer["نمایش در پنل مشاور"] </span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</form>
+
+
