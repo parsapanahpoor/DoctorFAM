@@ -9,11 +9,13 @@ namespace DoctorFAM.Web.Areas.Admin.ViewComponents
 
         private readonly ITicketService _ticketService;
         private readonly IOnlineVisitService _onlineVisitService;
+        private readonly IDashboardsService _dashboardsService;
 
-        public AdminSideBarViewComponent(ITicketService ticketService, IOnlineVisitService onlineVisitService)
+        public AdminSideBarViewComponent(ITicketService ticketService, IOnlineVisitService onlineVisitService, IDashboardsService dashboardsService)
         {
             _ticketService = ticketService;
             _onlineVisitService = onlineVisitService;
+            _dashboardsService = dashboardsService;
         }
 
         #endregion
@@ -27,7 +29,9 @@ namespace DoctorFAM.Web.Areas.Admin.ViewComponents
 
             #endregion
 
-            return View("AdminSideBar");
+            var model = await _dashboardsService.FillAdminSideBarViewModel();
+
+            return View("AdminSideBar" , model); 
         }
     }
 }

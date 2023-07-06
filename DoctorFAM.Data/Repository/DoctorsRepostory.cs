@@ -707,7 +707,10 @@ namespace DoctorFAM.Data.Repository
 
         public async Task<List<DoctorsInterestInfo>> GetDoctorInterestsInfo()
         {
-            return await _context.InterestInfos.Include(p => p.Interest).Where(p => !p.IsDelete).ToListAsync();
+            return await _context.InterestInfos
+                                 .Include(p => p.Interest)
+                                 .Where(p => !p.IsDelete && p.Interest.DoctorPanelSide)
+                                 .ToListAsync();
         }
 
         public async Task<List<DoctorsInterestInfo>> GetDoctorSelectedInterests(ulong doctorId)
@@ -741,7 +744,7 @@ namespace DoctorFAM.Data.Repository
 
         public async Task<bool> IsExistInterestById(ulong interestId)
         {
-            return await _context.Interests.AnyAsync(p => !p.IsDelete && p.Id == interestId);
+            return await _context.Interests.AnyAsync(p => !p.IsDelete && p.Id == interestId && p.DoctorPanelSide);
         }
 
         public async Task DeleteDoctoreSelectedInterest(DoctorsSelectedInterests item)

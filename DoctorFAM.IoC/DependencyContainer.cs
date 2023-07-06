@@ -77,6 +77,7 @@ public static class DependencyContainer
         services.AddScoped <IChatService, ChatService>();
         services.AddScoped <ISMBGNoteBookService, SMBGNoteBookService>();
         services.AddScoped <IDentistService, DentistService>();
+        services.AddScoped <IInterestService, InterestService>();
 
         #endregion
 
@@ -125,6 +126,7 @@ public static class DependencyContainer
         services.AddScoped<IChatRepository, ChatRepository>();
         services.AddScoped<ISMBGNoteBookRepository, SMBGNoteBookRepository>();
         services.AddScoped<IDentistRepoistory, DentistRepoistory>();
+        services.AddScoped<IInterestRepository, InterestRepository>();
 
         #endregion
 

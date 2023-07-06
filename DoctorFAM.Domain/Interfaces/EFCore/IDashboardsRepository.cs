@@ -1,6 +1,7 @@
 ﻿#region Usings
 
 using DoctorFAM.Domain.ViewModels.Admin.Dashboard;
+using DoctorFAM.Domain.ViewModels.Admin.SideBar;
 using DoctorFAM.Domain.ViewModels.Consultant.Dashboard;
 using DoctorFAM.Domain.ViewModels.Dentist.Dashboard;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Dashbaord;
@@ -26,6 +27,9 @@ public interface IDashboardsRepository
     #endregion
 
     #region Admin  Dashboard
+
+    //Fill Admin Side Bar View Model
+    Task<AdminSideBarViewModel> FillAdminSideBarViewModel();
 
     Task<AdminDashboardViewModel> FillAdminDashboardViewModel();
 

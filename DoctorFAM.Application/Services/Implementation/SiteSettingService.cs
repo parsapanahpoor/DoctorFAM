@@ -68,7 +68,8 @@ public class SiteSettingService : ISiteSettingService
                 OnlineReservationTariffForAnonymousPersonsSiteShare = setting.OnlineReservationTariffForAnonymousPersonsSiteShare,
                 OnlineReservationTariffForDoctorPopulationCoveredSiteShare = setting.OnlineReservationTariffForDoctorPopulationCoveredSiteShare,
                 CashDesk = setting.SiteCashDesk,
-                HomeVisitSiteShare = setting.HomeVisitSiteShare
+                HomeVisitSiteShare = setting.HomeVisitSiteShare,
+                WalletLockPrice = setting.WalletLockPrice,
             };
         }
 
@@ -199,6 +200,7 @@ public class SiteSettingService : ISiteSettingService
             setting.OnlineReservationTariffForAnonymousPersonsSiteShare = editSiteSettingViewModel.OnlineReservationTariffForAnonymousPersonsSiteShare;
             setting.OnlineReservationTariffForDoctorPopulationCoveredSiteShare = editSiteSettingViewModel.OnlineReservationTariffForDoctorPopulationCoveredSiteShare;
             setting.HomeVisitSiteShare = editSiteSettingViewModel.HomeVisitSiteShare;
+            setting.WalletLockPrice = editSiteSettingViewModel.WalletLockPrice;
         }
 
         await _siteSettingRepository.UpdateSiteSetting(setting);
@@ -288,6 +290,7 @@ public class SiteSettingService : ISiteSettingService
             OnlineReservationTariffForDoctorPopulationCoveredSiteShare = editSiteSettingViewModel.OnlineReservationTariffForDoctorPopulationCoveredSiteShare,
             SiteCashDesk = 0,
             HomeVisitSiteShare= editSiteSettingViewModel.HomeVisitSiteShare,
+            WalletLockPrice = editSiteSettingViewModel.WalletLockPrice,
         };
 
         await _siteSettingRepository.AddSiteSetting(newSetting);
@@ -657,6 +660,12 @@ public class SiteSettingService : ISiteSettingService
     public async Task<bool> CheckFieldOnlineReservationTariffForOnlineReservationTariffForAnonymousPersonsSiteShare(int price)
     {
         return await _siteSettingRepository.CheckFieldOnlineReservationTariffForOnlineReservationTariffForAnonymousPersonsSiteShare(price);
+    }
+
+    //Get Withdraw Lock Price
+    public async Task<int> GetWithdrawLockPrice()
+    {
+        return await _siteSettingRepository.GetWithdrawLockPrice();
     }
 
     #region OnlineVisit
