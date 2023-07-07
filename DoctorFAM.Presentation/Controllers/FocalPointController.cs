@@ -52,7 +52,8 @@ public class FocalPointController : SiteBaseController
 
     #region Doctor Page 
 
-    public async Task<IActionResult> DocPage(ulong userId)
+    [HttpGet("DocPage/{userId}/{name}")]
+    public async Task<IActionResult> DocPage(ulong userId , string name)
     {
         #region Fill Page Model 
 
