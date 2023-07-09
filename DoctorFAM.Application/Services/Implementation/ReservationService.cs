@@ -1810,6 +1810,7 @@ public class ReservationService : IReservationService
         reservationDateTime.DoctorReservationState = DoctorReservationState.WaitingForComplete;
         reservationDateTime.PatientId = patientId;
         reservationDateTime.DoctorReservationType = model.DoctorReservationType;
+        reservationDateTime.UserRequestForReserveDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 0, 0);
 
         #region Get User Office Address
 
