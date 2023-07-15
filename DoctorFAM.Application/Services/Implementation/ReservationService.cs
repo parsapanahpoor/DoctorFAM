@@ -15,6 +15,7 @@ using DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment;
 using DoctorFAM.Domain.ViewModels.Site.Reservation;
 using DoctorFAM.Domain.ViewModels.Supporter.Reservation;
 using DoctorFAM.Domain.ViewModels.UserPanel.Reservation;
+using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 
 #endregion
@@ -632,7 +633,7 @@ public class ReservationService : IReservationService
     //Filter Reservation Date Time Dentist Side
     public async Task<FilterReservationDateTimeDoctorPAnel?> FilterReservationDateTimeDentistSide(FilterReservationDateTimeDoctorPAnel filter)
     {
-        return await _reservation.FilterReservationDateTimeDentistSide( filter);
+        return await _reservation.FilterReservationDateTimeDentistSide(filter);
     }
 
     public async Task<DoctorReservationDate?> GetReservationDateById(ulong reservationDateId)
@@ -758,6 +759,33 @@ public class ReservationService : IReservationService
         };
 
         #endregion
+
+        return model;
+    }
+
+
+    //Fill Add Between Patient Time Doctor Side View Model
+    public async Task<AddBetweenPatientTimeDoctorSideViewModel?> FillAddBetweenPatientTimeDoctorSideViewModel(ulong reservationDateId, ulong userId)
+    {
+        #region Get Organization OwnerId 
+
+        ulong? ownerId = await _organizationService.GetOrganizationOwnerIdByOrganizationMemberUserIdWithAsNoTracking(userId);
+        if (ownerId == null || ownerId == 0) return null;
+
+        #endregion
+
+        #region Get Reservation By Id 
+
+        var reservationDate = await _reservation.GetReservationDateByIdWithAsNoTracking(reservationDateId);
+        if (reservationDate == null) return null;
+        if (reservationDate.UserId != ownerId.Value) return null;
+
+        #endregion
+
+        AddBetweenPatientTimeDoctorSideViewModel model = new AddBetweenPatientTimeDoctorSideViewModel()
+        {
+            ReservationDateId = reservationDate.Id
+        };
 
         return model;
     }
@@ -1112,7 +1140,7 @@ public class ReservationService : IReservationService
     }
 
     //Check That Is Doctor Reservation Is Doctor Personal Booking From Dentist Panel
-    public async Task<bool> CheckThatIsDoctorReservationIsDoctorPersonalBookingFromDentistPanel (ulong reservationId, ulong userId)
+    public async Task<bool> CheckThatIsDoctorReservationIsDoctorPersonalBookingFromDentistPanel(ulong reservationId, ulong userId)
     {
         #region Get Organization By User Id 
 
@@ -1187,6 +1215,74 @@ public class ReservationService : IReservationService
         DoctorPersonalBooking booking = new DoctorPersonalBooking()
         {
             DoctorReservationDateTimeId = reservationDateTime.Id,
+            FirstName = model.FirstName,
+            LastName = model.LastName,
+            Mobile = model.Mobile,
+            NationalId = model.NationalId,
+        };
+
+        //Add Method 
+        await _reservation.AddDoctorPersonalBooking(booking);
+
+        #endregion
+
+        #endregion
+
+        return true;
+    }
+
+    //Add Between Patient Time 
+    public async Task<bool> AddBetweenPatientTime(AddBetweenPatientTimeDoctorSideViewModel model, ulong userId)
+    {
+        #region Get Organization OwnerId 
+
+        ulong? ownerId = await _organizationService.GetOrganizationOwnerIdByOrganizationMemberUserIdWithAsNoTracking(userId);
+        if (ownerId == null || ownerId == 0) return false;
+
+        #endregion
+
+        #region Get Reservation By Id 
+
+        var reservationDate = await _reservation.GetReservationDateByIdWithAsNoTracking(model.ReservationDateId);
+        if (reservationDate == null) return false;
+        if (reservationDate.UserId != ownerId.Value) return false;
+
+        #endregion
+
+        #region Get Doctor Office Address
+
+        var doctorOffice = await _workAddress.GetLastWorkAddressByUserId(ownerId.Value);
+
+        #endregion
+
+        #region Fill Entity
+
+        DoctorReservationDateTime dateTime = new DoctorReservationDateTime
+        {
+            CreateDate = DateTime.Now,
+            DoctorReservationDateId = model.ReservationDateId,
+            DoctorReservationState = DoctorReservationState.Reserved,
+            StartTime = model.StartTime,
+            EndTime = model.StartTime,
+            PatientId = ownerId.Value,
+            DoctorReservationType = DoctorReservationType.Reserved,
+            DoctorBooking = true,
+        };
+
+        //Fill Work Address Id 
+        if (doctorOffice != null)
+        {
+            dateTime.WorkAddressId = doctorOffice.Id;
+        }
+
+        //Add Reservation Date Time 
+       var reservationDatetimeId = await _reservation.AddReservationDateTimeWithReturnId(dateTime);
+
+        #region Doctor Personal Booking 
+
+        DoctorPersonalBooking booking = new DoctorPersonalBooking()
+        {
+            DoctorReservationDateTimeId = reservationDatetimeId,
             FirstName = model.FirstName,
             LastName = model.LastName,
             Mobile = model.Mobile,
@@ -1599,6 +1695,12 @@ public class ReservationService : IReservationService
 
     #region Site Side
 
+    //Get List Of Reservation Request That Pass A Day For Pay Reservation Tariff
+    public async Task GetListOfReservationRequestThatPassADayForPayReservationTariff()
+    {
+        await _reservation.GetListOfReservationRequestThatPassADayForPayReservationTariff();
+    }
+
     //Get List Of Doctor Reservation Date And Doctor Reservation Date Time For Show Site Side 
     public async Task<List<ListOfReservationDateAndReservationDateTimeViewModel>?> GetListOfDoctorReservationDateAndDoctorReservationDateTimeForShowSiteSide(ulong doctorUserId)
     {
@@ -1810,6 +1912,7 @@ public class ReservationService : IReservationService
         reservationDateTime.DoctorReservationState = DoctorReservationState.WaitingForComplete;
         reservationDateTime.PatientId = patientId;
         reservationDateTime.DoctorReservationType = model.DoctorReservationType;
+        reservationDateTime.UserRequestForReserveDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 0, 0);
 
         #region Get User Office Address
 

@@ -44,15 +44,21 @@
 }
 
 <div class="row">
-    <div class="col-lg-6 col-sm-12">
+    <div class="col-lg-4 col-sm-12">
 
-        <a class="col-lg-6 col-sm-12 btn btn-sky w-100 margin-bottom-10" asp-action="AddreservationDateTimeWithComputer" asp-route-reservationDateId="@Model.ReservationDateId" asp-controller="Appointment" asp-area="Doctor"> @Localizer["Add Time With System"] </a>
+        <a class="col-lg-4 col-sm-12 btn btn-sky w-100 margin-bottom-10" asp-action="AddreservationDateTimeWithComputer" asp-route-reservationDateId="@Model.ReservationDateId" asp-controller="Appointment" asp-area="Doctor"> @Localizer["Add Time With System"] </a>
 
     </div>
 
-    <div class="col-lg-6 col-sm-12">
+    <div class="col-lg-4 col-sm-12">
 
-        <a class="col-lg-6 col-sm-12 btn btn-sky w-100 margin-bottom-10" asp-action="AddReservationDateTime" asp-route-reservationDateId="@Model.ReservationDateId" asp-controller="Appointment" asp-area="Doctor"> @Localizer["Add New Date Time"] </a>
+        <a class="col-lg-4 col-sm-12 btn btn-sky w-100 margin-bottom-10" asp-action="AddReservationDateTime" asp-route-reservationDateId="@Model.ReservationDateId" asp-controller="Appointment" asp-area="Doctor"> @Localizer["Add New Date Time"] </a>
+
+    </div>
+
+    <div class="col-lg-4 col-sm-12">
+
+        <a class="col-lg-4 col-sm-12 btn btn-sky w-100 margin-bottom-10" asp-action="AddBetweenPatient" asp-route-reservationDateId="@Model.ReservationDateId" asp-controller="Appointment" asp-area="Doctor">افزودن نوبت بین مریض</a>
 
     </div>
 
@@ -171,7 +177,13 @@
 
                                             <td class="center tc vm">
                                                 <p>
-                                                    @if (reservationdata.DoctorBooking)
+                                                    @if (reservationdata.StartTime == reservationdata.EndTime)
+                                                    {
+                                                        <span class="mr-8px label label-info">@Localizer["بین مریض"] </span>
+                                                    }
+                                                    else
+                                                    {
+                                                       @if (reservationdata.DoctorBooking)
                                                     {
                                                         <span class="mr-8px label label-info">@Localizer["Doctor Booking"] </span>
                                                     }
@@ -186,6 +198,7 @@
                                                         {
                                                             <span class="mr-8px label label-orange">@Localizer["Not Reserved Yet"] </span>
                                                         }
+                                                    }  
                                                     }
                                                 </p>
                                             </td>
