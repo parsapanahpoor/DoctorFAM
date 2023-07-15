@@ -204,7 +204,6 @@ public class AppointmentController : DoctorBaseController
 
         #endregion
 
-
         #region Get Owner Organization By EmployeeId 
 
         var organization = await _organizationService.GetDoctorOrganizationByUserId(User.GetUserId());
@@ -216,7 +215,7 @@ public class AppointmentController : DoctorBaseController
 
         var res = await _reservatioService.AddReservationDateTimeDoctorPanel(model, organization.OwnerId);
 
-        if (res)
+        if (res == true)
         {
             TempData[SuccessMessage] = _sharedLocalizer["Operation Successfully"].Value;
             return RedirectToAction(nameof(ReservationDateDetail), new { ReservationDateId = model.ReservationDateId });
@@ -337,7 +336,7 @@ public class AppointmentController : DoctorBaseController
 
         #region Check Doctor Booking 
 
-        if (await _reservatioService.CheckThatIsDoctorReservationIsDoctorPersonalBooking(ReservationDateTimeId , organization.OwnerId))
+        if (await _reservatioService.CheckThatIsDoctorReservationIsDoctorPersonalBooking(ReservationDateTimeId, organization.OwnerId))
         {
             ViewBag.DoctorBooking = true;
         }
@@ -363,7 +362,7 @@ public class AppointmentController : DoctorBaseController
 
         #region Check Doctor Reservation Date Time 
 
-        var res = await _reservatioService.FillDoctorPersonalBooking(ReservationDateTimeId , organization.OwnerId);
+        var res = await _reservatioService.FillDoctorPersonalBooking(ReservationDateTimeId, organization.OwnerId);
         if (res == null) return NotFound();
 
         #endregion
@@ -371,7 +370,7 @@ public class AppointmentController : DoctorBaseController
         return View(res);
     }
 
-    [HttpPost , ValidateAntiForgeryToken]
+    [HttpPost, ValidateAntiForgeryToken]
     public async Task<IActionResult> AddPersonalPatientForDoctorBooking(DoctorPersonalBookingViewModel model)
     {
         #region Get Owner Organization By EmployeeId 
@@ -400,7 +399,7 @@ public class AppointmentController : DoctorBaseController
 
         #region Add Patient To Doctor Booking 
 
-        var result = await _reservatioService.AddPatientToDoctorBooking(model , organization.OwnerId);
+        var result = await _reservatioService.AddPatientToDoctorBooking(model, organization.OwnerId);
         if (result)
         {
             //Get Doctor Reservation Date Time By ID 
@@ -408,7 +407,7 @@ public class AppointmentController : DoctorBaseController
             if (reservationDateTime == null) return NotFound();
 
             TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
-            return RedirectToAction(nameof(ReservationDateDetail) , new { ReservationDateId = reservationDateTime.DoctorReservationDateId });
+            return RedirectToAction(nameof(ReservationDateDetail), new { ReservationDateId = reservationDateTime.DoctorReservationDateId });
         }
 
         #endregion
@@ -485,6 +484,54 @@ public class AppointmentController : DoctorBaseController
         var result = await _reservatioService.GetReservationDateTimeByReservationDateIdSelectList(reservationDateId, User.GetUserId());
 
         return JsonResponseStatus.Success(result);
+    }
+
+    #endregion
+
+    #region Between Patient
+
+    [HttpGet]
+    public async Task<IActionResult> AddBetweenPatient(ulong reservationDateId)
+    {
+        #region Fill Model
+
+        var model = await _reservatioService.FillAddBetweenPatientTimeDoctorSideViewModel(reservationDateId , User.GetUserId());
+        if (model == null)
+        {
+            return NotFound();
+        }
+
+        #endregion
+
+        return View(model);
+    }
+
+    [HttpPost, ValidateAntiForgeryToken]
+    public async Task<IActionResult> AddBetweenPatient(AddBetweenPatientTimeDoctorSideViewModel model)
+    {
+        #region Model State Validation 
+
+        if (!ModelState.IsValid)
+        {
+            TempData[ErrorMessage] = "عملیات باشکست مواجه شده است. ";
+            return View(model);
+        }
+
+        #endregion
+
+        #region Add Between Patient 
+
+        var res = await _reservatioService.AddBetweenPatientTime(model , User.GetUserId());
+        if (res)
+        {
+            TempData[SuccessMessage] = _sharedLocalizer["Operation Successfully"].Value;
+            return RedirectToAction(nameof(ReservationDateDetail), new { ReservationDateId = model.ReservationDateId });
+        }
+
+        #endregion
+
+        TempData[ErrorMessage] = "عملیات باشکست مواجه شده است. ";
+        return View(model);
     }
 
     #endregion

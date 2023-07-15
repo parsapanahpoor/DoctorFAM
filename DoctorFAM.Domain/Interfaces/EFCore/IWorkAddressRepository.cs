@@ -30,6 +30,8 @@ namespace DoctorFAM.Domain.Interfaces
 
         Task<WorkAddress?> GetUserWorkAddressByIdWithAsNoTracking(ulong userid);
 
+        Task<WorkAddress?> GetLastWorkAddressByUserIdWithAsNoTracking(ulong userId);
+
         #endregion
     }
 }

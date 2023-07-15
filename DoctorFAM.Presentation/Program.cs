@@ -2,6 +2,7 @@
 
 using DoctorFAM.Application.SiteServices;
 using DoctorFAM.BackgroundTask;
+using DoctorFAM.BackgroundTask.Reservation;
 using DoctorFAM.Data.DbContext;
 using DoctorFAM.Domain.SharedResource;
 using DoctorFAM.IoC;
@@ -28,6 +29,7 @@ var builder = WebApplication.CreateBuilder(args);
 #region Back Ground Tasks
 
 builder.Services.AddHostedService<DeletePastHistoryRequests>();
+builder.Services.AddHostedService<RemoveWaitingReservationsRequestsAfterADay>();
 
 builder.Services.AddHostedService<SendSMSForWeeklyDrugAlerts>();
 builder.Services.AddHostedService<SendSMSForMonthlyDrugAlerts>();
