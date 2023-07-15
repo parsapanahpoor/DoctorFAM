@@ -83,6 +83,9 @@ public interface IReservationService
     //Fill Add Reservation Date Time From Dentist Panel
     Task<AddReservationDateTimeViewModel?> FillAddReservationDateTimeFromDentistPanel(ulong reservationDateId, ulong userId);
 
+    //Fill Add Between Patient Time Doctor Side View Model
+    Task<AddBetweenPatientTimeDoctorSideViewModel?> FillAddBetweenPatientTimeDoctorSideViewModel(ulong reservationDateId, ulong userId);
+
     Task<bool> AddReservationDateTimeDoctorPanel(AddReservationDateTimeViewModel model, ulong userId);
 
     //Add Reservation Date Time Dentist Panel
@@ -116,6 +119,9 @@ public interface IReservationService
 
     //Add Patient To Doctor Booking 
     Task<bool> AddPatientToDoctorBooking(DoctorPersonalBookingViewModel model, ulong userId);
+
+    //Add Between Patient Time 
+    Task<bool> AddBetweenPatientTime(AddBetweenPatientTimeDoctorSideViewModel model, ulong userId);
 
     //Add Patient To Doctor Booking From Dentist
     Task<bool> AddPatientToDoctorBookingFromDentist(DoctorPersonalBookingViewModel model, ulong userId);
@@ -172,6 +178,9 @@ public interface IReservationService
     #endregion
 
     #region Site Side 
+
+    //Get List Of Reservation Request That Pass A Day For Pay Reservation Tariff
+    Task GetListOfReservationRequestThatPassADayForPayReservationTariff();
 
     //Get List Of Doctor Reservation Date And Doctor Reservation Date Time For Show Site Side 
     Task<List<ListOfReservationDateAndReservationDateTimeViewModel>?> GetListOfDoctorReservationDateAndDoctorReservationDateTimeForShowSiteSide(ulong doctorUserId);
