@@ -214,7 +214,7 @@ public class HomeLaboratoryController : LaboratoryBaseController
             case AddHomeLaboratoryInvoiceLaboratorySideResult.Success:
                 TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
                 TempData[InfoMessage] = "خواهشمندیم تا تایید از طرف کاربر شکیبا باشید.";
-                return RedirectToAction(nameof(AcceptHomeLaboratoryRequestFromLaboratory) , new { requestId = model.RequestId });
+                return RedirectToAction(nameof(ListOfYourHomeLaboratoryRequests) );
 
             case AddHomeLaboratoryInvoiceLaboratorySideResult.Faild:
                 TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
