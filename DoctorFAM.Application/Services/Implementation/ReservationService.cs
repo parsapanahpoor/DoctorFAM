@@ -15,6 +15,7 @@ using DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment;
 using DoctorFAM.Domain.ViewModels.Site.Reservation;
 using DoctorFAM.Domain.ViewModels.Supporter.Reservation;
 using DoctorFAM.Domain.ViewModels.UserPanel.Reservation;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 
@@ -1257,13 +1258,24 @@ public class ReservationService : IReservationService
 
         #region Fill Entity
 
+        int hours = model.StartTime;
+        int minute = 0;
+
+        int startTime = model.StartTime;
+
+        //Sampling From Time DateTime 
+        DateTime time = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, hours, minute, 0);
+
+        //Fill Reservation Date Time 
+        var startReservationTime = time.ToString($"{time.Hour.ToString("00")}:{time.Minute.ToString("00")}:00");
+
         DoctorReservationDateTime dateTime = new DoctorReservationDateTime
         {
             CreateDate = DateTime.Now,
             DoctorReservationDateId = model.ReservationDateId,
             DoctorReservationState = DoctorReservationState.Reserved,
-            StartTime = model.StartTime,
-            EndTime = model.StartTime,
+            StartTime = startReservationTime,
+            EndTime = startReservationTime,
             PatientId = ownerId.Value,
             DoctorReservationType = DoctorReservationType.Reserved,
             DoctorBooking = true,
@@ -1276,7 +1288,7 @@ public class ReservationService : IReservationService
         }
 
         //Add Reservation Date Time 
-       var reservationDatetimeId = await _reservation.AddReservationDateTimeWithReturnId(dateTime);
+        var reservationDatetimeId = await _reservation.AddReservationDateTimeWithReturnId(dateTime);
 
         #region Doctor Personal Booking 
 

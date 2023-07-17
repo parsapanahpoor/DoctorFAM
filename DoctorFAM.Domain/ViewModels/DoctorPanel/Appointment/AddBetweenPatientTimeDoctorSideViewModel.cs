@@ -15,7 +15,7 @@ namespace DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment
 
         [Display(Name = "Start Time")]
         [Required(ErrorMessage = "Please Enter {0}")]
-        public string StartTime { get; set; }
+        public int StartTime { get; set; }
 
         [Required(ErrorMessage = "Please Enter {0}")]
         public string FirstName { get; set; }
