@@ -50,7 +50,7 @@ public class HomeLaboratoryController : LaboratoryBaseController
     public async Task<IActionResult> ListOfHomeLaboratoryRequest(FilterListOfHomeLaboratoryRequestViewModel filter)
     {
         filter.UserId = User.GetUserId();
-        return View(await _laboratoryService.FilterListOfHomeLaboratoryRequestViewModel(filter));   
+        return View(await _laboratoryService.FilterListOfHomeLaboratoryRequestViewModel(filter));
     }
 
     #endregion
@@ -193,11 +193,11 @@ public class HomeLaboratoryController : LaboratoryBaseController
     }
 
     [HttpPost, ValidateAntiForgeryToken]
-    public async Task<IActionResult> AcceptHomeLaboratoryRequestFromLaboratory(HomeLaboratoryInvoiceLaboratorySideViewModel model ,IFormFile? UserAvatar)
+    public async Task<IActionResult> AcceptHomeLaboratoryRequestFromLaboratory(HomeLaboratoryInvoiceLaboratorySideViewModel model, IFormFile? UserAvatar)
     {
         #region Model State Validation
 
-        if (!ModelState.IsValid) 
+        if (!ModelState.IsValid)
         {
             TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
             return View(model);
@@ -207,14 +207,14 @@ public class HomeLaboratoryController : LaboratoryBaseController
 
         #region Add Price To The Request 
 
-        var res = await _homeLaboratoryServices.AddHomeLaboratoryRequestPriceFromLaboratory(model , User.GetUserId() , UserAvatar);
+        var res = await _homeLaboratoryServices.AddHomeLaboratoryRequestPriceFromLaboratory(model, User.GetUserId(), UserAvatar);
 
         switch (res)
         {
             case AddHomeLaboratoryInvoiceLaboratorySideResult.Success:
                 TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
                 TempData[InfoMessage] = "خواهشمندیم تا تایید از طرف کاربر شکیبا باشید.";
-                return RedirectToAction(nameof(ListOfHomeLaboratoryRequest) );
+                return RedirectToAction(nameof(ListOfYourHomeLaboratoryRequests));
 
             case AddHomeLaboratoryInvoiceLaboratorySideResult.Faild:
                 TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
@@ -242,7 +242,7 @@ public class HomeLaboratoryController : LaboratoryBaseController
     {
         #region Sending Sampler Method 
 
-        var res = await _homeLaboratoryServices.SendingASampler(requestId , User.GetUserId());
+        var res = await _homeLaboratoryServices.SendingASampler(requestId, User.GetUserId());
         if (res)
         {
             TempData[SuccessMessage] = "لطفا در زمان مورد نظر نسبت به ارسال نمونه گیر اقدام فرمایید ";
@@ -286,7 +286,7 @@ public class HomeLaboratoryController : LaboratoryBaseController
     {
         #region Fill View Model 
 
-        var model = await _homeLaboratoryServices.FillHomeLaboratoryRequestResultLaboratorySideViewModel(requestId , User.GetUserId());
+        var model = await _homeLaboratoryServices.FillHomeLaboratoryRequestResultLaboratorySideViewModel(requestId, User.GetUserId());
         if (model == null) return NotFound();
 
         #endregion
@@ -299,7 +299,7 @@ public class HomeLaboratoryController : LaboratoryBaseController
     {
         #region Fill View Model 
 
-        var res = await _homeLaboratoryServices.SendHomeLaboratoryRequestResultFromLaboratory(model.RequestId, User.GetUserId() , UserAvatar);
+        var res = await _homeLaboratoryServices.SendHomeLaboratoryRequestResultFromLaboratory(model.RequestId, User.GetUserId(), UserAvatar);
         if (res)
         {
             TempData[SuccessMessage] = "عملیات با موفقیت انجام شذه است. ";
