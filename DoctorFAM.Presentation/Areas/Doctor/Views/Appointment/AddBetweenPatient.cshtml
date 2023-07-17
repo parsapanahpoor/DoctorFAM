@@ -88,6 +88,13 @@
                                     <span class="text-danger" asp-validation-for="NationalId"></span>
                                 </div>
 
+                                <div class="form-group col-md-12 col-sm-12">
+                                    <label asp-for="UserRequestDescription">توضیحات</label>
+                                    <span style="color:red; font-size:12px;">(اختیاری)</span>
+                                    <textarea type="text" class="form-control" asp-for="UserRequestDescription"></textarea>
+                                    <span class="text-danger" asp-validation-for="UserRequestDescription"></span>
+                                </div>
+
                                 <div class="form-group col-md-12">
                                     <button type="submit" class="btn btn-success">@SharedLocalizer["ثبت"]</button>
                                 </div>

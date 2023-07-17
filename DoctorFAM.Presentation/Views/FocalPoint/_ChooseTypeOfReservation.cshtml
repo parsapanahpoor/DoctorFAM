@@ -16,6 +16,14 @@
 
             <hr />
 
+            <div class="form-group col-md-12 col-sm-12">
+                <label asp-for="ReservationRequestDescription">توضیحات </label>
+                <textarea asp-for="ReservationRequestDescription" class="form-control"></textarea>
+                <span class="text-danger" asp-validation-for="ReservationRequestDescription"></span>
+            </div>
+
+            <hr />
+
             <div class="footer">
                 <button type="submit" style="padding-top: 10px;padding-bottom: 10px;padding-right: 20px;padding-left: 20px;" class="btn-SelfTest">ثبت</button>
                 <button type="button" style="padding-top: 10px;padding-bottom: 10px;padding-right: 20px;padding-left: 20px;" class="btn-SelfTest" data-dismiss="modal">بستن</button>

@@ -1,5 +1,7 @@
 ﻿using DoctorFAM.Domain.Entities.Laboratory;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
+using SixLabors.ImageSharp.ColorSpaces;
+using System.Security.Policy;
 
 namespace DoctorFAM.Application.StaticTools;
 
@@ -101,6 +103,13 @@ public static class Messages
     {
         return
             $" سلام . {Environment.NewLine} درخواست ویزیت درمنزل شما توسط پزشک تایید شد . {Environment.NewLine} {PathTools.SiteFarsiName}";
+    }
+
+    //Send SMS For Between Patient In Reservation Site Side  
+    public static string SendSMSForBetweenPatientInReservationSiteSide(string time , string date , string doctorNam)
+    {
+        return
+            $" سلام . {Environment.NewLine} برای شما نوبتی در ساعت {time} و تاریخ {date}  نزد دکتر {doctorNam} ثبت گردیده . . {Environment.NewLine} {PathTools.SiteFarsiName}";
     }
 
     //Send Activation Register Code 

@@ -30,6 +30,8 @@ namespace DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment
 
         public bool SendSMS { get; set; }
 
+        public string? UserRequestDescription { get; set; }
+
         #endregion
     }
 }
