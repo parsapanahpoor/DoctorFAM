@@ -251,6 +251,11 @@ public static class PathTools
     public static readonly string HomeLaboratoryInvoicePathThumb = "/content/images/HomeLaboratoryInvoice/thumb/";
     public static readonly string HomeLaboratoryInvoicePathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/HomeLaboratoryInvoice/thumb/");
 
+    public static readonly string HomeLaboratoryInvoiceFilesServerPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/HomeLaboratoryInvoice/Files/");
+    public static readonly string HomeLaboratoryInvoiceFilesChunkServerPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/HomeLaboratoryInvoice/Chunks/");
+
+    public static readonly string HomeLaboratoryInvoiceAttachmentFilesPath = "/content/images/HomeLaboratoryInvoice/Files/";
+
     #endregion
 
     #region Home Laboratory Result

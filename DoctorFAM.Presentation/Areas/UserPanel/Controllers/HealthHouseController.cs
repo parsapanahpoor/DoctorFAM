@@ -3,6 +3,7 @@
 using DoctorFAM.Application.Convertors;
 using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Services.Interfaces;
+using DoctorFAM.Application.StaticTools;
 using DoctorFAM.Domain.ViewModels.Site.Notification;
 using DoctorFAM.Domain.ViewModels.UserPanel.HealthHouse;
 using DoctorFAM.Domain.ViewModels.UserPanel.HealthHouse.HomeLaboratory;
@@ -12,6 +13,7 @@ using DoctorFAM.Web.HttpManager;
 using DoctorFAM.Web.Hubs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using ZNetCS.AspNetCore.ResumingFileResults.Extensions;
 
 #endregion
 
@@ -387,6 +389,31 @@ public class HealthHouseController : UserBaseController
         #endregion
 
         return View(model);
+    }
+
+    #endregion
+
+    #region Download Attachment File
+
+    public IActionResult DownloadAttachmentFile(string fileName)
+    {
+        if (string.IsNullOrEmpty(fileName))
+        {
+            return NotFound();
+        }
+
+        var webRoot = PathTools.HomeLaboratoryInvoiceFilesServerPath;
+
+        if (!System.IO.File.Exists(Path.Combine(webRoot, fileName)))
+        {
+            return NotFound();
+        }
+
+        var stream = System.IO.File.OpenRead(Path.Combine(webRoot, fileName));
+
+        var download = this.ResumingFile(stream, "application/octet-stream", fileName);
+
+        return download;
     }
 
     #endregion

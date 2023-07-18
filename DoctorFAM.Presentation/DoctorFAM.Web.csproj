@@ -54,6 +54,8 @@
 		<Folder Include="wwwroot\Content\Books\main\" />
 		<Folder Include="wwwroot\Content\Books\thumb\" />
 		<Folder Include="wwwroot\Content\images\HealthInformationAttachmentFiles\Chunks\" />
+		<Folder Include="wwwroot\Content\images\HomeLaboratoryInvoice\main\" />
+		<Folder Include="wwwroot\Content\images\HomeLaboratoryInvoice\thumb\" />
 		<Folder Include="wwwroot\Content\images\Ticket\" />
 		<Folder Include="Areas\Nurse\Data\" />
 		<Folder Include="Areas\Nurse\Models\" />
