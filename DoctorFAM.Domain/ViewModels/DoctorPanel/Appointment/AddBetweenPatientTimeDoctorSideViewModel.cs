@@ -13,10 +13,6 @@ namespace DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment
 
         public ulong ReservationDateId { get; set; }
 
-        [Display(Name = "Start Time")]
-        [Required(ErrorMessage = "Please Enter {0}")]
-        public int StartTime { get; set; }
-
         [Required(ErrorMessage = "Please Enter {0}")]
         public string FirstName { get; set; }
 
@@ -31,6 +27,10 @@ namespace DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment
         public bool SendSMS { get; set; }
 
         public string? UserRequestDescription { get; set; }
+
+        public int StartTimeHour { get; set; }
+
+        public int StartTimeMinute { get; set; }
 
         #endregion
     }
