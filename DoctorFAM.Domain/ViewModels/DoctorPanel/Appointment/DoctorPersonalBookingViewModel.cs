@@ -24,6 +24,8 @@ namespace DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment
 
         public string? NationalId { get; set; }
 
+        public string? UserRequetsDescription { get; set; }
+
         #endregion
     }
 }

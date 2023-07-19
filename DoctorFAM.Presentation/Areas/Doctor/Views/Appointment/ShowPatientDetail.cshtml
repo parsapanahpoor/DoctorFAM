@@ -175,6 +175,27 @@
                                                     </div>
                                                 </div>
                                             </div>
+
+                                            <hr class="wide">
+                                            <div class="row">
+
+                                                <div class="col-sm-12">
+                                                    <div class="form-group">
+                                                        <span class="input-icon icon-right">
+                                                            @if (Model.UserRequestDescription != null)
+                                                            {
+                                                                <textarea type="text" readonly class="form-control">
+                                                                    @Model.UserRequestDescription
+                                                                </textarea>
+                                                            }
+                                                            else
+                                                            {
+                                                                <input type="text" class="form-control" placeholder="@Localizer["توضیحات"]">
+                                                            }                                                        <i class="fa fa-globe"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
 
                                     </div>

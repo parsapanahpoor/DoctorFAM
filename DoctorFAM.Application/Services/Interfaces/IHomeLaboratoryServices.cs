@@ -86,7 +86,7 @@ public interface IHomeLaboratoryServices
     #region Home Laboratory Side 
 
     //Send Home Laboratory Request Result From LAboratory
-    Task<bool> SendHomeLaboratoryRequestResultFromLaboratory(ulong requestId, ulong userId, IFormFile? UserAvatar);
+    Task<bool> SendHomeLaboratoryRequestResultFromLaboratory(ulong requestId, ulong userId , string? AttachmentFileName);
 
     //Fill Home Laboratory Request Result Laboratory Side ViewModel
     Task<HomeLaboratoryRequestResultLaboratorySideViewModel?> FillHomeLaboratoryRequestResultLaboratorySideViewModel(ulong requestId, ulong userId);

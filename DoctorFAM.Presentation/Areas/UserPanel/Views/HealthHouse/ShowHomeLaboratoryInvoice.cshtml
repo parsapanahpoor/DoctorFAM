@@ -103,7 +103,7 @@ else
 
                                     <div class="form-group col-md-12 col-sm-12">
                                         <label asp-for="Price">جمع کل مبلغ فاکتور</label>
-                                        <input readonly type="text" class="form-control" asp-for="Price">
+                                        <input readonly type="text" class="form-control" value="@Model.Price.ToString("#,000")ریال" asp-for="Price">
                                         <span class="text-danger" asp-validation-for="Price"></span>
                                     </div>
 
