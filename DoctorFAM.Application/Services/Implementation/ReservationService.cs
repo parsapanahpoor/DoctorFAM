@@ -2,6 +2,7 @@
 
 using DoctorFAM.Application.Convertors;
 using DoctorFAM.Application.Services.Interfaces;
+using DoctorFAM.Application.StaticTools;
 using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Dentist;
 using DoctorFAM.Domain.Entities.DoctorReservation;
@@ -12,10 +13,12 @@ using DoctorFAM.Domain.ViewModels.Admin.Reservation;
 using DoctorFAM.Domain.ViewModels.Admin.Wallet;
 using DoctorFAM.Domain.ViewModels.Common;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment;
+using DoctorFAM.Domain.ViewModels.Site.Account;
 using DoctorFAM.Domain.ViewModels.Site.Reservation;
 using DoctorFAM.Domain.ViewModels.Supporter.Reservation;
 using DoctorFAM.Domain.ViewModels.UserPanel.Reservation;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 
@@ -43,9 +46,11 @@ public class ReservationService : IReservationService
 
     private readonly IWalletRepository _walletRepository;
 
+    private readonly ISMSService _smsService;
+
     public ReservationService(IReservationRepository reservation, IOrganizationService organizationService, IWorkAddressService workAddress
                              , IDoctorsRepository doctorsRepository, IUserService userService, ISiteSettingService siteSettingService
-                                , IWalletService walletService, IWalletRepository walletRepository)
+                                , IWalletService walletService, IWalletRepository walletRepository, ISMSService smsService)
     {
         _reservation = reservation;
         _organizationService = organizationService;
@@ -55,6 +60,7 @@ public class ReservationService : IReservationService
         _siteSettingService = siteSettingService;
         _walletService = walletService;
         _walletRepository = walletRepository;
+        _smsService = smsService;
     }
 
     #endregion
@@ -1060,6 +1066,7 @@ public class ReservationService : IReservationService
             DoctorReservationDateTime = reservationDateTime,
             User = patient,
             DoctorBooking = reservationDateTime.DoctorBooking,
+            UserRequestDescription = reservationDateTime.UserRequestDescription
         };
 
         #endregion
@@ -1201,9 +1208,10 @@ public class ReservationService : IReservationService
         #region Update Doctor Reservation Date Time 
 
         reservationDateTime.PatientId = userId;
-        reservationDateTime.DoctorReservationState = Domain.Enums.DoctorReservation.DoctorReservationState.Reserved;
-        reservationDateTime.DoctorReservationType = Domain.Enums.DoctorReservation.DoctorReservationType.Reserved;
+        reservationDateTime.DoctorReservationState = DoctorReservationState.Reserved;
+        reservationDateTime.DoctorReservationType = DoctorReservationType.Reserved;
         reservationDateTime.DoctorBooking = true;
+        reservationDateTime.UserRequestDescription = model.UserRequetsDescription;
 
         //Update Method 
         await _reservation.UpdateReservationDateTime(reservationDateTime);
@@ -1226,6 +1234,18 @@ public class ReservationService : IReservationService
         await _reservation.AddDoctorPersonalBooking(booking);
 
         #endregion
+
+        #endregion
+
+        #region Send SMS
+
+        var doctorUserInfo = await _userService.GetUserByIdWithAsNoTracking(reservationDate.UserId);
+        if (doctorUserInfo != null)
+        {
+            var message = Messages.SendSMSForBetweenPatientInReservationSiteSide(reservationDateTime.StartTime, reservationDate.ReservationDate.ToString(), doctorUserInfo.Username);
+
+            await _smsService.SendSimpleSMS(model.Mobile, message);
+        }
 
         #endregion
 
@@ -1279,6 +1299,7 @@ public class ReservationService : IReservationService
             PatientId = ownerId.Value,
             DoctorReservationType = DoctorReservationType.Reserved,
             DoctorBooking = true,
+            UserRequestDescription = model.UserRequestDescription
         };
 
         //Fill Work Address Id 
@@ -1305,6 +1326,18 @@ public class ReservationService : IReservationService
         await _reservation.AddDoctorPersonalBooking(booking);
 
         #endregion
+
+        #endregion
+
+        #region Send SMS
+
+        var doctorUserInfo = await _userService.GetUserByIdWithAsNoTracking(ownerId.Value);
+        if (doctorUserInfo != null)
+        {
+            var message = Messages.SendSMSForBetweenPatientInReservationSiteSide(dateTime.StartTime, reservationDate.ReservationDate.ToString(), doctorUserInfo.Username);
+
+            await _smsService.SendSimpleSMS(model.Mobile, message);
+        }
 
         #endregion
 
@@ -1925,6 +1958,7 @@ public class ReservationService : IReservationService
         reservationDateTime.PatientId = patientId;
         reservationDateTime.DoctorReservationType = model.DoctorReservationType;
         reservationDateTime.UserRequestForReserveDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 0, 0);
+        reservationDateTime.UserRequestDescription = model.ReservationRequestDescription;
 
         #region Get User Office Address
 

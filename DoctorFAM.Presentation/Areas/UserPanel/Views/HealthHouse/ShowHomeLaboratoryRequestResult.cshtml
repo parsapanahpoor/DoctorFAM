@@ -75,32 +75,33 @@
         </div>
 
 
-        <div class="col-lg-6 col-sm-12">
-            <div class="widget">
-                <div class="widget-header bordered-bottom bordered-green">
-                    <span class="widget-caption"> تصویر نتیجه ی آزمایش </span>
-                </div>
-                <div class="widget-body">
-                    <div class="row">
+        @if (!string.IsNullOrEmpty(Model.ResultImage))
+        {
+            <div class="col-lg-6 col-sm-12">
+                <div class="widget">
+                    <div class="widget-header bordered-bottom bordered-green">
+                        <span class="widget-caption"> فایل ضمیمه نتیجه ی آزمایش </span>
+                    </div>
+                    <div class="widget-body">
+                        <div class="row">
 
+                            <div class="col-md-6 mt-10px @((Model != null && !string.IsNullOrEmpty(Model.ResultImage)) ? "" : "display-none")" style="margin-bottom: 5px" id="CourseAttachmentDownloadBox">
+                                <a asp-action="DownloadAttachmentFile" asp-controller="HealthHouse" asp-area="UserPanel" asp-route-fileName="@((Model != null && !string.IsNullOrEmpty(Model.ResultImage)) ? Model.ResultImage : string.Empty)" class="btn btn-primary">
+                                    دانلود نتیجه
+                                </a>
+                            </div>
 
-                        @{
-                            var avatarUrl = PathTools.DefaultUserAvatar;
+                            <div class="col-md-6 mt-10px @((Model != null && !string.IsNullOrEmpty(Model.ResultImage)) ? "" : "display-none")" style="margin-bottom: 5px" id="CourseAttachmentDownloadBox">
+                                <a target="_blank" href="/Content/images/HomeLaboratoryInvoice/Files/@Model.ResultImage" class="btn btn-warning">
+                                    مشاهده نتیجه
+                                </a>
+                            </div>
 
-                            if (Model != null && !string.IsNullOrEmpty(Model.ResultImage))
-                            {
-                                avatarUrl = $"{PathTools.HomeLaboratoryResultPathThumb}{Model.ResultImage}";
-                            }
-                        }
-
-                        <div class="col-md-12 tc mt-10px">
-                            <a target="_blank" href="@PathTools.SiteAddress@avatarUrl"><img src="@avatarUrl" class="image-style" ImageFile="1" /></a>
                         </div>
-
                     </div>
                 </div>
             </div>
-        </div>
+        }
 
     </div>
 </div>

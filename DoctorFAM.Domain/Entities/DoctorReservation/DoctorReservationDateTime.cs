@@ -32,6 +32,8 @@ namespace DoctorFAM.Domain.Entities.DoctorReservation
 
         public DateTime? UserRequestForReserveDate { get; set; }
 
+        public string? UserRequestDescription { get; set; }
+
         #endregion
 
         #region relations

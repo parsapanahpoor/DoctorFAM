@@ -906,7 +906,7 @@ public class HomeLaboratoryService : IHomeLaboratoryServices
     #region Laboratory Side
 
     //Send Home Laboratory Request Result From LAboratory
-    public async Task<bool> SendHomeLaboratoryRequestResultFromLaboratory(ulong requestId, ulong userId, IFormFile? UserAvatar)
+    public async Task<bool> SendHomeLaboratoryRequestResultFromLaboratory(ulong requestId, ulong userId, string? AttachmentFileName)
     {
         #region Get Organization OwnerId 
 
@@ -927,17 +927,13 @@ public class HomeLaboratoryService : IHomeLaboratoryServices
 
         #region Fill Entity
 
-        if (UserAvatar != null)
+        if (!string.IsNullOrEmpty(AttachmentFileName))
         {
             HomeLaboratoruRequestResult model = new HomeLaboratoruRequestResult()
             {
                 RequestId = requestId,
+                ResultPicture = AttachmentFileName
             };
-
-            //Add Invoice Picture
-            var imageName = CodeGenerator.GenerateUniqCode() + Path.GetExtension(UserAvatar.FileName);
-            UserAvatar.AddImageToServer(imageName, PathTools.HomeLaboratoryResultPathServer, 270, 270, PathTools.HomeLaboratoryResultPathThumbServer);
-            model.ResultPicture = imageName;
 
             //Add Request Price And Update Request State
             await _homeLaboratory.AddHomeLaboratoryRequestResultToTheDataBase(model);
@@ -991,7 +987,7 @@ public class HomeLaboratoryService : IHomeLaboratoryServices
         HomeLaboratoryRequestResultLaboratorySideViewModel model = new HomeLaboratoryRequestResultLaboratorySideViewModel()
         {
             RequestId = requestId,
-            ResultPic = await _homeLaboratory.GetHomeLaboratoryRequestResultPictur(requestId),
+            AttachmentFileName = await _homeLaboratory.GetHomeLaboratoryRequestResultPictur(requestId),
             Finalize = (await _homeLaboratory.IsExistAnyHomeLaboratoryRequestResult(requestId)) ? true : false,
             ResultInDoctorFAMPanel = requestDetail.SendResultInDoctorFAMPanel,
             ResultInSocialMedia = requestDetail.SenResultInSocialMedias,
@@ -1199,7 +1195,11 @@ public class HomeLaboratoryService : IHomeLaboratoryServices
 
         var message = Messages.WaitingForConfitmInvoiceFromPatient(link);
 
-        await _smsService.SendSimpleSMS(request.User.Mobile, message);
+        var user = await _userService.GetUserByIdWithAsNoTracking(request.UserId);
+        if (user != null)
+        {
+            await _smsService.SendSimpleSMS(user.Mobile, message);
+        }
 
         #endregion
 

@@ -13,9 +13,9 @@ public class HomeLaboratoryRequestResultLaboratorySideViewModel
 
 	public ulong RequestId { get; set; }
 
-	public string? ResultPic{ get; set; }
+    public string? AttachmentFileName { get; set; }
 
-	public bool Finalize { get; set; }
+    public bool Finalize { get; set; }
 
 	public bool ResultInSocialMedia { get; set; }
 

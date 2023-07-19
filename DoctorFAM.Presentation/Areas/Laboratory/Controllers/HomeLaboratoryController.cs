@@ -7,10 +7,12 @@ using DoctorFAM.Application.StaticTools;
 using DoctorFAM.Data.Migrations;
 using DoctorFAM.Domain.ViewModels.Laboratory.HomeLaboratory;
 using DoctorFAM.Domain.ViewModels.Site.Notification;
+using DoctorFAM.Web.HttpManager;
 using DoctorFAM.Web.Hubs;
 using DoctorFAM.Web.Laboratory.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using ZNetCS.AspNetCore.ResumingFileResults.Extensions;
 
 #endregion
 
@@ -295,11 +297,11 @@ public class HomeLaboratoryController : LaboratoryBaseController
     }
 
     [HttpPost]
-    public async Task<IActionResult> SendResultForUser(HomeLaboratoryRequestResultLaboratorySideViewModel model, IFormFile? UserAvatar)
+    public async Task<IActionResult> SendResultForUser(HomeLaboratoryRequestResultLaboratorySideViewModel model)
     {
         #region Fill View Model 
 
-        var res = await _homeLaboratoryServices.SendHomeLaboratoryRequestResultFromLaboratory(model.RequestId, User.GetUserId(), UserAvatar);
+        var res = await _homeLaboratoryServices.SendHomeLaboratoryRequestResultFromLaboratory(model.RequestId, User.GetUserId() , model.AttachmentFileName);
         if (res)
         {
             TempData[SuccessMessage] = "عملیات با موفقیت انجام شذه است. ";
@@ -319,6 +321,54 @@ public class HomeLaboratoryController : LaboratoryBaseController
     public async Task<IActionResult> InvoiceFinalization()
     {
         return View();
+    }
+
+    #endregion
+
+    #region Upload Chunk Attachment File
+
+    public IActionResult UploadCourseAttachmentFile(IFormFile? videoFile)
+    {
+        var result = videoFile.AddChunkFileToServer(PathTools.HomeLaboratoryInvoiceFilesChunkServerPath,
+            PathTools.HomeLaboratoryInvoiceFilesServerPath);
+
+        if (result == null)
+        {
+            return ApiResponse.SetResponse(ApiResponseStatus.Danger, null, "عملیات با شکست مواجه شده است.");
+        }
+        else if (result == string.Empty)
+        {
+            return ApiResponse.SetResponse(ApiResponseStatus.Success, null, "عملیات باموفقیت به پایان رسیده است.");
+        }
+        else
+        {
+            return ApiResponse.SetResponse(ApiResponseStatus.Success, result, "عملیات باموفقیت به پایان رسیده است.");
+        }
+    }
+
+    #endregion
+
+    #region Download Attachment File
+
+    public IActionResult DownloadAttachmentFile(string fileName)
+    {
+        if (string.IsNullOrEmpty(fileName))
+        {
+            return NotFound();
+        }
+
+        var webRoot = PathTools.HomeLaboratoryInvoiceFilesServerPath;
+
+        if (!System.IO.File.Exists(Path.Combine(webRoot, fileName)))
+        {
+            return NotFound();
+        }
+
+        var stream = System.IO.File.OpenRead(Path.Combine(webRoot, fileName));
+
+        var download = this.ResumingFile(stream, "application/octet-stream", fileName);
+
+        return download;
     }
 
     #endregion

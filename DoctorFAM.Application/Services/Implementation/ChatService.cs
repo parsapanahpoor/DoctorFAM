@@ -59,6 +59,7 @@ public class ChatService : IChatService
 
             //Add To The Data Base
             await  _chatRepository.AddChatGroupToTheDataBase(groupCreated);
+            await _chatRepository.SaveChangesAsync();
 
             return new JoinUserToTheGroupViewModel()
             {

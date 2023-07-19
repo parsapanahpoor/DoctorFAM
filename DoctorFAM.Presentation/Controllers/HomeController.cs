@@ -8,7 +8,6 @@ using DoctorFAM.Application.StaticTools;
 using DoctorFAM.Presentation.Models;
 using DoctorFAM.Web.HttpManager;
 using DoctorFAM.Web.Hubs;
-using DoctorFAM.Web.Hubs.Implementation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;

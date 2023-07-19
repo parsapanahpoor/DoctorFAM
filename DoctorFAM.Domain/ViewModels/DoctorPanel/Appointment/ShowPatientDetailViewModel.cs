@@ -20,6 +20,8 @@ namespace DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment
 
         public bool DoctorBooking { get; set; }
 
+        public string? UserRequestDescription { get; set; }
+
         #endregion
     }
 }
