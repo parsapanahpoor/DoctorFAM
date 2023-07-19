@@ -8,7 +8,6 @@
 
 	<ItemGroup>
 	  <Content Remove="Views\OnlineVisit\BankPay.cshtml" />
-	  <Content Remove="wwwroot\admin\js\datatable\datatables-init-AllRecords.js" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -51,15 +50,11 @@
 		<Folder Include="Resources\Areas\Pharmacy\Controllers\" />
 		<Folder Include="Resources\Controllers\" />
 		<Folder Include="Resources\Views\" />
-		<Folder Include="wwwroot\Content\Books\main\" />
-		<Folder Include="wwwroot\Content\Books\thumb\" />
-		<Folder Include="wwwroot\Content\images\HealthInformationAttachmentFiles\Chunks\" />
-		<Folder Include="wwwroot\Content\images\HomeLaboratoryInvoice\main\" />
-		<Folder Include="wwwroot\Content\images\HomeLaboratoryInvoice\thumb\" />
-		<Folder Include="wwwroot\Content\images\Ticket\" />
 		<Folder Include="Areas\Nurse\Data\" />
 		<Folder Include="Areas\Nurse\Models\" />
 		<Folder Include="wwwroot\Content\images\Books\Chunks\" />
+		<Folder Include="wwwroot\Content\images\HealthInformationAttachmentFiles\Chunks\" />
+		<Folder Include="wwwroot\Content\images\HomeLaboratoryInvoice\Chunks\" />
 		<Folder Include="wwwroot\Content\images\Ticket\" />
 	</ItemGroup>
 
@@ -777,6 +772,8 @@
 		<None Include="wwwroot\admin\js\ckEditorReference.js" />
 		<None Include="wwwroot\admin\js\colorpicker\jquery.minicolors.js" />
 		<None Include="wwwroot\admin\js\colorpicker\jquery.minicolors.min.js" />
+		<None Include="wwwroot\admin\js\CreateArticle.js" />
+		<None Include="wwwroot\admin\js\CreateBooks.js" />
 		<None Include="wwwroot\admin\js\datatable\datatables-init-AllRecords.js" />
 		<None Include="wwwroot\admin\js\datatable\datatables-init.js" />
 		<None Include="wwwroot\admin\js\datatable\dataTables.bootstrap.js" />
@@ -798,6 +795,7 @@
 		<None Include="wwwroot\admin\js\datetime\moment.min.js" />
 		<None Include="wwwroot\admin\js\dropzone\dropzone.js" />
 		<None Include="wwwroot\admin\js\dropzone\dropzone.min.js" />
+		<None Include="wwwroot\admin\js\EditArticle.js" />
 		<None Include="wwwroot\admin\js\editors\summernote\summernote.js" />
 		<None Include="wwwroot\admin\js\editors\summernote\summernote.min.js" />
 		<None Include="wwwroot\admin\js\editors\wysiwyg\bootstrap-wysiwyg.js" />
@@ -871,6 +869,7 @@
 		<None Include="wwwroot\common\chart.xkcd\chart-xkcd.js" />
 		<None Include="wwwroot\common\chartjs\chartJs.js" />
 		<None Include="wwwroot\common\chartjs\chartjsPlugin.js" />
+		<None Include="wwwroot\common\ChatRoom\ChatRoomCustom.js" />
 		<None Include="wwwroot\common\ckeditor\build\ckeditor.js" />
 		<None Include="wwwroot\common\ckeditor\build\ckeditor.js.map" />
 		<None Include="wwwroot\common\ckeditor\build\translations\af.js" />
@@ -1411,6 +1410,7 @@
 		<None Include="wwwroot\Content\GuidLines\SiteGuid1_1.pdf" />
 		<None Include="wwwroot\Content\images\Books\Files\189c9801-35cd-4c29-a392-84507f1271a7.pdf" />
 		<None Include="wwwroot\Content\images\Books\Files\21f100fc-4f55-43db-b206-2d1b30e8a95f.pdf" />
+		<None Include="wwwroot\Content\images\HealthInformationAttachmentFiles\Files\162d136d-0e7d-4b13-a1f4-3d473df32beb.m4a" />
 		<None Include="wwwroot\Content\images\logo-customizer\radio-svgrepo-com%281%29.svg" />
 		<None Include="wwwroot\Content\images\logo-customizer\radio-svgrepo-com%282%29.svg" />
 		<None Include="wwwroot\Content\images\logo-customizer\radio-svgrepo-com.svg" />
@@ -1528,6 +1528,7 @@
 		<None Include="wwwroot\Site\404\pics\moon.svg" />
 		<None Include="wwwroot\Site\404\pics\overlay_stars.svg" />
 		<None Include="wwwroot\Site\404\pics\rocket.svg" />
+		<None Include="wwwroot\Site\APK\DoctorFAM.apk" />
 		<None Include="wwwroot\Site\fonts\fa-brands-400.svg" />
 		<None Include="wwwroot\Site\fonts\fa-brands-400.woff2" />
 		<None Include="wwwroot\Site\fonts\fa-regular-400.svg" />
@@ -1544,6 +1545,8 @@
 		<None Include="wwwroot\Site\fonts\YekanBakhFaNum-Medium.woff2" />
 		<None Include="wwwroot\Site\fonts\YekanBakhFaNum-Regular.woff2" />
 		<None Include="wwwroot\Site\fonts\YekanBakhFaNum-Thin.woff2" />
+		<None Include="wwwroot\Site\js\BloodPressureBMI.js" />
+		<None Include="wwwroot\Site\js\BMI.js" />
 		<None Include="wwwroot\Site\js\bootstrap-select\dist\js\bootstrap-select.min.js" />
 		<None Include="wwwroot\Site\js\color-customize\color-customizer.js" />
 		<None Include="wwwroot\Site\js\CooperationRequest.js" />
@@ -1562,6 +1565,25 @@
 	  <ProjectReference Include="..\DoctorFAM.Data\DoctorFAM.Data.csproj" />
 	  <ProjectReference Include="..\DoctorFAM.Domain\DoctorFAM.Domain.csproj" />
 	  <ProjectReference Include="..\DoctorFAM.IoC\DoctorFAM.IoC.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Update="Views\BloodPressure\_BloodPressureBMIModal.cshtml">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	  </Content>
+	  <Content Update="Views\BloodPressure\_BloodPressureGFRModal.cshtml">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	  </Content>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Areas\Admin\Views\SiteSetting\ListOfInsulin.cshtml" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <_ContentIncludedByDefault Remove="Areas\Admin\Views\SiteSetting\ListOfInsulin.cshtml" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -1589,25 +1611,6 @@
 	  <TypeScriptCompile Include="wwwroot\common\sweetalert\modules\state.ts" />
 	  <TypeScriptCompile Include="wwwroot\common\sweetalert\modules\utils.ts" />
 	  <TypeScriptCompile Include="wwwroot\common\sweetalert\sweetalert.d.ts" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Content Update="Views\BloodPressure\_BloodPressureBMIModal.cshtml">
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-	  </Content>
-	  <Content Update="Views\BloodPressure\_BloodPressureGFRModal.cshtml">
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-	  </Content>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <UpToDateCheckInput Remove="Areas\Admin\Views\SiteSetting\ListOfInsulin.cshtml" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <_ContentIncludedByDefault Remove="Areas\Admin\Views\SiteSetting\ListOfInsulin.cshtml" />
 	</ItemGroup>
 
 </Project>
