@@ -1278,24 +1278,26 @@ public class ReservationService : IReservationService
 
         #region Fill Entity
 
-        int hours = model.StartTime;
-        int minute = 0;
+        //int hours = model.StartTime;
+        //int minute = 0;
 
-        int startTime = model.StartTime;
+        //int startTime = model.StartTime;
 
-        //Sampling From Time DateTime 
-        DateTime time = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, hours, minute, 0);
+        ////Sampling From Time DateTime 
+        //DateTime time = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, hours, minute, 0);
 
-        //Fill Reservation Date Time 
-        var startReservationTime = time.ToString($"{time.Hour.ToString("00")}:{time.Minute.ToString("00")}:00");
+        ////Fill Reservation Date Time 
+        //var startReservationTime = time.ToString($"{time.Hour.ToString("00")}:{time.Minute.ToString("00")}:00");
+
+        var startTimeByNumbers = $"{model.StartTimeHour.ToString("00")}:{model.StartTimeMinute.ToString("00")}:00";
 
         DoctorReservationDateTime dateTime = new DoctorReservationDateTime
         {
             CreateDate = DateTime.Now,
             DoctorReservationDateId = model.ReservationDateId,
             DoctorReservationState = DoctorReservationState.Reserved,
-            StartTime = startReservationTime,
-            EndTime = startReservationTime,
+            StartTime = startTimeByNumbers,
+            EndTime = startTimeByNumbers,
             PatientId = ownerId.Value,
             DoctorReservationType = DoctorReservationType.Reserved,
             DoctorBooking = true,
