@@ -1999,5 +1999,52 @@ public class ReservationService : IReservationService
         #endregion
     }
 
+    //Fill Reservation Factor Site Side View Model
+    public async Task<ReservationFactorSiteSideViewModel?> FillReservationFactorSiteSideViewModel(ReservationFactorSiteSideViewModel model)
+    {
+        #region Get Doctor User 
+
+        var doctorUser = await _userService.GetUserByIdWithAsNoTracking(model.DoctorUserId);
+        if (doctorUser == null) return null;
+
+        #endregion
+
+        #region Get Doctor By User Id 
+
+        var doctor = await _doctorsRepository.GetDoctorByUserId(model.DoctorUserId);
+        if (doctor == null) return null;
+
+        #endregion
+
+        #region Get Doctor Info
+
+        //Get Doctor Info By Id
+        var info = await _doctorsRepository.GetDoctorsInfoByDoctorId(doctor.Id);
+        if (info == null) return null;
+
+        #endregion
+
+        #region Get Doctor Skill By Doctor Id
+
+        model.DoctorSpeciality = await _doctorsRepository.GetListOfDoctorSkillsByDoctorId(info.DoctorId);
+
+        #endregion
+
+        #region Get Doctor Work Addresses
+
+        model.DoctorAddress = await _workAddress.GetUserWorkAddressesByUserId(doctor.UserId);
+
+        #endregion
+
+        #region Fill Model 
+
+        model.DoctorMobile = info.ClinicPhone;
+        model.DoctorUsername = doctorUser.Username;
+
+        #endregion
+
+        return model;
+    }
+
     #endregion
 }
