@@ -212,5 +212,8 @@ public interface IReservationService
     //Pay Doctor Reservation Payed Share Percentage
     Task<bool> PayDoctorReservationPayedSharePercentage(ulong doctorUserId, int price, ulong requestId, bool isUserInDoctorPopulationCovered, DoctorReservationType doctorReservationType);
 
+    //Fill Reservation Factor Site Side View Model
+    Task<ReservationFactorSiteSideViewModel?> FillReservationFactorSiteSideViewModel(ReservationFactorSiteSideViewModel model);
+
     #endregion
 }
