@@ -21,13 +21,13 @@
 
 @section Breadcrumb
 {
-<li>
-    <a href="javascript:void(0)"> @ViewData["Title"] </a>
+<li>    
+    <a asp-action="ShowUserFamilyDoctorDetail" asp-controller="FamilyDoctor" asp-area="UserPanel"> پزشک من </a>
 </li>
 }
 
 <div class="row">
-    <div class="col-lg-3 col-sm-12">
+    @*<div class="col-lg-3 col-sm-12">
         <div class="widget">
             <div class="widget-header bordered-bottom bordered-green">
                 <span class="widget-caption"> @Localizer["Manage Reservation Date Info"] </span>
@@ -74,15 +74,15 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>*@
 
-    <div class="col-lg-9 col-sm-12">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
         <div class="well with-header with-footer table-responsive">
             <div class="header bordered-azure">
                 <div class="flex-style">
                     <span>@ViewData["Title"]</span>
                    
-                    <span class="red">(@Model.GetShownEntitiesPagesTitle())</span><span>نوبت</span>
+                    <span class="red">(@Model.GetShownEntitiesPagesTitle())</span><span>روز</span>
                 </div>
             </div>
 
@@ -142,7 +142,7 @@
                                 </td>
 
                                 <td class="tc vm">
-                                    <a asp-action="ReservationDateDetail" asp-controller="Reservation" asp-area="UserPanel" asp-route-UserId="@Model.UserId" asp-route-ReservationDateId="@date.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+                                    <a asp-action="ReservationDateDetail" asp-controller="Reservation" asp-area="UserPanel" asp-route-UserId="@Model.UserId" asp-route-ReservationDateId="@date.Id" class="btn btn-azure  ">@Localizer["View"]</a>
                                 </td>
                             </tr>
                         }

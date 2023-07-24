@@ -756,13 +756,21 @@ public class ReservationRepository : IReservationRepository
 
         #endregion
 
+        //var query = _context.DoctorReservationDateTimes
+        //    .Include(p => p.DoctorReservationDate)
+        //    .ThenInclude(p => p.User)
+        //    .Where(p => !p.IsDelete && p.PatientId == filter.UserId)
+        //    .OrderByDescending(s => s.DoctorReservationDate.ReservationDate)
+        //    .ThenByDescending(s => s.Id)
+        //    .AsQueryable();
+
         var query = _context.DoctorReservationDateTimes
-            .Include(p => p.DoctorReservationDate)
-            .ThenInclude(p => p.User)
-            .Where(p => !p.IsDelete && p.PatientId == filter.UserId)
-            .OrderByDescending(s => s.DoctorReservationDate.ReservationDate)
-            .ThenByDescending(s => s.Id)
-            .AsQueryable();
+           .Include(p => p.DoctorReservationDate)
+           .ThenInclude(p => p.User)
+           .Where(p => !p.IsDelete && p.PatientId == filter.UserId)
+           .OrderBy(s => s.DoctorReservationDate.ReservationDate)
+           .ThenByDescending(s => s.Id)
+           .AsQueryable();
 
         #region Status
 
@@ -845,12 +853,19 @@ public class ReservationRepository : IReservationRepository
 
         #endregion
 
+        //var query = _context.DoctorReservationDateTimes
+        //    .Include(p => p.DoctorReservationDate)
+        //    .ThenInclude(p => p.User)
+        //    .Where(p => !p.IsDelete && p.PatientId == filter.UserId)
+        //    .OrderByDescending(s => s.DoctorReservationDate.ReservationDate)
+        //    .AsQueryable();
+
         var query = _context.DoctorReservationDateTimes
-            .Include(p => p.DoctorReservationDate)
-            .ThenInclude(p => p.User)
-            .Where(p => !p.IsDelete && p.PatientId == filter.UserId)
-            .OrderByDescending(s => s.DoctorReservationDate.ReservationDate)
-            .AsQueryable();
+           .Include(p => p.DoctorReservationDate)
+           .ThenInclude(p => p.User)
+           .Where(p => !p.IsDelete && p.PatientId == filter.UserId)
+           .OrderBy(s => s.DoctorReservationDate.ReservationDate)
+           .AsQueryable();
 
         #region Status
 
@@ -943,7 +958,7 @@ public class ReservationRepository : IReservationRepository
             .Where(s => !s.IsDelete && s.DoctorReservationDate.UserId == organization.OwnerId
                             && s.DoctorReservationDateId == filter.ReservationDateId &&
                                             (s.DoctorReservationState == DoctorReservationState.NotReserved || s.DoctorReservationState == DoctorReservationState.Reserved))
-            .OrderByDescending(s => s.CreateDate)
+            .OrderBy(s => s.CreateDate)
             .AsQueryable();
 
         #region Status

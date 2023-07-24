@@ -1,4 +1,5 @@
 ﻿using DoctorFAM.Application.Extensions;
+using DoctorFAM.Application.Services.Implementation;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Web.Consultant.Controllers;
 using DoctorFAM.Web.Laboratory.Controllers;
@@ -57,6 +58,16 @@ namespace DoctorFAM.Web.Areas.Laboratory.Controllers
             return View();
         }
 
+        #endregion
+
+        
+
+        #region Lab Pages
+
+        public async Task<IActionResult> LabHome()
+        {
+            return View();
+        }
         #endregion
     }
 }

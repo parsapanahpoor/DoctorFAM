@@ -1904,11 +1904,14 @@ a:focus, a:active {
                             right: 4px;
                             padding: 2px;
                             cursor: pointer;
-                            background-color: transparent !important;
-                            border: 1px solid #fff;
-                            width: 18px;
-                            height: 18px;
-                            box-shadow: -1px 1px 0 #2dc3e8;
+                            background-color: red !important;
+                            color :yellow;
+                            font-weight:500;
+                            font-size:14px !important;
+                           /* border: 1px solid #fff;*/
+                            width: auto;
+                            height: 20px;
+                            /*box-shadow: -1px 1px 0 #2dc3e8;*/
                             -webkit-transition: top .3s ease;
                             -moz-transition: top .3s ease;
                             -o-transition: top .3s ease;
@@ -19768,23 +19771,27 @@ a.fc-more {
     right: -27px;
     padding: 2px;
     cursor: pointer;
-    background-color: #fb6e52 !important;
-    border: 1px solid #fff;
+    /*background-color: #fb6e52 !important;*/
+    background-color: red !important;
+    color: white;
+    /* border: 1px solid #fff;*/
     /*width: 24px;
     height: 18px;*/
-    box-shadow: -1px 1px 0 #2dc3e8;
+    /* box-shadow: -1px 1px 0 #2dc3e8;*/
     -webkit-transition: top .3s ease;
     -moz-transition: top .3s ease;
     -o-transition: top .3s ease;
     transition: top .3s ease;
-    font-size: 13px;
+    font-weight: 500;
+    font-size: 14px !important;
 }
 
 .badgeSPP {
+    font-weight: 500;
     font-size: 14px !important;
-    font-weight: 300;
     text-align: center;
-    background-color: #ccc;
+    background-color: red !important;
+    color: white !important;
     /*height: 18px;*/
     padding: 3px 6px 3px 6px;
     -webkit-border-radius: 12px !important;
@@ -19796,7 +19803,6 @@ a.fc-more {
     -webkit-text-shadow: none !important;
     text-shadow: none !important;
     vertical-align: middle;
-    color:white !important;
 }
 
 

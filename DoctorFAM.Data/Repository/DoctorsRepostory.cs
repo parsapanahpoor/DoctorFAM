@@ -1097,7 +1097,7 @@ namespace DoctorFAM.Data.Repository
                     .Include(p => p.Doctor)
                     .ThenInclude(p => p.User)
                     .Where(s => !s.IsDelete && s.InterestId == 3)
-                    .OrderByDescending(s => s.CreateDate)
+                    .OrderBy(s => s.CreateDate)
                     .Select(p => p.Doctor)
                     .ToListAsync();
 
