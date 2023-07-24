@@ -1,6 +1,7 @@
 ﻿@model DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor.ShowUserFamilyDoctorInfo
 @inject IViewLocalizer Localizer
 @inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
+@using DoctorFAM.Application.Convertors
 
 <div class="widget">
     <div class="widget-header">
@@ -13,15 +14,15 @@
         </div><!--Widget Buttons-->
     </div><!--Widget Header-->
     <div class="widget-body">
-        <div class="row text-center justify-content-center"> 
-            
-           
-          
-                <a asp-controller="Reservation" asp-area="UserPanel" asp-action="ListOfReservationDate" asp-route-UserId="@Model.User.Id" class="btn btn-success   p-3 " style="font-size:18px ;"> @Localizer["Doctor Reservation"] </a>
+        <div class="row text-center justify-content-center">
+
+
+
+            <a asp-action="DocBooking" asp-controller="FocalPoint" asp-area="" asp-route-userId="@Model.User.Id" class="btn btn-success   p-3 " style="font-size:18px ;"> @Localizer["Doctor Reservation"] </a>
                 
                 <a asp-action="CancelUserSelectedFamilyDoctorFromUserPanel" asp-controller="FamilyDoctor" asp-area="UserPanel" class="btn btn-maroon   p-3" style="font-size:18px ;"> خروج از جمعیت پزشک خانواده  </a>
 
-                <a asp-action="DocPage" asp-area="" asp-controller="FocalPoint" asp-route-userId="@Model.User.Id" class="btn btn-info   p-3 " style="font-size:18px ;">مشاهده پروفایل پزشک</a>
+            <a asp-action="DocPage" asp-area="" asp-controller="FocalPoint" asp-route-userId="@Model.User.Id" asp-route-name="@Model.User.Username.FixTextForUrl()" class="btn btn-info   p-3 " style="font-size:18px ;">مشاهده پروفایل پزشک</a>
 
            
            
