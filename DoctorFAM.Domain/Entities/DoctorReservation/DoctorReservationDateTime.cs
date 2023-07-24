@@ -30,6 +30,10 @@ namespace DoctorFAM.Domain.Entities.DoctorReservation
 
         public bool DoctorBooking { get; set; }
 
+        public DateTime? UserRequestForReserveDate { get; set; }
+
+        public string? UserRequestDescription { get; set; }
+
         #endregion
 
         #region relations

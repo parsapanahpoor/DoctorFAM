@@ -7,10 +7,12 @@ using DoctorFAM.Application.StaticTools;
 using DoctorFAM.Data.Migrations;
 using DoctorFAM.Domain.ViewModels.Laboratory.HomeLaboratory;
 using DoctorFAM.Domain.ViewModels.Site.Notification;
+using DoctorFAM.Web.HttpManager;
 using DoctorFAM.Web.Hubs;
 using DoctorFAM.Web.Laboratory.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using ZNetCS.AspNetCore.ResumingFileResults.Extensions;
 
 #endregion
 
@@ -50,7 +52,7 @@ public class HomeLaboratoryController : LaboratoryBaseController
     public async Task<IActionResult> ListOfHomeLaboratoryRequest(FilterListOfHomeLaboratoryRequestViewModel filter)
     {
         filter.UserId = User.GetUserId();
-        return View(await _laboratoryService.FilterListOfHomeLaboratoryRequestViewModel(filter));   
+        return View(await _laboratoryService.FilterListOfHomeLaboratoryRequestViewModel(filter));
     }
 
     #endregion
@@ -193,11 +195,11 @@ public class HomeLaboratoryController : LaboratoryBaseController
     }
 
     [HttpPost, ValidateAntiForgeryToken]
-    public async Task<IActionResult> AcceptHomeLaboratoryRequestFromLaboratory(HomeLaboratoryInvoiceLaboratorySideViewModel model ,IFormFile? UserAvatar)
+    public async Task<IActionResult> AcceptHomeLaboratoryRequestFromLaboratory(HomeLaboratoryInvoiceLaboratorySideViewModel model, IFormFile? UserAvatar)
     {
         #region Model State Validation
 
-        if (!ModelState.IsValid) 
+        if (!ModelState.IsValid)
         {
             TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
             return View(model);
@@ -207,14 +209,14 @@ public class HomeLaboratoryController : LaboratoryBaseController
 
         #region Add Price To The Request 
 
-        var res = await _homeLaboratoryServices.AddHomeLaboratoryRequestPriceFromLaboratory(model , User.GetUserId() , UserAvatar);
+        var res = await _homeLaboratoryServices.AddHomeLaboratoryRequestPriceFromLaboratory(model, User.GetUserId(), UserAvatar);
 
         switch (res)
         {
             case AddHomeLaboratoryInvoiceLaboratorySideResult.Success:
                 TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
                 TempData[InfoMessage] = "خواهشمندیم تا تایید از طرف کاربر شکیبا باشید.";
-                return RedirectToAction(nameof(AcceptHomeLaboratoryRequestFromLaboratory) , new { requestId = model.RequestId });
+                return RedirectToAction(nameof(ListOfYourHomeLaboratoryRequests));
 
             case AddHomeLaboratoryInvoiceLaboratorySideResult.Faild:
                 TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
@@ -242,7 +244,7 @@ public class HomeLaboratoryController : LaboratoryBaseController
     {
         #region Sending Sampler Method 
 
-        var res = await _homeLaboratoryServices.SendingASampler(requestId , User.GetUserId());
+        var res = await _homeLaboratoryServices.SendingASampler(requestId, User.GetUserId());
         if (res)
         {
             TempData[SuccessMessage] = "لطفا در زمان مورد نظر نسبت به ارسال نمونه گیر اقدام فرمایید ";
@@ -286,7 +288,7 @@ public class HomeLaboratoryController : LaboratoryBaseController
     {
         #region Fill View Model 
 
-        var model = await _homeLaboratoryServices.FillHomeLaboratoryRequestResultLaboratorySideViewModel(requestId , User.GetUserId());
+        var model = await _homeLaboratoryServices.FillHomeLaboratoryRequestResultLaboratorySideViewModel(requestId, User.GetUserId());
         if (model == null) return NotFound();
 
         #endregion
@@ -295,11 +297,11 @@ public class HomeLaboratoryController : LaboratoryBaseController
     }
 
     [HttpPost]
-    public async Task<IActionResult> SendResultForUser(HomeLaboratoryRequestResultLaboratorySideViewModel model, IFormFile? UserAvatar)
+    public async Task<IActionResult> SendResultForUser(HomeLaboratoryRequestResultLaboratorySideViewModel model)
     {
         #region Fill View Model 
 
-        var res = await _homeLaboratoryServices.SendHomeLaboratoryRequestResultFromLaboratory(model.RequestId, User.GetUserId() , UserAvatar);
+        var res = await _homeLaboratoryServices.SendHomeLaboratoryRequestResultFromLaboratory(model.RequestId, User.GetUserId() , model.AttachmentFileName);
         if (res)
         {
             TempData[SuccessMessage] = "عملیات با موفقیت انجام شذه است. ";
@@ -319,6 +321,54 @@ public class HomeLaboratoryController : LaboratoryBaseController
     public async Task<IActionResult> InvoiceFinalization()
     {
         return View();
+    }
+
+    #endregion
+
+    #region Upload Chunk Attachment File
+
+    public IActionResult UploadCourseAttachmentFile(IFormFile? videoFile)
+    {
+        var result = videoFile.AddChunkFileToServer(PathTools.HomeLaboratoryInvoiceFilesChunkServerPath,
+            PathTools.HomeLaboratoryInvoiceFilesServerPath);
+
+        if (result == null)
+        {
+            return ApiResponse.SetResponse(ApiResponseStatus.Danger, null, "عملیات با شکست مواجه شده است.");
+        }
+        else if (result == string.Empty)
+        {
+            return ApiResponse.SetResponse(ApiResponseStatus.Success, null, "عملیات باموفقیت به پایان رسیده است.");
+        }
+        else
+        {
+            return ApiResponse.SetResponse(ApiResponseStatus.Success, result, "عملیات باموفقیت به پایان رسیده است.");
+        }
+    }
+
+    #endregion
+
+    #region Download Attachment File
+
+    public IActionResult DownloadAttachmentFile(string fileName)
+    {
+        if (string.IsNullOrEmpty(fileName))
+        {
+            return NotFound();
+        }
+
+        var webRoot = PathTools.HomeLaboratoryInvoiceFilesServerPath;
+
+        if (!System.IO.File.Exists(Path.Combine(webRoot, fileName)))
+        {
+            return NotFound();
+        }
+
+        var stream = System.IO.File.OpenRead(Path.Combine(webRoot, fileName));
+
+        var download = this.ResumingFile(stream, "application/octet-stream", fileName);
+
+        return download;
     }
 
     #endregion

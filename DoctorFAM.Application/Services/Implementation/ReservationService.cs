@@ -2,6 +2,7 @@
 
 using DoctorFAM.Application.Convertors;
 using DoctorFAM.Application.Services.Interfaces;
+using DoctorFAM.Application.StaticTools;
 using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Dentist;
 using DoctorFAM.Domain.Entities.DoctorReservation;
@@ -12,9 +13,13 @@ using DoctorFAM.Domain.ViewModels.Admin.Reservation;
 using DoctorFAM.Domain.ViewModels.Admin.Wallet;
 using DoctorFAM.Domain.ViewModels.Common;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment;
+using DoctorFAM.Domain.ViewModels.Site.Account;
 using DoctorFAM.Domain.ViewModels.Site.Reservation;
 using DoctorFAM.Domain.ViewModels.Supporter.Reservation;
 using DoctorFAM.Domain.ViewModels.UserPanel.Reservation;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
+using System;
+using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 
 #endregion
@@ -41,9 +46,11 @@ public class ReservationService : IReservationService
 
     private readonly IWalletRepository _walletRepository;
 
+    private readonly ISMSService _smsService;
+
     public ReservationService(IReservationRepository reservation, IOrganizationService organizationService, IWorkAddressService workAddress
                              , IDoctorsRepository doctorsRepository, IUserService userService, ISiteSettingService siteSettingService
-                                , IWalletService walletService, IWalletRepository walletRepository)
+                                , IWalletService walletService, IWalletRepository walletRepository, ISMSService smsService)
     {
         _reservation = reservation;
         _organizationService = organizationService;
@@ -53,6 +60,7 @@ public class ReservationService : IReservationService
         _siteSettingService = siteSettingService;
         _walletService = walletService;
         _walletRepository = walletRepository;
+        _smsService = smsService;
     }
 
     #endregion
@@ -632,7 +640,7 @@ public class ReservationService : IReservationService
     //Filter Reservation Date Time Dentist Side
     public async Task<FilterReservationDateTimeDoctorPAnel?> FilterReservationDateTimeDentistSide(FilterReservationDateTimeDoctorPAnel filter)
     {
-        return await _reservation.FilterReservationDateTimeDentistSide( filter);
+        return await _reservation.FilterReservationDateTimeDentistSide(filter);
     }
 
     public async Task<DoctorReservationDate?> GetReservationDateById(ulong reservationDateId)
@@ -758,6 +766,33 @@ public class ReservationService : IReservationService
         };
 
         #endregion
+
+        return model;
+    }
+
+
+    //Fill Add Between Patient Time Doctor Side View Model
+    public async Task<AddBetweenPatientTimeDoctorSideViewModel?> FillAddBetweenPatientTimeDoctorSideViewModel(ulong reservationDateId, ulong userId)
+    {
+        #region Get Organization OwnerId 
+
+        ulong? ownerId = await _organizationService.GetOrganizationOwnerIdByOrganizationMemberUserIdWithAsNoTracking(userId);
+        if (ownerId == null || ownerId == 0) return null;
+
+        #endregion
+
+        #region Get Reservation By Id 
+
+        var reservationDate = await _reservation.GetReservationDateByIdWithAsNoTracking(reservationDateId);
+        if (reservationDate == null) return null;
+        if (reservationDate.UserId != ownerId.Value) return null;
+
+        #endregion
+
+        AddBetweenPatientTimeDoctorSideViewModel model = new AddBetweenPatientTimeDoctorSideViewModel()
+        {
+            ReservationDateId = reservationDate.Id
+        };
 
         return model;
     }
@@ -1031,6 +1066,7 @@ public class ReservationService : IReservationService
             DoctorReservationDateTime = reservationDateTime,
             User = patient,
             DoctorBooking = reservationDateTime.DoctorBooking,
+            UserRequestDescription = reservationDateTime.UserRequestDescription
         };
 
         #endregion
@@ -1112,7 +1148,7 @@ public class ReservationService : IReservationService
     }
 
     //Check That Is Doctor Reservation Is Doctor Personal Booking From Dentist Panel
-    public async Task<bool> CheckThatIsDoctorReservationIsDoctorPersonalBookingFromDentistPanel (ulong reservationId, ulong userId)
+    public async Task<bool> CheckThatIsDoctorReservationIsDoctorPersonalBookingFromDentistPanel(ulong reservationId, ulong userId)
     {
         #region Get Organization By User Id 
 
@@ -1172,9 +1208,10 @@ public class ReservationService : IReservationService
         #region Update Doctor Reservation Date Time 
 
         reservationDateTime.PatientId = userId;
-        reservationDateTime.DoctorReservationState = Domain.Enums.DoctorReservation.DoctorReservationState.Reserved;
-        reservationDateTime.DoctorReservationType = Domain.Enums.DoctorReservation.DoctorReservationType.Reserved;
+        reservationDateTime.DoctorReservationState = DoctorReservationState.Reserved;
+        reservationDateTime.DoctorReservationType = DoctorReservationType.Reserved;
         reservationDateTime.DoctorBooking = true;
+        reservationDateTime.UserRequestDescription = model.UserRequetsDescription;
 
         //Update Method 
         await _reservation.UpdateReservationDateTime(reservationDateTime);
@@ -1197,6 +1234,112 @@ public class ReservationService : IReservationService
         await _reservation.AddDoctorPersonalBooking(booking);
 
         #endregion
+
+        #endregion
+
+        #region Send SMS
+
+        var doctorUserInfo = await _userService.GetUserByIdWithAsNoTracking(reservationDate.UserId);
+        if (doctorUserInfo != null)
+        {
+            var message = Messages.SendSMSForBetweenPatientInReservationSiteSide(reservationDateTime.StartTime, reservationDate.ReservationDate.ToString(), doctorUserInfo.Username);
+
+            await _smsService.SendSimpleSMS(model.Mobile, message);
+        }
+
+        #endregion
+
+        return true;
+    }
+
+    //Add Between Patient Time 
+    public async Task<bool> AddBetweenPatientTime(AddBetweenPatientTimeDoctorSideViewModel model, ulong userId)
+    {
+        #region Get Organization OwnerId 
+
+        ulong? ownerId = await _organizationService.GetOrganizationOwnerIdByOrganizationMemberUserIdWithAsNoTracking(userId);
+        if (ownerId == null || ownerId == 0) return false;
+
+        #endregion
+
+        #region Get Reservation By Id 
+
+        var reservationDate = await _reservation.GetReservationDateByIdWithAsNoTracking(model.ReservationDateId);
+        if (reservationDate == null) return false;
+        if (reservationDate.UserId != ownerId.Value) return false;
+
+        #endregion
+
+        #region Get Doctor Office Address
+
+        var doctorOffice = await _workAddress.GetLastWorkAddressByUserId(ownerId.Value);
+
+        #endregion
+
+        #region Fill Entity
+
+        //int hours = model.StartTime;
+        //int minute = 0;
+
+        //int startTime = model.StartTime;
+
+        ////Sampling From Time DateTime 
+        //DateTime time = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, hours, minute, 0);
+
+        ////Fill Reservation Date Time 
+        //var startReservationTime = time.ToString($"{time.Hour.ToString("00")}:{time.Minute.ToString("00")}:00");
+
+        var startTimeByNumbers = $"{model.StartTimeHour.ToString("00")}:{model.StartTimeMinute.ToString("00")}:00";
+
+        DoctorReservationDateTime dateTime = new DoctorReservationDateTime
+        {
+            CreateDate = DateTime.Now,
+            DoctorReservationDateId = model.ReservationDateId,
+            DoctorReservationState = DoctorReservationState.Reserved,
+            StartTime = startTimeByNumbers,
+            EndTime = startTimeByNumbers,
+            PatientId = ownerId.Value,
+            DoctorReservationType = DoctorReservationType.Reserved,
+            DoctorBooking = true,
+            UserRequestDescription = model.UserRequestDescription
+        };
+
+        //Fill Work Address Id 
+        if (doctorOffice != null)
+        {
+            dateTime.WorkAddressId = doctorOffice.Id;
+        }
+
+        //Add Reservation Date Time 
+        var reservationDatetimeId = await _reservation.AddReservationDateTimeWithReturnId(dateTime);
+
+        #region Doctor Personal Booking 
+
+        DoctorPersonalBooking booking = new DoctorPersonalBooking()
+        {
+            DoctorReservationDateTimeId = reservationDatetimeId,
+            FirstName = model.FirstName,
+            LastName = model.LastName,
+            Mobile = model.Mobile,
+            NationalId = model.NationalId,
+        };
+
+        //Add Method 
+        await _reservation.AddDoctorPersonalBooking(booking);
+
+        #endregion
+
+        #endregion
+
+        #region Send SMS
+
+        var doctorUserInfo = await _userService.GetUserByIdWithAsNoTracking(ownerId.Value);
+        if (doctorUserInfo != null)
+        {
+            var message = Messages.SendSMSForBetweenPatientInReservationSiteSide(dateTime.StartTime, reservationDate.ReservationDate.ToString(), doctorUserInfo.Username);
+
+            await _smsService.SendSimpleSMS(model.Mobile, message);
+        }
 
         #endregion
 
@@ -1599,6 +1742,12 @@ public class ReservationService : IReservationService
 
     #region Site Side
 
+    //Get List Of Reservation Request That Pass A Day For Pay Reservation Tariff
+    public async Task GetListOfReservationRequestThatPassADayForPayReservationTariff()
+    {
+        await _reservation.GetListOfReservationRequestThatPassADayForPayReservationTariff();
+    }
+
     //Get List Of Doctor Reservation Date And Doctor Reservation Date Time For Show Site Side 
     public async Task<List<ListOfReservationDateAndReservationDateTimeViewModel>?> GetListOfDoctorReservationDateAndDoctorReservationDateTimeForShowSiteSide(ulong doctorUserId)
     {
@@ -1810,6 +1959,8 @@ public class ReservationService : IReservationService
         reservationDateTime.DoctorReservationState = DoctorReservationState.WaitingForComplete;
         reservationDateTime.PatientId = patientId;
         reservationDateTime.DoctorReservationType = model.DoctorReservationType;
+        reservationDateTime.UserRequestForReserveDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 0, 0);
+        reservationDateTime.UserRequestDescription = model.ReservationRequestDescription;
 
         #region Get User Office Address
 
@@ -1846,6 +1997,53 @@ public class ReservationService : IReservationService
         await _reservation.UpdateReservationDateTime(reservationDateTime);
 
         #endregion
+    }
+
+    //Fill Reservation Factor Site Side View Model
+    public async Task<ReservationFactorSiteSideViewModel?> FillReservationFactorSiteSideViewModel(ReservationFactorSiteSideViewModel model)
+    {
+        #region Get Doctor User 
+
+        var doctorUser = await _userService.GetUserByIdWithAsNoTracking(model.DoctorUserId);
+        if (doctorUser == null) return null;
+
+        #endregion
+
+        #region Get Doctor By User Id 
+
+        var doctor = await _doctorsRepository.GetDoctorByUserId(model.DoctorUserId);
+        if (doctor == null) return null;
+
+        #endregion
+
+        #region Get Doctor Info
+
+        //Get Doctor Info By Id
+        var info = await _doctorsRepository.GetDoctorsInfoByDoctorId(doctor.Id);
+        if (info == null) return null;
+
+        #endregion
+
+        #region Get Doctor Skill By Doctor Id
+
+        model.DoctorSpeciality = await _doctorsRepository.GetListOfDoctorSkillsByDoctorId(info.DoctorId);
+
+        #endregion
+
+        #region Get Doctor Work Addresses
+
+        model.DoctorAddress = await _workAddress.GetUserWorkAddressesByUserId(doctor.UserId);
+
+        #endregion
+
+        #region Fill Model 
+
+        model.DoctorMobile = info.ClinicPhone;
+        model.DoctorUsername = doctorUser.Username;
+
+        #endregion
+
+        return model;
     }
 
     #endregion

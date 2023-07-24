@@ -65,11 +65,16 @@ public interface IReservationRepository
     //Filter Reservation Date Time Dentist Side
     Task<FilterReservationDateTimeDoctorPAnel?> FilterReservationDateTimeDentistSide(FilterReservationDateTimeDoctorPAnel filter);
 
+    Task<DoctorReservationDate?> GetReservationDateByIdWithAsNoTracking(ulong reservationDateId);
+
     Task<DoctorReservationDate?> GetReservationDateById(ulong reservationDateId);
 
     Task UpdateReservationDate(DoctorReservationDate date);
 
     Task AddReservationDateTime(DoctorReservationDateTime dateTime);
+
+    //Add Reservation Date Time With Return Id
+    Task<ulong> AddReservationDateTimeWithReturnId(DoctorReservationDateTime dateTime);
 
     Task<DoctorReservationDateTime?> GetDoctorReservationDateTimeById(ulong reservationDateTimeId);
 
@@ -126,6 +131,9 @@ public interface IReservationRepository
     #endregion
 
     #region Site Side
+
+    //Get List Of Reservation Request That Pass A Day For Pay Reservation Tariff
+    Task GetListOfReservationRequestThatPassADayForPayReservationTariff();
 
     //Get List Of Doctor Reservation Date And Doctor Reservation Date Time For Show Site Side 
     Task<List<ListOfReservationDateAndReservationDateTimeViewModel>?> GetListOfDoctorReservationDateAndDoctorReservationDateTimeForShowSiteSide(ulong doctorUserId);

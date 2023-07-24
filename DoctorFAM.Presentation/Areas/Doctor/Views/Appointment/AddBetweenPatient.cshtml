@@ -1,0 +1,98 @@
+﻿@model DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment.AddBetweenPatientTimeDoctorSideViewModel
+
+@{
+    ViewData["Title"] = @Localizer["افزودن نوبت بین مریض"];
+}
+
+@section Scripts
+{
+<partial name="_JqueryValidation" />
+}
+
+@section Breadcrumb
+{
+<li>
+        <a asp-action="TurnRating" asp-controller="Home" asp-area="Doctor"> نوبت دهی </a>
+</li>
+}
+
+<div class="row">
+    <div class="col-lg-12 col-sm-12">
+
+        <div class="widget">
+            <div class="widget-header bordered-bottom bordered-green">
+                <span class="widget-caption"> @Localizer["افزودن نوبت بین مریض"] </span>
+            </div>
+            <div class="widget-body">
+                <div>
+
+                    <form asp-action="AddBetweenPatient" asp-controller="Appointment" asp-area="Doctor" method="post">
+                        <input type="hidden" asp-for="ReservationDateId" />
+                        <div class="modal-body">
+                            <div class="row">
+
+                                  <div class="form-group col-md-6 col-sm-12">
+                                    <label asp-for="StartTimeHour">@Localizer["ساعت"]</label>
+                                    <span style="color:red;">*</span>
+                                    <input type="number" min="0" max="24" class="form-control" asp-for="StartTimeHour">
+                                    <span class="text-danger" asp-validation-for="StartTimeHour"></span>
+                                </div>
+
+                                  <div class="form-group col-md-6 col-sm-12">
+                                    <label asp-for="StartTimeMinute">@Localizer["دقیقه"]</label>
+                                    <span style="color:red;">*</span>
+                                    <input type="number" min="0" max="60" class="form-control" asp-for="StartTimeMinute">
+                                    <span class="text-danger" asp-validation-for="StartTimeMinute"></span>
+                                </div>
+
+                                <div class="form-group col-md-6 col-sm-12">
+                                    <label asp-for="FirstName">@Localizer["نام"]</label>
+                                    <span style="color:red;">*</span>
+                                    <input type="text" class="form-control" asp-for="FirstName">
+                                    <span class="text-danger" asp-validation-for="FirstName"></span>
+                                </div>
+
+                                <div class="form-group col-md-6 col-sm-12">
+                                    <label asp-for="LastName">@Localizer["نام خانوادگی"]</label>
+                                    <span style="color:red;">*</span>
+                                    <input type="text" class="form-control" asp-for="LastName">
+                                    <span class="text-danger" asp-validation-for="LastName"></span>
+                                </div>
+
+                                <hr class="margin-bottom-10 margin-top-10" />
+
+                                <div class="form-group col-md-6 col-sm-12">
+                                    <label asp-for="Mobile">@Localizer["مویابل"]</label>
+                                    <span style="color:red;">*</span>
+                                    <input type="text" class="form-control" asp-for="Mobile">
+                                    <span class="text-danger" asp-validation-for="Mobile"></span>
+                                </div>
+
+                                <div class="form-group col-md-6 col-sm-12">
+                                    <label asp-for="NationalId">@Localizer["کدملی"]</label>
+                                    <span style="color:red; font-size:12px;">(اختیاری)</span>
+                                    <input type="text" class="form-control" asp-for="NationalId">
+                                    <span class="text-danger" asp-validation-for="NationalId"></span>
+                                </div>
+
+                                <div class="form-group col-md-12 col-sm-12">
+                                    <label asp-for="UserRequestDescription">توضیحات</label>
+                                    <span style="color:red; font-size:12px;">(اختیاری)</span>
+                                    <textarea type="text" class="form-control" asp-for="UserRequestDescription"></textarea>
+                                    <span class="text-danger" asp-validation-for="UserRequestDescription"></span>
+                                </div>
+
+                                <div class="form-group col-md-12">
+                                    <button type="submit" class="btn btn-success">@SharedLocalizer["ثبت"]</button>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>  
+        </div> 
+        </div>

@@ -72,6 +72,16 @@ namespace DoctorFAM.Data.Repository
                                 .FirstOrDefaultAsync(p => !p.IsDelete && p.UserId == userId);
         }
 
+        public async Task<WorkAddress?> GetLastWorkAddressByUserIdWithAsNoTracking(ulong userId)
+        {
+            return await _context.WorkAddresses
+                                 .AsNoTracking()
+                                 .Include(p => p.State)
+                                 .Include(p => p.Country)
+                                 .Include(p => p.City)
+                                 .FirstOrDefaultAsync(p => !p.IsDelete && p.UserId == userId);
+        }
+
         #endregion
     }
 }

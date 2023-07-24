@@ -52,7 +52,8 @@ public class FocalPointController : SiteBaseController
 
     #region Doctor Page 
 
-    public async Task<IActionResult> DocPage(ulong userId)
+    [HttpGet("DocPage/{userId}/{name}")]
+    public async Task<IActionResult> DocPage(ulong userId , string name)
     {
         #region Fill Page Model 
 
@@ -346,7 +347,26 @@ public class FocalPointController : SiteBaseController
 
                         #endregion
 
-                        return RedirectToAction("PaymentResult", "Payment", new { IsSuccess = true, refId = refid });
+                        #region Initial Factor For Page Model
+
+                        ReservationFactorSiteSideViewModel model = new ReservationFactorSiteSideViewModel()
+                        {
+                            PatientUsername = user.FirstName + user.LastName,
+                            PatientMobile = user.Mobile,
+                            ReservationDate = reservationDate.ReservationDate,
+                            ReservationDateTime = reservationDateTime.StartTime,
+                            ReservationPrice = reservationTariff.Item1,
+                            RefId = refid,
+                            DoctorUserId = reservationDate.UserId,
+                            PatientNationalId = user.NationalId
+                        };
+
+                        var modelOfView = await _reservationService.FillReservationFactorSiteSideViewModel(model);
+                        if (modelOfView == null) return NotFound();
+
+                        #endregion
+
+                        return View(modelOfView);
                     }
                 }
                 else if (errors != "[]")

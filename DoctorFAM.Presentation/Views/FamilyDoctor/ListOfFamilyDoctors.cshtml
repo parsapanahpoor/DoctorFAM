@@ -216,12 +216,12 @@
                                     <div class="doctor-widget">
                                         <div class="doc-info-left">
                                             <div class="doctor-img">
-                                                <a asp-action="DocPage" asp-area="" asp-controller="FocalPoint" asp-route-userId="@doctor.User.Id">
+                                                <a asp-action="DocPage" asp-area="" asp-controller="FocalPoint" asp-route-userId="@doctor.User.Id" asp-route-name="@doctor.User.Username.FixTextForUrl()">
                                                     <img src="/content/images/user/@((string.IsNullOrEmpty(doctor.User.Avatar)) ? "DefaultAvatar.png" : $"thumb/{doctor.User.Avatar}")" class="img-fluid" alt="User Image">
                                                 </a>
                                             </div>
                                             <div class="doc-info-cont">
-                                                <h4 class="doc-name"><a asp-action="DocPage" asp-area="" asp-controller="FocalPoint" asp-route-userId="@doctor.User.Id">پزشک:دکتر  @doctor.User.Username</a></h4>
+                                                <h4 class="doc-name"><a asp-action="DocPage" asp-area="" asp-controller="FocalPoint" asp-route-userId="@doctor.User.Id" asp-route-name="@doctor.User.Username.FixTextForUrl()">پزشک:دکتر  @doctor.User.Username</a></h4>
                                                 <p class="doc-speciality">@((!string.IsNullOrEmpty(doctor.DoctorsInfos.Education)) ? doctor.DoctorsInfos.Education : null)</p>
                                                 @if (doctor.DoctorsInfos.Specialty != null)
                                                 {

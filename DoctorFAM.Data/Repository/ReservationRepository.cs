@@ -700,6 +700,13 @@ public class ReservationRepository : IReservationRepository
         return await _context.DoctorReservationDates.FirstOrDefaultAsync(p => !p.IsDelete && p.Id == reservationDateId);
     }
 
+    public async Task<DoctorReservationDate?> GetReservationDateByIdWithAsNoTracking(ulong reservationDateId)
+    {
+        return await _context.DoctorReservationDates
+                             .AsNoTracking()
+                             .FirstOrDefaultAsync(p => !p.IsDelete && p.Id == reservationDateId);
+    }
+
     public async Task UpdateReservationDate(DoctorReservationDate date)
     {
         _context.DoctorReservationDates.Update(date);
@@ -709,6 +716,15 @@ public class ReservationRepository : IReservationRepository
     public async Task AddReservationDateTime(DoctorReservationDateTime dateTime)
     {
         await _context.DoctorReservationDateTimes.AddAsync(dateTime);
+    }
+
+    //Add Reservation Date Time With Return Id
+    public async Task<ulong> AddReservationDateTimeWithReturnId(DoctorReservationDateTime dateTime)
+    {
+        await _context.DoctorReservationDateTimes.AddAsync(dateTime);
+        await _context.SaveChangesAsync();
+
+        return dateTime.Id;
     }
 
     public async Task<DoctorReservationDateTime?> GetDoctorReservationDateTimeById(ulong reservationDateTimeId)
@@ -1444,6 +1460,45 @@ public class ReservationRepository : IReservationRepository
     #endregion
 
     #region Site Side 
+
+    //Get List Of Reservation Request That Pass A Day For Pay Reservation Tariff
+    public async Task GetListOfReservationRequestThatPassADayForPayReservationTariff()
+    {
+        #region Current Date Time
+
+        var dateTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 0, 0);
+
+        #endregion
+
+        #region Get List Of Reservations
+
+        var model = await _context.DoctorReservationDateTimes
+                             .Where(p => !p.IsDelete && p.DoctorReservationState == DoctorReservationState.WaitingForComplete
+                                    && p.UserRequestForReserveDate.HasValue && DateTime.Compare(p.UserRequestForReserveDate.Value, dateTime) >= 1)
+                             .ToListAsync();
+
+        #endregion
+
+        #region Remove Patients From Requests
+
+        if (model != null && model.Any())
+        {
+            foreach (var reservation in model)
+            {
+                reservation.UserRequestForReserveDate = null;
+                reservation.DoctorReservationState = DoctorReservationState.Reserved;
+                reservation.PatientId = null;
+                reservation.WorkAddressId = null;
+                reservation.DoctorReservationType = null;
+
+                _context.DoctorReservationDateTimes.Update(reservation);
+            }
+
+            await _context.SaveChangesAsync();
+        }
+
+        #endregion
+    }
 
     //Get List Of Doctor Reservation Date And Doctor Reservation Date Time For Show Site Side 
     public async Task<List<ListOfReservationDateAndReservationDateTimeViewModel>?> GetListOfDoctorReservationDateAndDoctorReservationDateTimeForShowSiteSide(ulong doctorUserId)

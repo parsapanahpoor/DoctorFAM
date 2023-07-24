@@ -17,6 +17,8 @@ namespace DoctorFAM.Domain.ViewModels.Site.Reservation
 
         public DoctorReservationType? DoctorReservationType { get; set; }
 
+        public string? ReservationRequestDescription { get; set; }
+
         #endregion
     }
 }

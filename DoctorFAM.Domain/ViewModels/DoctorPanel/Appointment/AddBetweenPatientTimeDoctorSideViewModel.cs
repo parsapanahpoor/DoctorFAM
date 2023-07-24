@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment
 {
-    public class DoctorPersonalBookingViewModel 
+    public class AddBetweenPatientTimeDoctorSideViewModel
     {
         #region properties
 
-        public ulong DoctorReservationDateTimeId { get; set; }
+        public ulong ReservationDateId { get; set; }
 
         [Required(ErrorMessage = "Please Enter {0}")]
         public string FirstName { get; set; }
@@ -24,7 +24,13 @@ namespace DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment
 
         public string? NationalId { get; set; }
 
-        public string? UserRequetsDescription { get; set; }
+        public bool SendSMS { get; set; }
+
+        public string? UserRequestDescription { get; set; }
+
+        public int StartTimeHour { get; set; }
+
+        public int StartTimeMinute { get; set; }
 
         #endregion
     }
