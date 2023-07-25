@@ -168,6 +168,11 @@
                                                         <span class="mr-8px label label-info">@Localizer["In Persone"] </span>
                                                     }
 
+                                                    @if (reservationdata.DoctorReservationType == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationType.BothOnlineAndReserved)
+                                                    {
+                                                        <span class="mr-8px label label-info">@Localizer["آنلاین - حضوری"] </span>
+                                                    }
+
                                                     @if (reservationdata.DoctorReservationType == null)
                                                     {
                                                         <span class="mr-8px label label-orange">@Localizer["Not Reserved Yet"] </span>

@@ -205,7 +205,7 @@ public class FocalPointController : SiteBaseController
 
     #endregion
 
-    #region Home Visit Payment
+    #region Doctor Reservation Payment
 
     [HttpGet("DoctorReservationPayment/{id}", Name = "DoctorReservationPayment")]
     public async Task<IActionResult> DoctorReservationPayment(ulong id)

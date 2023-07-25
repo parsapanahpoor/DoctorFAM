@@ -24,6 +24,8 @@ namespace DoctorFAM.Domain.Entities.DoctorReservation
 
         public DoctorReservationType? DoctorReservationType { get; set; }
 
+        public DoctorReservationType DoctorReservationTypeSelected { get; set; }
+
         public string StartTime { get; set; }
 
         public string EndTime { get; set; }

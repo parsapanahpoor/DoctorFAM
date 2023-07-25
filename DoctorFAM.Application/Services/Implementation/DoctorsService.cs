@@ -3896,7 +3896,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 }
 
                 //If Reservation Type Is Online 
-                if (DoctorReservationType == DoctorReservationType.Onile)
+                if (DoctorReservationType == DoctorReservationType.Onile || DoctorReservationType == DoctorReservationType.BothOnlineAndReserved)
                 {
                     return reservationTariff.OnlineReservationTariffForDoctorPopulationCovered;
                 }
@@ -3911,7 +3911,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 }
 
                 //If Reservation Type Is Online 
-                if (DoctorReservationType == DoctorReservationType.Onile)
+                if (DoctorReservationType == DoctorReservationType.Onile || DoctorReservationType == DoctorReservationType.BothOnlineAndReserved)
                 {
                     return reservationTariff.OnlineReservationTariffForAnonymousPersons;
                 }
@@ -3961,7 +3961,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 }
 
                 //If Reservation Type Is Online 
-                if (DoctorReservationType == DoctorReservationType.Onile)
+                if (DoctorReservationType == DoctorReservationType.Onile || DoctorReservationType == DoctorReservationType.BothOnlineAndReserved)
                 {
                     return ValueTuple.Create(reservationTariff.OnlineReservationTariffForDoctorPopulationCovered, true, true);
                 }
@@ -3976,7 +3976,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 }
 
                 //If Reservation Type Is Online 
-                if (DoctorReservationType == DoctorReservationType.Onile)
+                if (DoctorReservationType == DoctorReservationType.Onile || DoctorReservationType == DoctorReservationType.BothOnlineAndReserved)
                 {
                     return ValueTuple.Create(reservationTariff.OnlineReservationTariffForAnonymousPersons, false , true);
                 }
