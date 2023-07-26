@@ -53,6 +53,7 @@ using System.Diagnostics.Metrics;
 using System.Globalization;
 using DoctorFAM.Domain.Entities.SendSMS.FromDoctrors;
 using DoctorFAM.Domain.Entities.Dentist;
+using DoctorFAM.Domain.Entities.VirtualFile;
 
 
 #endregion
@@ -533,6 +534,12 @@ public class DoctorFAMDbContext : Microsoft.EntityFrameworkCore.DbContext
     public DbSet<SendRequestOfSMSFromDoctorsToThePatient> SendRequestOfSMSFromDoctorsToThePatients { get; set; }
 
     #endregion
+
+    #endregion
+
+    #region Users Virtual Files
+
+    public DbSet<UsersVirtualFile> UsersVirtualFiles { get; set; }
 
     #endregion
 
