@@ -35,6 +35,8 @@ namespace DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment
 
         public DoctorReservationType? DoctorReservationType { get; set; }
 
+        public DoctorReservationType? SelectedDoctorReservationType { get; set; }
+
         public string StartTime { get; set; }
 
         public string EndTime { get; set; }

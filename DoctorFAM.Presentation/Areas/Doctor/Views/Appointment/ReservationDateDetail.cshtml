@@ -44,21 +44,14 @@
 }
 
 <div class="row">
-    <div class="col-lg-4 col-sm-12">
+    <div class="col-lg-6 col-sm-12">
 
-        <a class="col-lg-4 col-sm-12 btn btn-sky w-100 margin-bottom-10" asp-action="AddreservationDateTimeWithComputer" asp-route-reservationDateId="@Model.ReservationDateId" asp-controller="Appointment" asp-area="Doctor"> @Localizer["Add Time With System"] </a>
-
-    </div>
-
-    <div class="col-lg-4 col-sm-12">
-
-        <a class="col-lg-4 col-sm-12 btn btn-sky w-100 margin-bottom-10" asp-action="AddReservationDateTime" asp-route-reservationDateId="@Model.ReservationDateId" asp-controller="Appointment" asp-area="Doctor"> @Localizer["Add New Date Time"] </a>
+        <a class="col-lg-6 col-sm-12 btn btn-sky w-100 margin-bottom-10" asp-action="AddreservationDateTimeWithComputer" asp-route-reservationDateId="@Model.ReservationDateId" asp-controller="Appointment" asp-area="Doctor"> @Localizer["Add Time With System"] </a>
 
     </div>
+    <div class="col-lg-6 col-sm-12">
 
-    <div class="col-lg-4 col-sm-12">
-
-        <a class="col-lg-4 col-sm-12 btn btn-sky w-100 margin-bottom-10" asp-action="AddBetweenPatient" asp-route-reservationDateId="@Model.ReservationDateId" asp-controller="Appointment" asp-area="Doctor">افزودن نوبت بین مریض</a>
+        <a class="col-lg-6 col-sm-12 btn btn-sky w-100 margin-bottom-10" asp-action="AddBetweenPatient" asp-route-reservationDateId="@Model.ReservationDateId" asp-controller="Appointment" asp-area="Doctor">افزودن نوبت بین مریض</a>
 
     </div>
 
@@ -82,7 +75,8 @@
                                         <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">کد پیگیری</th>
                                         <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">شروع</th>
                                         <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">وضعیت</th>
-                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending"> نوع(حضوری-آنلاین)</th>
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending"> روش انتخابی بیمار</th>
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending"> روش انتخابی پزشک</th>
                                         <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending"> نحوه اخذ نوبت(سامانه ای- منشی)</th>
                                         <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending"> امکانات</th>
 
@@ -174,6 +168,30 @@
                                                     }
 
                                                     @if (reservationdata.DoctorReservationType == null)
+                                                    {
+                                                        <span class="mr-8px label label-orange">@Localizer["Not Reserved Yet"] </span>
+                                                    }
+                                                </p>
+                                            </td>
+
+                                            <td class="center tc vm">
+                                                <p>
+                                                    @if (reservationdata.SelectedDoctorReservationType == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationType.Onile)
+                                                    {
+                                                        <span class="mr-8px label label-info">@Localizer["Online"] </span>
+                                                    }
+
+                                                    @if (reservationdata.SelectedDoctorReservationType == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationType.Reserved)
+                                                    {
+                                                        <span class="mr-8px label label-info">@Localizer["In Persone"] </span>
+                                                    }
+
+                                                    @if (reservationdata.SelectedDoctorReservationType == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationType.BothOnlineAndReserved)
+                                                    {
+                                                        <span class="mr-8px label label-info">@Localizer["آنلاین - حضوری"] </span>
+                                                    }
+
+                                                    @if (reservationdata.SelectedDoctorReservationType == null)
                                                     {
                                                         <span class="mr-8px label label-orange">@Localizer["Not Reserved Yet"] </span>
                                                     }

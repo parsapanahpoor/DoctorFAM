@@ -13,6 +13,7 @@ using DoctorFAM.Domain.ViewModels.Site.Reservation;
 using DoctorFAM.Domain.ViewModels.Supporter.Reservation;
 using DoctorFAM.Domain.ViewModels.UserPanel.Reservation;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.Contracts;
 using System.Globalization;
 
 #endregion
@@ -549,6 +550,7 @@ public class ReservationRepository : IReservationRepository
                                                 EndTime = p.EndTime,
                                                 PatientId = p.PatientId,
                                                 StartTime = p.StartTime,
+                                                SelectedDoctorReservationType = p.DoctorReservationTypeSelected
                                             }).ToListAsync();
         #endregion
 
@@ -1546,6 +1548,15 @@ public class ReservationRepository : IReservationRepository
     {
         return await _context.DoctorReservationDateTimes.Where(p => !p.IsDelete && p.DoctorReservationDateId == reservationDateId
                                                                 && p.DoctorReservationState != DoctorReservationState.Canceled).OrderBy(p => p.StartTime).ToListAsync();
+    }
+
+    //Get Doctor Reservation Date Time Doctor Selected Reservation Type
+    public async Task<DoctorReservationType> GetDoctorReservationDateTimeDoctorSelectedReservationType(ulong doctorReservationDateTimeId)
+    {
+        return await _context.DoctorReservationDateTimes
+                             .Where(p => !p.IsDelete && p.Id == doctorReservationDateTimeId && p.DoctorReservationTypeSelected.HasValue)
+                             .Select(p=> p.DoctorReservationTypeSelected.Value)
+                             .FirstOrDefaultAsync();
     }
 
     #endregion

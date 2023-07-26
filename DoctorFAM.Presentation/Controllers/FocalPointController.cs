@@ -128,7 +128,8 @@ public class FocalPointController : SiteBaseController
         ChooseTypeOfReservationViewModel model = new ChooseTypeOfReservationViewModel()
         {
             DoctorId = doctorId,
-            ReservationDateTimeId = reservationDateTimeId
+            ReservationDateTimeId = reservationDateTimeId,
+            DoctorSelectedReservationType = await _reservationService.GetDoctorReservationDateTimeDoctorSelectedReservationType(reservationDateTimeId)
         };
 
         #endregion

@@ -8,11 +8,45 @@
     <div class="modal-body">
         <div class="row">
 
-            <div class="form-group col-md-12 col-sm-12">
-                <label asp-for="DoctorReservationType">نوع نوبت </label>
-                <select asp-for="DoctorReservationType" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationType))"></select>
-                <span class="text-danger" asp-validation-for="DoctorReservationType"></span>
-            </div>
+            @if (Model.DoctorSelectedReservationType == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationType.Reserved)
+            {
+                <div class="form-group col-md-12 col-sm-12">
+                    <label asp-for="DoctorReservationType">نوع نوبت </label>
+                    <select asp-for="DoctorReservationType" class="form-control" >
+
+                        <option value="1">حضوری</option>
+
+                    </select>
+                    <span class="text-danger" asp-validation-for="DoctorReservationType"></span>
+                </div>
+            }
+
+            @if (Model.DoctorSelectedReservationType == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationType.Onile)
+            {
+                <div class="form-group col-md-12 col-sm-12">
+                    <label asp-for="DoctorReservationType">نوع نوبت </label>
+                    <select asp-for="DoctorReservationType" class="form-control">
+
+                        <option value="0">آنلاین</option>
+
+                    </select>
+                    <span class="text-danger" asp-validation-for="DoctorReservationType"></span>
+                </div>
+            }
+
+            @if (Model.DoctorSelectedReservationType == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationType.BothOnlineAndReserved)
+            {
+                <div class="form-group col-md-12 col-sm-12">
+                    <label asp-for="DoctorReservationType">نوع نوبت </label>
+                    <select asp-for="DoctorReservationType" class="form-control">
+
+                        <option value="0">آنلاین</option>
+                        <option value="1">حضوری</option>
+
+                    </select>
+                    <span class="text-danger" asp-validation-for="DoctorReservationType"></span>
+                </div>
+            }
 
             <hr />
 
