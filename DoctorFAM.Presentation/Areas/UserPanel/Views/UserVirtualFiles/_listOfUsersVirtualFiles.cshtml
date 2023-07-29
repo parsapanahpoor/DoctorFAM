@@ -1,0 +1,56 @@
+﻿@model List<DoctorFAM.Domain.Entities.VirtualFile.UsersVirtualFile>
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.Utils
+
+<div class="form-title">
+
+    پرونده های پزشکی
+
+    <a asp-action="CreateUserVirtualInfo" asp-area="UserPanel" asp-controller="UserVirtualFiles" style="margin-right: 10px;" class="btn btn-success mr-4">افزودن پرونده ی پزشکی</a>
+
+</div>
+
+
+@if (Model != null && Model.Any())
+{
+    foreach (var info in Model)
+    {
+        <ul class="timeline animated fadeInDown">
+
+            <li>
+                <div class="timeline-badge blue">
+                    <a asp-action="DeleteUsersVirtualFiles" asp-area="UserPanel" asp-controller="UserVirtualFiles" asp-route-id="@info.Id"> <i class="fa fa-trash-o danger"></i></a>
+                </div>
+           
+                <div class="timeline-panel">
+                    <div class="timeline-header bordered-bottom bordered-blue">
+                        @if (!string.IsNullOrEmpty(info.FileTitle))
+                        {
+                            <span class="timeline-title">
+                                @info.FileTitle
+                            </span>
+                        }
+                    </div>
+
+                    <div class="timeline-body">
+                        <div class="row mt-2 ">
+
+                            <div class="col-md-12  ">
+                                <p>توضیح : @((string.IsNullOrEmpty(info.Description)) ? "وارد نشده" : info.Description)</p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </li>
+        </ul>
+    }
+}
+else
+{
+    <div class="alert alert-info fade in">
+        @SharedLocalizer["وارد نشده است."]
+    </div>
+}

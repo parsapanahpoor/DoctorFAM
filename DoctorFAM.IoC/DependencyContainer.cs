@@ -78,6 +78,7 @@ public static class DependencyContainer
         services.AddScoped <ISMBGNoteBookService, SMBGNoteBookService>();
         services.AddScoped <IDentistService, DentistService>();
         services.AddScoped <IInterestService, InterestService>();
+        services.AddScoped <IUserVirtualFilesService, UserVirtualFilesService>();
 
         #endregion
 
@@ -127,6 +128,7 @@ public static class DependencyContainer
         services.AddScoped<ISMBGNoteBookRepository, SMBGNoteBookRepository>();
         services.AddScoped<IDentistRepoistory, DentistRepoistory>();
         services.AddScoped<IInterestRepository, InterestRepository>();
+        services.AddScoped<IUserVirtualFilesRepository, UserVirtualFilesRepository>();
 
         #endregion
 

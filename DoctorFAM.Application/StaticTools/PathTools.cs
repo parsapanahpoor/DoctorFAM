@@ -277,4 +277,13 @@ public static class PathTools
     public static readonly string ReceiptPathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/Receipt/thumb/");
 
     #endregion
+
+    #region Home Laboratory Invoice
+
+    public static readonly string UserVirtualFilesServerPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/UserVirtualFiles/Files/");
+    public static readonly string UserVirtualFilesChunkServerPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/UserVirtualFiles/Chunks/");
+
+    public static readonly string UserVirtualFilesPath = "/content/images/UserVirtualFiles/Files/";
+
+    #endregion
 }
