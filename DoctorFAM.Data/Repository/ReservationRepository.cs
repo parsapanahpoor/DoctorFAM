@@ -582,7 +582,8 @@ public class ReservationRepository : IReservationRepository
                                                                                .Select(p => new DoctorReservationDateTimePatientDetailDoctorSideViewModel()
                                                                                {
                                                                                    PatientMobile = p.Mobile,
-                                                                                   PatientUsername = (p.FirstName != null && p.LastName != null) ? p.FirstName + p.LastName : "عدم دسترسی"
+                                                                                   PatientUsername = (p.FirstName != null && p.LastName != null) ? p.FirstName + p.LastName : "عدم دسترسی",
+                                                                                   PatientUserId = p.Id
                                                                                }).FirstOrDefaultAsync();
 
                         //Add To Return Model 

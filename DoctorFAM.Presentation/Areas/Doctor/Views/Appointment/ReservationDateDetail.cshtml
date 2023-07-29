@@ -237,6 +237,10 @@
                                                 @if (reservationdata.DoctorReservationState != DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.NotReserved && reservationdata.PatientId != null)
                                                 {
                                                     <a asp-action="ShowPatientDetail" asp-controller="Appointment" asp-area="Doctor" asp-route-ReservationDateTimeId="@reservationdata.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+                                                    @if (!reservationdata.DoctorBooking)
+                                                    {
+                                                        <a asp-action="ListOfUserVirtualFiles" asp-area="Doctor" asp-controller="Home" asp-route-userId="@reservationdata.PatientDetail.PatientUserId" class="btn btn-warning btn-circle btn-xs"><i class="glyphicon glyphicon-list-alt"></i></a>
+                                                    }
                                                 }
 
                                             </td>

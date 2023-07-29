@@ -51,5 +51,7 @@ namespace DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment
         public string PatientUsername { get; set; }
 
         public string PatientMobile { get; set; }
+
+        public ulong? PatientUserId { get; set; }
     }
 }
