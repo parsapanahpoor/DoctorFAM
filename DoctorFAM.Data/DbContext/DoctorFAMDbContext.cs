@@ -794,6 +794,16 @@ public class DoctorFAMDbContext : Microsoft.EntityFrameworkCore.DbContext
             ParentId = null
         });
 
+        modelBuilder.Entity<Role>().HasData(new Role
+        {
+            Id = 21,
+            Title = "Tourism",
+            RoleUniqueName = "Tourism",
+            CreateDate = DateTime.Now,
+            IsDelete = false,
+            ParentId = null
+        });
+
         #endregion
 
         #region Doctor Interests Seed Data
@@ -1798,7 +1808,6 @@ public class DoctorFAMDbContext : Microsoft.EntityFrameworkCore.DbContext
         modelBuilder.Entity<SpecialtiyInfo>().HasQueryFilter(e => e.LanguageId == culture);
 
         #endregion
-
 
         base.OnModelCreating(modelBuilder);
     }

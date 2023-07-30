@@ -24,7 +24,7 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.6" />
+		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.8" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
 		<PackageReference Include="WebEssentials.AspNetCore.PWA" Version="1.0.65" />
 		<PackageReference Include="ZarinPal-SDK" Version="0.0.8" />
@@ -47,6 +47,10 @@
 		<Folder Include="Areas\Pharmacy\Models\" />
 		<Folder Include="Areas\Supporter\Data\" />
 		<Folder Include="Areas\Supporter\Models\" />
+		<Folder Include="Areas\Tourism\Controllers\" />
+		<Folder Include="Areas\Tourism\Data\" />
+		<Folder Include="Areas\Tourism\Models\" />
+		<Folder Include="Areas\Tourism\Views\" />
 		<Folder Include="Resources\Areas\Pharmacy\Controllers\" />
 		<Folder Include="Resources\Controllers\" />
 		<Folder Include="Resources\Views\" />

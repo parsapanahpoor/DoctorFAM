@@ -91,6 +91,9 @@ public interface IUserService
     //Register Dentist
     Task DentistConsultant(string mobile);
 
+    //Register Tourism
+    Task TourismConsultant(string mobile);
+
     Task RegisterDoctors(string mobile);
 
     Task RegisterPharmacy(string mobile);
