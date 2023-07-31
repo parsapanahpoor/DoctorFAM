@@ -229,6 +229,12 @@ namespace DoctorFAM.Application.Services.Implementation
             return await _organization.IsExistAnyLaboratoryByUserId(userId);
         }
 
+        //Check Is Exist Any Tourism By This User Id
+        public async Task<bool> IsExistAnyTourismByUserId(ulong userId)
+        {
+            return await _organization.IsExistAnyTourismByUserId(userId);
+        }
+
         public async Task<bool> IsExistAnyPharmacyOfficeEmployeeByUserId(ulong userId)
         {
             return await _organization.IsExistAnyPharmacyOfficeEmployeeByUserId(userId);

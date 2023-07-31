@@ -54,6 +54,7 @@ using System.Globalization;
 using DoctorFAM.Domain.Entities.SendSMS.FromDoctrors;
 using DoctorFAM.Domain.Entities.Dentist;
 using DoctorFAM.Domain.Entities.VirtualFile;
+using DoctorFAM.Domain.Entities.Tourism;
 
 
 #endregion
@@ -540,6 +541,14 @@ public class DoctorFAMDbContext : Microsoft.EntityFrameworkCore.DbContext
     #region Users Virtual Files
 
     public DbSet<UsersVirtualFile> UsersVirtualFiles { get; set; }
+
+    #endregion
+
+    #region Tourism
+
+    public DbSet<Tourism> Tourisms { get; set; }
+
+    public DbSet<TourismInfo> TourismInfos { get; set; }
 
     #endregion
 
