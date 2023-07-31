@@ -79,6 +79,7 @@ public static class DependencyContainer
         services.AddScoped <IDentistService, DentistService>();
         services.AddScoped <IInterestService, InterestService>();
         services.AddScoped <IUserVirtualFilesService, UserVirtualFilesService>();
+        services.AddScoped <ITourismService, TourismService>();
 
         #endregion
 
@@ -129,6 +130,7 @@ public static class DependencyContainer
         services.AddScoped<IDentistRepoistory, DentistRepoistory>();
         services.AddScoped<IInterestRepository, InterestRepository>();
         services.AddScoped<IUserVirtualFilesRepository, UserVirtualFilesRepository>();
+        services.AddScoped<ITourismRepository, TourismRepository>();
 
         #endregion
 

@@ -87,6 +87,9 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Get Laboratory Organization by User Id
         Task<Organization?> GetLaboratoryOrganizationByUserId(ulong userId);
 
+        //Get Tourist Organization by User Id
+        Task<Organization?> GetTouristOrganizationByUserId(ulong userId);
+
         //Delete Employee From Laboratory Office Organization
         Task<bool> DeleteEmployeeFromLaboratoryOfficeOrganization(ulong employeeId, ulong userId);
 

@@ -400,6 +400,11 @@ public class PermissionService : IPermissionService
             returnModel.Add("Labratory");
         }
 
+        if (userRoles.Any() && userRoles.Contains("Tourism"))
+        {
+            returnModel.Add("Tourism");
+        }
+
         #endregion
 
         return returnModel;
@@ -671,6 +676,20 @@ public class PermissionService : IPermissionService
         if (result.Contains("Labratory")) return true;
 
         if (result.Contains("LaboratoryOfficeEmployee")) return true;
+
+        return false;
+    }
+
+    //Check Is User Has Permission To Tourism Panel 
+    public async Task<bool> IsUserTourism(ulong userId)
+    {
+        var result = await GetUserRoleses(userId);
+
+        if (result == null || !result.Any()) return false;
+
+        if (result.Contains("Admin")) return true;
+
+        if (result.Contains("Tourism")) return true;
 
         return false;
     }

@@ -16,13 +16,15 @@ public class HomeController : TourismBaseController
     private readonly IDashboardsService _dashboardService;
     private readonly IOrganizationService _organizationService;
     private readonly ILaboratoryService _laboratoryService;
+    private readonly ITourismService _tourismService;
 
     public HomeController(IOrganizationService organizationService , IDashboardsService dashboardService
-                            , ILaboratoryService laboratoryService)
+                            , ILaboratoryService laboratoryService, ITourismService tourismService)
     {
         _organizationService = organizationService;
         _dashboardService = dashboardService;
         _laboratoryService = laboratoryService;
+        _tourismService = tourismService;
     }
 
     #endregion
@@ -37,9 +39,9 @@ public class HomeController : TourismBaseController
         {
             #region If Tourism Is Not Found In Tourism Table 
 
-            if (!await _laboratoryService.IsExistAnyLaboratoryByUserId(User.GetUserId()))
+            if (!await _tourismService.IsExistAnyTourismByUserId(User.GetUserId()))
             {
-                await _laboratoryService.AddLaboratoryForFirstTime(User.GetUserId());
+                await _tourismService.AddTourismForFirstTime(User.GetUserId());
             }
 
             #endregion

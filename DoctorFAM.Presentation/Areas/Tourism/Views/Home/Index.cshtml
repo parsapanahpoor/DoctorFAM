@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewData["Title"] = Localizer["Laboratory Panel Dashboard"];
+    ViewData["Title"] = Localizer["داشبور پنل گردشگر"];
 }
 
 @section Breadcrumb {
@@ -36,9 +36,9 @@
     </style>
 }
 
-    @await Component.InvokeAsync("LaboratoryInfos")
+@await Component.InvokeAsync("TourismInfos")
 
-@await Component.InvokeAsync("LaboratoryPanelSideBarInIndex")
+@await Component.InvokeAsync("TourismPanelSideBarInIndex")
 
     <div class="page-body">
 

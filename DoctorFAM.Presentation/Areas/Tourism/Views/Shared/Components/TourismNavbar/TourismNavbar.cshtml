@@ -187,6 +187,17 @@
                                             </div>
                                         </a>
                                     </li>
+
+                                    <li>
+
+                                        <a asp-action="Index" asp-area="Tourism" asp-controller="Home">
+                                            <div class="clearfix">
+                                                <span class="pull-right">پنل گردشگری </span>
+                                                <span class="pull-left">></span>
+                                            </div>
+                                        </a>
+                                    </li>
+
                                     <li>
 
                                         <a asp-action="Index" asp-area="Admin" asp-controller="Home">
@@ -328,6 +339,19 @@
                                             <a asp-action="Index" asp-area="dentist" asp-controller="Home">
                                                 <div class="clearfix">
                                                     <span class="pull-right">پنل دندان پزشک</span>
+                                                    <span class="pull-left">></span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    }
+
+                                    @if (ViewBag.Tourism == true)
+                                    {
+                                        <li>
+
+                                            <a asp-action="Index" asp-area="Tourism" asp-controller="Home">
+                                                <div class="clearfix">
+                                                    <span class="pull-right">پنل گردشگر</span>
                                                     <span class="pull-left">></span>
                                                 </div>
                                             </a>

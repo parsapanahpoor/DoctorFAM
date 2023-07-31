@@ -1,4 +1,4 @@
-﻿using DoctorFAM.Web.Areas.Laboratory.ActionFilterAttributes;
+﻿using DoctorFAM.Web.Areas.Tourism.ActionFilterAttributes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

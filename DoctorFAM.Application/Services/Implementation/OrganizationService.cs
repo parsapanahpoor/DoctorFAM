@@ -110,6 +110,12 @@ namespace DoctorFAM.Application.Services.Implementation
             return await _organization.GetLaboratoryOrganizationByUserId(userId);
         }
 
+        //Get Tourist Organization by User Id
+        public async Task<Organization?> GetTouristOrganizationByUserId(ulong userId)
+        {
+            return await _organization.GetTouristOrganizationByUserId(userId);
+        }
+
         public async Task<Organization?> GetPharmacyOrganizationByUserId(ulong userId)
         {
             return await _organization.GetPharmacyOrganizationByUserId(userId);
