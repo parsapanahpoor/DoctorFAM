@@ -413,6 +413,9 @@ public class AccountController : SiteBaseController
 
                     //If User Is Seller
                     if (userRole.Contains("Seller")) return RedirectToAction("Index", "Home", new { area = "Market" });
+
+                    //If User Is Tourism
+                    if (userRole.Contains("Tourism")) return RedirectToAction("Index", "Home", new { area = "Tourism" });
                 }
                 else
                 {

@@ -1,0 +1,49 @@
+﻿
+@{
+    ViewData["Title"] = Localizer["Laboratory Panel Dashboard"];
+}
+
+@section Breadcrumb {
+    
+}
+
+    @section Styles
+    {
+    <style>
+
+        .databox-bottom {
+            height: 100% !important;
+        }
+
+        .databox.databox-vertical.databox-lg {
+            height: 100%;
+            width: 100%;
+        }
+
+        .databox.databox-vertical.databox-halved .databox-top {
+            height: 60px;
+        }
+
+        .databox-icon {
+            margin-top: 10px !important;
+        }
+
+        .dropdown-menu {
+            left: 0;
+            right: auto;
+        }
+
+    </style>
+}
+
+    @await Component.InvokeAsync("LaboratoryInfos")
+
+@await Component.InvokeAsync("LaboratoryPanelSideBarInIndex")
+
+    <div class="page-body">
+
+        <div class="row">
+
+        </div>
+
+    </div>

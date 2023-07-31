@@ -500,6 +500,11 @@ public class PermissionService : IPermissionService
                         returnModel.Add("DentistOfficeEmployee");
                     }
 
+                    if (roleName == "Tourism")
+                    {
+                        returnModel.Add("Tourism");
+                    }
+
                     #endregion
                 }
             }
