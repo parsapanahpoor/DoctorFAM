@@ -28,6 +28,12 @@ public interface ITourismRepository
     //Fill Tourism Side Bar Panel
     Task<TourismSideBarViewModel> GetTourismSideBarInfo(ulong userId);
 
+    //Is Exist Any Tourist By This User Id 
+    Task<bool> IsExistAnyTouristByUserId(ulong userId);
+
+    //Get Tourist Information By User Id
+    Task<TourismInfo?> GetTouristInformationByUserId(ulong userId);
+
     #endregion
 
     #region Admin Side

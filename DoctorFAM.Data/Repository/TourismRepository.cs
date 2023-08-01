@@ -79,6 +79,22 @@ public class TourismRepository : ITourismRepository
         return model;
     }
 
+    //Is Exist Any Tourist By This User Id 
+    public async Task<bool> IsExistAnyTouristByUserId(ulong userId)
+    {
+        return await _context.Tourisms.AnyAsync(p => p.UserId == userId && !p.IsDelete);
+    }
+
+    //Get Tourist Information By User Id
+    public async Task<TourismInfo?> GetTouristInformationByUserId(ulong userId)
+    {
+        var tourism = await GetTouristByUserId(userId);
+        if(tourism == null) return null;
+
+        return await _context.TourismInfos
+                             .FirstOrDefaultAsync(p => p.TourismId == tourism.Id && !p.IsDelete);
+    }
+
     #endregion
 
     #region Admin Side

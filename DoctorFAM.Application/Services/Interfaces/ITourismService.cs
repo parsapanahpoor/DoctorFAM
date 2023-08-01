@@ -3,6 +3,7 @@
 using DoctorFAM.Domain.Entities.Tourism;
 using DoctorFAM.Domain.ViewModels.Admin.Tourist;
 using DoctorFAM.Domain.ViewModels.Tourism.SiteSideBar;
+using DoctorFAM.Domain.ViewModels.Tourism.TouristInfo;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +29,15 @@ public interface ITourismService
 
     //Filter Tourist Info Admin Side
     Task<ListOfTouristInfoViewModel> FilterListOfTouristInfoViewModel(ListOfTouristInfoViewModel filter);
+
+    //Is Exist Any Tourist By This User Id 
+    Task<bool> IsExistAnyTouristByUserId(ulong userId);
+
+    //Get Tourist Information By User Id
+    Task<TourismInfo?> GetTouristInformationByUserId(ulong userId);
+
+    //Fill Tourist Info View Model
+    Task<ManageTouristInfoViewModel?> FillManageTouristInfoViewModel(ulong userId);
 
     #endregion
 

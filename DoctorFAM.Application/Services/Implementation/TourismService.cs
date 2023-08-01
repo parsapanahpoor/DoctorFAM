@@ -1,12 +1,14 @@
 ﻿#region Usings
 
 using DoctorFAM.Application.Services.Interfaces;
+using DoctorFAM.Data.Migrations;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.Entities.Tourism;
 using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.Admin.Tourist;
 using DoctorFAM.Domain.ViewModels.Tourism.SiteSideBar;
+using DoctorFAM.Domain.ViewModels.Tourism.TouristInfo;
 
 #endregion
 
@@ -19,13 +21,15 @@ public class TourismService : ITourismService
 	private readonly ITourismRepository _tourismRepository;
     private readonly IOrganizationService _organizationService;
     private readonly IWorkAddressService _workAddressService;
+    private readonly IUserService _userService;
 
-    public TourismService(ITourismRepository tourismRepository, IOrganizationService organizationService , WorkAddressService workAddressService)
+    public TourismService(ITourismRepository tourismRepository, IOrganizationService organizationService , WorkAddressService workAddressService
+                            , IUserService userService)
     {
         _tourismRepository = tourismRepository;
         _organizationService = organizationService;
         _workAddressService = workAddressService;
-
+        _userService = userService;
     }
 
     #endregion
@@ -112,6 +116,94 @@ public class TourismService : ITourismService
     public async Task<TourismSideBarViewModel> GetTourismSideBarInfo(ulong userId)
     {
         return await _tourismRepository.GetTourismSideBarInfo(userId);
+    }
+
+    //Is Exist Any Tourist By This User Id 
+    public async Task<bool> IsExistAnyTouristByUserId(ulong userId)
+    {
+        return await _tourismRepository.IsExistAnyTouristByUserId(userId);
+    }
+
+    //Get Tourist Information By User Id
+    public async Task<TourismInfo?> GetTouristInformationByUserId(ulong userId)
+    {
+        return await _tourismRepository.GetTouristInformationByUserId(userId);
+    }
+
+    //Fill Tourist Info View Model
+    public async Task<ManageTouristInfoViewModel?> FillManageTouristInfoViewModel(ulong userId)
+    {
+        #region Check Is User Exist 
+
+        var user = await _userService.GetUserById(userId);
+        if (user == null) return null;
+
+        #endregion
+
+        #region Get Current Tourist Office
+
+        var touristOffice = await _organizationService.GetTouristOrganizationByUserId(userId);
+        if (touristOffice == null) return null;
+        if (touristOffice.OrganizationType != Domain.Enums.Organization.OrganizationType.Tourism) return null;
+
+        #endregion
+
+        #region Get User Office Address
+
+        var workAddress = await _workAddressService.GetUserWorkAddressById(userId);
+
+        #endregion
+
+        #region Exist Tourist Information
+
+        //Is Exist Tourist Informations
+        if (await IsExistAnyTouristByUserId(userId))
+        {
+            //Get Current Consultant Information
+            var consultantInfo = await GetTouristInformationByUserId(userId);
+
+            //Fill Model For return Value
+            ManageTouristInfoViewModel model = new ManageTouristInfoViewModel()
+            {
+                UserId = userId,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                TouristInfosType = touristOffice.OrganizationInfoState,
+                Education = ((consultantInfo != null) ? consultantInfo.Education : null),
+                NationalCode = ((consultantInfo != null) ? consultantInfo.NationalCode : "0"),
+                RejectDescription = touristOffice.RejectDescription
+            };
+
+            //Fill Consultant Address
+            if (workAddress != null)
+            {
+                model.WorkAddress = workAddress.Address;
+                model.CountryId = workAddress.CountryId;
+                model.StateId = workAddress.StateId;
+                model.CityId = workAddress.CityId;
+            }
+
+            return model;
+        }
+
+        #endregion
+
+        #region Not Exist Consultant Information
+
+        else
+        {
+            //This Is First Time For Come in To This Action 
+            ManageTouristInfoViewModel model = new ManageTouristInfoViewModel()
+            {
+                UserId = userId
+            };
+
+            return model;
+        }
+
+        #endregion
+
+        return null;
     }
 
     #endregion
@@ -253,5 +345,4 @@ public class TourismService : ITourismService
     }
 
     #endregion
-
 }
