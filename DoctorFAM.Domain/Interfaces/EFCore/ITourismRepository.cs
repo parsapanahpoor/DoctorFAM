@@ -34,6 +34,12 @@ public interface ITourismRepository
     //Get Tourist Information By User Id
     Task<TourismInfo?> GetTouristInformationByUserId(ulong userId);
 
+    //Is Exist Any Tourist Info ByUser Id
+    Task<bool> IsExistAnyTouristInfoByUserId(ulong userId);
+
+    //Add Tourist Info To The Data Base
+    Task AddTouristInfo(TourismInfo tourism);
+
     #endregion
 
     #region Admin Side

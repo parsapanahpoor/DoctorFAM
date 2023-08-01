@@ -402,6 +402,46 @@ public class NotificationService : INotificationService
         return true;
     }
 
+    //Create Notification For Admin About Insert Information From Tourist
+    public async Task<bool> CreateNotificationForAdminAboutInsertInformationFromTourist(ulong targetId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId)
+    {
+        #region Get Admins  
+
+        List<User> user = new List<User>();
+
+        //Get Admins
+        var admins = await _userService.GetListOfAdmins();
+        user.AddRange(admins);
+
+        #endregion
+
+        #region Fill Notification Entity
+
+        List<SupporterNotification> model = new List<SupporterNotification>();
+
+        foreach (var item in user)
+        {
+            SupporterNotification notif = new SupporterNotification()
+            {
+                CreateDate = DateTime.Now,
+                IsDelete = false,
+                IsSeen = false,
+                SupporterNotificationText = SupporterNotificationText,
+                TargetId = targetId,
+                UserId = senderId,
+                ReciverId = item.Id,
+            };
+
+            model.Add(notif);
+        };
+
+        await _notificationService.CreateRangeSupporter(model);
+
+        #endregion
+
+        return true;
+    }
+
     //Create Notification For Admin And Supporters
     public async Task<bool> CreateSupporterNotification(ulong targetId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId)
     {

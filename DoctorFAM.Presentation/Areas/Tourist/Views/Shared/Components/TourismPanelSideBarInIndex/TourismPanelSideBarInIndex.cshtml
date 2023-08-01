@@ -1,12 +1,12 @@
 ﻿@model DoctorFAM.Domain.ViewModels.Tourism.SiteSideBar.TourismSideBarViewModel
 
 @{
-    bool TourismLogin = ViewBag.TourismIncoming;
+    bool TouristLogin = ViewBag.TouristIncoming;
 }
 
 @if (Model.TourismInfoState == "Accepted")
 {
-    if (TourismLogin)
+    if (TouristLogin)
     {
         <div class="page-body">
 
@@ -15,15 +15,15 @@
                     <div class="row">
 
                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview text-center justify-content-center">
-                            <a asp-area="Tourism" asp-controller="Home" asp-action="Index" class="btn btn-success  btn-circle btn-lg"><i class="glyphicon glyphicon-th"></i></a>
+                            <a asp-area="Tourist" asp-controller="Home" asp-action="Index" class="btn btn-success  btn-circle btn-lg"><i class="glyphicon glyphicon-th"></i></a>
                             <p class="text-center justify-content-center" style="font-size:12PX;"> داشبورد </p>
                         </div>
                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview  text-center justify-content-center">
-                            <a asp-area="Tourism" asp-controller="Home" asp-action="LabHome" class="btn btn-danger  btn-circle btn-lg"><i class="fa fa-check-square-o"></i></a>
+                            <a asp-area="Tourist" asp-controller="Home" asp-action="LabHome" class="btn btn-danger  btn-circle btn-lg"><i class="fa fa-check-square-o"></i></a>
                             <p class="text-center justify-content-center" style="font-size:12PX;">آزمایشگاه درمنزل</p>
                         </div>
                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview  text-center justify-content-center">
-                            <a asp-area="Tourism" asp-controller="Home" asp-action="SendMessage" class="btn btn-primary  btn-circle btn-lg"><i class="glyphicon glyphicon-send"></i></a>
+                            <a asp-area="Tourist" asp-controller="Home" asp-action="SendMessage" class="btn btn-primary  btn-circle btn-lg"><i class="glyphicon glyphicon-send"></i></a>
                             <p class="text-center justify-content-center" style="font-size:12PX;">پیامک </p>
                         </div>
                     </div>
@@ -36,11 +36,11 @@
                             <p class="text-center justify-content-center" style="font-size:12PX;"> مالی </p>
                         </div>
                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview">
-                            <a asp-area="Tourism" asp-controller="Account" asp-action="FilterEmployees" class="btn btn-warning  btn-circle btn-lg"><i class="fa fa-user-plus"></i></a>
+                            <a asp-area="Tourist" asp-controller="Account" asp-action="FilterEmployees" class="btn btn-warning  btn-circle btn-lg"><i class="fa fa-user-plus"></i></a>
                             <p class="text-center justify-content-center" style="font-size:12PX;"> کارکنان </p>
                         </div>
                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview">
-                            <a asp-area="Tourism" asp-controller="Home" asp-action="MediaManage" class="btn btn-info  btn-circle btn-lg"><i class="fa fa-film"></i></a>
+                            <a asp-area="Tourist" asp-controller="Home" asp-action="MediaManage" class="btn btn-info  btn-circle btn-lg"><i class="fa fa-film"></i></a>
                             <p class="text-center justify-content-center" style="font-size:12PX;"> مدیریت مدیا </p>
                         </div>
 
@@ -85,7 +85,7 @@
                     <div class="row">
 
                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview text-center justify-content-center">
-                            <a asp-area="Tourism" asp-controller="Home" asp-action="Index_Sec" class="btn btn-success  btn-circle btn-lg"><i class="glyphicon glyphicon-th"></i></a>
+                            <a asp-area="Tourist" asp-controller="Home" asp-action="Index_Sec" class="btn btn-success  btn-circle btn-lg"><i class="glyphicon glyphicon-th"></i></a>
                             <p class="text-center justify-content-center" style="font-size:12PX;"> داشبورد </p>
                         </div>
                         
@@ -107,14 +107,14 @@
                 <div class="row">
 
                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview text-center justify-content-center">
-                        <a asp-area="Tourism" asp-controller="Home" asp-action="Index" class="btn btn-success  btn-circle btn-lg"><i class="glyphicon glyphicon-th"></i></a>
+                        <a asp-area="Tourist" asp-controller="Home" asp-action="Index" class="btn btn-success  btn-circle btn-lg"><i class="glyphicon glyphicon-th"></i></a>
                         <p class="text-center justify-content-center" style="font-size:12PX;"> داشبورد </p>
                     </div>
 
                  @*   @await Component.InvokeAsync("DoctorsInfosBadgeIndexView")*@
 
                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview">
-                        <a asp-area="Tourism" asp-controller="Ticket" asp-action="FilterTickets" class="btn btn-info  btn-circle btn-lg"><i class="fa fa-ticket"></i></a>
+                        <a asp-area="Tourist" asp-controller="Ticket" asp-action="FilterTickets" class="btn btn-info  btn-circle btn-lg"><i class="fa fa-ticket"></i></a>
                         <p class="text-center justify-content-center" style="font-size:12PX;"> تیکت پشتیبانی </p>
                     </div>
 

@@ -168,7 +168,7 @@ namespace DoctorFAM.Web.Areas.Laboratory.Controllers
                         SendSupporterNotificationViewModel viewModel = new SendSupporterNotificationViewModel()
                         {
                             CreateNotificationDate = $"{DateTime.Now.ToShamsi()} - {DateTime.Now.Hour}:{DateTime.Now.Minute}",
-                            NotificationText = "ارسال اطلاعات توسط داروخانه",
+                            NotificationText = "ارسال اطلاعات توسط آزمایشگاه",
                             RequestId = User.GetUserId(),
                             Username = User.Identity.Name,
                             UserImage = currentUser.Avatar

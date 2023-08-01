@@ -47,8 +47,8 @@
 		<Folder Include="Areas\Pharmacy\Models\" />
 		<Folder Include="Areas\Supporter\Data\" />
 		<Folder Include="Areas\Supporter\Models\" />
-		<Folder Include="Areas\Tourism\Data\" />
-		<Folder Include="Areas\Tourism\Models\" />
+		<Folder Include="Areas\Tourist\Data\" />
+		<Folder Include="Areas\Tourist\Models\" />
 		<Folder Include="Resources\Areas\Pharmacy\Controllers\" />
 		<Folder Include="Resources\Controllers\" />
 		<Folder Include="Resources\Views\" />

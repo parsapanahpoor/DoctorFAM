@@ -36,8 +36,14 @@ public interface ITourismService
     //Get Tourist Information By User Id
     Task<TourismInfo?> GetTouristInformationByUserId(ulong userId);
 
+    //Add Or Edit Tourist Info From Tourist Panel
+    Task<AddOrEditTouristInfoResult> AddOrEditTouristInfoNursePanel(ManageTouristInfoViewModel model);
+
     //Fill Tourist Info View Model
     Task<ManageTouristInfoViewModel?> FillManageTouristInfoViewModel(ulong userId);
+
+    //Is Exist Any Tourist Info ByUser Id
+    Task<bool> IsExistAnyTouristInfoByUserId(ulong userId);
 
     #endregion
 

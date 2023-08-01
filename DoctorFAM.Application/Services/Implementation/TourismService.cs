@@ -1,12 +1,16 @@
 ﻿#region Usings
 
+using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Data.Migrations;
 using DoctorFAM.Domain.Entities.Doctors;
+using DoctorFAM.Domain.Entities.Laboratory;
 using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.Entities.Tourism;
+using DoctorFAM.Domain.Entities.WorkAddress;
 using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.Admin.Tourist;
+using DoctorFAM.Domain.ViewModels.Laboratory.LaboratoryInfo;
 using DoctorFAM.Domain.ViewModels.Tourism.SiteSideBar;
 using DoctorFAM.Domain.ViewModels.Tourism.TouristInfo;
 
@@ -128,6 +132,285 @@ public class TourismService : ITourismService
     public async Task<TourismInfo?> GetTouristInformationByUserId(ulong userId)
     {
         return await _tourismRepository.GetTouristInformationByUserId(userId);
+    }
+
+    //Add Or Edit Tourist Info From Tourist Panel
+    public async Task<AddOrEditTouristInfoResult> AddOrEditTouristInfoNursePanel(ManageTouristInfoViewModel model)
+    {
+        #region Get User By User Id
+
+        var user = await _userService.GetUserById(model.UserId);
+        if (user == null) return AddOrEditTouristInfoResult.Faild;
+
+        #endregion
+
+        #region Get Current Tourist Office
+
+        var TouristOffice = await _organizationService.GetTouristOrganizationByUserId(model.UserId);
+        if (TouristOffice == null) return AddOrEditTouristInfoResult.Faild;
+        if (TouristOffice.OrganizationType != Domain.Enums.Organization.OrganizationType.Tourism) return AddOrEditTouristInfoResult.Faild;
+
+        #endregion
+
+        #region Get Tourist By User Id 
+
+        //Get Tourist By UserId
+        var Tourist = await GetTouristByUserId(user.Id);
+
+        #endregion
+
+        #region Is Exist Informations
+
+        var existInfo = await IsExistAnyTouristInfoByUserId(model.UserId);
+
+        #endregion
+
+        #region Edit Info
+
+        if (existInfo == true)
+        {
+            #region Update Properties
+
+            //Get Tourist Informations By User Id
+            var info = await GetTouristInformationByUserId(model.UserId);
+
+            //Edit Properties 
+            info.Education = model.Education.SanitizeText();
+            info.NationalCode = model.NationalCode;
+
+            //Update Tourist Office State 
+            TouristOffice.OrganizationInfoState = OrganizationInfoState.WatingForConfirm;
+
+            #region Update First Name And Last Name 
+
+            user.FirstName = model.FirstName;
+            user.LastName = model.LastName;
+
+            await _userService.UpdateUser(user);
+
+            #endregion
+
+            #endregion
+
+            #region Update Tourist Address
+
+            var TouristAddress = await _workAddressService.GetUserWorkAddressById(model.UserId);
+
+            if (TouristAddress != null && !string.IsNullOrEmpty(model.WorkAddress))
+            {
+                TouristAddress.Address = model.WorkAddress;
+                TouristAddress.CountryId = model.CountryId.Value;
+                TouristAddress.StateId = model.StateId.Value;
+                TouristAddress.CityId = model.CityId.Value;
+
+                await _workAddressService.UpdateUserWorkAddress(TouristAddress);
+            }
+
+            if (TouristAddress == null && !string.IsNullOrEmpty(model.WorkAddress))
+            {
+                WorkAddress workAddress = new WorkAddress()
+                {
+                    Address = model.WorkAddress,
+                    CountryId = model.CountryId.Value,
+                    CityId = model.CityId.Value,
+                    StateId = model.StateId.Value,
+                    UserId = model.UserId,
+                    CreateDate = DateTime.Now,
+                };
+
+                await _workAddressService.AddWorkAddress(workAddress);
+            }
+
+            #endregion
+
+            #region Update Methods
+
+            await _tourismRepository.UpdateTouristInfo(info);
+
+            await _organizationService.UpdateOrganization(TouristOffice);
+
+            #endregion
+        }
+
+        #endregion
+
+        #region Add Info
+
+        if (existInfo == false)
+        {
+            if (Tourist != null)
+            {
+                #region Fill View Model
+
+                TourismInfo manageTouristInfoViewModel1 = new TourismInfo()
+                {
+                    TourismId = Tourist.Id,
+                    Education = model.Education.SanitizeText(),
+                    NationalCode = model.NationalCode,
+                    FirstName = model.FirstName,
+                    LastName = model.LastName
+                };
+
+                #endregion
+
+                #region Update First Name And Last Name 
+
+                user.FirstName = model.FirstName;
+                user.LastName = model.LastName;
+
+                await _userService.UpdateUser(user);
+
+                #endregion
+
+                #region Add Tourist Address
+
+                if (model.WorkAddress != null)
+                {
+                    WorkAddress workAddress = new WorkAddress()
+                    {
+                        Address = model.WorkAddress,
+                        CountryId = model.CountryId.Value,
+                        CityId = model.CityId.Value,
+                        StateId = model.StateId.Value,
+                        UserId = model.UserId,
+                        CreateDate = DateTime.Now,
+                    };
+
+                    await _workAddressService.AddWorkAddress(workAddress);
+                }
+
+                #endregion
+
+                #region Update Tourist Office
+
+                TouristOffice.OrganizationInfoState = OrganizationInfoState.WatingForConfirm;
+
+                #endregion
+
+                #region Update Methods
+
+                await _tourismRepository.AddTouristInfo(manageTouristInfoViewModel1);
+
+                await _organizationService.UpdateOrganization(TouristOffice);
+
+                #endregion
+            }
+            else
+            {
+                #region Add Tourist
+
+                Tourism newTourist = new Tourism()
+                {
+                    CreateDate = DateTime.Now,
+                    UserId = user.Id,
+                    IsDelete = false
+                };
+
+                var newNurseId = await _tourismRepository.AddTourisms(newTourist);
+
+                #endregion
+
+                #region Add Tourist Address
+
+                if (model.WorkAddress != null)
+                {
+                    WorkAddress workAddress = new WorkAddress()
+                    {
+                        Address = model.WorkAddress,
+                        CountryId = model.CountryId.Value,
+                        CityId = model.CityId.Value,
+                        StateId = model.StateId.Value,
+                        UserId = model.UserId,
+                        CreateDate = DateTime.Now,
+                    };
+
+                    await _workAddressService.AddWorkAddress(workAddress);
+                }
+
+                #endregion
+
+                #region Organization Entity
+
+                #region Fill Organization Model
+
+                Organization organization = new Organization()
+                {
+                    CreateDate = DateTime.Now,
+                    IsDelete = false,
+                    OrganizationInfoState = OrganizationInfoState.JustRegister,
+                    OrganizationType = Domain.Enums.Organization.OrganizationType.Labratory,
+                    OwnerId = model.UserId,
+                };
+
+                #endregion
+
+                #region Add Method
+
+                var organizationId = await _organizationService.AddOrganizationWithReturnId(organization);
+
+                #endregion
+
+                #endregion
+
+                #region Organization Member
+
+                #region Fill Model 
+
+                OrganizationMember member = new OrganizationMember()
+                {
+                    CreateDate = DateTime.Now,
+                    IsDelete = false,
+                    OrganizationId = organizationId,
+                    UserId = model.UserId,
+                };
+
+                #endregion
+
+                #region Add Organization Member
+
+                await _organizationService.AddOrganizationMember(member);
+
+                #endregion
+
+                #endregion
+
+                #region Fill View Model
+
+                TourismInfo manageTouristInfoViewModel = new TourismInfo()
+                {
+                    TourismId = newTourist.Id,
+                    Education = model.Education.SanitizeText(),
+                    NationalCode = model.NationalCode,
+                };
+
+                #endregion
+
+                #region Update First Name And Last Name 
+
+                user.FirstName = model.FirstName;
+                user.LastName = model.LastName;
+
+                await _userService.UpdateUser(user);
+
+                #endregion
+
+                #region Update Methods
+
+                await _tourismRepository.AddTouristInfo(manageTouristInfoViewModel);
+
+                #endregion
+            }
+        }
+
+        #endregion
+
+        return AddOrEditTouristInfoResult.Success;
+    }
+
+    //Is Exist Any Tourist Info ByUser Id
+    public async Task<bool> IsExistAnyTouristInfoByUserId(ulong userId)
+    {
+        return await _tourismRepository.IsExistAnyTouristInfoByUserId(userId);
     }
 
     //Fill Tourist Info View Model

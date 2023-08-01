@@ -15,9 +15,9 @@ using Microsoft.Extensions.Localization;
 
 #endregion
 
-namespace DoctorFAM.Web.Areas.Tourism.Controllers;
+namespace DoctorFAM.Web.Areas.Tourist.Controllers;
 
-public class TouristInfoController : TourismBaseController
+public class TouristInfoController : TouristBaseController
 {
 	#region Ctor
 
@@ -65,7 +65,7 @@ public class TouristInfoController : TourismBaseController
     {
         #region Fill Model 
 
-        var model = await _LaboratoryService.FillManageLaboratoryInfoViewModel(User.GetUserId());
+        var model = await _tourismService.FillManageTouristInfoViewModel(User.GetUserId());
         if (model == null) return NotFound();
 
         //Send View Bag For List Of Countries And Cities And States
@@ -82,11 +82,11 @@ public class TouristInfoController : TourismBaseController
     }
 
     [HttpPost, ValidateAntiForgeryToken]
-    public async Task<IActionResult> ManageLaboratoryInfo(ManageTouristInfoViewModel model)
+    public async Task<IActionResult> ManageTouristInfo(ManageTouristInfoViewModel model)
     {
         #region Fill Model 
 
-        var returnModel = await _LaboratoryService.FillManageLaboratoryInfoViewModel(User.GetUserId());
+        var returnModel = await _tourismService.FillManageTouristInfoViewModel(User.GetUserId());
 
         ViewData["Countries"] = await _locationService.GetAllCountries();
 
@@ -139,22 +139,22 @@ public class TouristInfoController : TourismBaseController
 
         #endregion
 
-        #region Add Or Edit Laboratory Information
+        #region Add Or Edit Tourist Information
 
-        var result = await _LaboratoryService.AddOrEditLaboratoryInfoNursePanel(model);
+        var result = await _tourismService.AddOrEditTouristInfoNursePanel(model);
 
         switch (result)
         {
-            case AddOrEditLaboratoryInfoResult.Faild:
+            case AddOrEditTouristInfoResult.Faild:
                 TempData[ErrorMessage] = _sharedLocalizer["The operation has failed"].Value;
-                return RedirectToAction("ManageLaboratoryInfo", "LaboratoryInfo", new { area = "Laboratory" });
+                return RedirectToAction("ManageTouristInfo", "TouristInfo", new { area = "Tourist" });
 
-            case AddOrEditLaboratoryInfoResult.Success:
+            case AddOrEditTouristInfoResult.Success:
 
                 #region Send Notification In SignalR
 
                 //Create Notification For Admins
-                var notifyResult = await _notificationService.CreateNotificationForAdminAboutInsertInformationFromLaboratory(User.GetUserId(), Domain.Enums.Notification.SupporterNotificationText.LaboratoryInformationInsert, Domain.Enums.Notification.NotificationTarget.LaboratoryInfoInsert, User.GetUserId());
+                var notifyResult = await _notificationService.CreateNotificationForAdminAboutInsertInformationFromTourist(User.GetUserId(), Domain.Enums.Notification.SupporterNotificationText.LaboratoryInformationInsert, Domain.Enums.Notification.NotificationTarget.LaboratoryInfoInsert, User.GetUserId());
 
                 //Get Current User
                 var currentUser = await _userService.GetUserById(User.GetUserId());
@@ -168,7 +168,7 @@ public class TouristInfoController : TourismBaseController
                     SendSupporterNotificationViewModel viewModel = new SendSupporterNotificationViewModel()
                     {
                         CreateNotificationDate = $"{DateTime.Now.ToShamsi()} - {DateTime.Now.Hour}:{DateTime.Now.Minute}",
-                        NotificationText = "ارسال اطلاعات توسط داروخانه",
+                        NotificationText = "ارسال اطلاعات توسط گردشگری",
                         RequestId = User.GetUserId(),
                         Username = User.Identity.Name,
                         UserImage = currentUser.Avatar
@@ -181,7 +181,7 @@ public class TouristInfoController : TourismBaseController
 
 
                 TempData[SuccessMessage] = _sharedLocalizer["Operation Successfully"].Value;
-                return RedirectToAction("Index", "Home", new { area = "Laboratory" });
+                return RedirectToAction("Index", "Home", new { area = "Tourist" });
         }
 
         #endregion

@@ -1,14 +1,14 @@
-﻿using DoctorFAM.Web.Areas.Tourism.ActionFilterAttributes;
+﻿using DoctorFAM.Web.Areas.Tourist.ActionFilterAttributes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DoctorFAM.Web.Tourism.Controllers
 {
-    [Area("Tourism")]
+    [Area("Tourist")]
     [Authorize]
     [CheckUserHasPermission]
 
-    public class TourismBaseController : Controller
+    public class TouristBaseController : Controller
     {
         public static string SuccessMessage = "SuccessMessage";
         public static string ErrorMessage = "ErrorMessage";

@@ -7,9 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 
 #endregion
 
-namespace DoctorFAM.Web.Areas.Tourism.Controllers;
+namespace DoctorFAM.Web.Areas.Tourist.Controllers;
 
-public class HomeController : TourismBaseController
+public class HomeController : TouristBaseController
 {
     #region Ctor
 

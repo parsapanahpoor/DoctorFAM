@@ -2,7 +2,7 @@
 using DoctorFAM.Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace DoctorFAM.Web.Areas.Tourism.ActionFilterAttributes
+namespace DoctorFAM.Web.Areas.Tourist.ActionFilterAttributes
 {
     public class CheckUserHasPermission : ActionFilterAttribute
     {

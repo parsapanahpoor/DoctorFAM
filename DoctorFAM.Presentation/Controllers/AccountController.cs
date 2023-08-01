@@ -415,7 +415,7 @@ public class AccountController : SiteBaseController
                     if (userRole.Contains("Seller")) return RedirectToAction("Index", "Home", new { area = "Market" });
 
                     //If User Is Tourism
-                    if (userRole.Contains("Tourism")) return RedirectToAction("Index", "Home", new { area = "Tourism" });
+                    if (userRole.Contains("Tourism")) return RedirectToAction("Index", "Home", new { area = "Tourist" });
                 }
                 else
                 {
@@ -710,7 +710,7 @@ public class AccountController : SiteBaseController
                 if (model.RoleName == "Tourism")
                 {
                     TempData[SuccessMessage] = "درخواست ارتقای سطح شما باموفقیت ثبت شده است.";
-                    return RedirectToAction("Index", "Home", new { area = "Tourism" });
+                    return RedirectToAction("Index", "Home", new { area = "Tourist" });
                 }
             }
         }
