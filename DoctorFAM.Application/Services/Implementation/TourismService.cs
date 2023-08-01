@@ -27,7 +27,7 @@ public class TourismService : ITourismService
     private readonly IWorkAddressService _workAddressService;
     private readonly IUserService _userService;
 
-    public TourismService(ITourismRepository tourismRepository, IOrganizationService organizationService , WorkAddressService workAddressService
+    public TourismService(ITourismRepository tourismRepository, IOrganizationService organizationService , IWorkAddressService workAddressService
                             , IUserService userService)
     {
         _tourismRepository = tourismRepository;
@@ -589,7 +589,7 @@ public class TourismService : ITourismService
 
         var TouristOffice = await _organizationService.GetTouristOrganizationByUserId(Tourist.UserId);
         if (TouristOffice == null) return EditTouristInfoResult.faild;
-        if (TouristOffice.OrganizationType != Domain.Enums.Organization.OrganizationType.Labratory) return EditTouristInfoResult.faild;
+        if (TouristOffice.OrganizationType != Domain.Enums.Organization.OrganizationType.Tourism) return EditTouristInfoResult.faild;
 
         #endregion
 

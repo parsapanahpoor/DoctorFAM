@@ -137,7 +137,7 @@
                                 </td>
                                 <td class="tc vm">
                                     <p>
-                                        @Localizer["Email"] :
+                                        @Localizer["ایمیل"] :
                                         @if (info.User.Email == null)
                                         {
                                             <span class="mr-8px label label-orange">@Localizer["خالی"] </span>
@@ -195,7 +195,6 @@
 
                                 <td class="tc vm">
                                     <a asp-action="TouristInfoDetail" asp-controller="Tourist" asp-area="Admin" asp-route-userId="@info.OwnerId" class="btn btn-warning btn-circle btn-xs"><i class="glyphicon glyphicon-edit"></i></a>
-                                    <a asp-action="ShowTouristInfoDetail" asp-controller="Tourist" asp-area="Admin" asp-route-userId="@info.OwnerId" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
                                 </td>
                             </tr>
                         }

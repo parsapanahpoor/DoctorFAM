@@ -76,17 +76,18 @@
                                     }
                                 }
 
+
                                 <div class="form-group col-md-12 col-sm-12">
                                     <label>@Localizer["State"]</label>
-                                    <select asp-for="TouristInfosType" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Entities.Doctors.OrganizationInfoState))">وضعیت</select>
+                                    <select asp-for="TouristInfosType" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Entities.Doctors.OrganizationInfoState))"></select>
                                     <span class="text-danger" asp-validation-for="TouristInfosType"></span>
                                 </div>
 
                                 <div class="clearfix"></div>
 
                                 <div class="form-group col-md-12 @(Model.TouristInfosType == DoctorFAM.Domain.Entities.Doctors.OrganizationInfoState.Rejected ?"":"d-none")" id="RejectDescription-div">
-                                    <label>@Localizer["لطفا دلیل رد اطلاعات را ذکر بفرمایید"]</label>
-                                    <textarea asp-for="RejectDescription" rows="10" class="form-control" placeholder="@Localizer["لطفا دلیل رد اطلاعات را ذکر بفرمایید"]"></textarea>
+                                    <label>@Localizer["Enter the reason for not confirming the information"]</label>
+                                    <textarea asp-for="RejectDescription" rows="10" class="form-control" placeholder="@Localizer["Enter the reason for not confirming the information"]"></textarea>
                                     <span asp-validation-for="RejectDescription" class="text-danger"></span>
                                 </div>
 

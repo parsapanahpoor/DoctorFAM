@@ -1,4 +1,4 @@
-﻿@model DoctorFAM.Domain.Entities.Laboratory.Laboratory
+﻿@model DoctorFAM.Domain.Entities.Tourism.Tourism
 @using DoctorFAM.Domain.Enums
 @using DoctorFAM.Application.StaticTools
 @using DoctorFAM.Domain.ViewModels.Common
@@ -8,9 +8,9 @@
 @using Microsoft.AspNetCore.Mvc.Localization
 
 @{
-    ViewData["Title"] = @Localizer["Manage Laboratory Informations"];
+    ViewData["Title"] = @Localizer["مدیریت اطلاعات گردشگری"];
 
-    var LaboratoryOffice = ViewBag.LaboratoryOffice as DoctorFAM.Domain.Entities.Organization.Organization;
+    var TouristOffice = ViewBag.TouristOffice as DoctorFAM.Domain.Entities.Organization.Organization;
 }
 
 @section Scripts
@@ -21,7 +21,7 @@
     @section Breadcrumb
     {
     <li>
-        <a asp-action="Index" asp-controller="Home" asp-area="Laboratory"> @Localizer["Laboratory Panel"] </a>
+        <a asp-action="Index" asp-controller="Home" asp-area="Tourist"> @Localizer["پنل گردشگری"] </a>
     </li>
     <li>
         <a href="javascript:void(0)"> @ViewData["Title"] </a>
@@ -29,12 +29,12 @@
 }
     <div class="row">
 
-    @if (!string.IsNullOrEmpty(LaboratoryOffice.RejectDescription) && LaboratoryOffice.OrganizationInfoState == DoctorFAM.Domain.Entities.Doctors.OrganizationInfoState.Rejected)
+    @if (!string.IsNullOrEmpty(TouristOffice.RejectDescription) && TouristOffice.OrganizationInfoState == DoctorFAM.Domain.Entities.Doctors.OrganizationInfoState.Rejected)
     {
         <div class="col-lg-12 col-sm-12 col-xs-12">
             <div class="widget">
                 <div class="widget-header bg-red">
-                    <span class="widget-caption">@Localizer["Supporter Message"] </span>
+                    <span class="widget-caption">@Localizer["پیام پشتیبانی"] </span>
                     <div class="widget-buttons">
                         <a href="#" data-toggle="config">
                             <i class="fa fa-cog"></i>
@@ -51,7 +51,7 @@
                     </div><!--Widget Buttons-->
                 </div><!--Widget Header-->
                 <div class="widget-body bg-red">
-                    <p> @LaboratoryOffice.RejectDescription </p>
+                    <p> @TouristOffice.RejectDescription </p>
                 </div><!--Widget Body-->
             </div><!--Widget-->
         </div>
@@ -65,8 +65,8 @@
         <div class="row">
             <div class="col-lg-12 col-sm-12 col-xs-12">
                 <div class="well bordered-left bordered-themeprimary">
-                    <p> <strong> @Localizer["In order to be fully active on the website and display your information to users, you must fill in the information in the following sections."] </strong> </p>
-                    <p> @Localizer["In the personal information section of the Consultant, you must enter information such as the national code and ID of the medical system, etc."] </p>
+                    <p> <strong> @Localizer["برای اینکه بتوانید به طور کامل در وب سایت فعال باشید و اطلاعات خود را به کاربران نمایش دهید، باید در قسمت های زیر اطلاعات را پر کنید."] </strong> </p>
+                    <p> @Localizer["در قسمت اطلاعات شخصی مشاور باید اطلاعاتی مانند کد ملی و ... را وارد کنید."] </p>
                 </div>
             </div>
         </div>
@@ -87,10 +87,10 @@
                         </div>
 
                         <div class="databox-left">
-                            <span class="databox-number green">@Localizer["personal information"] </span>
-                            <div class="databox-text darkgray">@Localizer["including national ID and ID of the medical and..."] </div>
+                            <span class="databox-number green">@Localizer["اطلاعات فردی"] </span>
+                            <div class="databox-text darkgray">@Localizer["اطلاعاتی شامل نام و نام خانوادگی و ..."] </div>
                             <div class="databox-stat bg-green radius-bordered">
-                                <a style="color:white;" asp-action="ManageLaboratoryInfo" asp-area="Laboratory" asp-controller="LaboratoryInfo" class="stat-text">@Localizer["Edit"]</a>
+                                <a style="color:white;" asp-action="ManageTouristInfo" asp-area="Tourist" asp-controller="TouristInfo" class="stat-text">@Localizer["ویرایش"]</a>
                             </div>
                         </div>
                     </div>
@@ -109,10 +109,10 @@
                         </div>
 
                         <div class="databox-right">
-                            <span class="databox-number green">@Localizer["personal information"] </span>
-                            <div class="databox-text darkgray">@Localizer["including national ID and ID of the medical and..."] </div>
+                            <span class="databox-number green">@Localizer["اطلاعات فردی"] </span>
+                            <div class="databox-text darkgray">@Localizer["اطلاعاتی شامل نام و نام خانوادگی و ..."] </div>
                             <div class="databox-stat bg-green radius-bordered">
-                                <a style="color:white;" asp-action="ManageLaboratoryInfo" asp-area="Laboratory" asp-controller="LaboratoryInfo" class="stat-text">@Localizer["Edit"]</a>
+                                <a style="color:white;" asp-action="ManageTouristInfo" asp-area="Tourist" asp-controller="TouristInfo" class="stat-text">@Localizer["ویرایش"]</a>
                             </div>
                         </div>
                     </div>
