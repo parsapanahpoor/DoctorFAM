@@ -9,7 +9,6 @@ using Microsoft.Extensions.Localization;
 
 namespace DoctorFAM.Web.Areas.Laboratory.Controllers
 {
-    [PermissionChecker("ManageTickets")]
     public class TicketController : LaboratoryBaseController
     {
         #region Ctor
@@ -29,7 +28,6 @@ namespace DoctorFAM.Web.Areas.Laboratory.Controllers
 
         #region Filter Tickets
 
-        [PermissionChecker("ListOfTickets")]
         public async Task<IActionResult> FilterTickets(FilterSiteTicketViewModel filter)
         {
             #region Get User Organization
@@ -48,14 +46,12 @@ namespace DoctorFAM.Web.Areas.Laboratory.Controllers
 
         #region Create Ticket
 
-        [PermissionChecker("CreateNowTiceket")]
         [HttpGet]
         public async Task<IActionResult> CreateTicket()
         {
             return View();
         }
 
-        [PermissionChecker("CreateNowTiceket")]
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateTicket(CreateTicketViewModel create)
         {
@@ -97,7 +93,6 @@ namespace DoctorFAM.Web.Areas.Laboratory.Controllers
 
         #region Ticket Detail
 
-        [PermissionChecker("TicketDetail")]
         public async Task<IActionResult> TicketDetail(ulong id)
         {
             #region Get User Organization
@@ -123,7 +118,6 @@ namespace DoctorFAM.Web.Areas.Laboratory.Controllers
             });
         }
 
-        [PermissionChecker("TicketDetail")]
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> TicketDetail(AnswerTicketViewModel answer)
         {

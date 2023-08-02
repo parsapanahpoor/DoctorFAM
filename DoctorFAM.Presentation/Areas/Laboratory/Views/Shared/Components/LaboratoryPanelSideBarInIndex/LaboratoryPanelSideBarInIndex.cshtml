@@ -64,8 +64,8 @@
                         </div>
                        
                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview">
-                            <a asp-area="FilterEmployees" asp-controller="Ticket" asp-action="FilterTickets" class="btn btn-warning  btn-circle btn-lg" 
-                            style="background-image: linear-gradient(#609DFF, #432567) !important;"><i class="fa fa-ticket"></i></a>
+                            <a asp-area="Laboratory" asp-controller="Ticket" asp-action="FilterTickets" class="btn btn-warning  btn-circle btn-lg"
+                               style="background-image: linear-gradient(#609DFF, #432567) !important;"><i class="fa fa-ticket"></i></a>
                             <p class="text-center justify-content-center" style="font-size:12PX;"> تیکت پشتیبانی </p>
                         </div>
                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview">
@@ -85,19 +85,50 @@
         <div class="page-body">
 
             <div class="row text-center align-Item-center">
-                <div class="col-lg-12 col-sm-12 col-xs-12">
+                <div class="col-lg-6 col-sm-6 col-xs-12">
                     <div class="row">
 
                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview text-center justify-content-center">
-                            <a asp-area="Laboratory" asp-controller="Home" asp-action="Index_Sec" class="btn btn-success  btn-circle btn-lg"><i class="glyphicon glyphicon-th"></i></a>
+                            <a asp-area="Laboratory" asp-controller="Home" asp-action="Index" class="btn btn-success  btn-circle btn-lg"><i class="glyphicon glyphicon-th"></i></a>
                             <p class="text-center justify-content-center" style="font-size:12PX;"> داشبورد </p>
                         </div>
-                        
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview  text-center justify-content-center">
+                            <a asp-area="Laboratory" asp-controller="Home" asp-action="LabHome" class="btn btn-danger  btn-circle btn-lg"><i class="fa fa-check-square-o"></i></a>
+                            <p class="text-center justify-content-center" style="font-size:12PX;">آزمایشگاه درمنزل</p>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview  text-center justify-content-center">
+                            <a asp-area="Laboratory" asp-controller="Home" asp-action="SendMessage" class="btn btn-primary  btn-circle btn-lg"><i class="glyphicon glyphicon-send"></i></a>
+                            <p class="text-center justify-content-center" style="font-size:12PX;">پیامک </p>
+                        </div>
                     </div>
                 </div>
+
+
+                <div class="col-lg-6 col-sm-6 col-xs-12">
+                    <div class="row">
+
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview">
+                            <a asp-area="Laboratory" asp-controller="Home" asp-action="MediaManage" class="btn btn-info  btn-circle btn-lg"><i class="fa fa-film"></i></a>
+                            <p class="text-center justify-content-center" style="font-size:12PX;"> مدیریت مدیا </p>
+                        </div>
+
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview">
+                            <a asp-area="Laboratory" asp-controller="Ticket" asp-action="FilterTickets" class="btn btn-warning  btn-circle btn-lg"
+                               style="background-image: linear-gradient(#609DFF, #432567) !important;"><i class="fa fa-ticket"></i></a>
+                            <p class="text-center justify-content-center" style="font-size:12PX;"> تیکت پشتیبانی </p>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview">
+                            <a asp-area="Chatroom" asp-controller="Home" asp-action="Index" class="btn btn-warning  btn-circle btn-lg"
+                               style="background-image: linear-gradient(#ff00cc, #333399) !important;"><i class="fa fa-comments-o"></i></a>
+                            <p class="text-center justify-content-center" style="font-size:12PX;"> پیام رسان </p>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
         </div>
+
 
     }
 }
