@@ -4,6 +4,8 @@ using DoctorFAM.Domain.Entities.Laboratory;
 using DoctorFAM.Domain.ViewModels.Admin.FamilyDoctor;
 using DoctorFAM.Domain.ViewModels.Admin.HealthHouse.HomeLabratory;
 using DoctorFAM.Domain.ViewModels.Admin.Laboratory;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.ParsaSystem;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.SendSMS;
 using DoctorFAM.Domain.ViewModels.Laboratory.Employee;
 using DoctorFAM.Domain.ViewModels.Laboratory.HomeLaboratory;
 using DoctorFAM.Domain.ViewModels.Laboratory.LaboratoryInfo;
@@ -16,6 +18,24 @@ namespace DoctorFAM.Application.Services.Interfaces;
 public interface ILaboratoryService
 {
     #region Laboratory Side 
+
+    //Send Request For Send SMS From Laboratory Panel To Admin 
+    Task<SendRequestOfSMSFromDoctorsToThePatientResult> SendRequestForSendSMSFromLaboratoryPanelToAdmin(SendSMSToPatientDetailDoctorPanelViewModel model);
+
+    //Fill Send SMS To Patient Detail Laboratory Panel View Model
+    Task<SendSMSToPatientDetailDoctorPanelViewModel?> SendSMSToPatientDetailLaboratoryPanelViewModel(ulong requestId, ulong currentUserId);
+
+    //List Of Laboratory Send SMS Request Laboratory Side View Model
+    Task<List<ListOfDoctorSendSMSRequestDoctorSideViewModel>?> ListOfLaboratorySendSMSRequestLaboratorySideViewModel(ulong userId);
+
+    //Send Request For Send SMS From Laboratory Panel To Admin 
+    Task<SendRequestOfSMSFromDoctorsToThePatientResult> SendRequestForSendSMSFromLaboratoryPanelToAdmin(SendSMSToPatientViewModel model);
+
+    //Fill Send SMS To Patient View Model
+    Task<SendSMSToPatientViewModel?> FillSendSMSToPatientViewModel(ulong userId, List<ulong> usersId);
+
+    //List Of Current Laboratory Population Covered Users 
+    Task<List<ChooseUsersForSendSMSViewModel>?> ListOfCurrentLaboratoryPopulationCoveredUsers(ulong laboratoryUserId);
 
     //Request For Epload Excel File From Site
     Task<bool> RequestForEploadExcelFileFromSite(RequestForUploadExcelFileFromDoctorsToSiteViewModel model, ulong userId);

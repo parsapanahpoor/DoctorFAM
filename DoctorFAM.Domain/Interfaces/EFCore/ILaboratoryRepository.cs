@@ -4,7 +4,9 @@ using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.FamilyDoctor.ParsaSystem;
 using DoctorFAM.Domain.Entities.Laboratory;
 using DoctorFAM.Domain.Entities.Requests;
+using DoctorFAM.Domain.Entities.SendSMS.FromDoctrors;
 using DoctorFAM.Domain.ViewModels.Admin.Laboratory;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.SendSMS;
 using DoctorFAM.Domain.ViewModels.Laboratory.Employee;
 using DoctorFAM.Domain.ViewModels.Laboratory.HomeLaboratory;
 using DoctorFAM.Domain.ViewModels.Laboratory.LaboratorySideBar;
@@ -16,6 +18,30 @@ namespace DoctorFAM.Domain.Interfaces;
 public interface ILaboratoryRepository
 {
     #region Laboratory Side 
+
+    //Get List User That Laboratory Want To Send Them SMS
+    Task<List<User>?> GetListUserThatLaboratoryWantToSendThemSMS(ulong requestDetailId);
+
+    //Get Request For Send SMS From Laboratory To Patient By RequestId
+    Task<SendRequestOfSMSFromDoctorsToThePatient?> GetRequestForSendSMSFromLaboratoryToPatientByRequestId(ulong requestId);
+
+    //List Of Laboratory Send SMS Laboratory Doctor Side View Model
+    Task<List<ListOfDoctorSendSMSRequestDoctorSideViewModel>?> ListOfLaboratorySendSMSRequestLaboratorySideViewModel(ulong laboratoryUserId);
+
+    //Reduce Laboratory Free SMS Percentage Without Save Changes
+    Task ReduceLaboratoryFreeSMSPercentageWithoutSaveChanges(ulong laboratoryId, int smsCount);
+
+    //Add Send Request Of SMS From Laboratory To The Patient Detail To The Data Base
+    Task AddSendRequestOfSMSFromLaboratorysToThePatientDetailToTheDataBase(SendRequestOfSMSFromDoctorsToThePatientDetail requestDetail);
+
+    //Add Send Request Of SMS From Laboratory To The Patient
+    Task AddSendRequestOfSMSFromLaboratoryToThePatient(SendRequestOfSMSFromDoctorsToThePatient request);
+
+    //Get Count Of Laboratory SMS
+    Task<int> GetCountOfLaboratorySMS(ulong laboratoryOWnerId);
+
+    //List Of Laboratory User Excel File Uploaded
+    Task<List<UserInsertedFromParsaSystem>?> ListOfLaboratoryUserExcelFileUploaded(ulong laboratoryUserId);
 
     //Create Request Excel File For Compelete From Admin 
     Task CreateRequestExcelFileForCompeleteFromAdmin(RequestForUploadExcelFileFromDoctorsToSite model);

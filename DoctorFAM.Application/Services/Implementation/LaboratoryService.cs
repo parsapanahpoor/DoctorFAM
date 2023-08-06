@@ -10,15 +10,20 @@ using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.FamilyDoctor.ParsaSystem;
 using DoctorFAM.Domain.Entities.Laboratory;
 using DoctorFAM.Domain.Entities.Organization;
+using DoctorFAM.Domain.Entities.SendSMS.FromDoctrors;
 using DoctorFAM.Domain.Entities.WorkAddress;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.FamilyDoctor;
 using DoctorFAM.Domain.ViewModels.Admin.HealthHouse.HomeLabratory;
 using DoctorFAM.Domain.ViewModels.Admin.Laboratory;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.ParsaSystem;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.SendSMS;
 using DoctorFAM.Domain.ViewModels.Laboratory.Employee;
 using DoctorFAM.Domain.ViewModels.Laboratory.HomeLaboratory;
 using DoctorFAM.Domain.ViewModels.Laboratory.LaboratoryInfo;
 using DoctorFAM.Domain.ViewModels.Laboratory.LaboratorySideBar;
+using Microsoft.IdentityModel.Tokens;
+using System.Net.WebSockets;
 
 #endregion
 
@@ -54,6 +59,368 @@ public class LaboratoryService : ILaboratoryService
     #endregion
 
     #region Laboratory Side 
+
+    //Send Request For Send SMS From Laboratory Panel To Admin 
+    public async Task<SendRequestOfSMSFromDoctorsToThePatientResult> SendRequestForSendSMSFromLaboratoryPanelToAdmin(SendSMSToPatientDetailDoctorPanelViewModel model)
+    {
+        #region Get Organization
+
+        var organization = await _organizationService.GetLaboratoryOrganizationByUserId(model.DoctorUserId);
+        if (organization == null || organization.OrganizationInfoState != OrganizationInfoState.Accepted || organization.OrganizationType != Domain.Enums.Organization.OrganizationType.Labratory)
+        {
+            return SendRequestOfSMSFromDoctorsToThePatientResult.WrongInformation;
+        }
+
+        #endregion
+
+        #region Get Laboratory
+
+        var laboratory = await _laboratoryRepository.GetLaboratoryByUserId(organization.OwnerId);
+        if (laboratory == null) return SendRequestOfSMSFromDoctorsToThePatientResult.WrongInformation;
+
+        #endregion
+
+        #region Model State Validation 
+
+        if (model == null || model.PatientId.Count() == 0 || !model.PatientId.Any())
+        {
+            return SendRequestOfSMSFromDoctorsToThePatientResult.WrongInformation;
+        }
+
+        if (string.IsNullOrEmpty(model.SMSBody))
+        {
+            return SendRequestOfSMSFromDoctorsToThePatientResult.WrongInformation;
+        }
+
+        //Check Patients Id That Exist In Doctor Population
+        foreach (var item in model.PatientId)
+        {
+            if (!await _userService.IsExistUserById(item.Id))
+            {
+                return SendRequestOfSMSFromDoctorsToThePatientResult.WrongInformation;
+            }
+        }
+
+        #endregion
+
+        #region Check Laboratory Send SMS Count
+
+        //Get Count Of SMS For Send
+        int smsCount = ((model.SMSBody.Count() / 70) + 1) * model.PatientId.Count;
+
+        //Get Laboratory Free SMS Count
+        var laboratoryFreeSMSCount = await _laboratoryRepository.GetCountOfLaboratorySMS(organization.OwnerId);
+        if (laboratoryFreeSMSCount == null) return SendRequestOfSMSFromDoctorsToThePatientResult.WrongInformation;
+
+        //Check Incoming SMS Right Now
+        if (smsCount > laboratoryFreeSMSCount)
+        {
+            return SendRequestOfSMSFromDoctorsToThePatientResult.HigherThanDoctorFreePercentage;
+        }
+
+        //Insert Free SMS From Doctor 
+        if (smsCount <= laboratoryFreeSMSCount)
+        {
+            #region Create SMS 
+
+            //Create Main Request
+            SendRequestOfSMSFromDoctorsToThePatient mainRequest = new SendRequestOfSMSFromDoctorsToThePatient()
+            {
+                CreateDate = DateTime.Now,
+                DoctorUserId = organization.OwnerId,
+                IsDelete = false,
+                SendSMSFromDoctorState = Domain.Enums.SendSMS.FromDoctors.SendSMSFromDoctorState.WaitingForConfirm,
+                SMSText = model.SMSBody,
+            };
+
+            #endregion
+
+            //Add Request To The Data Base 
+            await _laboratoryRepository.AddSendRequestOfSMSFromLaboratoryToThePatient(mainRequest);
+
+            #region Create SMS Detail 
+
+            foreach (var userId in model.PatientId)
+            {
+                SendRequestOfSMSFromDoctorsToThePatientDetail detailRequest = new SendRequestOfSMSFromDoctorsToThePatientDetail()
+                {
+                    CreateDate = DateTime.Now,
+                    UserId = userId.Id,
+                    SendRequestOfSMSFromDoctorsToThePatientId = mainRequest.Id
+                };
+
+                //Add Request Detail To The Data Base
+                await _laboratoryRepository.AddSendRequestOfSMSFromLaboratorysToThePatientDetailToTheDataBase(detailRequest);
+            }
+
+            #endregion
+
+            #region Reduce Percentage Laboratory Free SMS Count
+
+            await _laboratoryRepository.ReduceLaboratoryFreeSMSPercentageWithoutSaveChanges(laboratory.Id, smsCount);
+
+            #endregion
+
+            await _laboratoryRepository.Savechanges();
+        }
+
+        #endregion
+
+        return SendRequestOfSMSFromDoctorsToThePatientResult.RequestSentSuccesfully;
+    }
+
+    //Fill Send SMS To Patient Detail Laboratory Panel View Model
+    public async Task<SendSMSToPatientDetailDoctorPanelViewModel?> SendSMSToPatientDetailLaboratoryPanelViewModel(ulong requestId, ulong currentUserId)
+    {
+        #region Get Organization
+
+        var organization = await _organizationService.GetLaboratoryOrganizationByUserId(currentUserId);
+        if (organization == null || organization.OrganizationType != Domain.Enums.Organization.OrganizationType.Labratory
+            || organization.OrganizationInfoState != OrganizationInfoState.Accepted)
+        {
+            return null;
+        }
+
+        #endregion
+
+        #region Get Request For Send SMS From Laboratory
+
+        var request = await _laboratoryRepository.GetRequestForSendSMSFromLaboratoryToPatientByRequestId(requestId);
+        if (request == null) return null;
+
+        #endregion
+
+        #region Get Doctor By User Id
+
+        var laboratory = await GetLaboratoryByUserId(organization.OwnerId);
+        if (laboratory == null) return null;
+
+        #endregion
+
+        #region Get Doctor SMS Percentage
+
+        var smsCount = await _laboratoryRepository.GetCountOfLaboratorySMS(organization.OwnerId);
+
+        #endregion
+
+        #region Fill Instance
+
+        SendSMSToPatientDetailDoctorPanelViewModel returnModel = new SendSMSToPatientDetailDoctorPanelViewModel()
+        {
+            RejectSMSDescription = request.DeclineDescription,
+            RequestId = request.Id,
+            DoctorUserId = request.DoctorUserId,
+            PatientId = await _laboratoryRepository.GetListUserThatLaboratoryWantToSendThemSMS(requestId),
+            SMSBody = request.SMSText,
+            CountOfUserPercentageSMS = smsCount,
+            SendSMSFromDoctorState = request.SendSMSFromDoctorState
+        };
+
+        #endregion
+
+        return returnModel;
+    }
+
+    //List Of Laboratory Send SMS Request Laboratory Side View Model
+    public async Task<List<ListOfDoctorSendSMSRequestDoctorSideViewModel>?> ListOfLaboratorySendSMSRequestLaboratorySideViewModel(ulong userId)
+    {
+        #region Get Organization
+
+        var organization = await _organizationService.GetLaboratoryOrganizationByUserId(userId);
+        if (organization == null || organization.OrganizationType != Domain.Enums.Organization.OrganizationType.Labratory
+            || organization.OrganizationInfoState != OrganizationInfoState.Accepted)
+        {
+            return null;
+        }
+
+        #endregion
+
+        return await _laboratoryRepository.ListOfLaboratorySendSMSRequestLaboratorySideViewModel(organization.OwnerId);
+    }
+
+    //Send Request For Send SMS From Laboratory Panel To Admin 
+    public async Task<SendRequestOfSMSFromDoctorsToThePatientResult> SendRequestForSendSMSFromLaboratoryPanelToAdmin(SendSMSToPatientViewModel model)
+    {
+        #region Get Organization
+
+        var organization = await _organizationService.GetLaboratoryOrganizationByUserId(model.DoctorUserId);
+        if (organization == null || organization.OrganizationInfoState != OrganizationInfoState.Accepted 
+            || organization.OrganizationType != Domain.Enums.Organization.OrganizationType.Labratory)
+        {
+            return SendRequestOfSMSFromDoctorsToThePatientResult.WrongInformation;
+        }
+
+        #endregion
+
+        #region Get Laboratory
+
+        var laboratory = await _laboratoryRepository.GetLaboratoryByUserId(organization.OwnerId);
+        if (laboratory == null) return SendRequestOfSMSFromDoctorsToThePatientResult.WrongInformation;
+
+        #endregion
+
+        #region Model State Validation 
+
+        if (model == null || model.PatientId.Count() == 0 || !model.PatientId.Any())
+        {
+            return SendRequestOfSMSFromDoctorsToThePatientResult.WrongInformation;
+        }
+
+        if (string.IsNullOrEmpty(model.SMSBody))
+        {
+            return SendRequestOfSMSFromDoctorsToThePatientResult.WrongInformation;
+        }
+
+        //Check Patients Id That Exist In Doctor Population
+        foreach (var item in model.PatientId)
+        {
+            if (!await _userService.IsExistUserById(item))
+            {
+                return SendRequestOfSMSFromDoctorsToThePatientResult.WrongInformation;
+            }
+        }
+
+        #endregion
+
+        #region Check Laboratory Send SMS Count
+
+        //Get Count Of SMS For Send
+        int smsCount = ((model.SMSBody.Count() / 70) + 1) * model.PatientId.Count;
+
+        //Get Laboratory Free SMS Count
+        var laboratoryFreeSMSCount = await _laboratoryRepository.GetCountOfLaboratorySMS(organization.OwnerId);
+        if (laboratoryFreeSMSCount == null) return SendRequestOfSMSFromDoctorsToThePatientResult.WrongInformation;
+
+        //Check Incoming SMS Right Now
+        if (smsCount > laboratoryFreeSMSCount)
+        {
+            return SendRequestOfSMSFromDoctorsToThePatientResult.HigherThanDoctorFreePercentage;
+        }
+
+        //Insert Free SMS From Doctor 
+        if (smsCount <= laboratoryFreeSMSCount)
+        {
+            #region Create SMS 
+
+            //Create Main Request
+            SendRequestOfSMSFromDoctorsToThePatient mainRequest = new SendRequestOfSMSFromDoctorsToThePatient()
+            {
+                CreateDate = DateTime.Now,
+                DoctorUserId = organization.OwnerId,
+                IsDelete = false,
+                SendSMSFromDoctorState = Domain.Enums.SendSMS.FromDoctors.SendSMSFromDoctorState.WaitingForConfirm,
+                SMSText = model.SMSBody,
+            };
+
+            #endregion
+
+            //Add Request To The Data Base 
+            await _laboratoryRepository.AddSendRequestOfSMSFromLaboratoryToThePatient(mainRequest);
+
+            #region Create SMS Detail 
+
+            foreach (var userId in model.PatientId)
+            {
+                SendRequestOfSMSFromDoctorsToThePatientDetail detailRequest = new SendRequestOfSMSFromDoctorsToThePatientDetail()
+                {
+                    CreateDate = DateTime.Now,
+                    UserId = userId,
+                    SendRequestOfSMSFromDoctorsToThePatientId = mainRequest.Id
+                };
+
+                //Add Request Detail To The Data Base
+                await _laboratoryRepository.AddSendRequestOfSMSFromLaboratorysToThePatientDetailToTheDataBase(detailRequest);
+            }
+
+            #endregion
+
+            #region Reduce Percentage Laboratory Free SMS Count
+
+            await _laboratoryRepository.ReduceLaboratoryFreeSMSPercentageWithoutSaveChanges(laboratory.Id, smsCount);
+
+            #endregion
+
+            await _laboratoryRepository.Savechanges();
+        }
+
+        #endregion
+
+        return SendRequestOfSMSFromDoctorsToThePatientResult.RequestSentSuccesfully;
+    }
+
+    //Fill Send SMS To Patient View Model
+    public async Task<SendSMSToPatientViewModel?> FillSendSMSToPatientViewModel(ulong userId, List<ulong> usersId)
+    {
+        #region Get Organization
+
+        var organization = await _organizationService.GetLaboratoryOrganizationByUserId(userId);
+        if (organization == null || organization.OrganizationType != Domain.Enums.Organization.OrganizationType.Labratory
+            || organization.OrganizationInfoState != OrganizationInfoState.Accepted)
+        {
+            return null;
+        }
+
+        #endregion
+
+        #region Get Doctor SMS Percentage
+
+        var smsCount = await _laboratoryRepository.GetCountOfLaboratorySMS(organization.OwnerId);
+
+        #endregion
+
+        return new SendSMSToPatientViewModel()
+        {
+            DoctorUserId = userId,
+            CountOfUserPercentageSMS = smsCount,
+            PatientId = usersId
+        };
+    }
+
+    //List Of Current Laboratory Population Covered Users 
+    public async Task<List<ChooseUsersForSendSMSViewModel>?> ListOfCurrentLaboratoryPopulationCoveredUsers(ulong laboratoryUserId)
+    {
+        #region Get List Of Users Id 
+
+        var patientsUser = await _laboratoryRepository.ListOfLaboratoryUserExcelFileUploaded(laboratoryUserId);
+        if (patientsUser == null) return null;
+
+        #endregion
+
+        #region Fill View Model 
+
+        List<ChooseUsersForSendSMSViewModel> returnModel = new List<ChooseUsersForSendSMSViewModel>();
+
+        if (patientsUser is not null)
+        {
+            foreach (var patientUser in patientsUser)
+            {
+                if (!string.IsNullOrEmpty(patientUser.PatientMobile))
+                {
+                    var userInSystem = await _userService.GetUserByMobile(patientUser.PatientMobile.Trim());
+                    if (userInSystem is not null)
+                    {
+                        //Create Instance
+                        ChooseUsersForSendSMSViewModel user = new ChooseUsersForSendSMSViewModel();
+
+                        user.Mobile = patientUser.PatientMobile;
+                        user.UserId = null;
+                        user.Username = patientUser.PatientFirstName + " " + patientUser.PatientLastName;
+                        user.FirstName = patientUser.PatientFirstName;
+                        user.LastName = patientUser.PatientLastName;
+                        user.UserId = userInSystem.Id;
+                        user.UserAvatar = userInSystem.Avatar;
+
+                        returnModel.Add(user);
+                    }
+                }
+
+            }
+        }
+
+        #endregion
+
+        return returnModel;
+    }
 
     //Request For Epload Excel File From Site
     public async Task<bool> RequestForEploadExcelFileFromSite(RequestForUploadExcelFileFromDoctorsToSiteViewModel model, ulong userId)

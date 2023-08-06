@@ -6,9 +6,11 @@ using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.FamilyDoctor.ParsaSystem;
 using DoctorFAM.Domain.Entities.Laboratory;
 using DoctorFAM.Domain.Entities.Requests;
+using DoctorFAM.Domain.Entities.SendSMS.FromDoctrors;
 using DoctorFAM.Domain.Enums.Request;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.Laboratory;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.SendSMS;
 using DoctorFAM.Domain.ViewModels.Laboratory.Employee;
 using DoctorFAM.Domain.ViewModels.Laboratory.HomeLaboratory;
 using DoctorFAM.Domain.ViewModels.Laboratory.LaboratorySideBar;
@@ -32,6 +34,102 @@ public class LaboratoryRepository : ILaboratoryRepository
     #endregion
 
     #region Laboratory Side 
+
+    //Get List User That Laboratory Want To Send Them SMS
+    public async Task<List<User>?> GetListUserThatLaboratoryWantToSendThemSMS(ulong requestDetailId)
+    {
+        #region Get Request Detail 
+
+        List<ulong> userIds = await _context.SendRequestOfSMSFromDoctorsToThePatientDetails
+                                            .Where(p => !p.IsDelete && p.SendRequestOfSMSFromDoctorsToThePatientId == requestDetailId)
+                                            .Select(p => p.UserId).ToListAsync();
+
+        #endregion
+
+        //Create Instance 
+        List<User> users = new List<User>();
+
+        foreach (var userId in userIds)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(p => !p.IsDelete && p.Id == userId);
+
+            if (user != null)
+            {
+                users.Add(user);
+            }
+        }
+
+        return users;
+    }
+
+    //Get Request For Send SMS From Laboratory To Patient By RequestId
+    public async Task<SendRequestOfSMSFromDoctorsToThePatient?> GetRequestForSendSMSFromLaboratoryToPatientByRequestId(ulong requestId)
+    {
+        return await _context.SendRequestOfSMSFromDoctorsToThePatients.FirstOrDefaultAsync(p => !p.IsDelete && p.Id == requestId);
+    }
+
+    //List Of Laboratory Send SMS Laboratory Doctor Side View Model
+    public async Task<List<ListOfDoctorSendSMSRequestDoctorSideViewModel>?> ListOfLaboratorySendSMSRequestLaboratorySideViewModel(ulong laboratoryUserId)
+    {
+        return await _context.SendRequestOfSMSFromDoctorsToThePatients.Where(p => !p.IsDelete && p.DoctorUserId == laboratoryUserId)
+                                   .Select(p => new ListOfDoctorSendSMSRequestDoctorSideViewModel()
+                                   {
+                                       CountOfSMS = _context.SendRequestOfSMSFromDoctorsToThePatientDetails.Count(s => !s.IsDelete && s.SendRequestOfSMSFromDoctorsToThePatientId == p.Id),
+                                       CreateDate = p.CreateDate,
+                                       RequestId = p.Id,
+                                       SendSMSFromDoctorState = p.SendSMSFromDoctorState,
+                                       Id = p.Id
+                                   }).ToListAsync();
+    }
+
+    //Reduce Laboratory Free SMS Percentage Without Save Changes
+    public async Task ReduceLaboratoryFreeSMSPercentageWithoutSaveChanges(ulong laboratoryId, int smsCount)
+    {
+        var laboratoriesInfo = await _context.LaboratoryInfos
+                                             .Where(p => !p.IsDelete && p.LaboratoryId == laboratoryId)
+                                             .FirstOrDefaultAsync();
+
+        if (laboratoriesInfo != null && laboratoriesInfo.CountOFFreeSMSForLaboratory >= smsCount)
+        {
+            laboratoriesInfo.CountOFFreeSMSForLaboratory = laboratoriesInfo.CountOFFreeSMSForLaboratory - smsCount;
+        }
+    }
+
+    //Add Send Request Of SMS From Laboratory To The Patient Detail To The Data Base
+    public async Task AddSendRequestOfSMSFromLaboratorysToThePatientDetailToTheDataBase(SendRequestOfSMSFromDoctorsToThePatientDetail requestDetail)
+    {
+        await _context.SendRequestOfSMSFromDoctorsToThePatientDetails.AddAsync(requestDetail);
+    }
+
+    //Add Send Request Of SMS From Laboratory To The Patient
+    public async Task AddSendRequestOfSMSFromLaboratoryToThePatient(SendRequestOfSMSFromDoctorsToThePatient request)
+    {
+        await _context.SendRequestOfSMSFromDoctorsToThePatients.AddAsync(request);
+        await _context.SaveChangesAsync();
+    }
+
+    //Get Count Of Laboratory SMS
+    public async Task<int> GetCountOfLaboratorySMS(ulong laboratoryOWnerId)
+    {
+        var laboratoryId = await _context.Laboratory
+                             .AsNoTracking()
+                             .Where(p => !p.IsDelete && p.UserId == laboratoryOWnerId)
+                             .Select(p => p.Id)
+                             .FirstOrDefaultAsync();
+
+        return await _context.LaboratoryInfos
+                             .AsNoTracking()
+                             .Where(p=> !p.IsDelete && p.LaboratoryId == laboratoryId)
+                             .Select(p=> p.CountOFFreeSMSForLaboratory)
+                             .FirstOrDefaultAsync();
+    }
+
+    //List Of Laboratory User Excel File Uploaded
+    public async Task<List<UserInsertedFromParsaSystem>?> ListOfLaboratoryUserExcelFileUploaded(ulong laboratoryUserId)
+    {
+        return await _context.UserInsertedFromParsaSystems.Where(p => !p.IsDelete && p.DoctorUserId == laboratoryUserId)
+                                             .OrderByDescending(p => p.CreateDate).ToListAsync();
+    }
 
     //Create Request Excel File For Compelete From Admin 
     public async Task CreateRequestExcelFileForCompeleteFromAdmin(RequestForUploadExcelFileFromDoctorsToSite model)
