@@ -1,81 +1,85 @@
-﻿using DoctorFAM.Domain.Entities.Account;
+﻿#region Usings
+
+using DoctorFAM.Domain.Entities.Account;
+using DoctorFAM.Domain.Entities.FamilyDoctor.ParsaSystem;
 using DoctorFAM.Domain.Entities.Laboratory;
 using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.ViewModels.Admin.Laboratory;
 using DoctorFAM.Domain.ViewModels.Laboratory.Employee;
 using DoctorFAM.Domain.ViewModels.Laboratory.HomeLaboratory;
 using DoctorFAM.Domain.ViewModels.Laboratory.LaboratorySideBar;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace DoctorFAM.Domain.Interfaces
+#endregion
+
+namespace DoctorFAM.Domain.Interfaces;
+
+public interface ILaboratoryRepository
 {
-    public interface ILaboratoryRepository
-    {
-        #region Laboratory Side 
+    #region Laboratory Side 
 
-        Task<PatientRequestDateTimeDetail?> GetRequestDateTimeDetailByRequestDetailId(ulong requestId);
+    //Create Request Excel File For Compelete From Admin 
+    Task CreateRequestExcelFileForCompeleteFromAdmin(RequestForUploadExcelFileFromDoctorsToSite model);
 
-        Task<PaitientRequestDetail?> GetRequestPatientDetailByRequestId(ulong requestId);
+    //Get Doctor's Free SMS Count
+    Task<int> GetLaboratoryFreeSMSCount();
 
-        Task<List<HomeLaboratoryRequestDetail>> GetHomeLaboratoryRequestDetailByRequestId(ulong requestId);
+    Task<PatientRequestDateTimeDetail?> GetRequestDateTimeDetailByRequestDetailId(ulong requestId);
 
-        //Check Is Exist Laboratory Info By User ID
-        Task<bool> IsExistAnyLaboratoryInfoByUserId(ulong userId);
+    Task<PaitientRequestDetail?> GetRequestPatientDetailByRequestId(ulong requestId);
 
-        //Fill Laboratory Side Bar Panel
-        Task<LaboratorySideBarViewModel> GetLaboratorySideBarInfo(ulong userId);
+    Task<List<HomeLaboratoryRequestDetail>> GetHomeLaboratoryRequestDetailByRequestId(ulong requestId);
 
-        //Is Exist Any Laboratory By This User Id 
-        Task<bool> IsExistAnyLaboratoryByUserId(ulong userId);
+    //Check Is Exist Laboratory Info By User ID
+    Task<bool> IsExistAnyLaboratoryInfoByUserId(ulong userId);
 
-        //Add Laboratory To Data Base
-        Task<ulong> AddLaboratory(Laboratory laboratory);
+    //Fill Laboratory Side Bar Panel
+    Task<LaboratorySideBarViewModel> GetLaboratorySideBarInfo(ulong userId);
 
-        //Get Laboratory By User Id
-        Task<Laboratory?> GetLaboratoryByUserId(ulong userId);
+    //Is Exist Any Laboratory By This User Id 
+    Task<bool> IsExistAnyLaboratoryByUserId(ulong userId);
 
-        //Get Laboratory Information By User Id
-        Task<LaboratoryInfo?> GetLaboratoryInformationByUserId(ulong userId);
+    //Add Laboratory To Data Base
+    Task<ulong> AddLaboratory(Laboratory laboratory);
 
-        //Update Laboratory Info 
-        Task UpdateLaboratoryInfo(LaboratoryInfo laboratoryInfo);
+    //Get Laboratory By User Id
+    Task<Laboratory?> GetLaboratoryByUserId(ulong userId);
 
-        //Add Laboratory Info
-        Task AddLaboratoryInfo(LaboratoryInfo laboratoryInfo);
+    //Get Laboratory Information By User Id
+    Task<LaboratoryInfo?> GetLaboratoryInformationByUserId(ulong userId);
 
-        //Filter Laboratory Office Employees
-        Task<FilterLaboratoryOfficeEmployeesViewmodel> FilterLaboratoryOfficeEmployees(FilterLaboratoryOfficeEmployeesViewmodel filter);
+    //Update Laboratory Info 
+    Task UpdateLaboratoryInfo(LaboratoryInfo laboratoryInfo);
 
-        //Add User Laboratory Member Role Without Save Changes
-        Task AddUserLaboratoryMemberRoleWithoutSaveChanges(UserRole userRole);
+    //Add Laboratory Info
+    Task AddLaboratoryInfo(LaboratoryInfo laboratoryInfo);
 
-        //Save Changes
-        Task Savechanges();
+    //Filter Laboratory Office Employees
+    Task<FilterLaboratoryOfficeEmployeesViewmodel> FilterLaboratoryOfficeEmployees(FilterLaboratoryOfficeEmployeesViewmodel filter);
 
-        //Filter List Of Home Laboratory Request ViewModel From User Or Supporter Panel 
-        Task<FilterListOfHomeLaboratoryRequestViewModel> FilterListOfHomeLaboratoryRequestViewModel(FilterListOfHomeLaboratoryRequestViewModel filter);
+    //Add User Laboratory Member Role Without Save Changes
+    Task AddUserLaboratoryMemberRoleWithoutSaveChanges(UserRole userRole);
 
-        #endregion
+    //Save Changes
+    Task Savechanges();
 
-        #region Admin Side
+    //Filter List Of Home Laboratory Request ViewModel From User Or Supporter Panel 
+    Task<FilterListOfHomeLaboratoryRequestViewModel> FilterListOfHomeLaboratoryRequestViewModel(FilterListOfHomeLaboratoryRequestViewModel filter);
 
-        //Filter Laboratory Info Admin Side
-        Task<ListOfLaboratoryInfoViewModel> FilterListOfLaboratoryInfoViewModel(ListOfLaboratoryInfoViewModel filter);
+    #endregion
 
-        //Get LaboratoryInfo Info By Nurse Id
-        Task<LaboratoryInfo?> GetLaboratoryInfoByLaboratoryId(ulong LaboratoryId);
+    #region Admin Side
 
-        //Get Laboratory By Consultant Id
-        Task<Laboratory?> GetLaboratoryById(ulong laboratoryId);
+    //Filter Laboratory Info Admin Side
+    Task<ListOfLaboratoryInfoViewModel> FilterListOfLaboratoryInfoViewModel(ListOfLaboratoryInfoViewModel filter);
 
-        //Get Laboratory Info By Laboratory Info Id
-        Task<LaboratoryInfo?> GetLaboratoryInfoById(ulong laboratoryInfoId);
+    //Get LaboratoryInfo Info By Nurse Id
+    Task<LaboratoryInfo?> GetLaboratoryInfoByLaboratoryId(ulong LaboratoryId);
 
-        #endregion
-    }
+    //Get Laboratory By Consultant Id
+    Task<Laboratory?> GetLaboratoryById(ulong laboratoryId);
+
+    //Get Laboratory Info By Laboratory Info Id
+    Task<LaboratoryInfo?> GetLaboratoryInfoById(ulong laboratoryInfoId);
+
+    #endregion
 }

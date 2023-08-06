@@ -60,7 +60,14 @@ namespace DoctorFAM.Web.Areas.Laboratory.Controllers
 
         #endregion
 
-        
+        #region Send Message Page 
+
+        public async Task<IActionResult> SendMessage()
+        {
+
+            return View();
+        }
+        #endregion
 
         #region Lab Pages
 

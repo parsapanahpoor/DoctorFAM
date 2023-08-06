@@ -967,11 +967,7 @@ namespace DoctorFAM.Application.Services.Implementation
         {
             #region Get Organization
 
-            var organization = await _organizationService.GetDoctorOrganizationByUserId(DoctorUserId);
-            if (organization.OrganizationInfoState != OrganizationInfoState.Accepted || organization.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice)
-            {
-                return null;
-            }
+            var organization = await _organizationService.GetOrganizationByUserId(DoctorUserId);
 
             #endregion
 
@@ -1212,8 +1208,8 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #region Get Doctor Organization 
 
-            var organization = await _organizationService.GetDoctorOrganizationByUserId(userId);
-            if (organization.OrganizationInfoState != OrganizationInfoState.Accepted || organization.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice)
+            var organization = await _organizationService.GetOrganizationByUserId(userId);
+            if (organization.OrganizationInfoState != OrganizationInfoState.Accepted )
             {
                 return false;
             }

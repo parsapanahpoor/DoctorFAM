@@ -1,77 +1,79 @@
-﻿using DoctorFAM.Domain.Entities.Laboratory;
+﻿#region Usings 
+
+using DoctorFAM.Domain.Entities.Laboratory;
+using DoctorFAM.Domain.ViewModels.Admin.FamilyDoctor;
 using DoctorFAM.Domain.ViewModels.Admin.HealthHouse.HomeLabratory;
 using DoctorFAM.Domain.ViewModels.Admin.Laboratory;
 using DoctorFAM.Domain.ViewModels.Laboratory.Employee;
 using DoctorFAM.Domain.ViewModels.Laboratory.HomeLaboratory;
 using DoctorFAM.Domain.ViewModels.Laboratory.LaboratoryInfo;
 using DoctorFAM.Domain.ViewModels.Laboratory.LaboratorySideBar;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace DoctorFAM.Application.Services.Interfaces
+#endregion
+
+namespace DoctorFAM.Application.Services.Interfaces;
+
+public interface ILaboratoryService
 {
-    public interface ILaboratoryService
-    {
-        #region Laboratory Side 
+    #region Laboratory Side 
 
-        //Fill Laboratory Side Bar Panel
-        Task<LaboratorySideBarViewModel> GetLaboratorySideBarInfo(ulong userId);
+    //Request For Epload Excel File From Site
+    Task<bool> RequestForEploadExcelFileFromSite(RequestForUploadExcelFileFromDoctorsToSiteViewModel model, ulong userId);
 
-        //Is Exist Any Laboratory By This User Id 
-        Task<bool> IsExistAnyLaboratoryByUserId(ulong userId);
+    //Fill Laboratory Side Bar Panel
+    Task<LaboratorySideBarViewModel> GetLaboratorySideBarInfo(ulong userId);
 
-        //Add Laboratory For First Time Loging To Laboratory Panel 
-        Task AddLaboratoryForFirstTime(ulong userId);
+    //Is Exist Any Laboratory By This User Id 
+    Task<bool> IsExistAnyLaboratoryByUserId(ulong userId);
 
-        //Get Laboratory By User Id
-        Task<Laboratory?> GetLaboratoryByUserId(ulong userId);
+    //Add Laboratory For First Time Loging To Laboratory Panel 
+    Task AddLaboratoryForFirstTime(ulong userId);
 
-        //Get Laboratory Information By User Id
-        Task<LaboratoryInfo?> GetLaboratoryInformationByUserId(ulong userId);
+    //Get Laboratory By User Id
+    Task<Laboratory?> GetLaboratoryByUserId(ulong userId);
 
-        //Fill Laboratory Info View Model
-        Task<ManageLaboratoryInfoViewModel?> FillManageLaboratoryInfoViewModel(ulong userId);
+    //Get Laboratory Information By User Id
+    Task<LaboratoryInfo?> GetLaboratoryInformationByUserId(ulong userId);
 
-        //Check Is Exist Laboratory Info By User ID
-        Task<bool> IsExistAnyLaboratoryInfoByUserId(ulong userId);
+    //Fill Laboratory Info View Model
+    Task<ManageLaboratoryInfoViewModel?> FillManageLaboratoryInfoViewModel(ulong userId);
 
-        //Add Or Edit Laboratory Info From Laboratory Panel
-        Task<AddOrEditLaboratoryInfoResult> AddOrEditLaboratoryInfoNursePanel(ManageLaboratoryInfoViewModel model);
+    //Check Is Exist Laboratory Info By User ID
+    Task<bool> IsExistAnyLaboratoryInfoByUserId(ulong userId);
 
-        //Filter Laboratory Office Employees
-        Task<FilterLaboratoryOfficeEmployeesViewmodel> FilterLaboratoryOfficeEmployees(FilterLaboratoryOfficeEmployeesViewmodel filter);
+    //Add Or Edit Laboratory Info From Laboratory Panel
+    Task<AddOrEditLaboratoryInfoResult> AddOrEditLaboratoryInfoNursePanel(ManageLaboratoryInfoViewModel model);
 
-        //Add Exist User To The Laboratory Organization 
-        Task<bool> AddExistUserToTheLaboratoryOrganization(ulong userId, List<ulong> UserRoles, ulong laboratoryId);
+    //Filter Laboratory Office Employees
+    Task<FilterLaboratoryOfficeEmployeesViewmodel> FilterLaboratoryOfficeEmployees(FilterLaboratoryOfficeEmployeesViewmodel filter);
 
-        //Filter List Of Home Laboratory Request ViewModel From User Or Supporter Panel 
-        Task<FilterListOfHomeLaboratoryRequestViewModel> FilterListOfHomeLaboratoryRequestViewModel(FilterListOfHomeLaboratoryRequestViewModel filter);
+    //Add Exist User To The Laboratory Organization 
+    Task<bool> AddExistUserToTheLaboratoryOrganization(ulong userId, List<ulong> UserRoles, ulong laboratoryId);
 
-        //Show Home Laboratory Request Detail In Laboratory Panel
-        Task<HomeLaboratoryRequestViewModel?> FillHomePharmacyRequestViewModel(ulong requestId, ulong userId);
+    //Filter List Of Home Laboratory Request ViewModel From User Or Supporter Panel 
+    Task<FilterListOfHomeLaboratoryRequestViewModel> FilterListOfHomeLaboratoryRequestViewModel(FilterListOfHomeLaboratoryRequestViewModel filter);
 
-        #endregion
+    //Show Home Laboratory Request Detail In Laboratory Panel
+    Task<HomeLaboratoryRequestViewModel?> FillHomePharmacyRequestViewModel(ulong requestId, ulong userId);
 
-        #region Admin Side 
+    #endregion
 
-        //Filter Laboratory Info Admin Side
-        Task<ListOfLaboratoryInfoViewModel> FilterListOfLaboratoryInfoViewModel(ListOfLaboratoryInfoViewModel filter);
+    #region Admin Side 
 
-        //Get Laboratory By Consultant Id
-        Task<Laboratory?> GetLaboratoryById(ulong laboratoryId);
+    //Filter Laboratory Info Admin Side
+    Task<ListOfLaboratoryInfoViewModel> FilterListOfLaboratoryInfoViewModel(ListOfLaboratoryInfoViewModel filter);
 
-        //Fill Laboratory Info Detail ViewModel
-        Task<LaboratoryInfoDetailAdminSideViewModel?> FillLaboratoryInfoDetailAdminSideViewModel(ulong ConsultantId);
+    //Get Laboratory By Consultant Id
+    Task<Laboratory?> GetLaboratoryById(ulong laboratoryId);
 
-        //Edit Laboratory Info From Admin Panel
-        Task<EditLaboratoryInfoResult> EditLaboratoryInfoAdminSide(LaboratoryInfoDetailAdminSideViewModel model);
+    //Fill Laboratory Info Detail ViewModel
+    Task<LaboratoryInfoDetailAdminSideViewModel?> FillLaboratoryInfoDetailAdminSideViewModel(ulong ConsultantId);
 
-        //Show Home Laboratory Request Detail In Admin And Supporter Panel
-        Task<HomeLabratoryRequestDetailViewModel?> FillHomePharmacyRequestDetailAdminSide(ulong requestId, ulong userId);
+    //Edit Laboratory Info From Admin Panel
+    Task<EditLaboratoryInfoResult> EditLaboratoryInfoAdminSide(LaboratoryInfoDetailAdminSideViewModel model);
 
-        #endregion
-    }
+    //Show Home Laboratory Request Detail In Admin And Supporter Panel
+    Task<HomeLabratoryRequestDetailViewModel?> FillHomePharmacyRequestDetailAdminSide(ulong requestId, ulong userId);
+
+    #endregion
 }
