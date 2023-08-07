@@ -35,6 +35,50 @@ public class LaboratoryRepository : ILaboratoryRepository
 
     #region Laboratory Side 
 
+    //Update Request For Send SMS From Laboratory To Patient
+    public async Task UpdateRequestForSendSMSFromLaboratoryToPatient(SendRequestOfSMSFromDoctorsToThePatient request)
+    {
+        _context.SendRequestOfSMSFromDoctorsToThePatients.Update(request);
+        await _context.SaveChangesAsync();
+    }
+
+    //Get Request Detail For Send SMS From Laboratory To Patient By Request Id
+    public async Task<List<SendRequestOfSMSFromDoctorsToThePatientDetail>> GetRequestDetailForSendSMSFromLaboratoryToPatientByRequestId(ulong requestId)
+    {
+        return await _context.SendRequestOfSMSFromDoctorsToThePatientDetails.Where(p => !p.IsDelete && p.SendRequestOfSMSFromDoctorsToThePatientId == requestId).ToListAsync();
+    }
+
+    //Get Count Of Laboratory Free SMS Sent
+    public async Task<int?> GetCountOfLaboratoryFreeSMSSent(ulong laboratoryUserId)
+    {
+        #region Get Send Request Of SMS From Laboratory To The Patient
+
+        //Get Send Request Of SMS From Laboratory To The Patient
+        List<ulong> requests = await _context.SendRequestOfSMSFromDoctorsToThePatients.Where(p => !p.IsDelete && p.DoctorUserId == laboratoryUserId)
+                                        .Select(p => p.Id).ToListAsync();
+
+        if (requests == null) return null;
+
+        #endregion
+
+        #region Get Count 
+
+        int returnModel = 0;
+
+        foreach (var requestId in requests)
+        {
+            var requestDetails = await _context.SendRequestOfSMSFromDoctorsToThePatientDetails
+                                       .Where(p => !p.IsDelete && p.SendRequestOfSMSFromDoctorsToThePatientId == requestId)
+                                       .CountAsync();
+
+            returnModel = returnModel + requestDetails;
+        }
+
+        #endregion
+
+        return returnModel;
+    }
+
     //Get List User That Laboratory Want To Send Them SMS
     public async Task<List<User>?> GetListUserThatLaboratoryWantToSendThemSMS(ulong requestDetailId)
     {

@@ -19,6 +19,15 @@ public interface ILaboratoryRepository
 {
     #region Laboratory Side 
 
+    //Update Request For Send SMS From Laboratory To Patient
+    Task UpdateRequestForSendSMSFromLaboratoryToPatient(SendRequestOfSMSFromDoctorsToThePatient request);
+
+    //Get Request Detail For Send SMS From Laboratory To Patient By Request Id
+    Task<List<SendRequestOfSMSFromDoctorsToThePatientDetail>> GetRequestDetailForSendSMSFromLaboratoryToPatientByRequestId(ulong requestId);
+
+    //Get Count Of Laboratory Free SMS Sent
+    Task<int?> GetCountOfLaboratoryFreeSMSSent(ulong laboratoryUserId);
+
     //Get List User That Laboratory Want To Send Them SMS
     Task<List<User>?> GetListUserThatLaboratoryWantToSendThemSMS(ulong requestDetailId);
 

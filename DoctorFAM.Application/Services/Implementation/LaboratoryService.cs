@@ -82,82 +82,58 @@ public class LaboratoryService : ILaboratoryService
 
         #region Model State Validation 
 
-        if (model == null || model.PatientId.Count() == 0 || !model.PatientId.Any())
-        {
-            return SendRequestOfSMSFromDoctorsToThePatientResult.WrongInformation;
-        }
-
         if (string.IsNullOrEmpty(model.SMSBody))
         {
             return SendRequestOfSMSFromDoctorsToThePatientResult.WrongInformation;
         }
 
-        //Check Patients Id That Exist In Doctor Population
-        foreach (var item in model.PatientId)
-        {
-            if (!await _userService.IsExistUserById(item.Id))
-            {
-                return SendRequestOfSMSFromDoctorsToThePatientResult.WrongInformation;
-            }
-        }
-
         #endregion
 
-        #region Check Laboratory Send SMS Count
+        #region Check laboratory Send SMS Count
 
-        //Get Count Of SMS For Send
-        int smsCount = ((model.SMSBody.Count() / 70) + 1) * model.PatientId.Count;
-
-        //Get Laboratory Free SMS Count
+        //Get laboratory Free SMS Count
         var laboratoryFreeSMSCount = await _laboratoryRepository.GetCountOfLaboratorySMS(organization.OwnerId);
         if (laboratoryFreeSMSCount == null) return SendRequestOfSMSFromDoctorsToThePatientResult.WrongInformation;
 
-        //Check Incoming SMS Right Now
-        if (smsCount > laboratoryFreeSMSCount)
+        //Get Count Of laboratory Free SMS Sent 
+        var countOFlaboratoryFreeSentSMS = await _laboratoryRepository.GetCountOfLaboratoryFreeSMSSent(organization.OwnerId);
+
+        if (countOFlaboratoryFreeSentSMS.HasValue && countOFlaboratoryFreeSentSMS.Value >= laboratoryFreeSMSCount)
         {
             return SendRequestOfSMSFromDoctorsToThePatientResult.HigherThanDoctorFreePercentage;
         }
 
-        //Insert Free SMS From Doctor 
-        if (smsCount <= laboratoryFreeSMSCount)
+        //Insert Free SMS From laboratory 
+        if (countOFlaboratoryFreeSentSMS.HasValue && countOFlaboratoryFreeSentSMS.Value <= laboratoryFreeSMSCount)
         {
-            #region Create SMS 
+            #region Get Request For Send SMS From laboratory
 
-            //Create Main Request
-            SendRequestOfSMSFromDoctorsToThePatient mainRequest = new SendRequestOfSMSFromDoctorsToThePatient()
+            var request = await _laboratoryRepository.GetRequestForSendSMSFromLaboratoryToPatientByRequestId(model.RequestId);
+            if (request == null) return SendRequestOfSMSFromDoctorsToThePatientResult.WrongInformation;
+
+            var requestDetail = await _laboratoryRepository.GetRequestDetailForSendSMSFromLaboratoryToPatientByRequestId(request.Id);
+            if (requestDetail == null) return SendRequestOfSMSFromDoctorsToThePatientResult.WrongInformation;
+
+            #endregion
+
+            //Check Incoming SMS Right Now
+            if (requestDetail.Count > laboratoryFreeSMSCount)
             {
-                CreateDate = DateTime.Now,
-                DoctorUserId = organization.OwnerId,
-                IsDelete = false,
-                SendSMSFromDoctorState = Domain.Enums.SendSMS.FromDoctors.SendSMSFromDoctorState.WaitingForConfirm,
-                SMSText = model.SMSBody,
-            };
+                return SendRequestOfSMSFromDoctorsToThePatientResult.HigherThanDoctorFreePercentage;
+            }
+
+            #region Update SMS 
+
+            request.SendSMSFromDoctorState = Domain.Enums.SendSMS.FromDoctors.SendSMSFromDoctorState.WaitingForConfirm;
 
             #endregion
 
             //Add Request To The Data Base 
-            await _laboratoryRepository.AddSendRequestOfSMSFromLaboratoryToThePatient(mainRequest);
+            await _laboratoryRepository.UpdateRequestForSendSMSFromLaboratoryToPatient(request);
 
-            #region Create SMS Detail 
+            #region Reduce Percentage laboratory Free SMS Count
 
-            foreach (var userId in model.PatientId)
-            {
-                SendRequestOfSMSFromDoctorsToThePatientDetail detailRequest = new SendRequestOfSMSFromDoctorsToThePatientDetail()
-                {
-                    CreateDate = DateTime.Now,
-                    UserId = userId.Id,
-                    SendRequestOfSMSFromDoctorsToThePatientId = mainRequest.Id
-                };
-
-                //Add Request Detail To The Data Base
-                await _laboratoryRepository.AddSendRequestOfSMSFromLaboratorysToThePatientDetailToTheDataBase(detailRequest);
-            }
-
-            #endregion
-
-            #region Reduce Percentage Laboratory Free SMS Count
-
-            await _laboratoryRepository.ReduceLaboratoryFreeSMSPercentageWithoutSaveChanges(laboratory.Id, smsCount);
+            await _laboratoryRepository.ReduceLaboratoryFreeSMSPercentageWithoutSaveChanges(laboratory.Id, requestDetail.Count());
 
             #endregion
 
