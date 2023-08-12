@@ -182,6 +182,10 @@
                                             <button onclick="DeleteAjax(@request.Id, '@Url.Action("RemoveRequest", "HomeVisit", new {area = "UserPanel", requestId = request.Id})')" class="btn btn-danger  btn-xs">@Localizer["Remove Request"]</button>
                                         }
                                     }
+                                    @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.TramsferringToTheBankingPortal)
+                                    {
+                                        <a asp-action="BankPay" asp-controller="HomeVisit" asp-area="" asp-route-requestId="@request.Id" class="btn btn-success btn-circle btn-xs"><i class="glyphicon glyphicon-usd"></i></a>
+                                    }
 
                                 </td>
                             </tr>

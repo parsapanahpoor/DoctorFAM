@@ -177,6 +177,10 @@
                                     {
                                         <a asp-action="HomeNurseRequestDetail" asp-controller="HealthHouse" asp-area="UserPanel" asp-route-requestId="@request.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
                                     }
+                                    @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.TramsferringToTheBankingPortal)
+                                    {
+                                        <a asp-action="BankPay" asp-controller="HomeNurse" asp-area="" asp-route-requestId="@request.Id" class="btn btn-success btn-circle btn-xs"><i class="glyphicon glyphicon-usd"></i></a>
+                                    }
                                 </td>
                             </tr>
                         }
