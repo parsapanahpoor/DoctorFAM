@@ -79,6 +79,9 @@ namespace DoctorFAM.Domain.Interfaces.EFCore
         //List Of Specialists Site Side 
         Task<List<ListOfSpecialistsSiteSideViewModel>> ListOfSpecialistsSiteSide();
 
+        //List Of Super Specialists 
+        Task<List<ListOfSpecialistsSiteSideViewModel>> ListOfSuperSpecialists();
+
         #endregion
     }
 }

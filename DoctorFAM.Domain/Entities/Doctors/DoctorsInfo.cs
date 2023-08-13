@@ -1,5 +1,6 @@
 ﻿using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Common;
+using DoctorFAM.Domain.Enums.DoctorTitleName;
 using DoctorFAM.Domain.Enums.Gender;
 using System;
 using System.Collections.Generic;
@@ -34,6 +35,8 @@ namespace DoctorFAM.Domain.Entities.Doctors
 
         [Display(Name = "تعداد پیامک رایگان برای ارسال از پزشک به بیماران")]
         public int CountOFFreeSMSForDoctors { get; set; }
+
+        public DoctorTilteName DoctorTilteName { get; set; } = DoctorTilteName.Anonymous;
 
         #endregion
 

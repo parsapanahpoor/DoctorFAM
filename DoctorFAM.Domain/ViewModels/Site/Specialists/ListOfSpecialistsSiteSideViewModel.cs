@@ -15,7 +15,7 @@ public class ListOfSpecialistsSiteSideViewModel
 {
 	#region properties
 
-	public DoctorSpecialistUserInfoViewModel DoctorUserInfo { get; set; }
+	public DoctorSpecialistUserInfoViewModel? DoctorUserInfo { get; set; }
 
 	#endregion
 }
