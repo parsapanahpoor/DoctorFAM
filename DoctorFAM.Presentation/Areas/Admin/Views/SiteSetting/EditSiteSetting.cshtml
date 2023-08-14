@@ -27,8 +27,6 @@
                     <span class="widget-caption"> @ViewData["Title"] </span>
                 </div>
                 <div class="widget-body">
-                    <div>
-                        <div class="row">
 
                             <div class="form-group col-md-12">
                                 <label asp-for="CashDesk"></label>
@@ -41,7 +39,7 @@
                                 <span class="text-danger" asp-validation-for="SiteDomain"></span>
                             </div>
 
-                            <hr />
+                            <hr class="margin-bottom-10 margin-top-10" />
 
                             <div class="form-group col-md-6">
                                 <label asp-for="HomeVisitTariff"></label>
@@ -55,63 +53,69 @@
                                 <span class="text-danger" asp-validation-for="HomeVisitSiteShare"></span>
                             </div>
 
-                            <hr />
-
-                            <div class="form-group col-md-3">
+                            <div class="form-group col-md-6">
                                 <label asp-for="OnlineVisitTariff"></label>
                                 <input type="text" class="form-control" asp-for="OnlineVisitTariff" />
                                 <span class="text-danger" asp-validation-for="OnlineVisitTariff"></span>
                             </div>
 
-                            <div class="form-group col-md-3">
+                            <div class="form-group col-md-6">
                                 <label asp-for="HomeNurseTariff"></label>
                                 <input type="text" class="form-control" asp-for="HomeNurseTariff" />
                                 <span class="text-danger" asp-validation-for="HomeNurseTariff"></span>
                             </div>
 
-                            <div class="form-group col-md-3">
+                            <div class="form-group col-md-6">
                                 <label asp-for="HomeLaboratoryTariff"></label>
                                 <input type="text" class="form-control" asp-for="HomeLaboratoryTariff" />
                                 <span class="text-danger" asp-validation-for="HomeLaboratoryTariff"></span>
                             </div>
 
-                            <div class="form-group col-md-3">
+                            <div class="form-group col-md-6">
                                 <label asp-for="HomePharmacyTariff"></label>
                                 <input type="text" class="form-control" asp-for="HomePharmacyTariff" />
                                 <span class="text-danger" asp-validation-for="HomePharmacyTariff"></span>
                             </div>
 
-                            <div class="form-group col-md-3">
+                            <div class="form-group col-md-6">
                                 <label asp-for="DeathCertificateTariff"></label>
                                 <input type="text" class="form-control" asp-for="DeathCertificateTariff" />
                                 <span class="text-danger" asp-validation-for="DeathCertificateTariff"></span>
                             </div>
 
-                            <div class="form-group col-md-3">
+                            <div class="form-group col-md-6">
                                 <label asp-for="HomePatientTransportTariff"></label>
                                 <input type="text" class="form-control" asp-for="HomePatientTransportTariff" />
                                 <span class="text-danger" asp-validation-for="HomePatientTransportTariff"></span>
                             </div>
 
-                            <div class="form-group col-md-3">
+                            <hr class="margin-bottom-10 margin-top-10" />
+
+                            <div class="form-group col-md-6">
                                 <label asp-for="ReservationTariff"></label>
                                 <input type="text" class="form-control" asp-for="ReservationTariff" />
                                 <span class="text-danger" asp-validation-for="ReservationTariff"></span>
                             </div>
 
-                            <div class="form-group col-md-3">
+                            <div class="form-group col-md-6">
+                                <label asp-for="TouristTicketTariff"></label>
+                                <input type="text" class="form-control" asp-for="TouristTicketTariff" />
+                                <span class="text-danger" asp-validation-for="TouristTicketTariff"></span>
+                            </div>
+
+                            <div class="form-group col-md-6">
                                 <label asp-for="SendSMSTime"></label>
                                 <input type="text" class="form-control" asp-for="SendSMSTime" />
                                 <span class="text-danger" asp-validation-for="SendSMSTime"></span>
                             </div>
 
-                            <div class="form-group col-md-3">
+                            <div class="form-group col-md-6">
                                 <label asp-for="DistanceFromCityTarriff">تعرفه به ازای هر 10 کیلومتر فاصله از شهر</label>
                                 <input type="text" class="form-control" asp-for="DistanceFromCityTarriff" />
                                 <span class="text-danger" asp-validation-for="DistanceFromCityTarriff"></span>
                             </div>
 
-                            <div class="form-group col-md-3">
+                            <div class="form-group col-md-6">
                                 <label asp-for="CountOFFreeSMSForDoctors">تعداد پیامک های رایگان </label>
                                 <input type="text" class="form-control" asp-for="CountOFFreeSMSForDoctors" />
                                 <span class="text-danger" asp-validation-for="CountOFFreeSMSForDoctors"></span>
@@ -123,7 +127,7 @@
                                 <span class="text-danger" asp-validation-for="WalletLockPrice"></span>
                             </div>
 
-                            <hr>
+                            <hr class="margin-bottom-10 margin-top-10" />
 
                             <div class="form-group col-md-6">
                                 <label asp-for="InPersonReservationTariffForDoctorPopulationCoveredSiteShare"></label>
@@ -149,7 +153,7 @@
                                 <span class="text-danger" asp-validation-for="OnlineReservationTariffForAnonymousPersonsSiteShare"></span>
                             </div>
 
-                            <hr>
+                            <hr class="margin-bottom-10 margin-top-10" />
 
                             <div class="form-group col-md-12">
                                 <label asp-for="CopyRightText"></label>
@@ -157,7 +161,6 @@
                                 <span class="text-danger" asp-validation-for="CopyRightText"></span>
                             </div>
 
-                        </div>
 
                         <hr class="margin-bottom-10 margin-top-10" />
 
@@ -170,7 +173,6 @@
                         </div>
 
                     </div>
-                </div>
             </div>
         </div>
     </div>

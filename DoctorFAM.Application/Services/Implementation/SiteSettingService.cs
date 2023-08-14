@@ -70,6 +70,7 @@ public class SiteSettingService : ISiteSettingService
                 CashDesk = setting.SiteCashDesk,
                 HomeVisitSiteShare = setting.HomeVisitSiteShare,
                 WalletLockPrice = setting.WalletLockPrice,
+                TouristTicketTariff = setting.TouristTicketTariff
             };
         }
 
@@ -201,6 +202,7 @@ public class SiteSettingService : ISiteSettingService
             setting.OnlineReservationTariffForDoctorPopulationCoveredSiteShare = editSiteSettingViewModel.OnlineReservationTariffForDoctorPopulationCoveredSiteShare;
             setting.HomeVisitSiteShare = editSiteSettingViewModel.HomeVisitSiteShare;
             setting.WalletLockPrice = editSiteSettingViewModel.WalletLockPrice;
+            setting.TouristTicketTariff = editSiteSettingViewModel.TouristTicketTariff;
         }
 
         await _siteSettingRepository.UpdateSiteSetting(setting);
@@ -291,6 +293,7 @@ public class SiteSettingService : ISiteSettingService
             SiteCashDesk = 0,
             HomeVisitSiteShare= editSiteSettingViewModel.HomeVisitSiteShare,
             WalletLockPrice = editSiteSettingViewModel.WalletLockPrice,
+            TouristTicketTariff = editSiteSettingViewModel.TouristTicketTariff
         };
 
         await _siteSettingRepository.AddSiteSetting(newSetting);
