@@ -276,35 +276,44 @@ public class SpecialityRepository : ISpecialityRepository
         {
             foreach (var superSpecialityId in superSpecialistsRecords)
             {
-                List<ulong> doctorUsersIds = await _context.DoctorSelectedSpeciality
+                List<ListOfDoctorIdAndDoctorUserId> doctorIds = await _context.DoctorSelectedSpeciality
                                                .AsNoTracking()
                                                .Where(p => !p.IsDelete && p.SpecialityId == superSpecialityId)
-                                               .Select(p => _context.Doctors
+                                               .Select(p => new ListOfDoctorIdAndDoctorUserId()
+                                               {
+                                                   DoctorUserId = _context.Doctors
                                                                     .AsNoTracking()
                                                                     .Where(s => !s.IsDelete && s.Id == p.DoctorId)
                                                                     .Select(s => s.UserId)
-                                                                    .FirstOrDefault())
+                                                                    .FirstOrDefault(),
+                                                   DoctorId = p.DoctorId
+                                               })
                                                .ToListAsync();
 
 
-                if (doctorUsersIds != null && doctorUsersIds.Any())
+                if (doctorIds != null && doctorIds.Any())
                 {
-                    foreach (var doctorUserId in doctorUsersIds)
+                    foreach (var doctorId in doctorIds)
                     {
                         if (model != null && model.Any())
                         {
-                            if (!model.Any(p => p.DoctorUserInfo.UserId == doctorUserId))
+                            if (!model.Any(p => p.DoctorUserInfo.UserId == doctorId.DoctorUserId))
                             {
                                 ListOfSpecialistsSiteSideViewModel modelChild = new ListOfSpecialistsSiteSideViewModel()
                                 {
                                     DoctorUserInfo = await _context.Users
                                                                                                                      .AsNoTracking()
-                                                                                                                     .Where(p => !p.IsDelete && p.Id == doctorUserId)
+                                                                                                                     .Where(p => !p.IsDelete && p.Id == doctorId.DoctorUserId)
                                                                                                                      .Select(p => new DoctorSpecialistUserInfoViewModel()
                                                                                                                      {
                                                                                                                          UserAvatar = p.Avatar,
                                                                                                                          UserId = p.Id,
-                                                                                                                         Username = p.Username
+                                                                                                                         Username = p.Username,
+                                                                                                                         DoctorTilteName = _context.DoctorsInfos
+                                                                                                                                                   .AsNoTracking()
+                                                                                                                                                   .Where(p=> !p.IsDelete && p.DoctorId == doctorId.DoctorId)
+                                                                                                                                                   .Select(p=> p.DoctorTilteName)
+                                                                                                                                                   .FirstOrDefault()
                                                                                                                      })
                                                                                                                      .FirstOrDefaultAsync()
                                 };
@@ -318,12 +327,17 @@ public class SpecialityRepository : ISpecialityRepository
                             {
                                 DoctorUserInfo = await _context.Users
                                                                                       .AsNoTracking()
-                                                                                      .Where(p => !p.IsDelete && p.Id == doctorUserId)
+                                                                                      .Where(p => !p.IsDelete && p.Id == doctorId.DoctorUserId)
                                                                                       .Select(p => new DoctorSpecialistUserInfoViewModel()
                                                                                       {
                                                                                           UserAvatar = p.Avatar,
                                                                                           UserId = p.Id,
-                                                                                          Username = p.Username
+                                                                                          Username = p.Username,
+                                                                                          DoctorTilteName = _context.DoctorsInfos
+                                                                                                                                                   .AsNoTracking()
+                                                                                                                                                   .Where(p => !p.IsDelete && p.DoctorId == doctorId.DoctorId)
+                                                                                                                                                   .Select(p => p.DoctorTilteName)
+                                                                                                                                                   .FirstOrDefault()
                                                                                       })
                                                                                       .FirstOrDefaultAsync()
                             };
@@ -367,35 +381,44 @@ public class SpecialityRepository : ISpecialityRepository
         {
             foreach (var superSpecialityId in superSpecialistsRecords)
             {
-                List<ulong> doctorUsersIds = await _context.DoctorSelectedSpeciality
+                List<ListOfDoctorIdAndDoctorUserId> doctorIds = await _context.DoctorSelectedSpeciality
                                                .AsNoTracking()
                                                .Where(p => !p.IsDelete && p.SpecialityId == superSpecialityId)
-                                               .Select(p => _context.Doctors
+                                               .Select(p => new ListOfDoctorIdAndDoctorUserId()
+                                               {
+                                                   DoctorUserId = _context.Doctors
                                                                     .AsNoTracking()
                                                                     .Where(s => !s.IsDelete && s.Id == p.DoctorId)
                                                                     .Select(s => s.UserId)
-                                                                    .FirstOrDefault())
+                                                                    .FirstOrDefault(),
+                                                   DoctorId = p.DoctorId
+                                               })
                                                .ToListAsync();
 
 
-                if (doctorUsersIds != null && doctorUsersIds.Any())
+                if (doctorIds != null && doctorIds.Any())
                 {
-                    foreach (var doctorUserId in doctorUsersIds)
+                    foreach (var doctorId in doctorIds)
                     {
                         if (model != null && model.Any())
                         {
-                            if (!model.Any(p => p.DoctorUserInfo.UserId == doctorUserId))
+                            if (!model.Any(p => p.DoctorUserInfo.UserId == doctorId.DoctorUserId))
                             {
                                 ListOfSpecialistsSiteSideViewModel modelChild = new ListOfSpecialistsSiteSideViewModel()
                                 {
                                     DoctorUserInfo = await _context.Users
                                                                                                                      .AsNoTracking()
-                                                                                                                     .Where(p => !p.IsDelete && p.Id == doctorUserId)
+                                                                                                                     .Where(p => !p.IsDelete && p.Id == doctorId.DoctorUserId)
                                                                                                                      .Select(p => new DoctorSpecialistUserInfoViewModel()
                                                                                                                      {
                                                                                                                          UserAvatar = p.Avatar,
                                                                                                                          UserId = p.Id,
-                                                                                                                         Username = p.Username
+                                                                                                                         Username = p.Username,
+                                                                                                                         DoctorTilteName = _context.DoctorsInfos
+                                                                                                                                                   .AsNoTracking()
+                                                                                                                                                   .Where(p => !p.IsDelete && p.DoctorId == doctorId.DoctorId)
+                                                                                                                                                   .Select(p => p.DoctorTilteName)
+                                                                                                                                                   .FirstOrDefault()
                                                                                                                      })
                                                                                                                      .FirstOrDefaultAsync()
                                 };
@@ -409,12 +432,17 @@ public class SpecialityRepository : ISpecialityRepository
                             {
                                 DoctorUserInfo = await _context.Users
                                                                                       .AsNoTracking()
-                                                                                      .Where(p => !p.IsDelete && p.Id == doctorUserId)
+                                                                                      .Where(p => !p.IsDelete && p.Id == doctorId.DoctorUserId)
                                                                                       .Select(p => new DoctorSpecialistUserInfoViewModel()
                                                                                       {
                                                                                           UserAvatar = p.Avatar,
                                                                                           UserId = p.Id,
-                                                                                          Username = p.Username
+                                                                                          Username = p.Username,
+                                                                                          DoctorTilteName = _context.DoctorsInfos
+                                                                                                                                                   .AsNoTracking()
+                                                                                                                                                   .Where(p => !p.IsDelete && p.DoctorId == doctorId.DoctorId)
+                                                                                                                                                   .Select(p => p.DoctorTilteName)
+                                                                                                                                                   .FirstOrDefault()
                                                                                       })
                                                                                       .FirstOrDefaultAsync()
                             };

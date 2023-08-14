@@ -3,6 +3,7 @@
 @using DoctorFAM.Domain.ViewModels.Common
 @model DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo.DoctorsInfoDetailViewModel
 @using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo
+@using DoctorFAM.Domain.Enums.DoctorTitleName
 @inject IViewLocalizer Localizer
 @inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
 
@@ -111,6 +112,11 @@
                                         <label asp-for="DoctorSkills"></label>
                                         <input type="text" tagify="1" class="form-control" asp-for="DoctorSkills">
                                         <span class="text-danger" asp-validation-for="DoctorSkills"></span>
+                                    </div>
+
+                                    <div class="form-group col-md-12 col-sm-12">
+                                        <label asp-for="DoctorTilteName"> لقب نمایشی </label>
+                                        <select asp-for="DoctorTilteName" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorTilteName))"></select>
                                     </div>
 
                                     <hr />

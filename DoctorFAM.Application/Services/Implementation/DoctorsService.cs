@@ -3217,7 +3217,8 @@ namespace DoctorFAM.Application.Services.Implementation
                 GeneralPhone = info.GeneralPhone,
                 ClinicPhone = info.ClinicPhone,
                 DoctorSkills = string.Join(",", doctorSkills.Select(p => p.DoctorSkil).ToList()),
-                CountOFFreeSMSForDoctors = info.CountOFFreeSMSForDoctors
+                CountOFFreeSMSForDoctors = info.CountOFFreeSMSForDoctors,
+                DoctorTilteName = info.DoctorTilteName
             };
 
             #endregion
@@ -3344,6 +3345,7 @@ namespace DoctorFAM.Application.Services.Implementation
             info.GeneralPhone = model.GeneralPhone;
             info.ClinicPhone = model.ClinicPhone;
             info.CountOFFreeSMSForDoctors = model.CountOFFreeSMSForDoctors;
+            info.DoctorTilteName = model.DoctorTilteName;
 
             #endregion
 

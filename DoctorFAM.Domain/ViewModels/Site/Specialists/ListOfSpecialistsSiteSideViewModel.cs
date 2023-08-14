@@ -1,5 +1,6 @@
 ﻿#region Usings
 
+using DoctorFAM.Domain.Enums.DoctorTitleName;
 using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
 using System;
 using System.Collections.Generic;
@@ -30,5 +31,13 @@ public class DoctorSpecialistUserInfoViewModel
 
 	public string UserAvatar { get; set; }
 
-	#endregion
+    public DoctorTilteName DoctorTilteName { get; set; }
+
+    #endregion
+}
+
+public class ListOfDoctorIdAndDoctorUserId
+{
+    public ulong DoctorUserId{ get; set; }
+    public ulong DoctorId { get; set; }
 }

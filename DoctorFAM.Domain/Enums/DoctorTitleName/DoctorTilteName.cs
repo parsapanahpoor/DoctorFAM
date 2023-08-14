@@ -10,7 +10,7 @@ public enum DoctorTilteName
 {
     [Display(Name = "ناشناس")]
     Anonymous,
-    [Display(Name = "پزشک")]
+    [Display(Name = "دکتر")]
     Doctor,
     [Display(Name = "پروفسور")]
     Professor,
