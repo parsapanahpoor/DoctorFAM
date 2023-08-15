@@ -55,6 +55,8 @@ using DoctorFAM.Domain.Entities.SendSMS.FromDoctrors;
 using DoctorFAM.Domain.Entities.Dentist;
 using DoctorFAM.Domain.Entities.VirtualFile;
 using DoctorFAM.Domain.Entities.Tourism;
+using DoctorFAM.Domain.Enums.Tourist;
+using DoctorFAM.Domain.Entities.Tourism.Token;
 
 
 #endregion
@@ -544,11 +546,19 @@ public class DoctorFAMDbContext : Microsoft.EntityFrameworkCore.DbContext
 
     #endregion
 
-    #region Tourism
+    #region Tourist
 
     public DbSet<Tourism> Tourisms { get; set; }
 
     public DbSet<TourismInfo> TourismInfos { get; set; }
+
+    public DbSet<CountOfTouristTokenUsage> CountOfTouristTokenUsages { get; set; }
+
+    public DbSet<TouristPassengersSelectToken> TouristPassengersSelectTokens { get; set; }
+
+    public DbSet<TouristToken> TouristTokens { get; set; }
+
+    public DbSet<TouristPassengers> TouristPassengers { get; set; }
 
     #endregion
 
