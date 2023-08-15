@@ -1,5 +1,7 @@
 ﻿#region Usings
 
+using DoctorFAM.Application.Extensions;
+using DoctorFAM.Application.Services.Implementation;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.ViewModels.Tourist.Token;
 using DoctorFAM.Web.Tourism.Controllers;
@@ -14,11 +16,11 @@ public class TokenController : TouristBaseController
 
     #region Ctor
 
-    private readonly ITourismService _tourismService;
+    private readonly ITouristTokenService _touristTokenService;
 
-    public TokenController(ITourismService tourismService)
+    public TokenController(ITouristTokenService touristTokenService)
     {
-        _tourismService = tourismService;
+        _touristTokenService = touristTokenService;
     }
 
     #endregion
@@ -37,13 +39,36 @@ public class TokenController : TouristBaseController
     [HttpGet]
     public async Task<IActionResult> AddphoneNumber()
     {
+        #region List Of Waiting Users
+
+        ViewData["ListOfWaitingPassengers"] = await _touristTokenService.ListOfWaitingUserForTakeinTokenToThem(User.GetUserId());
+
+        #endregion
+
         return View();
     }
 
     [HttpPost , ValidateAntiForgeryToken]
     public async Task<IActionResult> AddphoneNumber(AddPhoneNumbersViewModel model)
     {
-        return View();
+        #region Add Passenger Info 
+
+        if (ModelState.IsValid)
+        {
+            var res = await _touristTokenService.AddPassengerInfoFromTouristPanel(model , User.GetUserId());
+            if (res)
+            {
+                TempData[SuccessMessage] = "اطلاعات باموفقیت وارد شده است.";
+                return RedirectToAction(nameof(AddphoneNumber));
+            }
+        }
+
+        #endregion
+
+        TempData[ErrorMessage] = "عملیات باشکست مواجه شده است.";
+        ViewData["ListOfWaitingPassengers"] = await _touristTokenService.ListOfWaitingUserForTakeinTokenToThem(User.GetUserId());
+
+        return View(model);
     }
 
     #endregion

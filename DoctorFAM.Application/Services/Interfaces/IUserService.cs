@@ -52,6 +52,9 @@ public interface IUserService
 
     Task<RegisterUserResult> RegisterUser(RegisterUserViewModel register);
 
+    //Register User From Tourist Panel
+    Task<ulong> RegisterUserFromTouristPanel(string userMobile);
+
     Task<bool> IsExistsUserByEmail(string email);
 
     Task<bool> IsExistUserByMobile(string mobile);

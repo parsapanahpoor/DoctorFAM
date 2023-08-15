@@ -271,6 +271,41 @@ public class UserService : IUserService
 
     }
 
+    //Register User From Tourist Panel
+    public async Task<ulong> RegisterUserFromTouristPanel(string userMobile)
+    {
+        //Fix Email Format
+        var mobile = userMobile.Trim().ToLower().SanitizeText();
+
+        //Check Mobile Number
+        if (await IsExistUserByMobile(userMobile))
+        {
+            return 0;
+        }
+
+        //Hash Password
+        var password = PasswordHasher.EncodePasswordMd5(userMobile.SanitizeText());
+
+        //Create User
+        var User = new DoctorFAM.Domain.Entities.Account.User()
+        {
+            //Email = email,
+            Password = password,
+            Username = mobile,
+            Mobile = userMobile.SanitizeText(),
+            EmailActivationCode = CodeGenerator.GenerateUniqCode(),
+            MobileActivationCode = new Random().Next(10000, 999999).ToString(),
+            ExpireMobileSMSDateTime = DateTime.Now,
+            IsMobileConfirm = true
+        };
+
+        await _context.Users.AddAsync(User);
+        await _context.SaveChangesAsync();
+
+        return User.Id;
+    }
+
+
     public async Task<bool> AccountActivation(string emailActivationCode)
     {
         // get user by email activation code

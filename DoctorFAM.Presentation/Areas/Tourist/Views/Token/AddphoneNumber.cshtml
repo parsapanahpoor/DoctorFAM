@@ -1,14 +1,32 @@
 ﻿@model DoctorFAM.Domain.ViewModels.Tourist.Token.AddPhoneNumbersViewModel
 @using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.Extensions;
 @using DoctorFAM.Domain.Enums.DoctorReservation
 
 @{
     ViewData["Title"] = @Localizer["افزودن شماره تلفن"];
 }
 
+@{
+    var listOfWaitingPassengers = ViewData["ListOfWaitingPassengers"] as List<DoctorFAM.Domain.ViewModels.Tourist.Token.ListOfWaitingUserForTakeinTokenToThemTouristPanelViewModel>;
+}
+
 @section Scripts
     {
     <partial name="_JqueryValidation" />
+    <link href="/admin/css/dataTables.bootstrap.rtl.css" rel="stylesheet" />
+
+    <script src="~/admin/js/datatable/jquery.dataTables.min.js"></script>
+    <script src="~/admin/js/datatable/ZeroClipboard.js"></script>
+    <script src="~/admin/js/datatable/dataTables.tableTools.min.js"></script>
+    <script src="~/admin/js/datatable/dataTables.bootstrap.min.js"></script>
+    <script src="~/admin/js/datatable/datatables-init.js"></script>
+    <script>
+        InitiateSimpleDataTable.init();
+        InitiateEditableDataTable.init();
+        InitiateExpandableDataTable.init();
+        InitiateSearchableDataTable.init();
+    </script>
 }
 
 @section Breadcrumb
@@ -28,7 +46,7 @@
             <div class="widget-body">
                 <div>
 
-                    <form asp-action="AddReservationDateView" asp-controller="Appointment" asp-area="Doctor" method="post">
+                    <form asp-action="AddphoneNumber" asp-controller="Token" asp-area="Tourist" method="post">
                         <div class="modal-body">
                             <div class="row">
 
@@ -42,7 +60,7 @@
                                 <div class="form-group col-md-6 col-sm-12">
                                     <label asp-for="RequiredAmount">@Localizer["تعداد توکن مورد نیاز"]</label>
                                     <span style="color:red;">*</span>
-                                    <input type="number" class="form-control" asp-for="RequiredAmount">
+                                    <input type="number" min="1" class="form-control" asp-for="RequiredAmount">
                                     <span class="text-danger" asp-validation-for="RequiredAmount"></span>
                                 </div>
 
@@ -64,37 +82,76 @@
 </div>
 
 
-@*@if (reserve != null && reserve.Any())
-{
+<div class="page-body">
+
     <div class="row">
-        <div class="col-lg-12 col-sm-12">
 
-            <div class="widget">
-                <div class="widget-header bordered-bottom bordered-green">
-                    <span class="widget-caption"> @Localizer["List Of Your Reservation Dates"] </span>
-                </div>
-                <div class="widget-body">
-                    <div>
-                        <div class="modal-body">
-                            <div class="row">
+        <div id="horizontal-form">
 
-                                @foreach (var item in reserve)
+            @if (listOfWaitingPassengers != null && listOfWaitingPassengers.Any())
+            {
+
+                <div class="widget-body no-padding">
+                    <div id="searchable_wrapper" class="dataTables_wrapper form-inline">
+
+                        <table class="table table-bordered table-hover table-striped dataTable" id="searchable" role="grid" aria-describedby="searchable_info">
+                            <thead class="bordered-darkorange">
+                                <tr role="row">
+
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" aria-sort="ascending">کاربر</th>
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" aria-sort="ascending">موبایل</th>
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Platform: activate to sort column ascending">تعداد بلیط درخواستی</th>
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending"></th>
+
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                @foreach (var user in listOfWaitingPassengers)
                                 {
-                                    <div class="form-group col-md-2 col-sm-12">
-                                        <div class="form-control">
-                                            <a asp-action="ReservationDateDetail" asp-controller="Appointment" asp-area="Doctor" asp-route-ReservationDateId="@item.Id">
-                                                @item.ReservationDate.ToShamsi()
-                                            </a>
-                                        </div>
-                                    </div>
+                                    <tr role="row" class="even responsive" remove-ajax-item="@user.Id">
+
+                                        <td class="sorting_1">
+                                            <div class="flex-style-center">
+                                                <img src="@user.TouristPassengerInfo.UserAvatar.GetUserAvatar()" class="avatar-style" />
+                                                <div class="mr-10px">
+                                                    <span> @user.TouristPassengerInfo.Username </span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="sorting_1">
+                                            <div class="row" style="width: 100%;margin: auto;text-aling">
+
+                                                @user.TouristPassengerInfo.Username 
+
+                                            </div>
+                                        </td>
+
+                                        <td class="center ">
+
+                                            @user.RequiredAmount بلیط
+
+                                        </td>
+                                        <td>
+                                            <a asp-action="DeletePassengerFromTouristList" asp-controller="Token" asp-area="Tourist" asp-route-id="@user.Id" class="btn btn-danger btn-circle btn-xs"><i class="glyphicon glyphicon-remove"></i></a>
+                                        </td>
+
+                                    </tr>
+
                                 }
 
-                            </div>
-                        </div>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-            </div>
+            }
+            else
+            {
+                <partial name="_TourismNotFoundPartial" />
+            }
+
         </div>
     </div>
 
-}*@
+</div>
