@@ -20,6 +20,8 @@ namespace DoctorFAM.Domain.Entities.Tourism.Token
 
         public string Token { get; set; }
 
+        public string? TokenLabel { get; set; }
+
         public TouristTokenState TouristTokenState { get; set; }
 
         #endregion

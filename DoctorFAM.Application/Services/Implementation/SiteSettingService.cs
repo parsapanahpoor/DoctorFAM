@@ -750,6 +750,12 @@ public class SiteSettingService : ISiteSettingService
 
     #region Site Side
 
+    //Get Tourist Token Tariff
+    public async Task<int> GetTouristTokenTariff()
+    {
+        return await _siteSettingRepository.GetTouristTokenTariff();
+    }
+
     //Get Supplementary Insurance Name By Id 
     public async Task<string?> GetSupplementaryInsuranceNameById(ulong id)
     {

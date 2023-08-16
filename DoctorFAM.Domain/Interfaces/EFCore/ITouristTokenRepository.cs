@@ -22,5 +22,26 @@ public interface ITouristTokenRepository
     //List Of Waiting User For Take in Token To Them
     Task<List<ListOfWaitingUserForTakeinTokenToThemTouristPanelViewModel>?> ListOfWaitingUserForTakeinTokenToThem(ulong touristId);
 
+    //Check That Is Exist Any Waiting Record With This User Infomation
+    Task<TouristPassengers?> CheckThatIsExistAnyWaitingRecordWithThisUserInfomation(ulong userId, ulong touristId);
+
+    //Update Tourist Passenger Data Information 
+    Task UpdateTouristPassengerDataInformation(TouristPassengers passengers);
+
+    //Get Tourist Passenger By Id
+    Task<TouristPassengers?> GetTouristPassengerById(ulong touristPassengerId);
+
+    //Count Of Waiting User For Initial Token
+    Task<int> CountOfWaitingUserForInitialToken(ulong touristId);
+
+    //Add Token To The Data Base
+    Task AddTokenToTheDataBase(TouristToken token);
+
+    //Count Of Waiting Passengers With Their Required Amount
+    Task<int> CountOfWaitingPassengersWithTheirRequiredAmount(ulong touristId);
+
+    //Get Last Waiting Fot Payment Token 
+    Task<TouristToken?> GetLastWaitingFotPaymentToken(ulong touristId);
+
     #endregion
 }

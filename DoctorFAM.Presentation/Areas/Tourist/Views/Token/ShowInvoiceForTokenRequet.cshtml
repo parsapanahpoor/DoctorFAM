@@ -1,0 +1,140 @@
+﻿@using DoctorFAM.Application.Convertors;
+@model DoctorFAM.Domain.ViewModels.Tourist.Token.ShowTokenInvoiceForTouristViewModle
+
+@{
+    ViewData["Title"] = @Localizer["نمایش پیش فاکتور توکن گردشگری"];
+}
+
+@section Scripts
+    {
+    <partial name="_JqueryValidation" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function ($) {
+
+            $(document).on('click', '.btn_print', function (event) {
+                event.preventDefault();
+
+                //credit : https://ekoopmans.github.io/html2pdf.js
+
+                var element = document.getElementById('container_content');
+
+                //easy
+                html2pdf().from(element).save();
+
+            });
+        });
+    </script>
+        }
+
+@section Breadcrumb
+    {
+    <li>
+        <a asp-action="ManagePage" asp-controller="Token" asp-area="Tourist"> مدیریت توکن ها </a>
+    </li>
+}
+
+<div class="row">
+    <div class="col-lg-12 col-sm-12">
+
+        <div class="row mt-5" id="container_content">
+            <div class="col-lg-3 col-sm-12 col-xs-12">
+            </div>
+            <div class="col-lg-6 col-sm-12 col-xs-12">
+                <div class="well invoice-container" style="background-color: cornflowerblue;">
+                    <div class="row">
+                        <div class="col-lg-4 col-sm-4 col-xs-4">
+                        </div>
+                        <div class="col-lg-5 col-sm-5 col-xs-5">
+                            <h1>
+                                <a href="">
+                                    <img src="/Content/images/Logo/doctorfamTes.png" alt="" style="width:200px; height:45px; margin-right:-17px">
+                                </a>
+                            </h1>
+                            <div>
+                                <span>کد رهگیری درخواست : </span>
+                                <span>@Model.TokenId</span>
+                            </div>
+                            <div class="horizontal-space"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 col-sm-12 col-xs-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h6>اطلاعات درخواست :</h6>
+                                </div>
+                                <div class="panel-body">
+                                    <ul>
+
+                                        @if (!string.IsNullOrEmpty(Model.TokenLabel))
+                                        {
+                                            <li>عنوان توکن : @Model.TokenLabel</li>
+                                        }
+                                        else
+                                        {
+                                            <li> بدون عنوان</li>
+                                        }
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- / end client details section -->
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th><h5 class="no-margin-bottom">عنوان </h5></th>
+                                <th><h5 class="no-margin-bottom">توضیح </h5></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr>
+                                <td>کد توکن</td>
+                                <td>@Model.Token</td>
+                            </tr>
+
+                            <tr>
+                                <td>تاریخ شروع اعتبار</td>
+                                <td>@Model.StartDate.ToShamsi()</td>
+                            </tr>
+
+                            <tr>
+                                <td>تاریخ پایان اعتبار</td>
+                                <td>@Model.EndDate.ToShamsi()</td>
+                            </tr>
+
+                            <tr>
+                                <td>تعداد توکن های درخواستی</td>
+                                <td>@Model.CountOfToken</td>
+                            </tr>
+
+                            <tr>
+                                <td>قیمت واحد توکن
+                                <td>@Model.PriceOfUnitToken.ToString("#,000") ریال</td>
+                            </tr>
+
+                            <tr>
+                                <td>قیمت کل</td>
+                                <td>@Model.Price.ToString("#,000") ریال</td>
+                            </tr>
+
+                            <tr>
+                                <td class="text-center"><strong>عملیات  </strong></td>
+                                <td class="text-center ">
+                                    <p class="btn btn-sccess btn_print">
+                                        چاپ و دانلود فاکتور
+                                    </p>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

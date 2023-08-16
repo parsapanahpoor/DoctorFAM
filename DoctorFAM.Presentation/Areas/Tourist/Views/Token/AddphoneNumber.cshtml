@@ -81,6 +81,37 @@
     </div>
 </div>
 
+<div class="row">
+    <div class="col-lg-12 col-sm-12">
+
+        <div class="widget">
+            <div class="widget-header bordered-bottom bordered-green">
+                <span class="widget-caption"> @Localizer["تایید افراد و درخواست ثبت توکن"] </span>
+            </div>
+            <div class="widget-body">
+                <div>
+
+                        <div class="modal-body">
+                            <div class="row">
+
+                                <p>در صورتی که لیست افراد زیر مورد تایید شما می باشد و ویرایش شما نهایی شده است میتوانید با کلیک بر روی گزینه ی به صفحه ی درخواست تولید توکن وارد شوید</p>
+
+                                <div class="clearfix"></div>
+
+                                <div class="form-group col-md-12">
+                                    <a asp-action="ImportingTokenInformation" asp-area="Tourist" asp-controller="Token" class="btn btn-success">@SharedLocalizer["درخواست ایجاد توکن"]</a>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <div class="page-body">
 
@@ -134,7 +165,7 @@
 
                                         </td>
                                         <td>
-                                            <a asp-action="DeletePassengerFromTouristList" asp-controller="Token" asp-area="Tourist" asp-route-id="@user.Id" class="btn btn-danger btn-circle btn-xs"><i class="glyphicon glyphicon-remove"></i></a>
+                                            <a asp-action="DeleteTouristPassengersFromWaitingList" asp-controller="Token" asp-area="Tourist" asp-route-id="@user.Id" class="btn btn-danger btn-circle btn-xs"><i class="glyphicon glyphicon-remove"></i></a>
                                         </td>
 
                                     </tr>
