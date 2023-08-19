@@ -36,5 +36,7 @@ public class ShowTokenInvoiceForTouristViewModle
 
     public ulong TokenId { get; set; }
 
+    public int  CountOfDays { get; set; }
+
     #endregion
 }

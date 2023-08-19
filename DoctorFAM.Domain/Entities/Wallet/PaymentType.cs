@@ -39,4 +39,7 @@ public enum PaymentType
 
     [Display(Name = "WithdrawMoney")]
     WithdrawMoney = 11,
+
+    [Display(Name = "TouristToken")]
+    TouristToken = 12,
 }

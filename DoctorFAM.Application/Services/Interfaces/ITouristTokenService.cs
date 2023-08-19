@@ -37,5 +37,14 @@ public interface ITouristTokenService
     //Fill Show Token Invoice For Tourist View Model
     Task<ShowTokenInvoiceForTouristViewModle?> ShowTokenInvoiceForTouristViewModel(ulong touristUserId);
 
+    //Is Exist Any Waiting For Payment Token Request For Current Tourist
+    Task<bool> IsExistAnyWaitingForPaymentTokenRequestForCurrentTourist(ulong touristUserId);
+
+    //Delete Last Waiting for payment Token
+    Task<bool> DeleteLastWaitingforpaymentToken(ulong touristUserId);
+
+    //tourist Token Payment
+    Task<TouristTokenPaymentResult> FillTouristTokenPaymentResult(ulong touristUserId, ulong tokenId);
+
     #endregion
 }

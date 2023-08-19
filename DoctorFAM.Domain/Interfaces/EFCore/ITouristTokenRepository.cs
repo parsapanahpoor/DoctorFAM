@@ -43,5 +43,14 @@ public interface ITouristTokenRepository
     //Get Last Waiting Fot Payment Token 
     Task<TouristToken?> GetLastWaitingFotPaymentToken(ulong touristId);
 
+    //Is Exist Any Waiting For Payment Token Request For Current Tourist
+    Task<bool> IsExistAnyWaitingForPaymentTokenRequestForCurrentTourist(ulong touristId);
+
+    //Update Method 
+    Task UpdateMethod(TouristToken token);
+
+    //Get Token By Tourist Id And Token Id 
+    Task<TouristToken?> GetTokenByTouristIdAndTokenId(ulong touristId, ulong tokenId);
+
     #endregion
 }

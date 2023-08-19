@@ -113,7 +113,12 @@
                             </tr>
 
                             <tr>
-                                <td>قیمت واحد توکن
+                                <td>تعداد روزهای درخواستی</td>
+                                <td>@Model.CountOfDays</td>
+                            </tr>
+
+                            <tr>
+                                <td>قیمت واحد توکن به ازای یک شبانه روز
                                 <td>@Model.PriceOfUnitToken.ToString("#,000") ریال</td>
                             </tr>
 
@@ -123,11 +128,29 @@
                             </tr>
 
                             <tr>
+                                <td class="text-center"><strong>چاپ و دانلود فاکتور  </strong></td>
+                                <td class="text-center ">
+                                    <p class="btn btn-primary btn_print">
+                                        چاپ 
+                                    </p>
+                                </td>
+                            </tr>
+
+                            <tr>
                                 <td class="text-center"><strong>عملیات  </strong></td>
                                 <td class="text-center ">
-                                    <p class="btn btn-sccess btn_print">
-                                        چاپ و دانلود فاکتور
-                                    </p>
+                                    <a asp-action="TouristTokenPayment"
+                                       asp-area="Tourist"
+                                       asp-controller="Token"
+                                       asp-route-tokenId="@Model.TokenId"
+
+                                       class="btn btn-success">
+                                        پرداخت
+                                    </a>
+
+                                    <a asp-action="DeleteLastWaitingforpaymentToken" asp-controller="Token" asp-area="Tourist"  class="btn btn-danger">
+                                        حذف و تعریف مجدد
+                                    </a>
                                 </td>
                             </tr>
 

@@ -122,5 +122,20 @@ public class TouristTokenRepository : ITouristTokenRepository
                                .FirstOrDefaultAsync(p => !p.IsDelete && p.TouristId == touristId && p.TouristTokenState == Domain.Enums.Tourist.TouristTokenState.WaitingForPayment);
     }
 
+    //Is Exist Any Waiting For Payment Token Request For Current Tourist
+    public async Task<bool> IsExistAnyWaitingForPaymentTokenRequestForCurrentTourist(ulong touristId)
+    {
+        return await _context.TouristTokens
+                             .AsNoTracking()
+                             .AnyAsync(p => !p.IsDelete && p.TouristId == touristId && p.TouristTokenState == Domain.Enums.Tourist.TouristTokenState.WaitingForPayment);
+    }
+
+    //Update Method 
+    public async Task UpdateMethod(TouristToken token)
+    {
+        _context.TouristTokens.Update(token);
+        await _context.SaveChangesAsync();
+    }
+
     #endregion
 }

@@ -4,10 +4,12 @@ using DoctorFAM.Application.Convertors;
 using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Data.Migrations;
+using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.Tourism;
 using DoctorFAM.Domain.Entities.Tourism.Token;
 using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.Tourist.Token;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
 using System;
 using System.Collections.Generic;
@@ -315,6 +317,12 @@ public class TouristTokenService : ITouristTokenService
 
         #endregion
 
+        #region Count Of Days 
+
+        var days = token.EndDate.DayOfYear - token.StartDate.DayOfYear;
+
+        #endregion
+
         #region Fill Invoice
 
         ShowTokenInvoiceForTouristViewModle model = new()
@@ -328,12 +336,77 @@ public class TouristTokenService : ITouristTokenService
             TokenLabel = token.TokenLabel,
             TokenState = token.TouristTokenState,
             PriceOfUnitToken = tokenTriff,
-            Price = tokenTriff * countOfUsageAmount
+            Price = tokenTriff * countOfUsageAmount * days,
+            CountOfDays = days,
         };
 
         #endregion
 
         return model;
+    }
+
+    //Is Exist Any Waiting For Payment Token Request For Current Tourist
+    public async Task<bool> IsExistAnyWaitingForPaymentTokenRequestForCurrentTourist(ulong touristUserId)
+    {
+        #region Get Tourist By Tourist User Id 
+
+        var tourist = await GetTouristIdByTouristUserId(touristUserId);
+        if (tourist == null) return false;
+
+        #endregion
+
+        return await _touristTokenRepository.IsExistAnyWaitingForPaymentTokenRequestForCurrentTourist(tourist.Id);
+    }
+
+    //Delete Last Waiting for payment Token
+    public async Task<bool> DeleteLastWaitingforpaymentToken(ulong touristUserId)
+    {
+        #region Get Tourist By Tourist User Id 
+
+        var tourist = await GetTouristIdByTouristUserId(touristUserId);
+        if (tourist == null) return false;
+
+        #endregion
+
+        #region Get Lastets Waiting For Payment Request 
+
+        var token = await _touristTokenRepository.GetLastWaitingFotPaymentToken(tourist.Id);
+        if (token == null) return false;
+
+        #endregion
+
+        #region Update Token 
+
+        token.IsDelete = true;
+        token.TouristTokenState = Domain.Enums.Tourist.TouristTokenState.CanceledFromTourist;
+
+        //Update Method
+        await _touristTokenRepository.UpdateMethod(token);
+
+        #endregion
+
+        return true;
+    }
+
+    //tourist Token Payment
+    public async Task<TouristTokenPaymentResult> FillTouristTokenPaymentResult(ulong touristUserId , ulong tokenId)
+    {
+        #region Fill Model
+
+        TouristTokenPaymentResult model = new TouristTokenPaymentResult() { Result = false};
+
+        #endregion
+
+        #region Get Tourist By Tourist User Id 
+
+        var tourist = await GetTouristIdByTouristUserId(touristUserId);
+        if (tourist == null)return model;
+
+        #endregion
+
+        #region Get Token By Tourist Id And  Token Id
+
+        #endregion
     }
 
     #endregion
