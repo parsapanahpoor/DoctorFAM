@@ -1,6 +1,7 @@
 ﻿#region Usings
 
 using DoctorFAM.Domain.Entities.Tourism;
+using DoctorFAM.Domain.Entities.Tourism.Token;
 using DoctorFAM.Domain.ViewModels.Tourist.Token;
 using System;
 using System.Collections.Generic;
@@ -45,6 +46,21 @@ public interface ITouristTokenService
 
     //tourist Token Payment
     Task<TouristTokenPaymentResult> FillTouristTokenPaymentResult(ulong touristUserId, ulong tokenId);
+
+    //Get Token By Id
+    Task<TouristToken?> GetTokenById(ulong tokenId);
+
+    //tourist Token Payment
+    Task<TouristTokenPaymentResult> FillTouristTokenPaymentResult(ulong tokenId);
+
+    //Get List Of Waiting Passengers By Tourist Id
+    Task<List<TouristPassengers>?> GetListOfWaitingPassengersByTouristId(ulong touristId);
+
+    //Update Token And Passengers State And Add PassengerUsersSelectedToken
+    Task<bool> UpdateTokenAndPassengersStateAndAddPassengerUsersSelectedToken(ulong tokenId);
+
+    //Pay Tourist Token Tariff
+    Task<bool> PayTouristTokenTariff(ulong touristOwnerID, int price, ulong? requestId);
 
     #endregion
 }

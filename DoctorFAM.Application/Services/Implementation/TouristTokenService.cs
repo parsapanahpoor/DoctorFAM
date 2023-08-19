@@ -7,15 +7,20 @@ using DoctorFAM.Data.Migrations;
 using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.Tourism;
 using DoctorFAM.Domain.Entities.Tourism.Token;
+using DoctorFAM.Domain.Entities.Wallet;
+using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.Tourist.Token;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
+using OfficeOpenXml.FormulaParsing.LexicalAnalysis;
+using OfficeOpenXml.VBA;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace DoctorFAM.Application.Services.Implementation;
 
@@ -35,15 +40,17 @@ public class TouristTokenService : ITouristTokenService
 
     private readonly ISiteSettingService _siteSettingService;
 
+    private readonly IWalletRepository _walletRepository;
+
     public TouristTokenService(ITouristTokenRepository touristTokenRepository, IUserService userService, IOrganizationService organizationService
-                                , ITourismService touristService, ISiteSettingService siteSettingService)
+                                , ITourismService touristService, ISiteSettingService siteSettingService , IWalletRepository walletRepository)
     {
         _touristTokenRepository = touristTokenRepository;
         _userService = userService;
         _organizationService = organizationService;
         _touristService = touristService;
         _siteSettingService = siteSettingService;
-
+        _walletRepository = walletRepository;
     }
 
     #endregion
@@ -406,7 +413,148 @@ public class TouristTokenService : ITouristTokenService
 
         #region Get Token By Tourist Id And  Token Id
 
+        TouristToken? token = await _touristTokenRepository.GetTokenByTouristIdAndTokenId(tourist.Id , tokenId);
+        if (token == null || token.TouristTokenState != Domain.Enums.Tourist.TouristTokenState.WaitingForPayment) return model;
+
         #endregion
+
+        #region Get Tourist Token Tariff
+
+        var tokenTriff = await _siteSettingService.GetTouristTokenTariff();
+
+        #endregion
+
+        #region Initial Price 
+
+        var days = token.EndDate.DayOfYear - token.StartDate.DayOfYear;
+
+        //Count Of Usage Count 
+        var countOfUsageAmount = await _touristTokenRepository.CountOfWaitingPassengersWithTheirRequiredAmount(tourist.Id);
+
+        int price = tokenTriff * countOfUsageAmount * days;
+
+        #endregion
+
+        #region retun Model 
+
+        model.Price = price;
+        model.Result = true;
+        model.TouristId = tourist.Id;
+        model.TokenId = tokenId;
+        model.TouristOwnerId = tourist.UserId;
+
+        #endregion
+
+        return model;
+    }
+
+    //Get Token By Id
+    public async Task<TouristToken?> GetTokenById(ulong tokenId)
+    {
+        return await _touristTokenRepository.GetTokenById(tokenId);
+    }
+
+    //tourist Token Payment
+    public async Task<TouristTokenPaymentResult> FillTouristTokenPaymentResult( ulong tokenId)
+    {
+        #region Fill Model
+
+        TouristTokenPaymentResult model = new TouristTokenPaymentResult() { Result = false };
+
+        #endregion
+
+        #region Get Token By Tourist Id And  Token Id
+
+        TouristToken? token = await _touristTokenRepository.GetTokenById( tokenId);
+        if (token == null || token.TouristTokenState != Domain.Enums.Tourist.TouristTokenState.WaitingForPayment) return model;
+
+        #endregion
+
+        #region Get Tourist By Tourist User Id 
+
+        var tourist = await _touristService.GetTouristById(token.TouristId);
+        if (tourist == null) return model;
+
+        #endregion
+
+        #region Get Tourist Token Tariff
+
+        var tokenTriff = await _siteSettingService.GetTouristTokenTariff();
+
+        #endregion
+
+        #region Initial Price 
+
+        var days = token.EndDate.DayOfYear - token.StartDate.DayOfYear;
+
+        //Count Of Usage Count 
+        var countOfUsageAmount = await _touristTokenRepository.CountOfWaitingPassengersWithTheirRequiredAmount(token.TouristId);
+
+        int price = tokenTriff * countOfUsageAmount * days;
+
+        #endregion
+
+        #region retun Model 
+
+        model.Price = price;
+        model.Result = true;
+        model.TouristId = token.TouristId;
+        model.TokenId = tokenId;
+        model.TouristOwnerId = tourist.UserId;
+
+        #endregion
+
+        return model;
+    }
+
+    //Get List Of Waiting Passengers By Tourist Id
+    public async Task<List<TouristPassengers>?> GetListOfWaitingPassengersByTouristId(ulong touristId)
+    {
+        return await _touristTokenRepository.GetListOfWaitingPassengersByTouristId(touristId);
+    }
+
+    //Update Token And Passengers State And Add PassengerUsersSelectedToken
+    public async Task<bool> UpdateTokenAndPassengersStateAndAddPassengerUsersSelectedToken(ulong tokenId)
+    {
+        #region Update token
+
+        var token = await GetTokenById(tokenId);
+        if (token == null) return false;
+
+        token.TouristTokenState = Domain.Enums.Tourist.TouristTokenState.Paid;
+
+        //Update Token
+        await _touristTokenRepository.UpdateMethod(token);
+
+        #endregion
+
+        #region Update Passsengers State
+
+        var res = await _touristTokenRepository.UpdatePassengersInfosStateToPaiedToken(token.TouristId , token.Id);
+        if (!res) return false;
+
+        #endregion
+
+        return true;
+    }
+
+    //Pay Tourist Token Tariff
+    public async Task<bool> PayTouristTokenTariff(ulong touristOwnerID, int price, ulong? requestId)
+    {
+        var wallet = new Wallet
+        {
+            UserId = touristOwnerID,
+            TransactionType = TransactionType.Withdraw,
+            GatewayType = GatewayType.Zarinpal,
+            PaymentType = PaymentType.TouristToken,
+            Price = price,
+            Description = "پرداخت مبلغ دریافت توکن گردشگری",
+            IsFinally = true,
+            RequestId = requestId
+        };
+
+        await _walletRepository.CreateWalletAsync(wallet);
+        return true;
     }
 
     #endregion

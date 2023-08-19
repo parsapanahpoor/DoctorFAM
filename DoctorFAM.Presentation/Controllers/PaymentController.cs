@@ -98,6 +98,64 @@ namespace DoctorFAM.Web.Controllers
 
         #endregion
 
+        #region Payment For Organizations
+
+        public async Task<IActionResult> PaymentMethodForOrganizations(ulong ownerUserId ,GatewayType gatewayType, int amount, string description, string returURL, ulong? requestId)
+        {
+            #region Online Payment
+
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    RequestParameters parameters = new RequestParameters(PathTools.merchant, amount.ToString(), description, returURL, user.Mobile, "");
+
+                    var json = JsonConvert.SerializeObject(parameters);
+
+                    HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                    HttpResponseMessage response = await client.PostAsync(URLs.requestUrl, content);
+
+                    string responseBody = await response.Content.ReadAsStringAsync();
+
+                    JObject jo = JObject.Parse(responseBody);
+                    string errorscode = jo["errors"].ToString();
+
+                    JObject jodata = JObject.Parse(responseBody);
+                    string dataauth = jodata["data"].ToString();
+
+                    if (dataauth != "[]")
+                    {
+                        string authority = jodata["data"]["authority"].ToString();
+
+                        string gatewayUrl = URLs.gateWayUrl + authority;
+
+                        #region Create Wallet With False Finally
+
+                        await _walletService.CreateNewWalletTransactionForRedirextToTheBankPortal(ownerUserId, amount, gatewayType, authority.Trim(), description, requestId);
+
+                        #endregion
+
+                        return Redirect(gatewayUrl);
+                    }
+                    else
+                    {
+                        return BadRequest("error " + errorscode);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+            #endregion
+
+            return View();
+        }
+
+        #endregion
+
         #region Payment Result 
 
         [HttpGet("PaymentResult/{IsSuccess}/{refId}", Name = "PaymentResult")]

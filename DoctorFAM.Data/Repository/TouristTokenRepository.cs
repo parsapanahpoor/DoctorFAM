@@ -137,5 +137,74 @@ public class TouristTokenRepository : ITouristTokenRepository
         await _context.SaveChangesAsync();
     }
 
+    //Get Token By Tourist Id And Token Id 
+    public async Task<TouristToken?> GetTokenByTouristIdAndTokenId(ulong touristId, ulong tokenId)
+    {
+        return await _context.TouristTokens
+                             .AsNoTracking()
+                             .Where(p => !p.IsDelete && p.TouristId == touristId && p.Id == tokenId)
+                             .FirstOrDefaultAsync();
+    }
+
+    //Get Token By Id
+    public async Task<TouristToken?> GetTokenById(ulong tokenId)
+    {
+        return await _context.TouristTokens
+                             .AsNoTracking()
+                             .FirstOrDefaultAsync(p => !p.IsDelete && p.Id == tokenId);
+    }
+
+    //Get List Of Waiting Passengers By Tourist Id
+    public async Task<List<TouristPassengers>?> GetListOfWaitingPassengersByTouristId(ulong touristId)
+    {
+        return await _context.TouristPassengers
+                                       .AsNoTracking()
+                                       .Where(p => !p.IsDelete && p.TouristId == touristId && p.PassengerInfoState == Domain.Enums.Tourist.TouristPassengersInfoState.WaitingForCompleteInfoFromTourist)
+                                       .ToListAsync();
+    }
+
+    //Update Passengers Infos State To Paied Token
+    public async Task<bool> UpdatePassengersInfosStateToPaiedToken( , ulong touristId , ulong tokenId)
+    {
+        #region Get List Of Passengers
+
+        var passengers = await GetListOfWaitingPassengersByTouristId(touristId);
+        if (passengers == null) return false;
+
+        #endregion
+
+        #region Update And Add Data 
+
+        List<TouristPassengerSelectedToken> model = new();
+
+        foreach (var passenger in passengers)
+        {
+            //Update Passenger State 
+            passenger.PassengerInfoState = Domain.Enums.Tourist.TouristPassengersInfoState.RecievedToken;
+
+            //Add Passenger Selected Token
+            model.Add(new TouristPassengerSelectedToken()
+            {
+                CreateDate = DateTime.Now,
+                IsDelete = false,
+                PassengerId = passenger.Id,
+                TokenId = tokenId,
+                TouristId = touristId
+            });
+        }
+
+        //Update
+        _context.TouristPassengers.UpdateRange(passengers);
+
+        //Add 
+        await _context.TouristPassengerSelectedTokens.AddRangeAsync(model);
+
+        await  _context.SaveChangesAsync();
+
+        #endregion
+
+        return true;
+    }
+
     #endregion
 }

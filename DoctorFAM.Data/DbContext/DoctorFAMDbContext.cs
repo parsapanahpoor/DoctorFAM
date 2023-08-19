@@ -560,6 +560,10 @@ public class DoctorFAMDbContext : Microsoft.EntityFrameworkCore.DbContext
 
     public DbSet<TouristPassengers> TouristPassengers { get; set; }
 
+    public DbSet<TouristPassengerSelectedToken> TouristPassengerSelectedTokens { get; set; }
+
+    public DbSet<CountOFTouristTokenUsage> CountOFTouristTokenUsages { get; set; }
+
     #endregion
 
     #endregion

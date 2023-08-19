@@ -198,8 +198,9 @@ public class TokenController : TouristBaseController
 
         #region Online Payment
 
-        return RedirectToAction("PaymentMethod", "Payment", new
+        return RedirectToAction("PaymentMethodForOrganizations", "Payment", new
         {
+            ownerUserId = res.TouristOwnerId,
             gatewayType = GatewayType.Zarinpal,
             amount = res.Price,
             description = "شارژ حساب کاربری برای پرداخت هزینه ی توکن گردشگری",

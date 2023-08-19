@@ -52,5 +52,14 @@ public interface ITouristTokenRepository
     //Get Token By Tourist Id And Token Id 
     Task<TouristToken?> GetTokenByTouristIdAndTokenId(ulong touristId, ulong tokenId);
 
+    //Get Token By Id
+    Task<TouristToken?> GetTokenById(ulong tokenId);
+
+    //Get List Of Waiting Passengers By Tourist Id
+    Task<List<TouristPassengers>?> GetListOfWaitingPassengersByTouristId(ulong touristId);
+
+    //Update Passengers Infos State To Paied Token
+    Task<bool> UpdatePassengersInfosStateToPaiedToken(ulong touristId, ulong tokenId);
+
     #endregion
 }

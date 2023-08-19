@@ -22,5 +22,7 @@ public class TouristTokenPaymentResult
 
     public bool Result { get; set; }
 
+    public ulong TouristOwnerId { get; set; }
+
     #endregion
 }
