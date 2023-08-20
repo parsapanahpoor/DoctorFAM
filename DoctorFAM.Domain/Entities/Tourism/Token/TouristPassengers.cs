@@ -16,6 +16,8 @@ namespace DoctorFAM.Domain.Entities.Tourism.Token
 
         public ulong TouristId { get; set; }
 
+        public ulong? TokenId { get; set; }
+
         public TouristPassengersInfoState PassengerInfoState { get; set; }
 
         public int RequiredAmount { get; set; }

@@ -102,6 +102,13 @@ namespace DoctorFAM.Web.Controllers
 
         public async Task<IActionResult> PaymentMethodForOrganizations(ulong ownerUserId ,GatewayType gatewayType, int amount, string description, string returURL, ulong? requestId)
         {
+            #region Get User By Id
+
+            var user = await _userService.GetUserById(ownerUserId);
+            if (user == null) return NotFound();
+
+            #endregion
+
             #region Online Payment
 
             try

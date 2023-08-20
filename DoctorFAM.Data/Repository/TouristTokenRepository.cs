@@ -5,6 +5,7 @@ using DoctorFAM.Data.Migrations;
 using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Tourism;
 using DoctorFAM.Domain.Entities.Tourism.Token;
+using DoctorFAM.Domain.Enums.Tourist;
 using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.Tourist.Token;
 using Microsoft.EntityFrameworkCore;
@@ -45,7 +46,8 @@ public class TouristTokenRepository : ITouristTokenRepository
     {
         return await _context.TouristPassengers
                              .AsNoTracking()
-                             .Where(p => !p.IsDelete && p.TouristId == touristId && p.PassengerInfoState == Domain.Enums.Tourist.TouristPassengersInfoState.WaitingForCompleteInfoFromTourist)
+                             .Where(p => !p.IsDelete && p.TouristId == touristId && !p.TokenId.HasValue &&
+                                    p.PassengerInfoState == Domain.Enums.Tourist.TouristPassengersInfoState.WaitingForCompleteInfoFromTourist)
                              .Select(p => new ListOfWaitingUserForTakeinTokenToThemTouristPanelViewModel()
                              {
                                  Id = p.Id,
@@ -164,7 +166,7 @@ public class TouristTokenRepository : ITouristTokenRepository
     }
 
     //Update Passengers Infos State To Paied Token
-    public async Task<bool> UpdatePassengersInfosStateToPaiedToken( , ulong touristId , ulong tokenId)
+    public async Task<bool> UpdatePassengersInfosStateToPaiedToken(ulong touristId , ulong tokenId)
     {
         #region Get List Of Passengers
 
@@ -175,35 +177,44 @@ public class TouristTokenRepository : ITouristTokenRepository
 
         #region Update And Add Data 
 
-        List<TouristPassengerSelectedToken> model = new();
 
         foreach (var passenger in passengers)
         {
             //Update Passenger State 
             passenger.PassengerInfoState = Domain.Enums.Tourist.TouristPassengersInfoState.RecievedToken;
-
-            //Add Passenger Selected Token
-            model.Add(new TouristPassengerSelectedToken()
-            {
-                CreateDate = DateTime.Now,
-                IsDelete = false,
-                PassengerId = passenger.Id,
-                TokenId = tokenId,
-                TouristId = touristId
-            });
+            passenger.TokenId = tokenId;
         }
 
         //Update
         _context.TouristPassengers.UpdateRange(passengers);
-
-        //Add 
-        await _context.TouristPassengerSelectedTokens.AddRangeAsync(model);
 
         await  _context.SaveChangesAsync();
 
         #endregion
 
         return true;
+    }
+
+    //Get List OF Tokens By Tourist Id
+    public async Task<List<ListOfTokensTouristSideViewModel>> GetListOFTokensByTouristId(ulong touristId)
+    {
+        return await _context.TouristTokens
+                             .AsNoTracking()
+                             .Where(p => !p.IsDelete && p.Id == touristId)
+                             .Select(p => new ListOfTokensTouristSideViewModel()
+                             {
+                                 EndDate = p.EndDate,
+                                 StartDate = p.StartDate,
+                                 TokenCode = p.Token,
+                                 TokenLabel = p.TokenLabel,
+                                 CountOfPassengers = _context.TouristPassengers
+                                                             .AsNoTracking()
+                                                             .Where(s=> !s.IsDelete && s.TokenId == p.Id)
+                                                             .Select(s=> s.RequiredAmount)
+                                                             .Count(),
+                                 TouristTokenState = p.TouristTokenState
+                             })
+                             .ToListAsync();
     }
 
     #endregion

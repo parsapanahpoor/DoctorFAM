@@ -557,5 +557,22 @@ public class TouristTokenService : ITouristTokenService
         return true;
     }
 
+    //Get List OF Tokens By Tourist Id
+    public async Task<List<ListOfTokensTouristSideViewModel>?> GetListOFTokensByTouristId(ulong touristUserId)
+    {
+        #region Get Tourist By Tourist User Id 
+
+        var tourist = await GetTouristIdByTouristUserId(touristUserId);
+        if (tourist == null) return null;
+
+        #endregion
+
+        #region Return Model 
+
+        return await _touristTokenRepository.GetListOFTokensByTouristId(touristUserId);
+
+        #endregion
+    }
+
     #endregion
 }

@@ -287,7 +287,7 @@ public static class Messages
     public static string PaiedTokenForPassengers(TouristToken token , TouristPassengers passengers )
     {
         return
-            $"باعرض سلام . {Environment.NewLine}" +
+            $" سلام . {Environment.NewLine}" +
             $"تعداد {passengers.RequiredAmount} توکن گردشگری از طرف آژانس گردشگری برای شما صادر شده است. {Environment.NewLine}" +
             $"این توکن از تاریخ {token.StartDate.ToShamsi()} تا پایان روز {token.EndDate.ToShamsi()} برای شما معتبر خواهد بود .  {Environment.NewLine}" +
             $"سریال توکن شمات : {token.Token}" +

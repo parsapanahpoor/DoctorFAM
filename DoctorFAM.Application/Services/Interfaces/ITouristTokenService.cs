@@ -62,5 +62,8 @@ public interface ITouristTokenService
     //Pay Tourist Token Tariff
     Task<bool> PayTouristTokenTariff(ulong touristOwnerID, int price, ulong? requestId);
 
+    //Get List OF Tokens By Tourist Id
+    Task<List<ListOfTokensTouristSideViewModel>?> GetListOFTokensByTouristId(ulong touristUserId);
+
     #endregion
 }

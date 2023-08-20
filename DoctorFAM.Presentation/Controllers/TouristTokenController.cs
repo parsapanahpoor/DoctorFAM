@@ -89,7 +89,7 @@ public class TouristTokenController : SiteBaseController
                     string refid = jodata["data"]["ref_id"].ToString();
 
                     //Get Wallet Transaction For Validation 
-                    var wallet = await _walletService.FindWalletTransactionForRedirectToTheBankPortal(token.TouristOwnerId, GatewayType.Zarinpal, token.TouristId, parameters.authority, token.Price);
+                    var wallet = await _walletService.FindWalletTransactionForRedirectToTheBankPortal(token.TouristOwnerId, GatewayType.Zarinpal, token.TokenId, parameters.authority, token.Price);
 
                     if (wallet != null)
                     {

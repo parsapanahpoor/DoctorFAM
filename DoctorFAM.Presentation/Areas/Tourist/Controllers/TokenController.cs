@@ -200,6 +200,7 @@ public class TokenController : TouristBaseController
 
         return RedirectToAction("PaymentMethodForOrganizations", "Payment", new
         {
+            area = "", 
             ownerUserId = res.TouristOwnerId,
             gatewayType = GatewayType.Zarinpal,
             amount = res.Price,
@@ -209,6 +210,16 @@ public class TokenController : TouristBaseController
         });
 
         #endregion
+    }
+
+    #endregion
+
+    #region List Of Tokens
+
+    [HttpGet]
+    public async Task<IActionResult> ListOfTokens()
+    {
+        return View(await _touristTokenService.GetListOFTokensByTouristId(User.GetUserId()));
     }
 
     #endregion

@@ -61,5 +61,8 @@ public interface ITouristTokenRepository
     //Update Passengers Infos State To Paied Token
     Task<bool> UpdatePassengersInfosStateToPaiedToken(ulong touristId, ulong tokenId);
 
+    //Get List OF Tokens By Tourist Id
+    Task<List<ListOfTokensTouristSideViewModel>> GetListOFTokensByTouristId(ulong touristId);
+
     #endregion
 }
