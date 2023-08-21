@@ -11,6 +11,8 @@ namespace DoctorFAM.Domain.ViewModels.Tourist.Token
     {
         #region properties
 
+        public ulong TokenId { get; set; }
+
         public string TokenCode { get; set; }
 
         public string? TokenLabel { get; set; }

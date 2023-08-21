@@ -33,10 +33,10 @@ public interface ITouristTokenService
     Task<int> CountOfWaitingUserForInitialToken(ulong touristUserId);
 
     //Initial Tourist Token For Tourist
-    Task<bool> InitialTouristTokenForTourist(ImportingTokenInformationTouristSideViewModele model, ulong touristUserId);
+    Task<AddPhoneNumbersResultViewModel> InitialTouristTokenForTourist(ImportingTokenInformationTouristSideViewModele model, ulong touristUserId);
 
     //Fill Show Token Invoice For Tourist View Model
-    Task<ShowTokenInvoiceForTouristViewModle?> ShowTokenInvoiceForTouristViewModel(ulong touristUserId);
+    Task<ShowTokenInvoiceForTouristViewModle?> ShowTokenInvoiceForTouristViewModel(ulong touristUserId , ulong tokenId);
 
     //Is Exist Any Waiting For Payment Token Request For Current Tourist
     Task<bool> IsExistAnyWaitingForPaymentTokenRequestForCurrentTourist(ulong touristUserId);
@@ -64,6 +64,9 @@ public interface ITouristTokenService
 
     //Get List OF Tokens By Tourist Id
     Task<List<ListOfTokensTouristSideViewModel>?> GetListOFTokensByTouristId(ulong touristUserId);
+
+    //Fill Token Detail Tourist Side View Model
+    Task<TokenDetailTouristSideViewModel?> FillTokenDetailTouristSideViewModel(ulong touristUserId, ulong tokenId);
 
     #endregion
 }

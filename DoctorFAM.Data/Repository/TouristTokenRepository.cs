@@ -166,7 +166,7 @@ public class TouristTokenRepository : ITouristTokenRepository
     }
 
     //Update Passengers Infos State To Paied Token
-    public async Task<bool> UpdatePassengersInfosStateToPaiedToken(ulong touristId , ulong tokenId)
+    public async Task<bool> UpdatePassengersInfosStateToPaiedToken(ulong touristId, ulong tokenId)
     {
         #region Get List Of Passengers
 
@@ -188,7 +188,7 @@ public class TouristTokenRepository : ITouristTokenRepository
         //Update
         _context.TouristPassengers.UpdateRange(passengers);
 
-        await  _context.SaveChangesAsync();
+        await _context.SaveChangesAsync();
 
         #endregion
 
@@ -200,21 +200,71 @@ public class TouristTokenRepository : ITouristTokenRepository
     {
         return await _context.TouristTokens
                              .AsNoTracking()
-                             .Where(p => !p.IsDelete && p.Id == touristId)
+                             .Where(p => !p.IsDelete && p.TouristId == touristId)
                              .Select(p => new ListOfTokensTouristSideViewModel()
                              {
                                  EndDate = p.EndDate,
                                  StartDate = p.StartDate,
                                  TokenCode = p.Token,
                                  TokenLabel = p.TokenLabel,
+                                 TokenId = p.Id,
                                  CountOfPassengers = _context.TouristPassengers
                                                              .AsNoTracking()
-                                                             .Where(s=> !s.IsDelete && s.TokenId == p.Id)
-                                                             .Select(s=> s.RequiredAmount)
+                                                             .Where(s => !s.IsDelete && s.TokenId == p.Id)
+                                                             .Select(s => s.RequiredAmount)
                                                              .Count(),
                                  TouristTokenState = p.TouristTokenState
                              })
                              .ToListAsync();
+    }
+
+    //Fill Token Detail Tourist Side View Model
+    public async Task<TokenDetailTouristSideViewModel?> FillTokenDetailTouristSideViewModel(ulong touristId, ulong tokenId)
+    {
+        return await _context.TouristTokens
+                             .AsNoTracking()
+                             .Where(p => !p.IsDelete && p.Id == tokenId && p.TouristId == touristId)
+                             .Select(p => new TokenDetailTouristSideViewModel()
+                             {
+                                 TouristToken = p,
+                                 ListOfPassengersInTokenDetailPage = _context.TouristPassengers
+                                                             .AsNoTracking()
+                                                             .Where(s => !s.IsDelete && s.TouristId == touristId && s.TokenId == tokenId)
+                                                             .Select(s=> new ListOfPassengersInTokenDetailPage()
+                                                             {
+                                                                 User = _context.Users
+                                                                                .AsNoTracking()
+                                                                                .Where(u=> u.Id == s.UserId)
+                                                                                .FirstOrDefault(),
+                                                                 TouristPassengers = s
+                                                             })
+                                                             .ToList()
+                             })
+                             .FirstOrDefaultAsync();
+    }
+
+    //Update Paid Tourist's Passengers After Add New Passenger To The Paid Token
+    public async Task UpdatePaidTouristsPassengersAfterAddNewPassengerToThePaidToken(ulong touristId , ulong tokenId)
+    {
+        #region Get Paid Passengers
+
+        var passengers = await _context.TouristPassengers
+                                       .AsNoTracking()
+                                       .Where(p => !p.IsDelete && p.TouristId == touristId && p.TokenId == tokenId && p.PassengerInfoState == TouristPassengersInfoState.RecievedToken)
+                                       .ToListAsync();
+
+        #endregion
+
+        if (passengers != null && passengers.Any())
+        {
+            foreach (var passenger in passengers)
+            {
+                passenger.PassengerInfoState = TouristPassengersInfoState.PaidButWaitingForPaymentMoreForToken;
+            }
+
+            _context.TouristPassengers.UpdateRange(passengers);
+            await _context.SaveChangesAsync();
+        }
     }
 
     #endregion

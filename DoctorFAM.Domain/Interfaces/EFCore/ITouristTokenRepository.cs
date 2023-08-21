@@ -64,5 +64,11 @@ public interface ITouristTokenRepository
     //Get List OF Tokens By Tourist Id
     Task<List<ListOfTokensTouristSideViewModel>> GetListOFTokensByTouristId(ulong touristId);
 
+    //Fill Token Detail Tourist Side View Model
+    Task<TokenDetailTouristSideViewModel?> FillTokenDetailTouristSideViewModel(ulong touristId, ulong tokenId);
+
+    //Update Paid Tourist's Passengers After Add New Passenger To The Paid Token
+    Task UpdatePaidTouristsPassengersAfterAddNewPassengerToThePaidToken(ulong touristId, ulong tokenId);
+
     #endregion
 }

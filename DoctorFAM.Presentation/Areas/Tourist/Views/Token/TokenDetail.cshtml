@@ -1,0 +1,211 @@
+﻿@model DoctorFAM.Domain.ViewModels.Tourist.Token.TokenDetailTouristSideViewModel
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.Extensions;
+@using DoctorFAM.Domain.Enums.DoctorReservation
+
+@{
+    ViewData["Title"] = @Localizer["بررسی اطلاعات توکن"];
+}
+
+@section Scripts
+    {
+    <partial name="_JqueryValidation" />
+    <link href="/admin/css/dataTables.bootstrap.rtl.css" rel="stylesheet" />
+
+    <script src="~/admin/js/datatable/jquery.dataTables.min.js"></script>
+    <script src="~/admin/js/datatable/ZeroClipboard.js"></script>
+    <script src="~/admin/js/datatable/dataTables.tableTools.min.js"></script>
+    <script src="~/admin/js/datatable/dataTables.bootstrap.min.js"></script>
+    <script src="~/admin/js/datatable/datatables-init.js"></script>
+    <script>
+        InitiateSimpleDataTable.init();
+        InitiateEditableDataTable.init();
+        InitiateExpandableDataTable.init();
+        InitiateSearchableDataTable.init();
+    </script>
+}
+
+@section Breadcrumb
+    {
+    <li>
+        <a asp-action="ManagePage" asp-controller="Token" asp-area="Tourist"> مدیریت توکن ها </a>
+    </li>
+}
+
+<div class="row">
+    <div class="col-lg-12 col-sm-12">
+
+        <div class="widget">
+            <div class="widget-header bordered-bottom bordered-green">
+                <span class="widget-caption"> @Localizer["افزودن اطلاعات مسافر"] </span>
+            </div>
+            <div class="widget-body">
+                <div>
+
+                    <form asp-action="AddphoneNumber" asp-controller="Token" asp-area="Tourist" method="post">
+                        <input name="TokenId" value="@Model.TouristToken.Id" type="hidden" />
+                        <div class="modal-body">
+                            <div class="row">
+
+                                <div class="form-group col-md-6 col-sm-12">
+                                    <label >@Localizer["شماره موبایل"]</label>
+                                    <span style="color:red;">*</span>
+                                    <input type="text" class="form-control" name="PhoneNumber">
+                                </div>
+
+                                <div class="form-group col-md-6 col-sm-12">
+                                    <label >@Localizer["تعداد توکن مورد نیاز"]</label>
+                                    <span style="color:red;">*</span>
+                                    <input type="number" min="1" class="form-control" name="RequiredAmount">
+                                </div>
+
+                                <div class="clearfix"></div>
+
+                                <div class="form-group col-md-12">
+                                    <button type="submit" class="btn btn-success">@SharedLocalizer["ثبت"]</button>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (Model.TouristToken.TouristTokenState == DoctorFAM.Domain.Enums.Tourist.TouristTokenState.WaitingForPayment)
+{
+    <div class="row">
+        <div class="col-lg-12 col-sm-12">
+
+            <div class="widget">
+                <div class="widget-header bordered-bottom bordered-green">
+                    <span class="widget-caption"> @Localizer["پرداخت هزینه ی توکن"] </span>
+                </div>
+                <div class="widget-body">
+                    <div>
+
+                        <div class="modal-body">
+                            <div class="row">
+
+                                <p>در صورتی که لیست افراد زیر مورد تایید شما می باشد و ویرایش شما نهایی شده است میتوانید با کلیک بر روی گزینه ی به صفحه ی درخواست تولید توکن وارد شوید</p>
+
+                                <div class="clearfix"></div>
+
+                                <div class="form-group col-md-12">
+                                    <a asp-action="ShowInvoiceForTokenRequet" asp-area="Tourist" asp-controller="Token" asp-route-tokenId="@Model.TouristToken.Id" class="btn btn-success">@SharedLocalizer["درخواست ایجاد توکن"]</a>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+<div class="page-body">
+
+    <div class="row">
+
+        <div id="horizontal-form">
+
+            @if (Model.ListOfPassengersInTokenDetailPage != null && Model.ListOfPassengersInTokenDetailPage.Any())
+            {
+
+                <div class="widget-body no-padding">
+                    <div id="searchable_wrapper" class="dataTables_wrapper form-inline">
+
+                        <table class="table table-bordered table-hover table-striped dataTable" id="searchable" role="grid" aria-describedby="searchable_info">
+                            <thead class="bordered-darkorange">
+                                <tr role="row">
+
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" aria-sort="ascending">کاربر</th>
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" aria-sort="ascending">موبایل</th>
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Platform: activate to sort column ascending">تعداد بلیط درخواستی</th>
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Platform: activate to sort column ascending">وضعیت</th>
+
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                @foreach (var user in Model.ListOfPassengersInTokenDetailPage)
+                                {
+                                    <tr role="row" class="even responsive" remove-ajax-item="@user.User.Id">
+
+                                        <td class="sorting_1">
+                                            <div class="flex-style-center">
+                                                <img src="@user.User.Avatar.GetUserAvatar()" class="avatar-style" />
+                                                <div class="mr-10px">
+                                                    <span> @user.User.Username</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="sorting_1">
+                                            <div class="row" style="width: 100%;margin: auto;text-aling">
+
+                                                @user.User.Mobile
+
+                                            </div>
+                                        </td>
+
+                                        <td class="center ">
+
+                                            @user.TouristPassengers.RequiredAmount بلیط
+
+                                        </td>
+
+                                        <td class="center ">
+
+                                            @if (user.TouristPassengers.PassengerInfoState == DoctorFAM.Domain.Enums.Tourist.TouristPassengersInfoState.PaidButWaitingForPaymentMoreForToken)
+                                            {
+                                                <p class="label label-info">پرداخت شده</p>
+                                            }
+                                            @if (user.TouristPassengers.PassengerInfoState == DoctorFAM.Domain.Enums.Tourist.TouristPassengersInfoState.WaitingForCompleteInfoFromTourist)
+                                            {
+                                                <p class="label label-warning">درانتظار پرداخت</p>
+                                            }
+                                            @if (user.TouristPassengers.PassengerInfoState == DoctorFAM.Domain.Enums.Tourist.TouristPassengersInfoState.RecievedToken)
+                                            {
+                                                <p class="label label-success">نهایی شده</p>
+                                            }
+
+                                        </td>
+                                        <td class="center ">
+
+                                            @if (user.TouristPassengers.PassengerInfoState == DoctorFAM.Domain.Enums.Tourist.TouristPassengersInfoState.WaitingForCompleteInfoFromTourist)
+                                            {
+                                                <a asp-action="DeleteTouristPassengersFromWaitingList"
+                                                   asp-area="Tourist"
+                                                   asp-controller="Token"
+                                                   asp-route-id="@user.TouristPassengers"
+                                                   asp-route-tokenId="@Model.TouristToken.Id"
+                                                   class="btn btn-danger btn-circle btn-xs"><i class="glyphicon glyphicon-trash"></i></a>
+                                            }
+
+                                        </td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <partial name="_TourismNotFoundPartial" />
+            }
+
+        </div>
+    </div>
+
+</div>

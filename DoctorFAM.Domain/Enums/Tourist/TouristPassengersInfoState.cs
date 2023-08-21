@@ -10,6 +10,7 @@ namespace DoctorFAM.Domain.Enums.Tourist
     {
         WaitingForCompleteInfoFromTourist,
         RecievedToken,
-        RemovedByTourist
+        RemovedByTourist,
+        PaidButWaitingForPaymentMoreForToken
     }
 }

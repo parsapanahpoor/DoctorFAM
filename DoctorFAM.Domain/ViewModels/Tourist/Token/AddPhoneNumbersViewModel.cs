@@ -14,5 +14,18 @@ public class AddPhoneNumbersViewModel
 
     public int RequiredAmount { get; set; }
 
+    public ulong TokenId { get; set; }
+
+    #endregion
+}
+
+public class AddPhoneNumbersResultViewModel
+{
+    #region properties
+
+    public bool Result { get; set; }
+
+    public ulong TokenId { get; set; }
+
     #endregion
 }

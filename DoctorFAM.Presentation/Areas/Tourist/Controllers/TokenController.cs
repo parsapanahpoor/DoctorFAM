@@ -10,6 +10,7 @@ using DoctorFAM.Web.Tourism.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Storage;
+using System.ComponentModel.DataAnnotations;
 
 #endregion
 
@@ -37,21 +38,30 @@ public class TokenController : TouristBaseController
 
     #endregion
 
-    #region Add phone Number 
+    #region Token Detail
 
-    [HttpGet, CheckThatIsExistAnyWaitingForPaymentTokenRequest]
-    public async Task<IActionResult> AddphoneNumber()
+    [HttpGet]
+    public async Task<IActionResult> TokenDetail(ulong id)
     {
-        #region List Of Waiting Users
+        #region Fill Model
 
-        ViewData["ListOfWaitingPassengers"] = await _touristTokenService.ListOfWaitingUserForTakeinTokenToThem(User.GetUserId());
+        var model = await _touristTokenService.FillTokenDetailTouristSideViewModel(User.GetUserId(), id);
+        if (model == null)
+        {
+            TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+            return RedirectToAction(nameof(ListOfTokens));
+        }
 
         #endregion
 
-        return View();
+        return View(model);
     }
 
-    [HttpPost, ValidateAntiForgeryToken, CheckThatIsExistAnyWaitingForPaymentTokenRequest]
+    #endregion
+
+    #region Add phone Number 
+
+    [HttpPost, ValidateAntiForgeryToken]
     public async Task<IActionResult> AddphoneNumber(AddPhoneNumbersViewModel model)
     {
         #region Add Passenger Info 
@@ -62,24 +72,23 @@ public class TokenController : TouristBaseController
             if (res)
             {
                 TempData[SuccessMessage] = "اطلاعات باموفقیت وارد شده است.";
-                return RedirectToAction(nameof(AddphoneNumber));
+                return RedirectToAction(nameof(TokenDetail), new { id = model.TokenId});
             }
         }
 
         #endregion
 
         TempData[ErrorMessage] = "عملیات باشکست مواجه شده است.";
-        ViewData["ListOfWaitingPassengers"] = await _touristTokenService.ListOfWaitingUserForTakeinTokenToThem(User.GetUserId());
 
-        return View(model);
+        return RedirectToAction(nameof(TokenDetail), new { id = model.TokenId });
     }
 
     #endregion
 
     #region Delete Tourist Passengers From Waiting List 
 
-    [HttpGet, CheckThatIsExistAnyWaitingForPaymentTokenRequest]
-    public async Task<IActionResult> DeleteTouristPassengersFromWaitingList(ulong id)
+    [HttpGet]
+    public async Task<IActionResult> DeleteTouristPassengersFromWaitingList(ulong id , ulong tokenId)
     {
         #region Remove Method
 
@@ -87,38 +96,27 @@ public class TokenController : TouristBaseController
         if (res)
         {
             TempData[SuccessMessage] = "اطلاعات باموفقیت وارد شده است.";
-            return RedirectToAction(nameof(AddphoneNumber));
+            return RedirectToAction(nameof(ShowInvoiceForTokenRequet), new { id = tokenId });
         }
 
         #endregion
 
         TempData[ErrorMessage] = "عملیات باشکست مواجه شده است.";
 
-        return RedirectToAction(nameof(AddphoneNumber));
+        return RedirectToAction(nameof(ShowInvoiceForTokenRequet), new { id = tokenId });
     }
 
     #endregion
 
     #region Importing Token Information
 
-    [HttpGet, CheckThatIsExistAnyWaitingForPaymentTokenRequest]
+    [HttpGet]
     public async Task<IActionResult> ImportingTokenInformation()
     {
-        #region Count Of Waiting User For Initial Token 
-
-        var countOfWaitingPassengers = await _touristTokenService.CountOfWaitingUserForInitialToken(User.GetUserId());
-        if (countOfWaitingPassengers < 1)
-        {
-            TempData[ErrorMessage] = "تعداد کاربران انتخاب شده از حد مجاز کمتر است. ";
-            return View(nameof(AddphoneNumber));
-        }
-
-        #endregion
-
         return View();
     }
 
-    [HttpPost, ValidateAntiForgeryToken, CheckThatIsExistAnyWaitingForPaymentTokenRequest]
+    [HttpPost, ValidateAntiForgeryToken]
     public async Task<IActionResult> ImportingTokenInformation(ImportingTokenInformationTouristSideViewModele model)
     {
         #region Add Token For Tourist 
@@ -126,10 +124,10 @@ public class TokenController : TouristBaseController
         if (ModelState.IsValid)
         {
             var res = await _touristTokenService.InitialTouristTokenForTourist(model, User.GetUserId());
-            if (res)
+            if (res.Result)
             {
                 TempData[SuccessMessage] = "عملیات باموفقیت وارد شده است.";
-                return RedirectToAction(nameof(ShowInvoiceForTokenRequet));
+                return RedirectToAction(nameof(TokenDetail) , new { id = res.TokenId });
             }
         }
 
@@ -144,11 +142,11 @@ public class TokenController : TouristBaseController
     #region Show Invoice For Token Requet
 
     [HttpGet]
-    public async Task<IActionResult> ShowInvoiceForTokenRequet()
+    public async Task<IActionResult> ShowInvoiceForTokenRequet(ulong tokenId)
     {
         #region Fill Invoice
 
-        var invoice = await _touristTokenService.ShowTokenInvoiceForTouristViewModel(User.GetUserId());
+        var invoice = await _touristTokenService.ShowTokenInvoiceForTouristViewModel(User.GetUserId() , tokenId);
 
         #endregion
 

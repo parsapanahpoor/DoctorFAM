@@ -100,6 +100,22 @@ public class TouristTokenService : ITouristTokenService
 
         #endregion
 
+        #region Get Token By Token Id
+
+        var token = await GetTokenById(model.TokenId);
+        if (token == null || token.TouristId != tourist.Id) return false;
+
+        #endregion
+
+        #region Update Last Token Requests 
+
+        if (token.TouristTokenState == Domain.Enums.Tourist.TouristTokenState.Paid)
+        {
+            await _touristTokenRepository.UpdatePaidTouristsPassengersAfterAddNewPassengerToThePaidToken(tourist.Id , token.Id);
+        }
+
+        #endregion
+
         #region Get User By Mobile Number
 
         var user = await _userService.GetUserByMobile(model.PhoneNumber);
@@ -115,6 +131,7 @@ public class TouristTokenService : ITouristTokenService
             if (touristPassenger != null)
             {
                 touristPassenger.RequiredAmount = touristPassenger.RequiredAmount + model.RequiredAmount;
+                touristPassenger.TokenId = model.TokenId;
 
                 await _touristTokenRepository.UpdateTouristPassengerDataInformation(touristPassenger);
             }
@@ -129,7 +146,8 @@ public class TouristTokenService : ITouristTokenService
                     PassengerInfoState = Domain.Enums.Tourist.TouristPassengersInfoState.WaitingForCompleteInfoFromTourist,
                     RequiredAmount = model.RequiredAmount,
                     TouristId = tourist.Id,
-                    UserId = user.Id
+                    UserId = user.Id,
+                    TokenId = model.TokenId
                 };
 
                 //Add Tourist Passenger To The Data Base
@@ -154,6 +172,7 @@ public class TouristTokenService : ITouristTokenService
             if (touristPassenger != null)
             {
                 touristPassenger.RequiredAmount = touristPassenger.RequiredAmount + model.RequiredAmount;
+                touristPassenger.TokenId = model.TokenId;
 
                 await _touristTokenRepository.UpdateTouristPassengerDataInformation(touristPassenger);
             }
@@ -168,7 +187,8 @@ public class TouristTokenService : ITouristTokenService
                     PassengerInfoState = Domain.Enums.Tourist.TouristPassengersInfoState.WaitingForCompleteInfoFromTourist,
                     RequiredAmount = model.RequiredAmount,
                     TouristId = tourist.Id,
-                    UserId = newUserId
+                    UserId = newUserId,
+                    TokenId = model.TokenId,
                 };
 
                 //Add Tourist Passenger To The Data Base
@@ -223,7 +243,7 @@ public class TouristTokenService : ITouristTokenService
 
         var touristPassenger = await _touristTokenRepository.GetTouristPassengerById(touristPassengerId);
         if (touristPassenger == null) return false;
-        if (touristPassenger.TouristId != tourist.Id) return false;
+        if (touristPassenger.TouristId != tourist.Id || touristPassenger.PassengerInfoState != Domain.Enums.Tourist.TouristPassengersInfoState.WaitingForCompleteInfoFromTourist) return false;
 
         #endregion
 
@@ -253,19 +273,18 @@ public class TouristTokenService : ITouristTokenService
     }
 
     //Initial Tourist Token For Tourist
-    public async Task<bool> InitialTouristTokenForTourist(ImportingTokenInformationTouristSideViewModele model , ulong touristUserId)
+    public async Task<AddPhoneNumbersResultViewModel> InitialTouristTokenForTourist(ImportingTokenInformationTouristSideViewModele model , ulong touristUserId)
     {
+        //Initial Model 
+        AddPhoneNumbersResultViewModel returnModel = new AddPhoneNumbersResultViewModel()
+        {
+            Result = false,
+        };
+
         #region Get Tourist By Tourist User Id 
 
         var tourist = await GetTouristIdByTouristUserId(touristUserId);
-        if (tourist == null) return false;
-
-        #endregion
-
-        #region Check Count Of Waiting Users
-
-        var count = await CountOfWaitingUserForInitialToken(touristUserId);
-        if (count < 1) return false;
+        if (tourist == null) return returnModel;
 
         #endregion
 
@@ -284,14 +303,15 @@ public class TouristTokenService : ITouristTokenService
 
         //Add Token To The Data Base 
         await _touristTokenRepository.AddTokenToTheDataBase(token);
+        returnModel.TokenId = token.Id;
 
         #endregion
 
-        return true;
+        return returnModel;
     }
 
     //Fill Show Token Invoice For Tourist View Model
-    public async Task<ShowTokenInvoiceForTouristViewModle?> ShowTokenInvoiceForTouristViewModel(ulong touristUserId)
+    public async Task<ShowTokenInvoiceForTouristViewModle?> ShowTokenInvoiceForTouristViewModel(ulong touristUserId, ulong tokenId)
     {
         #region Get Tourist By Tourist User Id 
 
@@ -319,8 +339,8 @@ public class TouristTokenService : ITouristTokenService
 
         #region Get Token By Tourist Id
 
-        var token = await _touristTokenRepository.GetLastWaitingFotPaymentToken(tourist.Id);
-        if (token == null) return null;
+        var token = await _touristTokenRepository.GetTokenById(tokenId);
+        if (token == null || token.TouristId != tourist.Id) return null;
 
         #endregion
 
@@ -569,9 +589,22 @@ public class TouristTokenService : ITouristTokenService
 
         #region Return Model 
 
-        return await _touristTokenRepository.GetListOFTokensByTouristId(touristUserId);
+        return await _touristTokenRepository.GetListOFTokensByTouristId(tourist.Id);
 
         #endregion
+    }
+
+    //Fill Token Detail Tourist Side View Model
+    public async Task<TokenDetailTouristSideViewModel?> FillTokenDetailTouristSideViewModel(ulong touristUserId, ulong tokenId)
+    {
+        #region Get Tourist By Tourist User Id 
+
+        var tourist = await GetTouristIdByTouristUserId(touristUserId);
+        if (tourist == null) return null;
+
+        #endregion
+
+        return await _touristTokenRepository.FillTokenDetailTouristSideViewModel(tourist.Id , tokenId);
     }
 
     #endregion
