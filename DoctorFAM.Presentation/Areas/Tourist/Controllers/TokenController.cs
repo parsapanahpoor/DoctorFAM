@@ -96,14 +96,14 @@ public class TokenController : TouristBaseController
         if (res)
         {
             TempData[SuccessMessage] = "اطلاعات باموفقیت وارد شده است.";
-            return RedirectToAction(nameof(ShowInvoiceForTokenRequet), new { id = tokenId });
+            return RedirectToAction(nameof(TokenDetail), new { id = tokenId });
         }
 
         #endregion
 
         TempData[ErrorMessage] = "عملیات باشکست مواجه شده است.";
 
-        return RedirectToAction(nameof(ShowInvoiceForTokenRequet), new { id = tokenId });
+        return RedirectToAction(nameof(TokenDetail), new { id = tokenId });
     }
 
     #endregion
@@ -147,6 +147,7 @@ public class TokenController : TouristBaseController
         #region Fill Invoice
 
         var invoice = await _touristTokenService.ShowTokenInvoiceForTouristViewModel(User.GetUserId() , tokenId);
+        if (invoice == null) return RedirectToAction(nameof(TokenDetail), new { id = tokenId });
 
         #endregion
 
@@ -189,7 +190,7 @@ public class TokenController : TouristBaseController
         if (res.Result == false)
         {
             TempData[ErrorMessage] = "عملیات با شکست مواجه شده است. ";
-            return RedirectToAction(nameof(ShowInvoiceForTokenRequet));
+            return RedirectToAction(nameof(ShowInvoiceForTokenRequet), new { tokenId = tokenId });
         }
 
         #endregion

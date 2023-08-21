@@ -108,11 +108,11 @@ public class TouristTokenRepository : ITouristTokenRepository
     }
 
     //Count Of Waiting Passengers With Their Required Amount
-    public async Task<int> CountOfWaitingPassengersWithTheirRequiredAmount(ulong touristId)
+    public async Task<int> CountOfWaitingPassengersWithTheirRequiredAmount(ulong touristId, ulong tokenId)
     {
         return await _context.TouristPassengers
                              .AsNoTracking()
-                             .Where(p => !p.IsDelete && p.TouristId == touristId && p.PassengerInfoState == Domain.Enums.Tourist.TouristPassengersInfoState.WaitingForCompleteInfoFromTourist)
+                             .Where(p => !p.IsDelete && p.TouristId == touristId && p.PassengerInfoState == Domain.Enums.Tourist.TouristPassengersInfoState.WaitingForCompleteInfoFromTourist && p.TokenId == tokenId)
                              .SumAsync(p => p.RequiredAmount);
     }
 
@@ -165,30 +165,52 @@ public class TouristTokenRepository : ITouristTokenRepository
                                        .ToListAsync();
     }
 
+    //Get List Of Waiting Passengers By Tourist Id
+    public async Task<List<TouristPassengers>?> GetListOfWaitingPassengersByTouristIdAndTokenId(ulong touristId, ulong tokenId)
+    {
+        return await _context.TouristPassengers
+                                       .AsNoTracking()
+                                       .Where(p => !p.IsDelete && p.TouristId == touristId && p.PassengerInfoState == Domain.Enums.Tourist.TouristPassengersInfoState.WaitingForCompleteInfoFromTourist && p.TokenId == tokenId)
+                                       .ToListAsync();
+    }
+
+    //Get List Of Waiting Passengers By Tourist Id
+    public async Task<List<TouristPassengers>?> GetListOfWaitingAfterFirstPaidPassengersByTouristIdAndTokenId(ulong touristId, ulong tokenId)
+    {
+        return await _context.TouristPassengers
+                                       .AsNoTracking()
+                                       .Where(p => !p.IsDelete && p.TouristId == touristId && p.PassengerInfoState == Domain.Enums.Tourist.TouristPassengersInfoState.PaidButWaitingForPaymentMoreForToken && p.TokenId == tokenId)
+                                       .ToListAsync();
+    }
+
     //Update Passengers Infos State To Paied Token
     public async Task<bool> UpdatePassengersInfosStateToPaiedToken(ulong touristId, ulong tokenId)
     {
         #region Get List Of Passengers
 
-        var passengers = await GetListOfWaitingPassengersByTouristId(touristId);
+        var passengers = await GetListOfWaitingPassengersByTouristIdAndTokenId(touristId, tokenId);
         if (passengers == null) return false;
+
+        var afterPaidPassengers= await GetListOfWaitingAfterFirstPaidPassengersByTouristIdAndTokenId(touristId, tokenId);
+        if (afterPaidPassengers != null) passengers.AddRange(afterPaidPassengers);
 
         #endregion
 
         #region Update And Add Data 
 
-
-        foreach (var passenger in passengers)
+        if (passengers != null && passengers.Any())
         {
-            //Update Passenger State 
-            passenger.PassengerInfoState = Domain.Enums.Tourist.TouristPassengersInfoState.RecievedToken;
-            passenger.TokenId = tokenId;
+            foreach (var passenger in passengers)
+            {
+                //Update Passenger State 
+                passenger.PassengerInfoState = Domain.Enums.Tourist.TouristPassengersInfoState.RecievedToken;
+            }
+
+            //Update
+            _context.TouristPassengers.UpdateRange(passengers);
+
+            await _context.SaveChangesAsync();
         }
-
-        //Update
-        _context.TouristPassengers.UpdateRange(passengers);
-
-        await _context.SaveChangesAsync();
 
         #endregion
 
@@ -230,11 +252,11 @@ public class TouristTokenRepository : ITouristTokenRepository
                                  ListOfPassengersInTokenDetailPage = _context.TouristPassengers
                                                              .AsNoTracking()
                                                              .Where(s => !s.IsDelete && s.TouristId == touristId && s.TokenId == tokenId)
-                                                             .Select(s=> new ListOfPassengersInTokenDetailPage()
+                                                             .Select(s => new ListOfPassengersInTokenDetailPage()
                                                              {
                                                                  User = _context.Users
                                                                                 .AsNoTracking()
-                                                                                .Where(u=> u.Id == s.UserId)
+                                                                                .Where(u => u.Id == s.UserId)
                                                                                 .FirstOrDefault(),
                                                                  TouristPassengers = s
                                                              })
@@ -244,7 +266,7 @@ public class TouristTokenRepository : ITouristTokenRepository
     }
 
     //Update Paid Tourist's Passengers After Add New Passenger To The Paid Token
-    public async Task UpdatePaidTouristsPassengersAfterAddNewPassengerToThePaidToken(ulong touristId , ulong tokenId)
+    public async Task UpdatePaidTouristsPassengersAfterAddNewPassengerToThePaidToken(ulong touristId, ulong tokenId)
     {
         #region Get Paid Passengers
 
@@ -252,7 +274,6 @@ public class TouristTokenRepository : ITouristTokenRepository
                                        .AsNoTracking()
                                        .Where(p => !p.IsDelete && p.TouristId == touristId && p.TokenId == tokenId && p.PassengerInfoState == TouristPassengersInfoState.RecievedToken)
                                        .ToListAsync();
-
         #endregion
 
         if (passengers != null && passengers.Any())
@@ -265,6 +286,13 @@ public class TouristTokenRepository : ITouristTokenRepository
             _context.TouristPassengers.UpdateRange(passengers);
             await _context.SaveChangesAsync();
         }
+    }
+
+    //Update Token
+    public async Task UpdateToken(TouristToken token)
+    {
+        _context.TouristTokens.Update(token);
+        await _context.SaveChangesAsync();
     }
 
     #endregion

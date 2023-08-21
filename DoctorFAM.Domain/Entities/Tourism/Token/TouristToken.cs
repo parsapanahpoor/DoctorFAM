@@ -2,6 +2,7 @@
 using DoctorFAM.Domain.Enums.Tourist;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,7 +21,8 @@ namespace DoctorFAM.Domain.Entities.Tourism.Token
 
         public string Token { get; set; }
 
-        public string? TokenLabel { get; set; }
+        [MaxLength(300)]
+        public string TokenLabel { get; set; }
 
         public TouristTokenState TouristTokenState { get; set; }
 

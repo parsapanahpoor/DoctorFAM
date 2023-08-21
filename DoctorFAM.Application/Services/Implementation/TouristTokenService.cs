@@ -111,7 +111,12 @@ public class TouristTokenService : ITouristTokenService
 
         if (token.TouristTokenState == Domain.Enums.Tourist.TouristTokenState.Paid)
         {
+            //Update Passengers
             await _touristTokenRepository.UpdatePaidTouristsPassengersAfterAddNewPassengerToThePaidToken(tourist.Id , token.Id);
+
+            //Update Token
+            token.TouristTokenState = Domain.Enums.Tourist.TouristTokenState.WaitingForPayment;
+            await _touristTokenRepository.UpdateToken(token);
         }
 
         #endregion
@@ -303,7 +308,9 @@ public class TouristTokenService : ITouristTokenService
 
         //Add Token To The Data Base 
         await _touristTokenRepository.AddTokenToTheDataBase(token);
+
         returnModel.TokenId = token.Id;
+        returnModel.Result = true;
 
         #endregion
 
@@ -327,7 +334,7 @@ public class TouristTokenService : ITouristTokenService
         if (countOfWaitingTouristPassengers < 1) return null;
 
         //Count Of Usage Count 
-        var countOfUsageAmount = await _touristTokenRepository.CountOfWaitingPassengersWithTheirRequiredAmount(tourist.Id);
+        var countOfUsageAmount = await _touristTokenRepository.CountOfWaitingPassengersWithTheirRequiredAmount(tourist.Id , tokenId);
 
         #endregion
 
@@ -449,7 +456,7 @@ public class TouristTokenService : ITouristTokenService
         var days = token.EndDate.DayOfYear - token.StartDate.DayOfYear;
 
         //Count Of Usage Count 
-        var countOfUsageAmount = await _touristTokenRepository.CountOfWaitingPassengersWithTheirRequiredAmount(tourist.Id);
+        var countOfUsageAmount = await _touristTokenRepository.CountOfWaitingPassengersWithTheirRequiredAmount(tourist.Id, tokenId);
 
         int price = tokenTriff * countOfUsageAmount * days;
 
@@ -508,7 +515,7 @@ public class TouristTokenService : ITouristTokenService
         var days = token.EndDate.DayOfYear - token.StartDate.DayOfYear;
 
         //Count Of Usage Count 
-        var countOfUsageAmount = await _touristTokenRepository.CountOfWaitingPassengersWithTheirRequiredAmount(token.TouristId);
+        var countOfUsageAmount = await _touristTokenRepository.CountOfWaitingPassengersWithTheirRequiredAmount(token.TouristId , tokenId);
 
         int price = tokenTriff * countOfUsageAmount * days;
 

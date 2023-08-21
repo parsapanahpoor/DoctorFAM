@@ -131,6 +131,7 @@
                                     <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" aria-sort="ascending">موبایل</th>
                                     <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Platform: activate to sort column ascending">تعداد بلیط درخواستی</th>
                                     <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Platform: activate to sort column ascending">وضعیت</th>
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Platform: activate to sort column ascending"></th>
 
                                 </tr>
                             </thead>
@@ -186,7 +187,7 @@
                                                 <a asp-action="DeleteTouristPassengersFromWaitingList"
                                                    asp-area="Tourist"
                                                    asp-controller="Token"
-                                                   asp-route-id="@user.TouristPassengers"
+                                                   asp-route-id="@user.TouristPassengers.Id"
                                                    asp-route-tokenId="@Model.TouristToken.Id"
                                                    class="btn btn-danger btn-circle btn-xs"><i class="glyphicon glyphicon-trash"></i></a>
                                             }

@@ -38,7 +38,7 @@ public interface ITouristTokenRepository
     Task AddTokenToTheDataBase(TouristToken token);
 
     //Count Of Waiting Passengers With Their Required Amount
-    Task<int> CountOfWaitingPassengersWithTheirRequiredAmount(ulong touristId);
+    Task<int> CountOfWaitingPassengersWithTheirRequiredAmount(ulong touristId , ulong tokenId);
 
     //Get Last Waiting Fot Payment Token 
     Task<TouristToken?> GetLastWaitingFotPaymentToken(ulong touristId);
@@ -69,6 +69,15 @@ public interface ITouristTokenRepository
 
     //Update Paid Tourist's Passengers After Add New Passenger To The Paid Token
     Task UpdatePaidTouristsPassengersAfterAddNewPassengerToThePaidToken(ulong touristId, ulong tokenId);
+
+    //Get List Of Waiting Passengers By Tourist Id
+    Task<List<TouristPassengers>?> GetListOfWaitingPassengersByTouristIdAndTokenId(ulong touristId, ulong tokenId);
+
+    //Get List Of Waiting Passengers By Tourist Id
+    Task<List<TouristPassengers>?> GetListOfWaitingAfterFirstPaidPassengersByTouristIdAndTokenId(ulong touristId, ulong tokenId);
+
+    //Update Token
+    Task UpdateToken(TouristToken token);
 
     #endregion
 }
