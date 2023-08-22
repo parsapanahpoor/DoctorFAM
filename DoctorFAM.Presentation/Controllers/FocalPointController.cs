@@ -211,27 +211,12 @@ public class FocalPointController : SiteBaseController
     [HttpGet("DoctorReservationPayment/{id}", Name = "DoctorReservationPayment")]
     public async Task<IActionResult> DoctorReservationPayment(ulong id)
     {
-        #region Get User By User Id
-
-        var user = await _userService.GetUserById(User.GetUserId());
-        if (user == null) NotFound();
-
-        #endregion
-
         #region Get Reservation Date Time 
 
         var reservationDateTime = await _reservationService.GetDoctorReservationDateTimeById(id);
 
-        if (reservationDateTime == null || reservationDateTime.DoctorReservationState == Domain.Enums.DoctorReservation.DoctorReservationState.Canceled) return NotFound();
-
-        if (reservationDateTime.DoctorReservationState == Domain.Enums.DoctorReservation.DoctorReservationState.Reserved)
-        {
-            if (reservationDateTime.PatientId != user.Id)
-            {
-                TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد";
-                return RedirectToAction("PaymentResult", "Payment", new { IsSuccess = false });
-            }
-        }
+        if (reservationDateTime == null || reservationDateTime.DoctorReservationState == Domain.Enums.DoctorReservation.DoctorReservationState.Canceled
+            || !reservationDateTime.PatientId.HasValue) return NotFound();
 
         var reservationDate = await _reservationService.GetReservationDateById(reservationDateTime.DoctorReservationDateId);
         if (reservationDate == null || !reservationDateTime.DoctorReservationType.HasValue)
@@ -244,7 +229,7 @@ public class FocalPointController : SiteBaseController
 
         #region Get Reservation Tariff 
 
-        var reservationTariff = await _doctorService.ProcessReservationTariffForPayFromUserAndIsUserInDoctorPopulationCoveredOrNot(reservationDate.UserId, User.GetUserId(), reservationDateTime.DoctorReservationType.Value);
+        var reservationTariff = await _doctorService.ProcessReservationTariffForPayFromUserAndIsUserInDoctorPopulationCoveredOrNot(reservationDate.UserId, reservationDateTime.PatientId.Value, reservationDateTime.DoctorReservationType.Value);
         if (reservationTariff.Item1 == 0 && reservationTariff.Item2 == false && reservationTariff.Item3 == false)
         {
             TempData[ErrorMessage] = "لطفا با پشتیبانی تماس بگیرید";
@@ -297,7 +282,7 @@ public class FocalPointController : SiteBaseController
                     string refid = jodata["data"]["ref_id"].ToString();
 
                     //Get Wallet Transaction For Validation 
-                    var wallet = await _walletService.FindWalletTransactionForRedirectToTheBankPortal(user.Id, GatewayType.Zarinpal, reservationDateTime.Id, parameters.authority, reservationTariff.Item1);
+                    var wallet = await _walletService.FindWalletTransactionForRedirectToTheBankPortal(reservationDateTime.PatientId.Value, GatewayType.Zarinpal, reservationDateTime.Id, parameters.authority, reservationTariff.Item1);
 
                     if (wallet != null)
                     {
@@ -310,20 +295,21 @@ public class FocalPointController : SiteBaseController
                         await _walletService.UpdateWalletAndCalculateUserBalanceAfterBankingPayment(wallet);
 
                         //Pay Home Visit Tariff
-                        await _reservationService.PayReservationTariff(User.GetUserId(), reservationTariff.Item1 , reservationDateTime.Id);
+                        await _reservationService.PayReservationTariff(reservationDateTime.PatientId.Value, reservationTariff.Item1 , reservationDateTime.Id);
 
                         await _reservationService.PayDoctorReservationPayedSharePercentage(reservationDate.UserId , reservationTariff.Item1 , reservationDateTime.Id , reservationTariff.Item2 , reservationDateTime.DoctorReservationType.Value);
 
                         #region Send Notification In SignalR
 
                         //Create Notification For Supporters And Admins
-                        var notifyResult = await _notificationService.CreateSupporterNotification(reservationDateTime.Id, Domain.Enums.Notification.SupporterNotificationText.TakeReservation, Domain.Enums.Notification.NotificationTarget.reservation, User.GetUserId());
+                        var notifyResult = await _notificationService.CreateSupporterNotification(reservationDateTime.Id, Domain.Enums.Notification.SupporterNotificationText.TakeReservation, Domain.Enums.Notification.NotificationTarget.reservation, reservationDateTime.PatientId.Value);
 
                         //Send Notification For Doctor 
-                        await _notificationService.CreateNotificationForDoctorThatReserveHerReservation(reservationDateTime.Id, Domain.Enums.Notification.SupporterNotificationText.TakeReservation, Domain.Enums.Notification.NotificationTarget.reservation, User.GetUserId());
+                        await _notificationService.CreateNotificationForDoctorThatReserveHerReservation(reservationDateTime.Id, Domain.Enums.Notification.SupporterNotificationText.TakeReservation, Domain.Enums.Notification.NotificationTarget.reservation, reservationDateTime.PatientId.Value);
 
                         //Get Current User
-                        var currentUser = await _userService.GetUserById(User.GetUserId());
+                        var currentUser = await _userService.GetUserById(reservationDateTime.PatientId.Value);
+                        if (currentUser == null) return NotFound();
 
                         if (notifyResult)
                         {
@@ -352,14 +338,14 @@ public class FocalPointController : SiteBaseController
 
                         ReservationFactorSiteSideViewModel model = new ReservationFactorSiteSideViewModel()
                         {
-                            PatientUsername = user.FirstName + user.LastName,
-                            PatientMobile = user.Mobile,
+                            PatientUsername = currentUser.FirstName + currentUser.LastName,
+                            PatientMobile = currentUser.Mobile,
                             ReservationDate = reservationDate.ReservationDate,
                             ReservationDateTime = reservationDateTime.StartTime,
                             ReservationPrice = reservationTariff.Item1,
                             RefId = refid,
                             DoctorUserId = reservationDate.UserId,
-                            PatientNationalId = user.NationalId
+                            PatientNationalId = (string.IsNullOrEmpty(currentUser.NationalId)) ? "وارد نشده" : currentUser.NationalId
                         };
 
                         var modelOfView = await _reservationService.FillReservationFactorSiteSideViewModel(model);
