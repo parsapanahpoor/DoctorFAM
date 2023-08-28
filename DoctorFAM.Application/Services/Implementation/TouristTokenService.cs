@@ -657,42 +657,53 @@ public class TouristTokenService : ITouristTokenService
     }
 
     //Passenger Token Usage Tracking
-    public async Task<bool> PassengerTokenUsageTracking(AddTokenToOnlineVisitRequestSiteSideDTO model, ulong userId)
+    public async Task<ulong> PassengerTokenUsageTracking(AddTokenToOnlineVisitRequestSiteSideDTO model, ulong userId)
     {
         #region Get User Id 
 
         var user = await _userService.GetUserByIdWithAsNoTracking(userId);
-        if (user == null) return false;
+        if (user == null) return 0;
 
         #endregion
 
         #region Get Token By Uniq Code 
 
         var token = await _touristTokenRepository.GetTouristTokenByUniqToken(model.token);
-        if (token == null) return false;
+        if (token == null) return 0;
 
         #endregion
 
         #region Check Token Validations 
 
         var dateTime = await _onlineVisitService.GetOnlineVisitDateTimeByBusinessKey(model.businessKey);
-        if (dateTime == null) return false;
+        if (dateTime == null) return 0;
 
         //Check That Token Is Valid In This Date 
-        if (!await _touristTokenRepository.CheckIsExitsValidTokenWithSpecialDate(token.Id, dateTime.Value)) return false;
+        if (!await _touristTokenRepository.CheckIsExitsValidTokenWithSpecialDate(token.Id, dateTime.Value)) return 0;
 
         //Check That Is Exist Any Token By This Data For This User
-        if (!await _touristTokenRepository.CheckThatIsExistUserPassengerSelectedToken(user.Id, token.Id)) return false;
+        if (!await _touristTokenRepository.CheckThatIsExistUserPassengerSelectedToken(user.Id, token.Id)) return 0;
 
         #endregion
 
         #region Add User Token Usage
 
+        CountOfTouristTokenUsage tokenUsage = new CountOfTouristTokenUsage()
+        {
+            CreateDate = DateTime.Now,
+            IsDelete = false,
+            PassengerUserId = userId,
+            TimeOfUsage = dateTime.Value.ToShamsi(),
+            TokenId = token.Id,
+            TouristId = token.TouristId,
+        };
 
+        //Add To The Data Base 
+        await _touristTokenRepository.AddCountOfPassengersTokenUsageToTheDataBase(tokenUsage);
 
         #endregion
 
-        return true;
+        return token.Id;
     }
 
     #endregion

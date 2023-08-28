@@ -90,5 +90,8 @@ public interface ITouristTokenRepository
     //Check That Is Exist User Passenger Selected Token
     Task<bool> CheckThatIsExistUserPassengerSelectedToken(ulong passengerUserId, ulong tokenId);
 
+    //Add Count Of Passengers Token Usage To The Data Base 
+    Task AddCountOfPassengersTokenUsageToTheDataBase(CountOfTouristTokenUsage tokenUsage);
+
     #endregion
 }

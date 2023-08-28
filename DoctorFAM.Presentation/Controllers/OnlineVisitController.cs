@@ -705,7 +705,12 @@ public class OnlineVisitController : SiteBaseController
 
         #region Validation For Token And Insert Token Usage Log 
 
-
+        var resAddTokenUsage = await _tokenService.PassengerTokenUsageTracking(model, user.Id);
+        if (resAddTokenUsage ==0)
+        {
+            TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد";
+            return RedirectToAction(nameof(ListOfShifts), new { businessKey = model.businessKey });
+        }
 
         #endregion
 
@@ -723,17 +728,10 @@ public class OnlineVisitController : SiteBaseController
 
         #endregion
 
-        #region Check Validations And Online Visit Tariff
+        #region Validation Of Online Visit Request 
 
-        var res = await _onlineVisitService.SelectShiftAndRedirectToBank(selectShiftAndRedirectToBankDTO);
-
-        if (res.Result == SelectShiftAndRedirectToBankResultEnum.UserIsNotExist)
-        {
-            TempData[ErrorMessage] = "کاربر یافت نشده است.";
-            return RedirectToAction(nameof(ListOfShifts), new { businessKey = model.businessKey });
-        }
-
-        if (res.Result == SelectShiftAndRedirectToBankResultEnum.NotExistFreeTime)
+        var requestId = await ValidationOfOnlineVisitReservation(selectShiftAndRedirectToBankDTO);
+        if (requestId == 0)
         {
             TempData[ErrorMessage] = "زمان خالی برای شیفت مورد نظر شما یافت نشده است.";
             return RedirectToAction(nameof(ListOfShifts), new { businessKey = model.businessKey });
@@ -741,20 +739,14 @@ public class OnlineVisitController : SiteBaseController
 
         #endregion
 
-        #region Add User Request To Data Base
-
-        var requestId = await _onlineVisitService.AddUserOnlineVisitRequestToTheDataBase(selectShiftAndRedirectToBankDTO);
-        if (res.Result == SelectShiftAndRedirectToBankResultEnum.ProblemWithOnlineVisitTariff)
-        {
-            return RedirectToAction(nameof(OnlineVisitPaymentWithZeroPayment), new { id = requestId });
-        }
-
-        #endregion
-
         #region Get Online Visit User Request Detail
 
         var onlineVisitRequestDetail = await _onlineVisitService.GetOnlineVisitUserRequestDetailByIdAndUserId(requestId, User.GetUserId());
-        if (onlineVisitRequestDetail == null || onlineVisitRequestDetail.IsFinaly) { TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد."; return RedirectToAction(nameof(ListOfDays)); }
+        if (onlineVisitRequestDetail == null || onlineVisitRequestDetail.IsFinaly) if (requestId == 0)
+            {
+                TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد .";
+                return RedirectToAction(nameof(ListOfShifts), new { businessKey = model.businessKey });
+            }
 
         #endregion
 
@@ -804,13 +796,87 @@ public class OnlineVisitController : SiteBaseController
 
         #endregion
 
-        return View();
-
+        TempData[SuccessMessage] = "رزرو ویزیت آنلاین باموفقیت به پایان رسیده است .";
+        return RedirectToAction(
+            nameof(ShowInvoice)
+            , new
+            {
+                businessKey = model.businessKey,
+                WorkShiftDateTimeId = model.WorkShiftDateTimeId,
+                WorkShiftDateId = model.WorkShiftDateId,
+                tokenId = resAddTokenUsage
+            }
+            );
         #endregion
     }
 
+    #endregion
+
+    #region Show Invoice After Show Use From Passenger
+
+    [Authorize]
+    public async Task<IActionResult> ShowInvoiceAfterShowUseFromPassenger(int businessKey, ulong WorkShiftDateTimeId, ulong WorkShiftDateId, ulong? tokenId)
+    {
+        #region Instance Of DTO
+
+        SelectShiftAndRedirectToBankDTO dto = new SelectShiftAndRedirectToBankDTO()
+        {
+            businessKey = businessKey,
+            UserId = User.GetUserId(),
+            WorkShiftDateId = WorkShiftDateId,
+            WorkShiftDateTimeId = WorkShiftDateTimeId
+        };
+
+        #endregion
+
+        #region Fill Invoice
+
+        var model = await _onlineVisitService.FillOnlineVisitInvoice(dto, tokenId);
+        if (model == null) { return RedirectToAction("Index", "Home"); }
+
+        #endregion
+
+        return View(model);
+    }
 
     #endregion
+
+    #endregion
+
+    #region Validation Of Online Visit Reservation 
+
+    private async Task<ulong> ValidationOfOnlineVisitReservation(SelectShiftAndRedirectToBankDTO selectShiftAndRedirectToBankDTO)
+    {
+        #region Check Validations And Online Visit Tariff
+
+        var res = await _onlineVisitService.SelectShiftAndRedirectToBank(selectShiftAndRedirectToBankDTO);
+
+        if (res.Result == SelectShiftAndRedirectToBankResultEnum.UserIsNotExist)
+        {
+            TempData[ErrorMessage] = "کاربر یافت نشده است.";
+            return 0;
+        }
+
+        if (res.Result == SelectShiftAndRedirectToBankResultEnum.NotExistFreeTime)
+        {
+            TempData[ErrorMessage] = "زمان خالی برای شیفت مورد نظر شما یافت نشده است.";
+            return 0;
+        }
+
+        #endregion
+
+        #region Add User Request To Data Base
+
+        var requestId = await _onlineVisitService.AddUserOnlineVisitRequestToTheDataBase(selectShiftAndRedirectToBankDTO);
+        if (res.Result == SelectShiftAndRedirectToBankResultEnum.ProblemWithOnlineVisitTariff)
+        {
+            return 0;
+        }
+
+        #endregion
+
+        return requestId;
+    }
 
     #endregion
 }

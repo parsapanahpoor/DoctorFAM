@@ -77,5 +77,8 @@ public interface ITouristTokenService
     //Add Token For User Token 
     Task<long> AddTokenForUserToken(AddTokenToOnlineVisitRequestSiteSideDTO model, ulong userId);
 
+    //Passenger Token Usage Tracking
+    Task<ulong> PassengerTokenUsageTracking(AddTokenToOnlineVisitRequestSiteSideDTO model, ulong userId);
+
     #endregion
 }

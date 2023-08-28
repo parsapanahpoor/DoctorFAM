@@ -1043,7 +1043,7 @@ public class OnlineVisitRepository : IOnlineVisitRepository
     //Get Online Visit User Request Detail By Id And User Id
     public async Task<OnlineVisitUserRequestDetail?> GetOnlineVisitUserRequestDetailByIdAndUserId(ulong id, ulong userId)
     {
-        return await _context.OnlineVisitUserRequestDetails.AsNoTracking()
+        return await _context.OnlineVisitUserRequestDetails
                                 .FirstOrDefaultAsync(p => !p.IsDelete && p.UserId == userId && p.Id == id);
     }
 

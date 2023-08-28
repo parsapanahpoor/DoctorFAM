@@ -301,6 +301,13 @@ public class TouristTokenRepository : ITouristTokenRepository
 
     #region Site Side 
 
+    //Add Count Of Passengers Token Usage To The Data Base 
+    public async Task AddCountOfPassengersTokenUsageToTheDataBase(CountOfTouristTokenUsage tokenUsage)
+    {
+        await _context.CountOfTouristTokenUsages.AddAsync(tokenUsage);
+        await _context.SaveChangesAsync();
+    }
+
     //Check Is Exits Valid Token In This Date
     public async Task<bool> CheckIsExitsValidTokenWithSpecialDate(ulong tokenId , DateTime specialDate)
     {
