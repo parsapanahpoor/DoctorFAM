@@ -428,14 +428,6 @@ public class DashboardsRepository : IDashboardsRepository
 
         #endregion
 
-        #region List Of User Inserts From Parsa System That Not Sent SMS To Them
-
-        model.UserNotSendSMS = await _context.UserInsertedFromParsaSystems.Where(p => !p.IsDelete && p.DoctorUserId == organization.OwnerId
-                                            && p.ShowInDashboard && !p.SMSSent)
-                                            .OrderByDescending(p => p.CreateDate).ToListAsync();
-
-        #endregion
-
         #region List Of User Inserts From Parsa System That Sent SMS To Them
 
         model.UserSendSMS = await _context.UserInsertedFromParsaSystems.Where(p => !p.IsDelete && p.DoctorUserId == organization.OwnerId

@@ -3,6 +3,7 @@
 using DoctorFAM.Data.DbContext;
 using DoctorFAM.Data.Migrations;
 using DoctorFAM.Domain.Entities.Account;
+using DoctorFAM.Domain.Entities.Chat;
 using DoctorFAM.Domain.Entities.Tourism;
 using DoctorFAM.Domain.Entities.Tourism.Token;
 using DoctorFAM.Domain.Enums.Tourist;
@@ -10,6 +11,7 @@ using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.Tourist.Token;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -191,7 +193,7 @@ public class TouristTokenRepository : ITouristTokenRepository
         var passengers = await GetListOfWaitingPassengersByTouristIdAndTokenId(touristId, tokenId);
         if (passengers == null) return false;
 
-        var afterPaidPassengers= await GetListOfWaitingAfterFirstPaidPassengersByTouristIdAndTokenId(touristId, tokenId);
+        var afterPaidPassengers = await GetListOfWaitingAfterFirstPaidPassengersByTouristIdAndTokenId(touristId, tokenId);
         if (afterPaidPassengers != null) passengers.AddRange(afterPaidPassengers);
 
         #endregion
@@ -293,6 +295,44 @@ public class TouristTokenRepository : ITouristTokenRepository
     {
         _context.TouristTokens.Update(token);
         await _context.SaveChangesAsync();
+    }
+
+    #endregion
+
+    #region Site Side 
+
+    //Check Is Exits Valid Token In This Date
+    public async Task<bool> CheckIsExitsValidTokenWithSpecialDate(ulong tokenId , DateTime specialDate)
+    {
+        return await _context.TouristTokens
+                             .AsNoTracking()
+                             .AnyAsync(p => p.Id == tokenId && !p.IsDelete
+                                       && p.StartDate <= specialDate && p.EndDate >= specialDate);
+    }
+
+    //Check Is Exits Valid Token In This Date
+    public async Task<bool> CheckIsExitsValidTokenInThisDate(ulong tokenId)
+    {
+        return await _context.TouristTokens
+                             .AsNoTracking()
+                             .AnyAsync(p => p.Id == tokenId && !p.IsDelete
+                                       && p.StartDate <= DateTime.Now && p.EndDate >= DateTime.Now);
+    }
+
+    //Get Tourist Token By Uniq Token
+    public async Task<TouristToken?> GetTouristTokenByUniqToken(string token)
+    {
+        return await _context.TouristTokens
+                             .AsNoTracking()
+                             .FirstOrDefaultAsync(p => !p.IsDelete && p.Token == token.Trim());
+    }
+
+    //Check That Is Exist User Passenger Selected Token
+    public async Task<bool> CheckThatIsExistUserPassengerSelectedToken(ulong passengerUserId , ulong tokenId)
+    {
+        return await _context.TouristPassengers
+                             .AsNoTracking()
+                             .AnyAsync(p => !p.IsDelete && p.UserId == passengerUserId && p.TokenId == tokenId);
     }
 
     #endregion

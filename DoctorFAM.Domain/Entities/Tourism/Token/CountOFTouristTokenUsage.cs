@@ -11,7 +11,7 @@ public class CountOfTouristTokenUsage : BaseEntity
 {
     #region properties
 
-    public ulong PassengerId { get; set; }
+    public ulong TouristId { get; set; }
 
     public ulong PassengerUserId { get; set; }
 

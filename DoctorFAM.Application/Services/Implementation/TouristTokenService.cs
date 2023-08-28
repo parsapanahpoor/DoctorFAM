@@ -4,12 +4,14 @@ using DoctorFAM.Application.Convertors;
 using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Data.Migrations;
+using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.Tourism;
 using DoctorFAM.Domain.Entities.Tourism.Token;
 using DoctorFAM.Domain.Entities.Wallet;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.Interfaces.EFCore;
+using DoctorFAM.Domain.ViewModels.Site.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.Tourist.Token;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
@@ -42,8 +44,10 @@ public class TouristTokenService : ITouristTokenService
 
     private readonly IWalletRepository _walletRepository;
 
+    private readonly IOnlineVisitRepository _onlineVisitService;
+
     public TouristTokenService(ITouristTokenRepository touristTokenRepository, IUserService userService, IOrganizationService organizationService
-                                , ITourismService touristService, ISiteSettingService siteSettingService , IWalletRepository walletRepository)
+                                , ITourismService touristService, ISiteSettingService siteSettingService , IWalletRepository walletRepository, IOnlineVisitRepository onlineVisitService)
     {
         _touristTokenRepository = touristTokenRepository;
         _userService = userService;
@@ -51,6 +55,7 @@ public class TouristTokenService : ITouristTokenService
         _touristService = touristService;
         _siteSettingService = siteSettingService;
         _walletRepository = walletRepository;
+        _onlineVisitService = onlineVisitService;
     }
 
     #endregion
@@ -612,6 +617,80 @@ public class TouristTokenService : ITouristTokenService
         #endregion
 
         return await _touristTokenRepository.FillTokenDetailTouristSideViewModel(tourist.Id , tokenId);
+    }
+
+    #endregion
+
+    #region Site Side 
+
+    //Add Token For User Token 
+    public async Task<long> AddTokenForUserToken(AddTokenToOnlineVisitRequestSiteSideDTO model , ulong userId)
+    {
+        #region Get User Id 
+
+        var user = await _userService.GetUserByIdWithAsNoTracking(userId);
+        if (user == null) return 0;
+
+        #endregion
+
+        #region Get Token By Uniq Code 
+
+        var token = await _touristTokenRepository.GetTouristTokenByUniqToken(model.token);
+        if (token == null) return 0;
+
+        #endregion
+
+        #region Check Token Validations 
+
+        var dateTime = await _onlineVisitService.GetOnlineVisitDateTimeByBusinessKey(model.businessKey);
+        if (dateTime == null) return 0;
+
+        //Check That Token Is Valid In This Date 
+        if (!await _touristTokenRepository.CheckIsExitsValidTokenWithSpecialDate(token.Id , dateTime.Value)) return -1;
+
+        //Check That Is Exist Any Token By This Data For This User
+        if (!await _touristTokenRepository.CheckThatIsExistUserPassengerSelectedToken(user.Id, token.Id)) return 0;
+
+        #endregion
+
+        return (long)token.Id;
+    }
+
+    //Passenger Token Usage Tracking
+    public async Task<bool> PassengerTokenUsageTracking(AddTokenToOnlineVisitRequestSiteSideDTO model, ulong userId)
+    {
+        #region Get User Id 
+
+        var user = await _userService.GetUserByIdWithAsNoTracking(userId);
+        if (user == null) return false;
+
+        #endregion
+
+        #region Get Token By Uniq Code 
+
+        var token = await _touristTokenRepository.GetTouristTokenByUniqToken(model.token);
+        if (token == null) return false;
+
+        #endregion
+
+        #region Check Token Validations 
+
+        var dateTime = await _onlineVisitService.GetOnlineVisitDateTimeByBusinessKey(model.businessKey);
+        if (dateTime == null) return false;
+
+        //Check That Token Is Valid In This Date 
+        if (!await _touristTokenRepository.CheckIsExitsValidTokenWithSpecialDate(token.Id, dateTime.Value)) return false;
+
+        //Check That Is Exist Any Token By This Data For This User
+        if (!await _touristTokenRepository.CheckThatIsExistUserPassengerSelectedToken(user.Id, token.Id)) return false;
+
+        #endregion
+
+        #region Add User Token Usage
+
+        #endregion
+
+        return true;
     }
 
     #endregion

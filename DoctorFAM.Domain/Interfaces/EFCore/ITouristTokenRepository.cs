@@ -2,11 +2,6 @@
 
 using DoctorFAM.Domain.Entities.Tourism.Token;
 using DoctorFAM.Domain.ViewModels.Tourist.Token;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DoctorFAM.Domain.Interfaces.EFCore;
 
@@ -78,6 +73,22 @@ public interface ITouristTokenRepository
 
     //Update Token
     Task UpdateToken(TouristToken token);
+
+    #endregion
+
+    #region Site Side 
+
+    //Check Is Exits Valid Token In This Date
+    Task<bool> CheckIsExitsValidTokenWithSpecialDate(ulong tokenId, DateTime specialDate);
+
+    //Check Is Exits Valid Token In This Date
+    Task<bool> CheckIsExitsValidTokenInThisDate(ulong tokenId);
+
+    //Get Tourist Token By Uniq Token
+    Task<TouristToken?> GetTouristTokenByUniqToken(string token);
+
+    //Check That Is Exist User Passenger Selected Token
+    Task<bool> CheckThatIsExistUserPassengerSelectedToken(ulong passengerUserId, ulong tokenId);
 
     #endregion
 }

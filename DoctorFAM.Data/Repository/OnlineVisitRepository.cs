@@ -11,6 +11,7 @@ using DoctorFAM.Domain.ViewModels.Site.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.UserPanel.OnlineVisit;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 #endregion
 
@@ -940,6 +941,16 @@ public class OnlineVisitRepository : IOnlineVisitRepository
 
     #region Site Side 
 
+    //Get Online Visit Work Work Time By Id 
+    public async Task<string?> GetOnlineVisitWorkWorkTimeById(ulong onlineVisitWorkShiftId)
+    {
+        return await _context.OnlineVisitWorkShiftDetails
+                             .AsNoTracking()
+                             .Where(p => !p.IsDelete && p.Id == onlineVisitWorkShiftId)
+                             .Select(p => p.StartTime)
+                             .FirstOrDefaultAsync();
+    }
+
     //List Of Work Shift Days
     public async Task<List<ListOfDaysForShowSiteSideViewModel>> FillListOfDaysForShowSiteSideViewModel()
     {
@@ -966,6 +977,16 @@ public class OnlineVisitRepository : IOnlineVisitRepository
         return await _context.OnlineVisitDoctorsReservationDates.AsNoTracking()
                                             .Where(p => !p.IsDelete && p.BusinessKey == businessKey)
                                             .Select(p => p.Id).ToListAsync();
+    }
+
+    //Get Online Visit Date Time By Business Key
+    public async Task<DateTime?> GetOnlineVisitDateTimeByBusinessKey(int businessKey)
+    {
+        return await _context.OnlineVisitDoctorsReservationDates
+                                            .AsNoTracking()
+                                            .Where(p => !p.IsDelete && p.BusinessKey == businessKey)
+                                            .Select(p => p.OnlineVisitShiftDate)
+                                            .FirstOrDefaultAsync();
     }
 
     //Fill ListOfShiftSiteSideViewModel

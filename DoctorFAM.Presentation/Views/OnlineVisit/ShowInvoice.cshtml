@@ -1,0 +1,246 @@
+﻿@model DoctorFAM.Domain.ViewModels.Site.OnlineVisit.ShowOnlineVisitInvoice
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.StaticTools
+
+@{
+    ViewData["Title"] = "پیش فاکتور ویزیت آنلاین";
+}
+
+@section Styles
+    {
+    <!--Basic Styles-->
+    <link href="/admin/css/bootstrap.min.css" rel="stylesheet">
+    <link id="bootstrap-rtl-link" href="/admin/css/bootstrap-rtl.min.css" rel="stylesheet">
+    <link href="/admin/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/admin/css/weather-icons.min.css" rel="stylesheet">
+
+    <!--Fonts-->
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300" rel="stylesheet" type="text/css">
+
+    <!--Beyond styles-->
+    <link id="beyond-link" href="/admin/css/beyond-rtl.min.css" rel="stylesheet">
+    <link href="/admin/css/demo.min.css" rel="stylesheet">
+    <link href="/admin/css/typicons.min.css" rel="stylesheet">
+    <link href="/admin/css/animate.min.css" rel="stylesheet">
+    <link id="skin-link" href="" rel="stylesheet" type="text/css">
+}
+
+@section Scripts
+    {
+    <partial name="_JqueryValidation" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+
+    }
+
+@if (Model.Token == null)
+{
+    <div class="row mt-5" id="container_content">
+        <div class="col-lg-3 col-sm-12 col-xs-12">
+        </div>
+        <div class="col-lg-6 col-sm-12 col-xs-12">
+            <div class="well invoice-container" style="background-color: cornflowerblue;">
+                <div class="row">
+                    <div class="col-lg-4 col-sm-4 col-xs-4">
+                    </div>
+                    <div class="col-lg-5 col-sm-5 col-xs-5">
+                        <h1>
+                            <a href="">
+                                <img src="/Content/images/Logo/doctorfamTes.png" alt="" style="width:200px; height:45px; margin-right:-17px">
+                            </a>
+                        </h1>
+                        <div>
+                            <span>کد رهگیری درخواست : </span>
+                            <span>@Model.businessKey</span>
+                        </div>
+                        <div class="horizontal-space"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 col-sm-12 col-xs-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h6>اطلاعات درخواست :</h6>
+                            </div>
+                            <div class="panel-body">
+                                <ul>
+                                    <li>نام کاربری  : @Model.User.Username</li>
+                                    <li>موبایل : @Model.User.Mobile</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- / end client details section -->
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th><h5 class="no-margin-bottom">عنوان </h5></th>
+                            <th><h5 class="no-margin-bottom">توضیح </h5></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr>
+                            <td>ساعت درخواست ویزیت </td>
+                            <td>@Model.OnlineVisitWorkShiftTime</td>
+                        </tr>
+
+                        <tr>
+                            <td>تاریخ درخواست ویزیت </td>
+                            <td>@Model.RequestDateTime.ToShamsi()</td>
+                        </tr>
+
+                        <tr>
+                            <td>هزینه ی پرداخت  </td>
+                            <td>@Model.OnlineVisitTariff.ToString("#,000") ریال</td>
+                        </tr>
+
+                        <tr>
+                            <td>آیا توکن گردشگری دارید ؟  </td>
+                            <td>
+                                <form method="post" asp-action="AddTouristToken" asp-controller="OnlineVisit" asp-area="" enctype="multipart/form-data">
+                                    <input type="hidden" name="businessKey" value="@Model.businessKey" />
+                                    <input type="hidden" name="WorkShiftDateTimeId" value="@Model.WorkShiftDateTimeId" />
+                                    <input type="hidden" name="WorkShiftDateId" value="@Model.WorkShiftDateId" />
+
+
+                                    <input name="token" type="text" />
+                                    <button type="submit" class="btn btn-success ">ثبت   </button>
+                                </form>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="text-center">
+                                <a class="btn btn-success "
+                                   asp-action="SelectShiftAndRedirectToBank"
+                                   asp-area=""
+                                   asp-controller="OnlineVisit"
+                                   asp-route-businessKey="@Model.businessKey"
+                                   asp-route-WorkShiftDateTimeId="@Model.WorkShiftDateTimeId"
+                                   asp-route-WorkShiftDateId="@Model.WorkShiftDateId">پرداخت  </a>
+                            </td>
+                            <td class="text-center ">
+                                <p class="btn btn-primary btn_print">
+                                    چاپ و دانلود فاکتور
+                                </p>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="row mt-5" id="container_content">
+        <div class="col-lg-3 col-sm-12 col-xs-12">
+        </div>
+        <div class="col-lg-6 col-sm-12 col-xs-12">
+            <div class="well invoice-container" style="background-color: cornflowerblue;">
+                <div class="row">
+                    <div class="col-lg-4 col-sm-4 col-xs-4">
+                    </div>
+                    <div class="col-lg-5 col-sm-5 col-xs-5">
+                        <h1>
+                            <a href="">
+                                <img src="/Content/images/Logo/doctorfamTes.png" alt="" style="width:200px; height:45px; margin-right:-17px">
+                            </a>
+                        </h1>
+                        <div>
+                            <span>کد رهگیری درخواست : </span>
+                            <span>@Model.businessKey</span>
+                        </div>
+                        <div class="horizontal-space"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 col-sm-12 col-xs-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h6>اطلاعات درخواست :</h6>
+                            </div>
+                            <div class="panel-body">
+                                <ul>
+                                    <li>نام کاربری  : @Model.User.Username</li>
+                                    <li>موبایل : @Model.User.Mobile</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- / end client details section -->
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th><h5 class="no-margin-bottom">عنوان </h5></th>
+                            <th><h5 class="no-margin-bottom">توضیح </h5></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr>
+                            <td>ساعت درخواست ویزیت </td>
+                            <td>@Model.OnlineVisitWorkShiftTime</td>
+                        </tr>
+
+                        <tr>
+                            <td>تاریخ درخواست ویزیت </td>
+                            <td>@Model.RequestDateTime.ToShamsi()</td>
+                        </tr>
+
+                        <tr>
+                            <td>هزینه ی پرداخت  </td>
+                            <td>0 ریال</td>
+                        </tr>
+
+                        <tr>
+                            <td>کد توکن  </td>
+                            <td>@Model.Token.Token</td>
+                        </tr>
+
+                        <tr>
+                            <td>تاریخ شروع اعتبار توکن  </td>
+                            <td>@Model.Token.StartDate.ToShamsi()</td>
+                        </tr>
+
+                        <tr>
+                            <td>تاریخ پایان اعتبار توکن</td>
+                            <td>@Model.Token.EndDate.ToShamsi()</td>
+                        </tr>
+
+
+                        <tr>
+                            <td> توکن گردشگری   </td>
+                            <td>
+                                <p type="submit" class="label label-success ">@Model.Token.TokenLabel</p>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="text-center">
+                                <a class="btn btn-success "
+                                   asp-action="UseTokenFromPassengerForOnlineVisit"
+                                   asp-area=""
+                                   asp-controller="OnlineVisit"
+                                   asp-route-businessKey="@Model.businessKey"
+                                   asp-route-WorkShiftDateTimeId="@Model.WorkShiftDateTimeId"
+                                   asp-route-WorkShiftDateId="@Model.WorkShiftDateId"
+                                   asp-route-token="@Model.Token.Token">پرداخت
+                               </a>
+                            </td>
+                            <td class="text-center ">
+                                <p class="btn btn-primary btn_print">
+                                    چاپ و دانلود فاکتور
+                                </p>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}

@@ -1,7 +1,9 @@
 ﻿#region Usings
 
+using DoctorFAM.Application.Services.Implementation;
 using DoctorFAM.Domain.Entities.Tourism;
 using DoctorFAM.Domain.Entities.Tourism.Token;
+using DoctorFAM.Domain.ViewModels.Site.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.Tourist.Token;
 using System;
 using System.Collections.Generic;
@@ -67,6 +69,13 @@ public interface ITouristTokenService
 
     //Fill Token Detail Tourist Side View Model
     Task<TokenDetailTouristSideViewModel?> FillTokenDetailTouristSideViewModel(ulong touristUserId, ulong tokenId);
+
+    #endregion
+
+    #region Site Side 
+
+    //Add Token For User Token 
+    Task<long> AddTokenForUserToken(AddTokenToOnlineVisitRequestSiteSideDTO model, ulong userId);
 
     #endregion
 }
