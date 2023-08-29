@@ -3,6 +3,7 @@
 using DoctorFAM.Application.Services.Implementation;
 using DoctorFAM.Domain.Entities.Tourism;
 using DoctorFAM.Domain.Entities.Tourism.Token;
+using DoctorFAM.Domain.ViewModels.Admin.Tourist;
 using DoctorFAM.Domain.ViewModels.Site.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.Tourist.Token;
 using System;
@@ -79,6 +80,16 @@ public interface ITouristTokenService
 
     //Passenger Token Usage Tracking
     Task<ulong> PassengerTokenUsageTracking(AddTokenToOnlineVisitRequestSiteSideDTO model, ulong userId);
+
+    #endregion
+
+    #region Admin Side 
+
+    //Get List OF Tokens By Tourist Id Admin Side 
+    Task<List<ListOfTokensAdminSideViewModel>?> GetListOFTokensByTouristIdAdminSide(ulong touristUserId);
+
+    //Fill Token Detail Admin Side View Model
+    Task<TokenDetailAdminSideViewModel?> FillTokenDetailAdminSideViewModel(ulong touristUserId, ulong tokenId);
 
     #endregion
 }

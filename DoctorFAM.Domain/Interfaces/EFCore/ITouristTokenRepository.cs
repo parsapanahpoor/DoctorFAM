@@ -1,7 +1,9 @@
 ﻿#region Usings
 
 using DoctorFAM.Domain.Entities.Tourism.Token;
+using DoctorFAM.Domain.ViewModels.Admin.Tourist;
 using DoctorFAM.Domain.ViewModels.Tourist.Token;
+using Microsoft.EntityFrameworkCore;
 
 namespace DoctorFAM.Domain.Interfaces.EFCore;
 
@@ -92,6 +94,16 @@ public interface ITouristTokenRepository
 
     //Add Count Of Passengers Token Usage To The Data Base 
     Task AddCountOfPassengersTokenUsageToTheDataBase(CountOfTouristTokenUsage tokenUsage);
+
+    #endregion
+
+    #region Admin Side 
+
+    //Get List OF Tokens By Tourist Id Admin Side 
+    Task<List<ListOfTokensAdminSideViewModel>> GetListOFTokensByTouristIdAdminSide(ulong touristId);
+
+    //Fill Token Detail Admin Side View Model
+    Task<TokenDetailAdminSideViewModel?> FillTokenDetailAdminSideViewModel(ulong touristId, ulong tokenId);
 
     #endregion
 }

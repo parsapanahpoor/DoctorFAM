@@ -11,6 +11,7 @@ using DoctorFAM.Domain.Entities.Tourism.Token;
 using DoctorFAM.Domain.Entities.Wallet;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.Interfaces.EFCore;
+using DoctorFAM.Domain.ViewModels.Admin.Tourist;
 using DoctorFAM.Domain.ViewModels.Site.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.Tourist.Token;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -704,6 +705,40 @@ public class TouristTokenService : ITouristTokenService
         #endregion
 
         return token.Id;
+    }
+
+    #endregion
+
+    #region Admin Side 
+
+    //Get List OF Tokens By Tourist Id Admin Side 
+    public async Task<List<ListOfTokensAdminSideViewModel>?> GetListOFTokensByTouristIdAdminSide(ulong touristUserId)
+    {
+        #region Get Tourist By Tourist User Id 
+
+        var tourist = await _touristService.GetTouristByUserId(touristUserId);
+        if (tourist == null) return null;
+
+        #endregion
+
+        #region Return Model 
+
+        return await _touristTokenRepository.GetListOFTokensByTouristIdAdminSide(tourist.Id);
+
+        #endregion
+    }
+
+    //Fill Token Detail Admin Side View Model
+    public async Task<TokenDetailAdminSideViewModel?> FillTokenDetailAdminSideViewModel(ulong touristUserId, ulong tokenId)
+    {
+        #region Get Tourist By Tourist User Id 
+
+        var tourist = await GetTouristIdByTouristUserId(touristUserId);
+        if (tourist == null) return null;
+
+        #endregion
+
+        return await _touristTokenRepository.FillTokenDetailAdminSideViewModel(tourist.Id, tokenId);
     }
 
     #endregion

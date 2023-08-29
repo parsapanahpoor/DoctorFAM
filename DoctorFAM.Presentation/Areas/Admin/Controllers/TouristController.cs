@@ -1,5 +1,6 @@
 ﻿#region Usings
 
+using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Services.Implementation;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.Laboratory;
@@ -12,15 +13,17 @@ namespace DoctorFAM.Web.Areas.Admin.Controllers;
 
 public class TouristController : AdminBaseController
 {
-    #region CTor
+    #region Ctor
 
     private readonly IUserService _userService;
     private readonly ITourismService _touristService;
+    private readonly ITouristTokenService _touristTokenService;
 
-    public TouristController(ITourismService tourismService, IUserService userService)
+    public TouristController(ITourismService tourismService, IUserService userService, ITouristTokenService touristTokenService)
     {
         _userService = userService;
         _touristService = tourismService;
+        _touristTokenService = touristTokenService;
     }
 
     #endregion
@@ -121,6 +124,46 @@ public class TouristController : AdminBaseController
     }
 
     #endregion
+
+    #endregion
+
+    #region List Of Tourist Tokens
+
+    public async Task<IActionResult> ListOFTouristTokens(ulong userId)
+    {
+        return View(await _touristTokenService.GetListOFTokensByTouristIdAdminSide(userId));
+    }
+
+    #endregion
+
+    #region Token Detail
+
+    [HttpGet]
+    public async Task<IActionResult> TokenDetail(ulong id)
+    {
+        #region Fill Model
+
+        var model = await _touristTokenService.FillTokenDetailAdminSideViewModel(User.GetUserId(), id);
+        if (model == null)
+        {
+            TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+            return RedirectToAction(nameof(ListOFTouristTokens));
+        }
+
+        #endregion
+
+        return View(model);
+    }
+
+    #endregion
+
+    #region Passengers Usage Token Detail 
+
+    [HttpGet]
+    public async Task<IActionResult> PassengersUsageTokenDetail(ulong id)
+    {
+        return View();
+    }
 
     #endregion
 }
