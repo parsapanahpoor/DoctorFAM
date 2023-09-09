@@ -14,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -371,17 +372,17 @@ public class TouristTokenRepository : ITouristTokenRepository
     }
 
     //Fill Token Detail Admin Side View Model
-    public async Task<TokenDetailAdminSideViewModel?> FillTokenDetailAdminSideViewModel(ulong touristId, ulong tokenId)
+    public async Task<TokenDetailAdminSideViewModel?> FillTokenDetailAdminSideViewModel(ulong tokenId)
     {
         return await _context.TouristTokens
                              .AsNoTracking()
-                             .Where(p => !p.IsDelete && p.Id == tokenId && p.TouristId == touristId)
+                             .Where(p => !p.IsDelete && p.Id == tokenId )
                              .Select(p => new TokenDetailAdminSideViewModel()
                              {
                                  TouristToken = p,
                                  ListOfPassengersInTokenDetailPage = _context.TouristPassengers
                                                              .AsNoTracking()
-                                                             .Where(s => !s.IsDelete && s.TouristId == touristId && s.TokenId == tokenId)
+                                                             .Where(s => !s.IsDelete  && s.TokenId == tokenId)
                                                              .Select(s => new ListOfPassengersInTokenDetailPage()
                                                              {
                                                                  User = _context.Users
@@ -393,6 +394,29 @@ public class TouristTokenRepository : ITouristTokenRepository
                                                              .ToList()
                              })
                              .FirstOrDefaultAsync();
+    }
+
+    //Fill Passengers Usage Token Detail Admin Side View Model
+    public async Task<List<PassengersUsageTokenDetailAdminSideViewModel>?> FillPassengersUsageTokenDetailAdminSideViewModel(ulong tokenId)
+    {
+        return await _context.CountOfTouristTokenUsages
+                             .AsNoTracking()
+                             .Where(p => !p.IsDelete && p.TokenId == tokenId)
+                             .Select(p => new PassengersUsageTokenDetailAdminSideViewModel()
+                             {
+                                 DateTime = p.TimeOfUsage,
+                                 PassengerInfo = _context.Users
+                                                         .AsNoTracking()
+                                                         .Where(s=> !s.IsDelete && s.Id == p.PassengerUserId)
+                                                         .Select(s=> new PassengerInfo()
+                                                         {
+                                                             Mobile = s.Mobile,
+                                                             UserAvatar = s.Avatar,
+                                                             Username = s.Username
+                                                         })
+                                                         .FirstOrDefault()
+                             })
+                             .ToListAsync();
     }
 
     #endregion

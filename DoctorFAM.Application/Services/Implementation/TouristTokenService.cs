@@ -696,7 +696,6 @@ public class TouristTokenService : ITouristTokenService
             PassengerUserId = userId,
             TimeOfUsage = dateTime.Value.ToShamsi(),
             TokenId = token.Id,
-            TouristId = token.TouristId,
         };
 
         //Add To The Data Base 
@@ -729,16 +728,15 @@ public class TouristTokenService : ITouristTokenService
     }
 
     //Fill Token Detail Admin Side View Model
-    public async Task<TokenDetailAdminSideViewModel?> FillTokenDetailAdminSideViewModel(ulong touristUserId, ulong tokenId)
+    public async Task<TokenDetailAdminSideViewModel?> FillTokenDetailAdminSideViewModel(ulong tokenId)
     {
-        #region Get Tourist By Tourist User Id 
+        return await _touristTokenRepository.FillTokenDetailAdminSideViewModel(tokenId);
+    }
 
-        var tourist = await GetTouristIdByTouristUserId(touristUserId);
-        if (tourist == null) return null;
-
-        #endregion
-
-        return await _touristTokenRepository.FillTokenDetailAdminSideViewModel(tourist.Id, tokenId);
+    //Fill Passengers Usage Token Detail Admin Side View Model
+    public async Task<List<PassengersUsageTokenDetailAdminSideViewModel>?> FillPassengersUsageTokenDetailAdminSideViewModel(ulong tokenId)
+    {
+        return await _touristTokenRepository.FillPassengersUsageTokenDetailAdminSideViewModel(tokenId);
     }
 
     #endregion

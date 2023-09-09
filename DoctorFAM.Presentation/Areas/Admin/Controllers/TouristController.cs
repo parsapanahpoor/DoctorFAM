@@ -143,7 +143,7 @@ public class TouristController : AdminBaseController
     {
         #region Fill Model
 
-        var model = await _touristTokenService.FillTokenDetailAdminSideViewModel(User.GetUserId(), id);
+        var model = await _touristTokenService.FillTokenDetailAdminSideViewModel(id);
         if (model == null)
         {
             TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
@@ -162,7 +162,7 @@ public class TouristController : AdminBaseController
     [HttpGet]
     public async Task<IActionResult> PassengersUsageTokenDetail(ulong id)
     {
-        return View();
+        return View(await _touristTokenService.FillPassengersUsageTokenDetailAdminSideViewModel(id));
     }
 
     #endregion

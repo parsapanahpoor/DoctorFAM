@@ -103,7 +103,10 @@ public interface ITouristTokenRepository
     Task<List<ListOfTokensAdminSideViewModel>> GetListOFTokensByTouristIdAdminSide(ulong touristId);
 
     //Fill Token Detail Admin Side View Model
-    Task<TokenDetailAdminSideViewModel?> FillTokenDetailAdminSideViewModel(ulong touristId, ulong tokenId);
+    Task<TokenDetailAdminSideViewModel?> FillTokenDetailAdminSideViewModel( ulong tokenId);
+
+    //Fill Passengers Usage Token Detail Admin Side View Model
+    Task<List<PassengersUsageTokenDetailAdminSideViewModel>?> FillPassengersUsageTokenDetailAdminSideViewModel(ulong tokenId);
 
     #endregion
 }
