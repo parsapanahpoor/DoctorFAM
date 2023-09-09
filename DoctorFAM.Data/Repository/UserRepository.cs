@@ -72,8 +72,11 @@ namespace DoctorFAM.Data.Repository
         //Get User Roles By User Id 
         public async Task<List<ulong>?> GetUserRolesByUserId(ulong userId)
         {
-            return await _context.UserRoles.Include(p => p.Role).Where(p => !p.IsDelete && p.UserId == userId)
-                                        .Select(p => p.RoleId).ToListAsync();
+            return await _context.UserRoles
+                                 .Include(p => p.Role)
+                                 .Where(p => !p.IsDelete && p.UserId == userId)
+                                 .Select(p => p.RoleId)
+                                 .ToListAsync();
         }
 
         //Get User Roles 

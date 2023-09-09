@@ -1,0 +1,78 @@
+﻿@model DoctorFAM.Domain.Entities.Account.User
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
+
+@{
+    ViewData["Title"] = @Localizer["Page Title"];
+}
+
+@section Scripts
+    {
+    <partial name="_JqueryValidation" />
+    <script src="/admin/js/ArticleCommentIndex.js"></script>
+    <script src="/admin/js/userDetail.js"></script>
+
+    <style>
+
+        .dropdown-menu {
+            left: 0;
+            right: auto;
+        }
+
+    </style>
+
+}
+
+
+    @section Breadcrumb
+    {
+    <li>
+        <a asp-action="ListOfTouristInfoViewModel" asp-controller="Tourist" asp-area="Admin"> @Localizer["لیست گردشگران"] </a>
+    </li>
+    <li>
+        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+    </li>
+}
+
+    <div class="row">
+
+        <div class="col-lg-3 col-sm-12">
+            <div class="row">
+
+                <div class="col-md-12">
+
+                    <partial name="_AccountDetailTopBoxInfo" model="Model" />
+
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-lg-9 col-sm-12 mt-0" id="BoxOfUserCommentInAdminPanel">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="tabbable">
+
+                        <ul class="nav nav-tabs nav-justified">
+
+                            <li class="active">
+                                <a data-toggle="tab" href="#PopulationCovered" aria-expanded="true">
+                                </a>
+                            </li>
+
+                        </ul>
+
+                        <div class="tab-content">
+
+                            <div id="PopulationCovered" class="tab-pane active">
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>

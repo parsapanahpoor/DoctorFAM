@@ -1,4 +1,4 @@
-﻿#region Userings
+﻿#region Usings
 
 using DoctorFAM.Application.Convertors;
 using DoctorFAM.Application.Extensions;

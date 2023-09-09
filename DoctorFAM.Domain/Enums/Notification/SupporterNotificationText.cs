@@ -60,6 +60,8 @@ namespace DoctorFAM.Domain.Enums.Notification
         [Display(Name = "Laboratory Information Insert")]
         LaboratoryInformationInsert,
         [Display(Name = "درخواست آزمایشگاه درمنزل")]
-        NewArrivalHomeLaboratoryRequest
+        NewArrivalHomeLaboratoryRequest,
+        [Display(Name = "ایجاد توکن گردشگری")]
+        TouristTokenPaid
     }
 }

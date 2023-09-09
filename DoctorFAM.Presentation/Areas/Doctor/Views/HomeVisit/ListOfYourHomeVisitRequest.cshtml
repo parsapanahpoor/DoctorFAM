@@ -104,11 +104,17 @@
                                 @Localizer["Mobile"]
                             </th>
                             <th class="tc vm">
-                                @Localizer["Option"]
+                                @Localizer["Emergency Request"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["Female Doctor"]
                             </th>
                             <th class="tc vm">
                                 @Localizer["Date Time"]
                             </th>
+                           @* <th class="tc vm">
+                                @Localizer["Request Date Time"]
+                            </th>*@
                             <th class="tc vm">
                                 @Localizer["Options"]
                             </th>
@@ -137,13 +143,32 @@
                                     else
                                     {
                                         <p class="flex-style-center">
-                                            <span> @Localizer["Emergency Request"] </span>
-                                            <span class="mr-8px label @((request.HomeVisitRequestDetail.EmergencyVisit) ? "label-success" : "label-orange")"> @((request.HomeVisitRequestDetail.EmergencyVisit) ? @Localizer["Yes"] : @Localizer["No"])</span>
+
+                                            <span class="mr-8px label @((request.HomeVisitRequestDetail.EmergencyVisit) ? "label-success" : "label-orange")">
+                                                @(
+                                                    (request.HomeVisitRequestDetail.EmergencyVisit) ? @Localizer["Yes"] : @Localizer["No"]
+                                                    )
+                                            </span>
                                         </p>
-                                        <hr class="margin-7" />
+
+                                    }
+                                </td>
+
+                                <td class="tc vm">
+                                    @if (request.HomeVisitRequestDetail == null)
+                                    {
+                                        <p class="label label-orange">  @Localizer["Empty"] </p>
+                                    }
+                                    else
+                                    {
+
                                         <p class="flex-style-center">
-                                            <span> @Localizer["Female Doctor"] </span>
-                                            <span class="mr-8px label @((request.HomeVisitRequestDetail.FemalePhysician) ? "label-success" : "label-orange")"> @((request.HomeVisitRequestDetail.FemalePhysician) ? @Localizer["Yes"] : @Localizer["No"])</span>
+
+                                            <span class="mr-8px label @((request.HomeVisitRequestDetail.FemalePhysician) ? "label-success" : "label-orange")">
+                                                @(
+                                                    (request.HomeVisitRequestDetail.FemalePhysician) ? @Localizer["Yes"] : @Localizer["No"]
+                                                    )
+                                            </span>
                                         </p>
                                     }
                                 </td>
@@ -151,7 +176,11 @@
                                     <p>  @request.CreateDate.ToStringShamsiDate() </p>
                                     <p> @request.CreateDate.Hour:@request.CreateDate.Minute:@request.CreateDate.Second</p>
                                 </td>
-
+                               @* <td class="tc vm">
+                                   
+                                        <p>  @request.PatientRequestDateTimeDetails.SendDate.ToShamsiDate() </p>
+                                   
+                                </td>*@
                                 <td class="tc vm">
                                     @if (request.RequestState == RequestState.Canceled)
                                     {

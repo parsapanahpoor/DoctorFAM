@@ -1,0 +1,134 @@
+﻿@model List<DoctorFAM.Domain.ViewModels.Tourist.Token.ListOfTokensTouristSideViewModel>
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.Extensions;
+@using DoctorFAM.Domain.Enums.DoctorReservation
+
+@{
+    ViewData["Title"] = @Localizer["لیست توکن ها"];
+}
+
+@section Scripts
+    {
+    <partial name="_JqueryValidation" />
+    <link href="/admin/css/dataTables.bootstrap.rtl.css" rel="stylesheet" />
+
+    <script src="~/admin/js/datatable/jquery.dataTables.min.js"></script>
+    <script src="~/admin/js/datatable/ZeroClipboard.js"></script>
+    <script src="~/admin/js/datatable/dataTables.tableTools.min.js"></script>
+    <script src="~/admin/js/datatable/dataTables.bootstrap.min.js"></script>
+    <script src="~/admin/js/datatable/datatables-init.js"></script>
+    <script>
+        InitiateSimpleDataTable.init();
+        InitiateEditableDataTable.init();
+        InitiateExpandableDataTable.init();
+        InitiateSearchableDataTable.init();
+    </script>
+}
+
+@section Breadcrumb
+    {
+    <li>
+        <a asp-action="ManagePage" asp-controller="Token" asp-area="Tourist"> مدیریت توکن ها </a>
+    </li>
+}
+
+<div class="page-body">
+
+    <div class="row">
+
+        <div id="horizontal-form">
+
+            @if (Model != null && Model.Any())
+            {
+
+                <div class="widget-body no-padding">
+                    <div id="searchable_wrapper" class="dataTables_wrapper form-inline">
+
+                        <table class="table table-bordered table-hover table-striped dataTable" id="searchable" role="grid" aria-describedby="searchable_info">
+                            <thead class="bordered-darkorange">
+                                <tr role="row">
+
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" aria-sort="ascending">کد توکن</th>
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" aria-sort="ascending"> عنوان توکن</th>
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Platform: activate to sort column ascending">تاریخ شروع</th>
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Platform: activate to sort column ascending"> تاریخ پایان</th>
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Platform: activate to sort column ascending">وضعیت </th>
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending"></th>
+
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                @foreach (var token in Model)
+                                {
+                                    <tr role="row" class="even responsive" >
+
+                                        <td class="sorting_1">
+                                            <p>
+                                                @token.TokenCode
+                                            </p>
+                                        </td>
+                                        <td class="sorting_1">
+                                            <div class="row" style="width: 100%;margin: auto;text-aling">
+
+                                                @token.TokenLabel
+
+                                            </div>
+                                        </td>
+
+                                        <td class="sorting_1">
+                                            <div class="row" style="width: 100%;margin: auto;text-aling">
+
+                                                @token.StartDate.ToShamsi()
+
+                                            </div>
+                                        </td>
+                                        <td class="sorting_1">
+                                            <div class="row" style="width: 100%;margin: auto;text-aling">
+
+                                                @token.EndDate.ToShamsi()
+
+                                            </div>
+                                        </td>
+                                        <td class="sorting_1">
+                                            <div class="row" style="width: 100%;margin: auto;text-aling">
+
+                                                @if (token.TouristTokenState == DoctorFAM.Domain.Enums.Tourist.TouristTokenState.WaitingForPayment)
+                                                {
+                                                    <p class="label label-warning">درانتظار پرداخت</p>
+                                                }
+                                                @if (token.TouristTokenState == DoctorFAM.Domain.Enums.Tourist.TouristTokenState.Paid)
+                                                {
+                                                    <p class="label label-success">تایید شده</p>
+                                                }
+                                                @if (token.TouristTokenState == DoctorFAM.Domain.Enums.Tourist.TouristTokenState.CanceledFromTourist
+                                                    || token.TouristTokenState == DoctorFAM.Domain.Enums.Tourist.TouristTokenState.CanceledFromAdmin)
+                                                {
+                                                    <p class="label label-danger">لغو شده</p>
+                                                }
+
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <a asp-action="TokenDetail" asp-controller="Token" asp-area="Tourist" asp-route-id="@token.TokenId" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+                                        </td>
+
+                                    </tr>
+
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <partial name="_TourismNotFoundPartial" />
+            }
+
+        </div>
+    </div>
+
+</div>

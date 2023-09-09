@@ -14,6 +14,7 @@ namespace DoctorFAM.Domain.Enums.Notification
         NurseInfoInsert,
         LaboratoryInfoInsert,
         ConsultantInfoInsert,
-        ConsultantRequest
+        ConsultantRequest,
+        TouristToken
     }
 }

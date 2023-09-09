@@ -102,16 +102,22 @@
                     <thead class="tc vm">
                         <tr class="tc vm">
                             <th class="tc vm">
-                                @Localizer["User Avatar"]
+                                @Localizer["User"]
                             </th>
                             <th class="tc vm">
                                 @Localizer["Mobile"]
                             </th>
                             <th class="tc vm">
-                                @Localizer["Option"]
+                                @Localizer["Emergency Request"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["Female Doctor"]
                             </th>
                             <th class="tc vm">
                                 @Localizer["Date Time"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["Request Date Time"]
                             </th>
                             <th class="tc vm">
                                 @Localizer["Options"]
@@ -143,16 +149,27 @@
                                         else
                                         {
                                             <p class="flex-style-center">
-                                                <span> @Localizer["Emergency Request"] </span>
+                                               
                                                 <span class="mr-8px label @((request.HomeVisitRequestDetail.EmergencyVisit) ? "label-success" : "label-orange")">
                                                     @(
                                                         (request.HomeVisitRequestDetail.EmergencyVisit) ? @Localizer["Yes"] : @Localizer["No"]
                                                         )
                                                 </span>
                                             </p>
-                                            <hr class="margin-7" />
+                                            
+                                        }
+                                    </td>
+
+                                    <td class="tc vm">
+                                        @if (request.HomeVisitRequestDetail == null)
+                                        {
+                                            <p class="label label-orange">  @Localizer["Empty"] </p>
+                                        }
+                                        else
+                                        {
+                                            
                                             <p class="flex-style-center">
-                                                <span> @Localizer["Female Doctor"] </span>
+
                                                 <span class="mr-8px label @((request.HomeVisitRequestDetail.FemalePhysician) ? "label-success" : "label-orange")">
                                                     @(
                                                         (request.HomeVisitRequestDetail.FemalePhysician) ? @Localizer["Yes"] : @Localizer["No"]
@@ -161,13 +178,23 @@
                                             </p>
                                         }
                                     </td>
+
                                     <td class="tc vm">
                                         <p>  @request.CreateDate.ToStringShamsiDate() </p>
                                         <p> @request.CreateDate.Hour:@request.CreateDate.Minute:@request.CreateDate.Second</p>
                                     </td>
-
                                     <td class="tc vm">
-                                        <a asp-action="HomeVisitRequestDetail" asp-controller="HomeVisit" asp-area="Doctor" asp-route-requestId="@request.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+                                        <p>  @request.PatientRequestDateTimeDetails.SendDate.ToStringShamsiDate() </p>
+                                        <p> @request.PatientRequestDateTimeDetails.StartTime.ToString("00")  <span> تا </span> @request.PatientRequestDateTimeDetails.EndTime.ToString("00")</p>
+                                    </td>
+                                    <td class="tc vm">
+                                        @if ((request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.Paid
+                                       || request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.WaitingForConfirmFromDestination)
+                                       && request.OperationId == null)
+                                        {
+                                            <a asp-action="ConfirmHomeVisitRequest" asp-area="Doctor" asp-controller="HomeVisit" asp-route-requestId="@request.Id" class="btn btn-primary">@Localizer["Confirm Request"]</a>
+                                        }
+                                        <a asp-action="HomeVisitRequestDetail" asp-controller="HomeVisit" asp-area="Doctor" asp-route-requestId="@request.Id" class="btn btn-info">@Localizer["Detail View"]</a>
                                     </td>
                                 </tr>
 

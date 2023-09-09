@@ -223,7 +223,6 @@
 
                                         @if (User.Identity.IsAuthenticated)
                                         {
-
                                             @if (ViewBag.Admin == true)
                                             {
                                                 <div class="d-flex align-items-center">
@@ -242,6 +241,7 @@
                                                                 <a asp-action="Index" asp-area="Consultant" asp-controller="Home" class="dropdown-item "> پنل مشاور</a>
                                                                 <a asp-action="Index" asp-area="Market" asp-controller="Home" class="dropdown-item "> پنل فروشنده  </a>
                                                                 <a asp-action="Index" asp-area="Supporter" asp-controller="Home" class="dropdown-item "> پنل پشتیبان</a>
+                                                                <a asp-action="Index" asp-area="Tourist" asp-controller="Home" class="dropdown-item "> پنل گردشگری</a>
                                                                 <a asp-action="Index" asp-area="Admin" asp-controller="Home" class="dropdown-item dropdown-itemuserpanel"> پنل ادمین </a>
                                                                 <a asp-action="Index" asp-area="Chatroom" asp-controller="Home" class="dropdown-item dropdown-itemuserpanel" style="color: green;">ورود به پیام رسان</a>
                                                                 <a asp-action="Logout" asp-controller="Account" class="dropdown-item"> خروج</a>
@@ -315,6 +315,11 @@
                                                                 @if (ViewBag.DentistOfficeEmployee == true)
                                                                 {
                                                                     <a asp-action="Index" asp-area="Dentist" asp-controller="Home" class="dropdown-item ">  پنل دندان پزشک</a>
+                                                                }
+
+                                                                @if (ViewBag.Tourism == true)
+                                                                {
+                                                                    <a asp-action="Index" asp-area="Tourist" asp-controller="Home" class="dropdown-item "> پنل گردشگری</a>
                                                                 }
 
                                                                 <a asp-action="Index" asp-area="Chatroom" asp-controller="Home" class="dropdown-item dropdown-itemuserpanel" style="color: green;">ورود به پیام رسان</a>

@@ -53,6 +53,10 @@ using System.Diagnostics.Metrics;
 using System.Globalization;
 using DoctorFAM.Domain.Entities.SendSMS.FromDoctrors;
 using DoctorFAM.Domain.Entities.Dentist;
+using DoctorFAM.Domain.Entities.VirtualFile;
+using DoctorFAM.Domain.Entities.Tourism;
+using DoctorFAM.Domain.Enums.Tourist;
+using DoctorFAM.Domain.Entities.Tourism.Token;
 
 
 #endregion
@@ -536,6 +540,26 @@ public class DoctorFAMDbContext : Microsoft.EntityFrameworkCore.DbContext
 
     #endregion
 
+    #region Users Virtual Files
+
+    public DbSet<UsersVirtualFile> UsersVirtualFiles { get; set; }
+
+    #endregion
+
+    #region Tourist
+
+    public DbSet<Tourism> Tourisms { get; set; }
+
+    public DbSet<TourismInfo> TourismInfos { get; set; }
+
+    public DbSet<CountOfTouristTokenUsage> CountOfTouristTokenUsages { get; set; }
+
+    public DbSet<TouristToken> TouristTokens { get; set; }
+
+    public DbSet<TouristPassengers> TouristPassengers { get; set; }
+
+    #endregion
+
     #endregion
 
     #region On Model Creating
@@ -782,6 +806,16 @@ public class DoctorFAMDbContext : Microsoft.EntityFrameworkCore.DbContext
             Id = 20,
             Title = "DentistOfficeEmployee",
             RoleUniqueName = "DentistOfficeEmployee",
+            CreateDate = DateTime.Now,
+            IsDelete = false,
+            ParentId = null
+        });
+
+        modelBuilder.Entity<Role>().HasData(new Role
+        {
+            Id = 21,
+            Title = "Tourism",
+            RoleUniqueName = "Tourism",
             CreateDate = DateTime.Now,
             IsDelete = false,
             ParentId = null
@@ -1791,7 +1825,6 @@ public class DoctorFAMDbContext : Microsoft.EntityFrameworkCore.DbContext
         modelBuilder.Entity<SpecialtiyInfo>().HasQueryFilter(e => e.LanguageId == culture);
 
         #endregion
-
 
         base.OnModelCreating(modelBuilder);
     }

@@ -13,6 +13,7 @@ using DoctorFAM.Domain.ViewModels.Site.Reservation;
 using DoctorFAM.Domain.ViewModels.Supporter.Reservation;
 using DoctorFAM.Domain.ViewModels.UserPanel.Reservation;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.Contracts;
 using System.Globalization;
 
 #endregion
@@ -549,6 +550,7 @@ public class ReservationRepository : IReservationRepository
                                                 EndTime = p.EndTime,
                                                 PatientId = p.PatientId,
                                                 StartTime = p.StartTime,
+                                                SelectedDoctorReservationType = p.DoctorReservationTypeSelected
                                             }).ToListAsync();
         #endregion
 
@@ -580,7 +582,8 @@ public class ReservationRepository : IReservationRepository
                                                                                .Select(p => new DoctorReservationDateTimePatientDetailDoctorSideViewModel()
                                                                                {
                                                                                    PatientMobile = p.Mobile,
-                                                                                   PatientUsername = (p.FirstName != null && p.LastName != null) ? p.FirstName + p.LastName : "عدم دسترسی"
+                                                                                   PatientUsername = (p.FirstName != null && p.LastName != null) ? p.FirstName + p.LastName : "عدم دسترسی",
+                                                                                   PatientUserId = p.Id
                                                                                }).FirstOrDefaultAsync();
 
                         //Add To Return Model 
@@ -772,13 +775,21 @@ public class ReservationRepository : IReservationRepository
 
         #endregion
 
+        //var query = _context.DoctorReservationDateTimes
+        //    .Include(p => p.DoctorReservationDate)
+        //    .ThenInclude(p => p.User)
+        //    .Where(p => !p.IsDelete && p.PatientId == filter.UserId)
+        //    .OrderByDescending(s => s.DoctorReservationDate.ReservationDate)
+        //    .ThenByDescending(s => s.Id)
+        //    .AsQueryable();
+
         var query = _context.DoctorReservationDateTimes
-            .Include(p => p.DoctorReservationDate)
-            .ThenInclude(p => p.User)
-            .Where(p => !p.IsDelete && p.PatientId == filter.UserId)
-            .OrderByDescending(s => s.DoctorReservationDate.ReservationDate)
-            .ThenByDescending(s => s.Id)
-            .AsQueryable();
+           .Include(p => p.DoctorReservationDate)
+           .ThenInclude(p => p.User)
+           .Where(p => !p.IsDelete && p.PatientId == filter.UserId)
+           .OrderBy(s => s.DoctorReservationDate.ReservationDate)
+           .ThenByDescending(s => s.Id)
+           .AsQueryable();
 
         #region Status
 
@@ -861,12 +872,19 @@ public class ReservationRepository : IReservationRepository
 
         #endregion
 
+        //var query = _context.DoctorReservationDateTimes
+        //    .Include(p => p.DoctorReservationDate)
+        //    .ThenInclude(p => p.User)
+        //    .Where(p => !p.IsDelete && p.PatientId == filter.UserId)
+        //    .OrderByDescending(s => s.DoctorReservationDate.ReservationDate)
+        //    .AsQueryable();
+
         var query = _context.DoctorReservationDateTimes
-            .Include(p => p.DoctorReservationDate)
-            .ThenInclude(p => p.User)
-            .Where(p => !p.IsDelete && p.PatientId == filter.UserId)
-            .OrderByDescending(s => s.DoctorReservationDate.ReservationDate)
-            .AsQueryable();
+           .Include(p => p.DoctorReservationDate)
+           .ThenInclude(p => p.User)
+           .Where(p => !p.IsDelete && p.PatientId == filter.UserId)
+           .OrderBy(s => s.DoctorReservationDate.ReservationDate)
+           .AsQueryable();
 
         #region Status
 
@@ -959,7 +977,7 @@ public class ReservationRepository : IReservationRepository
             .Where(s => !s.IsDelete && s.DoctorReservationDate.UserId == organization.OwnerId
                             && s.DoctorReservationDateId == filter.ReservationDateId &&
                                             (s.DoctorReservationState == DoctorReservationState.NotReserved || s.DoctorReservationState == DoctorReservationState.Reserved))
-            .OrderByDescending(s => s.CreateDate)
+            .OrderBy(s => s.CreateDate)
             .AsQueryable();
 
         #region Status
@@ -1531,6 +1549,15 @@ public class ReservationRepository : IReservationRepository
     {
         return await _context.DoctorReservationDateTimes.Where(p => !p.IsDelete && p.DoctorReservationDateId == reservationDateId
                                                                 && p.DoctorReservationState != DoctorReservationState.Canceled).OrderBy(p => p.StartTime).ToListAsync();
+    }
+
+    //Get Doctor Reservation Date Time Doctor Selected Reservation Type
+    public async Task<DoctorReservationType> GetDoctorReservationDateTimeDoctorSelectedReservationType(ulong doctorReservationDateTimeId)
+    {
+        return await _context.DoctorReservationDateTimes
+                             .Where(p => !p.IsDelete && p.Id == doctorReservationDateTimeId && p.DoctorReservationTypeSelected.HasValue)
+                             .Select(p=> p.DoctorReservationTypeSelected.Value)
+                             .FirstOrDefaultAsync();
     }
 
     #endregion

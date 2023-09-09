@@ -9,6 +9,7 @@ using DoctorFAM.Domain.Entities.OnlineVisit;
 using DoctorFAM.Domain.Entities.PeriodicSelfEvaluatuion;
 using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Entities.SiteSetting;
+using DoctorFAM.Domain.Entities.Tourism;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.SiteSetting;
 using Microsoft.EntityFrameworkCore;
@@ -377,6 +378,16 @@ public class SiteSettingRepository : ISiteSettingRepository
     #endregion
 
     #region Site Side 
+
+    //Get Tourist Token Tariff
+    public async Task<int> GetTouristTokenTariff()
+    {
+        return await _context.SiteSettings
+                             .AsNoTracking()
+                             .Where(p => !p.IsDelete)
+                             .Select(p => p.TouristTicketTariff)
+                             .FirstOrDefaultAsync();
+    }
 
     //Get Supplementary Insurance Name By Id 
     public async Task<string?> GetSupplementaryInsuranceNameById(ulong id)

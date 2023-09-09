@@ -136,6 +136,10 @@
                                     @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.Finalized)
                                     {
                                         <a asp-action="DeathCertificateRequestDetail" asp-controller="DeathCertificate" asp-area="UserPanel" asp-route-requestId="@request.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+                                    } 
+                                    @if (request.RequestState == DoctorFAM.Domain.Enums.Request.RequestState.TramsferringToTheBankingPortal)
+                                    {
+                                        <a asp-action="BankPay" asp-controller="DeathCertificat" asp-area="" asp-route-requestId="@request.Id" class="btn btn-success btn-circle btn-xs"><i class="glyphicon glyphicon-usd"></i></a>
                                     }
                                 </td>
                             </tr>

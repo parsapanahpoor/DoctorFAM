@@ -205,6 +205,15 @@
                                     </li>
                                     <li>
 
+                                        <a asp-action="Index" asp-area="Tourist" asp-controller="Home">
+                                            <div class="clearfix">
+                                                <span class="pull-right">پنل گردشگری </span>
+                                                <span class="pull-left">></span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+
                                         <a asp-action="Index" asp-area="Admin" asp-controller="Home">
                                             <div class="clearfix">
                                                 <span class="pull-right">پنل ادمین</span>
@@ -344,6 +353,18 @@
                                             <a asp-action="Index" asp-area="dentist" asp-controller="Home">
                                                 <div class="clearfix">
                                                     <span class="pull-right">پنل دندان پزشک</span>
+                                                    <span class="pull-left">></span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    } 
+                                    @if (ViewBag.Tourist == true)
+                                    {
+                                        <li>
+
+                                            <a asp-action="Index" asp-area="Tourist" asp-controller="Home">
+                                                <div class="clearfix">
+                                                    <span class="pull-right">پنل گردشگری </span>
                                                     <span class="pull-left">></span>
                                                 </div>
                                             </a>

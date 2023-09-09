@@ -10,40 +10,53 @@
 }
 
 
-<div class="page-body">
+<div class="">
 
 
     <div class="row text-center align-Item-center">
         <div class="col-lg-12 col-sm-12 col-xs-12">
+            <div class="bordered-well-container">
+                <div class="well   ">
+
+                    <div class="featured-icon">
+                        <i class="fa fa-headphones fa-2x"></i>
+                    </div>
+                    <h2 class="text-center justify-content-center"> ویزیت آنلاین  </h2>
+
+                </div>
+            </div>
             <div class="row">
             
                 @if (Model.OnlineVisit == true)
                 {
-                    <div class="col-lg-4 col-md-4   buttons-preview mt-2"> </div>
+                    <div class="col-lg-2 col-md-2   buttons-preview mt-2"></div>
+                    
                     <div class="col-lg-4 col-md-4   buttons-preview mt-2">
                         <div class="bordered-well-container">
-                            <div class="well bordered-top bordered-bottom  bordered-blue">
-
-                                <div class="featured-icon">
-                                    <i class="fa fa-headphones fa-2x"></i>
-                                </div>
-                                <p class="text-center justify-content-center"> ویزیت آنلاین  </p>
-
-                            </div>
+                            
                             <a asp-action="ListOfLastestOnlineVisitRequestDoctorSideViewModel" asp-area="Doctor" asp-controller="OnlineVisit">
-                                <div class="well  bordered-bottom  bordered-pink">
-                                    <p class="text-center justify-content-center" style="font-size:12px !important;"> جدیدترین درخواستها  </p>
+                                <div class="well bordered-top bordered-bottom bordered-left bordered-right bordered-pink mt-5">
+                                    <h4 class="text-center justify-content-center" > جدیدترین درخواستها  </h4>
                                 </div>
                             </a>
+                            
+                        </div>
+
+                    </div>
+                    <div class="col-lg-4 col-md-4   buttons-preview mt-2">
+                        <div class="bordered-well-container">
+
+                           
                             <a asp-action="ListOfDoctorWorkShifts" asp-area="Doctor" asp-controller="OnlineVisit">
-                                <div class="well  bordered-bottom  bordered-palegreen">
-                                    <p class="text-center justify-content-center" style="font-size:12px !important;"> مدیریت شیفت های شما  </p>
+                                <div class="well bordered-top bordered-bottom bordered-left bordered-right bordered-palegreen mt-5">
+                                    <h4 class="text-center justify-content-center" > مدیریت شیفت های شما  </h4>
                                 </div>
                             </a>
                         </div>
 
                     </div>
-                    <div class="col-lg-4 col-md-4   buttons-preview mt-2"> </div>
+                    <div class="col-lg-2 col-md-2   buttons-preview mt-2"></div>
+                    
                 }
 
 

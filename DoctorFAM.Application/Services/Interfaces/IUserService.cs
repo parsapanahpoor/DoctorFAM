@@ -52,6 +52,9 @@ public interface IUserService
 
     Task<RegisterUserResult> RegisterUser(RegisterUserViewModel register);
 
+    //Register User From Tourist Panel
+    Task<ulong> RegisterUserFromTouristPanel(string userMobile);
+
     Task<bool> IsExistsUserByEmail(string email);
 
     Task<bool> IsExistUserByMobile(string mobile);
@@ -90,6 +93,9 @@ public interface IUserService
 
     //Register Dentist
     Task DentistConsultant(string mobile);
+
+    //Register Tourism
+    Task TourismConsultant(string mobile);
 
     Task RegisterDoctors(string mobile);
 

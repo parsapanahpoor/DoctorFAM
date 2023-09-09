@@ -37,7 +37,7 @@ public class AccountController : SiteBaseController
 
     [HttpGet("Register")]
     [RedirectHomeIfLoggedInActionFilter]
-    public IActionResult Register(bool? doctors, bool? seller, bool? pharmacy, bool? nurse, bool? consultant, bool? Labratory, string? mobile , bool? Dentist)
+    public IActionResult Register(bool? doctors, bool? seller, bool? pharmacy, bool? nurse, bool? consultant, bool? Labratory, string? mobile , bool? Dentist , bool? tourism)
     {
         #region About Doctors & Seller & Pharmacy
 
@@ -54,6 +54,8 @@ public class AccountController : SiteBaseController
         ViewBag.LabratoryRegister = Labratory;
 
         ViewBag.Dentist = Dentist;
+
+        ViewBag.Tourism = tourism;
 
         #endregion
 
@@ -92,6 +94,8 @@ public class AccountController : SiteBaseController
         ViewBag.ConsultantRegister = register.ConsultantRegister;
 
         ViewBag.LabratoryRegister = register.LabratoryRegister;
+
+        ViewBag.Tourism = register.TourismRegister;
 
         #endregion
 
@@ -182,6 +186,15 @@ public class AccountController : SiteBaseController
                 if (register.DentistRegister == true)
                 {
                     await _userService.DentistConsultant(register.Mobile);
+                }
+
+                #endregion
+
+                #region Tourism Register
+
+                if (register.TourismRegister == true)
+                {
+                    await _userService.TourismConsultant(register.Mobile);
                 }
 
                 #endregion
@@ -400,6 +413,9 @@ public class AccountController : SiteBaseController
 
                     //If User Is Seller
                     if (userRole.Contains("Seller")) return RedirectToAction("Index", "Home", new { area = "Market" });
+
+                    //If User Is Tourism
+                    if (userRole.Contains("Tourism")) return RedirectToAction("Index", "Home", new { area = "Tourist" });
                 }
                 else
                 {
@@ -688,6 +704,13 @@ public class AccountController : SiteBaseController
                 {
                     TempData[SuccessMessage] = "درخواست ارتقای سطح شما باموفقیت ثبت شده است.";
                     return RedirectToAction("Index", "Home", new { area = "Dentist" });
+                }
+
+                //If User Select Tourism Role 
+                if (model.RoleName == "Tourism")
+                {
+                    TempData[SuccessMessage] = "درخواست ارتقای سطح شما باموفقیت ثبت شده است.";
+                    return RedirectToAction("Index", "Home", new { area = "Tourist" });
                 }
             }
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DoctorFAM.Domain.Enums.DoctorReservation;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -21,6 +22,8 @@ namespace DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment
         [Display(Name = "End Time")]
         [Required(ErrorMessage = "Please Enter {0}")]
         public int EndTime { get; set; }
+
+        public DoctorReservationType DoctorReservationType { get; set; }
 
         public int PeriodNumber { get; set; }
 

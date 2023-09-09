@@ -4,6 +4,7 @@ public static class PathTools
 {
     #region Site
 
+
         public static string SiteFarsiName = "دکتر فم";
         public static string SiteAddress = "http://devhealthhouse.ir";
         public static string merchant = "300608fa-d6d7-40cc-b70c-7229d28299c6";
@@ -275,6 +276,15 @@ public static class PathTools
 
     public static readonly string ReceiptPathThumb = "/content/images/Receipt/thumb/";
     public static readonly string ReceiptPathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/Receipt/thumb/");
+
+    #endregion
+
+    #region Home Laboratory Invoice
+
+    public static readonly string UserVirtualFilesServerPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/UserVirtualFiles/Files/");
+    public static readonly string UserVirtualFilesChunkServerPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/UserVirtualFiles/Chunks/");
+
+    public static readonly string UserVirtualFilesPath = "/content/images/UserVirtualFiles/Files/";
 
     #endregion
 }

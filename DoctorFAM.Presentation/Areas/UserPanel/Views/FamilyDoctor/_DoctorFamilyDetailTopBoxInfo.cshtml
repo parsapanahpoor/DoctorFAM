@@ -10,8 +10,18 @@
             <img src="@Model.User.GetUserAvatar()" style="width: 75px; height: 75px;" class="image-circular bordered-3 bordered-palegreen">
         </div>
         <div class="col-lg-8 col-sm-8 col-xs-8 text-align-left padding-10">
-            <span class="databox-header carbon no-margin"> @Model.User.Username </span>
-                @if (@Model.DoctorsInfo.Education == null)
+            <span class="databox-header carbon no-margin">دکتر  @Model.User.Username </span>
+            @if (@Model.DoctorsInfo.Specialty == null)
+            {
+                <span class="databox-text lightcarbon no-margin danger"></span>
+            }
+            else
+            {
+                <span class="databox-text lightcarbon no-margin">@Model.DoctorsInfo.Specialty</span>
+            }
+            
+            
+            @if (@Model.DoctorsInfo.Education == null)
                 {
                 <span class="databox-text lightcarbon no-margin danger">@Localizer["Education Not Found"]</span>
                 }else
@@ -25,8 +35,8 @@
         <div class="databox-row row-12">
             <div class="databox-row row-12 no-padding">
                 <div class="databox-cell cell-12 no-padding text-align-center bordered-right bordered-platinum">
-                    <span class="databox-text sonic-silver  no-margin"> @Localizer["Mobile"] </span>
-                    <span class="databox-number lightcarbon no-margin"> @Model.User.ExtraPhoneNumber </span>
+                    
+                    <span class="databox-number lightcarbon no-margin">@Localizer["Mobile"] :  @Model.User.ExtraPhoneNumber </span>
                 </div>
              
                 @*<div class="databox-cell cell-6 no-padding text-align-center">

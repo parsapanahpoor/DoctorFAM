@@ -127,6 +127,22 @@
         <li>
             <a href="#" class="menu-dropdown">
                 <i class="menu-icon glyphicon glyphicon-user"></i>
+                <span class="menu-text"> @SharedLocalizer["مدیریت گردشگری"]  </span>
+                <i class="menu-expand"></i>
+            </a>
+
+            <ul class="submenu">
+                <li>
+                    <a asp-controller="Tourist" asp-action="ListOfTouristInfoViewModel">
+                        <span class="menu-text"> @SharedLocalizer["لیست مدیران گردشگری"]  </span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="#" class="menu-dropdown">
+                <i class="menu-icon glyphicon glyphicon-user"></i>
                 <span class="menu-text"> @SharedLocalizer["مدیریت دندان پزشکان"]  </span>
                 <i class="menu-expand"></i>
             </a>

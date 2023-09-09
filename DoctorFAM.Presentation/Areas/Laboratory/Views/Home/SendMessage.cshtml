@@ -1,0 +1,68 @@
+﻿@{
+    ViewData["Title"] = "پیامک";
+}
+
+
+
+@section Breadcrumb
+    {
+
+}
+
+
+<div class="page-body">
+
+
+    <div class="row text-center align-Item-center">
+        <div class="col-lg-12 col-sm-12 col-xs-12">
+                     <div class="row mt-5">
+                <div class="col-lg-4 col-md-4  buttons-preview mt-2">
+                    <div class="bordered-well-container">
+                        <div class="well bordered-top bordered-bottom  bordered-blue">
+                            <a class=" hover-icon" asp-area="Laboratory" asp-controller="SendSMS" asp-action="UploadFile">
+                                <div class="featured-icon">
+                                    <i class="fa fa-upload fa-2x"></i>
+                                </div>
+                                <p class="text-center justify-content-center"> بارگذاری لیست جمعیت  </p>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-lg-4 col-md-4  buttons-preview mt-2">
+                    <div class="bordered-well-container">
+                        <div class="well bordered-top bordered-bottom  bordered-blue">
+                            <a class=" hover-icon" asp-area="Laboratory" asp-controller="SendSMS" asp-action="ChooseUsersForSendSMS">
+                                <div class="featured-icon">
+                                    <i class="glyphicon glyphicon-folder-open fa-2x"></i>
+                                </div>
+                                <p class="text-center justify-content-center">  درخواست ارسال پیامک  </p>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-lg-4 col-md-4 buttons-preview mt-2">
+                    <div class="bordered-well-container">
+                        <div class="well bordered-top bordered-bottom  bordered-blue">
+                            <a class=" hover-icon" asp-area="Laboratory" asp-controller="SendSMS" asp-action="ListOFCurrentLaboratorySMSRequests">
+                                <div class="featured-icon">
+                                    <i class="fa fa-list fa-2x"></i>
+                                </div>
+                                <p class="text-center justify-content-center">  سابقه پیامک های ارسالی  </p>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+
+    </div>
+
+
+</div>

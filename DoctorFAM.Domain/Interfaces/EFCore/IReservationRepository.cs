@@ -1,6 +1,7 @@
 ﻿#region Usings
 
 using DoctorFAM.Domain.Entities.DoctorReservation;
+using DoctorFAM.Domain.Enums.DoctorReservation;
 using DoctorFAM.Domain.ViewModels.Admin.Reservation;
 using DoctorFAM.Domain.ViewModels.Common;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment;
@@ -146,6 +147,9 @@ public interface IReservationRepository
 
     //Get List Of Doctor Reservation Date Time By Reservation Date Id
     Task<List<DoctorReservationDateTime>?> GetListOfDoctorReservationDateTimeByReservationDateId(ulong reservationDateId);
+
+    //Get Doctor Reservation Date Time Doctor Selected Reservation Type
+    Task<DoctorReservationType> GetDoctorReservationDateTimeDoctorSelectedReservationType(ulong doctorReservationDateTimeId);
 
     #endregion
 }

@@ -167,6 +167,12 @@ public interface IOnlineVisitRepository
 
     #region Site Side 
 
+    //Get Online Visit Work Work Time By Id 
+    Task<string?> GetOnlineVisitWorkWorkTimeById(ulong onlineVisitWorkShiftId);
+
+    //Get Online Visit Date Time By Business Key
+    Task<DateTime?> GetOnlineVisitDateTimeByBusinessKey(int businessKey);
+
     //List Of Work Shift Days
     Task<List<ListOfDaysForShowSiteSideViewModel>> FillListOfDaysForShowSiteSideViewModel();
 

@@ -1,0 +1,251 @@
+﻿@model DoctorFAM.Domain.ViewModels.DoctorPanel.SendSMS.SendSMSToPatientDetailDoctorPanelViewModel
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.Extensions
+
+@{
+    ViewData["Title"] = "جزییات درخواست ارسال پیامک ";
+}
+
+@section Breadcrumb
+    {
+    <li>
+        <a asp-area="Laboratory" asp-controller="SendSMS" asp-action="ListOFCurrentDoctorSMSRequests"> سابقه پیامکهای ارسالی </a>
+    </li>
+}
+
+@section Styles
+    {
+    <link href="/admin/css/dataTables.bootstrap.rtl.css" rel="stylesheet" />
+}
+
+@section Scripts
+    {
+    <script src="~/admin/js/datatable/jquery.dataTables.min.js"></script>
+    <script src="~/admin/js/datatable/ZeroClipboard.js"></script>
+    <script src="~/admin/js/datatable/dataTables.tableTools.min.js"></script>
+    <script src="~/admin/js/datatable/dataTables.bootstrap.min.js"></script>
+    <script src="~/admin/js/datatable/datatables-init.js"></script>
+    <script>
+        InitiateSimpleDataTable.init();
+        InitiateEditableDataTable.init();
+        InitiateExpandableDataTable.init();
+        InitiateSearchableDataTable.init();
+    </script>
+    }
+
+<div class="page-body">
+
+
+
+    @if (!string.IsNullOrEmpty(Model.RejectSMSDescription) && Model.SendSMSFromDoctorState == DoctorFAM.Domain.Enums.SendSMS.FromDoctors.SendSMSFromDoctorState.Decline)
+    {
+        <div class="row">
+            <div class="col-lg-12 col-sm-12 col-xs-12">
+                <div class="widget">
+                    <div class="widget-header bg-red">
+                        <span class="widget-caption">پیام پشتیبانی </span>
+                        <div class="widget-buttons">
+                            <a href="#" data-toggle="config">
+                                <i class="fa fa-cog"></i>
+                            </a>
+                            <a href="#" data-toggle="maximize">
+                                <i class="fa fa-expand"></i>
+                            </a>
+                            <a href="#" data-toggle="collapse">
+                                <i class="fa fa-minus"></i>
+                            </a>
+                            <a href="#" data-toggle="dispose">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div><!--Widget Buttons-->
+                    </div><!--Widget Header-->
+                    <div class="widget-body bg-red">
+                        <p> @Model.RejectSMSDescription </p>
+                    </div><!--Widget Body-->
+                </div><!--Widget-->
+            </div>
+        </div>
+    }
+
+
+
+    <div class="row">
+
+        @if (Model.SendSMSFromDoctorState == DoctorFAM.Domain.Enums.SendSMS.FromDoctors.SendSMSFromDoctorState.Decline)
+        {
+            <form method="post" asp-action="ShowRequestDetail" asp-controller="SendSMS" asp-area="Laboratory" enctype="multipart/form-data">
+
+                <input type="hidden" asp-for="RequestId">
+                <input type="hidden" asp-for="RejectSMSDescription">
+                <input type="hidden" asp-for="DoctorUserId">
+                <input type="hidden" asp-for="SendSMSFromDoctorState">
+
+                <div class="col-lg-12 col-sm-12">
+                    <div class="row">
+
+                        <div class="col-lg-12">
+                            <div class="widget">
+                                <div class="widget-header bordered-bottom bordered-green">
+                                    <span class="widget-caption"> مدیریت درخواست  </span>
+                                </div>
+                                <div class="widget-body">
+                                    <div class="row">
+
+                                        <div class="form-group col-md-12 ">
+                                            <label>متن پیامک</label>
+                                            <textarea asp-for="SMSBody" rows="5" class="form-control" placeholder="">@Model.SMSBody</textarea>
+                                        </div>
+
+                                        <hr class="margin-bottom-10 margin-top-10" />
+
+                                        <div class="col-md-12 flex-style">
+                                            <button type="submit" class="btn btn-labeled btn-palegreen">
+                                                <i class="btn-label glyphicon glyphicon-ok"></i>ثبت
+                                            </button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+        }
+        @if (Model.SendSMSFromDoctorState == DoctorFAM.Domain.Enums.SendSMS.FromDoctors.SendSMSFromDoctorState.AcceptAndSent)
+        {
+            <div class="col-lg-12 col-sm-12">
+                <div class="row">
+
+                    <div class="col-lg-12">
+                        <div class="widget">
+                            <div class="widget-header bordered-bottom bordered-green">
+                                <span class="widget-caption"> مدیریت درخواست  </span>
+                            </div>
+
+                            <div class="form-group col-md-12 @(Model != null && Model.SendSMSFromDoctorState == DoctorFAM.Domain.Enums.SendSMS.FromDoctors.SendSMSFromDoctorState.Decline ?"":"d-none")" id="RejectDescription-div">
+                                <label>متن پیامک</label>
+                                <textarea asp-for="SMSBody" rows="5" class="form-control" placeholder="">@Model.SMSBody</textarea>
+                                <span asp-validation-for="SMSBody" class="text-danger"></span>
+                            </div>
+
+                            <div class="widget-body">
+                                <div class="row">
+
+                                    <div class="form-group col-md-12 col-sm-12">
+                                        این درخواست تایید شده و پیامک های آن نیز ارسال گردیده است.
+                                    </div>
+                                    <hr />
+                                    <div class="form-group col-md-12 ">
+                                        <label>متن پیامک</label>
+                                        <textarea asp-for="SMSBody" rows="5" class="form-control" placeholder="">@Model.SMSBody</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        }
+        @if (Model.SendSMSFromDoctorState == DoctorFAM.Domain.Enums.SendSMS.FromDoctors.SendSMSFromDoctorState.WaitingForConfirm)
+        {
+            <div class="col-lg-12 col-sm-12">
+                <div class="row">
+
+                    <div class="col-lg-12">
+                        <div class="widget">
+                            <div class="widget-header bordered-bottom bordered-green">
+                                <span class="widget-caption"> مدیریت درخواست  </span>
+                            </div>
+
+                            <div class="form-group col-md-12 @(Model != null && Model.SendSMSFromDoctorState == DoctorFAM.Domain.Enums.SendSMS.FromDoctors.SendSMSFromDoctorState.Decline ?"":"d-none")" id="RejectDescription-div">
+                                <label>متن پیامک</label>
+                                <textarea asp-for="SMSBody" rows="10" class="form-control" placeholder="">@Model.SMSBody</textarea>
+                                <span asp-validation-for="SMSBody" class="text-danger"></span>
+                            </div>
+
+                            <div class="widget-body">
+                                <div class="row">
+
+                                    <div class="form-group col-md-12 col-sm-12">
+                                        این درخواست درانتظار بررسی توسط پشتیبانی می باشد.
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        }
+
+        <div class="col-lg-12 col-sm-12">
+            <div id="horizontal-form">
+
+                @if (Model.PatientId != null && Model.PatientId.Any())
+                {
+
+                    <div class="widget-body no-padding">
+                        <div id="searchable_wrapper" class="dataTables_wrapper form-inline">
+
+                            <table class="table table-bordered table-hover table-striped dataTable" id="searchable" role="grid" aria-describedby="searchable_info">
+                                <thead class="bordered-darkorange">
+                                    <tr role="row">
+
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">کاربر</th>
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" aria-sort="ascending">موبایل</th>
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" aria-sort="ascending">تاریخ ثبت نام </th>
+
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+
+                                    @foreach (var request in Model.PatientId)
+                                    {
+                                        <tr role="row" class="even responsive" remove-ajax-item="@request.Id">
+
+                                            <td class=" sorting_1">
+                                                <div class="flex-style-center">
+
+                                                    <img src="@request.GetUserAvatar()" class="avatar-style" style="border-radius:50px" />
+                                                    <div class="mr-10px">
+                                                        <span> @request.Username </span>
+                                                    </div>
+
+                                                </div>
+                                            </td>
+
+                                            <td class="sorting_1">
+                                                @request.Mobile
+                                            </td>
+
+                                            <td class="sorting_1">
+                                                @request.CreateDate.ToShamsi()
+                                            </td>
+
+                                        </tr>
+
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <partial name="_LaboratoryPanelNotFoundPartial" />
+                }
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+

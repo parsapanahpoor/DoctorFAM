@@ -85,6 +85,12 @@ namespace DoctorFAM.Domain.Interfaces
         //Get Laboratory Organization by User Id
         Task<Organization?> GetLaboratoryOrganizationByUserId(ulong userId);
 
+        //Check Is Exist Any Tourism By This User Id
+        Task<bool> IsExistAnyTourismByUserId(ulong userId);
+
+        //Get Tourist Organization by User Id
+        Task<Organization?> GetTouristOrganizationByUserId(ulong userId);
+
         #endregion
     }
 }

@@ -332,6 +332,7 @@ public class ReservationService : IReservationService
                 reservationTime.EndTime = endTime.ToString($"{endTime.Hour.ToString("00")}:{endTime.Minute.ToString("00")}:00");
                 reservationTime.DoctorReservationDateId = reservation.Id;
                 reservationTime.DoctorReservationState = Domain.Enums.DoctorReservation.DoctorReservationState.NotReserved;
+                reservationTime.DoctorReservationTypeSelected = model.DoctorReservationType;
                 if (doctorOffice != null) reservationTime.WorkAddressId = doctorOffice.Id;
 
                 await _reservation.AddReservationDateTime(reservationTime);
@@ -491,6 +492,7 @@ public class ReservationService : IReservationService
             reservationTime.EndTime = endTime.ToString($"{endTime.Hour.ToString("00")}:{endTime.Minute.ToString("00")}:00");
             reservationTime.DoctorReservationDateId = reservationDate.Id;
             reservationTime.DoctorReservationState = Domain.Enums.DoctorReservation.DoctorReservationState.NotReserved;
+            reservationTime.DoctorReservationTypeSelected = model.DoctorReservationType;
             if (doctorOffice != null) reservationTime.WorkAddressId = doctorOffice.Id;
 
             #region Check Is Exist Doctor Reservation Date Time With This Time 
@@ -505,7 +507,7 @@ public class ReservationService : IReservationService
                     var lastStart = Int32.Parse(item.StartTime.Substring(0, 2));
                     var lastEnd = Int32.Parse(item.EndTime.Substring(0, 2));
 
-                    if (lastStart <= startTimes && lastEnd >= endTimes)
+                    if (lastStart < endTimes && lastEnd > startTimes)
                     {
                         return false;
                     }
@@ -2044,6 +2046,12 @@ public class ReservationService : IReservationService
         #endregion
 
         return model;
+    }
+
+    //Get Doctor Reservation Date Time Doctor Selected Reservation Type
+    public async Task<DoctorReservationType> GetDoctorReservationDateTimeDoctorSelectedReservationType(ulong doctorReservationDateTimeId)
+    {
+        return await _reservation.GetDoctorReservationDateTimeDoctorSelectedReservationType(doctorReservationDateTimeId);
     }
 
     #endregion

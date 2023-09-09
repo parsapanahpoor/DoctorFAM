@@ -120,11 +120,17 @@
   <data name="Awaiting Payment" xml:space="preserve">
     <value>درانتظار پرداخت</value>
   </data>
+  <data name="Confirm Request" xml:space="preserve">
+    <value>پذیرش درخواست</value>
+  </data>
   <data name="Date Time" xml:space="preserve">
-    <value>تاریخ</value>
+    <value>تاریخ ثبت درخواست</value>
   </data>
   <data name="Delete Filter" xml:space="preserve">
     <value>حذف فیلتر</value>
+  </data>
+  <data name="Detail View" xml:space="preserve">
+    <value>مشاهده جزییات</value>
   </data>
   <data name="Email" xml:space="preserve">
     <value>ایمیل</value>
@@ -168,11 +174,17 @@
   <data name="Register Date" xml:space="preserve">
     <value>تاریخ ثبت نام </value>
   </data>
+  <data name="Request Date Time" xml:space="preserve">
+    <value>تاریخ مورد نظر بیمار برای مراجعه</value>
+  </data>
   <data name="State" xml:space="preserve">
     <value>وضعیت</value>
   </data>
   <data name="unpaid" xml:space="preserve">
     <value>پرداخت نشده</value>
+  </data>
+  <data name="User" xml:space="preserve">
+    <value>مشخصات کاربر</value>
   </data>
   <data name="User Avatar" xml:space="preserve">
     <value>تصویر کاربر</value>

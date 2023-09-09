@@ -148,7 +148,7 @@
     <value>نام کاربری سفارش دهنده</value>
   </data>
   <data name="Confirm Request" xml:space="preserve">
-    <value>تایید درخواست</value>
+    <value>پذیرش درخواست</value>
   </data>
   <data name="Count" xml:space="preserve">
     <value>تعداد</value>
@@ -219,6 +219,9 @@
   <data name="Health Insurance" xml:space="preserve">
     <value>بیمه سلامت</value>
   </data>
+  <data name="Home visit" xml:space="preserve">
+    <value>ویزیت در منزل</value>
+  </data>
   <data name="Insurance Type" xml:space="preserve">
     <value>نوع بیمه</value>
   </data>
@@ -286,7 +289,7 @@
     <value>تاریخ ایجاد درخواست</value>
   </data>
   <data name="Request Description" xml:space="preserve">
-    <value>توضیحات سفارش</value>
+    <value>توضیحات </value>
   </data>
   <data name="Request Detail" xml:space="preserve">
     <value>اطلاعات درخواست</value>
@@ -313,7 +316,7 @@
     <value>بیمه تامین اجتماعی</value>
   </data>
   <data name="Start Time" xml:space="preserve">
-    <value>ساعت شروع </value>
+    <value>ساعت مورد نظر بیمار برای مراجعه پزشک</value>
   </data>
   <data name="Urinary Bladder" xml:space="preserve">
     <value>سونگذاری مثانه</value>

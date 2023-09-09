@@ -255,5 +255,11 @@ public class SpecialityService : ISpecialityService
         return await _specialityRepository.ListOfSpecialistsSiteSide();
     }
 
+    //List Of Super Specialists 
+    public async Task<List<ListOfSpecialistsSiteSideViewModel>> ListOfSuperSpecialists()
+    {
+        return await _specialityRepository.ListOfSuperSpecialists();
+    }
+
     #endregion
 }

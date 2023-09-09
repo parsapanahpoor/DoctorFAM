@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Linq.Expressions;
 using System.Text;
 
 #endregion
@@ -38,11 +39,12 @@ public class OnlineVisitController : SiteBaseController
     private readonly IHubContext<NotificationHub> _notificationHub;
     private readonly INotificationService _notificationService;
     private readonly IWalletService _walletService;
+    private readonly ITouristTokenService _tokenService;
 
     public OnlineVisitController(IOnlineVisitService onlineVisitService, IRequestService requestService,
                                     IUserService userService, IPatientService patientService, ILocationService locationService
                                         , ISiteSettingService siteSettingService, IHubContext<NotificationHub> notificationHub
-                                            , INotificationService notificationService, IWalletService walletService)
+                                            , INotificationService notificationService, IWalletService walletService, ITouristTokenService tokenService)
     {
         _onlineVisitService = onlineVisitService;
         _requestService = requestService;
@@ -53,6 +55,7 @@ public class OnlineVisitController : SiteBaseController
         _notificationHub = notificationHub;
         _notificationService = notificationService;
         _walletService = walletService;
+        _tokenService = tokenService;
     }
 
     #endregion
@@ -319,6 +322,35 @@ public class OnlineVisitController : SiteBaseController
     {
         ViewBag.businessKey = businessKey;
         return View(await _onlineVisitService.FillListOfShiftSiteSideViewModel(businessKey));
+    }
+
+    #endregion
+
+    #region Show Invoice
+
+    [Authorize]
+    public async Task<IActionResult> ShowInvoice(int businessKey, ulong WorkShiftDateTimeId, ulong WorkShiftDateId, ulong? tokenId)
+    {
+        #region Instance Of DTO
+
+        SelectShiftAndRedirectToBankDTO dto = new SelectShiftAndRedirectToBankDTO()
+        {
+            businessKey = businessKey,
+            UserId = User.GetUserId(),
+            WorkShiftDateId = WorkShiftDateId,
+            WorkShiftDateTimeId = WorkShiftDateTimeId
+        };
+
+        #endregion
+
+        #region Fill Invoice
+
+        var model = await _onlineVisitService.FillOnlineVisitInvoice(dto, tokenId);
+        if (model == null) { return RedirectToAction("Index", "Home"); }
+
+        #endregion
+
+        return View(model);
     }
 
     #endregion
@@ -598,6 +630,252 @@ public class OnlineVisitController : SiteBaseController
         #endregion
 
         return RedirectToAction("PaymentResult", "Payment", new { IsSuccess = true, refId = "-" });
+    }
+
+    #endregion
+
+    #region Tourist Token 
+
+    #region Add Tourist Token 
+
+    [HttpPost, ValidateAntiForgeryToken, Authorize]
+    public async Task<IActionResult> AddTouristToken(AddTokenToOnlineVisitRequestSiteSideDTO model)
+    {
+        #region Check Token Validations
+
+        var res = await _tokenService.AddTokenForUserToken(model, User.GetUserId());
+
+        if (res > 0)
+        {
+            TempData[SuccessMessage] = "توکن وارد شده یافت گردید.";
+            return RedirectToAction(
+                nameof(ShowInvoice)
+                , new
+                {
+                    businessKey = model.businessKey,
+                    WorkShiftDateTimeId = model.WorkShiftDateTimeId,
+                    WorkShiftDateId = model.WorkShiftDateId,
+                    tokenId = res
+                }
+                );
+        }
+
+        if (res == -1)
+        {
+            TempData[ErrorMessage] = "توکن گردشگری شما در تاریخ مورد نظر معتبر نمی باشد.";
+            return RedirectToAction(
+                nameof(ShowInvoice)
+                , new
+                {
+                    businessKey = model.businessKey,
+                    WorkShiftDateTimeId = model.WorkShiftDateTimeId,
+                    WorkShiftDateId = model.WorkShiftDateId,
+                    tokenId = res
+                }
+                );
+        }
+
+        #endregion
+
+        TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+        return RedirectToAction(
+                        nameof(ShowInvoice)
+                        , new
+                        {
+                            businessKey = model.businessKey,
+                            WorkShiftDateTimeId = model.WorkShiftDateTimeId,
+                            WorkShiftDateId = model.WorkShiftDateId,
+                        }
+                        );
+    }
+
+    #endregion
+
+    #region Use Token From Passenger For Online Visit
+
+    [HttpGet]
+    public async Task<IActionResult> UseTokenFromPassengerForOnlineVisit(AddTokenToOnlineVisitRequestSiteSideDTO model)
+    {
+        #region Get User By User Id
+
+        var user = await _userService.GetUserById(User.GetUserId());
+        if (user == null) NotFound();
+
+        #endregion
+
+        #region Validation For Token And Insert Token Usage Log 
+
+        var resAddTokenUsage = await _tokenService.PassengerTokenUsageTracking(model, user.Id);
+        if (resAddTokenUsage ==0)
+        {
+            TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد";
+            return RedirectToAction(nameof(ListOfShifts), new { businessKey = model.businessKey });
+        }
+
+        #endregion
+
+        #region Reservation Of Online Visit Request
+
+        #region Instance Of DTO
+
+        SelectShiftAndRedirectToBankDTO selectShiftAndRedirectToBankDTO = new SelectShiftAndRedirectToBankDTO()
+        {
+            businessKey = model.businessKey,
+            UserId = User.GetUserId(),
+            WorkShiftDateId = model.WorkShiftDateId,
+            WorkShiftDateTimeId = model.WorkShiftDateTimeId
+        };
+
+        #endregion
+
+        #region Validation Of Online Visit Request 
+
+        var requestId = await ValidationOfOnlineVisitReservation(selectShiftAndRedirectToBankDTO);
+        if (requestId == 0)
+        {
+            TempData[ErrorMessage] = "زمان خالی برای شیفت مورد نظر شما یافت نشده است.";
+            return RedirectToAction(nameof(ListOfShifts), new { businessKey = model.businessKey });
+        }
+
+        #endregion
+
+        #region Get Online Visit User Request Detail
+
+        var onlineVisitRequestDetail = await _onlineVisitService.GetOnlineVisitUserRequestDetailByIdAndUserId(requestId, User.GetUserId());
+        if (onlineVisitRequestDetail == null || onlineVisitRequestDetail.IsFinaly) if (requestId == 0)
+            {
+                TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد .";
+                return RedirectToAction(nameof(ListOfShifts), new { businessKey = model.businessKey });
+            }
+
+        #endregion
+
+        #region Get Online Visit Reservation Tariff
+
+        int onlineVisitTariff = 0;
+
+        #endregion
+
+        //Update Randome Record Of Reservation Doctor And Patient For Exist Request For Select
+        await _onlineVisitService.UpdateRandomeRecordOfReservationDoctorAndPatientForExistRequestForSelect(onlineVisitRequestDetail.DayDatebusinessKey, onlineVisitRequestDetail.WorkShiftDateId, onlineVisitRequestDetail.WorkShiftDateTimeId);
+
+        //Update Online Visit User Request Detail 
+        await _onlineVisitService.UpdateOnlineVisitUserRequestDetailToFinaly(requestId, user.Id);
+
+        //Pay Online Visit Tariff
+        await _onlineVisitService.PayOnlineVisitTariff(User.GetUserId(), onlineVisitTariff, requestId);
+
+        #region Send Notification In SignalR
+
+        //Create Notification For Supporters And Admins
+        var notifyResult = await _notificationService.CreateSupporterNotification(requestId, Domain.Enums.Notification.SupporterNotificationText.OnlineVisitRequest, Domain.Enums.Notification.NotificationTarget.request, User.GetUserId());
+
+        //Send Notification For Doctor
+        //await _notificationService.CreateNotificationForDoctorThatReserveHerReservation(requestId, Domain.Enums.Notification.SupporterNotificationText.OnlineVisitRequest, Domain.Enums.Notification.NotificationTarget.request, User.GetUserId());
+
+        if (notifyResult)
+        {
+            //Get List Of Admins And Supporter To Send Notification Into Them
+            var users = await _userService.GetAdminsAndSupportersNotificationForSendNotificationInOnlineVisit();
+
+            //Get Doctor For Send Notification  
+            users.AddRange(await _onlineVisitService.GetListOfDoctorForSendThemNotificationByOnlineVisit(onlineVisitRequestDetail.DayDatebusinessKey, onlineVisitRequestDetail.WorkShiftDateId, onlineVisitRequestDetail.WorkShiftDateTimeId));
+
+            //Fill Send Supporter Notification ViewModel For Send Notification
+            SendSupporterNotificationViewModel viewModel = new SendSupporterNotificationViewModel()
+            {
+                CreateNotificationDate = $"{DateTime.Now.ToShamsi()} - {DateTime.Now.Hour}:{DateTime.Now.Minute}",
+                NotificationText = "درخواست ویزیت آنلاین",
+                RequestId = requestId,
+                Username = User.Identity.Name,
+                UserImage = user.Avatar
+            };
+
+            await _notificationHub.Clients.Users(users).SendAsync("SendSupporterNotification", viewModel);
+        }
+
+        #endregion
+
+        TempData[SuccessMessage] = "رزرو ویزیت آنلاین باموفقیت به پایان رسیده است .";
+        return RedirectToAction(
+            nameof(ShowInvoice)
+            , new
+            {
+                businessKey = model.businessKey,
+                WorkShiftDateTimeId = model.WorkShiftDateTimeId,
+                WorkShiftDateId = model.WorkShiftDateId,
+                tokenId = resAddTokenUsage
+            }
+            );
+        #endregion
+    }
+
+    #endregion
+
+    #region Show Invoice After Show Use From Passenger
+
+    [Authorize]
+    public async Task<IActionResult> ShowInvoiceAfterShowUseFromPassenger(int businessKey, ulong WorkShiftDateTimeId, ulong WorkShiftDateId, ulong? tokenId)
+    {
+        #region Instance Of DTO
+
+        SelectShiftAndRedirectToBankDTO dto = new SelectShiftAndRedirectToBankDTO()
+        {
+            businessKey = businessKey,
+            UserId = User.GetUserId(),
+            WorkShiftDateId = WorkShiftDateId,
+            WorkShiftDateTimeId = WorkShiftDateTimeId
+        };
+
+        #endregion
+
+        #region Fill Invoice
+
+        var model = await _onlineVisitService.FillOnlineVisitInvoice(dto, tokenId);
+        if (model == null) { return RedirectToAction("Index", "Home"); }
+
+        #endregion
+
+        return View(model);
+    }
+
+    #endregion
+
+    #endregion
+
+    #region Validation Of Online Visit Reservation 
+
+    private async Task<ulong> ValidationOfOnlineVisitReservation(SelectShiftAndRedirectToBankDTO selectShiftAndRedirectToBankDTO)
+    {
+        #region Check Validations And Online Visit Tariff
+
+        var res = await _onlineVisitService.SelectShiftAndRedirectToBank(selectShiftAndRedirectToBankDTO);
+
+        if (res.Result == SelectShiftAndRedirectToBankResultEnum.UserIsNotExist)
+        {
+            TempData[ErrorMessage] = "کاربر یافت نشده است.";
+            return 0;
+        }
+
+        if (res.Result == SelectShiftAndRedirectToBankResultEnum.NotExistFreeTime)
+        {
+            TempData[ErrorMessage] = "زمان خالی برای شیفت مورد نظر شما یافت نشده است.";
+            return 0;
+        }
+
+        #endregion
+
+        #region Add User Request To Data Base
+
+        var requestId = await _onlineVisitService.AddUserOnlineVisitRequestToTheDataBase(selectShiftAndRedirectToBankDTO);
+        if (res.Result == SelectShiftAndRedirectToBankResultEnum.ProblemWithOnlineVisitTariff)
+        {
+            return 0;
+        }
+
+        #endregion
+
+        return requestId;
     }
 
     #endregion

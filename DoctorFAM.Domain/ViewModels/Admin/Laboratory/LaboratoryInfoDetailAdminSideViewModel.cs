@@ -37,6 +37,8 @@ namespace DoctorFAM.Domain.ViewModels.Admin.Laboratory
 
         public OrganizationInfoState LaboratoryInfosType { get; set; }
 
+        public int CountOfFreeSMSForSend { get; set; }
+
         #endregion
     }
 

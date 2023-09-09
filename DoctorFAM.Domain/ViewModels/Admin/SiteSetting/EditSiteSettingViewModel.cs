@@ -68,6 +68,9 @@ namespace DoctorFAM.Domain.ViewModels.Admin.SiteSetting
 
         [Display(Name = "مبلغ غیرقابل برداشت از کیف پول")]
         public int WalletLockPrice { get; set; }
+
+        [Display(Name = "تعرفه ی بلیط گردشگری به ازای هر 24 ساعت")]
+        public int TouristTicketTariff { get; set; }
     }
 
     public enum EditSiteSettingResult
