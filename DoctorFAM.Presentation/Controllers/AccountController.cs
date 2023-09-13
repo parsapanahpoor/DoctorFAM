@@ -16,7 +16,7 @@ using System.Security.Claims;
 
 namespace DoctorFAM.Web.Controllers;
 
-public class AccountController : SiteBaseController
+public class  AccountController : SiteBaseController
 {
     #region Ctor
 
