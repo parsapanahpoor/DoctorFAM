@@ -44,7 +44,7 @@ function previousMusic() {
 }
 
 async function loadMusic() {
-    await fetch("https://doctorfam.com/api/v1/RadioFAMAPI/get-LatestPodcasts-ForShowInLanding")
+    await fetch("http://devhealthhouse.ir/api/v1/RadioFAMAPI/get-LatestPodcasts-ForShowInLanding")
         .then(res => res.json())
         .then(data => {
             audioArray = data.data

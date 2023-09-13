@@ -52,6 +52,9 @@
 		<Folder Include="Resources\Areas\Pharmacy\Controllers\" />
 		<Folder Include="Resources\Controllers\" />
 		<Folder Include="Resources\Views\" />
+		<Folder Include="wwwroot\Content\Books\main\" />
+		<Folder Include="wwwroot\Content\Books\thumb\" />
+		<Folder Include="wwwroot\Content\images\Ticket\" />
 		<Folder Include="Areas\Nurse\Data\" />
 		<Folder Include="Areas\Nurse\Models\" />
 		<Folder Include="wwwroot\Content\images\Books\Chunks\" />
