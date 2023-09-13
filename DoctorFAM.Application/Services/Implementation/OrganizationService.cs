@@ -110,6 +110,12 @@ namespace DoctorFAM.Application.Services.Implementation
             return await _organization.GetLaboratoryOrganizationByUserId(userId);
         }
 
+        //Get Tourist Organization by User Id
+        public async Task<Organization?> GetTouristOrganizationByUserId(ulong userId)
+        {
+            return await _organization.GetTouristOrganizationByUserId(userId);
+        }
+
         public async Task<Organization?> GetPharmacyOrganizationByUserId(ulong userId)
         {
             return await _organization.GetPharmacyOrganizationByUserId(userId);
@@ -227,6 +233,12 @@ namespace DoctorFAM.Application.Services.Implementation
         public async Task<bool> IsExistAnyLaboratoryByUserId(ulong userId)
         {
             return await _organization.IsExistAnyLaboratoryByUserId(userId);
+        }
+
+        //Check Is Exist Any Tourism By This User Id
+        public async Task<bool> IsExistAnyTourismByUserId(ulong userId)
+        {
+            return await _organization.IsExistAnyTourismByUserId(userId);
         }
 
         public async Task<bool> IsExistAnyPharmacyOfficeEmployeeByUserId(ulong userId)

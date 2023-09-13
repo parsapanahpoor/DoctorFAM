@@ -54,11 +54,14 @@ namespace DoctorFAM.Web.Areas.Supporter.ViewComponents
                     if (userRole.Contains("Dentist")) ViewBag.Dentist = true;
 
                     if (userRole.Contains("DentistOfficeEmployee")) ViewBag.Dentist = true;
+
+                    if (userRole.Contains("Tourism")) ViewBag.Tourist = true;
                 }
 
             }
 
             #endregion
+
             var user = await _userService.GetUserById(User.GetUserId());
 
             return View("SupporterNavbar" , user);

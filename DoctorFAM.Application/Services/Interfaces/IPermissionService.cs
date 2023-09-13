@@ -72,6 +72,9 @@ public interface IPermissionService
     //Check Is User Has Permission To Laboratory Panel 
     Task<bool> IsUserLaboratory(ulong userId);
 
+    //Check Is User Has Permission To Tourism Panel 
+    Task<bool> IsUserTourism(ulong userId);
+
     //Get List Of Laboratory Roles
     Task<List<Role>> GetListOfLaboratoryRoles();
 

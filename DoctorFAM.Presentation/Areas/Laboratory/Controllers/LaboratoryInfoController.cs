@@ -1,18 +1,19 @@
-﻿using DoctorFAM.Application.Convertors;
+﻿#region Usings
+
+using DoctorFAM.Application.Convertors;
 using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Interfaces;
-using DoctorFAM.Application.Services.Implementation;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.ViewModels.Laboratory.LaboratoryInfo;
-using DoctorFAM.Domain.ViewModels.Nurse.NurseInfo;
 using DoctorFAM.Domain.ViewModels.Site.Notification;
 using DoctorFAM.Web.Laboratory.Controllers;
 using DoctorFAM.Web.Hubs;
-using DoctorFAM.Web.Laboratory.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Localization;
 using DoctorFAM.Web.Areas.Laboratory.ActionFilterAttributes;
+
+#endregion
 
 namespace DoctorFAM.Web.Areas.Laboratory.Controllers
 {
@@ -167,7 +168,7 @@ namespace DoctorFAM.Web.Areas.Laboratory.Controllers
                         SendSupporterNotificationViewModel viewModel = new SendSupporterNotificationViewModel()
                         {
                             CreateNotificationDate = $"{DateTime.Now.ToShamsi()} - {DateTime.Now.Hour}:{DateTime.Now.Minute}",
-                            NotificationText = "ارسال اطلاعات توسط داروخانه",
+                            NotificationText = "ارسال اطلاعات توسط آزمایشگاه",
                             RequestId = User.GetUserId(),
                             Username = User.Identity.Name,
                             UserImage = currentUser.Avatar

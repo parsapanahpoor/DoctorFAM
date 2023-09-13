@@ -1,0 +1,72 @@
+﻿@model DoctorFAM.Domain.ViewModels.DoctorPanel.ParsaSystem.SendSMSToPatientViewModel
+@*currnet version*@
+@{
+    ViewData["Title"] = "ارسال پیامک برای کاربران";
+}
+
+@section Breadcrumb
+    {
+    <li>
+        <a asp-area="Laboratory" asp-controller="SendSMS" asp-action="ChooseUsersForSendSMS"> انتخاب کاربر </a>
+    </li>
+}
+
+@section Scripts{
+    <script>
+
+        function countChar(val) {
+            var len = val.value.length;
+            $('#charNum').text(len);
+        };
+
+    </script>
+}
+
+<div class="row">
+    <div class="col-lg-12 col-sm-6 col-xs-12">
+        <div class="widget">
+            <div class="widget-header bordered-bottom bordered-primary">
+                <span class="widget-caption">اطلاعات پیامک </span>
+            </div>
+            <div class="widget-body">
+                <div id="horizontal-form">
+                    <form asp-action="WriteSMSText" asp-area="Laboratory" asp-controller="SendSMS" method="post" enctype="multipart/form-data">
+
+                        <input type="hidden" asp-for="DoctorUserId" />
+
+                        @foreach (var item in Model.PatientId)
+                        {
+                            <input type="hidden" asp-for="PatientId" value="@item" />
+                        }
+
+                        <div class="row">
+                            <div class="col-md-8">
+                                <input type="email" readonly placeholder="تعداد پیامک های مجاز  برای ارسال : (@Model.CountOfUserPercentageSMS) پیامک" class="form-control">
+                                <div class="horizontal-space"></div>
+                            </div>
+                            <div class="col-md-6">
+                                <p style="color:red; font-size:12px;">تعداد کاراکترهای تایپ شده (هر 70 کاراکتر (شامل فاصله و سطر جدید و همه علائم...) یک پیامک محاسبه میشود.) </p>
+                            </div>
+                            <div class="col-md-2">
+                                <div id="charNum" class="form-control">  0</div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-2">
+                            <div class="col-md-12">
+                                <input type="email" readonly placeholder="تعداد کاربران انتخابی  : (@Model.PatientId.Count()) نفر" class="form-control">
+                                <div class="horizontal-space"></div>
+                            </div>
+                        </div>
+
+                        <textarea class="form-control" asp-for="SMSBody" rows="4" onkeyup="countChar(this)" placeholder="متن پیامک ارسالی "></textarea>
+                        <div class="horizontal-space"></div>
+                        <div>
+                            <button type="submit" class="btn btn-success">ارسال</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

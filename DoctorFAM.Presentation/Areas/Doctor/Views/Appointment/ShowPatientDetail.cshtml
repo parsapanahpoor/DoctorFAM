@@ -29,12 +29,12 @@
     </style>
 }
 
-    @section Scripts
+@section Scripts
     {
     <partial name="_JqueryValidation" />
 }
 
-    @section Breadcrumb
+@section Breadcrumb
     {
     <li>
         <a href="javascript:void(0)"> @ViewData["Title"] </a>
@@ -186,7 +186,7 @@
                                                             {
                                                                 <textarea type="text" readonly class="form-control">
                                                                     @Model.UserRequestDescription
-                                                                </textarea>
+                                                                            </textarea>
                                                             }
                                                             else
                                                             {
@@ -283,10 +283,6 @@ else
 
                         </div>
 
-
-
-
-
                     </div>
                     <div class="profile-body">
                         <div class="col-lg-12">
@@ -380,25 +376,30 @@ else
                                                 </div>
                                             </div>
                                             <hr class="wide">
-                                            <div class="row">
 
-                                                <div class="col-sm-12">
-                                                    <div class="form-group">
-                                                        <span class="input-icon icon-right">
-                                                            @if (Model.UserRequestDescription != null)
-                                                            {
-                                                                <textarea type="text" readonly class="form-control">
-                                                                    @Model.UserRequestDescription
-                                                                        </textarea>
-                                                            }
-                                                            else
-                                                            {
-                                                                <input type="text" class="form-control" placeholder="@Localizer["توضیحات"]">
-                                                            }                                                        <i class="fa fa-globe"></i>
-                                                        </span>
-                                                    </div>
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <span class="input-icon icon-right">
+                                                        @if (Model.UserRequestDescription != null)
+                                                        {
+                                                            <textarea type="text" readonly class="form-control">
+                                                                @Model.UserRequestDescription
+                                                                                </textarea>
+                                                        }
+                                                        else
+                                                        {
+                                                            <input type="text" class="form-control" placeholder="@Localizer["توضیحات"]">
+                                                        }                                                        <i class="fa fa-globe"></i>
+                                                    </span>
                                                 </div>
                                             </div>
+                                            <hr class="wide">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <a class="btn btn-primary" asp-action="ListOfUserVirtualFiles" asp-area="Doctor" asp-controller="Home" asp-route-userId="@Model.User.Id">مشاهده ی پرونده ی مجازی بیمار</a>
+                                                </div>
+                                            </div>
+
                                         </div>
                                     </div>
 

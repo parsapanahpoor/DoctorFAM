@@ -44,7 +44,7 @@
                                                 </a>
                                             </div>
                                             <div class="doc-info-cont">
-                                                <h4 class="doc-name"><a asp-action="DocPage" asp-area="" asp-controller="FocalPoint" asp-route-userId="@doctor.DoctorUserInfo.UserId" asp-route-name="@doctor.DoctorUserInfo.Username.FixTextForUrl()">پزشک:دکتر  @doctor.DoctorUserInfo.Username</a></h4>
+                                                <h4 class="doc-name"><a asp-action="DocPage" asp-area="" asp-controller="FocalPoint" asp-route-userId="@doctor.DoctorUserInfo.UserId" asp-route-name="@doctor.DoctorUserInfo.Username.FixTextForUrl()">پزشک:@((doctor.DoctorUserInfo.DoctorTilteName == DoctorFAM.Domain.Enums.DoctorTitleName.DoctorTilteName.Anonymous) ? "" : doctor.DoctorUserInfo.DoctorTilteName.GetEnumName()) @doctor.DoctorUserInfo.Username</a></h4>
 
                                                 <div class="rating">
                                                     <i class="fas fa-star filled"></i>

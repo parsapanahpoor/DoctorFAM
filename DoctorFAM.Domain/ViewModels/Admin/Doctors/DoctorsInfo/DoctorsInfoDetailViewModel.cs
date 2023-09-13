@@ -2,6 +2,7 @@
 using DoctorFAM.Domain.Entities.Interest;
 using DoctorFAM.Domain.Entities.Speciality;
 using DoctorFAM.Domain.Entities.WorkAddress;
+using DoctorFAM.Domain.Enums.DoctorTitleName;
 using DoctorFAM.Domain.Enums.Gender;
 using System;
 using System.Collections.Generic;
@@ -79,6 +80,8 @@ namespace DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo
 
         [Display(Name = "تعداد پیامک های مجاز برای ارسال از پزشک به بیماران")]
         public int CountOFFreeSMSForDoctors { get; set; }
+
+        public DoctorTilteName DoctorTilteName { get; set; }
 
         #endregion
     }

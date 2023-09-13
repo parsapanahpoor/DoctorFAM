@@ -63,5 +63,8 @@ namespace Academy.Domain.Entities.SiteSetting
 
         [Display(Name = "مبلغ غیرقابل برداشت")]
         public int WalletLockPrice { get; set; }
+
+        [Display(Name = "تعرفه ی هر بلیط گردشگری")]
+        public int TouristTicketTariff { get; set; }
     }
 }

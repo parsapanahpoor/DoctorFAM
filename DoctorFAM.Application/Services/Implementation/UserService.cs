@@ -271,6 +271,41 @@ public class UserService : IUserService
 
     }
 
+    //Register User From Tourist Panel
+    public async Task<ulong> RegisterUserFromTouristPanel(string userMobile)
+    {
+        //Fix Email Format
+        var mobile = userMobile.Trim().ToLower().SanitizeText();
+
+        //Check Mobile Number
+        if (await IsExistUserByMobile(userMobile))
+        {
+            return 0;
+        }
+
+        //Hash Password
+        var password = PasswordHasher.EncodePasswordMd5(userMobile.SanitizeText());
+
+        //Create User
+        var User = new DoctorFAM.Domain.Entities.Account.User()
+        {
+            //Email = email,
+            Password = password,
+            Username = mobile,
+            Mobile = userMobile.SanitizeText(),
+            EmailActivationCode = CodeGenerator.GenerateUniqCode(),
+            MobileActivationCode = new Random().Next(10000, 999999).ToString(),
+            ExpireMobileSMSDateTime = DateTime.Now,
+            IsMobileConfirm = true
+        };
+
+        await _context.Users.AddAsync(User);
+        await _context.SaveChangesAsync();
+
+        return User.Id;
+    }
+
+
     public async Task<bool> AccountActivation(string emailActivationCode)
     {
         // get user by email activation code
@@ -370,6 +405,9 @@ public class UserService : IUserService
 
             //If User Select Dentist Role While User Has Dentist Role
             if (roleName == "Dentist" && userRoles.Contains(19)) return false;
+
+            //If User Select Tourism Role While User Has Tourism Role
+            if (roleName == "Tourism" && userRoles.Contains(21)) return false;
         }
 
         #endregion
@@ -454,6 +492,18 @@ public class UserService : IUserService
             var userRole = new UserRole()
             {
                 RoleId = 19,
+                UserId = user.Id
+            };
+
+            await _userRepository.AddUserRole(userRole);
+        }
+
+        //Add Tourism Role To The User
+        if (roleName == "Tourism")
+        {
+            var userRole = new UserRole()
+            {
+                RoleId = 21,
                 UserId = user.Id
             };
 
@@ -711,6 +761,30 @@ public class UserService : IUserService
         var userRole = new UserRole()
         {
             RoleId = 19,
+            UserId = user.Id
+        };
+
+        await _context.UserRoles.AddAsync(userRole);
+
+        await _context.SaveChangesAsync();
+
+        #endregion
+    }
+
+    //Register Tourism
+    public async Task TourismConsultant(string mobile)
+    {
+        #region Get User By Mobile
+
+        var user = await GetUserByMobile(mobile);
+
+        #endregion
+
+        #region Add Tourism Role To User
+
+        var userRole = new UserRole()
+        {
+            RoleId = 21,
             UserId = user.Id
         };
 

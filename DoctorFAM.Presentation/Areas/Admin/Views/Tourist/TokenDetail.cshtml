@@ -1,0 +1,119 @@
+﻿@model DoctorFAM.Domain.ViewModels.Admin.Tourist.TokenDetailAdminSideViewModel
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.Extensions;
+@using DoctorFAM.Domain.Enums.DoctorReservation
+
+@{
+    ViewData["Title"] = @Localizer["بررسی اطلاعات توکن"];
+}
+
+@section Scripts
+    {
+    <partial name="_JqueryValidation" />
+    <link href="/admin/css/dataTables.bootstrap.rtl.css" rel="stylesheet" />
+
+    <script src="~/admin/js/datatable/jquery.dataTables.min.js"></script>
+    <script src="~/admin/js/datatable/ZeroClipboard.js"></script>
+    <script src="~/admin/js/datatable/dataTables.tableTools.min.js"></script>
+    <script src="~/admin/js/datatable/dataTables.bootstrap.min.js"></script>
+    <script src="~/admin/js/datatable/datatables-init.js"></script>
+    <script>
+        InitiateSimpleDataTable.init();
+        InitiateEditableDataTable.init();
+        InitiateExpandableDataTable.init();
+        InitiateSearchableDataTable.init();
+    </script>
+}
+
+@section Breadcrumb
+    {
+    <li>
+        <a asp-action="ListOfTouristInfoViewModel" asp-controller="Tourist" asp-area="Admin"> مدیریت توکن ها </a>
+    </li>
+}
+
+<div class="page-body">
+
+    <div class="row">
+
+        <div id="horizontal-form">
+
+            @if (Model.ListOfPassengersInTokenDetailPage != null && Model.ListOfPassengersInTokenDetailPage.Any())
+            {
+
+                <div class="widget-body no-padding">
+                    <div id="searchable_wrapper" class="dataTables_wrapper form-inline">
+
+                        <table class="table table-bordered table-hover table-striped dataTable" id="searchable" role="grid" aria-describedby="searchable_info">
+                            <thead class="bordered-darkorange">
+                                <tr role="row">
+
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" aria-sort="ascending">کاربر</th>
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" aria-sort="ascending">موبایل</th>
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Platform: activate to sort column ascending">تعداد بلیط درخواستی</th>
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Platform: activate to sort column ascending">وضعیت</th>
+
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                @foreach (var user in Model.ListOfPassengersInTokenDetailPage)
+                                {
+                                    <tr role="row" class="even responsive" remove-ajax-item="@user.User.Id">
+
+                                        <td class="sorting_1">
+                                            <div class="flex-style-center">
+                                                <img src="@user.User.Avatar.GetUserAvatar()" class="avatar-style" />
+                                                <div class="mr-10px">
+                                                    <span> @user.User.Username</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="sorting_1">
+                                            <div class="row" style="width: 100%;margin: auto;text-aling">
+
+                                                @user.User.Mobile
+
+                                            </div>
+                                        </td>
+
+                                        <td class="center ">
+
+                                            @user.TouristPassengers.RequiredAmount بلیط
+
+                                        </td>
+
+                                        <td class="center ">
+
+                                            @if (user.TouristPassengers.PassengerInfoState == DoctorFAM.Domain.Enums.Tourist.TouristPassengersInfoState.PaidButWaitingForPaymentMoreForToken)
+                                            {
+                                                <p class="label label-info">پرداخت شده</p>
+                                            }
+                                            @if (user.TouristPassengers.PassengerInfoState == DoctorFAM.Domain.Enums.Tourist.TouristPassengersInfoState.WaitingForCompleteInfoFromTourist)
+                                            {
+                                                <p class="label label-warning">درانتظار پرداخت</p>
+                                            }
+                                            @if (user.TouristPassengers.PassengerInfoState == DoctorFAM.Domain.Enums.Tourist.TouristPassengersInfoState.RecievedToken)
+                                            {
+                                                <p class="label label-success">نهایی شده</p>
+                                            }
+
+                                        </td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <partial name="_AdminNotFoundPartial" />
+            }
+
+        </div>
+    </div>
+
+</div>

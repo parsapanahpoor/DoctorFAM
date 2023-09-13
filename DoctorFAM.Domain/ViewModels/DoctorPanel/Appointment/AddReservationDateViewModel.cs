@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DoctorFAM.Domain.Enums.DoctorReservation;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -15,6 +16,8 @@ namespace DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment
         public string ReservationDate { get; set; }
 
         public AddReservationDateState AddReservationDateState { get; set; }
+
+        public DoctorReservationType DoctorReservationType { get; set; }
 
         [Display(Name = "Start Time")]
         [Required(ErrorMessage = "Please Enter {0}")]

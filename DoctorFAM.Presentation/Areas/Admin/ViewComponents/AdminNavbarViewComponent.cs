@@ -54,6 +54,8 @@ namespace DoctorFAM.Web.Areas.Admin.ViewComponents
                     if (userRole.Contains("LaboratoryOfficeEmployee")) ViewBag.LaboratoryOfficeEmployee = true;
 
                     if (userRole.Contains("Labratory")) ViewBag.Labratory = true;
+
+                    if (userRole.Contains("Tourism")) ViewBag.Tourism = true;
                 }
 
             }

@@ -10,7 +10,7 @@ namespace DoctorFAM.Domain.ViewModels.DoctorPanel.SendSMS
     {
         #region properties
 
-        public ulong UserId{ get; set; }
+        public ulong? UserId{ get; set; }
 
         public string Username { get; set; }
 
@@ -20,7 +20,7 @@ namespace DoctorFAM.Domain.ViewModels.DoctorPanel.SendSMS
 
         public string Mobile { get; set; }
 
-        public string UserAvatar { get; set; }
+        public string? UserAvatar { get; set; }
 
         #endregion
     }

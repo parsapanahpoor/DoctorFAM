@@ -1,0 +1,195 @@
+﻿@using DoctorFAM.Domain.Enums
+@using DoctorFAM.Application.StaticTools
+@using DoctorFAM.Domain.ViewModels.Common
+@model DoctorFAM.Domain.ViewModels.Tourism.TouristInfo.ManageTouristInfoViewModel
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
+
+@{
+    ViewData["Title"] = @Localizer["اطلاعات گردشگری"];
+}
+
+@{
+    var countries = ViewData["Countries"] != null ? ViewData["Countries"] as List<SelectListViewModel> : null;
+    var states = ViewData["States"] != null ? ViewData["States"] as List<SelectListViewModel> : null;
+    var cities = ViewData["Cities"] != null ? ViewData["Cities"] as List<SelectListViewModel> : null;
+}
+
+@section Scripts
+    {
+    <partial name="_JqueryValidation" />
+}
+
+@section Breadcrumb
+    {
+    <li>
+        <a asp-action="Index" asp-controller="Home" asp-area="Tourist"> @Localizer["پنل گردشگر"] </a>
+    </li>
+    <li>
+        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+    </li>
+}
+
+<form method="post" asp-action="ManageTouristInfo" asp-controller="TouristInfo" asp-area="Tourist" enctype="multipart/form-data">
+
+    <div class="row">
+
+        @if (!string.IsNullOrEmpty(Model.RejectDescription) && Model.TouristInfosType == DoctorFAM.Domain.Entities.Doctors.OrganizationInfoState.Rejected)
+        {
+            <div class="col-lg-12 col-sm-12 col-xs-12">
+                <div class="widget">
+                    <div class="widget-header bg-red">
+                        <span class="widget-caption">@Localizer["Supporter Message"] </span>
+                        <div class="widget-buttons">
+                            <a href="#" data-toggle="config">
+                                <i class="fa fa-cog"></i>
+                            </a>
+                            <a href="#" data-toggle="maximize">
+                                <i class="fa fa-expand"></i>
+                            </a>
+                            <a href="#" data-toggle="collapse">
+                                <i class="fa fa-minus"></i>
+                            </a>
+                            <a href="#" data-toggle="dispose">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div><!--Widget Buttons-->
+                    </div><!--Widget Header-->
+                    <div class="widget-body bg-red">
+                        <p> @Model.RejectDescription </p>
+                    </div><!--Widget Body-->
+                </div><!--Widget-->
+            </div>
+        }
+
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12 col-sm-12">
+            <div class="row">
+
+                <input type="hidden" asp-for="UserId" />
+
+                <div class="col-lg-12">
+                    <div class="widget">
+                        <div class="widget-header bordered-bottom bordered-green">
+                            <span class="widget-caption"> @Localizer["اطلاعات گردشگری"] </span>
+                        </div>
+                        <div class="widget-body">
+                            <div class="row">
+
+                                <div class="form-group col-md-6 col-sm-12">
+                                    <label asp-for="NationalCode">کدملی</label>
+                                    <input type="text" class="form-control" asp-for="NationalCode">
+                                    <span class="text-danger" asp-validation-for="NationalCode"></span>
+                                </div>
+
+                                <div class="form-group col-md-6 col-sm-12">
+                                    <label asp-for="FirstName">نام</label>
+                                    <input type="text" class="form-control" asp-for="FirstName">
+                                    <span class="text-danger" asp-validation-for="FirstName"></span>
+                                </div>
+
+                                <div class="form-group col-md-6 col-sm-12">
+                                    <label asp-for="LastName">نام خانوادگی</label>
+                                    <input type="text" class="form-control" asp-for="LastName">
+                                    <span class="text-danger" asp-validation-for="LastName"></span>
+                                </div>
+
+                                <div class="form-group col-md-6 col-sm-12">
+                                    <label asp-for="Education">تحصیلات</label>
+                                    <input type="text" class="form-control" asp-for="Education">
+                                    <span class="text-danger" asp-validation-for="Education"></span>
+                                </div>
+
+                                <div class="form-group col-md-4 col-sm-12">
+                                    <label asp-for="CountryId"></label>
+                                    <select class="form-control" asp-for="CountryId">
+                                        <option value=""> @Localizer[" کشور را انتخاب کنید"] </option>
+                                        @if (countries != null && countries.Any())
+                                        {
+
+                                            foreach (var country in countries)
+                                            {
+                                                if (Model != null && Model.CountryId == country.Id)
+                                                {
+                                                    <option value="@country.Id" selected="selected"> @country.Title </option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@country.Id"> @country.Title </option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    <span class="text-danger" asp-validation-for="CountryId"></span>
+                                </div>
+
+                                <div class="form-group col-md-4 col-sm-12">
+                                    <label asp-for="StateId"></label>
+                                    <select class="form-control" asp-for="StateId">
+                                        <option value=""> @Localizer["استان را انتخاب کنید"] </option>
+                                        @if (states != null && states.Any())
+                                        {
+                                            foreach (var state in states)
+                                            {
+                                                if (Model != null && Model.StateId == state.Id)
+                                                {
+                                                    <option value="@state.Id" selected="selected"> @state.Title </option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@state.Id"> @state.Title </option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    <span class="text-danger" asp-validation-for="StateId"></span>
+                                </div>
+
+                                <div class="form-group col-md-4 col-sm-12">
+                                    <label asp-for="CityId"></label>
+                                    <select asp-for="CityId" class="form-control">
+                                        <option value=""> @Localizer["شهر را انتخاب کیند"] </option>
+                                        @if (cities != null && cities.Any())
+                                        {
+                                            foreach (var city in cities)
+                                            {
+                                                if (Model != null && Model.CityId == city.Id)
+                                                {
+                                                    <option value="@city.Id" selected="selected"> @city.Title </option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@city.Id"> @city.Title </option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    <span class="text-danger" asp-validation-for="CityId"></span>
+                                </div>
+
+                                <div class="form-group col-md-12 col-sm-12">
+                                    <label asp-for="WorkAddress">آدرس</label>
+                                    <textarea type="text" class="form-control" asp-for="WorkAddress">@Model.WorkAddress</textarea>
+                                    <span class="text-danger" asp-validation-for="WorkAddress"></span>
+                                </div>
+
+                                <hr class="margin-bottom-10 margin-top-10" />
+
+                                <div class="col-md-12 flex-style">
+                                    <button type="submit" class="btn btn-labeled btn-palegreen">
+                                        <i class="btn-label glyphicon glyphicon-ok"></i>@Localizer["ثبت"]
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</form>
