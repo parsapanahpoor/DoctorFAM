@@ -215,6 +215,9 @@ public interface IReservationService
     //Fill Reservation Factor Site Side View Model
     Task<ReservationFactorSiteSideViewModel?> FillReservationFactorSiteSideViewModel(ReservationFactorSiteSideViewModel model);
 
+    //Fill Reservation Factor User Side View Model
+    Task<ReservationFactorUserSideViewModel?> FillReservationFactorUserSideViewModel(ulong reservationId, ulong userId);
+
     //Get Doctor Reservation Date Time Doctor Selected Reservation Type
     Task<DoctorReservationType> GetDoctorReservationDateTimeDoctorSelectedReservationType(ulong doctorReservationDateTimeId);
 
