@@ -1,4 +1,4 @@
-﻿@model DoctorFAM.Domain.ViewModels.UserPanel.Reservation.ShowReservationDetailUserSideViewModel
+﻿@model DoctorFAM.Domain.ViewModels.UserPanel.Reservation.ReservationFactorUserSideViewModel
 @using DoctorFAM.Application.Extensions
 @using DoctorFAM.Application.Convertors
 @using DoctorFAM.Domain.ViewModels.Common
@@ -33,6 +33,27 @@
 @section Scripts
 {
 <partial name="_JqueryValidation" />
+
+    <partial name="_JqueryValidation" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function ($) {
+
+            $(document).on('click', '.btn_print', function (event) {
+                event.preventDefault();
+
+                //credit : https://ekoopmans.github.io/html2pdf.js
+
+                var element = document.getElementById('container_content');
+
+                //easy
+                html2pdf().from(element).save();
+
+            });
+        });
+    </script>
 }
 
 @section Breadcrumb
@@ -48,150 +69,116 @@
     <div class="col-md-12">
         <div class="profile-container">
 
-           
-                <div class="profile-header row">
 
-                    <div class="row">
-                        <div class="col-md-3">
-                            <div class="col-md-12 text-center">
+            <div class="row mt-5" id="container_content">
+                <div class="col-lg-3 col-sm-12 col-xs-12">
+                </div>
+                <div class="col-lg-6 col-sm-12 col-xs-12">
+                    <div class="well invoice-container" style="background-color: cornflowerblue;">
+                        <div class="row">
+                            <div class="col-lg-4 col-sm-4 col-xs-4">
+                            </div>
+                            <div class="col-lg-5 col-sm-5 col-xs-5">
+                                <h1>
+                                    <a href="">
+                                        <img src="/Content/images/Logo/doctorfamTes.png" alt="" style="width:200px; height:45px; margin-right:-17px">
+                                    </a>
+                                </h1>
                                 <div>
-                                    <img src="@Model.User.GetUserAvatar()" class="header-avatar">
+                                    <span>کد رهگیری درخواست : </span>
+                                    <span>@Model.ReservationId</span>
                                 </div>
+                                <div class="horizontal-space"></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 col-sm-12 col-xs-12">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h6>اطلاعات درخواست :</h6>
+                                    </div>
+                                    <div class="panel-body">
+                                        <ul>
+                                            <li>نام کاربری  : @Model.PatientUsername</li>
+                                            <li>موبایل : @Model.PatientMobile</li>
 
-                                @if (Model.User.FirstName != null && Model.User.LastName != null)
+
+                                            @if (Model.DoctorAddress != null && Model.DoctorAddress.Any())
+                                            {
+                                                <li>آدرس مطب : @Model.DoctorAddress.Select(p=> p.Address).FirstOrDefault()</li>
+                                            }
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> <!-- / end client details section -->
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th><h5 class="no-margin-bottom">عنوان </h5></th>
+                                    <th><h5 class="no-margin-bottom">توضیح </h5></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <tr>
+                                    <td>کدملی بیمار</td>
+                                    <td>@((!string.IsNullOrEmpty(Model.PatientNationalId)) ? Model.PatientNationalId : "وارد نشده")</td>
+                                </tr>
+
+                                <tr>
+                                    <td>نام و نام خانوادگی بیمار</td>
+                                    <td>@((!string.IsNullOrEmpty(Model.PatientUsername)) ? Model.PatientUsername : "وارد نشده")</td>
+                                </tr>
+
+                                <tr>
+                                    <td>نام پزشک</td>
+                                    <td>@((!string.IsNullOrEmpty(Model.DoctorUsername)) ? Model.DoctorUsername : "وارد نشده")</td>
+                                </tr>
+
+                                @if (Model.DoctorSpeciality != null && Model.DoctorSpeciality.Any())
                                 {
-                                    <div class="header-fullname">
-                                        <p>@Model.User.FirstName @Model.User.LastName</p>
+                                    <tr>
 
-                                    </div>
+                                        <td>تخصص پزشک</td>
+                                        <td>
+                                            @foreach (var skill in Model.DoctorSpeciality)
+                                            {
+                                                <p>@skill.DoctorSkil</p>
+                                            }
+                                        </td>
+                                    </tr>
                                 }
-                                <div class="header-fullname2">
-                                    <p>
-                                        @Model.User.Mobile
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 profile-stats">
-                            <div class="row rowmt">
-                                <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12  stats-col">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <span class="stats-value ">@Localizer["Reserve Date"] : @Model.DoctorReservationDate.ReservationDate.ToStringShamsiDate()</span>
-                                        </div>
-                                        <div class="col-md-12">
-                                            @if (Model.DoctorReservationDateTime.DoctorReservationType == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationType.Onile)
-                                            {
-                                                <span class="stats-value "> @Localizer["Type"] : @Localizer["Online"] </span>
 
-                                            }
-                                            @if (Model.DoctorReservationDateTime.DoctorReservationType == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationType.Reserved)
-                                            {
-                                                <span class="stats-value "> @Localizer["Type"] : @Localizer["In Persone"] </span>
+                                <tr>
+                                    <td>تاریخ نوبت</td>
+                                    <td>@Model.ReservationDate.ToStringShamsiDate()</td>
+                                </tr>
 
-                                            }
-                                          
-                                        </div>
-                                    </div>
+                                <tr>
+                                    <td>ساعت مراجعه</td>
+                                    <td>@string.Concat(Model.ReservationDateTime.Reverse().Skip(3).Reverse())</td>
+                                </tr>
 
-                                </div>
-                                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12  stats-col">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            @Localizer["Start Time"]<span class="stats-value2 ">  @string.Concat(Model.DoctorReservationDateTime.StartTime.Reverse().Skip(3).Reverse()) </span>
-                                        </div>
-                                        <div class="col-md-12">
-                                            @Localizer["End Time"]<span class="stats-value2 "> @string.Concat(Model.DoctorReservationDateTime.EndTime.Reverse().Skip(3).Reverse()) </span>
-                                        </div>
-                                    </div>
+                                <tr>
+                                    <td>کد پیگیری</td>
+                                    <td>@Model.ReservationId</td>
+                                </tr>
 
-                                </div>
+                                <tr>
+                                    <td class="text-center"><strong>عملیات  </strong></td>
+                                    <td class="text-center ">
+                                        <p class="btn btn-sccess btn_print">
+                                            چاپ و دانلود فاکتور
+                                        </p>
+                                    </td>
+                                </tr>
 
-                            </div>
-                        </div>
-
-                    </div>
-
-                </div>
-         
-               
-                <div class="profile-body">
-                    <div class="col-lg-12">
-                        <div class="tabbable">
-
-                            <div class="tab-content tabs-flat">
-
-                                <div id="settings" class="tab-pane active">
-                                    <div class="form-title">
-                                        @Localizer["Doctor Personal Informations"]
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-sm-12">
-                                            <div class="form-group">
-                                                <span class="input-icon icon-right">
-                                                    @if (Model.User.LastName != null && Model.User.FirstName != null)
-                                                    {
-                                                        <input type="text" readonly class="form-control" value="@Model.User.FirstName @Model.User.LastName" placeholder="@Localizer["FullName"]">
-                                                    }
-                                                    else
-                                                    {
-                                                        <input type="text" class="form-control" placeholder="@Localizer["FullName"]">
-                                                    }
-                                                    <i class="fa fa-user orange"></i>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-sm-6">
-                                            <div class="form-group">
-                                                <span class="input-icon icon-right">
-                                                    @if (Model.User.ExtraPhoneNumber != null)
-                                                    {
-                                                        <input type="text" readonly class="form-control" value="@Model.User.ExtraPhoneNumber" placeholder="@Localizer["Extra Phone"]">
-                                                    }
-                                                    else
-                                                    {
-                                                        <input type="text" class="form-control" placeholder="@Localizer["Extra Phone"]">
-                                                    }
-                                                    <i class="glyphicon glyphicon-earphone yellow"></i>
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="form-group">
-                                                <span class="input-icon icon-right">
-                                                    <input type="text" readonly class="form-control" value="@Model.User.Mobile" placeholder="@Localizer["Extra Phone"]">
-                                                    <i class="glyphicon glyphicon-phone palegreen"></i>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    @if (Model.DoctorReservationDateTime.DoctorReservationType == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationType.Reserved && Model.WorkAddress != null)
-                                    {
-                                        <div class="form-title">
-                                            @Localizer["Contact Information"]
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <div class="form-group">
-                                                    <span class="input-icon icon-right">
-                                                        <textarea type="text" class="form-control" readonly> @Model.WorkAddress </textarea>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    }
-
-
-                                </div>
-
-                            </div>
-                        </div>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
+            </div>
           
            
         </div>
