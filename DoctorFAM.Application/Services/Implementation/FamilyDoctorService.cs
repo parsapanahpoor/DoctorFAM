@@ -10,6 +10,8 @@ using DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor;
 using DoctorFAM.Domain.ViewModels.UserPanel.Reservation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
+using SixLabors.ImageSharp.ColorSpaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -233,6 +235,15 @@ namespace DoctorFAM.Application.Services.Implementation
         #endregion
 
         #region Doctor Panel 
+
+        //Select All Population Covered UserIds For Send SMS To Them 
+        public async Task<List<ulong>?> SelectAllPopulationCoveredUserIdsForSendSMSToThem(ulong doctorUserId)
+        {
+            var usersId = await _familyDoctor.ListOfCurrentDoctorPopulationCoveredUsersWithoutBasePaging(doctorUserId);
+            if (usersId == null) return null;
+
+            return usersId;
+        }
 
         //List Of Current Doctor Population Covered Users Without Base Paging
         public async Task<List<ChooseUsersForSendSMSViewModel>?> ListOfCurrentDoctorPopulationCoveredUsersWithoutBasePaging(ulong doctorUserId)
