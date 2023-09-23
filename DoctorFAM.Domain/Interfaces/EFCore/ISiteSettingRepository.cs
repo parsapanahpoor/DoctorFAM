@@ -139,6 +139,9 @@ public interface ISiteSettingRepository
 
     #region Site Side
 
+    //Get Tourist Token Tariff
+    Task<int> GetTouristTokenTariff();
+
     //Get Supplementary Insurance Name By Id 
     Task<string?> GetSupplementaryInsuranceNameById(ulong id);
 

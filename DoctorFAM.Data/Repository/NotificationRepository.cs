@@ -60,10 +60,12 @@ public class NotificationRepository : INotificationRepository
     //Get User Notifications
     public async Task<List<SupporterNotification>?> GetListOfSupporterNotificationByUserId(ulong userId)
     {
-        return await _context.SupporterNotification.Include(p=> p.User)
-            .Where(p=> !p.IsDelete && !p.IsSeen && p.ReciverId == userId)
-                                .OrderByDescending(p=> p.CreateDate)
-                                .Take(10).ToListAsync();
+        return await _context.SupporterNotification
+                             .Include(p=> p.User)
+                             .Where(p=> !p.IsDelete && !p.IsSeen && p.ReciverId == userId)
+                             .OrderByDescending(p=> p.CreateDate)
+                             .Take(10)
+                             .ToListAsync();
     }
 
     //Get Supporter Notification By Id

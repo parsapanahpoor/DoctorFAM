@@ -1,0 +1,108 @@
+﻿@model DoctorFAM.Domain.ViewModels.UserPanel.UserVirtualFiles.CreateUserVirtualFileUserSideViewModel
+@using DoctorFAM.Domain.Enums
+@using DoctorFAM.Application.StaticTools
+@using DoctorFAM.Domain.ViewModels.Common
+
+@{
+    ViewData["Title"] = "افزودن پرونده ی مجازی";
+}
+
+@section Scripts
+    {
+    <partial name="_JqueryValidation" />
+}
+
+@section Breadcrumb
+    {
+    <li>
+        <a asp-action="ListOfUserVirtualFiles" asp-area="UserPanel" asp-controller="UserVirtualFiles"> پرونده ی مجازی </a>
+    </li>
+}
+
+<form method="post" asp-action="CreateUserVirtualInfo" asp-controller="UserVirtualFiles" asp-area="UserPanel" enctype="multipart/form-data">
+
+    <div class="row">
+        <div class="col-lg-12 col-sm-12">
+            <div class="row">
+
+                <div class="col-lg-6 col-sm-12">
+                    <div class="row">
+
+
+                        <div class="col-lg-12">
+                            <div class="widget">
+                                <div class="widget-header bordered-bottom bordered-green" style="background-color:#d1f4fa">
+                                    <span class="widget-caption"> اطلاعات  </span>
+                                </div>
+
+                                <div class="widget-body" style="background-color:#d1f4fa !important;">
+                                    <div class="row">
+
+                                        <div class="form-group col-md-12 col-sm-12">
+                                            <label asp-for="Title">@Localizer["عنوان"]</label>
+                                            <span style="color:red;">*</span>
+                                            <input type="text" class="form-control" asp-for="Title">
+                                            <span class="text-danger" asp-validation-for="Title"></span>
+                                        </div>
+
+                                        <div class="form-group col-md-12 col-sm-12">
+                                            <label asp-for="Description">توضیحات</label>
+                                            <span style="color:red; font-size:12px;">(اختیاری)</span>
+                                            <textarea type="text" class="form-control" asp-for="Description"></textarea>
+                                            <span class="text-danger" asp-validation-for="Description"></span>
+                                        </div>
+
+                                        <div class="col-md-12 flex-style">
+                                            <button type="submit" class="btn btn-labeled btn-palegreen">
+                                                <i class="btn-label glyphicon glyphicon-ok"></i>ثبت
+                                            </button>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="widget">
+                        <div class="widget-header bordered-bottom bordered-green">
+                            <span class="widget-caption"> فایل ضمیمه </span>
+                        </div>
+                        <div class="widget-body">
+                            <div class="row">
+
+                                <input type="hidden" asp-for="AttachmentFileName">
+
+                                <div class="col-md-12">
+                                    <label for="courseAttachmentFile" class="file-input-style">
+                                        <i class="glyphicon glyphicon-upload"></i>
+                                        <span class="mr-8px">لطفا فایل ضمیمه را انتخاب کنید .</span>
+                                    </label>
+                                </div>
+
+                                <div class="col-md-12 mt-10px display-none" id="CourseAttachment" inputId="AttachmentFileName" upload-url="@Url.Action("UploadCourseAttachmentFile", "UserVirtualFiles", new {area = "UserPanel"})">
+                                    <div class="progress progress-bordered" style="margin-bottom: 10px !important">
+                                        <div class="progress-bar progress-bar-blue" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                                            <span class="percent"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</form>
+
+<input type="file" chunk-upload="CourseAttachment" class="display-none" name="courseAttachmentFile" id="courseAttachmentFile" />
+
+
+

@@ -54,6 +54,8 @@ namespace DoctorFAM.Web.Areas.Admin.ViewComponents
                     if (userRole.Contains("Dentist")) ViewBag.Dentist = true;
 
                     if (userRole.Contains("DentistOfficeEmployee")) ViewBag.DentistOfficeEmployee = true;
+
+                    if (userRole.Contains("Tourism")) ViewBag.Tourism = true;
                 }
          
             }

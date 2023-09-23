@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Accept Request" xml:space="preserve">
-    <value>قبول درخواست</value>
+    <value>پذیرش درخواست</value>
   </data>
   <data name="Address" xml:space="preserve">
     <value>آدرس کامل </value>
@@ -145,7 +145,7 @@
     <value>نام کاربری سفارش دهنده</value>
   </data>
   <data name="Confirm Request" xml:space="preserve">
-    <value>تایید درخواست</value>
+    <value>پذیرش درخواست</value>
   </data>
   <data name="Count" xml:space="preserve">
     <value>تعداد</value>
@@ -190,7 +190,7 @@
     <value>بیمه ی آزاد</value>
   </data>
   <data name="Gender" xml:space="preserve">
-    <value>جنسیت بیمار</value>
+    <value>جنسیت متوفی</value>
   </data>
   <data name="Health Insurance" xml:space="preserve">
     <value>بیمه سلامت</value>
@@ -214,25 +214,25 @@
     <value>مشاوره پاراکلینیک</value>
   </data>
   <data name="Patient Date Time" xml:space="preserve">
-    <value>زمان دریافت مورد نظر بیمار</value>
+    <value>زمان دریافت مورد نظر متوفی</value>
   </data>
   <data name="Patient First Name" xml:space="preserve">
-    <value>نام بیمار</value>
+    <value>نام متوفی</value>
   </data>
   <data name="Patient Information" xml:space="preserve">
-    <value>اطلاعات بیمار</value>
+    <value>اطلاعات متوفی</value>
   </data>
   <data name="Patient Last Name" xml:space="preserve">
-    <value>نام خانوادگی بیمار</value>
+    <value>نام خانوادگی متوفی</value>
   </data>
   <data name="Patient Mobile" xml:space="preserve">
-    <value>موبایل بیمار</value>
+    <value>موبایل متوفی</value>
   </data>
   <data name="Patient National Code" xml:space="preserve">
-    <value>کدملی بیمار</value>
+    <value>کدملی متوفی</value>
   </data>
   <data name="Patient Phone Number" xml:space="preserve">
-    <value>تلفن ثابت بیمار</value>
+    <value>تلفن ثابت متوفی</value>
   </data>
   <data name="Prescription tracking code/applicant's national code" xml:space="preserve">
     <value>کد رهگیری نسخه/ کد ملی متقاضی</value>
@@ -247,7 +247,7 @@
     <value>تاریخ ایجاد درخواست</value>
   </data>
   <data name="Request Description" xml:space="preserve">
-    <value>توضیحات سفارش</value>
+    <value>توضیحات </value>
   </data>
   <data name="Request Detail" xml:space="preserve">
     <value>اطلاعات درخواست</value>

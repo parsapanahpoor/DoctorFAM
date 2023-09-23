@@ -48,6 +48,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         #region Doctor Panel 
 
+        //Select All Population Covered UserIds For Send SMS To Them 
+        Task<List<ulong>?> SelectAllPopulationCoveredUserIdsForSendSMSToThem(ulong doctorUserId);
+
         //List Of Current Doctor Population Covered Users
         Task<ListOfDoctorPopulationCoveredViewModel> FilterCurrentDoctorPopulationCovered(ListOfDoctorPopulationCoveredViewModel filter);
 

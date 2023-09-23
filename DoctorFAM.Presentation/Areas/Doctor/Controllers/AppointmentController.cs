@@ -1,4 +1,4 @@
-﻿#region Userings
+﻿#region Usings
 
 using DoctorFAM.Application.Convertors;
 using DoctorFAM.Application.Extensions;
@@ -41,10 +41,10 @@ public class AppointmentController : DoctorBaseController
 
     #region List Of Futear Reservation Date  
 
-    public async Task<IActionResult> ListOfReservationDate(FilterAppointmentViewModel filter)
+    public async Task<IActionResult> ListOfReservationDate(FilterAppointmentViewModelWithoutPaging filter)
     {
         filter.UserId = User.GetUserId();
-        return View(await _reservatioService.FilterDoctorReservationDateSide(filter));
+        return View(await _reservatioService.FilterDoctorReservationDateSideWithoutPaging(filter));
     }
 
     #endregion

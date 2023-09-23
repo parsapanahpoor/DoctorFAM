@@ -140,6 +140,12 @@ public interface IOnlineVisitService
 
     #region Site Side 
 
+    //Get Online Visit Date Time By Business Key
+    Task<DateTime?> GetOnlineVisitDateTimeByBusinessKey(int businessKey);
+
+    //Fill Online Visit Invoice 
+    Task<ShowOnlineVisitInvoice?> FillOnlineVisitInvoice(SelectShiftAndRedirectToBankDTO model, ulong? tokenId);
+
     //List Of Work Shift Days
     Task<List<ListOfDaysForShowSiteSideViewModel>> FillListOfDaysForShowSiteSideViewModel();
 

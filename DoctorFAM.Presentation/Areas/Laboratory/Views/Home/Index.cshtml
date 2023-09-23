@@ -4,7 +4,7 @@
 }
 
 @section Breadcrumb {
-    <li class="active">@SharedHtmlLocalizer["Home"]</li>
+    
 }
 
     @section Styles
@@ -37,6 +37,8 @@
 }
 
     @await Component.InvokeAsync("LaboratoryInfos")
+
+@await Component.InvokeAsync("LaboratoryPanelSideBarInIndex")
 
     <div class="page-body">
 

@@ -967,11 +967,7 @@ namespace DoctorFAM.Application.Services.Implementation
         {
             #region Get Organization
 
-            var organization = await _organizationService.GetDoctorOrganizationByUserId(DoctorUserId);
-            if (organization.OrganizationInfoState != OrganizationInfoState.Accepted || organization.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice)
-            {
-                return null;
-            }
+            var organization = await _organizationService.GetOrganizationByUserId(DoctorUserId);
 
             #endregion
 
@@ -1212,8 +1208,8 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #region Get Doctor Organization 
 
-            var organization = await _organizationService.GetDoctorOrganizationByUserId(userId);
-            if (organization.OrganizationInfoState != OrganizationInfoState.Accepted || organization.OrganizationType != Domain.Enums.Organization.OrganizationType.DoctorOffice)
+            var organization = await _organizationService.GetOrganizationByUserId(userId);
+            if (organization.OrganizationInfoState != OrganizationInfoState.Accepted )
             {
                 return false;
             }
@@ -3221,7 +3217,8 @@ namespace DoctorFAM.Application.Services.Implementation
                 GeneralPhone = info.GeneralPhone,
                 ClinicPhone = info.ClinicPhone,
                 DoctorSkills = string.Join(",", doctorSkills.Select(p => p.DoctorSkil).ToList()),
-                CountOFFreeSMSForDoctors = info.CountOFFreeSMSForDoctors
+                CountOFFreeSMSForDoctors = info.CountOFFreeSMSForDoctors,
+                DoctorTilteName = info.DoctorTilteName
             };
 
             #endregion
@@ -3348,6 +3345,7 @@ namespace DoctorFAM.Application.Services.Implementation
             info.GeneralPhone = model.GeneralPhone;
             info.ClinicPhone = model.ClinicPhone;
             info.CountOFFreeSMSForDoctors = model.CountOFFreeSMSForDoctors;
+            info.DoctorTilteName = model.DoctorTilteName;
 
             #endregion
 
@@ -3896,7 +3894,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 }
 
                 //If Reservation Type Is Online 
-                if (DoctorReservationType == DoctorReservationType.Onile)
+                if (DoctorReservationType == DoctorReservationType.Onile || DoctorReservationType == DoctorReservationType.BothOnlineAndReserved)
                 {
                     return reservationTariff.OnlineReservationTariffForDoctorPopulationCovered;
                 }
@@ -3911,7 +3909,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 }
 
                 //If Reservation Type Is Online 
-                if (DoctorReservationType == DoctorReservationType.Onile)
+                if (DoctorReservationType == DoctorReservationType.Onile || DoctorReservationType == DoctorReservationType.BothOnlineAndReserved)
                 {
                     return reservationTariff.OnlineReservationTariffForAnonymousPersons;
                 }
@@ -3961,7 +3959,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 }
 
                 //If Reservation Type Is Online 
-                if (DoctorReservationType == DoctorReservationType.Onile)
+                if (DoctorReservationType == DoctorReservationType.Onile || DoctorReservationType == DoctorReservationType.BothOnlineAndReserved)
                 {
                     return ValueTuple.Create(reservationTariff.OnlineReservationTariffForDoctorPopulationCovered, true, true);
                 }
@@ -3976,7 +3974,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 }
 
                 //If Reservation Type Is Online 
-                if (DoctorReservationType == DoctorReservationType.Onile)
+                if (DoctorReservationType == DoctorReservationType.Onile || DoctorReservationType == DoctorReservationType.BothOnlineAndReserved)
                 {
                     return ValueTuple.Create(reservationTariff.OnlineReservationTariffForAnonymousPersons, false , true);
                 }

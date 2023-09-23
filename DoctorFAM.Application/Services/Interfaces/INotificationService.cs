@@ -76,6 +76,9 @@ public interface INotificationService
     //Create Notification For Admin About Insert Information From Laboratory
     Task<bool> CreateNotificationForAdminAboutInsertInformationFromLaboratory(ulong targetId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId);
 
+    //Create Notification For Admin About Insert Information From Tourist
+    Task<bool> CreateNotificationForAdminAboutInsertInformationFromTourist(ulong targetId, SupporterNotificationText SupporterNotificationText, NotificationTarget notification, ulong senderId);
+
     #endregion
 
     #region User Panel Side 

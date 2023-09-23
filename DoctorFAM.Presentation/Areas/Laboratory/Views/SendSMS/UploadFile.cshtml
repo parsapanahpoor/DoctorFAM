@@ -1,0 +1,32 @@
+﻿@using DoctorFAM.Application.Convertors
+
+@{
+    ViewData["Title"] = "روش های آپلود فایل اکسل";
+}
+
+@section Breadcrumb
+    {
+    <li>
+        <a asp-area="Laboratory" asp-controller="Home" asp-action="SendMessage"> پیامک </a>
+    </li>
+}
+
+
+
+
+<div class="page-body">
+
+
+    <div class="row text-center ">
+        <div class="col-md-6">
+            <a target="_blank" href="/Content/ExcelSampleFile/PopulationCoveredSmple.xlsx" title="از اینجا برای دانلود یک نمونه فایل اکسل، برای انتقال اطلاعات از کامپیوتر خود، به این سامانه استفاده کنید." class="exlStyle btn btn-primary ">@SharedLocalizer["dlw Sample Of Excel File"]</a>
+        </div>
+        <div class="col-md-6">
+            <a asp-action="RequestForEploadExcelFileFromSite" asp-controller="SendSMS" asp-area="Laboratory" title="اگر به هر دلیلی نمی توانید فایل اکسل خود را تکمیل کنید این کار را به ما بسپارید " class="exlStyle btn btn-primary">
+                آپلود فایل اکسل خود
+            </a>
+        </div>
+    </div>
+
+
+</div>

@@ -27,6 +27,8 @@ namespace DoctorFAM.Domain.Enums.DoctorReservation
         //[Display(Name = "In Person")]
         [Display(Name = "حضوری")]
         Reserved,
+        [Display(Name = "حضوری و آنلاین")]
+        BothOnlineAndReserved,
     }
 
     public enum FilterDoctorReservationType

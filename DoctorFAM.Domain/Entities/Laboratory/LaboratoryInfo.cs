@@ -1,9 +1,11 @@
 ﻿using DoctorFAM.Domain.Entities.Common;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace DoctorFAM.Domain.Entities.Laboratory
 {
@@ -20,6 +22,9 @@ namespace DoctorFAM.Domain.Entities.Laboratory
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
+
+        [Display(Name = "تعداد پیامک رایگان برای ارسال از آزمایشگاه به بیماران")]
+        public int CountOFFreeSMSForLaboratory { get; set; }
 
         #endregion
 

@@ -1,7 +1,9 @@
 ﻿using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Services.Interfaces;
+using DoctorFAM.Application.StaticTools;
 using DoctorFAM.Web.Doctor.Controllers;
 using Microsoft.AspNetCore.Mvc;
+using ZNetCS.AspNetCore.ResumingFileResults.Extensions;
 
 namespace DoctorFAM.Web.Areas.Doctor.Controllers
 {
@@ -12,12 +14,15 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
         private readonly IDoctorsService _doctorService;
         private readonly IDashboardsService _dashboardService;
         private readonly IOrganizationService _organizationService;
+        private readonly IUserVirtualFilesService _userVirtualFilesService;
 
-        public HomeController(IDoctorsService doctorService , IOrganizationService organizationService , IDashboardsService dashboardService)
+        public HomeController(IDoctorsService doctorService , IOrganizationService organizationService , IDashboardsService dashboardService
+                                , IUserVirtualFilesService userVirtualFilesService)
         {
             _doctorService = doctorService;
             _organizationService = organizationService;
             _dashboardService = dashboardService;
+            _userVirtualFilesService = userVirtualFilesService;
         }
 
         #endregion
@@ -150,6 +155,56 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
 
             return View();
         }
+        #endregion
+
+        #region Patients Virtual Files
+
+        #region List Of User Virtual Files
+
+        [HttpGet]
+        public async Task<IActionResult> ListOfUserVirtualFiles(ulong userId)
+        {
+            #region Initial Model 
+
+            var model = await _userVirtualFilesService.FillUserVirtualFilesSiteSideViewModele(userId);
+            if (model == null)
+            {
+                TempData[ErrorMessage] = "اطلاعاتی یافت نشده است .";
+                return RedirectToAction(nameof(Index));
+            }
+
+            #endregion
+
+            return View(model);
+        }
+
+        #endregion
+
+        #region Download Attachment File
+
+        public IActionResult DownloadAttachmentFile(string fileName)
+        {
+            if (string.IsNullOrEmpty(fileName))
+            {
+                return NotFound();
+            }
+
+            var webRoot = PathTools.UserVirtualFilesServerPath;
+
+            if (!System.IO.File.Exists(Path.Combine(webRoot, fileName)))
+            {
+                return NotFound();
+            }
+
+            var stream = System.IO.File.OpenRead(Path.Combine(webRoot, fileName));
+
+            var download = this.ResumingFile(stream, "application/octet-stream", fileName);
+
+            return download;
+        }
+
+        #endregion
+
         #endregion
     }
 }

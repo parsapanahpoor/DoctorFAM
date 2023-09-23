@@ -43,11 +43,12 @@ public class OnlineVisitService : IOnlineVisitService
     private readonly ISiteSettingService _siteSettingService;
     private readonly ISMSService _smsService;
     private readonly IChatService _chatService;
+    private readonly ITouristTokenService _touristTokenService;
 
     public OnlineVisitService(IOnlineVisitRepository onlineVisitRepository, IUserService userService, IRequestService requestService
                                 , IPatientService patientService, ILocationService locationService, IWalletRepository walletRepository
                                         , IHomePharmacyServicec homePharmacyService, IOrganizationService organizationService
-                                            , ISiteSettingService siteSettingService, ISMSService smsService, IChatService chatService)
+                                            , ISiteSettingService siteSettingService, ISMSService smsService, IChatService chatService, ITouristTokenService touristTokenService)
     {
         _onlineVisitRepository = onlineVisitRepository;
         _userService = userService;
@@ -60,6 +61,7 @@ public class OnlineVisitService : IOnlineVisitService
         _siteSettingService = siteSettingService;
         _smsService = smsService;
         _chatService = chatService;
+        _touristTokenService = touristTokenService;
     }
 
     #endregion
@@ -909,6 +911,86 @@ public class OnlineVisitService : IOnlineVisitService
     #endregion
 
     #region Site Side 
+
+    //Get Online Visit Date Time By Business Key
+    public async Task<DateTime?> GetOnlineVisitDateTimeByBusinessKey(int businessKey)
+    {
+        return await _onlineVisitRepository.GetOnlineVisitDateTimeByBusinessKey(businessKey);
+    }
+
+    //Fill Online Visit Invoice 
+    public async Task<ShowOnlineVisitInvoice?> FillOnlineVisitInvoice(SelectShiftAndRedirectToBankDTO model , ulong? tokenId)
+    {
+        #region Fill Model 
+
+        ShowOnlineVisitInvoice returnModel = new ShowOnlineVisitInvoice();
+        returnModel.businessKey = model.businessKey;
+        returnModel.WorkShiftDateId = model.WorkShiftDateId;
+        returnModel.WorkShiftDateTimeId = model.WorkShiftDateTimeId;
+
+        #endregion
+
+        #region Check That Is User Exist 
+
+        var user = await _userService.GetUserById(model.UserId);
+        if (user == null) return null;
+
+        returnModel.User = user;
+
+        #endregion
+
+        #region Check Is Exist Free Shift 
+
+        List<ulong> doctorReservationIds = await _onlineVisitRepository.GetListOfDocotrsReservationDatesWithDateBusinessKey(model.businessKey);
+        if (doctorReservationIds == null) return null;
+
+        int res = await _onlineVisitRepository.CheckThatIsExistFreeShift(model.WorkShiftDateTimeId, model.WorkShiftDateId, doctorReservationIds);
+        if (res == 0) return null;
+
+        #endregion
+
+        #region Get Online Visit Tariff
+
+        int onlineVisitTariff = await _siteSettingService.GetOnlineVisitTariff();
+        if (onlineVisitTariff == 0) return null;
+
+        returnModel.OnlineVisitTariff = onlineVisitTariff;
+
+        #endregion
+
+        #region Get Selected Date Time
+
+        var dateTime = await _onlineVisitRepository.GetOnlineVisitDateTimeByBusinessKey(model.businessKey);
+        if(dateTime == null) return null;
+
+        returnModel.RequestDateTime = (DateTime)dateTime;
+
+        #endregion
+
+        #region Get Work Shift Date Time 
+
+        var workShiftDateTime = await _onlineVisitRepository.GetOnlineVisitWorkWorkTimeById(model.WorkShiftDateTimeId);
+        if (workShiftDateTime == null) return null;
+
+        returnModel.OnlineVisitWorkShiftTime = workShiftDateTime.ToString();
+
+        #endregion
+
+        #region If Token Selected
+
+        if (tokenId.HasValue && tokenId.Value != null)
+        {
+            //Get Token
+            var token = await _touristTokenService.GetTokenById(tokenId.Value);
+            if (token == null) return null;
+
+            returnModel.Token = token;
+        }
+
+        #endregion
+
+        return returnModel;
+    }
 
     //List Of Work Shift Days
     public async Task<List<ListOfDaysForShowSiteSideViewModel>> FillListOfDaysForShowSiteSideViewModel()

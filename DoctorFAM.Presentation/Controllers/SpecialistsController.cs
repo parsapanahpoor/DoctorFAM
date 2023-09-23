@@ -29,4 +29,13 @@ public class SpecialistsController : Controller
 	}
 
 	#endregion
+
+	#region List Of Super Specialists
+
+	public async Task<IActionResult> ListOfSuperSpecialists()
+	{
+		return View(await _specialityService.ListOfSuperSpecialists());
+	}
+
+    #endregion
 }

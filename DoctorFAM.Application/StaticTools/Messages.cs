@@ -1,5 +1,8 @@
-﻿using DoctorFAM.Domain.Entities.Laboratory;
+﻿using DoctorFAM.Application.Convertors;
+using DoctorFAM.Domain.Entities.Laboratory;
+using DoctorFAM.Domain.Entities.Tourism.Token;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
+using OfficeOpenXml.FormulaParsing.LexicalAnalysis;
 using SixLabors.ImageSharp.ColorSpaces;
 using System.Security.Policy;
 
@@ -109,7 +112,14 @@ public static class Messages
     public static string SendSMSForBetweenPatientInReservationSiteSide(string time , string date , string doctorNam)
     {
         return
-            $" سلام . {Environment.NewLine} برای شما نوبتی در ساعت {time} و تاریخ {date}  نزد دکتر {doctorNam} ثبت گردیده . . {Environment.NewLine} {PathTools.SiteFarsiName}";
+            $" سلام . {Environment.NewLine}" +
+            $" نوبت ویزیت شما نزد {Environment.NewLine}" +
+            $" دکتر {doctorNam} {Environment.NewLine}" +
+            $" برای تاریخ {date} {Environment.NewLine}" +
+            $" و ساعت {string.Concat(time.Reverse().Skip(3).Reverse())} {Environment.NewLine}" +
+            $" ثبت گردید. {Environment.NewLine}" +
+            $"دکترفم {Environment.NewLine}"+
+            $"{PathTools.SiteAddress}";
     }
 
     //Send Activation Register Code 
@@ -278,5 +288,16 @@ public static class Messages
     {
         return
             $"سلام . {Environment.NewLine}  نتیجه آزمایش شما آماده و براساس روش انتخابی برای شما ارسال میگردد. {Environment.NewLine} {PathTools.SiteFarsiName}";
+    }
+
+    //Paied Token For Passengers  
+    public static string PaiedTokenForPassengers(TouristToken token , TouristPassengers passengers )
+    {
+        return
+            $" سلام . {Environment.NewLine}" +
+            $"تعداد {passengers.RequiredAmount} توکن گردشگری از طرف آژانس گردشگری برای شما صادر شده است. {Environment.NewLine}" +
+            $"این توکن از تاریخ {token.StartDate.ToShamsi()} تا پایان روز {token.EndDate.ToShamsi()} برای شما معتبر خواهد بود .  {Environment.NewLine}" +
+            $"سریال توکن شمات : {token.Token}" +
+            $"{Environment.NewLine} {PathTools.SiteFarsiName}";
     }
 }

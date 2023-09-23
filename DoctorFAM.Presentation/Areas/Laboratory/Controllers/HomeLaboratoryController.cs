@@ -155,24 +155,6 @@ public class HomeLaboratoryController : LaboratoryBaseController
             //Create Notification For Supporters And Admins
             var notifyResult = await _notificationService.CreateSupporterNotification(request.Id, Domain.Enums.Notification.SupporterNotificationText.ApprovalOfTheRequestFromTheLaboratory, Domain.Enums.Notification.NotificationTarget.request, User.GetUserId());
 
-            if (notifyResult)
-            {
-                //Get List Of Admins And Supporter To Send Notification Into Them
-                var users = await _userService.GetAdminsAndSupportersNotificationForSendNotificationInHomePharmacy();
-
-                //Fill Send Supporter Notification ViewModel For Send Notification
-                SendSupporterNotificationViewModel viewModel = new SendSupporterNotificationViewModel()
-                {
-                    CreateNotificationDate = $"{DateTime.Now.ToShamsi()} - {DateTime.Now.Hour}:{DateTime.Now.Minute}",
-                    NotificationText = "قبول درخواست از طرف آزمایشگاه",
-                    RequestId = request.Id,
-                    Username = User.Identity.Name,
-                    UserImage = currentOrganization.User.Avatar
-                };
-
-                await _notificationHub.Clients.Users(users).SendAsync("SendSupporterNotification", viewModel);
-            }
-
             #region Send SMS For Customer User 
 
             var message = Messages.SendSMSForAccepteHomeLaboratoryRequestFromLaboratory();
@@ -301,11 +283,11 @@ public class HomeLaboratoryController : LaboratoryBaseController
     {
         #region Fill View Model 
 
-        var res = await _homeLaboratoryServices.SendHomeLaboratoryRequestResultFromLaboratory(model.RequestId, User.GetUserId() , model.AttachmentFileName);
+        var res = await _homeLaboratoryServices.SendHomeLaboratoryRequestResultFromLaboratory(model.RequestId, User.GetUserId(), model.AttachmentFileName);
         if (res)
         {
-            TempData[SuccessMessage] = "عملیات با موفقیت انجام شذه است. ";
-            return RedirectToAction(nameof(SendResultForUser), new { requestId = model.RequestId });
+            TempData[SuccessMessage] = "عملیات با موفقیت انجام شده است. ";
+            return RedirectToAction("Index" , "Home" , new { area = "Laboratory" });
         }
 
         #endregion
