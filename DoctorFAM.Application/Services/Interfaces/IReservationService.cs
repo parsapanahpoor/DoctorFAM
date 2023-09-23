@@ -50,6 +50,8 @@ public interface IReservationService
 
     Task<FilterAppointmentViewModel> FilterDoctorReservationDateSide(FilterAppointmentViewModel filter);
 
+    Task<List<DoctorReservationDate>?> FilterDoctorReservationDateSideWithoutPaging(FilterAppointmentViewModelWithoutPaging filter);
+
     //This Is Filter For Reservation Date From Today By Dentist Panel
     Task<FilterAppointmentViewModel?> FilterDoctorReservationDateSideByDentistPanel(FilterAppointmentViewModel filter);
 
@@ -214,6 +216,9 @@ public interface IReservationService
 
     //Fill Reservation Factor Site Side View Model
     Task<ReservationFactorSiteSideViewModel?> FillReservationFactorSiteSideViewModel(ReservationFactorSiteSideViewModel model);
+
+    //Fill Reservation Factor User Side View Model
+    Task<ReservationFactorUserSideViewModel?> FillReservationFactorUserSideViewModel(ulong reservationId, ulong userId);
 
     //Get Doctor Reservation Date Time Doctor Selected Reservation Type
     Task<DoctorReservationType> GetDoctorReservationDateTimeDoctorSelectedReservationType(ulong doctorReservationDateTimeId);

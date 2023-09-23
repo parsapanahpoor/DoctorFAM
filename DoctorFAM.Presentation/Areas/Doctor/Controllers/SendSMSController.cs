@@ -45,11 +45,20 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers
         #region Write SMS Text
 
         [HttpGet]
-        public async Task<IActionResult> WriteSMSText(List<ulong> usersId)
+        public async Task<IActionResult> WriteSMSText(bool selectedAll,List<ulong>? usersId)
         {
+            #region Selected All Users
+
+            if (selectedAll)
+            {
+                usersId = await _familyDoctorService.SelectAllPopulationCoveredUserIdsForSendSMSToThem(User.GetUserId());
+            }
+
+            #endregion
+
             #region Validation 
 
-            if (usersId.Count() == 0)
+            if (usersId == null || !usersId.Any() || usersId.Count() == 0)
             {
                 TempData[ErrorMessage] = "لطفا بیماران خود را انتخاب کنید.";
                 return RedirectToAction(nameof(ChooseUsersForSendSMS));
