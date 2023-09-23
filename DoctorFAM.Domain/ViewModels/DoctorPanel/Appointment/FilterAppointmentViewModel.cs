@@ -29,4 +29,13 @@ namespace DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment
 
         #endregion
     }
+
+    public class FilterAppointmentViewModelWithoutPaging
+    {
+        #region properties
+
+        public ulong UserId { get; set; }
+
+        #endregion
+    }
 }

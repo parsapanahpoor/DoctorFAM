@@ -234,6 +234,11 @@ public class ReservationService : IReservationService
         return await _reservation.FilterDoctorReservationDateSide(filter);
     }
 
+    public async Task<List<DoctorReservationDate>?> FilterDoctorReservationDateSideWithoutPaging(FilterAppointmentViewModelWithoutPaging filter)
+    {
+        return await _reservation.FilterDoctorReservationDateSideWithoutPaging(filter);
+    }
+
     //This Is Filter For Reservation Date From Today By Dentist Panel
     public async Task<FilterAppointmentViewModel?> FilterDoctorReservationDateSideByDentistPanel(FilterAppointmentViewModel filter)
     {
@@ -1245,7 +1250,7 @@ public class ReservationService : IReservationService
         var doctorUserInfo = await _userService.GetUserByIdWithAsNoTracking(reservationDate.UserId);
         if (doctorUserInfo != null)
         {
-            var message = Messages.SendSMSForBetweenPatientInReservationSiteSide(reservationDateTime.StartTime, reservationDate.ReservationDate.ToString(), doctorUserInfo.Username);
+            var message = Messages.SendSMSForBetweenPatientInReservationSiteSide(reservationDateTime.StartTime, reservationDate.ReservationDate.ToShamsi(), doctorUserInfo.Username);
 
             await _smsService.SendSimpleSMS(model.Mobile, message);
         }
@@ -1339,7 +1344,7 @@ public class ReservationService : IReservationService
         var doctorUserInfo = await _userService.GetUserByIdWithAsNoTracking(ownerId.Value);
         if (doctorUserInfo != null)
         {
-            var message = Messages.SendSMSForBetweenPatientInReservationSiteSide(dateTime.StartTime, reservationDate.ReservationDate.ToString(), doctorUserInfo.Username);
+            var message = Messages.SendSMSForBetweenPatientInReservationSiteSide(dateTime.StartTime, reservationDate.ReservationDate.ToShamsi(), doctorUserInfo.Username);
 
             await _smsService.SendSimpleSMS(model.Mobile, message);
         }

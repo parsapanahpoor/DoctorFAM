@@ -50,6 +50,8 @@ public interface IReservationService
 
     Task<FilterAppointmentViewModel> FilterDoctorReservationDateSide(FilterAppointmentViewModel filter);
 
+    Task<List<DoctorReservationDate>?> FilterDoctorReservationDateSideWithoutPaging(FilterAppointmentViewModelWithoutPaging filter);
+
     //This Is Filter For Reservation Date From Today By Dentist Panel
     Task<FilterAppointmentViewModel?> FilterDoctorReservationDateSideByDentistPanel(FilterAppointmentViewModel filter);
 
