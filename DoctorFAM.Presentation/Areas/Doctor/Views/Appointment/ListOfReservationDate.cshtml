@@ -21,7 +21,7 @@
     <script src="~/admin/js/datatable/ZeroClipboard.js"></script>
     <script src="~/admin/js/datatable/dataTables.tableTools.min.js"></script>
     <script src="~/admin/js/datatable/dataTables.bootstrap.min.js"></script>
-    <script src="~/admin/js/datatable/datatables-init.js"></script>
+    <script src="~/admin/js/datatable/datatables-init-AllRecords.js"></script>
     <script>
         InitiateSimpleDataTable.init();
         InitiateEditableDataTable.init();
@@ -59,17 +59,21 @@
                             <table class="table table-bordered table-hover table-striped dataTable" id="searchable" role="grid" aria-describedby="searchable_info">
                                 <thead class="bordered-darkorange">
                                     <tr role="row">
-
-                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column descending">
+                                        <th class="sorting_asc" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Browser: activate to sort column descending">
                                             @Localizer["Date"]
+                                            </th>
+
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending">
+                                            @Localizer["#"]
+
                                         </th>
-                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column descending">
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending">
                                             @Localizer["Count Of Times"]
                                         </th>
-                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column descending">
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending">
                                             @Localizer["Create Date"]
                                         </th>
-                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column descending">
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending">
                                             @Localizer["Possibilities"]
                                         </th>
                                     </tr>
@@ -77,16 +81,20 @@
 
                                 <tbody>
 
-                                    @foreach (var date in Model.OrderByDescending(p=> p.Id))
+                                    @foreach (var date in Model)
                                     {
                                         <tr role="row" class="even responsive" remove-ajax-item="@date.Id">
-
                                             <td class="vm">
                                                 <div class="flex-style-center">
                                                     <p> @date.ReservationDate.ToStringShamsiDate() </p>
                                                 </div>
                                             </td>
-
+                                            <td class="vm">
+                                                <div class="flex-style-center">
+                                                    <p> @date.Id </p>
+                                                </div>
+                                            </td>
+                                        
                                             <td class="tc vm">
                                                 <p>
                                                     @if (date.DoctorReservationDateTimes.Any() == false)
