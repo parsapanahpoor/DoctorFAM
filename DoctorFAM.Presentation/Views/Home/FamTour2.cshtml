@@ -1,0 +1,42 @@
+﻿@{
+    ViewBag.Title = "فم تور";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<section>
+    <div class="container">
+
+        <div class="col-md-12 text-center justify-content-center ">
+            <h2 class="hColorFontt famOnlinecolor">فم تور  </h2>
+
+            <h4 class=" text-center justify-content-center" style="color:#2264c5;"> (سفرِ درمانی) </h4>
+
+
+
+        </div>
+
+<div class="row text-center justify-content-center" >
+    
+    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 text-center   mt-3">
+        <a class=" hover-icon" asp-action="ListOfFamilyDoctors" asp-controller="FamilyDoctor" asp-area="">
+            <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/FamilyDoctor.png" style="width:195px; height:115px; border:2px solid #ffffff;  border-radius:5px !important ;" alt="">
+                    <h6 class=" mt-2">  فرایند سفرِ درمانی </h6>
+        </a>
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 text-center   mt-3">
+        <a class=" hover-icon" asp-action="ListOfSpecialists" asp-controller="Specialists" asp-area="">
+                    <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/SpecialistDoctor.png" style="width:195px; height:115px; border:2px solid #ffffff;  border-radius:5px !important; " alt="">
+                    <h6 class=" mt-2">  معرفی خدمات </h6>
+        </a>
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 text-center   mt-3">
+        <a class=" hover-icon" asp-action="ListOfSuperSpecialists" asp-controller="Specialists" asp-area="">
+                    <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/OverSpecialistDoctor.png" style="width:195px; height:115px; border:2px solid #ffffff;  border-radius:5px !important; " alt="">
+                    <h6 class=" mt-2"> ثبت درخواست </h6>
+        </a>
+    </div>
+    
+</div>
+
+
+    </div>
+    </section>

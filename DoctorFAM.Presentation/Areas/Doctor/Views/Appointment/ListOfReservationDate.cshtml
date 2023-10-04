@@ -31,10 +31,10 @@
 }
 
 @section Breadcrumb
-{
-<li>
-        <a  asp-action="TurnRating" asp-controller="Home" asp-area="Doctor"> نوبت دهی </a>
-</li>
+    {
+    <li>
+        <a asp-action="TurnRating" asp-controller="Home" asp-area="Doctor"> نوبت دهی </a>
+    </li>
 }
 
 <div class="row">
@@ -59,19 +59,20 @@
                             <table class="table table-bordered table-hover table-striped dataTable" id="searchable" role="grid" aria-describedby="searchable_info">
                                 <thead class="bordered-darkorange">
                                     <tr role="row">
+                                        
                                         <th class="sorting_asc" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Browser: activate to sort column descending">
                                             @Localizer["Date"]
-                                            </th>
-
+                                        </th>
                                         <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending">
                                             @Localizer["#"]
 
                                         </th>
+                                        
                                         <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending">
                                             @Localizer["Count Of Times"]
                                         </th>
                                         <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending">
-                                            @Localizer["Create Date"]
+                                            نوبت گرفته شده
                                         </th>
                                         <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending">
                                             @Localizer["Possibilities"]
@@ -84,6 +85,7 @@
                                     @foreach (var date in Model)
                                     {
                                         <tr role="row" class="even responsive" remove-ajax-item="@date.Id">
+                                            
                                             <td class="vm">
                                                 <div class="flex-style-center">
                                                     <p> @date.ReservationDate.ToStringShamsiDate() </p>
@@ -94,7 +96,7 @@
                                                     <p> @date.Id </p>
                                                 </div>
                                             </td>
-                                        
+
                                             <td class="tc vm">
                                                 <p>
                                                     @if (date.DoctorReservationDateTimes.Any() == false)

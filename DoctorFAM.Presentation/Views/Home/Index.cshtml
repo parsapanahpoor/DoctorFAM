@@ -25,54 +25,104 @@
 
 <div class="page-content">
 
+    <div class="row" style="background-color: #94d8ef !important;">
 
-    <section class="Banner-select ">
 
-        <div class="select-Banner ">
+        <div class="col-md-6" style="padding-right:1px !important; padding-left:1px !important; ">
+            <section class="Banner-select ">
 
-            <div class="d-flex align-items-center">
+                <div class="select-Banner ">
 
-                <div class="container ">
-                    <div class="row">
-                        <div class="col-md-4 text-center justify-content-center ">
-                            <h2 class="hColorFontt famOnlinecolor"> ویزیت آنلاین فوری </h2>
-                            <h4 class=" text-center justify-content-center" style="color:#2264c5;;"> (فم آنلاین) </h4>
+                    <div class="d-flex align-items-center">
+
+                        <div class="container ">
+                            <div class="row">
+                                <div class="col-md-8 text-center justify-content-center ">
+                                    <h2 class="hColorFontt famOnlinecolor">فم آنلاین  </h2>
+                                    <h4 class=" text-center justify-content-center" style="color:#2264c5;"> (مشاوره پزشکی آنلاین) </h4>
+                                    <div class="row pricing-btn text-center justify-content-center mt-2">
+                                        <a asp-action="ListOfDays" asp-controller="OnlineVisit" asp-area="" class="pricing-btn default-btn "><h6 style="color:white;">مشاهده جزئیات و ثبت درخواست</h6>  </a>
+                                    </div>
+
+
+                                </div>
+
+
+
+                                <div class="col-md-4"></div>
+                            </div>
+
+
                         </div>
-
-                        <div class="col-md-8"></div>
                     </div>
 
-
                 </div>
-            </div>
-            <div class="col-md-12 pricing-btn text-center justify-content-center mt-2">
-                <a asp-action="ListOfDays" asp-controller="OnlineVisit" asp-area="" class="pricing-btn default-btn"><h6 style="color:white;">نوبت بگیرید و منتظر تماس پزشک باشید</h6>  </a>
-            </div>
+
+            </section>
+
         </div>
+        <div class="col-md-6" style="padding-right:1px !important; padding-left:1px !important; ">
+            <section class="Banner-select-Tour ">
 
-    </section>
+                <div class="select-Banner-Tour ">
 
+                    <div class="d-flex align-items-center">
+
+                        <div class="container ">
+                            <div class="row">
+                               
+                                <div class="col-md-8 text-center justify-content-center ">
+                                    <h2 class="hColorFontt famOnlinecolor">فم تور  </h2>
+                                    <h4 class=" text-center justify-content-center" style="color:#2264c5;"> (سفرِ درمانی) </h4>
+                                    <div class="row pricing-btn text-center justify-content-center mt-2">
+                                        <a asp-action="FamTour" asp-controller="Home" asp-area="" class="pricing-btn default-btn "><h6 style="color:white;">مشاهده جزئیات و ثبت درخواست</h6>  </a>
+                                    </div>
+
+
+                                </div>
+                                <div class="col-md-4">
+                                    <a referrerpolicy='origin' target='_blank' href='https://trustseal.enamad.ir/u?id=378630&code=y9WvkMjUx2FMMbzFgWn0LLL1S12fEjXR'><img referrerpolicy='origin' src='https://trustseal.enamad.ir/logo.aspx?id=378630&code=y9WvkMjUx2FMMbzFgWn0LLL1S12fEjXR' alt='' style='cursor:pointer' code='y9WvkMjUx2FMMbzFgWn0LLL1S12fEjXR'></a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>        
+       
+        
+        
+       
+    </div>
+   
 
     <div class="row text-center justify-content-center" style="background-color:#0d092c; ">
-        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-center   mt-4">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center  mt-4 ">
+            <h4 class="hColorFontt famOnlinecolor"> نوبت دهی دکترفم </h4>
+        </div>
+
+
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 text-center   mt-3">
             <a class=" hover-icon" asp-action="ListOfFamilyDoctors" asp-controller="FamilyDoctor" asp-area="">
                 <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/FamilyDoctor.png" style="width:75px; height:75px; border:2px solid #ffffff;  border-radius:50% !important ;" alt="">
-                <p class="text-white mt-2"> پزشکان عمومی، خانواده </p>
+                <p class="text-white mt-2">  پزشکان عمومی-خانواده </p>
             </a>
         </div>
-        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-center   mt-4">
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 text-center   mt-3">
             <a class=" hover-icon" asp-action="ListOfSpecialists" asp-controller="Specialists" asp-area="">
                 <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/SpecialistDoctor.png" style="width:75px; height:75px; border:2px solid #ffffff;  border-radius:50% !important; " alt="">
-                <p class="text-white mt-2"> پزشکان متخصص </p>
+                <p class="text-white mt-2">  پزشکان متخصص </p>
             </a>
         </div>
-        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-center   mt-4">
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 text-center   mt-3">
             <a class=" hover-icon" asp-action="ListOfSuperSpecialists" asp-controller="Specialists" asp-area="">
-                <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/SpecialistDoctor.png" style="width:75px; height:75px; border:2px solid #ffffff;  border-radius:50% !important; " alt="">
+                <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/OverSpecialistDoctor.png" style="width:75px; height:75px; border:2px solid #ffffff;  border-radius:50% !important; " alt="">
                 <p class="text-white mt-2"> پزشکان فوق تخصص </p>
             </a>
         </div>
-        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-center   mt-4">
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 text-center j  mt-3">
             <a class=" hover-icon" asp-action="ListOfDentists" asp-controller="Dentist" asp-area="">
                 <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/Dentist.jpg" style="width:75px; height:75px; border:2px solid #ffffff;  border-radius:50% !important;" alt="">
                 <p class="text-white mt-2"> دندانپزشکان </p>
