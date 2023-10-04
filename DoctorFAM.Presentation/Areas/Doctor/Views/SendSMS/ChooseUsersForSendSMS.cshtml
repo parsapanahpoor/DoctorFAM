@@ -33,7 +33,6 @@
         InitiateExpandableDataTable.init();
         InitiateSearchableDataTable.init();
     </script>
-
     }
 
 <div class="page-body">
@@ -75,6 +74,9 @@
                                                 <button type="submit" class="btn btn-success">
                                                     ارسال پیامک
                                                 </button>
+                                                <a class="btn btn-primary" asp-action="WriteSMSText" asp-controller="SendSMS" asp-area="Doctor" asp-route-selectedAll="@true">
+                                                    انتخاب همه
+                                                </a>
                                             </th>
 
                                         </tr>
@@ -129,7 +131,7 @@
                                                 <td>
                                                     <div class="flex-style-center">
                                                         <label>
-                                                            <input type="checkbox" name="usersId" value="@user.UserId">
+                                                            <input class="UsersIds" type="checkbox" name="usersId" value="@user.UserId">
                                                             <span class="text"></span>
                                                         </label>
                                                     </div>
