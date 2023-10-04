@@ -144,6 +144,25 @@ public class ReservationRepository : IReservationRepository
     }
 
     //This Is Filter For Reservation Date From Today 
+    public async Task<List<DoctorReservationDate>?> FilterDoctorReservationDateSideWithoutPaging(FilterAppointmentViewModelWithoutPaging filter)
+    {
+        #region Get Owner Organization By EmployeeId 
+
+        var organization = await _organizationRepository.GetOrganizationByUserId(filter.UserId);
+        if (organization == null) return null;
+
+        #endregion
+
+        return await _context.DoctorReservationDates
+            .Include(p => p.DoctorReservationDateTimes)
+            .Where(s => !s.IsDelete && s.UserId == organization.OwnerId && ((s.ReservationDate.Year > DateTime.Now.Year)
+                                      || (s.ReservationDate.Year == DateTime.Now.Year
+                                           && s.ReservationDate.DayOfYear >= DateTime.Now.DayOfYear)))
+            .OrderBy(s => s.ReservationDate)
+            .ToListAsync();
+    }
+
+    //This Is Filter For Reservation Date From Today 
     public async Task<FilterAppointmentViewModel?> FilterDoctorReservationDateSide(FilterAppointmentViewModel filter)
     {
         #region Get Owner Organization By EmployeeId 

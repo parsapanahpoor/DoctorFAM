@@ -3672,6 +3672,91 @@ doctors intrud*/
 
 
 
+/**********************************************************************/
+/**********************************************************************/
+/**********************************************************************/
+/*Site Banner Tour*/
+
+.Banner-select-Tour {
+    background: linear-gradient(rgba(189,251,249,.8),rgba(159,231,249,.9)),url(/Content/images/bg/Banner0200.jpg);
+    padding: 30px 0;
+    background-size: cover;
+    background-repeat: no-repeat !important;
+    margin-top: -33px !important;
+}
+
+.select-Banner-Tour {
+    background: url(/Content/images/bg/Banner0200.jpg);
+    padding: 20px;
+    position: relative;
+    z-index: 1;
+    background-size: 100%;
+    background-repeat: no-repeat !important;
+    transition: background-size .9s ease;
+    border-bottom: 1px solid white;
+}
+
+    .select-Banner-Tour:hover {
+        background: url(/Content/images/bg/Banner0200.jpg);
+        background-size: 125%;
+        border-bottom: 1px solid #fd5b03;
+    }
+
+    .select-Banner-Tour::before {
+        content: "";
+        position: absolute;
+        background: rgba(16, 222, 253, 0.6);
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        z-index: -1;
+    }
+
+
+
+    .select-Banner-Tour .pricing-btn .default-btn {
+        background: #2264c5;
+        color: #ffffff;
+        padding: 12px 20px;
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+        outline: none;
+        border: 2px solid #2264c5;
+        vertical-align: middle;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+
+    .select-Banner-Tour:hover .pricing-btn .default-btn {
+        background: #2264c5;
+        color: #ffffff;
+        padding: 12px 20px;
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+        outline: none;
+        border: 2px solid #2264c5;
+        vertical-align: middle;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+
+        .select-Banner-Tour:hover .pricing-btn .default-btn::before {
+            background-color: #2264c5;
+        }
+
+.pricing-btn:hover .default-btn:hover {
+    background: #fd5b03;
+    color: #ffffff;
+    border: 2px solid #fd5b03;
+    /* color: white !important;*/
+}
+
+
+
+
 
 
 
@@ -7050,6 +7135,25 @@ doctors intrud*/
         background: #39de65;
     }
 
+
+.Notbtn33 {
+    background: #757575;
+    color: #ffffff;
+    padding: 14px 20px;
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    outline: none;
+    border: 1px solid #197c66;
+    vertical-align: middle;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+    .Notbtn33:hover {
+        background: #39de65;
+    }
+
 .NotbtnDay {
     background: #13bf2c;
     color: #ffffff;
@@ -7063,7 +7167,19 @@ doctors intrud*/
     border-radius: 5px;
     
 }
-
+.NotbtnDay22 {
+    background: #cccccc;
+    color: #ffffff;
+    padding: 12px 16px;
+    margin:3px;
+    font-size: 15px !important;
+    cursor: pointer;
+    outline: none;
+    text-align: center;
+    vertical-align: middle;
+    text-decoration: none;
+    border-radius: 5px;
+}
    
     .NobatLI {
         margin-top: 10px;
@@ -7108,3 +7224,35 @@ doctors intrud*/
 .famOnlinecolor:hover {
     color:white;
 }
+
+
+
+/************************************************************************/
+/************************************************************************/
+/************************************************************************/
+
+
+ .Tour-btn  {
+    background: #2264c5;
+    color: #ffffff;
+    padding: 12px 20px;
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    outline: none;
+    border: 2px solid #2264c5;
+    vertical-align: middle;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+
+
+.Tour-btn:hover  {
+    background: #fd5b03;
+    color: #ffffff;
+    border: 2px solid #fd5b03;
+    /* color: white !important;*/
+}
+
+

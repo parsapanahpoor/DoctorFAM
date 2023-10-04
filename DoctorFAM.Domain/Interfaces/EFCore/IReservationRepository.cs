@@ -47,6 +47,9 @@ public interface IReservationRepository
     //In Add Reservation Date Check Date In Not Duplicate
     Task<bool> IsExistAnyDuplicateReservationDate(DateTime date, ulong userId);
 
+    //This Is Filter For Reservation Date From Today 
+    Task<List<DoctorReservationDate>?> FilterDoctorReservationDateSideWithoutPaging(FilterAppointmentViewModelWithoutPaging filter);
+
     Task<FilterAppointmentViewModel> FilterDoctorReservationDateSide(FilterAppointmentViewModel filter);
 
     //This Is Filter For Reservation Date From Today By Dentist Panel

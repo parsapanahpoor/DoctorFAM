@@ -1,4 +1,4 @@
-﻿@model DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment.FilterAppointmentViewModel
+﻿@model List<DoctorFAM.Domain.Entities.DoctorReservation.DoctorReservationDate>
 @using DoctorFAM.Application.Extensions
 @using DoctorFAM.Application.Convertors
 @using DoctorFAM.Domain.ViewModels.Common
@@ -11,175 +11,144 @@
 }
 
 @section Styles
-{
+    {
+    <link href="/admin/css/dataTables.bootstrap.rtl.css" rel="stylesheet" />
 }
 
 @section Scripts
-{
-<partial name="_JqueryValidation" />
+    {
+    <script src="~/admin/js/datatable/jquery.dataTables.min.js"></script>
+    <script src="~/admin/js/datatable/ZeroClipboard.js"></script>
+    <script src="~/admin/js/datatable/dataTables.tableTools.min.js"></script>
+    <script src="~/admin/js/datatable/dataTables.bootstrap.min.js"></script>
+    <script src="~/admin/js/datatable/datatables-init-AllRecords.js"></script>
+    <script>
+        InitiateSimpleDataTable.init();
+        InitiateEditableDataTable.init();
+        InitiateExpandableDataTable.init();
+        InitiateSearchableDataTable.init();
+    </script>
 }
 
 @section Breadcrumb
-{
-<li>
-        <a  asp-action="TurnRating" asp-controller="Home" asp-area="Doctor"> نوبت دهی </a>
-</li>
+    {
+    <li>
+        <a asp-action="TurnRating" asp-controller="Home" asp-area="Doctor"> نوبت دهی </a>
+    </li>
 }
 
 <div class="row">
-    <div class="col-lg-3 col-sm-12">
+    <div class="col-lg-12 col-sm-12">
 
-        <a class="btn btn-sky w-100 margin-bottom-10" asp-action="AddReservationDateView" asp-controller="Appointment" asp-area="Doctor"> @Localizer["Add New Date"] </a>
+        <a class="col-lg-6 col-sm-12 btn btn-sky w-100 margin-bottom-10"
+           asp-action="AddReservationDateView" asp-controller="Appointment" asp-area="Doctor"> @Localizer["Add New Date"] </a>
 
-        <div class="widget">
-            <div class="widget-header bordered-bottom bordered-green">
-                <span class="widget-caption"> @Localizer["Manage Reservation Date Info"] </span>
-            </div>
-            <div class="widget-body">
-                <div>
-                    <form asp-action="ListOfReservationDate" asp-controller="Appointment" asp-area="Doctor" id="filter-search" method="get">
-
-                        <input type="hidden" asp-for="Page" />
-
-                        <div class="form-group">
-                            <label asp-for="FromDate"> @Localizer["From Date"] </label>
-                            <input type="text" class="form-control" AdminDatePicker="1" asp-for="FromDate">
-                        </div>
-
-                        <div class="form-group">
-                            <label asp-for="ToDate"> @Localizer["To Date"] </label>
-                            <input type="text" class="form-control" AdminDatePicker="2" asp-for="ToDate">
-                        </div>
-
-                        <div class="form-group">
-                            <label asp-for="FilterReservationOrder"> @Localizer["Order By Reservation Date"] </label>
-                            <select asp-for="FilterReservationOrder" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.DoctorReservation.FilterReservationOrder))"></select>
-                        </div>
-
-                        <div class="form-group">
-                            <label asp-for="FilterRequestOrder"> @Localizer["Order By Create Date"] </label>
-                            <select asp-for="FilterRequestOrder" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.Request.FilterRequestOrder))"></select>
-                        </div>
-
-                        <hr />
-
-                        <div class="row">
-                            <div class="col-md-12 flex-style">
-                                <button type="submit" class="btn btn-labeled w-100 btn-palegreen">
-                                    <i class="btn-label glyphicon glyphicon-filter"></i>@Localizer["Filter"]
-                                </button>
-
-                                @if (Context.Request.QueryString.HasValue)
-                                {
-                                    <a asp-action="ListOfReservationDate" asp-controller="Appointment" asp-area="Doctor" class="btn btn-labeled w-100 btn-darkorange ">
-                                        <i class="btn-label glyphicon glyphicon-remove"></i>@Localizer["Delete Filter"]
-                                    </a>
-                                }
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
     </div>
 
-    <div class="col-lg-9 col-sm-12">
-        <div class="well with-header with-footer table-responsive">
-            <div class="header bordered-azure">
-                <div class="flex-style">
-                    <span>@ViewData["Title"]</span>
-                    <span class="red">(@Model.GetShownEntitiesPagesTitle() روز)</span>
-                   
-                </div>
-            </div>
+    <div class="col-lg-12 col-sm-12">
 
-            @if (Model.Entities != null && Model.Entities.Any())
-            {
-                <table class="table table-hover table-bordered tc vm">
-                    <thead class="tc vm">
-                        <tr class="tc vm">
-                            <th class="tc vm">
-                                @Localizer["Date"]
-                            </th>
-                            <th class="tc vm">
-                                @Localizer["Count Of Times"]
-                            </th>
-                            <th class="tc vm">
-                                @Localizer["Count Of Reserved Time"]
-                            </th>
-                            <th class="tc vm">
-                                @Localizer["Create Date"]
-                            </th>
-                            <th class="tc vm">
-                                @Localizer["Possibilities"]
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody class="tc vm">
-                        @foreach (var date in Model.Entities)
-                        {
-                            <tr class="tc vm" remove-ajax-item="@date.Id">
-                                <td class="vm">
-                                    <div class="flex-style-center">
-                                        <p> @date.ReservationDate.ToStringShamsiDate() </p>
-                                    </div>
-                                </td>
+        <div class="row" style="margin:10px 10px 10px 10px;">
 
-                                <td class="tc vm">
-                                    <p>
-                                        @if (date.DoctorReservationDateTimes.Any() == false)
-                                        {
-                                            <span class="mr-8px label label-orange">@Localizer["Empty"] </span>
-                                        }
-                                        else
-                                        {
-                                            <span class="mr-8px label label-info">@date.DoctorReservationDateTimes.Count(p=> !p.IsDelete &&  p.DoctorReservationState != DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.Canceled) </span>
-                                        }
-                                    </p>
-                                </td>
+            <div id="horizontal-form">
 
-                                <td class="tc vm">
-                                    <p>
-                                        @if (date.DoctorReservationDateTimes.Any() == false)
-                                        {
-                                            <span class="mr-8px label label-orange">@Localizer["Empty"] </span>
-                                        }
-                                        else
-                                        {
-                                            <span class="mr-8px label label-success">@date.DoctorReservationDateTimes.Count(p=>!p.IsDelete &&  p.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.Reserved) </span>
-                                        }
-                                    </p>
-                                </td>
+                @if (Model != null && Model.Any())
+                {
+                    <div class="widget-body no-padding">
+                        <div id="searchable_wrapper" class="dataTables_wrapper form-inline">
 
-                                <td class="vm">
-                                    <div class="flex-style-center">
-                                        <p> @date.CreateDate.ToShamsi() </p>
-                                    </div>
-                                </td>
+                            <table class="table table-bordered table-hover table-striped dataTable" id="searchable" role="grid" aria-describedby="searchable_info">
+                                <thead class="bordered-darkorange">
+                                    <tr role="row">
+                                        
+                                        <th class="sorting_asc" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Browser: activate to sort column descending">
+                                            @Localizer["Date"]
+                                        </th>
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending">
+                                            @Localizer["#"]
 
-                                <td class="tc vm">
-                                    <a asp-action="ReservationDateDetail" asp-controller="Appointment" asp-area="Doctor" asp-route-ReservationDateId="@date.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
-                                    @if (date.DoctorReservationDateTimes.Any() == false)
+                                        </th>
+                                        
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending">
+                                            @Localizer["Count Of Times"]
+                                        </th>
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending">
+                                            نوبت گرفته شده
+                                        </th>
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending">
+                                            @Localizer["Possibilities"]
+                                        </th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+
+                                    @foreach (var date in Model)
                                     {
-                                        <button onclick="DeleteAjax(@date.Id, '@Url.Action("DeleteReservationDate", "Appointment", new {area = "Doctor", Id = date.Id})')" class="btn btn-danger btn-circle btn-xs"><i class="glyphicon glyphicon-trash"></i></button>
+                                        <tr role="row" class="even responsive" remove-ajax-item="@date.Id">
+                                            
+                                            <td class="vm">
+                                                <div class="flex-style-center">
+                                                    <p> @date.ReservationDate.ToStringShamsiDate() </p>
+                                                </div>
+                                            </td>
+                                            <td class="vm">
+                                                <div class="flex-style-center">
+                                                    <p> @date.Id </p>
+                                                </div>
+                                            </td>
+
+                                            <td class="tc vm">
+                                                <p>
+                                                    @if (date.DoctorReservationDateTimes.Any() == false)
+                                                    {
+                                                        <span class="mr-8px label label-orange">@Localizer["Empty"] </span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="mr-8px label label-info">@date.DoctorReservationDateTimes.Count(p=> !p.IsDelete &&  p.DoctorReservationState != DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.Canceled) </span>
+                                                    }
+                                                </p>
+                                            </td>
+
+                                            <td class="tc vm">
+                                                <p>
+                                                    @if (date.DoctorReservationDateTimes.Any() == false)
+                                                    {
+                                                        <span class="mr-8px label label-orange">@Localizer["Empty"] </span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="mr-8px label label-success">@date.DoctorReservationDateTimes.Count(p=>!p.IsDelete &&  p.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.Reserved) </span>
+                                                    }
+                                                </p>
+                                            </td>
+
+                                            <td class="tc vm">
+                                                <a asp-action="ReservationDateDetail" asp-controller="Appointment" asp-area="Doctor" asp-route-ReservationDateId="@date.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+                                                @if (date.DoctorReservationDateTimes.Any() == false)
+                                                {
+                                                    <button onclick="DeleteAjax(@date.Id, '@Url.Action("DeleteReservationDate", "Appointment", new {area = "Doctor", Id = date.Id})')" class="btn btn-danger btn-circle btn-xs"><i class="glyphicon glyphicon-trash"></i></button>
+                                                }
+                                            </td>
+
+                                        </tr>
+
                                     }
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
 
-            @*    <div class="footer tc">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <partial name="_DoctorPanelNotFoundPartial" />
+                }
 
-                    <partial name="_DoctorPanelPaging" model="@Model.GetCurrentPaging()" />
-
-                </div>*@
-            }
-            else
-            {
-                <partial name="_DoctorPanelNotFoundPartial" />
-            }
+            </div>
         </div>
+
     </div>
 </div>
+
 

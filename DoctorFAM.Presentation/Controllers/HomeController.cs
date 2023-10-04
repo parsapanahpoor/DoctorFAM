@@ -341,4 +341,33 @@ public class HomeController : SiteBaseController
     }
 
     #endregion
+
+    #region Fam Tour
+
+    public IActionResult FamTour()
+    {
+        return View();
+    }
+    public IActionResult FamTour2()
+    {
+        return View();
+    }
+    public IActionResult FamTour3()
+    {
+        return View();
+    }
+    public IActionResult FamTourProcess()
+    {
+        return View();
+    }
+    public IActionResult FamTourServicess()
+    {
+        return View();
+    }
+
+    public IActionResult FamTourRegister()
+    {
+        return View();
+    }
+    #endregion
 }

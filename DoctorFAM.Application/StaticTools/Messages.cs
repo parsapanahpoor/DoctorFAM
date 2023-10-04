@@ -110,13 +110,20 @@ public static class Messages
 
     //Send SMS For Between Patient In Reservation Site Side  
     public static string SendSMSForBetweenPatientInReservationSiteSide(string time , string date , string doctorNam)
+   
     {
         return
-            $" سلام . {Environment.NewLine} برای شما نوبتی در ساعت {time} و تاریخ {date}  نزد دکتر {doctorNam} ثبت گردیده . . {Environment.NewLine} {PathTools.SiteFarsiName}";
+            $" سلام . {Environment.NewLine}" +
+            $" نوبت ویزیت شما نزد {Environment.NewLine}" +
+            $" دکتر {doctorNam} {Environment.NewLine}" +
+            $" برای تاریخ {date} {Environment.NewLine}" +
+            $" و ساعت {string.Concat(time.Reverse().Skip(3).Reverse())} {Environment.NewLine}" +
+            $" ثبت گردید. {Environment.NewLine}" +
+            $"دکترفم {Environment.NewLine}"+
+            $"{PathTools.SiteAddress}";
     }
-
-    //Send Activation Register Code 
-    public static string SendSMSForLinkOfHomeVisitRequestFromDoctor(string link)
+//Send Activation Register Code 
+public static string SendSMSForLinkOfHomeVisitRequestFromDoctor(string link)
     {
         return
             $"لطفا از طریق لینک زیر درخواست ویزیت در منزل خود را تایید کنید :{Environment.NewLine} {link} . {Environment.NewLine} {PathTools.SiteFarsiName}";

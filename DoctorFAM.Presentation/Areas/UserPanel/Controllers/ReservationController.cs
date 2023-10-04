@@ -48,7 +48,7 @@ namespace DoctorFAM.Web.Areas.UserPanel.Controllers
         {
             #region Fill Model
 
-            var model = await _reservationService.FillShowReservationUserSideViewModel(ReservationId , User.GetUserId());
+            var model = await _reservationService.FillReservationFactorUserSideViewModel(ReservationId, User.GetUserId());
             if (model == null) return NotFound();
 
             #endregion
