@@ -57,11 +57,13 @@ using DoctorFAM.Domain.Entities.VirtualFile;
 using DoctorFAM.Domain.Entities.Tourism;
 using DoctorFAM.Domain.Enums.Tourist;
 using DoctorFAM.Domain.Entities.Tourism.Token;
+using System.Reflection;
+using DoctorFAM.Domain.Markers;
 
+namespace DoctorFAM.Data.DbContext;
 
 #endregion
 
-namespace DoctorFAM.Data.DbContext;
 
 public class DoctorFAMDbContext : Microsoft.EntityFrameworkCore.DbContext
 {
@@ -572,6 +574,20 @@ public class DoctorFAMDbContext : Microsoft.EntityFrameworkCore.DbContext
         {
             relationship.DeleteBehavior = DeleteBehavior.Restrict;
         }
+
+        #region Get Executing Assemblies
+
+        var dbSets = Assembly.GetExecutingAssembly()
+                             .GetTypes()
+                             .Where(type => Attribute.IsDefined(type, typeof(EntityMarkerAttribute)))
+                             .ToList();
+
+        foreach (var dbSet in dbSets)
+        {
+            modelBuilder.Entity(dbSet);
+        }
+
+        #endregion
 
         #region Seed Data
 
