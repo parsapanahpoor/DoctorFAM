@@ -1,6 +1,5 @@
 ﻿#region Usings
 
-using AngleSharp.Css.Dom;
 using BusinessPortal.Application.Services.Implementation;
 using DoctorFAM.Application.Interfaces;
 using DoctorFAM.Application.Services;
@@ -12,11 +11,6 @@ using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.Interfaces.Dapper;
 using DoctorFAM.Domain.Interfaces.EFCore;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 #endregion
 
@@ -81,6 +75,7 @@ public static class DependencyContainer
         services.AddScoped <IUserVirtualFilesService, UserVirtualFilesService>();
         services.AddScoped <ITourismService, TourismService>();
         services.AddScoped <ITouristTokenService, TouristTokenService>();
+        services.AddScoped <IUserBankAccountsInfosService, UserBankAccountsInfosService>();
 
         #endregion
 
@@ -133,6 +128,7 @@ public static class DependencyContainer
         services.AddScoped<IUserVirtualFilesRepository, UserVirtualFilesRepository>();
         services.AddScoped<ITourismRepository, TourismRepository>();
         services.AddScoped<ITouristTokenRepository, TouristTokenRepository>();
+        services.AddScoped<IUserBankAccountRepository, UserBankAccountRepository>();
 
         #endregion
 
