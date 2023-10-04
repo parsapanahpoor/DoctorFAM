@@ -1,0 +1,54 @@
+﻿@{
+    ViewBag.Title = "فم تور";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section>
+    <div class="container">
+        
+        <div class="col-md-12 text-center justify-content-center ">
+            <h2 class="hColorFontt famOnlinecolor">فم تور  </h2>
+                     
+            <h4 class=" text-center justify-content-center" style="color:#2264c5;"> (سفرِ درمانی) </h4>
+            
+
+
+        </div>
+        <div class="row  ">
+            <div class="col-lg-1   text-center justify-content-center "></div>
+            <div class="col-lg-3  p-5 text-center justify-content-center mr-4" style="border:10px solid #2264c5; border-radius:15px;">
+               
+                <h4 class="font-w-7  mt-3  "> فرایند سفرِ درمانی </h4>
+                <p class="text-justify">
+                   در این قسمت با مراحل مختلف یک سفر توریستی-درمانی آشنا می شوید.
+                </p> 
+                <div class="row pricing-btn text-center justify-content-center m-3">
+                    <a asp-action="FamTourProcess" asp-controller="Home" asp-area="" class="Tour-btn p-2"><h6 style="color:white;">ادامه</h6>  </a>
+                </div>
+                
+            </div>
+            <div class="col-lg-3  p-5   text-center justify-content-center mr-4" style="border:10px solid #0d092c; border-radius:15px;">
+               
+                <h4 class="font-w-7  mt-3"> معرفی خدمات</h4>
+                <p class="text-justify">
+                    در این قسمت با خدمات مختلف درمانی، که دکترفم ارائه می کند، آشنا می شوید.
+                </p> 
+                <div class="row pricing-btn text-center justify-content-center m-3">
+                    <a asp-action="FamTourServicess" asp-controller="Home" asp-area="" class="Tour-btn p-2"><h6 style="color:white;">ادامه</h6>  </a>
+                </div>
+                
+            </div>
+            <div class="col-lg-3   p-5  text-center justify-content-center mr-4" style="border:10px solid #fd5b03; border-radius:15px;">
+                
+                <h4 class="font-w-7  mt-3"> ثبت درخواست </h4>
+                <p class="text-justify">
+                    فرم صفحه بعد را تکمیل کنید، کارشناسان دکترفم با شما تماس میگیرند.
+                </p> 
+                <div class="row pricing-btn text-center justify-content-center m-3">
+                    <a asp-action="FamTourRegister" asp-controller="Home" asp-area="" class="Tour-btn p-2"><h6 style="color:white;">ادامه</h6>  </a>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</section>
