@@ -57,6 +57,7 @@ using DoctorFAM.Domain.Entities.VirtualFile;
 using DoctorFAM.Domain.Entities.Tourism;
 using DoctorFAM.Domain.Enums.Tourist;
 using DoctorFAM.Domain.Entities.Tourism.Token;
+using DoctorFAM.Domain.Entities.UsersBankAccount;
 
 
 #endregion
@@ -557,6 +558,12 @@ public class DoctorFAMDbContext : Microsoft.EntityFrameworkCore.DbContext
     public DbSet<TouristToken> TouristTokens { get; set; }
 
     public DbSet<TouristPassengers> TouristPassengers { get; set; }
+
+    #endregion
+
+    #region User Bank Accounts
+
+    public DbSet<UsersBankAccountsInfos> UsersBankAccountsInfos { get; set; }
 
     #endregion
 
