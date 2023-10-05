@@ -72,14 +72,43 @@
 
                             <div class="clearfix"></div>
 
+                            @if (Model.BankAccount != null)
+                            {
+                                <div class="form-group col-md-6 col-sm-12">
+                                    <label>شماره شبا</label>
+                                    <input type="text" readonly class="form-control" value="@Model.BankAccount.ShomareShaba">
+                                </div>
 
-                            <div class="form-group col-md-12 col-sm-12">
-                                <label>@Localizer["وضعیت"]</label>
-                                <select asp-for="RequestState" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.Wallet.WalletWithdrawRequestState))"></select>
-                                <span class="text-danger" asp-validation-for="RequestState"></span>
-                            </div>
+                                <div class="form-group col-md-6 col-sm-12">
+                                    <label>شماره کارت</label>
+                                    <input type="text" readonly class="form-control" value="@Model.BankAccount.ShomareCart">
+                                </div>
 
-                            <div class="clearfix"></div>
+                                <div class="form-group col-md-4 col-sm-12">
+                                    <label>نام صاحب حساب </label>
+                                    <input type="text" readonly class="form-control" value="@Model.BankAccount.OwnerAccountUsername">
+                                </div>
+
+                                <div class="form-group col-md-4 col-sm-12">
+                                    <label>کد شعبه</label>
+                                    <input type="text" readonly class="form-control" value="@Model.BankAccount.BankBranchCode">
+                                </div>
+
+                                <div class="form-group col-md-4 col-sm-12">
+                                    <label>نام بانک</label>
+                                    <input type="text" readonly class="form-control" value="@Model.BankAccount.BankName">
+                                </div>
+
+                                <div class="clearfix"></div>
+
+                                <div class="form-group col-md-12 col-sm-12">
+                                    <label>@Localizer["وضعیت"]</label>
+                                    <select asp-for="RequestState" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.Wallet.WalletWithdrawRequestState))"></select>
+                                    <span class="text-danger" asp-validation-for="RequestState"></span>
+                                </div>
+
+                                <div class="clearfix"></div>
+                            }
 
                             <div class="form-group col-md-12 @(Model != null && Model.RequestState == DoctorFAM.Domain.Enums.Wallet.WalletWithdrawRequestState.Reject ?"":"d-none")" id="RejectDescription-div">
                                 <label>@Localizer["لطفا دلیل رد درخواست را ذکر کنید"]</label>

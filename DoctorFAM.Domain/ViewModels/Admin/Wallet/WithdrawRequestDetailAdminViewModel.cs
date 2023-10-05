@@ -1,6 +1,8 @@
 ﻿#region Using
 
+using DoctorFAM.Domain.Entities.UsersBankAccount;
 using DoctorFAM.Domain.Enums.Wallet;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.Wallet;
 
 namespace DoctorFAM.Domain.ViewModels.Admin.Wallet;
 
@@ -23,6 +25,8 @@ public class WithdrawRequestDetailAdminViewModel
     public string? Receipt { get; set; }
 
     public WalletWithdrawRequestState RequestState { get; set; }
+
+    public UsersBankAccountsInfos? BankAccount{ get; set; }
 
     #endregion
 }
