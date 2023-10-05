@@ -1,4 +1,5 @@
 ﻿using DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorBankAccounts;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.Wallet;
 
 namespace DoctorFAM.Application.Services.Interfaces;
 
@@ -22,6 +23,9 @@ public interface IUserBankAccountsInfosService
     Task<bool> DeleteUserBankAccount(ulong userId,
                                      ulong accountId,
                                      CancellationToken cancellationToken);
+
+    //Fill User Bank Account Name And Id
+    Task<List<UserBankAccountNameAndId>?> FillUserBankAccountNameAndIdWithAsNoTracking(ulong userId);
 
     #endregion
 }

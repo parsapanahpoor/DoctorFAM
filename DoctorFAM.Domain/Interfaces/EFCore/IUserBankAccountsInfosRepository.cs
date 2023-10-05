@@ -1,6 +1,7 @@
 ﻿using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.UsersBankAccount;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorBankAccounts;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.Wallet;
 using Microsoft.EntityFrameworkCore;
 using System.Threading;
 
@@ -23,6 +24,9 @@ public interface IUserBankAccountsInfosRepository
 
     //Save Changes
     Task Savechanges(CancellationToken cancellationToken);
+
+    //Fill User Bank Account Name And Id
+    Task<List<UserBankAccountNameAndId>?> FillUserBankAccountNameAndIdWithAsNoTracking(ulong userId);
 
     #endregion
 }

@@ -17,11 +17,15 @@ public class WalletController : DoctorBaseController
 
     private readonly IWalletService _walletService;
     private readonly ISiteSettingService _siteSettingService;
+    private readonly IUserBankAccountsInfosService _userBankAccountsInfosService;
 
-    public WalletController(IWalletService walletService, ISiteSettingService siteSettingService)
+    public WalletController(IWalletService walletService, 
+                            ISiteSettingService siteSettingService , 
+                            IUserBankAccountsInfosService userBankAccountsInfosService)
     {
         _walletService = walletService;
         _siteSettingService = siteSettingService;
+        _userBankAccountsInfosService = userBankAccountsInfosService;
     }
 
     #endregion
@@ -44,6 +48,7 @@ public class WalletController : DoctorBaseController
 
         ViewData["SiteLockPrice"] = await _siteSettingService.GetWithdrawLockPrice();
         ViewData["UserWalletBalance"] = await _walletService.GetUserWithRoleWalletBalancec(User.GetUserId());
+        ViewData["UserBankAccounts"] = await _userBankAccountsInfosService.FillUserBankAccountNameAndIdWithAsNoTracking(User.GetUserId());
 
         #endregion
 
@@ -61,6 +66,7 @@ public class WalletController : DoctorBaseController
 
             ViewData["SiteLockPrice"] = await _siteSettingService.GetWithdrawLockPrice();
             ViewData["UserWalletBalance"] = await _walletService.GetUserWithRoleWalletBalancec(User.GetUserId());
+            ViewData["UserBankAccounts"] = await _userBankAccountsInfosService.FillUserBankAccountNameAndIdWithAsNoTracking(User.GetUserId());
 
             #endregion
 
@@ -93,6 +99,7 @@ public class WalletController : DoctorBaseController
 
         ViewData["SiteLockPrice"] = await _siteSettingService.GetWithdrawLockPrice();
         ViewData["UserWalletBalance"] = await _walletService.GetUserWithRoleWalletBalancec(User.GetUserId());
+        ViewData["UserBankAccounts"] = await _userBankAccountsInfosService.FillUserBankAccountNameAndIdWithAsNoTracking(User.GetUserId());
 
         #endregion
 

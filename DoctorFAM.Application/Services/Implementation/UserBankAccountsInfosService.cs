@@ -3,6 +3,7 @@ using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.UsersBankAccount;
 using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorBankAccounts;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.Wallet;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters.Internal;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
@@ -132,6 +133,19 @@ public class UserBankAccountsInfosService : IUserBankAccountsInfosService
         #endregion
 
         return true;
+    }
+
+    //Fill User Bank Account Name And Id
+    public async Task<List<UserBankAccountNameAndId>?> FillUserBankAccountNameAndIdWithAsNoTracking(ulong userId)
+    {
+        #region User Validation 
+
+        var user = await _userService.GetUserByIdWithAsNoTracking(userId);
+        if (user == null) return null;
+
+        #endregion
+
+        return await _userBankAccountRepository.FillUserBankAccountNameAndIdWithAsNoTracking(userId);
     }
 
     #endregion

@@ -3,6 +3,7 @@ using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.UsersBankAccount;
 using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorBankAccounts;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.Wallet;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Principal;
 
@@ -64,6 +65,21 @@ public class UserBankAccountsInfosRepository : IUserBankAccountsInfosRepository
     public async Task Savechanges(CancellationToken cancellationToken)
     {
         await _context.SaveChangesAsync();
+    }
+
+    //Fill User Bank Account Name And Id
+    public async Task<List<UserBankAccountNameAndId>?> FillUserBankAccountNameAndIdWithAsNoTracking(ulong userId)
+    {
+        return await _context.UsersBankAccountsInfos
+                             .AsNoTracking()
+                             .Where(p=> !p.IsDelete && p.UserId == userId)
+                             .Select(p=> new UserBankAccountNameAndId()
+                             {
+                                 BankName = p.BankName,
+                                 Id = p.Id,
+                                 ShomareCart = p.ShomareCart
+                             })
+                             .ToListAsync();
     }
 
     #endregion
