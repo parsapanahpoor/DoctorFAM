@@ -1,6 +1,9 @@
 ﻿#region Usings
 
+using DoctorFAM.Application.Extensions;
+using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Web.Doctor.Controllers;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DoctorFAM.Web.Areas.Doctor.Controllers;
 
@@ -8,26 +11,36 @@ namespace DoctorFAM.Web.Areas.Doctor.Controllers;
 
 public class BankAccountController : DoctorBaseController
 {
-	//#region Ctor
+    #region Ctor
 
-	//private readonly IUserBankAccountsInfosService _userBankAccountsInfos;
+    private readonly IUserBankAccountsInfosService _userBankAccountsInfos;
 
- //   public BankAccountController(IUserBankAccountsInfosService userBankAccountsInfosService)
- //   {
- //           _userBankAccountsInfos = userBankAccountsInfosService;
- //   }
+    public BankAccountController(IUserBankAccountsInfosService userBankAccountsInfosService)
+    {
+        _userBankAccountsInfos = userBankAccountsInfosService;
+    }
 
- //   #endregion
+    #endregion
 
- //   #region List Of User Banks Accounts
+    #region List Of User Banks Accounts
 
- //   [HttpGet]
- //   public async Task<IActionResult> ListOfUserBanksAccounts(CancellationToken cancellationToken)
- //   {
- //       var model = await _userBankAccountsInfos.GetListOfDoctorBankAccounts(User.GetUserId() , cancellationToken);
+    [HttpGet]
+    public async Task<IActionResult> ListOfUserBanksAccounts(CancellationToken cancellationToken)
+    {
+        var model = await _userBankAccountsInfos.GetListOfDoctorBankAccounts(User.GetUserId(), cancellationToken);
 
- //       return View(model);
- //   }
+        return View(model);
+    }
 
- //   #endregion
+    #endregion
+
+    #region Add New Bank Account Info 
+
+    [HttpGet]
+    public async Task<IActionResult> AddNewBankAccountInfo()
+    {
+        return View();
+    }
+
+    #endregion
 }

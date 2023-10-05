@@ -59,6 +59,7 @@ using DoctorFAM.Domain.Enums.Tourist;
 using DoctorFAM.Domain.Entities.Tourism.Token;
 using System.Reflection;
 using DoctorFAM.Domain.Markers;
+using DoctorFAM.Domain.Entities.UsersBankAccount;
 
 namespace DoctorFAM.Data.DbContext;
 
@@ -559,6 +560,12 @@ public class DoctorFAMDbContext : Microsoft.EntityFrameworkCore.DbContext
     public DbSet<TouristToken> TouristTokens { get; set; }
 
     public DbSet<TouristPassengers> TouristPassengers { get; set; }
+
+    #endregion
+
+    #region Users Bank Accounts Infos
+
+    public DbSet<UsersBankAccountsInfos> BankAccountsInfos { get; set; }
 
     #endregion
 

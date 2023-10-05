@@ -81,6 +81,7 @@ public static class DependencyContainer
         services.AddScoped <IUserVirtualFilesService, UserVirtualFilesService>();
         services.AddScoped <ITourismService, TourismService>();
         services.AddScoped <ITouristTokenService, TouristTokenService>();
+        services.AddScoped <IUserBankAccountsInfosService, UserBankAccountsInfosService>();
 
         #endregion
 
@@ -133,6 +134,7 @@ public static class DependencyContainer
         services.AddScoped<IUserVirtualFilesRepository, UserVirtualFilesRepository>();
         services.AddScoped<ITourismRepository, TourismRepository>();
         services.AddScoped<ITouristTokenRepository, TouristTokenRepository>();
+        services.AddScoped<IUserBankAccountsInfosRepository, UserBankAccountsInfosRepository>();
 
         #endregion
 
