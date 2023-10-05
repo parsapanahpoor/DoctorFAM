@@ -44,7 +44,7 @@ public class BankAccountController : DoctorBaseController
     }
 
     [HttpPost, ValidateAntiForgeryToken]
-    public async Task<IActionResult> AddNewBankAccountInfo(AddDoctorAccountInfoDTOs model , CancellationToken cancellationToken)
+    public async Task<IActionResult> AddNewBankAccountInfo(AddDoctorAccountInfoDTOs model, CancellationToken cancellationToken )
     {
         if (ModelState.IsValid)
         {
@@ -57,6 +57,19 @@ public class BankAccountController : DoctorBaseController
         }
 
         TempData[ErrorMessage] = "عملیات باشکست روبرو شده است.";
+        return View(model);
+    }
+
+    #endregion
+
+    #region Bank Account Detail 
+
+    [HttpGet]
+    public async Task<IActionResult> BankAccountDetail(ulong id)
+    {
+        var model = await _userBankAccountsInfos.DetailDoctorAccountInfoDTOs(User.GetUserId() , id );
+        if (model == null) return NotFound();
+
         return View(model);
     }
 

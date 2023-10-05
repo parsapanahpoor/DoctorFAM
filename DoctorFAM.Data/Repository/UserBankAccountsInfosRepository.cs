@@ -1,8 +1,10 @@
 ﻿using DoctorFAM.Data.DbContext;
+using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.UsersBankAccount;
 using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorBankAccounts;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Principal;
 
 namespace DoctorFAM.Data.Repository;
 
@@ -41,6 +43,15 @@ public class UserBankAccountsInfosRepository : IUserBankAccountsInfosRepository
     {
         await _context.UsersBankAccountsInfos.AddAsync(usersBank);
         await _context.SaveChangesAsync();
+    }
+
+    //Get User Bank Account By Id As No Tracking
+    public async Task<UsersBankAccountsInfos?> GetUserBankAccountByIdAsNoTracking(ulong id )
+    {
+        return await _context.UsersBankAccountsInfos
+                             .AsNoTracking()
+                             .Where(p => !p.IsDelete && p.Id == id)
+                             .FirstOrDefaultAsync();
     }
 
     #endregion

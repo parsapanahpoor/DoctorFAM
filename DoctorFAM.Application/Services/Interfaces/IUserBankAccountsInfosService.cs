@@ -6,10 +6,17 @@ public interface IUserBankAccountsInfosService
 {
     #region Doctor Panel Side 
 
-    Task<List<ListOfDoctorBankAccountsInfosDoctorSideDTO>?> GetListOfDoctorBankAccounts(ulong userId, CancellationToken cancellationToken);
+    Task<List<ListOfDoctorBankAccountsInfosDoctorSideDTO>?> GetListOfDoctorBankAccounts(ulong userId
+                                                                                       , CancellationToken cancellationToken);
 
     // Add New Doctor Bank Account Info Doctor Side 
-    Task<bool> AddNewDoctorBankAccountInfoDoctorSide(ulong userId, AddDoctorAccountInfoDTOs model, CancellationToken cancellationToken);
+    Task<bool> AddNewDoctorBankAccountInfoDoctorSide(ulong userId,
+                                                     AddDoctorAccountInfoDTOs model, 
+                                                     CancellationToken cancellationToken);
+
+    //Fill Detail Doctor Account Info DTOs
+    Task<DetailDoctorAccountInfoDTOs?> DetailDoctorAccountInfoDTOs(ulong userId, 
+                                                                   ulong accountId );
 
     #endregion
 }

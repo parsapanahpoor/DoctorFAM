@@ -14,5 +14,8 @@ public interface IUserBankAccountsInfosRepository
     //Add Bank Account To The Data Base
     Task AddBankAccountToTheDataBase(UsersBankAccountsInfos usersBank, CancellationToken cancellationToken);
 
+    //Get User Bank Account By Id As No Tracking
+    Task<UsersBankAccountsInfos?> GetUserBankAccountByIdAsNoTracking(ulong id);
+
     #endregion
 }

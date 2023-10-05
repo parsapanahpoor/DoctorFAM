@@ -71,7 +71,11 @@
                                         <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending">
                                             @Localizer["نام بانک"]
                                         </th>
-                                       
+
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending">
+                                            @Localizer["امکانات"]
+                                        </th>
+
                                     </tr>
                                 </thead>
 
@@ -99,7 +103,7 @@
                                             </td>
 
                                             <td class="tc vm">
-                                                <a asp-action="EditBankAccountIndo" asp-controller="BankAccount" asp-area="Doctor" asp-route-Id="@date.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+                                                <a asp-action="BankAccountDetail" asp-controller="BankAccount" asp-area="Doctor" asp-route-id="@date.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
                                             </td>
 
                                         </tr>
