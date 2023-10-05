@@ -16,7 +16,6 @@ using DoctorFAM.Domain.ViewModels.Admin.SiteSetting.OnlineVisit;
 
 #endregion
 
-
 namespace DoctorFAM.Application.Services.Implementation;
 
 public class SiteSettingService : ISiteSettingService

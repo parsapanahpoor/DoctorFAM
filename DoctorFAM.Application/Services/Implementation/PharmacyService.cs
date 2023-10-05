@@ -1,5 +1,4 @@
 ﻿using DoctorFAM.Application.Services.Interfaces;
-using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.Interest;
 using DoctorFAM.Domain.Entities.Organization;
@@ -10,12 +9,6 @@ using DoctorFAM.Domain.ViewModels.Admin.Pharmacy;
 using DoctorFAM.Domain.ViewModels.Pharmacy.HomePharmacy;
 using DoctorFAM.Domain.ViewModels.Pharmacy.PharmacyInfo;
 using DoctorFAM.Domain.ViewModels.Pharmacy.PharmacySideBar;
-using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static DoctorFAM.Domain.ViewModels.Pharmacy.PharmacyInfo.ManagePharmacyInfoViewModel;
 
 namespace DoctorFAM.Application.Services.Implementation

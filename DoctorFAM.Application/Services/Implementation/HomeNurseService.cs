@@ -1,7 +1,6 @@
 ﻿using DoctorFAM.Application.Interfaces;
 using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
-using DoctorFAM.Data.DbContext;
 using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.Requests;
@@ -10,14 +9,7 @@ using DoctorFAM.Domain.Enums.RequestType;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.HealthHouse.HomeNurse;
 using DoctorFAM.Domain.ViewModels.Site.HomeNurseRequest;
-using DoctorFAM.Domain.ViewModels.Site.HomeVisitRequest;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DoctorFAM.Application.Services.Implementation
 {
@@ -25,7 +17,6 @@ namespace DoctorFAM.Application.Services.Implementation
     {
         #region Ctor
 
-        private readonly DoctorFAMDbContext _context;
         private readonly IHomeNurseRepository _homeNurse;
         private readonly IRequestService _requestService;
         private readonly IUserService _userService;
@@ -35,11 +26,10 @@ namespace DoctorFAM.Application.Services.Implementation
         private readonly IPopulationCoveredRepository _populationCovered;
         private readonly ISiteSettingService _siteSetting;
 
-        public HomeNurseService(DoctorFAMDbContext context, IHomeNurseRepository homeNurse, IRequestService requestService,
+        public HomeNurseService( IHomeNurseRepository homeNurse, IRequestService requestService,
                                 IUserService userService, IPatientService patientService , ILocationService locationService,
                                 IWalletRepository walletRepository, IPopulationCoveredRepository populationCovered, ISiteSettingService siteSetting)
         {
-            _context = context;
             _homeNurse = homeNurse;
             _requestService = requestService;
             _userService = userService;

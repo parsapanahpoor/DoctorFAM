@@ -1,22 +1,9 @@
 ﻿using DoctorFAM.Application.Services.Interfaces;
-using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.FollowAndUnFollow;
-using DoctorFAM.Domain.Entities.HealthInformation;
 using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Follow;
 using DoctorFAM.Domain.ViewModels.Site.Doctor.Follow;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DoctorFAM.Application.Services.Implementation
 {

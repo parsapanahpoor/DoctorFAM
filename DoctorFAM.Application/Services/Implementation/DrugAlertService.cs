@@ -1,24 +1,10 @@
-﻿using AngleSharp.Common;
-using DoctorFAM.Application.Convertors;
+﻿using DoctorFAM.Application.Convertors;
 using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Application.StaticTools;
-using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.DurgAlert;
 using DoctorFAM.Domain.Interfaces.EFCore;
-using DoctorFAM.Domain.ViewModels.BackgroundTasks.DrugAlert;
 using DoctorFAM.Domain.ViewModels.Site.DurgAlert;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace DoctorFAM.Application.Services.Implementation
 {

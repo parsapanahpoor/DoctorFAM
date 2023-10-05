@@ -1,12 +1,6 @@
 ﻿using DoctorFAM.Application.Services.Interfaces;
-using DoctorFAM.Data.DbContext;
 using Microsoft.Extensions.Configuration;
 using Kavenegar.Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DoctorFAM.Application.StaticTools;
 
 namespace DoctorFAM.Application.Services.Implementation
@@ -15,12 +9,10 @@ namespace DoctorFAM.Application.Services.Implementation
     {
         #region Ctor
 
-        private DoctorFAMDbContext _context;
         private readonly IConfiguration _configuration;
 
-        public SMSService(DoctorFAMDbContext context, IConfiguration configuration)
+        public SMSService( IConfiguration configuration)
         {
-            _context = context;
             _configuration = configuration;
         }
 

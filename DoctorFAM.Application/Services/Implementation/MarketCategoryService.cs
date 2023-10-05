@@ -3,11 +3,6 @@ using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.Entities.MarketCategory;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.MarketCategory;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DoctorFAM.Application.Services.Implementation
 {

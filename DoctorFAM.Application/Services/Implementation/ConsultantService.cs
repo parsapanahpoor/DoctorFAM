@@ -1,6 +1,5 @@
 ﻿#region Usigns
 
-using Academy.Domain.Entities.SiteSetting;
 using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Generators;
 using DoctorFAM.Application.Security;
@@ -14,17 +13,14 @@ using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.Entities.WorkAddress;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.Consultant;
-using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo;
 using DoctorFAM.Domain.ViewModels.Consultant.ConsultantInfo;
 using DoctorFAM.Domain.ViewModels.Consultant.ConsultantInfo.Interest;
 using DoctorFAM.Domain.ViewModels.Consultant.ConsultantRequest;
 using DoctorFAM.Domain.ViewModels.Consultant.ConsultantSideBar;
 using DoctorFAM.Domain.ViewModels.Consultant.NavBar;
-using DoctorFAM.Domain.ViewModels.Dentist.NavBar;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo;
 using DoctorFAM.Domain.ViewModels.UserPanel.Consultant;
 using Microsoft.AspNetCore.Http;
-using System.Numerics;
 
 namespace DoctorFAM.Application.Services.Implementation;
 

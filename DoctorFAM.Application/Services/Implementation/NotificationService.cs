@@ -1,23 +1,14 @@
 ﻿#region Usings
 
 using DoctorFAM.Application.Services.Interfaces;
-using DoctorFAM.Data.Repository;
 using DoctorFAM.Domain.Entities.Account;
-using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.Notification;
-using DoctorFAM.Domain.Entities.Nurse;
 using DoctorFAM.Domain.Enums.Notification;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Consultant.Notification;
 using DoctorFAM.Domain.ViewModels.Dentist.Notification;
 using DoctorFAM.Domain.ViewModels.Doctor.Notification;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Notification;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 #endregion
 

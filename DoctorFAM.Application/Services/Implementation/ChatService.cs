@@ -4,7 +4,6 @@ using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Application.StaticTools;
-using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Chat;
 using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.ChatRoom;

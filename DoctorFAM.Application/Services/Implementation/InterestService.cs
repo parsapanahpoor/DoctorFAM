@@ -5,7 +5,6 @@ using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.Entities.Interest;
 using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.Admin.Interest;
-using DoctorFAM.Domain.ViewModels.Admin.Location;
 
 namespace DoctorFAM.Application.Services.Implementation;
 

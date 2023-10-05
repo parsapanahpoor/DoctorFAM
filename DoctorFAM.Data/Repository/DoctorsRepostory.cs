@@ -1,45 +1,22 @@
 ﻿using DoctorFAM.Data.DbContext;
-using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Account;
-using DoctorFAM.Domain.Entities.Chat;
-using DoctorFAM.Domain.Entities.Consultant;
 using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.FamilyDoctor.ParsaSystem;
 using DoctorFAM.Domain.Entities.FamilyDoctor.VIPSystem;
 using DoctorFAM.Domain.Entities.Interest;
-using DoctorFAM.Domain.Entities.Organization;
-using DoctorFAM.Domain.Entities.Patient;
-using DoctorFAM.Domain.Entities.Resume;
 using DoctorFAM.Domain.Entities.SendSMS.FromDoctrors;
-using DoctorFAM.Domain.Entities.WorkAddress;
-using DoctorFAM.Domain.Enums.SendSMS.FromDoctors;
 using DoctorFAM.Domain.Interfaces;
-using DoctorFAM.Domain.ViewModels.Admin;
 using DoctorFAM.Domain.ViewModels.Admin.Dashboard;
 using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo;
-using DoctorFAM.Domain.ViewModels.Admin.SendSMS;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DosctorSideBarInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Employees;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.SendSMS;
 using DoctorFAM.Domain.ViewModels.Site.BloodPressure;
 using DoctorFAM.Domain.ViewModels.Site.Diabet;
 using DoctorFAM.Domain.ViewModels.Site.Doctor;
-using DoctorFAM.Domain.ViewModels.Site.DurgAlert;
 using DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.VisualBasic;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace DoctorFAM.Data.Repository
 {

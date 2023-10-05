@@ -1,5 +1,4 @@
-﻿using BusinessPortal.Application.Services.Implementation;
-using DoctorFAM.Application.Convertors;
+﻿using DoctorFAM.Application.Convertors;
 using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Generators;
 using DoctorFAM.Application.Security;
@@ -13,17 +12,9 @@ using DoctorFAM.Domain.Enums;
 using DoctorFAM.Domain.Enums.Ticket;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.Ticket;
-using DoctorFAM.Domain.ViewModels.Common;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Tikcet;
 using DoctorFAM.Domain.ViewModels.UserPanel.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.UserPanel.Ticket;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DoctorFAM.Application.Services.Implementation
 {

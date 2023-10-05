@@ -1,15 +1,9 @@
-﻿using Academy.Domain.Entities.SiteSetting;
-using DoctorFAM.Application.Interfaces;
+﻿using DoctorFAM.Application.Interfaces;
 using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
-using DoctorFAM.Data.DbContext;
-using DoctorFAM.Data.Repository;
 using DoctorFAM.DataLayer.Entities;
-using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Doctors;
-using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.Entities.Patient;
-using DoctorFAM.Domain.Entities.PopulationCovered;
 using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Entities.Wallet;
 using DoctorFAM.Domain.Enums.Request;
@@ -17,19 +11,9 @@ using DoctorFAM.Domain.Enums.RequestType;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.HealthHouse.DeathCertificate;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DeathCertificate;
-using DoctorFAM.Domain.ViewModels.DoctorPanel.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.Site.DeathCertificate;
-using DoctorFAM.Domain.ViewModels.Site.HomeNurseRequest;
-using DoctorFAM.Domain.ViewModels.Site.HomeVisitRequest;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
 using DoctorFAM.Domain.ViewModels.UserPanel.HealthHouse.DeathCertificate;
-using DoctorFAM.Domain.ViewModels.UserPanel.HealthHouse.HomeNurse;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DoctorFAM.Application.Services.Implementation
 {

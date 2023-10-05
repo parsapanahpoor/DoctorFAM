@@ -1,13 +1,11 @@
 ﻿#region Usings
 
-using AngleSharp.Text;
 using DoctorFAM.Application.Convertors;
 using DoctorFAM.Application.Generators;
 using DoctorFAM.Application.Interfaces;
 using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Application.StaticTools;
-using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.OnlineVisit;
 using DoctorFAM.Domain.Entities.Patient;
@@ -21,7 +19,6 @@ using DoctorFAM.Domain.ViewModels.DoctorPanel.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.Site.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
 using DoctorFAM.Domain.ViewModels.UserPanel.OnlineVisit;
-using Microsoft.AspNetCore.Mvc;
 using Request = DoctorFAM.DataLayer.Entities.Request;
 
 #endregion

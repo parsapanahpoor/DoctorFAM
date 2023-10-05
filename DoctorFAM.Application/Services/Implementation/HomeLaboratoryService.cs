@@ -21,8 +21,6 @@ using DoctorFAM.Domain.Entities.Wallet;
 using DoctorFAM.Domain.Enums.RequestType;
 using DoctorFAM.Domain.ViewModels.UserPanel.HealthHouse.HomeLaboratory;
 using DoctorFAM.Domain.ViewModels.Laboratory.HomeLaboratory;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
-using DoctorFAM.Domain.Entities.Account;
 
 #endregion
 

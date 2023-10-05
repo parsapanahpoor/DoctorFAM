@@ -4,7 +4,6 @@ using DoctorFAM.Application.Generators;
 using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Application.StaticTools;
-using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.HealthInformation;
 using DoctorFAM.Domain.Enums.HealtInformation;
 using DoctorFAM.Domain.Interfaces;

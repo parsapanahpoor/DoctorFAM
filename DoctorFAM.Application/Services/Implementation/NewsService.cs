@@ -1,5 +1,4 @@
-﻿using DoctorFAM.Application.Convertors;
-using DoctorFAM.Application.Extensions;
+﻿using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Application.StaticTools;
@@ -7,12 +6,6 @@ using DoctorFAM.Domain.ViewModels.Common;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DoctorFAM.Data.DbContext;
 using DoctorFAM.Domain.Entities.News;
 using DoctorFAM.Domain.ViewModels.Admin.News;
 

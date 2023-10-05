@@ -1,18 +1,9 @@
 ﻿using DoctorFAM.Application.Services.Interfaces;
-using DoctorFAM.Data.DbContext;
-using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.SelfAssessment;
 using DoctorFAM.Domain.Enums.BloodPressure;
 using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.Site.BloodPressure;
 using DoctorFAM.Domain.ViewModels.Site.Diabet;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DoctorFAM.Application.Services.Implementation
 {

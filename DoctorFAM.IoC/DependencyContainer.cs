@@ -6,8 +6,6 @@ using DoctorFAM.Application.Services;
 using DoctorFAM.Application.Services.Implementation;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Data.Dapper.Repository;
-using DoctorFAM.Data.Repository;
-using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.Interfaces.Dapper;
 using DoctorFAM.Domain.Interfaces.EFCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -79,56 +77,9 @@ public static class DependencyContainer
 
         #endregion
 
-        #region EF Core Repository
+        #region Unit Of Work
 
-        services.AddScoped<ILocationRepository, LocationRepository>();
-        services.AddScoped<IHomeVisitRepository, HomeVisitRepository>();
-        services.AddScoped<IHomeNurseRepository, HomeNurseRepository>();
-        services.AddScoped<IDeathCertificateRepository, DeathCertificateRepository>();
-        services.AddScoped<IPatientRepository, PatientRepository>();
-        services.AddScoped<IRequestRepository, RequestRepository>();
-        services.AddScoped<IUserRepository, UserRepository>();
-        services.AddScoped<IWalletRepository, WalletRepository>();
-        services.AddScoped<IHomePharmacyRepository, HomePharmacyRepository>();
-        services.AddScoped<IDoctorsRepository, DoctorsRepostory>();
-        services.AddScoped<IHomeLaboratoryRepository, HomeLaboratoryRepository>();
-        services.AddScoped<IHomePatientTransportRepository, HomePatientTransportRepository>();
-        services.AddScoped<IMarketCategoryRepository, MarketCategoryRepository>();
-        services.AddScoped<IProductRepository, ProductRepository>();
-        services.AddScoped<ISiteSettingRepository, SiteSettingRepository>();
-        services.AddScoped<IPopulationCoveredRepository, PopulationCoveredRepository>();
-        services.AddScoped<IDashboardsRepository, DashboardsRepository>();
-        services.AddScoped<IOrganizationRepository, OrganizationRepository>();
-        services.AddScoped<IWorkAddressRepository, WorkAddressRepository>();
-        services.AddScoped<IReservationRepository, ReservationRepository>();
-        services.AddScoped<IPharmacyRepository, PharmacyRepository>();
-        services.AddScoped<INotificationRepository, NotificationRepository>();
-        services.AddScoped<IBMIRepository, BMIRepository>();
-        services.AddScoped<IFamilyDoctorRepository, FamilyDoctorRepository>();
-        services.AddScoped<IOnlineVisitRepository, OnlineVisitRepository>();
-        services.AddScoped<ITicketRepository, TicketRepository>();
-        services.AddScoped<INurseRepository, NurseRepository>();
-        services.AddScoped<IConsultantRepository, ConsultantRepository>();
-        services.AddScoped<ILaboratoryRepository, LaboratoryRepository>();
-        services.AddScoped<IHealthInformationRepository, HealthInformationRepository>();
-        services.AddScoped<IResumeRepository, ResumeRepository>();
-        services.AddScoped<ICustomerAdvertisementRepository, CustomerAdvertisementRepository>();
-        services.AddScoped<IFollowRepository, FollowRepository>();
-        services.AddScoped<ISpecialityRepository, SpecialityRepository>();
-        services.AddScoped<IMedicalExaminationRepository, MedicalExaminationRepository>();
-        services.AddScoped<IDrugAlertRepository, DrugAlertRepository>();
-        services.AddScoped<IPeriodicSelftEvaluationRepository, PeriodicSelftEvaluationRepository>();
-        services.AddScoped<IPeriodicTestRepository, PeriodicTestRepository>();
-        services.AddScoped<ISelfAssessmentRepository, SelfAssessmentRepository>();
-        services.AddScoped<IASCVDRepository, ASCVDRepository>();
-        services.AddScoped<IChatRepository, ChatRepository>();
-        services.AddScoped<ISMBGNoteBookRepository, SMBGNoteBookRepository>();
-        services.AddScoped<IDentistRepoistory, DentistRepoistory>();
-        services.AddScoped<IInterestRepository, InterestRepository>();
-        services.AddScoped<IUserVirtualFilesRepository, UserVirtualFilesRepository>();
-        services.AddScoped<ITourismRepository, TourismRepository>();
-        services.AddScoped<ITouristTokenRepository, TouristTokenRepository>();
-        services.AddScoped<IUserBankAccountRepository, UserBankAccountRepository>();
+        services.AddScoped<IUserBankAccountsInfosService, UserBankAccountsInfosService>();
 
         #endregion
 

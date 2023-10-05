@@ -3,8 +3,6 @@
 using DoctorFAM.Application.Convertors;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Application.StaticTools;
-using DoctorFAM.Domain.Entities.Account;
-using DoctorFAM.Domain.Entities.Dentist;
 using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.Entities.Wallet;
 using DoctorFAM.Domain.Enums.DoctorReservation;
@@ -13,14 +11,9 @@ using DoctorFAM.Domain.ViewModels.Admin.Reservation;
 using DoctorFAM.Domain.ViewModels.Admin.Wallet;
 using DoctorFAM.Domain.ViewModels.Common;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment;
-using DoctorFAM.Domain.ViewModels.Site.Account;
 using DoctorFAM.Domain.ViewModels.Site.Reservation;
 using DoctorFAM.Domain.ViewModels.Supporter.Reservation;
-using DoctorFAM.Domain.ViewModels.Tourist.Token;
 using DoctorFAM.Domain.ViewModels.UserPanel.Reservation;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
-using System;
-using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 
 #endregion

@@ -1,13 +1,6 @@
 ﻿using DoctorFAM.Application.Services.Interfaces;
-using DoctorFAM.Data.DbContext;
 using DoctorFAM.Domain.Entities.SiteSetting;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Mail;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessPortal.Application.Services.Implementation
 {
@@ -15,12 +8,7 @@ namespace BusinessPortal.Application.Services.Implementation
     {
         #region Ctor
 
-        private DoctorFAMDbContext _context;
-
-        public EmailSender(DoctorFAMDbContext context)
-        {
-            _context = context;
-        }
+        
 
         #endregion
 
@@ -58,7 +46,7 @@ namespace BusinessPortal.Application.Services.Implementation
 
         public async Task<EmailSetting> GetDefaultEmailSetting()
         {
-            return await _context.EmailSettings.FirstOrDefaultAsync(s => !s.IsDelete && s.IsDefaultEmail);
+            return null; //_context.EmailSettings.FirstOrDefaultAsync(s => !s.IsDelete && s.IsDefaultEmail);
         }
     }
 

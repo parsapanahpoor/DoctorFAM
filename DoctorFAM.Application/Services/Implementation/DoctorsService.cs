@@ -44,11 +44,8 @@ using DoctorFAM.Domain.ViewModels.Admin.Doctors.UsersInDoctorPopulationCovered;
 using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.Enums.DoctorReservation;
 using DoctorFAM.Domain.Entities.SendSMS.FromDoctrors;
-using DoctorFAM.Domain.ViewModels.Admin;
-using Microsoft.EntityFrameworkCore;
 using DoctorFAM.Domain.ViewModels.Admin.Dashboard;
 using DoctorFAM.Domain.ViewModels.Admin.SendSMS;
-using System.Numerics;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.SendSMS;
 
 namespace DoctorFAM.Application.Services.Implementation

@@ -22,8 +22,6 @@ using DoctorFAM.Domain.ViewModels.Laboratory.Employee;
 using DoctorFAM.Domain.ViewModels.Laboratory.HomeLaboratory;
 using DoctorFAM.Domain.ViewModels.Laboratory.LaboratoryInfo;
 using DoctorFAM.Domain.ViewModels.Laboratory.LaboratorySideBar;
-using Microsoft.IdentityModel.Tokens;
-using System.Net.WebSockets;
 
 #endregion
 

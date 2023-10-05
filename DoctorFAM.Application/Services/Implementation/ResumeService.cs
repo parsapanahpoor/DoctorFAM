@@ -4,12 +4,7 @@ using DoctorFAM.Application.Generators;
 using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Application.StaticTools;
-using DoctorFAM.Data.Migrations;
-using DoctorFAM.Domain.Entities.Account;
-using DoctorFAM.Domain.Entities.Doctors;
-using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.Entities.Resume;
-using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.Admin.Resume;
 using DoctorFAM.Domain.ViewModels.Admin.Resume.Certificate;
@@ -27,14 +22,6 @@ using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.Service;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.WorkHistory;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Resume.WorkingAddress;
 using Microsoft.AspNetCore.Http;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.Database;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DoctorFAM.Application.Services.Implementation
 {

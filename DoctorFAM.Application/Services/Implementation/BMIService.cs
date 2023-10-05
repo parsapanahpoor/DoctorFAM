@@ -3,11 +3,6 @@ using DoctorFAM.Domain.Entities.BMI;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.Interfaces.Dapper;
 using DoctorFAM.Domain.ViewModels.Site.Diabet;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DoctorFAM.Application.Services.Implementation
 {

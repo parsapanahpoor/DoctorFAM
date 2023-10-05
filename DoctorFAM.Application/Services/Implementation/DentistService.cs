@@ -1,14 +1,11 @@
 ﻿#region Usings
 
-using Academy.Domain.Entities.SiteSetting;
 using DoctorFAM.Application.Convertors;
 using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Generators;
-using DoctorFAM.Application.Interfaces;
 using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Application.StaticTools;
-using DoctorFAM.Data.Repository;
 using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Dentist;
 using DoctorFAM.Domain.Entities.DoctorReservation;
@@ -18,12 +15,10 @@ using DoctorFAM.Domain.Entities.WorkAddress;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.Admin.Dentist;
-using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo;
 using DoctorFAM.Domain.ViewModels.Dentist.DentistsInfo;
 using DoctorFAM.Domain.ViewModels.Dentist.Employees;
 using DoctorFAM.Domain.ViewModels.Dentist.NavBar;
 using DoctorFAM.Domain.ViewModels.Dentist.SideBar;
-using DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo;
 using DoctorFAM.Domain.ViewModels.Site;
 using DoctorFAM.Domain.ViewModels.Site.Dentist;
 using DoctorFAM.Domain.ViewModels.Site.Doctor;
@@ -35,9 +30,7 @@ using DoctorFAM.Domain.ViewModels.Site.Doctor.Resume.Honor;
 using DoctorFAM.Domain.ViewModels.Site.Doctor.Resume.Service;
 using DoctorFAM.Domain.ViewModels.Site.Doctor.Resume.WorkHistory;
 using DoctorFAM.Domain.ViewModels.Site.Doctor.Resume.WorkingAddress;
-using DoctorFAM.Domain.ViewModels.Site.Reservation;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 
 #endregion

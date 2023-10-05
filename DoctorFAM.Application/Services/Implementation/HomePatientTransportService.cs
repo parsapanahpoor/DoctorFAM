@@ -1,7 +1,6 @@
 ﻿using DoctorFAM.Application.Interfaces;
 using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
-using DoctorFAM.Data.DbContext;
 using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.Requests;
@@ -10,20 +9,12 @@ using DoctorFAM.Domain.Enums.RequestType;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.HealthHouse.HomePatientTransport;
 using DoctorFAM.Domain.ViewModels.Site.Patient;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DoctorFAM.Application.Services.Implementation
 {
     public class HomePatientTransportService : IHomePatientTransportService
     {
         #region Ctor
-
-        private readonly DoctorFAMDbContext _context;
 
         private readonly IHomePatientTransportRepository _homePatientTransport;
 
@@ -41,11 +32,10 @@ namespace DoctorFAM.Application.Services.Implementation
 
         private readonly ISiteSettingService _siteSettingService;
 
-        public HomePatientTransportService(DoctorFAMDbContext context, IHomePatientTransportRepository homePatientTransport, IRequestService requestService,
+        public HomePatientTransportService( IHomePatientTransportRepository homePatientTransport, IRequestService requestService,
                                 IUserService userService, IPatientService patientService , ILocationService locationService, IWalletRepository walletRepository,
                                 IPopulationCoveredRepository populationCovered, ISiteSettingService siteSettingService = null)
         {
-            _context = context;
             _homePatientTransport = homePatientTransport;
             _requestService = requestService;
             _userService = userService;

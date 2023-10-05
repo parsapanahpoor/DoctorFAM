@@ -1,16 +1,9 @@
 ﻿#region Usings
 
 using DoctorFAM.Application.Services.Interfaces;
-using DoctorFAM.Data.Migrations;
-using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.VirtualFile;
 using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.UserPanel.UserVirtualFiles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 #endregion
 

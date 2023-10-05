@@ -2,15 +2,12 @@
 
 using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
-using DoctorFAM.Data.Migrations;
 using DoctorFAM.Domain.Entities.Doctors;
-using DoctorFAM.Domain.Entities.Laboratory;
 using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.Entities.Tourism;
 using DoctorFAM.Domain.Entities.WorkAddress;
 using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.Admin.Tourist;
-using DoctorFAM.Domain.ViewModels.Laboratory.LaboratoryInfo;
 using DoctorFAM.Domain.ViewModels.Tourism.SiteSideBar;
 using DoctorFAM.Domain.ViewModels.Tourism.TouristInfo;
 

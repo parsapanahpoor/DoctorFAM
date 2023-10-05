@@ -1,7 +1,6 @@
 ﻿#region Usings
 
 using DoctorFAM.Domain.Entities.Account;
-using DoctorFAM.Domain.Entities.Laboratory;
 using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.Access;
 using DoctorFAM.Domain.ViewModels.Common;
@@ -10,7 +9,6 @@ using DoctorFAM.Domain.ViewModels.DoctorPanel.DosctorSideBarInfo;
 using Microsoft.EntityFrameworkCore;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Application.StaticTools;
-using DoctorFAM.Data.DbContext;
 namespace BusinessPortal.Application.Services.Implementation;
 
 #endregion
