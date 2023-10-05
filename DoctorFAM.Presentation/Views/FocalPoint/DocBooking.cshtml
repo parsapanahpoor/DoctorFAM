@@ -208,18 +208,24 @@
 
     @if (Model.DoctorReservationDateTimes != null && Model.DoctorReservationDateTimes.Any())
     {
+       
+
         <div class="card booking-schedule schedule-widget">
+            
             <div class="schedule-cont">
                 <div class="row">
                     <div class="col-md-12">
-                      
+                        @if (Model.DoctorReservationDate != null)
+                        {
+                            <div class="col-md-2 col-sm-12  mt-4 mb-3 ">
+                                <span class=" NotbtnDay">@Model.DoctorReservationDate.ReservationDate.ToStringShamsiDate()</span>
+                            </div>
+                        }
                         <div class="time-slot">
                             <ul class="clearfix">
 
                                 @foreach (var item in Model.DoctorReservationDateTimes)
                                 {
-
-                                   
                                     @if (item.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.NotReserved)
                                     {
                                         <li class="form-group col-md-2 col-sm-12" style="margin-top:10px;">
