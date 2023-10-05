@@ -1,0 +1,90 @@
+﻿@model DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorBankAccounts.AddDoctorAccountInfoDTOs
+
+@{
+    ViewData["Title"] = @Localizer["افزودن حساب بانکی جدید"];
+}
+
+@section Scripts
+    {
+    <partial name="_JqueryValidation" />
+}
+
+@section Breadcrumb
+    {
+    <li>
+        <a asp-action="ListOfUserBanksAccounts" asp-controller="BankAccount" asp-area="Doctor"> مدیریت اطلاعات بانکی </a>
+    </li>
+}
+
+<div class="row">
+    <div class="col-lg-12 col-sm-12">
+
+        <div class="widget">
+            <div class="widget-header bordered-bottom bordered-green">
+                <span class="widget-caption"> @Localizer["افزودن حساب بانکی جدید"] </span>
+            </div>
+            <div class="widget-body">
+                <div>
+
+                    <form asp-action="AddNewBankAccountInfo" asp-controller="BankAccount" asp-area="Doctor" method="post">
+                        <div class="modal-body">
+                            <div class="row">
+
+                                <div class="form-group col-md-6 col-sm-12">
+                                    <label asp-for="ShomareShaba">@Localizer["شماره شبا"]</label>
+                                    <span style="color:red;">*</span>
+                                    <input type="text"  class="form-control" asp-for="ShomareShaba">
+                                    <span class="text-danger" asp-validation-for="ShomareShaba"></span>
+                                </div>
+
+                                <div class="form-group col-md-6 col-sm-12">
+                                    <label asp-for="ShomareCart">@Localizer["شماره کارت"]</label>
+                                    <span style="color:red;">*</span>
+                                    <input type="text"  class="form-control" asp-for="ShomareCart">
+                                    <span class="text-danger" asp-validation-for="ShomareCart"></span>
+                                </div>
+
+                                <div class="form-group col-md-6 col-sm-12">
+                                    <label asp-for="BankName">@Localizer["نام بانک"]</label>
+                                    <span style="color:red;">*</span>
+                                    <input type="text" class="form-control" asp-for="BankName">
+                                    <span class="text-danger" asp-validation-for="BankName"></span>
+                                </div>
+
+                                <div class="form-group col-md-6 col-sm-12">
+                                    <label asp-for="OwnerAccountUsername">@Localizer["نام صاحب حساب"]</label>
+                                    <span style="color:red;">*</span>
+                                    <input type="text" class="form-control" asp-for="OwnerAccountUsername">
+                                    <span class="text-danger" asp-validation-for="OwnerAccountUsername"></span>
+                                </div>
+
+                                <hr class="margin-bottom-10 margin-top-10" />
+
+                                <div class="form-group col-md-6 col-sm-12">
+                                    <label asp-for="BankBranchCode">@Localizer["کد شعبه"]</label>
+                                    <span style="color:red;">*</span>
+                                    <input type="text" class="form-control" asp-for="BankBranchCode">
+                                    <span class="text-danger" asp-validation-for="BankBranchCode"></span>
+                                </div>
+
+                                <div class="form-group col-md-6 col-sm-12">
+                                    <label asp-for="BankBranchName">@Localizer["نام شعبه ی بانکی"]</label>
+                                    <span style="color:red;">*</span>
+                                    <input type="text" class="form-control" asp-for="BankBranchName">
+                                    <span class="text-danger" asp-validation-for="BankBranchName"></span>
+                                </div>
+
+                                <div class="form-group col-md-12">
+                                    <button type="submit" class="btn btn-success">@SharedLocalizer["ثبت"]</button>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -19,6 +19,8 @@ public class CreateWithdrawRequestDoctorPanelSideViewModel
 
     public bool FullAccountWithdraw { get; set; }
 
+    public ulong UserBankAccountId { get; set; }
+
     #endregion
 }
 
@@ -26,5 +28,15 @@ public enum CreateWithdrawRequestDoctorPanelSideResult
 {
     success, 
     faild,
-    NotEnoughCredit
+    NotEnoughCredit,
+    OwnerOfBankAccount
+}
+
+public record UserBankAccountNameAndId
+{
+    public ulong Id { get; set; }
+
+    public string ShomareCart { get; set; }
+
+    public string BankName { get; set; }
 }

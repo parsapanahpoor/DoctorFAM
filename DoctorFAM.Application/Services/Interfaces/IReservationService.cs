@@ -208,6 +208,9 @@ public interface IReservationService
     //Get Reservation Date Time To User Patient
     Task<bool> GetReservationDateTimeToUserPatient(ChooseTypeOfReservationViewModel model, ulong patientId);
 
+    //Cancel Payment From User And Make Reservation Time Free 
+    Task<bool> CancelPaymentFromUserAndMakeReservationTimeFree(ulong reservationDateId);
+
     //Reserve Doctor Reservation Date Time After Success Payment
     Task ReserveDoctorReservationDateTimeAfterSuccessPayment(ulong reservationDateTimeId);
 

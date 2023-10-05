@@ -69,18 +69,19 @@ public static class DependencyContainer
         services.AddScoped<IFollowService, FollowService>();
         services.AddScoped<ISpecialityService, SpecialityService>();
         services.AddScoped<IMedicalExaminationService, MedicalExaminationService>();
-        services.AddScoped <IDrugAlertService, DrugAlertService>();
-        services.AddScoped <IPeriodicSelftEvaluationService, PeriodicSelftEvaluationService>();
-        services.AddScoped <IPeriodicTestService, PeriodicTestService>();
-        services.AddScoped <ISelfAssessmentService, SelfAssessmentService>();
-        services.AddScoped <IASCVDService, ASCVDService>();
-        services.AddScoped <IChatService, ChatService>();
-        services.AddScoped <ISMBGNoteBookService, SMBGNoteBookService>();
-        services.AddScoped <IDentistService, DentistService>();
-        services.AddScoped <IInterestService, InterestService>();
-        services.AddScoped <IUserVirtualFilesService, UserVirtualFilesService>();
-        services.AddScoped <ITourismService, TourismService>();
-        services.AddScoped <ITouristTokenService, TouristTokenService>();
+        services.AddScoped<IDrugAlertService, DrugAlertService>();
+        services.AddScoped<IPeriodicSelftEvaluationService, PeriodicSelftEvaluationService>();
+        services.AddScoped<IPeriodicTestService, PeriodicTestService>();
+        services.AddScoped<ISelfAssessmentService, SelfAssessmentService>();
+        services.AddScoped<IASCVDService, ASCVDService>();
+        services.AddScoped<IChatService, ChatService>();
+        services.AddScoped<ISMBGNoteBookService, SMBGNoteBookService>();
+        services.AddScoped<IDentistService, DentistService>();
+        services.AddScoped<IInterestService, InterestService>();
+        services.AddScoped<IUserVirtualFilesService, UserVirtualFilesService>();
+        services.AddScoped<ITourismService, TourismService>();
+        services.AddScoped<ITouristTokenService, TouristTokenService>();
+        services.AddScoped<IUserBankAccountsInfosService, UserBankAccountsInfosService>();
 
         #endregion
 
@@ -133,6 +134,7 @@ public static class DependencyContainer
         services.AddScoped<IUserVirtualFilesRepository, UserVirtualFilesRepository>();
         services.AddScoped<ITourismRepository, TourismRepository>();
         services.AddScoped<ITouristTokenRepository, TouristTokenRepository>();
+        services.AddScoped<IUserBankAccountsInfosRepository, UserBankAccountsInfosRepository>();
 
         #endregion
 

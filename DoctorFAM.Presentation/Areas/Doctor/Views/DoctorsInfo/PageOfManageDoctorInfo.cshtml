@@ -14,12 +14,12 @@
 }
 
 @section Scripts
-{
-<partial name="_JqueryValidation" />
+    {
+    <partial name="_JqueryValidation" />
 }
 
 @section Breadcrumb
-{
+    {
 
 
 }
@@ -45,12 +45,12 @@
                             <i class="fa fa-times"></i>
                         </a>
                     </div><!--Widget Buttons-->
-            </div><!--Widget Header-->
-            <div class="widget-body bg-red">
+                </div><!--Widget Header-->
+                <div class="widget-body bg-red">
                     <p> @doctorOffice.RejectDescription </p>
                 </div><!--Widget Body-->
-        </div><!--Widget-->
-    </div>
+            </div><!--Widget-->
+        </div>
     }
 
 </div>
@@ -149,6 +149,25 @@
                             <div class="databox-text darkgray">@Localizer["family doctor and general practitioner and..."]</div>
                             <div class="databox-stat bg-warning radius-bordered">
                                 <a style="color:white;" asp-action="ListOFSpecialities" asp-area="Doctor" asp-controller="DoctorsInfo" class="stat-text">@Localizer["Edit"]</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-12 col-sm-12 col-xs-12">
+                    <div class="databox databox-lg radius-bordered databox-shadowed databox-graded">
+                        <div class="bg-warning databox-right">
+                            <div class="databox-piechart">
+                                <div data-toggle="easypiechart" class="easyPieChart" data-barcolor="#fff" data-linecap="butt" data-percent="50" data-animate="500" data-linewidth="3" data-size="60" data-trackcolor="#aadc95" style="width: 60px; height: 60px; line-height: 60px;">
+                                    <i class="glyphicon glyphicon-usd"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="databox-left">
+                            <span class="databox-number blue"> مدیریت حساب های بانکی </span>
+                            <div class="databox-stat bg-info radius-bordered">
+                                <a style="color:white;" asp-action="ListOfUserBanksAccounts" asp-area="Doctor" asp-controller="BankAccount" class="stat-text">ویرایش</a>
                             </div>
                         </div>
                     </div>
