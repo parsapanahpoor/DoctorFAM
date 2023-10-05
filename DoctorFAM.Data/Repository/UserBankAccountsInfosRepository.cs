@@ -1,4 +1,5 @@
 ﻿using DoctorFAM.Data.DbContext;
+using DoctorFAM.Domain.Entities.UsersBankAccount;
 using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorBankAccounts;
 using Microsoft.EntityFrameworkCore;
@@ -33,6 +34,13 @@ public class UserBankAccountsInfosRepository : IUserBankAccountsInfosRepository
                                  ShomareShaba = p.ShomareShaba
                              })
                              .ToListAsync();
+    }
+
+    //Add Bank Account To The Data Base
+    public async Task AddBankAccountToTheDataBase(UsersBankAccountsInfos usersBank , CancellationToken cancellationToken)
+    {
+        await _context.BankAccountsInfos.AddAsync(usersBank);
+        await _context.SaveChangesAsync();
     }
 
     #endregion

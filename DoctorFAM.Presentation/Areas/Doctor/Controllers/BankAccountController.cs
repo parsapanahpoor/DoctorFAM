@@ -2,6 +2,7 @@
 
 using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Services.Interfaces;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorBankAccounts;
 using DoctorFAM.Web.Doctor.Controllers;
 using Microsoft.AspNetCore.Mvc;
 
@@ -37,9 +38,26 @@ public class BankAccountController : DoctorBaseController
     #region Add New Bank Account Info 
 
     [HttpGet]
-    public async Task<IActionResult> AddNewBankAccountInfo()
+    public IActionResult AddNewBankAccountInfo()
     {
         return View();
+    }
+
+    [HttpPost, ValidateAntiForgeryToken]
+    public async Task<IActionResult> AddNewBankAccountInfo(AddDoctorAccountInfoDTOs model , CancellationToken cancellationToken)
+    {
+        if (ModelState.IsValid)
+        {
+            var res = await _userBankAccountsInfos.AddNewDoctorBankAccountInfoDoctorSide(User.GetUserId() , model,cancellationToken);
+            if (res)
+            {
+                TempData[SuccessMessage] = "عملیات مورد نظر باموقیت انجام شده است.";
+                return View(nameof(ListOfUserBanksAccounts));
+            }
+        }
+
+        TempData[ErrorMessage] = "عملیات باشکست روبرو شده است.";
+        return View(model);
     }
 
     #endregion

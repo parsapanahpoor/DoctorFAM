@@ -8,5 +8,8 @@ public interface IUserBankAccountsInfosService
 
     Task<List<ListOfDoctorBankAccountsInfosDoctorSideDTO>?> GetListOfDoctorBankAccounts(ulong userId, CancellationToken cancellationToken);
 
+    // Add New Doctor Bank Account Info Doctor Side 
+    Task<bool> AddNewDoctorBankAccountInfoDoctorSide(ulong userId, AddDoctorAccountInfoDTOs model, CancellationToken cancellationToken);
+
     #endregion
 }
