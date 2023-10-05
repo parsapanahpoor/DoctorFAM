@@ -102,5 +102,37 @@ public class UserBankAccountsInfosService : IUserBankAccountsInfosService
         };
     }
 
+    //Delete User Bank Account 
+    public async Task<bool> DeleteUserBankAccount(ulong userId,
+                                                  ulong accountId,
+                                                  CancellationToken cancellationToken)
+    {
+        #region User Validation 
+
+        var user = await _userService.GetUserByIdWithAsNoTracking(userId);
+        if (user == null) return false;
+
+        #endregion
+
+        #region Get User Bank Account 
+
+        var account = await _userBankAccountRepository.GetUserBankAccountByIdAsNoTracking(accountId);
+        if (account == null || account.UserId != user.Id) return false;
+
+        #endregion
+
+        #region Delete Account 
+
+        account.IsDelete = true;
+
+        //Update Data Base
+        _userBankAccountRepository.DeleteUserBankAccountFromDataBase(account);
+        await _userBankAccountRepository.Savechanges(cancellationToken);
+
+        #endregion
+
+        return true;
+    }
+
     #endregion
 }

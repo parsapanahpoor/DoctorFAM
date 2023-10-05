@@ -54,5 +54,17 @@ public class UserBankAccountsInfosRepository : IUserBankAccountsInfosRepository
                              .FirstOrDefaultAsync();
     }
 
+    //Delete User Bank Account From Data Base
+    public void DeleteUserBankAccountFromDataBase(UsersBankAccountsInfos accountsInfos)
+    {
+        _context.UsersBankAccountsInfos.Update(accountsInfos);
+    }
+
+    //Save Changes
+    public async Task Savechanges(CancellationToken cancellationToken)
+    {
+        await _context.SaveChangesAsync();
+    }
+
     #endregion
 }

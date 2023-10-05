@@ -104,6 +104,8 @@
 
                                             <td class="tc vm">
                                                 <a asp-action="BankAccountDetail" asp-controller="BankAccount" asp-area="Doctor" asp-route-id="@date.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+                                                <button onclick="DeleteAjax(@date.Id, '@Url.Action("DeleteUserBankAccount", "BankAccount", new {area = "Doctor", Id = date.Id})')" class="btn btn-danger btn-circle btn-xs"><i class="glyphicon glyphicon-trash"></i></button>
+
                                             </td>
 
                                         </tr>

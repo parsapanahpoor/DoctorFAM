@@ -18,5 +18,10 @@ public interface IUserBankAccountsInfosService
     Task<DetailDoctorAccountInfoDTOs?> DetailDoctorAccountInfoDTOs(ulong userId, 
                                                                    ulong accountId );
 
+    //Delete User Bank Account 
+    Task<bool> DeleteUserBankAccount(ulong userId,
+                                     ulong accountId,
+                                     CancellationToken cancellationToken);
+
     #endregion
 }

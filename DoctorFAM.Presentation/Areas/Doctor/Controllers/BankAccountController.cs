@@ -4,6 +4,7 @@ using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorBankAccounts;
 using DoctorFAM.Web.Doctor.Controllers;
+using DoctorFAM.Web.HttpManager;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DoctorFAM.Web.Areas.Doctor.Controllers;
@@ -71,6 +72,23 @@ public class BankAccountController : DoctorBaseController
         if (model == null) return NotFound();
 
         return View(model);
+    }
+
+    #endregion
+
+    #region Delete User Bank Account 
+
+    [HttpGet]
+    public async Task<IActionResult> DeleteUserBankAccount(ulong Id , CancellationToken cancellationToken)
+    {
+        var result = await _userBankAccountsInfos.DeleteUserBankAccount(User.GetUserId(), Id , cancellationToken);
+
+        if (result)
+        {
+            return ApiResponse.SetResponse(ApiResponseStatus.Success, null, "عملیات باموفقیت انجام شده است.");
+        }
+
+        return ApiResponse.SetResponse(ApiResponseStatus.Danger, null, "عملیات باشکست مواجه شده است.");
     }
 
     #endregion

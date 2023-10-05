@@ -1,6 +1,7 @@
 ﻿using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.UsersBankAccount;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorBankAccounts;
+using Microsoft.EntityFrameworkCore;
 using System.Threading;
 
 namespace DoctorFAM.Domain.Interfaces.EFCore;
@@ -16,6 +17,12 @@ public interface IUserBankAccountsInfosRepository
 
     //Get User Bank Account By Id As No Tracking
     Task<UsersBankAccountsInfos?> GetUserBankAccountByIdAsNoTracking(ulong id);
+
+    //Delete User Bank Account From Data Base
+    void DeleteUserBankAccountFromDataBase(UsersBankAccountsInfos accountsInfos);
+
+    //Save Changes
+    Task Savechanges(CancellationToken cancellationToken);
 
     #endregion
 }
