@@ -59,8 +59,6 @@ using DoctorFAM.Domain.Enums.Tourist;
 using DoctorFAM.Domain.Entities.Tourism.Token;
 using System.Reflection;
 using DoctorFAM.Domain.Markers;
-using System.Security.Cryptography;
-using DoctorFAM.Domain.Entities.UsersBankAccount;
 
 namespace DoctorFAM.Data.DbContext;
 
@@ -564,12 +562,6 @@ public class DoctorFAMDbContext : Microsoft.EntityFrameworkCore.DbContext
 
     #endregion
 
-    #region User Bank Accounts
-
-    public DbSet<UsersBankAccountsInfos> UsersBankAccountsInfos { get; set; }
-
-    #endregion
-
     #endregion
 
     #region On Model Creating
@@ -578,8 +570,6 @@ public class DoctorFAMDbContext : Microsoft.EntityFrameworkCore.DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        base.OnModelCreating(modelBuilder);
-
         foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
         {
             relationship.DeleteBehavior = DeleteBehavior.Restrict;
@@ -1851,6 +1841,8 @@ public class DoctorFAMDbContext : Microsoft.EntityFrameworkCore.DbContext
         modelBuilder.Entity<SpecialtiyInfo>().HasQueryFilter(e => e.LanguageId == culture);
 
         #endregion
+
+        base.OnModelCreating(modelBuilder);
     }
 
     #endregion

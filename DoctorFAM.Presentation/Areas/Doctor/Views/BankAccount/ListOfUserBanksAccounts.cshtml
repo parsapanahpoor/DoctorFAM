@@ -1,0 +1,126 @@
+﻿@*@model List<DoctorFAM.Application.DTOs.DoctorPanel.DoctorsBanksAccounts.ListOfDoctorBankAccountsInfosDoctorSideDTO>
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Domain.ViewModels.Common
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
+
+
+@{
+    ViewData["Title"] = "لیست حساب های بانکی";
+}
+
+@section Styles
+    {
+    <link href="/admin/css/dataTables.bootstrap.rtl.css" rel="stylesheet" />
+}
+
+@section Scripts
+    {
+    <script src="~/admin/js/datatable/jquery.dataTables.min.js"></script>
+    <script src="~/admin/js/datatable/ZeroClipboard.js"></script>
+    <script src="~/admin/js/datatable/dataTables.tableTools.min.js"></script>
+    <script src="~/admin/js/datatable/dataTables.bootstrap.min.js"></script>
+    <script src="~/admin/js/datatable/datatables-init-AllRecords.js"></script>
+    <script>
+        InitiateSimpleDataTable.init();
+        InitiateEditableDataTable.init();
+        InitiateExpandableDataTable.init();
+        InitiateSearchableDataTable.init();
+    </script>
+}
+
+@section Breadcrumb
+    {
+    <li>
+        <a asp-action="Index" asp-controller="Home" asp-area="Doctor"> مدیریت حساب های بانکی </a>
+    </li>
+}
+
+<div class="row">
+    <div class="col-lg-12 col-sm-12">
+
+        <a class="col-lg-6 col-sm-12 btn btn-sky w-100 margin-bottom-10"
+           asp-action="AddBankAccount" asp-controller="BankAccount" asp-area="Doctor"> @Localizer["افزودن حساب جدید"] </a>
+
+    </div>
+
+    <div class="col-lg-12 col-sm-12">
+
+        <div class="row" style="margin:10px 10px 10px 10px;">
+
+            <div id="horizontal-form">
+
+                @if (Model != null && Model.Any())
+                {
+                    <div class="widget-body no-padding">
+                        <div id="searchable_wrapper" class="dataTables_wrapper form-inline">
+
+                            <table class="table table-bordered table-hover table-striped dataTable" id="searchable" role="grid" aria-describedby="searchable_info">
+                                <thead class="bordered-darkorange">
+                                    <tr role="row">
+
+                                        <th class="sorting_asc" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Browser: activate to sort column descending">
+                                            @Localizer["شماره شبا"]
+                                        </th>
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending">
+                                            @Localizer["شماره کارت"]
+
+                                        </th>
+
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending">
+                                            @Localizer["نام بانک"]
+                                        </th>
+                                       
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+
+                                    @foreach (var date in Model)
+                                    {
+                                        <tr role="row" class="even responsive" remove-ajax-item="@date.Id">
+
+                                            <td class="vm">
+                                                <div class="flex-style-center">
+                                                    <p> @date.ShomareShaba </p>
+                                                </div>
+                                            </td>
+                                            <td class="vm">
+                                                <div class="flex-style-center">
+                                                    <p> @date.ShomareCart </p>
+                                                </div>
+                                            </td>
+
+                                            <td class="vm">
+                                                <div class="flex-style-center">
+                                                    <p> @date.BankName </p>
+                                                </div>
+                                            </td>
+
+                                            <td class="tc vm">
+                                                <a asp-action="EditBankAccountIndo" asp-controller="BankAccount" asp-area="Doctor" asp-route-Id="@date.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+                                            </td>
+
+                                        </tr>
+
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <partial name="_DoctorPanelNotFoundPartial" />
+                }
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+*@
