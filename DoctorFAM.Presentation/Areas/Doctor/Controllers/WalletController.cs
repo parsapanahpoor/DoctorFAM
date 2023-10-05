@@ -91,6 +91,10 @@ public class WalletController : DoctorBaseController
             case CreateWithdrawRequestDoctorPanelSideResult.NotEnoughCredit:
                 TempData[ErrorMessage] = "موجودی حساب شما کافی نیست.";
                 break;
+
+            case CreateWithdrawRequestDoctorPanelSideResult.OwnerOfBankAccount:
+                TempData[ErrorMessage] = "حساب بانکی انتخاب شده مورد تایید نمی باشد .";
+                break;
         }
 
         #endregion

@@ -28,7 +28,8 @@ public enum CreateWithdrawRequestDoctorPanelSideResult
 {
     success, 
     faild,
-    NotEnoughCredit
+    NotEnoughCredit,
+    OwnerOfBankAccount
 }
 
 public record UserBankAccountNameAndId
