@@ -23,7 +23,7 @@ public class UserBankAccountsInfosRepository : IUserBankAccountsInfosRepository
 
     public async Task<List<ListOfDoctorBankAccountsInfosDoctorSideDTO>> GetListOfDoctorBankAccounts(ulong userId, CancellationToken cancellationToken)
     {
-        return await _context.BankAccountsInfos
+        return await _context.UsersBankAccountsInfos
                              .AsNoTracking()
                              .Where(p=> !p.IsDelete && p.UserId == userId)
                              .Select(p=> new ListOfDoctorBankAccountsInfosDoctorSideDTO()
@@ -39,7 +39,7 @@ public class UserBankAccountsInfosRepository : IUserBankAccountsInfosRepository
     //Add Bank Account To The Data Base
     public async Task AddBankAccountToTheDataBase(UsersBankAccountsInfos usersBank , CancellationToken cancellationToken)
     {
-        await _context.BankAccountsInfos.AddAsync(usersBank);
+        await _context.UsersBankAccountsInfos.AddAsync(usersBank);
         await _context.SaveChangesAsync();
     }
 

@@ -565,7 +565,7 @@ public class DoctorFAMDbContext : Microsoft.EntityFrameworkCore.DbContext
 
     #region Users Bank Accounts Infos
 
-    public DbSet<UsersBankAccountsInfos> BankAccountsInfos { get; set; }
+    public DbSet<UsersBankAccountsInfos> UsersBankAccountsInfos { get; set; }
 
     #endregion
 
