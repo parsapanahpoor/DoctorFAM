@@ -30,5 +30,16 @@ public class WithdrawRequestDetailViewModel
 
     public WalletWithdrawRequestState RequestState { get; set; }
 
+    public WithdrawRequestDetailUserBankAccountViewModel? UserBankAccountDetail { get; set; }
+
     #endregion
+}
+
+public class WithdrawRequestDetailUserBankAccountViewModel
+{
+    public ulong Id { get; set; }
+
+    public string BankName { get; set; }
+
+    public string ShomarCart { get; set; }
 }

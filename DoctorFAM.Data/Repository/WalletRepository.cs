@@ -472,7 +472,17 @@ public class WalletRepository : IWalletRepository
                                                              .Where(s => !s.IsDelete && s.Id == p.UserId)
                                                              .Select(s => s.WalletBalance)
                                                              .FirstOrDefault(),
-                                 RequestState = p.RequestState
+                                 RequestState = p.RequestState,
+                                 UserBankAccountDetail = _context.UsersBankAccountsInfos
+                                                                 .AsNoTracking()     
+                                                                 .Where(s=> !s.IsDelete && s.Id == p.UserBankAccountId)
+                                                                 .Select(s=> new WithdrawRequestDetailUserBankAccountViewModel()
+                                                                 {
+                                                                     Id = s.Id,
+                                                                     BankName = s.BankName,
+                                                                     ShomarCart = s.ShomareCart
+                                                                 })
+                                                                 .FirstOrDefault()
                              })
                              .FirstOrDefaultAsync();
     }
@@ -538,6 +548,10 @@ public class WalletRepository : IWalletRepository
                                                     UserWalletBalance = s.WalletBalance,
                                                 })
                                                 .FirstOrDefault(),
+                                 BankAccount = _context.UsersBankAccountsInfos
+                                                       .AsNoTracking() 
+                                                       .Where(s=> !s.IsDelete && s.Id == p.UserBankAccountId)
+                                                       .FirstOrDefault()
                              })
                              .FirstOrDefaultAsync();
     }

@@ -1,23 +1,14 @@
-﻿using AngleSharp.Html;
-using DoctorFAM.Application.Extensions;
+﻿using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Application.StaticTools;
-using DoctorFAM.Domain.Entities.Account;
-using DoctorFAM.Domain.Entities.News;
 using DoctorFAM.Domain.Entities.Wallet;
 using DoctorFAM.Domain.Interfaces;
+using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.Admin.Wallet;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Wallet;
 using DoctorFAM.Domain.ViewModels.UserPanel.Wallet;
 using DoctorFAM.Domain.ViewModels.Wallet;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DoctorFAM.Application.Services.Implementation
 {
@@ -29,14 +20,16 @@ namespace DoctorFAM.Application.Services.Implementation
         private readonly IUserRepository _userRepository;
         private readonly IOrganizationService _organizationService;
         private readonly ISiteSettingService _siteSettingService;
+        private readonly IUserBankAccountsInfosRepository _userBankAccountsInfosRepository;
 
         public WalletService(IWalletRepository walletRepository, IUserRepository userRepository, IOrganizationService organizationService,
-                                ISiteSettingService siteSettingService)
+                                ISiteSettingService siteSettingService , IUserBankAccountsInfosRepository userBankAccountsInfosRepository)
         {
             _walletRepository = walletRepository;
             _userRepository = userRepository;
             _organizationService = organizationService;
             _siteSettingService = siteSettingService;
+            _userBankAccountsInfosRepository = userBankAccountsInfosRepository;
         }
 
         #endregion
@@ -312,6 +305,14 @@ namespace DoctorFAM.Application.Services.Implementation
 
             #endregion
 
+            #region Get User Bank Account 
+
+            var userBankAccount = await _userBankAccountsInfosRepository.GetUserBankAccountByIdAsNoTracking(model.UserBankAccountId);
+            if (userBankAccount == null) return CreateWithdrawRequestDoctorPanelSideResult.OwnerOfBankAccount;
+            if(userBankAccount.UserId != ownerId)  return CreateWithdrawRequestDoctorPanelSideResult.OwnerOfBankAccount;
+
+            #endregion
+
             #region Intiial Request 
 
             WalletWithdrawRequests walletWithdrawRequests = new WalletWithdrawRequests()
@@ -320,7 +321,8 @@ namespace DoctorFAM.Application.Services.Implementation
                 Receipt = null,
                 RejectDescription = null,
                 UserId = ownerId.Value,
-                RequestState = Domain.Enums.Wallet.WalletWithdrawRequestState.Waiting
+                RequestState = Domain.Enums.Wallet.WalletWithdrawRequestState.Waiting,
+                UserBankAccountId = model.UserBankAccountId
             };
 
             //Add To The Data Base

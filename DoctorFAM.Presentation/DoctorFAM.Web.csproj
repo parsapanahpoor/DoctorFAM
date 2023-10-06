@@ -76,6 +76,8 @@
 		<None Include="Areas\ChatRoom\Views\Shared\_ValidationScriptsPartial.cshtml" />
 		<None Include="Areas\ChatRoom\Views\_ViewImports.cshtml" />
 		<None Include="Areas\ChatRoom\Views\_ViewStart.cshtml" />
+		<None Include="Areas\Doctor\Views\BankAccount\AddNewBankAccountInfo.cshtml" />
+		<None Include="Areas\Doctor\Views\BankAccount\ListOfUserBanksAccounts.cshtml" />
 		<None Include="Areas\UserPanel\Views\Wallet\Index.cshtml" />
 		<None Include="Views\Account\ActiveUserByMobileActivationCode.cshtml" />
 		<None Include="Views\Account\ForgotPassword.cshtml" />

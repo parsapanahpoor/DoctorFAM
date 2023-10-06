@@ -6,6 +6,7 @@ using DoctorFAM.Application.StaticTools;
 using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Dentist;
 using DoctorFAM.Domain.Entities.DoctorReservation;
+using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.Wallet;
 using DoctorFAM.Domain.Enums.DoctorReservation;
 using DoctorFAM.Domain.Interfaces;
@@ -1981,6 +1982,32 @@ public class ReservationService : IReservationService
         }
 
         #endregion
+
+        await _reservation.UpdateReservationDateTime(reservationDateTime);
+
+        #endregion
+
+        return true;
+    }
+
+    //Cancel Payment From User And Make Reservation Time Free 
+    public async Task<bool> CancelPaymentFromUserAndMakeReservationTimeFree(ulong reservationDateId)
+    {
+        #region get Doctor Reservation Date Time By Id 
+
+        var reservationDateTime = await _reservation.GetDoctorReservationDateTimeById(reservationDateId);
+        if (reservationDateTime == null) return false;
+        if (reservationDateTime.DoctorReservationState != DoctorReservationState.WaitingForComplete) return false;
+
+        #endregion
+
+        #region Update Method 
+
+        reservationDateTime.DoctorReservationState = DoctorReservationState.NotReserved;
+        reservationDateTime.PatientId = null;
+        reservationDateTime.DoctorReservationType = null;
+        reservationDateTime.UserRequestForReserveDate = null;
+        reservationDateTime.UserRequestDescription = null;
 
         await _reservation.UpdateReservationDateTime(reservationDateTime);
 
