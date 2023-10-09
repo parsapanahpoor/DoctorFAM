@@ -1,13 +1,13 @@
-﻿@model List<DoctorFAM.Domain.ViewModels.UserPanel.OnlineVisit.FilterOnlineVisitRequestUserPanelViewModel>
-@using DoctorFAM.Domain.ViewModels.DoctorPanel.OnlineVisit
+﻿@model List<DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorBankAccounts.ListOfDoctorBankAccountsInfosDoctorSideDTO>
 @using DoctorFAM.Application.Extensions
 @using DoctorFAM.Application.Convertors
 @using DoctorFAM.Domain.ViewModels.Common
-@using DoctorFAM.Domain.Enums.Request
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
 
 
 @{
-    ViewData["Title"] = @Localizer["List Of Reservation Date"];
+    ViewData["Title"] = "لیست حساب های بانکی";
 }
 
 @section Styles
@@ -32,9 +32,18 @@
 
 @section Breadcrumb
     {
+    <li>
+        <a asp-action="Index" asp-controller="Home" asp-area="Doctor"> مدیریت حساب های بانکی </a>
+    </li>
 }
 
 <div class="row">
+    <div class="col-lg-12 col-sm-12">
+
+        <a class="col-lg-6 col-sm-12 btn btn-sky w-100 margin-bottom-10"
+           asp-action="AddNewBankAccountInfo" asp-controller="BankAccount" asp-area="Doctor"> @Localizer["افزودن حساب جدید"] </a>
+
+    </div>
 
     <div class="col-lg-12 col-sm-12">
 
@@ -50,56 +59,53 @@
                             <table class="table table-bordered table-hover table-striped dataTable" id="searchable" role="grid" aria-describedby="searchable_info">
                                 <thead class="bordered-darkorange">
                                     <tr role="row">
-                                        
+
                                         <th class="sorting_asc" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Browser: activate to sort column descending">
-                                            @Localizer["تاریخ"]
+                                            @Localizer["شماره شبا"]
                                         </th>
                                         <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending">
-                                            ساعت شروع
+                                            @Localizer["شماره کارت"]
 
                                         </th>
-                                        
+
                                         <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending">
-                                           وضعیت
+                                            @Localizer["نام بانک"]
                                         </th>
+
                                         <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending">
                                             @Localizer["امکانات"]
                                         </th>
+
                                     </tr>
                                 </thead>
 
                                 <tbody>
 
-                                    @foreach (var request in Model)
+                                    @foreach (var date in Model)
                                     {
-                                        <tr role="row" class="even responsive" remove-ajax-item="@request.UserId">
-                                            
+                                        <tr role="row" class="even responsive" remove-ajax-item="@date.Id">
+
                                             <td class="vm">
                                                 <div class="flex-style-center">
-                                                    <p> @request.DateTime.ToShamsi() </p>
+                                                    <p> @date.ShomareShaba </p>
                                                 </div>
                                             </td>
                                             <td class="vm">
                                                 <div class="flex-style-center">
-                                                    <p> @request.WorkShiftDateTime </p>
+                                                    <p> @date.ShomareCart </p>
+                                                </div>
+                                            </td>
+
+                                            <td class="vm">
+                                                <div class="flex-style-center">
+                                                    <p> @date.BankName </p>
                                                 </div>
                                             </td>
 
                                             <td class="tc vm">
-                                                <p>
-                                                    @if (!request.IsFinaly)
-                                                    {
-                                                        <span class="mr-8px label label-orange">نهایی نشده </span>
-                                                    }
-                                                    else
-                                                    {
-                                                        <span class="mr-8px label label-success">نهایی شده </span>
-                                                    }
-                                                </p>
-                                            </td>
+                                                <a asp-action="BankAccountDetail" asp-controller="BankAccount" asp-area="Doctor" asp-route-id="@date.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+                                                <button onclick="DeleteAjax(@date.Id, '@Url.Action("DeleteUserBankAccount", "BankAccount", new {area = "Doctor", Id = date.Id})')" class="btn btn-danger btn-circle btn-xs"><i class="glyphicon glyphicon-trash"></i></button>
 
-                                            <td class="tc vm">
-                                                <a asp-action="OnlineVisitRequestDetail" asp-controller="OnlineVisit" asp-area="UserPanel" asp-route-id="@request.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
                                             </td>
 
                                         </tr>

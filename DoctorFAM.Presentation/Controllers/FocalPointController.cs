@@ -215,8 +215,9 @@ public class FocalPointController : SiteBaseController
 
         var reservationDateTime = await _reservationService.GetDoctorReservationDateTimeById(id);
 
-        if (reservationDateTime == null || reservationDateTime.DoctorReservationState == Domain.Enums.DoctorReservation.DoctorReservationState.Canceled
-            || !reservationDateTime.PatientId.HasValue) return NotFound();
+        if (reservationDateTime == null || 
+            reservationDateTime.DoctorReservationState == Domain.Enums.DoctorReservation.DoctorReservationState.Canceled ||
+            !reservationDateTime.PatientId.HasValue) return NotFound();
 
         var reservationDate = await _reservationService.GetReservationDateById(reservationDateTime.DoctorReservationDateId);
         if (reservationDate == null || !reservationDateTime.DoctorReservationType.HasValue)
@@ -358,6 +359,12 @@ public class FocalPointController : SiteBaseController
                 }
                 else if (errors != "[]")
                 {
+                    var res = await _reservationService.CancelPaymentFromUserAndMakeReservationTimeFree(id);
+                    if (!res)
+                    {
+                        return NotFound();
+                    }
+
                     string errorscode = jo["errors"]["code"].ToString();
 
                     return BadRequest($"error code {errorscode}");

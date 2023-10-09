@@ -18,6 +18,8 @@ public sealed class WalletWithdrawRequests : BaseEntity
 
     public ulong UserId { get; set; }
 
+    public ulong UserBankAccountId { get; set; }
+
     public int Price { get; set; }
 
     public string? RejectDescription { get; set; }
