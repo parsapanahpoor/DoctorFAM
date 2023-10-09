@@ -1,10 +1,7 @@
 ﻿using CRM.Web.Areas.Admin.Controllers;
 using DoctorFAM.Application.Convertors;
 using DoctorFAM.Application.Extensions;
-using DoctorFAM.Application.Services.Implementation;
 using DoctorFAM.Application.Services.Interfaces;
-using DoctorFAM.Domain.Entities.Account;
-using DoctorFAM.Domain.ViewModels.DoctorPanel.Tikcet;
 using DoctorFAM.Domain.ViewModels.Site.Notification;
 using DoctorFAM.Domain.ViewModels.UserPanel.OnlineVisit;
 using DoctorFAM.Web.ActionFilterAttributes;
@@ -13,7 +10,6 @@ using DoctorFAM.Web.Hubs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Localization;
-using System.Diagnostics.Contracts;
 
 namespace DoctorFAM.Web.Areas.UserPanel.Controllers
 {
@@ -58,44 +54,12 @@ namespace DoctorFAM.Web.Areas.UserPanel.Controllers
         #region Show Online Visit Request Detail
 
         [HttpGet]
-        public async Task<IActionResult> OnlineVisitRequestDetail(ulong requestId)
+        public async Task<IActionResult> OnlineVisitRequestDetail(ulong id)
         {
-            #region Get Request By Id
+            var model = await _onlineVisitService.FillOnlineVisitRequestDetailUserPanelSideDTO(User.GetUserId() , id);
+            if (model == null) return NotFound();
 
-            var request = await _requestService.GetRequestById(requestId);
-            if (request == null) return NotFound();
-            if (request.RequestType != Domain.Enums.RequestType.RequestType.OnlineVisit || request.UserId != User.GetUserId() || !request.OperationId.HasValue) return NotFound();
-
-            #endregion
-
-            #region Get Ticket By Request Id
-
-            var ticket = await _ticketService.GetTicketByOnlineVisitRequestId(requestId);
-            if (ticket == null) return NotFound();
-            if (ticket.OwnerId != request.OperationId.Value) return NotFound();
-            if (ticket.TargetUserId != User.GetUserId()) return NotFound();
-
-            #endregion
-
-            #region Read Ticket
-
-            await _ticketService.ReadTicketByUser(ticket);
-
-            #endregion
-
-            #region Get Ticket Messages
-
-            var messages = await _ticketService.GetTikcetMessagesByTicketId(ticket.Id);
-
-            ViewData["Ticket"] = ticket;
-            ViewData["TicketMessages"] = messages;
-
-            #endregion
-
-            return View(new AnswerTikcetUserPanelViewModel
-            {
-                TicketId = ticket.Id
-            });
+            return View(model);
         }
 
         [HttpPost, ValidateAntiForgeryToken]

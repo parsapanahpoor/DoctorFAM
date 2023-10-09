@@ -428,8 +428,14 @@ public class OnlineVisitService : IOnlineVisitService
 
     #region User Panel Side 
 
+    //Fill Online Visit Request Detail User Panel Side DTO
+    public async Task<OnlineVisitRequestDetailUserPanelSideDTO?> FillOnlineVisitRequestDetailUserPanelSideDTO(ulong userId, ulong Id)
+    {
+        return await _onlineVisitRepository.FillOnlineVisitRequestDetailUserPanelSideDTO(userId, Id);
+    }
+
     //Filter User Onlien Visit Requests 
-    public async Task<FilterOnlineVisitRequestUserPanelViewModel> FilterOnlineVisitRequestUserPanel(FilterOnlineVisitRequestUserPanelViewModel filter)
+    public async Task<List<FilterOnlineVisitRequestUserPanelViewModel>> FilterOnlineVisitRequestUserPanel(FilterOnlineVisitRequestUserPanelViewModel filter)
     {
         return await _onlineVisitRepository.FilterOnlineVisitRequestUserPanel(filter);
     }
