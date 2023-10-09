@@ -1,226 +1,125 @@
-﻿@model DoctorFAM.Domain.ViewModels.UserPanel.OnlineVisit.FilterOnlineVisitRequestUserPanelViewModel
+﻿@model List<DoctorFAM.Domain.ViewModels.UserPanel.OnlineVisit.FilterOnlineVisitRequestUserPanelViewModel>
 @using DoctorFAM.Domain.ViewModels.DoctorPanel.OnlineVisit
 @using DoctorFAM.Application.Extensions
 @using DoctorFAM.Application.Convertors
 @using DoctorFAM.Domain.ViewModels.Common
 @using DoctorFAM.Domain.Enums.Request
-@inject IViewLocalizer Localizer
-@inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
 
 
 @{
-    ViewData["Title"] = @Localizer["Online Visit Requests"];
+    ViewData["Title"] = @Localizer["List Of Reservation Date"];
 }
-
 
 @section Styles
     {
-
+    <link href="/admin/css/dataTables.bootstrap.rtl.css" rel="stylesheet" />
 }
 
-    @section Scripts
+@section Scripts
     {
-    <partial name="_JqueryValidation" />
+    <script src="~/admin/js/datatable/jquery.dataTables.min.js"></script>
+    <script src="~/admin/js/datatable/ZeroClipboard.js"></script>
+    <script src="~/admin/js/datatable/dataTables.tableTools.min.js"></script>
+    <script src="~/admin/js/datatable/dataTables.bootstrap.min.js"></script>
+    <script src="~/admin/js/datatable/datatables-init-AllRecords.js"></script>
+    <script>
+        InitiateSimpleDataTable.init();
+        InitiateEditableDataTable.init();
+        InitiateExpandableDataTable.init();
+        InitiateSearchableDataTable.init();
+    </script>
 }
 
-    @section Breadcrumb
+@section Breadcrumb
     {
-    <li>
-        <a href="javascript:void(0)"> @ViewData["Title"] </a>
-    </li>
 }
 
-    <div class="row">
-        <div class="col-lg-3 col-sm-12">
-            <div class="widget">
-                <div class="widget-header bordered-bottom bordered-green">
-                    <span class="widget-caption"> @ViewData["Title"] </span>
-                </div>
-                <div class="widget-body">
-                    <div>
-                        <form asp-action="ListOfCurrentUserOnlineVisitRequests" asp-controller="OnlineVisit" asp-area="UserPanel" id="filter-search" method="get">
-                            <input type="hidden" asp-for="Page" />
+<div class="row">
 
-                            <div class="form-group">
-                                <label asp-for="OnlineVisitRequestTypeForFilter"> @Localizer["Online Visit Request Type"] </label>
-                                <select asp-for="OnlineVisitRequestTypeForFilter" class="form-control" asp-items="Html.GetEnumSelectList(typeof(OnlineVisitRequestTypeForFilter))"></select>
-                            </div>
+    <div class="col-lg-12 col-sm-12">
 
-                            <div class="form-group">
-                                <label asp-for="FilterRequestAdminSideOrder"> @Localizer["Order By"] </label>
-                                <select asp-for="FilterRequestAdminSideOrder" class="form-control" asp-items="Html.GetEnumSelectList(typeof(FilterRequestAdminSideOrder))"></select>
-                            </div>
+        <div class="row" style="margin:10px 10px 10px 10px;">
 
-                            <hr />
+            <div id="horizontal-form">
 
-                            <div class="row">
-                                <div class="col-md-12 flex-style">
-                                    <button type="submit" class="btn btn-labeled w-100 btn-palegreen">
-                                        <i class="btn-label glyphicon glyphicon-filter"></i>@Localizer["Filter"]
-                                    </button>
+                @if (Model != null && Model.Any())
+                {
+                    <div class="widget-body no-padding">
+                        <div id="searchable_wrapper" class="dataTables_wrapper form-inline">
 
-                                @if (Context.Request.QueryString.HasValue)
-                                {
-                                    <a asp-action="ListOfCurrentUserOnlineVisitRequests" asp-controller="OnlineVisit" asp-area="UserPanel" class="btn btn-labeled w-100 btn-darkorange ">
-                                        <i class="btn-label glyphicon glyphicon-remove"></i>@Localizer["Delete Filter"]
-                                    </a>
-                                }
-                            </div>
+                            <table class="table table-bordered table-hover table-striped dataTable" id="searchable" role="grid" aria-describedby="searchable_info">
+                                <thead class="bordered-darkorange">
+                                    <tr role="row">
+                                        
+                                        <th class="sorting_asc" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Browser: activate to sort column descending">
+                                            @Localizer["تاریخ"]
+                                        </th>
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending">
+                                            ساعت شروع
+
+                                        </th>
+                                        
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending">
+                                           وضعیت
+                                        </th>
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending">
+                                            @Localizer["امکانات"]
+                                        </th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+
+                                    @foreach (var request in Model)
+                                    {
+                                        <tr role="row" class="even responsive" remove-ajax-item="@request.UserId">
+                                            
+                                            <td class="vm">
+                                                <div class="flex-style-center">
+                                                    <p> @request.DateTime.ToShamsi() </p>
+                                                </div>
+                                            </td>
+                                            <td class="vm">
+                                                <div class="flex-style-center">
+                                                    <p> @request.WorkShiftDateTime </p>
+                                                </div>
+                                            </td>
+
+                                            <td class="tc vm">
+                                                <p>
+                                                    @if (!request.IsFinaly)
+                                                    {
+                                                        <span class="mr-8px label label-orange">نهایی نشده </span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="mr-8px label label-success">نهایی شده </span>
+                                                    }
+                                                </p>
+                                            </td>
+
+                                            <td class="tc vm">
+                                                <a asp-action="OnlineVisitRequestDetail" asp-controller="OnlineVisit" asp-area="UserPanel" asp-route-id="@request.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+                                            </td>
+
+                                        </tr>
+
+                                    }
+
+                                </tbody>
+                            </table>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                }
+                else
+                {
+                    <partial name="_DoctorPanelNotFoundPartial" />
+                }
+
             </div>
         </div>
-    </div>
 
-    <div class="col-lg-9 col-sm-12">
-        <div class="well with-header with-footer table-responsive">
-            <div class="header bordered-azure">
-                <div class="flex-style">
-                    <span> @ViewData["Title"]</span>
-                    <span>@Model.GetShownEntitiesPagesTitle()</span>
-                </div>
-            </div>
-
-            @if (Model.Entities != null && Model.Entities.Any())
-            {
-                <table class="table table-hover table-bordered tc vm">
-                    <thead class="tc vm">
-                        <tr class="tc vm">
-                            <th class="tc vm">
-                                @Localizer["Code"]
-                            </th>
-                            <th class="tc vm">
-                                @Localizer["Doctor Avatar"]
-                            </th>
-                            <th class="tc vm">
-                                @Localizer["Request State"]
-                            </th>
-                            <th class="tc vm">
-                                @Localizer["Request Status"]
-                            </th>
-                            <th class="tc vm">
-                                @Localizer["Date Time"]
-                            </th>
-                            <th class="tc vm">
-                                @Localizer["Options"]
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody class="tc vm">
-                        @foreach (var request in Model.Entities)
-                        {
-                            <tr class="tc vm">
-                                <td class="vm">
-                                    <p>
-                                        @request.Id
-                                    </p>
-                                </td>
-                                <td class="vm">
-                                    @if (request.OperationId.HasValue)
-                                    {
-                                        <div class="flex-style-center">
-                                            <img src="@request.Operation.GetUserAvatar()" class="avatar-style" style="border-radius:50px;" />
-                                            <div class="mr-10px">
-                                                <span> @request.Operation.Username </span>
-                                            </div>
-                                        </div>
-                                    }
-                                    else
-                                    {
-                                        <p class="label label-warning">@Localizer["Empty"]</p>
-                                    }
-                                </td>
-                                <td class="tc vm">
-
-                                    @if (request.OnlineVisitRequestDetail == null)
-                                    {
-                                        <p class="label label-warning">@Localizer["Empty"]</p>
-                                    }
-                                    else
-                                    {
-                                        @if (request.OnlineVisitRequestDetail.OnlineVisitRequestType == DoctorFAM.Domain.Enums.OnlineVisitRequest.OnlineVisitRequestType.EmergencyConsultation)
-                                        {
-                                            <p class="label label-primary">@Localizer["Emergency Consultation"]</p>
-                                        }
-                                        @if (request.OnlineVisitRequestDetail.OnlineVisitRequestType == DoctorFAM.Domain.Enums.OnlineVisitRequest.OnlineVisitRequestType.DiseaseCounseling)
-                                        {
-                                            <p class="label label-primary">@Localizer["Disease Counseling"]</p>
-                                        }
-                                        @if (request.OnlineVisitRequestDetail.OnlineVisitRequestType == DoctorFAM.Domain.Enums.OnlineVisitRequest.OnlineVisitRequestType.PsychologicalCounseling)
-                                        {
-                                            <p class="label label-primary">@Localizer["Psychological Counseling"]</p>
-                                        }
-                                        @if (request.OnlineVisitRequestDetail.OnlineVisitRequestType == DoctorFAM.Domain.Enums.OnlineVisitRequest.OnlineVisitRequestType.ParaclinicalCounseling)
-                                        {
-                                            <p class="label label-primary">@Localizer["Paraclinical Counseling"]</p>
-                                        }
-                                        @if (request.OnlineVisitRequestDetail.OnlineVisitRequestType == DoctorFAM.Domain.Enums.OnlineVisitRequest.OnlineVisitRequestType.DrugCounseling)
-                                        {
-                                            <p class="label label-primary">@Localizer["Drug Counseling"]</p>
-                                        }
-                                    }
-
-                                </td>
-                                <td class="tc vm">
-
-                                    @if (request.RequestState == RequestState.Paid ||
-                                   request.RequestState == RequestState.SelectedFromDoctor ||
-                                   request.RequestState == RequestState.Finalized ||
-                                   request.RequestState == RequestState.WaitingForConfirmFromDestination)
-                                    {
-                                        @if (request.RequestState == RequestState.Paid)
-                                        {
-                                            <p class="label label-primary">@Localizer["Paid & Waiting For Confirm"]</p>
-                                        }
-                                        @if (request.RequestState == RequestState.SelectedFromDoctor)
-                                        {
-                                            <p class="label label-success">@Localizer["Confirm From Destanation Doctor"]</p>
-                                        }
-                                        @if (request.RequestState == RequestState.Finalized)
-                                        {
-                                            <p class="label label-primary">@Localizer["Closed"]</p>
-                                        }
-                                        @if (request.RequestState == RequestState.WaitingForConfirmFromDestination)
-                                        {
-                                            <p class="label label-primary">@Localizer["Paid & Waiting For Confirm"]</p>
-                                        }
-                                    }
-                                    else
-                                    {
-                                        <p class="label label-warning">@Localizer["Information has not been entered"]</p>
-                                    }
-
-                                </td>
-                                <td class="tc vm">
-                                    <p>  @request.CreateDate.ToStringShamsiDate() </p>
-                                    <p> @request.CreateDate.Hour:@request.CreateDate.Minute:@request.CreateDate.Second</p>
-                                </td>
-
-                                <td class="tc vm">
-                                    @if (request.OperationId.HasValue)
-                                    {
-                                        <a asp-action="OnlineVisitRequestDetail" asp-controller="OnlineVisit" asp-area="UserPanel" asp-route-requestId="@request.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
-                                    }
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-
-                <div class="footer tc">
-
-                    <partial name="_UserPanelPaging" model="@Model.GetCurrentPaging()" />
-
-                </div>
-            }
-            else
-            {
-                <partial name="_UserPanelNotFoundPartial" />
-            }
-        </div>
     </div>
 </div>
-
 
 

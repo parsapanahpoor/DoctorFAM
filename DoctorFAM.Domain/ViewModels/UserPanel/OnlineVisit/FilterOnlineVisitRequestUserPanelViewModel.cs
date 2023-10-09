@@ -1,24 +1,21 @@
-﻿using DoctorFAM.DataLayer.Entities;
-using DoctorFAM.Domain.Enums.Request;
-using DoctorFAM.Domain.ViewModels.Common;
+﻿using DoctorFAM.Domain.Enums.Request;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.OnlineVisit;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DoctorFAM.Domain.ViewModels.UserPanel.OnlineVisit
 {
-    public class FilterOnlineVisitRequestUserPanelViewModel : BasePaging<Request>
+    public class FilterOnlineVisitRequestUserPanelViewModel
     {
         #region properties
 
+        public ulong Id { get; set; }
+
         public ulong UserId{ get; set; }
 
-        public FilterRequestAdminSideOrder FilterRequestAdminSideOrder { get; set; }
+        public string? WorkShiftDateTime { get; set; }
 
-        public OnlineVisitRequestTypeForFilter OnlineVisitRequestTypeForFilter { get; set; }
+        public bool IsFinaly { get; set; }
+
+        public DateTime DateTime { get; set; }
 
         #endregion
     }
