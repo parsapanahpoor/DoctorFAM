@@ -1,35 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo;
 
-namespace DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo
+public record DoctorsReservationTariffDoctorPanelSideViewModel
 {
-    public class DoctorsReservationTariffDoctorPanelSideViewModel
-    {
-        #region properties
+    #region properties
 
-        public ulong DoctorUserId { get; set; }
+    public ulong DoctorUserId { get; set; }
 
-        public int InPersonReservationTariffForDoctorPopulationCovered { get; set; }
+    public int InPersonReservationTariffForDoctorPopulationCovered { get; set; }
 
-        public int OnlineReservationTariffForDoctorPopulationCovered { get; set; }
+    public int OnlineReservationTariffForDoctorPopulationCovered { get; set; }
 
-        public int InPersonReservationTariffForAnonymousPersons { get; set; }
+    public int InPersonReservationTariffForAnonymousPersons { get; set; }
 
-        public int OnlineReservationTariffForAnonymousPersons { get; set; }
+    public int OnlineReservationTariffForAnonymousPersons { get; set; }
 
-        #endregion
-    }
+    public string? DoctorReservationAlert { get; set; }
 
-    public enum DoctorsReservationTariffDoctorPanelSideViewModelResult
-    {
-        success,
-        failure,
-        InpersonReservationPopluationCoveredLessThanSiteShare,
-        OnlineReservationPopluationCoveredLessThanSiteShare,
-        InpersonReservationAnonymousePersoneLessThanSiteShare,
-        OnlineReservationAnonymousePersoneLessThanSiteShare
-    }
+    #endregion
+}
+
+public enum DoctorsReservationTariffDoctorPanelSideViewModelResult
+{
+    success,
+    failure,
+    InpersonReservationPopluationCoveredLessThanSiteShare,
+    OnlineReservationPopluationCoveredLessThanSiteShare,
+    InpersonReservationAnonymousePersoneLessThanSiteShare,
+    OnlineReservationAnonymousePersoneLessThanSiteShare
 }
