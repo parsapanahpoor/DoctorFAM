@@ -30,5 +30,7 @@ public class ShowDoctorReservationDetailViewModel
 
     public List<ListOfReservationDateAndReservationDateTimeViewModel>? ListOfReservationDateAndReservationDateTime { get; set; }
 
+    public string? DoctorReservationAlert { get; set; }
+
     #endregion
 }

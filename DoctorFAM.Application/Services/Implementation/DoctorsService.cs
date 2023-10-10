@@ -1675,7 +1675,8 @@ namespace DoctorFAM.Application.Services.Implementation
                     InPersonReservationTariffForAnonymousPersons = tariffs.InPersonReservationTariffForAnonymousPersons,
                     InPersonReservationTariffForDoctorPopulationCovered = tariffs.InPersonReservationTariffForDoctorPopulationCovered,
                     OnlineReservationTariffForAnonymousPersons = tariffs.OnlineReservationTariffForAnonymousPersons,
-                    OnlineReservationTariffForDoctorPopulationCovered = tariffs.OnlineReservationTariffForDoctorPopulationCovered
+                    OnlineReservationTariffForDoctorPopulationCovered = tariffs.OnlineReservationTariffForDoctorPopulationCovered,
+                    DoctorReservationAlert = tariffs.DoctorReservationAlert,
                 };
 
                 return returnModel;
@@ -1755,7 +1756,8 @@ namespace DoctorFAM.Application.Services.Implementation
                     InPersonReservationTariffForAnonymousPersons = inCommingModel.InPersonReservationTariffForAnonymousPersons,
                     InPersonReservationTariffForDoctorPopulationCovered = inCommingModel.InPersonReservationTariffForDoctorPopulationCovered,
                     OnlineReservationTariffForAnonymousPersons = inCommingModel.OnlineReservationTariffForAnonymousPersons,
-                    OnlineReservationTariffForDoctorPopulationCovered = inCommingModel.OnlineReservationTariffForDoctorPopulationCovered
+                    OnlineReservationTariffForDoctorPopulationCovered = inCommingModel.OnlineReservationTariffForDoctorPopulationCovered,
+                    DoctorReservationAlert = inCommingModel.DoctorReservationAlert
                 };
 
                 //Add Data To The Data Base 
@@ -1772,6 +1774,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 tariffs.InPersonReservationTariffForDoctorPopulationCovered = inCommingModel.InPersonReservationTariffForDoctorPopulationCovered;
                 tariffs.OnlineReservationTariffForAnonymousPersons = inCommingModel.OnlineReservationTariffForAnonymousPersons;
                 tariffs.OnlineReservationTariffForDoctorPopulationCovered = inCommingModel.OnlineReservationTariffForDoctorPopulationCovered;
+                tariffs.DoctorReservationAlert = inCommingModel.DoctorReservationAlert;
 
                 //Update Doctor Reservation Tariffs
                 await _doctorRepository.UpdateDoctorReservationTariffs(tariffs);
@@ -3262,6 +3265,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 model.OnlineReservationTariffForDoctorPopulationCovered = reservationTariff.OnlineReservationTariffForDoctorPopulationCovered;
                 model.InPersonReservationTariffForAnonymousPersons = reservationTariff.InPersonReservationTariffForAnonymousPersons;
                 model.OnlineReservationTariffForAnonymousPersons = reservationTariff.OnlineReservationTariffForAnonymousPersons;
+                model.DoctorReservationAlert = reservationTariff?.DoctorReservationAlert;
             }
             else
             {
@@ -3269,6 +3273,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 model.OnlineReservationTariffForDoctorPopulationCovered = null;
                 model.InPersonReservationTariffForAnonymousPersons = null;
                 model.OnlineReservationTariffForAnonymousPersons = null;
+                model.DoctorReservationAlert = null;
             }
 
             #endregion
@@ -3791,7 +3796,8 @@ namespace DoctorFAM.Application.Services.Implementation
                 LoggedDateTime = loggedDateTime,
                 DoctorReservationDate = ((!string.IsNullOrEmpty(loggedDateTime) ? await _reservationService.GetDoctorReservationDateByReservationDateAndUserId(loggedDateTime, userId) : null)),
                 DoctorReservationDateTimes = ((!string.IsNullOrEmpty(loggedDateTime) ? await _reservationService.GetDoctorReservationDateByReservationDateTimeAndUserId(loggedDateTime, userId) : null)),
-                ListOfReservationDateAndReservationDateTime = await _reservationService.GetListOfDoctorReservationDateAndDoctorReservationDateTimeForShowSiteSide(organization.OwnerId)
+                ListOfReservationDateAndReservationDateTime = await _reservationService.GetListOfDoctorReservationDateAndDoctorReservationDateTimeForShowSiteSide(organization.OwnerId),
+                DoctorReservationAlert = await _reservationService.GetDoctorReservationAlertByDoctorUserId(organization.OwnerId)
             };
 
             DoctorPageInReservationViewModel childModel = new DoctorPageInReservationViewModel()
