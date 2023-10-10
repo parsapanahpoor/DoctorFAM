@@ -56,8 +56,11 @@ public interface IOnlineVisitService
 
     #region User Panel 
 
+    //Fill Online Visit Request Detail User Panel Side DTO
+    Task<OnlineVisitRequestDetailUserPanelSideDTO?> FillOnlineVisitRequestDetailUserPanelSideDTO(ulong userId, ulong Id);
+
     //Filter User Onlien Visit Requests 
-    Task<FilterOnlineVisitRequestUserPanelViewModel> FilterOnlineVisitRequestUserPanel(FilterOnlineVisitRequestUserPanelViewModel filter);
+    Task<List<FilterOnlineVisitRequestUserPanelViewModel>> FilterOnlineVisitRequestUserPanel(FilterOnlineVisitRequestUserPanelViewModel filter);
 
     #endregion
 
