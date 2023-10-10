@@ -83,6 +83,8 @@ namespace DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo
 
         public DoctorTilteName DoctorTilteName { get; set; }
 
+        public string? DoctorReservationAlert { get; set; }
+
         #endregion
     }
 

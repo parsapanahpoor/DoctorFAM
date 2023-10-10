@@ -1,13 +1,8 @@
 ﻿using DoctorFAM.Domain.Entities.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DoctorFAM.Domain.Entities.DoctorReservation
 {
-    public class DoctorsReservationTariffs : BaseEntity
+    public sealed class DoctorsReservationTariffs : BaseEntity
     {
         #region properties
 
@@ -20,6 +15,8 @@ namespace DoctorFAM.Domain.Entities.DoctorReservation
         public int InPersonReservationTariffForAnonymousPersons { get; set; }
 
         public int OnlineReservationTariffForAnonymousPersons { get; set; }
+
+        public string? DoctorReservationAlert { get; set; }
 
         #endregion
 

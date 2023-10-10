@@ -134,6 +134,15 @@
                                 }
 
                                 <div class="form-group col-md-12 col-sm-12">
+                                    <label>متن پیام پزشک برای بیماران در بخش نوبت گیری</label>
+                                    <textarea asp-for="DoctorReservationAlert" class="form-control">
+                                        @Model.DoctorReservationAlert
+                                    </textarea>
+                                </div>
+
+                                <div class="clearfix"></div>
+
+                                <div class="form-group col-md-12 col-sm-12">
                                     <label>@Localizer["State"]</label>
                                     <select asp-for="DoctorsInfosType" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Entities.Doctors.OrganizationInfoState))"></select>
                                     <span class="text-danger" asp-validation-for="DoctorsInfosType"></span>
