@@ -1757,6 +1757,12 @@ public class ReservationService : IReservationService
         await _reservation.GetListOfReservationRequestThatPassADayForPayReservationTariff();
     }
 
+    //Get Doctor Reservation Alert By Doctor User Id
+    public async Task<string?> GetDoctorReservationAlertByDoctorUserId(ulong userId)
+    {
+        return await _reservation.GetDoctorReservationAlertByDoctorUserId(userId);
+    }
+
     //Get List Of Doctor Reservation Date And Doctor Reservation Date Time For Show Site Side 
     public async Task<List<ListOfReservationDateAndReservationDateTimeViewModel>?> GetListOfDoctorReservationDateAndDoctorReservationDateTimeForShowSiteSide(ulong doctorUserId)
     {

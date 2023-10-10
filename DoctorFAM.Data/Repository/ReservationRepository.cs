@@ -1483,6 +1483,16 @@ public class ReservationRepository : IReservationRepository
 
     #region Site Side 
 
+    //Get Doctor Reservation Alert By Doctor User Id
+    public async Task<string?> GetDoctorReservationAlertByDoctorUserId(ulong userId)
+    {
+        return await _context.DoctorsReservationTariffs
+                             .AsNoTracking()
+                             .Where(p => p.DoctorUserId == userId && !p.IsDelete)
+                             .Select(p => p.DoctorReservationAlert)
+                             .FirstOrDefaultAsync();
+    }
+
     //Get List Of Reservation Request That Pass A Day For Pay Reservation Tariff
     public async Task GetListOfReservationRequestThatPassADayForPayReservationTariff()
     {
@@ -1532,14 +1542,14 @@ public class ReservationRepository : IReservationRepository
         #endregion
 
         return await _context.DoctorReservationDates.AsNoTracking()
-                                            .Where(p=> !p.IsDelete && p.UserId == doctorUserId 
+                                            .Where(p => !p.IsDelete && p.UserId == doctorUserId
                                                     && DateTime.Compare(p.ReservationDate, dateTime) >= 0)
                                             .OrderBy(s => s.ReservationDate)
-                                            .Select(p=> new ListOfReservationDateAndReservationDateTimeViewModel()
+                                            .Select(p => new ListOfReservationDateAndReservationDateTimeViewModel()
                                             {
                                                 DoctorReservationDate = p,
                                                 DoctorReservationDateTimes = _context.DoctorReservationDateTimes.AsNoTracking()
-                                                                                        .Where(s=> !s.IsDelete && s.DoctorReservationDateId == p.Id
+                                                                                        .Where(s => !s.IsDelete && s.DoctorReservationDateId == p.Id
                                                                                                 && s.DoctorReservationState == DoctorReservationState.NotReserved
                                                                                                 && !s.PatientId.HasValue).ToList()
                                             }).Take(7).ToListAsync();
@@ -1575,7 +1585,7 @@ public class ReservationRepository : IReservationRepository
     {
         return await _context.DoctorReservationDateTimes
                              .Where(p => !p.IsDelete && p.Id == doctorReservationDateTimeId && p.DoctorReservationTypeSelected.HasValue)
-                             .Select(p=> p.DoctorReservationTypeSelected.Value)
+                             .Select(p => p.DoctorReservationTypeSelected.Value)
                              .FirstOrDefaultAsync();
     }
 

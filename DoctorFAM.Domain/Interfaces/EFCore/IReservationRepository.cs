@@ -136,6 +136,9 @@ public interface IReservationRepository
 
     #region Site Side
 
+    //Get Doctor Reservation Alert By Doctor User Id
+    Task<string?> GetDoctorReservationAlertByDoctorUserId(ulong userId);
+
     //Get List Of Reservation Request That Pass A Day For Pay Reservation Tariff
     Task GetListOfReservationRequestThatPassADayForPayReservationTariff();
 
