@@ -15,9 +15,12 @@
             <div class="col-12">
                 <div class="white-bg box-shadow rounded o-hidden">
                     <div class="row align-items-center">
-                        @*<div class="col-lg-7 col-md-12 p-5">
-                            <img class="img-fluid" src="~/Site/images/login.png" alt="">
-                        </div>*@
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p-2 text-center  align-items-center justify-content-center">
+                            @*<img class="img-fluid" src="~/Site/images/login.png" alt="">*@
+                            <h5 style="color:blue !important;">اگر برای ورود یا ثبت نام در سامانه مشکل دارید، با  این شماره تماس بگیرید:  </h5>
+                            <h3 class="dropdown-itemuserpanel">011-33304030 (پشتیبانی دکترفم)</h3>
+
+                        </div>
                         <div class="col-lg-4 col-md-4 "></div>
                         <div class="col-lg-4 col-md-4 ">
                             <div class="login-form text-center">
@@ -46,10 +49,11 @@
                                         <input type="hidden" asp-for="DentistRegister" value="@ViewBag.Dentist" />
                                         <input type="hidden" asp-for="TourismRegister" value="@ViewBag.Tourism" />
 
-                                        <h4 class="text-center ">ایجاد حساب کاربری</h4>
+                                        
+                                        <h4 class="text-center ">ثبت نام</h4>
                                         <div class="form-group">                                           
                                             <div class="col-md-12">
-                                                <input asp-for="Mobile" class="form-control" placeholder="تلفن همراه" />
+                                                <input asp-for="Mobile" class="form-control" placeholder="تلفن همراه(لطفا شماره تلفن معتبر و فعال وارد کنید.)" />
                                                 <span class="text-danger" asp-validation-for="Mobile"></span>
                                             </div>
                                         </div>
@@ -81,7 +85,7 @@
                                                <button type="submit" class="btn-Accept col-md-4 m-2 logfon">ثبت نام</button>
                                            </div>
                                            <div class="col-md-12 mt-2 ">
-                                               <span class="dropdown-itemuserpanel">در صورتیکه قبلا ثبت نام کرده و عضو سامانه شده اید  بر روی دکمه زیر کلیک کرده و وارد شوید</span>
+                                               <h5 class="dropdown-itemuserpanel">اگر قبلا ثبت نام کرده اید، لطفا دکمه ورود را بزنید</h5>
                                            </div>
                                            <div class="col-md-12 mt-2 mb-2">
                                                <a  asp-action="Login" asp-controller="Account" class="btn-AcceptXX col-md-6 ">ورود</a>    

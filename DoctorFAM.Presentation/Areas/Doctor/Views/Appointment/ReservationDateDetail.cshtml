@@ -24,7 +24,7 @@
     <script src="~/admin/js/datatable/ZeroClipboard.js"></script>
     <script src="~/admin/js/datatable/dataTables.tableTools.min.js"></script>
     <script src="~/admin/js/datatable/dataTables.bootstrap.min.js"></script>
-    <script src="~/admin/js/datatable/datatables-init.js"></script>
+    <script src="~/admin/js/datatable/datatables-init-AllRecords.js"></script>
     <script>
         InitiateSimpleDataTable.init();
         InitiateEditableDataTable.init();
@@ -69,16 +69,16 @@
                             <table class="table table-bordered table-hover table-striped dataTable" id="searchable" role="grid" aria-describedby="searchable_info">
                                 <thead class="bordered-darkorange">
                                     <tr role="row">
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Browser: activate to sort column descending">ساعت نوبت</th>
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending">نام بیمار</th>
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending">موبایل</th>
 
-                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">نام بیمار</th>
-                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">موبایل</th>
-                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">کد پیگیری</th>
-                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">شروع</th>
-                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">وضعیت</th>
-                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending"> روش انتخابی بیمار</th>
-                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending"> روش انتخابی پزشک</th>
-                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending"> نحوه اخذ نوبت(سامانه ای- منشی)</th>
-                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending"> امکانات</th>
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending">کد پیگیری</th>
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending">وضعیت</th>
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending"> روش انتخابی بیمار</th>
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending"> روش انتخابی پزشک</th>
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending"> نحوه اخذ نوبت(سامانه ای- منشی)</th>
+                                        <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending"> امکانات</th>
 
                                     </tr>
                                 </thead>
@@ -89,6 +89,12 @@
                                     {
                                         <tr role="row" class="even responsive" remove-ajax-item="@reservationdata.Id">
 
+                                            <td class="center ">
+
+                                                @string.Concat(reservationdata.StartTime.Reverse().Skip(3).Reverse())
+
+                                            </td>
+                                            
                                             <td class="center tc vm">
                                                 <p>
                                                     @if (reservationdata.PatientId.HasValue && reservationdata.PatientDetail != null)
@@ -125,11 +131,7 @@
 
                                             </td>
 
-                                            <td class="center ">
-
-                                                @string.Concat(reservationdata.StartTime.Reverse().Skip(3).Reverse())
-
-                                            </td>
+                                           
 
                                             <td class="center tc vm">
                                                 <p>

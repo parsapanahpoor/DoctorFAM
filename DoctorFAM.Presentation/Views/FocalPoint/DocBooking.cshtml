@@ -142,7 +142,7 @@
     @if (doctorDaysList != null)
     {
 
-        <div class="card booking-schedule schedule-widget">
+        <div class=" booking-schedule schedule-widget">
             <div class="schedule-cont">
                 <div class="container">
                     <div class="row">
@@ -173,7 +173,7 @@
 
 
     }
-    <hr />
+    
    @* <div class="container mt-5">
         <div class="row text-center justify-contnet-center">
 
@@ -210,16 +210,21 @@
     {
        
 
-        <div class="card booking-schedule schedule-widget">
+        <div class=" booking-schedule schedule-widget">
             
             <div class="schedule-cont">
                 <div class="row">
                     <div class="col-md-12">
                         @if (Model.DoctorReservationDate != null)
                         {
-                            <div class="col-md-2 col-sm-12  mt-4 mb-3 ">
-                                <span class=" NotbtnDay">@Model.DoctorReservationDate.ReservationDate.ToStringShamsiDate()</span>
+                            <div class="row">
+                                <div class="col-md-4 "></div>
+                                <div class="col-md-4   text-center justify-contnet-center">
+                                    <h4 class="  ">@Model.DoctorReservationDate.ReservationDate.ToStringShamsiDate()</h4>
+                                </div>
+                                <div class="col-md-4 "></div>
                             </div>
+                            
                         }
                         <div class="time-slot">
                             <ul class="clearfix">
