@@ -13,6 +13,9 @@ namespace DoctorFAM.Domain.Interfaces
     {
         #region Site Side
 
+        //Update User Without SaveChanges
+        void UpdateUserWithoutSaveChange(User user);
+
         //Get Username By User ID
         Task<string?> GetUsernameByUserID(ulong userId);
 

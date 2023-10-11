@@ -1589,5 +1589,19 @@ public class ReservationRepository : IReservationRepository
                              .FirstOrDefaultAsync();
     }
 
+    //Get Patient User Informations For Get Reservation Time From Doctors
+    public async Task<UserInfoForGetReservation?> GetPatientUserInformationsForGetReservationTimeFromDoctors(ulong userId)
+    {
+        return await _context.Users
+                             .AsNoTracking()
+                             .Where(p => !p.IsDelete && p.Id == userId)
+                             .Select(p => new UserInfoForGetReservation()
+                             {
+                                 FirstName = p.FirstName,
+                                 LastName = p.LastName,
+                             })
+                             .FirstOrDefaultAsync();
+    }
+
     #endregion
 }

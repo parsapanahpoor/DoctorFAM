@@ -71,7 +71,6 @@ public class FocalPointController : SiteBaseController
 
     [Authorize]
     [HttpGet]
-    [CheckUserFillPersonalInformation]
     public async Task<IActionResult> DocBooking(ulong userId, string? loggedDateTime)
     {
         #region Fill Model
@@ -99,7 +98,6 @@ public class FocalPointController : SiteBaseController
 
     [Authorize]
     [HttpPost, ValidateAntiForgeryToken]
-    [CheckUserFillPersonalInformation]
     public async Task<IActionResult> DocBooking(ShowDoctorReservationDetailViewModel reservationDetail)
     {
         #region Fill Model
@@ -129,7 +127,8 @@ public class FocalPointController : SiteBaseController
         {
             DoctorId = doctorId,
             ReservationDateTimeId = reservationDateTimeId,
-            DoctorSelectedReservationType = await _reservationService.GetDoctorReservationDateTimeDoctorSelectedReservationType(reservationDateTimeId)
+            DoctorSelectedReservationType = await _reservationService.GetDoctorReservationDateTimeDoctorSelectedReservationType(reservationDateTimeId),
+            UserInfoForGetReservation = await _reservationService.GetPatientUserInformationsForGetReservationTimeFromDoctors(User.GetUserId())
         };
 
         #endregion
@@ -142,7 +141,6 @@ public class FocalPointController : SiteBaseController
     #region Choose Type Of Reservation
 
     [Authorize]
-    [CheckUserFillPersonalInformation]
     public async Task<IActionResult> ChooseTypeOfReservation(ChooseTypeOfReservationViewModel model)
     {
         #region Get Reservation Date Time 
@@ -187,6 +185,12 @@ public class FocalPointController : SiteBaseController
             TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
             return RedirectToAction(nameof(DoctorReservationWith0Price) , new { id = model.ReservationDateTimeId });
         }
+
+        #endregion
+
+        #region Change User Information By Incoming Data
+
+
 
         #endregion
 

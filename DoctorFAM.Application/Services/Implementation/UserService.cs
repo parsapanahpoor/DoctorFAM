@@ -18,6 +18,7 @@ using DoctorFAM.Domain.ViewModels.Common;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Employees;
 using DoctorFAM.Domain.ViewModels.Laboratory.Employee;
 using DoctorFAM.Domain.ViewModels.Site.Account;
+using DoctorFAM.Domain.ViewModels.Site.Reservation;
 using DoctorFAM.Domain.ViewModels.UserPanel.Account;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -584,6 +585,75 @@ public class UserService : IUserService
     #endregion
 
     #region Site Side
+
+    //Change User Informations From Reservation Part
+    public async Task<UserInfoForGetReservationResult> ChangeUserInformationsFromReservationPart(ulong UserId , UserInfoForGetReservation? UserInfoForGetReservation)
+    {
+        #region Get User By Id
+
+        var user = await GetUserByIdWithAsNoTracking(UserId);
+        if (user == null) return UserInfoForGetReservationResult.UserNotfound;
+
+        #endregion
+
+        #region Change User Info
+
+        if (UserInfoForGetReservation.GetReservationForHimSelf == 1)
+        {
+            #region FirstName And Validation
+
+            if (string.IsNullOrEmpty(user.FirstName) && string.IsNullOrEmpty(UserInfoForGetReservation.FirstName))
+            {
+                return UserInfoForGetReservationResult.FirstName;
+            }
+            else if (string.IsNullOrEmpty(user.FirstName) && !string.IsNullOrEmpty(UserInfoForGetReservation.FirstName))
+            {
+                user.FirstName = UserInfoForGetReservation.FirstName;
+
+                _userRepository.UpdateUserWithoutSaveChange(user);
+            }
+
+            #endregion
+
+            #region LastName And Validation
+
+            if (string.IsNullOrEmpty(user.LastName) && string.IsNullOrEmpty(UserInfoForGetReservation.LastName))
+            {
+                return UserInfoForGetReservationResult.LastName;
+            }
+            else if (string.IsNullOrEmpty(user.LastName) && !string.IsNullOrEmpty(UserInfoForGetReservation.LastName))
+            {
+                user.LastName = UserInfoForGetReservation.LastName;
+
+                _userRepository.UpdateUserWithoutSaveChange(user);
+            }
+
+            #endregion
+
+            #region National Id And Validation
+
+            if (string.IsNullOrEmpty(user.NationalId) && string.IsNullOrEmpty(UserInfoForGetReservation.NationalCode))
+            {
+                return UserInfoForGetReservationResult.NationalCode;
+            }
+            else if (string.IsNullOrEmpty(user.NationalId) && !string.IsNullOrEmpty(UserInfoForGetReservation.NationalCode))
+            {
+                //Check Exist National Id
+                if (await IsExistAnyUserByNationalId(UserInfoForGetReservation.NationalCode))
+                {
+                    return UserInfoForGetReservationResult.NationalCodeIsExist;
+                }
+
+                user.NationalId = UserInfoForGetReservation.NationalCode;
+
+                _userRepository.UpdateUserWithoutSaveChange(user);
+            }
+
+            #endregion
+        }
+
+        #endregion
+    }
 
     //Get Username By User ID
     public async Task<string?> GetUsernameByUserID(ulong userId)

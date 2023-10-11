@@ -2179,5 +2179,11 @@ public class ReservationService : IReservationService
         return await _reservation.GetDoctorReservationDateTimeDoctorSelectedReservationType(doctorReservationDateTimeId);
     }
 
+    //Get Patient User Informations For Get Reservation Time From Doctors
+    public async Task<UserInfoForGetReservation?> GetPatientUserInformationsForGetReservationTimeFromDoctors(ulong userId)
+    {
+        return await _reservation.GetPatientUserInformationsForGetReservationTimeFromDoctors(userId);
+    }
+
     #endregion
 }

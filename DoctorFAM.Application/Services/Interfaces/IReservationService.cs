@@ -229,5 +229,8 @@ public interface IReservationService
     //Get Doctor Reservation Date Time Doctor Selected Reservation Type
     Task<DoctorReservationType> GetDoctorReservationDateTimeDoctorSelectedReservationType(ulong doctorReservationDateTimeId);
 
+    //Get Patient User Informations For Get Reservation Time From Doctors
+    Task<UserInfoForGetReservation?> GetPatientUserInformationsForGetReservationTimeFromDoctors(ulong userId);
+
     #endregion
 }

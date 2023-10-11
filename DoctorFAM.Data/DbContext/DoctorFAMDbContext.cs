@@ -282,6 +282,8 @@ public class DoctorFAMDbContext : Microsoft.EntityFrameworkCore.DbContext
 
     public DbSet<DoctorsReservationTariffs> DoctorsReservationTariffs { get; set; }
 
+    public DbSet<LogForGetAppoinmentForOtherPeople> logForGetAppoinmentForOtherPeoples { get; set; }
+
     #endregion
 
     #region Notification 
