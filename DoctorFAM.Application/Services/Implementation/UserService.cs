@@ -587,7 +587,7 @@ public class UserService : IUserService
     #region Site Side
 
     //Change User Informations From Reservation Part
-    public async Task<UserInfoForGetReservationResult> ChangeUserInformationsFromReservationPart(ulong UserId , UserInfoForGetReservation? UserInfoForGetReservation)
+    public async Task<UserInfoForGetReservationResult> ChangeUserInformationsFromReservationPart(ulong UserId, UserInfoForGetReservation? UserInfoForGetReservation)
     {
         #region Get User By Id
 
@@ -598,61 +598,78 @@ public class UserService : IUserService
 
         #region Change User Info
 
-        if (UserInfoForGetReservation.GetReservationForHimSelf == 1)
+        #region FirstName And Validation
+
+        if (string.IsNullOrEmpty(user.FirstName) && string.IsNullOrEmpty(UserInfoForGetReservation.FirstName))
         {
-            #region FirstName And Validation
+            return UserInfoForGetReservationResult.FirstName;
+        }
+        else if (string.IsNullOrEmpty(user.FirstName) && !string.IsNullOrEmpty(UserInfoForGetReservation.FirstName))
+        {
+            user.FirstName = UserInfoForGetReservation.FirstName;
 
-            if (string.IsNullOrEmpty(user.FirstName) && string.IsNullOrEmpty(UserInfoForGetReservation.FirstName))
-            {
-                return UserInfoForGetReservationResult.FirstName;
-            }
-            else if (string.IsNullOrEmpty(user.FirstName) && !string.IsNullOrEmpty(UserInfoForGetReservation.FirstName))
-            {
-                user.FirstName = UserInfoForGetReservation.FirstName;
-
-                _userRepository.UpdateUserWithoutSaveChange(user);
-            }
-
-            #endregion
-
-            #region LastName And Validation
-
-            if (string.IsNullOrEmpty(user.LastName) && string.IsNullOrEmpty(UserInfoForGetReservation.LastName))
-            {
-                return UserInfoForGetReservationResult.LastName;
-            }
-            else if (string.IsNullOrEmpty(user.LastName) && !string.IsNullOrEmpty(UserInfoForGetReservation.LastName))
-            {
-                user.LastName = UserInfoForGetReservation.LastName;
-
-                _userRepository.UpdateUserWithoutSaveChange(user);
-            }
-
-            #endregion
-
-            #region National Id And Validation
-
-            if (string.IsNullOrEmpty(user.NationalId) && string.IsNullOrEmpty(UserInfoForGetReservation.NationalCode))
-            {
-                return UserInfoForGetReservationResult.NationalCode;
-            }
-            else if (string.IsNullOrEmpty(user.NationalId) && !string.IsNullOrEmpty(UserInfoForGetReservation.NationalCode))
-            {
-                //Check Exist National Id
-                if (await IsExistAnyUserByNationalId(UserInfoForGetReservation.NationalCode))
-                {
-                    return UserInfoForGetReservationResult.NationalCodeIsExist;
-                }
-
-                user.NationalId = UserInfoForGetReservation.NationalCode;
-
-                _userRepository.UpdateUserWithoutSaveChange(user);
-            }
-
-            #endregion
+            _userRepository.UpdateUserWithoutSaveChange(user);
         }
 
         #endregion
+
+        #region LastName And Validation
+
+        if (string.IsNullOrEmpty(user.LastName) && string.IsNullOrEmpty(UserInfoForGetReservation.LastName))
+        {
+            return UserInfoForGetReservationResult.LastName;
+        }
+        else if (string.IsNullOrEmpty(user.LastName) && !string.IsNullOrEmpty(UserInfoForGetReservation.LastName))
+        {
+            user.LastName = UserInfoForGetReservation.LastName;
+
+            _userRepository.UpdateUserWithoutSaveChange(user);
+        }
+
+        #endregion
+
+        #region National Id And Validation
+
+        if (string.IsNullOrEmpty(user.NationalId) && string.IsNullOrEmpty(UserInfoForGetReservation.NationalCode))
+        {
+            return UserInfoForGetReservationResult.NationalCode;
+        }
+        else if (string.IsNullOrEmpty(user.NationalId) && !string.IsNullOrEmpty(UserInfoForGetReservation.NationalCode))
+        {
+            //Check Exist National Id
+            if (await IsExistAnyUserByNationalId(UserInfoForGetReservation.NationalCode))
+            {
+                return UserInfoForGetReservationResult.NationalCodeIsExist;
+            }
+
+            user.NationalId = UserInfoForGetReservation.NationalCode;
+
+            _userRepository.UpdateUserWithoutSaveChange(user);
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Add Record For Other People
+
+        if (UserInfoForGetReservation.GetReservationForHimSelf == 0)
+        {
+            if (string.IsNullOrEmpty(UserInfoForGetReservation.FirstName) ) 
+            {
+                return UserInfoForGetReservationResult.FirstName;
+            }
+            if (string.IsNullOrEmpty(UserInfoForGetReservation.LastName))
+            {
+                return UserInfoForGetReservationResult.LastName;
+            }
+
+
+        }
+
+        #endregion
+
+        return UserInfoForGetReservationResult.Success;
     }
 
     //Get Username By User ID

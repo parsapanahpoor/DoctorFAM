@@ -46,5 +46,8 @@ public enum UserInfoForGetReservationResult
     LastName,
     NationalCode,
     UserNotfound,
-    NationalCodeIsExist
+    NationalCodeIsExist,
+    Success,
+    OthersFirstName,
+    OthersLastName,
 }
