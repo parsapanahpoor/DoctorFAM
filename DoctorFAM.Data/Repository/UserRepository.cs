@@ -1,5 +1,6 @@
 ﻿using DoctorFAM.Data.DbContext;
 using DoctorFAM.Domain.Entities.Account;
+using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,6 +20,12 @@ namespace DoctorFAM.Data.Repository
         #endregion
 
         #region Site Side
+
+        //Add LogForGetAppoinmentForOtherPeople To The Data Base Without Save Changes
+        public async Task AddLogForGetAppoinmentForOtherPeopleToTheDataBaseWithoutSaveChanges(LogForGetAppoinmentForOtherPeople otherPerson)
+        {
+            await _context.logForGetAppoinmentForOtherPeoples.AddAsync(otherPerson);
+        }
 
         //Update User Without SaveChanges
         public void UpdateUserWithoutSaveChange(User user)

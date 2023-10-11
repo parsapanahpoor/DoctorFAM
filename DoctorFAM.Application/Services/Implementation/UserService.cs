@@ -9,6 +9,7 @@ using DoctorFAM.Application.StaticTools;
 using DoctorFAM.Data.DbContext;
 using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.CooperationRequest;
+using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Account;
@@ -664,6 +665,15 @@ public class UserService : IUserService
                 return UserInfoForGetReservationResult.LastName;
             }
 
+            LogForGetAppoinmentForOtherPeople otherPerson = new LogForGetAppoinmentForOtherPeople()
+            {
+                FirstName = UserInfoForGetReservation.FirstName,
+                LastName = UserInfoForGetReservation.LastName,
+                UserId = user.Id
+            };
+
+            //Add To The Data Base 
+            await _userRepository.AddLogForGetAppoinmentForOtherPeopleToTheDataBaseWithoutSaveChanges(otherPerson);
 
         }
 

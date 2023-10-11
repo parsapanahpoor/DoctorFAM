@@ -6,6 +6,8 @@ public sealed class LogForGetAppoinmentForOtherPeople : BaseEntity
 {
     #region properties
 
+    public ulong ReservationDateTimeId { get; set; }
+
     public ulong UserId { get; set; }
 
     public string FirstName { get; set; }
