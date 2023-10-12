@@ -1599,6 +1599,7 @@ public class ReservationRepository : IReservationRepository
                              {
                                  FirstName = p.FirstName,
                                  LastName = p.LastName,
+                                 NationalCode = p.NationalId
                              })
                              .FirstOrDefaultAsync();
     }

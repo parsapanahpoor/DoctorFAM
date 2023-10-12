@@ -37,6 +37,12 @@ public record UserInfoForGetReservation
 
     public string? OthersLastName { get; set; }
 
+    public string? OtherButYourFirstName { get; set; }
+
+    public string? OtherButYourLastName { get; set; }
+
+    public string? OtherButYourNationalCode { get; set; }
+
     #endregion
 }
 

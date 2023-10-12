@@ -11,11 +11,11 @@
 
             <div class="col-md-12">
                 <div class="form-group">
-                    <label class="control-label"> برای خودتان نوبت میخواهید یا فرد دیگری ؟  </label>
+                    <label class="control-label"> برای چه کسی نوبت میخواد ؟  </label>
                     <select id="GetReservationForHimSelf" asp-for="UserInfoForGetReservation.GetReservationForHimSelf" class="form-control">
-                        <option>انتخاب کنید</option>
-                        <option value="1">خودم </option>
-                        <option value="0">فرد دیگر</option>
+                        <option selected="selected" value="0">انتخاب کنید</option>
+                        <option value="2">خودم </option>
+                        <option value="1">فرد دیگر</option>
                     </select>
                 </div>
             </div>
@@ -56,14 +56,7 @@
                 </div>
             }
 
-            @if (Model.UserInfoForGetReservation != null && !string.IsNullOrEmpty(Model.UserInfoForGetReservation.NationalCode))
-            {
-                <div class="form-group col-md-6 col-sm-6">
-                    <label asp-for="ReservationRequestDescription">کدملی شما : </label>
-                    <input readonly asp-for="UserInfoForGetReservation.NationalCode" class="form-control">
-                </div>
-            }
-            else
+            @if (Model.UserInfoForGetReservation != null && string.IsNullOrEmpty(Model.UserInfoForGetReservation.NationalCode))
             {
                 <div class="form-group col-md-12 col-sm-6">
                     <label asp-for="ReservationRequestDescription">کدملی شما : </label>
@@ -76,14 +69,41 @@
 
         <div class="row d-none" id="OtherInformation">
 
+            @if (Model.UserInfoForGetReservation != null && string.IsNullOrEmpty(Model.UserInfoForGetReservation.FirstName))
+            {
+                <div class="form-group col-md-6 col-sm-6">
+                    <label asp-for="ReservationRequestDescription">نام شما : </label>
+                    <input asp-for="UserInfoForGetReservation.OtherButYourFirstName" class="form-control">
+                    <span class="text-danger" asp-validation-for="UserInfoForGetReservation.OtherButYourFirstName"></span>
+                </div>
+            }
+
+            @if (Model.UserInfoForGetReservation != null && string.IsNullOrEmpty(Model.UserInfoForGetReservation.LastName))
+            {
+                <div class="form-group col-md-6 col-sm-6">
+                    <label asp-for="ReservationRequestDescription">نام خانوادگی شما : </label>
+                    <input asp-for="UserInfoForGetReservation.OtherButYourLastName" class="form-control">
+                    <span class="text-danger" asp-validation-for="UserInfoForGetReservation.OtherButYourLastName"></span>
+                </div>
+            }
+
+            @if (Model.UserInfoForGetReservation != null && string.IsNullOrEmpty(Model.UserInfoForGetReservation.NationalCode))
+            {
+                <div class="form-group col-md-12 col-sm-6">
+                    <label asp-for="ReservationRequestDescription">کدملی شما : </label>
+                    <input asp-for="UserInfoForGetReservation.OtherButYourNationalCode" class="form-control">
+                    <span class="text-danger" asp-validation-for="UserInfoForGetReservation.OtherButYourNationalCode"></span>
+                </div>
+            }
+
             <div class="form-group col-md-6 col-sm-6">
-                <label asp-for="ReservationRequestDescription">نام  : </label>
+                <label asp-for="ReservationRequestDescription">نام بیمار  : </label>
                 <input asp-for="UserInfoForGetReservation.OthersFirstName" class="form-control">
                 <span class="text-danger" asp-validation-for="UserInfoForGetReservation.OthersFirstName"></span>
             </div>
 
             <div class="form-group col-md-6 col-sm-6">
-                <label asp-for="ReservationRequestDescription">نام خانوادگی  : </label>
+                <label asp-for="ReservationRequestDescription">نام حانوادگی بیمار  : </label>
                 <input  asp-for="UserInfoForGetReservation.OthersLastName" class="form-control">
                 <span class="text-danger" asp-validation-for="UserInfoForGetReservation.OthersLastName"></span>
             </div>

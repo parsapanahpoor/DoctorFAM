@@ -154,6 +154,58 @@ public class FocalPointController : SiteBaseController
 
         #endregion
 
+        #region Change User Information By Incoming Data
+
+        var res = await _userService.ChangeUserInformationsFromReservationPart(User.GetUserId(), model.UserInfoForGetReservation, model.ReservationDateTimeId);
+
+        switch (res)
+        {
+            case UserInfoForGetReservationResult.FirstName:
+
+                TempData[ErrorMessage] = "لطفا نام خود را وارد کنید.";
+                return RedirectToAction(nameof(DocBooking), new { userId = model.DoctorId });
+                break;
+
+            case UserInfoForGetReservationResult.LastName:
+                TempData[ErrorMessage] = "لطفا نام خانوادگی خود را وارد کنید.";
+                return RedirectToAction(nameof(DocBooking), new { userId = model.DoctorId });
+                break;
+
+            case UserInfoForGetReservationResult.NationalCode:
+                TempData[ErrorMessage] = "لطفا کدملی خود را وارد کنید.";
+                return RedirectToAction(nameof(DocBooking), new { userId = model.DoctorId });
+                break;
+
+            case UserInfoForGetReservationResult.UserNotfound:
+                TempData[ErrorMessage] = "کاربر یافت نشد.";
+                return RedirectToAction(nameof(DocBooking), new { userId = model.DoctorId });
+                break;
+
+            case UserInfoForGetReservationResult.NationalCodeIsExist:
+                TempData[ErrorMessage] = "کدملی وارد شده درگذشته توسط فرد دیگری در وب سایت وارد شده است.";
+                return RedirectToAction(nameof(DocBooking), new { userId = model.DoctorId });
+                break;
+
+            case UserInfoForGetReservationResult.Success:
+                break;
+
+            case UserInfoForGetReservationResult.OthersFirstName:
+                TempData[ErrorMessage] = "نام بیمار را وارد کنید.";
+                return RedirectToAction(nameof(DocBooking), new { userId = model.DoctorId });
+                break;
+
+            case UserInfoForGetReservationResult.OthersLastName:
+                TempData[ErrorMessage] = "نام خانوادگی بیمار را وارد کنید.";
+                return RedirectToAction(nameof(DocBooking), new { userId = model.DoctorId });
+                break;
+
+            default:
+                break;
+        }
+
+        #endregion
+
+
         #region Add Reservation Date Time To User Patient
 
         var resForAdd = await _reservationService.GetReservationDateTimeToUserPatient(model, User.GetUserId());
@@ -185,12 +237,6 @@ public class FocalPointController : SiteBaseController
             TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
             return RedirectToAction(nameof(DoctorReservationWith0Price) , new { id = model.ReservationDateTimeId });
         }
-
-        #endregion
-
-        #region Change User Information By Incoming Data
-
-
 
         #endregion
 

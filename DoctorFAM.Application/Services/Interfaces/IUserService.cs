@@ -7,6 +7,7 @@ using DoctorFAM.Domain.ViewModels.Admin.Account;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Employees;
 using DoctorFAM.Domain.ViewModels.Laboratory.Employee;
 using DoctorFAM.Domain.ViewModels.Site.Account;
+using DoctorFAM.Domain.ViewModels.Site.Reservation;
 using DoctorFAM.Domain.ViewModels.UserPanel.Account;
 using Microsoft.AspNetCore.Http;
 namespace DoctorFAM.Application.Services.Interfaces;
@@ -75,6 +76,9 @@ public interface IUserService
     #endregion
 
     #region Site Side
+
+    //Change User Informations From Reservation Part
+    Task<UserInfoForGetReservationResult> ChangeUserInformationsFromReservationPart(ulong UserId, UserInfoForGetReservation? UserInfoForGetReservation, ulong reservationDateTimeId);
 
     //Get Username By User ID
     Task<string?> GetUsernameByUserID(ulong userId);
