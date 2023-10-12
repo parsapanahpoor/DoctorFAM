@@ -1,12 +1,8 @@
-﻿using DoctorFAM.Application.Convertors;
-using DoctorFAM.Application.Extensions;
-using DoctorFAM.Application.Services.Implementation;
+﻿using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Application.StaticTools;
 using DoctorFAM.Domain.DTOs.ZarinPal;
 using DoctorFAM.Domain.Entities.Wallet;
-using DoctorFAM.Domain.Interfaces;
-using DoctorFAM.Domain.ViewModels.Site.Notification;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;

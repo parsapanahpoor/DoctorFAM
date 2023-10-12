@@ -415,17 +415,13 @@ public class FocalPointController : SiteBaseController
                         return NotFound();
                     }
 
-                    string errorscode = jo["errors"]["code"].ToString();
-
-                    return BadRequest($"error code {errorscode}");
-
+                    return RedirectToAction("PaymentResult", "Payment", new { IsSuccess = false, refId = "-" });
                 }
             }
         }
         catch (Exception ex)
         {
-
-            throw ex;
+            return RedirectToAction("PaymentResult", "Payment", new { IsSuccess = false, refId = "-" });
         }
 
         return NotFound();
