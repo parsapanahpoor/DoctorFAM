@@ -71,7 +71,6 @@ public class FocalPointController : SiteBaseController
 
     [Authorize]
     [HttpGet]
-    [CheckUserFillPersonalInformation]
     public async Task<IActionResult> DocBooking(ulong userId, string? loggedDateTime)
     {
         #region Fill Model
@@ -99,7 +98,6 @@ public class FocalPointController : SiteBaseController
 
     [Authorize]
     [HttpPost, ValidateAntiForgeryToken]
-    [CheckUserFillPersonalInformation]
     public async Task<IActionResult> DocBooking(ShowDoctorReservationDetailViewModel reservationDetail)
     {
         #region Fill Model
@@ -129,7 +127,8 @@ public class FocalPointController : SiteBaseController
         {
             DoctorId = doctorId,
             ReservationDateTimeId = reservationDateTimeId,
-            DoctorSelectedReservationType = await _reservationService.GetDoctorReservationDateTimeDoctorSelectedReservationType(reservationDateTimeId)
+            DoctorSelectedReservationType = await _reservationService.GetDoctorReservationDateTimeDoctorSelectedReservationType(reservationDateTimeId),
+            UserInfoForGetReservation = await _reservationService.GetPatientUserInformationsForGetReservationTimeFromDoctors(User.GetUserId())
         };
 
         #endregion
@@ -142,7 +141,6 @@ public class FocalPointController : SiteBaseController
     #region Choose Type Of Reservation
 
     [Authorize]
-    [CheckUserFillPersonalInformation]
     public async Task<IActionResult> ChooseTypeOfReservation(ChooseTypeOfReservationViewModel model)
     {
         #region Get Reservation Date Time 
@@ -155,6 +153,58 @@ public class FocalPointController : SiteBaseController
         }
 
         #endregion
+
+        #region Change User Information By Incoming Data
+
+        var res = await _userService.ChangeUserInformationsFromReservationPart(User.GetUserId(), model.UserInfoForGetReservation, model.ReservationDateTimeId);
+
+        switch (res)
+        {
+            case UserInfoForGetReservationResult.FirstName:
+
+                TempData[ErrorMessage] = "لطفا نام خود را وارد کنید.";
+                return RedirectToAction(nameof(DocBooking), new { userId = model.DoctorId });
+                break;
+
+            case UserInfoForGetReservationResult.LastName:
+                TempData[ErrorMessage] = "لطفا نام خانوادگی خود را وارد کنید.";
+                return RedirectToAction(nameof(DocBooking), new { userId = model.DoctorId });
+                break;
+
+            case UserInfoForGetReservationResult.NationalCode:
+                TempData[ErrorMessage] = "لطفا کدملی خود را وارد کنید.";
+                return RedirectToAction(nameof(DocBooking), new { userId = model.DoctorId });
+                break;
+
+            case UserInfoForGetReservationResult.UserNotfound:
+                TempData[ErrorMessage] = "کاربر یافت نشد.";
+                return RedirectToAction(nameof(DocBooking), new { userId = model.DoctorId });
+                break;
+
+            case UserInfoForGetReservationResult.NationalCodeIsExist:
+                TempData[ErrorMessage] = "کدملی وارد شده درگذشته توسط فرد دیگری در وب سایت وارد شده است.";
+                return RedirectToAction(nameof(DocBooking), new { userId = model.DoctorId });
+                break;
+
+            case UserInfoForGetReservationResult.Success:
+                break;
+
+            case UserInfoForGetReservationResult.OthersFirstName:
+                TempData[ErrorMessage] = "نام بیمار را وارد کنید.";
+                return RedirectToAction(nameof(DocBooking), new { userId = model.DoctorId });
+                break;
+
+            case UserInfoForGetReservationResult.OthersLastName:
+                TempData[ErrorMessage] = "نام خانوادگی بیمار را وارد کنید.";
+                return RedirectToAction(nameof(DocBooking), new { userId = model.DoctorId });
+                break;
+
+            default:
+                break;
+        }
+
+        #endregion
+
 
         #region Add Reservation Date Time To User Patient
 
@@ -365,17 +415,13 @@ public class FocalPointController : SiteBaseController
                         return NotFound();
                     }
 
-                    string errorscode = jo["errors"]["code"].ToString();
-
-                    return BadRequest($"error code {errorscode}");
-
+                    return RedirectToAction("PaymentResult", "Payment", new { IsSuccess = false, refId = "-" });
                 }
             }
         }
         catch (Exception ex)
         {
-
-            throw ex;
+            return RedirectToAction("PaymentResult", "Payment", new { IsSuccess = false, refId = "-" });
         }
 
         return NotFound();

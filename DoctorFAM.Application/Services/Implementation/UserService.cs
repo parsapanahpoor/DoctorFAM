@@ -9,6 +9,7 @@ using DoctorFAM.Application.StaticTools;
 using DoctorFAM.Data.DbContext;
 using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.CooperationRequest;
+using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Account;
@@ -18,6 +19,7 @@ using DoctorFAM.Domain.ViewModels.Common;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Employees;
 using DoctorFAM.Domain.ViewModels.Laboratory.Employee;
 using DoctorFAM.Domain.ViewModels.Site.Account;
+using DoctorFAM.Domain.ViewModels.Site.Reservation;
 using DoctorFAM.Domain.ViewModels.UserPanel.Account;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -584,6 +586,160 @@ public class UserService : IUserService
     #endregion
 
     #region Site Side
+
+    //Change User Informations From Reservation Part
+    public async Task<UserInfoForGetReservationResult> ChangeUserInformationsFromReservationPart(ulong UserId, UserInfoForGetReservation? UserInfoForGetReservation, ulong reservationDateTimeId)
+    {
+        #region Get User By Id
+
+        var user = await GetUserById(UserId);
+        if (user == null) return UserInfoForGetReservationResult.UserNotfound;
+
+        #endregion
+
+        #region Change User Info
+
+        if (UserInfoForGetReservation.GetReservationForHimSelf == 2)
+        {
+            #region FirstName And Validation
+
+            if (string.IsNullOrEmpty(user.FirstName) && string.IsNullOrEmpty(UserInfoForGetReservation.FirstName))
+            {
+                return UserInfoForGetReservationResult.FirstName;
+            }
+            else if (string.IsNullOrEmpty(user.FirstName) && !string.IsNullOrEmpty(UserInfoForGetReservation.FirstName))
+            {
+                user.FirstName = UserInfoForGetReservation.FirstName;
+
+                _userRepository.UpdateUserWithoutSaveChange(user);
+            }
+
+            #endregion
+
+            #region LastName And Validation
+
+            if (string.IsNullOrEmpty(user.LastName) && string.IsNullOrEmpty(UserInfoForGetReservation.LastName))
+            {
+                return UserInfoForGetReservationResult.LastName;
+            }
+            else if (string.IsNullOrEmpty(user.LastName) && !string.IsNullOrEmpty(UserInfoForGetReservation.LastName))
+            {
+                user.LastName = UserInfoForGetReservation.LastName;
+
+                _userRepository.UpdateUserWithoutSaveChange(user);
+            }
+
+            #endregion
+
+            #region National Id And Validation
+
+            if (string.IsNullOrEmpty(user.NationalId) && string.IsNullOrEmpty(UserInfoForGetReservation.NationalCode))
+            {
+                return UserInfoForGetReservationResult.NationalCode;
+            }
+            else if (string.IsNullOrEmpty(user.NationalId) && !string.IsNullOrEmpty(UserInfoForGetReservation.NationalCode))
+            {
+                //Check Exist National Id
+                if (await IsExistAnyUserByNationalId(UserInfoForGetReservation.NationalCode))
+                {
+                    return UserInfoForGetReservationResult.NationalCodeIsExist;
+                }
+
+                user.NationalId = UserInfoForGetReservation.NationalCode;
+
+                _userRepository.UpdateUserWithoutSaveChange(user);
+            }
+
+            #endregion
+        }
+
+        #endregion
+
+        #region Add Record For Other People
+
+        if (UserInfoForGetReservation.GetReservationForHimSelf == 1)
+        {
+            #region FirstName And Validation
+
+            if (string.IsNullOrEmpty(user.FirstName) && string.IsNullOrEmpty(UserInfoForGetReservation.OtherButYourFirstName))
+            {
+                return UserInfoForGetReservationResult.FirstName;
+            }
+            else if (string.IsNullOrEmpty(user.FirstName) && !string.IsNullOrEmpty(UserInfoForGetReservation.OtherButYourFirstName))
+            {
+                user.FirstName = UserInfoForGetReservation.OtherButYourFirstName;
+
+                _userRepository.UpdateUserWithoutSaveChange(user);
+            }
+
+            #endregion
+
+            #region LastName And Validation
+
+            if (string.IsNullOrEmpty(user.LastName) && string.IsNullOrEmpty(UserInfoForGetReservation.OtherButYourLastName))
+            {
+                return UserInfoForGetReservationResult.LastName;
+            }
+            else if (string.IsNullOrEmpty(user.LastName) && !string.IsNullOrEmpty(UserInfoForGetReservation.OtherButYourLastName))
+            {
+                user.LastName = UserInfoForGetReservation.OtherButYourLastName;
+
+                _userRepository.UpdateUserWithoutSaveChange(user);
+            }
+
+            #endregion
+
+            #region National Id And Validation
+
+            if (string.IsNullOrEmpty(user.NationalId) && string.IsNullOrEmpty(UserInfoForGetReservation.OtherButYourNationalCode))
+            {
+                return UserInfoForGetReservationResult.NationalCode;
+            }
+            else if (string.IsNullOrEmpty(user.NationalId) && !string.IsNullOrEmpty(UserInfoForGetReservation.OtherButYourNationalCode))
+            {
+                //Check Exist National Id
+                if (await IsExistAnyUserByNationalId(UserInfoForGetReservation.OtherButYourNationalCode))
+                {
+                    return UserInfoForGetReservationResult.NationalCodeIsExist;
+                }
+
+                user.NationalId = UserInfoForGetReservation.OtherButYourNationalCode;
+
+                _userRepository.UpdateUserWithoutSaveChange(user);
+            }
+
+            #endregion
+
+            #region Other Informations
+
+            if (string.IsNullOrEmpty(UserInfoForGetReservation.OthersFirstName))
+            {
+                return UserInfoForGetReservationResult.OthersFirstName;
+            }
+            if (string.IsNullOrEmpty(UserInfoForGetReservation.OthersLastName))
+            {
+                return UserInfoForGetReservationResult.OthersLastName;
+            }
+
+            LogForGetAppoinmentForOtherPeople otherPerson = new LogForGetAppoinmentForOtherPeople()
+            {
+                FirstName = UserInfoForGetReservation.OthersFirstName,
+                LastName = UserInfoForGetReservation.OthersLastName,
+                UserId = user.Id
+            };
+
+            //Add To The Data Base 
+            await _userRepository.AddLogForGetAppoinmentForOtherPeopleToTheDataBaseWithoutSaveChanges(otherPerson);
+
+            #endregion
+        }
+
+        #endregion
+
+        await _userRepository.SaveChangesAsync();
+
+        return UserInfoForGetReservationResult.Success;
+    }
 
     //Get Username By User ID
     public async Task<string?> GetUsernameByUserID(ulong userId)
