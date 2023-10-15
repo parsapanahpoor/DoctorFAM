@@ -1481,10 +1481,14 @@ public class ReservationRepository : IReservationRepository
     //Fill ListOfSelectedReservationsSupporterSideDTO
     public async Task<List<ListOfSelectedReservationsSupporterSideDTO>?> FillListOfSelectedReservationsSupporterSideDTO()
     {
-        return await _context.DoctorReservationDateTimes
+        List<ListOfSelectedReservationsSupporterSideDTO> model = new List<ListOfSelectedReservationsSupporterSideDTO>();
+
+        model.AddRange(await _context.DoctorReservationDateTimes
                              .AsNoTracking()
                              .Include(p => p.DoctorReservationDate)
-                             .Where(p => !p.IsDelete && p.PatientId.HasValue)
+                             .Where(p => !p.IsDelete && p.PatientId.HasValue && 
+                                   ((p.CreateDate.DayOfYear == DateTime.Now.DayOfYear && p.CreateDate.Year == DateTime.Now.Year)
+                                    ||( p.DoctorReservationDate.ReservationDate.DayOfYear == DateTime.Now.DayOfYear && p.DoctorReservationDate.ReservationDate.Year == DateTime.Now.Year)))
                              .OrderByDescending(p => p.DoctorReservationDateId)
                              .Select(p => new ListOfSelectedReservationsSupporterSideDTO()
                              {
@@ -1509,7 +1513,9 @@ public class ReservationRepository : IReservationRepository
                                                       .FirstOrDefault(),
                                  ReservationDateTime = p
                              })
-                             .ToListAsync();
+                             .ToListAsync());
+
+        return model;
     }
 
     #endregion

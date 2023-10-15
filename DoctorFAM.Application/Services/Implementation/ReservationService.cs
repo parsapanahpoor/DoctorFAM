@@ -1606,10 +1606,6 @@ public class ReservationService : IReservationService
     //Fill ListOfSelectedReservationsSupporterSideDTO
     public async Task<List<ListOfSelectedReservationsSupporterSideDTO>?> FillListOfSelectedReservationsSupporterSideDTO()
     {
-        ListOfSelectedReservationsSupporterSideDTO model = new ListOfSelectedReservationsSupporterSideDTO();
-
-
-
         return await _reservation.FillListOfSelectedReservationsSupporterSideDTO();
     }
 
