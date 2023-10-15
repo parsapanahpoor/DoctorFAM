@@ -8,8 +8,10 @@
     <li class="active">@Localizer["Supporter Dashboard"]</li>
 }
 
-    @section Styles
+@section Styles
     {
+    <link href="/admin/css/dataTables.bootstrap.rtl.css" rel="stylesheet" />
+
     <style>
 
         .databox-bottom {
@@ -36,27 +38,37 @@
     </style>
 }
 
-    @section Scripts
+@section Scripts
     {
-
+    <script src="~/admin/js/datatable/jquery.dataTables.min.js"></script>
+    <script src="~/admin/js/datatable/ZeroClipboard.js"></script>
+    <script src="~/admin/js/datatable/dataTables.tableTools.min.js"></script>
+    <script src="~/admin/js/datatable/dataTables.bootstrap.min.js"></script>
+    <script src="~/admin/js/datatable/datatables-init.js"></script>
+    <script>
+        InitiateSimpleDataTable.init();
+        InitiateEditableDataTable.init();
+        InitiateExpandableDataTable.init();
+        InitiateSearchableDataTable.init();
+    </script>
 }
 
-    <div class="page-body">
+<div class="page-body">
 
-        <div class="row">
+    <div class="row">
 
-            @*Box Of Lastest Requests*@
-            <partial name="_LastestRequestsPartial" model="@Model.AllRecords" />
+        @*Box Of Today's Reservation Requests*@
+        <partial name="_TodayReservationReserved" model="@Model.DoctorReservationDateTimes" />
 
-            @*Box Of Lastest Requests*@
-            <partial name="_TodayReservationReserved" model="@Model.DoctorReservationDateTimes" />
+        @*Box Of Lastest Requests*@
+        <partial name="_LastestRequestsPartial" model="@Model.AllRecords" />
 
-            @*Box Of  Lastest Request For Excel File*@
-            <partial name="_LastestRequestForExcelFile" model="@Model.LatestRequestForUploadExcelFile" />
+        @*Box Of  Lastest Request For Excel File*@
+        <partial name="_LastestRequestForExcelFile" model="@Model.LatestRequestForUploadExcelFile" />
 
-            @*Box Of  Tickets List*@
-            <partial name="_LastestTicketsPartial" model="@Model.ListOfLastestTickets" />
-
-        </div>
+        @*Box Of  Tickets List*@
+        <partial name="_LastestTicketsPartial" model="@Model.ListOfLastestTickets" />
 
     </div>
+
+</div>

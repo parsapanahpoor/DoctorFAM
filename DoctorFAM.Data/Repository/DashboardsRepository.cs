@@ -12,6 +12,7 @@ using DoctorFAM.Domain.ViewModels.Dentist.Dashboard;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Dashbaord;
 using DoctorFAM.Domain.ViewModels.Nurse.NurseDashboard;
 using DoctorFAM.Domain.ViewModels.Supporter;
+using DoctorFAM.Domain.ViewModels.Supporter.Reservation;
 using DoctorFAM.Domain.ViewModels.UserPanel.Home;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -117,9 +118,37 @@ public class DashboardsRepository : IDashboardsRepository
 
         #region List Of Reservation Date Time 
 
-        model.DoctorReservationDateTimes = await _context.DoctorReservationDateTimes.Include(p => p.User).Include(p => p.DoctorReservationDate).ThenInclude(p => p.User)
-                                                .Where(p => !p.IsDelete && p.DoctorReservationDate.ReservationDate.DayOfYear == DateTime.Now.DayOfYear
-                                                && p.DoctorReservationDate.ReservationDate.Year == DateTime.Now.Year && !p.DoctorBooking).ToListAsync();
+        model.DoctorReservationDateTimes = await _context.DoctorReservationDateTimes
+                             .AsNoTracking()
+                             .Include(p => p.DoctorReservationDate)
+                             .Where(p => !p.IsDelete && p.PatientId.HasValue &&
+                                   ((p.CreateDate.DayOfYear == DateTime.Now.DayOfYear && p.CreateDate.Year == DateTime.Now.Year)
+                                    || (p.DoctorReservationDate.ReservationDate.DayOfYear == DateTime.Now.DayOfYear && p.DoctorReservationDate.ReservationDate.Year == DateTime.Now.Year)))
+                             .OrderByDescending(p => p.DoctorReservationDateId)
+                             .Select(p => new ListOfSelectedReservationsSupporterSideDTO()
+                             {
+                                 ReservationDate = p.DoctorReservationDate,
+                                 DoctorInfo = _context.Users
+                                                      .AsNoTracking()
+                                                      .Where(s => !s.IsDelete && s.Id == p.DoctorReservationDate.UserId)
+                                                      .Select(s => new DoctorInfoListOfSelectedReservationsSupporterSideDTO()
+                                                      {
+                                                          Mobile = s.Mobile,
+                                                          Username = s.Username
+                                                      })
+                                                      .FirstOrDefault(),
+                                 PatientInfo = _context.Users
+                                                      .AsNoTracking()
+                                                      .Where(s => !s.IsDelete && s.Id == p.PatientId.Value)
+                                                      .Select(s => new PatientInfoListOfSelectedReservationsSupporterSideDTO()
+                                                      {
+                                                          Mobile = s.Mobile,
+                                                          Username = s.Username
+                                                      })
+                                                      .FirstOrDefault(),
+                                 ReservationDateTime = p
+                             })
+                             .ToListAsync();
 
         #endregion
 
@@ -327,13 +356,13 @@ public class DashboardsRepository : IDashboardsRepository
         #region Lastest Customer Advertisements
 
         model.LastestCustomerAdvertisements = await _context.CustomerAdvertisement.Where(p => !p.IsDelete && p.CustomerAdvertisementState == Domain.Enums.CustomerAdvertisement.CustomerAdvertisementState.WaitingForInitialInvoice)
-                                                                 .OrderByDescending(p=> p.CreateDate).ToListAsync();
+                                                                 .OrderByDescending(p => p.CreateDate).ToListAsync();
 
         #endregion
 
         #region List Of Doctors That Waiting For Accpet Them Informations 
 
-        model.ListOfWaitingForAcceptInformationsDoctors = await  _context.Organizations
+        model.ListOfWaitingForAcceptInformationsDoctors = await _context.Organizations
             .Where(s => !s.IsDelete && s.OrganizationType == Domain.Enums.Organization.OrganizationType.DoctorOffice
                    && s.OrganizationInfoState == Domain.Entities.Doctors.OrganizationInfoState.WatingForConfirm)
             .Include(p => p.User)
@@ -344,15 +373,15 @@ public class DashboardsRepository : IDashboardsRepository
 
         #region Request For Send SMS From Doctors To The Users Admin Side View Model
 
-        model.RequestForSendSMSFromDoctorsToTheUsersAdminSideViewModel = await _context.SendRequestOfSMSFromDoctorsToThePatients.Where(p=> !p.IsDelete && p.SendSMSFromDoctorState == Domain.Enums.SendSMS.FromDoctors.SendSMSFromDoctorState.WaitingForConfirm)
-                                        .Select(p=> new RequestForSendSMSFromDoctorsToTheUsersAdminSideViewModel()
+        model.RequestForSendSMSFromDoctorsToTheUsersAdminSideViewModel = await _context.SendRequestOfSMSFromDoctorsToThePatients.Where(p => !p.IsDelete && p.SendSMSFromDoctorState == Domain.Enums.SendSMS.FromDoctors.SendSMSFromDoctorState.WaitingForConfirm)
+                                        .Select(p => new RequestForSendSMSFromDoctorsToTheUsersAdminSideViewModel()
                                         {
-                                            CountOfSMS = _context.SendRequestOfSMSFromDoctorsToThePatientDetails.Count(s=> !s.IsDelete && s.SendRequestOfSMSFromDoctorsToThePatientId == p.Id),
+                                            CountOfSMS = _context.SendRequestOfSMSFromDoctorsToThePatientDetails.Count(s => !s.IsDelete && s.SendRequestOfSMSFromDoctorsToThePatientId == p.Id),
                                             CreateDate = p.CreateDate,
                                             RequestId = p.Id,
                                             SendSMSFromDoctorState = p.SendSMSFromDoctorState,
-                                            DoctorUserInfoForShow = _context.Users.Where(s=> !s.IsDelete && s.Id == p.DoctorUserId)
-                                                                            .Select(s=> new DoctorUserInfoForShow()
+                                            DoctorUserInfoForShow = _context.Users.Where(s => !s.IsDelete && s.Id == p.DoctorUserId)
+                                                                            .Select(s => new DoctorUserInfoForShow()
                                                                             {
                                                                                 Mobile = s.Mobile,
                                                                                 UserAvatar = s.Avatar,
