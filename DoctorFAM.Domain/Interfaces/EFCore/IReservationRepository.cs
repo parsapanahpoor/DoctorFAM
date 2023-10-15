@@ -132,6 +132,9 @@ public interface IReservationRepository
 
     Task<FilterReservationSupporterSideViewModel?> FilterReservationSupporterPanelViewModel(FilterReservationSupporterSideViewModel filter);
 
+    //Fill ListOfSelectedReservationsSupporterSideDTO
+    Task<List<ListOfSelectedReservationsSupporterSideDTO>?> FillListOfSelectedReservationsSupporterSideDTO();
+
     #endregion
 
     #region Site Side

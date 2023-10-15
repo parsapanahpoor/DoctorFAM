@@ -1364,7 +1364,7 @@ public class ReservationRepository : IReservationRepository
 
     #endregion
 
-    #region Supporter Side 
+    #region Supporter Side  
 
     public async Task<FilterReservationSupporterSideViewModel?> FilterReservationSupporterPanelViewModel(FilterReservationSupporterSideViewModel filter)
     {
@@ -1372,7 +1372,7 @@ public class ReservationRepository : IReservationRepository
         .Include(s => s.User)
         .Include(p => p.DoctorReservationDate)
         .ThenInclude(p => p.User)
-        .Where(p => !p.IsDelete)
+        .Where(p => !p.IsDelete && p.PatientId.HasValue)
         .OrderByDescending(s => s.DoctorReservationDate.ReservationDate)
         .AsQueryable();
 
@@ -1478,6 +1478,39 @@ public class ReservationRepository : IReservationRepository
         return filter;
     }
 
+    //Fill ListOfSelectedReservationsSupporterSideDTO
+    public async Task<List<ListOfSelectedReservationsSupporterSideDTO>?> FillListOfSelectedReservationsSupporterSideDTO()
+    {
+        return await _context.DoctorReservationDateTimes
+                             .AsNoTracking()
+                             .Include(p => p.DoctorReservationDate)
+                             .Where(p => !p.IsDelete && p.PatientId.HasValue)
+                             .OrderByDescending(p => p.DoctorReservationDateId)
+                             .Select(p => new ListOfSelectedReservationsSupporterSideDTO()
+                             {
+                                 ReservationDate = p.DoctorReservationDate,
+                                 DoctorInfo = _context.Users
+                                                      .AsNoTracking()
+                                                      .Where(s => !s.IsDelete && s.Id == p.DoctorReservationDate.UserId)
+                                                      .Select(s => new DoctorInfoListOfSelectedReservationsSupporterSideDTO()
+                                                      {
+                                                          Mobile = s.Mobile,
+                                                          Username = s.Username
+                                                      })
+                                                      .FirstOrDefault(),
+                                 PatientInfo = _context.Users
+                                                      .AsNoTracking()
+                                                      .Where(s => !s.IsDelete && s.Id == p.PatientId.Value)
+                                                      .Select(s => new PatientInfoListOfSelectedReservationsSupporterSideDTO()
+                                                      {
+                                                          Mobile = s.Mobile,
+                                                          Username = s.Username
+                                                      })
+                                                      .FirstOrDefault(),
+                                 ReservationDateTime = p
+                             })
+                             .ToListAsync();
+    }
 
     #endregion
 
