@@ -1603,6 +1603,16 @@ public class ReservationService : IReservationService
 
     #region Supporter Panel 
 
+    //Fill ListOfSelectedReservationsSupporterSideDTO
+    public async Task<List<ListOfSelectedReservationsSupporterSideDTO>?> FillListOfSelectedReservationsSupporterSideDTO()
+    {
+        ListOfSelectedReservationsSupporterSideDTO model = new ListOfSelectedReservationsSupporterSideDTO();
+
+
+
+        return await _reservation.FillListOfSelectedReservationsSupporterSideDTO();
+    }
+
     public async Task<FilterReservationSupporterSideViewModel?> FilterReservationSupporterPanelViewModel(FilterReservationSupporterSideViewModel filter)
     {
         return await _reservation.FilterReservationSupporterPanelViewModel(filter);

@@ -173,6 +173,9 @@ public interface IReservationService
 
     #region Supporter Panel 
 
+    //Fill ListOfSelectedReservationsSupporterSideDTO
+    Task<List<ListOfSelectedReservationsSupporterSideDTO>?> FillListOfSelectedReservationsSupporterSideDTO();
+
     Task<FilterReservationSupporterSideViewModel?> FilterReservationSupporterPanelViewModel(FilterReservationSupporterSideViewModel filter);
 
     Task<ShowReservationDetailSupporterSideViewModel?> FillShowReservationDetailSupporterSideViewModel(ulong reservationId);
