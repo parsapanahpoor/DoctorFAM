@@ -95,7 +95,7 @@
 
                                         <td class="center ">
 
-                                            @reservation.ReservationDateTime.CreateDate.ToShamsiDate()
+                                            @reservation.ReservationDateTime.UserRequestForReserveDate.Value.ToShamsiDate()
 
                                         </td>
 
@@ -114,7 +114,7 @@
             }
             else
             {
-                <partial name="_SupporterNotFoundPartial" />
+                <partial name="_AdminNotFoundPartial" />
             }
 
         </div>
