@@ -1055,7 +1055,7 @@ public class ReservationRepository : IReservationRepository
         .Include(s => s.User)
         .Include(p => p.DoctorReservationDate)
         .ThenInclude(p => p.User)
-        .Where(p => !p.IsDelete)
+        .Where(p => !p.IsDelete && p.PatientId.HasValue)
         .OrderByDescending(s => s.DoctorReservationDate.ReservationDate)
         .AsQueryable();
 
