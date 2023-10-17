@@ -122,8 +122,8 @@ public class DashboardsRepository : IDashboardsRepository
         model.DoctorReservationDateTimes = await _context.DoctorReservationDateTimes
                              .AsNoTracking()
                              .Include(p => p.DoctorReservationDate)
-                             .Where(p => !p.IsDelete && p.PatientId.HasValue &&
-                                   ((p.CreateDate.DayOfYear == DateTime.Now.DayOfYear && p.CreateDate.Year == DateTime.Now.Year)
+                             .Where(p => !p.IsDelete && p.PatientId.HasValue && p.UserRequestForReserveDate.HasValue &&
+                                   ((p.UserRequestForReserveDate.Value.DayOfYear == DateTime.Now.DayOfYear && p.UserRequestForReserveDate.Value.Year == DateTime.Now.Year)
                                     || (p.DoctorReservationDate.ReservationDate.DayOfYear == DateTime.Now.DayOfYear && p.DoctorReservationDate.ReservationDate.Year == DateTime.Now.Year)))
                              .OrderByDescending(p => p.DoctorReservationDateId)
                              .Select(p => new ListOfSelectedReservationsSupporterSideDTO()
@@ -289,8 +289,8 @@ public class DashboardsRepository : IDashboardsRepository
         model.DoctorReservationDateTimes = await _context.DoctorReservationDateTimes
                              .AsNoTracking()
                              .Include(p => p.DoctorReservationDate)
-                             .Where(p => !p.IsDelete && p.PatientId.HasValue &&
-                                   ((p.CreateDate.DayOfYear == DateTime.Now.DayOfYear && p.CreateDate.Year == DateTime.Now.Year)
+                             .Where(p => !p.IsDelete && p.PatientId.HasValue && p.UserRequestForReserveDate.HasValue &&
+                                   ((p.UserRequestForReserveDate.Value.DayOfYear == DateTime.Now.DayOfYear && p.UserRequestForReserveDate.Value.Year == DateTime.Now.Year)
                                     || (p.DoctorReservationDate.ReservationDate.DayOfYear == DateTime.Now.DayOfYear && p.DoctorReservationDate.ReservationDate.Year == DateTime.Now.Year)))
                              .OrderByDescending(p => p.DoctorReservationDateId)
                              .Select(p => new ListOfSelectedReservationsAdminSideDTO()

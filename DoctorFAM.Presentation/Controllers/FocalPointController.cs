@@ -205,7 +205,6 @@ public class FocalPointController : SiteBaseController
 
         #endregion
 
-
         #region Add Reservation Date Time To User Patient
 
         var resForAdd = await _reservationService.GetReservationDateTimeToUserPatient(model, User.GetUserId());
