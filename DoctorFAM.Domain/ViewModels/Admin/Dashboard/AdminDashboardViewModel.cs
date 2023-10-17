@@ -4,6 +4,7 @@ using DoctorFAM.Domain.Entities.CooperationRequest;
 using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.ViewModels.Admin.IncomingExcelFile;
+using DoctorFAM.Domain.ViewModels.Admin.Reservation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +31,7 @@ namespace DoctorFAM.Domain.ViewModels.Admin.Dashboard
         
         public List<Request> AllRecords { get; set; }
 
-        public List<DoctorReservationDateTime> DoctorReservationDateTimes { get; set; }
+        public List<ListOfSelectedReservationsAdminSideDTO> DoctorReservationDateTimes { get; set; }
 
         public List<Domain.Entities.Contact.Ticket> ListOfLastestTickets { get; set; }
 
