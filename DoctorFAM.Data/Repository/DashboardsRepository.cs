@@ -6,6 +6,7 @@ using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.Dashboard;
 using DoctorFAM.Domain.ViewModels.Admin.IncomingExcelFile;
+using DoctorFAM.Domain.ViewModels.Admin.Reservation;
 using DoctorFAM.Domain.ViewModels.Admin.SideBar;
 using DoctorFAM.Domain.ViewModels.Consultant.Dashboard;
 using DoctorFAM.Domain.ViewModels.Dentist.Dashboard;
@@ -283,12 +284,41 @@ public class DashboardsRepository : IDashboardsRepository
 
         #region List Of Reservation Date Time 
 
+        #region List Of Reservation Date Time 
+
         model.DoctorReservationDateTimes = await _context.DoctorReservationDateTimes
-                                                .Include(p => p.User)
-                                                .Include(p => p.DoctorReservationDate)
-                                                .ThenInclude(p => p.User)
-                                                .Where(p => !p.IsDelete && p.DoctorReservationDate.ReservationDate.DayOfYear == DateTime.Now.DayOfYear
-                                                && p.DoctorReservationDate.ReservationDate.Year == DateTime.Now.Year && !p.DoctorBooking).ToListAsync();
+                             .AsNoTracking()
+                             .Include(p => p.DoctorReservationDate)
+                             .Where(p => !p.IsDelete && p.PatientId.HasValue &&
+                                   ((p.CreateDate.DayOfYear == DateTime.Now.DayOfYear && p.CreateDate.Year == DateTime.Now.Year)
+                                    || (p.DoctorReservationDate.ReservationDate.DayOfYear == DateTime.Now.DayOfYear && p.DoctorReservationDate.ReservationDate.Year == DateTime.Now.Year)))
+                             .OrderByDescending(p => p.DoctorReservationDateId)
+                             .Select(p => new ListOfSelectedReservationsAdminSideDTO()
+                             {
+                                 ReservationDate = p.DoctorReservationDate,
+                                 DoctorInfo = _context.Users
+                                                      .AsNoTracking()
+                                                      .Where(s => !s.IsDelete && s.Id == p.DoctorReservationDate.UserId)
+                                                      .Select(s => new DoctorInfoListOfSelectedReservationsAdminSideDTO()
+                                                      {
+                                                          Mobile = s.Mobile,
+                                                          Username = s.Username
+                                                      })
+                                                      .FirstOrDefault(),
+                                 PatientInfo = _context.Users
+                                                      .AsNoTracking()
+                                                      .Where(s => !s.IsDelete && s.Id == p.PatientId.Value)
+                                                      .Select(s => new PatientInfoListOfSelectedReservationsAdminSideDTO()
+                                                      {
+                                                          Mobile = s.Mobile,
+                                                          Username = s.Username
+                                                      })
+                                                      .FirstOrDefault(),
+                                 ReservationDateTime = p
+                             })
+                             .ToListAsync();
+
+        #endregion
 
         #endregion
 
