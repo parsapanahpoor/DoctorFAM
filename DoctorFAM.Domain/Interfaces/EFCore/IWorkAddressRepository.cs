@@ -1,37 +1,56 @@
 ﻿using DoctorFAM.Domain.Entities.WorkAddress;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo;
+using Microsoft.EntityFrameworkCore;
 
-namespace DoctorFAM.Domain.Interfaces
+namespace DoctorFAM.Domain.Interfaces;
+
+public interface IWorkAddressRepository
 {
-    public interface IWorkAddressRepository
-    {
-        #region User Side
+    #region User Side
 
-        Task<List<WorkAddress>?> GetUserWorkAddressesByUserId(ulong userId);
+    //Update Work Address
+    void Update(WorkAddress workAddress);
 
-        Task AddWorkAddress(WorkAddress workAddress);
+    //Save Changees
+    Task SaveChangesAsync();
+
+    //Get Count Of User Work Addresses
+    Task<int> GetCountOfUserWorkAddresses(ulong userId);
+
+    //Get User Work Address By Work Address Id
+    Task<WorkAddress?> GetUserWorkAddressByWorkAddressIdAsyNoTracking(ulong addressId);
+
+    //Get User Work Address By Work Address Id
+    Task<WorkAddress?> GetUserWorkAddressByWorkAddressId(ulong addressId);
+
+    Task<List<WorkAddress>?> GetUserWorkAddressesByUserId(ulong userId);
+
+    Task AddWorkAddress(WorkAddress workAddress);
 
 
-        //Add Work Address Without Save Changes
-        Task AddWorkAddressWithoutSaveChanges(WorkAddress workAddress);
+    //Add Work Address Without Save Changes
+    Task AddWorkAddressWithoutSaveChanges(WorkAddress workAddress);
 
-        Task<WorkAddress?> GetUserWorkAddressById(ulong userid);
+    Task<WorkAddress?> GetUserWorkAddressById(ulong userid);
 
-        Task UpdateUserWorkAddress(WorkAddress workAddress);
+    Task UpdateUserWorkAddress(WorkAddress workAddress);
 
-        //Update User Work Address Without Save Changes
-        Task UpdateUserWorkAddressWithoutSaveChanges(WorkAddress workAddress);
+    //Update User Work Address Without Save Changes
+    Task UpdateUserWorkAddressWithoutSaveChanges(WorkAddress workAddress);
 
-        Task<WorkAddress?> GetLastWorkAddressByUserId(ulong userId);
+    Task<WorkAddress?> GetLastWorkAddressByUserId(ulong userId);
 
-        Task<WorkAddress?> GetUserWorkAddressByIdWithAsNoTracking(ulong userid);
+    Task<WorkAddress?> GetUserWorkAddressByIdWithAsNoTracking(ulong userid);
 
-        Task<WorkAddress?> GetLastWorkAddressByUserIdWithAsNoTracking(ulong userId);
+    Task<WorkAddress?> GetLastWorkAddressByUserIdWithAsNoTracking(ulong userId);
 
-        #endregion
-    }
+    #endregion
+
+    #region Doctor Panel 
+
+    //Get List Of Doctor Addresses By Doctor User Id
+    Task<List<ListOfDoctorsLocationDTO>?> GetListOfDoctorAddressesByDoctorUserId(ulong doctorUserId);
+
+    #endregion
+
 }
