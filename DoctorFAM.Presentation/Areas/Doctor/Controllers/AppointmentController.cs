@@ -88,7 +88,8 @@ public class AppointmentController : DoctorBaseController
     {
         #region Model State Validation 
 
-        if (model.AddReservationDateState == AddReservationDateState.computerized && (!model.StartTime.HasValue || !model.EndTime.HasValue || !model.PeriodNumber.HasValue))
+        if (model.AddReservationDateState == AddReservationDateState.computerized && 
+           (!model.StartTime.HasValue || !model.EndTime.HasValue || !model.PeriodNumber.HasValue))
         {
             #region Page Data 
 

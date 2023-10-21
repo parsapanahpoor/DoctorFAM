@@ -298,12 +298,6 @@ public class ReservationService : IReservationService
 
         #endregion
 
-        #region Get Doctor Office Address
-
-        var doctorOffice = await _workAddress.GetLastWorkAddressByUserId(userId);
-
-        #endregion
-
         #region If Add Reservation Date State Is computerized
 
         //Check That Fields Are Not Empty
@@ -338,9 +332,9 @@ public class ReservationService : IReservationService
                 reservationTime.StartTime = time.ToString($"{time.Hour.ToString("00")}:{time.Minute.ToString("00")}:00");
                 reservationTime.EndTime = endTime.ToString($"{endTime.Hour.ToString("00")}:{endTime.Minute.ToString("00")}:00");
                 reservationTime.DoctorReservationDateId = reservation.Id;
-                reservationTime.DoctorReservationState = Domain.Enums.DoctorReservation.DoctorReservationState.NotReserved;
+                reservationTime.DoctorReservationState = DoctorReservationState.NotReserved;
                 reservationTime.DoctorReservationTypeSelected = model.DoctorReservationType;
-                if (doctorOffice != null) reservationTime.WorkAddressId = doctorOffice.Id;
+                reservationTime.WorkAddressId = model.LocationId;
 
                 await _reservation.AddReservationDateTime(reservationTime);
 
