@@ -255,6 +255,8 @@ public class AppointmentController : DoctorBaseController
         var model = await _reservatioService.FillAddReservationDateTimeWithComputerViewModel(reservationDateId, organization.OwnerId);
         if (model == null) return NotFound();
 
+        ViewBag.DoctorWorkAddresses = await _workAddressService.GetListOfDoctorAddressesByDoctorUserId(User.GetUserId());
+
         #endregion
 
         return View(model);
@@ -267,6 +269,8 @@ public class AppointmentController : DoctorBaseController
 
         if (!ModelState.IsValid)
         {
+            ViewBag.DoctorWorkAddresses = await _workAddressService.GetListOfDoctorAddressesByDoctorUserId(User.GetUserId());
+
             TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
             return View(model);
         }
@@ -292,7 +296,9 @@ public class AppointmentController : DoctorBaseController
 
         #endregion
 
+        ViewBag.DoctorWorkAddresses = await _workAddressService.GetListOfDoctorAddressesByDoctorUserId(User.GetUserId());
         TempData[ErrorMessage] = _sharedLocalizer["The operation has failed"].Value;
+
         return View(model);
     }
 
@@ -372,6 +378,12 @@ public class AppointmentController : DoctorBaseController
 
         #endregion
 
+        #region Doctor Office Work Address
+
+        ViewBag.WorkAddress = await _workAddressService.GetWorkAddressById(res.WorkAddressId);
+
+        #endregion
+
         return View(res);
     }
 
@@ -396,6 +408,12 @@ public class AppointmentController : DoctorBaseController
 
         if (!ModelState.IsValid)
         {
+            #region Doctor Office Work Address
+
+            ViewBag.WorkAddress = await _workAddressService.GetWorkAddressById(res.WorkAddressId);
+
+            #endregion
+
             TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
             return View(res);
         }
@@ -414,6 +432,12 @@ public class AppointmentController : DoctorBaseController
             TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
             return RedirectToAction(nameof(ReservationDateDetail), new { ReservationDateId = reservationDateTime.DoctorReservationDateId });
         }
+
+        #endregion
+
+        #region Doctor Office Work Address
+
+        ViewBag.WorkAddress = await _workAddressService.GetWorkAddressById(res.WorkAddressId);
 
         #endregion
 

@@ -28,6 +28,16 @@ public class WorkAddressService : IWorkAddressService
 
     #endregion
 
+    #region General
+
+    //Get Work Address By Id
+    public async Task<WorkAddress?> GetWorkAddressById(ulong workAddressId)
+    {
+        return await _workAddress.GetWorkAddressById(workAddressId);
+    }
+
+    #endregion
+
     #region Doctor Panel 
 
     //Get List Of Doctor Addresses By Doctor User Id

@@ -9,6 +9,13 @@ namespace DoctorFAM.Application.Services.Interfaces;
 
 public interface IWorkAddressService
 {
+    #region General
+
+    //Get Work Address By Id
+    Task<WorkAddress?> GetWorkAddressById(ulong workAddressId);
+
+    #endregion
+
     #region User Panel Side 
 
     Task<List<WorkAddress>?> GetUserWorkAddressesByUserId(ulong userId);

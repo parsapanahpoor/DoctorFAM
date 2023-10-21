@@ -6,6 +6,13 @@ namespace DoctorFAM.Domain.Interfaces;
 
 public interface IWorkAddressRepository
 {
+    #region General
+
+    //Get Work Address By Id
+    Task<WorkAddress?> GetWorkAddressById(ulong workAddressId);
+
+    #endregion
+
     #region User Side
 
     //Update Work Address
@@ -52,5 +59,4 @@ public interface IWorkAddressRepository
     Task<List<ListOfDoctorsLocationDTO>?> GetListOfDoctorAddressesByDoctorUserId(ulong doctorUserId);
 
     #endregion
-
 }

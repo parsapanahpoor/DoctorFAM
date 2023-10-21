@@ -61,6 +61,14 @@ public class WorkAddressRepository : IWorkAddressRepository
 
     #region User Panel Side 
 
+    //Get Work Address By Id
+    public async Task<WorkAddress?> GetWorkAddressById(ulong workAddressId)
+    {
+        return await _context.WorkAddresses
+                             .Where(p => !p.IsDelete && p.Id == workAddressId)
+                             .FirstOrDefaultAsync();
+    }
+
     //Update Work Address
     public void Update(WorkAddress workAddress)
     {

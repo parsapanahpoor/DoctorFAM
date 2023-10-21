@@ -494,7 +494,7 @@ public class ReservationService : IReservationService
             reservationTime.DoctorReservationDateId = reservationDate.Id;
             reservationTime.DoctorReservationState = Domain.Enums.DoctorReservation.DoctorReservationState.NotReserved;
             reservationTime.DoctorReservationTypeSelected = model.DoctorReservationType;
-            if (doctorOffice != null) reservationTime.WorkAddressId = doctorOffice.Id;
+            reservationTime.WorkAddressId = model.LocationId;
 
             #region Check Is Exist Doctor Reservation Date Time With This Time 
 
@@ -976,6 +976,7 @@ public class ReservationService : IReservationService
         DoctorPersonalBookingViewModel model = new DoctorPersonalBookingViewModel()
         {
             DoctorReservationDateTimeId = reservationDateTime.Id,
+            WorkAddressId = reservationDateTime.WorkAddressId.Value,
         };
 
         #endregion

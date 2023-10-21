@@ -35,8 +35,6 @@ public sealed class DoctorReservationDateTime : BaseEntity
 
     public string? UserRequestDescription { get; set; }
 
-    public ulong DoctorLocationId { get; set; }
-
     #endregion
 
     #region relations
