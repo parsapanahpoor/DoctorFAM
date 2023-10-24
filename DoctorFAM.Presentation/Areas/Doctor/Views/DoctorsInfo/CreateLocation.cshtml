@@ -1,0 +1,132 @@
+﻿@using DoctorFAM.Domain.Enums
+@using DoctorFAM.Application.StaticTools
+@using DoctorFAM.Domain.ViewModels.Common
+@model DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo.CreateLocationDoctorPanelDTO
+
+@{
+    ViewData["Title"] = "افزودن آدرس جدید";
+}
+
+@{
+    var countries = ViewData["Countries"] != null ? ViewData["Countries"] as List<SelectListViewModel> : null;
+    var states = ViewData["States"] != null ? ViewData["States"] as List<SelectListViewModel> : null;
+    var cities = ViewData["Cities"] != null ? ViewData["Cities"] as List<SelectListViewModel> : null;
+}
+
+@section Scripts
+    {
+    <partial name="_JqueryValidation" />
+}
+
+@section Breadcrumb
+    {
+    <li>
+        <a asp-action="PageOfManageDoctorInfo" asp-controller="DoctorsInfo" asp-area="Doctor"> @Localizer["اطلاعات کاربری پزشک"] </a>
+    </li>
+}
+
+<form method="post" asp-action="CreateLocation" asp-controller="DoctorsInfo" asp-area="Doctor" >
+
+    <div class="row">
+        <div class="col-lg-12 col-sm-12">
+            <div class="row">
+
+
+                <div class="col-lg-12">
+                    <div class="widget">
+                        <div class="widget-header bordered-bottom bordered-green" style="background-color:#d1f4fa">
+                            <span class="widget-caption"> @Localizer["اطلاعات آدرس"] </span>
+                        </div>
+                        <div class="widget-body" style="background-color:#d1f4fa !important;">
+                            <div class="row">
+
+                                <div class="form-group col-md-4 col-sm-12">
+                                    <label asp-for="CountryId">کشور</label>
+                                    <select class="form-control" asp-for="CountryId">
+                                        <option value=""> لطفا یک کشور را انتخاب کنید </option>
+                                        @if (countries != null && countries.Any())
+                                        {
+                                            foreach (var country in countries)
+                                            {
+                                                if (Model != null && Model.CountryId == country.Id)
+                                                {
+                                                    <option value="@country.Id" selected="selected"> @country.Title </option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@country.Id"> @country.Title </option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    <span class="text-danger" asp-validation-for="CountryId"></span>
+                                </div>
+
+                                <div class="form-group col-md-4 col-sm-12">
+                                    <label asp-for="StateId">استان</label>
+                                    <select class="form-control" asp-for="StateId">
+                                        <option value=""> لطفا یک استان را انتخاب کنید </option>
+                                        @if (states != null && states.Any())
+                                        {
+                                            foreach (var state in states)
+                                            {
+                                                if (Model != null && Model.StateId == state.Id)
+                                                {
+                                                    <option value="@state.Id" selected="selected"> @state.Title </option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@state.Id"> @state.Title </option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    <span class="text-danger" asp-validation-for="StateId"></span>
+                                </div>
+
+                                <div class="form-group col-md-4 col-sm-12">
+                                    <label asp-for="CityId">شهر</label>
+                                    <select asp-for="CityId" class="form-control">
+                                        <option value=""> لطفا یک شهر را انتخاب کنید </option>
+                                        @if (cities != null && cities.Any())
+                                        {
+                                            foreach (var city in cities)
+                                            {
+                                                if (Model != null && Model.CityId == city.Id)
+                                                {
+                                                    <option value="@city.Id" selected="selected"> @city.Title </option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@city.Id"> @city.Title </option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    <span class="text-danger" asp-validation-for="CityId"></span>
+                                </div>
+
+                                <div class="form-group col-md-12 col-sm-12">
+                                    <span class="red">*</span>
+                                    <label>آدرس مطب یا محل کار</label>
+                                    <textarea type="text" class="form-control" asp-for="WorkAddress">@Model.WorkAddress</textarea>
+                                    <span class="text-danger" asp-validation-for="WorkAddress"></span>
+                                </div>
+
+                                <hr class="margin-bottom-10 margin-top-10" />
+
+                                <div class="col-md-12 flex-style">
+                                    <button type="submit" class="btn btn-labeled btn-palegreen">
+                                        <i class="btn-label glyphicon glyphicon-ok"></i>@Localizer["ثبت"]
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</form>

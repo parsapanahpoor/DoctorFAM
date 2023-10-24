@@ -1,28 +1,25 @@
-﻿using DoctorFAM.Domain.Entities.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿#region Usings
 
-namespace DoctorFAM.Domain.Entities.DoctorReservation
+using DoctorFAM.Domain.Entities.Common;
+namespace DoctorFAM.Domain.Entities.DoctorReservation;
+
+#endregion
+
+public sealed class ReservationDateTimeCancelation : BaseEntity
 {
-    public class ReservationDateTimeCancelation : BaseEntity
-    {
-        #region properties
+    #region properties
 
-        public ulong ReservationDateCancelationId { get; set; }
+    public ulong ReservationDateCancelationId { get; set; }
 
-        public ulong  DoctorReservationDateTimeId{ get; set; }
+    public ulong  DoctorReservationDateTimeId{ get; set; }
 
-        #endregion
+    #endregion
 
-        #region relations 
+    #region relations 
 
-        public ReservationDateCancelation ReservationDateCancelation { get; set; }
+    public ReservationDateCancelation ReservationDateCancelation { get; set; }
 
-        public DoctorReservationDateTime DoctorReservationDateTime { get; set; }
+    public DoctorReservationDateTime DoctorReservationDateTime { get; set; }
 
-        #endregion
-    }
+    #endregion
 }

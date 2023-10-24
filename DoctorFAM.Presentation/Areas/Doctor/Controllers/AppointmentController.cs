@@ -2,37 +2,36 @@
 
 using DoctorFAM.Application.Convertors;
 using DoctorFAM.Application.Extensions;
-using DoctorFAM.Application.Services.Implementation;
 using DoctorFAM.Application.Services.Interfaces;
-using DoctorFAM.Application.StaticTools;
-using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment;
-using DoctorFAM.Web.Areas.Doctor.ActionFilterAttributes;
 using DoctorFAM.Web.Doctor.Controllers;
 using DoctorFAM.Web.HttpManager;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
-using System.Threading.Tasks;
-
-#endregion
+using System.Runtime.CompilerServices;
 
 namespace DoctorFAM.Web.Areas.Doctor.Controllers;
+
+#endregion
 
 public class AppointmentController : DoctorBaseController
 {
     #region ctor
 
     private readonly IReservationService _reservatioService;
-
     private readonly IStringLocalizer<SharedLocalizer.SharedLocalizer> _sharedLocalizer;
-
     private readonly IOrganizationService _organizationService;
+    private readonly IWorkAddressService _workAddressService;
 
-    public AppointmentController(IReservationService reservatioService, IStringLocalizer<SharedLocalizer.SharedLocalizer> sharedLocalizer, IOrganizationService organizationService)
+    public AppointmentController(IReservationService reservatioService,
+                                 IStringLocalizer<SharedLocalizer.SharedLocalizer> sharedLocalizer, 
+                                 IOrganizationService organizationService,
+                                 IWorkAddressService workAddressService)
     {
         _reservatioService = reservatioService;
         _sharedLocalizer = sharedLocalizer;
         _organizationService = organizationService;
+        _workAddressService = workAddressService;
     }
 
     #endregion
@@ -77,6 +76,7 @@ public class AppointmentController : DoctorBaseController
         #region Page Data 
 
         ViewBag.DoctorReservationDate = await _reservatioService.ListOfDoctorReservationDateAfterDateTimeNow(User.GetUserId());
+        ViewBag.DoctorWorkAddresses = await _workAddressService.GetListOfDoctorAddressesByDoctorUserId(User.GetUserId());
 
         #endregion
 
@@ -88,11 +88,13 @@ public class AppointmentController : DoctorBaseController
     {
         #region Model State Validation 
 
-        if (model.AddReservationDateState == AddReservationDateState.computerized && (!model.StartTime.HasValue || !model.EndTime.HasValue || !model.PeriodNumber.HasValue))
+        if (model.AddReservationDateState == AddReservationDateState.computerized && 
+           (!model.StartTime.HasValue || !model.EndTime.HasValue || !model.PeriodNumber.HasValue))
         {
             #region Page Data 
 
             ViewBag.DoctorReservationDate = await _reservatioService.ListOfDoctorReservationDateAfterDateTimeNow(User.GetUserId());
+            ViewBag.DoctorWorkAddresses = await _workAddressService.GetListOfDoctorAddressesByDoctorUserId(User.GetUserId());
 
             #endregion
 
@@ -132,6 +134,7 @@ public class AppointmentController : DoctorBaseController
         #region Page Data 
 
         ViewBag.DoctorReservationDate = await _reservatioService.ListOfDoctorReservationDateAfterDateTimeNow(User.GetUserId());
+        ViewBag.DoctorWorkAddresses = await _workAddressService.GetListOfDoctorAddressesByDoctorUserId(User.GetUserId());
 
         #endregion
 
@@ -252,6 +255,8 @@ public class AppointmentController : DoctorBaseController
         var model = await _reservatioService.FillAddReservationDateTimeWithComputerViewModel(reservationDateId, organization.OwnerId);
         if (model == null) return NotFound();
 
+        ViewBag.DoctorWorkAddresses = await _workAddressService.GetListOfDoctorAddressesByDoctorUserId(User.GetUserId());
+
         #endregion
 
         return View(model);
@@ -264,6 +269,8 @@ public class AppointmentController : DoctorBaseController
 
         if (!ModelState.IsValid)
         {
+            ViewBag.DoctorWorkAddresses = await _workAddressService.GetListOfDoctorAddressesByDoctorUserId(User.GetUserId());
+
             TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
             return View(model);
         }
@@ -289,7 +296,9 @@ public class AppointmentController : DoctorBaseController
 
         #endregion
 
+        ViewBag.DoctorWorkAddresses = await _workAddressService.GetListOfDoctorAddressesByDoctorUserId(User.GetUserId());
         TempData[ErrorMessage] = _sharedLocalizer["The operation has failed"].Value;
+
         return View(model);
     }
 
@@ -369,6 +378,12 @@ public class AppointmentController : DoctorBaseController
 
         #endregion
 
+        #region Doctor Office Work Address
+
+        ViewBag.WorkAddress = await _workAddressService.GetWorkAddressById(res.WorkAddressId);
+
+        #endregion
+
         return View(res);
     }
 
@@ -393,6 +408,12 @@ public class AppointmentController : DoctorBaseController
 
         if (!ModelState.IsValid)
         {
+            #region Doctor Office Work Address
+
+            ViewBag.WorkAddress = await _workAddressService.GetWorkAddressById(res.WorkAddressId);
+
+            #endregion
+
             TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
             return View(res);
         }
@@ -411,6 +432,12 @@ public class AppointmentController : DoctorBaseController
             TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
             return RedirectToAction(nameof(ReservationDateDetail), new { ReservationDateId = reservationDateTime.DoctorReservationDateId });
         }
+
+        #endregion
+
+        #region Doctor Office Work Address
+
+        ViewBag.WorkAddress = await _workAddressService.GetWorkAddressById(res.WorkAddressId);
 
         #endregion
 
@@ -503,6 +530,8 @@ public class AppointmentController : DoctorBaseController
             return NotFound();
         }
 
+        ViewBag.DoctorWorkAddresses = await _workAddressService.GetListOfDoctorAddressesByDoctorUserId(User.GetUserId());
+
         #endregion
 
         return View(model);
@@ -515,7 +544,9 @@ public class AppointmentController : DoctorBaseController
 
         if (!ModelState.IsValid)
         {
+            ViewBag.DoctorWorkAddresses = await _workAddressService.GetListOfDoctorAddressesByDoctorUserId(User.GetUserId());
             TempData[ErrorMessage] = "عملیات باشکست مواجه شده است. ";
+
             return View(model);
         }
 
@@ -532,7 +563,9 @@ public class AppointmentController : DoctorBaseController
 
         #endregion
 
+        ViewBag.DoctorWorkAddresses = await _workAddressService.GetListOfDoctorAddressesByDoctorUserId(User.GetUserId());
         TempData[ErrorMessage] = "عملیات باشکست مواجه شده است. ";
+
         return View(model);
     }
 

@@ -1,6 +1,9 @@
-﻿using DoctorFAM.Domain.Entities.Common;
+﻿#region Usings
 
+using DoctorFAM.Domain.Entities.Common;
 namespace DoctorFAM.Domain.Entities.DoctorReservation;
+
+#endregion
 
 public sealed class LogForGetAppoinmentForOtherPeople : BaseEntity
 {

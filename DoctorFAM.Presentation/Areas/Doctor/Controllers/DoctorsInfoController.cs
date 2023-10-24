@@ -22,14 +22,16 @@ public class DoctorsInfoController : DoctorBaseController
     public IStringLocalizer<SharedLocalizer.SharedLocalizer> _sharedLocalizer;
     private readonly IOrganizationService _organization;
     private readonly ILocationService _locationService;
-
+    private readonly IWorkAddressService _workAddressService;
+    
     public DoctorsInfoController(IDoctorsService doctorService, IStringLocalizer<SharedLocalizer.SharedLocalizer> sharedLocalizer
-                                , IOrganizationService organization, ILocationService locationService)
+                                , IOrganizationService organization, ILocationService locationService , IWorkAddressService workAddressService)
     {
         _doctorService = doctorService;
         _sharedLocalizer = sharedLocalizer;
         _organization = organization;
         _locationService = locationService;
+        _workAddressService = workAddressService;
     }
 
     #endregion
@@ -519,6 +521,90 @@ public class DoctorsInfoController : DoctorBaseController
 
         return View(model);
     }
+
+    #endregion
+
+    #region Doctors Location 
+
+    #region List Of Doctor Loactions 
+
+    [HttpGet]
+    public async Task<IActionResult> ListOfDoctorsLocations()
+    {
+        var model = await _workAddressService.GetListOfDoctorAddressesByDoctorUserId(User.GetUserId());
+        if (model == null) return NotFound();
+
+        return View(model);
+    }
+
+    #endregion
+
+    #region Create Location 
+
+    [HttpGet]
+    public async Task<IActionResult> CreateLocation()
+    {
+        ViewData["Countries"] = await _locationService.GetAllCountries();
+
+        return View();
+    }
+
+    [HttpPost , ValidateAntiForgeryToken]
+    public async Task<IActionResult> CreateLocation(CreateLocationDoctorPanelDTO model)
+    {
+        #region Add To The Data Base
+
+        if (!ModelState.IsValid)
+        {
+            ViewData["Countries"] = await _locationService.GetAllCountries();
+
+            TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+            return View();
+        }
+
+        var res = await _workAddressService.AddDoctorWorkAddressToTheDataBase(User.GetUserId() , model);
+        if (res)
+        {
+            TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+            return RedirectToAction(nameof(ListOfDoctorsLocations));
+        }
+
+        #endregion
+
+        ViewData["Countries"] = await _locationService.GetAllCountries();
+        TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+
+        return View(model);
+    }
+
+    #endregion
+
+    #region Delete Location
+
+    [HttpGet]
+    public async Task<IActionResult> DeleteLocation(ulong id)
+    {
+        var res = await _workAddressService.DeleteUserWorkAddressWithoutLastRecordDoctorSide(User.GetUserId() , id);
+
+        switch (res)
+        {
+            case DeleteDoctorWorkAddressResult.success:
+                TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+                break;
+            case DeleteDoctorWorkAddressResult.failure:
+                TempData[ErrorMessage] = "عملیات باشکست مواجه شده است.";
+                break;
+            case DeleteDoctorWorkAddressResult.LastRecord:
+                TempData[ErrorMessage] = "آخرین آدرس را نمی توانید پاک کنید";
+                break;
+            default:
+                break;
+        }
+
+        return RedirectToAction(nameof(ListOfDoctorsLocations));
+    }
+
+    #endregion
 
     #endregion
 }

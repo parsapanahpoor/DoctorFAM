@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment
 {
@@ -25,6 +20,8 @@ namespace DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment
         public string? NationalId { get; set; }
 
         public string? UserRequetsDescription { get; set; }
+
+        public ulong WorkAddressId { get; set; }
 
         #endregion
     }

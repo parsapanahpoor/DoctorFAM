@@ -298,12 +298,6 @@ public class ReservationService : IReservationService
 
         #endregion
 
-        #region Get Doctor Office Address
-
-        var doctorOffice = await _workAddress.GetLastWorkAddressByUserId(userId);
-
-        #endregion
-
         #region If Add Reservation Date State Is computerized
 
         //Check That Fields Are Not Empty
@@ -338,9 +332,9 @@ public class ReservationService : IReservationService
                 reservationTime.StartTime = time.ToString($"{time.Hour.ToString("00")}:{time.Minute.ToString("00")}:00");
                 reservationTime.EndTime = endTime.ToString($"{endTime.Hour.ToString("00")}:{endTime.Minute.ToString("00")}:00");
                 reservationTime.DoctorReservationDateId = reservation.Id;
-                reservationTime.DoctorReservationState = Domain.Enums.DoctorReservation.DoctorReservationState.NotReserved;
+                reservationTime.DoctorReservationState = DoctorReservationState.NotReserved;
                 reservationTime.DoctorReservationTypeSelected = model.DoctorReservationType;
-                if (doctorOffice != null) reservationTime.WorkAddressId = doctorOffice.Id;
+                reservationTime.WorkAddressId = model.LocationId;
 
                 await _reservation.AddReservationDateTime(reservationTime);
 
@@ -500,7 +494,7 @@ public class ReservationService : IReservationService
             reservationTime.DoctorReservationDateId = reservationDate.Id;
             reservationTime.DoctorReservationState = Domain.Enums.DoctorReservation.DoctorReservationState.NotReserved;
             reservationTime.DoctorReservationTypeSelected = model.DoctorReservationType;
-            if (doctorOffice != null) reservationTime.WorkAddressId = doctorOffice.Id;
+            reservationTime.WorkAddressId = model.LocationId;
 
             #region Check Is Exist Doctor Reservation Date Time With This Time 
 
@@ -982,6 +976,7 @@ public class ReservationService : IReservationService
         DoctorPersonalBookingViewModel model = new DoctorPersonalBookingViewModel()
         {
             DoctorReservationDateTimeId = reservationDateTime.Id,
+            WorkAddressId = reservationDateTime.WorkAddressId.Value,
         };
 
         #endregion
@@ -1075,7 +1070,8 @@ public class ReservationService : IReservationService
             DoctorReservationDateTime = reservationDateTime,
             User = patient,
             DoctorBooking = reservationDateTime.DoctorBooking,
-            UserRequestDescription = reservationDateTime.UserRequestDescription
+            UserRequestDescription = reservationDateTime.UserRequestDescription,
+            WorkAddress= await _workAddress.GetWorkAddressById(reservationDateTime.WorkAddressId.Value),
         };
 
         #endregion
@@ -1310,14 +1306,11 @@ public class ReservationService : IReservationService
             PatientId = ownerId.Value,
             DoctorReservationType = DoctorReservationType.Reserved,
             DoctorBooking = true,
-            UserRequestDescription = model.UserRequestDescription
+            UserRequestDescription = model.UserRequestDescription,
+            WorkAddressId = model.LocationId
         };
 
-        //Fill Work Address Id 
-        if (doctorOffice != null)
-        {
-            dateTime.WorkAddressId = doctorOffice.Id;
-        }
+        dateTime.WorkAddressId = model.LocationId;
 
         //Add Reservation Date Time 
         var reservationDatetimeId = await _reservation.AddReservationDateTimeWithReturnId(dateTime);
@@ -2047,7 +2040,7 @@ public class ReservationService : IReservationService
     }
 
     //Fill Reservation Factor Site Side View Model
-    public async Task<ReservationFactorSiteSideViewModel?> FillReservationFactorSiteSideViewModel(ReservationFactorSiteSideViewModel model)
+    public async Task<ReservationFactorSiteSideViewModel?> FillReservationFactorSiteSideViewModel(ReservationFactorSiteSideViewModel model , ulong workAddressId)
     {
         #region Get Doctor User 
 
@@ -2079,7 +2072,7 @@ public class ReservationService : IReservationService
 
         #region Get Doctor Work Addresses
 
-        model.DoctorAddress = await _workAddress.GetUserWorkAddressesByUserId(doctor.UserId);
+        model.DoctorAddress = await _workAddress.GetWorkAddressById(workAddressId);
 
         #endregion
 
@@ -2156,7 +2149,7 @@ public class ReservationService : IReservationService
 
         #region Get Doctor Work Addresses
 
-        model.DoctorAddress = await _workAddress.GetUserWorkAddressesByUserId(doctorUser.Id);
+        model.DoctorAddress = await _workAddress.GetWorkAddressById(reservationDateTime.WorkAddressId.Value);
 
         #endregion
 
