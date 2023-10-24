@@ -530,6 +530,8 @@ public class AppointmentController : DoctorBaseController
             return NotFound();
         }
 
+        ViewBag.DoctorWorkAddresses = await _workAddressService.GetListOfDoctorAddressesByDoctorUserId(User.GetUserId());
+
         #endregion
 
         return View(model);
@@ -542,7 +544,9 @@ public class AppointmentController : DoctorBaseController
 
         if (!ModelState.IsValid)
         {
+            ViewBag.DoctorWorkAddresses = await _workAddressService.GetListOfDoctorAddressesByDoctorUserId(User.GetUserId());
             TempData[ErrorMessage] = "عملیات باشکست مواجه شده است. ";
+
             return View(model);
         }
 
@@ -559,7 +563,9 @@ public class AppointmentController : DoctorBaseController
 
         #endregion
 
+        ViewBag.DoctorWorkAddresses = await _workAddressService.GetListOfDoctorAddressesByDoctorUserId(User.GetUserId());
         TempData[ErrorMessage] = "عملیات باشکست مواجه شده است. ";
+
         return View(model);
     }
 

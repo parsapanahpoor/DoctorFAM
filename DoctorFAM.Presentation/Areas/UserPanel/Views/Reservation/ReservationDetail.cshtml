@@ -103,9 +103,9 @@
                                             <li>موبایل : @Model.PatientMobile</li>
 
 
-                                            @if (Model.DoctorAddress != null && Model.DoctorAddress.Any())
+                                            @if (Model.DoctorAddress != null )
                                             {
-                                                <li>آدرس مطب : @Model.DoctorAddress.Select(p=> p.Address).FirstOrDefault()</li>
+                                                <li>آدرس مطب : @Model.DoctorAddress.Address</li>
                                             }
                                         </ul>
                                     </div>

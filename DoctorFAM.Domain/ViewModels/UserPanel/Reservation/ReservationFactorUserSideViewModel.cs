@@ -22,7 +22,7 @@ public class ReservationFactorUserSideViewModel
 
     public string DoctorUsername { get; set; }
 
-    public List<WorkAddress>? DoctorAddress { get; set; }
+    public WorkAddress? DoctorAddress { get; set; }
 
     public List<DoctorsSkils>? DoctorSpeciality { get; set; }
 
