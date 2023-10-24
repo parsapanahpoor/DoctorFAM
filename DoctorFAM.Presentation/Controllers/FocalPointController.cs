@@ -398,7 +398,7 @@ public class FocalPointController : SiteBaseController
                             PatientNationalId = (string.IsNullOrEmpty(currentUser.NationalId)) ? "وارد نشده" : currentUser.NationalId
                         };
 
-                        var modelOfView = await _reservationService.FillReservationFactorSiteSideViewModel(model);
+                        var modelOfView = await _reservationService.FillReservationFactorSiteSideViewModel(model , reservationDateTime.WorkAddressId.Value);
                         if (modelOfView == null) return NotFound();
 
                         #endregion

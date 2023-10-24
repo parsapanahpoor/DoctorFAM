@@ -1,27 +1,24 @@
 ﻿using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.DoctorReservation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using DoctorFAM.Domain.Entities.WorkAddress;
 
-namespace DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment
+namespace DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment;
+
+public class ShowPatientDetailViewModel
 {
-    public class ShowPatientDetailViewModel
-    {
-        #region properties
+    #region properties
 
-        public User User { get; set; }
+    public User User { get; set; }
 
-        public DoctorReservationDate DoctorReservationDate { get; set; }
+    public DoctorReservationDate DoctorReservationDate { get; set; }
 
-        public DoctorReservationDateTime DoctorReservationDateTime { get; set; }
+    public DoctorReservationDateTime DoctorReservationDateTime { get; set; }
 
-        public bool DoctorBooking { get; set; }
+    public bool DoctorBooking { get; set; }
 
-        public string? UserRequestDescription { get; set; }
+    public string? UserRequestDescription { get; set; }
 
-        #endregion
-    }
+    public WorkAddress? WorkAddress { get; set; }
+
+    #endregion
 }

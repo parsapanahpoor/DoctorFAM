@@ -3,6 +3,9 @@
 @{
     ViewData["Title"] = @Localizer["افزودن نوبت بین مریض"];
 }
+@{
+        var doctorWorkAddress = ViewBag.DoctorWorkAddresses as List<DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo.ListOfDoctorsLocationDTO>;
+}
 
 @section Scripts
 {
@@ -81,6 +84,31 @@
                                     <textarea type="text" class="form-control" asp-for="UserRequestDescription"></textarea>
                                     <span class="text-danger" asp-validation-for="UserRequestDescription"></span>
                                 </div>
+
+                                <div class="clearfix"></div>
+
+                                <div class="form-group col-md-10 col-sm-12 " id="PeriodTime-div">
+                                    <label asp-for="LocationId"> @Localizer["آدرس مطب"] </label>
+                                    <select class="form-control" asp-for="LocationId">
+
+                                        <option value=""> لطفا آدرس مطب را انتخاب کنید </option>
+
+                                        @if (doctorWorkAddress != null && doctorWorkAddress.Any())
+                                        {
+                                            foreach (var address in doctorWorkAddress)
+                                            {
+                                                <option value="@address.Id"> @address.WorkAddress</option>
+                                            }
+                                        }
+
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-md-2 col-sm-12 mt-5">
+                                    <a asp-action="CreateLocation" asp-area="Doctor" asp-controller="DoctorsInfo" class="btn btn-primary">@SharedLocalizer["ثبت آدرس مطب جدید"]</a>
+                                </div>
+
+                                <div class="clearfix"></div>
 
                                 <div class="form-group col-md-12">
                                     <button type="submit" class="btn btn-success">@SharedLocalizer["ثبت"]</button>

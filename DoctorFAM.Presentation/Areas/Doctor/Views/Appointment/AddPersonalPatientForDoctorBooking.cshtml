@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = @Localizer["Doctor Booking"];
+    var address = ViewBag.WorkAddress as DoctorFAM.Domain.Entities.WorkAddress.WorkAddress;
 }
 
 @section Scripts
@@ -18,6 +19,7 @@
 
 <form method="post" asp-action="AddPersonalPatientForDoctorBooking" asp-controller="Appointment" asp-area="Doctor">
     <input type="hidden" asp-for="DoctorReservationDateTimeId" />
+    <input type="hidden" asp-for="WorkAddressId" />
 
     <div class="row">
         <div class="col-lg-12 col-sm-12">
@@ -66,6 +68,11 @@
                                 <span style="color:red; font-size:12px;">(اختیاری)</span>
                                 <textarea type="text" class="form-control" asp-for="UserRequetsDescription"></textarea>
                                 <span class="text-danger" asp-validation-for="UserRequetsDescription"></span>
+                            </div>
+
+                            <div class="form-group col-md-12 col-sm-12">
+                                <label>آدرس مطب</label>
+                                <textarea readonly  type="text" class="form-control"> @(address != null ? address.Address : "وارد نشده" )</textarea>
                             </div>
                         </div>
 

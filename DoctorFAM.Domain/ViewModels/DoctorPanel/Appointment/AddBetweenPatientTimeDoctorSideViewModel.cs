@@ -32,6 +32,8 @@ namespace DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment
 
         public int StartTimeMinute { get; set; }
 
+        public ulong LocationId { get; set; }
+
         #endregion
     }
 }

@@ -1,32 +1,29 @@
-﻿using DoctorFAM.Domain.Entities.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿#region Usings
 
-namespace DoctorFAM.Domain.Entities.DoctorReservation
+using DoctorFAM.Domain.Entities.Common;
+namespace DoctorFAM.Domain.Entities.DoctorReservation;
+
+#endregion
+
+public sealed class DoctorPersonalBooking : BaseEntity
 {
-    public class DoctorPersonalBooking : BaseEntity
-    {
-        #region properties
+    #region properties
 
-        public ulong DoctorReservationDateTimeId { get; set; }
+    public ulong DoctorReservationDateTimeId { get; set; }
 
-        public string FirstName { get; set; }
+    public string FirstName { get; set; }
 
-        public string LastName { get; set; }
+    public string LastName { get; set; }
 
-        public string Mobile { get; set; }
+    public string Mobile { get; set; }
 
-        public string? NationalId { get; set; }
+    public string? NationalId { get; set; }
 
-        #endregion
+    #endregion
 
-        #region relations 
+    #region relations 
 
-        public DoctorReservationDateTime DoctorReservationDateTime { get; set; }
+    public DoctorReservationDateTime DoctorReservationDateTime { get; set; }
 
-        #endregion
-    }
+    #endregion
 }
