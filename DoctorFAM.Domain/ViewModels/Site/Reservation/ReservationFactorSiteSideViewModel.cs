@@ -24,7 +24,7 @@ namespace DoctorFAM.Domain.ViewModels.Site.Reservation
 
         public string DoctorUsername{ get; set; }
 
-        public List<WorkAddress?> DoctorAddress{ get; set; }
+        public WorkAddress? DoctorAddress{ get; set; }
 
         public List<DoctorsSkils?> DoctorSpeciality { get; set; }
 
