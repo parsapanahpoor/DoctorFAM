@@ -184,6 +184,12 @@ public interface IReservationService
 
     #region Site Side 
 
+    //Update Log For Reservation Date Times In Waiting For Payment State
+    Task<bool> RemoveLogForReservationDateTimesInWaitingForPaymentState(ulong doctorReservationDateTimeId, ulong userId);
+
+    //Log For Reservation Date Times In Waiting For Payment State
+    Task<bool> LogForReservationDateTimesInWaitingForPaymentState(ulong doctorReservationDateTimeId, ulong userId);
+
     //Get Doctor Reservation Alert By Doctor User Id
     Task<string?> GetDoctorReservationAlertByDoctorUserId(ulong userId);
 

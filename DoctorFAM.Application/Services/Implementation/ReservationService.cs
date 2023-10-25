@@ -19,6 +19,7 @@ using DoctorFAM.Domain.ViewModels.Site.Reservation;
 using DoctorFAM.Domain.ViewModels.Supporter.Reservation;
 using DoctorFAM.Domain.ViewModels.Tourist.Token;
 using DoctorFAM.Domain.ViewModels.UserPanel.Reservation;
+using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
 using System;
 using System.ComponentModel.DataAnnotations;
@@ -1750,6 +1751,50 @@ public class ReservationService : IReservationService
 
     #region Site Side
 
+    //Update Log For Reservation Date Times In Waiting For Payment State
+    public async Task<bool> RemoveLogForReservationDateTimesInWaitingForPaymentState(ulong doctorReservationDateTimeId, ulong userId)
+    {
+        //Get Log 
+        var log = await _reservation.GetLogForReservationDateTimesInWaitingForPaymentState(doctorReservationDateTimeId , userId);
+        if (log == null) return false;
+
+        //Update Log 
+        log.IsDelete = true;
+
+        _reservation.RemoveLogForReservationDateTimesInWaitingForPaymentState(log);
+        await _reservation.Savechanges();
+
+        return true;
+    }
+
+    //Log For Reservation Date Times In Waiting For Payment State
+    public async Task<bool> LogForReservationDateTimesInWaitingForPaymentState(ulong doctorReservationDateTimeId , ulong userId)
+    {
+        //Get Log 
+        var log = await _reservation.GetLogForReservationDateTimesInWaitingForPaymentState(doctorReservationDateTimeId, userId);
+        if (log != null) return true;
+
+        #region Fill Entity
+
+        LogForDoctorReservationDateTimeWaitingForPayment entity = new LogForDoctorReservationDateTimeWaitingForPayment()
+        {
+            CreateDate  = DateTime.Now,
+            DoctorReservationDateTimeId = doctorReservationDateTimeId,
+            IsDelete = false,
+            IsSeenBySupporters = false,
+            PatientUserId = userId,
+            SupporterUserId = null
+        };
+
+        #endregion
+
+        //Add To The Data Base
+        await _reservation.LogForReservationDateTimesInWaitingForPaymentState(entity);
+        await _reservation.Savechanges();
+
+        return true;
+    }
+
     //Get List Of Reservation Request That Pass A Day For Pay Reservation Tariff
     public async Task GetListOfReservationRequestThatPassADayForPayReservationTariff()
     {
@@ -2005,6 +2050,8 @@ public class ReservationService : IReservationService
         if (reservationDateTime.DoctorReservationState != DoctorReservationState.WaitingForComplete) return false;
 
         #endregion
+
+
 
         #region Update Method 
 

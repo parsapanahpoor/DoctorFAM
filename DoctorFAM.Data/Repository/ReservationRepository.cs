@@ -1486,9 +1486,9 @@ public class ReservationRepository : IReservationRepository
         model.AddRange(await _context.DoctorReservationDateTimes
                              .AsNoTracking()
                              .Include(p => p.DoctorReservationDate)
-                             .Where(p => !p.IsDelete && p.PatientId.HasValue && 
+                             .Where(p => !p.IsDelete && p.PatientId.HasValue &&
                                    ((p.CreateDate.DayOfYear == DateTime.Now.DayOfYear && p.CreateDate.Year == DateTime.Now.Year)
-                                    ||( p.DoctorReservationDate.ReservationDate.DayOfYear == DateTime.Now.DayOfYear && p.DoctorReservationDate.ReservationDate.Year == DateTime.Now.Year)))
+                                    || (p.DoctorReservationDate.ReservationDate.DayOfYear == DateTime.Now.DayOfYear && p.DoctorReservationDate.ReservationDate.Year == DateTime.Now.Year)))
                              .OrderByDescending(p => p.DoctorReservationDateId)
                              .Select(p => new ListOfSelectedReservationsSupporterSideDTO()
                              {
@@ -1521,6 +1521,33 @@ public class ReservationRepository : IReservationRepository
     #endregion
 
     #region Site Side 
+
+    //Get Log For Reservation Date Times In Waiting For Payment State
+    public async Task<LogForDoctorReservationDateTimeWaitingForPayment?> GetLogForReservationDateTimesInWaitingForPaymentState(ulong doctorReservationDateTimeId, ulong userId)
+    {
+        return await _context.LogForDoctorReservationDateTimeWaitingForPayments
+                       .AsNoTracking()
+                       .FirstOrDefaultAsync(p => !p.IsDelete && p.DoctorReservationDateTimeId == doctorReservationDateTimeId &&
+                                            p.PatientUserId == userId);
+    }
+
+    //Add Log For Reservation Date Times In Waiting For Payment State
+    public async Task LogForReservationDateTimesInWaitingForPaymentState(LogForDoctorReservationDateTimeWaitingForPayment model)
+    {
+        await _context.LogForDoctorReservationDateTimeWaitingForPayments.AddAsync(model);
+    }
+
+    //Remove Log For Reservation Date Times In Waiting For Payment State
+    public void RemoveLogForReservationDateTimesInWaitingForPaymentState(LogForDoctorReservationDateTimeWaitingForPayment model)
+    {
+        _context.LogForDoctorReservationDateTimeWaitingForPayments.Remove(model);
+    }
+
+    //Update Log For Reservation Date Times In Waiting For Payment State
+    public void UpdateLogForReservationDateTimesInWaitingForPaymentState(LogForDoctorReservationDateTimeWaitingForPayment model)
+    {
+        _context.LogForDoctorReservationDateTimeWaitingForPayments.Update(model);
+    }
 
     //Get Doctor Reservation Alert By Doctor User Id
     public async Task<string?> GetDoctorReservationAlertByDoctorUserId(ulong userId)

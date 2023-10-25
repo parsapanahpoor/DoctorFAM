@@ -139,6 +139,18 @@ public interface IReservationRepository
 
     #region Site Side
 
+    //Remove Log For Reservation Date Times In Waiting For Payment State
+    void RemoveLogForReservationDateTimesInWaitingForPaymentState(LogForDoctorReservationDateTimeWaitingForPayment model);
+
+    //Get Log For Reservation Date Times In Waiting For Payment State
+    Task<LogForDoctorReservationDateTimeWaitingForPayment?> GetLogForReservationDateTimesInWaitingForPaymentState(ulong doctorReservationDateTimeId, ulong userId);
+
+    //Update Log For Reservation Date Times In Waiting For Payment State
+    void UpdateLogForReservationDateTimesInWaitingForPaymentState(LogForDoctorReservationDateTimeWaitingForPayment model);
+
+    //Log For Reservation Date Times In Waiting For Payment State
+    Task LogForReservationDateTimesInWaitingForPaymentState(LogForDoctorReservationDateTimeWaitingForPayment model);
+
     //Get Doctor Reservation Alert By Doctor User Id
     Task<string?> GetDoctorReservationAlertByDoctorUserId(ulong userId);
 
