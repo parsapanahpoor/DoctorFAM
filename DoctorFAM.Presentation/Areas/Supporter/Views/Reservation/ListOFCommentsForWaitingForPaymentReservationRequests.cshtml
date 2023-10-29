@@ -1,0 +1,56 @@
+﻿@model List<DoctorFAM.Domain.ViewModels.Supporter.Reservation.ListOfCommentsForWaitingForPaymentReservationRequestSupporterSideDTO>
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Domain.ViewModels.Common
+
+@{
+    ViewData["Title"] = @Localizer["لیست درخواست های درانتظار بررسی"];
+}
+
+@{
+    var user = ViewBag.OwnerOfComment as DoctorFAM.Domain.Entities.Account.User;
+}
+
+@section Styles
+    {
+}
+
+@section Scripts
+    {
+    <partial name="_JqueryValidation" />
+}
+
+@section Breadcrumb
+    {
+    <li>
+        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+    </li>
+}
+
+@if (user != null)
+{
+    
+}
+
+<div class="row">
+    <div class="col-lg-12 col-sm-12">
+
+        <div class="databox databox-graded">
+            <div class="no-padding databox-right">
+                <img src="@user.GetUserAvatar()" style="width:65px; height:65px;">
+            </div>
+            <div class="padding-top-20 databox-left">
+               
+                <div class="databox-text darkgray">@user.Username</div>
+                <div class="databox-text darkgray">@user.Mobile</div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+
+</div>
+
+

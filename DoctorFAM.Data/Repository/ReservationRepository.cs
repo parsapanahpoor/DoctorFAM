@@ -1631,6 +1631,19 @@ public class ReservationRepository : IReservationRepository
         await _context.LogForDoctorReservationDateTimeWaitingForPaymentComments.AddAsync(comment);
     }
 
+    //Fill List Of Comments For Waiting For Payment Reservation Request Supporter Side DTO
+    public async Task<List<ListOfCommentsForWaitingForPaymentReservationRequestSupporterSideDTO>?> FillListOfCommentsForWaitingForPaymentReservationRequestSupporterSideDTO(ulong id)
+    {
+        return await _context.LogForDoctorReservationDateTimeWaitingForPaymentComments
+                             .Where(p => !p.IsDelete && p.LogForDoctorReservationDateTimeWaitingForPaymentId == id)
+                             .Select(p => new ListOfCommentsForWaitingForPaymentReservationRequestSupporterSideDTO()    
+                             {
+                                 LogInformation = p,
+                                 UserInfo = _context.Users.FirstOrDefault(s=> !s.IsDelete && s.Id == p.UserId)
+                             })
+                             .ToListAsync();
+    }
+
     #endregion
 
     #region Site Side 

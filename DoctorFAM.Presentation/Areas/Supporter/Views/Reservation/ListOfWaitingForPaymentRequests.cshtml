@@ -168,6 +168,15 @@
                                     @if (!date.IsSeenBySupporters)
                                     {
                                         <button title="حذف " onclick="DeleteAjax(@date.Id, '@Url.Action("SeenBySupporters", "Reservation", new { area = "Supporter", Id = date.Id })')" class="btn btn-success btn-circle btn-xs"><i class="glyphicon glyphicon-check"></i></button>
+                                    }  
+                                    else
+                                    {
+                                        <a asp-action="ListOFCommentsForWaitingForPaymentReservationRequests"
+                                       asp-controller="Reservation"
+                                       asp-area="Supporter"
+                                       asp-route-ReservationId="@date.DoctorReservationDateTime.Id"
+                                       asp-route-id="@date.PatientUserId"
+                                       class="btn btn-primary btn-circle btn-xs"><i class="glyphicon glyphicon-comment"></i></a>
                                     }
 
                                 </td>

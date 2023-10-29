@@ -166,12 +166,14 @@ public class ReservationController : SupporterBaseController
     }
 
     #endregion
-
+    
     #region List OF Comments For Waiting For Payment Reservation Requests 
 
     public async Task<IActionResult> ListOFCommentsForWaitingForPaymentReservationRequests(ulong id)
     {
-        
+        ViewBag.OwnerOfComment = await _reservationService.GetTheOwnerOfCommentForLogForWaitingForPaymentReservationRequest(id);
+
+        return View(await _reservationService.FillListOfCommentsForWaitingForPaymentReservationRequestSupporterSideDTO(id));
     }
 
     #endregion

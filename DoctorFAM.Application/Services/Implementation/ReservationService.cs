@@ -1598,8 +1598,22 @@ public class ReservationService : IReservationService
 
     #region Supporter Panel 
 
+    //Get The Owner Of Comment For Log For Waiting For Payment Reservation Request
+    public async Task<User?> GetTheOwnerOfCommentForLogForWaitingForPaymentReservationRequest(ulong id)
+    { 
+        #region Get Request By Id
+
+        var request = await GetLogForWaitingforReservationRequestById(id);
+        if (request == null) return null;
+        if (request.IsSeenBySupporters) return null;
+
+        #endregion
+
+        return await _userService.GetUserById(request.PatientUserId);
+    }
+
     //Seen Log For Waiting For Payment Reservation Requests
-    public async Task<bool> SeenLogForWaitingForPaymentReservationRequests(ulong requestId , ulong userId)
+    public async Task<bool> SeenLogForWaitingForPaymentReservationRequests(ulong requestId, ulong userId)
     {
         #region Get Request By Id
 
@@ -1772,7 +1786,6 @@ public class ReservationService : IReservationService
         return model;
     }
 
-
     public async Task<bool> CloseReservation(ulong reservationTimeId)
     {
         #region Get Reservation Time By Id 
@@ -1852,6 +1865,12 @@ public class ReservationService : IReservationService
         #endregion
 
         return true;
+    }
+
+    //Fill List Of Comments For Waiting For Payment Reservation Request Supporter Side DTO
+    public async Task<List<ListOfCommentsForWaitingForPaymentReservationRequestSupporterSideDTO>?> FillListOfCommentsForWaitingForPaymentReservationRequestSupporterSideDTO(ulong id)
+    {
+        return await _reservation.FillListOfCommentsForWaitingForPaymentReservationRequestSupporterSideDTO(id);
     }
 
     #endregion

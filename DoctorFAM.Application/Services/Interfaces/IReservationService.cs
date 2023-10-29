@@ -1,5 +1,6 @@
 ﻿#region Usings
 
+using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.Enums.DoctorReservation;
 using DoctorFAM.Domain.ViewModels.Admin.Reservation;
@@ -106,6 +107,12 @@ public interface IReservationService
     Task<ShowPatientDetailViewModel?> ShowPatientDetailViewModelFromDentistPanel(ulong reservationDateTimeId, ulong userId);
 
     Task<bool> CloseReservation(ulong reservationTimeId);
+
+    //Get The Owner Of Comment For Log For Waiting For Payment Reservation Request
+    Task<User?> GetTheOwnerOfCommentForLogForWaitingForPaymentReservationRequest(ulong id);
+
+    //Fill List Of Comments For Waiting For Payment Reservation Request Supporter Side DTO
+    Task<List<ListOfCommentsForWaitingForPaymentReservationRequestSupporterSideDTO>?> FillListOfCommentsForWaitingForPaymentReservationRequestSupporterSideDTO(ulong id);
 
     //Check Doctor Reservation Date Time Validation For Add Doctor Personal Patient (Doctor Booking)
     Task<DoctorPersonalBookingViewModel?> FillDoctorPersonalBooking(ulong reservationDateTimeId, ulong userId);
