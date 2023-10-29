@@ -8,6 +8,7 @@ using DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment;
 using DoctorFAM.Domain.ViewModels.Site.Reservation;
 using DoctorFAM.Domain.ViewModels.Supporter.Reservation;
 using DoctorFAM.Domain.ViewModels.UserPanel.Reservation;
+using Microsoft.EntityFrameworkCore;
 
 #endregion
 
@@ -134,6 +135,17 @@ public interface IReservationRepository
 
     //Fill ListOfSelectedReservationsSupporterSideDTO
     Task<List<ListOfSelectedReservationsSupporterSideDTO>?> FillListOfSelectedReservationsSupporterSideDTO();
+
+    Task<FilterWaitingForReservationRequestsSupporterSideViewModel?> FilterListOfWaitingForPaymentRequests(FilterWaitingForReservationRequestsSupporterSideViewModel filter);
+
+    //Get Log For Waiting for Reservation Request By Id 
+    Task<LogForDoctorReservationDateTimeWaitingForPayment?> GetLogForWaitingforReservationRequestById(ulong id);
+
+    //Update Log For Waiting for Reservation Request By Id 
+    void UpdateLogForWaitingforReservationRequestById(LogForDoctorReservationDateTimeWaitingForPayment model);
+
+    //Add Comment For Log of Waiting For Payment Request Reservation 
+    Task AddCommentForLogofWaitingForPaymentRequestReservation(LogForDoctorReservationDateTimeWaitingForPaymentComment comment);
 
     #endregion
 

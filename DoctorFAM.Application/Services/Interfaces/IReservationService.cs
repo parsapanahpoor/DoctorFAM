@@ -180,6 +180,16 @@ public interface IReservationService
 
     Task<ShowReservationDetailSupporterSideViewModel?> FillShowReservationDetailSupporterSideViewModel(ulong reservationId);
 
+    Task<FilterWaitingForReservationRequestsSupporterSideViewModel?> FilterListOfWaitingForPaymentRequests(FilterWaitingForReservationRequestsSupporterSideViewModel filter);
+
+    Task<ShowReservationDetailSupporterSideViewModel?> FillShowWaitingForPaymentReservationRequestDetailSupporterSideViewModel(ulong reservationId, ulong patientUserId);
+
+    //Get Log For Waiting for Reservation Request By Id 
+    Task<LogForDoctorReservationDateTimeWaitingForPayment?> GetLogForWaitingforReservationRequestById(ulong id);
+
+    //Seen Log For Waiting For Payment Reservation Requests
+    Task<bool> SeenLogForWaitingForPaymentReservationRequests(ulong requestId, ulong userId);
+
     #endregion
 
     #region Site Side 

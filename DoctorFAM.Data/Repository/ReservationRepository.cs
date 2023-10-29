@@ -15,6 +15,7 @@ using DoctorFAM.Domain.ViewModels.UserPanel.Reservation;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics.Contracts;
 using System.Globalization;
+using System.Security.AccessControl;
 
 #endregion
 
@@ -1478,6 +1479,99 @@ public class ReservationRepository : IReservationRepository
         return filter;
     }
 
+    public async Task<FilterWaitingForReservationRequestsSupporterSideViewModel?> FilterListOfWaitingForPaymentRequests(FilterWaitingForReservationRequestsSupporterSideViewModel filter)
+    {
+        var query = _context.LogForDoctorReservationDateTimeWaitingForPayments
+        .Include(p => p.DoctorReservationDateTime)
+        .ThenInclude(p => p.DoctorReservationDate)
+        .Where(p => !p.IsDelete)
+        .OrderByDescending(s => s.CreateDate)
+        .AsQueryable();
+
+        #region Status
+
+        switch (filter.FilterDoctorReservationState)
+        {
+            case FilterDoctorReservationState.All:
+                break;
+            case FilterDoctorReservationState.Reserved:
+                query = query.Where(p => p.DoctorReservationDateTime.DoctorReservationState == DoctorReservationState.Reserved);
+                break;
+            case FilterDoctorReservationState.NotReserved:
+                query = query.Where(p => p.DoctorReservationDateTime.DoctorReservationState == DoctorReservationState.NotReserved);
+                break;
+            case FilterDoctorReservationState.WaitingForComplete:
+                query = query.Where(p => p.DoctorReservationDateTime.DoctorReservationState == DoctorReservationState.WaitingForComplete);
+                break;
+        }
+
+        switch (filter.FilterDoctorReservationType)
+        {
+            case FilterDoctorReservationType.All:
+                break;
+            case FilterDoctorReservationType.Onile:
+                query = query.Where(p => p.DoctorReservationDateTime.DoctorReservationType == DoctorReservationType.Onile);
+                break;
+            case FilterDoctorReservationType.Reserved:
+                query = query.Where(p => p.DoctorReservationDateTime.DoctorReservationType == DoctorReservationType.Reserved);
+                break;
+        }
+
+        switch (filter.FilterReservationOrder)
+        {
+            case FilterReservationOrder.CreateDate_Des:
+                break;
+
+            case FilterReservationOrder.CreateDate_Asc:
+                query = query.OrderBy(p => p.DoctorReservationDateTime.DoctorReservationDate.ReservationDate);
+                break;
+        }
+
+        #endregion
+
+        #region Filter
+
+        if (!string.IsNullOrEmpty(filter.FromDate))
+        {
+            var spliteDate = filter.FromDate.Split('/');
+            int year = int.Parse(spliteDate[0]);
+            int month = int.Parse(spliteDate[1]);
+            int day = int.Parse(spliteDate[2]);
+            DateTime fromDate = new DateTime(year, month, day, new PersianCalendar());
+
+            query = query.Where(s => s.DoctorReservationDateTime.DoctorReservationDate.ReservationDate >= fromDate);
+        }
+
+        if (!string.IsNullOrEmpty(filter.ToDate))
+        {
+            var spliteDate = filter.ToDate.Split('/');
+            int year = int.Parse(spliteDate[0]);
+            int month = int.Parse(spliteDate[1]);
+            int day = int.Parse(spliteDate[2]);
+            DateTime toDate = new DateTime(year, month, day, new PersianCalendar());
+
+            query = query.Where(s => s.DoctorReservationDateTime.DoctorReservationDate.ReservationDate <= toDate);
+        }
+
+        if (filter.IsSeen.HasValue)
+        {
+            if (filter.IsSeen.Value == true)
+            {
+                query = query.Where(p => p.IsSeenBySupporters);
+            }
+            else
+            {
+                query = query.Where(p => !p.IsSeenBySupporters);
+            }
+        }
+
+        #endregion
+
+        await filter.Paging(query);
+
+        return filter;
+    }
+
     //Fill ListOfSelectedReservationsSupporterSideDTO
     public async Task<List<ListOfSelectedReservationsSupporterSideDTO>?> FillListOfSelectedReservationsSupporterSideDTO()
     {
@@ -1516,6 +1610,25 @@ public class ReservationRepository : IReservationRepository
                              .ToListAsync());
 
         return model;
+    }
+
+    //Get Log For Waiting for Reservation Request By Id 
+    public async Task<LogForDoctorReservationDateTimeWaitingForPayment?> GetLogForWaitingforReservationRequestById(ulong id)
+    {
+        return await _context.LogForDoctorReservationDateTimeWaitingForPayments
+                             .FirstOrDefaultAsync(p=> !p.IsDelete && p.Id == id);
+    }
+
+    //Update Log For Waiting for Reservation Request By Id 
+    public void UpdateLogForWaitingforReservationRequestById(LogForDoctorReservationDateTimeWaitingForPayment model)
+    {
+        _context.LogForDoctorReservationDateTimeWaitingForPayments.Update(model);
+    }
+
+    //Add Comment For Log of Waiting For Payment Request Reservation 
+    public async Task AddCommentForLogofWaitingForPaymentRequestReservation(LogForDoctorReservationDateTimeWaitingForPaymentComment comment)
+    {
+        await _context.LogForDoctorReservationDateTimeWaitingForPaymentComments.AddAsync(comment);
     }
 
     #endregion
