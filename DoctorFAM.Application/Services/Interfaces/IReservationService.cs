@@ -197,6 +197,9 @@ public interface IReservationService
     //Seen Log For Waiting For Payment Reservation Requests
     Task<bool> SeenLogForWaitingForPaymentReservationRequests(ulong requestId, ulong userId);
 
+    //Add Comment For Waiting For Payment Reservation Request 
+    Task AddCommentForWaitingForPaymentReservationRequest(ulong requestId, ulong userId, string comment);
+
     #endregion
 
     #region Site Side 

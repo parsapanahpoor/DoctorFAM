@@ -4,7 +4,7 @@
 @using DoctorFAM.Domain.ViewModels.Common
 
 @{
-    ViewData["Title"] = @Localizer["لیست درخواست های درانتظار بررسی"];
+    ViewData["Title"] = @Localizer["پیام های درخواست مورد نظر"];
 }
 
 @{
@@ -29,7 +29,7 @@
 
 @if (user != null)
 {
-    
+
 }
 
 <div class="row">
@@ -40,8 +40,8 @@
                 <img src="@user.GetUserAvatar()" style="width:65px; height:65px;">
             </div>
             <div class="padding-top-20 databox-left">
-               
-                <div class="databox-text darkgray">@user.Username</div>
+
+                <div class="databox-text darkgray">  پشتیبان پاسخ گو : @user.Username</div>
                 <div class="databox-text darkgray">@user.Mobile</div>
 
             </div>
@@ -49,7 +49,48 @@
 
     </div>
 
+    <div class="col-lg-12 col-sm-12 col-xs-12">
+        <div class="widget">
+            <div class="widget-header bordered-bottom bordered-blue">
+                <span class="widget-caption">درج پیام</span>
+            </div>
+            <div class="widget-body">
+                <div>
+                    <form asp-action="AddCommentForWaitingRequest" asp-controller="Reservation" asp-area="Supporter" id="filter-search" method="post">
+                        <input type="hidden" name="RequestId" value="@Model.Select(p=> p.LogInformation.LogForDoctorReservationDateTimeWaitingForPaymentId).FirstOrDefault()" />
 
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">پیام</label>
+                            <textarea name="Comment" class="form-control" id="exampleInputPassword1" placeholder="متن پیام"></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-blue">ثبت</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (Model != null && Model.Any())
+    {
+        foreach (var comment in Model)
+        {
+            <div class="col-lg-12 col-sm-12 col-xs-12">
+                <div class="widget no-header ">
+                    <div class="widget-body colored-purple">
+
+                        <span class="widget-caption">پشتیبان : @comment.UserInfo.Username - تاریخ : @comment.LogInformation.CreateDate.ToShamsi()</span>
+                        <p>
+
+                            @comment.LogInformation.Comment
+
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+        }
+    }
 
 </div>
 

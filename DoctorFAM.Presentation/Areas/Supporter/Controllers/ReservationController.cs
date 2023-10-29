@@ -177,4 +177,20 @@ public class ReservationController : SupporterBaseController
     }
 
     #endregion
+
+    #region Add Comment For Waiting Request
+
+    [HttpPost]
+    public async Task<IActionResult> AddCommentForWaitingRequest(ulong RequestId ,string Comment)
+    {
+        #region Add Comment To The Data Base 
+
+        await _reservationService.AddCommentForWaitingForPaymentReservationRequest(RequestId , User.GetUserId() , Comment);
+
+        #endregion
+
+        return RedirectToAction(nameof(ListOFCommentsForWaitingForPaymentReservationRequests) , new { id = RequestId });
+    }
+
+    #endregion
 }

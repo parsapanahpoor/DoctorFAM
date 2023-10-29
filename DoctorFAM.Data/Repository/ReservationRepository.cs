@@ -1644,6 +1644,12 @@ public class ReservationRepository : IReservationRepository
                              .ToListAsync();
     }
 
+    //Add Comment For Waiting For Payment Reservation Request 
+    public async Task AddCommentForWaitingForPaymentReservationRequest(LogForDoctorReservationDateTimeWaitingForPaymentComment comment)
+    {
+        await _context.LogForDoctorReservationDateTimeWaitingForPaymentComments.AddAsync(comment); 
+    }
+
     #endregion
 
     #region Site Side 

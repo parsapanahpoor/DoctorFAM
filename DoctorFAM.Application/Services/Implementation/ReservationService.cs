@@ -1605,11 +1605,10 @@ public class ReservationService : IReservationService
 
         var request = await GetLogForWaitingforReservationRequestById(id);
         if (request == null) return null;
-        if (request.IsSeenBySupporters) return null;
 
         #endregion
 
-        return await _userService.GetUserById(request.PatientUserId);
+        return await _userService.GetUserById(request.SupporterUserId.Value);
     }
 
     //Seen Log For Waiting For Payment Reservation Requests
@@ -1639,6 +1638,7 @@ public class ReservationService : IReservationService
         #endregion
 
         request.IsSeenBySupporters = true;
+        request.SupporterUserId = userId;
 
         _reservation.UpdateLogForWaitingforReservationRequestById(request);
         await _reservation.Savechanges();
@@ -1871,6 +1871,20 @@ public class ReservationService : IReservationService
     public async Task<List<ListOfCommentsForWaitingForPaymentReservationRequestSupporterSideDTO>?> FillListOfCommentsForWaitingForPaymentReservationRequestSupporterSideDTO(ulong id)
     {
         return await _reservation.FillListOfCommentsForWaitingForPaymentReservationRequestSupporterSideDTO(id);
+    }
+
+    //Add Comment For Waiting For Payment Reservation Request 
+    public async Task AddCommentForWaitingForPaymentReservationRequest(ulong requestId , ulong userId , string comment)
+    {
+        LogForDoctorReservationDateTimeWaitingForPaymentComment model = new LogForDoctorReservationDateTimeWaitingForPaymentComment()
+        {
+             Comment = comment,
+             UserId = userId,
+             LogForDoctorReservationDateTimeWaitingForPaymentId = requestId
+        };
+
+        await _reservation.AddCommentForLogofWaitingForPaymentRequestReservation(model);
+        await _reservation.Savechanges();
     }
 
     #endregion

@@ -150,6 +150,9 @@ public interface IReservationRepository
     //Fill List Of Comments For Waiting For Payment Reservation Request Supporter Side DTO
     Task<List<ListOfCommentsForWaitingForPaymentReservationRequestSupporterSideDTO>?> FillListOfCommentsForWaitingForPaymentReservationRequestSupporterSideDTO(ulong id);
 
+    //Add Comment For Waiting For Payment Reservation Request 
+    Task AddCommentForWaitingForPaymentReservationRequest(LogForDoctorReservationDateTimeWaitingForPaymentComment comment);
+
     #endregion
 
     #region Site Side
