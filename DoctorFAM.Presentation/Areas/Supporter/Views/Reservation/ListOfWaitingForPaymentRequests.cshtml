@@ -1,0 +1,200 @@
+﻿@model DoctorFAM.Domain.ViewModels.Supporter.Reservation.FilterWaitingForReservationRequestsSupporterSideViewModel
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Domain.ViewModels.Common
+
+@{
+    ViewData["Title"] = @Localizer["لیست درخواست های درانتظار بررسی"];
+}
+
+@section Styles
+    {
+}
+
+@section Scripts
+    {
+    <partial name="_JqueryValidation" />
+}
+
+@section Breadcrumb
+    {
+    <li>
+        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+    </li>
+}
+
+<div class="row">
+    <div class="col-lg-12 col-sm-12">
+        <div class="widget">
+            <div class="widget-header bordered-bottom bordered-green">
+                <span class="widget-caption"> @Localizer["مدیریت اطلاعات نوبت دهی"] </span>
+            </div>
+            <div class="widget-body">
+                <div>
+                    <form asp-action="ListOfWaitingForPaymentRequests" asp-controller="Reservation" asp-area="Supporter" id="filter-search" method="get">
+
+                        <input type="hidden" asp-for="Page" />
+
+                        <div class="form-group col-lg-4 col-sm-12">
+                            <label asp-for="IsSeen"> @Localizer["دیده شده توسط ادمین"] </label>
+                            <select class="form-control" asp-for="IsSeen">
+                                <option selected="selected">لطفا وضعیت را انتخاب کنید</option>
+                                <option value="@true">دیده شده</option>
+                                <option value="@false">دیده نشده</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group col-lg-4 col-sm-12">
+                            <label asp-for="FromDate"> @Localizer["از تاریخ"] </label>
+                            <input type="text" class="form-control" AdminDatePicker="1" asp-for="FromDate">
+                        </div>
+
+                        <div class="form-group col-lg-4 col-sm-12">
+                            <label asp-for="ToDate"> @Localizer["تا تاریخ"] </label>
+                            <input type="text" class="form-control" AdminDatePicker="2" asp-for="ToDate">
+                        </div>
+
+                        <div class="form-group col-lg-6 col-sm-12">
+                            <label asp-for="FilterDoctorReservationType"> @Localizer["روش مراجعه"] </label>
+                            <select asp-for="FilterDoctorReservationType" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.DoctorReservation.FilterDoctorReservationType))"></select>
+                        </div>
+
+                        <div class="form-group col-lg-6 col-sm-12">
+                            <label asp-for="FilterReservationOrder"> @Localizer["مرتب سازی براساس تاریخ نوبت"] </label>
+                            <select asp-for="FilterReservationOrder" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.DoctorReservation.FilterReservationOrder))"></select>
+                        </div>
+
+                        <hr />
+
+                        <div class="row">
+                            <div class="col-md-12 flex-style">
+                                <button type="submit" class="btn btn-labeled w-100 btn-palegreen">
+                                    <i class="btn-label glyphicon glyphicon-filter"></i>@Localizer["فیلتر"]
+                                </button>
+
+                                @if (Context.Request.QueryString.HasValue)
+                                {
+                                    <a asp-action="ListOfWaitingForPaymentRequests" asp-controller="Reservation" asp-area="Supporter" class="btn btn-labeled w-100 btn-darkorange ">
+                                        <i class="btn-label glyphicon glyphicon-remove"></i>@Localizer["حذف فیلتر"]
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-12 col-sm-12">
+        <div class="well with-header with-footer table-responsive">
+            <div class="header bordered-azure">
+                <div class="flex-style">
+                    <span>@ViewData["Title"]</span>
+                    <span>@Model.GetShownEntitiesPagesTitle()</span>
+                </div>
+            </div>
+
+            @if (Model.Entities != null && Model.Entities.Any())
+            {
+                <table class="table table-hover table-bordered tc vm">
+                    <thead class="tc vm">
+                        <tr class="tc vm">
+                            <th class="tc vm">
+                                @Localizer["تاریخ نوبت"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer[" ساعت"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["تاریخ درخواست"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["دیده شده"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["امکانات"]
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="tc vm">
+                        @foreach (var date in Model.Entities)
+                        {
+                            <tr class="tc vm" remove-ajax-item="@date.Id">
+
+                                <td class="vm">
+                                    <div class="flex-style-center">
+                                        <p> @date.DoctorReservationDateTime.DoctorReservationDate.ReservationDate.ToStringShamsiDate() </p>
+                                    </div>
+                                </td>
+
+                                <td class="vm">
+                                    <div class="flex-style-center">
+                                        <p> @Localizer["ساعت"] : @date.DoctorReservationDateTime.StartTime </p>
+                                    </div>
+                                </td>
+
+                                <td class="vm">
+                                    <div class="flex-style-center">
+                                        <p> @date.CreateDate.ToShamsi() </p>
+                                    </div>
+                                </td>
+
+                                <td class="vm">
+                                    <div class="flex-style-center">
+                                        <div class="mr-10px">
+
+                                            @if (date.IsSeenBySupporters == true)
+                                            {
+                                                <p class="label label-success">@Localizer["دیده شده"]</p>
+                                            }
+                                            @if (date.IsSeenBySupporters == false)
+                                            {
+                                                <p class="label label-danger">@Localizer["دیده نشده"]</p>
+                                            }
+
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <td class="tc vm">
+                                    <a asp-action="FillShowWaitingForPaymentReservationRequestDetail"
+                                       asp-controller="Reservation"
+                                       asp-area="Supporter"
+                                       asp-route-ReservationId="@date.DoctorReservationDateTime.Id"
+                                       asp-route-patientUserId="@date.PatientUserId"
+                                       class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+
+                                    @if (!date.IsSeenBySupporters)
+                                    {
+                                        <button title="حذف " onclick="DeleteAjax(@date.Id, '@Url.Action("SeenBySupporters", "Reservation", new { area = "Supporter", Id = date.Id })')" class="btn btn-success btn-circle btn-xs"><i class="glyphicon glyphicon-check"></i></button>
+                                    }  
+                                    else
+                                    {
+                                        <a asp-action="ListOFCommentsForWaitingForPaymentReservationRequests"
+                                       asp-controller="Reservation"
+                                       asp-area="Supporter"
+                                       asp-route-id="@date.Id"
+                                       class="btn btn-primary btn-circle btn-xs"><i class="glyphicon glyphicon-comment"></i></a>
+                                    }
+
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <div class="footer tc">
+
+                    <partial name="_SupporterPaging" model="@Model.GetCurrentPaging()" />
+
+                </div>
+            }
+            else
+            {
+                <partial name="_SupporterNotFoundPartial" />
+            }
+        </div>
+    </div>
+</div>
+

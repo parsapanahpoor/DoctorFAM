@@ -19,6 +19,8 @@ using DoctorFAM.Domain.ViewModels.Site.Reservation;
 using DoctorFAM.Domain.ViewModels.Supporter.Reservation;
 using DoctorFAM.Domain.ViewModels.Tourist.Token;
 using DoctorFAM.Domain.ViewModels.UserPanel.Reservation;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
 using System;
 using System.ComponentModel.DataAnnotations;
@@ -1071,7 +1073,7 @@ public class ReservationService : IReservationService
             User = patient,
             DoctorBooking = reservationDateTime.DoctorBooking,
             UserRequestDescription = reservationDateTime.UserRequestDescription,
-            WorkAddress= await _workAddress.GetWorkAddressById(reservationDateTime.WorkAddressId.Value),
+            WorkAddress = await _workAddress.GetWorkAddressById(reservationDateTime.WorkAddressId.Value),
         };
 
         #endregion
@@ -1596,6 +1598,62 @@ public class ReservationService : IReservationService
 
     #region Supporter Panel 
 
+    //Get The Owner Of Comment For Log For Waiting For Payment Reservation Request
+    public async Task<User?> GetTheOwnerOfCommentForLogForWaitingForPaymentReservationRequest(ulong id)
+    { 
+        #region Get Request By Id
+
+        var request = await GetLogForWaitingforReservationRequestById(id);
+        if (request == null) return null;
+
+        #endregion
+
+        return await _userService.GetUserById(request.SupporterUserId.Value);
+    }
+
+    //Seen Log For Waiting For Payment Reservation Requests
+    public async Task<bool> SeenLogForWaitingForPaymentReservationRequests(ulong requestId, ulong userId)
+    {
+        #region Get Request By Id
+
+        var request = await GetLogForWaitingforReservationRequestById(requestId);
+        if (request == null) return false;
+        if (request.IsSeenBySupporters) return false;
+
+        #endregion
+
+        #region Update 
+
+        #region Add Comment For Log 
+
+        LogForDoctorReservationDateTimeWaitingForPaymentComment comment = new LogForDoctorReservationDateTimeWaitingForPaymentComment()
+        {
+            UserId = userId,
+            LogForDoctorReservationDateTimeWaitingForPaymentId = requestId,
+            Comment = "این درخواست توسط پشتیبانی بررسی شده است."
+        };
+
+        await _reservation.AddCommentForLogofWaitingForPaymentRequestReservation(comment);
+
+        #endregion
+
+        request.IsSeenBySupporters = true;
+        request.SupporterUserId = userId;
+
+        _reservation.UpdateLogForWaitingforReservationRequestById(request);
+        await _reservation.Savechanges();
+
+        #endregion
+
+        return true;
+    }
+
+    //Get Log For Waiting for Reservation Request By Id 
+    public async Task<LogForDoctorReservationDateTimeWaitingForPayment?> GetLogForWaitingforReservationRequestById(ulong id)
+    {
+        return await _reservation.GetLogForWaitingforReservationRequestById(id);
+    }
+
     //Fill ListOfSelectedReservationsSupporterSideDTO
     public async Task<List<ListOfSelectedReservationsSupporterSideDTO>?> FillListOfSelectedReservationsSupporterSideDTO()
     {
@@ -1605,6 +1663,11 @@ public class ReservationService : IReservationService
     public async Task<FilterReservationSupporterSideViewModel?> FilterReservationSupporterPanelViewModel(FilterReservationSupporterSideViewModel filter)
     {
         return await _reservation.FilterReservationSupporterPanelViewModel(filter);
+    }
+
+    public async Task<FilterWaitingForReservationRequestsSupporterSideViewModel?> FilterListOfWaitingForPaymentRequests(FilterWaitingForReservationRequestsSupporterSideViewModel filter)
+    {
+        return await _reservation.FilterListOfWaitingForPaymentRequests(filter);
     }
 
     public async Task<ShowReservationDetailSupporterSideViewModel?> FillShowReservationDetailSupporterSideViewModel(ulong reservationId)
@@ -1658,6 +1721,64 @@ public class ReservationService : IReservationService
         if (officeAddress != null)
         {
             model.WorkAddress = officeAddress.Address;
+        }
+
+        #endregion
+
+        return model;
+    }
+
+    public async Task<ShowReservationDetailSupporterSideViewModel?> FillShowWaitingForPaymentReservationRequestDetailSupporterSideViewModel(ulong reservationId, ulong patientUserId)
+    {
+        #region Get Reservation Date Time By Id
+
+        var reservationDateTime = await _reservation.GetDoctorReservationDateTimeById(reservationId);
+        if (reservationDateTime == null) return null;
+
+        #endregion
+
+        #region Get Reservation Date By Id
+
+        var reservationDate = await _reservation.GetReservationDateById(reservationDateTime.DoctorReservationDateId);
+        if (reservationDate == null) return null;
+
+        #endregion
+
+        #region Get Doctor By Doctor Id
+
+        var doctor = await _userService.GetUserById(reservationDate.UserId);
+        if (doctor == null) return null;
+
+        #endregion
+
+        #region Fill View Model
+
+        ShowReservationDetailSupporterSideViewModel model = new ShowReservationDetailSupporterSideViewModel()
+        {
+            DoctorReservationDate = reservationDate,
+            DoctorReservationDateTime = reservationDateTime,
+            Doctor = doctor
+        };
+
+        #endregion
+
+        #region Get Patient 
+
+        var patient = await _userService.GetUserById(patientUserId);
+        model.Patient = patient;
+
+        #endregion
+
+        #region Get Doctor Work Address
+
+        if (reservationDateTime.WorkAddressId.HasValue)
+        {
+            var officeAddress = await _workAddress.GetWorkAddressById(reservationDateTime.WorkAddressId.Value);
+
+            if (officeAddress != null)
+            {
+                model.WorkAddress = officeAddress.Address;
+            }
         }
 
         #endregion
@@ -1746,9 +1867,73 @@ public class ReservationService : IReservationService
         return true;
     }
 
+    //Fill List Of Comments For Waiting For Payment Reservation Request Supporter Side DTO
+    public async Task<List<ListOfCommentsForWaitingForPaymentReservationRequestSupporterSideDTO>?> FillListOfCommentsForWaitingForPaymentReservationRequestSupporterSideDTO(ulong id)
+    {
+        return await _reservation.FillListOfCommentsForWaitingForPaymentReservationRequestSupporterSideDTO(id);
+    }
+
+    //Add Comment For Waiting For Payment Reservation Request 
+    public async Task AddCommentForWaitingForPaymentReservationRequest(ulong requestId , ulong userId , string comment)
+    {
+        LogForDoctorReservationDateTimeWaitingForPaymentComment model = new LogForDoctorReservationDateTimeWaitingForPaymentComment()
+        {
+             Comment = comment,
+             UserId = userId,
+             LogForDoctorReservationDateTimeWaitingForPaymentId = requestId
+        };
+
+        await _reservation.AddCommentForLogofWaitingForPaymentRequestReservation(model);
+        await _reservation.Savechanges();
+    }
+
     #endregion
 
     #region Site Side
+
+    //Update Log For Reservation Date Times In Waiting For Payment State
+    public async Task<bool> RemoveLogForReservationDateTimesInWaitingForPaymentState(ulong doctorReservationDateTimeId, ulong userId)
+    {
+        //Get Log 
+        var log = await _reservation.GetLogForReservationDateTimesInWaitingForPaymentState(doctorReservationDateTimeId, userId);
+        if (log == null) return false;
+
+        //Update Log 
+        log.IsDelete = true;
+
+        _reservation.RemoveLogForReservationDateTimesInWaitingForPaymentState(log);
+        await _reservation.Savechanges();
+
+        return true;
+    }
+
+    //Log For Reservation Date Times In Waiting For Payment State
+    public async Task<bool> LogForReservationDateTimesInWaitingForPaymentState(ulong doctorReservationDateTimeId, ulong userId)
+    {
+        //Get Log 
+        var log = await _reservation.GetLogForReservationDateTimesInWaitingForPaymentState(doctorReservationDateTimeId, userId);
+        if (log != null) return true;
+
+        #region Fill Entity
+
+        LogForDoctorReservationDateTimeWaitingForPayment entity = new LogForDoctorReservationDateTimeWaitingForPayment()
+        {
+            CreateDate = DateTime.Now,
+            DoctorReservationDateTimeId = doctorReservationDateTimeId,
+            IsDelete = false,
+            IsSeenBySupporters = false,
+            PatientUserId = userId,
+            SupporterUserId = null
+        };
+
+        #endregion
+
+        //Add To The Data Base
+        await _reservation.LogForReservationDateTimesInWaitingForPaymentState(entity);
+        await _reservation.Savechanges();
+
+        return true;
+    }
 
     //Get List Of Reservation Request That Pass A Day For Pay Reservation Tariff
     public async Task GetListOfReservationRequestThatPassADayForPayReservationTariff()
@@ -2006,6 +2191,8 @@ public class ReservationService : IReservationService
 
         #endregion
 
+
+
         #region Update Method 
 
         reservationDateTime.DoctorReservationState = DoctorReservationState.NotReserved;
@@ -2040,7 +2227,7 @@ public class ReservationService : IReservationService
     }
 
     //Fill Reservation Factor Site Side View Model
-    public async Task<ReservationFactorSiteSideViewModel?> FillReservationFactorSiteSideViewModel(ReservationFactorSiteSideViewModel model , ulong workAddressId)
+    public async Task<ReservationFactorSiteSideViewModel?> FillReservationFactorSiteSideViewModel(ReservationFactorSiteSideViewModel model, ulong workAddressId)
     {
         #region Get Doctor User 
 
@@ -2087,7 +2274,7 @@ public class ReservationService : IReservationService
     }
 
     //Fill Reservation Factor User Side View Model
-    public async Task<ReservationFactorUserSideViewModel?> FillReservationFactorUserSideViewModel(ulong reservationId , ulong userId)
+    public async Task<ReservationFactorUserSideViewModel?> FillReservationFactorUserSideViewModel(ulong reservationId, ulong userId)
     {
         #region Create Model 
 
