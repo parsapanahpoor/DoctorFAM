@@ -1,5 +1,6 @@
 ﻿#region Usings
 
+using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.Enums.DoctorReservation;
 using DoctorFAM.Domain.ViewModels.Admin.Reservation;
@@ -107,6 +108,12 @@ public interface IReservationService
 
     Task<bool> CloseReservation(ulong reservationTimeId);
 
+    //Get The Owner Of Comment For Log For Waiting For Payment Reservation Request
+    Task<User?> GetTheOwnerOfCommentForLogForWaitingForPaymentReservationRequest(ulong id);
+
+    //Fill List Of Comments For Waiting For Payment Reservation Request Supporter Side DTO
+    Task<List<ListOfCommentsForWaitingForPaymentReservationRequestSupporterSideDTO>?> FillListOfCommentsForWaitingForPaymentReservationRequestSupporterSideDTO(ulong id);
+
     //Check Doctor Reservation Date Time Validation For Add Doctor Personal Patient (Doctor Booking)
     Task<DoctorPersonalBookingViewModel?> FillDoctorPersonalBooking(ulong reservationDateTimeId, ulong userId);
 
@@ -180,9 +187,28 @@ public interface IReservationService
 
     Task<ShowReservationDetailSupporterSideViewModel?> FillShowReservationDetailSupporterSideViewModel(ulong reservationId);
 
+    Task<FilterWaitingForReservationRequestsSupporterSideViewModel?> FilterListOfWaitingForPaymentRequests(FilterWaitingForReservationRequestsSupporterSideViewModel filter);
+
+    Task<ShowReservationDetailSupporterSideViewModel?> FillShowWaitingForPaymentReservationRequestDetailSupporterSideViewModel(ulong reservationId, ulong patientUserId);
+
+    //Get Log For Waiting for Reservation Request By Id 
+    Task<LogForDoctorReservationDateTimeWaitingForPayment?> GetLogForWaitingforReservationRequestById(ulong id);
+
+    //Seen Log For Waiting For Payment Reservation Requests
+    Task<bool> SeenLogForWaitingForPaymentReservationRequests(ulong requestId, ulong userId);
+
+    //Add Comment For Waiting For Payment Reservation Request 
+    Task AddCommentForWaitingForPaymentReservationRequest(ulong requestId, ulong userId, string comment);
+
     #endregion
 
     #region Site Side 
+
+    //Update Log For Reservation Date Times In Waiting For Payment State
+    Task<bool> RemoveLogForReservationDateTimesInWaitingForPaymentState(ulong doctorReservationDateTimeId, ulong userId);
+
+    //Log For Reservation Date Times In Waiting For Payment State
+    Task<bool> LogForReservationDateTimesInWaitingForPaymentState(ulong doctorReservationDateTimeId, ulong userId);
 
     //Get Doctor Reservation Alert By Doctor User Id
     Task<string?> GetDoctorReservationAlertByDoctorUserId(ulong userId);
