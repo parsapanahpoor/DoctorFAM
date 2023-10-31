@@ -6,7 +6,9 @@ using DoctorFAM.Domain.Entities.Speciality;
 using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.Admin.Speciality;
 using DoctorFAM.Domain.ViewModels.Site.Specialists;
+using DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor;
 using Microsoft.EntityFrameworkCore;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace DoctorFAM.Data.Repository;
 
@@ -254,7 +256,7 @@ public class SpecialityRepository : ISpecialityRepository
     #region Site Side 
 
     //List Of Specialists Site Side 
-    public async Task<List<ListOfSpecialistsSiteSideViewModel>> ListOfSpecialistsSiteSide()
+    public async Task<List<ListOfSpecialistsSiteSideViewModel>> ListOfSpecialistsSiteSide(FilterFamilyDoctorUserPanelSideViewModel filter)
     {
         #region Get Super Specialists Records 
 
@@ -301,7 +303,7 @@ public class SpecialityRepository : ISpecialityRepository
                             {
                                 ListOfSpecialistsSiteSideViewModel modelChild = new ListOfSpecialistsSiteSideViewModel()
                                 {
-                                    DoctorUserInfo = await _context.Users
+                                    DoctorUserInfo = await _context.Users.Include(p=> p.Doctors).ThenInclude(p=> p.DoctorsInfos)
                                                                                                                      .AsNoTracking()
                                                                                                                      .Where(p => !p.IsDelete && p.Id == doctorId.DoctorUserId)
                                                                                                                      .Select(p => new DoctorSpecialistUserInfoViewModel()
@@ -313,7 +315,8 @@ public class SpecialityRepository : ISpecialityRepository
                                                                                                                                                    .AsNoTracking()
                                                                                                                                                    .Where(p=> !p.IsDelete && p.DoctorId == doctorId.DoctorId)
                                                                                                                                                    .Select(p=> p.DoctorTilteName)
-                                                                                                                                                   .FirstOrDefault()
+                                                                                                                                                   .FirstOrDefault(),
+                                                                                                                         doctorsInfo = p.Doctors.DoctorsInfos
                                                                                                                      })
                                                                                                                      .FirstOrDefaultAsync()
                                 };
@@ -325,7 +328,7 @@ public class SpecialityRepository : ISpecialityRepository
                         {
                             ListOfSpecialistsSiteSideViewModel modelChild = new ListOfSpecialistsSiteSideViewModel()
                             {
-                                DoctorUserInfo = await _context.Users
+                                DoctorUserInfo = await _context.Users.Include(p => p.Doctors).ThenInclude(p => p.DoctorsInfos)
                                                                                       .AsNoTracking()
                                                                                       .Where(p => !p.IsDelete && p.Id == doctorId.DoctorUserId)
                                                                                       .Select(p => new DoctorSpecialistUserInfoViewModel()
@@ -337,7 +340,8 @@ public class SpecialityRepository : ISpecialityRepository
                                                                                                                                                    .AsNoTracking()
                                                                                                                                                    .Where(p => !p.IsDelete && p.DoctorId == doctorId.DoctorId)
                                                                                                                                                    .Select(p => p.DoctorTilteName)
-                                                                                                                                                   .FirstOrDefault()
+                                                                                                                                                   .FirstOrDefault(),
+                                                                                          doctorsInfo = p.Doctors.DoctorsInfos
                                                                                       })
                                                                                       .FirstOrDefaultAsync()
                             };
@@ -351,11 +355,125 @@ public class SpecialityRepository : ISpecialityRepository
             }
         }
 
+        if (filter.Gender.HasValue)
+        {
+            if (filter.Gender.Value == 0)
+            {
+                model = model.Where(p => p.DoctorUserInfo.doctorsInfo.Gender == Domain.Enums.Gender.Gender.Male).ToList();
+            }
+            if (filter.Gender.Value == 1)
+            {
+                model = model.Where(p => p.DoctorUserInfo.doctorsInfo.Gender == Domain.Enums.Gender.Gender.Female).ToList();
+            }
+        }
+
+        if (!string.IsNullOrEmpty(filter.Username))
+        {
+            model = model.Where(s => s.DoctorUserInfo.Username.Contains(filter.Username)).ToList();
+        }
+
+        if (filter.CountryId.HasValue)
+        {
+            List<ListOfSpecialistsSiteSideViewModel?> CountryModel = new List<ListOfSpecialistsSiteSideViewModel?>();
+
+            foreach (var item in model.Select(p => p.DoctorUserInfo.UserId))
+            {
+                var address = await _context.WorkAddresses.FirstOrDefaultAsync(p => !p.IsDelete && p.UserId == item && p.CountryId == filter.CountryId.Value);
+
+                if (address != null)
+                {
+                    ListOfSpecialistsSiteSideViewModel modelChild = new ListOfSpecialistsSiteSideViewModel()
+                    {
+                        DoctorUserInfo = await _context.Users.Include(p => p.Doctors).ThenInclude(p => p.DoctorsInfos)
+                                                                                                                      .AsNoTracking()
+                                                                                                                      .Where(p => !p.IsDelete && p.Id == address.UserId)
+                                                                                                                      .Select(p => new DoctorSpecialistUserInfoViewModel()
+                                                                                                                      {
+                                                                                                                          UserAvatar = p.Avatar,
+                                                                                                                          UserId = p.Id,
+                                                                                                                          Username = p.Username,
+                                                                                                                          DoctorTilteName = p.Doctors.DoctorsInfos.DoctorTilteName,
+                                                                                                                          doctorsInfo = p.Doctors.DoctorsInfos
+                                                                                                                      })
+                                                                                                                      .FirstOrDefaultAsync()
+                    };
+
+                    CountryModel.Add(modelChild);
+                }
+            }
+
+            model = CountryModel;
+        }
+
+        if (filter.StateId.HasValue)
+        {
+            List<ListOfSpecialistsSiteSideViewModel?> StateModel = new List<ListOfSpecialistsSiteSideViewModel?>();
+
+            foreach (var item in model.Select(p => p.DoctorUserInfo.UserId))
+            {
+                var address = await _context.WorkAddresses.FirstOrDefaultAsync(p => !p.IsDelete && p.UserId == item && p.StateId == filter.StateId.Value);
+
+                if (address != null)
+                {
+                    ListOfSpecialistsSiteSideViewModel modelChild = new ListOfSpecialistsSiteSideViewModel()
+                    {
+                        DoctorUserInfo = await _context.Users.Include(p => p.Doctors).ThenInclude(p => p.DoctorsInfos)
+                                                                                                                     .AsNoTracking()
+                                                                                                                     .Where(p => !p.IsDelete && p.Id == address.UserId)
+                                                                                                                     .Select(p => new DoctorSpecialistUserInfoViewModel()
+                                                                                                                     {
+                                                                                                                         UserAvatar = p.Avatar,
+                                                                                                                         UserId = p.Id,
+                                                                                                                         Username = p.Username,
+                                                                                                                         DoctorTilteName = p.Doctors.DoctorsInfos.DoctorTilteName,
+                                                                                                                         doctorsInfo = p.Doctors.DoctorsInfos
+                                                                                                                     })
+                                                                                                                     .FirstOrDefaultAsync()
+                    };
+
+                    StateModel.Add(modelChild);
+                }
+            }
+
+            model = StateModel;
+        }
+
+        if (filter.CityId.HasValue)
+        {
+            List<ListOfSpecialistsSiteSideViewModel?> CityModel = new List<ListOfSpecialistsSiteSideViewModel?>();
+
+            foreach (var item in model.Select(p => p.DoctorUserInfo.UserId))
+            {
+                var address = await _context.WorkAddresses.FirstOrDefaultAsync(p => !p.IsDelete && p.UserId == item && p.CityId == filter.CityId.Value);
+
+                if (address != null)
+                {
+                    ListOfSpecialistsSiteSideViewModel modelChild = new ListOfSpecialistsSiteSideViewModel()
+                    {
+                        DoctorUserInfo = await _context.Users.Include(p => p.Doctors).ThenInclude(p => p.DoctorsInfos)
+                                                                                                                    .AsNoTracking()
+                                                                                                                    .Where(p => !p.IsDelete && p.Id == address.UserId)
+                                                                                                                    .Select(p => new DoctorSpecialistUserInfoViewModel()
+                                                                                                                    {
+                                                                                                                        UserAvatar = p.Avatar,
+                                                                                                                        UserId = p.Id,
+                                                                                                                        Username = p.Username,
+                                                                                                                        DoctorTilteName = p.Doctors.DoctorsInfos.DoctorTilteName,
+                                                                                                                        doctorsInfo = p.Doctors.DoctorsInfos
+                                                                                                                    })
+                                                                                                                    .FirstOrDefaultAsync()
+                    };
+
+                    CityModel.Add(modelChild);
+                }
+            }
+
+            model = CityModel;
+        }
+
         return model;
 
         #endregion
-
-        return null;
     }
 
     //List Of Super Specialists 

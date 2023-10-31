@@ -6,6 +6,7 @@ using DoctorFAM.Domain.Entities.Speciality;
 using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.Admin.Speciality;
 using DoctorFAM.Domain.ViewModels.Site.Specialists;
+using DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor;
 using Microsoft.EntityFrameworkCore;
 
 namespace DoctorFAM.Application.Services.Implementation;
@@ -250,9 +251,9 @@ public class SpecialityService : ISpecialityService
     #region Site Side 
 
     //List Of Specialists Site Side 
-    public async Task<List<ListOfSpecialistsSiteSideViewModel>> ListOfSpecialistsSiteSide()
+    public async Task<List<ListOfSpecialistsSiteSideViewModel>> ListOfSpecialistsSiteSide(FilterFamilyDoctorUserPanelSideViewModel filter)
     {
-        return await _specialityRepository.ListOfSpecialistsSiteSide();
+        return await _specialityRepository.ListOfSpecialistsSiteSide(filter);
     }
 
     //List Of Super Specialists 
