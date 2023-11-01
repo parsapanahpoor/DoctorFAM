@@ -1,7 +1,11 @@
 ﻿#region Usings
 
+using DoctorFAM.Application.Extensions;
+using DoctorFAM.Application.Services.Implementation;
 using DoctorFAM.Application.Services.Interfaces;
+using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.ViewModels.Supporter.Reservation;
+using DoctorFAM.Web.HttpManager;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 
@@ -113,6 +117,79 @@ public class ReservationController : SupporterBaseController
     public async Task<IActionResult> ListOfSelectedReservationTimes()
     {
         return View(await _reservationService.FillListOfSelectedReservationsSupporterSideDTO());
+    }
+
+    #endregion
+
+    #region List Of Waiting For Payment Requests
+
+    [HttpGet]
+    public async Task<IActionResult> ListOfWaitingForPaymentRequests(FilterWaitingForReservationRequestsSupporterSideViewModel filter)
+    {
+        return View(await _reservationService.FilterListOfWaitingForPaymentRequests(filter));
+    }
+
+    #endregion
+
+    #region Fill Show Waiting For Payment Reservation Request Detail 
+
+    [HttpGet]
+    public async Task<IActionResult> FillShowWaitingForPaymentReservationRequestDetail(ulong ReservationId , ulong patientUserId)
+    {
+        #region Fill Model
+
+        var model = await _reservationService.FillShowWaitingForPaymentReservationRequestDetailSupporterSideViewModel(ReservationId, patientUserId);
+        if (model == null) return NotFound();
+
+        #endregion
+
+        return View(model);
+    }
+
+    #endregion
+
+    #region Seen By Supporter
+
+    [HttpGet]
+    public async Task<IActionResult> SeenBySupporters(ulong id)
+    {
+        #region Seen Cooperation Request 
+
+        var res = await _reservationService.SeenLogForWaitingForPaymentReservationRequests(id, User.GetUserId()); if (res)
+        {
+            return ApiResponse.SetResponse(ApiResponseStatus.Success, null, "عملیات با موفقیت انجام شده است.");
+        }
+
+        #endregion
+
+        return ApiResponse.SetResponse(ApiResponseStatus.Danger, null, "عملیات با شکست مواجه شده است.");
+    }
+
+    #endregion
+    
+    #region List OF Comments For Waiting For Payment Reservation Requests 
+
+    public async Task<IActionResult> ListOFCommentsForWaitingForPaymentReservationRequests(ulong id)
+    {
+        ViewBag.OwnerOfComment = await _reservationService.GetTheOwnerOfCommentForLogForWaitingForPaymentReservationRequest(id);
+
+        return View(await _reservationService.FillListOfCommentsForWaitingForPaymentReservationRequestSupporterSideDTO(id));
+    }
+
+    #endregion
+
+    #region Add Comment For Waiting Request
+
+    [HttpPost]
+    public async Task<IActionResult> AddCommentForWaitingRequest(ulong RequestId ,string Comment)
+    {
+        #region Add Comment To The Data Base 
+
+        await _reservationService.AddCommentForWaitingForPaymentReservationRequest(RequestId , User.GetUserId() , Comment);
+
+        #endregion
+
+        return RedirectToAction(nameof(ListOFCommentsForWaitingForPaymentReservationRequests) , new { id = RequestId });
     }
 
     #endregion

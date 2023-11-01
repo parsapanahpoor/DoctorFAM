@@ -375,6 +375,15 @@
                     </a>
                 </li>
                 <li>
+                 
+                    <a asp-area="Admin" asp-controller="Reservation" asp-action="ListOfWaitingForPaymentRequests">
+                        <span class="menu-text">@SharedLocalizer["درخواست های درانتظار "]</span>
+                        <div class="badge badge-warning" id="DoctorInfoState">
+                            @Model.LastestWaitingForPaymentReservationRequests
+                        </div>
+                    </a>
+                </li>
+                <li>
                     <a asp-area="Admin" asp-controller="Reservation" asp-action="FilterCancelReservationRequests">
                         <span class="menu-text">@SharedLocalizer["List Of Cancel Request"]</span>
                     </a>
