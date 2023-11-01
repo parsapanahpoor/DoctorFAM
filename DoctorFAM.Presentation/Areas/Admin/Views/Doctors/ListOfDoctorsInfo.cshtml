@@ -203,7 +203,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label asp-for="Mobile"> @Localizer["Mobile"] </label>
+                            <label asp-for="Mobile"> @Localizer["تلفن مطب"] </label>
                             <input type="text" class="form-control" asp-for="Mobile">
                         </div>
 
@@ -302,11 +302,31 @@
                                             @info.User.Email
                                         }
                                     </p>
-                                    @if (!string.IsNullOrEmpty(info.User.Mobile))
+
+                                    <hr class="margin-7" />
+
+                                    @if (info.User.Doctors != null)
                                     {
-                                        <hr class="margin-7" />
-                                        <p>@Localizer["Mobile"] : @info.User.Mobile</p>
+                                        @if (info.User.Doctors.DoctorsInfos != null)
+                                        {
+                                            @if (!string.IsNullOrEmpty(info.User.Doctors.DoctorsInfos.ClinicPhone))
+                                            {
+                                                <p>@Localizer["شماره ی مطب"] : @info.User.Doctors.DoctorsInfos.ClinicPhone</p>
+                                            }
+                                            else
+                                            {
+                                                <span class="mr-8px label label-orange">@Localizer["شماره ی مطب"] :  @Localizer["Empty"] </span>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <span class="mr-8px label label-orange">@Localizer["شماره ی مطب"] :  @Localizer["Empty"] </span>
+                                        }
+                                    }else
+                                    {
+                                        <span class="mr-8px label label-orange">@Localizer["شماره ی مطب"] :  @Localizer["Empty"] </span>
                                     }
+
                                 </td>
                                 <td class="tc vm">
                                     <p class="flex-style-center">
