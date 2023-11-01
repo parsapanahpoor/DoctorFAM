@@ -101,7 +101,7 @@
             <div class="header bordered-azure">
                 <div class="flex-style">
                     <span>@ViewData["Title"]</span>
-                    <span>@Model.GetShownEntitiesPagesTitle()</span>
+                    <span>@Model.GetShownEntitiesPagesTitle() </span>
                 </div>
             </div>
 
@@ -133,11 +133,12 @@
                             <tr class="tc vm">
                                 <td class="vm">
                                     <div class="flex-style-center">
-                                        <img src="@info.User.GetUserAvatar()" class="avatar-style" />
+                                       
                                         <div class="mr-10px">
                                             <span> @info.User.Username </span>
                                             <hr class="margin-7" />
-                                            <span>@Localizer["Register Date"] : @info.User.CreateDate.ToShamsi()</span>
+
+                                            
                                         </div>
                                     </div>
                                 </td>

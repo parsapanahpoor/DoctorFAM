@@ -1,0 +1,42 @@
+﻿@model List<DoctorFAM.Domain.ViewModels.Site.Doctor.Resume.WorkingAddress.WorkingAddressResumeInSitePanelViewModel>
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.Extensions
+
+
+@if (Model != null && Model.Any())
+{
+    foreach (var item in Model)
+    {
+
+        <div class="banermeta">
+            <div class="row ">
+                <div class="col-md-12">
+                    @if (!string.IsNullOrEmpty(item.WorkingAddressTitle))
+                    {
+                        <p class="text-white"><a href="#"><u>@item.WorkingAddressTitle</u></a></p>
+                    }
+                    @if (!string.IsNullOrEmpty(item.WorkingAddress))
+                    {
+                        <p class="text-white">@item.WorkingAddress</p>
+                    }
+
+                </div>
+                <div class="col-md-12">
+                    <p class="text-white">
+                        @if (!string.IsNullOrEmpty(item.Days))
+                        {
+                            <span> @item.Days </span>
+                        }
+                        @if (!string.IsNullOrEmpty(item.Times))
+                        {
+                            <span>ساعت @item.Times </span>
+                        }
+                    </p>
+                   
+                </div>
+            </div>
+            <hr />
+        </div>
+
+    }
+}

@@ -1,0 +1,172 @@
+﻿@model DoctorFAM.Domain.ViewModels.Site.Reservation.ChooseTypeOfReservationViewModel
+
+<form id="ChooseReservationType" method="post" asp-action="ChooseTypeOfReservation" asp-controller="FocalPoint" asp-area="">
+    <input type="hidden" asp-for="ReservationDateTimeId" />
+    <input type="hidden" asp-for="DoctorId" />
+    <h5 class="modal-title" id="exampleModalLabel">انتخاب روش مراجعه </h5>
+
+    <div class="modal-body">
+
+        <div class="row">
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label"> برای چه کسی نوبت میخواد ؟  </label>
+                    <select id="GetReservationForHimSelf" asp-for="UserInfoForGetReservation.GetReservationForHimSelf" class="form-control">
+                        <option selected="selected" value="0">انتخاب کنید</option>
+                        <option value="2">خودم </option>
+                        <option value="1">فرد دیگر</option>
+                    </select>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row d-none" id="PersonalInformation">
+
+            @if (Model.UserInfoForGetReservation != null && !string.IsNullOrEmpty(Model.UserInfoForGetReservation.FirstName))
+            {
+                <div class="form-group col-md-6 col-sm-6">
+                    <label asp-for="ReservationRequestDescription">نام شما : </label>
+                    <input readonly asp-for="UserInfoForGetReservation.FirstName" class="form-control">
+                </div>
+            }
+            else
+            {
+                <div class="form-group col-md-6 col-sm-6">
+                    <label asp-for="ReservationRequestDescription">نام شما : </label>
+                    <input asp-for="UserInfoForGetReservation.FirstName" class="form-control">
+                    <span class="text-danger" asp-validation-for="UserInfoForGetReservation.FirstName"></span>
+                </div>
+            }
+
+            @if (Model.UserInfoForGetReservation != null && !string.IsNullOrEmpty(Model.UserInfoForGetReservation.LastName))
+            {
+                <div class="form-group col-md-6 col-sm-6">
+                    <label asp-for="ReservationRequestDescription">نام خانوادگی شما : </label>
+                    <input readonly asp-for="UserInfoForGetReservation.LastName" class="form-control">
+                </div>
+            }
+            else
+            {
+                <div class="form-group col-md-6 col-sm-6">
+                    <label asp-for="ReservationRequestDescription">نام خانوادگی شما : </label>
+                    <input asp-for="UserInfoForGetReservation.LastName" class="form-control">
+                    <span class="text-danger" asp-validation-for="UserInfoForGetReservation.LastName"></span>
+                </div>
+            }
+
+            @if (Model.UserInfoForGetReservation != null && string.IsNullOrEmpty(Model.UserInfoForGetReservation.NationalCode))
+            {
+                <div class="form-group col-md-12 col-sm-6">
+                    <label asp-for="ReservationRequestDescription">کدملی شما : </label>
+                    <input asp-for="UserInfoForGetReservation.NationalCode" class="form-control">
+                    <span class="text-danger" asp-validation-for="UserInfoForGetReservation.NationalCode"></span>
+                </div>
+            }
+
+        </div>
+
+        <div class="row d-none" id="OtherInformation">
+
+            @if (Model.UserInfoForGetReservation != null && string.IsNullOrEmpty(Model.UserInfoForGetReservation.FirstName))
+            {
+                <div class="form-group col-md-6 col-sm-6">
+                    <label asp-for="ReservationRequestDescription">نام شما : </label>
+                    <input asp-for="UserInfoForGetReservation.OtherButYourFirstName" class="form-control">
+                    <span class="text-danger" asp-validation-for="UserInfoForGetReservation.OtherButYourFirstName"></span>
+                </div>
+            }
+
+            @if (Model.UserInfoForGetReservation != null && string.IsNullOrEmpty(Model.UserInfoForGetReservation.LastName))
+            {
+                <div class="form-group col-md-6 col-sm-6">
+                    <label asp-for="ReservationRequestDescription">نام خانوادگی شما : </label>
+                    <input asp-for="UserInfoForGetReservation.OtherButYourLastName" class="form-control">
+                    <span class="text-danger" asp-validation-for="UserInfoForGetReservation.OtherButYourLastName"></span>
+                </div>
+            }
+
+            @if (Model.UserInfoForGetReservation != null && string.IsNullOrEmpty(Model.UserInfoForGetReservation.NationalCode))
+            {
+                <div class="form-group col-md-12 col-sm-6">
+                    <label asp-for="ReservationRequestDescription">کدملی شما : </label>
+                    <input asp-for="UserInfoForGetReservation.OtherButYourNationalCode" class="form-control">
+                    <span class="text-danger" asp-validation-for="UserInfoForGetReservation.OtherButYourNationalCode"></span>
+                </div>
+            }
+
+            <div class="form-group col-md-6 col-sm-6">
+                <label asp-for="ReservationRequestDescription">نام بیمار  : </label>
+                <input asp-for="UserInfoForGetReservation.OthersFirstName" class="form-control">
+                <span class="text-danger" asp-validation-for="UserInfoForGetReservation.OthersFirstName"></span>
+            </div>
+
+            <div class="form-group col-md-6 col-sm-6">
+                <label asp-for="ReservationRequestDescription">نام حانوادگی بیمار  : </label>
+                <input  asp-for="UserInfoForGetReservation.OthersLastName" class="form-control">
+                <span class="text-danger" asp-validation-for="UserInfoForGetReservation.OthersLastName"></span>
+            </div>
+
+        </div>
+
+        <div class="row d-none" id="MainContent">
+
+            @if (Model.DoctorSelectedReservationType == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationType.Reserved)
+            {
+                <div class="form-group col-md-12 col-sm-12">
+                    <label asp-for="DoctorReservationType">نوع نوبت </label>
+                    <select asp-for="DoctorReservationType" class="form-control">
+
+                        <option value="1">حضوری</option>
+
+                    </select>
+                    <span class="text-danger" asp-validation-for="DoctorReservationType"></span>
+                </div>
+            }
+
+            @if (Model.DoctorSelectedReservationType == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationType.Onile)
+            {
+                <div class="form-group col-md-12 col-sm-12">
+                    <label asp-for="DoctorReservationType">نوع نوبت </label>
+                    <select asp-for="DoctorReservationType" class="form-control">
+
+                        <option value="0">آنلاین</option>
+
+                    </select>
+                    <span class="text-danger" asp-validation-for="DoctorReservationType"></span>
+                </div>
+            }
+
+            @if (Model.DoctorSelectedReservationType == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationType.BothOnlineAndReserved)
+            {
+                <div class="form-group col-md-12 col-sm-12">
+                    <label asp-for="DoctorReservationType">نوع نوبت </label>
+                    <select asp-for="DoctorReservationType" class="form-control">
+
+                        <option value="0">آنلاین</option>
+                        <option value="1">حضوری</option>
+
+                    </select>
+                    <span class="text-danger" asp-validation-for="DoctorReservationType"></span>
+                </div>
+            }
+
+            <hr />
+
+            <div class="form-group col-md-12 col-sm-12">
+                <label asp-for="ReservationRequestDescription">توضیحات </label>
+                <input  asp-for="ReservationRequestDescription" class="form-control">
+                <span class="text-danger" asp-validation-for="ReservationRequestDescription"></span>
+            </div>
+
+            <hr />
+
+            <div class="footer">
+                <button type="submit" style="padding-top: 10px;padding-bottom: 10px;padding-right: 20px;padding-left: 20px;" class="btn-SelfTest">ثبت</button>
+                <a asp-action="ListOfUserVirtualFiles" asp-area="UserPanel" asp-controller="UserVirtualFiles" style="padding-top: 10px;padding-bottom: 10px;padding-right: 20px;padding-left: 20px;" class="btn-SelfTest">پرونده ی مجازی بیمار</a>
+            </div>
+
+        </div>
+    </div>
+</form>

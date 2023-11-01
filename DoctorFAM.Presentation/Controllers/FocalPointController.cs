@@ -67,6 +67,23 @@ public class FocalPointController : SiteBaseController
 
     #endregion
 
+    #region New Doctor Page 
+
+    [HttpGet("NewDocPage/{userId}/{name}")]
+    public async Task<IActionResult> NewDocPage(ulong userId, string name)
+    {
+        #region Fill Page Model 
+
+        var model = await _doctorService.FillDoctorPageDetailInReservationPage(userId);
+        if (model == null) return NotFound();
+
+        #endregion
+
+        return View(model);
+    }
+
+    #endregion
+
     #region Doctor Reservation Detail 
 
     [Authorize]

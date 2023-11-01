@@ -7,47 +7,41 @@
 {
     foreach (var item in Model)
     {
-        <div role="tabpanel" id="doc_locations" class="tab-pane fade">
 
-            <div class="location-list">
-                <div class="row divst1">
-
-                    <div class="col-md-6">
-                        <div class="clinic-content">
-
-                            @if (!string.IsNullOrEmpty(item.WorkingAddressTitle))
-                            {
-                                <h4 class="clinic-name"><a href="#">@item.WorkingAddressTitle</a></h4>
-                            }
-                            @if (!string.IsNullOrEmpty(item.WorkingAddress))
-                            {
-                                <p>@item.WorkingAddress</p>
-                            }
-
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="clinic-timing">
-                            <div>
-                                <p class="timings-days">
-                                    @if (!string.IsNullOrEmpty(item.Days))
-                                    {
-                                        <span> @item.Days </span>
-                                    }
-                                </p>
-                                <p class="timings-times">
-                                    @if (!string.IsNullOrEmpty(item.Times))
-                                    {
-                                        <span>@item.Times </span>
-                                    }
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+        <div class="banermeta">
+            <div class="row ">
+                <div class="col-md-12">
+                    @if (!string.IsNullOrEmpty(item.WorkingAddressTitle))
+                    {
+                        <p class="text-white"><a href="#"><u>@item.WorkingAddressTitle</u></a></p>
+                    }
+                    @if (!string.IsNullOrEmpty(item.WorkingAddress))
+                    {
+                        <p class="text-white">@item.WorkingAddress</p>
+                    }
 
                 </div>
+                <div class="col-md-12">
+                    <p class="text-white">
+                        @if (!string.IsNullOrEmpty(item.Days))
+                        {
+                            <span> @item.Days </span>
+                        }
+                        @if (!string.IsNullOrEmpty(item.Times))
+                        {
+                            <span>ساعت @item.Times </span>
+                        }
+                    </p>
+                   
+                </div>
+
+            
+
+                
+
             </div>
+            <hr />
         </div>
+
     }
 }

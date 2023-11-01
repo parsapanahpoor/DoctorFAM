@@ -1,0 +1,22 @@
+﻿@model List<DoctorFAM.Domain.ViewModels.Site.Doctor.Resume.WorkingAddress.WorkingAddressResumeInSitePanelViewModel>
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.Extensions
+
+
+@if (Model != null && Model.Any())
+{
+    foreach (var item in Model)
+    {
+
+        @if (!string.IsNullOrEmpty(item.Days))
+        {
+            <span> @item.Days </span>
+        }
+
+        @if (!string.IsNullOrEmpty(item.Times))
+        {
+            <span>@item.Times </span>
+        }
+
+    }
+}
