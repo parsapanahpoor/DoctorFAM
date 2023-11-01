@@ -52,5 +52,7 @@ public sealed class DoctorReservationDateTime : BaseEntity
 
     public DoctorPersonalBooking DoctorPersonalBooking { get; set; }
 
+    public ICollection<LogForDoctorReservationDateTimeWaitingForPayment> LogForDoctorReservationDateTimeWaitingForPayment { get; set; }
+
     #endregion
 }

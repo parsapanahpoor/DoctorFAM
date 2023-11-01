@@ -67,6 +67,23 @@ public class FocalPointController : SiteBaseController
 
     #endregion
 
+    #region New Doctor Page 
+
+    [HttpGet("NewDocPage/{userId}/{name}")]
+    public async Task<IActionResult> NewDocPage(ulong userId, string name)
+    {
+        #region Fill Page Model 
+
+        var model = await _doctorService.FillDoctorPageDetailInReservationPage(userId);
+        if (model == null) return NotFound();
+
+        #endregion
+
+        return View(model);
+    }
+
+    #endregion
+
     #region Doctor Reservation Detail 
 
     [Authorize]
@@ -216,6 +233,13 @@ public class FocalPointController : SiteBaseController
 
         #endregion
 
+        #region Log For Reservation Date Times In Waiting For Payment State
+
+        var logForWaitingForPayments = await _reservationService.LogForReservationDateTimesInWaitingForPaymentState(model.ReservationDateTimeId , User.GetUserId());
+        if (!logForWaitingForPayments) return NotFound();
+
+        #endregion
+
         #region Get Reservation Tariff 
 
         if (!model.DoctorReservationType.HasValue)
@@ -336,6 +360,9 @@ public class FocalPointController : SiteBaseController
 
                     if (wallet != null)
                     {
+                        //Remove Waiting For Payment Reservations Logs
+                        await _reservationService.RemoveLogForReservationDateTimesInWaitingForPaymentState(reservationDateTime.Id , reservationDateTime.PatientId.Value);
+
                         //Update Reservation State 
                         await _reservationService.ReserveDoctorReservationDateTimeAfterSuccessPayment(reservationDateTime.Id);
 

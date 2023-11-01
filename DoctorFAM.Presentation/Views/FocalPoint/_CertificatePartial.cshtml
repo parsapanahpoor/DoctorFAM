@@ -5,40 +5,60 @@
 
 @if (Model != null && Model.Any())
 {
-    <div role="tabpanel" id="doc_reviews" class="tab-pane fade">
 
-        @foreach (var item in Model)
-        {
-            <div class="location-list">
-                <div class="row divst1">
+    <div class="widget">
+        <div class="banner medium-opacity bluesh">
+            <div style="background-image: url(images/resources/baner-widgetbg.jpg)" class="bg-image"></div>
+            <div class="baner-top">
+                <span><img src="images/book-icon.png" alt="">گواهینامه ها</span>
 
-                    <div class="col-md-9">
-                        <div class="clinic-content">
-
-                            @if (!string.IsNullOrEmpty(item.CertificateTitle))
-                            {
-                                <h4 class="clinic-name"><a href="#">@item.CertificateTitle</a></h4>
-                            }
-                            @if (!string.IsNullOrEmpty(item.ExporterRefrence))
-                            {
-                                <p>@item.ExporterRefrence</p>
-                            }
-                            
-                            
-                        </div>
-                    </div>
-                    <div class="col-md-3 text-center">
-                        <div class="clinic-content">                            
-                            @if (!string.IsNullOrEmpty(item.ImageName))
-                            {
-                                <a href="@PathTools.CertificatePathThumb@item.ImageName" target="_blank" > <img style="border-radius: 8px;height: 90px;" src="@PathTools.CertificatePathThumb@item.ImageName" /></a>
-                            }
-                            
-                        </div>
-                    </div>
-                </div>
             </div>
-        }
+            <div class="banermeta">
 
+
+                @*Box Of Certificate*@
+                @foreach (var item in Model)
+                {
+
+                    <div class="row ">
+
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                           
+
+                                @if (!string.IsNullOrEmpty(item.CertificateTitle))
+                                {
+                                    <p class="text-white">
+                                        <a href="#"><u>@item.CertificateTitle</u></a>
+                                    </p>
+                                }
+                                @if (!string.IsNullOrEmpty(item.ExporterRefrence))
+                                {
+                                    <p class="text-white">@item.ExporterRefrence</p>
+                                }
+
+
+                           
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            
+                                @if (!string.IsNullOrEmpty(item.ImageName))
+                                {
+                                    <a href="@PathTools.CertificatePathThumb@item.ImageName" target="_blank"> <img style="border-radius: 8px;height: 90px;" src="@PathTools.CertificatePathThumb@item.ImageName" /></a>
+                                }
+
+                            
+                        </div>
+                    </div>
+                    <hr />
+
+
+                }
+
+
+            </div>
+        </div>
     </div>
+
+
+
 }

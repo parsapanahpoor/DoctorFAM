@@ -8,6 +8,7 @@ using DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment;
 using DoctorFAM.Domain.ViewModels.Site.Reservation;
 using DoctorFAM.Domain.ViewModels.Supporter.Reservation;
 using DoctorFAM.Domain.ViewModels.UserPanel.Reservation;
+using Microsoft.EntityFrameworkCore;
 
 #endregion
 
@@ -135,9 +136,38 @@ public interface IReservationRepository
     //Fill ListOfSelectedReservationsSupporterSideDTO
     Task<List<ListOfSelectedReservationsSupporterSideDTO>?> FillListOfSelectedReservationsSupporterSideDTO();
 
+    Task<FilterWaitingForReservationRequestsSupporterSideViewModel?> FilterListOfWaitingForPaymentRequests(FilterWaitingForReservationRequestsSupporterSideViewModel filter);
+
+    //Get Log For Waiting for Reservation Request By Id 
+    Task<LogForDoctorReservationDateTimeWaitingForPayment?> GetLogForWaitingforReservationRequestById(ulong id);
+
+    //Update Log For Waiting for Reservation Request By Id 
+    void UpdateLogForWaitingforReservationRequestById(LogForDoctorReservationDateTimeWaitingForPayment model);
+
+    //Add Comment For Log of Waiting For Payment Request Reservation 
+    Task AddCommentForLogofWaitingForPaymentRequestReservation(LogForDoctorReservationDateTimeWaitingForPaymentComment comment);
+
+    //Fill List Of Comments For Waiting For Payment Reservation Request Supporter Side DTO
+    Task<List<ListOfCommentsForWaitingForPaymentReservationRequestSupporterSideDTO>?> FillListOfCommentsForWaitingForPaymentReservationRequestSupporterSideDTO(ulong id);
+
+    //Add Comment For Waiting For Payment Reservation Request 
+    Task AddCommentForWaitingForPaymentReservationRequest(LogForDoctorReservationDateTimeWaitingForPaymentComment comment);
+
     #endregion
 
     #region Site Side
+
+    //Remove Log For Reservation Date Times In Waiting For Payment State
+    void RemoveLogForReservationDateTimesInWaitingForPaymentState(LogForDoctorReservationDateTimeWaitingForPayment model);
+
+    //Get Log For Reservation Date Times In Waiting For Payment State
+    Task<LogForDoctorReservationDateTimeWaitingForPayment?> GetLogForReservationDateTimesInWaitingForPaymentState(ulong doctorReservationDateTimeId, ulong userId);
+
+    //Update Log For Reservation Date Times In Waiting For Payment State
+    void UpdateLogForReservationDateTimesInWaitingForPaymentState(LogForDoctorReservationDateTimeWaitingForPayment model);
+
+    //Log For Reservation Date Times In Waiting For Payment State
+    Task LogForReservationDateTimesInWaitingForPaymentState(LogForDoctorReservationDateTimeWaitingForPayment model);
 
     //Get Doctor Reservation Alert By Doctor User Id
     Task<string?> GetDoctorReservationAlertByDoctorUserId(ulong userId);

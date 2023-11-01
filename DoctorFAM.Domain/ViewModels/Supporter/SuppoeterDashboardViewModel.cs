@@ -34,6 +34,10 @@ namespace DoctorFAM.Domain.ViewModels.Supporter
 
         public List<ListOfArrivalExcelFiles> LatestRequestForUploadExcelFile { get; set; }
 
+        public int CountOfTodayRegister { get; set; }
+
+        public int CountOfWaitingForPaymentReservationRequests { get; set; }
+
         #endregion
     }
 }

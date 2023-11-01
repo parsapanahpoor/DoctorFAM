@@ -1378,7 +1378,7 @@
 }
 /*Widget-Title*/
 .widget-title {
-    margin-top: 50px;
+  /*  margin-top: 50px;*/
     font-weight: 600;
     color: #081b3a;
     display: inline-block;

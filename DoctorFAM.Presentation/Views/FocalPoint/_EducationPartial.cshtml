@@ -2,39 +2,57 @@
 @using DoctorFAM.Application.Convertors
 @using DoctorFAM.Application.Extensions
 
-<div class="col-md-5  divst1">
-    <div class="widget education-widget">
-        <h4 class="widget-title"> تحصیلات </h4>
-        @if (Model != null && Model.Any())
-        {
-            <div class="experience-box">
-                <ul class="experience-list">
+
+
+@if (Model != null && Model.Any())
+{
+
+    <div class="widget">
+        <div class="banner medium-opacity bluesh">
+            <div style="background-image: url(images/resources/baner-widgetbg.jpg)" class="bg-image"></div>
+            <div class="baner-top">
+                <span><img src="images/book-icon.png" alt="">تحصیلات </span>
+
+            </div>
+            <div class="banermeta">
+                <div class="row  ">
                     @foreach (var item in Model)
                     {
-                        <li>
-                            <div class="experience-user">
-                                <div class="before-circle"></div>
-                            </div>
-                            <div class="experience-content">
-                                <div class="timeline-content">
-                                    @if (!string.IsNullOrEmpty(item.UnivercityName))
-                                    {
-                                        <a href="#/" class="name">@item.UnivercityName</a>
-                                    }
-                                    @if (!string.IsNullOrEmpty(item.FieldOfStudy))
-                                    {
-                                        <div>@item.FieldOfStudy</div>
-                                    }
-                                    @if (item.StartDate != null && item.EndDate != null)
-                                    {
-                                        <span class="time">@item.StartDate.Value.ToShamsi() - @item.EndDate.Value.ToShamsi()</span>
-                                    }
-                                </div>
-                            </div>
-                        </li>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-122">
+                            @if (!string.IsNullOrEmpty(item.UnivercityName))
+                            {
+                                <a href="#/" class="name"><u>@item.UnivercityName</u></a>
+                            }
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            @if (!string.IsNullOrEmpty(item.FieldOfStudy))
+                            {
+                                <div>@item.FieldOfStudy</div>
+                            }
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            @if (item.StartDate != null && item.EndDate != null)
+                            {
+                                <span class="time">@item.StartDate.Value.ToShamsi() - @item.EndDate.Value.ToShamsi()</span>
+                            }
+                        </div>
+
+
+                        
+                        
+                       
+
+
                     }
-                </ul>
+                </div>
             </div>
-        }
+        </div>
     </div>
-</div>
+
+
+
+
+
+    
+}
+
