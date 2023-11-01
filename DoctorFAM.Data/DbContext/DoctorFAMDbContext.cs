@@ -284,6 +284,10 @@ public class DoctorFAMDbContext : Microsoft.EntityFrameworkCore.DbContext
 
     public DbSet<LogForGetAppoinmentForOtherPeople> logForGetAppoinmentForOtherPeoples { get; set; }
 
+    public DbSet<LogForDoctorReservationDateTimeWaitingForPaymentComment> LogForDoctorReservationDateTimeWaitingForPaymentComments { get; set; }
+
+    public DbSet<LogForDoctorReservationDateTimeWaitingForPayment> LogForDoctorReservationDateTimeWaitingForPayments { get; set; }
+
     #endregion
 
     #region Notification 

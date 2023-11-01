@@ -1,15 +1,9 @@
 ﻿//using DoctorFAM.Domain.Entities.Advertisement;
 using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.CooperationRequest;
-using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.ViewModels.Admin.IncomingExcelFile;
 using DoctorFAM.Domain.ViewModels.Admin.Reservation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DoctorFAM.Domain.ViewModels.Admin.Dashboard
 {
@@ -50,6 +44,10 @@ namespace DoctorFAM.Domain.ViewModels.Admin.Dashboard
         public List<Organization> ListOfWaitingForAcceptInformationsDoctors { get; set; }
 
         public List<RequestForSendSMSFromDoctorsToTheUsersAdminSideViewModel>? RequestForSendSMSFromDoctorsToTheUsersAdminSideViewModel { get; set; }
+
+        public int CountOfTodayRegister { get; set; }
+
+        public int CountOfWaitingForPaymentReservationRequests { get; set; }
 
         #endregion
     }

@@ -1,0 +1,835 @@
+footer{direction: rtl;}
+ol {
+    padding-right: 0;
+}
+
+.rtl {
+    direction: rtl;
+    text-align: right;
+}
+
+.topbar .logo {
+    float: right;
+    margin-top: 10px;
+    unicode-bidi: bidi-override;
+    width: auto;
+}
+.topbar .top-area {
+    direction: rtl;
+    float: left;
+    text-align: left;
+}
+.top-area > ul.main-menu {
+    float: right;
+    margin-right: 0;
+    padding-right: 0;
+}
+.top-area > span.main-menu {
+    margin: 0;
+    padding-right: 14px;
+}
+.user-setting {
+    left: -30px;
+    right: auto;
+	width: 200px;
+}
+.top-area > ul.main-menu > li > ul li a {
+    text-align: right;
+    unicode-bidi: bidi-override;
+}
+.top-area > ul.main-menu > li ul {
+    left: auto;
+    padding-right: 5px;
+    right: 0;
+}
+.user-setting > a {
+    direction: rtl;
+    text-align: right;
+    unicode-bidi: bidi-override;
+}
+.user-setting .status {
+    left: 20px;
+    right: auto;
+}
+.user-setting > a i {
+    margin-left: 8px;
+    margin-right: 0;
+}
+.side-panel.active {
+    left: 0;
+    right: auto;
+}
+.side-panel {
+    left: -100%;
+    right: auto;
+}
+.dropdowns > span {
+    font-weight: bold;
+    text-align: right;
+}
+.drops-menu {
+    padding-right: 0;
+}
+.drops-menu > li > .tag {
+    left: 0;
+    right: auto;
+}
+.mesg-meta {
+    padding-left: 0;
+    padding-right: 10px;
+    text-align: right;
+}
+.mesg-meta > h6 {
+    font-weight: bold;
+}
+.top-area > ul.main-menu > li a {
+    font-weight: bold;
+}
+.form-search button {
+    left: 0;
+    right: auto;
+}
+.personal > p {
+    text-align: right;
+}
+.timeline-info > ul li a{font-weight: bold;}
+
+.f-title {
+    direction: rtl;
+    text-align: right;
+    unicode-bidi: bidi-override;
+}
+.f-title::before {
+    left: auto;
+    right: 0;
+}
+.sidebar .widget {
+    direction: rtl;
+    text-align: right;
+    unicode-bidi: bidi-override;
+}
+.sidebar .widget-title::before {
+    left: auto;
+    right: 20px;
+}
+.page-meta > span i {
+    margin-left: 10px;
+    margin-right: 5px;
+}
+.nav.nav-tabs.likes-btn {
+    padding-right: 0;
+}
+.friend-meta {
+    padding-left: 0;
+    padding-right: 10px;
+}
+.widget {
+    direction: rtl;
+    text-align: right;
+    unicode-bidi: bidi-override;
+}
+.widget-title > h4 {
+}
+footer .widget-title h4::before {
+    left: auto;
+    right: 0;
+}
+footer .widget-title > h4 {
+    font-weight: bold;
+}
+.widget > ul {
+    padding-right: 0;
+}
+.list-style > li > i {
+    margin-left: 10px;
+    margin-right: 0;
+}
+.colla-apps > li a {
+    padding: 5px 10px;
+    text-align: center;
+}
+.colla-apps > li a i {
+    margin-left: 10px;
+    margin-right: 0;
+}
+.location > li i {
+    margin-left: 10px;
+    margin-right: 0;
+}
+.d-flex {
+    direction: rtl;
+    text-align: right;
+    unicode-bidi: bidi-override;
+}
+.nav-tabs--vertical {
+    padding-right: 0;
+}
+.basics > li i {
+    float: right;
+    margin-left: 10px;
+    margin-right: 0;
+}
+.sidebar .widget li > a{text-align: right;}
+.nav.nav-tabs.likes-btn > li a{text-align: center;}
+.topbar.transparent .logo {
+    display: inline-block;
+    float: none;
+    margin-top: 0;
+    unicode-bidi: unset;
+}
+.about-winku {
+    direction: rtl;
+    text-align: right;
+}
+.category-box {
+    direction: rtl;
+    text-align: right;
+}
+
+.top-search {
+    float: right;
+}
+.top-search button {
+    left: 6px;
+    right: auto;
+}
+
+.detail-meta {
+    direction: rtl;
+    text-align: right;
+}
+.detail-meta .author-thumb {
+    margin-right: 0;
+}
+.admin-postmeta {
+    padding-left: 0;
+    padding-right: 20px;
+}
+.commenter-meta > p {
+    padding-left: 0;
+    width: 100%;
+}
+.commenter-meta {
+    padding-left: 0;
+    padding-right: 20px;
+}
+.comment-title {
+    float: right;
+}
+.comments {
+    padding-right: 0;
+}
+.post-filter-sec {
+    direction: rtl;
+    text-align: right;
+}
+.purify .chosen-container-single .chosen-single {
+    padding-left: 0;
+    padding-right: 20px;
+    text-align: right;
+}
+.chosen-container-single .chosen-single span {
+    margin-left: 26px;
+    margin-right: auto;
+}
+.chosen-container-single .chosen-drop {
+    text-align: right;
+}
+.purify > span {
+    margin-left: 10px;
+    margin-right: 0;
+}
+.filter-form > button {
+    left: 0;
+    right: auto;
+}
+.post-title {
+    text-align: right;
+}
+.g-post-ranking {
+    text-align: right;
+}
+.g-post-ranking > a {
+    margin-left: 20px;
+    margin-right: 0;
+}
+
+.l-post {
+    direction: rtl;
+    text-align: right;
+}
+.blg-socials {
+    left: auto;
+    right: 10px;
+}
+
+.g-post-ranking > a i {
+    margin-left: 10px;
+    margin-right: 0;
+}
+
+.job-detail {
+    direction: rtl;
+    text-align: right;
+}
+.company-intro {
+    direction: rtl;
+    text-align: right;
+}
+
+.open-position {
+    direction: rtl;
+    text-align: right;
+}
+.open-position > a i {
+    margin-left: 10px;
+    margin-right: 0;
+}
+.map-meta {
+    direction: rtl;
+    text-align: right;
+}
+.cnt-title {
+    direction: rtl;
+    text-align: right;
+}
+
+.form-group input, .form-group textarea {
+    direction: rtl;
+    text-align: right;
+}
+.form-group .control-label {
+    direction: rtl;
+    text-align: right;
+    width: 100%;
+}
+.cntct-adres {
+    direction: rtl;
+    text-align: right;
+}
+.cntct-adres > ul > li span {
+    padding-left: 0;
+}
+.more-branches {
+    direction: rtl;
+    text-align: right;
+}
+.branches-box > ul li i {
+    margin-left: 10px;
+    margin-right: 0;
+}
+.branches-box > ul li span i {
+    margin-left: 0;
+    margin-right: 10px;
+}
+.chosen-single{
+	padding-left: 0;
+	padding-right: 15px;
+	text-align: right;
+}
+.onoff-options .setting-row {
+    direction: rtl;
+    text-align: right;
+}
+.onoff-options .setting-row > span {
+    direction: rtl;
+    text-align: right;
+}
+.onoff-options .setting-row > p {
+    float: right;
+}
+.onoff-options .setting-row > label {
+    float: left;
+}
+.submit-btns {
+    text-align: right;
+}
+.f-title i {
+    margin-left: 5px;
+    margin-right: 0;
+}
+.editing-interest > p {
+    direction: rtl;
+    text-align: right;
+}
+.editing-interest > form {
+    direction: rtl;
+    float: none;
+    text-align: right;
+}
+
+.editing-interest form ol > li span.remove {
+    left: auto;
+    right: 0;
+}
+.editing-interest form ol > li {
+    padding-right: 20px;
+}
+.baner-top {
+    direction: rtl;
+    text-align: right;
+    width: 100%;
+}
+.baner-top > i {
+    float: left;
+}
+.baner-top > span {
+    float: none;
+    text-align: right;
+}
+
+.form-radio {
+    text-align: right;
+}
+.form-radio > .radio label {
+    direction: rtl;
+    display: inline-block;
+    padding-left: 0;
+    text-align: right;
+}
+.checkbox input, .form-radio input {
+    left: auto;
+    right: 0;
+}
+.radio .check-box::after, .radio .check-box::before {
+    left: auto;
+    right: 0;
+}
+/* form .form-group.half{
+	width: 48%;
+} */
+
+.accordion .card h5 button {
+    direction: rtl;
+    text-align: right;
+}
+.accordion .card h5 button::before {
+    float: left;
+}
+.card-body {
+    direction: rtl;
+    text-align: right;
+}
+.card-body ol, .card-body ul {
+    padding-left: 0;
+    padding-right: 40px;
+}
+.sidebar .widget ul.naves li i {
+    margin-left: 5px;
+    margin-right: 0;
+}
+.faq-area h2 {
+    direction: rtl;
+    text-align: right;
+}
+.invition .friend-meta a.invite{float: none;}
+.chat-head .more {
+    direction: rtl;
+    float: left;
+}
+.chat-head .more > span {
+    margin-left: 0;
+    margin-right: 15px;
+    float: right;
+}
+.chat-head > h6 {
+    float: right;
+    padding-right: 10px;
+    line-height: 1.8;
+}
+.widget.friend-list .chat-box span.status {
+    right: 10px;
+}
+.chat-head {
+    padding: 10px 20px 10px 15px;
+}
+
+.newpst-input textarea {
+    direction: rtl;
+    text-align: right;
+}
+.attachments {
+    direction: rtl;
+    text-align: left;
+}
+.new-postbox {
+    direction: rtl;
+}
+.newpst-input {
+    margin-left: 0;
+    margin-right: 10px;
+}
+.user-post {
+    direction: rtl;
+    text-align: right;
+}
+.friend-name {
+    padding-left: 0;
+    padding-right: 10px;
+}
+.add-smiles {
+    left: 10px;
+    right: auto;
+}
+.post-comt-box form button {
+    left: 0;
+    right: auto;
+}
+.smiles-bunch {
+    left: 0;
+    right: auto;
+}
+.smiles-bunch::before {
+    left: 11px;
+    right: auto;
+}
+
+.widget .recent-topics > li a {
+    direction: rtl;
+    text-align: right;
+}
+.widget .feature-topics > li > a {
+    text-align: right;
+}
+.forum-list {
+    direction: rtl;
+}
+.forum-list .table {
+    text-align: right;
+}
+.forum-list .table tr td p {
+    text-align: right;
+}
+.forum-list .table tr td a, .forum-list .table tr td i {
+    text-align: right;
+}
+.forum-list .table tr td a {
+    padding-left: 10px;
+}
+
+.addnewforum {
+    direction: rtl;
+    float: right;
+}
+.forum-list table tbody tr td{vertical-align: middle;}
+.inbox-panel-head {
+    direction: rtl;
+    float: none;
+    text-align: right;
+}
+.inbox-panel-head > img {
+    display: inline-block;
+    float: right;
+    margin-left: 20px;
+    margin-right: auto;
+}
+.inbox-panel-head > a > i {
+    margin-left: 5px;
+    margin-right: 0;
+}
+.inbox-navigation > ul {
+    direction: rtl;
+    float: none;
+    text-align: right;
+}
+.inbox-navigation > ul > li {
+    padding: 15px 20px;
+}
+.inbox-navigation > ul > li > span {
+    float: left;
+}
+.inbox-navigation > ul > li > a {
+    float: right;
+}
+.flaged {
+    direction: rtl;
+    text-align: right;
+}
+.flaged li {
+    padding: 8px 20px;
+}
+.flaged li a i {
+    margin-left: 10px;
+    margin-right: 0;
+}
+.flaged > h3 > i {
+    margin-left: 10px;
+    margin-right: 0;
+}
+.flaged > h3 {
+    padding-left: 20px;
+    padding-right: 20px;
+    text-align: right;
+}
+.inbox-action {
+    direction: rtl;
+    text-align: right;
+}
+.message-list > li > p {
+    direction: rtl;
+    text-align: right;
+}
+.message-list {
+    direction: rtl;
+    text-align: right;
+}
+.message-list > li > span.make-important {
+    float: right;
+    margin-left: 10px;
+    margin-right: 0;
+   
+}
+.message-list > li > span.star-this {
+    float: right;
+}
+.message-list > li > .select-message {
+    float: right;
+  }
+.chat-message-item {
+    text-align: right;
+}
+.notification-date {
+    text-align: right;
+}
+.we-video-info > ul li {
+    margin-left: 40px;
+    margin-right: 0;
+}
+.we-video-info > ul li span ins {
+    left: auto;
+    right: 20px;
+}
+.we-comment::before, .peoples-mesg-box > ul > li p::before {
+    left: auto;
+    right: -11px;
+    transform: rotate(180deg);
+}
+.we-comment::after, .peoples-mesg-box > ul > li p::after {
+    left: auto;
+    right: -9px;
+    transform: rotate(180deg);
+}
+
+.post-comt-box {
+    padding-left: 0;
+    padding-right: 15px;
+}
+.x_title h2 {
+    direction: rtl;
+    float: right;
+}
+.toolbox {
+    float: left;
+}
+.faq-top > form input {
+    padding-left: 105px;
+    padding-right: 20px;
+    text-align: right;
+}
+.faq-top form button {
+    left: 3px;
+    right: auto;
+}
+.vid-links {
+    direction: rtl;
+    text-align: right;
+}
+.tutor-links > li i {
+    margin-left: 15px;
+    margin-right: 0;
+}
+.log-reg-area {
+    direction: rtl;
+    text-align: right;
+}
+.conversation-head {
+    direction: rtl;
+    text-align: right;
+}
+.conversation-head > span {
+    margin-left: 0;
+    margin-right: 10px;
+}
+.peoples-mesg-box > ul.chatting-area {
+    direction: rtl;
+}
+.peoples-mesg-box > ul > li p {
+    text-align: right;
+}
+.peoples-mesg-box > ul li {
+    direction: rtl;
+    text-align: right;
+}
+.peoples-mesg-box > ul li.me p {
+    text-align: right;
+}
+
+.message-box {
+    direction: rtl;
+    text-align: right;
+}
+.peoples-mesg-box {
+   
+    padding-right: 20px;
+}
+.people-name {
+    margin-left: 0;
+    margin-right: 10px;
+}
+
+
+
+.more-options{float: left;}
+.notification-box {
+    direction: rtl;
+    text-align: right;
+}
+.notification-box > ul li figure {
+    margin-left: 10px;
+    margin-right: 0;
+}
+.notification-box > ul li > i.del {
+    left: 0;
+    right: auto;
+}
+.frnds .nav.nav-tabs {
+    direction: rtl;
+    text-align: right;
+    padding-right: 0;
+}
+}
+.frnds .nav-tabs .nav-item {
+    margin-left: 40px;
+    margin-right: 0;
+}
+.nearby-contct {
+    direction: rtl;
+    text-align: right;
+}
+.pepl-info {
+    padding-left: 0;
+    padding-right: 15px;
+}
+a.add-butn {
+    float: left;
+    left: 0;
+    right: auto;
+}
+
+.product-name {
+    text-align: right;
+}
+.checkout-meta {
+    direction: rtl;
+    text-align: right;
+}
+.checkout-total {
+    direction: rtl;
+    text-align: right;
+}
+.total-box > ul > li span {
+    float: left;
+}
+.prod-detail {
+    direction: rtl;
+    text-align: right;
+}
+.prod-avatar {
+    direction: ltr;
+}
+a.btn2 > i {
+    margin-left: 10px;
+    margin-right: 0;
+    line-height: 0;
+}
+.add_to_wishlist {
+    margin-left: 0;
+    margin-right: 20px;
+}
+
+
+.comment-respond {
+    direction: rtl;
+    float: right;
+    text-align: right;
+}
+
+.comment-form-author {
+    margin-right: 0px;
+}
+.help-list {
+    direction: rtl;
+    text-align: right;
+}
+.help-list > ul li a i {
+    margin-left: 10px;
+    margin-right: 0;
+}
+.right-pading {
+    padding-right: 0;
+}
+
+
+.help-topic {
+    direction: rtl;
+    text-align: right;
+}
+.verified {
+    margin-left: 20px;
+    margin-right: 0;
+}
+.assistant-name {
+    padding-left: 0;
+    padding-right: 10px;
+}
+.post-dated > span {
+    padding-left: 0;
+    padding-right: 10px;
+}
+h3.resutl-found {
+    direction: rtl;
+    text-align: right;
+}
+.help-topic-result {
+    direction: rtl;
+    padding-left: 0;
+    padding-right: 50px;
+    text-align: right;
+}
+.help-topic-result .checkd {
+    left: auto;
+    right: 0;
+}
+.pepl-info a.add-butn.more-action {
+    left: 100px;
+    right: auto;
+}
+#frends a.add-butn.more-action{
+	right: auto;
+}
+.groups > span {
+    direction: rtl;
+    float: right;
+    text-align: right;
+}
+.page-infos {
+    direction: rtl;
+    text-align: right;
+}
+.inbox-sec {
+    direction: rtl;
+    text-align: right;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

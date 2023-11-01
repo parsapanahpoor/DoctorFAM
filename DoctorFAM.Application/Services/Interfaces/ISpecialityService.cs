@@ -3,6 +3,7 @@
 using DoctorFAM.Domain.Entities.Speciality;
 using DoctorFAM.Domain.ViewModels.Admin.Speciality;
 using DoctorFAM.Domain.ViewModels.Site.Specialists;
+using DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor;
 
 namespace DoctorFAM.Application.Services.Interfaces;
 
@@ -53,7 +54,7 @@ public interface ISpecialityService
     #region Site Side 
 
     //List Of Specialists Site Side 
-    Task<List<ListOfSpecialistsSiteSideViewModel>> ListOfSpecialistsSiteSide();
+    Task<List<ListOfSpecialistsSiteSideViewModel>> ListOfSpecialistsSiteSide(FilterFamilyDoctorUserPanelSideViewModel filter);
 
     //List Of Super Specialists 
     Task<List<ListOfSpecialistsSiteSideViewModel>> ListOfSuperSpecialists();

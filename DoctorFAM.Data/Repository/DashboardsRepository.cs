@@ -185,6 +185,22 @@ public class DashboardsRepository : IDashboardsRepository
 
         #endregion
 
+        #region Count Of Today Register
+
+        model.CountOfTodayRegister = await _context.Users
+                                                   .AsNoTracking()
+                                                   .CountAsync(p => !p.IsDelete && p.CreateDate == DateTime.Now);
+
+        #endregion
+
+        #region Count Of Waiting For Payment Reservation Requests
+
+        model.CountOfWaitingForPaymentReservationRequests = await _context.LogForDoctorReservationDateTimeWaitingForPayments
+                                                                          .AsNoTracking()
+                                                                          .CountAsync(p => !p.IsDelete && !p.IsSeenBySupporters);
+
+        #endregion
+
         return model;
     }
 
@@ -203,6 +219,14 @@ public class DashboardsRepository : IDashboardsRepository
                                                      .AsNoTracking()
                                                      .Where(p => !p.IsDelete && p.RequestState == Domain.Enums.Wallet.WalletWithdrawRequestState.Waiting)
                                                      .CountAsync();
+
+        #endregion
+
+        #region Lastest Waiting For Payment Reservation Requests
+
+        model.LastestWaitingForPaymentReservationRequests = await _context.LogForDoctorReservationDateTimeWaitingForPayments
+                                                                          .AsNoTracking()
+                                                                          .CountAsync(p => !p.IsDelete && !p.IsSeenBySupporters);
 
         #endregion
 
@@ -418,6 +442,22 @@ public class DashboardsRepository : IDashboardsRepository
                                                                                 Username = s.Username,
                                                                             }).FirstOrDefault(),
                                         }).ToListAsync();
+
+        #endregion
+
+        #region Count Of Today Register
+
+        model.CountOfTodayRegister = await _context.Users
+                                                   .AsNoTracking()
+                                                   .CountAsync(p=> !p.IsDelete && p.CreateDate ==DateTime.Now);
+
+        #endregion
+
+        #region Count Of Waiting For Payment Reservation Requests
+
+        model.CountOfWaitingForPaymentReservationRequests = await _context.LogForDoctorReservationDateTimeWaitingForPayments
+                                                                          .AsNoTracking()
+                                                                          .CountAsync(p => !p.IsDelete && !p.IsSeenBySupporters);
 
         #endregion
 

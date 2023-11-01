@@ -3,19 +3,30 @@
 @using DoctorFAM.Application.Extensions
 
 
-<div class="col-md-10 divst1">
-    <div class="service-list">
-        <h4>خدمات</h4>
 
-        @if (Model != null && Model.Any())
-        {
-            <ul class="clearfix">
-                @foreach (var item in Model)
-                {
-                    <li>@item.ServiceTitle</li>
-                }
-            </ul>
-        }
 
+@if (Model != null && Model.Any())
+{
+    <div class="widget">
+        <div class="banner medium-opacity bluesh">
+            <div style="background-image: url(images/resources/baner-widgetbg.jpg)" class="bg-image"></div>
+            <div class="baner-top">
+                <span><img src="images/book-icon.png" alt="">خدمات</span>
+
+            </div>
+            <div class="banermeta">
+                <div class="row ">
+                   
+                    @foreach (var item in Model)
+                    {
+                        <span style="padding:5px;">* @item.ServiceTitle</span>
+                    }
+                </div>
+            </div>
+        </div>
     </div>
-</div>
+
+   
+
+}
+
