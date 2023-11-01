@@ -1,4 +1,5 @@
-﻿
+﻿@model DoctorFAM.Domain.ViewModels.Admin.SideBar.AdminSideBarViewModel
+
 <div class="page-sidebar" id="sidebar">
     <div class="sidebar-header-wrapper">
         <input type="text" class="searchinput" />
@@ -137,6 +138,9 @@
                 <li>
                     <a asp-area="Supporter" asp-controller="Reservation" asp-action="ListOfWaitingForPaymentRequests">
                         <span class="menu-text">@SharedLocalizer["درخواست های درانتظار "]</span>
+                        <div class="badge badge-warning" id="DoctorInfoState">
+                            @Model.LastestWaitingForPaymentReservationRequests
+                        </div>
                     </a>
                 </li>
                 <li>

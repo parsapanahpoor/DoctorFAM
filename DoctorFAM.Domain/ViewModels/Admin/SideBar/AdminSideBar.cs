@@ -17,5 +17,7 @@ public class AdminSideBarViewModel
 
     public int LastestWithdrawRequest { get; set; }
 
+    public int LastestWaitingForPaymentReservationRequests { get; set; }
+
     #endregion
 }
