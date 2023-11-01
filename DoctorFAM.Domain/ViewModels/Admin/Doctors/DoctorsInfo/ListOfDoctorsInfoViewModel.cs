@@ -45,6 +45,10 @@ namespace DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo
 
         public DoctorsState DoctorsState { get; set; }
 
+        public string? ClinicPhone { get; set; }
+
+        public string? GeneralPhone { get; set; }
+
         #endregion
     }
 

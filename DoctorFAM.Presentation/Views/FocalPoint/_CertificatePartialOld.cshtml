@@ -1,0 +1,64 @@
+﻿@model List<DoctorFAM.Domain.ViewModels.Site.Doctor.Resume.Certificate.CertificateResumeInSitePanelViewModel>
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.StaticTools
+
+@if (Model != null && Model.Any())
+{
+
+    <div class="widget">
+        <div class="banner medium-opacity bluesh">
+            <div style="background-image: url(images/resources/baner-widgetbg.jpg)" class="bg-image"></div>
+            <div class="baner-top">
+                <span><img src="images/book-icon.png" alt="">گواهینامه ها</span>
+
+            </div>
+            <div class="banermeta">
+
+
+                @*Box Of Certificate*@
+                @foreach (var item in Model)
+                {
+
+                    <div class="row ">
+
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                           
+
+                                @if (!string.IsNullOrEmpty(item.CertificateTitle))
+                                {
+                                    <p class="text-white">
+                                        <a href="#"><u>@item.CertificateTitle</u></a>
+                                    </p>
+                                }
+                                @if (!string.IsNullOrEmpty(item.ExporterRefrence))
+                                {
+                                    <p class="text-white">@item.ExporterRefrence</p>
+                                }
+
+
+                           
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            
+                                @if (!string.IsNullOrEmpty(item.ImageName))
+                                {
+                                    <a href="@PathTools.CertificatePathThumb@item.ImageName" target="_blank"> <img style="border-radius: 8px;height: 90px;" src="@PathTools.CertificatePathThumb@item.ImageName" /></a>
+                                }
+
+                            
+                        </div>
+                    </div>
+                    <hr />
+
+
+                }
+
+
+            </div>
+        </div>
+    </div>
+
+
+
+}

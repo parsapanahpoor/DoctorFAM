@@ -129,6 +129,7 @@
 		<None Include="Views\Lab\Index.cshtml" />
 		<None Include="Views\OnlineVisit\BankPay.cshtml" />
 		<None Include="Views\ScienceMag\Index.cshtml" />
+		<None Include="Views\Shared\Components\SiteSideBarNew\SiteSideBarNew.cshtml" />
 		<None Include="Views\Shared\Components\SiteSideBar\SiteSideBar.cshtml" />
 		<None Include="Views\Shared\Components\TestDoctorForReservation\TestDoctorForReservation.cshtml" />
 		<None Include="Views\Shared\Error.cshtml" />

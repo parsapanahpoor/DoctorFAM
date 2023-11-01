@@ -3498,9 +3498,9 @@ namespace DoctorFAM.Application.Services.Implementation
                 UserAvatar = doctor.User.Avatar,
                 Education = doctorPersonalInfo.Education,
                 Specialist = doctorPersonalInfo.Specialty,
-                GeneralPhone = doctorPersonalInfo.GeneralPhone, 
-                ClinicPhone = doctorPersonalInfo.ClinicPhone
-            };
+                GeneralPhone = doctorPersonalInfo.GeneralPhone,
+                ClinicPhone = doctorPersonalInfo.ClinicPhone,
+        };
 
             #endregion
 

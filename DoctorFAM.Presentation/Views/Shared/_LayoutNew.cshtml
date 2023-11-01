@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>  دکتر فم-@ViewData["Title"] </title>
+
+
+    <partial name="_MetaTags" />
+
+    @await RenderSectionAsync("MetaTags", false)
+
+    <partial name="_HeaderReferences" />
+
+    @await RenderSectionAsync("Styles", false)
+
+    @*<script type="text/javascript">window.RAYCHAT_TOKEN = "7235eebc-4420-4af7-9d3b-8cd3a769ce2a"; (function () { d = document; s = d.createElement("script"); s.src = "https://widget-react.raychat.io/install/widget.js"; s.async = 1; d.getElementsByTagName("head")[0].appendChild(s); })();</script>*@
+</head>
+
+
+<body>
+    <!-- page wrapper start -->
+    <div class="page-wrapper">
+
+            @await Component.InvokeAsync("SiteSideBarNew")
+
+        <div>
+            @RenderBody()
+        </div>
+       
+    </div>
+    <!-- page wrapper end -->
+    <!--back-to-top start-->
+    <div class="scroll-top"><a class="smoothscroll" href="#top"><i class="flaticon-top"></i></a></div>
+    <!--back-to-top end-->
+    @* <footer class="border-top footer text-muted">
+    <div class="container">
+    &copy; 2022 - HEALTH HOUSE - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    </div>
+    </footer>*@
+
+    <partial name="_Modals" />
+
+    <partial name="_FooterReferences" />
+
+    <partial name="_Notification" />
+
+    @await RenderSectionAsync("Scripts", false)
+
+</body>
+</html>

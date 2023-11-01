@@ -1,0 +1,49 @@
+﻿@model List<DoctorFAM.Domain.ViewModels.Site.Doctor.Resume.WorkHistory.WorkHistoryResumeInSitePanelViewModel>
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.Extensions
+
+@if (Model != null && Model.Any())
+{
+  
+<div class="widget">
+    <div class="banner medium-opacity bluesh">
+        <div style="background-image: url(images/resources/baner-widgetbg.jpg)" class="bg-image"></div>
+        <div class="baner-top">
+            <span><img src="images/book-icon.png" alt="">سوابق کاری </span>
+
+        </div>
+        <div class="banermeta">
+            <div class="row  ">
+                @foreach (var item in Model)
+                {
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            @if (!string.IsNullOrEmpty(item.JobPosition))
+                            {
+                                <div><u>@item.JobPosition</u></div>
+                            }
+                            @if (!string.IsNullOrEmpty(item.WorkAddress))
+                            {
+                                <a href="#/" class="name">@item.WorkAddress</a>
+                            }
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">  </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        @if (item.StartDate != null && item.EndDate != null)
+                        {
+                            <span class="time">@item.StartDate.Value.ToShamsi() - @item.EndDate.Value.ToShamsi()</span>
+                        }
+                    </div>
+
+
+
+
+
+
+
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+}
