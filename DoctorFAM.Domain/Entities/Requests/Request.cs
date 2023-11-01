@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Common;
 using DoctorFAM.Domain.Entities.Patient;
@@ -12,7 +6,6 @@ using DoctorFAM.Domain.Enums.RequestType;
 using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Enums.Request;
 using DoctorFAM.Domain.Entities.Pharmacy;
-using DoctorFAM.Domain.Entities.PopulationCovered;
 using DoctorFAM.Domain.Entities.OnlineVisit;
 
 namespace DoctorFAM.DataLayer.Entities
