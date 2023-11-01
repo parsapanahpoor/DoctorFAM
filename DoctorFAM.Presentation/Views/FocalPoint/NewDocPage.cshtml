@@ -3,6 +3,11 @@
 @using DoctorFAM.Application.Convertors
 
 @{
+    Layout = "_LayoutNew";
+
+}
+
+@{
     ViewBag.Title = "پروفایل پزشک";
 }
 
@@ -63,16 +68,38 @@
 
 
 
-                        @if (!string.IsNullOrEmpty(Model.WorkAddress))
+                  @*      @if (!string.IsNullOrEmpty(Model.WorkAddress))
                         {
                             <i class="fas fa-map-marker-alt"></i>
                         }
                         @((string.IsNullOrEmpty(Model.WorkAddress)) ? null : Model.WorkAddress)
 
-                        @*Box Of Work Address*@
+                      
                         <partial name="_WorkAddressPartialINLine" model="@Model.WorkingAddressResume" />
 
-                        @((!string.IsNullOrEmpty(Model.ClinicPhone)) ? Model.ClinicPhone : null)
+                  
+                        *@
+                        <div class="col-md-12">
+                            <p >
+                                @if (!string.IsNullOrEmpty(Model.ClinicPhone))
+                                {
+                                    <span>تلفن مطب: @Model.ClinicPhone </span>
+                                }
+                                @if (!string.IsNullOrEmpty(Model.GeneralPhone))
+                                {
+                                    <span>تلفن همراه: @Model.GeneralPhone </span>
+                                }
+                            </p>
+
+                        </div>
+
+
+
+
+
+
+
+
 
 
                         @((!string.IsNullOrEmpty(Model.GeneralPhone)) ? Model.GeneralPhone : null)
@@ -83,8 +110,9 @@
                         <ul>
 
                             <li>
-                                <a class="active" href="time-line.html" title="" data-ripple="">تایم لاین</a>
-                                <a class="" href="timeline-photos.html" title="" data-ripple="">رزرو نوبت</a>                                
+                                <a class="active" href="/Home" title="صفحه اصلی سایت" data-ripple="">خانه</a>
+                                
+                                <a style="color:RED !important; font-size:16px !important;" asp-action="DocBooking" asp-controller="FocalPoint" asp-area="" asp-route-userId="@Model.UserId" title="" data-ripple="">رزرو نوبت</a>
                                 <a class="" href="timeline-videos.html" title="" data-ripple="">کلیپ</a>
                                 <a class="" href="timeline-friends.html" title="" data-ripple="">پادکست</a>
                                 <a class="" href="timeline-groups.html" title="" data-ripple="">درباره من</a>
@@ -170,7 +198,7 @@
                                         </li>
                                     </ul>
                                 </div><!-- Shortcuts -->
-                                <div class="widget">
+                               @* <div class="widget">
                                     <h4 class="widget-title"> فعالیت اخیر </h4>
                                     <ul class="activitiez">
                                         <li>
@@ -194,7 +222,7 @@
                                             </div>
                                         </li>
                                     </ul>
-                                </div><!-- recent activites -->
+                                </div>*@<!-- recent activites -->
                                
                             </aside>
                         </div><!-- sidebar -->

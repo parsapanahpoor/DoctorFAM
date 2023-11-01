@@ -1,0 +1,32 @@
+﻿@model List<DoctorFAM.Domain.ViewModels.Site.Doctor.Resume.Service.ServiceResumeInSitePanelViewModel>
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.Extensions
+
+
+
+
+@if (Model != null && Model.Any())
+{
+    <div class="widget">
+        <div class="banner medium-opacity bluesh">
+            <div style="background-image: url(images/resources/baner-widgetbg.jpg)" class="bg-image"></div>
+            <div class="baner-top">
+                <span><img src="images/book-icon.png" alt="">خدمات</span>
+
+            </div>
+            <div class="banermeta">
+                <div class="row ">
+                   
+                    @foreach (var item in Model)
+                    {
+                        <span style="padding:5px;">* @item.ServiceTitle</span>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+   
+
+}
+

@@ -1,0 +1,153 @@
+﻿
+
+<header id="site-header" class="header">
+    <div class="header-middle" style="background:#4cc8ee;">
+        <div class=" Top-BannerImage222">
+            <div class="container row ">
+                <div class="col-lg-10 col-md-10 col-sm-6 col-xs-6 d-flex text-center align-items-center justify-content-between">
+                    <a class="navbar-brand logo" href="/Home">
+                        <img id="logo-img" class="img-center" src="~/Content/images/Logo/doctorfamTes.png" alt="">
+                    </a>
+                </div>
+                @*   <div class="col-md-4 d-flex text-center align-items-center justify-content-between">
+                <a href="https://doctorfam.com/Site/apk/DoctorFAM.apk" class="btn btn-1 btn-border white p-1 ">
+
+                <span class="btn-text"> دانلود اپلیکیشن اندروید </span>
+
+                </a>
+                </div>*@
+                
+                <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6 d-flex  align-items-center justify-content-end ">
+                   
+                    
+                    
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        @if (ViewBag.Admin == true)
+                        {
+
+                            <div class="user-img" >
+                                <img src="~/Content/images/user/thumb/DefaultAvatar.png" alt="" style="height:45px !important; width: 45px !important;">
+                                
+                                <div class="user-setting">
+                                    <a><span class="status f-online"></span> @User.Identity.Name خوش آمدید </a>
+                                    <a asp-action="Index" asp-area="UserPanel" asp-controller="Home" >ورود به صفحه شخصی</a>
+                                    <a asp-action="Index" asp-area="Doctor" asp-controller="Home" >  پنل پزشک</a>
+                                    <a asp-action="Index" asp-area="Dentist" asp-controller="Home" >  پنل دندان پزشک</a>
+                                    <a asp-action="Index" asp-area="Nurse" asp-controller="Home" > پنل پرستار</a>
+                                    <a asp-action="Index" asp-area="Laboratory" asp-controller="Home" >  پنل آزمایشگاه</a>
+                                    <a asp-action="Index" asp-area="Pharmacy" asp-controller="Home" >  پنل داروخانه</a>
+                                    <a asp-action="Index" asp-area="Consultant" asp-controller="Home" > پنل مشاور</a>
+                                    <a asp-action="Index" asp-area="Market" asp-controller="Home" > پنل فروشنده  </a>
+                                    <a asp-action="Index" asp-area="Supporter" asp-controller="Home" > پنل پشتیبان</a>
+                                    <a asp-action="Index" asp-area="Tourist" asp-controller="Home" > پنل گردشگری</a>
+                                    <a asp-action="Index" asp-area="Admin" asp-controller="Home" > پنل ادمین </a>
+                                    <a asp-action="Index" asp-area="Chatroom" asp-controller="Home"  style="color: green;">ورود به پیام رسان</a>
+                                    <a asp-action="Logout" asp-controller="Account"><i class="ti-power-off"></i> خروج</a>
+
+
+                                </div>
+                            </div>
+
+                        }
+
+                        else
+                        {
+                            <div class="user-img" >
+                                <img src="~/Content/images/user/thumb/DefaultAvatar.png" alt="" style="height:45px !important; width: 45px !important;">
+                                
+                                <div class="user-setting">
+                                    <a><span class="status f-online"></span> @User.Identity.Name خوش آمدید </a>
+                                    <a asp-action="Index" asp-area="UserPanel" asp-controller="Home">ورود به صفحه شخصی</a>
+                                    @if (ViewBag.Doctor == true)
+                                    {
+                                        <a asp-action="Index" asp-area="Doctor" asp-controller="Home" >  پنل پزشک</a>
+                                    }
+
+                                    @if (ViewBag.Labratory == true)
+                                    {
+                                        <a asp-action="Index" asp-area="Laboratory" asp-controller="Home" >  پنل آزمایشگاه</a>
+                                    }
+
+                                    @if (ViewBag.LaboratoryOfficeEmployee == true)
+                                    {
+                                        <a asp-action="Index" asp-area="Laboratory" asp-controller="Home" >  پنل آزمایشگاه</a>
+                                    }
+
+                                    @if (ViewBag.Pharmacy == true)
+                                    {
+                                        <a asp-action="Index" asp-area="Pharmacy" asp-controller="Home" >  پنل داروخانه</a>
+                                    }
+
+                                    @if (ViewBag.Seller == true)
+                                    {
+                                        <a asp-action="Index" asp-area="Market" asp-controller="Home" > پنل فروشنده  </a>
+                                    }
+
+                                    @if (ViewBag.DoctorOfficeEmployee == true)
+                                    {
+                                        <a asp-action="Index" asp-area="Doctor" asp-controller="Home" >  پنل پزشک</a>
+                                    }
+
+                                    @if (ViewBag.Supporter == true)
+                                    {
+                                        <a asp-action="Index" asp-area="Supporter" asp-controller="Home" > پنل پشتیبان</a>
+                                    }
+
+                                    @if (ViewBag.Nurse == true)
+                                    {
+                                        <a asp-action="Index" asp-area="Nurse" asp-controller="Home" > پنل پرستار</a>
+                                    }
+
+                                    @if (ViewBag.Consultant == true)
+                                    {
+                                        <a asp-action="Index" asp-area="Consultant" asp-controller="Home" > پنل مشاور</a>
+                                    }
+
+                                    @if (ViewBag.Dentist == true)
+                                    {
+                                        <a asp-action="Index" asp-area="Dentist" asp-controller="Home" >  پنل دندان پزشک</a>
+                                    }
+
+                                    @if (ViewBag.DentistOfficeEmployee == true)
+                                    {
+                                        <a asp-action="Index" asp-area="Dentist" asp-controller="Home" >  پنل دندان پزشک</a>
+                                    }
+
+                                    @if (ViewBag.Tourism == true)
+                                    {
+                                        <a asp-action="Index" asp-area="Tourist" asp-controller="Home" > پنل گردشگری</a>
+                                    }
+
+                                    <a asp-action="Index" asp-area="Chatroom" asp-controller="Home"  style="color: green;">ورود به پیام رسان</a>
+                                    <a asp-action="Logout" asp-controller="Account"><i class="ti-power-off"></i> خروج</a>
+
+                                </div>
+                            </div>
+
+                        }
+
+                    }
+                    else
+                    {
+
+                        <a asp-action="Login" asp-controller="Account" class="btn-Accept mr-2"><span> ورود/ثبت نام </span></a>
+
+                    }
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                   
+                </div>
+
+            </div>
+        </div>
+    </div>
+   
+
+</header>
+

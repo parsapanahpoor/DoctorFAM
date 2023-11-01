@@ -221,11 +221,11 @@
                                                 </a>
                                             </div>
                                             <div class="doc-info-cont">
-                                                <h4 class="doc-name"><a asp-action="DocPage" asp-area="" asp-controller="FocalPoint" asp-route-userId="@doctor.User.Id" asp-route-name="@doctor.User.Username.FixTextForUrl()">پزشک:@((doctor.DoctorsInfos.DoctorTilteName == DoctorFAM.Domain.Enums.DoctorTitleName.DoctorTilteName.Anonymous) ? "" : doctor.DoctorsInfos.DoctorTilteName.GetEnumName()) @doctor.User.Username</a></h4>
-                                                <p class="doc-speciality">@((!string.IsNullOrEmpty(doctor.DoctorsInfos.Education)) ? doctor.DoctorsInfos.Education : null)</p>
+                                                <h4 class="doc-name"><a asp-action="DocPage" asp-area="" asp-controller="FocalPoint" asp-route-userId="@doctor.User.Id" asp-route-name="@doctor.User.Username.FixTextForUrl()">@((doctor.DoctorsInfos.DoctorTilteName == DoctorFAM.Domain.Enums.DoctorTitleName.DoctorTilteName.Anonymous) ? "" : doctor.DoctorsInfos.DoctorTilteName.GetEnumName()) @doctor.User.Username</a></h4>
+                                               @* <p class="doc-speciality">@((!string.IsNullOrEmpty(doctor.DoctorsInfos.Education)) ? doctor.DoctorsInfos.Education : null)</p>*@
                                                 @if (doctor.DoctorsInfos.Specialty != null)
                                                 {
-                                                    <h5 class="doc-department">تخصص : @((!string.IsNullOrEmpty(doctor.DoctorsInfos.Specialty)) ? doctor.DoctorsInfos.Specialty : null)</h5>
+                                                    <h5 class="doc-department"> @((!string.IsNullOrEmpty(doctor.DoctorsInfos.Specialty)) ? doctor.DoctorsInfos.Specialty : null)</h5>
                                                 }
                                                 <div class="rating">
                                                     <i class="fas fa-star filled"></i>
@@ -267,7 +267,7 @@
                                                         <a class="view-pro-btn " asp-action="Login" asp-area="" asp-controller="Account">دنبال کردن</a>
                                                     </div>
                                                 }
-                                                <a class="view-pro-btn mt-3  text-center justify-content-center" asp-action="DocPage" asp-area="" asp-controller="FocalPoint" asp-route-userId="@doctor.User.Id" asp-route-name="@doctor.User.Username.FixTextForUrl()">مشاهده پروفایل</a>
+                                                <a class="view-pro-btn mt-3  text-center justify-content-center" asp-action="NewDocPage" asp-area="" asp-controller="FocalPoint" asp-route-userId="@doctor.User.Id" asp-route-name="@doctor.User.Username.FixTextForUrl()"> پروفایل</a>
                                                 <a class="apt-btn  text-center justify-content-center" asp-action="DocBooking" asp-controller="FocalPoint" asp-area="" asp-route-userId="@doctor.UserId">رزرو نوبت</a>
                                                 <a asp-action="ChoosingFamilyDoctor" asp-area="UserPanel" asp-controller="FamilyDoctor" asp-route-doctorUserId="@doctor.User.Id" class="apt-btn  text-center justify-content-center">انتخاب پزشک خانواده</a>
                                             </div>
