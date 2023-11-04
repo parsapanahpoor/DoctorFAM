@@ -258,9 +258,9 @@ public class SpecialityService : ISpecialityService
     }
 
     //List Of Super Specialists 
-    public async Task<List<ListOfSpecialistsSiteSideViewModel>> ListOfSuperSpecialists()
+    public async Task<List<ListOfSpecialistsSiteSideViewModel>> ListOfSuperSpecialists(FilterFamilyDoctorUserPanelSideViewModel filter)
     {
-        return await _specialityRepository.ListOfSuperSpecialists();
+        return await _specialityRepository.ListOfSuperSpecialists( filter);
     }
 
     //Get List Of General Title Specialities
@@ -279,6 +279,18 @@ public class SpecialityService : ISpecialityService
     public async Task<List<SelectListViewModel>> GetChildJustSpecialityByParentIdSelectListViewModel(ulong parentId)
     {
         return await _specialityRepository.GetChildJustSpecialityByParentIdSelectListViewModel(parentId);
+    }
+
+    //فوق تخصص ها
+    public async Task<List<Speciality>> GetChildJustSuperSpecialityByParentId(ulong parentId)
+    {
+        return await _specialityRepository.GetChildJustSuperSpecialityByParentId(parentId);
+    }
+
+    //فوق تخصص ها
+    public async Task<List<SelectListViewModel>> GetChildJustSuperSpecialityByParentIdSelectListViewModel(ulong parentId)
+    {
+        return await _specialityRepository.GetChildJustSuperSpecialityByParentIdSelectListViewModel(parentId);
     }
 
     #endregion
