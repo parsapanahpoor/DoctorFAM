@@ -50,6 +50,7 @@ using DoctorFAM.Domain.ViewModels.Admin.Dashboard;
 using DoctorFAM.Domain.ViewModels.Admin.SendSMS;
 using System.Numerics;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.SendSMS;
+using DoctorFAM.Domain.Entities.Speciality;
 
 namespace DoctorFAM.Application.Services.Implementation
 {

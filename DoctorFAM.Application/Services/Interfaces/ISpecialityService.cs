@@ -2,6 +2,7 @@
 
 using DoctorFAM.Domain.Entities.Speciality;
 using DoctorFAM.Domain.ViewModels.Admin.Speciality;
+using DoctorFAM.Domain.ViewModels.Common;
 using DoctorFAM.Domain.ViewModels.Site.Specialists;
 using DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor;
 
@@ -58,6 +59,15 @@ public interface ISpecialityService
 
     //List Of Super Specialists 
     Task<List<ListOfSpecialistsSiteSideViewModel>> ListOfSuperSpecialists();
+
+    //Get List Of General Title Specialities
+    Task<List<Speciality>> GetListOfGeneralTitleSpecialities();
+
+    //تخصص ها 
+    Task<List<Speciality>> GetChildJustSpecialityByParentId(ulong parentId);
+
+    //تخصص ها 
+    Task<List<SelectListViewModel>> GetChildJustSpecialityByParentIdSelectListViewModel(ulong parentId);
 
     #endregion
 }

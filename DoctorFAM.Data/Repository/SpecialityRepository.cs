@@ -5,9 +5,11 @@ using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.Speciality;
 using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.Admin.Speciality;
+using DoctorFAM.Domain.ViewModels.Common;
 using DoctorFAM.Domain.ViewModels.Site.Specialists;
 using DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace DoctorFAM.Data.Repository;
@@ -166,6 +168,29 @@ public class SpecialityRepository : ISpecialityRepository
         return await _context.Specialities.Where(p => !p.IsDelete && p.ParentId == parentId).ToListAsync();
     }
 
+    //تخصص ها 
+    public async Task<List<Speciality>> GetChildJustSpecialityByParentId(ulong parentId)
+    {
+        return await _context.Specialities
+                             .AsNoTracking()
+                             .Where(p => !p.IsDelete && p.ParentId == parentId && p.IsSpecialty)
+                             .ToListAsync();
+    }
+
+    //تخصص ها 
+    public async Task<List<SelectListViewModel>> GetChildJustSpecialityByParentIdSelectListViewModel(ulong parentId)
+    {
+        return await _context.Specialities
+                             .AsNoTracking()
+                             .Where(p => !p.IsDelete && p.ParentId == parentId && p.IsSpecialty)
+                            .Select(s => new SelectListViewModel
+                            {
+                                Id = s.Id,
+                                Title = s.UniqueName
+                            })
+                            .ToListAsync();
+    }
+
     public async Task DeleteSpeciality(Speciality speciality)
     {
 
@@ -260,11 +285,24 @@ public class SpecialityRepository : ISpecialityRepository
     {
         #region Get Super Specialists Records 
 
-        List<ulong> superSpecialistsRecords = await _context.Specialities
-                                                            .AsNoTracking()
-                                                            .Where(p => !p.IsDelete && p.IsSpecialty)
-                                                            .Select(p => p.Id)
-                                                            .ToListAsync();
+        List<ulong> superSpecialistsRecords = new();
+
+        if (filter.specificId.HasValue)
+        {
+            superSpecialistsRecords = await _context.Specialities
+                                                                      .AsNoTracking()
+                                                                      .Where(p => !p.IsDelete &&  p.Id == filter.specificId.Value)
+                                                                      .Select(p => p.Id)
+                                                                      .ToListAsync();
+        }
+        else
+        {
+            superSpecialistsRecords = await _context.Specialities
+                                                                      .AsNoTracking()
+                                                                      .Where(p => !p.IsDelete && p.IsSpecialty)
+                                                                      .Select(p => p.Id)
+                                                                      .ToListAsync();
+        }
 
         #endregion
 
@@ -303,7 +341,7 @@ public class SpecialityRepository : ISpecialityRepository
                             {
                                 ListOfSpecialistsSiteSideViewModel modelChild = new ListOfSpecialistsSiteSideViewModel()
                                 {
-                                    DoctorUserInfo = await _context.Users.Include(p=> p.Doctors).ThenInclude(p=> p.DoctorsInfos)
+                                    DoctorUserInfo = await _context.Users.Include(p => p.Doctors).ThenInclude(p => p.DoctorsInfos)
                                                                                                                      .AsNoTracking()
                                                                                                                      .Where(p => !p.IsDelete && p.Id == doctorId.DoctorUserId)
                                                                                                                      .Select(p => new DoctorSpecialistUserInfoViewModel()
@@ -313,8 +351,8 @@ public class SpecialityRepository : ISpecialityRepository
                                                                                                                          Username = p.Username,
                                                                                                                          DoctorTilteName = _context.DoctorsInfos
                                                                                                                                                    .AsNoTracking()
-                                                                                                                                                   .Where(p=> !p.IsDelete && p.DoctorId == doctorId.DoctorId)
-                                                                                                                                                   .Select(p=> p.DoctorTilteName)
+                                                                                                                                                   .Where(p => !p.IsDelete && p.DoctorId == doctorId.DoctorId)
+                                                                                                                                                   .Select(p => p.DoctorTilteName)
                                                                                                                                                    .FirstOrDefault(),
                                                                                                                          doctorsInfo = p.Doctors.DoctorsInfos
                                                                                                                      })
@@ -579,6 +617,15 @@ public class SpecialityRepository : ISpecialityRepository
         #endregion
 
         return null;
+    }
+
+    //Get List Of General Title Specialities
+    public async Task<List<Speciality>> GetListOfGeneralTitleSpecialities()
+    {
+        return await _context.Specialities
+                             .AsNoTracking()
+                             .Where(p => !p.IsDelete && p.IsTitle && !p.IsSpecialty && !p.IsSuperSpecialty)
+                             .ToListAsync();
     }
 
     #endregion

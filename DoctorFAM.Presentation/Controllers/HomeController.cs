@@ -28,15 +28,18 @@ public class HomeController : SiteBaseController
     private readonly IFollowService _followService;
     private readonly IUserService _userService;
     private readonly ISMSService _smsservice;
+    private readonly ISpecialityService _specialityService;
 
-    public HomeController( ILocationService lcaotionService , IHubContext<NotificationHub> notificationHub
-                            , IFollowService followService, IUserService userService, ISMSService smsservice)
+    public HomeController(ILocationService lcaotionService, IHubContext<NotificationHub> notificationHub
+                            , IFollowService followService, IUserService userService, ISMSService smsservice,
+                                ISpecialityService specialityService)
     {
         _locationService = lcaotionService;
         _notificationHub = notificationHub;
         _followService = followService;
         _userService = userService;
         _smsservice = smsservice;
+        _specialityService = specialityService;
     }
 
     #endregion
@@ -52,7 +55,7 @@ public class HomeController : SiteBaseController
 
     #region SecPage
 
-    public async  Task<IActionResult> SecPage()
+    public async Task<IActionResult> SecPage()
     {
         return View();
     }
@@ -235,7 +238,7 @@ public class HomeController : SiteBaseController
     #region Follow Users 
 
     [Authorize]
-    public async Task<IActionResult> FollowDoctor(ulong doctorId , string actionName , string controllerName , string? areaName)
+    public async Task<IActionResult> FollowDoctor(ulong doctorId, string actionName, string controllerName, string? areaName)
     {
         #region Follow User 
 
@@ -369,5 +372,16 @@ public class HomeController : SiteBaseController
     {
         return View();
     }
+    #endregion
+
+    #region Load Just Specialities
+
+    public async Task<IActionResult> LoadJustSpecialities(ulong specificId)
+    {
+        var result = await _specialityService.GetChildJustSpecialityByParentIdSelectListViewModel(specificId);
+
+        return JsonResponseStatus.Success(result);
+    }
+
     #endregion
 }
