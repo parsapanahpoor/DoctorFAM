@@ -892,6 +892,8 @@ namespace DoctorFAM.Data.Repository
             var query = _context.Organizations
                 .Where(s => !s.IsDelete && s.OrganizationType == Domain.Enums.Organization.OrganizationType.DoctorOffice)
                 .Include(p => p.User)
+                .ThenInclude(p=> p.Doctors)
+                .ThenInclude(p=> p.DoctorsInfos)
                 .OrderByDescending(s => s.CreateDate)
                 .AsQueryable();
 

@@ -5,6 +5,7 @@ using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.Entities.Speciality;
 using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.Admin.Speciality;
+using DoctorFAM.Domain.ViewModels.Common;
 using DoctorFAM.Domain.ViewModels.Site.Specialists;
 using DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor;
 using Microsoft.EntityFrameworkCore;
@@ -86,9 +87,9 @@ public class SpecialityService : ISpecialityService
             UniqueName = Speciality.UniqueName.SanitizeText(),
             IsDelete = false,
             UniqueId = Speciality.UniqueId,
-            IsTitle= Speciality.IsTitle,
-            IsSpecialty= Speciality.IsSpeciality,
-            IsSuperSpecialty= Speciality.IsSuperSpeciality,
+            IsTitle = Speciality.IsTitle,
+            IsSpecialty = Speciality.IsSpeciality,
+            IsSuperSpecialty = Speciality.IsSuperSpeciality,
         };
 
         if (Speciality.ParentId != null && Speciality.ParentId != 0)
@@ -188,9 +189,9 @@ public class SpecialityService : ISpecialityService
 
         Speciality.UniqueName = SpecialityViewModel.UniqueName.SanitizeText();
         Speciality.UniqueId = SpecialityViewModel.UniqueId;
-        Speciality.IsTitle = SpecialityViewModel.IsTitle; 
-        Speciality.IsSpecialty = SpecialityViewModel.IsSpeciality; 
-        Speciality.IsSuperSpecialty = SpecialityViewModel.IsSuperSpeciality; 
+        Speciality.IsTitle = SpecialityViewModel.IsTitle;
+        Speciality.IsSpecialty = SpecialityViewModel.IsSpeciality;
+        Speciality.IsSuperSpecialty = SpecialityViewModel.IsSuperSpeciality;
 
         _specialityRepository.UpdateSpacialityAdminSide(Speciality);
 
@@ -260,6 +261,24 @@ public class SpecialityService : ISpecialityService
     public async Task<List<ListOfSpecialistsSiteSideViewModel>> ListOfSuperSpecialists()
     {
         return await _specialityRepository.ListOfSuperSpecialists();
+    }
+
+    //Get List Of General Title Specialities
+    public async Task<List<Speciality>> GetListOfGeneralTitleSpecialities()
+    {
+        return await _specialityRepository.GetListOfGeneralTitleSpecialities();
+    }
+
+    //تخصص ها 
+    public async Task<List<Speciality>> GetChildJustSpecialityByParentId(ulong parentId)
+    {
+        return await _specialityRepository.GetChildJustSpecialityByParentId(parentId);
+    }
+
+    //تخصص ها 
+    public async Task<List<SelectListViewModel>> GetChildJustSpecialityByParentIdSelectListViewModel(ulong parentId)
+    {
+        return await _specialityRepository.GetChildJustSpecialityByParentIdSelectListViewModel(parentId);
     }
 
     #endregion

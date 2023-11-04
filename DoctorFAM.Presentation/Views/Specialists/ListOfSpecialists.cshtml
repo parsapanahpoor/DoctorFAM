@@ -2,6 +2,7 @@
 
 
 @using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo
+@using DoctorFAM.Domain.Entities.Speciality
 @using DoctorFAM.Application.Extensions
 @using DoctorFAM.Application.Convertors
 @using DoctorFAM.Domain.ViewModels.Common
@@ -18,6 +19,9 @@
     var countries = ViewData["Countries"] != null ? ViewData["Countries"] as List<SelectListViewModel> : null;
     var states = ViewData["States"] != null ? ViewData["States"] as List<SelectListViewModel> : null;
     var cities = ViewData["Cities"] != null ? ViewData["Cities"] as List<SelectListViewModel> : null;
+
+    var generalSpecialities = ViewData["GeneralSpeciality"] != null ? ViewData["GeneralSpeciality"] as List<Speciality> : null;
+    var justSpeciality = ViewData["JustSpeciality"] != null ? ViewData["JustSpeciality"] as List<Speciality> : null;
 }
 
 @section Scripts
@@ -34,7 +38,27 @@
             $("#formFilter").submit();
         }
 
+        $("#GeneralSpecialityId").change(function () {
+            if ($("#GeneralSpecialityId :selected").val() !== '') {
+                $('#specificId option:not(:first)').remove();
+                $.get("/Home/LoadJustSpecialities", { specificId: $("#GeneralSpecialityId :selected").val() }).then(res => {
+                    if (res.data !== null) {
+                        console.log(res.data);
+                        $.each(res.data, function () {
+                            $("#specificId").append(
+                                '<option value=' + this.id + '>' + this.title + '</option>'
+                            );
+                        });
+                        $("#specificId").removeAttr("disabled");
+                    }
+                });
+            } else {
+                $('#specificId option:not(:first)').remove();
+            }
+        });
+
     </script>
+
 }
 
 @section Styles
@@ -59,6 +83,14 @@
 
         .nice-select {
             display: none !important;
+        }
+
+        #GeneralSpecialityId {
+            display: initial !important;
+        }
+
+        #specificId {
+            display: initial !important;
         }
 
     </style>
@@ -181,8 +213,54 @@
                                         </div>
                                     </div>
 
-                                </div>
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                            <div class="form-group">
+                                                <h6>عنوان تخصص</h6>
+                                                <select class="form-control" id="GeneralSpecialityId" name="GeneralSpecialityId">
+                                                    <option value="">عنوان تخصص </option>
+                                                    @if (generalSpecialities != null && generalSpecialities.Any())
+                                                    {
+                                                        foreach (var speciality in generalSpecialities)
+                                                        {
+                                                            if (Model != null && Model.Item2.GeneralSpecialityId == speciality.Id)
+                                                            {
+                                                                <option value="@speciality.Id" selected="selected"> @speciality.UniqueName </option>
+                                                            }
+                                                            else
+                                                            {
+                                                                <option value="@speciality.Id"> @speciality.UniqueName </option>
+                                                            }
+                                                        }
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                            <div class="form-group">
+                                                <h6>انتخاب تخصصص</h6>
+                                                <select class="form-control" id="specificId" name="specificId">
+                                                    <option value=""> انتخاب تخصصص  </option>
+                                                    @if (justSpeciality != null && justSpeciality.Any())
+                                                    {
+                                                        foreach (var speciality in justSpeciality)
+                                                        {
+                                                            if (Model != null && Model.Item2.specificId == speciality.Id)
+                                                            {
+                                                                <option value="@speciality.Id" selected="selected"> @speciality.UniqueName </option>
+                                                            }
+                                                            else
+                                                            {
+                                                                <option value="@speciality.Id"> @speciality.UniqueName </option>
+                                                            }
+                                                        }
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
 
+                                </div>
 
                                 <div class="btn-search ">
                                     <button type="submit" class=" btn-Accept w-100">جستجو</button>
@@ -193,11 +271,6 @@
                                         حذف فیلتر
                                     </a>
                                 </div>
-
-
-
-
-
 
                             </div>
                         </div>
