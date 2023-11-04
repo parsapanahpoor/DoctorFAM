@@ -384,4 +384,15 @@ public class HomeController : SiteBaseController
     }
 
     #endregion
+
+    #region Load Just Super Specialities
+
+    public async Task<IActionResult> LoadJustSuperSpecialities(ulong specificId)
+    {
+        var result = await _specialityService.GetChildJustSuperSpecialityByParentIdSelectListViewModel(specificId);
+
+        return JsonResponseStatus.Success(result);
+    }
+
+    #endregion
 }
