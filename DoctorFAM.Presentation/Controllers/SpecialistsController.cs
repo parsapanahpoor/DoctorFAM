@@ -29,7 +29,7 @@ public class SpecialistsController : Controller
 	//List Of Specialists For Show Site Side 
 	public async  Task<IActionResult> ListOfSpecialists(FilterFamilyDoctorUserPanelSideViewModel filter)
 	{
-		#region Location ViewBags 
+		#region View Bags 
 
 		ViewData["Countries"] = await _locationServcie.GetAllCountries();
 
@@ -42,9 +42,16 @@ public class SpecialistsController : Controller
 			}
 		}
 
-		#endregion
+		ViewData["GeneralSpeciality"] = await _specialityService.GetListOfGeneralTitleSpecialities();
 
-		ViewBag.pageId = filter.PageId;
+		if (filter.GeneralSpecialityId != null)
+		{
+            ViewData["JustSpeciality"] = await _specialityService.GetChildJustSpecialityByParentId(filter.GeneralSpecialityId.Value);
+        }
+
+        #endregion
+
+        ViewBag.pageId = filter.PageId;
 
 		var model = await _specialityService.ListOfSpecialistsSiteSide(filter);
 		if (model == null) return NotFound();

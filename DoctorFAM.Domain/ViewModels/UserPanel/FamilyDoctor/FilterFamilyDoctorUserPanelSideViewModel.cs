@@ -34,6 +34,10 @@ namespace DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor
 
         public bool YouFollowed { get; set; }
 
+        public ulong? GeneralSpecialityId { get; set; }
+
+        public ulong? specificId { get; set; }
+
         #endregion
     }
 }
