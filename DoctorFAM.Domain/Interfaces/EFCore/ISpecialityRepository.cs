@@ -82,7 +82,7 @@ namespace DoctorFAM.Domain.Interfaces.EFCore
         Task<List<ListOfSpecialistsSiteSideViewModel>> ListOfSpecialistsSiteSide(FilterFamilyDoctorUserPanelSideViewModel filter);
 
         //List Of Super Specialists 
-        Task<List<ListOfSpecialistsSiteSideViewModel>> ListOfSuperSpecialists();
+        Task<List<ListOfSpecialistsSiteSideViewModel>> ListOfSuperSpecialists(FilterFamilyDoctorUserPanelSideViewModel filter);
 
         //Get List Of General Title Specialities
         Task<List<Speciality>> GetListOfGeneralTitleSpecialities();
@@ -92,6 +92,12 @@ namespace DoctorFAM.Domain.Interfaces.EFCore
 
         //تخصص ها 
         Task<List<SelectListViewModel>> GetChildJustSpecialityByParentIdSelectListViewModel(ulong parentId);
+
+        //فوق تخصص ها
+        Task<List<Speciality>> GetChildJustSuperSpecialityByParentId(ulong parentId);
+
+        //فوق تخصص ها
+        Task<List<SelectListViewModel>> GetChildJustSuperSpecialityByParentIdSelectListViewModel(ulong parentId);
 
         #endregion
     }
