@@ -3,6 +3,7 @@
 using DoctorFAM.Data.DbContext;
 using DoctorFAM.Domain.Entities.Dentist;
 using DoctorFAM.Domain.Entities.DoctorReservation;
+using DoctorFAM.Domain.Entities.Product;
 using DoctorFAM.Domain.Enums.DoctorReservation;
 using DoctorFAM.Domain.Enums.Request;
 using DoctorFAM.Domain.Interfaces;
@@ -44,6 +45,202 @@ public class ReservationRepository : IReservationRepository
     #endregion
 
     #region Doctor
+
+    public async Task<ListOfAppointmentsReceivedJoinDoctorSideDTO?> ListOfAppointmentsReceived(ListOfAppointmentsReceivedJoinDoctorSideDTO filter)
+    {
+        var reservation = _context.DoctorReservationDateTimes
+            .Include(p => p.User)
+            .Include(p => p.DoctorReservationDate)
+            .AsNoTracking()
+            .Where(p => !p.IsDelete && p.DoctorReservationDate.UserId == filter.DoctorUserId &&
+                   p.PatientId.HasValue &&
+                   !p.DoctorBooking &&
+                   p.DoctorReservationState == DoctorReservationState.Reserved)
+            .OrderByDescending(s => s.CreateDate)
+           .AsQueryable();
+
+        var wallets = _context.Wallets
+                              .AsNoTracking()
+                              .Where(p => !p.IsDelete && p.UserId == filter.DoctorUserId &&
+                                     p.PaymentType == Domain.Entities.Wallet.PaymentType.ChargeWallet &&
+                                     p.IsFinally)
+                              .AsQueryable();
+
+        var query = from q in reservation
+                    join c in wallets
+                    on q.Id equals c.RequestId
+                    select new ListOfAppointmentsReceivedJoinEntity
+                    {
+                        User = q.User,
+                        DoctorReservationDateId = q.DoctorReservationDateId,
+                        DoctorReservationDateTimeId = q.Id,
+                        ReservationDate = q.DoctorReservationDate.ReservationDate,
+                        StartTime = q.StartTime,
+                        Price = c.Price,
+                        DoctorReservationType = q.DoctorReservationType
+                    };
+
+        #region Status
+
+        switch (filter.FilterDoctorReservationType)
+        {
+            case FilterDoctorReservationType.All:
+                break;
+            case FilterDoctorReservationType.Onile:
+                query = query.Where(p => p.DoctorReservationType == DoctorReservationType.Onile);
+                break;
+            case FilterDoctorReservationType.Reserved:
+                query = query.Where(p => p.DoctorReservationType == DoctorReservationType.Reserved);
+                break;
+        }
+
+        #endregion
+
+        #region Filter
+
+        if (!string.IsNullOrEmpty(filter.FromDate))
+        {
+            var spliteDate = filter.FromDate.Split('/');
+            int year = int.Parse(spliteDate[0]);
+            int month = int.Parse(spliteDate[1]);
+            int day = int.Parse(spliteDate[2]);
+            DateTime fromDate = new DateTime(year, month, day, new PersianCalendar());
+
+            query = query.Where(s => s.ReservationDate >= fromDate);
+        }
+
+        if (!string.IsNullOrEmpty(filter.ToDate))
+        {
+            var spliteDate = filter.ToDate.Split('/');
+            int year = int.Parse(spliteDate[0]);
+            int month = int.Parse(spliteDate[1]);
+            int day = int.Parse(spliteDate[2]);
+            DateTime toDate = new DateTime(year, month, day, new PersianCalendar());
+
+            query = query.Where(s => s.ReservationDate <= toDate);
+        }
+
+        if (!string.IsNullOrEmpty(filter.Username))
+        {
+            query = query.Where(p => p.User.Username == filter.Username);
+        }
+
+        if (!string.IsNullOrEmpty(filter.NationalId))
+        {
+            query = query.Where(p => p.User.NationalId == filter.NationalId);
+        }
+
+        if (!string.IsNullOrEmpty(filter.Mobile))
+        {
+            query = query.Where(p => p.User.Mobile == filter.Mobile);
+        }
+
+        #endregion
+
+        await filter.Paging(query);
+
+        return filter;
+    }
+
+
+    public async Task<ListOfPeopleWhoHaveVisitedDoctorSideDTO?> ListOfPeopleWhoHaveVisited(ListOfPeopleWhoHaveVisitedDoctorSideDTO filter)
+    {
+        var query = _context.DoctorReservationDateTimes
+            .Include(p => p.User)
+            .Include(p => p.DoctorReservationDate)
+            .Where(p => !p.IsDelete && p.DoctorReservationDate.UserId == filter.DoctorUserId &&
+                   p.PatientId.HasValue &&
+                   !p.DoctorBooking &&
+                   p.DoctorReservationState == DoctorReservationState.Reserved)
+            .OrderByDescending(s => s.CreateDate)
+           .AsQueryable();
+
+        #region Status
+
+        switch (filter.FilterDoctorReservationState)
+        {
+            case FilterDoctorReservationState.All:
+                break;
+            case FilterDoctorReservationState.Reserved:
+                query = query.Where(p => p.DoctorReservationState == DoctorReservationState.Reserved);
+                break;
+            case FilterDoctorReservationState.NotReserved:
+                query = query.Where(p => p.DoctorReservationState == DoctorReservationState.NotReserved);
+                break;
+            case FilterDoctorReservationState.WaitingForComplete:
+                query = query.Where(p => p.DoctorReservationState == DoctorReservationState.WaitingForComplete);
+                break;
+        }
+
+        switch (filter.FilterDoctorReservationType)
+        {
+            case FilterDoctorReservationType.All:
+                break;
+            case FilterDoctorReservationType.Onile:
+                query = query.Where(p => p.DoctorReservationType == DoctorReservationType.Onile);
+                break;
+            case FilterDoctorReservationType.Reserved:
+                query = query.Where(p => p.DoctorReservationType == DoctorReservationType.Reserved);
+                break;
+        }
+
+        switch (filter.FilterReservationOrder)
+        {
+            case FilterReservationOrder.CreateDate_Des:
+                break;
+
+            case FilterReservationOrder.CreateDate_Asc:
+                query = query.OrderBy(p => p.DoctorReservationDate.ReservationDate);
+                break;
+        }
+
+        #endregion
+
+        #region Filter
+
+        if (!string.IsNullOrEmpty(filter.FromDate))
+        {
+            var spliteDate = filter.FromDate.Split('/');
+            int year = int.Parse(spliteDate[0]);
+            int month = int.Parse(spliteDate[1]);
+            int day = int.Parse(spliteDate[2]);
+            DateTime fromDate = new DateTime(year, month, day, new PersianCalendar());
+
+            query = query.Where(s => s.DoctorReservationDate.ReservationDate >= fromDate);
+        }
+
+        if (!string.IsNullOrEmpty(filter.ToDate))
+        {
+            var spliteDate = filter.ToDate.Split('/');
+            int year = int.Parse(spliteDate[0]);
+            int month = int.Parse(spliteDate[1]);
+            int day = int.Parse(spliteDate[2]);
+            DateTime toDate = new DateTime(year, month, day, new PersianCalendar());
+
+            query = query.Where(s => s.DoctorReservationDate.ReservationDate <= toDate);
+        }
+
+        if (!string.IsNullOrEmpty(filter.Username))
+        {
+            query = query.Where(p => p.User.Username == filter.Username);
+        }
+
+        if (!string.IsNullOrEmpty(filter.NationalId))
+        {
+            query = query.Where(p => p.User.NationalId == filter.NationalId);
+        }
+
+        if (!string.IsNullOrEmpty(filter.Mobile))
+        {
+            query = query.Where(p => p.User.Mobile == filter.Mobile);
+        }
+
+        #endregion
+
+        await filter.Paging(query);
+
+        return filter;
+    }
 
     //List Of Doctor Reservation Date After Date Time Now
     public async Task<List<DoctorReservationDate>> ListOfDoctorReservationDateAfterDateTimeNow(ulong userId)
@@ -1616,7 +1813,7 @@ public class ReservationRepository : IReservationRepository
     public async Task<LogForDoctorReservationDateTimeWaitingForPayment?> GetLogForWaitingforReservationRequestById(ulong id)
     {
         return await _context.LogForDoctorReservationDateTimeWaitingForPayments
-                             .FirstOrDefaultAsync(p=> !p.IsDelete && p.Id == id);
+                             .FirstOrDefaultAsync(p => !p.IsDelete && p.Id == id);
     }
 
     //Update Log For Waiting for Reservation Request By Id 
@@ -1636,10 +1833,10 @@ public class ReservationRepository : IReservationRepository
     {
         return await _context.LogForDoctorReservationDateTimeWaitingForPaymentComments
                              .Where(p => !p.IsDelete && p.LogForDoctorReservationDateTimeWaitingForPaymentId == id)
-                             .Select(p => new ListOfCommentsForWaitingForPaymentReservationRequestSupporterSideDTO()    
+                             .Select(p => new ListOfCommentsForWaitingForPaymentReservationRequestSupporterSideDTO()
                              {
                                  LogInformation = p,
-                                 UserInfo = _context.Users.FirstOrDefault(s=> !s.IsDelete && s.Id == p.UserId)
+                                 UserInfo = _context.Users.FirstOrDefault(s => !s.IsDelete && s.Id == p.UserId)
                              })
                              .ToListAsync();
     }
@@ -1647,7 +1844,7 @@ public class ReservationRepository : IReservationRepository
     //Add Comment For Waiting For Payment Reservation Request 
     public async Task AddCommentForWaitingForPaymentReservationRequest(LogForDoctorReservationDateTimeWaitingForPaymentComment comment)
     {
-        await _context.LogForDoctorReservationDateTimeWaitingForPaymentComments.AddAsync(comment); 
+        await _context.LogForDoctorReservationDateTimeWaitingForPaymentComments.AddAsync(comment);
     }
 
     #endregion
