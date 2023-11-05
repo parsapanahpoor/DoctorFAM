@@ -570,4 +570,24 @@ public class AppointmentController : DoctorBaseController
     }
 
     #endregion
+
+    #region List Of People Who Have Visited
+
+    [HttpGet]
+    public async Task<IActionResult> ListOfPeopleWhoHaveVisited(ListOfPeopleWhoHaveVisitedDoctorSideDTO filter)
+    {
+        return View(await _reservatioService.ListOfPeopleWhoHaveVisited(filter , User.GetUserId())); ;
+    }
+
+    #endregion
+
+    #region List Of Appointments Received
+
+    [HttpGet]
+    public async Task<IActionResult> ListOfAppointmentsReceived(ListOfAppointmentsReceivedJoinDoctorSideDTO filter)
+    {
+        return View(await _reservatioService.ListOfAppointmentsReceived(filter, User.GetUserId()));
+    }
+
+    #endregion
 }
