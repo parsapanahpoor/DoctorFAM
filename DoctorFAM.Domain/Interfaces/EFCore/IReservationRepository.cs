@@ -18,6 +18,11 @@ public interface IReservationRepository
 {
     #region Doctor Panel 
 
+    Task<ListOfAppointmentsReceivedJoinDoctorSideDTO?> ListOfAppointmentsReceived(ListOfAppointmentsReceivedJoinDoctorSideDTO filter);
+
+    //List Of People Who Have Visited
+    Task<ListOfPeopleWhoHaveVisitedDoctorSideDTO?> ListOfPeopleWhoHaveVisited(ListOfPeopleWhoHaveVisitedDoctorSideDTO filter);
+
     //List Of Doctor Reservation Date After Date Time Now In Dentist Panel
     Task<List<DoctorReservationDate>> ListOfDoctorReservationDateAfterDateTimeNowInDentistPanel(ulong userId);
 

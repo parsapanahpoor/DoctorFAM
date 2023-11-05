@@ -19,6 +19,12 @@ public interface IReservationService
 {
     #region Doctor Panel
 
+    //List Of Appointments Received
+    Task<ListOfAppointmentsReceivedJoinDoctorSideDTO?> ListOfAppointmentsReceived(ListOfAppointmentsReceivedJoinDoctorSideDTO filter, ulong userId);
+
+    //List Of People Who Have Visited
+    Task<ListOfPeopleWhoHaveVisitedDoctorSideDTO?> ListOfPeopleWhoHaveVisited(ListOfPeopleWhoHaveVisitedDoctorSideDTO filter, ulong userId);
+
     //List Of Doctor Reservation Date After Date Time Now In Dentist Panel
     Task<List<DoctorReservationDate>> ListOfDoctorReservationDateAfterDateTimeNowInDentistPanel(ulong userId);
 

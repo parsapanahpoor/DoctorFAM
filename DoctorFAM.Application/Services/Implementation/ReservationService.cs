@@ -71,6 +71,36 @@ public class ReservationService : IReservationService
 
     #region Doctor Panel
 
+    //List Of Appointments Received
+    public async Task<ListOfAppointmentsReceivedJoinDoctorSideDTO?> ListOfAppointmentsReceived(ListOfAppointmentsReceivedJoinDoctorSideDTO filter, ulong userId)
+    {
+        #region Get Organization 
+
+        var organization = await _organizationService.GetOrganizationOwnerIdByOrganizationMemberUserIdWithAsNoTracking(userId);
+        if (!organization.HasValue) return null;
+
+        filter.DoctorUserId = organization.Value;
+
+        #endregion
+
+        return await _reservation.ListOfAppointmentsReceived(filter);
+    }
+
+    //List Of People Who Have Visited
+    public async Task<ListOfPeopleWhoHaveVisitedDoctorSideDTO?> ListOfPeopleWhoHaveVisited(ListOfPeopleWhoHaveVisitedDoctorSideDTO filter , ulong userId)
+    {
+        #region Get Organization 
+
+        var organization = await _organizationService.GetOrganizationOwnerIdByOrganizationMemberUserIdWithAsNoTracking(userId);
+        if (!organization.HasValue) return null;
+
+        filter.DoctorUserId = organization.Value;
+
+        #endregion
+
+        return await _reservation.ListOfPeopleWhoHaveVisited(filter);
+    }
+
     //Fill Add Reservation Date Time With Computer View Model
     public async Task<AddReservationDateTimeWithComputerViewModel?> FillAddReservationDateTimeWithComputerViewModel(ulong reservationDateId, ulong doctorId)
     {
@@ -1600,7 +1630,7 @@ public class ReservationService : IReservationService
 
     //Get The Owner Of Comment For Log For Waiting For Payment Reservation Request
     public async Task<User?> GetTheOwnerOfCommentForLogForWaitingForPaymentReservationRequest(ulong id)
-    { 
+    {
         #region Get Request By Id
 
         var request = await GetLogForWaitingforReservationRequestById(id);
@@ -1874,13 +1904,13 @@ public class ReservationService : IReservationService
     }
 
     //Add Comment For Waiting For Payment Reservation Request 
-    public async Task AddCommentForWaitingForPaymentReservationRequest(ulong requestId , ulong userId , string comment)
+    public async Task AddCommentForWaitingForPaymentReservationRequest(ulong requestId, ulong userId, string comment)
     {
         LogForDoctorReservationDateTimeWaitingForPaymentComment model = new LogForDoctorReservationDateTimeWaitingForPaymentComment()
         {
-             Comment = comment,
-             UserId = userId,
-             LogForDoctorReservationDateTimeWaitingForPaymentId = requestId
+            Comment = comment,
+            UserId = userId,
+            LogForDoctorReservationDateTimeWaitingForPaymentId = requestId
         };
 
         await _reservation.AddCommentForLogofWaitingForPaymentRequestReservation(model);
