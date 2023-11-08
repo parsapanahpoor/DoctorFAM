@@ -58,8 +58,7 @@ public class ReservationRepository : IReservationRepository
                                     p.PatientId.HasValue &&
                                     p.DoctorReservationState == DoctorReservationState.Reserved &&
                                    (p.DoctorReservationDate.ReservationDate.Year == DateTime.Now.Year &&
-                                    p.DoctorReservationDate.ReservationDate.Month == DateTime.Now.Month &&
-                                    p.DoctorReservationDate.ReservationDate.Day == DateTime.Now.AddDays(1).Day)
+                                    p.DoctorReservationDate.ReservationDate.DayOfYear == DateTime.Now.DayOfYear)
                                     )
                              .Select(p => new SendSMSForReminderToReservationDTO()
                              {
