@@ -22,6 +22,7 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 #endregion
 
@@ -117,22 +118,23 @@ public class DashboardsRepository : IDashboardsRepository
 
         #endregion
 
-        #region List Of Reservation Date Time 
+        #region List Of Incoming Today Reservation Date Time 
 
-        model.DoctorReservationDateTimes = await _context.DoctorReservationDateTimes
+        model.ListOfIncomingTodayReservationDateTime = await _context.DoctorReservationDateTimes
                              .AsNoTracking()
                              .Include(p => p.DoctorReservationDate)
-                             .Where(p => !p.IsDelete && p.PatientId.HasValue && p.UserRequestForReserveDate.HasValue &&
-                                   ((p.UserRequestForReserveDate.Value.DayOfYear == DateTime.Now.DayOfYear && p.UserRequestForReserveDate.Value.Year == DateTime.Now.Year)
-                                    || (p.DoctorReservationDate.ReservationDate.DayOfYear == DateTime.Now.DayOfYear && p.DoctorReservationDate.ReservationDate.Year == DateTime.Now.Year)))
+                             .Where(p => !p.IsDelete &&
+                                    p.PatientId.HasValue &&
+                                    p.UserRequestForReserveDate.HasValue &&
+                                   (p.UserRequestForReserveDate.Value.DayOfYear == DateTime.Now.DayOfYear && p.UserRequestForReserveDate.Value.Year == DateTime.Now.Year))
                              .OrderByDescending(p => p.DoctorReservationDateId)
-                             .Select(p => new ListOfSelectedReservationsSupporterSideDTO()
+                             .Select(p => new ListOfSelectedReservationsAdminSideDTO()
                              {
                                  ReservationDate = p.DoctorReservationDate,
                                  DoctorInfo = _context.Users
                                                       .AsNoTracking()
                                                       .Where(s => !s.IsDelete && s.Id == p.DoctorReservationDate.UserId)
-                                                      .Select(s => new DoctorInfoListOfSelectedReservationsSupporterSideDTO()
+                                                      .Select(s => new DoctorInfoListOfSelectedReservationsAdminSideDTO()
                                                       {
                                                           Mobile = s.Mobile,
                                                           Username = s.Username
@@ -141,7 +143,44 @@ public class DashboardsRepository : IDashboardsRepository
                                  PatientInfo = _context.Users
                                                       .AsNoTracking()
                                                       .Where(s => !s.IsDelete && s.Id == p.PatientId.Value)
-                                                      .Select(s => new PatientInfoListOfSelectedReservationsSupporterSideDTO()
+                                                      .Select(s => new PatientInfoListOfSelectedReservationsAdminSideDTO()
+                                                      {
+                                                          Mobile = s.Mobile,
+                                                          Username = s.Username
+                                                      })
+                                                      .FirstOrDefault(),
+                                 ReservationDateTime = p
+                             })
+                             .ToListAsync();
+
+        #endregion
+
+        #region List Of Today Reservation Date Time 
+
+        model.ListOfTodayReservationDateTime = await _context.DoctorReservationDateTimes
+                             .AsNoTracking()
+                             .Include(p => p.DoctorReservationDate)
+                             .Where(p => !p.IsDelete &&
+                                    p.PatientId.HasValue &&
+                                    p.UserRequestForReserveDate.HasValue &&
+                                   (p.DoctorReservationDate.ReservationDate.DayOfYear == DateTime.Now.DayOfYear && p.DoctorReservationDate.ReservationDate.Year == DateTime.Now.Year))
+                             .OrderByDescending(p => p.DoctorReservationDateId)
+                             .Select(p => new ListOfSelectedReservationsAdminSideDTO()
+                             {
+                                 ReservationDate = p.DoctorReservationDate,
+                                 DoctorInfo = _context.Users
+                                                      .AsNoTracking()
+                                                      .Where(s => !s.IsDelete && s.Id == p.DoctorReservationDate.UserId)
+                                                      .Select(s => new DoctorInfoListOfSelectedReservationsAdminSideDTO()
+                                                      {
+                                                          Mobile = s.Mobile,
+                                                          Username = s.Username
+                                                      })
+                                                      .FirstOrDefault(),
+                                 PatientInfo = _context.Users
+                                                      .AsNoTracking()
+                                                      .Where(s => !s.IsDelete && s.Id == p.PatientId.Value)
+                                                      .Select(s => new PatientInfoListOfSelectedReservationsAdminSideDTO()
                                                       {
                                                           Mobile = s.Mobile,
                                                           Username = s.Username
@@ -306,16 +345,15 @@ public class DashboardsRepository : IDashboardsRepository
 
         #endregion
 
-        #region List Of Reservation Date Time 
+        #region List Of Incoming Today Reservation Date Time 
 
-        #region List Of Reservation Date Time 
-
-        model.DoctorReservationDateTimes = await _context.DoctorReservationDateTimes
+        model.ListOfIncomingTodayReservationDateTime = await _context.DoctorReservationDateTimes
                              .AsNoTracking()
                              .Include(p => p.DoctorReservationDate)
-                             .Where(p => !p.IsDelete && p.PatientId.HasValue && p.UserRequestForReserveDate.HasValue &&
-                                   ((p.UserRequestForReserveDate.Value.DayOfYear == DateTime.Now.DayOfYear && p.UserRequestForReserveDate.Value.Year == DateTime.Now.Year)
-                                    || (p.DoctorReservationDate.ReservationDate.DayOfYear == DateTime.Now.DayOfYear && p.DoctorReservationDate.ReservationDate.Year == DateTime.Now.Year)))
+                             .Where(p => !p.IsDelete && 
+                                    p.PatientId.HasValue &&
+                                    p.UserRequestForReserveDate.HasValue &&
+                                   (p.UserRequestForReserveDate.Value.DayOfYear == DateTime.Now.DayOfYear && p.UserRequestForReserveDate.Value.Year == DateTime.Now.Year))
                              .OrderByDescending(p => p.DoctorReservationDateId)
                              .Select(p => new ListOfSelectedReservationsAdminSideDTO()
                              {
@@ -343,6 +381,41 @@ public class DashboardsRepository : IDashboardsRepository
                              .ToListAsync();
 
         #endregion
+
+        #region List Of Today Reservation Date Time 
+
+        model.ListOfTodayReservationDateTime = await _context.DoctorReservationDateTimes
+                             .AsNoTracking()
+                             .Include(p => p.DoctorReservationDate)
+                             .Where(p => !p.IsDelete && 
+                                    p.PatientId.HasValue && 
+                                    p.UserRequestForReserveDate.HasValue &&
+                                   (p.DoctorReservationDate.ReservationDate.DayOfYear == DateTime.Now.DayOfYear && p.DoctorReservationDate.ReservationDate.Year == DateTime.Now.Year))
+                             .OrderByDescending(p => p.DoctorReservationDateId)
+                             .Select(p => new ListOfSelectedReservationsAdminSideDTO()
+                             {
+                                 ReservationDate = p.DoctorReservationDate,
+                                 DoctorInfo = _context.Users
+                                                      .AsNoTracking()
+                                                      .Where(s => !s.IsDelete && s.Id == p.DoctorReservationDate.UserId)
+                                                      .Select(s => new DoctorInfoListOfSelectedReservationsAdminSideDTO()
+                                                      {
+                                                          Mobile = s.Mobile,
+                                                          Username = s.Username
+                                                      })
+                                                      .FirstOrDefault(),
+                                 PatientInfo = _context.Users
+                                                      .AsNoTracking()
+                                                      .Where(s => !s.IsDelete && s.Id == p.PatientId.Value)
+                                                      .Select(s => new PatientInfoListOfSelectedReservationsAdminSideDTO()
+                                                      {
+                                                          Mobile = s.Mobile,
+                                                          Username = s.Username
+                                                      })
+                                                      .FirstOrDefault(),
+                                 ReservationDateTime = p
+                             })
+                             .ToListAsync();
 
         #endregion
 

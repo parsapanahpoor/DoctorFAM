@@ -71,6 +71,21 @@ public class ReservationService : IReservationService
 
     #region Doctor Panel
 
+    public async Task SendSMSForReminderToReservation()
+    {
+        var userMobiles = await _reservation.SendSMSForReminderToReservation();
+
+        if (userMobiles != null && userMobiles.Any())
+        {
+            foreach (var userMobile in userMobiles)
+            {
+                var message = Messages.SendSMSForReminderToReservation(userMobile.DoctorUsername);
+
+                await _smsService.SendSimpleSMS(userMobile.UserMobile, message);
+            }
+        }
+    }
+
     //List Of Appointments Received
     public async Task<ListOfAppointmentsReceivedJoinDoctorSideDTO?> ListOfAppointmentsReceived(ListOfAppointmentsReceivedJoinDoctorSideDTO filter, ulong userId)
     {
