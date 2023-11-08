@@ -8,6 +8,7 @@ using DoctorFAM.Domain.Enums.DoctorReservation;
 using DoctorFAM.Domain.Enums.Request;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.Reservation;
+using DoctorFAM.Domain.ViewModels.BackgroundTasks.Reservation;
 using DoctorFAM.Domain.ViewModels.Common;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment;
 using DoctorFAM.Domain.ViewModels.Site.Reservation;
@@ -17,6 +18,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Security.AccessControl;
+using System.Text;
 
 #endregion
 
@@ -45,6 +47,30 @@ public class ReservationRepository : IReservationRepository
     #endregion
 
     #region Doctor
+
+    public async Task<List<SendSMSForReminderToReservationDTO>> SendSMSForReminderToReservation()
+    {
+        return await _context.DoctorReservationDateTimes
+                             .AsNoTracking()
+                             .Include(p=> p.DoctorReservationDate)
+                             .ThenInclude(p=> p.User)
+                             .Where(p => !p.IsDelete &&
+                                    p.PatientId.HasValue &&
+                                    p.DoctorReservationState == DoctorReservationState.Reserved &&
+                                   (p.DoctorReservationDate.ReservationDate.Year == DateTime.Now.Year &&
+                                    p.DoctorReservationDate.ReservationDate.DayOfYear == DateTime.Now.DayOfYear)
+                                    )
+                             .Select(p => new SendSMSForReminderToReservationDTO()
+                             {
+                                 DoctorUsername = p.DoctorReservationDate.User.Username,
+                                 UserMobile = _context.Users    
+                                                      .AsNoTracking()
+                                                      .Where(s=> !s.IsDelete && s.Id == p.PatientId.Value )
+                                                      .Select(s=> s.Mobile)
+                                                      .FirstOrDefault()
+                             })
+                             .ToListAsync();
+    }
 
     public async Task<ListOfAppointmentsReceivedJoinDoctorSideDTO?> ListOfAppointmentsReceived(ListOfAppointmentsReceivedJoinDoctorSideDTO filter)
     {
@@ -141,7 +167,6 @@ public class ReservationRepository : IReservationRepository
 
         return filter;
     }
-
 
     public async Task<ListOfPeopleWhoHaveVisitedDoctorSideDTO?> ListOfPeopleWhoHaveVisited(ListOfPeopleWhoHaveVisitedDoctorSideDTO filter)
     {
