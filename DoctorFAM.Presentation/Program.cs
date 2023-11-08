@@ -35,6 +35,7 @@ builder.Services.AddHostedService<SendSMSForWeeklyDrugAlerts>();
 builder.Services.AddHostedService<SendSMSForMonthlyDrugAlerts>();
 builder.Services.AddHostedService<SendSMSForYearlyDrugAlerts>();
 builder.Services.AddHostedService<SendSMSForDailyDrugAlerts>();
+builder.Services.AddHostedService<SendSMSForReminderToReservation>();
 
 builder.Services.AddHostedService<SendSMSForPeriodicTestAlert>();
 builder.Services.AddHostedService<SendSMSForPeriodicExaminationAlarm>();

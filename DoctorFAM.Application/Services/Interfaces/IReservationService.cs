@@ -19,6 +19,8 @@ public interface IReservationService
 {
     #region Doctor Panel
 
+    Task SendSMSForReminderToReservation();
+
     //List Of Appointments Received
     Task<ListOfAppointmentsReceivedJoinDoctorSideDTO?> ListOfAppointmentsReceived(ListOfAppointmentsReceivedJoinDoctorSideDTO filter, ulong userId);
 

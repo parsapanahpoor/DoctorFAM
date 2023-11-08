@@ -56,7 +56,7 @@
 
     <div class="row">
 
-        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+        <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
             <div class="databox radius-bordered databox-shadowed databox-graded">
                 <div class="bg-green databox-right">
                     <div class="databox-piechart">
@@ -65,26 +65,40 @@
                 <div class="databox-left">
                     <span class="databox-number success">@Model.CountOfTodayRegister</span>
                     <div class="databox-text darkgray">تعداد ثبت نامی های امروز</div>
-                   
+
                 </div>
             </div>
         </div>
 
-        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+        <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
             <div class="databox radius-bordered databox-shadowed databox-graded">
                 <div class="bg-blue databox-right">
                     <div class="databox-piechart">
                     </div>
                 </div>
                 <div class="databox-left">
-                    <span class="databox-number primary">@Model.DoctorReservationDateTimes.Count()</span>
-                    <div class="databox-text darkgray">تعداد نوبت های امروز</div>
+                    <span class="databox-number primary">@Model.ListOfIncomingTodayReservationDateTime.Count()</span>
+                    <div class="databox-text darkgray">تعداد نوبت های دریافتی امروز</div>
 
                 </div>
             </div>
         </div>
 
-        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+        <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
+            <div class="databox radius-bordered databox-shadowed databox-graded">
+                <div class="bg-blue databox-right">
+                    <div class="databox-piechart">
+                    </div>
+                </div>
+                <div class="databox-left">
+                    <span class="databox-number primary">@Model.ListOfTodayReservationDateTime.Count()</span>
+                    <div class="databox-text darkgray">تعداد مراجعه های امروز به پزشک</div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
             <div class="databox radius-bordered databox-shadowed databox-graded">
                 <div class="bg-red databox-right">
                     <div class="databox-piechart">
@@ -102,8 +116,11 @@
 
     <div class="row">
 
-        @*Box Of Lastest Reservation Reuqests*@
-        <partial name="_TodayReservationReserved" model="@Model.DoctorReservationDateTimes" />
+        @*List Of Incoming Today Reservation Date Time*@
+        <partial name="_TodayReservationReserved" model="@Model.ListOfIncomingTodayReservationDateTime" />
+
+        @*List Of Today Reservation Date Time*@
+        <partial name="ListOfTodayReservationDateTime" model="@Model.ListOfTodayReservationDateTime" />
 
         @*Box Of Lastest Requests*@
         <partial name="_LastestRequestsPartial" model="@Model.AllRecords" />

@@ -1,6 +1,7 @@
 ﻿using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.ViewModels.Admin.IncomingExcelFile;
+using DoctorFAM.Domain.ViewModels.Admin.Reservation;
 using DoctorFAM.Domain.ViewModels.Supporter.Reservation;
 using System;
 using System.Collections.Generic;
@@ -28,7 +29,9 @@ namespace DoctorFAM.Domain.ViewModels.Supporter
 
         public List<Request> AllRecords { get; set; }
 
-        public List<ListOfSelectedReservationsSupporterSideDTO> DoctorReservationDateTimes { get; set; }
+        public List<ListOfSelectedReservationsAdminSideDTO> ListOfIncomingTodayReservationDateTime { get; set; }
+
+        public List<ListOfSelectedReservationsAdminSideDTO> ListOfTodayReservationDateTime { get; set; }
 
         public List<Domain.Entities.Contact.Ticket> ListOfLastestTickets { get; set; }
 

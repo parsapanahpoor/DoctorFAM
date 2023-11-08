@@ -3,6 +3,7 @@
 using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.Enums.DoctorReservation;
 using DoctorFAM.Domain.ViewModels.Admin.Reservation;
+using DoctorFAM.Domain.ViewModels.BackgroundTasks.Reservation;
 using DoctorFAM.Domain.ViewModels.Common;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment;
 using DoctorFAM.Domain.ViewModels.Site.Reservation;
@@ -17,6 +18,8 @@ namespace DoctorFAM.Domain.Interfaces;
 public interface IReservationRepository
 {
     #region Doctor Panel 
+
+    Task<List<SendSMSForReminderToReservationDTO>> SendSMSForReminderToReservation();
 
     Task<ListOfAppointmentsReceivedJoinDoctorSideDTO?> ListOfAppointmentsReceived(ListOfAppointmentsReceivedJoinDoctorSideDTO filter);
 
