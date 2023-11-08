@@ -1,9 +1,9 @@
-﻿//using DoctorFAM.Domain.Entities.Advertisement;
-using DoctorFAM.DataLayer.Entities;
+﻿using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.CooperationRequest;
 using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.ViewModels.Admin.IncomingExcelFile;
 using DoctorFAM.Domain.ViewModels.Admin.Reservation;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DoctorFAM.Domain.ViewModels.Admin.Dashboard
 {
@@ -25,7 +25,9 @@ namespace DoctorFAM.Domain.ViewModels.Admin.Dashboard
         
         public List<Request> AllRecords { get; set; }
 
-        public List<ListOfSelectedReservationsAdminSideDTO> DoctorReservationDateTimes { get; set; }
+        public List<ListOfSelectedReservationsAdminSideDTO> ListOfIncomingTodayReservationDateTime { get; set; }
+
+        public List<ListOfSelectedReservationsAdminSideDTO> ListOfTodayReservationDateTime { get; set; }
 
         public List<Domain.Entities.Contact.Ticket> ListOfLastestTickets { get; set; }
 

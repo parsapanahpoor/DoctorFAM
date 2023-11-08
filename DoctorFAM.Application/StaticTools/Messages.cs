@@ -300,4 +300,14 @@ public static string SendSMSForLinkOfHomeVisitRequestFromDoctor(string link)
             $"سریال توکن شمات : {token.Token}" +
             $"{Environment.NewLine} {PathTools.SiteFarsiName}";
     }
+
+    //Finalize Home Laboratory Request Result
+    public static string SendSMSForReminderToReservation(string DoctorName)
+    {
+        return
+            $"کاربر گرامی دکترفم . {Environment.NewLine} " +
+            $" فردا نزد دکتر {DoctorName} نوبت دارید . {Environment.NewLine}" +
+            $"جزئیات نوبت را در صفحه ی شخصی خود ببینید. {Environment.NewLine}" +
+            $"{PathTools.SiteFarsiName}";
+    }
 }
