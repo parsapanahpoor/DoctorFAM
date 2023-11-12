@@ -44,6 +44,8 @@ namespace DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment
         public bool DoctorBooking { get; set; }
 
         public DoctorReservationDateTimePatientDetailDoctorSideViewModel? PatientDetail { get; set; }
+
+        public LogForGetAppoinmentForOtherPeopleDoctorPanelSide? LogForGetAppoinmentForOtherPeople { get; set; }
     }
 
     public class DoctorReservationDateTimePatientDetailDoctorSideViewModel
@@ -53,5 +55,12 @@ namespace DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment
         public string PatientMobile { get; set; }
 
         public ulong? PatientUserId { get; set; }
+    }
+
+    public class LogForGetAppoinmentForOtherPeopleDoctorPanelSide
+    {
+        public string? FirstName { get; set; }
+
+        public string? LastName { get; set; }
     }
 }

@@ -725,7 +725,8 @@ public class UserService : IUserService
             {
                 FirstName = UserInfoForGetReservation.OthersFirstName,
                 LastName = UserInfoForGetReservation.OthersLastName,
-                UserId = user.Id
+                UserId = user.Id,
+                ReservationDateTimeId = reservationDateTimeId
             };
 
             //Add To The Data Base 

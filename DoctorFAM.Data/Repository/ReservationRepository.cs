@@ -828,6 +828,16 @@ public class ReservationRepository : IReservationRepository
                                                                                    PatientUserId = p.Id
                                                                                }).FirstOrDefaultAsync();
 
+                        item.LogForGetAppoinmentForOtherPeople = await _context.logForGetAppoinmentForOtherPeoples
+                                                                               .AsNoTracking()
+                                                                               .Where(p => !p.IsDelete && p.ReservationDateTimeId == item.Id && p.UserId == item.PatientId)
+                                                                               .Select(p => new LogForGetAppoinmentForOtherPeopleDoctorPanelSide()
+                                                                               {
+                                                                                   FirstName = p.FirstName,
+                                                                                   LastName = p.LastName
+                                                                               })
+                                                                               .FirstOrDefaultAsync();
+
                         //Add To Return Model 
                         sampleModel.Add(item);
                     }
