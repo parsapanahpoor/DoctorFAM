@@ -1587,7 +1587,8 @@ public class ReservationService : IReservationService
         {
             DoctorReservationDate = reservationDate,
             DoctorReservationDateTime = reservationDateTime,
-            Doctor = doctor
+            Doctor = doctor,
+            LogForAnotherPatient = reservationDateTime.PatientId.HasValue ? await _reservation.FillLogForAnotherPatient(reservationDateTime.Id , reservationDateTime.PatientId.Value) : null,
         };
 
         #endregion
@@ -1744,7 +1745,8 @@ public class ReservationService : IReservationService
         {
             DoctorReservationDate = reservationDate,
             DoctorReservationDateTime = reservationDateTime,
-            Doctor = doctor
+            Doctor = doctor,
+            LogForAnotherPatient = reservationDateTime.PatientId.HasValue ? await _reservation.FillLogForAnotherPatientSupporterSide(reservationDateTime.Id, reservationDateTime.PatientId.Value) : null,
         };
 
         #endregion
@@ -2398,6 +2400,7 @@ public class ReservationService : IReservationService
         model.ReservationDate = reservationDate.ReservationDate;
         model.ReservationDateTime = reservationDateTime.StartTime;
         model.PatientNationalId = user.NationalId;
+        model.LogForAnotherPatientUserSide = await _reservation.FillLogForAnotherPatientUserSide(reservationId , userId);
 
         #endregion
 

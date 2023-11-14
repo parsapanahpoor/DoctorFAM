@@ -1,10 +1,5 @@
 ﻿using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.DoctorReservation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DoctorFAM.Domain.ViewModels.Admin.Reservation
 {
@@ -22,6 +17,15 @@ namespace DoctorFAM.Domain.ViewModels.Admin.Reservation
 
         public string? WorkAddress { get; set; }
 
+        public LogForAnotherPatient? LogForAnotherPatient { get; set; }
+
         #endregion
+    }
+
+    public record LogForAnotherPatient
+    {
+        public string? FristName { get; set; }
+
+        public string? LastName { get; set; }
     }
 }

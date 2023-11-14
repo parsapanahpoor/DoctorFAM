@@ -8,9 +8,11 @@ public record ListOfSelectedReservationsAdminSideDTO
 
     public DoctorInfoListOfSelectedReservationsAdminSideDTO? DoctorInfo { get; set; }
 
-    public Domain.Entities.DoctorReservation.DoctorReservationDateTime? ReservationDateTime { get; set; }
+    public Entities.DoctorReservation.DoctorReservationDateTime? ReservationDateTime { get; set; }
 
-    public Domain.Entities.DoctorReservation.DoctorReservationDate? ReservationDate { get; set; }
+    public Entities.DoctorReservation.DoctorReservationDate? ReservationDate { get; set; }
+
+    public LogForGetAppoinmentForOtherPeoplesAdminSide? LogForGetAppoinmentForOtherPeoples { get; set; }
 
     #endregion
 }
@@ -36,3 +38,15 @@ public record DoctorInfoListOfSelectedReservationsAdminSideDTO
 
     #endregion
 }
+
+public record LogForGetAppoinmentForOtherPeoplesAdminSide
+{
+    #region properties
+
+    public string? FirstName { get; set;}
+
+    public string? LastName { get; set; }
+
+    #endregion
+}
+

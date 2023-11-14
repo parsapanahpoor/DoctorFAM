@@ -828,6 +828,16 @@ public class ReservationRepository : IReservationRepository
                                                                                    PatientUserId = p.Id
                                                                                }).FirstOrDefaultAsync();
 
+                        item.LogForGetAppoinmentForOtherPeople = await _context.logForGetAppoinmentForOtherPeoples
+                                                                               .AsNoTracking()
+                                                                               .Where(p => !p.IsDelete && p.ReservationDateTimeId == item.Id && p.UserId == item.PatientId)
+                                                                               .Select(p => new LogForGetAppoinmentForOtherPeopleDoctorPanelSide()
+                                                                               {
+                                                                                   FirstName = p.FirstName,
+                                                                                   LastName = p.LastName
+                                                                               })
+                                                                               .FirstOrDefaultAsync();
+
                         //Add To Return Model 
                         sampleModel.Add(item);
                     }
@@ -1007,6 +1017,19 @@ public class ReservationRepository : IReservationRepository
     #endregion
 
     #region User Panel
+
+    public async Task<LogForAnotherPatientUserSide?> FillLogForAnotherPatientUserSide(ulong reservationId, ulong patientId)
+    {
+        return await _context.logForGetAppoinmentForOtherPeoples
+                             .AsNoTracking()
+                             .Where(p => !p.IsDelete && p.ReservationDateTimeId == reservationId && p.UserId == patientId)
+                             .Select(p => new LogForAnotherPatientUserSide()
+                             {
+                                 FristName = p.FirstName,
+                                 LastName = p.LastName
+                             })
+                             .FirstOrDefaultAsync();
+    }
 
     public async Task<FilterReservationViewModel?> FilterReservationUserPanelViewModel(FilterReservationViewModel filter)
     {
@@ -1271,6 +1294,19 @@ public class ReservationRepository : IReservationRepository
     #endregion
 
     #region Admin Side 
+
+    public async Task<DoctorFAM.Domain.ViewModels.Admin.Reservation.LogForAnotherPatient?> FillLogForAnotherPatient(ulong reservationId , ulong patientId)
+    {
+        return await _context.logForGetAppoinmentForOtherPeoples
+                             .AsNoTracking()
+                             .Where(p => !p.IsDelete && p.ReservationDateTimeId == reservationId && p.UserId == patientId)
+                             .Select(p => new DoctorFAM.Domain.ViewModels.Admin.Reservation.LogForAnotherPatient()
+                             {
+                                 FristName = p.FirstName,
+                                 LastName = p.LastName
+                             })
+                             .FirstOrDefaultAsync();
+    }
 
     public async Task<FilterReservationAdminSideViewModel?> FilterReservationAdminPanelViewModel(FilterReservationAdminSideViewModel filter)
     {
@@ -1588,6 +1624,19 @@ public class ReservationRepository : IReservationRepository
     #endregion
 
     #region Supporter Side  
+
+    public async Task<DoctorFAM.Domain.ViewModels.Supporter.Reservation.LogForAnotherPatient?> FillLogForAnotherPatientSupporterSide(ulong reservationId, ulong patientId)
+    {
+        return await _context.logForGetAppoinmentForOtherPeoples
+                             .AsNoTracking()
+                             .Where(p => !p.IsDelete && p.ReservationDateTimeId == reservationId && p.UserId == patientId)
+                             .Select(p => new DoctorFAM.Domain.ViewModels.Supporter.Reservation.LogForAnotherPatient()
+                             {
+                                 FristName = p.FirstName,
+                                 LastName = p.LastName
+                             })
+                             .FirstOrDefaultAsync();
+    }
 
     public async Task<FilterReservationSupporterSideViewModel?> FilterReservationSupporterPanelViewModel(FilterReservationSupporterSideViewModel filter)
     {

@@ -149,7 +149,16 @@ public class DashboardsRepository : IDashboardsRepository
                                                           Username = s.Username
                                                       })
                                                       .FirstOrDefault(),
-                                 ReservationDateTime = p
+                                 ReservationDateTime = p,
+                                 LogForGetAppoinmentForOtherPeoples = _context.logForGetAppoinmentForOtherPeoples
+                                                                              .AsNoTracking()
+                                                                              .Where(s => !s.IsDelete && s.ReservationDateTimeId == p.Id && s.UserId == p.PatientId.Value)
+                                                                              .Select(s => new LogForGetAppoinmentForOtherPeoplesAdminSide()
+                                                                              {
+                                                                                  FirstName = s.FirstName,
+                                                                                  LastName = s.LastName,
+                                                                              })
+                                                                              .FirstOrDefault()
                              })
                              .ToListAsync();
 
@@ -186,7 +195,16 @@ public class DashboardsRepository : IDashboardsRepository
                                                           Username = s.Username
                                                       })
                                                       .FirstOrDefault(),
-                                 ReservationDateTime = p
+                                 ReservationDateTime = p,
+                                 LogForGetAppoinmentForOtherPeoples = _context.logForGetAppoinmentForOtherPeoples
+                                                                              .AsNoTracking()
+                                                                              .Where(s => !s.IsDelete && s.ReservationDateTimeId == p.Id && s.UserId == p.PatientId.Value)
+                                                                              .Select(s => new LogForGetAppoinmentForOtherPeoplesAdminSide()
+                                                                              {
+                                                                                  FirstName = s.FirstName,
+                                                                                  LastName = s.LastName,
+                                                                              })
+                                                                              .FirstOrDefault()
                              })
                              .ToListAsync();
 
@@ -350,7 +368,7 @@ public class DashboardsRepository : IDashboardsRepository
         model.ListOfIncomingTodayReservationDateTime = await _context.DoctorReservationDateTimes
                              .AsNoTracking()
                              .Include(p => p.DoctorReservationDate)
-                             .Where(p => !p.IsDelete && 
+                             .Where(p => !p.IsDelete &&
                                     p.PatientId.HasValue &&
                                     p.UserRequestForReserveDate.HasValue &&
                                    (p.UserRequestForReserveDate.Value.DayOfYear == DateTime.Now.DayOfYear && p.UserRequestForReserveDate.Value.Year == DateTime.Now.Year))
@@ -376,7 +394,16 @@ public class DashboardsRepository : IDashboardsRepository
                                                           Username = s.Username
                                                       })
                                                       .FirstOrDefault(),
-                                 ReservationDateTime = p
+                                 ReservationDateTime = p,
+                                 LogForGetAppoinmentForOtherPeoples = _context.logForGetAppoinmentForOtherPeoples
+                                                                              .AsNoTracking()
+                                                                              .Where(s => !s.IsDelete && s.ReservationDateTimeId == p.Id && s.UserId == p.PatientId.Value)
+                                                                              .Select(s => new LogForGetAppoinmentForOtherPeoplesAdminSide()
+                                                                              {
+                                                                                  FirstName = s.FirstName,
+                                                                                  LastName = s.LastName,
+                                                                              })
+                                                                              .FirstOrDefault()
                              })
                              .ToListAsync();
 
@@ -387,8 +414,8 @@ public class DashboardsRepository : IDashboardsRepository
         model.ListOfTodayReservationDateTime = await _context.DoctorReservationDateTimes
                              .AsNoTracking()
                              .Include(p => p.DoctorReservationDate)
-                             .Where(p => !p.IsDelete && 
-                                    p.PatientId.HasValue && 
+                             .Where(p => !p.IsDelete &&
+                                    p.PatientId.HasValue &&
                                     p.UserRequestForReserveDate.HasValue &&
                                    (p.DoctorReservationDate.ReservationDate.DayOfYear == DateTime.Now.DayOfYear && p.DoctorReservationDate.ReservationDate.Year == DateTime.Now.Year))
                              .OrderByDescending(p => p.DoctorReservationDateId)
@@ -413,7 +440,16 @@ public class DashboardsRepository : IDashboardsRepository
                                                           Username = s.Username
                                                       })
                                                       .FirstOrDefault(),
-                                 ReservationDateTime = p
+                                 ReservationDateTime = p,
+                                 LogForGetAppoinmentForOtherPeoples = _context.logForGetAppoinmentForOtherPeoples
+                                                                              .AsNoTracking()
+                                                                              .Where(s => !s.IsDelete && s.ReservationDateTimeId == p.Id && s.UserId == p.PatientId.Value)
+                                                                              .Select(s => new LogForGetAppoinmentForOtherPeoplesAdminSide()
+                                                                              {
+                                                                                  FirstName = s.FirstName,
+                                                                                  LastName = s.LastName,
+                                                                              })
+                                                                              .FirstOrDefault()
                              })
                              .ToListAsync();
 
@@ -522,7 +558,7 @@ public class DashboardsRepository : IDashboardsRepository
 
         model.CountOfTodayRegister = await _context.Users
                                                    .AsNoTracking()
-                                                   .CountAsync(p=> !p.IsDelete && p.CreateDate ==DateTime.Now);
+                                                   .CountAsync(p => !p.IsDelete && p.CreateDate == DateTime.Now);
 
         #endregion
 
