@@ -103,7 +103,7 @@
                                             <li>موبایل : @Model.PatientMobile</li>
 
 
-                                            @if (Model.DoctorAddress != null )
+                                            @if (Model.DoctorAddress != null)
                                             {
                                                 <li>آدرس مطب : @Model.DoctorAddress.Address</li>
                                             }
@@ -128,7 +128,20 @@
 
                                 <tr>
                                     <td>نام و نام خانوادگی بیمار</td>
-                                    <td>@((!string.IsNullOrEmpty(Model.PatientUsername)) ? Model.PatientUsername : "وارد نشده")</td>
+                                    @if (Model.LogForAnotherPatientUserSide != null)
+                                    {
+                                        <td>
+                                            @(!string.IsNullOrEmpty(Model.LogForAnotherPatientUserSide.FristName) ? Model.LogForAnotherPatientUserSide.FristName : " ")
+
+                                            -
+
+                                            @(!string.IsNullOrEmpty(Model.LogForAnotherPatientUserSide.LastName) ? Model.LogForAnotherPatientUserSide.LastName : " ")
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td>@((!string.IsNullOrEmpty(Model.PatientUsername)) ? Model.PatientUsername : "وارد نشده")</td>
+                                    }
                                 </tr>
 
                                 <tr>

@@ -2147,6 +2147,7 @@ namespace DoctorFAM.Application.Services.Implementation
                     {
                         var imageName = CodeGenerator.GenerateUniqCode() + Path.GetExtension(MediacalFile.FileName);
                         MediacalFile.AddImageToServer(imageName, PathTools.MediacalFilePathServer, 270, 270, PathTools.MediacalFilePathThumbServer);
+
                         manageDoctorsInfoViewModel1.MediacalFile = imageName;
                     }
 

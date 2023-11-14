@@ -120,6 +120,8 @@ public interface IReservationRepository
 
     #region Admin Panel 
 
+    Task<DoctorFAM.Domain.ViewModels.Admin.Reservation.LogForAnotherPatient?> FillLogForAnotherPatient(ulong reservationId, ulong patientId);
+
     Task<FilterReservationAdminSideViewModel?> FilterReservationAdminPanelViewModel(FilterReservationAdminSideViewModel filter);
 
     Task AddLogForCloseReservation(LogForCloseReservation log);
@@ -138,6 +140,10 @@ public interface IReservationRepository
     #endregion
 
     #region Supporter Panel 
+
+    Task<LogForAnotherPatientUserSide?> FillLogForAnotherPatientUserSide(ulong reservationId, ulong patientId);
+
+    Task<DoctorFAM.Domain.ViewModels.Supporter.Reservation.LogForAnotherPatient?> FillLogForAnotherPatientSupporterSide(ulong reservationId, ulong patientId);
 
     Task<FilterReservationSupporterSideViewModel?> FilterReservationSupporterPanelViewModel(FilterReservationSupporterSideViewModel filter);
 

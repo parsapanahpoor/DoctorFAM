@@ -52,6 +52,17 @@
                                                 @reservation.PatientInfo.Username
                                                 <hr />
                                                 @reservation.PatientInfo.Mobile
+
+                                            @if (reservation.LogForGetAppoinmentForOtherPeoples != null)
+                                            {
+                                                <hr />
+                                                <span class="">
+                                                    @(!string.IsNullOrEmpty(reservation.LogForGetAppoinmentForOtherPeoples.FirstName) ? reservation.LogForGetAppoinmentForOtherPeoples.FirstName : "")
+                                                    -
+                                                    @(!string.IsNullOrEmpty(reservation.LogForGetAppoinmentForOtherPeoples.LastName) ? reservation.LogForGetAppoinmentForOtherPeoples.LastName : "")
+
+                                                </span>
+                                            }
                                             }
 
 
