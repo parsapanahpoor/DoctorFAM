@@ -186,9 +186,14 @@ public class WalletRepository : IWalletRepository
     //Find Wallet Transaction For Redirect To The Bank Portal 
     public async Task<Wallet?> FindWalletTransactionForRedirectToTheBankPortal(ulong userId, GatewayType gateway, ulong? requestId, string authority, int amount)
     {
-        return await _context.Wallets.Include(p => p.WalletData).FirstOrDefaultAsync(p => !p.IsDelete && !p.IsFinally && p.UserId == userId && p.GatewayType == gateway
-                                                                                            && p.WalletData.TrackingCode == authority &&
-                                                                                                    p.RequestId == requestId && p.Price == amount);
+        return await _context.Wallets
+                             .Include(p => p.WalletData)
+                             .FirstOrDefaultAsync(p => !p.IsDelete &&
+                                                  !p.IsFinally && 
+                                                  p.UserId == userId && 
+                                                  p.GatewayType == gateway &&
+                                                  p.WalletData.TrackingCode == authority &&
+                                                  p.RequestId == requestId && p.Price == amount);
     }
 
     //Create Wallet Without Calculate

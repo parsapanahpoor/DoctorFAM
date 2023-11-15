@@ -494,7 +494,7 @@ public class FocalPointController : SiteBaseController
 
                         #endregion
 
-                        return RedirectToAction(nameof(ShowInvoiceAfterPaymentForReservation) , new { id = reservationDateTime.Id , refId = refid});
+                        return RedirectToAction(nameof(ShowInvoiceAfterPaymentForReservation) , new { resId = reservationDateTime.Id , trackingCode = parameters.authority });
                     }
                 }
                 else if (errors != "[]")
@@ -521,7 +521,7 @@ public class FocalPointController : SiteBaseController
 
     #region Show Invoice After Payment For Reservation 
 
-    public async Task<IActionResult> ShowInvoiceAfterPaymentForReservation(ulong resId , string refId)
+    public async Task<IActionResult> ShowInvoiceAfterPaymentForReservation(ulong resId , string trackingCode)
     {
         #region Fill Invoice Model
 
@@ -532,10 +532,10 @@ public class FocalPointController : SiteBaseController
 
         #region Get Ref Code From Bank 
 
-        var match = await _walletService.GetReservationRefIdFromWalletDataByReservationIdAndUserId(resId , invoice.PatientUserId , refId);
+        var match = await _walletService.GetReservationRefIdFromWalletDataByReservationIdAndUserId(resId , invoice.PatientUserId , trackingCode);
         if (!match) return NotFound();
 
-        invoice.RefId = refId;
+        invoice.RefId = trackingCode;
 
         #endregion
 
