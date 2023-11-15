@@ -1936,6 +1936,12 @@ public class ReservationService : IReservationService
 
     #region Site Side
 
+    //Is Exist Any Waiting For Payment Reservation Request By User Id
+    public async Task<ulong?> IsExistAnyWaitingForPaymentReservationRequestByUserId(ulong userId)
+    {
+        return await _reservation.IsExistAnyWaitingForPaymentReservationRequestByUserId(userId);
+    }
+
     //Get And Delete Another Patient 
     public async Task GetAndDeleteAnotherPatient(ulong reservationDateTimeId, ulong userId)
     {

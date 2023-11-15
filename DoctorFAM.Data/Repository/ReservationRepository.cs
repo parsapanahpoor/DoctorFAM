@@ -1927,6 +1927,20 @@ public class ReservationRepository : IReservationRepository
 
     #region Site Side 
 
+    //Is Exist Any Waiting For Payment Reservation Request By User Id
+    public async Task<ulong?> IsExistAnyWaitingForPaymentReservationRequestByUserId(ulong userId)
+    {
+        return await _context.DoctorReservationDateTimes
+                             .AsNoTracking()
+                             .Where(p => !p.IsDelete &&
+                                    p.PatientId.HasValue &&
+                                    p.PatientId.Value == userId &&
+                                    p.DoctorReservationState == DoctorReservationState.WaitingForComplete &&
+                                    !p.DoctorBooking)
+                             .Select(p => p.Id)
+                             .FirstOrDefaultAsync();
+    }
+
     //Get And Delete Another Patient 
     public async Task GetAndDeleteAnotherPatient(ulong reservationDateTimeId , ulong userId)
     {

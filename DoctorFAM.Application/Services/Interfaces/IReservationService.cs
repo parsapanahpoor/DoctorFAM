@@ -213,6 +213,9 @@ public interface IReservationService
 
     #region Site Side 
 
+    //Is Exist Any Waiting For Payment Reservation Request By User Id
+    Task<ulong?> IsExistAnyWaitingForPaymentReservationRequestByUserId(ulong userId);
+
     //Get And Delete Another Patient 
     Task GetAndDeleteAnotherPatient(ulong reservationDateTimeId, ulong userId);
 

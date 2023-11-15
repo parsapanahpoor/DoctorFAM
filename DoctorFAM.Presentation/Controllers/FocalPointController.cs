@@ -90,6 +90,16 @@ public class FocalPointController : SiteBaseController
     [HttpGet]
     public async Task<IActionResult> DocBooking(ulong userId, string? loggedDateTime)
     {
+        #region Check Is Exist Any Waiting For Payment Reservation For This User
+
+        var existInvoiceId = await _reservationService.IsExistAnyWaitingForPaymentReservationRequestByUserId(User.GetUserId());
+        if (existInvoiceId != null && existInvoiceId.HasValue && existInvoiceId.Value != 0)
+        {
+            return RedirectToAction(nameof(ShowInvoiceBeforeRedirectToBankProtable) , new { reservationDateTimeId = existInvoiceId });
+        }
+
+        #endregion
+
         #region Fill Model
 
         var model = await _doctorService.FillDoctorReservationDetailForShowSiteSide(userId, loggedDateTime);
@@ -117,6 +127,16 @@ public class FocalPointController : SiteBaseController
     [HttpPost, ValidateAntiForgeryToken]
     public async Task<IActionResult> DocBooking(ShowDoctorReservationDetailViewModel reservationDetail)
     {
+        #region Check Is Exist Any Waiting For Payment Reservation For This User
+
+        var existInvoiceId = await _reservationService.IsExistAnyWaitingForPaymentReservationRequestByUserId(User.GetUserId());
+        if (existInvoiceId != null && existInvoiceId.HasValue && existInvoiceId.Value != 0)
+        {
+            return RedirectToAction(nameof(ShowInvoiceBeforeRedirectToBankProtable), new { reservationDateTimeId = existInvoiceId });
+        }
+
+        #endregion
+
         #region Fill Model
 
         var model = await _doctorService.FillDoctorReservationDetailForShowSiteSide(reservationDetail.UserId, reservationDetail.LoggedDateTime);
