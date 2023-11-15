@@ -171,6 +171,9 @@ public interface IReservationRepository
 
     #region Site Side
 
+    //Get And Delete Another Patient 
+    Task GetAndDeleteAnotherPatient(ulong reservationDateTimeId, ulong userId);
+
     //Remove Log For Reservation Date Times In Waiting For Payment State
     void RemoveLogForReservationDateTimesInWaitingForPaymentState(LogForDoctorReservationDateTimeWaitingForPayment model);
 

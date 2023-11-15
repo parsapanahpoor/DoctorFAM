@@ -240,25 +240,71 @@ public class FocalPointController : SiteBaseController
 
         #endregion
 
-        #region Get Reservation Tariff 
+        #region Redirect To Invoice
 
-        if (!model.DoctorReservationType.HasValue)
+        return RedirectToAction(nameof(ShowInvoiceBeforeRedirectToBankProtable) , new { reservationDateTimeId= reservationDateTime.Id });
+
+        #endregion
+    }
+
+    #endregion
+
+    #region Show Invoice Before Redirect To Bank Protable  
+
+    [Authorize, HttpGet]
+    public async Task<IActionResult> ShowInvoiceBeforeRedirectToBankProtable(ulong reservationDateTimeId)
+    {
+        #region Fill Model 
+
+        var model = await _reservationService.ShowInvoiceBeforeRedirectToBankProtable(reservationDateTimeId , User.GetUserId());
+        if (model == null) return NotFound();
+
+        #endregion
+
+        return View(model);
+    }
+
+    #endregion
+
+    #region Redirect To Bank Portable
+
+    [Authorize]
+    public async Task<IActionResult> RedirectToBankPortableForPayReservationTariff(ulong reservatioonDateTimeId)
+    {
+        #region Get Reservation Date Time 
+
+        var reservationDateTime = await _reservationService.GetDoctorReservationDateTimeById(reservatioonDateTimeId);
+
+        if (reservationDateTime == null ||
+            reservationDateTime.DoctorReservationState != Domain.Enums.DoctorReservation.DoctorReservationState.WaitingForComplete ||
+            !reservationDateTime.PatientId.HasValue || 
+            reservationDateTime.PatientId.Value != User.GetUserId())
         {
             TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
             return RedirectToAction("Index", "Home");
         }
 
-        var reservationTariff = await _doctorService.ProcessReservationTariffForPayFromUser(model.DoctorId, User.GetUserId(), model.DoctorReservationType.Value);
+        #endregion
+
+        #region Get Reservation Tariff 
+
+        if (!reservationDateTime.DoctorReservationType.HasValue)
+        {
+            TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+            return RedirectToAction("Index", "Home");
+        }
+
+        var reservationTariff = await _doctorService.ProcessReservationTariffForPayFromUser(reservationDateTime.DoctorReservationDate.UserId, User.GetUserId(), reservationDateTime.DoctorReservationType.Value);
         if (reservationTariff == null)
         {
             TempData[ErrorMessage] = "لطفا با پشتیبانی تماس بگیرید";
             return RedirectToAction("Index", "Home");
         }
-        
+
         if (reservationTariff == 0)
         {
             TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
-            return RedirectToAction(nameof(DoctorReservationWith0Price) , new { id = model.ReservationDateTimeId });
+            return RedirectToAction(nameof(DoctorReservationWith0Price), new { id = reservatioonDateTimeId });
         }
 
         #endregion
@@ -270,11 +316,29 @@ public class FocalPointController : SiteBaseController
             gatewayType = GatewayType.Zarinpal,
             amount = reservationTariff,
             description = "شارژ حساب کاربری برای پرداخت هزینه ی دریافت نوبت",
-            returURL = $"{PathTools.SiteAddress}/DoctorReservationPayment/" + model.ReservationDateTimeId,
-            requestId = model.ReservationDateTimeId,
+            returURL = $"{PathTools.SiteAddress}/DoctorReservationPayment/" + reservatioonDateTimeId,
+            requestId = reservatioonDateTimeId,
         });
 
         #endregion
+    }
+
+    #endregion
+
+    #region Cancel Reservation Request From Patient
+
+    [Authorize]
+    public async Task<IActionResult> CancelReservationRequestFromPatient(ulong reservatioonDateTimeId)
+    {
+        #region Cancelation Reservation 
+
+        var res = await _reservationService.CancelPaymentFromUserAndMakeReservationTimeFree(reservatioonDateTimeId , User.GetUserId());
+        if (!res) return NotFound();
+
+        #endregion
+
+        TempData[SuccessMessage] = "نوبت مورد نظر باموفقیت لغو گردید. ";
+        return RedirectToAction("Index", "Home");
     }
 
     #endregion
@@ -422,10 +486,11 @@ public class FocalPointController : SiteBaseController
                             ReservationPrice = reservationTariff.Item1,
                             RefId = refid,
                             DoctorUserId = reservationDate.UserId,
-                            PatientNationalId = (string.IsNullOrEmpty(currentUser.NationalId)) ? "وارد نشده" : currentUser.NationalId
+                            PatientNationalId = (string.IsNullOrEmpty(currentUser.NationalId)) ? "وارد نشده" : currentUser.NationalId,
+                            ReservationDateTimeId = reservationDateTime.Id,
                         };
 
-                        var modelOfView = await _reservationService.FillReservationFactorSiteSideViewModel(model , reservationDateTime.WorkAddressId.Value);
+                        var modelOfView = await _reservationService.FillReservationFactorSiteSideViewModel(model , reservationDateTime.WorkAddressId.Value , currentUser.Id);
                         if (modelOfView == null) return NotFound();
 
                         #endregion
@@ -435,7 +500,7 @@ public class FocalPointController : SiteBaseController
                 }
                 else if (errors != "[]")
                 {
-                    var res = await _reservationService.CancelPaymentFromUserAndMakeReservationTimeFree(id);
+                    var res = await _reservationService.CancelPaymentFromUserAndMakeReservationTimeFree(id , reservationDateTime.PatientId.Value);
                     if (!res)
                     {
                         return NotFound();

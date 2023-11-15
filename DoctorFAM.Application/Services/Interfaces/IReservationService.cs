@@ -9,6 +9,7 @@ using DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment;
 using DoctorFAM.Domain.ViewModels.Site.Reservation;
 using DoctorFAM.Domain.ViewModels.Supporter.Reservation;
 using DoctorFAM.Domain.ViewModels.UserPanel.Reservation;
+using Microsoft.EntityFrameworkCore;
 
 
 #endregion
@@ -212,6 +213,11 @@ public interface IReservationService
 
     #region Site Side 
 
+    //Get And Delete Another Patient 
+    Task GetAndDeleteAnotherPatient(ulong reservationDateTimeId, ulong userId);
+
+    Task<ReservationFactorSiteSideViewModel?> ShowInvoiceBeforeRedirectToBankProtable(ulong reservationDateTimeId, ulong userId);
+
     //Update Log For Reservation Date Times In Waiting For Payment State
     Task<bool> RemoveLogForReservationDateTimesInWaitingForPaymentState(ulong doctorReservationDateTimeId, ulong userId);
 
@@ -249,7 +255,7 @@ public interface IReservationService
     Task<bool> GetReservationDateTimeToUserPatient(ChooseTypeOfReservationViewModel model, ulong patientId);
 
     //Cancel Payment From User And Make Reservation Time Free 
-    Task<bool> CancelPaymentFromUserAndMakeReservationTimeFree(ulong reservationDateId);
+    Task<bool> CancelPaymentFromUserAndMakeReservationTimeFree(ulong reservationDateId , ulong userId);
 
     //Reserve Doctor Reservation Date Time After Success Payment
     Task ReserveDoctorReservationDateTimeAfterSuccessPayment(ulong reservationDateTimeId);
@@ -258,7 +264,7 @@ public interface IReservationService
     Task<bool> PayDoctorReservationPayedSharePercentage(ulong doctorUserId, int price, ulong requestId, bool isUserInDoctorPopulationCovered, DoctorReservationType doctorReservationType);
 
     //Fill Reservation Factor Site Side View Model
-    Task<ReservationFactorSiteSideViewModel?> FillReservationFactorSiteSideViewModel(ReservationFactorSiteSideViewModel model , ulong workAddressId);
+    Task<ReservationFactorSiteSideViewModel?> FillReservationFactorSiteSideViewModel(ReservationFactorSiteSideViewModel model , ulong workAddressId , ulong PatientUserId);
 
     //Fill Reservation Factor User Side View Model
     Task<ReservationFactorUserSideViewModel?> FillReservationFactorUserSideViewModel(ulong reservationId, ulong userId);
