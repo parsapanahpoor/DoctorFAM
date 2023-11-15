@@ -1,21 +1,18 @@
-﻿using DoctorFAM.Application.Services.Implementation;
-using DoctorFAM.Domain.Entities.Wallet;
+﻿using DoctorFAM.Domain.Entities.Wallet;
 using DoctorFAM.Domain.ViewModels.Admin.Wallet;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Wallet;
 using DoctorFAM.Domain.ViewModels.UserPanel.Wallet;
 using DoctorFAM.Domain.ViewModels.Wallet;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DoctorFAM.Application.Services.Interfaces
 {
     public interface IWalletService
     {
         #region Wallet
+
+        //Get Reservation Ref Id From Wallet Data By Reservation Id And User Id And Ref Id
+        Task<bool> GetReservationRefIdFromWalletDataByReservationIdAndUserId(ulong reservationId, ulong userId, string refId);
 
         Task<FilterWalletViewModel> FilterWalletsAsync(FilterWalletViewModel filter);
 

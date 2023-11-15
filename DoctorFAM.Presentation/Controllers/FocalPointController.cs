@@ -95,7 +95,7 @@ public class FocalPointController : SiteBaseController
         var existInvoiceId = await _reservationService.IsExistAnyWaitingForPaymentReservationRequestByUserId(User.GetUserId());
         if (existInvoiceId != null && existInvoiceId.HasValue && existInvoiceId.Value != 0)
         {
-            return RedirectToAction(nameof(ShowInvoiceBeforeRedirectToBankProtable) , new { reservationDateTimeId = existInvoiceId });
+            return RedirectToAction(nameof(ShowInvoiceBeforeRedirectToBankProtable) , new { reservationDateTimeId = existInvoiceId , Reminder = true });
         }
 
         #endregion
@@ -132,7 +132,7 @@ public class FocalPointController : SiteBaseController
         var existInvoiceId = await _reservationService.IsExistAnyWaitingForPaymentReservationRequestByUserId(User.GetUserId());
         if (existInvoiceId != null && existInvoiceId.HasValue && existInvoiceId.Value != 0)
         {
-            return RedirectToAction(nameof(ShowInvoiceBeforeRedirectToBankProtable), new { reservationDateTimeId = existInvoiceId });
+            return RedirectToAction(nameof(ShowInvoiceBeforeRedirectToBankProtable), new { reservationDateTimeId = existInvoiceId , Reminder = true});
         }
 
         #endregion
@@ -272,7 +272,7 @@ public class FocalPointController : SiteBaseController
     #region Show Invoice Before Redirect To Bank Protable  
 
     [Authorize, HttpGet]
-    public async Task<IActionResult> ShowInvoiceBeforeRedirectToBankProtable(ulong reservationDateTimeId)
+    public async Task<IActionResult> ShowInvoiceBeforeRedirectToBankProtable(ulong reservationDateTimeId , bool Reminder)
     {
         #region Fill Model 
 
@@ -280,6 +280,8 @@ public class FocalPointController : SiteBaseController
         if (model == null) return NotFound();
 
         #endregion
+
+        ViewBag.Reminder = Reminder;
 
         return View(model);
     }
@@ -450,9 +452,6 @@ public class FocalPointController : SiteBaseController
                         //Update Reservation State 
                         await _reservationService.ReserveDoctorReservationDateTimeAfterSuccessPayment(reservationDateTime.Id);
 
-                        //Charge User Wallet
-                        //await _reservationService.ChargeUserWallet(User.GetUserId(), reservationTariff.Item1);
-
                         await _walletService.UpdateWalletAndCalculateUserBalanceAfterBankingPayment(wallet);
 
                         //Pay Home Visit Tariff
@@ -495,27 +494,7 @@ public class FocalPointController : SiteBaseController
 
                         #endregion
 
-                        #region Initial Factor For Page Model
-
-                        ReservationFactorSiteSideViewModel model = new ReservationFactorSiteSideViewModel()
-                        {
-                            PatientUsername = currentUser.FirstName + currentUser.LastName,
-                            PatientMobile = currentUser.Mobile,
-                            ReservationDate = reservationDate.ReservationDate,
-                            ReservationDateTime = reservationDateTime.StartTime,
-                            ReservationPrice = reservationTariff.Item1,
-                            RefId = refid,
-                            DoctorUserId = reservationDate.UserId,
-                            PatientNationalId = (string.IsNullOrEmpty(currentUser.NationalId)) ? "وارد نشده" : currentUser.NationalId,
-                            ReservationDateTimeId = reservationDateTime.Id,
-                        };
-
-                        var modelOfView = await _reservationService.FillReservationFactorSiteSideViewModel(model , reservationDateTime.WorkAddressId.Value , currentUser.Id);
-                        if (modelOfView == null) return NotFound();
-
-                        #endregion
-
-                        return View(modelOfView);
+                        return RedirectToAction(nameof(ShowInvoiceAfterPaymentForReservation) , new { resId = reservationDateTime.Id , trackingCode = parameters.authority });
                     }
                 }
                 else if (errors != "[]")
@@ -536,6 +515,31 @@ public class FocalPointController : SiteBaseController
         }
 
         return NotFound();
+    }
+
+    #endregion
+
+    #region Show Invoice After Payment For Reservation 
+
+    public async Task<IActionResult> ShowInvoiceAfterPaymentForReservation(ulong resId , string trackingCode)
+    {
+        #region Fill Invoice Model
+
+        var invoice = await _reservationService.ShowInvoiceAfterPaymentForReservation(resId);
+        if (invoice == null) return NotFound();
+
+        #endregion
+
+        #region Get Ref Code From Bank 
+
+        var match = await _walletService.GetReservationRefIdFromWalletDataByReservationIdAndUserId(resId , invoice.PatientUserId , trackingCode);
+        if (!match) return NotFound();
+
+        invoice.RefId = trackingCode;
+
+        #endregion
+
+        return View(invoice);
     }
 
     #endregion

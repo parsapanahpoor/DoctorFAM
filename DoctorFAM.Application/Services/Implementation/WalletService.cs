@@ -36,6 +36,12 @@ namespace DoctorFAM.Application.Services.Implementation
 
         #region Wallet
 
+        //Get Reservation Ref Id From Wallet Data By Reservation Id And User Id And Ref Id
+        public async Task<bool> GetReservationRefIdFromWalletDataByReservationIdAndUserId(ulong reservationId, ulong userId, string refId)
+        {
+            return await _walletRepository.GetReservationRefIdFromWalletDataByReservationIdAndUserId(reservationId, userId , refId);
+        }
+
         //Get Wallet Transaction By Reservation Date Time Id
         public async Task<Wallet?> GetWalletTransactionByReservationDateTimeId(ulong dateTimeId)
         {

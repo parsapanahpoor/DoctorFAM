@@ -1,7 +1,9 @@
 ﻿#region Usings
 
+using DoctorFAM.Application.Services.Implementation;
 using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.DoctorReservation;
+using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Enums.DoctorReservation;
 using DoctorFAM.Domain.ViewModels.Admin.Reservation;
 using DoctorFAM.Domain.ViewModels.Common;
@@ -212,6 +214,9 @@ public interface IReservationService
     #endregion
 
     #region Site Side 
+
+    //Show Invoice After Payment For Reservation
+    Task<ReservationFactorSiteSideViewModel?> ShowInvoiceAfterPaymentForReservation(ulong reservationDateTimeId);
 
     //Is Exist Any Waiting For Payment Reservation Request By User Id
     Task<ulong?> IsExistAnyWaitingForPaymentReservationRequestByUserId(ulong userId);

@@ -17,6 +17,8 @@ namespace DoctorFAM.Domain.ViewModels.Site.Reservation
     {
         #region properties
 
+        public ulong PatientUserId  { get; set; }
+
         public ulong ReservationDateTimeId { get; set; }
 
         public ulong DoctorUserId { get; set; }
