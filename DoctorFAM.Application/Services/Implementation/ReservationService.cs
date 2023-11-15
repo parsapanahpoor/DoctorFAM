@@ -2074,7 +2074,8 @@ public class ReservationService : IReservationService
             ReservationDateTime = reservationDateTime.StartTime,
             DoctorUserId = reservationDateTime.DoctorReservationDate.UserId,
             PatientNationalId = (string.IsNullOrEmpty(user.NationalId)) ? "وارد نشده" : user.NationalId,
-            ReservationDateTimeId = reservationDateTimeId
+            ReservationDateTimeId = reservationDateTimeId,
+            PatientUserId = reservationDateTime.PatientId.Value
         };
 
         #endregion

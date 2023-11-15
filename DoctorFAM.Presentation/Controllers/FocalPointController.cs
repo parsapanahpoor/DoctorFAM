@@ -494,7 +494,7 @@ public class FocalPointController : SiteBaseController
 
                         #endregion
 
-                        return RedirectToAction(nameof(ShowInvoiceAfterPaymentForReservation) , new { id = reservationDateTime.Id});
+                        return RedirectToAction(nameof(ShowInvoiceAfterPaymentForReservation) , new { id = reservationDateTime.Id , refId = refid});
                     }
                 }
                 else if (errors != "[]")
@@ -527,6 +527,15 @@ public class FocalPointController : SiteBaseController
 
         var invoice = await _reservationService.ShowInvoiceAfterPaymentForReservation(resId);
         if (invoice == null) return NotFound();
+
+        #endregion
+
+        #region Get Ref Code From Bank 
+
+        var match = await _walletService.GetReservationRefIdFromWalletDataByReservationIdAndUserId(resId , invoice.PatientUserId , refId);
+        if (!match) return NotFound();
+
+        invoice.RefId = refId;
 
         #endregion
 

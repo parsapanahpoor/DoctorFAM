@@ -10,6 +10,7 @@ using DoctorFAM.Domain.ViewModels.DoctorPanel.Wallet;
 using DoctorFAM.Domain.ViewModels.UserPanel.Wallet;
 using DoctorFAM.Domain.ViewModels.Wallet;
 using Microsoft.EntityFrameworkCore;
+using System.Text;
 
 #endregion
 
@@ -316,6 +317,25 @@ public class WalletRepository : IWalletRepository
         return await _context.Wallets.Where(p => p.RequestId == requestId).FirstOrDefaultAsync();
     }
 
+    //Get Reservation Ref Id From Wallet Data By Reservation Id And User Id And Ref Id
+    public async Task<bool> GetReservationRefIdFromWalletDataByReservationIdAndUserId(ulong reservationId, ulong userId, string refId)
+    {
+        var walletId = await _context.WalletData
+                                     .AsNoTracking()
+                                     .Where(p => !p.IsDelete && p.TrackingCode == refId)
+                                     .Select(p => p.WalletId)
+                                     .FirstOrDefaultAsync();
+
+        if (walletId == 0 || walletId == null)
+        {
+            return false;
+        }
+
+        return await _context.Wallets
+                                   .AsNoTracking()
+                                   .AnyAsync(p => !p.IsDelete && p.UserId == userId && p.Id == walletId && p.RequestId == reservationId && p.IsFinally);
+    }
+
     #endregion
 
     #region User Panel 
@@ -474,9 +494,9 @@ public class WalletRepository : IWalletRepository
                                                              .FirstOrDefault(),
                                  RequestState = p.RequestState,
                                  UserBankAccountDetail = _context.UsersBankAccountsInfos
-                                                                 .AsNoTracking()     
-                                                                 .Where(s=> !s.IsDelete && s.Id == p.UserBankAccountId)
-                                                                 .Select(s=> new WithdrawRequestDetailUserBankAccountViewModel()
+                                                                 .AsNoTracking()
+                                                                 .Where(s => !s.IsDelete && s.Id == p.UserBankAccountId)
+                                                                 .Select(s => new WithdrawRequestDetailUserBankAccountViewModel()
                                                                  {
                                                                      Id = s.Id,
                                                                      BankName = s.BankName,
@@ -549,8 +569,8 @@ public class WalletRepository : IWalletRepository
                                                 })
                                                 .FirstOrDefault(),
                                  BankAccount = _context.UsersBankAccountsInfos
-                                                       .AsNoTracking() 
-                                                       .Where(s=> !s.IsDelete && s.Id == p.UserBankAccountId)
+                                                       .AsNoTracking()
+                                                       .Where(s => !s.IsDelete && s.Id == p.UserBankAccountId)
                                                        .FirstOrDefault()
                              })
                              .FirstOrDefaultAsync();
