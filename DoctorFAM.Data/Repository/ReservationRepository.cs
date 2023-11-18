@@ -1912,9 +1912,27 @@ public class ReservationRepository : IReservationRepository
                              .Select(p => new ListOfCommentsForWaitingForPaymentReservationRequestSupporterSideDTO()
                              {
                                  LogInformation = p,
-                                 UserInfo = _context.Users.FirstOrDefault(s => !s.IsDelete && s.Id == p.UserId)
+                                 UserInfo = _context.Users.FirstOrDefault(s => !s.IsDelete && s.Id == p.UserId),
                              })
                              .ToListAsync();
+    }
+
+
+    //Get Reservation Log For Waiting Payment Admind Side DTO 
+    public async Task<ReservationLogForWaitingPaymentAdmindSideDTO?> GetReservationLogForWaitingPaymentAdmindSideDTO(ulong id)
+    {
+
+        //Fill Reservation 
+        return await _context.LogForDoctorReservationDateTimeWaitingForPayments
+                                        .Include(p => p.DoctorReservationDateTime)
+                                        .Where(p => !p.IsDelete && p.Id == id)
+                                        .Select(p => new ReservationLogForWaitingPaymentAdmindSideDTO()
+                                        {
+                                            DoctorReservationState = p.DoctorReservationDateTime.DoctorReservationState,
+                                            PatientId = p.DoctorReservationDateTime.PatientId,
+                                            ReservationDateTimeId = p.DoctorReservationDateTimeId
+                                        })
+                                        .FirstOrDefaultAsync();
     }
 
     //Add Comment For Waiting For Payment Reservation Request 

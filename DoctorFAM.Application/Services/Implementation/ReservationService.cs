@@ -2040,7 +2040,7 @@ public class ReservationService : IReservationService
 
         #endregion
 
-        return await FillReservationFactorSiteSideViewModel(model , reservationDateTime.WorkAddressId.Value , userId);
+        return await FillReservationFactorSiteSideViewModel(model, reservationDateTime.WorkAddressId.Value, userId);
     }
 
     //Show Invoice After Payment For Reservation
@@ -2155,29 +2155,46 @@ public class ReservationService : IReservationService
         return true;
     }
 
+    //Get Reservation Log For Waiting Payment Admind Side DTO 
+    public async Task<ReservationLogForWaitingPaymentAdmindSideDTO?> GetReservationLogForWaitingPaymentAdmindSideDTO(ulong id)
+    {
+        return await _reservation.GetReservationLogForWaitingPaymentAdmindSideDTO(id);
+    }
+
     //Log For Reservation Date Times In Waiting For Payment State
     public async Task<bool> LogForReservationDateTimesInWaitingForPaymentState(ulong doctorReservationDateTimeId, ulong userId)
     {
         //Get Log 
         var log = await _reservation.GetLogForReservationDateTimesInWaitingForPaymentState(doctorReservationDateTimeId, userId);
-        if (log != null) return true;
-
-        #region Fill Entity
-
-        LogForDoctorReservationDateTimeWaitingForPayment entity = new LogForDoctorReservationDateTimeWaitingForPayment()
+        if (log != null)
         {
-            CreateDate = DateTime.Now,
-            DoctorReservationDateTimeId = doctorReservationDateTimeId,
-            IsDelete = false,
-            IsSeenBySupporters = false,
-            PatientUserId = userId,
-            SupporterUserId = null
-        };
+            log.CreateDate = DateTime.Now;
+            log.PatientUserId = userId;
+            log.IsSeenBySupporters = false;
 
-        #endregion
+            _reservation.UpdateLogForReservationDateTimesInWaitingForPaymentState(log);
+        }
 
-        //Add To The Data Base
-        await _reservation.LogForReservationDateTimesInWaitingForPaymentState(entity);
+        else
+        {
+            #region Fill Entity
+
+            LogForDoctorReservationDateTimeWaitingForPayment entity = new LogForDoctorReservationDateTimeWaitingForPayment()
+            {
+                CreateDate = DateTime.Now,
+                DoctorReservationDateTimeId = doctorReservationDateTimeId,
+                IsDelete = false,
+                IsSeenBySupporters = false,
+                PatientUserId = userId,
+                SupporterUserId = null
+            };
+
+            #endregion
+
+            //Add To The Data Base
+            await _reservation.LogForReservationDateTimesInWaitingForPaymentState(entity);
+        }
+
         await _reservation.Savechanges();
 
         return true;
@@ -2429,7 +2446,7 @@ public class ReservationService : IReservationService
     }
 
     //Cancel Payment From User And Make Reservation Time Free 
-    public async Task<bool> CancelPaymentFromUserAndMakeReservationTimeFree(ulong reservationDateId , ulong userId)
+    public async Task<bool> CancelPaymentFromUserAndMakeReservationTimeFree(ulong reservationDateId, ulong userId)
     {
         #region get Doctor Reservation Date Time By Id 
 
@@ -2454,7 +2471,47 @@ public class ReservationService : IReservationService
 
         #region Get Another Patient
 
-        await _reservation.GetAndDeleteAnotherPatient(reservationDateId , userId);
+        await _reservation.GetAndDeleteAnotherPatient(reservationDateId, userId);
+
+        #endregion
+
+        return true;
+    }
+
+    //Cancel Payment From Admin And Make Reservation Time Free 
+    public async Task<bool> CancelPaymentFromAdminAndMakeReservationTimeFree(ulong reservationDateId)
+    {
+        #region get Doctor Reservation Date Time By Id 
+
+        var reservationDateTime = await _reservation.GetDoctorReservationDateTimeById(reservationDateId);
+        if (reservationDateTime == null) return false;
+        if (reservationDateTime.DoctorReservationState != DoctorReservationState.WaitingForComplete) return false;
+        if (!reservationDateTime.PatientId.HasValue) return false;
+
+        #endregion
+
+        #region Get Another Patient
+
+        await _reservation.GetAndDeleteAnotherPatient(reservationDateId, reservationDateTime.PatientId.Value);
+
+        #region Update Method 
+
+        reservationDateTime.DoctorReservationState = DoctorReservationState.NotReserved;
+        reservationDateTime.PatientId = null;
+        reservationDateTime.DoctorReservationType = null;
+        reservationDateTime.UserRequestForReserveDate = null;
+        reservationDateTime.UserRequestDescription = null;
+
+        await _reservation.UpdateReservationDateTime(reservationDateTime);
+
+        #endregion
+
+        #endregion
+
+        #region Check Wallet 
+
+        var wallet = await _walletService.GetWalletTransactionByReservationDateTimeId(reservationDateId);
+        if (wallet != null) return false;
 
         #endregion
 

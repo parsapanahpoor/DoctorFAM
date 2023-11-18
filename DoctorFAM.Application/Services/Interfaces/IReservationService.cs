@@ -229,6 +229,9 @@ public interface IReservationService
     //Update Log For Reservation Date Times In Waiting For Payment State
     Task<bool> RemoveLogForReservationDateTimesInWaitingForPaymentState(ulong doctorReservationDateTimeId, ulong userId);
 
+    //Get Reservation Log For Waiting Payment Admind Side DTO 
+    Task<ReservationLogForWaitingPaymentAdmindSideDTO?> GetReservationLogForWaitingPaymentAdmindSideDTO(ulong id);
+
     //Log For Reservation Date Times In Waiting For Payment State
     Task<bool> LogForReservationDateTimesInWaitingForPaymentState(ulong doctorReservationDateTimeId, ulong userId);
 
@@ -264,6 +267,9 @@ public interface IReservationService
 
     //Cancel Payment From User And Make Reservation Time Free 
     Task<bool> CancelPaymentFromUserAndMakeReservationTimeFree(ulong reservationDateId , ulong userId);
+
+    //Cancel Payment From Admin And Make Reservation Time Free 
+    Task<bool> CancelPaymentFromAdminAndMakeReservationTimeFree(ulong reservationDateId);
 
     //Reserve Doctor Reservation Date Time After Success Payment
     Task ReserveDoctorReservationDateTimeAfterSuccessPayment(ulong reservationDateTimeId);

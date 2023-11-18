@@ -113,6 +113,9 @@
                                 @Localizer["دیده شده"]
                             </th>
                             <th class="tc vm">
+                                @Localizer["وضعیت درخواست"]
+                            </th>
+                            <th class="tc vm">
                                 @Localizer["امکانات"]
                             </th>
                         </tr>
@@ -151,6 +154,27 @@
                                             @if (date.IsSeenBySupporters == false)
                                             {
                                                 <p class="label label-danger">@Localizer["دیده نشده"]</p>
+                                            }
+
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <td class="vm">
+                                    <div class="flex-style-center">
+                                        <div class="mr-10px">
+
+                                            @if (date.DoctorReservationDateTime.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.Reserved)
+                                            {
+                                                <p class="label label-success">@Localizer["پرداخت شده و نهایی"]</p>
+                                            }
+                                            @if (date.DoctorReservationDateTime.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.WaitingForComplete)
+                                            {
+                                                <p class="label label-warning">@Localizer["در انتظار پرداخت"]</p>
+                                            }
+                                            @if (date.DoctorReservationDateTime.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.NotReserved)
+                                            {
+                                                <p class="label label-primary">@Localizer["در انتظار اخذ نوبت"]</p>
                                             }
 
                                         </div>
