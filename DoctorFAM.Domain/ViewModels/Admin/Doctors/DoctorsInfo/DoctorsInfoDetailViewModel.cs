@@ -85,6 +85,8 @@ namespace DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo
 
         public string? DoctorReservationAlert { get; set; }
 
+        public bool ContractPartyWithDoctorsFamily { get; set; }
+
         #endregion
     }
 

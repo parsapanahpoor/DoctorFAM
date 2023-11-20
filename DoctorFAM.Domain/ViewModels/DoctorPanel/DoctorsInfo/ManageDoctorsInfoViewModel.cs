@@ -105,6 +105,8 @@ namespace DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo
         public string HomePhoneNumber { get; set; }
 
         public OrganizationInfoState? DoctorsInfosType { get; set; }
+
+        public bool ContractPartyWithFamilyDoctors { get; set; }
     }
 
     public enum AddOrEditDoctorInfoResult
