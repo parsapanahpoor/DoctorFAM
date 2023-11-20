@@ -1,5 +1,6 @@
 ﻿using DoctorFAM.Application.Convertors;
 using DoctorFAM.Domain.Entities.Laboratory;
+using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.Tourism.Token;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
 using OfficeOpenXml.FormulaParsing.LexicalAnalysis;
@@ -308,6 +309,27 @@ public static string SendSMSForLinkOfHomeVisitRequestFromDoctor(string link)
             $"کاربر گرامی دکترفم . {Environment.NewLine} " +
             $" امروز نزد دکتر {DoctorName} نوبت دارید . {Environment.NewLine}" +
             $"جزئیات نوبت را در صفحه ی شخصی خود ببینید. {Environment.NewLine}" +
+            $"{PathTools.SiteFarsiName}";
+    }
+
+    //Seting Free A Reservation Date Time 
+    public static string SetingFreeAReservationDateTime(string DoctorName , string DateTime)
+    {
+        return
+            $"کاربر گرامی دکترفم . {Environment.NewLine} " +
+            $"نوبت انتخابی شما از دکتر {DoctorName} در تاریخ {DateTime} نهایی نشده , لذا از لیست نوبتهای شما حذف میشود. {Environment.NewLine} " +
+            $"درصورت نیاز می توانید مجددا نوبت بگیرید.   {Environment.NewLine} " +
+            $"{PathTools.SiteFarsiName}";
+    }
+
+    //Registering Patient As WebSite's User From Doctor Booking 
+    public static string RegisteringPatientAsWebSiteUserFromDoctorBooking(string DoctorName, string DateTime , string Username , string Password)
+    {
+        return
+            $"مراجعه کننده ی محترم . {Environment.NewLine} " +
+            $"باتوجه به اخذ نوبت نزد دکتر - در تاریخ ثبت شماره همراه شما در سامانه ی دکترفم باموفقیت انجام شده است. {Environment.NewLine} " +
+            $"نام کاربری : {Username} {Environment.NewLine} " +
+            $"کلمه ی عبور : {Password} {Environment.NewLine} " +
             $"{PathTools.SiteFarsiName}";
     }
 }
