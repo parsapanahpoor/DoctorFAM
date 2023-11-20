@@ -38,6 +38,8 @@ namespace DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor
 
         public ulong? specificId { get; set; }
 
+        public bool? IsContactPartyWithFamilyDoctors { get; set; }
+
         #endregion
     }
 }

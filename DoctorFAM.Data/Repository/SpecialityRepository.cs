@@ -314,7 +314,7 @@ public class SpecialityRepository : ISpecialityRepository
         {
             superSpecialistsRecords = await _context.Specialities
                                                                       .AsNoTracking()
-                                                                      .Where(p => !p.IsDelete &&  p.Id == filter.specificId.Value)
+                                                                      .Where(p => !p.IsDelete && p.Id == filter.specificId.Value)
                                                                       .Select(p => p.Id)
                                                                       .ToListAsync();
         }
@@ -425,6 +425,18 @@ public class SpecialityRepository : ISpecialityRepository
             if (filter.Gender.Value == 1)
             {
                 model = model.Where(p => p.DoctorUserInfo.doctorsInfo.Gender == Domain.Enums.Gender.Gender.Female).ToList();
+            }
+        }
+
+        if (filter.IsContactPartyWithFamilyDoctors.HasValue)
+        {
+            if (filter.IsContactPartyWithFamilyDoctors.Value == false)
+            {
+                model = model.Where(p => !p.DoctorUserInfo.doctorsInfo.ContractWithFamilyDoctors).ToList();
+            }
+            else
+            {
+                model = model.Where(p => p.DoctorUserInfo.doctorsInfo.ContractWithFamilyDoctors).ToList();
             }
         }
 
@@ -659,6 +671,18 @@ public class SpecialityRepository : ISpecialityRepository
             if (filter.Gender.Value == 1)
             {
                 model = model.Where(p => p.DoctorUserInfo.doctorsInfo.Gender == Domain.Enums.Gender.Gender.Female).ToList();
+            }
+        }
+
+        if (filter.IsContactPartyWithFamilyDoctors.HasValue)
+        {
+            if (filter.IsContactPartyWithFamilyDoctors.Value == false)
+            {
+                model = model.Where(p => !p.DoctorUserInfo.doctorsInfo.ContractWithFamilyDoctors).ToList();
+            }
+            else
+            {
+                model = model.Where(p => p.DoctorUserInfo.doctorsInfo.ContractWithFamilyDoctors).ToList();
             }
         }
 
