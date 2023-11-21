@@ -1,13 +1,6 @@
 ﻿using DoctorFAM.DataLayer.Entities;
-using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.ViewModels.Admin.IncomingExcelFile;
 using DoctorFAM.Domain.ViewModels.Admin.Reservation;
-using DoctorFAM.Domain.ViewModels.Supporter.Reservation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DoctorFAM.Domain.ViewModels.Supporter
 {

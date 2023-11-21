@@ -34,5 +34,14 @@ public class ReservationFactorUserSideViewModel
 
     public string PatientNationalId { get; set; }
 
+    public LogForAnotherPatientUserSide? LogForAnotherPatientUserSide { get; set; }
+
     #endregion
+}
+
+public record LogForAnotherPatientUserSide
+{
+    public string? FristName { get; set; }
+
+    public string? LastName { get; set; }
 }

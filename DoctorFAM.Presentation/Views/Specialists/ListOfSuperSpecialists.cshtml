@@ -93,6 +93,11 @@
             display: initial !important;
         }
 
+
+        #IsContactPartyWithFamilyDoctors {
+            display: initial !important;
+        }
+
     </style>
 }
 
@@ -144,6 +149,34 @@
 
                                         </select>
                                     </div>
+
+                                    <div class="form-group">
+                                        <h6>طرف قرارداد باپزشک خانواده</h6>
+                                        <select class="form-control" name="IsContactPartyWithFamilyDoctors" id="IsContactPartyWithFamilyDoctors">
+
+                                            <option value="">لطفا وضعیت قرارداد پزشک را وارد کنید </option>
+
+
+                                            @if (Model.Item2.IsContactPartyWithFamilyDoctors == false)
+                                            {
+                                                <option value="@false" selected="selected">نباشد </option>
+                                                <option value="@true">باشد</option>
+                                            }
+                                            @if (Model.Item2.IsContactPartyWithFamilyDoctors == true)
+                                            {
+                                                <option value="@true" selected="selected">باشد</option>
+                                                <option value="@false">نباشد </option>
+                                            }
+                                            @if (Model.Item2.IsContactPartyWithFamilyDoctors == null)
+                                            {
+
+                                                <option value="@true">باشد</option>
+                                                <option value="@false">نباشد </option>
+                                            }
+
+                                        </select>
+                                    </div>
+
                                     <div class="row">
                                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
                                             <div class="form-group">
@@ -302,6 +335,10 @@
                                                 @if (doctor.DoctorUserInfo.doctorsInfo.Specialty != null)
                                                 {
                                                     <h5 class="doc-department">تخصص : @((!string.IsNullOrEmpty(doctor.DoctorUserInfo.doctorsInfo.Specialty)) ? doctor.DoctorUserInfo.doctorsInfo.Specialty : null)</h5>
+                                                }
+                                                @if (doctor.DoctorUserInfo.doctorsInfo.ContractWithFamilyDoctors)
+                                                {
+                                                    <h5 class="doc-department" style="color: #ff9b00;">طرف قرارداد با پزشک خانواده است.</h5>
                                                 }
                                                 <div class="rating">
                                                     <i class="fas fa-star filled"></i>

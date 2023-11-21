@@ -2,6 +2,7 @@
 
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.WorkAddress;
+using DoctorFAM.Domain.ViewModels.Admin.Reservation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,10 @@ namespace DoctorFAM.Domain.ViewModels.Site.Reservation
     public class ReservationFactorSiteSideViewModel
     {
         #region properties
+
+        public ulong PatientUserId  { get; set; }
+
+        public ulong ReservationDateTimeId { get; set; }
 
         public ulong DoctorUserId { get; set; }
 
@@ -39,6 +44,8 @@ namespace DoctorFAM.Domain.ViewModels.Site.Reservation
         public string RefId { get; set; }
 
         public string PatientNationalId { get; set; }
+
+        public LogForAnotherPatient? AnotherPatientSiteSide { get; set; }
 
         #endregion
     }

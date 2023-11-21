@@ -309,6 +309,17 @@ else
                                     <p class="header-fullname2">
                                         @Model.Patient.Mobile
                                     </p>
+
+                                        @if (Model.LogForAnotherPatient != null)
+                                        {
+                                            <p>
+                                                @(!string.IsNullOrEmpty(Model.LogForAnotherPatient.FristName) ? Model.LogForAnotherPatient.FristName : " ")
+
+                                                -
+
+                                                @(!string.IsNullOrEmpty(Model.LogForAnotherPatient.LastName) ? Model.LogForAnotherPatient.LastName : " ")
+                                            </p>
+                                        }
                                 </div>
                             }
 

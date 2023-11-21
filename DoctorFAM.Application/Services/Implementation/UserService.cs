@@ -587,6 +587,12 @@ public class UserService : IUserService
 
     #region Site Side
 
+    //Add User
+    public async Task AddUser(User user)
+    {
+        await _userRepository.AddUser(user);
+    }
+
     //Change User Informations From Reservation Part
     public async Task<UserInfoForGetReservationResult> ChangeUserInformationsFromReservationPart(ulong UserId, UserInfoForGetReservation? UserInfoForGetReservation, ulong reservationDateTimeId)
     {
@@ -725,7 +731,8 @@ public class UserService : IUserService
             {
                 FirstName = UserInfoForGetReservation.OthersFirstName,
                 LastName = UserInfoForGetReservation.OthersLastName,
-                UserId = user.Id
+                UserId = user.Id,
+                ReservationDateTimeId = reservationDateTimeId
             };
 
             //Add To The Data Base 

@@ -1841,7 +1841,8 @@ namespace DoctorFAM.Application.Services.Implementation
                     Mobile = user.Mobile,
                     Email = user.Email,
                     HomePhoneNumber = user.HomePhoneNumber,
-                    AvatarName = user.Avatar
+                    AvatarName = user.Avatar,
+                    ContractPartyWithFamilyDoctors = doctorInfo.ContractWithFamilyDoctors
                 };
 
                 if (user.BithDay != null && user.BithDay.HasValue)
@@ -1998,6 +1999,7 @@ namespace DoctorFAM.Application.Services.Implementation
                 info.Gender = model.Gender;
                 info.GeneralPhone = model.GeneralPhone;
                 info.ClinicPhone = model.ClinicPhone;
+                info.ContractWithFamilyDoctors = model.ContractPartyWithFamilyDoctors;
 
                 //Update Doctor Office State 
                 doctorOffice.OrganizationInfoState = OrganizationInfoState.WatingForConfirm;
@@ -2110,7 +2112,7 @@ namespace DoctorFAM.Application.Services.Implementation
             {
                 if (doctor != null)
                 {
-                    #region Fill View Model
+                    #region Fill Model
 
                     DoctorsInfo manageDoctorsInfoViewModel1 = new DoctorsInfo()
                     {
@@ -2122,7 +2124,8 @@ namespace DoctorFAM.Application.Services.Implementation
                         Gender = model.Gender,
                         GeneralPhone = model.GeneralPhone,
                         ClinicPhone = model.ClinicPhone,
-                        CountOFFreeSMSForDoctors = await _doctorRepository.GetDoctorsFreeSMSCount()
+                        CountOFFreeSMSForDoctors = await _doctorRepository.GetDoctorsFreeSMSCount(),
+                        ContractWithFamilyDoctors = model.ContractPartyWithFamilyDoctors
                     };
 
                     #endregion
@@ -2147,6 +2150,7 @@ namespace DoctorFAM.Application.Services.Implementation
                     {
                         var imageName = CodeGenerator.GenerateUniqCode() + Path.GetExtension(MediacalFile.FileName);
                         MediacalFile.AddImageToServer(imageName, PathTools.MediacalFilePathServer, 270, 270, PathTools.MediacalFilePathThumbServer);
+
                         manageDoctorsInfoViewModel1.MediacalFile = imageName;
                     }
 
@@ -2294,7 +2298,8 @@ namespace DoctorFAM.Application.Services.Implementation
                         Specialty = model.Specialty.SanitizeText(),
                         GeneralPhone = model.GeneralPhone,
                         ClinicPhone = model.ClinicPhone,
-                        CountOFFreeSMSForDoctors = await _doctorRepository.GetDoctorsFreeSMSCount()
+                        CountOFFreeSMSForDoctors = await _doctorRepository.GetDoctorsFreeSMSCount(),
+                        ContractWithFamilyDoctors = model.ContractPartyWithFamilyDoctors
                     };
 
                     #endregion
@@ -3222,7 +3227,8 @@ namespace DoctorFAM.Application.Services.Implementation
                 ClinicPhone = info.ClinicPhone,
                 DoctorSkills = string.Join(",", doctorSkills.Select(p => p.DoctorSkil).ToList()),
                 CountOFFreeSMSForDoctors = info.CountOFFreeSMSForDoctors,
-                DoctorTilteName = info.DoctorTilteName
+                DoctorTilteName = info.DoctorTilteName,
+                ContractPartyWithDoctorsFamily = info.ContractWithFamilyDoctors
             };
 
             #endregion

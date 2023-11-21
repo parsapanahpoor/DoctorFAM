@@ -2,6 +2,7 @@
 @using DoctorFAM.Application.Extensions
 @using DoctorFAM.Application.Convertors
 @using DoctorFAM.Domain.ViewModels.Common
+@using DoctorFAM.Domain.ViewModels.Supporter.Reservation;
 
 @{
     ViewData["Title"] = @Localizer["پیام های درخواست مورد نظر"];
@@ -9,6 +10,8 @@
 
 @{
     var user = ViewBag.OwnerOfComment as DoctorFAM.Domain.Entities.Account.User;
+
+    var reservationState = ViewBag.ReservationState as ReservationLogForWaitingPaymentAdmindSideDTO;
 }
 
 @section Styles
@@ -48,6 +51,31 @@
         </div>
 
     </div>
+
+    @if (reservationState != null && reservationState.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.WaitingForComplete)
+    {
+          <div class="col-lg-12 col-sm-12 col-xs-12">
+        <div class="widget">
+            <div class="widget-header bordered-bottom bordered-warning">
+                <span class="widget-caption">تغییر وضعیت نوبت </span>
+            </div>
+            <div class="widget-body">
+                <div>
+                        <h4>
+                            درصورتی که از حذف درخواست بیمار و آزاد کردن نوبت برای اخذ مجدد از طریق سامانه اطمینان دارید بر روی گزینه ی پایین کلیک کنید . 
+                        </h4>
+
+                        <a asp-action="CancelReservationRequestFromPatient"
+                           asp-area="Admin"
+                           asp-controller="Reservation"
+                           asp-route-reservatioonDateTimeId="@reservationState.ReservationDateTimeId"
+                        class="btn btn-warning">ثبت</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    }
+  
 
     <div class="col-lg-12 col-sm-12 col-xs-12">
         <div class="widget">
