@@ -21,6 +21,13 @@ namespace DoctorFAM.Data.Repository
 
         #region Site Side
 
+        //Add User
+        public async Task AddUser(User user)
+        {
+            await _context.Users.AddAsync(user);
+            await _context.SaveChangesAsync();
+        }
+
         //Add LogForGetAppoinmentForOtherPeople To The Data Base Without Save Changes
         public async Task AddLogForGetAppoinmentForOtherPeopleToTheDataBaseWithoutSaveChanges(LogForGetAppoinmentForOtherPeople otherPerson)
         {

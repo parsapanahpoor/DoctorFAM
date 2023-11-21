@@ -1,18 +1,14 @@
 ﻿using DoctorFAM.Domain.Entities.Account;
-using DoctorFAM.Domain.Entities.CooperationRequest;
 using DoctorFAM.Domain.Entities.DoctorReservation;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DoctorFAM.Domain.Interfaces
 {
     public interface IUserRepository 
     {
         #region Site Side
+
+        //Add User
+        Task AddUser(User user);
 
         //Add LogForGetAppoinmentForOtherPeople To The Data Base Without Save Changes
         Task AddLogForGetAppoinmentForOtherPeopleToTheDataBaseWithoutSaveChanges(LogForGetAppoinmentForOtherPeople otherPerson);

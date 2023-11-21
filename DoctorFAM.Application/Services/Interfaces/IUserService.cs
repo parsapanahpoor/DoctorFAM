@@ -77,6 +77,9 @@ public interface IUserService
 
     #region Site Side
 
+    //Add User
+    Task AddUser(User user);
+
     //Change User Informations From Reservation Part
     Task<UserInfoForGetReservationResult> ChangeUserInformationsFromReservationPart(ulong UserId, UserInfoForGetReservation? UserInfoForGetReservation, ulong reservationDateTimeId);
 
