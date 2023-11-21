@@ -1,6 +1,8 @@
 ﻿#region Usings
 
 using DoctorFAM.Application.Convertors;
+using DoctorFAM.Application.Generators;
+using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Application.StaticTools;
 using DoctorFAM.Domain.Entities.Account;
@@ -24,10 +26,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
+using Microsoft.Win32;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
+using System.Reflection;
 
 #endregion
 
@@ -1239,12 +1243,6 @@ public class ReservationService : IReservationService
 
         #endregion
 
-        #region Get User By Mobile Number 
-
-        //var user = await _userService.GetUserByMobile(model.Mobile);
-
-        #endregion
-
         #region Get Reservation Date
 
         var reservationDate = await _reservation.GetReservationDateById(reservationDateTime.DoctorReservationDateId);
@@ -1270,7 +1268,6 @@ public class ReservationService : IReservationService
 
         #region Doctor Personal Booking 
 
-
         DoctorPersonalBooking booking = new DoctorPersonalBooking()
         {
             DoctorReservationDateTimeId = reservationDateTime.Id,
@@ -1287,14 +1284,59 @@ public class ReservationService : IReservationService
 
         #endregion
 
-        #region Send SMS
+        #region Get User By Mobile Number 
 
-        var doctorUserInfo = await _userService.GetUserByIdWithAsNoTracking(reservationDate.UserId);
-        if (doctorUserInfo != null)
+        var user = await _userService.GetUserByMobile(model.Mobile);
+        if (user == null)
         {
-            var message = Messages.SendSMSForBetweenPatientInReservationSiteSide(reservationDateTime.StartTime, reservationDate.ReservationDate.ToShamsi(), doctorUserInfo.Username);
+            #region Register User 
 
-            await _smsService.SendSimpleSMS(model.Mobile, message);
+            //Hash Password
+            var password = PasswordHasher.EncodePasswordMd5(model.Mobile.SanitizeText());
+
+            //Create User
+            var User = new DoctorFAM.Domain.Entities.Account.User()
+            {
+                //Email = email,
+                Password = password,
+                Username = model.Mobile,
+                Mobile = model.Mobile.SanitizeText(),
+                EmailActivationCode = CodeGenerator.GenerateUniqCode(),
+                MobileActivationCode = new Random().Next(10000, 999999).ToString(),
+                ExpireMobileSMSDateTime = DateTime.Now,
+                IsMobileConfirm = true
+            };
+
+            await _userService.AddUser(User);
+
+            #endregion
+
+            #region Send SMS
+
+            var doctorUserInfo = await _userService.GetUserByIdWithAsNoTracking(reservationDate.UserId);
+            if (doctorUserInfo != null)
+            {
+                var message = Messages.RegisteringPatientAsWebSiteUserFromDoctorBooking(doctorUserInfo.Username, reservationDate.ReservationDate.ToShamsi(),  model.Mobile , model.Mobile);
+
+                await _smsService.SendSimpleSMS(model.Mobile, message);
+            }
+
+            #endregion
+
+        }
+        else
+        {
+            #region Send SMS
+
+            var doctorUserInfo = await _userService.GetUserByIdWithAsNoTracking(reservationDate.UserId);
+            if (doctorUserInfo != null)
+            {
+                var message = Messages.SendSMSForBetweenPatientInReservationSiteSide(reservationDateTime.StartTime, reservationDate.ReservationDate.ToShamsi(), doctorUserInfo.Username);
+
+                await _smsService.SendSimpleSMS(model.Mobile, message);
+            }
+
+            #endregion
         }
 
         #endregion
@@ -2487,6 +2529,28 @@ public class ReservationService : IReservationService
         if (reservationDateTime == null) return false;
         if (reservationDateTime.DoctorReservationState != DoctorReservationState.WaitingForComplete) return false;
         if (!reservationDateTime.PatientId.HasValue) return false;
+
+        #endregion
+
+        #region Get Doctor Info
+
+        var doctorUserInfo = await _userService.GetUserByIdWithAsNoTracking(reservationDateTime.DoctorReservationDate.UserId);
+        if (doctorUserInfo == null) return false;
+
+        #endregion
+
+        #region Get User Details
+
+        var patientUserInfo = await _userService.GetUserByIdWithAsNoTracking(reservationDateTime.PatientId.Value);
+        if (patientUserInfo == null) return false;
+
+        #endregion
+
+        #region Send SMS
+
+        var message = Messages.SetingFreeAReservationDateTime(doctorUserInfo.Username, reservationDateTime.DoctorReservationDate.ReservationDate.ToShamsi());
+
+        await _smsService.SendSimpleSMS(patientUserInfo.Mobile, message);
 
         #endregion
 

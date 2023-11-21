@@ -90,21 +90,21 @@
                         <div class="widget-body" style="background-color:#d1f4fa !important;">
                             <div class="row">
 
-                                <div class="form-group col-md-4 col-sm-12">
+                                <div class="form-group col-md-6 col-sm-12">
                                     <span class="red">*</span>
                                     <label asp-for="FirstName"></label>
                                     <input type="text" class="form-control" onblur="ChangeUsername()" asp-for="FirstName">
                                     <span class="text-danger" asp-validation-for="FirstName"></span>
                                 </div>
 
-                                <div class="form-group col-md-4 col-sm-12">
+                                <div class="form-group col-md-6 col-sm-12">
                                     <span class="red">*</span>
                                     <label asp-for="LastName"></label>
                                     <input type="text" class="form-control" onblur="ChangeUsername()" asp-for="LastName">
                                     <span class="text-danger" asp-validation-for="LastName"></span>
                                 </div>
 
-                                 <div class="form-group col-md-4 col-sm-12">
+                                <div class="form-group col-md-6 col-sm-12">
                                     <span class="red">*</span>
                                     <label asp-for="FatherName"></label>
                                     <input type="text" class="form-control" asp-for="FatherName">
@@ -120,12 +120,11 @@
 
                                 <div class="form-group col-md-6 col-sm-12">
                                     @*<label asp-for="username"></label>*@
-                                   
+
                                     <label>نام پزشک در سامانه</label>
                                     <input type="text" class="form-control" readonly asp-for="username">
                                     <span class="text-danger" asp-validation-for="username"></span>
                                 </div>
-
 
                                 <div class="form-group col-md-6 col-sm-12">
                                     <span class="red">*</span>
@@ -140,12 +139,6 @@
                                     <input type="text" class="form-control" asp-for="MedicalSystemCode">
                                     <span class="text-danger" asp-validation-for="MedicalSystemCode"></span>
                                 </div>
-
-
-                                
-                               
-
-
 
                                 <div class="form-group col-md-6 col-sm-12">
                                     <span class="red">*</span>
@@ -173,6 +166,26 @@
                                     <label asp-for="Specialty"></label>
                                     <input type="text" class="form-control" asp-for="Specialty">
                                     <span class="text-danger" asp-validation-for="Specialty"></span>
+                                </div>
+
+                                <div class="form-group col-md-6 col-sm-12">
+                                    <span class="red">*</span>
+                                    <label asp-for="ContractPartyWithFamilyDoctors">آیا شما طرف قرارداد با پزشک خانواده هستید ؟ </label>
+                                    <select asp-for="ContractPartyWithFamilyDoctors" class="form-control">
+
+                                        @if (Model.ContractPartyWithFamilyDoctors)
+                                        {
+                                            <option value="@true" selected="selected">بله</option>
+                                            <option value="@false">خیر</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@false" selected="selected">خیر</option>
+                                            <option value="@true">بله</option>
+                                        }
+
+                                    </select>
+
                                 </div>
 
                                 <div class="form-group col-md-12 col-sm-12">
