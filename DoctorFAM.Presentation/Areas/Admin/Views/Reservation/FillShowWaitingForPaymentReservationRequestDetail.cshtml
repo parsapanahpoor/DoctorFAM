@@ -219,25 +219,28 @@ else
 
                         </div>
                     </div>
-                    <div class="col-md-6   text-center">
-                        <h3>@Localizer["Patient"]</h3>
-                        <div class="col-md-12 text-center">
-                            <div>
-                                <img src="@Model.Patient.GetUserAvatar()" class="header-avatar">
-                            </div>
-
-                            @if (Model.Patient.FirstName != null && Model.Patient.LastName != null)
-                            {
-                                <div class="header-fullname">
-                                    <p>@Model.Patient.FirstName @Model.Patient.LastName</p>
-                                    <p class="header-fullname2">
-                                        @Model.Patient.Mobile
-                                    </p>
+                    @if (Model.DoctorReservationDateTime.DoctorReservationState != DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.NotReserved)
+                    {
+                        <div class="col-md-6   text-center">
+                            <h3>@Localizer["Patient"]</h3>
+                            <div class="col-md-12 text-center">
+                                <div>
+                                    <img src="@Model.Patient.GetUserAvatar()" class="header-avatar">
                                 </div>
-                            }
 
+                                @if (Model.Patient.FirstName != null && Model.Patient.LastName != null)
+                                {
+                                    <div class="header-fullname">
+                                        <p>@Model.Patient.FirstName @Model.Patient.LastName</p>
+                                        <p class="header-fullname2">
+                                            @Model.Patient.Mobile
+                                        </p>
+                                    </div>
+                                }
+
+                            </div>
                         </div>
-                    </div>
+                    }
 
                 </div>
 

@@ -4,7 +4,7 @@
 @using DoctorFAM.Application.StaticTools
 
 @{
-    ViewData["Title"] = "فاکتور شما";
+    ViewData["Title"] = "پیش فاکتور شما";
 }
 
 @section Styles
@@ -54,39 +54,55 @@
     <div class="col-lg-3 col-sm-12 col-xs-12">
     </div>
     <div class="col-lg-6 col-sm-12 col-xs-12">
-        <div class="well invoice-container" style="background-color: cornflowerblue;">
-            <div class="row">
-                <div class="col-lg-4 col-sm-4 col-xs-4">
-                </div>
-                <div class="col-lg-5 col-sm-5 col-xs-5">
-                    <h1>
-                        <a href="">
-                            <img src="/Content/images/Logo/doctorfamTes.png" alt="" style="width:200px; height:45px; margin-right:-17px">
-                        </a>
-                    </h1>
-                    <div>
-                        <span>کد رهگیری درخواست : </span>
-                        <span>@Model.RefId</span>
+        <div class="well invoice-container" style="background-color: #ff9445;">
+
+            @if (ViewBag.Reminder)
+            {
+                <div class="row">
+                    <div class="col-lg-12 col-sm-12 col-xs-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h6>اطلاعیه :</h6>
+                            </div>
+                            <div class="panel-body">
+                                <ul>
+
+                                    <li>
+                                        کاربر گرامی شما یک فاکتور نوبت پرداخت نشده دارید . درصورت تمایل به نهایی سازی این نوبت خواهشمندیم مبلغ فاکتور را پرداخت نمایید یا برای ادامه و دریافت نوبتی دیگر دکمه ی انصراف را کلیک کنید
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
                     </div>
-                    <div class="horizontal-space"></div>
                 </div>
-            </div>
+            }
+
             <div class="row">
                 <div class="col-lg-12 col-sm-12 col-xs-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h6>اطلاعات درخواست :</h6>
+                            <h6>مرحله ی نهایی :</h6>
                         </div>
                         <div class="panel-body">
                             <ul>
-                                <li>نام کاربری  : @Model.PatientUsername</li>
-                                <li>موبایل : @Model.PatientMobile</li>
 
-                              
-                                @if (Model.DoctorAddress != null )
-                                {
-                                        <li>آدرس مطب : @Model.DoctorAddress.Address</li>
-                                }
+                                <li>
+                                    کاربر گرامی نوبت انتخابی شما هنوز رزرو نشده است برای رزرو نهایی نوبت باید پرداخت مبلغ @Model.ReservationPrice.ToString("#,000") ریال را انجام دهید .
+                                </li>
+
+                                <li>
+                                    مبلغی که پرداخت میکنید بابت بیعانه ی ویزیت پزشک بوده و مابقی ویزیت پزشک را باید در مطب پرداخت نمایید .
+                                </li>
+
+                                <li>
+                                    اگر تصمیم بر لغو نوبت اخذ شده داشتید 72 ساعت قبل از نوبت باید نسبت به لغو آن اقدام نمایید در غیر این صورت مبلغ فوق عودت داده نمی شود.
+                                </li>
+
+                                <li>
+                                    جهت ورود به درگاه بانکی و پرداخت دکمه پرداخت زیر را کلیک کنید .
+                                </li>
+
                             </ul>
                         </div>
                     </div>
@@ -95,16 +111,44 @@
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
-                        <th><h5 class="no-margin-bottom">عنوان </h5></th>
-                        <th><h5 class="no-margin-bottom">توضیح </h5></th>
+                        <th><h5 class="no-margin-bottom"> برای پرداخت بر روی دکمه ی سبز کلیک کنید</h5></th>
+                        <th><h5 class="no-margin-bottom">انصراف </h5></th>
                     </tr>
                 </thead>
                 <tbody>
 
                     <tr>
-                        <td>کدملی بیمار</td>
-                        <td>@((!string.IsNullOrEmpty(Model.PatientNationalId)) ? Model.PatientNationalId : "وارد نشده")</td>
+                        <td class="text-center">
+                            <a class="btn btn-sccess " style="background-color:green;color:white;"
+                               asp-action="RedirectToBankPortableForPayReservationTariff"
+                               asp-area=""
+                               asp-controller="FocalPoint"
+                               asp-route-reservatioonDateTimeId="@Model.ReservationDateTimeId">
+                                پرداخت و نهایی سازی
+                            </a>
+                        </td>
+                        <td class="text-center">
+                            <a class="btn btn-sccess " style="background-color:red;color:white;"
+                               asp-action="CancelReservationRequestFromPatient"
+                               asp-area=""
+                               asp-controller="FocalPoint"
+                               asp-route-reservatioonDateTimeId="@Model.ReservationDateTimeId">
+                                انصراف
+                            </a>
+                        </td>
                     </tr>
+
+                </tbody>
+            </table>
+
+            <table class="table table-bordered mt-3 table-striped">
+                <thead>
+                    <tr>
+                        <th><h5 class="no-margin-bottom">عنوان </h5></th>
+                        <th><h5 class="no-margin-bottom">توضیح </h5></th>
+                    </tr>
+                </thead>
+                <tbody>
 
                     <tr>
                         <td>نام و نام خانوادگی بیمار</td>
@@ -129,20 +173,6 @@
                         <td>@((!string.IsNullOrEmpty(Model.DoctorUsername)) ? Model.DoctorUsername : "وارد نشده")</td>
                     </tr>
 
-                    @if (Model.DoctorSpeciality != null && Model.DoctorSpeciality.Any())
-                    {
-                        <tr>
-
-                            <td>تخصص پزشک</td>
-                            <td>
-                                @foreach (var skill in Model.DoctorSpeciality)
-                                {
-                                    <p>@skill.DoctorSkil</p>
-                                }
-                            </td>
-                        </tr>
-                    }
-
                     <tr>
                         <td>تاریخ نوبت</td>
                         <td>@Model.ReservationDate.ToStringShamsiDate()</td>
@@ -158,22 +188,11 @@
                         <td>@Model.ReservationPrice.ToString("#,000") ریال</td>
                     </tr>
 
-                    <tr>
-                        <td>کد پیگیری</td>
-                        <td>@Model.RefId</td>
-                    </tr>
-
-                    <tr>
-                        <td class="text-center"><strong>عملیات  </strong></td>
-                        <td class="text-center ">
-                            <p class="btn btn-sccess btn_print">
-                                چاپ و دانلود فاکتور
-                            </p>
-                        </td>
-                    </tr>
-
                 </tbody>
             </table>
+
         </div>
     </div>
 </div>
+
+

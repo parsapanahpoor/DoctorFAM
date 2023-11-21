@@ -828,6 +828,16 @@ public class ReservationRepository : IReservationRepository
                                                                                    PatientUserId = p.Id
                                                                                }).FirstOrDefaultAsync();
 
+                        item.LogForGetAppoinmentForOtherPeople = await _context.logForGetAppoinmentForOtherPeoples
+                                                                               .AsNoTracking()
+                                                                               .Where(p => !p.IsDelete && p.ReservationDateTimeId == item.Id && p.UserId == item.PatientId)
+                                                                               .Select(p => new LogForGetAppoinmentForOtherPeopleDoctorPanelSide()
+                                                                               {
+                                                                                   FirstName = p.FirstName,
+                                                                                   LastName = p.LastName
+                                                                               })
+                                                                               .FirstOrDefaultAsync();
+
                         //Add To Return Model 
                         sampleModel.Add(item);
                     }
@@ -974,7 +984,9 @@ public class ReservationRepository : IReservationRepository
 
     public async Task<DoctorReservationDateTime?> GetDoctorReservationDateTimeById(ulong reservationDateTimeId)
     {
-        return await _context.DoctorReservationDateTimes.Include(p => p.DoctorReservationDate).FirstOrDefaultAsync(p => !p.IsDelete && p.Id == reservationDateTimeId);
+        return await _context.DoctorReservationDateTimes
+                             .Include(p => p.DoctorReservationDate)
+                             .FirstOrDefaultAsync(p => !p.IsDelete && p.Id == reservationDateTimeId);
     }
 
     //Get Doctor Reservation Date Time By Include Relation With Doctor Booking
@@ -1007,6 +1019,19 @@ public class ReservationRepository : IReservationRepository
     #endregion
 
     #region User Panel
+
+    public async Task<LogForAnotherPatientUserSide?> FillLogForAnotherPatientUserSide(ulong reservationId, ulong patientId)
+    {
+        return await _context.logForGetAppoinmentForOtherPeoples
+                             .AsNoTracking()
+                             .Where(p => !p.IsDelete && p.ReservationDateTimeId == reservationId && p.UserId == patientId)
+                             .Select(p => new LogForAnotherPatientUserSide()
+                             {
+                                 FristName = p.FirstName,
+                                 LastName = p.LastName
+                             })
+                             .FirstOrDefaultAsync();
+    }
 
     public async Task<FilterReservationViewModel?> FilterReservationUserPanelViewModel(FilterReservationViewModel filter)
     {
@@ -1271,6 +1296,19 @@ public class ReservationRepository : IReservationRepository
     #endregion
 
     #region Admin Side 
+
+    public async Task<DoctorFAM.Domain.ViewModels.Admin.Reservation.LogForAnotherPatient?> FillLogForAnotherPatient(ulong reservationId , ulong patientId)
+    {
+        return await _context.logForGetAppoinmentForOtherPeoples
+                             .AsNoTracking()
+                             .Where(p => !p.IsDelete && p.ReservationDateTimeId == reservationId && p.UserId == patientId)
+                             .Select(p => new DoctorFAM.Domain.ViewModels.Admin.Reservation.LogForAnotherPatient()
+                             {
+                                 FristName = p.FirstName,
+                                 LastName = p.LastName
+                             })
+                             .FirstOrDefaultAsync();
+    }
 
     public async Task<FilterReservationAdminSideViewModel?> FilterReservationAdminPanelViewModel(FilterReservationAdminSideViewModel filter)
     {
@@ -1589,6 +1627,19 @@ public class ReservationRepository : IReservationRepository
 
     #region Supporter Side  
 
+    public async Task<DoctorFAM.Domain.ViewModels.Supporter.Reservation.LogForAnotherPatient?> FillLogForAnotherPatientSupporterSide(ulong reservationId, ulong patientId)
+    {
+        return await _context.logForGetAppoinmentForOtherPeoples
+                             .AsNoTracking()
+                             .Where(p => !p.IsDelete && p.ReservationDateTimeId == reservationId && p.UserId == patientId)
+                             .Select(p => new DoctorFAM.Domain.ViewModels.Supporter.Reservation.LogForAnotherPatient()
+                             {
+                                 FristName = p.FirstName,
+                                 LastName = p.LastName
+                             })
+                             .FirstOrDefaultAsync();
+    }
+
     public async Task<FilterReservationSupporterSideViewModel?> FilterReservationSupporterPanelViewModel(FilterReservationSupporterSideViewModel filter)
     {
         var query = _context.DoctorReservationDateTimes
@@ -1861,9 +1912,27 @@ public class ReservationRepository : IReservationRepository
                              .Select(p => new ListOfCommentsForWaitingForPaymentReservationRequestSupporterSideDTO()
                              {
                                  LogInformation = p,
-                                 UserInfo = _context.Users.FirstOrDefault(s => !s.IsDelete && s.Id == p.UserId)
+                                 UserInfo = _context.Users.FirstOrDefault(s => !s.IsDelete && s.Id == p.UserId),
                              })
                              .ToListAsync();
+    }
+
+
+    //Get Reservation Log For Waiting Payment Admind Side DTO 
+    public async Task<ReservationLogForWaitingPaymentAdmindSideDTO?> GetReservationLogForWaitingPaymentAdmindSideDTO(ulong id)
+    {
+
+        //Fill Reservation 
+        return await _context.LogForDoctorReservationDateTimeWaitingForPayments
+                                        .Include(p => p.DoctorReservationDateTime)
+                                        .Where(p => !p.IsDelete && p.Id == id)
+                                        .Select(p => new ReservationLogForWaitingPaymentAdmindSideDTO()
+                                        {
+                                            DoctorReservationState = p.DoctorReservationDateTime.DoctorReservationState,
+                                            PatientId = p.DoctorReservationDateTime.PatientId,
+                                            ReservationDateTimeId = p.DoctorReservationDateTimeId
+                                        })
+                                        .FirstOrDefaultAsync();
     }
 
     //Add Comment For Waiting For Payment Reservation Request 
@@ -1875,6 +1944,43 @@ public class ReservationRepository : IReservationRepository
     #endregion
 
     #region Site Side 
+
+    //Is Exist Any Waiting For Payment Reservation Request By User Id
+    public async Task<ulong?> IsExistAnyWaitingForPaymentReservationRequestByUserId(ulong userId)
+    {
+        return await _context.DoctorReservationDateTimes
+                             .AsNoTracking()
+                             .Where(p => !p.IsDelete &&
+                                    p.PatientId.HasValue &&
+                                    p.PatientId.Value == userId &&
+                                    p.DoctorReservationState == DoctorReservationState.WaitingForComplete &&
+                                    !p.DoctorBooking)
+                             .Select(p => p.Id)
+                             .FirstOrDefaultAsync();
+    }
+
+    //Get And Delete Another Patient 
+    public async Task GetAndDeleteAnotherPatient(ulong reservationDateTimeId , ulong userId)
+    {
+        #region Get Another Patient 
+
+        var anotherPatient = await _context.logForGetAppoinmentForOtherPeoples
+                                           .FirstOrDefaultAsync(p => !p.IsDelete && p.UserId == userId && p.ReservationDateTimeId == reservationDateTimeId);
+
+        #endregion
+
+        #region Delete Another Patient 
+
+        if (anotherPatient != null)
+        {
+            anotherPatient.IsDelete = true;
+
+            _context.logForGetAppoinmentForOtherPeoples.Remove(anotherPatient);
+            await _context.SaveChangesAsync();
+        }
+
+        #endregion
+    }
 
     //Get Log For Reservation Date Times In Waiting For Payment State
     public async Task<LogForDoctorReservationDateTimeWaitingForPayment?> GetLogForReservationDateTimesInWaitingForPaymentState(ulong doctorReservationDateTimeId, ulong userId)

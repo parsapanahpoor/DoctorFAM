@@ -45,6 +45,9 @@ public interface IWalletRepository
     //Get Home Visit Transaction For Cancelation Home Visit Request 
     Task<Wallet?> GetHomeVisitTransactionForCancelationHomeVisitRequest(ulong requestId);
 
+    //Get Reservation Ref Id From Wallet Data By Reservation Id And User Id And Ref Id
+    Task<bool> GetReservationRefIdFromWalletDataByReservationIdAndUserId(ulong reservationId, ulong userId, string refId);
+
     //Create Wallet Without Calculate
     Task CreateWalletWithoutCalculate(Wallet wallet);
 

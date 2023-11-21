@@ -1,7 +1,9 @@
 ﻿#region Usings
 
+using DoctorFAM.Application.Services.Implementation;
 using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.DoctorReservation;
+using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Enums.DoctorReservation;
 using DoctorFAM.Domain.ViewModels.Admin.Reservation;
 using DoctorFAM.Domain.ViewModels.Common;
@@ -9,6 +11,7 @@ using DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment;
 using DoctorFAM.Domain.ViewModels.Site.Reservation;
 using DoctorFAM.Domain.ViewModels.Supporter.Reservation;
 using DoctorFAM.Domain.ViewModels.UserPanel.Reservation;
+using Microsoft.EntityFrameworkCore;
 
 
 #endregion
@@ -212,8 +215,22 @@ public interface IReservationService
 
     #region Site Side 
 
+    //Show Invoice After Payment For Reservation
+    Task<ReservationFactorSiteSideViewModel?> ShowInvoiceAfterPaymentForReservation(ulong reservationDateTimeId);
+
+    //Is Exist Any Waiting For Payment Reservation Request By User Id
+    Task<ulong?> IsExistAnyWaitingForPaymentReservationRequestByUserId(ulong userId);
+
+    //Get And Delete Another Patient 
+    Task GetAndDeleteAnotherPatient(ulong reservationDateTimeId, ulong userId);
+
+    Task<ReservationFactorSiteSideViewModel?> ShowInvoiceBeforeRedirectToBankProtable(ulong reservationDateTimeId, ulong userId);
+
     //Update Log For Reservation Date Times In Waiting For Payment State
     Task<bool> RemoveLogForReservationDateTimesInWaitingForPaymentState(ulong doctorReservationDateTimeId, ulong userId);
+
+    //Get Reservation Log For Waiting Payment Admind Side DTO 
+    Task<ReservationLogForWaitingPaymentAdmindSideDTO?> GetReservationLogForWaitingPaymentAdmindSideDTO(ulong id);
 
     //Log For Reservation Date Times In Waiting For Payment State
     Task<bool> LogForReservationDateTimesInWaitingForPaymentState(ulong doctorReservationDateTimeId, ulong userId);
@@ -249,7 +266,10 @@ public interface IReservationService
     Task<bool> GetReservationDateTimeToUserPatient(ChooseTypeOfReservationViewModel model, ulong patientId);
 
     //Cancel Payment From User And Make Reservation Time Free 
-    Task<bool> CancelPaymentFromUserAndMakeReservationTimeFree(ulong reservationDateId);
+    Task<bool> CancelPaymentFromUserAndMakeReservationTimeFree(ulong reservationDateId , ulong userId);
+
+    //Cancel Payment From Admin And Make Reservation Time Free 
+    Task<bool> CancelPaymentFromAdminAndMakeReservationTimeFree(ulong reservationDateId);
 
     //Reserve Doctor Reservation Date Time After Success Payment
     Task ReserveDoctorReservationDateTimeAfterSuccessPayment(ulong reservationDateTimeId);
@@ -258,7 +278,7 @@ public interface IReservationService
     Task<bool> PayDoctorReservationPayedSharePercentage(ulong doctorUserId, int price, ulong requestId, bool isUserInDoctorPopulationCovered, DoctorReservationType doctorReservationType);
 
     //Fill Reservation Factor Site Side View Model
-    Task<ReservationFactorSiteSideViewModel?> FillReservationFactorSiteSideViewModel(ReservationFactorSiteSideViewModel model , ulong workAddressId);
+    Task<ReservationFactorSiteSideViewModel?> FillReservationFactorSiteSideViewModel(ReservationFactorSiteSideViewModel model , ulong workAddressId , ulong PatientUserId);
 
     //Fill Reservation Factor User Side View Model
     Task<ReservationFactorUserSideViewModel?> FillReservationFactorUserSideViewModel(ulong reservationId, ulong userId);

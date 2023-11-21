@@ -5,6 +5,7 @@ using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.Reservation;
 using DoctorFAM.Domain.ViewModels.Supporter.Reservation;
 using DoctorFAM.Web.HttpManager;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 
@@ -188,6 +189,7 @@ public class ReservationController : AdminBaseController
     public async Task<IActionResult> ListOFCommentsForWaitingForPaymentReservationRequests(ulong id)
     {
         ViewBag.OwnerOfComment = await _reservationService.GetTheOwnerOfCommentForLogForWaitingForPaymentReservationRequest(id);
+        ViewBag.ReservationState = await _reservationService.GetReservationLogForWaitingPaymentAdmindSideDTO(id);
 
         return View(await _reservationService.FillListOfCommentsForWaitingForPaymentReservationRequestSupporterSideDTO(id));
     }
@@ -206,6 +208,28 @@ public class ReservationController : AdminBaseController
         #endregion
 
         return RedirectToAction(nameof(ListOFCommentsForWaitingForPaymentReservationRequests), new { id = RequestId });
+    }
+
+    #endregion
+
+    #region Cancel Reservation Request From Patient
+
+    public async Task<IActionResult> CancelReservationRequestFromPatient(ulong reservatioonDateTimeId)
+    {
+        #region Cancelation Reservation 
+
+        var res = await _reservationService.CancelPaymentFromAdminAndMakeReservationTimeFree(reservatioonDateTimeId);
+        if (!res)
+        {
+            TempData[ErrorMessage] = "اطلاعاتی از این نوبت وجود دارد که مانع حذف آن میشود.";
+            TempData[InfoMessage] = "خواهشمندیم یا پشتیبانی فنی تماس بگیرید.";
+            return RedirectToAction(nameof(ListOfWaitingForPaymentRequests));
+        }
+
+        #endregion
+
+        TempData[SuccessMessage] = "نوبت مورد نظر باموفقیت آزاد شده و آماده ی اخذ مجدد می باشد. ";
+        return RedirectToAction(nameof(ListOfWaitingForPaymentRequests));
     }
 
     #endregion

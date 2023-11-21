@@ -1,11 +1,14 @@
 ﻿#region Usings
 
 using DoctorFAM.Application.Convertors;
+using DoctorFAM.Application.Generators;
+using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Application.StaticTools;
 using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Dentist;
 using DoctorFAM.Domain.Entities.DoctorReservation;
+using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.Wallet;
 using DoctorFAM.Domain.Enums.DoctorReservation;
@@ -19,12 +22,16 @@ using DoctorFAM.Domain.ViewModels.Site.Reservation;
 using DoctorFAM.Domain.ViewModels.Supporter.Reservation;
 using DoctorFAM.Domain.ViewModels.Tourist.Token;
 using DoctorFAM.Domain.ViewModels.UserPanel.Reservation;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
+using Microsoft.Win32;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
+using System.Reflection;
 
 #endregion
 
@@ -35,26 +42,20 @@ public class ReservationService : IReservationService
     #region Ctor
 
     private readonly IReservationRepository _reservation;
-
     private readonly IOrganizationService _organizationService;
-
     private readonly IWorkAddressService _workAddress;
-
     private readonly IDoctorsRepository _doctorsRepository;
-
     private readonly IUserService _userService;
-
     private readonly ISiteSettingService _siteSettingService;
-
     private readonly IWalletService _walletService;
-
     private readonly IWalletRepository _walletRepository;
-
     private readonly ISMSService _smsService;
+    private readonly IFamilyDoctorRepository _familyDoctorRepository;
 
     public ReservationService(IReservationRepository reservation, IOrganizationService organizationService, IWorkAddressService workAddress
                              , IDoctorsRepository doctorsRepository, IUserService userService, ISiteSettingService siteSettingService
-                                , IWalletService walletService, IWalletRepository walletRepository, ISMSService smsService)
+                                , IWalletService walletService, IWalletRepository walletRepository, ISMSService smsService
+                                    , IFamilyDoctorRepository familyDoctorRepository)
     {
         _reservation = reservation;
         _organizationService = organizationService;
@@ -65,6 +66,7 @@ public class ReservationService : IReservationService
         _walletService = walletService;
         _walletRepository = walletRepository;
         _smsService = smsService;
+        _familyDoctorRepository = familyDoctorRepository;
     }
 
     #endregion
@@ -102,7 +104,7 @@ public class ReservationService : IReservationService
     }
 
     //List Of People Who Have Visited
-    public async Task<ListOfPeopleWhoHaveVisitedDoctorSideDTO?> ListOfPeopleWhoHaveVisited(ListOfPeopleWhoHaveVisitedDoctorSideDTO filter , ulong userId)
+    public async Task<ListOfPeopleWhoHaveVisitedDoctorSideDTO?> ListOfPeopleWhoHaveVisited(ListOfPeopleWhoHaveVisitedDoctorSideDTO filter, ulong userId)
     {
         #region Get Organization 
 
@@ -1241,12 +1243,6 @@ public class ReservationService : IReservationService
 
         #endregion
 
-        #region Get User By Mobile Number 
-
-        //var user = await _userService.GetUserByMobile(model.Mobile);
-
-        #endregion
-
         #region Get Reservation Date
 
         var reservationDate = await _reservation.GetReservationDateById(reservationDateTime.DoctorReservationDateId);
@@ -1272,7 +1268,6 @@ public class ReservationService : IReservationService
 
         #region Doctor Personal Booking 
 
-
         DoctorPersonalBooking booking = new DoctorPersonalBooking()
         {
             DoctorReservationDateTimeId = reservationDateTime.Id,
@@ -1289,14 +1284,59 @@ public class ReservationService : IReservationService
 
         #endregion
 
-        #region Send SMS
+        #region Get User By Mobile Number 
 
-        var doctorUserInfo = await _userService.GetUserByIdWithAsNoTracking(reservationDate.UserId);
-        if (doctorUserInfo != null)
+        var user = await _userService.GetUserByMobile(model.Mobile);
+        if (user == null)
         {
-            var message = Messages.SendSMSForBetweenPatientInReservationSiteSide(reservationDateTime.StartTime, reservationDate.ReservationDate.ToShamsi(), doctorUserInfo.Username);
+            #region Register User 
 
-            await _smsService.SendSimpleSMS(model.Mobile, message);
+            //Hash Password
+            var password = PasswordHasher.EncodePasswordMd5(model.Mobile.SanitizeText());
+
+            //Create User
+            var User = new DoctorFAM.Domain.Entities.Account.User()
+            {
+                //Email = email,
+                Password = password,
+                Username = model.Mobile,
+                Mobile = model.Mobile.SanitizeText(),
+                EmailActivationCode = CodeGenerator.GenerateUniqCode(),
+                MobileActivationCode = new Random().Next(10000, 999999).ToString(),
+                ExpireMobileSMSDateTime = DateTime.Now,
+                IsMobileConfirm = true
+            };
+
+            await _userService.AddUser(User);
+
+            #endregion
+
+            #region Send SMS
+
+            var doctorUserInfo = await _userService.GetUserByIdWithAsNoTracking(reservationDate.UserId);
+            if (doctorUserInfo != null)
+            {
+                var message = Messages.RegisteringPatientAsWebSiteUserFromDoctorBooking(doctorUserInfo.Username, reservationDate.ReservationDate.ToShamsi(),  model.Mobile , model.Mobile);
+
+                await _smsService.SendSimpleSMS(model.Mobile, message);
+            }
+
+            #endregion
+
+        }
+        else
+        {
+            #region Send SMS
+
+            var doctorUserInfo = await _userService.GetUserByIdWithAsNoTracking(reservationDate.UserId);
+            if (doctorUserInfo != null)
+            {
+                var message = Messages.SendSMSForBetweenPatientInReservationSiteSide(reservationDateTime.StartTime, reservationDate.ReservationDate.ToShamsi(), doctorUserInfo.Username);
+
+                await _smsService.SendSimpleSMS(model.Mobile, message);
+            }
+
+            #endregion
         }
 
         #endregion
@@ -1587,7 +1627,8 @@ public class ReservationService : IReservationService
         {
             DoctorReservationDate = reservationDate,
             DoctorReservationDateTime = reservationDateTime,
-            Doctor = doctor
+            Doctor = doctor,
+            LogForAnotherPatient = reservationDateTime.PatientId.HasValue ? await _reservation.FillLogForAnotherPatient(reservationDateTime.Id, reservationDateTime.PatientId.Value) : null,
         };
 
         #endregion
@@ -1744,7 +1785,8 @@ public class ReservationService : IReservationService
         {
             DoctorReservationDate = reservationDate,
             DoctorReservationDateTime = reservationDateTime,
-            Doctor = doctor
+            Doctor = doctor,
+            LogForAnotherPatient = reservationDateTime.PatientId.HasValue ? await _reservation.FillLogForAnotherPatientSupporterSide(reservationDateTime.Id, reservationDateTime.PatientId.Value) : null,
         };
 
         #endregion
@@ -1936,6 +1978,209 @@ public class ReservationService : IReservationService
 
     #region Site Side
 
+    //Is Exist Any Waiting For Payment Reservation Request By User Id
+    public async Task<ulong?> IsExistAnyWaitingForPaymentReservationRequestByUserId(ulong userId)
+    {
+        return await _reservation.IsExistAnyWaitingForPaymentReservationRequestByUserId(userId);
+    }
+
+    //Get And Delete Another Patient 
+    public async Task GetAndDeleteAnotherPatient(ulong reservationDateTimeId, ulong userId)
+    {
+        await _reservation.GetAndDeleteAnotherPatient(reservationDateTimeId, userId);
+    }
+
+    public async Task<ReservationFactorSiteSideViewModel?> ShowInvoiceBeforeRedirectToBankProtable(ulong reservationDateTimeId, ulong userId)
+    {
+        #region Get Reservation Date Time By Id 
+
+        var reservationDateTime = await GetDoctorReservationDateTimeById(reservationDateTimeId);
+        if (reservationDateTime == null ||
+           reservationDateTime.PatientId == null ||
+           reservationDateTime.PatientId.Value != userId ||
+           reservationDateTime.DoctorReservationState != DoctorReservationState.WaitingForComplete)
+
+            return null;
+
+        #endregion
+
+        #region Get User By User Id 
+
+        var user = await _userService.GetUserByIdWithAsNoTracking(userId);
+        if (user == null) return null;
+
+        #endregion
+
+        #region Fill Model 
+
+        var model = new ReservationFactorSiteSideViewModel()
+        {
+            PatientUsername = user.FirstName + user.LastName,
+            PatientMobile = user.Mobile,
+            ReservationDate = reservationDateTime.DoctorReservationDate.ReservationDate,
+            ReservationDateTime = reservationDateTime.StartTime,
+            DoctorUserId = reservationDateTime.DoctorReservationDate.UserId,
+            PatientNationalId = (string.IsNullOrEmpty(user.NationalId)) ? "وارد نشده" : user.NationalId,
+            ReservationDateTimeId = reservationDateTimeId
+        };
+
+        #endregion
+
+        #region Get Reservation Tariff 
+
+        #region Get Current Doctor Office
+
+        var doctorOffice = await _organizationService.GetOrganizationByUserId(reservationDateTime.DoctorReservationDate.UserId);
+        if (doctorOffice == null) return null;
+        if (doctorOffice.OrganizationInfoState != OrganizationInfoState.Accepted) return null;
+
+        #endregion
+
+        #region Get Doctor Reservation Tariff
+
+        var reservationTariff = await _doctorsRepository.GetDoctorReservationTariffByDoctorUserId(doctorOffice.OwnerId);
+        if (reservationTariff == null) return null;
+
+        #endregion
+
+        #region Check Doctor Population Covered 
+
+        var populationCovered = await _familyDoctorRepository.GetUserSelectedFamilyDoctorByUserAndDoctorId(userId, doctorOffice.OwnerId);
+
+        //If User Is In Doctor Population Covered 
+        if (populationCovered != null && populationCovered.IsUserInDoctorPopulationCoveredOutOfDoctorFAM)
+        {
+            //If Reservation Type Is In Person 
+            if (reservationDateTime.DoctorReservationType == DoctorReservationType.Reserved)
+            {
+                model.ReservationPrice = reservationTariff.InPersonReservationTariffForDoctorPopulationCovered;
+            }
+
+            //If Reservation Type Is Online 
+            if (reservationDateTime.DoctorReservationType == DoctorReservationType.Onile || reservationDateTime.DoctorReservationType == DoctorReservationType.BothOnlineAndReserved)
+            {
+                model.ReservationPrice = reservationTariff.OnlineReservationTariffForDoctorPopulationCovered;
+            }
+        }
+
+        else
+        {
+            //If Reservation Type Is In Person
+            if (reservationDateTime.DoctorReservationType == DoctorReservationType.Reserved)
+            {
+                model.ReservationPrice = reservationTariff.InPersonReservationTariffForAnonymousPersons;
+            }
+
+            //If Reservation Type Is Online 
+            if (reservationDateTime.DoctorReservationType == DoctorReservationType.Onile || reservationDateTime.DoctorReservationType == DoctorReservationType.BothOnlineAndReserved)
+            {
+                model.ReservationPrice = reservationTariff.OnlineReservationTariffForAnonymousPersons;
+            }
+        }
+
+        #endregion
+
+        #endregion
+
+        return await FillReservationFactorSiteSideViewModel(model, reservationDateTime.WorkAddressId.Value, userId);
+    }
+
+    //Show Invoice After Payment For Reservation
+    public async Task<ReservationFactorSiteSideViewModel?> ShowInvoiceAfterPaymentForReservation(ulong reservationDateTimeId)
+    {
+        #region Get Reservation Date Time By Id 
+
+        var reservationDateTime = await GetDoctorReservationDateTimeById(reservationDateTimeId);
+        if (reservationDateTime == null ||
+           reservationDateTime.PatientId == null ||
+           reservationDateTime.DoctorReservationState != DoctorReservationState.Reserved)
+
+            return null;
+
+        #endregion
+
+        #region Get User By User Id 
+
+        var user = await _userService.GetUserByIdWithAsNoTracking(reservationDateTime.PatientId.Value);
+        if (user == null) return null;
+
+        #endregion
+
+        #region Fill Model 
+
+        var model = new ReservationFactorSiteSideViewModel()
+        {
+            PatientUsername = user.FirstName + user.LastName,
+            PatientMobile = user.Mobile,
+            ReservationDate = reservationDateTime.DoctorReservationDate.ReservationDate,
+            ReservationDateTime = reservationDateTime.StartTime,
+            DoctorUserId = reservationDateTime.DoctorReservationDate.UserId,
+            PatientNationalId = (string.IsNullOrEmpty(user.NationalId)) ? "وارد نشده" : user.NationalId,
+            ReservationDateTimeId = reservationDateTimeId,
+            PatientUserId = reservationDateTime.PatientId.Value
+        };
+
+        #endregion
+
+        #region Get Reservation Tariff 
+
+        #region Get Current Doctor Office
+
+        var doctorOffice = await _organizationService.GetOrganizationByUserId(reservationDateTime.DoctorReservationDate.UserId);
+        if (doctorOffice == null) return null;
+        if (doctorOffice.OrganizationInfoState != OrganizationInfoState.Accepted) return null;
+
+        #endregion
+
+        #region Get Doctor Reservation Tariff
+
+        var reservationTariff = await _doctorsRepository.GetDoctorReservationTariffByDoctorUserId(doctorOffice.OwnerId);
+        if (reservationTariff == null) return null;
+
+        #endregion
+
+        #region Check Doctor Population Covered 
+
+        var populationCovered = await _familyDoctorRepository.GetUserSelectedFamilyDoctorByUserAndDoctorId(user.Id, doctorOffice.OwnerId);
+
+        //If User Is In Doctor Population Covered 
+        if (populationCovered != null && populationCovered.IsUserInDoctorPopulationCoveredOutOfDoctorFAM)
+        {
+            //If Reservation Type Is In Person 
+            if (reservationDateTime.DoctorReservationType == DoctorReservationType.Reserved)
+            {
+                model.ReservationPrice = reservationTariff.InPersonReservationTariffForDoctorPopulationCovered;
+            }
+
+            //If Reservation Type Is Online 
+            if (reservationDateTime.DoctorReservationType == DoctorReservationType.Onile || reservationDateTime.DoctorReservationType == DoctorReservationType.BothOnlineAndReserved)
+            {
+                model.ReservationPrice = reservationTariff.OnlineReservationTariffForDoctorPopulationCovered;
+            }
+        }
+
+        else
+        {
+            //If Reservation Type Is In Person
+            if (reservationDateTime.DoctorReservationType == DoctorReservationType.Reserved)
+            {
+                model.ReservationPrice = reservationTariff.InPersonReservationTariffForAnonymousPersons;
+            }
+
+            //If Reservation Type Is Online 
+            if (reservationDateTime.DoctorReservationType == DoctorReservationType.Onile || reservationDateTime.DoctorReservationType == DoctorReservationType.BothOnlineAndReserved)
+            {
+                model.ReservationPrice = reservationTariff.OnlineReservationTariffForAnonymousPersons;
+            }
+        }
+
+        #endregion
+
+        #endregion
+
+        return await FillReservationFactorSiteSideViewModel(model, reservationDateTime.WorkAddressId.Value, user.Id);
+    }
+
     //Update Log For Reservation Date Times In Waiting For Payment State
     public async Task<bool> RemoveLogForReservationDateTimesInWaitingForPaymentState(ulong doctorReservationDateTimeId, ulong userId)
     {
@@ -1952,29 +2197,46 @@ public class ReservationService : IReservationService
         return true;
     }
 
+    //Get Reservation Log For Waiting Payment Admind Side DTO 
+    public async Task<ReservationLogForWaitingPaymentAdmindSideDTO?> GetReservationLogForWaitingPaymentAdmindSideDTO(ulong id)
+    {
+        return await _reservation.GetReservationLogForWaitingPaymentAdmindSideDTO(id);
+    }
+
     //Log For Reservation Date Times In Waiting For Payment State
     public async Task<bool> LogForReservationDateTimesInWaitingForPaymentState(ulong doctorReservationDateTimeId, ulong userId)
     {
         //Get Log 
         var log = await _reservation.GetLogForReservationDateTimesInWaitingForPaymentState(doctorReservationDateTimeId, userId);
-        if (log != null) return true;
-
-        #region Fill Entity
-
-        LogForDoctorReservationDateTimeWaitingForPayment entity = new LogForDoctorReservationDateTimeWaitingForPayment()
+        if (log != null)
         {
-            CreateDate = DateTime.Now,
-            DoctorReservationDateTimeId = doctorReservationDateTimeId,
-            IsDelete = false,
-            IsSeenBySupporters = false,
-            PatientUserId = userId,
-            SupporterUserId = null
-        };
+            log.CreateDate = DateTime.Now;
+            log.PatientUserId = userId;
+            log.IsSeenBySupporters = false;
 
-        #endregion
+            _reservation.UpdateLogForReservationDateTimesInWaitingForPaymentState(log);
+        }
 
-        //Add To The Data Base
-        await _reservation.LogForReservationDateTimesInWaitingForPaymentState(entity);
+        else
+        {
+            #region Fill Entity
+
+            LogForDoctorReservationDateTimeWaitingForPayment entity = new LogForDoctorReservationDateTimeWaitingForPayment()
+            {
+                CreateDate = DateTime.Now,
+                DoctorReservationDateTimeId = doctorReservationDateTimeId,
+                IsDelete = false,
+                IsSeenBySupporters = false,
+                PatientUserId = userId,
+                SupporterUserId = null
+            };
+
+            #endregion
+
+            //Add To The Data Base
+            await _reservation.LogForReservationDateTimesInWaitingForPaymentState(entity);
+        }
+
         await _reservation.Savechanges();
 
         return true;
@@ -2226,17 +2488,16 @@ public class ReservationService : IReservationService
     }
 
     //Cancel Payment From User And Make Reservation Time Free 
-    public async Task<bool> CancelPaymentFromUserAndMakeReservationTimeFree(ulong reservationDateId)
+    public async Task<bool> CancelPaymentFromUserAndMakeReservationTimeFree(ulong reservationDateId, ulong userId)
     {
         #region get Doctor Reservation Date Time By Id 
 
         var reservationDateTime = await _reservation.GetDoctorReservationDateTimeById(reservationDateId);
         if (reservationDateTime == null) return false;
         if (reservationDateTime.DoctorReservationState != DoctorReservationState.WaitingForComplete) return false;
+        if (!reservationDateTime.PatientId.HasValue || reservationDateTime.PatientId.Value != userId) return false;
 
         #endregion
-
-
 
         #region Update Method 
 
@@ -2247,6 +2508,74 @@ public class ReservationService : IReservationService
         reservationDateTime.UserRequestDescription = null;
 
         await _reservation.UpdateReservationDateTime(reservationDateTime);
+
+        #endregion
+
+        #region Get Another Patient
+
+        await _reservation.GetAndDeleteAnotherPatient(reservationDateId, userId);
+
+        #endregion
+
+        return true;
+    }
+
+    //Cancel Payment From Admin And Make Reservation Time Free 
+    public async Task<bool> CancelPaymentFromAdminAndMakeReservationTimeFree(ulong reservationDateId)
+    {
+        #region get Doctor Reservation Date Time By Id 
+
+        var reservationDateTime = await _reservation.GetDoctorReservationDateTimeById(reservationDateId);
+        if (reservationDateTime == null) return false;
+        if (reservationDateTime.DoctorReservationState != DoctorReservationState.WaitingForComplete) return false;
+        if (!reservationDateTime.PatientId.HasValue) return false;
+
+        #endregion
+
+        #region Get Doctor Info
+
+        var doctorUserInfo = await _userService.GetUserByIdWithAsNoTracking(reservationDateTime.DoctorReservationDate.UserId);
+        if (doctorUserInfo == null) return false;
+
+        #endregion
+
+        #region Get User Details
+
+        var patientUserInfo = await _userService.GetUserByIdWithAsNoTracking(reservationDateTime.PatientId.Value);
+        if (patientUserInfo == null) return false;
+
+        #endregion
+
+        #region Send SMS
+
+        var message = Messages.SetingFreeAReservationDateTime(doctorUserInfo.Username, reservationDateTime.DoctorReservationDate.ReservationDate.ToShamsi());
+
+        await _smsService.SendSimpleSMS(patientUserInfo.Mobile, message);
+
+        #endregion
+
+        #region Get Another Patient
+
+        await _reservation.GetAndDeleteAnotherPatient(reservationDateId, reservationDateTime.PatientId.Value);
+
+        #region Update Method 
+
+        reservationDateTime.DoctorReservationState = DoctorReservationState.NotReserved;
+        reservationDateTime.PatientId = null;
+        reservationDateTime.DoctorReservationType = null;
+        reservationDateTime.UserRequestForReserveDate = null;
+        reservationDateTime.UserRequestDescription = null;
+
+        await _reservation.UpdateReservationDateTime(reservationDateTime);
+
+        #endregion
+
+        #endregion
+
+        #region Check Wallet 
+
+        var wallet = await _walletService.GetWalletTransactionByReservationDateTimeId(reservationDateId);
+        if (wallet != null) return false;
 
         #endregion
 
@@ -2272,7 +2601,7 @@ public class ReservationService : IReservationService
     }
 
     //Fill Reservation Factor Site Side View Model
-    public async Task<ReservationFactorSiteSideViewModel?> FillReservationFactorSiteSideViewModel(ReservationFactorSiteSideViewModel model, ulong workAddressId)
+    public async Task<ReservationFactorSiteSideViewModel?> FillReservationFactorSiteSideViewModel(ReservationFactorSiteSideViewModel model, ulong workAddressId, ulong PatientUserId)
     {
         #region Get Doctor User 
 
@@ -2312,6 +2641,7 @@ public class ReservationService : IReservationService
 
         model.DoctorMobile = info.ClinicPhone;
         model.DoctorUsername = doctorUser.Username;
+        model.AnotherPatientSiteSide = await _reservation.FillLogForAnotherPatient(model.ReservationDateTimeId, PatientUserId);
 
         #endregion
 
@@ -2398,6 +2728,7 @@ public class ReservationService : IReservationService
         model.ReservationDate = reservationDate.ReservationDate;
         model.ReservationDateTime = reservationDateTime.StartTime;
         model.PatientNationalId = user.NationalId;
+        model.LogForAnotherPatientUserSide = await _reservation.FillLogForAnotherPatientUserSide(reservationId, userId);
 
         #endregion
 

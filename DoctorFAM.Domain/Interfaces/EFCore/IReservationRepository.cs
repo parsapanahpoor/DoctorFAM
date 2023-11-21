@@ -120,6 +120,8 @@ public interface IReservationRepository
 
     #region Admin Panel 
 
+    Task<DoctorFAM.Domain.ViewModels.Admin.Reservation.LogForAnotherPatient?> FillLogForAnotherPatient(ulong reservationId, ulong patientId);
+
     Task<FilterReservationAdminSideViewModel?> FilterReservationAdminPanelViewModel(FilterReservationAdminSideViewModel filter);
 
     Task AddLogForCloseReservation(LogForCloseReservation log);
@@ -138,6 +140,10 @@ public interface IReservationRepository
     #endregion
 
     #region Supporter Panel 
+
+    Task<LogForAnotherPatientUserSide?> FillLogForAnotherPatientUserSide(ulong reservationId, ulong patientId);
+
+    Task<DoctorFAM.Domain.ViewModels.Supporter.Reservation.LogForAnotherPatient?> FillLogForAnotherPatientSupporterSide(ulong reservationId, ulong patientId);
 
     Task<FilterReservationSupporterSideViewModel?> FilterReservationSupporterPanelViewModel(FilterReservationSupporterSideViewModel filter);
 
@@ -158,12 +164,21 @@ public interface IReservationRepository
     //Fill List Of Comments For Waiting For Payment Reservation Request Supporter Side DTO
     Task<List<ListOfCommentsForWaitingForPaymentReservationRequestSupporterSideDTO>?> FillListOfCommentsForWaitingForPaymentReservationRequestSupporterSideDTO(ulong id);
 
+    //Get Reservation Log For Waiting Payment Admind Side DTO 
+    Task<ReservationLogForWaitingPaymentAdmindSideDTO?> GetReservationLogForWaitingPaymentAdmindSideDTO(ulong id);
+
     //Add Comment For Waiting For Payment Reservation Request 
     Task AddCommentForWaitingForPaymentReservationRequest(LogForDoctorReservationDateTimeWaitingForPaymentComment comment);
 
     #endregion
 
     #region Site Side
+
+    //Is Exist Any Waiting For Payment Reservation Request By User Id
+    Task<ulong?> IsExistAnyWaitingForPaymentReservationRequestByUserId(ulong userId);
+
+    //Get And Delete Another Patient 
+    Task GetAndDeleteAnotherPatient(ulong reservationDateTimeId, ulong userId);
 
     //Remove Log For Reservation Date Times In Waiting For Payment State
     void RemoveLogForReservationDateTimesInWaitingForPaymentState(LogForDoctorReservationDateTimeWaitingForPayment model);
