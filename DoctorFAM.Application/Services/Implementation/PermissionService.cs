@@ -510,6 +510,11 @@ public class PermissionService : IPermissionService
                         returnModel.Add("Tourism");
                     }
 
+                    if (roleName == "HealthCenter")
+                    {
+                        returnModel.Add("HealthCenter");
+                    }
+
                     #endregion
                 }
             }
