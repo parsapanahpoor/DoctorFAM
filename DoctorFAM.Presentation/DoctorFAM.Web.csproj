@@ -24,7 +24,7 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.8" />
+		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.11" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
 		<PackageReference Include="WebEssentials.AspNetCore.PWA" Version="1.0.65" />
 		<PackageReference Include="ZarinPal-SDK" Version="0.0.8" />
@@ -37,6 +37,10 @@
 		<Folder Include="Areas\Admin\Models\" />
 		<Folder Include="Areas\Dentist\Data\" />
 		<Folder Include="Areas\Dentist\Models\" />
+		<Folder Include="Areas\HealthCenters\Controllers\" />
+		<Folder Include="Areas\HealthCenters\Data\" />
+		<Folder Include="Areas\HealthCenters\Models\" />
+		<Folder Include="Areas\HealthCenters\Views\" />
 		<Folder Include="Areas\Laboratory\Data\" />
 		<Folder Include="Areas\Laboratory\Models\" />
 		<Folder Include="Areas\Market\Data\" />
