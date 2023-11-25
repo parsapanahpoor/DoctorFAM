@@ -834,6 +834,16 @@ public class DoctorFAMDbContext : Microsoft.EntityFrameworkCore.DbContext
             ParentId = null
         });
 
+        modelBuilder.Entity<Role>().HasData(new Role
+        {
+            Id = 22,
+            Title = "HealthCenter",
+            RoleUniqueName = "HealthCenter",
+            CreateDate = DateTime.Now,
+            IsDelete = false,
+            ParentId = null
+        });
+
         #endregion
 
         #region Doctor Interests Seed Data
