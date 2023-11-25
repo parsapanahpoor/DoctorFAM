@@ -1,0 +1,400 @@
+﻿@using DoctorFAM.Application.Extensions
+@model DoctorFAM.Domain.Entities.Account.User
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
+
+@{
+    var currentCulture = ApplicationCultures.GetCurrentCulture();
+    var isRtl = currentCulture.IsRtl;
+}
+
+<!-- Loading Container -->
+<div class="loading-container">
+    <div class="loader"></div>
+</div>
+<!--  /Loading Container -->
+<!-- Navbar -->
+<div class="navbar">
+    <div class="navbar-inner">
+        <div class="navbar-container">
+            <!-- Navbar Barnd -->
+            <div class="navbar-header @(currentCulture.IsRtl ? "pull-right":"pull-left")">
+                <a href="/Home" class="navbar-brand">
+                    <small>
+                        <img class="logoImage text-center align-items-center" src="/Content/images/Logo/doctorfamTes.png" alt="دکترفم">
+                    </small>
+                </a>
+            </div>
+            <!-- /Navbar Barnd -->
+            <!-- Sidebar Collapse -->
+            <div class="sidebar-collapse" id="sidebar-collapse">
+                <i class="collapse-icon fa fa-bars"></i>
+            </div>
+            <!-- /Sidebar Collapse -->
+            <!-- Account Area and Settings --->
+            <div class="navbar-header pull-left">
+                <div class="navbar-account">
+                    <ul class="account-area">
+
+                        @* <!--Online-->
+                        <li class="marli margin-left-10" id="Online">
+
+                        <a class="dropdown-toggle btn btn-success" href="#">
+                        آنلاین
+                        </a>
+
+                        </li>
+                        <!--Offline-->
+                        <li class="marli margin-left-10 " id="disConnect">
+
+                        <a class="dropdown-toggle btn btn-danger" href="#">
+                        آفلاین
+                        </a>
+
+                        </li>*@
+                       
+                        <li class="marli" id="Online">
+
+                            <a title="موجودی کیف پول" href="#">
+                                <i class="icon glyphicon glyphicon-piggy-bank"></i>
+                                @*<Span class=" badge" style="background-color: #fb6e52 !important; font-size:13px !important;">@Model.WalletBalance.ToString("#,000") ریال</Span>*@
+                                <Span class=" badgeSPP">@Model.WalletBalance.ToString("#,000") ریال</Span>
+                                
+                            </a>
+
+                        </li>
+                        <!--Notification-->
+                        <li class="marli ">
+
+                            <a  id="chat-link" title="اعلانها" href="#">
+                                <i class="icon glyphicon glyphicon-bell"></i>
+                                <span class="badge">7</span>
+                                @*@SharedLocalizer["Notofications"]*@
+                            </a>
+
+                        </li>
+
+                        
+                        @await Component.InvokeAsync("FollowersOnNavbarLayout")
+
+                        @await Component.InvokeAsync("ShowLastestFamilyDoctorRequestInNavbar")
+
+
+
+
+                        @*<li class="marli margin-left-10">
+
+                        <a class="dropdown-toggle btn btn-primary " data-toggle="dropdown" title="انتخاب زبان" href="#">
+                        <i class="fa fa-angle-down"></i>
+                        انتخاب زبان
+                        </a>
+                        <!--Tasks Dropdown-->
+                        <ul class="pull-right dropdown-menu dropdown-tasks dropdown-arrow ">
+
+                        @foreach (var language in ApplicationCultures.CultureItems)
+                        {
+                        <li>
+                        <a asp-area="" asp-controller="Home" asp-action="ChangeLanguage" asp-route-culture="@language.CultureKey">
+                        <div class="clearfix">
+                        <span class="pull-right">@language.Title</span>
+                        <span class="pull-left">@language.CultureKey</span>
+                        </div>
+                        </a>
+                        </li>
+                        }
+                        </ul>
+
+                        </li>*@
+
+
+                        <li>
+                            <a class="login-area dropdown-toggle" data-toggle="dropdown">
+                                <div class="avatar" title="View your public profile">
+                                    <img src="@Model.GetUserAvatar()">
+                                </div>
+                                <section>
+                                    <h2><span class="profile"><span>@Model.Username </span></span></h2>
+                                </section>
+                            </a>
+                            <!--Login Area Dropdown-->
+                            <ul class="pull-right dropdown-menu dropdown-arrow dropdown-login-area">
+
+                                @if (ViewBag.Admin == true)
+                                {
+                                    <li>
+                                        <a asp-action="Index" asp-area="UserPanel" asp-controller="Home">
+                                            <div class="clearfix">
+                                                <span class="pull-right">ورود به صفحه شخصی</span>
+                                                <span class="pull-left">></span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+
+                                        <a asp-action="Index" asp-area="Doctor" asp-controller="Home">
+                                            <div class="clearfix">
+                                                <span class="pull-right">پنل پزشک</span>
+                                                <span class="pull-left">></span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+
+                                        <a asp-action="Index" asp-area="Nurse" asp-controller="Home">
+                                            <div class="clearfix">
+                                                <span class="pull-right">پنل پرستار</span>
+                                                <span class="pull-left">></span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+
+                                        <a asp-action="Index" asp-area="Laboratory" asp-controller="Home">
+                                            <div class="clearfix">
+                                                <span class="pull-right">پنل آزمایشگاه</span>
+                                                <span class="pull-left">></span>
+                                            </div>
+
+                                        </a>
+                                    </li>
+                                    <li>
+
+                                        <a asp-action="Index" asp-area="Pharmacy" asp-controller="Home">
+                                            <div class="clearfix">
+                                                <span class="pull-right">پنل داروخانه</span>
+                                                <span class="pull-left">></span>
+
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+
+                                        <a asp-action="Index" asp-area="Consultant" asp-controller="Home">
+                                            <div class="clearfix">
+                                                <span class="pull-right">پنل مشاور</span>
+                                                <span class="pull-left">></span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+
+                                        <a asp-action="Index" asp-area="Market" asp-controller="Home">
+                                            <div class="clearfix">
+                                                <span class="pull-right">پنل فروشنده</span>
+                                                <span class="pull-left">></span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+
+                                        <a asp-action="Index" asp-area="Supporter" asp-controller="Home">
+                                            <div class="clearfix">
+                                                <span class="pull-right">پنل پشتیبان</span>
+                                                <span class="pull-left">></span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+
+                                        <a asp-action="Index" asp-area="dentist" asp-controller="Home">
+                                            <div class="clearfix">
+                                                <span class="pull-right">پنل دندان پزشک </span>
+                                                <span class="pull-left">></span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+
+                                        <a asp-action="Index" asp-area="Tourist" asp-controller="Home">
+                                            <div class="clearfix">
+                                                <span class="pull-right">پنل گردشگری </span>
+                                                <span class="pull-left">></span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+
+                                        <a asp-action="Index" asp-area="Admin" asp-controller="Home">
+                                            <div class="clearfix">
+                                                <span class="pull-right">پنل ادمین</span>
+                                                <span class="pull-left">></span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                }
+
+                                else
+                                {
+                                    <li>
+                                        <a asp-action="Index" asp-area="UserPanel" asp-controller="Home">
+                                            <div class="clearfix">
+                                                <span class="pull-right">ورود به صفحه شخصی</span>
+                                                <span class="pull-left">></span>
+                                            </div>
+                                        </a>
+                                    </li>
+
+                                    @if (ViewBag.Doctor == true)
+                                    {
+                                        <li>
+
+                                            <a asp-action="Index" asp-area="Doctor" asp-controller="Home">
+                                                <div class="clearfix">
+                                                    <span class="pull-right">پنل پزشک</span>
+                                                    <span class="pull-left">></span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    }
+                                    @if (ViewBag.Labratory == true)
+                                    {
+                                        <li>
+
+                                            <a asp-action="Index" asp-area="Laboratory" asp-controller="Home">
+                                                <div class="clearfix">
+                                                    <span class="pull-right">پنل آزمایشگاه</span>
+                                                    <span class="pull-left">></span>
+                                                </div>
+
+                                            </a>
+                                        </li>
+                                    }
+                                    @if (ViewBag.LaboratoryOfficeEmployee == true)
+                                    {
+                                        <li>
+
+                                            <a asp-action="Index" asp-area="Laboratory" asp-controller="Home">
+                                                <div class="clearfix">
+                                                    <span class="pull-right">پنل آزمایشگاه</span>
+                                                    <span class="pull-left">></span>
+                                                </div>
+
+                                            </a>
+                                        </li>
+                                    }
+                                    @if (ViewBag.Pharmacy == true)
+                                    {
+                                        <li>
+
+                                            <a asp-action="Index" asp-area="Pharmacy" asp-controller="Home">
+                                                <div class="clearfix">
+                                                    <span class="pull-right">پنل داروخانه</span>
+                                                    <span class="pull-left">></span>
+
+                                                </div>
+                                            </a>
+                                        </li>
+                                    }
+                                    @if (ViewBag.Seller == true)
+                                    {
+                                        <li>
+
+                                            <a asp-action="Index" asp-area="Market" asp-controller="Home">
+                                                <div class="clearfix">
+                                                    <span class="pull-right">پنل فروشنده</span>
+                                                    <span class="pull-left">></span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    }
+                                    @if (ViewBag.DoctorOfficeEmployee == true)
+                                    {
+                                        <li>
+
+                                            <a asp-action="Index" asp-area="Doctor" asp-controller="Home">
+                                                <div class="clearfix">
+                                                    <span class="pull-right">پنل پزشک</span>
+                                                    <span class="pull-left">></span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    }
+                                    @if (ViewBag.Supporter == true)
+                                    {
+                                        <li>
+
+                                            <a asp-action="Index" asp-area="Supporter" asp-controller="Home">
+                                                <div class="clearfix">
+                                                    <span class="pull-right">پنل پشتیبان</span>
+                                                    <span class="pull-left">></span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    }
+                                    @if (ViewBag.Nurse == true)
+                                    {
+                                        <li>
+
+                                            <a asp-action="Index" asp-area="Nurse" asp-controller="Home">
+                                                <div class="clearfix">
+                                                    <span class="pull-right">پنل پرستار</span>
+                                                    <span class="pull-left">></span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    }
+                                    @if (ViewBag.Consultant == true)
+                                    {
+                                        <li>
+
+                                            <a asp-action="Index" asp-area="Consultant" asp-controller="Home">
+                                                <div class="clearfix">
+                                                    <span class="pull-right">پنل مشاور</span>
+                                                    <span class="pull-left">></span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    }
+
+                                    @if (ViewBag.Dentist == true)
+                                    {
+                                        <li>
+
+                                            <a asp-action="Index" asp-area="dentist" asp-controller="Home">
+                                                <div class="clearfix">
+                                                    <span class="pull-right">پنل دندان پزشک</span>
+                                                    <span class="pull-left">></span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    } 
+                                    @if (ViewBag.Tourist == true)
+                                    {
+                                        <li>
+
+                                            <a asp-action="Index" asp-area="Tourist" asp-controller="Home">
+                                                <div class="clearfix">
+                                                    <span class="pull-right">پنل گردشگری </span>
+                                                    <span class="pull-left">></span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    }
+                                }
+
+                                <li>
+                                    <a asp-area="UserPanel" asp-controller="Account" asp-action="ChangePassword">
+                                        <span class="menu-text">@SharedLocalizer["Change Password"]</span>
+                                    </a>
+                                </li>
+                                <!--/Theme Selector Area-->
+                                <li class="dropdown-footer @(isRtl ? "text-right": "")">
+                                    <a asp-area="" asp-controller="Account" asp-action="Logout">
+                                        @SharedHtmlLocalizer["LogOut"]
+                                    </a>
+                                </li>
+                            </ul>
+                            <!--/Login Area Dropdown-->
+                        </li>
+
+
+                    </ul>
+
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- /Navbar -->

@@ -1,0 +1,45 @@
+﻿@model string
+
+@if (Model == "NewUser")
+{
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview">
+       @* <div class="badge badge-warning">
+            @SharedLocalizer["Waiting"]
+        </div>*@
+        <a asp-area="Doctor" asp-controller="DoctorsInfo" asp-action="PageOfManageDoctorInfo" class="btn btn-warning  btn-circle btn-lg"> <span style="margin-top:50% !important; ">@SharedLocalizer["Waiting"]</span></a>
+        <p class="text-center justify-content-center" style="font-size:12PX;"> اطلاعات پزشک  </p>
+    </div>
+}
+
+@if (Model == "WatingForConfirm")
+{
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview">
+        @*<div class="badge badge-warning">
+            @SharedLocalizer["Waiting"]
+        </div>*@
+        <a asp-area="Doctor" asp-controller="DoctorsInfo" asp-action="PageOfManageDoctorInfo" class="btn btn-warning  btn-circle btn-lg"> <span style="margin-top:50%!important; ">@SharedLocalizer["Waiting"]</span></a>
+        <p class="text-center justify-content-center" style="font-size:12PX;"> اطلاعات پزشک  </p>
+    </div>
+}
+
+@if (Model == "Rejected")
+{
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview">
+        @*<div class="badge badge-danger">
+            @SharedLocalizer["Decline"]
+        </div>*@
+        <a asp-area="Doctor" asp-controller="DoctorsInfo" asp-action="PageOfManageDoctorInfo" class="btn btn-danger  btn-circle btn-lg">@SharedLocalizer["Decline"]</a>
+        <p class="text-center justify-content-center" style="font-size:12PX;"> اطلاعات پزشک  </p>
+    </div>
+}
+
+@if (Model == "Accepted")
+{
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview">
+       @* <div class="badge badge-success">
+            @SharedLocalizer["Accepted"]
+        </div>*@
+        <a asp-area="Doctor" asp-controller="DoctorsInfo" asp-action="PageOfManageDoctorInfo" class="btn btn-success  btn-circle btn-lg"><i class="fa fa-table"></i></a>
+        <p class="text-center justify-content-center" style="font-size:12PX;"> اطلاعات پزشک  </p>
+    </div>
+}

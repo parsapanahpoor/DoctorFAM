@@ -1,0 +1,353 @@
+﻿@model DoctorFAM.Domain.ViewModels.DoctorPanel.DosctorSideBarInfo.DoctorSideBarViewModel
+
+<!-- Page Sidebar -->
+<div class="page-sidebar" id="sidebar">
+    <!-- Page Sidebar Header-->
+    <div class="sidebar-header-wrapper">
+        <input type="text" class="searchinput" />
+        <i class="searchicon fa fa-search"></i>
+        <div class="searchhelper">به جستجوی صفحات، گزارشات، پیام ها و ایمیل خود بپردازید</div>
+    </div>
+    <!-- /Page Sidebar Header -->
+    <!-- Sidebar Menu -->
+    <ul class="nav sidebar-menu">
+        <!--Dashboard-->
+         <li>
+            <a asp-area="" asp-controller="Home" asp-action="Index">
+                <i class="menu-icon fa fa-globe"></i>
+                <span class="menu-text"> صفحه اصلی سایت </span>
+            </a>
+        </li>
+
+        <li>
+            <a asp-area="Doctor" asp-controller="Home" asp-action="Index">
+                <i class="menu-icon glyphicon glyphicon-home"></i>
+                <span class="menu-text"> پنل پزشک </span>
+            </a>
+        </li>
+
+        <li>
+            <a asp-area="Doctor" asp-controller="Home" asp-action="Index_Sec">
+                <i class="menu-icon glyphicon glyphicon-th"></i>
+                <span class="menu-text"> @SharedLocalizer["Dashboard"] </span>
+            </a>
+        </li>
+
+        @if (Model.DoctorInfoState == "Accepted")
+        {
+             <li>
+                <a href="#" class="menu-dropdown" style="font-size:16px;font-weight:500; color:#ef2e2e   ">
+                    <i class="menu-icon fa fa-check-square-o"></i>
+                    <span class="menu-text"> @SharedLocalizer["Turn ratings"] </span>
+                    <i class="menu-expand" style="font-size:16px;font-weight:500; color:#ef2e2e   "></i>
+                </a>
+
+                <ul class="submenu">
+
+                    <li>
+                        <a asp-area="Doctor" asp-controller="Appointment" asp-action="ListOfReservationDate">
+                            <span class="menu-text">@SharedLocalizer["List Of Reservations"]</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a asp-area="Doctor" asp-controller="Appointment" asp-action="AddReservationDateView">
+                            <span class="menu-text">@SharedLocalizer["Add Reservation Date"]</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a asp-area="Doctor" asp-controller="Appointment" asp-action="ListOfDoctorReservationHistory">
+                            <span class="menu-text">@SharedLocalizer["Reservation History"]</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a asp-area="Doctor" asp-controller="Appointment" asp-action="CancelReservationRequest">
+                            <span class="menu-text">@SharedLocalizer["Canecl Reservation Request"]</span>
+                        </a>
+                    </li>
+
+                </ul>
+            </li>
+
+            <li>
+                <a href="#" class="menu-dropdown" style="font-size:16px;font-weight:500; color:#ef2e2e   ">
+                    <i class="menu-icon glyphicon glyphicon-send"></i>
+                    <span class="menu-text"> @SharedLocalizer["SMS Management"] </span>
+                    <i class="menu-expand" style="font-size:16px;font-weight:500; color:#ef2e2e   "></i>
+                </a>
+
+                <ul class="submenu">
+
+                    <li>
+                        <a asp-area="Doctor" asp-controller="IncomeSystem" asp-action="UploadFile">
+                            <span class="menu-text">@SharedLocalizer["UpLoad population list"]</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a asp-area="Doctor" asp-controller="IncomeSystem" asp-action="ListOfYourUsers">
+                            <span class="menu-text">@SharedLocalizer["Send SMS"]</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a asp-area="Doctor" asp-controller="IncomeSystem" asp-action="ListOfVIPYourUsers">
+                            <span class="menu-text">@SharedLocalizer["Send Special SMS"]</span>
+                        </a>
+                    </li>
+
+
+
+                </ul>
+            </li>
+            
+            @if (Model.DoctorFamily == true)
+            {
+                <li>
+                    <a href="#" class="menu-dropdown">
+                        <i class="menu-icon glyphicon glyphicon-thumbs-up"></i>
+                        <span class="menu-text">@SharedLocalizer["List of covered people"]</span>
+                        <i class="menu-expand"></i>
+                    </a>
+
+                    <ul class="submenu">
+
+                        <li>
+                            <a asp-area="Doctor" asp-controller="PopulationCovered" asp-action="FilterPopulationCovered">
+                                <span class="menu-text">@SharedLocalizer["Lastest Population Covered"]</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a asp-area="Doctor" asp-controller="PopulationCovered" asp-action="FilterCurrentDoctorPopulationCovered">
+                                <span class="menu-text">@SharedLocalizer["My Family Doctor Population"]</span>
+                            </a>
+                        </li>
+
+
+                    </ul>
+                </li>
+            }
+
+            <li>
+                <a href="#" class="menu-dropdown">
+                    <i class="menu-icon glyphicon glyphicon-sort-by-attributes"></i>
+                    <span class="menu-text"> @SharedLocalizer["Records of medical"] </span>
+                    <i class="menu-expand"></i>
+                </a>
+                <ul class="submenu">
+                    @if (Model.HomeVisit == true)
+                    {
+                        <li>
+                            <a href="#" class="menu-dropdown">
+                                <i class="menu-icon glyphicon glyphicon-thumbs-up"></i>
+                                <span class="menu-text">@SharedLocalizer["Home Visit"]</span>
+                                <i class="menu-expand"></i>
+                            </a>
+
+                            <ul class="submenu">
+
+                                <li>
+                                    <a asp-action="ListOfHomeVisitRequest" asp-area="Doctor" asp-controller="HomeVisit">
+                                        <span class="menu-text">@SharedLocalizer["Requests"]</span>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a asp-action="ListOfYourHomeVisitRequest" asp-area="Doctor" asp-controller="HomeVisit">
+                                        <span class="menu-text">@SharedLocalizer["Accepted Requests"]</span>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </li>
+                    }
+                    @if (Model.DeathCertificate == true)
+                    {
+                        <li>
+                            <a href="#" class="menu-dropdown">
+                                <i class="menu-icon glyphicon glyphicon-thumbs-up"></i>
+                                <span class="menu-text">@SharedLocalizer["Death Certificate"]</span>
+                                <i class="menu-expand"></i>
+                            </a>
+
+                            <ul class="submenu">
+
+                                <li>
+                                    <a asp-action="ListOfDeathCertificateRequests" asp-area="Doctor" asp-controller="DeathCertificate">
+                                        <span class="menu-text">@SharedLocalizer["Requests"]</span>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a asp-action="ListOfYourDeathCertificateRequests" asp-area="Doctor" asp-controller="DeathCertificate">
+                                        <span class="menu-text">@SharedLocalizer["Accepted Requests"]</span>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </li>
+
+                    }
+
+                    @if (Model.OnlineVisit == true)
+                    {
+                        <li>
+                            <a href="#" class="menu-dropdown">
+                                <i class="menu-icon glyphicon glyphicon-thumbs-up"></i>
+                                <span class="menu-text">@SharedLocalizer["Online Visit"]</span>
+                                <i class="menu-expand"></i>
+                            </a>
+
+                            <ul class="submenu">
+
+                                <li>
+                                    <a asp-action="FilterOnlineVisitRequests" asp-area="Doctor" asp-controller="OnlineVisit">
+                                        <span class="menu-text">@SharedLocalizer["Requests"]</span>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a asp-action="FilterYourOnlineVisitRequest" asp-area="Doctor" asp-controller="OnlineVisit">
+                                        <span class="menu-text">@SharedLocalizer["Accepted Requests"]</span>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </li>
+                    }
+                </ul>
+            </li>
+
+            <li>
+                <a asp-area="Doctor" asp-controller="Follow" asp-action="ListOfFollowers">
+                    <i class="menu-icon glyphicon glyphicon-heart-empty"></i>
+                    <span class="menu-text"> دنبال کنندگان </span>
+                </a>
+            </li>
+
+            <li>
+                <a href="#" class="menu-dropdown">
+                    <i class="menu-icon glyphicon glyphicon-share"></i>
+                    <span class="menu-text"> @SharedLocalizer["Media Management"] </span>
+                    
+                    <i class="menu-expand"></i>
+                </a>
+                <ul class="submenu">
+
+                    <li>
+                        <a href="#" class="menu-dropdown">
+                            <i class="menu-icon  glyphicon glyphicon-facetime-video"></i>
+                            <span class="menu-text">@SharedLocalizer["Video Clip"]</span>
+                            <i class="menu-expand"></i>
+                        </a>
+
+                        <ul class="submenu">
+
+                            <li>
+                                <a asp-action="FilterVideos" asp-controller="HealthInformation" asp-area="Doctor">
+                                    <span class="menu-text"> @SharedLocalizer["List of Videos"] </span>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a asp-action="CreateTVFAM" asp-controller="HealthInformation" asp-area="Doctor">
+                                    <span class="menu-text"> @SharedLocalizer["Create new Video"] </span>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="#" class="menu-dropdown">
+                            <i class="menu-icon  glyphicon glyphicon-volume-up"></i>
+                            <span class="menu-text">@SharedLocalizer["Audio File"]</span>
+                            <i class="menu-expand"></i>
+                        </a>
+
+                        <ul class="submenu">
+
+                            <li>
+                                <a asp-action="FilterPodcast" asp-controller="HealthInformation" asp-area="Doctor">
+                                    <span class="menu-text"> @SharedLocalizer["List of Podcast"] </span>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a asp-action="CreatePodcast" asp-controller="HealthInformation" asp-area="Doctor">
+                                    <span class="menu-text"> @SharedLocalizer["Create new Podcast"] </span>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </li>
+
+
+
+
+                </ul>
+            </li>
+
+            <li>
+                <a href="#" class="menu-dropdown">
+                    <i class="menu-icon fa fa-users"></i>
+                    <span class="menu-text"> @SharedLocalizer["Manage Employees"] </span>
+                    <i class="menu-expand"></i>
+                </a>
+
+                <ul class="submenu">
+
+                    <li>
+                        <a asp-area="Doctor" asp-controller="Account" asp-action="FilterEmployees">
+                            <span class="menu-text">@SharedLocalizer["List Of Employees"]</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a asp-area="Doctor" asp-controller="Account" asp-action="AddNewUser">
+                            <span class="menu-text">@SharedLocalizer["Add New Employee"]</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            @await Component.InvokeAsync("DoctorsResumeStateBadge")
+
+            @await Component.InvokeAsync("DoctorsInfosBadge")
+        }
+
+        @if (Model.DoctorInfoState != "Accepted")
+        {
+            @await Component.InvokeAsync("DoctorsInfosBadge")
+        }
+
+
+        <li>
+            <a href="#" class="menu-dropdown">
+                <i class="menu-icon fa fa-ticket"></i>
+                <span class="menu-text">تیکت پشتیبانی</span>
+
+                <i class="menu-expand"></i>
+            </a>
+
+            <ul class="submenu">
+                <li>
+                    <a asp-area="Doctor" asp-controller="Ticket" asp-action="FilterTickets">
+                        <span class="menu-text">@SharedLocalizer["List Of Tickets"]</span>
+                    </a>
+                </li>
+                <li>
+                    <a asp-area="Doctor" asp-controller="Ticket" asp-action="CreateTicket">
+                        <span class="menu-text">@SharedLocalizer["Create Ticket"]</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+    </ul>
+    <!-- /Sidebar Menu -->
+</div>
+<!-- /Page Sidebar -->
