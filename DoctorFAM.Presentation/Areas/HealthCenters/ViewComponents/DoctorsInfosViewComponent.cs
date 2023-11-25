@@ -10,19 +10,19 @@ namespace DoctorFAM.Web.Areas.HealthCenters.ViewComponents
     {
         #region Ctor
 
-        public IDoctorsService _doctorService { get; set; }
+        private readonly IHealthCentersService _healthCentersService;
 
-        public HealthCentersInfosViewComponent(IDoctorsService doctorService)
+        public HealthCentersInfosViewComponent(IHealthCentersService healthCentersService)
         {
-            _doctorService = doctorService;
+            _healthCentersService = healthCentersService;
         }
 
         #endregion
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var model = await _doctorService.GetDoctorsSideBarInfo(User.GetUserId());
-            return View("HealthCentersInfos", model.DoctorInfoState);
+            var model = await _healthCentersService.GetHealthCentersSideBarInfo(User.GetUserId());
+            return View("HealthCentersInfos", model.HealthCenterInfoState);
         }
     }
 
@@ -30,19 +30,19 @@ namespace DoctorFAM.Web.Areas.HealthCenters.ViewComponents
     {
         #region Ctor
 
-        public IDoctorsService _doctorService { get; set; }
+        private readonly IHealthCentersService _healthCentersService;
 
-        public DoctorsInfosBadgeViewComponent(IDoctorsService doctorService)
+        public HealthCentersInfosBadgeViewComponent(IHealthCentersService healthCentersService)
         {
-            _doctorService = doctorService;
+            _healthCentersService = healthCentersService;
         }
 
         #endregion
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var model = await _doctorService.GetDoctorsSideBarInfo(User.GetUserId());
-            return View("HealthCentersInfosBadge", model.DoctorInfoState);
+            var model = await _healthCentersService.GetHealthCentersSideBarInfo(User.GetUserId());
+            return View("HealthCentersInfosBadge", model.HealthCenterInfoState);
         }
     }
 
@@ -54,19 +54,19 @@ namespace DoctorFAM.Web.Areas.HealthCenters.ViewComponents
     {
         #region Ctor
 
-        public IDoctorsService _doctorService { get; set; }
+        private readonly IHealthCentersService _healthCentersService;
 
-        public HealthCentersInfosBadgeIndexViewViewComponent(IDoctorsService doctorService)
+        public HealthCentersInfosBadgeIndexViewViewComponent(IHealthCentersService healthCentersService)
         {
-            _doctorService = doctorService;
+            _healthCentersService = healthCentersService;
         }
 
         #endregion
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var model = await _doctorService.GetDoctorsSideBarInfo(User.GetUserId());
-            return View("HealthCentersInfosBadgeIndexView", model.DoctorInfoState);
+            var model = await _healthCentersService.GetHealthCentersSideBarInfo(User.GetUserId());
+            return View("HealthCentersInfosBadgeIndexView", model.HealthCenterInfoState);
         }
     }
 
