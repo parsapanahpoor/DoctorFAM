@@ -58,6 +58,7 @@ using DoctorFAM.Domain.Entities.Tourism;
 using DoctorFAM.Domain.Enums.Tourist;
 using DoctorFAM.Domain.Entities.Tourism.Token;
 using DoctorFAM.Domain.Entities.UsersBankAccount;
+using DoctorFAM.Domain.Entities.HealthCenters;
 
 
 #endregion
@@ -570,6 +571,14 @@ public class DoctorFAMDbContext : Microsoft.EntityFrameworkCore.DbContext
     #region User Bank Accounts
 
     public DbSet<UsersBankAccountsInfos> UsersBankAccountsInfos { get; set; }
+
+    #endregion
+
+    #region Health Center
+
+    public DbSet<HealthCentersInfo> HealthCentersInfos { get; set; }
+
+    public DbSet<HealthCenter> HealthCenters{ get; set; }
 
     #endregion
 
