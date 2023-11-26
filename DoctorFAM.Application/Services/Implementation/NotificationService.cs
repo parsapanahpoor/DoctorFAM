@@ -1,7 +1,9 @@
 ﻿#region Usings
 
+using DoctorFAM.Application.DTOs.HealthCenters.Notification;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Data.Repository;
+using DoctorFAM.Domain.DTOs.HealthCenters.Notification;
 using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.Notification;
@@ -1103,6 +1105,33 @@ public class NotificationService : INotificationService
     public async Task<List<DoctorPanelNotificationViewModel>?> GetListOfDoctorPanelNotificationByUserId(ulong userId)
     {
         return await _notificationService.GetListOfDoctorPanelNotificationByUserId(userId);
+    }
+
+    #endregion
+
+    #region Health Center Panel
+
+    //Get Health Center Notifications
+    public async Task<List<HealthCenterNotificationDTO>?> GetListOfHealthCenterNotificationByUserId(ulong userId)
+    {
+        var healthCenterNotification = _notificationService.GetListOfHealthCenterPanelNotificationByUserId(userId);
+        if (healthCenterNotification == null) return null;
+
+        return await healthCenterNotification
+                                         .Take(10)
+                                         .Select(p => new HealthCenterNotificationDTO()
+                                         {
+                                             IsHealthHouseRequest = p.IsHealthHouseRequest,
+                                             IsSeen = p.IsSeen,
+                                             IsTicket = p.IsTicket,
+                                             ReciverId = p.ReciverId,
+                                             SupporterNotificationText = p.SupporterNotificationText,
+                                             TargetId = p.TargetId,
+                                             CreateDate = p.CreateDate,
+                                             User = _notificationService.GetHealthCenterNotificationUsersInfoDTO(p.UserId)
+                                         })
+                                         .ToListAsync();
+
     }
 
     #endregion

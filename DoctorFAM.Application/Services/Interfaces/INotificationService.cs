@@ -1,5 +1,6 @@
 ﻿#region Usings
 
+using DoctorFAM.Domain.DTOs.HealthCenters.Notification;
 using DoctorFAM.Domain.Entities.Notification;
 using DoctorFAM.Domain.Enums.Notification;
 using DoctorFAM.Domain.ViewModels.Consultant.Notification;
@@ -119,6 +120,13 @@ public interface INotificationService
 
     //Get User Notifications
     Task<List<DoctorPanelNotificationViewModel>?> GetListOfDoctorPanelNotificationByUserId(ulong userId);
+
+    #endregion
+
+    #region Health Centers
+
+    //Get Health Center Notifications
+    Task<List<HealthCenterNotificationDTO>?> GetListOfHealthCenterNotificationByUserId(ulong userId);
 
     #endregion
 

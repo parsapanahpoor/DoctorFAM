@@ -31,7 +31,7 @@ public class HealthCenterPanelChatBarViewComponent : ViewComponent
 
         #endregion
 
-        var model = await _notificationService.GetListOfDoctorPanelNotificationByUserId(organizationOwmerId);
+        var model = await _notificationService.GetListOfHealthCenterNotificationByUserId(organizationOwmerId);
         return View("HealthCenterPanelChatBar", model);
     }
 }
