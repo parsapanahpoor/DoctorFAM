@@ -196,6 +196,15 @@
                                     </li>
                                     <li>
 
+                                        <a asp-action="Index" asp-area="HealthCenters" asp-controller="Home">
+                                            <div class="clearfix">
+                                                <span class="pull-right">پنل مراکز درمانی</span>
+                                                <span class="pull-left">></span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+
                                         <a asp-action="Index" asp-area="dentist" asp-controller="Home">
                                             <div class="clearfix">
                                                 <span class="pull-right">پنل دندان پزشک </span>
@@ -345,7 +354,18 @@
                                             </a>
                                         </li>
                                     }
+                                    @if (ViewBag.HealthCenter == true)
+                                    {
+                                        <li>
 
+                                            <a asp-action="Index" asp-area="HealthCenters" asp-controller="Home">
+                                                <div class="clearfix">
+                                                    <span class="pull-right">پنل مراکز درمانی</span>
+                                                    <span class="pull-left">></span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    }
                                     @if (ViewBag.Dentist == true)
                                     {
                                         <li>

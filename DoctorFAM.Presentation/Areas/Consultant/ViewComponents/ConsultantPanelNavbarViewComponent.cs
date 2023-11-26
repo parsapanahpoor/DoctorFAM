@@ -65,6 +65,8 @@ public class ConsultantPanelNavbarViewComponent : ViewComponent
                 if (userRole.Contains("DentistOfficeEmployee")) ViewBag.DentistOfficeEmployee = true;
 
                 if (userRole.Contains("Tourism")) ViewBag.Tourist = true;
+
+                if (userRole.Contains("HealthCenter")) ViewBag.HealthCenter = true;
             }
 
         }

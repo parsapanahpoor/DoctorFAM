@@ -160,6 +160,15 @@
                                             </div>
                                         </a>
                                     </li>
+                                        <li>
+
+                                            <a asp-action="Index" asp-area="HealthCenters" asp-controller="Home">
+                                                <div class="clearfix">
+                                                    <span class="pull-right">پنل مراکز درمانی</span>
+                                                    <span class="pull-left">></span>
+                                                </div>
+                                            </a>
+                                        </li>
                                     <li>
 
                                         <a asp-action="Index" asp-area="Market" asp-controller="Home">
@@ -265,6 +274,18 @@
                                                     <span class="pull-right">پنل داروخانه</span>
                                                     <span class="pull-left">></span>
 
+                                                </div>
+                                            </a>
+                                        </li>
+                                    }
+                                    @if (ViewBag.HealthCenter == true)
+                                    {
+                                        <li>
+
+                                            <a asp-action="Index" asp-area="HealthCenters" asp-controller="Home">
+                                                <div class="clearfix">
+                                                    <span class="pull-right">پنل مراکز درمانی</span>
+                                                    <span class="pull-left">></span>
                                                 </div>
                                             </a>
                                         </li>
