@@ -1,9 +1,10 @@
 ﻿using DoctorFAM.Application.Services.Interfaces;
+using DoctorFAM.Web.HealthCenters.Admin.Controllers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DoctorFAM.Web.Areas.HealthCenters.Controllers;
 
-public class HomeController : Controller
+public class HomeController : HealthCentersBaseController
 {
     #region Ctor 
 

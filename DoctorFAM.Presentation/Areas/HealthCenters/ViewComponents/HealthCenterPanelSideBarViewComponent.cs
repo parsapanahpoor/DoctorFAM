@@ -11,18 +11,15 @@ namespace DoctorFAM.Web.Areas.HealthCenters.ViewComponents
     {
         #region Ctor
 
-        public IDoctorsService _doctorService;
-
-        public HealthCenterPanelSideBarViewComponent(IDoctorsService doctorService)
+        public HealthCenterPanelSideBarViewComponent()
         {
-            _doctorService = doctorService;
         }
 
         #endregion
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            return View("HealthCenterPanelSideBar", await _doctorService.GetDoctorsSideBarInfo(User.GetUserId()));
+            return View("HealthCenterPanelSideBar");
         }
     }
 
@@ -34,37 +31,15 @@ namespace DoctorFAM.Web.Areas.HealthCenters.ViewComponents
     {
         #region Ctor
 
-        public IDoctorsService _doctorService;
-        private readonly IOrganizationService _organizationService;
-
-        public HealthCenterPanelSideBarInIndexViewComponent(IDoctorsService doctorService, IOrganizationService organizationService)
+        public HealthCenterPanelSideBarInIndexViewComponent()
         {
-            _doctorService = doctorService;
-            _organizationService = organizationService;
         }
 
         #endregion
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            #region Check Owner Of Organization
-
-            var organization = await _organizationService.GetOrganizationByUserId(User.GetUserId());
-            if (organization is not null)
-            {
-                if (organization.OwnerId == User.GetUserId())
-                {
-                    ViewBag.DoctorIncoming = true;
-                }
-                else
-                {
-                    ViewBag.DoctorIncoming = false;
-                }
-            }
-
-            #endregion
-
-            return View("HealthCenterPanelSideBarInIndex", await _doctorService.GetDoctorsSideBarInfo(User.GetUserId()));
+            return View("HealthCenterPanelSideBarInIndex");
         }
     }
 

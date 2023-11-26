@@ -1,6 +1,5 @@
 ﻿#region Usings
 
-using DoctorFAM.Application.DTOs.HealthCenters.Notification;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Data.Repository;
 using DoctorFAM.Domain.DTOs.HealthCenters.Notification;
@@ -1117,7 +1116,7 @@ public class NotificationService : INotificationService
         var healthCenterNotification = _notificationService.GetListOfHealthCenterPanelNotificationByUserId(userId);
         if (healthCenterNotification == null) return null;
 
-        return await healthCenterNotification
+        var model = await healthCenterNotification
                                          .Take(10)
                                          .Select(p => new HealthCenterNotificationDTO()
                                          {
@@ -1128,10 +1127,18 @@ public class NotificationService : INotificationService
                                              SupporterNotificationText = p.SupporterNotificationText,
                                              TargetId = p.TargetId,
                                              CreateDate = p.CreateDate,
-                                             User = _notificationService.GetHealthCenterNotificationUsersInfoDTO(p.UserId)
+                                             SenderId = p.UserId
                                          })
                                          .ToListAsync();
+        if (model is not null)
+        {
+            foreach (var notif in model)
+            {
+                notif.User = _notificationService.GetHealthCenterNotificationUsersInfoDTO(notif.SenderId);
+            }
+        }
 
+        return model;
     }
 
     #endregion

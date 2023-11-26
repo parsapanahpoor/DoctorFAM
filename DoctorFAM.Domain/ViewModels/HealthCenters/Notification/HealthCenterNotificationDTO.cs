@@ -8,6 +8,8 @@ public record HealthCenterNotificationDTO
 
     public HealthCenterNotificationUsersInfoDTO? User { get; set; }
 
+    public ulong SenderId { get; set; }
+
     public ulong ReciverId { get; set; }
 
     //This Is For Any Request Id Or etc ... 

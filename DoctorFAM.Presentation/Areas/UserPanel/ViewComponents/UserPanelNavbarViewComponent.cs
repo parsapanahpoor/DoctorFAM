@@ -58,7 +58,7 @@ namespace DoctorFAM.Web.Areas.UserPanel.ViewComponents
 
                     if (userRole.Contains("Tourism")) ViewBag.Tourist = true;
 
-                    if (userRole.Contains("HealthCenter")) ViewBag.HealthCenter = true
+                    if (userRole.Contains("HealthCenter")) ViewBag.HealthCenter = true;
                 }
 
             }
