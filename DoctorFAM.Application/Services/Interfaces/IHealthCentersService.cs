@@ -19,5 +19,8 @@ public interface IHealthCentersService
     //Add Health Center For First Time
     Task AddHealthCenterForFirstTime(ulong userId);
 
+    //Fill Health Center Side Bar Panel 
+    Task<Domain.ViewModels.HealthCenters.SideBar.HealthCenterSideBarViewModel> GetHealthCenterSideBarInfo(ulong userId);
+
     #endregion
 }

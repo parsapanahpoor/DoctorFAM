@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using DoctorFAM.Web.Areas.HealthCenters.ActionFilterAttributes;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DoctorFAM.Web.HealthCenters.Admin.Controllers
 {
     [Area("HealthCenters")]
     [Authorize]
-    //[CheckUserHasPermission]
+    [CheckUserHasPermission]
 
     public class HealthCentersBaseController : Controller
     {

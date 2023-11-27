@@ -136,5 +136,11 @@ public class HealthCentersService : IHealthCentersService
         #endregion
     }
 
+    //Fill Health Center Side Bar Panel 
+    public async Task<Domain.ViewModels.HealthCenters.SideBar.HealthCenterSideBarViewModel> GetHealthCenterSideBarInfo(ulong userId)
+    {
+        return await _healthCentersRepository.GetHealthCenterSideBarInfo(userId);
+    }
+
     #endregion
 }
