@@ -1,0 +1,219 @@
+﻿@model DoctorFAM.Domain.ViewModels.Admin.HealthCenter.ListOfHealthCenterInfoViewModel
+@using DoctorFAM.Domain.ViewModels.Admin.HealthCenter
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Domain.ViewModels.Common
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
+
+
+@{
+    ViewData["Title"] = @Localizer["لیست مراکز درمانی"];
+}
+
+@{
+    var roles = ViewData["Roles"] != null ? ViewData["Roles"] as List<SelectListViewModel> : null;
+}
+
+@section Styles
+    {
+
+}
+
+@section Scripts
+    {
+    <partial name="_JqueryValidation" />
+}
+
+@section Breadcrumb
+    {
+    <li>
+        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+    </li>
+}
+
+<div class="row">
+    <div class="col-lg-3 col-sm-12">
+        <div class="widget">
+            <div class="widget-header bordered-bottom bordered-green">
+                <span class="widget-caption"> @Localizer["مدیریت اطلاعات"] </span>
+            </div>
+            <div class="widget-body">
+                <div>
+                    <form asp-action="ListOfHealthCenters" asp-controller="HealthCenters" asp-area="Admin" id="filter-search" method="get">
+
+                        <input type="hidden" asp-for="Page" />
+
+                        <div class="form-group">
+                            <label asp-for="FullName"> @Localizer["نام کاربری"] </label>
+                            <input type="text" class="form-control" asp-for="FullName">
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Email"> @Localizer["ایمیل"] </label>
+                            <input type="text" class="form-control" asp-for="Email">
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Mobile"> @Localizer["موبایل"] </label>
+                            <input type="text" class="form-control" asp-for="Mobile">
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="NationalCode"> @Localizer["کدملی"] </label>
+                            <input type="text" class="form-control" asp-for="NationalCode">
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="HealthCentersState"> @Localizer["وضعیت"] </label>
+                            <select asp-for="HealthCentersState" class="form-control" asp-items="Html.GetEnumSelectList(typeof(ApartmentState))"></select>
+                        </div>
+
+                        <hr />
+
+                        <div class="row">
+                            <div class="col-md-12 flex-style">
+                                <button type="submit" class="btn btn-labeled w-100 btn-palegreen">
+                                    <i class="btn-label glyphicon glyphicon-filter"></i>@Localizer["فیلتر"]
+                                </button>
+
+                                @if (Context.Request.QueryString.HasValue)
+                                {
+                                    <a asp-action="ListOfHealthCenters" asp-controller="HealthCenters" asp-area="Admin" class="btn btn-labeled w-100 btn-darkorange">
+                                        <i class="btn-label glyphicon glyphicon-remove"></i>@Localizer["حذف فیلتر"]
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-9 col-sm-12">
+        <div class="well with-header with-footer table-responsive">
+            <div class="header bordered-azure">
+                <div class="flex-style">
+                    <span>@ViewData["Title"]</span>
+                    <span>@Model.GetShownEntitiesPagesTitle()</span>
+                </div>
+            </div>
+
+            @if (Model.Entities != null && Model.Entities.Any())
+            {
+                <table class="table table-hover table-bordered tc vm">
+                    <thead class="tc vm">
+                        <tr class="tc vm">
+                            <th class="tc vm">
+                                @Localizer["تصویر"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["اطلاعات شخصی"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["وضعیت"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["دسترسی"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["امکانات"]
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="tc vm">
+                        @foreach (var info in Model.Entities)
+                        {
+                            <tr class="tc vm">
+                                <td class="vm">
+                                    <div class="flex-style-center">
+                                        <img src="@info.User.GetUserAvatar()" class="avatar-style" style="border-radius:50px" />
+                                        <div class="mr-10px">
+                                            <span> @info.User.Username </span>
+                                            <hr class="margin-7" />
+                                            <span>@Localizer["تاریخ ثبت نام"] : @info.User.CreateDate.ToShamsi()</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="tc vm">
+                                    <p>
+                                        @Localizer["Email"] :
+                                        @if (info.User.Email == null)
+                                        {
+                                            <span class="mr-8px label label-orange">@Localizer["خالی"] </span>
+                                        }
+                                        else
+                                        {
+                                            @info.User.Email
+                                        }
+                                    </p>
+                                    @if (!string.IsNullOrEmpty(info.User.Mobile))
+                                    {
+                                        <hr class="margin-7" />
+                                        <p>@Localizer["موبایل"] : @info.User.Mobile</p>
+                                    }
+                                </td>
+                                <td class="tc vm">
+                                    <p class="flex-style-center">
+                                        <span> @Localizer["وضعیت ایمیل"] </span>
+                                        <span class="mr-8px label @((info.User.IsEmailConfirm) ? "label-success" : "label-orange")">@((info.User.IsEmailConfirm) ? @Localizer["تایید شده"] : @Localizer["تایید نشده"])</span>
+                                    </p>
+                                    <hr class="margin-7" />
+                                    <p class="flex-style-center">
+                                        <span> @Localizer["وضعیت موبایل"] </span>
+                                        <span class="mr-8px label @((info.User.IsMobileConfirm) ? "label-success" : "label-orange")">@((info.User.IsMobileConfirm) ? @Localizer["تایید شده"] : @Localizer["تایید نشده"])</span>
+                                    </p>
+                                </td>
+                                <td class="tc vm">
+                                    <p class="flex-style-center">
+                                        <span> @Localizer["وضعیت مرکز درمانی"] </span>
+                                        @if (info.OrganizationInfoState == DoctorFAM.Domain.Entities.Doctors.OrganizationInfoState.Accepted)
+                                        {
+                                            <span class="mr-8px label label-success"> @Localizer["تایید شده"] </span>
+                                        }
+                                        @if (info.OrganizationInfoState == DoctorFAM.Domain.Entities.Doctors.OrganizationInfoState.Rejected)
+                                        {
+                                            <span class="mr-8px label label-danger"> @Localizer["رد شده"] </span>
+                                        }
+                                        @if (info.OrganizationInfoState == DoctorFAM.Domain.Entities.Doctors.OrganizationInfoState.WatingForConfirm)
+                                        {
+                                            <span class="mr-8px label label-warning"> @Localizer["در انتظار بررسی"] </span>
+                                        }
+                                        @if (info.OrganizationInfoState == DoctorFAM.Domain.Entities.Doctors.OrganizationInfoState.JustRegister)
+                                        {
+                                            <span class="mr-8px label label-warning"> @Localizer["ثبت نام جدید"] </span>
+                                        }
+                                    </p>
+                                    <hr class="margin-7" />
+
+                                    <p class="flex-style-center">
+                                        <span> @Localizer["دسترسی به سایت"] </span>
+                                        <span class="mr-8px label @((!info.User.IsBan) ? "label-success" : "label-orange")">@((!info.User.IsBan) ? @Localizer["دارد"] : @Localizer["ندارد"])</span>
+                                    </p>
+
+                                </td>
+
+                                <td class="tc vm">
+                                    <a asp-action="HealthCenterInfoDetail" asp-controller="HealthCenters" asp-area="Admin" asp-route-userId="@info.OwnerId" class="btn btn-warning btn-circle btn-xs"><i class="glyphicon glyphicon-edit"></i></a>
+                                    <a asp-action="ShowHealthCenterInfoDetail" asp-controller="HealthCenters" asp-area="Admin" asp-route-userId="@info.OwnerId" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <div class="footer tc">
+
+                    <partial name="_AdminPaging" model="@Model.GetCurrentPaging()" />
+
+                </div>
+            }
+            else
+            {
+                <partial name="_AdminNotFoundPartial" />
+            }
+        </div>
+    </div>
+</div>
+

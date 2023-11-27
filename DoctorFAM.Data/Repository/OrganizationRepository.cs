@@ -207,6 +207,20 @@ namespace DoctorFAM.Data.Repository
             return await _context.Organizations.FirstOrDefaultAsync(p => p.Id == member.OrganizationId && !p.IsDelete && p.OrganizationType == Domain.Enums.Organization.OrganizationType.Nurse);
         }
 
+        //Get Health Center Organization by User Id
+        public async Task<Organization?> GetHealthCenterOrganizationByUserId(ulong userId)
+        {
+            var member = await _context.OrganizationMembers
+                                       .Include(p => p.Organization)
+                                       .FirstOrDefaultAsync(p => !p.IsDelete && 
+                                                            p.UserId == userId && 
+                                                            p.Organization.OrganizationType == Domain.Enums.Organization.OrganizationType.HealthCenter);
+
+            return await _context.Organizations
+                                 .FirstOrDefaultAsync(p => p.Id == member.OrganizationId && 
+                                                      !p.IsDelete && p.OrganizationType == Domain.Enums.Organization.OrganizationType.HealthCenter);
+        }
+
         //Get Consultant Organization by User Id
         public async Task<Organization?> GetConsultantOrganizationByUserId(ulong userId)
         {

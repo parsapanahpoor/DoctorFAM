@@ -104,6 +104,12 @@ namespace DoctorFAM.Application.Services.Implementation
             return await _organization.GetNurseOrganizationByUserId(userId);
         }
 
+        //Get Health Center Organization by User Id
+        public async Task<Organization?> GetHealthCenterOrganizationByUserId(ulong userId)
+        {
+            return await _organization.GetHealthCenterOrganizationByUserId(userId);
+        }
+
         //Get Laboratory Organization by User Id
         public async Task<Organization?> GetLaboratoryOrganizationByUserId(ulong userId)
         {

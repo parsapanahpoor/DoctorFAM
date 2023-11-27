@@ -79,6 +79,9 @@ namespace DoctorFAM.Domain.Interfaces
         //Get Consultant Organization OwnerId By User Id
         Task<ulong> GetConsultantOrganizationOwnerIdByUserId(ulong userId);
 
+        //Get Health Center Organization by User Id
+        Task<Organization?> GetHealthCenterOrganizationByUserId(ulong userId);
+
         //Get Nurse Organization by User Id
         Task<Organization?> GetNurseOrganizationByUserId(ulong userId);
 
