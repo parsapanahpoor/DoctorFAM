@@ -13,5 +13,11 @@ public interface IHealthCentersService
     //Fill Health Center Side Bar Panel 
     Task<HealthCenterSideBarViewModel> GetHealthCentersSideBarInfo(ulong userId);
 
+    //Is Exist Any Health Center By User Id
+    Task<bool> IsExistAnyHealthCenterByUserId(ulong userId);
+
+    //Add Health Center For First Time
+    Task AddHealthCenterForFirstTime(ulong userId);
+
     #endregion
 }

@@ -1,10 +1,9 @@
 ﻿using DoctorFAM.Application.DTOs.HealthCenters.HealthCentersInfos;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.Entities.Doctors;
+using DoctorFAM.Domain.Entities.HealthCenters;
 using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.Interfaces.EFCore;
-using DoctorFAM.Domain.ViewModels.DoctorPanel.DosctorSideBarInfo;
-using Microsoft.EntityFrameworkCore;
 
 namespace DoctorFAM.Application.Services.Implementation;
 
@@ -13,10 +12,12 @@ public class HealthCentersService : IHealthCentersService
     #region Ctor
 
     private readonly IHealthCentersRepository _healthCentersRepository;
+    private readonly IOrganizationService _organizationService;
 
-    public HealthCentersService(IHealthCentersRepository healthCentersRepository)
+    public HealthCentersService(IHealthCentersRepository healthCentersRepository, IOrganizationService organizationService)
     {
         _healthCentersRepository = healthCentersRepository;
+        _organizationService = organizationService;
     }
 
     #endregion
@@ -57,6 +58,82 @@ public class HealthCentersService : IHealthCentersService
         #endregion
 
         return model;
+    }
+
+    //Is Exist Any Health Center By User Id
+    public async Task<bool> IsExistAnyHealthCenterByUserId(ulong userId)
+    {
+        return await _healthCentersRepository.IsExistAnyHealthCenterByUserId(userId);
+    }
+
+    //Add Health Center For First Time
+    public async Task AddHealthCenterForFirstTime(ulong userId)
+    {
+        #region Health Center Entity
+
+        #region Fill Health Center Model
+
+        HealthCenter healthCenter = new HealthCenter()
+        {
+            UserId = userId,
+            CreateDate = DateTime.Now,
+            IsDelete = false,
+        };
+
+        #endregion
+
+        #region Add Methods 
+
+        await _healthCentersRepository.AddHealthCenterWithoutSaveChanges(healthCenter);
+
+        #endregion
+
+        #endregion
+
+        #region Organization Entity
+
+        #region Fill Organization Model
+
+        Organization organization = new Organization()
+        {
+            CreateDate = DateTime.Now,
+            IsDelete = false,
+            OrganizationInfoState = OrganizationInfoState.JustRegister,
+            OrganizationType = Domain.Enums.Organization.OrganizationType.HealthCenter,
+            OwnerId = userId,
+        };
+
+        #endregion
+
+        #region Add Method
+
+        var organizationId = await _organizationService.AddOrganizationWithReturnId(organization);
+
+        #endregion
+
+        #endregion
+
+        #region Organization Member
+
+        #region Fill Model 
+
+        OrganizationMember member = new OrganizationMember()
+        {
+            CreateDate = DateTime.Now,
+            IsDelete = false,
+            OrganizationId = organizationId,
+            UserId = userId
+        };
+
+        #endregion
+
+        #region Add Organization Member
+
+        await _organizationService.AddOrganizationMember(member);
+
+        #endregion
+
+        #endregion
     }
 
     #endregion
