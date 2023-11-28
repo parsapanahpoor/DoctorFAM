@@ -1,105 +1,37 @@
-﻿@model DoctorFAM.Domain.ViewModels.DoctorPanel.DosctorSideBarInfo.DoctorSideBarViewModel
+﻿@model DoctorFAM.Application.DTOs.HealthCenters.HealthCentersInfos.HealthCenterSideBarViewModel
 
 @{
-    bool doctorLogin = ViewBag.DoctorIncoming;
+    bool doctorLogin = ViewBag.OwnerIncoming;
 }
 
-@if (Model.DoctorInfoState == "Accepted")
+@if (Model.HealthCenterInfoState == "Accepted")
 {
     if (doctorLogin)
     {
         <div class="page-body">
 
             <div class="row text-center align-Item-center">
-                <div class="col-lg-6 col-sm-6 col-xs-12">
+                <div class="col-lg-12 col-sm-12 col-xs-12">
                     <div class="row">
 
-                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview text-center justify-content-center">
-                            <a asp-area="Doctor" asp-controller="Home" asp-action="Index_Sec" class="btn btn-success  btn-circle btn-lg"><i class="glyphicon glyphicon-th"></i></a>
-                            <p class="text-center justify-content-center" style="font-size:12PX;"> داشبورد </p>
-                        </div>
-                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview  text-center justify-content-center">
-                            <a asp-area="Doctor" asp-controller="Home" asp-action="TurnRating" class="btn btn-info  btn-circle btn-lg"><i class="fa fa-check-square-o"></i></a>
-                            <p class="text-center justify-content-center" style="font-size:12PX;">نوبت دهی</p>
-                        </div>
-                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview  text-center justify-content-center">
-                            <a asp-area="Doctor" asp-controller="Home" asp-action="SendMessage" class="btn btn-primary  btn-circle btn-lg"><i class="glyphicon glyphicon-send"></i></a>
-                            <p class="text-center justify-content-center" style="font-size:12PX;">پیامک </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6 col-sm-6 col-xs-12">
-                    <div class="row">
+                        @await Component.InvokeAsync("HealthCentersBadgeIndexView")
 
-                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview">
-                            <a asp-area="Doctor" asp-controller="Home" asp-action="FamilyDoctorPop" class="btn btn-warning  btn-circle btn-lg"><i class="fa fa-users"></i></a>
-                            <p class="text-center justify-content-center" style="font-size:12PX;">  جمعیت پزشک </p>
-                        </div>
-                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview">
-                            <a  class="btn btn-success  btn-circle btn-lg"><i class="fa fa-heartbeat"></i></a>
-                            <p class="text-center justify-content-center" style="font-size:12PX;"> اقدامات پزشکی </p>
-                        </div>
-                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview">
-                            <a asp-area="Doctor" asp-controller="Home" asp-action="MediaManage" class="btn btn-info  btn-circle btn-lg"><i class="fa fa-film"></i></a>
-                            <p class="text-center justify-content-center" style="font-size:12PX;"> مدیریت مدیا </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6 col-sm-6 col-xs-12">
-                    <div class="row">
-
-                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview">
-                            <a asp-area="Doctor" asp-controller="Account" asp-action="FilterEmployees" class="btn btn-info  btn-circle btn-lg"><i class="fa fa-user-plus"></i></a>
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3  buttons-preview">
+                            <a href="/" class="btn btn-info  btn-circle btn-lg"><i class="fa fa-user-plus"></i></a>
                             <p class="text-center justify-content-center" style="font-size:12PX;"> کارکنان </p>
                         </div>
 
-                        @await Component.InvokeAsync("DoctorsResumeStateBadgeInIndex")
-
-                        @await Component.InvokeAsync("DoctorsInfosBadgeIndexView")
-
-                    </div>
-                </div>
-                <div class="col-lg-6 col-sm-6 col-xs-12">
-                    <div class="row">
-
-                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview">
-                            <a asp-action="ListOfWithdrawRequests" asp-area="Doctor" asp-controller="Wallet" class="btn btn-primary  btn-circle btn-lg"><i class="fa fa-money"></i></a>
-                            <p class="text-center justify-content-center" style="font-size:12PX;"> مالی </p>
-                        </div>
-                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview">
-                            <a asp-area="Doctor" asp-controller="Ticket" asp-action="FilterTickets" class="btn btn-info  btn-circle btn-lg"><i class="fa fa-ticket"></i></a>
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3  buttons-preview">
+                            <a href="/" class="btn btn-info  btn-circle btn-lg"><i class="fa fa-ticket"></i></a>
                             <p class="text-center justify-content-center" style="font-size:12PX;"> تیکت پشتیبانی </p>
                         </div>
-                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview">
+
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3  buttons-preview">
                             <a asp-area="Chatroom" asp-controller="Home" asp-action="Index" class="btn btn-warning  btn-circle btn-lg"
-                              style="background-image: linear-gradient(#ff00cc, #333399) !important;"><i class="fa fa-comments-o"></i></a>
+                               style="background-image: linear-gradient(#ff00cc, #333399) !important;"><i class="fa fa-comments-o"></i></a>
                             <p class="text-center justify-content-center" style="font-size:12PX;"> پیام رسان </p>
                         </div>
-                    </div>
-                </div>
-                <div class="col-lg-6 col-sm-6 col-xs-12">
-                    <div class="row">
-                        @if (Model.HomeVisit == true)
-                        {
-                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview">
-                                <a asp-area="Doctor" asp-controller="Home" asp-action="HomeVisit" class="btn btn-warning  btn-circle btn-lg"><i class="fa fa-medkit "></i></a>
-                            <p class="text-center justify-content-center" style="font-size:12PX;">  ویزیت درمنزل </p>
-                        </div>
-                         }
-                        @if (Model.DeathCertificate == true)
-                        {
-                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview">
-                                <a asp-area="Doctor" asp-controller="Home" asp-action="DeathCertificate" class="btn btn-success  btn-circle btn-lg"><i class="fa fa-ambulance "></i></a>
-                            <p class="text-center justify-content-center" style="font-size:12PX;">  گواهی فوت </p>
-                        </div>
-                        }
-                        @if (Model.OnlineVisit == true)
-                        {
-                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview">
-                                <a asp-area="Doctor" asp-controller="Home" asp-action="VisitOnLine" class="btn btn-danger  btn-circle btn-lg"><i class="fa fa-headphones "></i></a>
-                            <p class="text-center justify-content-center" style="font-size:12PX;"> ویزیت آنلاین </p>
-                        </div>
-                        }
+
                     </div>
                 </div>
             </div>
@@ -115,20 +47,8 @@
                     <div class="row">
 
                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview text-center justify-content-center">
-                            <a asp-area="Doctor" asp-controller="Home" asp-action="Index_Sec" class="btn btn-success  btn-circle btn-lg"><i class="glyphicon glyphicon-th"></i></a>
+                            <a asp-area="HealthCenters" asp-controller="Home" asp-action="Index" class="btn btn-success  btn-circle btn-lg"><i class="glyphicon glyphicon-th"></i></a>
                             <p class="text-center justify-content-center" style="font-size:12PX;"> داشبورد </p>
-                        </div>
-                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview  text-center justify-content-center">
-                            <a asp-area="Doctor" asp-controller="Home" asp-action="TurnRating" class="btn btn-info  btn-circle btn-lg"><i class="fa fa-check-square-o"></i></a>
-                            <p class="text-center justify-content-center" style="font-size:12PX;">نوبت دهی</p>
-                        </div>
-                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview">
-                            <a  class="btn btn-success  btn-circle btn-lg"><i class="fa fa-heartbeat"></i></a>
-                            <p class="text-center justify-content-center" style="font-size:12PX;"> اقدامات پزشکی </p>
-                        </div>
-                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview">
-                            <a asp-area="Doctor" asp-controller="Home" asp-action="FamilyDoctorPop" class="btn btn-warning  btn-circle btn-lg"><i class="fa fa-users"></i></a>
-                            <p class="text-center justify-content-center" style="font-size:12PX;">  جمعیت پزشک </p>
                         </div>
                     </div>
                 </div>
@@ -139,7 +59,7 @@
     }
 }
 
-@if (Model.DoctorInfoState != "Accepted")
+@if (Model.HealthCenterInfoState != "Accepted")
 {
     <div class="page-body">
 
@@ -148,14 +68,14 @@
                 <div class="row">
 
                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview text-center justify-content-center">
-                        <a asp-area="Doctor" asp-controller="Home" asp-action="Index_Sec" class="btn btn-success  btn-circle btn-lg"><i class="glyphicon glyphicon-th"></i></a>
+                        <a asp-area="HealthCenters" asp-controller="Home" asp-action="Index" class="btn btn-success  btn-circle btn-lg"><i class="glyphicon glyphicon-th"></i></a>
                         <p class="text-center justify-content-center" style="font-size:12PX;"> داشبورد </p>
                     </div>
 
-                    @await Component.InvokeAsync("DoctorsInfosBadgeIndexView")
+                    @await Component.InvokeAsync("HealthCentersBadgeIndexView")
 
                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  buttons-preview">
-                        <a asp-area="Doctor" asp-controller="Ticket" asp-action="FilterTickets" class="btn btn-info  btn-circle btn-lg"><i class="fa fa-ticket"></i></a>
+                        <a href="/" class="btn btn-info  btn-circle btn-lg"><i class="fa fa-ticket"></i></a>
                         <p class="text-center justify-content-center" style="font-size:12PX;"> تیکت پشتیبانی </p>
                     </div>
 

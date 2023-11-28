@@ -1,13 +1,19 @@
-﻿using DoctorFAM.Application.DTOs.HealthCenters.HealthCentersInfos;
+﻿using DoctorFAM.Application.Convertors;
+using DoctorFAM.Application.DTOs.HealthCenters.HealthCentersInfos;
+using DoctorFAM.Application.Extensions;
+using DoctorFAM.Application.Generators;
+using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
-using DoctorFAM.Data.Repository;
+using DoctorFAM.Application.StaticTools;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.HealthCenters;
 using DoctorFAM.Domain.Entities.Organization;
+using DoctorFAM.Domain.Entities.WorkAddress;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.Interfaces.EFCore;
-using DoctorFAM.Domain.ViewModels.Admin.Doctor;
 using DoctorFAM.Domain.ViewModels.Admin.HealthCenter;
+using DoctorFAM.Domain.ViewModels.HealthCenters.HealthCentersInfo;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace DoctorFAM.Application.Services.Implementation;
@@ -19,14 +25,17 @@ public class HealthCentersService : IHealthCentersService
     private readonly IHealthCentersRepository _healthCentersRepository;
     private readonly IOrganizationService _organizationService;
     private readonly IWorkAddressRepository _workAddressRepository;
+    private readonly IUserService _userService;
 
     public HealthCentersService(IHealthCentersRepository healthCentersRepository, 
-                                IOrganizationService organizationService , 
-                                IWorkAddressRepository workAddressRepository)
+                                IOrganizationService organizationService,
+                                IWorkAddressRepository workAddressRepository,
+                                IUserService userService )
     {
         _healthCentersRepository = healthCentersRepository;
         _organizationService = organizationService;
         _workAddressRepository = workAddressRepository;
+        _userService = userService;
     }
 
     #endregion
@@ -228,7 +237,7 @@ public class HealthCentersService : IHealthCentersService
 
         var healthCenterOffice = await _organizationService.GetHealthCenterOrganizationByUserId(healthCenter.UserId);
         if (healthCenterOffice == null) return null;
-        if (healthCenterOffice.OrganizationType != Domain.Enums.Organization.OrganizationType.Nurse) return null;
+        if (healthCenterOffice.OrganizationType != Domain.Enums.Organization.OrganizationType.HealthCenter) return null;
 
         #endregion
 
@@ -281,7 +290,7 @@ public class HealthCentersService : IHealthCentersService
 
         var healthCenterOffice = await _organizationService.GetHealthCenterOrganizationByUserId(healthCenter.UserId);
         if (healthCenterOffice == null) return EditHealthCenterInfoResult.faild;
-        if (healthCenterOffice.OrganizationType != Domain.Enums.Organization.OrganizationType.Nurse) return EditHealthCenterInfoResult.faild;
+        if (healthCenterOffice.OrganizationType != Domain.Enums.Organization.OrganizationType.HealthCenter) return EditHealthCenterInfoResult.faild;
 
         #endregion
 
@@ -317,6 +326,426 @@ public class HealthCentersService : IHealthCentersService
         #endregion
 
         return EditHealthCenterInfoResult.success;
+    }
+
+    //Fill Manage Health Center Info ViewModel
+    public async Task<ManageHealthCentersInfoViewModel?> FillManageHealthCentersInfoViewModel(ulong userId)
+    {
+        #region Check Is User Exist 
+
+        var user = await _userService.GetUserByIdWithAsNoTracking(userId);
+        if (user == null) return null;
+
+        #endregion
+
+        #region Get Current Health Center Office
+
+        var healthCenterOffice = await _organizationService.GetHealthCenterOrganizationByUserId(userId);
+        if (healthCenterOffice == null) return null;
+
+        #endregion
+
+        #region Get User Office Address
+
+        var workAddress = await _workAddressRepository.GetUserWorkAddressByIdWithAsNoTracking(userId);
+
+        #endregion
+
+        #region Exist Health Center Information
+
+        //Is Exist Health Center Informations
+        if (await _healthCentersRepository.IsExistAnyHealthCenterInfoByUserId(userId).AnyAsync())
+        {
+            //Get Current Health Center Information
+            var doctorInfo = await _healthCentersRepository.GetHealthCentersInformationByUserId(userId)
+                                                           .FirstOrDefaultAsync();
+
+            //Fill Model For return Value
+            ManageHealthCentersInfoViewModel model = new ManageHealthCentersInfoViewModel()
+            {
+                UserId = userId,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                HealthCentersInfosType = healthCenterOffice.OrganizationInfoState,
+                Education = doctorInfo.Education,
+                NationalCode = doctorInfo.NationalCode,
+                Gender = doctorInfo.Gender,
+                RejectDescription = healthCenterOffice.RejectDescription,
+                GeneralPhone = doctorInfo.GeneralPhone,
+                FatherName = user.FatherName,
+                username = user.Username,
+                Mobile = user.Mobile,
+                Email = user.Email,
+                HomePhoneNumber = user.HomePhoneNumber,
+                AvatarName = user.Avatar
+            };
+
+            if (user.BithDay != null && user.BithDay.HasValue)
+            {
+                model.BithDay = user.BithDay.Value.ToShamsi();
+            }
+
+            //Fill Health Center Cilinic Address
+            if (workAddress != null)
+            {
+                model.WorkAddress = workAddress.Address;
+                model.CountryId = workAddress.CountryId;
+                model.StateId = workAddress.StateId;
+                model.CityId = workAddress.CityId;
+            }
+
+            return model;
+        }
+
+        #endregion
+
+        #region Not Exist Dentist Information
+
+        else
+        {
+            //This Is First Time For Come in To This Action 
+            ManageHealthCentersInfoViewModel model = new ManageHealthCentersInfoViewModel()
+            {
+                UserId = userId
+            };
+
+            return model;
+        }
+
+        #endregion
+    }
+
+    //Add Or Edit Health Center Info Health Center Panel 
+    public async Task<AddOrEditHealthCenterstInfoResult> AddOrEditHealthCenterInfoDentistsPanel(ManageHealthCentersInfoViewModel model, IFormFile? UserAvatar)
+    {
+        #region Get User By User Id
+
+        var user = await _userService.GetUserById(model.UserId);
+
+        if (user == null) return AddOrEditHealthCenterstInfoResult.Faild;
+        if (model.UserId != model.UserId) return AddOrEditHealthCenterstInfoResult.Faild;
+        if (UserAvatar != null && !UserAvatar.IsImage()) return AddOrEditHealthCenterstInfoResult.NotValidImage;
+        if (UserAvatar != null)
+        {
+            if (!string.IsNullOrEmpty(user.Avatar))
+            {
+                user.Avatar.DeleteImage(PathTools.UserAvatarPathServer, PathTools.UserAvatarPathThumbServer);
+            }
+
+            var imageName = CodeGenerator.GenerateUniqCode() + Path.GetExtension(UserAvatar.FileName);
+            UserAvatar.AddImageToServer(imageName, PathTools.UserAvatarPathServer, 270, 270, PathTools.UserAvatarPathThumbServer);
+            user.Avatar = imageName;
+        }
+        if (!string.IsNullOrEmpty(model.Email))
+        {
+            if (!await _userService.IsValidEmailForUserEditByAdmin(model.Email, user.Id))
+            {
+                return AddOrEditHealthCenterstInfoResult.NotValidEmail;
+            }
+        }
+        if (string.IsNullOrEmpty(model.NationalCode))
+        {
+            return AddOrEditHealthCenterstInfoResult.NationalId;
+        }
+        if (!string.IsNullOrEmpty(model.NationalCode) && !await _userService.IsValidNationalIdForUserEditByAdmin(model.NationalCode, user.Id))
+        {
+            return AddOrEditHealthCenterstInfoResult.NotValidNationalId;
+        }
+
+        #endregion
+
+        #region Get Current Health Center Office
+
+        var HealthCenterOffice = await _organizationService.GetHealthCenterOrganizationByUserId(model.UserId);
+        if (HealthCenterOffice == null) return AddOrEditHealthCenterstInfoResult.Faild;
+
+        #endregion
+
+        #region Get Health Center By User Id 
+
+        //Get Health Center By UserId
+        var healthCenter= await _healthCentersRepository.GetHealthCenterByUserId(user.Id)
+                                                    .FirstOrDefaultAsync();
+
+        if (healthCenter == null) return AddOrEditHealthCenterstInfoResult.Faild;
+
+        #endregion
+
+        #region Is Exist Informations
+
+        var existInfo = await _healthCentersRepository.IsExistAnyHealthCenterInfoByUserId(model.UserId)
+                                                      .AnyAsync();
+
+        #endregion
+
+        #region Edit Info
+
+        if (existInfo == true)
+        {
+            #region Update Properties
+
+            //Get Current Health Center Information
+            var info = await _healthCentersRepository.GetHealthCentersInformationByUserId(model.UserId)
+                                                           .FirstOrDefaultAsync();
+
+            //Edit Properties 
+            info.Education = model.Education.SanitizeText();
+            info.NationalCode = model.NationalCode;
+            info.Gender = model.Gender;
+            info.GeneralPhone = model.GeneralPhone;
+
+            //Update Doctor Office State 
+            HealthCenterOffice.OrganizationInfoState = OrganizationInfoState.WatingForConfirm;
+
+            #region Update User
+
+            user.FirstName = model.FirstName.SanitizeText();
+            user.LastName = model.LastName.SanitizeText();
+            user.FatherName = model.FatherName.SanitizeText();
+            user.Email = model.Email.SanitizeText();
+            user.BithDay = model.BithDay.ToMiladiDateTime();
+            user.NationalId = model.NationalCode.SanitizeText();
+            user.ExtraPhoneNumber = model.GeneralPhone.SanitizeText();
+            user.Username = model.username;
+            user.HomePhoneNumber = model.HomePhoneNumber;
+
+            await _userService.UpdateUserWithoutSaveChanges(user);
+
+            #endregion
+
+            #endregion
+
+            #region Update Doctor Address
+
+            var doctorAddress = await _workAddressRepository.GetUserWorkAddressByIdWithAsNoTracking(model.UserId);
+
+            if (doctorAddress != null && !string.IsNullOrEmpty(model.WorkAddress))
+            {
+                doctorAddress.Address = model.WorkAddress;
+                doctorAddress.CountryId = model.CountryId.Value;
+                doctorAddress.StateId = model.StateId.Value;
+                doctorAddress.CityId = model.CityId.Value;
+
+                await _workAddressRepository.UpdateUserWorkAddressWithoutSaveChanges(doctorAddress);
+            }
+
+            if (doctorAddress == null && !string.IsNullOrEmpty(model.WorkAddress))
+            {
+                WorkAddress workAddress = new WorkAddress()
+                {
+                    Address = model.WorkAddress,
+                    CountryId = model.CountryId.Value,
+                    CityId = model.CityId.Value,
+                    StateId = model.StateId.Value,
+                    UserId = model.UserId,
+                    CreateDate = DateTime.Now,
+                };
+
+                await _workAddressRepository.AddWorkAddressWithoutSaveChanges(workAddress);
+            }
+
+            #endregion
+
+            #region Update Methods
+
+            _healthCentersRepository.UpdateHealthCenterInfo(info);
+
+            //The Last Save Changes In This Method 
+            await _organizationService.UpdateOrganization(HealthCenterOffice);
+
+            #endregion
+        }
+
+        #endregion
+
+        #region Add Info
+
+        if (existInfo == false)
+        {
+            if (healthCenter != null )
+            {
+                #region Fill View Model
+
+                HealthCentersInfo manageHealthCentersInfoViewModel1 = new HealthCentersInfo()
+                {
+                    HealthCenterId = healthCenter.Id,
+                    UserId = model.UserId,
+                    Education = model.Education.SanitizeText(),
+                    NationalCode = model.NationalCode,
+                    Gender = model.Gender,
+                    GeneralPhone = model.GeneralPhone,
+                };
+
+                #endregion
+
+                #region Update User Infos 
+
+                user.FatherName = model.FatherName.SanitizeText();
+                user.Email = model.Email.SanitizeText();
+                user.BithDay = model.BithDay.ToMiladiDateTime();
+                user.NationalId = model.NationalCode.SanitizeText();
+                user.ExtraPhoneNumber = model.GeneralPhone.SanitizeText();
+                user.Username = model.username;
+                user.HomePhoneNumber = model.HomePhoneNumber;
+
+                await _userService.UpdateUserWithoutSaveChanges(user);
+
+                #endregion
+
+                #region Add Doctor Address
+
+                if (model.WorkAddress != null)
+                {
+                    WorkAddress workAddress = new WorkAddress()
+                    {
+                        Address = model.WorkAddress,
+                        CountryId = model.CountryId.Value,
+                        CityId = model.CityId.Value,
+                        StateId = model.StateId.Value,
+                        UserId = model.UserId,
+                        CreateDate = DateTime.Now,
+                    };
+
+                    await _workAddressRepository.AddWorkAddressWithoutSaveChanges(workAddress);
+                }
+
+                #endregion
+
+                #region Update Dentist Office
+
+                HealthCenterOffice.OrganizationInfoState = OrganizationInfoState.WatingForConfirm;
+
+                #endregion
+
+                #region Update Methods
+
+                await _healthCentersRepository.AddHealthCenterInfo(manageHealthCentersInfoViewModel1);
+
+                //Last Save Changes 
+                await _organizationService.UpdateOrganization(HealthCenterOffice);
+
+                #endregion
+            }
+            else
+            {
+                #region Add HealthCenter
+
+                HealthCenter newHealthCenter = new HealthCenter()
+                {
+                    CreateDate = DateTime.Now,
+                    UserId = user.Id,
+                    IsDelete = false
+                };
+
+                var newHealthCenterId = await _healthCentersRepository.AddHealthCenterWithReturningId(newHealthCenter);
+
+                #endregion
+
+                #region Add Dentist Address
+
+                if (model.WorkAddress != null)
+                {
+                    WorkAddress workAddress = new WorkAddress()
+                    {
+                        Address = model.WorkAddress,
+                        CountryId = model.CountryId.Value,
+                        CityId = model.CityId.Value,
+                        StateId = model.StateId.Value,
+                        UserId = model.UserId,
+                        CreateDate = DateTime.Now,
+                    };
+
+                    await _workAddressRepository.AddWorkAddressWithoutSaveChanges(workAddress);
+                }
+
+                #endregion
+
+                #region Organization Entity
+
+                #region Fill Organization Model
+
+                Organization organization = new Organization()
+                {
+                    CreateDate = DateTime.Now,
+                    IsDelete = false,
+                    OrganizationInfoState = OrganizationInfoState.JustRegister,
+                    OrganizationType = Domain.Enums.Organization.OrganizationType.HealthCenter,
+                    OwnerId = model.UserId,
+                };
+
+                #endregion
+
+                #region Add Method
+
+                var organizationId = await _organizationService.AddOrganizationWithReturnId(organization);
+
+                #endregion
+
+                #endregion
+
+                #region Organization Member
+
+                #region Fill Model 
+
+                OrganizationMember member = new OrganizationMember()
+                {
+                    CreateDate = DateTime.Now,
+                    IsDelete = false,
+                    OrganizationId = organizationId,
+                    UserId = model.UserId,
+                };
+
+                #endregion
+
+                #region Add Organization Member
+
+                await _organizationService.AddOrganizationMember(member);
+
+                #endregion
+
+                #endregion
+
+                #region Fill View Model
+
+                HealthCentersInfo manageHealthCentersInfoViewModel = new HealthCentersInfo()
+                {
+                    HealthCenterId = newHealthCenter.Id,
+                    UserId = model.UserId,
+                    Education = model.Education.SanitizeText(),
+                    NationalCode = model.NationalCode,
+                    GeneralPhone = model.GeneralPhone,
+                };
+
+                #endregion
+
+                #region Update User Info 
+
+                user.FirstName = model.FirstName;
+                user.LastName = model.LastName;
+                user.FatherName = model.FatherName.SanitizeText();
+                user.Email = model.Email.SanitizeText();
+                user.BithDay = model.BithDay.ToMiladiDateTime();
+                user.NationalId = model.NationalCode.SanitizeText();
+                user.ExtraPhoneNumber = model.GeneralPhone.SanitizeText();
+                user.Username = model.username;
+                user.HomePhoneNumber = model.HomePhoneNumber;
+
+                await _userService.UpdateUserWithoutSaveChanges(user);
+
+                #endregion
+
+                #region Update Methods
+
+                await _healthCentersRepository.AddHealthCenterInfo(manageHealthCentersInfoViewModel);
+                await _healthCentersRepository.SaveChangesAsync();
+
+                #endregion
+            }
+        }
+
+        #endregion
+
+        return AddOrEditHealthCenterstInfoResult.Success;
     }
 
     #endregion

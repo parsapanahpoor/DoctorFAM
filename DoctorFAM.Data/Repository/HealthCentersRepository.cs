@@ -149,10 +149,18 @@ public class HealthCentersRepository : IHealthCentersRepository
     }
 
     //Get Health Center By Health Center Id
-    public IQueryable<HealthCenter?> GetHealthCenterById(ulong nurseId)
+    public IQueryable<HealthCenter?> GetHealthCenterById(ulong id)
     {
         return  _context.HealthCenters
-                        .Where(p => !p.IsDelete && p.Id == nurseId)
+                        .Where(p => !p.IsDelete && p.Id == id)
+                        .AsQueryable();
+    }
+
+    //Get Health Center By Health Center User Id
+    public IQueryable<HealthCenter?> GetHealthCenterByUserId(ulong userId)
+    {
+        return _context.HealthCenters
+                        .Where(p => !p.IsDelete && p.UserId == userId)
                         .AsQueryable();
     }
 
@@ -160,6 +168,39 @@ public class HealthCentersRepository : IHealthCentersRepository
     public void UpdateHealthCenterInfo(HealthCentersInfo model)
     {
         _context.HealthCentersInfos.Update(model);
+    }
+
+    //Update Method 
+    public async Task AddHealthCenterInfo(HealthCentersInfo model)
+    {
+        await _context.HealthCentersInfos.AddAsync(model);
+    }
+
+    //Is Exist Any Health Center Info By UserId
+    public IQueryable<HealthCentersInfo> IsExistAnyHealthCenterInfoByUserId(ulong userId)
+    {
+        return _context.HealthCentersInfos
+                             .AsNoTracking()
+                             .Where(p => !p.IsDelete && p.UserId == userId)
+                             .AsQueryable();
+    }
+
+    //Get Health Centers Information By UserId
+    public IQueryable<HealthCentersInfo?> GetHealthCentersInformationByUserId(ulong userId)
+    {
+        return _context.HealthCentersInfos
+                             .AsNoTracking()
+                             .Where(p => p.UserId == userId && !p.IsDelete)
+                             .AsQueryable();
+    }
+
+    //Add Health Center With Returning Id 
+    public async Task<ulong> AddHealthCenterWithReturningId(HealthCenter healthCenter)
+    {
+        await _context.HealthCenters.AddAsync(healthCenter);
+        await SaveChangesAsync();
+
+        return healthCenter.Id;
     }
 
     #endregion

@@ -1593,6 +1593,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <_ContentIncludedByDefault Remove="Areas\Admin\Views\HealthCenters\HealthCenterInfoDetail.cshtml" />
 	  <_ContentIncludedByDefault Remove="Areas\Admin\Views\SiteSetting\ListOfInsulin.cshtml" />
 	</ItemGroup>
 
@@ -1621,6 +1622,10 @@
 	  <TypeScriptCompile Include="wwwroot\common\sweetalert\modules\state.ts" />
 	  <TypeScriptCompile Include="wwwroot\common\sweetalert\modules\utils.ts" />
 	  <TypeScriptCompile Include="wwwroot\common\sweetalert\sweetalert.d.ts" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Areas\Admin\Views\HealthCenters\HealthCenterInfoDetail.cshtml" />
 	</ItemGroup>
 
 </Project>

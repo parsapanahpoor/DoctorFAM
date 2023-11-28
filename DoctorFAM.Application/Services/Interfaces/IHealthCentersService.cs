@@ -1,6 +1,8 @@
 ﻿using DoctorFAM.Application.DTOs.HealthCenters.HealthCentersInfos;
 using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.ViewModels.Admin.HealthCenter;
+using DoctorFAM.Domain.ViewModels.HealthCenters.HealthCentersInfo;
+using Microsoft.AspNetCore.Http;
 
 namespace DoctorFAM.Application.Services.Interfaces;
 
@@ -31,6 +33,12 @@ public interface IHealthCentersService
 
     //Edit HealthCenter Info From Admin Panel
     Task<EditHealthCenterInfoResult> EditHealthCenterInfoAdminSide(HealthCenterInfoDetailViewModel model);
+
+    //Fill Manage Health Center Info ViewModel
+    Task<ManageHealthCentersInfoViewModel?> FillManageHealthCentersInfoViewModel(ulong userId);
+
+    //Add Or Edit Health Center Info Health Center Panel 
+    Task<AddOrEditHealthCenterstInfoResult> AddOrEditHealthCenterInfoDentistsPanel(ManageHealthCentersInfoViewModel model, IFormFile? UserAvatar);
 
     #endregion
 }

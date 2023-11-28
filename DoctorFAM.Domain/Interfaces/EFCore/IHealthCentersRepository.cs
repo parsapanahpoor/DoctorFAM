@@ -36,10 +36,25 @@ public interface IHealthCentersRepository
     IQueryable<HealthCenter> GetHealthCenterByHealthCenterId(ulong healthCenterId);
 
     //Get Health Center By Health Center Id
-    IQueryable<HealthCenter?> GetHealthCenterById(ulong nurseId);
+    IQueryable<HealthCenter?> GetHealthCenterById(ulong id);
+
+    //Get Health Center By Health Center User Id
+    IQueryable<HealthCenter?> GetHealthCenterByUserId(ulong userId);
 
     //Update Method 
     void UpdateHealthCenterInfo(HealthCentersInfo model);
+
+    //Is Exist Any Health Center Info By UserId
+    IQueryable<HealthCentersInfo> IsExistAnyHealthCenterInfoByUserId(ulong userId);
+
+    //Get Health Centers Information By UserId
+    IQueryable<HealthCentersInfo?> GetHealthCentersInformationByUserId(ulong userId);
+
+    //Update Method 
+    Task AddHealthCenterInfo(HealthCentersInfo model);
+
+    //Add Health Center With Returning Id 
+    Task<ulong> AddHealthCenterWithReturningId(HealthCenter healthCenter);
 
     #endregion
 }
