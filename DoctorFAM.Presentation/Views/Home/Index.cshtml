@@ -495,9 +495,11 @@
                     <div class="row no-gutters box-shadow">
                         <div class="col-md-5 theme-bg p-5">
 
-                            <cache expires-after="@TimeSpan.FromDays(1)">
+                           @* <cache expires-after="@TimeSpan.FromDays(1)">
                                 @await Component.InvokeAsync("CooperationRequest")
-                            </cache>
+                            </cache>*@
+
+                                @await Component.InvokeAsync("CooperationRequest")
 
                         </div>
                         <div class="col-md-1"></div>

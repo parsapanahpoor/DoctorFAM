@@ -322,6 +322,11 @@
                                                                     <a asp-action="Index" asp-area="Tourist" asp-controller="Home" class="dropdown-item "> پنل گردشگری</a>
                                                                 }
 
+                                                                @if (ViewBag.HealthCenter == true)
+                                                                {
+                                                                    <a asp-action="Index" asp-area="HealthCenters" asp-controller="Home" class="dropdown-item "> پنل مراکز درمانی</a>
+                                                                }
+
                                                                 <a asp-action="Index" asp-area="Chatroom" asp-controller="Home" class="dropdown-item dropdown-itemuserpanel" style="color: green;">ورود به پیام رسان</a>
 
                                                                 <a asp-action="Logout" asp-controller="Account" class="dropdown-item"> خروج</a>

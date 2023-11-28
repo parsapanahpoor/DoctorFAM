@@ -58,6 +58,7 @@ using DoctorFAM.Domain.Entities.Tourism;
 using DoctorFAM.Domain.Enums.Tourist;
 using DoctorFAM.Domain.Entities.Tourism.Token;
 using DoctorFAM.Domain.Entities.UsersBankAccount;
+using DoctorFAM.Domain.Entities.HealthCenters;
 
 
 #endregion
@@ -573,6 +574,14 @@ public class DoctorFAMDbContext : Microsoft.EntityFrameworkCore.DbContext
 
     #endregion
 
+    #region Health Center
+
+    public DbSet<HealthCentersInfo> HealthCentersInfos { get; set; }
+
+    public DbSet<HealthCenter> HealthCenters{ get; set; }
+
+    #endregion
+
     #endregion
 
     #region On Model Creating
@@ -829,6 +838,16 @@ public class DoctorFAMDbContext : Microsoft.EntityFrameworkCore.DbContext
             Id = 21,
             Title = "Tourism",
             RoleUniqueName = "Tourism",
+            CreateDate = DateTime.Now,
+            IsDelete = false,
+            ParentId = null
+        });
+
+        modelBuilder.Entity<Role>().HasData(new Role
+        {
+            Id = 22,
+            Title = "HealthCenter",
+            RoleUniqueName = "HealthCenter",
             CreateDate = DateTime.Now,
             IsDelete = false,
             ParentId = null

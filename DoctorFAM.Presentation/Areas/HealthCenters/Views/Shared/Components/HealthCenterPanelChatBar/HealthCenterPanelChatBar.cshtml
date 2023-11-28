@@ -1,0 +1,94 @@
+﻿@model List<DoctorFAM.Domain.DTOs.HealthCenters.Notification.HealthCenterNotificationDTO>
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Domain.ViewModels.Common
+
+<!-- Chat Bar -->
+<div id="chatbar" class="page-chatbar">
+    <div class="chatbar-contacts">
+
+        <div class="contacts-search" style="margin-top:10px">
+            <div class="col-md-6">
+                <a style="margin:0px 0px 0px 0px" class="col-md-12 btn btn-labeled btn-warning refresh" id="refresh-toggler" href="">
+                    <i class="btn-label glyphicon glyphicon-refresh"></i>بروز رسانی
+                </a>
+            </div>
+            <div class="col-md-6">
+                <a asp-action="SeenNotificationsByUserId" asp-area="Doctor" asp-controller="Notification" style="margin:0px 0px 0px 0px" class="col-md-12 btn btn-labeled btn-danger">
+                    <i class="btn-label glyphicon glyphicon-trash"></i>پاک کردن
+                </a>
+            </div>
+        </div>
+
+        <ul class="contacts-list">
+            @foreach (var item in Model)
+            {
+                if (Model != null && Model.Any())
+                {
+                    <li class="contact" style="pointer-events:none">
+                        <div class="contact-avatar">
+                            <img src="@item.User.UserAvatar.GetUserAvatar()" />
+                        </div>
+                        <div class="contact-info">
+
+                            <div class="contact-name">
+                                <div class="row">
+                                    <div class="col-md-12">@item.User.Username</div>
+                                    @* <div class="col-md-6">
+                            <div class=" palegreen" style="margin-right:75px;">
+                            <i class="stat-icon icon-xlg fa fa-phone"></i>
+                            </div>
+                            </div>*@
+                                </div>
+                            </div>
+
+                            <div class="contact-status" style="margin-bottom: 25px;">
+                                <div class="status">@item.CreateDate.Hour.ToString("00"):@item.CreateDate.Minute.ToString("00") - @item.CreateDate.ToShamsi() </div>
+                            </div>
+                            <div class="last-chat-time">
+                                @if (item.SupporterNotificationText == DoctorFAM.Domain.Enums.Notification.SupporterNotificationText.TakeReservation)
+                                {
+                                    <div>نوبت دریافت شده از پزشک</div>
+                                }
+                                @if (item.SupporterNotificationText == DoctorFAM.Domain.Enums.Notification.SupporterNotificationText.FamilyHomeRequest)
+                                {
+                                    <div>درخواست برای پزشک خانواده</div>
+                                }
+                                @if (item.SupporterNotificationText == DoctorFAM.Domain.Enums.Notification.SupporterNotificationText.OnlineVisitRequest)
+                                {
+                                    <div>ثبت درخواست برای ویزیت آنلاین</div>
+                                }
+                                @if (item.SupporterNotificationText == DoctorFAM.Domain.Enums.Notification.SupporterNotificationText.NewArrivalOnlineVisitMessage)
+                                {
+                                    <div>پیام جدید از درخواست ویزیت آنلاین</div>
+                                }
+                                @if (item.SupporterNotificationText == DoctorFAM.Domain.Enums.Notification.SupporterNotificationText.HomeVisitRequest)
+                                {
+                                    <div>درخواست برای ویزیت درمنزل</div>
+                                }  
+                                @if (item.SupporterNotificationText == DoctorFAM.Domain.Enums.Notification.SupporterNotificationText.AcceptHomeVisitRequestFromUser)
+                                {
+                                    <div>تایید درخواست ویزیت درمنزل از طرف کاربر</div>
+                                }
+                                @if (item.SupporterNotificationText == DoctorFAM.Domain.Enums.Notification.SupporterNotificationText.DeclineHomeVisitRequestFromUser)
+                                {
+                                    <div>رد پزشک متقاضی ویزیت در منزل توسط کاربر</div>
+                                }
+                                @if (item.SupporterNotificationText == DoctorFAM.Domain.Enums.Notification.SupporterNotificationText.CancelHomeVisitRequest)
+                                {
+                                    <div>لغو درخواست ویزیت در منزل از طرف کاربر</div>
+                                }
+                                @if (item.SupporterNotificationText == DoctorFAM.Domain.Enums.Notification.SupporterNotificationText.NewArrivalDeathCertificateRequest)
+                                {
+                                    <div>درخواست برای صدور گواهی فوت</div>
+                                }
+                            </div>
+                        </div>
+                    </li>
+                }
+            }
+        </ul>
+    </div>
+
+</div>
+<!-- /Chat Bar -->

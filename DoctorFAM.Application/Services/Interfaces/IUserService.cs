@@ -104,6 +104,9 @@ public interface IUserService
     //Register Tourism
     Task TourismConsultant(string mobile);
 
+    //Register Health Center
+    Task HealthCenterConsultant(string mobile);
+
     Task RegisterDoctors(string mobile);
 
     Task RegisterPharmacy(string mobile);
