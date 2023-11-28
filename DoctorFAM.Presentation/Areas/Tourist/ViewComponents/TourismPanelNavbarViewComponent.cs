@@ -60,6 +60,8 @@ namespace DoctorFAM.Web.Areas.Tourism.ViewComponents
                     if (userRole.Contains("DentistOfficeEmployee")) ViewBag.Dentist = true;
 
                     if (userRole.Contains("Tourism")) ViewBag.Tourism = true;
+
+                    if (userRole.Contains("HealthCenter")) ViewBag.HealthCenter = true;
                 }
 
             }

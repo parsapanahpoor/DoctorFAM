@@ -37,7 +37,7 @@ public class  AccountController : SiteBaseController
 
     [HttpGet("Register")]
     [RedirectHomeIfLoggedInActionFilter]
-    public IActionResult Register(bool? doctors, bool? seller, bool? pharmacy, bool? nurse, bool? consultant, bool? Labratory, string? mobile , bool? Dentist , bool? tourism)
+    public IActionResult Register(bool? doctors, bool? seller, bool? pharmacy, bool? nurse, bool? consultant, bool? Labratory, string? mobile , bool? Dentist , bool? tourism , bool? HealthCenter)
     {
         #region About Doctors & Seller & Pharmacy
 
@@ -56,6 +56,8 @@ public class  AccountController : SiteBaseController
         ViewBag.Dentist = Dentist;
 
         ViewBag.Tourism = tourism;
+
+        ViewBag.HealthCenter = HealthCenter;
 
         #endregion
 
@@ -195,6 +197,15 @@ public class  AccountController : SiteBaseController
                 if (register.TourismRegister == true)
                 {
                     await _userService.TourismConsultant(register.Mobile);
+                }
+
+                #endregion
+
+                #region Health Center Register
+
+                if (register.HealthCenterRegister == true)
+                {
+                    await _userService.HealthCenterConsultant(register.Mobile);
                 }
 
                 #endregion
@@ -712,6 +723,13 @@ public class  AccountController : SiteBaseController
                     TempData[SuccessMessage] = "درخواست ارتقای سطح شما باموفقیت ثبت شده است.";
                     return RedirectToAction("Index", "Home", new { area = "Tourist" });
                 }
+
+                //If User Select HealthCenter Role 
+                if (model.RoleName == "HealthCenter")
+                {
+                    TempData[SuccessMessage] = "درخواست ارتقای سطح شما باموفقیت ثبت شده است.";
+                    return RedirectToAction("Index", "Home", new { area = "HealthCenters" });
+                }
             }
         }
 
@@ -741,6 +759,9 @@ public class  AccountController : SiteBaseController
 
             //If User Select Dentist Role 
             if (model.RoleName == "Dentist") return RedirectToAction("Register", "Account", new { Dentist = true, mobile = model.Mobile });
+
+            //If User Select Health Center Role 
+            if (model.RoleName == "HealthCenter") return RedirectToAction("Register", "Account", new { HealthCenter = true, mobile = model.Mobile });
         }
 
         #endregion

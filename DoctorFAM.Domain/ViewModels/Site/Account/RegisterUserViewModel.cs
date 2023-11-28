@@ -42,6 +42,8 @@ namespace DoctorFAM.Domain.ViewModels.Account
 
         public bool? TourismRegister { get; set; }
 
+        public bool? HealthCenterRegister { get; set; }
+
         public bool SiteRoles { get; set; }
     }
 

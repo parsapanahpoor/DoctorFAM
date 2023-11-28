@@ -28,6 +28,9 @@ namespace DoctorFAM.Domain.Enums.Organization
         DentistOffice,
 
         [Display(Name = "Tourism")]
-        Tourism
+        Tourism,
+
+        [Display(Name = "HealthCenter")]
+        HealthCenter,
     }
 }

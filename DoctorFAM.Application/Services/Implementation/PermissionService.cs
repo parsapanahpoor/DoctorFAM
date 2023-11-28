@@ -23,13 +23,19 @@ public class PermissionService : IPermissionService
     public DoctorFAMDbContext _context { get; set; }
     public IDoctorsService _doctorsService;
     public IDentistService _dentistService;
+    private readonly IHealthCentersService _healthCentersService;
 
-    public PermissionService(DoctorFAMDbContext context, IUserService userServie, IDoctorsService doctorsService , IDentistService dentistService)
+    public PermissionService(DoctorFAMDbContext context, 
+                             IUserService userServie, 
+                             IDoctorsService doctorsService , 
+                             IDentistService dentistService , 
+                             IHealthCentersService healthCentersService)
     {
         _context = context;
         _userService = userServie;
         _doctorsService = doctorsService;
         _dentistService = dentistService;
+        _healthCentersService = healthCentersService;
     }
 
     #endregion
@@ -40,6 +46,12 @@ public class PermissionService : IPermissionService
     public async Task<DentistSideBarViewModel> GetDentistSideBarInfo(ulong userId)
     {
         return await _dentistService.GetDentistSideBarInfo(userId);
+    }
+
+    //Get Health Centers Side Bar Info
+    public async Task<DoctorFAM.Domain.ViewModels.HealthCenters.SideBar.HealthCenterSideBarViewModel> GetHealthCenterSideBarInfo(ulong userId)
+    {
+        return await _healthCentersService.GetHealthCenterSideBarInfo(userId);
     }
 
     public async Task<DoctorSideBarViewModel> GetDoctorsInfosState(ulong userId)
@@ -510,6 +522,11 @@ public class PermissionService : IPermissionService
                         returnModel.Add("Tourism");
                     }
 
+                    if (roleName == "HealthCenter")
+                    {
+                        returnModel.Add("HealthCenter");
+                    }
+
                     #endregion
                 }
             }
@@ -605,6 +622,20 @@ public class PermissionService : IPermissionService
         return false;
     }
 
+    //Check Is User Has Permission To HealthCenter Panel 
+    public async Task<bool> IsUserHealthCenter(ulong userId)
+    {
+        var result = await GetUserRolesesWithAsNoTracking(userId);
+
+        if (result == null || !result.Any()) return false;
+
+        if (result.Contains("Admin")) return true;
+
+        if (result.Contains("HealthCenter")) return true;
+
+        return false;
+    }
+
     //Check Is User Has Permission To Dentist Panel 
     public async Task<bool> IsUserDentistOrDentistEmployee(ulong userId)
     {
@@ -617,6 +648,20 @@ public class PermissionService : IPermissionService
         if (result.Contains("Dentist")) return true;
 
         if (result.Contains("DentistOfficeEmployee")) return true;
+
+        return false;
+    }
+
+    //Check Is User Has Permission To Health Center Panel 
+    public async Task<bool> IsUserHealthCenterEmployee(ulong userId)
+    {
+        var result = await GetUserRolesesWithAsNoTracking(userId);
+
+        if (result == null || !result.Any()) return false;
+
+        if (result.Contains("Admin")) return true;
+
+        if (result.Contains("HealthCenter")) return true;
 
         return false;
     }

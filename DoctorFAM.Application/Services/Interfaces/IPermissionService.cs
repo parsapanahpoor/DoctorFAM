@@ -18,6 +18,9 @@ public interface IPermissionService
 
     Task<bool> HasUserPermission(ulong userId, string permissionName);
 
+    //Get Health Centers Side Bar Info
+    Task<Domain.ViewModels.HealthCenters.SideBar.HealthCenterSideBarViewModel> GetHealthCenterSideBarInfo(ulong userId);
+
     #endregion
 
     #region Role
@@ -56,11 +59,17 @@ public interface IPermissionService
 
     Task<bool> IsUserDoctorOrDoctorEmployee(ulong userId);
 
+    //Check Is User Has Permission To Health Center Panel 
+    Task<bool> IsUserHealthCenterEmployee(ulong userId);
+
     //Check Is User Has Permission To Dentist Panel 
     Task<bool> IsUserDentist(ulong userId);
 
     //Check Is User Has Permission To Dentist Panel 
     Task<bool> IsUserDentistOrDentistEmployee(ulong userId);
+
+    //Check Is User Has Permission To HealthCenter Panel 
+    Task<bool> IsUserHealthCenter(ulong userId);
 
     Task<bool> IsUserPharmacy(ulong userId);
 

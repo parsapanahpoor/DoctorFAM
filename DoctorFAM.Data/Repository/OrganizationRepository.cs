@@ -3,12 +3,6 @@ using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DoctorFAM.Data.Repository
 {
@@ -213,6 +207,20 @@ namespace DoctorFAM.Data.Repository
             return await _context.Organizations.FirstOrDefaultAsync(p => p.Id == member.OrganizationId && !p.IsDelete && p.OrganizationType == Domain.Enums.Organization.OrganizationType.Nurse);
         }
 
+        //Get Health Center Organization by User Id
+        public async Task<Organization?> GetHealthCenterOrganizationByUserId(ulong userId)
+        {
+            var member = await _context.OrganizationMembers
+                                       .Include(p => p.Organization)
+                                       .FirstOrDefaultAsync(p => !p.IsDelete && 
+                                                            p.UserId == userId && 
+                                                            p.Organization.OrganizationType == Domain.Enums.Organization.OrganizationType.HealthCenter);
+
+            return await _context.Organizations
+                                 .FirstOrDefaultAsync(p => p.Id == member.OrganizationId && 
+                                                      !p.IsDelete && p.OrganizationType == Domain.Enums.Organization.OrganizationType.HealthCenter);
+        }
+
         //Get Consultant Organization by User Id
         public async Task<Organization?> GetConsultantOrganizationByUserId(ulong userId)
         {
@@ -319,6 +327,29 @@ namespace DoctorFAM.Data.Repository
             foreach (var organizationId in organizationIds)
             {
                 if (await _context.Organizations.AsNoTracking().AnyAsync(p=> !p.IsDelete && p.Id == organizationId && p.OrganizationType == Domain.Enums.Organization.OrganizationType.DentistOffice))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        //Is Exist Any Health Center Office Employee By User Id
+        public async Task<bool> IsExistAnyHealthCenterOfficeEmployeeByUserId(ulong userId)
+        {
+            List<ulong>? organizationIds = await _context.OrganizationMembers
+                                                             .AsNoTracking()
+                                                             .Where(p => !p.IsDelete && p.UserId == userId)
+                                                             .Select(p => p.OrganizationId)
+                                                             .ToListAsync();
+
+            //If User Is Not Exist
+            if (organizationIds == null) return false;
+
+            foreach (var organizationId in organizationIds)
+            {
+                if (await _context.Organizations.AsNoTracking().AnyAsync(p => !p.IsDelete && p.Id == organizationId && p.OrganizationType == Domain.Enums.Organization.OrganizationType.HealthCenter))
                 {
                     return true;
                 }
