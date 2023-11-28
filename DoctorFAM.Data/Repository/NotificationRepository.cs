@@ -1,6 +1,7 @@
 ﻿#region Usings
 
 using DoctorFAM.Data.DbContext;
+using DoctorFAM.Domain.DTOs.HealthCenters.Notification;
 using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.Notification;
@@ -13,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -61,9 +63,9 @@ public class NotificationRepository : INotificationRepository
     public async Task<List<SupporterNotification>?> GetListOfSupporterNotificationByUserId(ulong userId)
     {
         return await _context.SupporterNotification
-                             .Include(p=> p.User)
-                             .Where(p=> !p.IsDelete && !p.IsSeen && p.ReciverId == userId)
-                             .OrderByDescending(p=> p.CreateDate)
+                             .Include(p => p.User)
+                             .Where(p => !p.IsDelete && !p.IsSeen && p.ReciverId == userId)
+                             .OrderByDescending(p => p.CreateDate)
                              .Take(10)
                              .ToListAsync();
     }
@@ -137,18 +139,18 @@ public class NotificationRepository : INotificationRepository
     public async Task<List<ListOFDoctorNotificationForShowInDoctorPanelViewModel>?> GetDoctorNotificationByDoctorUserId(ulong doctorUserId)
     {
         return await _context.SupporterNotification.AsNoTracking().Where(p => !p.IsDelete && !p.IsSeen && p.ReciverId == doctorUserId)
-                        .OrderByDescending(p => p.CreateDate) 
-                            .Select(p=> new ListOFDoctorNotificationForShowInDoctorPanelViewModel()
+                        .OrderByDescending(p => p.CreateDate)
+                            .Select(p => new ListOFDoctorNotificationForShowInDoctorPanelViewModel()
                             {
-                                IsSeen= p.IsSeen,
+                                IsSeen = p.IsSeen,
                                 CreateDate = p.CreateDate,
                                 SupporterNotificationText = p.SupporterNotificationText,
-                                User =  _context.Users.AsNoTracking()
-                                        .Where(u=> !u.IsDelete && u.Id == p.UserId)
-                                        .Select(u=> new NotificationSendersInformationsForDoctorPanelViewModel()
+                                User = _context.Users.AsNoTracking()
+                                        .Where(u => !u.IsDelete && u.Id == p.UserId)
+                                        .Select(u => new NotificationSendersInformationsForDoctorPanelViewModel()
                                         {
                                             UserAvatar = u.Avatar,
-                                            UserId= u.Id,
+                                            UserId = u.Id,
                                             Username = u.Username
                                         }).FirstOrDefault()
 
@@ -185,6 +187,36 @@ public class NotificationRepository : INotificationRepository
                              .Take(10)
                              .ToListAsync();
     }
+
+    #endregion
+
+    #region Health Center Panel
+
+    //Get Health Center Notifications
+    public IQueryable<SupporterNotification>? GetListOfHealthCenterPanelNotificationByUserId(ulong userId)
+    {
+        return _context.SupporterNotification
+                             .AsNoTracking()
+                             .Where(p => !p.IsDelete && !p.IsSeen && p.ReciverId == userId)
+                             .OrderByDescending(p => p.CreateDate)
+                             .AsQueryable();
+    }
+
+    //Get Health Center Notification Users Info DTO
+    public HealthCenterNotificationUsersInfoDTO? GetHealthCenterNotificationUsersInfoDTO(ulong userId)
+    {
+        return _context.Users
+                                                                            .AsNoTracking()
+                                                                            .Where(s => !s.IsDelete && s.Id == userId)
+                                                                            .Select(s => new HealthCenterNotificationUsersInfoDTO()
+                                                                            {
+                                                                                Mobile = s.Mobile,
+                                                                                UserAvatar = s.Avatar,
+                                                                                UserId = s.Id,
+                                                                                Username = s.Username,
+                                                                            }).FirstOrDefault();
+    }
+
 
     #endregion
 

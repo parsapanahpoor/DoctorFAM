@@ -15,6 +15,9 @@ namespace DoctorFAM.Application.Services.Interfaces
         //Get Nurse Organization By User Id
         Task<Organization?> GetNurseOrganizationByUserId(ulong userId);
 
+        //Get Health Center Organization by User Id
+        Task<Organization?> GetHealthCenterOrganizationByUserId(ulong userId);
+
         //Check Is Exist Any Nurse By This User Id
         Task<bool> IsExistAnyNurseByUserId(ulong userId);
 
@@ -57,6 +60,9 @@ namespace DoctorFAM.Application.Services.Interfaces
 
         //Get Dentist Organization OwnerId By User Id
         Task<ulong> GetDentistOrganizationOwnerIdByUserId(ulong userId);
+
+        //Is Exist Any Health Center Office Employee By User Id
+        Task<bool> IsExistAnyHealthCenterOfficeEmployeeByUserId(ulong userId);
 
         //Get Consultant Organization OwnerId By User Id
         Task<ulong> GetConsultanttOrganizationOwnerIdByUserId(ulong userId);
