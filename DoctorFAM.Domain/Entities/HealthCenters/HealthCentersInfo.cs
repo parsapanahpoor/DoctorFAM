@@ -21,6 +21,8 @@ public sealed class HealthCentersInfo : BaseEntity
 
     public string? GeneralPhone { get; set; }
 
+    public string HealthCenterImage { get; set; }
+
     #endregion
 
 }
