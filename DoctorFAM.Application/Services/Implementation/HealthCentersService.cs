@@ -252,6 +252,7 @@ public class HealthCentersService : IHealthCentersService
             HealthCenterInfosType= healthCenterOffice.OrganizationInfoState,
             Id = info.Id,
             HealthCenterId = healthCenter.Id,
+            HealthCenterFile = info.HealthCenterImage
         };
 
         #endregion
