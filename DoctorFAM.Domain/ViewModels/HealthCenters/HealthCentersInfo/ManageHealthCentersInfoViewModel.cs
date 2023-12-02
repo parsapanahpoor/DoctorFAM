@@ -82,6 +82,8 @@ public record ManageHealthCentersInfoViewModel
 
     public string? GeneralPhone { get; set; }
 
+    public string? HealthCenterFile { get; set; }
+
     #endregion
 }
 

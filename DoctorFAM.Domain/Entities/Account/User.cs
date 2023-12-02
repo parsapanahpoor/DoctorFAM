@@ -6,6 +6,7 @@ using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.FamilyDoctor;
 using DoctorFAM.Domain.Entities.FamilyDoctor.ParsaSystem;
+using DoctorFAM.Domain.Entities.HealthCenters;
 using DoctorFAM.Domain.Entities.Laboratory;
 using DoctorFAM.Domain.Entities.Notification;
 using DoctorFAM.Domain.Entities.Nurse;
@@ -118,6 +119,8 @@ namespace DoctorFAM.Domain.Entities.Account
         public ICollection<Product.Product> Products { get; set; }
 
         public Doctor Doctors { get; set; }
+
+        public HealthCenter HealthCenter { get; set; }
 
         public Nurse.Nurse Nurse { get; set; }
 
