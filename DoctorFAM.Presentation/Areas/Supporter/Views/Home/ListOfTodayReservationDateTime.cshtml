@@ -2,12 +2,12 @@
 @using DoctorFAM.Application.Extensions
 @using DoctorFAM.Application.Convertors
 
-<div class="col-lg-6 col-md-6 col-xl-12 col-sm-12 col-xs-12">
+<div class="col-lg-12 col-md-12 col-xl-12 col-sm-12 col-xs-12">
     <div class="widget">
 
         <div class="widget-header">
             <i class="widget-icon fa fa-comment"></i>
-            <span class="widget-caption">مراجعه های امروز به پزشک :  @DateTime.Now.ToShamsi()     </span>
+            <h4 class="widget-caption" style="color:red;">مراجعه های امروز به پزشک :  @DateTime.Now.ToShamsi()     </h4>
             <div class="widget-buttons">
                 <div class="row" style="margin-right: -84px;">
 
@@ -51,17 +51,6 @@
                                             @reservation.PatientInfo.Username
                                             <hr />
                                             @reservation.PatientInfo.Mobile
-
-                                            @if (reservation.LogForGetAppoinmentForOtherPeoples != null)
-                                            {
-                                                <hr />
-                                                <span class="">
-                                                    @(!string.IsNullOrEmpty(reservation.LogForGetAppoinmentForOtherPeoples.FirstName) ? reservation.LogForGetAppoinmentForOtherPeoples.FirstName : "")
-                                                    -
-                                                    @(!string.IsNullOrEmpty(reservation.LogForGetAppoinmentForOtherPeoples.LastName) ? reservation.LogForGetAppoinmentForOtherPeoples.LastName : "")
-
-                                                </span>
-                                            }
                                         }
 
 

@@ -1,5 +1,22 @@
 /*--- big screen ----*/
 
+@media screen and  (min-width: 1921px) {
+
+
+    .add-btn {
+        bottom: auto;
+        top: 20px;
+        left: 20px;
+    }
+
+    .edit-phto {
+        bottom: auto;
+        top: 20px;
+        right: 50px;
+    }
+}
+
+
 @media screen and (max-width: 1920px) and (min-width: 1601px) {
     .edit-phto {
         right: 369px;
@@ -64,12 +81,32 @@
     .chat-box {
         right: 294px;
     }
-    .edit-phto {
-        right: 315px;
-        bottom: 125px;
-    }
     .add-btn {
-        bottom: 125px;
+        bottom: auto;
+        top: 20px;
+        left: 20px;
+    }
+
+    .edit-phto {
+        bottom: auto;
+        top: 20px;
+        right: 50px;
+    }
+}
+
+@media screen and (max-width: 1399px) and (min-width: 1282px) {
+    
+
+    .add-btn {
+        bottom: auto;
+        top: 20px;
+        left: 20px;
+    }
+
+    .edit-phto {
+        bottom: auto;
+        top: 20px;
+        right: 50px;
     }
 }
 
@@ -121,6 +158,17 @@
     .row.widget-page {
         padding: 0;
     }
+    .add-btn {
+        bottom: auto;
+        top: 20px;
+        left: 20px;
+    }
+
+    .edit-phto {
+        bottom: auto;
+        top: 20px;
+        right:50px;
+    }
 }
 
 
@@ -138,7 +186,8 @@
         right: 5px;
     }
     .add-btn {
-        bottom: 148px;
+        bottom: auto;
+        top:20px;
         left: 20px;
     }
 	.top-area > ul {
@@ -148,7 +197,8 @@
 	    padding: 0 10px;
 	}
     .edit-phto {
-        bottom: 148px;
+        bottom: auto;
+        top: 20px;
     }
     .pepl-info {
         width: 88.4%;
@@ -364,11 +414,13 @@
         padding: 5px 10px;
     }
     .edit-phto {
-        right: 278px !important;
-        bottom: 140px;
+        right: 50px !important;
+        bottom: auto;
+        top :20px;
     }
     .add-btn {
-        bottom: 140px;
+        bottom: auto;
+        top: 20px;
     }
     .timeline-info > ul li a {
         font-size: 13px;
@@ -617,9 +669,9 @@
         top: 20px;
     }
     .add-btn {
-        bottom: 90px;
+        bottom: auto;
     left: 15px;
-    top: auto;
+    top: 20px;
     }
     .timeline-info > ul li a {
         font-size: 12px;
@@ -670,7 +722,7 @@
     }
     .add-btn {
         bottom: auto;
-        top: 130px;
+        top: 30px;
         z-index: 9;
         left: 30px;
     }
@@ -1755,77 +1807,120 @@
 
 }
 
-@media screen and (max-width: 320px) {
+@media screen and (max-width: 320px) and (min-width: 300px) {
     .user-avatar {
         width: 40%;
     }
+
     #people-list figure {
         width: 20%;
     }
+
     .sidebar .widget ul.recent-photos li {
         width: 32.1%;
         margin-bottom: 4px;
     }
+
     .friend-logo > span {
         font-size: 170px;
     }
+
     .frnds .nav-tabs .nav-item {
         font-size: 14px;
         margin-right: 15px;
     }
+
     .timeline-info > ul li.admin-name {
         left: 128px;
         top: -95px;
     }
+
     .add-btn {
         right: 6px;
         top: 57px;
     }
+
     .feature-photo > .edit-phto {
         top: 10px;
     }
+
     .timeline-info .admin-name > span {
         color: #333;
     }
+
     .timeline-info .admin-name > h5 {
         color: #424242;
         font-size: 20px;
     }
+
     .comet-avatar {
         max-width: 10%;
         width: 10%;
     }
+
     .liked-pages > li {
         max-width: 48%;
         min-width: 48%;
         width: 48%;
     }
+
     .nearby-contct > li {
         padding: 10px;
     }
+
     .pepl-info {
         width: 81%;
     }
-    .pepl-info > h4 {
-        width: auto;
-    }
+
+        .pepl-info > h4 {
+            width: auto;
+        }
+
     .we-video-info > ul li.social-media {
         position: absolute;
         right: 20px;
         top: -41px;
     }
+
     .pepl-info {
         width: 80%;
     }
+
     .delivery-guide {
         margin-bottom: 15px;
     }
+
     .add_to_wishlist {
         margin-bottom: 14px;
     }
+
     nav.breadcrumb {
         width: 100%;
     }
-    .apply-bttons > a{font-size: 13px; padding: 8px 14px;}
 
+    .apply-bttons > a {
+        font-size: 13px;
+        padding: 8px 14px;
+    }
+}
+
+@media screen and (max-width: 299px)  {
+   
+
+    .add-btn {
+        right: 6px;
+        top: 40px;
+    }
+
+    .feature-photo > .edit-phto {
+        top: 10px;
+    }
+
+   
+
+   
+
+    
+
+    
 }
