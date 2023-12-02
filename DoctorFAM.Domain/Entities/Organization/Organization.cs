@@ -2,12 +2,7 @@
 using DoctorFAM.Domain.Entities.Common;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Enums.Organization;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DoctorFAM.Domain.Entities.Organization
 {

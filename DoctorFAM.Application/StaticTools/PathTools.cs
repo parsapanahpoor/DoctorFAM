@@ -79,6 +79,18 @@ public static class PathTools
 
     #endregion
 
+    #region Health Center
+
+    public static readonly string DefaultHealthCenterFile = "/content/images/MediacalFile/DefaultMediacalFile.png";
+
+    public static readonly string HealthCenterFilePath = "/content/images/HealthCenterFile/main/";
+    public static readonly string HealthCenterFilePathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/HealthCenterFile/main/");
+
+    public static readonly string HealthCenterFilePathThumb = "/content/images/HealthCenterFile/thumb/";
+    public static readonly string HealthCenterFilePathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/HealthCenterFile/thumb/");
+
+    #endregion
+
     #region Lab Prescription
 
     public static readonly string LabPrescriptionPath = "/content/images/LabPrescription/main/";

@@ -74,7 +74,7 @@ public class HealthCentersInfoController : HealthCentersBaseController
     }
 
     [HttpPost, ValidateAntiForgeryToken]
-    public async Task<IActionResult> ManageHealthCentersInfo(ManageHealthCentersInfoViewModel model, IFormFile? UserAvatar)
+    public async Task<IActionResult> ManageHealthCentersInfo(ManageHealthCentersInfoViewModel model, IFormFile? UserAvatar, IFormFile? HealthCenterImage)
     {
         #region Model State Validation
 
@@ -145,7 +145,7 @@ public class HealthCentersInfoController : HealthCentersBaseController
 
         #region Add Or Edit Health Center Information
 
-        var result = await _healthCentersService.AddOrEditHealthCenterInfoDentistsPanel(model, UserAvatar);
+        var result = await _healthCentersService.AddOrEditHealthCenterInfoDentistsPanel(model, UserAvatar, HealthCenterImage);
 
         switch (result)
         {
