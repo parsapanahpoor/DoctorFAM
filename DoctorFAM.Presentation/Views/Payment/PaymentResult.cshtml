@@ -9,38 +9,40 @@
     <section class="fullscreen-banner p-0">
         <div class="container-fluid p-0 h-100">
             <div class="row h-100">
-                <div class="col-lg-5 col-md-12 h-100 d-flex align-items-center text-center">
+                <div class="col-lg-12 col-md-12 h-100 d-flex align-items-center text-center">
                     <div class="w-100">
-                        <a class="logo" href="index.html">
-                            <img id="logo-img" class="img-center" src="images/logo.png" alt="">
-                        </a>
+
+
+
 
                         @if (ViewBag.IsSuccess == true)
                         {
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  h-100 d-flex align-items-center text-center justify-content-center">
+                                <img id="logo-img" class="img-center" src="/Content/images/bg/Successign.png" alt="">
+                            </div>
                             <h1 class="mt-4 mb-2 font-w-7"> تراکنش موفقیت آمیز بوده است . </h1>
-                            <h3 class="mt-4 mb-2 font-w-7"> @ViewBag.refId : کد رهگیری تراکنش </h3>
+                            <h2 class="mt-4 mb-2 font-w-7"> @ViewBag.refId : کد رهگیری تراکنش </h2>
+                            <div class="row pricing-btn text-center justify-content-center mt-4">
+                                <a asp-action="Index" asp-controller="Home" asp-area="" class="btn btn-acc   hover-icon  text-center">بازگشت به صفحه اول دکترفم  </a>
+                            </div>
+
                         }
                         else
                         {
-                            <h1 class="mt-4 mb-2 font-w-7"> تراکنش ناموفق بوده است .. </h1>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  h-100 d-flex align-items-center text-center justify-content-center">
+                                <img id="logo-img" class="img-center" src="/Content/images/bg/WarninSign.png" alt="">
+                            </div>
+                            <h1 class="mt-4 mb-2 font-w-7"> تراکنش ناموفق بوده است . </h1>
+                            <h5 class="mt-4 mb-2 " style="color:red"> کاربر گرامی در صورتیکه پول از حساب شما کسر شده است با پشتیبانی دکترفم و شماره تلفن 01133304030 تماس بگیرید . </h5>
+
+                            <div class="row pricing-btn text-center justify-content-center mt-4">
+                                <a asp-action="Index" asp-controller="Home" asp-area="" class="btn btn-acc   hover-icon  text-center">بازگشت به صفحه اول دکترفم  </a>
+                            </div>
                         }
 
                     </div>
                 </div>
-                <div class="col-lg-7 col-md-12 h-100 dark-bg p-5 d-flex align-items-center">
-                    <div class="coming-soon w-100">
-                        <ul class="countdown list-inline d-flex justify-content-between" data-countdown="2022/07/15"></ul>
-                        <div>
-                            <h4 class="title z-index-1 mb-4"> برای اطلاع رسانی مشترک شوید! </h4>
-                            <div class="subscribe-form xs-w-100 w-50">
-                                <form id="mc-form" class="group">
-                                    <input type="email" value="" name="EMAIL" class="email" id="mc-email" placeholder="آدرس ایمیل را وارد کنید" required="">
-                                    <input class="btn-Accept" type="submit" name="subscribe" value="اشتراک">
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
             </div>
         </div>
     </section>

@@ -38,47 +38,46 @@
 
                         <input type="hidden" asp-for="Page" />
 
-                        <div class="form-group col-lg-6 col-sm-12">
-                            <label asp-for="PatientName"> @Localizer["Patient Name"] </label>
-                            <input type="text" class="form-control" asp-for="PatientName">
+                        <div class="form-group col-lg-2 col-sm-12">
+
+                            <input type="text" class="form-control" asp-for="PatientName" placeholder="@Localizer["Patient Name"]">
                         </div>
 
-                        <div class="form-group col-lg-6 col-sm-12">
-                            <label asp-for="DoctorName"> @Localizer["Doctor Name"] </label>
-                            <input type="text" class="form-control" asp-for="DoctorName">
+                        <div class="form-group col-lg-2 col-sm-12">
+
+                            <input type="text" class="form-control" asp-for="DoctorName" placeholder="@Localizer["Doctor Name"]">
                         </div>
 
-                        <div class="form-group col-lg-4 col-sm-12">
-                            <label asp-for="PatientMobile"> @Localizer["Patient Mobile"] </label>
-                            <input type="text" class="form-control" asp-for="PatientMobile">
+                        <div class="form-group col-lg-2 col-sm-12">
+
+                            <input type="text" class="form-control" asp-for="PatientMobile" placeholder="@Localizer["Patient Mobile"]">
                         </div>
 
-                        <div class="form-group col-lg-4 col-sm-12">
-                            <label asp-for="FromDate"> @Localizer["From Date"] </label>
-                            <input type="text" class="form-control" AdminDatePicker="1" asp-for="FromDate">
+                        <div class="form-group col-lg-2 col-sm-12">
+
+                            <input type="text" class="form-control" AdminDatePicker="1" asp-for="FromDate" placeholder="@Localizer["From Date"]">
                         </div>
 
-                        <div class="form-group col-lg-4 col-sm-12">
-                            <label asp-for="ToDate"> @Localizer["To Date"] </label>
-                            <input type="text" class="form-control" AdminDatePicker="2" asp-for="ToDate">
+                        <div class="form-group col-lg-2 col-sm-12">
+
+                            <input type="text" class="form-control" AdminDatePicker="2" asp-for="ToDate" placeholder="@Localizer["To Date"]">
                         </div>
 
                         <div class="form-group col-lg-4 col-sm-12">
                             <label asp-for="FilterDoctorReservationType"> @Localizer["Order By Type"] </label>
-                            <select asp-for="FilterDoctorReservationType" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.DoctorReservation.FilterDoctorReservationType))"></select>
+                            <select asp-for="FilterDoctorReservationType" class="form-control" placeholder="" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.DoctorReservation.FilterDoctorReservationType))"></select>
                         </div>
 
 
                         <div class="form-group col-lg-4 col-sm-12">
                             <label asp-for="FilterDoctorReservationState"> @Localizer["Order By State"] </label>
-                            <select asp-for="FilterDoctorReservationState" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.DoctorReservation.FilterDoctorReservationState))"></select>
+                            <select asp-for="FilterDoctorReservationState" class="form-control" placeholder="" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.DoctorReservation.FilterDoctorReservationState))"></select>
                         </div>
 
                         <div class="form-group col-lg-4 col-sm-12">
                             <label asp-for="FilterReservationOrder"> @Localizer["Order By Reservation Date"] </label>
-                            <select asp-for="FilterReservationOrder" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.DoctorReservation.FilterReservationOrder))"></select>
+                            <select asp-for="FilterReservationOrder" class="form-control" placeholder="" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.DoctorReservation.FilterReservationOrder))"></select>
                         </div>
-
                         <hr />
 
                         <div class="row">
@@ -284,7 +283,7 @@
 
                                 <td class="vm">
                                     <div class="flex-style-center">
-                                        <p> @date.CreateDate.ToShamsi() </p>
+                                        <p> @date.UserRequestForReserveDate.ToString() </p>
                                     </div>
                                 </td>
 

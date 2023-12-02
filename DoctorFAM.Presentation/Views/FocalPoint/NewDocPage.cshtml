@@ -64,6 +64,7 @@
                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
                     <div class="admin-name mt-1">
                         <h5>دکتر @Model.Username</h5>
+                        
                         <p>  @((!string.IsNullOrEmpty(Model.Specialist)) ? Model.Specialist : null) </p>
 
 
@@ -94,15 +95,6 @@
                         </div>
 
 
-
-
-
-
-
-
-
-
-                        @((!string.IsNullOrEmpty(Model.GeneralPhone)) ? Model.GeneralPhone : null)
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
@@ -143,7 +135,7 @@
                                     <div class="row">
                                         <div class="col-md-2"></div>
                                         <div class="col-md-8">
-                                            <a class="btn-Accept mt-2 col-md-12 text-center justify-content-center" asp-action="DocPage" asp-area="" asp-controller="FocalPoint" asp-route-userId="@Model.User.Id" asp-route-name="@Model.User.Username.FixTextForUrl()"> پروفایل</a>
+                                            <a class="btn-Accept mt-2 col-md-12 text-center justify-content-center" asp-action="NewDocPage" asp-area="" asp-controller="FocalPoint" asp-route-userId="@Model.User.Id" asp-route-name="@Model.User.Username.FixTextForUrl()"> پروفایل</a>
 
                                             <a class="btn-Accept mt-2 col-md-12 text-center justify-content-center" asp-action="DocBooking" asp-controller="FocalPoint" asp-area="" asp-route-userId="@Model.UserId">رزرو نوبت</a>
 

@@ -324,12 +324,12 @@
                                     <div class="doctor-widget">
                                         <div class="doc-info-left">
                                             <div class="doctor-img">
-                                                <a asp-action="DocPage" asp-area="" asp-controller="FocalPoint" asp-route-userId="@doctor.DoctorUserInfo.UserId" asp-route-name="@doctor.DoctorUserInfo.Username.FixTextForUrl()">
+                                                <a asp-action="NewDocPage" asp-area="" asp-controller="FocalPoint" asp-route-userId="@doctor.DoctorUserInfo.UserId" asp-route-name="@doctor.DoctorUserInfo.Username.FixTextForUrl()">
                                                     <img src="/content/images/user/@((string.IsNullOrEmpty(doctor.DoctorUserInfo.UserAvatar)) ? "DefaultAvatar.png" : $"thumb/{doctor.DoctorUserInfo.UserAvatar}")" class="img-fluid" alt="User Image">
                                                 </a>
                                             </div>
                                             <div class="doc-info-cont">
-                                                <h4 class="doc-name"><a asp-action="DocPage" asp-area="" asp-controller="FocalPoint" asp-route-userId="@doctor.DoctorUserInfo.UserId" asp-route-name="@doctor.DoctorUserInfo.Username.FixTextForUrl()">پزشک:@((doctor.DoctorUserInfo.DoctorTilteName == DoctorFAM.Domain.Enums.DoctorTitleName.DoctorTilteName.Anonymous) ? "" : doctor.DoctorUserInfo.DoctorTilteName.GetEnumName()) @doctor.DoctorUserInfo.Username</a></h4>
+                                                <h4 class="doc-name"><a asp-action="NewDocPage" asp-area="" asp-controller="FocalPoint" asp-route-userId="@doctor.DoctorUserInfo.UserId" asp-route-name="@doctor.DoctorUserInfo.Username.FixTextForUrl()">پزشک:@((doctor.DoctorUserInfo.DoctorTilteName == DoctorFAM.Domain.Enums.DoctorTitleName.DoctorTilteName.Anonymous) ? "" : doctor.DoctorUserInfo.DoctorTilteName.GetEnumName()) @doctor.DoctorUserInfo.Username</a></h4>
                                                 <p class="doc-speciality">@((!string.IsNullOrEmpty(doctor.DoctorUserInfo.doctorsInfo.Education)) ? doctor.DoctorUserInfo.doctorsInfo.Education : null)</p>
                                                 @if (doctor.DoctorUserInfo.doctorsInfo.Specialty != null)
                                                 {
@@ -364,7 +364,7 @@
 
                                             <div class="clinic-booking mt-1  text-center justify-content-center">
 
-                                                <a class="view-pro-btn mt-3  text-center justify-content-center" asp-action="DocPage" asp-area="" asp-controller="FocalPoint" asp-route-userId="@doctor.DoctorUserInfo.UserId" asp-route-name="@doctor.DoctorUserInfo.Username.FixTextForUrl()">مشاهده پروفایل</a>
+                                                <a class="view-pro-btn mt-3  text-center justify-content-center" asp-action="NewDocPage" asp-area="" asp-controller="FocalPoint" asp-route-userId="@doctor.DoctorUserInfo.UserId" asp-route-name="@doctor.DoctorUserInfo.Username.FixTextForUrl()">مشاهده پروفایل</a>
                                                 <a class="apt-btn  text-center justify-content-center" asp-action="DocBooking" asp-controller="FocalPoint" asp-area="" asp-route-userId="@doctor.DoctorUserInfo.UserId">رزرو نوبت</a>
                                             </div>
                                         </div>

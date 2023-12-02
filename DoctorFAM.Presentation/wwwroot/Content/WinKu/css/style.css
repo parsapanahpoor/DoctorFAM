@@ -989,7 +989,7 @@ header.sticky {
 
 .edit-phto {
     background: rgba(0, 0, 0, 0.7) none repeat scroll 0 0;
-    bottom: 210px;
+    bottom: 270px;
     color: #fff;
     right: 375px;
     padding: 5px 20px;
@@ -1208,7 +1208,7 @@ header.sticky {
 }
 
 .add-btn {
-    bottom: 210px;
+    bottom: 270px;
     position: absolute;
     left: 0;
 }

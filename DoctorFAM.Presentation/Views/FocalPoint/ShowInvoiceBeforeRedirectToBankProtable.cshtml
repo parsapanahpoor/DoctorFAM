@@ -4,7 +4,7 @@
 @using DoctorFAM.Application.StaticTools
 
 @{
-    ViewData["Title"] = "پیش فاکتور شما";
+    ViewData["Title"] = "پیش فاکتور ";
 }
 
 @section Styles
@@ -61,14 +61,16 @@
                 <div class="row">
                     <div class="col-lg-12 col-sm-12 col-xs-12">
                         <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h6>اطلاعیه :</h6>
+                            <div class="panel-heading  text-center justify-content-center">
+                                <h2 style="color:red">توجه :</h2>
                             </div>
                             <div class="panel-body">
                                 <ul>
 
-                                    <li>
-                                        کاربر گرامی شما یک فاکتور نوبت پرداخت نشده دارید . درصورت تمایل به نهایی سازی این نوبت خواهشمندیم مبلغ فاکتور را پرداخت نمایید یا برای ادامه و دریافت نوبتی دیگر دکمه ی انصراف را کلیک کنید
+                                    <li style="font-weight:700; ">
+                                        کاربر گرامی، شما قبلا یک نوبت رزور کرده، ولی آنرا نهایی نکرده اید. در صورت تمایل به نهایی سازی آن ابتدا فاکتور مربوط به نوبت قبلی را پرداخت و سپس برای نوبت جدید اقدام کنید. در غیر اینصورت برای دریافت نوبت جدید دکمه انصراف را بزنید.  
+
+                                        
                                     </li>
 
                                 </ul>
@@ -81,65 +83,36 @@
             <div class="row">
                 <div class="col-lg-12 col-sm-12 col-xs-12">
                     <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h6>مرحله ی نهایی :</h6>
+                        <div class="panel-heading  text-center justify-content-center">
+                            <h4 style="color:red"><b>قبل از ورود به درگاه بانکی حتما به توضیحات زیر توجه نمایید</b></h4>
                         </div>
                         <div class="panel-body">
                             <ul>
 
-                                <li>
-                                    کاربر گرامی نوبت انتخابی شما هنوز رزرو نشده است برای رزرو نهایی نوبت باید پرداخت مبلغ @Model.ReservationPrice.ToString("#,000") ریال را انجام دهید .
+                                <li style="font-weight:700; ">
+                                    کاربر گرامی نوبت انتخابی شما هنوز ثبت نهایی نشده است برای ثبت نهایی نوبت باید مبلغ @Model.ReservationPrice.ToString("#,000") ریال را پرداخت کنید .
                                 </li>
 
                                 <li>
-                                    مبلغی که پرداخت میکنید بابت بیعانه ی ویزیت پزشک بوده و مابقی ویزیت پزشک را باید در مطب پرداخت نمایید .
+                                    مبلغی که پرداخت میکنید بابت بیعانه ی ویزیت پزشک بوده و در صورتیکه ویزیت پزشک بیشتر از مبلغ پرداختی باشد، مابقی ویزیت پزشک را باید در مطب پرداخت نمایید .
                                 </li>
 
                                 <li>
                                     اگر تصمیم بر لغو نوبت اخذ شده داشتید 72 ساعت قبل از نوبت باید نسبت به لغو آن اقدام نمایید در غیر این صورت مبلغ فوق عودت داده نمی شود.
                                 </li>
 
-                                <li>
-                                    جهت ورود به درگاه بانکی و پرداخت دکمه پرداخت زیر را کلیک کنید .
+                                <li style="font-weight:700; ">
+                                     جهت ثبت نهایی نوبت دکمه پرداخت و نهایی سازی را کلیک کنید تا به درگاه بانکی منتقل شوید .
                                 </li>
 
+                                <li>
+                                    در غیر اینصورت با زدن دکمه انصراف به صفحه اول سامانه برگردید .
+                                </li>
                             </ul>
                         </div>
                     </div>
                 </div>
             </div> <!-- / end client details section -->
-            <table class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th><h5 class="no-margin-bottom"> برای پرداخت بر روی دکمه ی سبز کلیک کنید</h5></th>
-                        <th><h5 class="no-margin-bottom">انصراف </h5></th>
-                    </tr>
-                </thead>
-                <tbody>
-
-                    <tr>
-                        <td class="text-center">
-                            <a class="btn btn-sccess " style="background-color:green;color:white;"
-                               asp-action="RedirectToBankPortableForPayReservationTariff"
-                               asp-area=""
-                               asp-controller="FocalPoint"
-                               asp-route-reservatioonDateTimeId="@Model.ReservationDateTimeId">
-                                پرداخت و نهایی سازی
-                            </a>
-                        </td>
-                        <td class="text-center">
-                            <a class="btn btn-sccess " style="background-color:red;color:white;"
-                               asp-action="CancelReservationRequestFromPatient"
-                               asp-area=""
-                               asp-controller="FocalPoint"
-                               asp-route-reservatioonDateTimeId="@Model.ReservationDateTimeId">
-                                انصراف
-                            </a>
-                        </td>
-                    </tr>
-
-                </tbody>
-            </table>
 
             <table class="table table-bordered mt-3 table-striped">
                 <thead>
@@ -169,27 +142,57 @@
                     </tr>
 
                     <tr>
-                        <td>نام پزشک</td>
-                        <td>@((!string.IsNullOrEmpty(Model.DoctorUsername)) ? Model.DoctorUsername : "وارد نشده")</td>
+                        <td >نام پزشک</td>
+                        <td style="font-weight:700;  color:red;">دکتر  @((!string.IsNullOrEmpty(Model.DoctorUsername)) ? Model.DoctorUsername : "وارد نشده")</td>
                     </tr>
 
                     <tr>
                         <td>تاریخ نوبت</td>
-                        <td>@Model.ReservationDate.ToStringShamsiDate()</td>
+                        <td style="font-weight:700;  color:red;">@Model.ReservationDate.ToStringShamsiDate()</td>
                     </tr>
 
                     <tr>
-                        <td>ساعت مراجعه</td>
-                        <td>@string.Concat(Model.ReservationDateTime.Reverse().Skip(3).Reverse())</td>
+                        <td >ساعت مراجعه</td>
+                        <td style="font-weight:700;  color:red;">@string.Concat(Model.ReservationDateTime.Reverse().Skip(3).Reverse())</td>
                     </tr>
 
                     <tr>
-                        <td>مبلغ پرداختی</td>
-                        <td>@Model.ReservationPrice.ToString("#,000") ریال</td>
+                        <td >مبلغ پرداختی</td>
+                        <td style="font-weight:700;  color:red;">@Model.ReservationPrice.ToString("#,000") ریال</td>
                     </tr>
 
                 </tbody>
             </table>
+
+            <table class="table table-bordered table-striped">
+                
+                <tbody>
+
+                    <tr>
+                        <td class="text-center">
+                            <a class="btn btn-sccess " style="background-color:green;color:white;"
+                               asp-action="RedirectToBankPortableForPayReservationTariff"
+                               asp-area=""
+                               asp-controller="FocalPoint"
+                               asp-route-reservatioonDateTimeId="@Model.ReservationDateTimeId">
+                                پرداخت و نهایی سازی
+                            </a>
+                        </td>
+                        <td class="text-center">
+                            <a class="btn btn-sccess " style="background-color:red;color:white;"
+                               asp-action="CancelReservationRequestFromPatient"
+                               asp-area=""
+                               asp-controller="FocalPoint"
+                               asp-route-reservatioonDateTimeId="@Model.ReservationDateTimeId">
+                                انصراف
+                            </a>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+            
 
         </div>
     </div>
