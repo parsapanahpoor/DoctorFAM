@@ -64,7 +64,7 @@
                 </div>
                 <div class="databox-left">
                     <span class="databox-number success">@Model.CountOfTodayRegister</span>
-                    <div class="databox-text darkgray">تعداد ثبت نامی های امروز</div>
+                    <div class="databox-text darkgray"> ثبت نام های امروز</div>
 
                 </div>
             </div>
@@ -78,7 +78,7 @@
                 </div>
                 <div class="databox-left">
                     <span class="databox-number primary">@Model.ListOfIncomingTodayReservationDateTime.Count()</span>
-                    <div class="databox-text darkgray">تعداد نوبت های دریافتی امروز</div>
+                    <div class="databox-text darkgray"> نوبت های اخذشده امروز</div>
 
                 </div>
             </div>
@@ -92,7 +92,7 @@
                 </div>
                 <div class="databox-left">
                     <span class="databox-number primary">@Model.ListOfTodayReservationDateTime.Count()</span>
-                    <div class="databox-text darkgray">تعداد مراجعه های امروز به پزشک</div>
+                    <div class="databox-text darkgray">  نوبتهای امروز</div>
 
                 </div>
             </div>
@@ -100,15 +100,17 @@
 
         <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
             <div class="databox radius-bordered databox-shadowed databox-graded">
-                <div class="bg-red databox-right">
-                    <div class="databox-piechart">
+                <a asp-area="Admin" asp-controller="Reservation" asp-action="ListOfWaitingForPaymentRequests">
+                    <div class="bg-red databox-right">
+                        <div class="databox-piechart">
+                        </div>
                     </div>
-                </div>
-                <div class="databox-left">
-                    <span class="databox-number orange">@Model.CountOfWaitingForPaymentReservationRequests</span>
-                    <div class="databox-text darkgray">تعداد نوبت های درانتظار بررسی پشتیان</div>
+                    <div class="databox-left">
+                        <span class="databox-number orange">@Model.CountOfWaitingForPaymentReservationRequests</span>
+                        <div class="databox-text darkgray"> منتظر بررسی پشتیبان</div>
 
-                </div>
+                    </div>
+                </a>
             </div>
         </div>
 

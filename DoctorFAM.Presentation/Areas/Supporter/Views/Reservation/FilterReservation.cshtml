@@ -2,6 +2,7 @@
 @using DoctorFAM.Application.Extensions
 @using DoctorFAM.Application.Convertors
 @using DoctorFAM.Domain.ViewModels.Common
+
 @inject IViewLocalizer Localizer
 @inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
 
@@ -14,78 +15,78 @@
     {
 }
 
-    @section Scripts
+@section Scripts
     {
     <partial name="_JqueryValidation" />
 }
 
-    @section Breadcrumb
+@section Breadcrumb
     {
     <li>
         <a href="javascript:void(0)"> @ViewData["Title"] </a>
     </li>
 }
 
-    <div class="row">
-        <div class="col-lg-12 col-sm-12">
-            <div class="widget">
-                <div class="widget-header bordered-bottom bordered-green">
-                    <span class="widget-caption"> @Localizer["Manage Reservation Date Info"] </span>
-                </div>
-                <div class="widget-body">
-                    <div>
-                        <form asp-action="FilterReservation" asp-controller="Reservation" asp-area="Supporter" id="filter-search" method="get">
+<div class="row">
+    <div class="col-lg-12 col-sm-12">
+        <div class="widget">
+            <div class="widget-header bordered-bottom bordered-green">
+                <span class="widget-caption"> @Localizer["Manage Reservation Date Info"] </span>
+            </div>
+            <div class="widget-body">
+                <div>
+                    <form asp-action="FilterReservation" asp-controller="Reservation" asp-area="Supporter" id="filter-search" method="get">
 
-                            <input type="hidden" asp-for="Page" />
+                        <input type="hidden" asp-for="Page" />
 
-                            <div class="form-group col-lg-6 col-sm-12">
-                                <label asp-for="PatientName"> @Localizer["Patient Name"] </label>
-                                <input type="text" class="form-control" asp-for="PatientName">
-                            </div>
+                        <div class="form-group col-lg-2 col-sm-12">
 
-                        <div class="form-group col-lg-6 col-sm-12">
-                                <label asp-for="DoctorName"> @Localizer["Doctor Name"] </label>
-                                <input type="text" class="form-control" asp-for="DoctorName">
-                            </div>
+                            <input type="text" class="form-control" asp-for="PatientName" placeholder="@Localizer["Patient Name"]">
+                        </div>
 
-                            <div class="form-group col-lg-4 col-sm-12">
-                                <label asp-for="PatientMobile"> @Localizer["Patient Mobile"] </label>
-                                <input type="text" class="form-control" asp-for="PatientMobile">
-                            </div>
+                        <div class="form-group col-lg-2 col-sm-12">
 
-                            <div class="form-group col-lg-4 col-sm-12">
-                                <label asp-for="FromDate"> @Localizer["From Date"] </label>
-                                <input type="text" class="form-control" AdminDatePicker="1" asp-for="FromDate">
-                            </div>
+                            <input type="text" class="form-control" asp-for="DoctorName" placeholder="@Localizer["Doctor Name"]">
+                        </div>
 
-                            <div class="form-group col-lg-4 col-sm-12">
-                                <label asp-for="ToDate"> @Localizer["To Date"] </label>
-                                <input type="text" class="form-control" AdminDatePicker="2" asp-for="ToDate">
-                            </div>
+                        <div class="form-group col-lg-2 col-sm-12">
 
-                        <div class="form-group col-lg-4 col-sm-12">
-                                <label asp-for="FilterDoctorReservationType"> @Localizer["Order By Type"] </label>
-                                <select asp-for="FilterDoctorReservationType" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.DoctorReservation.FilterDoctorReservationType))"></select>
-                            </div>
+                            <input type="text" class="form-control" asp-for="PatientMobile" placeholder="@Localizer["Patient Mobile"]">
+                        </div>
 
+                        <div class="form-group col-lg-2 col-sm-12">
 
-                            <div class="form-group col-lg-4 col-sm-12">
-                                <label asp-for="FilterDoctorReservationState"> @Localizer["Order By State"] </label>
-                                <select asp-for="FilterDoctorReservationState" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.DoctorReservation.FilterDoctorReservationState))"></select>
-                            </div>
+                            <input type="text" class="form-control" AdminDatePicker="1" asp-for="FromDate" placeholder="@Localizer["From Date"]">
+                        </div>
+
+                        <div class="form-group col-lg-2 col-sm-12">
+
+                            <input type="text" class="form-control" AdminDatePicker="2" asp-for="ToDate" placeholder="@Localizer["To Date"]">
+                        </div>
 
                         <div class="form-group col-lg-4 col-sm-12">
-                                <label asp-for="FilterReservationOrder"> @Localizer["Order By Reservation Date"] </label>
-                                <select asp-for="FilterReservationOrder" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.DoctorReservation.FilterReservationOrder))"></select>
-                            </div>
+                            <label asp-for="FilterDoctorReservationType"> @Localizer["Order By Type"] </label>
+                            <select asp-for="FilterDoctorReservationType" class="form-control" placeholder="" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.DoctorReservation.FilterDoctorReservationType))"></select>
+                        </div>
 
-                            <hr />
 
-                            <div class="row">
-                                <div class="col-md-12 flex-style">
-                                    <button type="submit" class="btn btn-labeled w-100 btn-palegreen">
-                                        <i class="btn-label glyphicon glyphicon-filter"></i>@Localizer["Filter"]
-                                    </button>
+                        <div class="form-group col-lg-4 col-sm-12">
+                            <label asp-for="FilterDoctorReservationState"> @Localizer["Order By State"] </label>
+                            <select asp-for="FilterDoctorReservationState" class="form-control" placeholder="" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.DoctorReservation.FilterDoctorReservationState))"></select>
+                        </div>
+
+                        <div class="form-group col-lg-4 col-sm-12">
+                            <label asp-for="FilterReservationOrder"> @Localizer["Order By Reservation Date"] </label>
+                            <select asp-for="FilterReservationOrder" class="form-control" placeholder="" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.DoctorReservation.FilterReservationOrder))"></select>
+                        </div>
+
+                        <hr />
+
+                        <div class="row">
+                            <div class="col-md-12 flex-style">
+                                <button type="submit" class="btn btn-labeled w-100 btn-palegreen">
+                                    <i class="btn-label glyphicon glyphicon-filter"></i>@Localizer["Filter"]
+                                </button>
 
                                 @if (Context.Request.QueryString.HasValue)
                                 {
@@ -219,7 +220,7 @@
                                     <div class="flex-style-center">
                                         <div class="mr-10px">
                                             <span> @date.DoctorReservationDate.User.Username</span>
-                                     
+
                                         </div>
                                     </div>
                                 </td>
@@ -254,7 +255,7 @@
 
                                 <td class="vm">
                                     <div class="flex-style-center">
-                                        <p> @date.DoctorReservationDate.ReservationDate.ToStringShamsiDate() </p>                              
+                                        <p> @date.DoctorReservationDate.ReservationDate.ToStringShamsiDate() </p>
                                         <hr class="margin-7" />
                                         <p> @Localizer["ساعت"] : @date.StartTime </p>
                                     </div>
@@ -283,8 +284,8 @@
                                 </td>
 
                                 <td class="vm">
-                                    <div class="flex-style-center">
-                                        <p> @date.CreateDate.ToShamsi() </p>
+                                    <div class="flex-style-center">                                        
+                                        <p> @date.UserRequestForReserveDate.ToString() </p>
                                     </div>
                                 </td>
 
@@ -300,7 +301,7 @@
                         }
                     </tbody>
                 </table>
- 
+
                 <div class="footer tc">
 
                     <partial name="_SupporterPaging" model="@Model.GetCurrentPaging()" />
