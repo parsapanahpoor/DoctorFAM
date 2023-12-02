@@ -4,116 +4,105 @@
 @inject IViewLocalizer Localizer
 @inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
 
-<div class="col-lg-6 col-md-6 col-xl-12 col-sm-12 col-xs-12">
+<div class="col-lg-12 col-md-12 col-xl-12 col-sm-12 col-xs-12">
     <div class="widget">
 
-        <div class="widget-header">
-            <i class="widget-icon fa fa-comment"></i>
-            <span class="widget-caption">نوبت های دریافت شده امروز :  @DateTime.Now.ToShamsi()     </span>
-            <div class="widget-buttons">
-                <div class="row" style="margin-right: -84px;">
+            <div class="widget-header">
+                <i class="widget-icon fa fa-comment"></i>
+            <h4 class="widget-caption" style="color:RED">نوبت های دریافت شده امروز :  @DateTime.Now.ToShamsi()     </h4>
+                <div class="widget-buttons">
+                    <div class="row" style="margin-right: -84px;">
 
-                    <a id="ShowUserCommentInAdminPanelMinus" href="#" data-toggle="collapse">
-                        <i class="fa fa-minus"></i>
-                    </a>
+                        <a id="ShowUserCommentInAdminPanelMinus" href="#" data-toggle="collapse">
+                            <i class="fa fa-minus"></i>
+                        </a>
 
-                </div>
-            </div><!--Widget Buttons-->
-        </div>
+                    </div>
+                </div><!--Widget Buttons-->
+            </div>
 
-        @if (Model != null && Model.Any())
-        {
+            @if (Model != null && Model.Any())
+            {
 
-            <div class="widget-body" style="max-height: 230px !important; overflow-y: scroll; height:auto;">
-                <div id="searchable_wrapper" class="dataTables_wrapper form-inline">
+                <div class="widget-body" style="max-height: 230px !important; overflow-y: scroll; height:auto;">
+                    <div id="searchable_wrapper" class="dataTables_wrapper form-inline">
 
-                    <table class="table table-bordered table-hover table-striped dataTable" id="searchable" role="grid" aria-describedby="searchable_info">
-                        <thead class="bordered-darkorange">
-                            <tr role="row">
+                        <table class="table table-bordered table-hover table-striped dataTable" id="searchable" role="grid" aria-describedby="searchable_info">
+                            <thead class="bordered-darkorange">
+                                <tr role="row">
 
-                                <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">اطلاعات بیمار</th>
-                                <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">اطلاعات پزشک</th>
-                                <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">تاریخ و ساعت</th>
-                                <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">وضعیت درخواست</th>
-                                <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending"></th>
-
-                            </tr>
-                        </thead>
-
-                        <tbody>
-
-                            @foreach (var reservation in Model)
-                            {
-                                <tr role="row" class="even responsive" remove-ajax-item="@reservation.ReservationDateTime.Id">
-
-                                    <td class="center ">
-                                        @if (reservation.PatientInfo != null)
-                                        {
-                                            @reservation.PatientInfo.Username
-                                            <hr />
-                                            @reservation.PatientInfo.Mobile
-
-                                            @if (reservation.LogForGetAppoinmentForOtherPeoples != null)
-                                            {
-                                                <hr />
-                                                <span class="">
-                                                    @(!string.IsNullOrEmpty(reservation.LogForGetAppoinmentForOtherPeoples.FirstName) ? reservation.LogForGetAppoinmentForOtherPeoples.FirstName : "")
-                                                    -
-                                                    @(!string.IsNullOrEmpty(reservation.LogForGetAppoinmentForOtherPeoples.LastName) ? reservation.LogForGetAppoinmentForOtherPeoples.LastName : "")
-
-                                                </span>
-                                            }
-                                        }
-
-
-                                    </td>
-
-                                    <td class="center ">
-
-                                        @reservation.DoctorInfo.Username
-                                        <hr />
-                                        @reservation.DoctorInfo.Mobile
-
-                                    </td>
-
-                                    <td class="center ">
-
-                                        تاریخ : @reservation.ReservationDate.ReservationDate.ToShamsi()
-                                        <hr>
-                                        ساعت : @reservation.ReservationDateTime.StartTime
-
-                                    </td>
-
-                                    <td class="center ">
-
-                                        @if (reservation.ReservationDateTime.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.Reserved)
-                                        {
-                                            <span class="badge badge-success">رزرو شده</span>
-                                        }
-                                        @if (reservation.ReservationDateTime.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.WaitingForComplete)
-                                        {
-                                            <span class="badge badge-danger">درانتظار</span>
-                                        }
-
-                                    </td>
-
-                                    <td>
-                                        <a asp-action="ReservationDetail" asp-controller="Reservation" asp-area="Admin" asp-route-ReservationId="@reservation.ReservationDateTime.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
-                                    </td>
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">اطلاعات بیمار</th>
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">اطلاعات پزشک</th>
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">تاریخ و ساعت</th>
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">وضعیت درخواست</th>
+                                    <th class="sorting" tabindex="0" aria-controls="searchable" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending"></th>
 
                                 </tr>
+                            </thead>
 
-                            }
+                            <tbody>
 
-                        </tbody>
-                    </table>
+                                @foreach (var reservation in Model)
+                                {
+                                    <tr role="row" class="even responsive" remove-ajax-item="@reservation.ReservationDateTime.Id">
+
+                                        <td class="center ">
+                                            @if (reservation.PatientInfo != null)
+                                            {
+                                                @reservation.PatientInfo.Username
+                                                <hr />
+                                                @reservation.PatientInfo.Mobile
+                                            }
+
+
+                                        </td>
+
+                                        <td class="center ">
+
+                                            @reservation.DoctorInfo.Username
+                                            <hr />
+                                            @reservation.DoctorInfo.Mobile
+
+                                        </td>
+
+                                        <td class="center ">
+
+                                            تاریخ : @reservation.ReservationDate.ReservationDate.ToShamsi()
+                                            <hr>
+                                            ساعت : @reservation.ReservationDateTime.StartTime
+
+                                        </td>
+
+                                        <td class="center ">
+
+                                            @if (reservation.ReservationDateTime.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.Reserved)
+                                            {
+                                                <span class="badge badge-success">رزرو شده</span>
+                                            }
+                                            @if (reservation.ReservationDateTime.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.WaitingForComplete)
+                                            {
+                                                <span class="badge badge-danger">درانتظار</span>
+                                            }
+
+                                        </td>
+
+                                        <td>
+                                            <a asp-action="ReservationDetail" asp-controller="Reservation" asp-area="Admin" asp-route-ReservationId="@reservation.ReservationDateTime.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+                                        </td>
+
+                                    </tr>
+
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
-        }
-        else
-        {
-            <partial name="_AdminNotFoundPartial" />
-        }
+            }
+            else
+            {
+                <partial name="_AdminNotFoundPartial" />
+            }
 
     </div>
 </div>
