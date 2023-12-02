@@ -38,7 +38,7 @@ public interface IHealthCentersService
     Task<ManageHealthCentersInfoViewModel?> FillManageHealthCentersInfoViewModel(ulong userId);
 
     //Add Or Edit Health Center Info Health Center Panel 
-    Task<AddOrEditHealthCenterstInfoResult> AddOrEditHealthCenterInfoDentistsPanel(ManageHealthCentersInfoViewModel model, IFormFile? UserAvatar);
+    Task<AddOrEditHealthCenterstInfoResult> AddOrEditHealthCenterInfoDentistsPanel(ManageHealthCentersInfoViewModel model, IFormFile? UserAvatar, IFormFile? HealthCenterImage);
 
     #endregion
 }

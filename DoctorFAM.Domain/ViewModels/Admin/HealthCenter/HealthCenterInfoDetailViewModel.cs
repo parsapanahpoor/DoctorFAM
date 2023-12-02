@@ -28,6 +28,8 @@ public record HealthCenterInfoDetailViewModel
 
     public OrganizationInfoState HealthCenterInfosType { get; set; }
 
+    public string? HealthCenterFile { get; set; }
+
     #endregion
 }
 

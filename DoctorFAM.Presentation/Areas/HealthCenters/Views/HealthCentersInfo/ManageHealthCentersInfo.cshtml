@@ -243,7 +243,7 @@
 
                                 <div class="form-group col-md-12 col-sm-12">
                                     <span class="red">*</span>
-                                    <label>آدرس مطب یا محل کار</label>
+                                    <label>آدرس مزکز درمانی شما(این آدرس به نمایش عموم درخواهد آمد)</label>
                                     <textarea type="text" class="form-control" asp-for="WorkAddress">@Model.WorkAddress</textarea>
                                     <span class="text-danger" asp-validation-for="WorkAddress"></span>
                                 </div>
@@ -266,6 +266,43 @@
 
         <div class="col-lg-3 col-sm-12">
             <div class="row">
+
+                <div class="col-lg-12 col-sm-12">
+                    <div class="widget">
+                        <div class="widget-header bordered-bottom bordered-green">
+                            <span class="widget-caption"> @Localizer["تصویر مرکز درمانی(برای نمایش عموم)"]</span>
+                        </div>
+                        <div class="widget-body">
+                            <div class="row">
+
+                                <input type="file" class="display-none" name="HealthCenterImage" id="UserAvatar1" ImageInput="1" accept=".jpg,.jpeg,.png" />
+
+                                <div class="col-md-12">
+                                    <label for="UserAvatar1" class="file-input-style">
+                                        <i class="glyphicon glyphicon-upload"></i>
+                                        <span class="mr-8px"> @Localizer["لطفا تصویر مرکز درمانی را انتخاب کنید"]</span>
+                                    </label>
+                                </div>
+
+                                @{
+                                    var HealthCenterFileUrl = PathTools.DefaultHealthCenterFile;
+
+                                    if (Model != null && !string.IsNullOrEmpty(Model.HealthCenterFile))
+                                    {
+                                        HealthCenterFileUrl = $"{PathTools.HealthCenterFilePathThumb}{Model.HealthCenterFile}";
+                                    }
+                                }
+
+                                <div class="col-md-12 tc mt-10px">
+                                    <img src="@HealthCenterFileUrl" class="image-style" ImageFile="1" />
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
                 <div class="col-lg-12 col-sm-12">
                     <div class="widget">
                         <div class="widget-header bordered-bottom bordered-green">

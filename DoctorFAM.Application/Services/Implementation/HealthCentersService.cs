@@ -12,8 +12,11 @@ using DoctorFAM.Domain.Entities.WorkAddress;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.Admin.HealthCenter;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.HealthCenters;
 using DoctorFAM.Domain.ViewModels.HealthCenters.HealthCentersInfo;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace DoctorFAM.Application.Services.Implementation;
@@ -251,6 +254,7 @@ public class HealthCentersService : IHealthCentersService
             HealthCenterInfosType= healthCenterOffice.OrganizationInfoState,
             Id = info.Id,
             HealthCenterId = healthCenter.Id,
+            HealthCenterFile = info.HealthCenterImage
         };
 
         #endregion
@@ -377,7 +381,8 @@ public class HealthCentersService : IHealthCentersService
                 Mobile = user.Mobile,
                 Email = user.Email,
                 HomePhoneNumber = user.HomePhoneNumber,
-                AvatarName = user.Avatar
+                AvatarName = user.Avatar,
+                HealthCenterFile = doctorInfo.HealthCenterImage
             };
 
             if (user.BithDay != null && user.BithDay.HasValue)
@@ -416,7 +421,7 @@ public class HealthCentersService : IHealthCentersService
     }
 
     //Add Or Edit Health Center Info Health Center Panel 
-    public async Task<AddOrEditHealthCenterstInfoResult> AddOrEditHealthCenterInfoDentistsPanel(ManageHealthCentersInfoViewModel model, IFormFile? UserAvatar)
+    public async Task<AddOrEditHealthCenterstInfoResult> AddOrEditHealthCenterInfoDentistsPanel(ManageHealthCentersInfoViewModel model, IFormFile? UserAvatar, IFormFile? HealthCenterImage)
     {
         #region Get User By User Id
 
@@ -478,6 +483,14 @@ public class HealthCentersService : IHealthCentersService
 
         #endregion
 
+        #region Image Not Found 
+
+        if (existInfo == false && HealthCenterImage == null) return AddOrEditHealthCenterstInfoResult.FileNotUploaded;
+
+        if (HealthCenterImage != null && !HealthCenterImage.IsImage()) return AddOrEditHealthCenterstInfoResult.FileNotUploaded;
+
+        #endregion
+
         #region Edit Info
 
         if (existInfo == true)
@@ -512,6 +525,22 @@ public class HealthCentersService : IHealthCentersService
             await _userService.UpdateUserWithoutSaveChanges(user);
 
             #endregion
+
+            #endregion
+
+            #region HealthCenter File 
+
+            if (HealthCenterImage != null)
+            {
+                if (!string.IsNullOrEmpty(info.HealthCenterImage))
+                {
+                    info.HealthCenterImage.DeleteImage(PathTools.MediacalFilePathServer, PathTools.MediacalFilePathThumbServer);
+                }
+
+                var imageName = CodeGenerator.GenerateUniqCode() + Path.GetExtension(HealthCenterImage.FileName);
+                HealthCenterImage.AddImageToServer(imageName, PathTools.HealthCenterFilePathServer, 270, 270, PathTools.HealthCenterFilePathThumbServer);
+                info.HealthCenterImage = imageName;
+            }
 
             #endregion
 
@@ -589,6 +618,18 @@ public class HealthCentersService : IHealthCentersService
                 user.HomePhoneNumber = model.HomePhoneNumber;
 
                 await _userService.UpdateUserWithoutSaveChanges(user);
+
+                #endregion
+
+                #region HealthCenter File 
+
+                if (HealthCenterImage != null)
+                {
+
+                    var imageName = CodeGenerator.GenerateUniqCode() + Path.GetExtension(HealthCenterImage.FileName);
+                    HealthCenterImage.AddImageToServer(imageName, PathTools.HealthCenterFilePathServer, 270, 270, PathTools.HealthCenterFilePathThumbServer);
+                    manageHealthCentersInfoViewModel1.HealthCenterImage = imageName;
+                }
 
                 #endregion
 
@@ -718,6 +759,17 @@ public class HealthCentersService : IHealthCentersService
 
                 #endregion
 
+                #region HealthCenter File 
+
+                if (HealthCenterImage != null)
+                {
+                    var imageName = CodeGenerator.GenerateUniqCode() + Path.GetExtension(HealthCenterImage.FileName);
+                    HealthCenterImage.AddImageToServer(imageName, PathTools.HealthCenterFilePathServer, 270, 270, PathTools.HealthCenterFilePathThumbServer);
+                    manageHealthCentersInfoViewModel.HealthCenterImage = imageName;
+                }
+
+                #endregion
+
                 #region Update User Info 
 
                 user.FirstName = model.FirstName;
@@ -747,6 +799,14 @@ public class HealthCentersService : IHealthCentersService
 
         return AddOrEditHealthCenterstInfoResult.Success;
     }
+
+    #endregion
+
+    #region Doctor Panel 
+
+    //public async Task<FilterHealthCentersInDoctorPanelDTO> ListOfHealthCenters(FilterHealthCentersInDoctorPanelDTO model)
+    //{
+    //}
 
     #endregion
 }
