@@ -23,15 +23,21 @@ public class DoctorsInfoController : DoctorBaseController
     private readonly IOrganizationService _organization;
     private readonly ILocationService _locationService;
     private readonly IWorkAddressService _workAddressService;
+    private readonly IHealthCentersService _healthCentersService;
     
-    public DoctorsInfoController(IDoctorsService doctorService, IStringLocalizer<SharedLocalizer.SharedLocalizer> sharedLocalizer
-                                , IOrganizationService organization, ILocationService locationService , IWorkAddressService workAddressService)
+    public DoctorsInfoController(IDoctorsService doctorService,
+                                 IStringLocalizer<SharedLocalizer.SharedLocalizer> sharedLocalizer,
+                                 IOrganizationService organization, 
+                                 ILocationService locationService,
+                                 IWorkAddressService workAddressService,
+                                 IHealthCentersService healthCentersService )
     {
         _doctorService = doctorService;
         _sharedLocalizer = sharedLocalizer;
         _organization = organization;
         _locationService = locationService;
         _workAddressService = workAddressService;
+        _healthCentersService = healthCentersService;
     }
 
     #endregion
@@ -602,6 +608,19 @@ public class DoctorsInfoController : DoctorBaseController
         }
 
         return RedirectToAction(nameof(ListOfDoctorsLocations));
+    }
+
+    #endregion
+
+    #endregion
+
+    #region Health Centers
+
+    #region List Of Health Centers
+
+    public async Task<IActionResult> ListOfHealthCenters()
+    {
+        return View();
     }
 
     #endregion

@@ -25,4 +25,9 @@ public sealed class HealthCentersInfo : BaseEntity
 
     #endregion
 
+    #region Relation
+
+    public HealthCenter healthCenter { get; set; }
+
+    #endregion
 }

@@ -1,17 +1,11 @@
 ﻿using DoctorFAM.Data.DbContext;
-using DoctorFAM.Domain.Entities.Dentist;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.HealthCenters;
-using DoctorFAM.Domain.Entities.Nurse;
 using DoctorFAM.Domain.Entities.Organization;
-using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.Interfaces.EFCore;
-using DoctorFAM.Domain.ViewModels.Admin.Doctor;
-using DoctorFAM.Domain.ViewModels.Dentist.SideBar;
-using DoctorFAM.Domain.ViewModels.DoctorPanel.DosctorSideBarInfo;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.HealthCenters;
 using DoctorFAM.Domain.ViewModels.HealthCenters.SideBar;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ValueGeneration;
 using System.Linq;
 
 namespace DoctorFAM.Data.Repository;
@@ -202,6 +196,22 @@ public class HealthCentersRepository : IHealthCentersRepository
 
         return healthCenter.Id;
     }
+
+    #endregion
+
+    #region Doctor Panel 
+
+    //public async Task<FilterHealthCentersInDoctorPanelDTO> ListOfHealthCenters(FilterHealthCentersInDoctorPanelDTO model)
+    //{
+    //    var query = _context.HealthCenters
+    //                        .AsNoTracking()
+    //                        .Include(p=> p.HealthCentersInfo)
+    //                        .Include(p=> p.User)
+    //                        .ThenInclude(p=> p.WorkAddresses)
+    //                        .Where(p=> !p.IsDelete)
+    //                        .OrderByDescending(p=> p.CreateDate)
+    //                        .AsQueryable();
+    //}
 
     #endregion
 }

@@ -13,8 +13,10 @@ using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.Admin.HealthCenter;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.HealthCenters;
 using DoctorFAM.Domain.ViewModels.HealthCenters.HealthCentersInfo;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace DoctorFAM.Application.Services.Implementation;
@@ -797,6 +799,14 @@ public class HealthCentersService : IHealthCentersService
 
         return AddOrEditHealthCenterstInfoResult.Success;
     }
+
+    #endregion
+
+    #region Doctor Panel 
+
+    //public async Task<FilterHealthCentersInDoctorPanelDTO> ListOfHealthCenters(FilterHealthCentersInDoctorPanelDTO model)
+    //{
+    //}
 
     #endregion
 }
