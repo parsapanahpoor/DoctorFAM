@@ -675,7 +675,9 @@ public class UserService : IUserService
 
             #region Username And Validation
 
-            if (!string.IsNullOrEmpty(UserInfoForGetReservation.LastName) && !string.IsNullOrEmpty(UserInfoForGetReservation.FirstName))
+            if (!string.IsNullOrEmpty(UserInfoForGetReservation.LastName) && 
+                !string.IsNullOrEmpty(UserInfoForGetReservation.FirstName) &&
+                user.Mobile == user.Username)
             {
                 user.Username = UserInfoForGetReservation.FirstName + UserInfoForGetReservation.LastName;
 
