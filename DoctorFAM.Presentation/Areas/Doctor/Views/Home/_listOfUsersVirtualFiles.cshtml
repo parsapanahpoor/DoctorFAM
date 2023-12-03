@@ -1,6 +1,7 @@
 ﻿@model List<DoctorFAM.Domain.Entities.VirtualFile.UsersVirtualFile>
 @using DoctorFAM.Application.Extensions
 @using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.StaticTools;
 @using DoctorFAM.Application.Utils
 
 <div class="form-title">
@@ -31,6 +32,17 @@
                                 @info.FileTitle
                             </span>
                         }
+                    </div>
+
+                    <div class="timeline-body">
+                        <div class="row mt-2 ">
+
+                            <div class="col-md-12  ">
+                                <a class="btn btn-warning" target="_blank"
+                                   href="@PathTools.UserVirtualFilesPath@info.File">فایل پرونده</a>
+                            </div>
+                        </div>
+
                     </div>
 
                     <div class="timeline-body">

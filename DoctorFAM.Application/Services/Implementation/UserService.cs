@@ -672,6 +672,17 @@ public class UserService : IUserService
             }
 
             #endregion
+
+            #region Username And Validation
+
+            if (!string.IsNullOrEmpty(UserInfoForGetReservation.LastName) && !string.IsNullOrEmpty(UserInfoForGetReservation.FirstName))
+            {
+                user.Username = UserInfoForGetReservation.FirstName + UserInfoForGetReservation.LastName;
+
+                _userRepository.UpdateUserWithoutSaveChange(user);
+            }
+
+            #endregion
         }
 
         #endregion
