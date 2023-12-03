@@ -245,8 +245,10 @@ public class DashboardsRepository : IDashboardsRepository
         #region Count Of Today Register
 
         model.CountOfTodayRegister = await _context.Users
-                                                   .AsNoTracking()
-                                                   .CountAsync(p => !p.IsDelete && p.CreateDate == DateTime.Now);
+                                                    .AsNoTracking()
+                                                    .CountAsync(p => !p.IsDelete &&
+                                                                p.CreateDate.DayOfYear == DateTime.Now.DayOfYear &&
+                                                                p.CreateDate.Year == DateTime.Now.Year);
 
         #endregion
 
@@ -558,7 +560,9 @@ public class DashboardsRepository : IDashboardsRepository
 
         model.CountOfTodayRegister = await _context.Users
                                                    .AsNoTracking()
-                                                   .CountAsync(p => !p.IsDelete && p.CreateDate == DateTime.Now);
+                                                   .CountAsync(p => !p.IsDelete && 
+                                                               p.CreateDate.DayOfYear == DateTime.Now.DayOfYear && 
+                                                               p.CreateDate.Year == DateTime.Now.Year);
 
         #endregion
 
