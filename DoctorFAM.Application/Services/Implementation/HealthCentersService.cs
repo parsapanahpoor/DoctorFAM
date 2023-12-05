@@ -18,6 +18,7 @@ using DoctorFAM.Domain.ViewModels.HealthCenters.HealthCentersInfo;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DoctorFAM.Application.Services.Implementation;
 
@@ -254,7 +255,8 @@ public class HealthCentersService : IHealthCentersService
             HealthCenterInfosType= healthCenterOffice.OrganizationInfoState,
             Id = info.Id,
             HealthCenterId = healthCenter.Id,
-            HealthCenterFile = info.HealthCenterImage
+            HealthCenterFile = info.HealthCenterImage,
+            HealthCenterName = info.HealthCenterName
         };
 
         #endregion
@@ -382,7 +384,8 @@ public class HealthCentersService : IHealthCentersService
                 Email = user.Email,
                 HomePhoneNumber = user.HomePhoneNumber,
                 AvatarName = user.Avatar,
-                HealthCenterFile = doctorInfo.HealthCenterImage
+                HealthCenterFile = doctorInfo.HealthCenterImage,
+                HealthCenterName = doctorInfo.HealthCenterName
             };
 
             if (user.BithDay != null && user.BithDay.HasValue)
@@ -506,6 +509,7 @@ public class HealthCentersService : IHealthCentersService
             info.NationalCode = model.NationalCode;
             info.Gender = model.Gender;
             info.GeneralPhone = model.GeneralPhone;
+            info.HealthCenterName = model.HealthCenterName;
 
             //Update Doctor Office State 
             HealthCenterOffice.OrganizationInfoState = OrganizationInfoState.WatingForConfirm;
@@ -603,6 +607,7 @@ public class HealthCentersService : IHealthCentersService
                     NationalCode = model.NationalCode,
                     Gender = model.Gender,
                     GeneralPhone = model.GeneralPhone,
+                    HealthCenterName = model.HealthCenterName,
                 };
 
                 #endregion
@@ -755,6 +760,7 @@ public class HealthCentersService : IHealthCentersService
                     Education = model.Education.SanitizeText(),
                     NationalCode = model.NationalCode,
                     GeneralPhone = model.GeneralPhone,
+                    HealthCenterName = model.HealthCenterName
                 };
 
                 #endregion
@@ -804,9 +810,10 @@ public class HealthCentersService : IHealthCentersService
 
     #region Doctor Panel 
 
-    //public async Task<FilterHealthCentersInDoctorPanelDTO> ListOfHealthCenters(FilterHealthCentersInDoctorPanelDTO model)
-    //{
-    //}
+    public async Task<FilterHealthCentersInDoctorPanelDTO> ListOfHealthCenters(FilterHealthCentersInDoctorPanelDTO model)
+    {
+        return await _healthCentersRepository.ListOfHealthCenters(model);
+    }
 
     #endregion
 }

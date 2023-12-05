@@ -30,6 +30,8 @@ public record HealthCenterInfoDetailViewModel
 
     public string? HealthCenterFile { get; set; }
 
+    public string HealthCenterName { get; set; }
+
     #endregion
 }
 

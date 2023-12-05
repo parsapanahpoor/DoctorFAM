@@ -1,5 +1,6 @@
 ﻿using DoctorFAM.Domain.Entities.HealthCenters;
 using DoctorFAM.Domain.Entities.Organization;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.HealthCenters;
 using DoctorFAM.Domain.ViewModels.HealthCenters.SideBar;
 
 namespace DoctorFAM.Domain.Interfaces.EFCore;
@@ -55,6 +56,12 @@ public interface IHealthCentersRepository
 
     //Add Health Center With Returning Id 
     Task<ulong> AddHealthCenterWithReturningId(HealthCenter healthCenter);
+
+    #endregion
+
+    #region Doctor Panel
+
+    Task<FilterHealthCentersInDoctorPanelDTO> ListOfHealthCenters(FilterHealthCentersInDoctorPanelDTO model);
 
     #endregion
 }

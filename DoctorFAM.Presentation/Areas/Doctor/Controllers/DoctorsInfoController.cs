@@ -2,8 +2,10 @@
 
 using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Interfaces;
+using DoctorFAM.Application.Services;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.HealthCenters;
 using DoctorFAM.Web.Areas.Doctor.ActionFilterAttributes;
 using DoctorFAM.Web.Doctor.Controllers;
 using Microsoft.AspNetCore.Mvc;
@@ -24,13 +26,15 @@ public class DoctorsInfoController : DoctorBaseController
     private readonly ILocationService _locationService;
     private readonly IWorkAddressService _workAddressService;
     private readonly IHealthCentersService _healthCentersService;
+    private readonly IHealthCentersService _healthCenterService;
     
     public DoctorsInfoController(IDoctorsService doctorService,
                                  IStringLocalizer<SharedLocalizer.SharedLocalizer> sharedLocalizer,
                                  IOrganizationService organization, 
                                  ILocationService locationService,
                                  IWorkAddressService workAddressService,
-                                 IHealthCentersService healthCentersService )
+                                 IHealthCentersService healthCentersService ,
+                                 IHealthCentersService healthCentersService1)
     {
         _doctorService = doctorService;
         _sharedLocalizer = sharedLocalizer;
@@ -38,6 +42,7 @@ public class DoctorsInfoController : DoctorBaseController
         _locationService = locationService;
         _workAddressService = workAddressService;
         _healthCentersService = healthCentersService;
+        _healthCenterService = healthCentersService;
     }
 
     #endregion
@@ -618,9 +623,26 @@ public class DoctorsInfoController : DoctorBaseController
 
     #region List Of Health Centers
 
-    public async Task<IActionResult> ListOfHealthCenters()
+    public async Task<IActionResult> ListOfHealthCenters(FilterHealthCentersInDoctorPanelDTO filter)
     {
-        return View();
+        #region Location ViewBags 
+
+        ViewData["Countries"] = await _locationService.GetAllCountries();
+
+        if (filter.CountryId != null)
+        {
+            ViewData["States"] = await _locationService.GetStateChildren(filter.CountryId.Value);
+            if (filter.StateId != null)
+            {
+                ViewData["Cities"] = await _locationService.GetStateChildren(filter.StateId.Value);
+            }
+        }
+
+        #endregion
+
+        var model = await _healthCenterService.ListOfHealthCenters(filter);
+
+        return View(model);
     }
 
     #endregion

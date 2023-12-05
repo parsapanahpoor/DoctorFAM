@@ -84,6 +84,8 @@ public record ManageHealthCentersInfoViewModel
 
     public string? HealthCenterFile { get; set; }
 
+    public string HealthCenterName { get; set; }
+
     #endregion
 }
 

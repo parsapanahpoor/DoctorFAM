@@ -1,0 +1,241 @@
+﻿@model DoctorFAM.Domain.ViewModels.DoctorPanel.HealthCenters.FilterHealthCentersInDoctorPanelDTO
+@using DoctorFAM.Application.Extensions;
+@using DoctorFAM.Application.StaticTools;
+@using DoctorFAM.Domain.ViewModels.Common
+
+@{
+    ViewData["Title"] = @Localizer["لیست مراکز درمانی"];
+}
+@{
+    var countries = ViewData["Countries"] != null ? ViewData["Countries"] as List<SelectListViewModel> : null;
+    var states = ViewData["States"] != null ? ViewData["States"] as List<SelectListViewModel> : null;
+    var cities = ViewData["Cities"] != null ? ViewData["Cities"] as List<SelectListViewModel> : null;
+}
+
+@section Styles
+    {
+
+}
+
+@section Scripts
+    {
+    <partial name="_JqueryValidation" />
+
+    <script>
+        $("#CountryId").change(function () {
+            if ($("#CountryId :selected").val() !== '') {
+                $('#CityId option:not(:first)').remove();
+                $('#StateId option:not(:first)').remove();
+                $.get("/Home/LoadCities", { stateId: $("#CountryId :selected").val() }).then(res => {
+                    if (res.data !== null) {
+                        $("#StateId").append(
+                            '<option>' + "لطفا یک استان را انتخاب کنید" + '</option>'
+                        );
+                        $.each(res.data, function () {
+                            $("#StateId").append(
+                                '<option value=' + this.id + '>' + this.title + '</option>'
+                            );
+                        });
+                        $("#StateId").removeAttr("disabled");
+                    }
+                });
+            } else {
+                $('#StateId option:not(:first)').remove();
+                $('#CityId option:not(:first)').remove();
+            }
+        });
+
+        $("#StateId").change(function () {
+            if ($("#StateId :selected").val() !== '') {
+                $('#CityId option:not(:first)').remove();
+                $.get("/Home/LoadCities", { stateId: $("#StateId :selected").val() }).then(res => {
+                    if (res.data !== null) {
+                        $.each(res.data, function () {
+                            $("#CityId").append(
+                                '<option value=' + this.id + '>' + this.title + '</option>'
+                            );
+                        });
+                        $("#CityId").removeAttr("disabled");
+                    }
+                });
+            } else {
+                $('#CityId option:not(:first)').remove();
+            }
+        });
+
+    </script>
+}
+
+@section Breadcrumb
+    {
+    <li>
+        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+    </li>
+}
+
+<div class="row">
+    <div class="col-lg-3 col-sm-12">
+        <div class="widget">
+            <div class="widget-header bordered-bottom bordered-green">
+                <span class="widget-caption"> لیست مراکز درمانی </span>
+            </div>
+            <div class="widget-body">
+                <div>
+                    <form asp-action="ListOfHealthCenters" asp-controller="DoctorsInfo" asp-area="Doctor" id="filter-search" method="get">
+
+                        <input type="hidden" asp-for="Page" />
+
+                        <div class="form-group">
+                            <label asp-for="HealthCenterName"> نام مرکز درمانی</label>
+                            <input type="text" class="form-control" asp-for="HealthCenterName">
+                        </div>
+
+                        <div class="form-group">
+                            <label>کشور</label>
+                            <select class="form-control" id="CountryId" name="CountryId">
+                                <option value="">لطفا یک کشور را انتخاب کنید </option>
+                                @if (countries != null && countries.Any())
+                                {
+                                    foreach (var country in countries)
+                                    {
+                                        if (Model != null && Model.CountryId == country.Id)
+                                        {
+                                            <option value="@country.Id" selected="selected"> @country.Title </option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@country.Id"> @country.Title </option>
+                                        }
+                                    }
+                                }
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>استان</label>
+                            <select class="form-control" id="StateId" name="StateId">
+                                <option value="">لطفا یک استان را انتخاب کنید </option>
+                                @if (states != null && states.Any())
+                                {
+                                    foreach (var state in states)
+                                    {
+                                        if (Model != null && Model.StateId == state.Id)
+                                        {
+                                            <option value="@state.Id" selected="selected"> @state.Title </option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@state.Id"> @state.Title </option>
+                                        }
+                                    }
+                                }
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>شهر</label>
+                            <select name="CityId" id="CityId" class="form-control">
+                                <option value="">لطفا یک شهر را انتخاب کنید </option>
+                                @if (cities != null && cities.Any())
+                                {
+                                    foreach (var city in cities)
+                                    {
+                                        if (Model != null && Model.CityId == city.Id)
+                                        {
+                                            <option value="@city.Id" selected="selected"> @city.Title </option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@city.Id"> @city.Title </option>
+
+                                        }
+                                    }
+                                }
+                            </select>
+                        </div>
+
+                        <hr />
+
+                        <div class="row">
+                            <div class="col-md-12 flex-style">
+                                <button type="submit" class="btn btn-labeled w-100 btn-palegreen">
+                                    <i class="btn-label glyphicon glyphicon-filter"></i>@Localizer["فیلتر"]
+                                </button>
+
+                                @if (Context.Request.QueryString.HasValue)
+                                {
+                                    <a asp-action="ListOfHealthCenters" asp-controller="DoctorsInfo" asp-area="Doctor" class="btn btn-labeled w-100 btn-darkorange">
+                                        <i class="btn-label glyphicon glyphicon-remove"></i>@Localizer["حذف فیلتر"]
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-9 col-sm-12">
+        <div class="well with-header with-footer table-responsive">
+            <div class="header bordered-azure">
+                <div class="flex-style">
+                    <span>@ViewData["Title"]</span>
+                    <span>@Model.GetShownEntitiesPagesTitle()</span>
+                </div>
+            </div>
+
+            @if (Model.Entities != null && Model.Entities.Any())
+            {
+                <table class="table table-hover table-bordered tc vm">
+                    <thead class="tc vm">
+                        <tr class="tc vm">
+                            <th class="tc vm">
+                                @Localizer["تصویر"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["نام مرکز درمانی"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["امکانات"]
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="tc vm">
+                        @foreach (var info in Model.Entities)
+                        {
+                            <tr class="tc vm">
+
+                                <td class="vm">
+                                    <div class="flex-style-center">
+                                        <img src="@PathTools.HealthCenterFilePathThumb/@info.HealthCentersInfo.HealthCenterImage" class="avatar-style" style="border-radius:50px" />
+                                    </div>
+                                </td>
+
+                                <td class="tc vm">
+                                    <p> @info.HealthCentersInfo.HealthCenterName </p>
+                                </td>
+
+                                <td class="tc vm">
+                                    <a asp-action="HealthCenterInfoDetail" asp-controller="HealthCenters" asp-area="Admin" asp-route-userId="@info.UserId" class="btn btn-warning btn-circle btn-xs"><i class="glyphicon glyphicon-edit"></i></a>
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <div class="footer tc">
+
+                    <partial name="_DoctorPanelPaging" model="@Model.GetCurrentPaging()" />
+
+                </div>
+            }
+            else
+            {
+                <partial name="_DoctorPanelNotFoundPartial" />
+            }
+        </div>
+    </div>
+</div>
+

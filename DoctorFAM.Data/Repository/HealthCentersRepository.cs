@@ -6,7 +6,6 @@ using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.HealthCenters;
 using DoctorFAM.Domain.ViewModels.HealthCenters.SideBar;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 
 namespace DoctorFAM.Data.Repository;
 
@@ -201,17 +200,110 @@ public class HealthCentersRepository : IHealthCentersRepository
 
     #region Doctor Panel 
 
-    //public async Task<FilterHealthCentersInDoctorPanelDTO> ListOfHealthCenters(FilterHealthCentersInDoctorPanelDTO model)
-    //{
-    //    var query = _context.HealthCenters
-    //                        .AsNoTracking()
-    //                        .Include(p=> p.HealthCentersInfo)
-    //                        .Include(p=> p.User)
-    //                        .ThenInclude(p=> p.WorkAddresses)
-    //                        .Where(p=> !p.IsDelete)
-    //                        .OrderByDescending(p=> p.CreateDate)
-    //                        .AsQueryable();
-    //}
+    public async Task<FilterHealthCentersInDoctorPanelDTO> ListOfHealthCenters(FilterHealthCentersInDoctorPanelDTO model)
+    {
+        var query = _context.HealthCenters
+                            .AsNoTracking()
+                            .Include(p => p.HealthCentersInfo)
+                            .Include(p => p.User)
+                            .Where(p => !p.IsDelete )
+                            .OrderByDescending(p => p.CreateDate)
+                            .AsQueryable();
+
+        //Health Center Name
+        if (!string.IsNullOrEmpty(model.HealthCenterName))
+        {
+            //query = query.Where(p => p.HealthCentersInfo..Contains(model.HealthCenterName));
+        }
+
+        #region Country
+
+        if (model.CountryId.HasValue)
+        {
+            var userIds = _context.WorkAddresses
+                                  .AsNoTracking()
+                                  .Where(p => !p.IsDelete && p.CountryId == model.CountryId)
+                                  .Select(p => p.UserId)
+                                  .Distinct()
+                                  .AsQueryable();
+
+            query = from q in query
+                    join u in userIds
+                    on q.UserId equals u
+                    select new HealthCenter
+                    {
+                        HealthCentersInfo = q.HealthCentersInfo,
+                        Id = q.Id,
+                        CreateDate = q.CreateDate,
+                        IsDelete = q.IsDelete,
+                        User = q.User,
+                        UserId = q.UserId
+                    };
+
+        }
+
+        #endregion
+
+        #region State
+
+        if (model.StateId.HasValue)
+        {
+            var userIds = _context.WorkAddresses
+                                  .AsNoTracking()
+                                  .Where(p => !p.IsDelete && p.StateId == model.StateId)
+                                  .Select(p => p.UserId)
+                                  .Distinct()
+                                  .AsQueryable();
+
+            query = from q in query
+                    join u in userIds
+                    on q.UserId equals u
+                    select new HealthCenter
+                    {
+                        HealthCentersInfo = q.HealthCentersInfo,
+                        Id = q.Id,
+                        CreateDate = q.CreateDate,
+                        IsDelete = q.IsDelete,
+                        User = q.User,
+                        UserId = q.UserId
+                    };
+                    
+        }
+
+        #endregion
+
+        #region CityId
+
+        if (model.CityId.HasValue)
+        {
+            var userIds = _context.WorkAddresses
+                                  .AsNoTracking()
+                                  .Where(p => !p.IsDelete && p.CityId == model.CityId)
+                                  .Select(p => p.UserId)
+                                  .Distinct()
+                                  .AsQueryable();
+
+            query = from q in query
+                    join u in userIds
+                    on q.UserId equals u
+                    select new HealthCenter
+                    {
+                        HealthCentersInfo = q.HealthCentersInfo,
+                        Id = q.Id,
+                        CreateDate = q.CreateDate,
+                        IsDelete = q.IsDelete,
+                        User = q.User,
+                        UserId = q.UserId
+                    };
+
+        }
+
+        #endregion
+
+        await model.Paging(query);
+
+        return model;
+    }
 
     #endregion
 }
