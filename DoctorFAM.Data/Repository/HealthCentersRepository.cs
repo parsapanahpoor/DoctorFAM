@@ -213,7 +213,7 @@ public class HealthCentersRepository : IHealthCentersRepository
         //Health Center Name
         if (!string.IsNullOrEmpty(model.HealthCenterName))
         {
-            //query = query.Where(p => p.HealthCentersInfo..Contains(model.HealthCenterName));
+            query = query.Where(p => p.HealthCentersInfo.HealthCenterName.Contains(model.HealthCenterName));
         }
 
         #region Country
