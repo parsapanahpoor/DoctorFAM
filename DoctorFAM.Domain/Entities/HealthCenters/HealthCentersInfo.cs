@@ -23,6 +23,8 @@ public sealed class HealthCentersInfo : BaseEntity
 
     public string HealthCenterImage { get; set; }
 
+    public string HealthCenterName { get; set; }
+
     #endregion
 
     #region Relation

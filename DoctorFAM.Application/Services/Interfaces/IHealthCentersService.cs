@@ -1,6 +1,7 @@
 ﻿using DoctorFAM.Application.DTOs.HealthCenters.HealthCentersInfos;
 using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.ViewModels.Admin.HealthCenter;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.HealthCenters;
 using DoctorFAM.Domain.ViewModels.HealthCenters.HealthCentersInfo;
 using Microsoft.AspNetCore.Http;
 
@@ -8,6 +9,12 @@ namespace DoctorFAM.Application.Services.Interfaces;
 
 public interface IHealthCentersService
 {
+    #region General
+
+    Task<bool> IsExistAnyHealthCenterById(ulong id);
+
+    #endregion
+
     #region Health Center
 
     //Get Member Of Health Center With User Id 
@@ -39,6 +46,16 @@ public interface IHealthCentersService
 
     //Add Or Edit Health Center Info Health Center Panel 
     Task<AddOrEditHealthCenterstInfoResult> AddOrEditHealthCenterInfoDentistsPanel(ManageHealthCentersInfoViewModel model, IFormFile? UserAvatar, IFormFile? HealthCenterImage);
+
+    #endregion
+
+    #region Doctor Panel 
+
+    Task<FilterHealthCentersInDoctorPanelDTO> ListOfHealthCenters(FilterHealthCentersInDoctorPanelDTO model);
+
+    Task<FilterOfDoctorSelectedHealthCentersDoctorSide> FilterOfDoctorSelectedHealthCentersDoctorSide(FilterOfDoctorSelectedHealthCentersDoctorSide filter);
+
+    Task<AddDoctorSelectedHealthCenterResult> SendRequestForCoopratetoHealthCenter(ulong healthCenterId, ulong doctorUserId);
 
     #endregion
 }

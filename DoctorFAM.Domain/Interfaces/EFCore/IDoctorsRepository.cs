@@ -215,6 +215,8 @@ namespace DoctorFAM.Domain.Interfaces
 
         Task<Doctor?> GetDoctorByUserId(ulong userId);
 
+        Task<ulong> GetDoctorIdByUserId(ulong userId);
+
         Task UpdateDoctorState(Doctor doctor);
 
         Task<ulong> AddDoctor(Doctor doctor);

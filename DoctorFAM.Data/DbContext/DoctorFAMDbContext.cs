@@ -580,6 +580,8 @@ public class DoctorFAMDbContext : Microsoft.EntityFrameworkCore.DbContext
 
     public DbSet<HealthCenter> HealthCenters{ get; set; }
 
+    public DbSet<DoctorSelectedHealthCenter> DoctorSelectedHealthCenters { get; set; }
+
     #endregion
 
     #endregion

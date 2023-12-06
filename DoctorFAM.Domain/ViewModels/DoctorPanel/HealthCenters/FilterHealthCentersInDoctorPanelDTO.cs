@@ -1,5 +1,4 @@
 ﻿using DoctorFAM.Domain.Entities.HealthCenters;
-using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.ViewModels.Common;
 
 namespace DoctorFAM.Domain.ViewModels.DoctorPanel.HealthCenters;

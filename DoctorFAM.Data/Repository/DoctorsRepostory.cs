@@ -22,6 +22,7 @@ using DoctorFAM.Domain.ViewModels.Admin.SendSMS;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DosctorSideBarInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Employees;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.SendSMS;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.Wallet;
 using DoctorFAM.Domain.ViewModels.Site.BloodPressure;
 using DoctorFAM.Domain.ViewModels.Site.Diabet;
 using DoctorFAM.Domain.ViewModels.Site.Doctor;
@@ -690,6 +691,15 @@ namespace DoctorFAM.Data.Repository
         public async Task<Doctor?> GetDoctorByUserId(ulong userId)
         {
             return await _context.Doctors.Include(p => p.User).FirstOrDefaultAsync(p => !p.IsDelete && p.UserId == userId);
+        }
+
+        public async Task<ulong> GetDoctorIdByUserId(ulong userId)
+        {
+            return await _context.Doctors
+                                 .AsNoTracking()
+                                 .Where(p=> !p.IsDelete && p.UserId == userId)
+                                 .Select(p=> p.Id)
+                                 .FirstOrDefaultAsync();
         }
 
         public async Task<Doctor?> GetDoctorById(ulong doctorId)
