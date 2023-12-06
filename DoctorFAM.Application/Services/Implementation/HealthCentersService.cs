@@ -12,13 +12,11 @@ using DoctorFAM.Domain.Entities.WorkAddress;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.Admin.HealthCenter;
-using DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.HealthCenters;
 using DoctorFAM.Domain.ViewModels.HealthCenters.HealthCentersInfo;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DoctorFAM.Application.Services.Implementation;
 
@@ -30,16 +28,28 @@ public class HealthCentersService : IHealthCentersService
     private readonly IOrganizationService _organizationService;
     private readonly IWorkAddressRepository _workAddressRepository;
     private readonly IUserService _userService;
+    private readonly IDoctorsService _doctorsService;
 
     public HealthCentersService(IHealthCentersRepository healthCentersRepository, 
                                 IOrganizationService organizationService,
                                 IWorkAddressRepository workAddressRepository,
-                                IUserService userService )
+                                IUserService userService ,
+                                IDoctorsService doctorsService)
     {
         _healthCentersRepository = healthCentersRepository;
         _organizationService = organizationService;
         _workAddressRepository = workAddressRepository;
         _userService = userService;
+        _doctorsService = doctorsService;
+    }
+
+    #endregion
+
+    #region General
+
+    public async Task<bool> IsExistAnyHealthCenterById(ulong id)
+    {
+        return await IsExistAnyHealthCenterById(id);
     }
 
     #endregion
@@ -813,6 +823,49 @@ public class HealthCentersService : IHealthCentersService
     public async Task<FilterHealthCentersInDoctorPanelDTO> ListOfHealthCenters(FilterHealthCentersInDoctorPanelDTO model)
     {
         return await _healthCentersRepository.ListOfHealthCenters(model);
+    }
+
+    public async Task<FilterOfDoctorSelectedHealthCentersDoctorSide> FilterOfDoctorSelectedHealthCentersDoctorSide(FilterOfDoctorSelectedHealthCentersDoctorSide filter)
+    {
+        return await _healthCentersRepository.FilterOfDoctorSelectedHealthCentersDoctorSide( filter);
+    }
+
+    public async Task<bool> SendRequestForCoopratetoHealthCenter(ulong healthCenterId , ulong doctorUserId)
+    {
+        #region Get Health Center By Id
+
+        var healthCenter = await IsExistAnyHealthCenterById(healthCenterId);
+        if (!healthCenter) return false;
+
+        #endregion
+
+        #region Get Doctor By Doctor UserId
+
+        var doctor = await _doctorsService.IsExistAnyDoctorByUserId(doctorUserId);
+        if (!doctor) return false;
+
+        #endregion
+
+        #region Fill Doctor Selected Health Center
+
+        DoctorSelectedHealthCenter model = new()
+        {
+            CreateDate = DateTime.Now,
+            DoctorSelectedHealthCenterState = Domain.Enums.HealthCenter.DoctorSelectedHealthCenterState.Accept,
+            DoctorUserId = doctorUserId,
+            HealthCenterId = healthCenterId
+        };
+
+        #endregion
+
+        #region Add Ddoctor Selected Health Center To The Data Base
+
+        await _healthCentersRepository.AddDoctorSelectedHealthCenter(model);
+        await _healthCentersRepository.SaveChangesAsync();
+
+        #endregion
+
+        return true;
     }
 
     #endregion

@@ -22,6 +22,28 @@ public class HealthCentersRepository : IHealthCentersRepository
 
     #endregion
 
+    #region General
+
+    public async Task<bool> IsExistAnyHealthCenterById(ulong id)
+    {
+        return await _context.HealthCenters
+                             .AsNoTracking()
+                             .AnyAsync(p => !p.IsDelete && 
+                                       p.Id == id) ;
+    }
+
+    public async Task AddDoctorSelectedHealthCenter(DoctorSelectedHealthCenter doctorSelectedHealth)
+    {
+        await _context.DoctorSelectedHealthCenters.AddAsync(doctorSelectedHealth);
+    }
+
+    public async Task SaveChanges()
+    {
+        await _context.SaveChangesAsync();
+    }
+
+    #endregion
+
     #region Health Center Side
 
     //Get Member Of Health Center With User Id 
@@ -199,6 +221,35 @@ public class HealthCentersRepository : IHealthCentersRepository
     #endregion
 
     #region Doctor Panel 
+
+    public async Task<FilterOfDoctorSelectedHealthCentersDoctorSide> FilterOfDoctorSelectedHealthCentersDoctorSide(FilterOfDoctorSelectedHealthCentersDoctorSide filter)
+    {
+        var query = _context.HealthCenters
+                                    .AsNoTracking()
+                                    .Include(p => p.HealthCentersInfo)
+                                    .Where(p => !p.IsDelete)
+                                    .OrderByDescending(p => p.CreateDate)
+                                    .AsQueryable();
+
+        var userIds = _context.DoctorSelectedHealthCenters
+                              .AsNoTracking()
+                              .Where(p => !p.IsDelete && p.DoctorUserId == filter.UserId)
+                              .AsQueryable();
+
+        var model = from q in query
+                join u in userIds
+                on q.Id equals u.HealthCenterId
+                select new ListOfDoctorSelectedHealthCentersDoctorSideDTO
+                {
+                    DoctorSelectedHealthCenterState = u.DoctorSelectedHealthCenterState,
+                    HealthCenterImage = q.HealthCentersInfo.HealthCenterImage,
+                    HealthCenterName = q.HealthCentersInfo.HealthCenterName
+                };
+
+        await filter.Paging(model);
+
+        return filter;
+    }
 
     public async Task<FilterHealthCentersInDoctorPanelDTO> ListOfHealthCenters(FilterHealthCentersInDoctorPanelDTO model)
     {

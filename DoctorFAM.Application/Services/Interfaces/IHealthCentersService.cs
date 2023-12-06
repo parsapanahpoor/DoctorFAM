@@ -9,6 +9,12 @@ namespace DoctorFAM.Application.Services.Interfaces;
 
 public interface IHealthCentersService
 {
+    #region General
+
+    Task<bool> IsExistAnyHealthCenterById(ulong id);
+
+    #endregion
+
     #region Health Center
 
     //Get Member Of Health Center With User Id 
@@ -46,6 +52,10 @@ public interface IHealthCentersService
     #region Doctor Panel 
 
     Task<FilterHealthCentersInDoctorPanelDTO> ListOfHealthCenters(FilterHealthCentersInDoctorPanelDTO model);
+
+    Task<FilterOfDoctorSelectedHealthCentersDoctorSide> FilterOfDoctorSelectedHealthCentersDoctorSide(FilterOfDoctorSelectedHealthCentersDoctorSide filter);
+
+    Task<bool> SendRequestForCoopratetoHealthCenter(ulong healthCenterId, ulong doctorUserId);
 
     #endregion
 }

@@ -621,6 +621,15 @@ public class DoctorsInfoController : DoctorBaseController
 
     #region Health Centers
 
+    #region Manage HealthCenters Links
+
+    public IActionResult ManageHealthCentersLinks()
+    {
+        return View();
+    }
+
+    #endregion
+
     #region List Of Health Centers
 
     public async Task<IActionResult> ListOfHealthCenters(FilterHealthCentersInDoctorPanelDTO filter)
@@ -643,6 +652,38 @@ public class DoctorsInfoController : DoctorBaseController
         var model = await _healthCenterService.ListOfHealthCenters(filter);
 
         return View(model);
+    }
+
+    #endregion
+
+    #region List Of Doctor Selected Health Centers
+
+    public async Task<IActionResult> ListOfDoctorSelectedHealthCenters(FilterOfDoctorSelectedHealthCentersDoctorSide filter)
+    {
+        filter.UserId = User.GetUserId();
+        var model = await _healthCenterService.FilterOfDoctorSelectedHealthCentersDoctorSide(filter);
+
+        return View(model); 
+    }
+
+    #endregion
+
+    #region Send Request For Cooprate to Health Center
+
+    public async Task<IActionResult> SendRequestForCoopratetoHealthCenter(ulong healthCenterId)
+    {
+        #region Add Doctor Selected Health Center
+
+        bool res = await _healthCenterService.SendRequestForCoopratetoHealthCenter(healthCenterId , User.GetUserId());
+        if (res)
+        {
+            TempData[SuccessMessage] = "درخواست شما برای همکاری با مرکز درمانی انتخابی باموفقیت ثبت شده است.";
+            return RedirectToAction(nameof(ListOfDoctorSelectedHealthCenters));
+        }
+
+        #endregion
+
+        return RedirectToAction(nameof(ListOfHealthCenters));
     }
 
     #endregion

@@ -2,11 +2,22 @@
 using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.HealthCenters;
 using DoctorFAM.Domain.ViewModels.HealthCenters.SideBar;
+using Microsoft.EntityFrameworkCore;
 
 namespace DoctorFAM.Domain.Interfaces.EFCore;
 
 public interface IHealthCentersRepository
 {
+    #region General
+
+    Task<bool> IsExistAnyHealthCenterById(ulong id);
+
+    Task AddDoctorSelectedHealthCenter(DoctorSelectedHealthCenter doctorSelectedHealth);
+
+    Task SaveChanges();
+
+    #endregion
+
     #region Health Center
 
     //Get Member Of Health Center With User Id 
@@ -62,6 +73,8 @@ public interface IHealthCentersRepository
     #region Doctor Panel
 
     Task<FilterHealthCentersInDoctorPanelDTO> ListOfHealthCenters(FilterHealthCentersInDoctorPanelDTO model);
+
+    Task<FilterOfDoctorSelectedHealthCentersDoctorSide> FilterOfDoctorSelectedHealthCentersDoctorSide(FilterOfDoctorSelectedHealthCentersDoctorSide filter);
 
     #endregion
 }

@@ -9,8 +9,6 @@ public sealed class DoctorSelectedHealthCenter : BaseEntity
 
     public ulong DoctorUserId { get; set; }
 
-    public ulong OrganizationId { get; set; }
-
     public ulong HealthCenterId { get; set; }
 
     public DoctorSelectedHealthCenterState DoctorSelectedHealthCenterState { get; set; }
