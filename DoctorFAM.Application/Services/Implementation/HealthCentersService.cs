@@ -15,8 +15,9 @@ using DoctorFAM.Domain.ViewModels.Admin.HealthCenter;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.HealthCenters;
 using DoctorFAM.Domain.ViewModels.HealthCenters.HealthCentersInfo;
 using Microsoft.AspNetCore.Http;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.Internal;
+using System.ComponentModel.DataAnnotations;
 
 namespace DoctorFAM.Application.Services.Implementation;
 
@@ -29,18 +30,21 @@ public class HealthCentersService : IHealthCentersService
     private readonly IWorkAddressRepository _workAddressRepository;
     private readonly IUserService _userService;
     private readonly IDoctorsService _doctorsService;
+    private readonly ISMSService _sMSService;
 
     public HealthCentersService(IHealthCentersRepository healthCentersRepository, 
                                 IOrganizationService organizationService,
                                 IWorkAddressRepository workAddressRepository,
-                                IUserService userService ,
-                                IDoctorsService doctorsService)
+                                IUserService userService,
+                                IDoctorsService doctorsService,
+                                ISMSService sMSService)
     {
         _healthCentersRepository = healthCentersRepository;
         _organizationService = organizationService;
         _workAddressRepository = workAddressRepository;
         _userService = userService;
         _doctorsService = doctorsService;
+        _sMSService = sMSService;
     }
 
     #endregion
@@ -49,7 +53,7 @@ public class HealthCentersService : IHealthCentersService
 
     public async Task<bool> IsExistAnyHealthCenterById(ulong id)
     {
-        return await IsExistAnyHealthCenterById(id);
+        return await _healthCentersRepository.IsExistAnyHealthCenterById(id);
     }
 
     #endregion
@@ -830,19 +834,42 @@ public class HealthCentersService : IHealthCentersService
         return await _healthCentersRepository.FilterOfDoctorSelectedHealthCentersDoctorSide( filter);
     }
 
-    public async Task<bool> SendRequestForCoopratetoHealthCenter(ulong healthCenterId , ulong doctorUserId)
+    public async Task<AddDoctorSelectedHealthCenterResult> SendRequestForCoopratetoHealthCenter(ulong healthCenterId , ulong doctorUserId)
     {
         #region Get Health Center By Id
 
-        var healthCenter = await IsExistAnyHealthCenterById(healthCenterId);
-        if (!healthCenter) return false;
+        var healthCenter = await _healthCentersRepository.GetHealthCenterByIdAsync(healthCenterId);
+        if (healthCenter == null) return AddDoctorSelectedHealthCenterResult.Faild;
+
+        var healthCenterOwnerMobile = await _userService.GetUserMobileByUserIdWithAsNoTracking(healthCenter.UserId);
 
         #endregion
 
         #region Get Doctor By Doctor UserId
 
         var doctor = await _doctorsService.IsExistAnyDoctorByUserId(doctorUserId);
-        if (!doctor) return false;
+        if (!doctor) return  AddDoctorSelectedHealthCenterResult.Faild;
+
+        #endregion
+
+        #region Is Exist Any Doctor Selected Health Center Record By Doctor User Id And Health Center Id
+
+        if (await _healthCentersRepository.IsExistAnyDoctorSelectedHealthCenterRecordByDoctorUserIdAndHealthCenterId(healthCenterId, doctorUserId))
+        {
+            return AddDoctorSelectedHealthCenterResult.ExistRequest;
+        }
+
+        #endregion
+
+        #region Get UserName By Doctor User Id
+
+        var doctorUsername = await _userService.GetUsernameByUserID(doctorUserId);
+
+        #endregion
+
+        #region Get Health CenterName 
+
+        string? healthCenterName = await _healthCentersRepository.GetHealthCenterNameByHealthCenterId(healthCenterId);
 
         #endregion
 
@@ -852,7 +879,7 @@ public class HealthCentersService : IHealthCentersService
         {
             CreateDate = DateTime.Now,
             DoctorSelectedHealthCenterState = Domain.Enums.HealthCenter.DoctorSelectedHealthCenterState.Accept,
-            DoctorUserId = doctorUserId,
+            ApplicantUserId = doctorUserId,
             HealthCenterId = healthCenterId
         };
 
@@ -865,7 +892,18 @@ public class HealthCentersService : IHealthCentersService
 
         #endregion
 
-        return true;
+        #region Send SMS
+
+        if (!string.IsNullOrEmpty(doctorUsername) && !string.IsNullOrEmpty(healthCenterName) && !string.IsNullOrEmpty(healthCenterOwnerMobile))
+        {
+            var message = Messages.CooperationRequestForHealthCenters(doctorUsername , healthCenterName);
+
+            await _sMSService.SendSimpleSMS(healthCenterOwnerMobile, message);
+        }
+        
+        #endregion
+
+        return AddDoctorSelectedHealthCenterResult.Success;
     }
 
     #endregion

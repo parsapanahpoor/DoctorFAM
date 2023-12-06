@@ -55,7 +55,7 @@ public interface IHealthCentersService
 
     Task<FilterOfDoctorSelectedHealthCentersDoctorSide> FilterOfDoctorSelectedHealthCentersDoctorSide(FilterOfDoctorSelectedHealthCentersDoctorSide filter);
 
-    Task<bool> SendRequestForCoopratetoHealthCenter(ulong healthCenterId, ulong doctorUserId);
+    Task<AddDoctorSelectedHealthCenterResult> SendRequestForCoopratetoHealthCenter(ulong healthCenterId, ulong doctorUserId);
 
     #endregion
 }

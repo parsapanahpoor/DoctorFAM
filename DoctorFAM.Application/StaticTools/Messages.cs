@@ -332,4 +332,13 @@ public static string SendSMSForLinkOfHomeVisitRequestFromDoctor(string link)
             $"کلمه ی عبور : {Password} {Environment.NewLine} " +
             $"{PathTools.SiteFarsiName}";
     }
+
+    //Finalize Home Laboratory Request Result
+    public static string CooperationRequestForHealthCenters(string DoctorName , string healthCenterName)
+    {
+        return
+            $"سلام . {Environment.NewLine} " +
+            $" دکتر {DoctorName} برای عضویت در مرکز درمانی {healthCenterName} اعلام آمادگی کرده است. {Environment.NewLine}" +
+            $"{PathTools.SiteFarsiName}";
+    }
 }

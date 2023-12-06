@@ -2,7 +2,6 @@
 using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.HealthCenters;
 using DoctorFAM.Domain.ViewModels.HealthCenters.SideBar;
-using Microsoft.EntityFrameworkCore;
 
 namespace DoctorFAM.Domain.Interfaces.EFCore;
 
@@ -15,6 +14,10 @@ public interface IHealthCentersRepository
     Task AddDoctorSelectedHealthCenter(DoctorSelectedHealthCenter doctorSelectedHealth);
 
     Task SaveChanges();
+
+    Task<bool> IsExistAnyDoctorSelectedHealthCenterRecordByDoctorUserIdAndHealthCenterId(ulong healthCenterId, ulong doctorUserId);
+
+    Task<string?> GetHealthCenterNameByHealthCenterId(ulong healthCenterId);
 
     #endregion
 
@@ -49,6 +52,9 @@ public interface IHealthCentersRepository
 
     //Get Health Center By Health Center Id
     IQueryable<HealthCenter?> GetHealthCenterById(ulong id);
+
+    //Get Health Center By Health Center Id
+    Task<HealthCenter?> GetHealthCenterByIdAsync(ulong id);
 
     //Get Health Center By Health Center User Id
     IQueryable<HealthCenter?> GetHealthCenterByUserId(ulong userId);

@@ -95,6 +95,11 @@ namespace DoctorFAM.Application.Services.Implementation
 
         #region Doctors Panel Side
 
+        public async Task<ulong> GetDoctorIdByUserId(ulong userId)
+        {
+            return await _doctorRepository.GetDoctorIdByUserId(userId);
+        }
+
         //List Of Doctor Send SMS Request Doctor Side View Model
         public async Task<List<ListOfDoctorSendSMSRequestDoctorSideViewModel>?> ListOfDoctorSendSMSRequestDoctorSideViewModel(ulong userId)
         {

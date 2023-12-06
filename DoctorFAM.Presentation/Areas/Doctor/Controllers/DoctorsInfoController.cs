@@ -27,13 +27,13 @@ public class DoctorsInfoController : DoctorBaseController
     private readonly IWorkAddressService _workAddressService;
     private readonly IHealthCentersService _healthCentersService;
     private readonly IHealthCentersService _healthCenterService;
-    
+
     public DoctorsInfoController(IDoctorsService doctorService,
                                  IStringLocalizer<SharedLocalizer.SharedLocalizer> sharedLocalizer,
-                                 IOrganizationService organization, 
+                                 IOrganizationService organization,
                                  ILocationService locationService,
                                  IWorkAddressService workAddressService,
-                                 IHealthCentersService healthCentersService ,
+                                 IHealthCentersService healthCentersService,
                                  IHealthCentersService healthCentersService1)
     {
         _doctorService = doctorService;
@@ -560,7 +560,7 @@ public class DoctorsInfoController : DoctorBaseController
         return View();
     }
 
-    [HttpPost , ValidateAntiForgeryToken]
+    [HttpPost, ValidateAntiForgeryToken]
     public async Task<IActionResult> CreateLocation(CreateLocationDoctorPanelDTO model)
     {
         #region Add To The Data Base
@@ -573,7 +573,7 @@ public class DoctorsInfoController : DoctorBaseController
             return View();
         }
 
-        var res = await _workAddressService.AddDoctorWorkAddressToTheDataBase(User.GetUserId() , model);
+        var res = await _workAddressService.AddDoctorWorkAddressToTheDataBase(User.GetUserId(), model);
         if (res)
         {
             TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
@@ -595,7 +595,7 @@ public class DoctorsInfoController : DoctorBaseController
     [HttpGet]
     public async Task<IActionResult> DeleteLocation(ulong id)
     {
-        var res = await _workAddressService.DeleteUserWorkAddressWithoutLastRecordDoctorSide(User.GetUserId() , id);
+        var res = await _workAddressService.DeleteUserWorkAddressWithoutLastRecordDoctorSide(User.GetUserId(), id);
 
         switch (res)
         {
@@ -663,7 +663,7 @@ public class DoctorsInfoController : DoctorBaseController
         filter.UserId = User.GetUserId();
         var model = await _healthCenterService.FilterOfDoctorSelectedHealthCentersDoctorSide(filter);
 
-        return View(model); 
+        return View(model);
     }
 
     #endregion
@@ -674,11 +674,23 @@ public class DoctorsInfoController : DoctorBaseController
     {
         #region Add Doctor Selected Health Center
 
-        bool res = await _healthCenterService.SendRequestForCoopratetoHealthCenter(healthCenterId , User.GetUserId());
-        if (res)
+        var res = await _healthCenterService.SendRequestForCoopratetoHealthCenter(healthCenterId, User.GetUserId());
+        switch (res)
         {
-            TempData[SuccessMessage] = "درخواست شما برای همکاری با مرکز درمانی انتخابی باموفقیت ثبت شده است.";
-            return RedirectToAction(nameof(ListOfDoctorSelectedHealthCenters));
+            case AddDoctorSelectedHealthCenterResult.Success:
+                TempData[SuccessMessage] = "درخواست شما برای همکاری با مرکز درمانی انتخابی باموفقیت ثبت شده است.";
+                return RedirectToAction(nameof(ListOfDoctorSelectedHealthCenters));
+
+            case AddDoctorSelectedHealthCenterResult.ExistRequest:
+                TempData[WarningMessage] = "شما در گذشته برای این مرکز درمانی درخواستی ارسال کرده بودید";
+                break;
+
+            case AddDoctorSelectedHealthCenterResult.Faild:
+                TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+                                break;
+
+            default:
+                break;
         }
 
         #endregion

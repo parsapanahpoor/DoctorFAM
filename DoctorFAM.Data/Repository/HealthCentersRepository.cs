@@ -24,6 +24,26 @@ public class HealthCentersRepository : IHealthCentersRepository
 
     #region General
 
+    public async Task<string?> GetHealthCenterNameByHealthCenterId(ulong healthCenterId)
+    {
+        return await _context.HealthCentersInfos
+                             .AsNoTracking()
+                             .Where(p => !p.IsDelete &&
+                                    p.HealthCenterId == healthCenterId)
+                             .Select(p => p.HealthCenterName)
+                             .FirstOrDefaultAsync();
+    }
+
+    public async Task<bool> IsExistAnyDoctorSelectedHealthCenterRecordByDoctorUserIdAndHealthCenterId(ulong healthCenterId , ulong doctorUserId)
+    {
+        return await _context.DoctorSelectedHealthCenters
+                             .AsNoTracking()
+                             .AnyAsync(p => !p.IsDelete &&
+                                       p.HealthCenterId == healthCenterId &&
+                                       p.ApplicantUserId == doctorUserId &&
+                                       p.DoctorSelectedHealthCenterState != Domain.Enums.HealthCenter.DoctorSelectedHealthCenterState.Decline);
+    }
+
     public async Task<bool> IsExistAnyHealthCenterById(ulong id)
     {
         return await _context.HealthCenters
@@ -171,6 +191,15 @@ public class HealthCentersRepository : IHealthCentersRepository
                         .AsQueryable();
     }
 
+    //Get Health Center By Health Center Id
+    public async Task<HealthCenter?> GetHealthCenterByIdAsync(ulong id)
+    {
+        return await _context.HealthCenters
+                        .Where(p => !p.IsDelete && p.Id == id)
+                        .FirstOrDefaultAsync();
+    }
+
+
     //Get Health Center By Health Center User Id
     public IQueryable<HealthCenter?> GetHealthCenterByUserId(ulong userId)
     {
@@ -233,7 +262,7 @@ public class HealthCentersRepository : IHealthCentersRepository
 
         var userIds = _context.DoctorSelectedHealthCenters
                               .AsNoTracking()
-                              .Where(p => !p.IsDelete && p.DoctorUserId == filter.UserId)
+                              .Where(p => !p.IsDelete && p.ApplicantUserId == filter.UserId)
                               .AsQueryable();
 
         var model = from q in query

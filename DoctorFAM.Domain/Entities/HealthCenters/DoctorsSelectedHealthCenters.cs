@@ -7,7 +7,7 @@ public sealed class DoctorSelectedHealthCenter : BaseEntity
 {
     #region properties
 
-    public ulong DoctorUserId { get; set; }
+    public ulong ApplicantUserId { get; set; }
 
     public ulong HealthCenterId { get; set; }
 
