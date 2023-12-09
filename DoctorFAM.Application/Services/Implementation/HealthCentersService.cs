@@ -16,8 +16,6 @@ using DoctorFAM.Domain.ViewModels.DoctorPanel.HealthCenters;
 using DoctorFAM.Domain.ViewModels.HealthCenters.HealthCentersInfo;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query.Internal;
-using System.ComponentModel.DataAnnotations;
 
 namespace DoctorFAM.Application.Services.Implementation;
 
@@ -54,6 +52,11 @@ public class HealthCentersService : IHealthCentersService
     public async Task<bool> IsExistAnyHealthCenterById(ulong id)
     {
         return await _healthCentersRepository.IsExistAnyHealthCenterById(id);
+    }
+
+    public async Task<ulong> GetHealthCenterOwnerUserIdByHealthCenterId(ulong healthCenterId)
+    {
+        return await _healthCentersRepository.GetHealthCenterOwnerUserIdByHealthCenterId(healthCenterId);
     }
 
     #endregion
@@ -904,6 +907,11 @@ public class HealthCentersService : IHealthCentersService
         #endregion
 
         return AddDoctorSelectedHealthCenterResult.Success;
+    }
+
+    public async Task<List<ulong>> GetListOfHealthCentersIdFromDoctorSelectedHealthCentersByDoctorUserId(ulong doctorUserId)
+    {
+        return await _healthCentersRepository.GetListOfHealthCentersIdFromDoctorSelectedHealthCentersByDoctorUserId(doctorUserId);
     }
 
     #endregion

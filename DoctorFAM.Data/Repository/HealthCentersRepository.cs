@@ -24,6 +24,16 @@ public class HealthCentersRepository : IHealthCentersRepository
 
     #region General
 
+    public async Task<ulong> GetHealthCenterOwnerUserIdByHealthCenterId(ulong healthCenterId)
+    {
+        return await _context.HealthCenters
+                             .AsNoTracking()
+                             .Where(p=> !p.IsDelete &&
+                                    p.Id == healthCenterId)
+                             .Select(p=> p.UserId)
+                             .FirstOrDefaultAsync();
+    }
+
     public async Task<string?> GetHealthCenterNameByHealthCenterId(ulong healthCenterId)
     {
         return await _context.HealthCentersInfos
@@ -250,6 +260,16 @@ public class HealthCentersRepository : IHealthCentersRepository
     #endregion
 
     #region Doctor Panel 
+
+    public async Task<List<ulong>> GetListOfHealthCentersIdFromDoctorSelectedHealthCentersByDoctorUserId(ulong doctorUserId)
+    {
+        return await _context.DoctorSelectedHealthCenters
+                             .AsNoTracking()
+                             .Where(p=> !p.IsDelete &&
+                                    p.ApplicantUserId == doctorUserId)
+                             .Select(p=> p.HealthCenterId)
+                             .ToListAsync();
+    }
 
     public async Task<FilterOfDoctorSelectedHealthCentersDoctorSide> FilterOfDoctorSelectedHealthCentersDoctorSide(FilterOfDoctorSelectedHealthCentersDoctorSide filter)
     {

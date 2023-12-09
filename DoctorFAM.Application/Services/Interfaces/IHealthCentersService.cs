@@ -13,6 +13,8 @@ public interface IHealthCentersService
 
     Task<bool> IsExistAnyHealthCenterById(ulong id);
 
+    Task<ulong> GetHealthCenterOwnerUserIdByHealthCenterId(ulong healthCenterId);
+
     #endregion
 
     #region Health Center
@@ -56,6 +58,8 @@ public interface IHealthCentersService
     Task<FilterOfDoctorSelectedHealthCentersDoctorSide> FilterOfDoctorSelectedHealthCentersDoctorSide(FilterOfDoctorSelectedHealthCentersDoctorSide filter);
 
     Task<AddDoctorSelectedHealthCenterResult> SendRequestForCoopratetoHealthCenter(ulong healthCenterId, ulong doctorUserId);
+
+    Task<List<ulong>> GetListOfHealthCentersIdFromDoctorSelectedHealthCentersByDoctorUserId(ulong doctorUserId);
 
     #endregion
 }
