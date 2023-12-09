@@ -327,7 +327,7 @@ public static string SendSMSForLinkOfHomeVisitRequestFromDoctor(string link)
     {
         return
             $"مراجعه کننده ی محترم . {Environment.NewLine} " +
-            $"باتوجه به اخذ نوبت نزد دکتر - در تاریخ ثبت شماره همراه شما در سامانه ی دکترفم باموفقیت انجام شده است. {Environment.NewLine} " +
+            $"باتوجه به اخذ نوبت نزد دکتر {DoctorName} در تاریخ ثبت شماره همراه شما در سامانه ی دکترفم باموفقیت انجام شده است. {Environment.NewLine} " +
             $"نام کاربری : {Username} {Environment.NewLine} " +
             $"کلمه ی عبور : {Password} {Environment.NewLine} " +
             $"{PathTools.SiteFarsiName}";
