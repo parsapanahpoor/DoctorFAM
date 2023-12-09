@@ -1,6 +1,7 @@
 ﻿#region Usings
 
 using DoctorFAM.Domain.Entities.DoctorReservation;
+using DoctorFAM.Domain.Entities.Log.LogForBackgroundServices;
 using DoctorFAM.Domain.Enums.DoctorReservation;
 using DoctorFAM.Domain.ViewModels.Admin.Reservation;
 using DoctorFAM.Domain.ViewModels.BackgroundTasks.Reservation;
@@ -173,6 +174,8 @@ public interface IReservationRepository
     #endregion
 
     #region Site Side
+
+    Task AddReservationAlertBackgroundServiceLogger(BackgroundServicesLogger logger);
 
     //Is Exist Any Waiting For Payment Reservation Request By User Id
     Task<ulong?> IsExistAnyWaitingForPaymentReservationRequestByUserId(ulong userId);

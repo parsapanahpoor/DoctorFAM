@@ -2,8 +2,10 @@
 
 using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Interfaces;
+using DoctorFAM.Application.Services;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.HealthCenters;
 using DoctorFAM.Web.Areas.Doctor.ActionFilterAttributes;
 using DoctorFAM.Web.Doctor.Controllers;
 using Microsoft.AspNetCore.Mvc;
@@ -24,13 +26,15 @@ public class DoctorsInfoController : DoctorBaseController
     private readonly ILocationService _locationService;
     private readonly IWorkAddressService _workAddressService;
     private readonly IHealthCentersService _healthCentersService;
-    
+    private readonly IHealthCentersService _healthCenterService;
+
     public DoctorsInfoController(IDoctorsService doctorService,
                                  IStringLocalizer<SharedLocalizer.SharedLocalizer> sharedLocalizer,
-                                 IOrganizationService organization, 
+                                 IOrganizationService organization,
                                  ILocationService locationService,
                                  IWorkAddressService workAddressService,
-                                 IHealthCentersService healthCentersService )
+                                 IHealthCentersService healthCentersService,
+                                 IHealthCentersService healthCentersService1)
     {
         _doctorService = doctorService;
         _sharedLocalizer = sharedLocalizer;
@@ -38,6 +42,7 @@ public class DoctorsInfoController : DoctorBaseController
         _locationService = locationService;
         _workAddressService = workAddressService;
         _healthCentersService = healthCentersService;
+        _healthCenterService = healthCentersService;
     }
 
     #endregion
@@ -555,7 +560,7 @@ public class DoctorsInfoController : DoctorBaseController
         return View();
     }
 
-    [HttpPost , ValidateAntiForgeryToken]
+    [HttpPost, ValidateAntiForgeryToken]
     public async Task<IActionResult> CreateLocation(CreateLocationDoctorPanelDTO model)
     {
         #region Add To The Data Base
@@ -568,7 +573,7 @@ public class DoctorsInfoController : DoctorBaseController
             return View();
         }
 
-        var res = await _workAddressService.AddDoctorWorkAddressToTheDataBase(User.GetUserId() , model);
+        var res = await _workAddressService.AddDoctorWorkAddressToTheDataBase(User.GetUserId(), model);
         if (res)
         {
             TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
@@ -590,7 +595,7 @@ public class DoctorsInfoController : DoctorBaseController
     [HttpGet]
     public async Task<IActionResult> DeleteLocation(ulong id)
     {
-        var res = await _workAddressService.DeleteUserWorkAddressWithoutLastRecordDoctorSide(User.GetUserId() , id);
+        var res = await _workAddressService.DeleteUserWorkAddressWithoutLastRecordDoctorSide(User.GetUserId(), id);
 
         switch (res)
         {
@@ -616,11 +621,81 @@ public class DoctorsInfoController : DoctorBaseController
 
     #region Health Centers
 
-    #region List Of Health Centers
+    #region Manage HealthCenters Links
 
-    public async Task<IActionResult> ListOfHealthCenters()
+    public IActionResult ManageHealthCentersLinks()
     {
         return View();
+    }
+
+    #endregion
+
+    #region List Of Health Centers
+
+    public async Task<IActionResult> ListOfHealthCenters(FilterHealthCentersInDoctorPanelDTO filter)
+    {
+        #region Location ViewBags 
+
+        ViewData["Countries"] = await _locationService.GetAllCountries();
+
+        if (filter.CountryId != null)
+        {
+            ViewData["States"] = await _locationService.GetStateChildren(filter.CountryId.Value);
+            if (filter.StateId != null)
+            {
+                ViewData["Cities"] = await _locationService.GetStateChildren(filter.StateId.Value);
+            }
+        }
+
+        #endregion
+
+        var model = await _healthCenterService.ListOfHealthCenters(filter);
+
+        return View(model);
+    }
+
+    #endregion
+
+    #region List Of Doctor Selected Health Centers
+
+    public async Task<IActionResult> ListOfDoctorSelectedHealthCenters(FilterOfDoctorSelectedHealthCentersDoctorSide filter)
+    {
+        filter.UserId = User.GetUserId();
+        var model = await _healthCenterService.FilterOfDoctorSelectedHealthCentersDoctorSide(filter);
+
+        return View(model);
+    }
+
+    #endregion
+
+    #region Send Request For Cooprate to Health Center
+
+    public async Task<IActionResult> SendRequestForCoopratetoHealthCenter(ulong healthCenterId)
+    {
+        #region Add Doctor Selected Health Center
+
+        var res = await _healthCenterService.SendRequestForCoopratetoHealthCenter(healthCenterId, User.GetUserId());
+        switch (res)
+        {
+            case AddDoctorSelectedHealthCenterResult.Success:
+                TempData[SuccessMessage] = "درخواست شما برای همکاری با مرکز درمانی انتخابی باموفقیت ثبت شده است.";
+                return RedirectToAction(nameof(ListOfDoctorSelectedHealthCenters));
+
+            case AddDoctorSelectedHealthCenterResult.ExistRequest:
+                TempData[WarningMessage] = "شما در گذشته برای این مرکز درمانی درخواستی ارسال کرده بودید";
+                break;
+
+            case AddDoctorSelectedHealthCenterResult.Faild:
+                TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
+                                break;
+
+            default:
+                break;
+        }
+
+        #endregion
+
+        return RedirectToAction(nameof(ListOfHealthCenters));
     }
 
     #endregion

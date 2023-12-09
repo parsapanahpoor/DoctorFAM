@@ -43,7 +43,12 @@ namespace DoctorFAM.Data.Repository
         //Get Username By User ID
         public async Task<string?> GetUsernameByUserID(ulong userId)
         {
-            return await _context.Users.Where(p => !p.IsDelete && p.Id == userId).Select(p => p.Username).FirstOrDefaultAsync();
+            return await _context.Users
+                                 .AsNoTracking()
+                                 .Where(p => !p.IsDelete && 
+                                        p.Id == userId)
+                                 .Select(p => p.Username)
+                                 .FirstOrDefaultAsync();
         }
 
         //Get User By Username
