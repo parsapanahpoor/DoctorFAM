@@ -1,11 +1,28 @@
 ﻿using DoctorFAM.Domain.Entities.HealthCenters;
 using DoctorFAM.Domain.Entities.Organization;
+using DoctorFAM.Domain.ViewModels.DoctorPanel.HealthCenters;
 using DoctorFAM.Domain.ViewModels.HealthCenters.SideBar;
 
 namespace DoctorFAM.Domain.Interfaces.EFCore;
 
 public interface IHealthCentersRepository
 {
+    #region General
+
+    Task<ulong> GetHealthCenterOwnerUserIdByHealthCenterId(ulong healthCenterId);
+
+    Task<bool> IsExistAnyHealthCenterById(ulong id);
+
+    Task AddDoctorSelectedHealthCenter(DoctorSelectedHealthCenter doctorSelectedHealth);
+
+    Task SaveChanges();
+
+    Task<bool> IsExistAnyDoctorSelectedHealthCenterRecordByDoctorUserIdAndHealthCenterId(ulong healthCenterId, ulong doctorUserId);
+
+    Task<string?> GetHealthCenterNameByHealthCenterId(ulong healthCenterId);
+
+    #endregion
+
     #region Health Center
 
     //Get Member Of Health Center With User Id 
@@ -38,6 +55,9 @@ public interface IHealthCentersRepository
     //Get Health Center By Health Center Id
     IQueryable<HealthCenter?> GetHealthCenterById(ulong id);
 
+    //Get Health Center By Health Center Id
+    Task<HealthCenter?> GetHealthCenterByIdAsync(ulong id);
+
     //Get Health Center By Health Center User Id
     IQueryable<HealthCenter?> GetHealthCenterByUserId(ulong userId);
 
@@ -55,6 +75,16 @@ public interface IHealthCentersRepository
 
     //Add Health Center With Returning Id 
     Task<ulong> AddHealthCenterWithReturningId(HealthCenter healthCenter);
+
+    #endregion
+
+    #region Doctor Panel
+
+    Task<List<ulong>> GetListOfHealthCentersIdFromDoctorSelectedHealthCentersByDoctorUserId(ulong doctorUserId);
+
+    Task<FilterHealthCentersInDoctorPanelDTO> ListOfHealthCenters(FilterHealthCentersInDoctorPanelDTO model);
+
+    Task<FilterOfDoctorSelectedHealthCentersDoctorSide> FilterOfDoctorSelectedHealthCentersDoctorSide(FilterOfDoctorSelectedHealthCentersDoctorSide filter);
 
     #endregion
 }

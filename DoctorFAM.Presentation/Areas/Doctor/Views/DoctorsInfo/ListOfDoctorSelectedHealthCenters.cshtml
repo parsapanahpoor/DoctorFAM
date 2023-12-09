@@ -1,0 +1,112 @@
+﻿@model DoctorFAM.Domain.ViewModels.DoctorPanel.HealthCenters.FilterOfDoctorSelectedHealthCentersDoctorSide
+@using DoctorFAM.Application.Extensions;
+@using DoctorFAM.Application.StaticTools;
+@using DoctorFAM.Domain.ViewModels.Common
+
+@{
+    ViewData["Title"] = @Localizer["لیست مراکز درمانی"];
+}
+
+@section Styles
+    {
+
+}
+
+@section Scripts
+    {
+    <partial name="_JqueryValidation" />
+}
+
+@section Breadcrumb
+    {
+    <li>
+        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+    </li>
+}
+
+<form asp-action="ListOfDoctorSelectedHealthCenters" asp-controller="DoctorsInfo" asp-area="Doctor" id="filter-search" method="get">
+    <input type="hidden" asp-for="Page" />
+</form>
+
+<div class="row">
+    <div class="col-lg-12 col-sm-12">
+        <div class="well with-header with-footer table-responsive">
+            <div class="header bordered-azure">
+                <div class="flex-style">
+                    <span>@ViewData["Title"]</span>
+                    <span>@Model.GetShownEntitiesPagesTitle()</span>
+                </div>
+            </div>
+
+            @if (Model.Entities != null && Model.Entities.Any())
+            {
+                <table class="table table-hover table-bordered tc vm">
+                    <thead class="tc vm">
+                        <tr class="tc vm">
+                            <th class="tc vm">
+                                @Localizer["تصویر"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["نام مرکز درمانی"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["وضعیت همکاری"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["امکانات"]
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="tc vm">
+                        @foreach (var info in Model.Entities)
+                        {
+                            <tr class="tc vm">
+
+                                <td class="vm">
+                                    <div class="flex-style-center">
+                                        <img src="@PathTools.HealthCenterFilePathThumb/@info.HealthCenterImage" class="avatar-style" style="border-radius:50px" />
+                                    </div>
+                                </td>
+
+                                <td class="tc vm">
+                                    <p> @info.HealthCenterName </p>
+                                </td>
+
+                                <td class="tc vm">
+                                    @if (info.DoctorSelectedHealthCenterState == DoctorFAM.Domain.Enums.HealthCenter.DoctorSelectedHealthCenterState.Accept)
+                                    {
+                                        <p class="badge badge-success"> ثبت شده </p>
+                                    }
+                                    @if (info.DoctorSelectedHealthCenterState == DoctorFAM.Domain.Enums.HealthCenter.DoctorSelectedHealthCenterState.WaitingForResponse)
+                                    {
+                                        <p class="badge badge-warrning"> درانتظار بررسی </p>
+                                    }
+                                    @if (info.DoctorSelectedHealthCenterState == DoctorFAM.Domain.Enums.HealthCenter.DoctorSelectedHealthCenterState.Decline)
+                                    {
+                                        <p class="badge badge-danger"> درخواست ردشده </p>
+                                    }
+                                </td>
+
+                                <td class="tc vm">
+                                    <a asp-action="HealthCenterInfoDetail" asp-controller="HealthCenters" asp-area="Admin" asp-route-userId="" class="btn btn-success btn-circle btn-xs"><i class="glyphicon glyphicon-check"></i></a>
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <div class="footer tc">
+
+                    <partial name="_DoctorPanelPaging" model="@Model.GetCurrentPaging()" />
+
+                </div>
+            }
+            else
+            {
+                <partial name="_DoctorPanelNotFoundPartial" />
+            }
+        </div>
+    </div>
+</div>
+

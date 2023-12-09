@@ -1,8 +1,6 @@
 ﻿using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Interfaces;
 using DoctorFAM.Application.Services.Interfaces;
-using DoctorFAM.Domain.Interfaces.EFCore;
-using DoctorFAM.Domain.ViewModels.Dentist.DentistsInfo;
 using DoctorFAM.Domain.ViewModels.HealthCenters.HealthCentersInfo;
 using DoctorFAM.Web.Areas.Dentist.ActionFilterAttributes;
 using DoctorFAM.Web.HealthCenters.Admin.Controllers;

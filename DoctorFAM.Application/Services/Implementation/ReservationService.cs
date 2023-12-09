@@ -9,6 +9,7 @@ using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Dentist;
 using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.Entities.Doctors;
+using DoctorFAM.Domain.Entities.Log.LogForBackgroundServices;
 using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.Wallet;
 using DoctorFAM.Domain.Enums.DoctorReservation;
@@ -75,6 +76,21 @@ public class ReservationService : IReservationService
 
     public async Task SendSMSForReminderToReservation()
     {
+        #region AddLog 
+
+        //Fill Logger
+        BackgroundServicesLogger logger = new BackgroundServicesLogger()
+        {
+            BackgroundServiceName = "یادآوری نوبت روزانه ",
+            SendTime = $"{DateTime.Now.Hour}:{DateTime.Now.Minute}",
+        };
+
+        //Add To The Data Base
+        await _reservation.AddReservationAlertBackgroundServiceLogger(logger);
+        await _reservation.Savechanges();
+
+        #endregion
+
         var userMobiles = await _reservation.SendSMSForReminderToReservation();
 
         if (userMobiles != null && userMobiles.Any())

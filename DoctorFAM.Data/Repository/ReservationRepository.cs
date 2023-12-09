@@ -3,6 +3,7 @@
 using DoctorFAM.Data.DbContext;
 using DoctorFAM.Domain.Entities.Dentist;
 using DoctorFAM.Domain.Entities.DoctorReservation;
+using DoctorFAM.Domain.Entities.Log.LogForBackgroundServices;
 using DoctorFAM.Domain.Entities.Product;
 using DoctorFAM.Domain.Enums.DoctorReservation;
 using DoctorFAM.Domain.Enums.Request;
@@ -1944,6 +1945,11 @@ public class ReservationRepository : IReservationRepository
     #endregion
 
     #region Site Side 
+
+    public async Task AddReservationAlertBackgroundServiceLogger(BackgroundServicesLogger logger)
+    {
+        await _context.BackgroundServicesLoggers.AddAsync(logger);
+    }
 
     //Is Exist Any Waiting For Payment Reservation Request By User Id
     public async Task<ulong?> IsExistAnyWaitingForPaymentReservationRequestByUserId(ulong userId)

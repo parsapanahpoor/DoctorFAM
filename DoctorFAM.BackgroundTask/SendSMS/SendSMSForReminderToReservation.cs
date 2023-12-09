@@ -32,7 +32,7 @@ public class SendSMSForReminderToReservation : IHostedService, IDisposable
 
     public Task StartAsync(CancellationToken cancellationToken)
     {
-        var startTimer = "06:00";
+        var startTimer = "04:45";
 
         _timer = new Timer(
             SendSMSForReminderToReservationSMS,
