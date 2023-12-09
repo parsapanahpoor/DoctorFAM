@@ -9,6 +9,8 @@ public interface IHealthCentersRepository
 {
     #region General
 
+    Task<ulong> GetHealthCenterOwnerUserIdByHealthCenterId(ulong healthCenterId);
+
     Task<bool> IsExistAnyHealthCenterById(ulong id);
 
     Task AddDoctorSelectedHealthCenter(DoctorSelectedHealthCenter doctorSelectedHealth);
@@ -77,6 +79,8 @@ public interface IHealthCentersRepository
     #endregion
 
     #region Doctor Panel
+
+    Task<List<ulong>> GetListOfHealthCentersIdFromDoctorSelectedHealthCentersByDoctorUserId(ulong doctorUserId);
 
     Task<FilterHealthCentersInDoctorPanelDTO> ListOfHealthCenters(FilterHealthCentersInDoctorPanelDTO model);
 

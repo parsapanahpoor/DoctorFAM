@@ -5,6 +5,7 @@ using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.WorkAddress;
 using DoctorFAM.Domain.Interfaces;
+using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup;
 using System.Collections.Generic;
@@ -19,11 +20,15 @@ public class WorkAddressService : IWorkAddressService
 
     private readonly IWorkAddressRepository _workAddress;
     private readonly IOrganizationRepository _organizationRepository;
+    private readonly IHealthCentersRepository _healthCentersRepository;
 
-    public WorkAddressService(IWorkAddressRepository workAddress, IOrganizationRepository organizationRepository)
+    public WorkAddressService(IWorkAddressRepository workAddress, 
+                              IOrganizationRepository organizationRepository,
+                              IHealthCentersRepository healthCentersRepository)
     {
         _workAddress = workAddress;
         _organizationRepository = organizationRepository;
+        _healthCentersRepository = healthCentersRepository;
     }
 
     #endregion
@@ -53,6 +58,27 @@ public class WorkAddressService : IWorkAddressService
         #region Fill Model 
 
         var model = await _workAddress.GetListOfDoctorAddressesByDoctorUserId(ownerId.Value);
+
+        #endregion
+
+        #region Get Doctor Selected Health Centers Work Addresses
+
+        var healthCentersIds = await _healthCentersRepository.GetListOfHealthCentersIdFromDoctorSelectedHealthCentersByDoctorUserId(doctorUserId);
+        if (model != null)
+        {
+            foreach (var healthCenterId in healthCentersIds)
+            {
+                var healthCenterOwnerId = await _healthCentersRepository.GetHealthCenterOwnerUserIdByHealthCenterId(healthCenterId);
+                if (healthCenterId != 0)
+                {
+                    var healthCenterAddress = await _workAddress.GetListOfDoctorAddressesByDoctorUserId(healthCenterOwnerId);
+                    if (healthCenterAddress != null)
+                    {
+                        model.AddRange(healthCenterAddress);
+                    }
+                }
+            }
+        }
 
         #endregion
 
