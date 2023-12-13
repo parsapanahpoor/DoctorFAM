@@ -4,8 +4,10 @@ using DoctorFAM.Domain.Entities.HealthCenters;
 using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.HealthCenters;
+using DoctorFAM.Domain.ViewModels.HealthCenters.HealthCenterMembers;
 using DoctorFAM.Domain.ViewModels.HealthCenters.SideBar;
 using Microsoft.EntityFrameworkCore;
+using System.Runtime.CompilerServices;
 
 namespace DoctorFAM.Data.Repository;
 
@@ -28,9 +30,9 @@ public class HealthCentersRepository : IHealthCentersRepository
     {
         return await _context.HealthCenters
                              .AsNoTracking()
-                             .Where(p=> !p.IsDelete &&
+                             .Where(p => !p.IsDelete &&
                                     p.Id == healthCenterId)
-                             .Select(p=> p.UserId)
+                             .Select(p => p.UserId)
                              .FirstOrDefaultAsync();
     }
 
@@ -44,7 +46,7 @@ public class HealthCentersRepository : IHealthCentersRepository
                              .FirstOrDefaultAsync();
     }
 
-    public async Task<bool> IsExistAnyDoctorSelectedHealthCenterRecordByDoctorUserIdAndHealthCenterId(ulong healthCenterId , ulong doctorUserId)
+    public async Task<bool> IsExistAnyDoctorSelectedHealthCenterRecordByDoctorUserIdAndHealthCenterId(ulong healthCenterId, ulong doctorUserId)
     {
         return await _context.DoctorSelectedHealthCenters
                              .AsNoTracking()
@@ -58,8 +60,8 @@ public class HealthCentersRepository : IHealthCentersRepository
     {
         return await _context.HealthCenters
                              .AsNoTracking()
-                             .AnyAsync(p => !p.IsDelete && 
-                                       p.Id == id) ;
+                             .AnyAsync(p => !p.IsDelete &&
+                                       p.Id == id);
     }
 
     public async Task AddDoctorSelectedHealthCenter(DoctorSelectedHealthCenter doctorSelectedHealth)
@@ -196,7 +198,7 @@ public class HealthCentersRepository : IHealthCentersRepository
     //Get Health Center By Health Center Id
     public IQueryable<HealthCenter?> GetHealthCenterById(ulong id)
     {
-        return  _context.HealthCenters
+        return _context.HealthCenters
                         .Where(p => !p.IsDelete && p.Id == id)
                         .AsQueryable();
     }
@@ -211,11 +213,11 @@ public class HealthCentersRepository : IHealthCentersRepository
 
 
     //Get Health Center By Health Center User Id
-    public IQueryable<HealthCenter?> GetHealthCenterByUserId(ulong userId)
+    public Task<HealthCenter?> GetHealthCenterByUserId(ulong userId)
     {
         return _context.HealthCenters
-                        .Where(p => !p.IsDelete && p.UserId == userId)
-                        .AsQueryable();
+                       .Where(p => !p.IsDelete && p.UserId == userId)
+                       .FirstOrDefaultAsync();
     }
 
     //Update Method 
@@ -257,6 +259,69 @@ public class HealthCentersRepository : IHealthCentersRepository
         return healthCenter.Id;
     }
 
+    public async Task<FilterHealthcenterMembersDTO> FilterHealthcenterMembers(FilterHealthcenterMembersDTO model, ulong healthCenterId, CancellationToken cancellationToken)
+    {
+        var query = _context.DoctorSelectedHealthCenters
+                      .AsNoTracking()
+                      .Where(p => !p.IsDelete &&
+                             p.HealthCenterId == healthCenterId &&
+                             p.DoctorSelectedHealthCenterState != Domain.Enums.HealthCenter.DoctorSelectedHealthCenterState.Decline)
+                      .OrderByDescending(p => p.CreateDate)
+                      .AsQueryable();
+
+        var users = _context.Users
+                                  .AsNoTracking()
+                                  .Where(p => !p.IsDelete)
+                                  .AsQueryable();
+
+        var returnModel = from q in query
+                          join u in users
+                          on q.ApplicantUserId equals u.Id
+                          select new ListOFHealthMembersDTO
+                          {
+                              DoctorSelectedHealthCenterState = q.DoctorSelectedHealthCenterState,
+                              Mobile = u.Mobile,
+                              StartDate = q.CreateDate,
+                              UserAvatar = u.Avatar,
+                              Username = u.Username,
+                              Id = q.Id
+                          };
+
+        await model.Paging(returnModel);
+        return model;
+    }
+
+    public async Task<EditMemberInfoDTO?> FillEditMemberInfoDTO(ulong id , CancellationToken cancellation)
+    {
+        return await _context.DoctorSelectedHealthCenters
+                             .AsNoTracking()
+                             .Where(p => !p.IsDelete &&
+                                    p.Id == id)
+                             .Select(p => new EditMemberInfoDTO()
+                             {
+                                 DoctorSelectedHealthCenterState = p.DoctorSelectedHealthCenterState,
+                                 User = _context.Users
+                                                .AsNoTracking()
+                                                .Where(s=> !s.IsDelete &&  s.Id == p.ApplicantUserId)
+                                                .FirstOrDefault(),
+                                 Id = p.Id
+                             })
+                             .FirstOrDefaultAsync();
+    }
+
+    public async Task<DoctorSelectedHealthCenter?> GetDoctorSelectedHealthCenterById(ulong id , CancellationToken cancellationToken)
+    {
+        return await _context.DoctorSelectedHealthCenters
+                             .Where(p => !p.IsDelete && 
+                                    p.Id == id)
+                             .FirstOrDefaultAsync();
+    }
+
+    public void UpdateDoctorSelectedHealthCenterRequest(DoctorSelectedHealthCenter model)
+    {
+        _context.DoctorSelectedHealthCenters.Update(model);
+    }
+
     #endregion
 
     #region Doctor Panel 
@@ -265,9 +330,9 @@ public class HealthCentersRepository : IHealthCentersRepository
     {
         return await _context.DoctorSelectedHealthCenters
                              .AsNoTracking()
-                             .Where(p=> !p.IsDelete &&
+                             .Where(p => !p.IsDelete &&
                                     p.ApplicantUserId == doctorUserId)
-                             .Select(p=> p.HealthCenterId)
+                             .Select(p => p.HealthCenterId)
                              .ToListAsync();
     }
 
@@ -286,14 +351,14 @@ public class HealthCentersRepository : IHealthCentersRepository
                               .AsQueryable();
 
         var model = from q in query
-                join u in userIds
-                on q.Id equals u.HealthCenterId
-                select new ListOfDoctorSelectedHealthCentersDoctorSideDTO
-                {
-                    DoctorSelectedHealthCenterState = u.DoctorSelectedHealthCenterState,
-                    HealthCenterImage = q.HealthCentersInfo.HealthCenterImage,
-                    HealthCenterName = q.HealthCentersInfo.HealthCenterName
-                };
+                    join u in userIds
+                    on q.Id equals u.HealthCenterId
+                    select new ListOfDoctorSelectedHealthCentersDoctorSideDTO
+                    {
+                        DoctorSelectedHealthCenterState = u.DoctorSelectedHealthCenterState,
+                        HealthCenterImage = q.HealthCentersInfo.HealthCenterImage,
+                        HealthCenterName = q.HealthCentersInfo.HealthCenterName
+                    };
 
         await filter.Paging(model);
 
@@ -306,7 +371,7 @@ public class HealthCentersRepository : IHealthCentersRepository
                             .AsNoTracking()
                             .Include(p => p.HealthCentersInfo)
                             .Include(p => p.User)
-                            .Where(p => !p.IsDelete )
+                            .Where(p => !p.IsDelete)
                             .OrderByDescending(p => p.CreateDate)
                             .AsQueryable();
 
@@ -367,7 +432,7 @@ public class HealthCentersRepository : IHealthCentersRepository
                         User = q.User,
                         UserId = q.UserId
                     };
-                    
+
         }
 
         #endregion

@@ -1,0 +1,173 @@
+﻿@model DoctorFAM.Domain.ViewModels.HealthCenters.HealthCenterMembers.FilterHealthcenterMembersDTO
+@using DoctorFAM.Application.Convertors;
+@using DoctorFAM.Application.Extensions;
+@using DoctorFAM.Application.StaticTools;
+@using DoctorFAM.Domain.ViewModels.Common
+
+@{
+    ViewData["Title"] = @Localizer["لیست کارمندان مرکز شما"];
+}
+
+@section Styles
+    {
+
+}
+
+@section Scripts
+    {
+    <partial name="_JqueryValidation" />
+}
+
+@section Breadcrumb
+    {
+    <li>
+        <a href="javascript:void(0)"> @ViewData["Title"] </a>
+    </li>
+}
+
+<div class="row">
+    <div class="col-lg-3 col-sm-12">
+        <div class="widget">
+            <div class="widget-header bordered-bottom bordered-green">
+                <span class="widget-caption"> لیست کارمندان </span>
+            </div>
+            <div class="widget-body">
+                <div>
+                    <form asp-action="ListOfHealthCenterMembers" asp-controller="HealthCenterMember" asp-area="HealthCenters" id="filter-search" method="get">
+
+                        <input type="hidden" asp-for="Page" />
+
+                        <div class="form-group">
+                            <label asp-for="Username"> نام کاربر</label>
+                            <input type="text" class="form-control" asp-for="Username">
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Mobile"> موبایل</label>
+                            <input type="text" class="form-control" asp-for="Mobile">
+                        </div>
+
+                        <hr />
+
+                        <div class="row">
+                            <div class="col-md-12 flex-style">
+                                <button type="submit" class="btn btn-labeled w-100 btn-palegreen">
+                                    <i class="btn-label glyphicon glyphicon-filter"></i>@Localizer["فیلتر"]
+                                </button>
+
+                                @if (Context.Request.QueryString.HasValue)
+                                {
+                                    <a asp-action="ListOfHealthCenterMembers" asp-controller="HealthCenterMember" asp-area="HealthCenters" class="btn btn-labeled w-100 btn-darkorange">
+                                        <i class="btn-label glyphicon glyphicon-remove"></i>@Localizer["حذف فیلتر"]
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-9 col-sm-12">
+        <div class="well with-header with-footer table-responsive">
+            <div class="header bordered-azure">
+                <div class="flex-style">
+                    <span>@ViewData["Title"]</span>
+                    <span>@Model.GetShownEntitiesPagesTitle()</span>
+                </div>
+            </div>
+
+            @if (Model.Entities != null && Model.Entities.Any())
+            {
+                <table class="table table-hover table-bordered tc vm">
+                    <thead class="tc vm">
+                        <tr class="tc vm">
+                            <th class="tc vm">
+                                @Localizer["تصویر"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["موبایل"]
+                            </th>
+                              <th class="tc vm">
+                                @Localizer["وضعیت"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["تاریخ  درخواست همکاری"]
+                            </th>
+                            <th class="tc vm">
+                                @Localizer["امکانات"]
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="tc vm">
+                        @foreach (var user in Model.Entities)
+                        {
+                            <tr class="tc vm">
+
+                                <td class="vm">
+                                    <div class="flex-style-center">
+                                        <img src="@user.UserAvatar.GetUserAvatar()" class="avatar-style" />
+                                        <div class="mr-10px">
+                                            <span> @user.Username </span>
+                                            <hr class="margin-7" />
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <td class="tc vm">
+                                    <p> @user.Mobile </p>
+                                </td>
+
+                                <td class="tc vm">
+                                    @if (user.DoctorSelectedHealthCenterState == DoctorFAM.Domain.Enums.HealthCenter.DoctorSelectedHealthCenterState.Accept)
+                                    {
+                                        <p class="badge badge-success">
+                                            تایید شده
+                                        </p>
+                                    }
+                                       @if (user.DoctorSelectedHealthCenterState == DoctorFAM.Domain.Enums.HealthCenter.DoctorSelectedHealthCenterState.Decline)
+                                    {
+                                        <p class="badge badge-danger">
+                                            رد شده
+                                        </p>
+                                    }
+                                    @if (user.DoctorSelectedHealthCenterState == DoctorFAM.Domain.Enums.HealthCenter.DoctorSelectedHealthCenterState.WaitingForResponse)
+                                    {
+                                        <p class="badge badge-warning">
+                                            در انتظار بررسی
+                                        </p>
+                                    }
+                                </td>
+
+                                <td class="tc vm">
+                                    <p> @user.StartDate.ToShamsi() </p>
+                                </td>
+
+                                <td class="tc vm">
+                                    <a asp-action="EditUserRequest"
+                                       asp-controller="HealthCenterMember"
+                                       asp-area="HealthCenters"
+                                       asp-route-id="@user.Id" 
+                                       class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <div class="footer tc">
+
+                    <partial name="_HealthCenterPanelPaging" model="@Model.GetCurrentPaging()" />
+
+                </div>
+            }
+            else
+            {
+                <partial name="_HealthCenterPanelNotFoundPartial" />
+            }
+        </div>
+    </div>
+</div>
+
