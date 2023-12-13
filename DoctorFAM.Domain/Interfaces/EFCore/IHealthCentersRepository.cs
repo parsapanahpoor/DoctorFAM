@@ -1,6 +1,7 @@
 ﻿using DoctorFAM.Domain.Entities.HealthCenters;
 using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.HealthCenters;
+using DoctorFAM.Domain.ViewModels.HealthCenters.HealthCenterMembers;
 using DoctorFAM.Domain.ViewModels.HealthCenters.SideBar;
 
 namespace DoctorFAM.Domain.Interfaces.EFCore;
@@ -59,7 +60,7 @@ public interface IHealthCentersRepository
     Task<HealthCenter?> GetHealthCenterByIdAsync(ulong id);
 
     //Get Health Center By Health Center User Id
-    IQueryable<HealthCenter?> GetHealthCenterByUserId(ulong userId);
+    Task<HealthCenter?> GetHealthCenterByUserId(ulong userId);
 
     //Update Method 
     void UpdateHealthCenterInfo(HealthCentersInfo model);
@@ -75,6 +76,14 @@ public interface IHealthCentersRepository
 
     //Add Health Center With Returning Id 
     Task<ulong> AddHealthCenterWithReturningId(HealthCenter healthCenter);
+
+    Task<FilterHealthcenterMembersDTO> FilterHealthcenterMembers(FilterHealthcenterMembersDTO model, ulong healthCenterId, CancellationToken cancellationToken);
+
+    Task<EditMemberInfoDTO?> FillEditMemberInfoDTO(ulong id, CancellationToken cancellation);
+
+    Task<DoctorSelectedHealthCenter?> GetDoctorSelectedHealthCenterById(ulong id, CancellationToken cancellationToken);
+
+    void UpdateDoctorSelectedHealthCenterRequest(DoctorSelectedHealthCenter model);
 
     #endregion
 

@@ -1,7 +1,9 @@
 ﻿using DoctorFAM.Application.DTOs.HealthCenters.HealthCentersInfos;
 using DoctorFAM.Domain.Entities.Organization;
+using DoctorFAM.Domain.Enums.HealthCenter;
 using DoctorFAM.Domain.ViewModels.Admin.HealthCenter;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.HealthCenters;
+using DoctorFAM.Domain.ViewModels.HealthCenters.HealthCenterMembers;
 using DoctorFAM.Domain.ViewModels.HealthCenters.HealthCentersInfo;
 using Microsoft.AspNetCore.Http;
 
@@ -48,6 +50,12 @@ public interface IHealthCentersService
 
     //Add Or Edit Health Center Info Health Center Panel 
     Task<AddOrEditHealthCenterstInfoResult> AddOrEditHealthCenterInfoDentistsPanel(ManageHealthCentersInfoViewModel model, IFormFile? UserAvatar, IFormFile? HealthCenterImage);
+
+    Task<FilterHealthcenterMembersDTO> FilterHealthcenterMembers(FilterHealthcenterMembersDTO model, ulong healthCenterUserId, CancellationToken cancellationToken);
+
+    Task<EditMemberInfoDTO?> FillEditMemberInfoDTO(ulong id, CancellationToken cancellation);
+
+    Task<bool> EditHealthCenterMemberState(ulong id, DoctorSelectedHealthCenterState DoctorSelectedHealthCenterState, CancellationToken cancellationToken);
 
     #endregion
 
