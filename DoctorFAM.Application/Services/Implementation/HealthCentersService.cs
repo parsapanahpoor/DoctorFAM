@@ -9,10 +9,12 @@ using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.HealthCenters;
 using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.Entities.WorkAddress;
+using DoctorFAM.Domain.Enums.HealthCenter;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.Admin.HealthCenter;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.HealthCenters;
+using DoctorFAM.Domain.ViewModels.HealthCenters.HealthCenterMembers;
 using DoctorFAM.Domain.ViewModels.HealthCenters.HealthCentersInfo;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -30,7 +32,7 @@ public class HealthCentersService : IHealthCentersService
     private readonly IDoctorsService _doctorsService;
     private readonly ISMSService _sMSService;
 
-    public HealthCentersService(IHealthCentersRepository healthCentersRepository, 
+    public HealthCentersService(IHealthCentersRepository healthCentersRepository,
                                 IOrganizationService organizationService,
                                 IWorkAddressRepository workAddressRepository,
                                 IUserService userService,
@@ -269,7 +271,7 @@ public class HealthCentersService : IHealthCentersService
             UserId = healthCenter.UserId,
             NationalCode = info.NationalCode,
             RejectDescription = healthCenterOffice.RejectDescription,
-            HealthCenterInfosType= healthCenterOffice.OrganizationInfoState,
+            HealthCenterInfosType = healthCenterOffice.OrganizationInfoState,
             Id = info.Id,
             HealthCenterId = healthCenter.Id,
             HealthCenterFile = info.HealthCenterImage,
@@ -489,9 +491,7 @@ public class HealthCentersService : IHealthCentersService
         #region Get Health Center By User Id 
 
         //Get Health Center By UserId
-        var healthCenter= await _healthCentersRepository.GetHealthCenterByUserId(user.Id)
-                                                    .FirstOrDefaultAsync();
-
+        var healthCenter = await _healthCentersRepository.GetHealthCenterByUserId(user.Id);
         if (healthCenter == null) return AddOrEditHealthCenterstInfoResult.Faild;
 
         #endregion
@@ -612,7 +612,7 @@ public class HealthCentersService : IHealthCentersService
 
         if (existInfo == false)
         {
-            if (healthCenter != null )
+            if (healthCenter != null)
             {
                 #region Fill View Model
 
@@ -823,6 +823,36 @@ public class HealthCentersService : IHealthCentersService
         return AddOrEditHealthCenterstInfoResult.Success;
     }
 
+    public async Task<FilterHealthcenterMembersDTO> FilterHealthcenterMembers(FilterHealthcenterMembersDTO model, ulong healthCenterUserId, CancellationToken cancellationToken)
+    {
+        //Get Health Center By Owner UserId
+        var healthCenter = await _healthCentersRepository.GetHealthCenterByUserId(healthCenterUserId);
+
+        return await _healthCentersRepository.FilterHealthcenterMembers(model , healthCenter.Id , cancellationToken);
+    }
+
+    public async Task<EditMemberInfoDTO?> FillEditMemberInfoDTO(ulong id, CancellationToken cancellation)
+    {
+        return await _healthCentersRepository.FillEditMemberInfoDTO(id , cancellation);
+    }
+
+    public async Task<bool> EditHealthCenterMemberState(ulong id , DoctorSelectedHealthCenterState DoctorSelectedHealthCenterState , CancellationToken cancellationToken)
+    {
+        if (DoctorSelectedHealthCenterState == DoctorSelectedHealthCenterState.WaitingForResponse) return false;
+
+        //Get Doctor Selected HealthCenter Request 
+        var doctorSelectedHealthCenterRequest = await _healthCentersRepository.GetDoctorSelectedHealthCenterById(id , cancellationToken);
+        if (doctorSelectedHealthCenterRequest == null) return false;
+
+        //Update 
+        doctorSelectedHealthCenterRequest.DoctorSelectedHealthCenterState = DoctorSelectedHealthCenterState;
+
+        _healthCentersRepository.UpdateDoctorSelectedHealthCenterRequest(doctorSelectedHealthCenterRequest);
+        await _healthCentersRepository.SaveChangesAsync();
+
+        return true;
+    }
+
     #endregion
 
     #region Doctor Panel 
@@ -834,10 +864,10 @@ public class HealthCentersService : IHealthCentersService
 
     public async Task<FilterOfDoctorSelectedHealthCentersDoctorSide> FilterOfDoctorSelectedHealthCentersDoctorSide(FilterOfDoctorSelectedHealthCentersDoctorSide filter)
     {
-        return await _healthCentersRepository.FilterOfDoctorSelectedHealthCentersDoctorSide( filter);
+        return await _healthCentersRepository.FilterOfDoctorSelectedHealthCentersDoctorSide(filter);
     }
 
-    public async Task<AddDoctorSelectedHealthCenterResult> SendRequestForCoopratetoHealthCenter(ulong healthCenterId , ulong doctorUserId)
+    public async Task<AddDoctorSelectedHealthCenterResult> SendRequestForCoopratetoHealthCenter(ulong healthCenterId, ulong doctorUserId)
     {
         #region Get Health Center By Id
 
@@ -851,7 +881,7 @@ public class HealthCentersService : IHealthCentersService
         #region Get Doctor By Doctor UserId
 
         var doctor = await _doctorsService.IsExistAnyDoctorByUserId(doctorUserId);
-        if (!doctor) return  AddDoctorSelectedHealthCenterResult.Faild;
+        if (!doctor) return AddDoctorSelectedHealthCenterResult.Faild;
 
         #endregion
 
@@ -899,11 +929,11 @@ public class HealthCentersService : IHealthCentersService
 
         if (!string.IsNullOrEmpty(doctorUsername) && !string.IsNullOrEmpty(healthCenterName) && !string.IsNullOrEmpty(healthCenterOwnerMobile))
         {
-            var message = Messages.CooperationRequestForHealthCenters(doctorUsername , healthCenterName);
+            var message = Messages.CooperationRequestForHealthCenters(doctorUsername, healthCenterName);
 
             await _sMSService.SendSimpleSMS(healthCenterOwnerMobile, message);
         }
-        
+
         #endregion
 
         return AddDoctorSelectedHealthCenterResult.Success;

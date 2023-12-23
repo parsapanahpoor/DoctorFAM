@@ -1595,6 +1595,7 @@
 	<ItemGroup>
 	  <_ContentIncludedByDefault Remove="Areas\Admin\Views\HealthCenters\HealthCenterInfoDetail.cshtml" />
 	  <_ContentIncludedByDefault Remove="Areas\Admin\Views\SiteSetting\ListOfInsulin.cshtml" />
+	  <_ContentIncludedByDefault Remove="Views\Home\TestSepeciality.cshtml" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -1626,6 +1627,10 @@
 
 	<ItemGroup>
 	  <UpToDateCheckInput Remove="Areas\Admin\Views\HealthCenters\HealthCenterInfoDetail.cshtml" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Views\Home\TestSepeciality.cshtml" />
 	</ItemGroup>
 
 </Project>
