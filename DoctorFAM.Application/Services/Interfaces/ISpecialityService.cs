@@ -54,6 +54,8 @@ public interface ISpecialityService
 
     #region Site Side 
 
+    Task<FilterSpecialistDoctorsSiteSideViewModel> FilterSpecialistDoctorsSiteSide(FilterSpecialistDoctorsSiteSideViewModel model, CancellationToken token);
+
     //List Of Specialists Site Side 
     Task<List<ListOfSpecialistsSiteSideViewModel>> ListOfSpecialistsSiteSide(FilterFamilyDoctorUserPanelSideViewModel filter);
 

@@ -1,10 +1,5 @@
 ﻿using DoctorFAM.Domain.Entities.Common;
 using DoctorFAM.Domain.Entities.Doctors;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DoctorFAM.Domain.Entities.Speciality
 {

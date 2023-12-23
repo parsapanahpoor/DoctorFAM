@@ -1,0 +1,381 @@
+﻿@model DoctorFAM.Domain.ViewModels.Site.Specialists.FilterSpecialistDoctorsSiteSideViewModel
+@using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo
+@using DoctorFAM.Domain.Entities.Speciality
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Domain.ViewModels.Common
+@using DoctorFAM.Application.StaticTools
+
+@{
+    ViewBag.Title = "معرفی پزشکان متخصص";
+}
+
+@{
+    var countries = ViewData["Countries"] != null ? ViewData["Countries"] as List<SelectListViewModel> : null;
+    var states = ViewData["States"] != null ? ViewData["States"] as List<SelectListViewModel> : null;
+    var cities = ViewData["Cities"] != null ? ViewData["Cities"] as List<SelectListViewModel> : null;
+
+    var generalSpecialities = ViewData["GeneralSpeciality"] != null ? ViewData["GeneralSpeciality"] as List<Speciality> : null;
+    var justSpeciality = ViewData["JustSpeciality"] != null ? ViewData["JustSpeciality"] as List<Speciality> : null;
+}
+
+@section Scripts
+    {
+        <script>
+
+            $("#GeneralSpecialityId").change(function () {
+                if ($("#GeneralSpecialityId :selected").val() !== '') {
+                    $('#specificId option:not(:first)').remove();
+                    $.get("/Home/LoadJustSpecialities", { specificId: $("#GeneralSpecialityId :selected").val() }).then(res => {
+                        if (res.data !== null) {
+                            console.log(res.data);
+                            $.each(res.data, function () {
+                                $("#specificId").append(
+                                    '<option value=' + this.id + '>' + this.title + '</option>'
+                                );
+                            });
+                            $("#specificId").removeAttr("disabled");
+                        }
+                    });
+                } else {
+                    $('#specificId option:not(:first)').remove();
+                }
+            });
+
+        </script>
+
+}
+
+@section Styles
+    {
+        <style>
+
+            #StateId {
+                display: initial !important;
+            }
+
+            #CountryId {
+                display: initial !important;
+            }
+
+            #CityId {
+                display: initial !important;
+            }
+
+            #Gender {
+                display: initial !important;
+            }
+
+            #IsContactPartyWithFamilyDoctors {
+                display: initial !important;
+            }
+
+            .nice-select {
+                display: none !important;
+            }
+
+            #GeneralSpecialityId {
+                display: initial !important;
+            }
+
+            #specificId {
+                display: initial !important;
+            }
+
+        </style>
+}
+
+<div class="container">
+
+    <div class="content mt-3">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-4  theiaStickySidebar">
+
+                    <form asp-action="TestSepeciality" asp-controller="Home" asp-area="" id="formFilter" method="get">
+                        <input type="hidden" asp-for="Page" />
+
+                        <div class="card search-filter">
+                            <div class="card-header">
+                                <h4 class="card-title mb-0">فیلتر جستجو</h4>
+                            </div>
+                            <div class="card-body">
+
+                                <div class="filter-widget">
+
+                                    <div class="form-group">
+                                        <h6>نام پزشک</h6>
+                                        <input type="text" class="form-control" asp-for="Username" placeholder="لطفا نام پزشک را وارد کنید">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <h6>جنسیت پزشک</h6>
+                                        <select class="form-control" asp-for="Gender" id="Gender">
+
+                                            <option value="">لطفا جنسیت پزشک را انتخاب کنید </option>
+
+                                            @if (Model.Gender == 0)
+                                            {
+                                                    <option value="0" selected="selected">مرد </option>
+                                                    <option value="1">زن </option>
+                                            }
+                                            @if (Model.Gender == 1)
+                                            {
+                                                    <option value="0">مرد </option>
+                                                    <option value="1" selected="selected">زن </option>
+                                            }
+                                            @if (Model.Gender == null)
+                                            {
+                                                    <option value="0">مرد </option>
+                                                    <option value="1">زن </option>
+                                            }
+
+                                        </select>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <h6>طرف قرارداد باپزشک خانواده</h6>
+                                        <select class="form-control" asp-for="IsContactPartyWithFamilyDoctors" id="IsContactPartyWithFamilyDoctors">
+
+                                            <option value="">لطفا وضعیت قرارداد پزشک را وارد کنید </option>
+
+                                            @if (Model.IsContactPartyWithFamilyDoctors == false)
+                                            {
+                                                    <option value="@false" selected="selected">نباشد </option>
+                                                    <option value="@true">باشد</option>
+                                            }
+                                            @if (Model.IsContactPartyWithFamilyDoctors == true)
+                                            {
+                                                    <option value="@true" selected="selected">باشد</option>
+                                                    <option value="@false">نباشد </option>
+                                            }
+                                            @if (Model.IsContactPartyWithFamilyDoctors == null)
+                                            {
+
+                                                    <option value="@true">باشد</option>
+                                                    <option value="@false">نباشد </option>
+                                            }
+
+                                        </select>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                            <div class="form-group">
+                                                <h6>کشور</h6>
+                                                <select class="form-control" id="CountryId" asp-for="CountryId">
+                                                    <option value="">نام کشور </option>
+                                                    @if (countries != null && countries.Any())
+                                                    {
+                                                        foreach (var country in countries)
+                                                        {
+                                                            if (Model != null && Model.CountryId == country.Id)
+                                                            {
+                                                                            <option value="@country.Id" selected="selected"> @country.Title </option>
+                                                            }
+                                                            else
+                                                            {
+                                                                            <option value="@country.Id"> @country.Title </option>
+                                                            }
+                                                        }
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                            <div class="form-group">
+                                                <h6>استان</h6>
+                                                <select class="form-control" id="StateId" asp-for="StateId">
+                                                    <option value=""> نام استان  </option>
+                                                    @if (states != null && states.Any())
+                                                    {
+                                                        foreach (var state in states)
+                                                        {
+                                                            if (Model != null && Model.StateId == state.Id)
+                                                            {
+                                                                            <option value="@state.Id" selected="selected"> @state.Title </option>
+                                                            }
+                                                            else
+                                                            {
+                                                                            <option value="@state.Id"> @state.Title </option>
+                                                            }
+                                                        }
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                            <div class="form-group">
+                                                <h6>شهر</h6>
+                                                <select asp-for="CityId" id="CityId" class="form-control">
+                                                    <option value=""> نام شهر  </option>
+                                                    @if (cities != null && cities.Any())
+                                                    {
+                                                        foreach (var city in cities)
+                                                        {
+                                                            if (Model != null && Model.CityId == city.Id)
+                                                            {
+                                                                            <option value="@city.Id" selected="selected"> @city.Title </option>
+                                                            }
+                                                            else
+                                                            {
+                                                                            <option value="@city.Id"> @city.Title </option>
+
+                                                            }
+                                                        }
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                            <div class="form-group">
+                                                <h6>عنوان تخصص</h6>
+                                                <select class="form-control" id="GeneralSpecialityId" asp-for="GeneralSpecialityId">
+                                                    <option value="">عنوان تخصص </option>
+                                                    @if (generalSpecialities != null && generalSpecialities.Any())
+                                                    {
+                                                        foreach (var speciality in generalSpecialities)
+                                                        {
+                                                            if (Model != null && Model.GeneralSpecialityId == speciality.Id)
+                                                            {
+                                                                            <option value="@speciality.Id" selected="selected"> @speciality.UniqueName </option>
+                                                            }
+                                                            else
+                                                            {
+                                                                            <option value="@speciality.Id"> @speciality.UniqueName </option>
+                                                            }
+                                                        }
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                            <div class="form-group">
+                                                <h6>انتخاب تخصص</h6>
+                                                <select class="form-control" id="specificId" asp-for="specificId">
+                                                    <option value=""> انتخاب تخصص  </option>
+                                                    @if (justSpeciality != null && justSpeciality.Any())
+                                                    {
+                                                        foreach (var speciality in justSpeciality)
+                                                        {
+                                                            if (Model != null && Model.specificId == speciality.Id)
+                                                            {
+                                                                            <option value="@speciality.Id" selected="selected"> @speciality.UniqueName </option>
+                                                            }
+                                                            else
+                                                            {
+                                                                            <option value="@speciality.Id"> @speciality.UniqueName </option>
+                                                            }
+                                                        }
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="btn-search ">
+                                    <button type="submit" class="btn-Accept w-100">
+                                        جستجو
+                                    </button>
+                                </div>
+
+                                @if (Context.Request.QueryString.HasValue)
+                                {
+                                        <div class="btn-search text-center justify-center-content">
+                                            <a asp-action="TestSepeciality" asp-controller="Home" asp-area="" class="btn-SelfTest mt-2 text-center justify-center-content" style="padding-top: 10px;padding-bottom: 10px;padding-right: 20px;padding-left: 20px; ">
+                                                حذف فیلتر
+                                            </a>
+                                        </div>
+                                }
+
+                            </div>
+                        </div>
+
+                    </form>
+
+                </div>
+
+                @if (Model.Entities != null && Model.Entities.Any())
+                {
+                        <div class="col-md-8 mb-4 ">
+
+                        @foreach (var doctor in Model.Entities)
+                        {
+                                    <div class="card">
+
+                                        <div class="card-body">
+                                            <div class="doctor-widget">
+                                                <div class="doc-info-left">
+                                                    <div class="doctor-img">
+                                                        <a asp-action="NewDocPage" asp-area="" asp-controller="FocalPoint" asp-route-userId="@doctor.UserId" asp-route-name="@doctor.Username.FixTextForUrl()">
+                                                            <img src="/content/images/user/@((string.IsNullOrEmpty(doctor.UserAvatar)) ? "DefaultAvatar.png" : $"thumb/{doctor.UserAvatar}")" class="img-fluid" alt="User Image">
+                                                        </a>
+                                                    </div>
+                                                    <div class="doc-info-cont">
+                                                        <h4 class="doc-name"><a asp-action="NewDocPage" asp-area="" asp-controller="FocalPoint" asp-route-userId="@doctor.UserId" asp-route-name="@doctor.Username.FixTextForUrl()">پزشک:@((doctor.DoctorTitleName == DoctorFAM.Domain.Enums.DoctorTitleName.DoctorTilteName.Anonymous) ? "" : doctor.DoctorTitleName.GetEnumName()) @doctor.Username</a></h4>
+                                                        <p class="doc-speciality">@((!string.IsNullOrEmpty(doctor.Education)) ? doctor.Education : null)</p>
+                                                @if (doctor.Specialty != null)
+                                                {
+                                                                <h5 class="doc-department">تخصص : @((!string.IsNullOrEmpty(doctor.Specialty)) ? doctor.Specialty : null)</h5>
+                                                }
+                                                @if (doctor.PartyToTheContractWithTheFamilyDoctor)
+                                                {
+                                                                <h5 class="doc-department" style="color: #ff9b00;">طرف قرارداد با پزشک خانواده است.</h5>
+                                                }
+                                                        <div class="rating">
+                                                            <i class="fas fa-star filled"></i>
+                                                            <i class="fas fa-star filled"></i>
+                                                            <i class="fas fa-star filled"></i>
+                                                            <i class="fas fa-star filled"></i>
+                                                            <i class="fas fa-star"></i>
+                                                            <span class="d-inline-block average-rating">()</span>
+                                                        </div>
+
+                                                        <div class="clinic-services">
+                                                            نوع ویزیت: آنلاین - حضوری
+                                                    @*<span>آنلاین</span>
+                                            <span>حضوری</span>*@
+                                                        </div>
+
+
+
+
+
+                                                    </div>
+                                                </div>
+                                                <div class="doc-info-right text-center justify-content-center">
+
+                                                    <div class="clinic-booking mt-1  text-center justify-content-center">
+
+                                                        <a class="view-pro-btn mt-3  text-center justify-content-center" asp-action="NewDocPage" asp-area="" asp-controller="FocalPoint" asp-route-userId="@doctor.UserId" asp-route-name="@doctor.Username.FixTextForUrl()">مشاهده پروفایل</a>
+                                                        <a class="apt-btn  text-center justify-content-center" asp-action="DocBooking" asp-controller="FocalPoint" asp-area="" asp-route-userId="@doctor.UserId">رزرو نوبت</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                        }
+
+                            <div class="footer tc">
+                                <partial name="_Paging" model="@Model.GetCurrentPaging()" />
+                            </div>
+
+                        </div>
+                }
+                else
+                {
+                        <div>
+                            یافت نشد
+                        </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
