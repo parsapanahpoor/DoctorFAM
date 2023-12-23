@@ -251,6 +251,11 @@ public class SpecialityService : ISpecialityService
 
     #region Site Side 
 
+    public async Task<FilterSpecialistDoctorsSiteSideViewModel> FilterSpecialistDoctorsSiteSide(FilterSpecialistDoctorsSiteSideViewModel model, CancellationToken token)
+    {
+        return await _specialityRepository.FilterSpecialistDoctorsSiteSide(model, token);
+    }
+
     //List Of Specialists Site Side 
     public async Task<List<ListOfSpecialistsSiteSideViewModel>> ListOfSpecialistsSiteSide(FilterFamilyDoctorUserPanelSideViewModel filter)
     {

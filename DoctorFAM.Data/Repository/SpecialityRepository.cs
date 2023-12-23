@@ -1,8 +1,11 @@
 ﻿#region Usings
 
 using DoctorFAM.Data.DbContext;
+using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Doctors;
+using DoctorFAM.Domain.Entities.Product;
 using DoctorFAM.Domain.Entities.Speciality;
+using DoctorFAM.Domain.Enums.Gender;
 using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.Admin.Speciality;
 using DoctorFAM.Domain.ViewModels.Common;
@@ -303,6 +306,142 @@ public class SpecialityRepository : ISpecialityRepository
 
     #region Site Side 
 
+    public async Task<FilterSpecialistDoctorsSiteSideViewModel> FilterSpecialistDoctorsSiteSide(FilterSpecialistDoctorsSiteSideViewModel model, CancellationToken token)
+    {
+        #region Joins
+
+        var user = _context.Users
+                     .AsNoTracking()
+                     .Where(s => !s.IsDelete &&
+                            s.IsMobileConfirm)
+                     .OrderByDescending(s => s.CreateDate)
+                     .AsQueryable();
+
+        var acceptedDoctor = _context.Organizations
+                                           .AsNoTracking()
+                                           .Where(p => !p.IsDelete &&
+                                                  p.OrganizationInfoState == OrganizationInfoState.Accepted &&
+                                                  p.OrganizationType == Domain.Enums.Organization.OrganizationType.DoctorOffice)
+                                           .AsQueryable();
+
+        var doctorsInfos = _context.Doctors
+                                  .AsNoTracking()
+                                  .Include(p => p.DoctorsInfos)
+                                  .Include(p => p.DoctorSelectedSpecialities)
+                                  .Where(p => !p.IsDelete &&
+                                         p.DoctorSelectedSpecialities.Any(s => s.DoctorId == p.Id))
+                                  .Join(acceptedDoctor, d => d.UserId, o => o.OwnerId, (doctor, organization) =>
+                                    new
+                                    {
+                                        doctorId = doctor.Id,
+                                        userId = doctor.UserId,
+                                        SpecialityName = doctor.DoctorsInfos.Specialty,
+                                        PartyToTheContractWithTheFamilyDoctor = doctor.DoctorsInfos.ContractWithFamilyDoctors,
+                                        Gender = doctor.DoctorsInfos.Gender,
+                                        Education = doctor.DoctorsInfos.Education,
+                                        Speciality = doctor.DoctorsInfos.Specialty,
+                                        TitleName = doctor.DoctorsInfos.DoctorTilteName
+                                    })
+                                  .AsQueryable();
+
+
+
+        #endregion
+
+        #region Gender
+
+        if (model.Gender.HasValue)
+        {
+            if (model.Gender.Value == 0) doctorsInfos = doctorsInfos.Where(p => p.Gender == Gender.Male);
+
+            if (model.Gender.Value == 1) doctorsInfos = doctorsInfos.Where(p => p.Gender == Gender.Female);
+        }
+
+        #endregion
+
+        #region Contract With Family Doctors
+
+        if (model.IsContactPartyWithFamilyDoctors.HasValue)
+        {
+            if (model.IsContactPartyWithFamilyDoctors.Value == false) doctorsInfos = doctorsInfos.Where(p => !p.PartyToTheContractWithTheFamilyDoctor);
+
+            if (model.IsContactPartyWithFamilyDoctors.Value == true) doctorsInfos = doctorsInfos.Where(p => p.PartyToTheContractWithTheFamilyDoctor);
+        }
+
+        #endregion
+
+        #region Username 
+
+        if (!string.IsNullOrEmpty(model.Username))
+        {
+            user = user.Where(s => s.Username.Contains(model.Username));
+        }
+
+        #endregion
+
+        #region Country
+
+        if (model.CountryId.HasValue)
+        {
+            user = _context.WorkAddresses
+                           .AsNoTracking()
+                           .Where(p => !p.IsDelete &&
+                                  p.CountryId == model.CountryId.Value)
+                            .Join(user, w => w.UserId, u => u.Id, (country, user) => user)
+                            .Distinct();
+        }
+
+        #endregion
+
+        #region State
+
+        if (model.StateId.HasValue)
+        {
+            user = _context.WorkAddresses
+                           .AsNoTracking()
+                           .Where(p => !p.IsDelete &&
+                                  p.StateId == model.StateId.Value)
+                            .Join(user, w => w.UserId, u => u.Id, (state, user) => user)
+                            .Distinct();
+        }
+
+        #endregion
+
+        #region City
+
+        if (model.CityId.HasValue)
+        {
+            user = _context.WorkAddresses
+                           .AsNoTracking()
+                           .Where(p => !p.IsDelete &&
+                                  p.CityId == model.CityId.Value)
+                            .Join(user, w => w.UserId, u => u.Id, (city, user) => user)
+                            .Distinct();
+        }
+
+        #endregion
+
+        var returnModel = user.Join(doctorsInfos, u => u.Id, d => d.userId, (user, doctor) =>
+                             new Specialist
+                             {
+                                 DoctorId = doctor.doctorId,
+                                 PartyToTheContractWithTheFamilyDoctor = doctor.PartyToTheContractWithTheFamilyDoctor,
+                                 SpecialityName = doctor.SpecialityName,
+                                 UserAvatar = user.Avatar,
+                                 UserId = user.Id,
+                                 Username = user.Username,
+                                 Gender = doctor.Gender,
+                                 Specialty = doctor.Speciality,
+                                 Education = doctor.Education,
+                                 DoctorTitleName = doctor.TitleName
+                             });
+
+
+        await model.Paging(returnModel);
+
+        return model;
+    }
+
     //List Of Specialists Site Side 
     public async Task<List<ListOfSpecialistsSiteSideViewModel>> ListOfSpecialistsSiteSide(FilterFamilyDoctorUserPanelSideViewModel filter)
     {
@@ -548,6 +687,8 @@ public class SpecialityRepository : ISpecialityRepository
 
         #endregion
     }
+
+
 
     //List Of Super Specialists 
     public async Task<List<ListOfSpecialistsSiteSideViewModel>> ListOfSuperSpecialists(FilterFamilyDoctorUserPanelSideViewModel filter)

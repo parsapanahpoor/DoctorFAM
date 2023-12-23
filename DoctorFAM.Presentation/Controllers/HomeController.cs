@@ -2,9 +2,12 @@
 
 using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Interfaces;
+using DoctorFAM.Application.Services;
 using DoctorFAM.Application.Services.Implementation;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Application.StaticTools;
+using DoctorFAM.Domain.ViewModels.Site.Specialists;
+using DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor;
 using DoctorFAM.Presentation.Models;
 using DoctorFAM.Web.HttpManager;
 using DoctorFAM.Web.Hubs;
@@ -50,6 +53,41 @@ public class HomeController : SiteBaseController
     {
         return View();
     }
+
+    public async Task<IActionResult> TestSepeciality(FilterSpecialistDoctorsSiteSideViewModel filter , CancellationToken cancellation)
+    {
+        if (filter.GeneralSpecialityId.HasValue && !filter.specificId.HasValue)
+        {
+            TempData[ErrorMessage] = "لطفا تخصص مورد نظر را انتخاب کنید .";
+            return RedirectToAction(nameof(Index));
+        }
+
+        #region View Bags 
+
+        ViewData["Countries"] = await _locationService.GetAllCountries();
+
+        if (filter.CountryId != null)
+        {
+            ViewData["States"] = await _locationService.GetStateChildren(filter.CountryId.Value);
+            if (filter.StateId != null)
+            {
+                ViewData["Cities"] = await _locationService.GetStateChildren(filter.StateId.Value);
+            }
+        }
+
+        ViewData["GeneralSpeciality"] = await _specialityService.GetListOfGeneralTitleSpecialities();
+
+        if (filter.GeneralSpecialityId != null)
+        {
+            ViewData["JustSpeciality"] = await _specialityService.GetChildJustSpecialityByParentId(filter.GeneralSpecialityId.Value);
+        }
+
+        var res = await _specialityService.FilterSpecialistDoctorsSiteSide(filter,cancellation);
+
+        return View(filter);
+    }
+
+    #endregion
 
     #endregion
 
