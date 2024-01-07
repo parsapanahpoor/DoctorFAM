@@ -56,6 +56,7 @@ public class ReservationRepository : IReservationRepository
                              .Include(p=> p.DoctorReservationDate)
                              .ThenInclude(p=> p.User)
                              .Where(p => !p.IsDelete &&
+                                    !p.DoctorBooking && 
                                     p.PatientId.HasValue &&
                                     p.DoctorReservationState == DoctorReservationState.Reserved &&
                                    (p.DoctorReservationDate.ReservationDate.Year == DateTime.Now.Year &&
@@ -1054,7 +1055,9 @@ public class ReservationRepository : IReservationRepository
         var query = _context.DoctorReservationDateTimes
            .Include(p => p.DoctorReservationDate)
            .ThenInclude(p => p.User)
-           .Where(p => !p.IsDelete && p.PatientId == filter.UserId)
+           .Where(p => !p.IsDelete && 
+                  p.PatientId == filter.UserId &&
+                  !p.DoctorBooking)
            .OrderBy(s => s.DoctorReservationDate.ReservationDate)
            .ThenByDescending(s => s.Id)
            .AsQueryable();
