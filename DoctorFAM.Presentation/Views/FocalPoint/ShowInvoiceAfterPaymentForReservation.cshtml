@@ -126,6 +126,17 @@
                         <td>دکتر @((!string.IsNullOrEmpty(Model.DoctorUsername)) ? Model.DoctorUsername : "وارد نشده")</td>
                     </tr>
 
+                    @if (!string.IsNullOrEmpty(Model.DoctorSpecialities))
+                    {
+                        <tr>
+
+                            <td>تخصص پزشک</td>
+                            <td>
+                                @Model.DoctorSpecialities
+                            </td>
+                        </tr>
+                    }
+
                     @if (Model.DoctorSpeciality != null && Model.DoctorSpeciality.Any())
                     {
                         <tr>
