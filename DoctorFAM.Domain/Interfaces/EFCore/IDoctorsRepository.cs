@@ -4,7 +4,6 @@ using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.FamilyDoctor.ParsaSystem;
 using DoctorFAM.Domain.Entities.FamilyDoctor.VIPSystem;
 using DoctorFAM.Domain.Entities.Interest;
-using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.Entities.SendSMS.FromDoctrors;
 using DoctorFAM.Domain.ViewModels.Admin.Dashboard;
 using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo;
@@ -15,12 +14,6 @@ using DoctorFAM.Domain.ViewModels.Site.BloodPressure;
 using DoctorFAM.Domain.ViewModels.Site.Diabet;
 using DoctorFAM.Domain.ViewModels.Site.Doctor;
 using DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DoctorFAM.Domain.Interfaces
 {

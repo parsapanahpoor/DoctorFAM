@@ -6,12 +6,6 @@ using DoctorFAM.Domain.ViewModels.Consultant.Notification;
 using DoctorFAM.Domain.ViewModels.Dentist.Notification;
 using DoctorFAM.Domain.ViewModels.Doctor.Notification;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Notification;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 #endregion
 
