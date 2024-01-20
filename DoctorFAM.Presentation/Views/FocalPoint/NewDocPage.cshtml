@@ -36,13 +36,6 @@
 
             <a href="#" title="" data-ripple="">اضافه کردن به دوست ها</a>
         </div>
-        <form class="edit-phto">
-            <i class="fa fa-camera-retro"></i>
-            <label class="fileContainer">
-                ویرایش عکس کاور
-                <input type="file" />
-            </label>
-        </form>
 
 
         <div class="container-fluid">
@@ -50,14 +43,9 @@
                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
                     <div class="user-avatar">
                         <figure>
+
                             <img src="/content/images/user/@((string.IsNullOrEmpty(Model.UserAvatar)) ? "DefaultAvatar.png" : $"thumb/{Model.UserAvatar}")" alt="">
-                            <form class="edit-phto">
-                                <i class="fa fa-camera-retro"></i>
-                                <label class="fileContainer">
-                                    ویرایش عکس پروفایل
-                                    <input type="file" />
-                                </label>
-                            </form>
+                         
                         </figure>
                     </div>
                 </div>

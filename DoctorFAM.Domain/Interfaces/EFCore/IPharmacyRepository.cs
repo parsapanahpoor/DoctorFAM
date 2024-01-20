@@ -3,12 +3,6 @@ using DoctorFAM.Domain.Entities.Pharmacy;
 using DoctorFAM.Domain.ViewModels.Admin.Pharmacy;
 using DoctorFAM.Domain.ViewModels.Pharmacy.HomePharmacy;
 using DoctorFAM.Domain.ViewModels.Pharmacy.PharmacySideBar;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DoctorFAM.Domain.Interfaces
 {

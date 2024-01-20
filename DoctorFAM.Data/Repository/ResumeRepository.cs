@@ -50,6 +50,12 @@ namespace DoctorFAM.Data.Repository
             await _context.SaveChangesAsync();
         }
 
+        //Add Resume To Data Base 
+        public async Task AddResume(Resume resume , CancellationToken cancellationToken)
+        {
+            await _context.Resumes.AddAsync(resume);
+        }
+
         //Get User About Me Resume By Resume Id
         public async Task<ResumeAboutMe?> GetUserAboutMeResumeByResumeId(ulong resumeId)
         {
@@ -69,11 +75,23 @@ namespace DoctorFAM.Data.Repository
             await _context.SaveChangesAsync();
         }
 
+        //Add About Me 
+        public async Task AddAboutMe(ResumeAboutMe model , CancellationToken cancellation)
+        {
+            await _context.ResumeAboutMe.AddAsync(model);
+        }
+
         //Update About Me Resume 
         public async Task UpdateAboutMeResume(ResumeAboutMe model)
         {
             _context.ResumeAboutMe.Update(model);
             await _context.SaveChangesAsync();
+        }
+
+        //Update About Me Resume 
+        public void UpdateAboutMeResumeWithoutSaveChange(ResumeAboutMe model)
+        {
+            _context.ResumeAboutMe.Update(model);
         }
 
         //Change Resume State To The Waiting State  

@@ -3,12 +3,6 @@ using DoctorFAM.Domain.ViewModels.Admin.Speciality;
 using DoctorFAM.Domain.ViewModels.Common;
 using DoctorFAM.Domain.ViewModels.Site.Specialists;
 using DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DoctorFAM.Domain.Interfaces.EFCore
 {

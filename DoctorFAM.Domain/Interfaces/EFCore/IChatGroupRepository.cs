@@ -1,11 +1,5 @@
 ﻿using DoctorFAM.Domain.Entities.Chat;
 using DoctorFAM.Domain.ViewModels.ChatRoom;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DoctorFAM.Domain.Interfaces.EFCore
 {
