@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net7.0</TargetFramework>
+		<TargetFramework>net8.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
@@ -18,9 +18,9 @@
 	<ItemGroup>
 		<PackageReference Include="EPPlus" Version="4.5.2.1" />
 		<PackageReference Include="KavenegarDotNetCore" Version="1.0.3" />
-		<!--<PackageReference Include="FluentValidation" Version="11.8.1" />
+		<PackageReference Include="FluentValidation" Version="11.8.1" />
 		<PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.8.1" />
-		<PackageReference Include="MediatR" Version="12.2.0" />-->
+		<PackageReference Include="MediatR" Version="12.2.0" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -38,6 +38,10 @@
 		<ProjectReference Include="..\DoctorFAM.Data.Dapper\DoctorFAM.Data.Dapper.csproj" />
 		<ProjectReference Include="..\DoctorFAM.Data\DoctorFAM.Data.csproj" />
 		<ProjectReference Include="..\DoctorFAM.Domain\DoctorFAM.Domain.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="CQRS\SiteSide\Test\Command\" />
 	</ItemGroup>
 
 </Project>

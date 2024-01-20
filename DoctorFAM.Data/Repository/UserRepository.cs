@@ -19,6 +19,16 @@ namespace DoctorFAM.Data.Repository
 
         #endregion
 
+        #region General 
+
+        public async Task<User?> GetUserById(ulong userId ,
+                                             CancellationToken token)
+        {
+            return await _context.Users.FirstOrDefaultAsync(p=> !p.IsDelete && p.Id == userId);
+        }
+
+        #endregion
+
         #region Site Side
 
         //Add User
