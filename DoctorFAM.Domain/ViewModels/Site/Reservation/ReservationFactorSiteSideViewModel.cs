@@ -36,8 +36,6 @@ namespace DoctorFAM.Domain.ViewModels.Site.Reservation
        
         public string? DoctorSpecialities { get; set; }
 
-        public string? DoctorSpecialities { get; set; }
-
         public string DoctorMobile{ get; set; }
 
         public DateTime ReservationDate { get; set; }
