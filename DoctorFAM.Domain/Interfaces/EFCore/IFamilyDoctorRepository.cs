@@ -2,12 +2,6 @@
 using DoctorFAM.Domain.ViewModels.Admin.FamilyDoctor;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.PopulationCovered;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.SendSMS;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DoctorFAM.Domain.Interfaces
 {

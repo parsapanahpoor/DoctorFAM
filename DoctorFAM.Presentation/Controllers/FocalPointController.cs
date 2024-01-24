@@ -16,6 +16,9 @@ using DoctorFAM.Domain.DTOs.ZarinPal;
 using DoctorFAM.Domain.Entities.Wallet;
 using DoctorFAM.Application.StaticTools;
 using DoctorFAM.Web.ActionFilterAttributes;
+using DoctorFAM.Application.CQRS.SiteSide.FocalPoint.Queries.DoctorPage;
+using DoctorFAM.Web.HttpManager;
+using DoctorFAM.Application.CQRS.SiteSide.FocalPoint.Commands;
 
 #endregion
 
@@ -53,7 +56,7 @@ public class FocalPointController : SiteBaseController
     #region Doctor Page 
 
     [HttpGet("DocPage/{userId}/{name}")]
-    public async Task<IActionResult> DocPage(ulong userId , string name)
+    public async Task<IActionResult> DocPage(ulong userId, string name)
     {
         #region Fill Page Model 
 
@@ -70,16 +73,85 @@ public class FocalPointController : SiteBaseController
     #region New Doctor Page 
 
     [HttpGet("NewDocPage/{userId}/{name}")]
-    public async Task<IActionResult> NewDocPage(ulong userId, string name)
+    public async Task<IActionResult> NewDocPage(ShowDoctorInfoQuery query, CancellationToken cancellation = default)
     {
         #region Fill Page Model 
 
-        var model = await _doctorService.FillDoctorPageDetailInReservationPage(userId);
+        var model = await Mediator.Send(query, cancellation);
         if (model == null) return NotFound();
 
         #endregion
 
+        if (User.Identity.IsAuthenticated && model.User.Id == User.GetUserId())
+        {
+            return View("EditDoctorInfoByDoctor", model);
+        }
+
         return View(model);
+    }
+
+    #endregion
+
+    #region Edit Doctor User Avatar
+
+    [HttpPost]
+    public async Task<IActionResult> EditUserAvatar(CancellationToken cancellationToken = default)
+    {
+        string result = string.Empty;
+        var files = Request.Form.Files;
+
+        List<EditProfilePictureCommand> command = new List<EditProfilePictureCommand>();
+
+        foreach (var file in files)
+        {
+            EditProfilePictureCommand newInstance = new EditProfilePictureCommand()
+            {
+                Picture = file,
+                UserId = User.GetUserId()
+            };
+
+            command.Add(newInstance);
+        }
+
+        bool res = await Mediator.Send(command.First(), cancellationToken);
+        if (res)
+        {
+            return ApiResponse.SetResponse(ApiResponseStatus.Success, null, "عملیات با موفقیت انجام شده است.");
+        }
+
+        return ApiResponse.SetResponse(ApiResponseStatus.Danger, null, "عملیات باشکست مواجه شده است.");
+    }
+
+    #endregion
+
+    #region Edit Doctor Banner Image
+
+    [HttpPost]
+    public async Task<IActionResult> EditDoctorBannerImage(CancellationToken cancellationToken = default)
+    {
+        string result = string.Empty;
+        var files = Request.Form.Files;
+
+        List<EditDoctorBannerImageCommand> command = new List<EditDoctorBannerImageCommand>();
+
+        foreach (var file in files)
+        {
+            EditDoctorBannerImageCommand newInstance = new EditDoctorBannerImageCommand()
+            {
+                Picture = file,
+                UserId = User.GetUserId()
+            };
+
+            command.Add(newInstance);
+        }
+
+        bool res = await Mediator.Send(command.First(), cancellationToken);
+        if (res)
+        {
+            return ApiResponse.SetResponse(ApiResponseStatus.Success, null, "عملیات با موفقیت انجام شده است.");
+        }
+
+        return ApiResponse.SetResponse(ApiResponseStatus.Danger, null, "عملیات باشکست مواجه شده است.");
     }
 
     #endregion
@@ -95,7 +167,7 @@ public class FocalPointController : SiteBaseController
         var existInvoiceId = await _reservationService.IsExistAnyWaitingForPaymentReservationRequestByUserId(User.GetUserId());
         if (existInvoiceId != null && existInvoiceId.HasValue && existInvoiceId.Value != 0)
         {
-            return RedirectToAction(nameof(ShowInvoiceBeforeRedirectToBankProtable) , new { reservationDateTimeId = existInvoiceId , Reminder = true });
+            return RedirectToAction(nameof(ShowInvoiceBeforeRedirectToBankProtable), new { reservationDateTimeId = existInvoiceId, Reminder = true });
         }
 
         #endregion
@@ -132,7 +204,7 @@ public class FocalPointController : SiteBaseController
         var existInvoiceId = await _reservationService.IsExistAnyWaitingForPaymentReservationRequestByUserId(User.GetUserId());
         if (existInvoiceId != null && existInvoiceId.HasValue && existInvoiceId.Value != 0)
         {
-            return RedirectToAction(nameof(ShowInvoiceBeforeRedirectToBankProtable), new { reservationDateTimeId = existInvoiceId , Reminder = true});
+            return RedirectToAction(nameof(ShowInvoiceBeforeRedirectToBankProtable), new { reservationDateTimeId = existInvoiceId, Reminder = true });
         }
 
         #endregion
@@ -255,14 +327,14 @@ public class FocalPointController : SiteBaseController
 
         #region Log For Reservation Date Times In Waiting For Payment State
 
-        var logForWaitingForPayments = await _reservationService.LogForReservationDateTimesInWaitingForPaymentState(model.ReservationDateTimeId , User.GetUserId());
+        var logForWaitingForPayments = await _reservationService.LogForReservationDateTimesInWaitingForPaymentState(model.ReservationDateTimeId, User.GetUserId());
         if (!logForWaitingForPayments) return NotFound();
 
         #endregion
 
         #region Redirect To Invoice
 
-        return RedirectToAction(nameof(ShowInvoiceBeforeRedirectToBankProtable) , new { reservationDateTimeId= reservationDateTime.Id });
+        return RedirectToAction(nameof(ShowInvoiceBeforeRedirectToBankProtable), new { reservationDateTimeId = reservationDateTime.Id });
 
         #endregion
     }
@@ -272,11 +344,11 @@ public class FocalPointController : SiteBaseController
     #region Show Invoice Before Redirect To Bank Protable  
 
     [Authorize, HttpGet]
-    public async Task<IActionResult> ShowInvoiceBeforeRedirectToBankProtable(ulong reservationDateTimeId , bool Reminder)
+    public async Task<IActionResult> ShowInvoiceBeforeRedirectToBankProtable(ulong reservationDateTimeId, bool Reminder)
     {
         #region Fill Model 
 
-        var model = await _reservationService.ShowInvoiceBeforeRedirectToBankProtable(reservationDateTimeId , User.GetUserId());
+        var model = await _reservationService.ShowInvoiceBeforeRedirectToBankProtable(reservationDateTimeId, User.GetUserId());
         if (model == null) return NotFound();
 
         #endregion
@@ -301,7 +373,7 @@ public class FocalPointController : SiteBaseController
 
         if (reservationDateTime == null ||
             reservationDateTime.DoctorReservationState != Domain.Enums.DoctorReservation.DoctorReservationState.WaitingForComplete ||
-            !reservationDateTime.PatientId.HasValue || 
+            !reservationDateTime.PatientId.HasValue ||
             reservationDateTime.PatientId.Value != User.GetUserId())
         {
             TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
@@ -356,7 +428,7 @@ public class FocalPointController : SiteBaseController
     {
         #region Cancelation Reservation 
 
-        var res = await _reservationService.CancelPaymentFromUserAndMakeReservationTimeFree(reservatioonDateTimeId , User.GetUserId());
+        var res = await _reservationService.CancelPaymentFromUserAndMakeReservationTimeFree(reservatioonDateTimeId, User.GetUserId());
         if (!res) return NotFound();
 
         #endregion
@@ -376,7 +448,7 @@ public class FocalPointController : SiteBaseController
 
         var reservationDateTime = await _reservationService.GetDoctorReservationDateTimeById(id);
 
-        if (reservationDateTime == null || 
+        if (reservationDateTime == null ||
             reservationDateTime.DoctorReservationState == Domain.Enums.DoctorReservation.DoctorReservationState.Canceled ||
             !reservationDateTime.PatientId.HasValue) return NotFound();
 
@@ -449,7 +521,7 @@ public class FocalPointController : SiteBaseController
                     if (wallet != null)
                     {
                         //Remove Waiting For Payment Reservations Logs
-                        await _reservationService.RemoveLogForReservationDateTimesInWaitingForPaymentState(reservationDateTime.Id , reservationDateTime.PatientId.Value);
+                        await _reservationService.RemoveLogForReservationDateTimesInWaitingForPaymentState(reservationDateTime.Id, reservationDateTime.PatientId.Value);
 
                         //Update Reservation State 
                         await _reservationService.ReserveDoctorReservationDateTimeAfterSuccessPayment(reservationDateTime.Id);
@@ -457,9 +529,9 @@ public class FocalPointController : SiteBaseController
                         await _walletService.UpdateWalletAndCalculateUserBalanceAfterBankingPayment(wallet);
 
                         //Pay Home Visit Tariff
-                        await _reservationService.PayReservationTariff(reservationDateTime.PatientId.Value, reservationTariff.Item1 , reservationDateTime.Id);
+                        await _reservationService.PayReservationTariff(reservationDateTime.PatientId.Value, reservationTariff.Item1, reservationDateTime.Id);
 
-                        await _reservationService.PayDoctorReservationPayedSharePercentage(reservationDate.UserId , reservationTariff.Item1 , reservationDateTime.Id , reservationTariff.Item2 , reservationDateTime.DoctorReservationType.Value);
+                        await _reservationService.PayDoctorReservationPayedSharePercentage(reservationDate.UserId, reservationTariff.Item1, reservationDateTime.Id, reservationTariff.Item2, reservationDateTime.DoctorReservationType.Value);
 
                         #region Send Notification In SignalR
 
@@ -496,12 +568,12 @@ public class FocalPointController : SiteBaseController
 
                         #endregion
 
-                        return RedirectToAction(nameof(ShowInvoiceAfterPaymentForReservation) , new { resId = reservationDateTime.Id , trackingCode = parameters.authority });
+                        return RedirectToAction(nameof(ShowInvoiceAfterPaymentForReservation), new { resId = reservationDateTime.Id, trackingCode = parameters.authority });
                     }
                 }
                 else if (errors != "[]")
                 {
-                    var res = await _reservationService.CancelPaymentFromUserAndMakeReservationTimeFree(id , reservationDateTime.PatientId.Value);
+                    var res = await _reservationService.CancelPaymentFromUserAndMakeReservationTimeFree(id, reservationDateTime.PatientId.Value);
                     if (!res)
                     {
                         return NotFound();
@@ -523,7 +595,7 @@ public class FocalPointController : SiteBaseController
 
     #region Show Invoice After Payment For Reservation 
 
-    public async Task<IActionResult> ShowInvoiceAfterPaymentForReservation(ulong resId , string trackingCode)
+    public async Task<IActionResult> ShowInvoiceAfterPaymentForReservation(ulong resId, string trackingCode)
     {
         #region Fill Invoice Model
 
@@ -534,7 +606,7 @@ public class FocalPointController : SiteBaseController
 
         #region Get Ref Code From Bank 
 
-        var match = await _walletService.GetReservationRefIdFromWalletDataByReservationIdAndUserId(resId , invoice.PatientUserId , trackingCode);
+        var match = await _walletService.GetReservationRefIdFromWalletDataByReservationIdAndUserId(resId, invoice.PatientUserId, trackingCode);
         if (!match) return NotFound();
 
         invoice.RefId = trackingCode;
@@ -599,7 +671,7 @@ public class FocalPointController : SiteBaseController
         var charge = await _reservationService.ChargeUserWalletForZeroReservationPrice(User.GetUserId(), reservationTariff.Value, reservationDateTime.Id);
 
         //Pay Home Visit Tariff
-        var addPay = await _reservationService.PayReservationTariff(User.GetUserId(), reservationTariff.Value , reservationDateTime.Id);
+        var addPay = await _reservationService.PayReservationTariff(User.GetUserId(), reservationTariff.Value, reservationDateTime.Id);
 
         #region Send Notification In SignalR
 

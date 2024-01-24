@@ -1,10 +1,4 @@
 ﻿using DoctorFAM.Domain.Entities.Resume;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DoctorFAM.Domain.Interfaces.EFCore
 {
@@ -21,6 +15,9 @@ namespace DoctorFAM.Domain.Interfaces.EFCore
         //Add Resume To Data Base 
         Task CreateResume(Resume resume);
 
+        //Add Resume To Data Base 
+        Task AddResume(Resume resume, CancellationToken cancellationToken);
+
         //Get User About Me Resume By Resume Id
         Task<ResumeAboutMe?> GetUserAboutMeResumeByResumeId(ulong resumeId);
 
@@ -30,8 +27,14 @@ namespace DoctorFAM.Domain.Interfaces.EFCore
         //Create About Me 
         Task CreateAboutMe(ResumeAboutMe model);
 
+        //Add About Me 
+        Task AddAboutMe(ResumeAboutMe model, CancellationToken cancellation);
+
         //Update About Me Resume 
         Task UpdateAboutMeResume(ResumeAboutMe model);
+
+        //Update About Me Resume 
+        void UpdateAboutMeResumeWithoutSaveChange(ResumeAboutMe model);
 
         //Change Resume State To The Waiting State  
         Task ChangeResumeStateToTheWaitingState(Resume resume);

@@ -1,0 +1,448 @@
+﻿@model DoctorFAM.Domain.ViewModels.Site.Doctor.DoctorPageInReservationViewModel
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.StaticTools
+
+@{
+    Layout = "_LayoutNew";
+}
+
+@{
+    ViewBag.Title = "پروفایل پزشک";
+}
+
+@section Scripts {
+    <script src="~/Content/plugins/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="c05b42694ff6ef93b74325a7-|49" defer=""></script>
+    <script src="~/Content/WinKu/js/main.min.js"></script>
+    <script src="~/Content/WinKu/js/script.js"></script>
+    <link rel="stylesheet" href="~/Content/WinKu/css/main.min.css">
+    <link rel="stylesheet" href="~/Content/WinKu/css/style.css">
+    <link rel="stylesheet" href="~/Content/WinKu/css/color.css">
+    <link rel="stylesheet" href="~/Content/WinKu/css/responsive.css">
+    <link rel="stylesheet" href="~/Content/WinKu/css/RTL.css">
+
+    <script>
+        function readURL(input) {
+
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                var uploadFile = $('#UserAvatar').get(0);
+                var files = uploadFile.files;
+                var filedata = new FormData();
+                var empCode = @Model.User.Id;
+                for (var i = 0; i < files.length; i++) {
+                    filedata.append(empCode, files[i]);
+                };
+
+
+                $.ajax({
+                    url: '/FocalPoint/EditUserAvatar',
+                    type: 'POST',
+                    data: filedata,
+                    processData: false,
+                    contentType: false,
+                    success: function (result) {
+                        if (result.status === "Success") {
+                            ShowMessage("اعلان", "عملیات با موفقیت انجام شد", "success");
+                        }
+                    },
+                    error: function () {
+                        if (res.status === "Error") {
+                            ShowMessage("اعلان", "عملیات با شکست مواجه شد", "error");
+                        }
+                    }
+
+                })
+
+                reader.onload = function (e) {
+                    $('#imgAvatar').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#UserAvatar").change(function () {
+            readURL(this);
+        });
+    </script>
+
+    <script>
+        function readBannerURL(input) {
+
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                var uploadFileBanner = $('#UserBanner').get(0);
+                var filesBanner = uploadFileBanner.files;
+                var filedataBanner = new FormData();
+                var empCode = @Model.User.Id;
+                for (var i = 0; i < filesBanner.length; i++) {
+                    filedataBanner.append(empCode, filesBanner[i]);
+                };
+
+
+                $.ajax({
+                    url: '/FocalPoint/EditDoctorBannerImage',
+                    type: 'POST',
+                    data: filedataBanner,
+                    processData: false,
+                    contentType: false,
+                    success: function (result) {
+                        if (result.status === "Success") {
+                            ShowMessage("اعلان", "عملیات با موفقیت انجام شد", "success");
+                        }
+                    },
+                    error: function () {
+                        if (res.status === "Error") {
+                            ShowMessage("اعلان", "عملیات با شکست مواجه شد", "error");
+                        }
+                    }
+
+                })
+
+                reader.onload = function (e) {
+                    $('#imgBanner').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#UserBanner").change(function () {
+            readBannerURL(this);
+        });
+
+    </script>
+}
+
+
+<section style="padding: 0 !important; ">
+    <div class="feature-photo">
+        <figure>
+            @if (!string.IsNullOrEmpty(Model.ResumeAboutMeSitePanelViewModel.BannerImage))
+            {
+                <img id="imgBanner" src="@PathTools.DoctorBannerImagePath@Model.ResumeAboutMeSitePanelViewModel.BannerImage" style="height:400px" alt="">
+            }
+            else
+            {
+                <img id="imgBanner" src="~/Content/WinKu/images/resources/timeline-1.jpg" style="height:400px" alt="">
+            }
+        </figure>
+
+        <div class="add-btn">
+            <span>
+                @await Component.InvokeAsync("DoctorsFollowDetailOnListOfFamilyDoctors", new
+                    {
+                        targetUserId = Model.User.Id
+                    })
+            </span>
+        </div>
+
+
+        <form class="edit-phto">
+            <i class="fa fa-camera-retro"></i>
+            <label class="fileContainer">
+                ویرایش عکس کاور
+                <input type="file" id="UserBanner" />
+            </label>
+        </form>
+
+
+        <div class="container-fluid">
+            <div class="row merged mt-1">
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                    <div class="user-avatar">
+                        <figure>
+                            <img id="imgAvatar" src="/content/images/user/@((string.IsNullOrEmpty(Model.UserAvatar)) ? "DefaultAvatar.png" : $"thumb/{Model.UserAvatar}")" alt="">
+                            <form class="edit-phto" style="height:50px;">
+                                <i class="fa fa-camera-retro"></i>
+                                <label class="fileContainer">
+                                    ویرایش عکس پروفایل
+                                    <input type="file" id="UserAvatar" />
+                                </label>
+                            </form>
+                        </figure>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                    <div class="admin-name mt-1">
+                        <h5>دکتر @Model.Username</h5>
+
+                        <p>  @((!string.IsNullOrEmpty(Model.Specialist)) ? Model.Specialist : null) </p>
+
+
+
+                        @*      @if (!string.IsNullOrEmpty(Model.WorkAddress))
+                        {
+                        <i class="fas fa-map-marker-alt"></i>
+                        }
+                        @((string.IsNullOrEmpty(Model.WorkAddress)) ? null : Model.WorkAddress)
+
+
+                        <partial name="_WorkAddressPartialINLine" model="@Model.WorkingAddressResume" />
+
+
+                        *@
+                        <div class="col-md-12">
+                            <p>
+                                @if (!string.IsNullOrEmpty(Model.ClinicPhone))
+                                {
+                                    <span>تلفن مطب: @Model.ClinicPhone </span>
+                                }
+                                @if (!string.IsNullOrEmpty(Model.GeneralPhone))
+                                {
+                                    <span>تلفن همراه: @Model.GeneralPhone </span>
+                                }
+                            </p>
+
+                        </div>
+
+
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="timeline-info">
+                        <ul>
+
+                            <li>
+                                <a class="active" href="/Home" title="صفحه اصلی سایت" data-ripple="">خانه</a>
+
+                                <a style="color:RED !important; font-size:16px !important;" asp-action="DocBooking" asp-controller="FocalPoint" asp-area="" asp-route-userId="@Model.UserId" title="" data-ripple="">رزرو نوبت</a>
+                                <a class="" href="timeline-videos.html" title="" data-ripple="">کلیپ</a>
+                                <a class="" href="timeline-friends.html" title="" data-ripple="">پادکست</a>
+                                <a class="" href="timeline-groups.html" title="" data-ripple="">درباره من</a>
+
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</section><!-- top area -->
+
+
+<section>
+    <div class="gap gray-bg">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="row merged20" id="page-contents">
+                        <div class="col-lg-3">
+                            <aside class="sidebar static">
+                                <div class="widget">
+                                    <h4 class="widget-title">ارتباط با پزشک</h4>
+
+                                    <div class="row">
+                                        <div class="col-md-2"></div>
+                                        <div class="col-md-8">
+                                            <a class="btn-Accept mt-2 col-md-12 text-center justify-content-center" asp-action="NewDocPage" asp-area="" asp-controller="FocalPoint" asp-route-userId="@Model.User.Id" asp-route-name="@Model.User.Username.FixTextForUrl()"> پروفایل</a>
+
+                                            <a class="btn-Accept mt-2 col-md-12 text-center justify-content-center" asp-action="DocBooking" asp-controller="FocalPoint" asp-area="" asp-route-userId="@Model.UserId">رزرو نوبت</a>
+
+                                            <a class="btn-Accept mt-2 col-md-12 text-center justify-content-center" asp-action="ChoosingFamilyDoctor" asp-area="UserPanel" asp-controller="FamilyDoctor" asp-route-doctorUserId="@Model.User.Id">انتخاب پزشک خانواده</a>
+
+                                        </div>
+                                        <div class="col-md-2"></div>
+                                    </div>
+
+
+                                </div>
+                                <div class="widget">
+                                    <h4 class="widget-title"> میانبرها </h4>
+                                    <ul class="naves">
+                                        <li>
+                                            <i class="ti-clipboard"></i>
+                                            <a href="newsfeed.html" title="">نوبت دهی</a>
+                                        </li>
+                                        <li>
+                                            <i class="ti-mouse-alt"></i>
+                                            <a href="inbox.html" title="">پیامک</a>
+                                        </li>
+                                        <li>
+                                            <i class="ti-files"></i>
+                                            <a href="fav-page.html" title=""> تاریخچه خدمات </a>
+                                        </li>
+                                        <li>
+                                            <i class="ti-user"></i>
+                                            <a href="timeline-friends.html" title="">ویزیت آنلاین</a>
+                                        </li>
+                                        <li>
+                                            <i class="ti-image"></i>
+                                            <a href="timeline-photos.html" title=""> پیام رسان</a>
+                                        </li>
+                                        <li>
+                                            <i class="ti-video-camera"></i>
+                                            <a href="timeline-videos.html" title="">پشتیبانی</a>
+                                        </li>
+                                        <li>
+                                            <i class="ti-comments-smiley"></i>
+                                            <a href="messages.html" title=""> پیام ها </a>
+                                        </li>
+                                        <li>
+                                            <i class="ti-bell"></i>
+                                            <a href="notifications.html" title=""> اعلان ها</a>
+                                        </li>
+
+
+                                        <li>
+                                            <i class="ti-power-off"></i>
+                                            <a href="landing.html" title=""> خروج </a>
+                                        </li>
+                                    </ul>
+                                </div><!-- Shortcuts -->
+                                @* <div class="widget">
+                                <h4 class="widget-title"> فعالیت اخیر </h4>
+                                <ul class="activitiez">
+                                <li>
+                                <div class="activity-meta">
+                                <i> 10 ساعت قبل </i>
+                                <span><a href="#" title="">یه نظر درباره ی فیلمی که پست کرده بودی داری</a></span>
+                                <h6>  توسط  <a href="newsfeed.html">دیو سیاه.</a></h6>
+                                </div>
+                                </li>
+                                <li>
+                                <div class="activity-meta">
+                                <i> 30 روز قبل </i>
+                                <span><a href="newsfeed.html" title=""> وضعیتت ارسال شد ، "سلام بچه ها ، چطورین؟" </a></span>
+                                </div>
+                                </li>
+                                <li>
+                                <div class="activity-meta">
+                                <i> 2 سال قبل </i>
+                                <span><a href="#" title=""> یه فیلم روی تایم لاینت  اومده. </a></span>
+                                <h6>"<a href="newsfeed.html"> آرش خیلی بامزه ای ! </a>"</h6>
+                                </div>
+                                </li>
+                                </ul>
+                                </div>*@<!-- recent activites -->
+
+                            </aside>
+                        </div><!-- sidebar -->
+                        <div class="col-lg-6">
+
+                            <div class="central-meta new-pst item">
+                                <div class="new-postbox">
+                                    <figure>
+                                        <img src="images/resources/admin2.jpg" alt="">
+                                    </figure>
+                                    <div class="newpst-input">
+                                        <form method="post">
+                                            <textarea rows="2" placeholder="چیزی بنویسید:  (این میتونه یه موضوع جالب که تو مطب براتون اتفاق افتاده باشه)"></textarea>
+                                            <div class="attachments">
+                                                <ul>
+                                                    <li>
+                                                        <i class="fa fa-music"></i>
+                                                        <label class="fileContainer">
+                                                            <input type="file">
+                                                        </label>
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-image"></i>
+                                                        <label class="fileContainer">
+                                                            <input type="file">
+                                                        </label>
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-video-camera"></i>
+                                                        <label class="fileContainer">
+                                                            <input type="file">
+                                                        </label>
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-camera"></i>
+                                                        <label class="fileContainer">
+                                                            <input type="file">
+                                                        </label>
+                                                    </li>
+                                                    <li>
+                                                        <button type="submit"> منتشر کن</button>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div><!-- add post new box -->
+
+
+
+                            <div class="col-lg-12">
+                                <div class="central-meta">
+
+                                    <partial name="_GalleryPartial" model="@Model.GalleryResume" />
+
+                                </div><!-- photos -->
+                            </div>
+
+
+
+
+                        </div><!-- centerl meta -->
+                        <div class="col-lg-3">
+
+                            @if (Model.Resume != null && Model.Resume.ResumeState == DoctorFAM.Domain.Enums.ResumeState.ResumeState.Accepted)
+                            {
+
+                                @*Box Of ABout Me*@
+                                <partial name="_LastestAboutMePartial" model="@Model.ResumeAboutMeSitePanelViewModel" />
+
+
+
+
+                                <aside class="sidebar static">
+
+
+                                    @*Box Of Services*@
+                                    <partial name="_ServicesPartial" model="@Model.ServiceResume" />
+
+                                    @*Box Of Education*@
+                                    <partial name="_EducationPartial" model="@Model.EducationResume" />
+
+                                    @*Box Of Work History*@
+                                    <partial name="_WorkHistoryPartial" model="@Model.WorkHistoryResume" />
+
+
+                                    <partial name="_HonorsPartial" model="@Model.HonorResume" />
+
+                                    <partial name="_CertificatePartial" model="@Model.CertificateResume" />
+
+
+
+                                    <div class="widget">
+                                        <div class="banner medium-opacity bluesh">
+                                            <div style="background-image: url(images/resources/baner-widgetbg.jpg)" class="bg-image"></div>
+                                            <div class="baner-top">
+                                                <span><img src="images/book-icon.png" alt="">آدرس محل کار</span>
+
+                                            </div>
+                                            <div class="banermeta">
+                                                <div class="row  ">
+
+
+
+                                                    @*Box Of Work Address*@
+                                                    <partial name="_WorkAddressPartial" model="@Model.WorkingAddressResume" />
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </aside>
+
+
+                            }
+
+
+                        </div><!-- sidebar -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

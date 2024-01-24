@@ -1,12 +1,6 @@
 ﻿using DoctorFAM.Domain.Entities.Contact;
 using DoctorFAM.Domain.ViewModels.Admin.Ticket;
 using DoctorFAM.Domain.ViewModels.UserPanel.Ticket;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DoctorFAM.Domain.Interfaces
 {

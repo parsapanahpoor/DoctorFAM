@@ -1,18 +1,8 @@
 ﻿using Dapper;
 using DoctorFAM.Data.Dapper.ContextConfig;
-using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.BMI;
 using DoctorFAM.Domain.Interfaces.Dapper;
-using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DoctorFAM.Data.Dapper.Repository
 {
