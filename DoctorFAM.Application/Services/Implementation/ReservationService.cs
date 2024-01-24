@@ -2644,6 +2644,7 @@ public class ReservationService : IReservationService
         #region Get Doctor Skill By Doctor Id
 
         model.DoctorSpeciality = await _doctorsRepository.GetListOfDoctorSkillsByDoctorId(info.DoctorId);
+        model.DoctorSpecialities = info.Specialty;
 
         #endregion
 

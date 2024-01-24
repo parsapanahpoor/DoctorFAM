@@ -283,6 +283,8 @@ public class FocalPointController : SiteBaseController
 
         ViewBag.Reminder = Reminder;
 
+        ViewBag.ReservationPrice = model.ReservationPrice - 100000;
+
         return View(model);
     }
 
@@ -538,7 +540,7 @@ public class FocalPointController : SiteBaseController
         invoice.RefId = trackingCode;
 
         #endregion
-
+        ViewBag.ReservationPrice = invoice.ReservationPrice - 100000;
         return View(invoice);
     }
 
