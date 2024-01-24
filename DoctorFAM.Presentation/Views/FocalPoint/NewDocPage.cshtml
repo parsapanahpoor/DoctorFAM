@@ -1,6 +1,7 @@
 ﻿@model DoctorFAM.Domain.ViewModels.Site.Doctor.DoctorPageInReservationViewModel
 @using DoctorFAM.Application.Extensions
 @using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.StaticTools
 
 @{
     Layout = "_LayoutNew";
@@ -25,7 +26,16 @@
 
 <section style="padding: 0 !important; ">
     <div class="feature-photo">
-        <figure><img src="~/Content/WinKu/images/resources/timeline-1.jpg" alt=""></figure>
+        <figure>
+            @if (!string.IsNullOrEmpty(Model.ResumeAboutMeSitePanelViewModel.BannerImage))
+            {
+                <img id="imgBanner" src="@PathTools.DoctorBannerImagePath@Model.ResumeAboutMeSitePanelViewModel.BannerImage" style="height:400px" alt="">
+            }
+            else
+            {
+                <img id="imgBanner" src="~/Content/WinKu/images/resources/timeline-1.jpg" style="height:400px" alt="">
+            }
+            </figure>
 
 
         <div class="add-btn">

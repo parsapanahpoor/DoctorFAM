@@ -100,22 +100,46 @@ public record EditDoctorBannerImageCommandHandler : IRequestHandler<EditDoctorBa
         else
         {
             var aboutMe = await _resumeRepository.GetUserAboutMeResumeByResumeId(resume.Id);
-            if (aboutMe == null) return false;
-
-            if (request.Picture != null)
+            if (aboutMe == null)
             {
-                if (!string.IsNullOrEmpty(aboutMe.BannerImage))
+                //Add About Me Resume To the Data Base
+                ResumeAboutMe resumeAboutMe = new ResumeAboutMe()
                 {
-                    aboutMe.BannerImage.DeleteImage(PathTools.DoctorBannerImagePathServer, PathTools.DoctorBannerImagePathThumbServer);
+                    AboutMeText = "وارد نشده",
+                    ResumeId = resume.Id,
+                };
+
+                #region Edit Doctor Banner Image
+
+                if (request.Picture != null)
+                {
+                    var imageName = CodeGenerator.GenerateUniqCode() + Path.GetExtension(request.Picture.FileName);
+                    request.Picture.AddImageToServer(imageName, PathTools.DoctorBannerImagePathServer, 270, 270, PathTools.DoctorBannerImagePathThumbServer);
+                    resumeAboutMe.BannerImage = imageName;
                 }
 
-                var imageName = CodeGenerator.GenerateUniqCode() + Path.GetExtension(request.Picture.FileName);
-                request.Picture.AddImageToServer(imageName, PathTools.DoctorBannerImagePathServer, 270, 270, PathTools.DoctorBannerImagePathThumbServer);
-                aboutMe.BannerImage = imageName;
-            }
+                #endregion
 
-            _resumeRepository.UpdateAboutMeResumeWithoutSaveChange(aboutMe);
-            await _unitOfWork.SaveChangesAsync();
+                await _resumeRepository.AddAboutMe(resumeAboutMe, cancellationToken);
+                await _unitOfWork.SaveChangesAsync();
+            }
+            else
+            {
+                if (request.Picture != null)
+                {
+                    if (!string.IsNullOrEmpty(aboutMe.BannerImage))
+                    {
+                        aboutMe.BannerImage.DeleteImage(PathTools.DoctorBannerImagePathServer, PathTools.DoctorBannerImagePathThumbServer);
+                    }
+
+                    var imageName = CodeGenerator.GenerateUniqCode() + Path.GetExtension(request.Picture.FileName);
+                    request.Picture.AddImageToServer(imageName, PathTools.DoctorBannerImagePathServer, 270, 270, PathTools.DoctorBannerImagePathThumbServer);
+                    aboutMe.BannerImage = imageName;
+                }
+
+                _resumeRepository.UpdateAboutMeResumeWithoutSaveChange(aboutMe);
+                await _unitOfWork.SaveChangesAsync();
+            }
         }
 
         #endregion
