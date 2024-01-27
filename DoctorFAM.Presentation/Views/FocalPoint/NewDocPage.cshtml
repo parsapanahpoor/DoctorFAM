@@ -27,7 +27,7 @@
 <section style="padding: 0 !important; ">
     <div class="feature-photo">
         <figure>
-            @if (!string.IsNullOrEmpty(Model.ResumeAboutMeSitePanelViewModel.BannerImage))
+            @if (Model.ResumeAboutMeSitePanelViewModel != null && !string.IsNullOrEmpty(Model.ResumeAboutMeSitePanelViewModel.BannerImage))
             {
                 <img id="imgBanner" src="@PathTools.DoctorBannerImagePath@Model.ResumeAboutMeSitePanelViewModel.BannerImage" style="height:400px" alt="">
             }
@@ -41,7 +41,7 @@
         <div class="add-btn">
             <span>
                 @await Component.InvokeAsync("DoctorsFollowDetailOnListOfFamilyDoctors" , new{
-                targetUserId = Model.User.Id})
+                targetUserId = Model.UserId})
             </span>
 
             <a href="#" title="" data-ripple="">اضافه کردن به دوست ها</a>

@@ -82,9 +82,13 @@ public class FocalPointController : SiteBaseController
 
         #endregion
 
-        if (User.Identity.IsAuthenticated && model.User.Id == User.GetUserId())
+        if (User.Identity.IsAuthenticated)
         {
-            return View("EditDoctorInfoByDoctor", model);
+            if (model.User.Id == User.GetUserId())
+            {
+                return View("EditDoctorInfoByDoctor", model);
+
+            }
         }
 
         return View(model);

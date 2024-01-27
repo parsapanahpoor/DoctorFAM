@@ -58,6 +58,13 @@ public record ShowDoctorInfoQueryHandler : IRequestHandler<ShowDoctorInfoQuery, 
 
         #endregion
 
+        #region Fill User Property 
+
+        var user = await _userRepository.GetUserById(request.userId, cancellationToken);
+        if (user == null) return null;
+
+        #endregion
+
         #region Validate Doctor 
 
         var organization = await _organizationRepository.GetOrganizationByUserId(request.userId);
@@ -85,6 +92,7 @@ public record ShowDoctorInfoQueryHandler : IRequestHandler<ShowDoctorInfoQuery, 
             Specialist = doctorPersonalInfo.Specialty,
             GeneralPhone = doctorPersonalInfo.GeneralPhone,
             ClinicPhone = doctorPersonalInfo.ClinicPhone,
+            User = user,
         };
 
         #endregion
@@ -126,15 +134,6 @@ public record ShowDoctorInfoQueryHandler : IRequestHandler<ShowDoctorInfoQuery, 
 
         if (resume != null)
         {
-            #region Fill User Property 
-
-            var user = await _userRepository.GetUserById(resume.UserId , cancellationToken);
-            if (user == null) return null;
-
-            model.User = user;
-
-            #endregion
-
             #region Fill About Me 
 
             var aboutMe = await _resumeRepository.GetUserAboutMeResumeByResumeId(resume.Id);

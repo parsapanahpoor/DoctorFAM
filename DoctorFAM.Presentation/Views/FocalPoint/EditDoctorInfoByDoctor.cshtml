@@ -121,7 +121,7 @@
 <section style="padding: 0 !important; ">
     <div class="feature-photo">
         <figure>
-            @if (!string.IsNullOrEmpty(Model.ResumeAboutMeSitePanelViewModel.BannerImage))
+            @if (Model.ResumeAboutMeSitePanelViewModel != null && !string.IsNullOrEmpty(Model.ResumeAboutMeSitePanelViewModel.BannerImage))
             {
                 <img id="imgBanner" src="@PathTools.DoctorBannerImagePath@Model.ResumeAboutMeSitePanelViewModel.BannerImage" style="height:400px" alt="">
             }
