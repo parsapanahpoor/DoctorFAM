@@ -70,7 +70,7 @@
 
                         <div class="container ">
                             <div class="row">
-                               
+
                                 <div class="col-md-8 text-center justify-content-center ">
                                     <h2 class="hColorFontt famOnlinecolor">فم تور  </h2>
                                     <h4 class=" text-center justify-content-center" style="color:#2264c5;"> (سفرِ درمانی) </h4>
@@ -81,7 +81,6 @@
 
                                 </div>
                                 <div class="col-md-4">
-                                   
                                 </div>
                             </div>
 
@@ -90,13 +89,13 @@
                 </div>
             </section>
 
-        </div>        
-       
-        
-        
-       
+        </div>
+
+
+
+
     </div>
-   
+
 
     <div class="row text-center justify-content-center" style="background-color:#0d092c; ">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center  mt-4 ">
@@ -429,24 +428,47 @@
             </div>
 
 
-            <cache expires-after="@TimeSpan.FromMinutes(30)">
-                @*Lastest Podcasts *@
-                @await Component.InvokeAsync("PodcastLandingPage")
-            </cache>
+            @* <cache expires-after="@TimeSpan.FromMinutes(30)">
 
-            <div class="col-lg-12 col-md-12  text-center mt-2">
-                <a asp-action="RadioFamItems" asp-controller="Home" asp-area="" class="btn btn-acc   hover-icon  text-center">آرشیو رادیوفم </a>
-            </div>
+            @await Component.InvokeAsync("PodcastLandingPage")
+            </cache>*@
+
+            @*  <div class="col-lg-12 col-md-12  text-center mt-2">
+            <a asp-action="RadioFamItems" asp-controller="Home" asp-area="" class="btn btn-acc   hover-icon  text-center">آرشیو رادیوفم </a>
+            </div>*@
 
 
         </div>
-        <hr />
+        @*   <hr />
 
         <cache expires-after="@TimeSpan.FromMinutes(30)">
-            @*Lastest TVFAM Videos*@
-            @await Component.InvokeAsync("TVFAMLandingPage")
-        </cache>
 
+        @await Component.InvokeAsync("TVFAMLandingPage")
+        </cache>
+        *@
+
+        <div class="row text-center justify-content-center mt-3">
+            <div class=" col-md-6  text-center justify-content-center">
+
+                <a href="/Home/RadioFamItems" >
+                    <img class="   " src="/Content/images/bg/Radiofam1.jpg" style="width:80% !important; height:230px !important; border:1px solid #fd5b03; border-radius:8px;" alt="">
+                <br />
+                    <h4 class=" text-center justify-content-center" style="color:#2264c5;"> رادیوفم </h4>
+                </a>
+
+            </div>
+
+            <div class="col-md-6  text-center justify-content-center">
+
+                <a href="/Home/TeleFamItems" >
+                    <img class="   " src="/Content/images/bg/TVFam2.png" style="width:80% !important; height:230px !important; border:1px solid #fd5b03; border-radius:8px;" alt="">
+                    <br />
+                    <h4 class=" text-center justify-content-center" style="color:#2264c5;"> تیوی فم </h4>
+
+                </a>
+
+            </div>
+        </div>
 
     </div>
 
@@ -495,11 +517,11 @@
                     <div class="row no-gutters box-shadow">
                         <div class="col-md-5 theme-bg p-5">
 
-                           @* <cache expires-after="@TimeSpan.FromDays(1)">
-                                @await Component.InvokeAsync("CooperationRequest")
+                            @* <cache expires-after="@TimeSpan.FromDays(1)">
+                            @await Component.InvokeAsync("CooperationRequest")
                             </cache>*@
 
-                                @await Component.InvokeAsync("CooperationRequest")
+                            @await Component.InvokeAsync("CooperationRequest")
 
                         </div>
                         <div class="col-md-1"></div>

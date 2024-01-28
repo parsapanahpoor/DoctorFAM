@@ -1,7 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net7.0</TargetFramework>
+		<TargetFramework>net8.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
@@ -18,12 +18,9 @@
 	<ItemGroup>
 		<PackageReference Include="EPPlus" Version="4.5.2.1" />
 		<PackageReference Include="KavenegarDotNetCore" Version="1.0.3" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.4" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.4" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.0">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
+		<PackageReference Include="FluentValidation" Version="11.8.1" />
+		<PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.8.1" />
+		<PackageReference Include="MediatR" Version="12.2.0" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -31,7 +28,8 @@
 		<PackageReference Include="HtmlSanitizer" Version="6.0.453" />
 		<PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.12" />
-		<PackageReference Include="Microsoft.AspNetCore.Mvc.Razor" Version="2.2.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Razor" Version="2.0.4" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.0.4" />
 		<PackageReference Include="SixLabors.ImageSharp" Version="1.0.4" />
 		<PackageReference Include="System.Drawing.Common" Version="6.0.0" />
 	</ItemGroup>
@@ -40,6 +38,10 @@
 		<ProjectReference Include="..\DoctorFAM.Data.Dapper\DoctorFAM.Data.Dapper.csproj" />
 		<ProjectReference Include="..\DoctorFAM.Data\DoctorFAM.Data.csproj" />
 		<ProjectReference Include="..\DoctorFAM.Domain\DoctorFAM.Domain.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="CQRS\SiteSide\Test\Command\" />
 	</ItemGroup>
 
 </Project>

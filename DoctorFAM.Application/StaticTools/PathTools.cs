@@ -298,4 +298,16 @@ public static class PathTools
     public static readonly string UserVirtualFilesPath = "/content/images/UserVirtualFiles/Files/";
 
     #endregion
+
+    #region DoctorBannerImage
+
+    public static readonly string DoctorBannerImagePath = "/content/images/DoctorBannerImage/main/";
+    public static readonly string DoctorBannerImagePathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/DoctorBannerImage/main/");
+
+    public static readonly string DoctorBannerImagePathThumb = "/content/images/DoctorBannerImage/thumb/";
+    public static readonly string DoctorBannerImagePathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/DoctorBannerImage/thumb/");
+
+    public static readonly string DefaultDoctorBannerImage = "/content/images/DoctorBannerImage/DefaultDoctorBannerImage.jpg";
+
+    #endregion
 }

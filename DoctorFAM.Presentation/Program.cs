@@ -10,7 +10,6 @@ using DoctorFAM.Web.Hubs;
 using DoctorFAM.Web.Hubs.Implementation;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.DataProtection;
-using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +18,7 @@ using Newtonsoft.Json.Serialization;
 using System.Globalization;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
+using DoctorFAM.Application;
 
 #endregion
 
@@ -105,7 +105,10 @@ builder.Services.AddControllersWithViews()
     });
 
 builder.Services.AddResumingFileResult();
-builder.Services.AddMvc();
+builder.Services.AddControllers();
+{
+    builder.Services.RegisterApplicationServices();
+}
 
 #endregion
 

@@ -6,7 +6,6 @@ using DoctorFAM.Domain.ViewModels.Common;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.Site.OnlineVisit;
 using DoctorFAM.Domain.ViewModels.UserPanel.OnlineVisit;
-using Microsoft.EntityFrameworkCore;
 
 #endregion
 

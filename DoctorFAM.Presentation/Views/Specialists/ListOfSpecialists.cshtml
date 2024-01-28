@@ -329,11 +329,11 @@
                                                 </a>
                                             </div>
                                             <div class="doc-info-cont">
-                                                <h4 class="doc-name"><a asp-action="NewDocPage" asp-area="" asp-controller="FocalPoint" asp-route-userId="@doctor.DoctorUserInfo.UserId" asp-route-name="@doctor.DoctorUserInfo.Username.FixTextForUrl()">پزشک:@((doctor.DoctorUserInfo.DoctorTilteName == DoctorFAM.Domain.Enums.DoctorTitleName.DoctorTilteName.Anonymous) ? "" : doctor.DoctorUserInfo.DoctorTilteName.GetEnumName()) @doctor.DoctorUserInfo.Username</a></h4>
-                                                <p class="doc-speciality">@((!string.IsNullOrEmpty(doctor.DoctorUserInfo.doctorsInfo.Education)) ? doctor.DoctorUserInfo.doctorsInfo.Education : null)</p>
+                                                <h4 class="doc-name"><a asp-action="NewDocPage" asp-area="" asp-controller="FocalPoint" asp-route-userId="@doctor.DoctorUserInfo.UserId" asp-route-name="@doctor.DoctorUserInfo.Username.FixTextForUrl()">@((doctor.DoctorUserInfo.DoctorTilteName == DoctorFAM.Domain.Enums.DoctorTitleName.DoctorTilteName.Anonymous) ? "" : doctor.DoctorUserInfo.DoctorTilteName.GetEnumName()) @doctor.DoctorUserInfo.Username</a></h4>
+                                                @*<p class="doc-speciality">@((!string.IsNullOrEmpty(doctor.DoctorUserInfo.doctorsInfo.Education)) ? doctor.DoctorUserInfo.doctorsInfo.Education : null)</p>*@
                                                 @if (doctor.DoctorUserInfo.doctorsInfo.Specialty != null)
                                                 {
-                                                    <h5 class="doc-department">تخصص : @((!string.IsNullOrEmpty(doctor.DoctorUserInfo.doctorsInfo.Specialty)) ? doctor.DoctorUserInfo.doctorsInfo.Specialty : null)</h5>
+                                                    <h5 class="doc-department">  @((!string.IsNullOrEmpty(doctor.DoctorUserInfo.doctorsInfo.Specialty)) ? doctor.DoctorUserInfo.doctorsInfo.Specialty : null)</h5>
                                                 }
                                                 @if (doctor.DoctorUserInfo.doctorsInfo.ContractWithFamilyDoctors)
                                                 {
@@ -364,7 +364,7 @@
 
                                             <div class="clinic-booking mt-1  text-center justify-content-center">
 
-                                                <a class="view-pro-btn mt-3  text-center justify-content-center" asp-action="NewDocPage" asp-area="" asp-controller="FocalPoint" asp-route-userId="@doctor.DoctorUserInfo.UserId" asp-route-name="@doctor.DoctorUserInfo.Username.FixTextForUrl()">مشاهده پروفایل</a>
+                                                <a class="view-pro-btn mt-3  text-center justify-content-center" asp-action="NewDocPage" asp-area="" asp-controller="FocalPoint" asp-route-userId="@doctor.DoctorUserInfo.UserId" asp-route-name="@doctor.DoctorUserInfo.Username.FixTextForUrl()"> پروفایل</a>
                                                 <a class="apt-btn  text-center justify-content-center" asp-action="DocBooking" asp-controller="FocalPoint" asp-area="" asp-route-userId="@doctor.DoctorUserInfo.UserId">رزرو نوبت</a>
                                             </div>
                                         </div>

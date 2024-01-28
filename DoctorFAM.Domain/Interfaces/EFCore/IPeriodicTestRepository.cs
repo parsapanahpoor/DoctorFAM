@@ -1,12 +1,6 @@
 ﻿using DoctorFAM.Domain.Entities.PeriodicTest;
 using DoctorFAM.Domain.ViewModels.BackgroundTasks.PriodicTest;
 using DoctorFAM.Domain.ViewModels.Common;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DoctorFAM.Domain.Interfaces.EFCore
 {

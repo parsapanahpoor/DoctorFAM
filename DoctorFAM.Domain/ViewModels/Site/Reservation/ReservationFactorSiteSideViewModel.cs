@@ -1,6 +1,7 @@
 ﻿#region Using
 
 using DoctorFAM.Domain.Entities.Doctors;
+using DoctorFAM.Domain.Entities.Speciality;
 using DoctorFAM.Domain.Entities.WorkAddress;
 using DoctorFAM.Domain.ViewModels.Admin.Reservation;
 using System;
@@ -32,6 +33,8 @@ namespace DoctorFAM.Domain.ViewModels.Site.Reservation
         public WorkAddress? DoctorAddress{ get; set; }
 
         public List<DoctorsSkils?> DoctorSpeciality { get; set; }
+       
+        public string? DoctorSpecialities { get; set; }
 
         public string DoctorMobile{ get; set; }
 

@@ -126,19 +126,31 @@
                         <td>دکتر @((!string.IsNullOrEmpty(Model.DoctorUsername)) ? Model.DoctorUsername : "وارد نشده")</td>
                     </tr>
 
-                    @if (Model.DoctorSpeciality != null && Model.DoctorSpeciality.Any())
+                    @if (!string.IsNullOrEmpty(Model.DoctorSpecialities))
                     {
                         <tr>
 
                             <td>تخصص پزشک</td>
                             <td>
+                                @Model.DoctorSpecialities
+                            </td>
+                        </tr>
+                    }
+
+                    @if (Model.DoctorSpeciality != null && Model.DoctorSpeciality.Any())
+                    {
+                        <tr>
+
+                            <td>سایر خدمات </td>
+                            <td>
                                 @foreach (var skill in Model.DoctorSpeciality)
                                 {
-                                    <p>@skill.DoctorSkil</p>
+                                    <span>@skill.DoctorSkil ، </span>
                                 }
                             </td>
                         </tr>
                     }
+                   
 
                     <tr>
                         <td>تاریخ نوبت</td>
@@ -149,6 +161,18 @@
                         <td>ساعت مراجعه</td>
                         <td>@string.Concat(Model.ReservationDateTime.Reverse().Skip(3).Reverse())</td>
                     </tr>
+
+                    <tr>
+                        <td>اخذ نوبت</td>
+                        <td>100،000 ریال</td>
+                    </tr>
+
+                    <tr>
+                        <td>بیعانه ویزیت پزشک</td>
+                        <td>@ViewBag.ReservationPrice.ToString("#,000") ریال</td>
+                    </tr>
+
+
 
                     <tr>
                         <td>مبلغ پرداختی</td>

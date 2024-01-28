@@ -1,9 +1,6 @@
-﻿using DoctorFAM.Domain.Entities.Account;
-using DoctorFAM.Domain.Entities.UsersBankAccount;
+﻿using DoctorFAM.Domain.Entities.UsersBankAccount;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorBankAccounts;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Wallet;
-using Microsoft.EntityFrameworkCore;
-using System.Threading;
 
 namespace DoctorFAM.Domain.Interfaces.EFCore;
 

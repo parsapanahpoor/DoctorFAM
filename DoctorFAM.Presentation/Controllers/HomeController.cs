@@ -54,7 +54,7 @@ public class HomeController : SiteBaseController
         return View();
     }
 
-    public async Task<IActionResult> TestSepeciality(FilterSpecialistDoctorsSiteSideViewModel filter , CancellationToken cancellation)
+    public async Task<IActionResult> TestSepeciality(FilterSpecialistDoctorsSiteSideViewModel filter, CancellationToken cancellation)
     {
         if (filter.GeneralSpecialityId.HasValue && !filter.specificId.HasValue)
         {
@@ -82,7 +82,7 @@ public class HomeController : SiteBaseController
             ViewData["JustSpeciality"] = await _specialityService.GetChildJustSpecialityByParentId(filter.GeneralSpecialityId.Value);
         }
 
-        var res = await _specialityService.FilterSpecialistDoctorsSiteSide(filter,cancellation);
+        var res = await _specialityService.FilterSpecialistDoctorsSiteSide(filter, cancellation);
 
         return View(filter);
     }
@@ -276,7 +276,10 @@ public class HomeController : SiteBaseController
     #region Follow Users 
 
     [Authorize]
-    public async Task<IActionResult> FollowDoctor(ulong doctorId, string actionName, string controllerName, string? areaName)
+    public async Task<IActionResult> FollowDoctor(ulong doctorId,
+                                                  string actionName,
+                                                  string controllerName,
+                                                  string? areaName)
     {
         #region Follow User 
 

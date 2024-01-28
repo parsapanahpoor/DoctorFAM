@@ -1,6 +1,5 @@
 ﻿using DoctorFAM.Domain.Entities.WorkAddress;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DoctorsInfo;
-using Microsoft.EntityFrameworkCore;
 
 namespace DoctorFAM.Domain.Interfaces;
 

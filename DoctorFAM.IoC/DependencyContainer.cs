@@ -2,6 +2,8 @@
 
 using AngleSharp.Css.Dom;
 using BusinessPortal.Application.Services.Implementation;
+using DoctorFAM.Application.Common.IUnitOfWork;
+using DoctorFAM.Application.Common.UnitOfWork;
 using DoctorFAM.Application.Interfaces;
 using DoctorFAM.Application.Services;
 using DoctorFAM.Application.Services.Implementation;
@@ -26,6 +28,12 @@ public static class DependencyContainer
 {
     public static void RegisterServices(IServiceCollection services)
     {
+        #region Unit Of Work
+
+        services.AddScoped<IUnitOfWork , UnitOfWork>();
+
+        #endregion
+
         #region Services
 
         services.AddScoped<IUserService, UserService>();

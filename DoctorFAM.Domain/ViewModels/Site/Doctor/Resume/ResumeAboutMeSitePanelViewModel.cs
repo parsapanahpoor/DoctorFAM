@@ -16,6 +16,8 @@ namespace DoctorFAM.Domain.ViewModels.Site.Doctor.Resume
 
         public ulong ResumeId { get; set; }
 
+        public string? BannerImage { get; set; }
+
         #endregion
     }
 }
