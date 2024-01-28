@@ -1,15 +1,8 @@
 ﻿#region Usings
 
-using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.Tourism;
 using DoctorFAM.Domain.ViewModels.Admin.Tourist;
 using DoctorFAM.Domain.ViewModels.Tourism.SiteSideBar;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 #endregion
 

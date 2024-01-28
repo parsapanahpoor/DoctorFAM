@@ -16,6 +16,8 @@ namespace DoctorFAM.Domain.Entities.Resume
 
         public string AboutMeText { get; set; }
 
+        public string? BannerImage { get; set; }
+
         #endregion
 
         #region relation

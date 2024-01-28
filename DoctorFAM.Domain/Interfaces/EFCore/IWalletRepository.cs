@@ -5,7 +5,6 @@ using DoctorFAM.Domain.ViewModels.Admin.Wallet;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Wallet;
 using DoctorFAM.Domain.ViewModels.UserPanel.Wallet;
 using DoctorFAM.Domain.ViewModels.Wallet;
-using Microsoft.EntityFrameworkCore;
 
 #endregion
 

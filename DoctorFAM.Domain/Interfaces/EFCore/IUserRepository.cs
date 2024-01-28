@@ -1,10 +1,17 @@
 ﻿using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.DoctorReservation;
+using Microsoft.EntityFrameworkCore;
 
 namespace DoctorFAM.Domain.Interfaces
 {
     public interface IUserRepository 
     {
+        #region General 
+
+        Task<User?> GetUserById(ulong userId,CancellationToken token);
+
+        #endregion
+
         #region Site Side
 
         //Add User

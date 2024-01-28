@@ -53,9 +53,10 @@ public class ReservationRepository : IReservationRepository
     {
         return await _context.DoctorReservationDateTimes
                              .AsNoTracking()
-                             .Include(p=> p.DoctorReservationDate)
-                             .ThenInclude(p=> p.User)
+                             .Include(p => p.DoctorReservationDate)
+                             .ThenInclude(p => p.User)
                              .Where(p => !p.IsDelete &&
+                                    !p.DoctorBooking && 
                                     p.PatientId.HasValue &&
                                     p.DoctorReservationState == DoctorReservationState.Reserved &&
                                    (p.DoctorReservationDate.ReservationDate.Year == DateTime.Now.Year &&
@@ -64,10 +65,10 @@ public class ReservationRepository : IReservationRepository
                              .Select(p => new SendSMSForReminderToReservationDTO()
                              {
                                  DoctorUsername = p.DoctorReservationDate.User.Username,
-                                 UserMobile = _context.Users    
+                                 UserMobile = _context.Users
                                                       .AsNoTracking()
-                                                      .Where(s=> !s.IsDelete && s.Id == p.PatientId.Value )
-                                                      .Select(s=> s.Mobile)
+                                                      .Where(s => !s.IsDelete && s.Id == p.PatientId.Value)
+                                                      .Select(s => s.Mobile)
                                                       .FirstOrDefault()
                              })
                              .ToListAsync();
@@ -1054,7 +1055,9 @@ public class ReservationRepository : IReservationRepository
         var query = _context.DoctorReservationDateTimes
            .Include(p => p.DoctorReservationDate)
            .ThenInclude(p => p.User)
-           .Where(p => !p.IsDelete && p.PatientId == filter.UserId)
+           .Where(p => !p.IsDelete && 
+                  p.PatientId == filter.UserId &&
+                  !p.DoctorBooking)
            .OrderBy(s => s.DoctorReservationDate.ReservationDate)
            .ThenByDescending(s => s.Id)
            .AsQueryable();
@@ -1298,7 +1301,7 @@ public class ReservationRepository : IReservationRepository
 
     #region Admin Side 
 
-    public async Task<DoctorFAM.Domain.ViewModels.Admin.Reservation.LogForAnotherPatient?> FillLogForAnotherPatient(ulong reservationId , ulong patientId)
+    public async Task<DoctorFAM.Domain.ViewModels.Admin.Reservation.LogForAnotherPatient?> FillLogForAnotherPatient(ulong reservationId, ulong patientId)
     {
         return await _context.logForGetAppoinmentForOtherPeoples
                              .AsNoTracking()
@@ -1966,7 +1969,7 @@ public class ReservationRepository : IReservationRepository
     }
 
     //Get And Delete Another Patient 
-    public async Task GetAndDeleteAnotherPatient(ulong reservationDateTimeId , ulong userId)
+    public async Task GetAndDeleteAnotherPatient(ulong reservationDateTimeId, ulong userId)
     {
         #region Get Another Patient 
 

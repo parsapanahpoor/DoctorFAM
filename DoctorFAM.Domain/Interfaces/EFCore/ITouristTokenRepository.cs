@@ -3,7 +3,6 @@
 using DoctorFAM.Domain.Entities.Tourism.Token;
 using DoctorFAM.Domain.ViewModels.Admin.Tourist;
 using DoctorFAM.Domain.ViewModels.Tourist.Token;
-using Microsoft.EntityFrameworkCore;
 
 namespace DoctorFAM.Domain.Interfaces.EFCore;
 
