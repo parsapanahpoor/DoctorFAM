@@ -18,7 +18,10 @@ namespace DoctorFAM.Web.ViewComponents
 
         #endregion
 
-        public async Task<IViewComponentResult> InvokeAsync(ulong targetUserId , string actionName , string controllerName , string? area)
+        public async Task<IViewComponentResult> InvokeAsync(ulong targetUserId , 
+                                                            string actionName ,     
+                                                            string controllerName , 
+                                                            string? area)
         {
             #region Fill Model
 

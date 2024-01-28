@@ -12,7 +12,7 @@
     ViewBag.Title = "پروفایل پزشک";
 }
 
-@section Scripts{
+@section Scripts {
     <script src="~/Content/plugins/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="c05b42694ff6ef93b74325a7-|49" defer=""></script>
     <script src="~/Content/WinKu/js/main.min.js"></script>
     <script src="~/Content/WinKu/js/script.js"></script>
@@ -35,16 +35,39 @@
             {
                 <img id="imgBanner" src="~/Content/WinKu/images/resources/timeline-1.jpg" style="height:400px" alt="">
             }
-            </figure>
+        </figure>
 
 
         <div class="add-btn">
             <span>
-                @await Component.InvokeAsync("DoctorsFollowDetailOnListOfFamilyDoctors" , new{
-                targetUserId = Model.UserId})
+                @await Component.InvokeAsync("DoctorsFollowDetailOnListOfFamilyDoctors", new
+                    {
+                        targetUserId = Model.UserId
+                    })
             </span>
 
-            <a href="#" title="" data-ripple="">اضافه کردن به دوست ها</a>
+            @if (User.Identity.IsAuthenticated)
+            {
+                @*Followers Method*@
+                @await Component.InvokeAsync("ShowFollowButtonInDoctorsList",
+                         new
+                         {
+                             targetUserId = Model.UserId,
+                             actionName = $"{Model.Username.FixTextForUrl()}",
+                             controllerName = $"{Model.UserId}",
+                             area = "NewDocPage"
+                         })
+            }
+            else
+            {
+                <div class="doc-info-right clinic-booking mt-3  text-center justify-content-center">
+                    <a class="view-pro-btn "
+                       asp-action="Login"
+                       asp-area=""
+                       asp-controller="Account"
+                       asp-route-ReturnUrl="NewDocPage/@Model.UserId/@Model.Username.FixTextForUrl()">دنبال کردن</a>
+                </div>
+            }
         </div>
 
 
@@ -55,31 +78,31 @@
                         <figure>
 
                             <img src="/content/images/user/@((string.IsNullOrEmpty(Model.UserAvatar)) ? "DefaultAvatar.png" : $"thumb/{Model.UserAvatar}")" alt="">
-                         
+
                         </figure>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
                     <div class="admin-name mt-1">
                         <h5>دکتر @Model.Username</h5>
-                        
+
                         <p>  @((!string.IsNullOrEmpty(Model.Specialist)) ? Model.Specialist : null) </p>
 
 
 
-                  @*      @if (!string.IsNullOrEmpty(Model.WorkAddress))
+                        @*      @if (!string.IsNullOrEmpty(Model.WorkAddress))
                         {
-                            <i class="fas fa-map-marker-alt"></i>
+                        <i class="fas fa-map-marker-alt"></i>
                         }
                         @((string.IsNullOrEmpty(Model.WorkAddress)) ? null : Model.WorkAddress)
 
-                      
+
                         <partial name="_WorkAddressPartialINLine" model="@Model.WorkingAddressResume" />
 
-                  
+
                         *@
                         <div class="col-md-12">
-                            <p >
+                            <p>
                                 @if (!string.IsNullOrEmpty(Model.ClinicPhone))
                                 {
                                     <span>تلفن مطب: @Model.ClinicPhone </span>
@@ -101,7 +124,7 @@
 
                             <li>
                                 <a class="active" href="/Home" title="صفحه اصلی سایت" data-ripple="">خانه</a>
-                                
+
                                 <a style="color:RED !important; font-size:16px !important;" asp-action="DocBooking" asp-controller="FocalPoint" asp-area="" asp-route-userId="@Model.UserId" title="" data-ripple="">رزرو نوبت</a>
                                 <a class="" href="timeline-videos.html" title="" data-ripple="">کلیپ</a>
                                 <a class="" href="timeline-friends.html" title="" data-ripple="">پادکست</a>
@@ -180,101 +203,101 @@
                                             <i class="ti-bell"></i>
                                             <a href="notifications.html" title=""> اعلان ها</a>
                                         </li>
-                                       
-                                       
+
+
                                         <li>
                                             <i class="ti-power-off"></i>
                                             <a href="landing.html" title=""> خروج </a>
                                         </li>
                                     </ul>
                                 </div><!-- Shortcuts -->
-                               @* <div class="widget">
-                                    <h4 class="widget-title"> فعالیت اخیر </h4>
-                                    <ul class="activitiez">
-                                        <li>
-                                            <div class="activity-meta">
-                                                <i> 10 ساعت قبل </i>
-                                                <span><a href="#" title="">یه نظر درباره ی فیلمی که پست کرده بودی داری</a></span>
-                                                <h6>  توسط  <a href="newsfeed.html">دیو سیاه.</a></h6>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="activity-meta">
-                                                <i> 30 روز قبل </i>
-                                                <span><a href="newsfeed.html" title=""> وضعیتت ارسال شد ، "سلام بچه ها ، چطورین؟" </a></span>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="activity-meta">
-                                                <i> 2 سال قبل </i>
-                                                <span><a href="#" title=""> یه فیلم روی تایم لاینت  اومده. </a></span>
-                                                <h6>"<a href="newsfeed.html"> آرش خیلی بامزه ای ! </a>"</h6>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                @* <div class="widget">
+                                <h4 class="widget-title"> فعالیت اخیر </h4>
+                                <ul class="activitiez">
+                                <li>
+                                <div class="activity-meta">
+                                <i> 10 ساعت قبل </i>
+                                <span><a href="#" title="">یه نظر درباره ی فیلمی که پست کرده بودی داری</a></span>
+                                <h6>  توسط  <a href="newsfeed.html">دیو سیاه.</a></h6>
+                                </div>
+                                </li>
+                                <li>
+                                <div class="activity-meta">
+                                <i> 30 روز قبل </i>
+                                <span><a href="newsfeed.html" title=""> وضعیتت ارسال شد ، "سلام بچه ها ، چطورین؟" </a></span>
+                                </div>
+                                </li>
+                                <li>
+                                <div class="activity-meta">
+                                <i> 2 سال قبل </i>
+                                <span><a href="#" title=""> یه فیلم روی تایم لاینت  اومده. </a></span>
+                                <h6>"<a href="newsfeed.html"> آرش خیلی بامزه ای ! </a>"</h6>
+                                </div>
+                                </li>
+                                </ul>
                                 </div>*@<!-- recent activites -->
-                               
+
                             </aside>
                         </div><!-- sidebar -->
                         <div class="col-lg-6">
-                            
-                                <div class="central-meta new-pst item">
-                                    <div class="new-postbox">
-                                        <figure>
-                                            <img src="images/resources/admin2.jpg" alt="">
-                                        </figure>
-                                        <div class="newpst-input">
-                                            <form method="post">
-                                                <textarea rows="2" placeholder="چیزی بنویسید:  (این میتونه یه موضوع جالب که تو مطب براتون اتفاق افتاده باشه)"></textarea>
-                                                <div class="attachments">
-                                                    <ul>
-                                                        <li>
-                                                            <i class="fa fa-music"></i>
-                                                            <label class="fileContainer">
-                                                                <input type="file">
-                                                            </label>
-                                                        </li>
-                                                        <li>
-                                                            <i class="fa fa-image"></i>
-                                                            <label class="fileContainer">
-                                                                <input type="file">
-                                                            </label>
-                                                        </li>
-                                                        <li>
-                                                            <i class="fa fa-video-camera"></i>
-                                                            <label class="fileContainer">
-                                                                <input type="file">
-                                                            </label>
-                                                        </li>
-                                                        <li>
-                                                            <i class="fa fa-camera"></i>
-                                                            <label class="fileContainer">
-                                                                <input type="file">
-                                                            </label>
-                                                        </li>
-                                                        <li>
-                                                            <button type="submit"> منتشر کن</button>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </form>
-                                        </div>
+
+                            <div class="central-meta new-pst item">
+                                <div class="new-postbox">
+                                    <figure>
+                                        <img src="images/resources/admin2.jpg" alt="">
+                                    </figure>
+                                    <div class="newpst-input">
+                                        <form method="post">
+                                            <textarea rows="2" placeholder="چیزی بنویسید:  (این میتونه یه موضوع جالب که تو مطب براتون اتفاق افتاده باشه)"></textarea>
+                                            <div class="attachments">
+                                                <ul>
+                                                    <li>
+                                                        <i class="fa fa-music"></i>
+                                                        <label class="fileContainer">
+                                                            <input type="file">
+                                                        </label>
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-image"></i>
+                                                        <label class="fileContainer">
+                                                            <input type="file">
+                                                        </label>
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-video-camera"></i>
+                                                        <label class="fileContainer">
+                                                            <input type="file">
+                                                        </label>
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-camera"></i>
+                                                        <label class="fileContainer">
+                                                            <input type="file">
+                                                        </label>
+                                                    </li>
+                                                    <li>
+                                                        <button type="submit"> منتشر کن</button>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </form>
                                     </div>
-                                </div><!-- add post new box -->
-                               
-
-
-                                <div class="col-lg-12">
-                                    <div class="central-meta">
-
-                                        <partial name="_GalleryPartial" model="@Model.GalleryResume" />
-                                       
-                                    </div><!-- photos -->
                                 </div>
+                            </div><!-- add post new box -->
 
-                              
 
-                            
+
+                            <div class="col-lg-12">
+                                <div class="central-meta">
+
+                                    <partial name="_GalleryPartial" model="@Model.GalleryResume" />
+
+                                </div><!-- photos -->
+                            </div>
+
+
+
+
                         </div><!-- centerl meta -->
                         <div class="col-lg-3">
 
@@ -288,7 +311,7 @@
 
 
                                 <aside class="sidebar static">
-                                    
+
 
                                     @*Box Of Services*@
                                     <partial name="_ServicesPartial" model="@Model.ServiceResume" />
@@ -299,11 +322,11 @@
                                     @*Box Of Work History*@
                                     <partial name="_WorkHistoryPartial" model="@Model.WorkHistoryResume" />
 
-                                    
+
                                     <partial name="_HonorsPartial" model="@Model.HonorResume" />
 
                                     <partial name="_CertificatePartial" model="@Model.CertificateResume" />
-                                    
+
 
 
                                     <div class="widget">
@@ -311,7 +334,7 @@
                                             <div style="background-image: url(images/resources/baner-widgetbg.jpg)" class="bg-image"></div>
                                             <div class="baner-top">
                                                 <span><img src="images/book-icon.png" alt="">آدرس محل کار</span>
-                                               
+
                                             </div>
                                             <div class="banermeta">
                                                 <div class="row  ">
