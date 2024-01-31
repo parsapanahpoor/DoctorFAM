@@ -241,52 +241,6 @@
                         </div><!-- sidebar -->
                         <div class="col-lg-6">
 
-                            <div class="central-meta new-pst item">
-                                <div class="new-postbox">
-                                    <figure>
-                                        <img src="images/resources/admin2.jpg" alt="">
-                                    </figure>
-                                    <div class="newpst-input">
-                                        <form method="post">
-                                            <textarea rows="2" placeholder="چیزی بنویسید:  (این میتونه یه موضوع جالب که تو مطب براتون اتفاق افتاده باشه)"></textarea>
-                                            <div class="attachments">
-                                                <ul>
-                                                    <li>
-                                                        <i class="fa fa-music"></i>
-                                                        <label class="fileContainer">
-                                                            <input type="file">
-                                                        </label>
-                                                    </li>
-                                                    <li>
-                                                        <i class="fa fa-image"></i>
-                                                        <label class="fileContainer">
-                                                            <input type="file">
-                                                        </label>
-                                                    </li>
-                                                    <li>
-                                                        <i class="fa fa-video-camera"></i>
-                                                        <label class="fileContainer">
-                                                            <input type="file">
-                                                        </label>
-                                                    </li>
-                                                    <li>
-                                                        <i class="fa fa-camera"></i>
-                                                        <label class="fileContainer">
-                                                            <input type="file">
-                                                        </label>
-                                                    </li>
-                                                    <li>
-                                                        <button type="submit"> منتشر کن</button>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div><!-- add post new box -->
-
-
-
                             <div class="col-lg-12">
                                 <div class="central-meta">
 
@@ -295,10 +249,8 @@
                                 </div><!-- photos -->
                             </div>
 
-
-
-
                         </div><!-- centerl meta -->
+
                         <div class="col-lg-3">
 
                             @if (Model.Resume != null && Model.Resume.ResumeState == DoctorFAM.Domain.Enums.ResumeState.ResumeState.Accepted)
@@ -307,11 +259,7 @@
                                 @*Box Of ABout Me*@
                                 <partial name="_LastestAboutMePartial" model="@Model.ResumeAboutMeSitePanelViewModel" />
 
-
-
-
                                 <aside class="sidebar static">
-
 
                                     @*Box Of Services*@
                                     <partial name="_ServicesPartial" model="@Model.ServiceResume" />
@@ -322,12 +270,9 @@
                                     @*Box Of Work History*@
                                     <partial name="_WorkHistoryPartial" model="@Model.WorkHistoryResume" />
 
-
                                     <partial name="_HonorsPartial" model="@Model.HonorResume" />
 
                                     <partial name="_CertificatePartial" model="@Model.CertificateResume" />
-
-
 
                                     <div class="widget">
                                         <div class="banner medium-opacity bluesh">

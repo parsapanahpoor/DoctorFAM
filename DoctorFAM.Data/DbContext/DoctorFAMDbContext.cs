@@ -60,6 +60,7 @@ using DoctorFAM.Domain.Entities.Tourism.Token;
 using DoctorFAM.Domain.Entities.UsersBankAccount;
 using DoctorFAM.Domain.Entities.HealthCenters;
 using DoctorFAM.Domain.Entities.Log.LogForBackgroundServices;
+using DoctorFAM.Domain.Entities.Story;
 
 
 #endregion
@@ -592,6 +593,12 @@ public class DoctorFAMDbContext : Microsoft.EntityFrameworkCore.DbContext
     public DbSet<BackgroundServicesLogger> BackgroundServicesLoggers { get; set; }
 
     #endregion
+
+    #endregion
+
+    #region Story
+
+    public DbSet<Story> Stories { get; set; }
 
     #endregion
 

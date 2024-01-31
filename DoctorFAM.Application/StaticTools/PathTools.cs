@@ -310,4 +310,10 @@ public static class PathTools
     public static readonly string DefaultDoctorBannerImage = "/content/images/DoctorBannerImage/DefaultDoctorBannerImage.jpg";
 
     #endregion
+
+    #region Story File
+
+    public static readonly string StoryFile = "/content/images/StoryFiles/";
+
+    #endregion
 }

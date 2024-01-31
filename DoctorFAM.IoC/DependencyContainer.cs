@@ -10,9 +10,11 @@ using DoctorFAM.Application.Services.Implementation;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Data.Dapper.Repository;
 using DoctorFAM.Data.Repository;
+using DoctorFAM.Data.Repository.Story;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.Interfaces.Dapper;
 using DoctorFAM.Domain.Interfaces.EFCore;
+using DoctorFAM.Domain.Interfaces.EFCore.Story;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -145,6 +147,9 @@ public static class DependencyContainer
         services.AddScoped<ITouristTokenRepository, TouristTokenRepository>();
         services.AddScoped<IUserBankAccountsInfosRepository, UserBankAccountsInfosRepository>();
         services.AddScoped<IHealthCentersRepository, HealthCentersRepository>();
+
+        services.AddScoped<IStoryCommandRepository, StoryCommandRepository>();
+        services.AddScoped<IStoryQueryRepository, StoryQueryRepository>();
 
         #endregion
 

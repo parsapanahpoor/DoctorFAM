@@ -1,6 +1,7 @@
 ﻿using DoctorFAM.Domain.Entities.HealthInformation;
 using DoctorFAM.Domain.ViewModels.Admin.HealthInformation.RadioFAM.Category;
 using DoctorFAM.Domain.ViewModels.Admin.HealthInformation.TVFAM.Category;
+using DoctorFAM.Domain.ViewModels.Site.Doctor;
 
 namespace DoctorFAM.Domain.Interfaces.EFCore
 {
@@ -111,6 +112,8 @@ namespace DoctorFAM.Domain.Interfaces.EFCore
 
         //Get Lastest 3 TvFAM For Show In Admin Panel 
         Task<List<HealthInformation>?> GetLastest3TvFAMForShowInAdminPanel();
+
+        Task<List<DoctorVideosDTO>> FillDoctorVideosDTO(ulong userId, CancellationToken cancellation);
 
         #endregion
 

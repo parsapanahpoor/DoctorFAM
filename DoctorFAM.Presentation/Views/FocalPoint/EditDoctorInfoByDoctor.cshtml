@@ -327,49 +327,51 @@
 
                             <div class="central-meta new-pst item">
                                 <div class="new-postbox">
-                                    <figure>
-                                        <img src="images/resources/admin2.jpg" alt="">
-                                    </figure>
-                                    <div class="newpst-input">
-                                        <form method="post">
-                                            <textarea rows="2" placeholder="چیزی بنویسید:  (این میتونه یه موضوع جالب که تو مطب براتون اتفاق افتاده باشه)"></textarea>
-                                            <div class="attachments">
-                                                <ul>
-                                                    <li>
-                                                        <i class="fa fa-music"></i>
-                                                        <label class="fileContainer">
-                                                            <input type="file">
-                                                        </label>
-                                                    </li>
-                                                    <li>
-                                                        <i class="fa fa-image"></i>
-                                                        <label class="fileContainer">
-                                                            <input type="file">
-                                                        </label>
-                                                    </li>
-                                                    <li>
-                                                        <i class="fa fa-video-camera"></i>
-                                                        <label class="fileContainer">
-                                                            <input type="file">
-                                                        </label>
-                                                    </li>
-                                                    <li>
-                                                        <i class="fa fa-camera"></i>
-                                                        <label class="fileContainer">
-                                                            <input type="file">
-                                                        </label>
-                                                    </li>
-                                                    <li>
-                                                        <button type="submit"> منتشر کن</button>
-                                                    </li>
-                                                </ul>
+
+                                    <form asp-action="AddStory" asp-area="" asp-controller="FocalPoint" method="post" enctype="multipart/form-data">
+
+                                        <div class="row">
+
+                                            <div class="col-md-3"></div>
+
+                                            <div class="col-md-9">
+                                                <input type="file" name="StoryFile" />
                                             </div>
-                                        </form>
-                                    </div>
+
+                                            <div class="col-md-3"></div>
+
+                                        </div>
+
+                                        <div class="row col-md-12 mt-4">
+                                            <textarea rows="2"
+                                                      name="Description"
+                                                      placeholder="چیزی بنویسید:  (این میتونه یه موضوع جالب که تو مطب براتون اتفاق افتاده باشه)"></textarea>
+                                        </div>
+
+                                        <div class="row mt-4">
+
+                                            <div class="col-md-3"></div>
+
+                                            <div class="col-md-9">
+                                                <button type="submit"> منتشر کن</button>
+                                            </div>
+
+                                            <div class="col-md-3"></div>
+
+                                        </div>
+
+                                    </form>
+
                                 </div>
-                            </div><!-- add post new box -->
+                            </div>
 
+                              <div class="col-lg-12">
+                                <div class="central-meta">
 
+                                    <partial name="_GalleryPartial" model="@Model.GalleryResume" />
+
+                                </div><!-- photos -->
+                            </div>
 
                             <div class="col-lg-12">
                                 <div class="central-meta">
@@ -378,8 +380,6 @@
 
                                 </div><!-- photos -->
                             </div>
-
-
 
 
                         </div><!-- centerl meta -->
