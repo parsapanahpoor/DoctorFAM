@@ -313,7 +313,7 @@ public static class PathTools
 
     #region Story File
 
-    public static readonly string StoryFile = "/content/images/StoryFiles/";
+    public static readonly string StoryFile = "/content/images/StoryFile/";
 
     #endregion
 }
