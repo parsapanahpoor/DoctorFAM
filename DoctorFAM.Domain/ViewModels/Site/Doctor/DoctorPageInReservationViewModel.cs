@@ -7,6 +7,7 @@ using DoctorFAM.Domain.ViewModels.Site.Doctor.Resume.WorkHistory;
 using DoctorFAM.Domain.ViewModels.Site.Doctor.Resume.WorkingAddress;
 using DoctorFAM.Domain.ViewModels.Site.Doctor.Resume;
 using DoctorFAM.Domain.ViewModels.Site.Doctor.Resume.Education;
+using System.Security.Cryptography;
 
 namespace DoctorFAM.Domain.ViewModels.Site.Doctor;
 
@@ -55,6 +56,31 @@ public class DoctorPageInReservationViewModel
     public List<CertificateResumeInSitePanelViewModel>? CertificateResume { get; set; }
 
     public List<GalleryResumeInSitePanelViewModel>? GalleryResume { get; set; }
+
+    public List<DoctorVideosDTO> DoctorVideos { get; set; }
+
+    #endregion
+}
+
+public class DoctorVideosDTO
+{
+    #region properties
+
+    public ulong Id { get; set; }
+
+    public string? VideoBanner { get; set; }
+
+    public string? VideoFile { get; set; }
+
+    public bool IsImage { get; set; }
+
+    public bool IsVideo { get; set; }
+
+    public bool IsStory { get; set; }
+
+    public DateTime CreateDate { get; set; }
+
+    public string Description { get; set; }
 
     #endregion
 }

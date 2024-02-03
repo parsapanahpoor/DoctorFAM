@@ -15,10 +15,10 @@ using System.Text;
 using DoctorFAM.Domain.DTOs.ZarinPal;
 using DoctorFAM.Domain.Entities.Wallet;
 using DoctorFAM.Application.StaticTools;
-using DoctorFAM.Web.ActionFilterAttributes;
 using DoctorFAM.Application.CQRS.SiteSide.FocalPoint.Queries.DoctorPage;
 using DoctorFAM.Web.HttpManager;
 using DoctorFAM.Application.CQRS.SiteSide.FocalPoint.Commands;
+using DoctorFAM.Domain.ViewModels.Site.Story;
 
 #endregion
 
@@ -87,7 +87,6 @@ public class FocalPointController : SiteBaseController
             if (model.User.Id == User.GetUserId())
             {
                 return View("EditDoctorInfoByDoctor", model);
-
             }
         }
 
@@ -159,6 +158,8 @@ public class FocalPointController : SiteBaseController
     }
 
     #endregion
+
+    #region Doctor Reservation
 
     #region Doctor Reservation Detail 
 
@@ -722,6 +723,41 @@ public class FocalPointController : SiteBaseController
     {
         return View();
     }
+
+    #endregion
+
+    #endregion
+
+    #region Story
+
+    #region Add Story
+
+    [HttpPost]
+    public async Task<IActionResult> AddStory(AddDoctorStoryDTO model , CancellationToken cancellation)
+    {
+        #region Fill Command 
+
+        AddDoctorStoryCommand command = new AddDoctorStoryCommand()
+        {
+            DoctorUserId = User.GetUserId(),
+            Description = model.Description,
+            StoryFile = model.StoryFile
+        };
+
+        #endregion
+
+        var res = await Mediator.Send(command , cancellation);
+        if (res.Result)
+        {
+            TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+            return RedirectToAction("NewDocPage", "FocalPoint", new { userId = User.GetUserId() , name=res.Username.FixTextForUrl() });
+        }
+
+        TempData[ErrorMessage] = "عملیات باشکست مواجه شده است.";
+        return RedirectToAction("Index", "Home");
+    }
+
+    #endregion
 
     #endregion
 }
