@@ -741,7 +741,8 @@ public class FocalPointController : SiteBaseController
         {
             DoctorUserId = User.GetUserId(),
             Description = model.Description,
-            StoryFile = model.StoryFile
+            VideoFile = model.VideoFile,
+            ImageFile = model.ImageFile,
         };
 
         #endregion
