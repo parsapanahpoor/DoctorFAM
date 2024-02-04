@@ -7,7 +7,9 @@ public sealed class Story : BaseEntity
 
     public ulong UserId { get; set; }
 
-    public string File { get; set; }
+    public string? ImageFile { get; set; }
+
+    public string? VideoFile { get; set; }
 
     public string Description { get; set; }
 

@@ -31,7 +31,8 @@ public class StoryQueryRepository : QueryGenericRepository<DoctorFAM.Domain.Enti
                              {
                                  CreateDate = p.CreateDate,
                                  Id = p.Id,
-                                 VideoBanner = p.File,
+                                 VideoBanner = p.ImageFile,
+                                 VideoFile = p.VideoFile,
                                  Description = p.Description,
                                  IsStory = true
                              })

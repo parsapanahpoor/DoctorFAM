@@ -1,7 +1,10 @@
 ﻿using DoctorFAM.Application.Common.IUnitOfWork;
 using DoctorFAM.Application.Extensions;
+using DoctorFAM.Application.Generators;
 using DoctorFAM.Application.Security;
 using DoctorFAM.Application.Services.Interfaces;
+using DoctorFAM.Application.StaticTools;
+using DoctorFAM.Domain.Entities.Resume;
 using DoctorFAM.Domain.Entities.Story;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.Interfaces.EFCore.Story;
@@ -63,12 +66,19 @@ public record AddDoctorStoryCommandHandler : IRequestHandler<AddDoctorStoryComma
             Description = request.Description.SanitizeText()
         };
 
-        if (request.StoryFile != null)
+        if (request.VideoFile != null)
         {
             //Upload File To The Server
-            var fileName = await request.StoryFile.SaveFile("wwwroot/Content/images/StoryFile/");
+            var fileName = await request.VideoFile.SaveFile("wwwroot/Content/images/StoryFile/Videos/");
 
-            story.File = fileName;
+            story.VideoFile = fileName;
+        }
+
+        if (request.ImageFile != null)
+        {
+            var imageName = CodeGenerator.GenerateUniqCode() + Path.GetExtension(request.ImageFile.FileName);
+            request.ImageFile.AddImageToServer(imageName, PathTools.StoryImagePathServer, 270, 270, PathTools.StoryImagePathThumbServer);
+            story.ImageFile = imageName;
         }
 
         await _storyCommandRepository.AddAsync(story , cancellationToken);

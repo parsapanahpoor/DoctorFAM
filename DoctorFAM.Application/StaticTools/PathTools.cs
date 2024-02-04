@@ -313,7 +313,12 @@ public static class PathTools
 
     #region Story File
 
-    public static readonly string StoryFile = "/content/images/StoryFile/";
+    public static readonly string StoryFile = "/content/images/StoryFile/Videos/";
+
+    public static readonly string StoryImagePath = "/content/images/StoryFile/Image/";
+    public static readonly string StoryImagePathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/StoryFile/Image/");
+
+    public static readonly string StoryImagePathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/StoryFile/Thumb/");
 
     #endregion
 }

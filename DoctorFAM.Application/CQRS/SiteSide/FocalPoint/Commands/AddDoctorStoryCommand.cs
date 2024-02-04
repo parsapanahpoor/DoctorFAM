@@ -9,7 +9,9 @@ public class AddDoctorStoryCommand : IRequest<AddDoctorStoryResultDTO>
 
     public string Description { get; set; }
 
-    public IFormFile StoryFile { get; set; }
+    public IFormFile? ImageFile { get; set; }
+
+    public IFormFile? VideoFile { get; set; }
 }
 
 public class AddDoctorStoryResultDTO
