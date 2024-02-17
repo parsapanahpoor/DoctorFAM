@@ -573,6 +573,12 @@ public class FocalPointController : SiteBaseController
 
                         #endregion
 
+                        //Send SMS For Patient
+                        await _reservationService.SendSMSToPatientAfterGetReservation(reservationDateTime.StartTime , 
+                                                                                      reservationDateTime.DoctorReservationDate.ReservationDate , 
+                                                                                      reservationDateTime.DoctorReservationDate.UserId ,
+                                                                                      currentUser.Mobile);
+
                         return RedirectToAction(nameof(ShowInvoiceAfterPaymentForReservation), new { resId = reservationDateTime.Id, trackingCode = parameters.authority });
                     }
                 }

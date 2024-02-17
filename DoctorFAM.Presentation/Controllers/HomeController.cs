@@ -32,10 +32,15 @@ public class HomeController : SiteBaseController
     private readonly IUserService _userService;
     private readonly ISMSService _smsservice;
     private readonly ISpecialityService _specialityService;
+    private readonly IReservationService _reservationService;
 
-    public HomeController(ILocationService lcaotionService, IHubContext<NotificationHub> notificationHub
-                            , IFollowService followService, IUserService userService, ISMSService smsservice,
-                                ISpecialityService specialityService)
+    public HomeController(ILocationService lcaotionService, 
+                          IHubContext<NotificationHub> notificationHub,
+                          IFollowService followService, 
+                          IUserService userService, 
+                          ISMSService smsservice,
+                          ISpecialityService specialityService ,
+                          IReservationService reservationService)
     {
         _locationService = lcaotionService;
         _notificationHub = notificationHub;
@@ -43,6 +48,7 @@ public class HomeController : SiteBaseController
         _userService = userService;
         _smsservice = smsservice;
         _specialityService = specialityService;
+        _reservationService = reservationService;
     }
 
     #endregion
