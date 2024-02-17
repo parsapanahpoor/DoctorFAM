@@ -15,6 +15,7 @@ using DoctorFAM.Domain.ViewModels.Site.Doctor.Resume.WorkHistory;
 using DoctorFAM.Domain.ViewModels.Site.Doctor.Resume.WorkingAddress;
 using DoctorFAM.Domain.ViewModels.Site.Doctor.Resume;
 using DoctorFAM.Domain.Interfaces.EFCore;
+using DoctorFAM.Domain.Interfaces.EFCore.Story;
 
 namespace DoctorFAM.Application.CQRS.SiteSide.FocalPoint.Queries.DoctorPage;
 
@@ -29,6 +30,8 @@ public record ShowDoctorInfoQueryHandler : IRequestHandler<ShowDoctorInfoQuery, 
     private readonly IResumeService _resumeService;
     private readonly IResumeRepository _resumeRepository;
     private readonly IUserRepository _userRepository;
+    private readonly IHealthInformationRepository _healthInformationRepository;
+    private readonly IStoryQueryRepository _storyQueryRepository;
 
     public ShowDoctorInfoQueryHandler(IDoctorsRepository doctorsRepository ,
                                       IOrganizationRepository organizationRepository ,
@@ -36,9 +39,13 @@ public record ShowDoctorInfoQueryHandler : IRequestHandler<ShowDoctorInfoQuery, 
                                       ILocationRepository locationRepository ,
                                       IResumeService resumeService , 
                                       IUserRepository userRepository ,
-                                      IResumeRepository resumeRepository)
+                                      IResumeRepository resumeRepository ,
+                                      IHealthInformationRepository healthInformationRepository , 
+                                      IStoryQueryRepository storyQueryRepository)
     {
         _doctorsRepository = doctorsRepository;
+        _storyQueryRepository = storyQueryRepository;
+        _healthInformationRepository = healthInformationRepository;
         _organizationRepository = organizationRepository;
         _workAddressRepository = workAddressRepository;
         _locationRepository = locationRepository;
@@ -343,6 +350,26 @@ public record ShowDoctorInfoQueryHandler : IRequestHandler<ShowDoctorInfoQuery, 
 
             #endregion
         }
+
+        #endregion
+
+        #region Doctor Videos
+
+        var doctorVideos = new List<DoctorVideosDTO>();
+
+        var stories = await _storyQueryRepository.FillDoctorVideosDTO(user.Id , cancellationToken);
+        if (stories != null && stories.Any())
+        {
+            doctorVideos.AddRange(stories);
+        }
+
+        var healthInformations = await _healthInformationRepository.FillDoctorVideosDTO(user.Id , cancellationToken);
+        if (healthInformations != null && healthInformations.Any())
+        {
+            doctorVideos.AddRange(healthInformations);
+        }
+
+        model.DoctorVideos = doctorVideos.OrderByDescending(p=> p.CreateDate).ToList();
 
         #endregion
 

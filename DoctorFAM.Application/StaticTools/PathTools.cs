@@ -5,7 +5,7 @@ public static class PathTools
     #region Site
 
     public static string SiteFarsiName = "دکتر فم";
-    public static string SiteAddress = "https://doctorfam.com";
+    public static string SiteAddress = "https://localhost:44322";
     public static string merchant = "300608fa-d6d7-40cc-b70c-7229d28299c6";
 
     public static readonly string SiteLogo = "/content/images/site/logo/main/";
@@ -308,6 +308,17 @@ public static class PathTools
     public static readonly string DoctorBannerImagePathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/DoctorBannerImage/thumb/");
 
     public static readonly string DefaultDoctorBannerImage = "/content/images/DoctorBannerImage/DefaultDoctorBannerImage.jpg";
+
+    #endregion
+
+    #region Story File
+
+    public static readonly string StoryFile = "/content/images/StoryFile/Videos/";
+
+    public static readonly string StoryImagePath = "/content/images/StoryFile/Image/";
+    public static readonly string StoryImagePathServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/StoryFile/Image/");
+
+    public static readonly string StoryImagePathThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/StoryFile/Thumb/");
 
     #endregion
 }
