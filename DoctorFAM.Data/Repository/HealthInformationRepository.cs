@@ -1,20 +1,11 @@
 ﻿using DoctorFAM.Data.DbContext;
 using DoctorFAM.Domain.Entities.HealthInformation;
-using DoctorFAM.Domain.Entities.MarketCategory;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.Admin.HealthInformation.RadioFAM.Category;
 using DoctorFAM.Domain.ViewModels.Admin.HealthInformation.TVFAM.Category;
-using DoctorFAM.Domain.ViewModels.Site.HealthInformation;
+using DoctorFAM.Domain.ViewModels.Site.Doctor;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
-using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Linq;
-using System.Runtime.Intrinsics.X86;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DoctorFAM.Data.Repository
 {
@@ -26,7 +17,7 @@ namespace DoctorFAM.Data.Repository
 
         private readonly IOrganizationRepository _organizationRepository;
 
-        public HealthInformationRepository(DoctorFAMDbContext context , IOrganizationRepository organizationRepository)
+        public HealthInformationRepository(DoctorFAMDbContext context, IOrganizationRepository organizationRepository)
         {
             _context = context;
             _organizationRepository = organizationRepository;
@@ -279,27 +270,27 @@ namespace DoctorFAM.Data.Repository
         public async Task<List<ulong>> GetHealthInformationSelectedCategories(ulong healthId)
         {
             return await _context.TVFAMSelectedCategories.Where(p => !p.IsDelete && p.HealthInformationId == healthId)
-                            .Select(p => p.TVFAMCategoryId).ToListAsync(); 
+                            .Select(p => p.TVFAMCategoryId).ToListAsync();
         }
 
         //Remove Health Information Tags 
         public async Task RemoveHealthInformationTags(List<HealthInformationTag> tags)
         {
             _context.HealthInformationTags.RemoveRange(tags);
-            await _context.SaveChangesAsync(); 
+            await _context.SaveChangesAsync();
         }
 
         //Remove Health Information Selected Category
         public async Task RemoveHealthInformationSelectedCategory(List<TVFAMSelectedCategory> tvFAMCategory)
         {
-             _context.TVFAMSelectedCategories.RemoveRange(tvFAMCategory);
+            _context.TVFAMSelectedCategories.RemoveRange(tvFAMCategory);
             await _context.SaveChangesAsync();
         }
 
         //Remove Health Information Selected Category
         public async Task RemoveHealthInformationSelectedCategory(TVFAMSelectedCategory tvFAMCategory)
         {
-             _context.TVFAMSelectedCategories.Remove(tvFAMCategory);
+            _context.TVFAMSelectedCategories.Remove(tvFAMCategory);
             await _context.SaveChangesAsync();
         }
 
@@ -336,16 +327,41 @@ namespace DoctorFAM.Data.Repository
         //Get Lastest 3 TvFAM For Show In Admin Panel 
         public async Task<List<HealthInformation>?> GetLastest3TvFAMForShowInAdminPanel()
         {
-            var tvFAM = await _context.HealthInformation.Where(p=> !p.IsDelete && p.ShowInLanding && p.HealthInformationType == Domain.Enums.HealtInformation.HealthInformationType.TVFAM
-                                                                && p.HealtInformationFileState == Domain.Enums.HealtInformation.HealtInformationFileState.Accepted)
-                                                                    .OrderByDescending(p => p.CreateDate).ToListAsync();
+            var tvFAM = await _context.HealthInformation.Where(p => !p.IsDelete &&
+                                                               p.ShowInLanding &&
+                                                               p.HealthInformationType == Domain.Enums.HealtInformation.HealthInformationType.TVFAM &&
+                                                               p.HealtInformationFileState == Domain.Enums.HealtInformation.HealtInformationFileState.Accepted)
+                                                                    .OrderByDescending(p => p.CreateDate)
+                                                                    .ToListAsync();
 
             if (tvFAM is null)
             {
                 return null;
             }
 
-            return  tvFAM.Take(3).ToList();
+            return tvFAM.Take(3).ToList();
+        }
+
+        public async Task<List<DoctorVideosDTO>> FillDoctorVideosDTO(ulong userId, CancellationToken cancellation)
+        {
+            return await _context.HealthInformation
+                                 .AsNoTracking()
+                                 .Where(p => !p.IsDelete &&
+                                        p.HealthInformationType == Domain.Enums.HealtInformation.HealthInformationType.TVFAM &&
+                                        p.HealtInformationFileState == Domain.Enums.HealtInformation.HealtInformationFileState.Accepted &&
+                                        p.OwnerId == userId)
+                                 .Select(p=> new DoctorVideosDTO()
+                                 {
+                                     CreateDate = p.CreateDate,
+                                     Description = p.ShortDescription,
+                                     Id = p.Id,
+                                     IsImage = false,
+                                     IsStory = false,
+                                     IsVideo = true,
+                                     VideoBanner = p.Picture,
+                                     VideoFile = p.File
+                                 })
+                                 .ToListAsync();
         }
 
         #endregion

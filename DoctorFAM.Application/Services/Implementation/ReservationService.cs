@@ -16,6 +16,7 @@ using DoctorFAM.Domain.Enums.DoctorReservation;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.Reservation;
 using DoctorFAM.Domain.ViewModels.Admin.Wallet;
+using DoctorFAM.Domain.ViewModels.BackgroundTasks.Reservation;
 using DoctorFAM.Domain.ViewModels.Common;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment;
 using DoctorFAM.Domain.ViewModels.Site.Account;
@@ -1358,6 +1359,20 @@ public class ReservationService : IReservationService
         #endregion
 
         return true;
+    }
+
+    public async Task SendSMSToPatientAfterGetReservation(string reservationStartTime ,
+                                                          DateTime reservationDate , 
+                                                          ulong doctorUserId , 
+                                                          string patientMobile)
+    {
+        var doctorUserInfo = await _userService.GetUserByIdWithAsNoTracking(doctorUserId);
+        if (doctorUserInfo != null)
+        {
+            var message = Messages.SendSMSForBetweenPatientInReservationSiteSide(reservationStartTime, reservationDate.ToShamsi(), doctorUserInfo.Username);
+
+            await _smsService.SendSimpleSMS(patientMobile, message);
+        }
     }
 
     //Add Between Patient Time 

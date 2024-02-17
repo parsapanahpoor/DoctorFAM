@@ -6,6 +6,7 @@ using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Enums.DoctorReservation;
 using DoctorFAM.Domain.ViewModels.Admin.Reservation;
+using DoctorFAM.Domain.ViewModels.BackgroundTasks.Reservation;
 using DoctorFAM.Domain.ViewModels.Common;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment;
 using DoctorFAM.Domain.ViewModels.Site.Reservation;
@@ -142,6 +143,11 @@ public interface IReservationService
 
     //Add Between Patient Time 
     Task<bool> AddBetweenPatientTime(AddBetweenPatientTimeDoctorSideViewModel model, ulong userId);
+
+    Task SendSMSToPatientAfterGetReservation(string reservationStartTime,
+                                                          DateTime reservationDate,
+                                                          ulong doctorUserId,
+                                                          string patientMobile);
 
     //Add Patient To Doctor Booking From Dentist
     Task<bool> AddPatientToDoctorBookingFromDentist(DoctorPersonalBookingViewModel model, ulong userId);

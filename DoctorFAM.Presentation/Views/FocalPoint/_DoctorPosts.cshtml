@@ -1,0 +1,115 @@
+﻿@model List<DoctorFAM.Domain.ViewModels.Site.Doctor.DoctorVideosDTO>
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.StaticTools
+
+@if (Model != null && Model.Any())
+{
+    @foreach (var post in Model)
+    {
+        if (!string.IsNullOrEmpty(post.VideoFile))
+        {
+            <div class="col-lg-12">
+                <div class="central-meta">
+                    <ul class="photos">
+                        <li style="width: 100%;">
+                            @if (!string.IsNullOrEmpty(post.VideoBanner))
+                            {
+                                if (post.IsStory)
+                                {
+                                    <a class="strip" href="@PathTools.StoryImagePath@post.VideoBanner" data-strip-group="mygroup" data-strip-group-options="loop: false">
+                                        <video poster="@PathTools.StoryImagePath@post.VideoBanner"
+                                               src="@PathTools.StoryFile@post.VideoFile"
+                                               alt=""></video>
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a class="strip" href="@PathTools.HealthInformationAttachmentFilesImagePath@post.VideoBanner" data-strip-group="mygroup" data-strip-group-options="loop: false">
+                                        <video poster="@PathTools.HealthInformationAttachmentFilesImagePath@post.VideoBanner"
+                                               src="@PathTools.HealthInformationAttachmentFilesPath@post.VideoFile"
+                                               alt=""></video>
+                                    </a>
+                                }
+                            }
+                            else
+                            {
+                                if (post.IsStory)
+                                {
+                                    <a class="strip" href="@PathTools.StoryImagePath@post.VideoBanner" data-strip-group="mygroup" data-strip-group-options="loop: false">
+                                        <video poster="@PathTools.StoryImagePath@post.VideoBanner"
+                                               src="@PathTools.StoryFile@post.VideoFile"
+                                               alt=""></video>
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a class="strip" href="@PathTools.HealthInformationAttachmentFilesImagePath@post.VideoBanner" data-strip-group="mygroup" data-strip-group-options="loop: false">
+                                        <video poster="@PathTools.HealthInformationAttachmentFilesImagePath@post.VideoBanner"
+                                               src="@PathTools.HealthInformationAttachmentFilesPath@post.VideoFile"
+                                               alt=""></video>
+                                    </a>
+                                }
+                            }
+
+                            <p>
+                                @post.Description
+                            </p>
+                        </li>
+                    </ul>
+                </div><!-- photos -->
+            </div>
+        }
+        else
+        {
+            <div class="col-lg-12">
+                <div class="central-meta">
+                    <ul class="photos">
+                        <li style="width: 100%;">
+
+                            @if (!string.IsNullOrEmpty(post.VideoBanner))
+                            {
+                                if (post.IsStory)
+                                {
+                                    <a class="strip" href="@PathTools.StoryImagePath@post.VideoBanner" data-strip-group="mygroup" data-strip-group-options="loop: false">
+                                        <img src="@PathTools.StoryImagePath@post.VideoBanner"
+                                             alt="">
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a class="strip" href="@PathTools.HealthInformationAttachmentFilesImagePath@post.VideoBanner" data-strip-group="mygroup" data-strip-group-options="loop: false">
+                                        <img src="@PathTools.HealthInformationAttachmentFilesImagePath@post.VideoBanner"
+                                             alt="">
+                                    </a>
+                                }
+                            }
+                            else
+                            {
+                                if (post.IsStory)
+                                {
+                                    <a class="strip" href="@PathTools.StoryImagePath@post.VideoBanner" data-strip-group="mygroup" data-strip-group-options="loop: false">
+                                        <img src="@PathTools.StoryImagePath@post.VideoBanner"
+                                             alt="">
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a class="strip" href="@PathTools.HealthInformationAttachmentFilesImagePath@post.VideoBanner" data-strip-group="mygroup" data-strip-group-options="loop: false">
+                                        <img src="@PathTools.HealthInformationAttachmentFilesImagePath@post.VideoBanner"
+                                             alt="">
+                                    </a>
+                                }
+                            }
+
+                            <p>
+                                @post.Description
+                            </p>
+                        </li>
+                    </ul>
+                </div><!-- photos -->
+            </div>
+        }
+    }
+}
+

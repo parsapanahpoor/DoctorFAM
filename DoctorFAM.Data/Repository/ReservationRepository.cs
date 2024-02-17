@@ -60,7 +60,7 @@ public class ReservationRepository : IReservationRepository
                                     p.PatientId.HasValue &&
                                     p.DoctorReservationState == DoctorReservationState.Reserved &&
                                    (p.DoctorReservationDate.ReservationDate.Year == DateTime.Now.Year &&
-                                    p.DoctorReservationDate.ReservationDate.DayOfYear == DateTime.Now.DayOfYear)
+                                    p.DoctorReservationDate.ReservationDate.DayOfYear == DateTime.Now.AddDays(1).DayOfYear)
                                     )
                              .Select(p => new SendSMSForReminderToReservationDTO()
                              {
