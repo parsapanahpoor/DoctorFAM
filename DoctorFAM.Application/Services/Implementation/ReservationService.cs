@@ -16,6 +16,7 @@ using DoctorFAM.Domain.Enums.DoctorReservation;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Admin.Reservation;
 using DoctorFAM.Domain.ViewModels.Admin.Wallet;
+using DoctorFAM.Domain.ViewModels.BackgroundTasks.Reservation;
 using DoctorFAM.Domain.ViewModels.Common;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Appointment;
 using DoctorFAM.Domain.ViewModels.Site.Account;

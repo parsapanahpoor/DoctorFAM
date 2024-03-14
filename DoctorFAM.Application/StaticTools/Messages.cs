@@ -307,7 +307,7 @@ public static string SendSMSForLinkOfHomeVisitRequestFromDoctor(string link)
     {
         return
             $"کاربر گرامی دکترفم . {Environment.NewLine} " +
-            $" امروز نزد دکتر {DoctorName} نوبت دارید . {Environment.NewLine}" +
+            $" فردا نزد دکتر {DoctorName} نوبت دارید . {Environment.NewLine}" +
             $"جزئیات نوبت را در صفحه ی شخصی خود ببینید. {Environment.NewLine}" +
             $"{PathTools.SiteFarsiName}";
     }
