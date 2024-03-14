@@ -573,6 +573,12 @@ public class FocalPointController : SiteBaseController
 
                         #endregion
 
+                        //Send SMS For Patient
+                        await _reservationService.SendSMSToPatientAfterGetReservation(reservationDateTime.StartTime,
+                                                                                      reservationDateTime.DoctorReservationDate.ReservationDate,
+                                                                                      reservationDateTime.DoctorReservationDate.UserId,
+                                                                                      currentUser.Mobile);
+
                         return RedirectToAction(nameof(ShowInvoiceAfterPaymentForReservation), new { resId = reservationDateTime.Id, trackingCode = parameters.authority });
                     }
                 }
@@ -733,7 +739,7 @@ public class FocalPointController : SiteBaseController
     #region Add Story
 
     [HttpPost]
-    public async Task<IActionResult> AddStory(AddDoctorStoryDTO model , CancellationToken cancellation)
+    public async Task<IActionResult> AddStory(AddDoctorStoryDTO model, CancellationToken cancellation)
     {
         #region Fill Command 
 
@@ -747,11 +753,11 @@ public class FocalPointController : SiteBaseController
 
         #endregion
 
-        var res = await Mediator.Send(command , cancellation);
+        var res = await Mediator.Send(command, cancellation);
         if (res.Result)
         {
             TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
-            return RedirectToAction("NewDocPage", "FocalPoint", new { userId = User.GetUserId() , name=res.Username.FixTextForUrl() });
+            return RedirectToAction("NewDocPage", "FocalPoint", new { userId = User.GetUserId(), name = res.Username.FixTextForUrl() });
         }
 
         TempData[ErrorMessage] = "عملیات باشکست مواجه شده است.";

@@ -2421,3 +2421,279 @@
 .widgetdiv {
     border-radius: 8px !important;
 }
+
+
+
+/*****************************************************************/
+
+
+/* ------------------------
+    Social Icons
+------------------------*/
+.social-icons2 ul {
+    padding: 0;
+    margin: 0;
+    line-height: 0;
+}
+
+.text-center.social-icons2 ul {
+    display: inline-block;
+}
+
+.social-icons2 li {
+    display: inline-block;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 0 8px;
+}
+
+    .social-icons2 li a  {
+        display: inline-flex;
+        height: 140px;
+        width: 140px;
+        line-height: 40px;
+        font-size: 14px;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+        border-radius: .25rem;
+        border: 0;
+        background: transparent;
+        color: #081b3a;
+        overflow: hidden;
+        -webkit-transition: all .3s ease;
+        -o-transition: all .3s ease;
+        transition: all .3s ease;
+    }
+    
+.text-white .social-icons2 li a {
+    color: #ffffff;
+}
+
+.social-icons2.fullwidth li a {
+    width: auto;
+    height: auto;
+    line-height: 20px;
+    padding: 10px 15px;
+}
+
+.social-icons2 li:hover a {
+    transform: rotateY(360deg);
+}
+
+/*** Colored ***/
+.social-icons2.social-colored a,
+.social-icons2.social-hover a:hover {
+    color: #fff;
+    border: 0;
+}
+
+.social-icons2.social-colored .social-rss a,
+.social-icons2.social-hover .social-rss a:hover {
+    background-color: #faa33d;
+}
+
+.social-icons2.social-colored .social-facebook a,
+.social-icons2.social-hover .social-facebook a:hover {
+    background-color: #5d82d1;
+}
+
+.social-icons2.social-colored .social-twitter a,
+.social-icons2.social-hover .social-twitter a:hover {
+    background-color: #40bff5;
+}
+
+.social-icons2.social-colored .social-vimeo a,
+.social-icons2.social-hover .social-vimeo a:hover {
+    background-color: #35c6ea;
+}
+
+.social-icons2.social-colored .social-myspace a,
+.social-icons2.social-hover .social-myspace a:hover {
+    background-color: #008dde;
+}
+
+.social-icons2.social-colored .social-youtube a,
+.social-icons2.social-hover .social-youtube a:hover {
+    background-color: #ef4e41;
+}
+
+.social-icons2.social-colored .social-instagram a,
+.social-icons2.social-hover .social-instagram a:hover {
+    background-color: #548bb6;
+}
+
+.social-icons2.social-colored .social-gplus a,
+.social-icons2.social-hover .social-gplus a:hover {
+    background-color: #db5442;
+}
+
+.social-icons2.social-colored .social-stumbleupon a,
+.social-icons2.social-hover .social-stumbleupon a:hover {
+    background-color: #ff5c30;
+}
+
+.social-icons2.social-colored .social-lastfm a,
+.social-icons2.social-hover .social-lastfm a:hover {
+    background-color: #f34320;
+}
+
+.social-icons2.social-colored .social-pinterest a,
+.social-icons2.social-hover .social-pinterest a:hover {
+    background-color: #e13138;
+}
+
+.social-icons2.social-colored .social-google a,
+.social-icons2.social-hover .social-google a:hover {
+    background-color: #eb5e4c;
+}
+
+.social-icons2.social-colored .social-evernote a,
+.social-icons2.social-hover .social-evernote a:hover {
+    background-color: #9acf4f;
+}
+
+.social-icons2.social-colored .social-dribbble a,
+.social-icons2.social-hover .social-dribbble a:hover {
+    background-color: #f7659c;
+}
+
+.social-icons2.social-colored .social-skype a,
+.social-icons2.social-hover .social-skype a:hover {
+    background-color: #13c1f3;
+}
+
+.social-icons2.social-colored .social-forrst a,
+.social-icons2.social-hover .social-forrst a:hover {
+    background-color: #45ad76;
+}
+
+.social-icons2.social-colored .social-linkedin a,
+.social-icons2.social-hover .social-linkedin a:hover {
+    background-color: #238cc8;
+}
+
+.social-icons2.social-colored .social-wordpress a,
+.social-icons2.social-hover .social-wordpress a:hover {
+    background-color: #2592c3;
+}
+
+.social-icons2.social-colored .social-grooveshark a,
+.social-icons2.social-hover .social-grooveshark a:hover {
+    background-color: #ffb21d;
+}
+
+.social-icons2.social-colored .social-delicious a,
+.social-icons2.social-hover .social-delicious a:hover {
+    background-color: #377bda;
+}
+
+.social-icons2.social-colored .social-behance a,
+.social-icons2.social-hover .social-behance a:hover {
+    background-color: #1879fd;
+}
+
+.social-icons2.social-colored .social-dropbox a,
+.social-icons2.social-hover .social-dropbox a:hover {
+    background-color: #17a3eb;
+}
+
+.social-icons2.social-colored .social-soundcloud a,
+.social-icons2.social-hover .social-soundcloud a:hover {
+    background-color: #ff7e30;
+}
+
+.social-icons2.social-colored .social-deviantart a,
+.social-icons2.social-hover .social-deviantart a:hover {
+    background-color: #6a8a7b;
+}
+
+.social-icons2.social-colored .social-yahoo a,
+.social-icons2.social-hover .social-yahoo a:hover {
+    background-color: #ab47ac;
+}
+
+.social-icons2.social-colored .social-flickr a,
+.social-icons2.social-hover .social-flickr a:hover {
+    background-color: #ff48a3;
+}
+
+.social-icons2.social-colored .social-digg a,
+.social-icons2.social-hover .social-digg a:hover {
+    background-color: #75788d;
+}
+
+.social-icons2.social-colored .social-blogger a,
+.social-icons2.social-hover .social-blogger a:hover {
+    background-color: #ff9233;
+}
+
+.social-icons2.social-colored .social-tumblr a,
+.social-icons2.social-hover .social-tumblr a:hover {
+    background-color: #426d9b;
+}
+
+.social-icons2.social-colored .social-quora a,
+.social-icons2.social-hover .social-quora a:hover {
+    background-color: #ea3d23;
+}
+
+.social-icons2.social-colored .social-github a,
+.social-icons2.social-hover .social-github a:hover {
+    background-color: #3f91cb;
+}
+
+.social-icons2.social-colored .social-amazon a,
+.social-icons2.social-hover .social-amazon a:hover {
+    background-color: #ff8e2e;
+}
+
+.social-icons2.social-colored .social-xing a,
+.social-icons2.social-hover .social-xing a:hover {
+    background-color: #1a8e8c;
+}
+
+.social-icons2.social-colored .social-wikipedia a,
+.social-icons2.social-hover .social-wikipedia a:hover {
+    background-color: #b3b5b8;
+}
+
+.social-icons2.social-colored .social-android a,
+.social-icons2.social-hover .social-android a:hover {
+    background-color: #A4C639;
+}
+
+.social-icons2.social-colored .social-apple a,
+.social-icons2.social-hover .social-apple a:hover {
+    background-color: #999999;
+}
+
+/*** Border ***/
+.social-icons2.social-border li a {
+    border: 1px solid #efefef;
+    background: transparent;
+}
+
+/*** Circle ***/
+.social-icons2.circle li a {
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+}
+
+
+/*****************************************************************/
+
+.ClinicMenu {
+    display: inline-block;
+    padding: 5px;
+    font-size: 18px !important;
+    color:white ;
+    font-weight:400;
+    padding:5px;
+    
+}
+    .ClinicMenu:hover {
+        color: #fd5b03 !important;
+        font-size: 19px;
+    }

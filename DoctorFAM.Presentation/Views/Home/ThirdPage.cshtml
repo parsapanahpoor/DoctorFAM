@@ -1,0 +1,530 @@
+﻿@{
+    ViewBag.Title = "صفحه نخست";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@section Scripts {
+           
+    <script src="~/Content/assets/plugins/swiper/js/swiper.min.js"></script>
+
+    <script src="~/Content/assets/js/slick.js" type="6946799ff09d83e0be55c610-text/javascript"></script>
+
+    <script src="~/Content/assets/js/aos.js"></script>
+
+    
+
+    <link rel="stylesheet" href="~/Content/assets/plugins/swiper/css/swiper.min.css">
+
+        @*  <link rel="stylesheet" href="~/Content/assets/css/aos.css"> *@
+
+            <link rel="stylesheet" href="~/Content/assets/css/style.css">
+
+
+    <script>
+
+        $(document).on('click', '#videoPreview', function (e) {
+
+            const videoSource = $(this).attr('data-src');
+
+            $('#TVFAM source').attr('src', videoSource);
+            $('#TVFAM')[0].load();
+            $('#TVFAM')[0].play();
+
+        });
+
+
+    </script>
+
+}
+
+<div class="page-content">
+
+
+    @* ****************************************************** *@
+
+
+
+    <div class="pharmacy-home-slider pharmacy-home-slider-primary">
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <img src="/Content/assets/img/slide1.jpg" alt="">
+                </div>
+                <div class="swiper-slide">
+                    <img src="/Content/assets/img/slide2.jpg" alt="">
+                </div>
+            </div>
+
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+            <div class="banner-wrapper">
+                <div class="banner-header text-center aos" data-aos="fade-up">
+                    <h1>جستجو یک پزشک، رزرو یک نوبت</h1>
+                    <p> بهترین پزشکان ، کلینیک و بیمارستان را که نزدیک به شما است کشف کنید.</p>
+                </div>
+
+                <div class="search-box aos" data-aos="fade-up">
+                    <form action="https://template.doccure.io/html/template-rtl/search.html">
+                        <div class="form-group search-location">
+                            <input type="text" class="form-control" placeholder="جستجو مکان">
+                            <span class="form-text"> بر اساس مکان شما </span>
+                        </div>
+                        <div class="form-group search-info">
+                            <input type="text" class="form-control" placeholder="پزشکان ، کلینیک ها ، بیمارستان ها ، بیماری ها و غیره را جستجو کنید">
+                            <span class="form-text"> مانند: بررسی دندانپزشکی یا تست و غیره</span>
+                        </div>
+                        <button type="submit" class="btn btn-primary search-btn mt-0"><i class="fas fa-search"></i> <span>جستجو</span></button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="swiper-pagination"></div>
+    </div>
+
+
+
+    @* ***************************************************** *@
+
+
+
+    <div class="row" style="background-color: #94d8ef !important;">
+
+
+        <div class="col-md-6" style="padding-right:1px !important; padding-left:1px !important; ">
+            <section class="Banner-select ">
+
+                <div class="select-Banner ">
+
+                    <div class="d-flex align-items-center">
+
+                        <div class="container ">
+                            <div class="row">
+                                <div class="col-md-8 text-center justify-content-center ">
+                                    <h2 class="hColorFontt famOnlinecolor">فم آنلاین  </h2>
+                                    <h4 class=" text-center justify-content-center" style="color:#2264c5;"> (مشاوره پزشکی آنلاین) </h4>
+                                    <div class="row pricing-btn text-center justify-content-center mt-2">
+                                        <a asp-action="ListOfDays" asp-controller="OnlineVisit" asp-area="" class="pricing-btn default-btn "><h6 style="color:white;">مشاهده جزئیات و ثبت درخواست</h6>  </a>
+                                    </div>
+
+
+                                </div>
+
+
+
+                                <div class="col-md-4"></div>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+        <div class="col-md-6" style="padding-right:1px !important; padding-left:1px !important; ">
+            <section class="Banner-select-Tour ">
+
+                <div class="select-Banner-Tour ">
+
+                    <div class="d-flex align-items-center">
+
+                        <div class="container ">
+                            <div class="row">
+
+                                <div class="col-md-8 text-center justify-content-center ">
+                                    <h2 class="hColorFontt famOnlinecolor">فم تور  </h2>
+                                    <h4 class=" text-center justify-content-center" style="color:#2264c5;"> (سفرِ درمانی) </h4>
+                                    <div class="row pricing-btn text-center justify-content-center mt-2">
+                                        <a asp-action="FamTour" asp-controller="Home" asp-area="" class="pricing-btn default-btn "><h6 style="color:white;">مشاهده جزئیات و ثبت درخواست</h6>  </a>
+                                    </div>
+
+
+                                </div>
+                                <div class="col-md-4">
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+
+
+
+    </div>
+
+    <div class="row text-center justify-content-center" style="background-color:#0d092c; ">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center  mt-4 ">
+            <h4 class="hColorFontt famOnlinecolor"> نوبت دهی دکترفم </h4>
+        </div>
+
+
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 text-center   mt-3">
+            <a class=" hover-icon" asp-action="ListOfFamilyDoctors" asp-controller="FamilyDoctor" asp-area="">
+                <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/FamilyDoctor.png" style="width:75px; height:75px; border:2px solid #ffffff;  border-radius:50% !important ;" alt="">
+                <p class="text-white mt-2">  پزشکان عمومی-خانواده </p>
+            </a>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 text-center   mt-3">
+            <a class=" hover-icon" asp-action="ListOfSpecialists" asp-controller="Specialists" asp-area="">
+                <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/SpecialistDoctor.png" style="width:75px; height:75px; border:2px solid #ffffff;  border-radius:50% !important; " alt="">
+                <p class="text-white mt-2">  پزشکان متخصص </p>
+            </a>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 text-center   mt-3">
+            <a class=" hover-icon" asp-action="ListOfSuperSpecialists" asp-controller="Specialists" asp-area="">
+                <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/OverSpecialistDoctor.png" style="width:75px; height:75px; border:2px solid #ffffff;  border-radius:50% !important; " alt="">
+                <p class="text-white mt-2"> پزشکان فوق تخصص </p>
+            </a>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 text-center j  mt-3">
+            <a class=" hover-icon" asp-action="ListOfDentists" asp-controller="Dentist" asp-area="">
+                <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/Dentist.jpg" style="width:75px; height:75px; border:2px solid #ffffff;  border-radius:50% !important;" alt="">
+                <p class="text-white mt-2"> دندانپزشکان </p>
+            </a>
+        </div>
+    </div>
+
+    <section class="section section-featurebox">
+        <div class="row  text-center justify-content-center ">
+
+            <div class=" col-md-3 single-pricing_Div theme-bg p-4 m-2   text-center justify-content-center">
+                <h5 class="font-w-7 text-white mt-3">  خانه سلامت </h5>
+
+                <p class="text-justify right text-light">
+                    آنچه <b>دکتر فم</b> در منزل به شما ارائه می دهد:
+                </p>
+                <hr />
+                <div class="row mt-3 text-center justify-content-center">
+                    <div class=" col-lg-6 col-md-6 col-sm-6 col-xs-6 text-center justify-content-center">
+                        <a class=" hover-icon" asp-action="HomeVisit" asp-controller="HomeVisit">
+                            <img class="img-st rounded box-shadow divch" src="~/Content/images/case-studies/HouseVisit.jpg" alt="">
+                            <p class="text-white mt-2"> ویزیت در منزل </p>
+                        </a>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-center justify-content-center">
+                        <a class=" hover-icon" asp-action="HomeNurse" asp-controller="HomeNurse">
+                            <img class="img-st rounded box-shadow divch" src="~/Content/images/case-studies/HouseNurse.jpg" alt="">
+
+                            <p class="text-white mt-2"> پرستار در منزل </p>
+                        </a>
+                    </div>
+                    @* <div class="col-md-6 col-sm-6 text-center justify-content-center">
+                    <a class=" hover-icon" asp-action="HomePharmacy" asp-controller="HomePharmacy">
+                    <div class="featured-icon">
+
+                    <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/Pharmacy.jpg" alt="">
+                    </div>
+                    <p class="text-white mt-2"> داروخانه در منزل </p>
+                    </a>
+                    </div>*@
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-center justify-content-center">
+                        <a class=" hover-icon" asp-action="HomeLaboratory" asp-controller="HomeLaboratory">
+                            <img class="img-st rounded box-shadow divch" src="~/Content/images/case-studies/HouseLab.jpg" alt="">
+                            <p class="text-white mt-2"> آزمایشگاه در منزل </p>
+                        </a>
+                    </div>
+                    @* <div class="col-md-6 col-sm-6 text-center justify-content-center">
+                    <a class=" hover-icon" asp-action="HomePatientTransport" asp-controller="HomePatientTransport">
+                    <div class="featured-icon">
+
+                    <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/Transfer.jpg" alt="">
+                    </div>
+                    <p class="text-white mt-2"> انتقال بیمار  </p>
+                    </a>
+                    </div>*@
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-center justify-content-center">
+                        <a class=" hover-icon" asp-action="DeathCertificate" asp-controller="DeathCertificat">
+                            <img class="img-st rounded box-shadow divch" src="~/Content/images/case-studies/Death.jpg" alt="">
+                            <p class="text-white mt-2"> صدور گواهی فوت </p>
+                        </a>
+                    </div>
+
+                    @*   <a class="btn hover-icon p-3 mt-3 text-center" style="border:1px solid #0b0637; border-radius:5px !important;" asp-action="HealthHouseItems" asp-controller="Home">
+                    <span class="p-5"> بیشتر    </span>
+
+                    </a>*@
+                </div>
+            </div>
+            <div class=" col-md-3 single-pricing_Div  dark-bg p-4 m-2   text-center justify-content-center">
+                <h5 class="font-w-7 text-white mt-3">  کلینیک سلامت</h5>
+                <p class="text-justify right text-light">
+                    خدمات ویژه <b>دکتر فم</b> بر اساس  نیاز شما:
+                </p>
+
+                <hr />
+                <div class="row mt-3 text-center justify-content-center">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-center justify-content-center">
+                        <a class=" hover-icon" asp-action="Index" asp-controller="Diabet">
+                            <img class="img-st  rounded box-shadow divch" src="~/Content/images/case-studies/Diabete.jpg" alt="">
+                            <p class="text-white mt-2"> دیابت<p>
+                        </a>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6  text-center justify-content-center">
+                        <a class=" hover-icon" asp-action="Index" asp-controller="BloodPressure">
+                            <img class="img-st  rounded box-shadow divch" src="~/Content/images/case-studies/Blod.jpg" alt="">
+                            <p class="text-white mt-2"> فشار خون </p>
+                        </a>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6   text-center justify-content-center">
+                        @*<a class=" hover-icon" asp-action="Index" asp-controller="Cancer">*@
+                        <a class=" hover-icon">
+                            <img class="img-st  rounded box-shadow divch" src="~/Content/images/case-studies/Cancer.jpg" alt="">
+                            <p class="text-white mt-2">سرطان</p>
+                        </a>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6  text-center justify-content-center">
+                        @*<a class=" hover-icon" asp-action="Index" asp-controller="Psych">*@
+                        <a class=" hover-icon">
+                            <img class="img-st  rounded box-shadow divch" src="~/Content/images/case-studies/Psyche.jpg" alt="">
+                            <p class="text-white mt-2"> روان </p>
+                        </a>
+                    </div>
+                   
+                 
+                </div>
+            </div>
+            <div class=" col-md-3 single-pricing_Div  theme-bg-2 p-4 m-2   text-center justify-content-center">
+                <h5 class="font-w-7 text-white mt-3">  بازار سلامت </h5>
+                <p class="text-justify right text-light">
+                    از فروشگاه سلامت <b>دکتر فم</b> دیدن نمایید:
+                </p>
+
+                <hr />
+                <div class="row mt-3 text-center justify-content-center">
+
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6  text-center justify-content-center">
+                        <a class=" hover-icon" asp-action="Cosmetics" asp-controller="Home">
+                            <img class="img-st  rounded box-shadow divch" src="~/Content/images/case-studies/Equipment.jpg" alt="">
+                            <p class="text-white mt-2"> تجهیزات پزشکی  </p>
+                        </a>
+                    </div>
+
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6  text-center justify-content-center">
+                        <a class=" hover-icon" asp-action="Cosmetics" asp-controller="Home">
+                            <img class="img-st  rounded box-shadow divch" src="~/Content/images/case-studies/Cosmetics.jpeg" alt="">
+                            <p class="text-white mt-2">  آرایشی وبهداشتی </p>
+                        </a>
+                    </div>
+                  
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6  text-center justify-content-center">
+                        <a class=" hover-icon" asp-action="Index" asp-controller="Book">
+                            <img class="img-st  rounded box-shadow divch" src="~/Content/images/case-studies/Books.jpg" alt="">
+                            <p class="text-white mt-2"> کتب و مجلات </p>
+                        </a>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6  text-center justify-content-center">
+                        <a class=" hover-icon" asp-action="Insurance" asp-controller="Home">
+                            <img class="img-st rounded box-shadow divch" src="~/Content/images/case-studies/Insurance.jpg" alt="">
+                            <p class="text-white mt-2"> خدمات بیمه </p>
+                        </a>
+                    </div>
+
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+    @*14010230*@
+    <section class="patient-select ">
+        <div class="container">
+            <div class="row  text-center justify-content-center">
+                <div class="col-md-6  text-center justify-content-center mt-1">
+                    <div class="select-box aos " data-aos="fade-up">
+                        <div class="d-flex align-items-center">
+                            <div class="col-12">
+                                <h6 style="color:#5f6368 !important;">جهت دریافت مشاوره تغذیه و روان با کارشناسان دکترفم همراه باشید. </h6>
+                                <div class="row  text-center justify-content-center">
+
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6  text-center   mt-3">
+                                        <a class=" hover-icon " asp-action="ListOfFamilyDoctors" asp-controller="FamilyDoctor" asp-area="">
+                                            <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/Psych.png" style="width:90px; height:90px; border:2px solid #ffffff; border-radius:50% !important ;" alt="">
+                                            <h6 class="text-white mt-2" style="color:#5f6368 !important;">  روان </h6>
+                                        </a>
+                                    </div>
+
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6  text-center   mt-3">
+                                        <a class=" hover-icon" asp-action="ListOfFamilyDoctors" asp-controller="FamilyDoctor" asp-area="">
+                                            <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/Nutritionist.png" style="width:90px; height:90px; border:2px solid #ffffff; border-radius:50% !important; " alt="">
+                                            <h6 class="text-white mt-2" style="color:#5f6368 !important;">  تغذیه </h6>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-md-6  text-center justify-content-center mt-1">
+                    <div class="select-box theme aos " data-aos="fade-up">
+                        <div class="d-flex align-items-center">
+
+                            <div class="col-12">
+                                <h6 style="color:#5f6368 !important;">مراکز تشخیصی و درمانی که با دکترفم همکاری می کنند. </h6>
+                                <div class="row  text-center justify-content-center">
+
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6  text-center   mt-3">
+                                        <a class=" hover-icon " asp-action="Laboratory" asp-controller="Home" asp-area="">
+                                            <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/laboratoar.jpg" style="width:90px; height:90px; border:2px solid #ffffff; border-radius:50% !important ;" alt="">
+                                            <h6 class="text-white mt-2" style="color:#5f6368 !important;"> آزمایشگاه </h6>
+                                        </a>
+                                    </div>
+
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6  text-center   mt-3">
+                                        <a class=" hover-icon" asp-action="DrugStores" asp-controller="Home" asp-area="">
+                                            <img class="img-fluid rounded box-shadow divch" src="~/Content/images/case-studies/pharmacy-icon10.jpg" style="width:90px; height:90px; border:2px solid #ffffff; border-radius:50% !important; " alt="">
+                                            <h6 class="text-white mt-2" style="color:#5f6368 !important;"> داروخانه </h6>
+                                        </a>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <div class=" mt-5  pl-3 pr-3">
+        <div class="row mt-3 text-center justify-content-center">
+            <div class="col-lg-12 col-md-12  text-center justify-content-center ">
+                <div class="section-title">
+                    <h2 class="title"> دانستنیهای سلامت </h2>
+                    <h6 class="col-md-8 text-center"> جامعه سالم نتیجه افراد آگاه است. آگاهی در حوزه سلامت به شما کمک میکند ضمن آشنایی با بدن خود نسبت به بروز علایم بیماری حساس بوده و در خصوص بیماری های خود به طور صحیح نسبت به درمان اقدام نمایید.</h6>
+
+                </div>
+            </div>
+
+
+            @* <cache expires-after="@TimeSpan.FromMinutes(30)">
+
+            @await Component.InvokeAsync("PodcastLandingPage")
+            </cache>*@
+
+            @*  <div class="col-lg-12 col-md-12  text-center mt-2">
+            <a asp-action="RadioFamItems" asp-controller="Home" asp-area="" class="btn btn-acc   hover-icon  text-center">آرشیو رادیوفم </a>
+            </div>*@
+
+
+        </div>
+        @*   <hr />
+
+        <cache expires-after="@TimeSpan.FromMinutes(30)">
+
+        @await Component.InvokeAsync("TVFAMLandingPage")
+        </cache>
+        *@
+
+        <div class="row text-center justify-content-center mt-3">
+            <div class=" col-md-6  text-center justify-content-center">
+
+                <a href="/Home/RadioFamItems" >
+                    <img class="   " src="/Content/images/bg/Radiofam1.jpg" style="width:80% !important; height:230px !important; border:1px solid #fd5b03; border-radius:8px;" alt="">
+                <br />
+                    <h4 class=" text-center justify-content-center" style="color:#2264c5;"> رادیوفم </h4>
+                </a>
+
+            </div>
+
+            <div class="col-md-6  text-center justify-content-center">
+
+                <a href="/Home/TeleFamItems" >
+                    <img class="   " src="/Content/images/bg/TVFam2.png" style="width:80% !important; height:230px !important; border:1px solid #fd5b03; border-radius:8px;" alt="">
+                    <br />
+                    <h4 class=" text-center justify-content-center" style="color:#2264c5;"> تیوی فم </h4>
+
+                </a>
+
+            </div>
+        </div>
+
+    </div>
+
+    <cache expires-after="@TimeSpan.FromHours(5)">
+        @*Lastest News For Show in Landing Page*@
+        @await Component.InvokeAsync("LastestNewsOnLandingPage")
+    </cache>
+
+    <section class="dark-bg parallaxie" data-bg-img="/Content/images/bg/slider-1.jpg" data-overlay="6">
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-md-3 col-sm-6">
+                    <div class="counter">
+                        <span class="count-number" data-to="235" data-speed="200">235</span>
+                        <span>+</span>
+                        <h6> خدمت دهندگان </h6>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 xs-mt-5">
+                    <div class="counter">
+                        <span class="count-number" data-to="20" data-speed="200">20</span><span>+</span>
+                        <h6> عرضه کنندگان محصولات </h6>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 sm-mt-5">
+                    <div class="counter">
+                        <span class="count-number" data-to="4000" data-speed="200">4000</span><span>+</span>
+                        <h6> خدمت گیرندگان </h6>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 sm-mt-5">
+                    <div class="counter">
+                        <span class="count-number" data-to="15000" data-speed="200">15000</span><span>+</span>
+                        <h6> بازدیدکنندگان</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="pos-r pt-0 mt-8 mb-3 custom-mt-10 sm-mt-0">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row no-gutters box-shadow">
+                        <div class="col-md-5 theme-bg p-5">
+
+                           
+
+                            @await Component.InvokeAsync("CooperationRequest")
+
+                        </div>
+                        <div class="col-md-1"></div>
+                        <div class="col-lg-6 col-md-12 mt-5">
+                            <div class="owl-carousel no-pb" data-items="1" data-margin="30" data-dots="false" data-autoplay="true">
+                                <div class="item">
+                                    <div class="post">
+                                        <div class="post-image">
+                                            <img class="img-fluid rounded w-100" src="~/Content/images/case-studies/ADS_1.jpg" alt="">
+                                        </div>
+                                        <div class="post-desc">
+                                         
+                                            <div class="post-title text-center">
+                                                <h4><a asp-action="CreateAdvertisement" asp-controller="CustomerAdvertisement" asp-area="UserPanel" class="btn btn-acc   hover-icon  text-center ">  پذیرش تبلیغات از سراسر کشور </a></h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </section>
+
+</div>
+

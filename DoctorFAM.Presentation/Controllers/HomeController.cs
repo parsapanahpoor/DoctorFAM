@@ -100,6 +100,15 @@ public class HomeController : SiteBaseController
 
     #endregion
 
+    #region ThirdPage
+
+    public async Task<IActionResult> ThirdPage()
+    {
+        return View();
+    }
+
+    #endregion
+
     #region About Us
 
     public IActionResult AboutUs()

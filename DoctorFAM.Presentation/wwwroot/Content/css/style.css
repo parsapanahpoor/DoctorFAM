@@ -531,10 +531,10 @@ section {
 ------------------------*/
 
 .contact-media i {
-    line-height  : 70px;
-    font-size    : 70px;
+    /*line-height  : 70px;*/
+    font-size    : 35px;
     color        : #2264c5;
-    margin-bottom: 30px;
+   /* margin-bottom: 30px;*/
     display      : inline-block;
 }
 
@@ -7256,3 +7256,17 @@ doctors intrud*/
 }
 
 
+.Cliniculcer {
+    background-image: url('/Content/images/Clinics/Diabetic-Foot-and-wound-center-banner.png');
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+}
+.Clinidiet {
+    background-image: url('/Content/images/Clinics/CliniDiet.jpg');
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+}

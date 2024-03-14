@@ -1332,7 +1332,7 @@ public class ReservationService : IReservationService
             var doctorUserInfo = await _userService.GetUserByIdWithAsNoTracking(reservationDate.UserId);
             if (doctorUserInfo != null)
             {
-                var message = Messages.RegisteringPatientAsWebSiteUserFromDoctorBooking(doctorUserInfo.Username, reservationDate.ReservationDate.ToShamsi(),  model.Mobile , model.Mobile);
+                var message = Messages.RegisteringPatientAsWebSiteUserFromDoctorBooking(doctorUserInfo.Username, reservationDate.ReservationDate.ToShamsi(), model.Mobile, model.Mobile);
 
                 await _smsService.SendSimpleSMS(model.Mobile, message);
             }
@@ -1358,6 +1358,20 @@ public class ReservationService : IReservationService
         #endregion
 
         return true;
+    }
+
+    public async Task SendSMSToPatientAfterGetReservation(string reservationStartTime,
+                                                          DateTime reservationDate,
+                                                          ulong doctorUserId,
+                                                          string patientMobile)
+    {
+        var doctorUserInfo = await _userService.GetUserByIdWithAsNoTracking(doctorUserId);
+        if (doctorUserInfo != null)
+        {
+            var message = Messages.SendSMSForBetweenPatientInReservationSiteSide(reservationStartTime, reservationDate.ToShamsi(), doctorUserInfo.Username);
+
+            await _smsService.SendSimpleSMS(patientMobile, message);
+        }
     }
 
     //Add Between Patient Time 
