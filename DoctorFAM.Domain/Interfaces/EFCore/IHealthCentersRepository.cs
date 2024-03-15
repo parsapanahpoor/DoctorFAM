@@ -128,7 +128,12 @@ public interface IHealthCentersRepository
                                                                              CancellationToken cancellation);
 
     Task<HealthCenterDoctorDetailSiteSideDTO?> FillHealthCenterDoctorDetailSiteSideDTO_ByDoctorId(ulong doctorId,
+                                                                                                  ulong workAddressId , 
                                                                                                   CancellationToken cancellation);
+
+    //Get Health Center Location Id By HealthCenter Id
+    Task<ulong> GetHealthCenterLocationByHealthCenterId(ulong healthCenterId,
+                                                        CancellationToken cancellation);
 
     #endregion
 }

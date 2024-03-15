@@ -28,11 +28,15 @@ public record HealthCenterDoctorsPageQueryHandler : IRequestHandler<HealthCenter
 
         #endregion
 
+        //Get Health Center Location
+        var healthCenterLocationId = await _healthCentersRepository.GetHealthCenterLocationByHealthCenterId(request.HealthCenterId , cancellationToken);
+
         //Initial Model 
         var model = new HealthCenterDoctorsPageSiteSideDTO()
         {
             HealthCenterId = request.HealthCenterId,    
             SpecialityTitle = request.SpecialityTitle,
+            WorkAddressId = healthCenterLocationId
         };
 
         //Get List Of Health Center Accepted Doctors User Id
@@ -57,12 +61,14 @@ public record HealthCenterDoctorsPageQueryHandler : IRequestHandler<HealthCenter
                         if (doctors.Count == 0)
                         {
                             doctors.Add(await _healthCentersRepository.FillHealthCenterDoctorDetailSiteSideDTO_ByDoctorId(doctorId,
+                                                                                                                          healthCenterLocationId,                                                  
                                                                                                                           cancellationToken));
                         }
 
                         if (doctors != null &&  !doctors.Any(p=> p.DoctorInfo.DoctorId == doctorId))
                         {
                             doctors.Add(await _healthCentersRepository.FillHealthCenterDoctorDetailSiteSideDTO_ByDoctorId(doctorId,
+                                                                                                                          healthCenterLocationId,
                                                                                                                           cancellationToken));
                         }
                     }

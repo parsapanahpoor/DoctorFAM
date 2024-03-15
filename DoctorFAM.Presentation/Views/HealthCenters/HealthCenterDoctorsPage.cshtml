@@ -12,11 +12,40 @@
 }
 
 @section Scripts
-    {
+{
+    <partial name="_JqueryValidation" />
+    <script src="~/Site/js/Reservation/Reservation.js"></script>
+
+    <script>
+
+        //#region Choose Reservation Type
+
+        function ChooseReservationType(reservationDateTimeId, doctorId) {
+            $.ajax({
+                url: "/Choose-Type-Of-Reservation",
+                type: "get",
+                data: {
+                    reservationDateTimeId: reservationDateTimeId,
+                    doctorId: doctorId
+                },
+                success: function (response) {
+                    $("#modal-body").html(response);
+
+                    $('#ChooseReservationType').data('validator', null);
+                    $.validator.unobtrusive.parse('#ChooseReservationType');
+
+                    $("#exampleModal").modal("show");
+                }
+            });
+        }
+
+        //#endregion
+
+    </script>
 }
 
 @section Styles
-    {
+{
 }
 
 <div class="container">
@@ -60,7 +89,17 @@
                                                 <div class="clinic-booking mt-1  text-center justify-content-center">
 
                                                     <a class="view-pro-btn mt-3  text-center justify-content-center" asp-action="NewDocPage" asp-area="" asp-controller="FocalPoint" asp-route-userId="@doctor.DoctorUserInfo.DoctorUserId" asp-route-name="@doctor.DoctorUserInfo.DoctorUsername.FixTextForUrl()"> پروفایل</a>
+
                                                     <a class="apt-btn  text-center justify-content-center" asp-action="DocBooking" asp-controller="FocalPoint" asp-area="" asp-route-userId="@doctor.DoctorUserInfo.DoctorUserId">رزرو نوبت</a>
+
+                                                    @if (doctor.NewestReservationDTO != null )
+                                                    {
+                                                        <button onclick="ChooseReservationType(@doctor.NewestReservationDTO.DoctorReservationDateTimeId,@doctor.DoctorUserInfo.DoctorUserId)" type="button" class="Notbtn2 mt-3" data-toggle="modal" data-target="#exampleModal">
+                                                            نزدیک ترین زمان برای شما :
+                                                            روز <span> @doctor.NewestReservationDTO.ReservationDate.ToShamsi()</span>
+                                                            ساعت <span> @string.Concat(doctor.NewestReservationDTO.StartTime.Reverse().Skip(3).Reverse()) </span>
+                                                        </button>
+                                                    }
                                                 </div>
                                             </div>
                                         </div>
@@ -69,7 +108,7 @@
                             }
 
                         }
-                     
+
                     </div>
                 }
 

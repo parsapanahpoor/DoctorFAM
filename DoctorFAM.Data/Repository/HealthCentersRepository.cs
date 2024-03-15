@@ -3,6 +3,7 @@ using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.HealthCenters;
 using DoctorFAM.Domain.Entities.Organization;
+using DoctorFAM.Domain.Entities.States;
 using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.HealthCenters;
 using DoctorFAM.Domain.ViewModels.HealthCenters.HealthCenterMembers;
@@ -29,23 +30,23 @@ public class HealthCentersRepository : IHealthCentersRepository
 
     #region General
 
-    public async Task<bool> IsHealthCenter_AcceptedAndExist(ulong healthCenterId , 
+    public async Task<bool> IsHealthCenter_AcceptedAndExist(ulong healthCenterId,
                                                             CancellationToken cancellationToken)
     {
         //Get Health Center OwnerId 
         var ownerId = await _context.HealthCenters
                                     .AsNoTracking()
-                                    .Where(p => !p.IsDelete && 
+                                    .Where(p => !p.IsDelete &&
                                            p.Id == healthCenterId)
-                                    .Select(p=> p.UserId)
+                                    .Select(p => p.UserId)
                                     .FirstOrDefaultAsync();
 
         if (ownerId == null || ownerId == 0) return false;
 
         return await _context.Organizations
                              .AsNoTracking()
-                             .AnyAsync(p=> !p.IsDelete && 
-                                       p.OwnerId == ownerId && 
+                             .AnyAsync(p => !p.IsDelete &&
+                                       p.OwnerId == ownerId &&
                                        p.OrganizationInfoState == OrganizationInfoState.Accepted &&
                                        p.OrganizationType == Domain.Enums.Organization.OrganizationType.HealthCenter);
     }
@@ -315,7 +316,7 @@ public class HealthCentersRepository : IHealthCentersRepository
         return model;
     }
 
-    public async Task<EditMemberInfoDTO?> FillEditMemberInfoDTO(ulong id , CancellationToken cancellation)
+    public async Task<EditMemberInfoDTO?> FillEditMemberInfoDTO(ulong id, CancellationToken cancellation)
     {
         return await _context.DoctorSelectedHealthCenters
                              .AsNoTracking()
@@ -326,17 +327,17 @@ public class HealthCentersRepository : IHealthCentersRepository
                                  DoctorSelectedHealthCenterState = p.DoctorSelectedHealthCenterState,
                                  User = _context.Users
                                                 .AsNoTracking()
-                                                .Where(s=> !s.IsDelete &&  s.Id == p.ApplicantUserId)
+                                                .Where(s => !s.IsDelete && s.Id == p.ApplicantUserId)
                                                 .FirstOrDefault(),
                                  Id = p.Id
                              })
                              .FirstOrDefaultAsync();
     }
 
-    public async Task<DoctorSelectedHealthCenter?> GetDoctorSelectedHealthCenterById(ulong id , CancellationToken cancellationToken)
+    public async Task<DoctorSelectedHealthCenter?> GetDoctorSelectedHealthCenterById(ulong id, CancellationToken cancellationToken)
     {
         return await _context.DoctorSelectedHealthCenters
-                             .Where(p => !p.IsDelete && 
+                             .Where(p => !p.IsDelete &&
                                     p.Id == id)
                              .FirstOrDefaultAsync();
     }
@@ -520,9 +521,9 @@ public class HealthCentersRepository : IHealthCentersRepository
                           on o.OwnerId equals h.UserId
                           select new HealthCentersInfoDTO
                           {
-                             HealthCenterTitle = h.HealthCenterName,
-                             HealthCenterCoverImage = h.HealthCenterImage,
-                             HealthCenterId = h.HealthCenterId
+                              HealthCenterTitle = h.HealthCenterName,
+                              HealthCenterCoverImage = h.HealthCenterImage,
+                              HealthCenterId = h.HealthCenterId
                           };
 
         await model.Paging(returnModel);
@@ -534,9 +535,9 @@ public class HealthCentersRepository : IHealthCentersRepository
     {
         return await _context.HealthCentersInfos
                              .AsNoTracking()
-                             .Where(p=> !p.IsDelete && 
+                             .Where(p => !p.IsDelete &&
                                     p.HealthCenterId == healthCenterId)
-                             .Select(p=> new HealthCenterDetailSiteSideDTO()
+                             .Select(p => new HealthCenterDetailSiteSideDTO()
                              {
                                  HealthCenterInformation = new HealthCenterInformationSiteSideDTO()
                                  {
@@ -546,7 +547,7 @@ public class HealthCentersRepository : IHealthCentersRepository
                                      HealthCenterName = p.HealthCenterName,
                                      WorkAddress = _context.WorkAddresses
                                                            .AsNoTracking()
-                                                           .Where(l=> l.UserId == p.UserId)
+                                                           .Where(l => l.UserId == p.UserId)
                                                            .FirstOrDefault()
                                  },
                                  DoctorsInfo = null,
@@ -560,11 +561,11 @@ public class HealthCentersRepository : IHealthCentersRepository
     {
         return await _context.DoctorSelectedHealthCenters
                              .AsNoTracking()
-                             .Where(p=> !p.IsDelete && 
+                             .Where(p => !p.IsDelete &&
                                     p.HealthCenterId == healthCenterId &&
                                     p.DoctorSelectedHealthCenterState == Domain.Enums.HealthCenter.DoctorSelectedHealthCenterState.Accept)
-                             .OrderByDescending(p=> p.CreateDate)
-                             .Select(p=> p.ApplicantUserId)
+                             .OrderByDescending(p => p.CreateDate)
+                             .Select(p => p.ApplicantUserId)
                              .ToListAsync();
     }
 
@@ -577,14 +578,14 @@ public class HealthCentersRepository : IHealthCentersRepository
                                     p.HealthCenterId == healthCenterId &&
                                     p.DoctorSelectedHealthCenterState == Domain.Enums.HealthCenter.DoctorSelectedHealthCenterState.Accept)
                              .OrderByDescending(p => p.CreateDate)
-                             .Select(p => _context.Doctors.AsNoTracking().Where(d=> !d.IsDelete && 
-                                                                                d.UserId== p.ApplicantUserId)
-                                                                          .Select(p=> p.Id)
+                             .Select(p => _context.Doctors.AsNoTracking().Where(d => !d.IsDelete &&
+                                                                                d.UserId == p.ApplicantUserId)
+                                                                          .Select(p => p.Id)
                                                                           .FirstOrDefault())
                              .ToListAsync();
     }
 
-    public async Task<DoctorsMiniInfoDTO?> FillDoctorsMiniInfoDTO_ByHealthCenterDoctorsUserIds(ulong healthCenterId , 
+    public async Task<DoctorsMiniInfoDTO?> FillDoctorsMiniInfoDTO_ByHealthCenterDoctorsUserIds(ulong healthCenterId,
                                                                                               CancellationToken cancellationToken)
     {
         return await _context.Users
@@ -599,15 +600,15 @@ public class HealthCentersRepository : IHealthCentersRepository
                                  DoctorUsername = p.Username,
                                  SpecialitiesIds = _context.DoctorSelectedSpeciality
                                                            .AsNoTracking()
-                                                           .Where(s=> !s.IsDelete && 
+                                                           .Where(s => !s.IsDelete &&
                                                                   s.DoctorId == p.Doctors.Id)
-                                                           .Select(s=> s.SpecialityId)
+                                                           .Select(s => s.SpecialityId)
                                                            .ToList()
                              })
                              .FirstOrDefaultAsync();
     }
 
-    public async Task<SpecialitiesInfo?> Fill_SpecialitiesInfo_BySpecialityId(ulong specialityId , 
+    public async Task<SpecialitiesInfo?> Fill_SpecialitiesInfo_BySpecialityId(ulong specialityId,
                                                                               CancellationToken cancellation)
     {
         return await _context.Specialities
@@ -616,14 +617,14 @@ public class HealthCentersRepository : IHealthCentersRepository
                                     p.Id == specialityId)
                              .Select(p => new SpecialitiesInfo()
                              {
-                                 SpecialityId = p.Id , 
+                                 SpecialityId = p.Id,
                                  SpecialityName = p.UniqueName
                              })
                              .FirstOrDefaultAsync();
     }
 
-    public async Task<bool> HasDoctor_SelectedCurrentSpeciality_ByDoctorIdAndSpecialityId(ulong doctorId , 
-                                                                                              ulong specialityId ,
+    public async Task<bool> HasDoctor_SelectedCurrentSpeciality_ByDoctorIdAndSpecialityId(ulong doctorId,
+                                                                                              ulong specialityId,
                                                                                               CancellationToken cancellation)
     {
         return await _context.DoctorSelectedSpeciality
@@ -633,9 +634,16 @@ public class HealthCentersRepository : IHealthCentersRepository
                                        p.SpecialityId == specialityId);
     }
 
-    public async Task<HealthCenterDoctorDetailSiteSideDTO?> FillHealthCenterDoctorDetailSiteSideDTO_ByDoctorId(ulong doctorId , 
+    public async Task<HealthCenterDoctorDetailSiteSideDTO?> FillHealthCenterDoctorDetailSiteSideDTO_ByDoctorId(ulong doctorId,
+                                                                                                               ulong workAddressId,
                                                                                                                CancellationToken cancellation)
     {
+        #region Current Date Time
+
+        var dateTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 0, 0);
+
+        #endregion
+
         return await _context.Doctors
                              .AsNoTracking()
                              .Where(p => !p.IsDelete &&
@@ -666,9 +674,46 @@ public class HealthCentersRepository : IHealthCentersRepository
                                                               DoctorUserId = d.Id,
                                                               DoctorUsername = d.Username
                                                           })
-                                                          .FirstOrDefault()
+                                                          .FirstOrDefault(),
+
+                                 NewestReservationDTO = _context.DoctorReservationDateTimes
+                                                                .AsNoTracking()
+                                                                .Include(r=> r.DoctorReservationDate)
+                                                                .Where(r => !r.IsDelete &&
+                                                                       r.DoctorReservationDate.UserId == p.UserId &&
+                                                                       DateTime.Compare(r.DoctorReservationDate.ReservationDate, dateTime) >= 0 &&
+                                                                       r.WorkAddressId.Value == workAddressId &&
+                                                                       r.DoctorReservationState == Domain.Enums.DoctorReservation.DoctorReservationState.NotReserved &&
+                                                                       r.PatientId.HasValue == false)
+                                                                .OrderBy(r => r.DoctorReservationDate.ReservationDate)
+                                                                .Select(r => new NewestReservationDTO()
+                                                                {
+                                                                    DoctorReservationDateTimeId = r.Id, 
+                                                                    ReservationDate = r.DoctorReservationDate.ReservationDate,
+                                                                    ReservationDateId = r.DoctorReservationDateId,
+                                                                    StartTime = r.StartTime
+                                                                })
+                                                                .FirstOrDefault()
                              })
                              .FirstOrDefaultAsync();
+    }
+
+    //Get Health Center Location Id By HealthCenter Id
+    public async Task<ulong> GetHealthCenterLocationByHealthCenterId(ulong healthCenterId,
+                                                                     CancellationToken cancellation)
+    {
+        return await _context.HealthCenters
+                             .AsNoTracking()
+                             .Where(p => !p.IsDelete &&
+                                    p.Id == healthCenterId)
+                             .Select(p => _context.WorkAddresses
+                                                 .AsNoTracking()
+                                                 .Where(l => !l.IsDelete &&
+                                                        l.UserId == p.UserId)
+                                                 .Select(l => l.Id)
+                                                 .FirstOrDefault())
+                             .FirstOrDefaultAsync();
+
     }
 
     #endregion

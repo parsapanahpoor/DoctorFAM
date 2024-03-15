@@ -3,6 +3,7 @@ using DoctorFAM.Application.CQRS.SiteSide.HealthCenters.Query.HealthCenterDetail
 using DoctorFAM.Application.CQRS.SiteSide.HealthCenters.Query.HealthCenterDoctorsPage;
 using DoctorFAM.Domain.ViewModels.Site.HealthCenters;
 using DoctorFAM.Web.Areas.Tourist.ActionFilterAttributes;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DoctorFAM.Web.Controllers;
@@ -41,10 +42,11 @@ public class HealthCentersController : SiteBaseController
 		return View(model);
 	}
 
-    #endregion
+	#endregion
 
-    #region List Of Health Center Doctors With Speciali Speciality
+	#region List Of Health Center Doctors With Speciali Speciality
 
+	[Authorize]
     [HttpGet("HealthCenterDoctorsPage/{specialityId}/{healthCenterId}/{specialityName}")]
     public async Task<IActionResult> HealthCenterDoctorsPage(ulong specialityId , 
 														 	 ulong healthCenterId , 
