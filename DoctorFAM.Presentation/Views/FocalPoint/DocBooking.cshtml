@@ -132,36 +132,118 @@
 
 
     </div>
-    <div class="row text-center justify-content-center">
-        <div class="col-md-3"></div>
-        <div class=" col-md-6 text-center justify-content-center ">
-            <a asp-action="DocBooking" asp-area="" asp-controller="FocalPoint" asp-route-userId="@Model.UserId" class="btn btn-primary col-md-12 btn-Accept"> نمایش تاریخهایی که پزشک برای اخذ نوبت فعال کرده است </a>
-            <p style="color:red; font-size:15px; ">بر روی روز مورد نظر خود کلیک کنید تا ساعتهای فعال، نمایش داده شوند.</p>
+
+    @if (!Model.WorkAddressId.HasValue)
+    {
+        <div class="row text-center justify-content-center">
+            <div class="col-md-3"></div>
+            <div class=" col-md-6 text-center justify-content-center ">
+                <a asp-action="DocBooking" asp-area="" asp-controller="FocalPoint" asp-route-userId="@Model.UserId" class="btn btn-primary col-md-12 btn-Accept"> نمایش تاریخهایی که پزشک برای اخذ نوبت فعال کرده است </a>
+                <p style="color:red; font-size:15px; ">بر روی روز مورد نظر خود کلیک کنید تا ساعتهای فعال، نمایش داده شوند.</p>
+            </div>
+            <div class="col-md-3"></div>
+
         </div>
-        <div class="col-md-3"></div>
+        @if (doctorDaysList != null)
+        {
+
+            <div class=" booking-schedule schedule-widget">
+                <div class="schedule-cont">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-10">
+
+                                <div class="time-slot">
+                                    <ul class="clearfix">
+
+                                        @foreach (var day in doctorDaysList)
+                                        {
+
+                                            <li class="form-group col-md-2 col-sm-12 NotbtnDay22" style="margin-top:10px;">
+                                                <a asp-action="DocBooking" asp-area="" asp-controller="FocalPoint" asp-route-userId="@Model.UserId" asp-route-loggedDateTime="@day.ReservationDate.ToShamsi()">
+                                                    <span class=" ">   @day.ReservationDate.ToStringShamsiDate()</span>
+                                                </a>
+                                            </li>
+                                        }
+
+                                    </ul>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        }
+
+        @* <div class="container mt-5">
+    <div class="row text-center justify-contnet-center">
+
+    <div class="col-md-12 text-center justify-contnet-center">
+    <h6>در صورتیکه تاریخهای موجود در لیست بالا برای شما مناسب نیست،  با کلیک بر روی این دکمه تاریخ مورد نظر خود را بیابید:</h6>
+    </div>
+    <div class="col-md-12 text-center justify-contnet-center">
+    <form asp-action="DocBooking" asp-area="" asp-controller="FocalPoint" method="post">
+    <input type="hidden" asp-for="UserId" />
+
+    <h5> @((Model.DoctorReservationDate != null) ? Model.DoctorReservationDate.ReservationDate.ToStringShamsiDate() : "")</h5>
+
+
+    <div class="row text-center justify-content-center">
+    <div class="col-md-4"></div>
+    <div class="form-group col-md-4 text-center justify-content-center">
+    <input type="text" class="form-control col-md-12 text-center justify-content-center" DatePicker="1" asp-for="LoggedDateTime" style="z-index:9999!important;">
+    <input type="submit" class="btn btn-primary col-md-12 btn-Accept" value="جستجوی تاریخ" placeholder="ثبت نوبت" />
 
     </div>
-    @if (doctorDaysList != null)
-    {
+    <div class="col-md-4"></div>
 
-        <div class=" booking-schedule schedule-widget">
-            <div class="schedule-cont">
-                <div class="container">
+    </div>
+
+    </form>
+    </div>
+
+    </div>
+    </div>
+    *@
+
+
+        @if (Model.DoctorReservationDateTimes != null && Model.DoctorReservationDateTimes.Any())
+        {
+
+
+            <div class=" booking-schedule schedule-widget">
+
+                <div class="schedule-cont">
                     <div class="row">
-                        <div class="col-md-2"></div>
-                        <div class="col-md-10">
+                        <div class="col-md-12">
+                            @if (Model.DoctorReservationDate != null)
+                            {
+                                <div class="row">
+                                    <div class="col-md-4 "></div>
+                                    <div class="col-md-4   text-center justify-contnet-center">
+                                        <h4 class="  ">@Model.DoctorReservationDate.ReservationDate.ToStringShamsiDate()</h4>
+                                    </div>
+                                    <div class="col-md-4 "></div>
+                                </div>
 
+                            }
                             <div class="time-slot">
                                 <ul class="clearfix">
 
-                                    @foreach (var day in doctorDaysList)
+                                    @foreach (var item in Model.DoctorReservationDateTimes)
                                     {
-
-                                        <li class="form-group col-md-2 col-sm-12 NotbtnDay22" style="margin-top:10px;">
-                                            <a asp-action="DocBooking" asp-area="" asp-controller="FocalPoint" asp-route-userId="@Model.UserId" asp-route-loggedDateTime="@day.ReservationDate.ToShamsi()">
-                                                <span class=" ">   @day.ReservationDate.ToStringShamsiDate()</span>
-                                            </a>
-                                        </li>
+                                        @if (item.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.NotReserved)
+                                        {
+                                            <li class="form-group col-md-2 col-sm-12" style="margin-top:10px;">
+                                                <button onclick="ChooseReservationType(@item.Id,@Model.UserId)" type="button" class="Notbtn33" data-toggle="modal" data-target="#exampleModal">
+                                                    ساعت <span> @string.Concat(item.StartTime.Reverse().Skip(3).Reverse()) </span>
+                                                </button>
+                                            </li>
+                                        }
                                     }
 
                                 </ul>
@@ -171,86 +253,10 @@
                     </div>
                 </div>
             </div>
-        </div>
 
-
+        }
     }
-    
-   @* <div class="container mt-5">
-        <div class="row text-center justify-contnet-center">
 
-            <div class="col-md-12 text-center justify-contnet-center">
-                <h6>در صورتیکه تاریخهای موجود در لیست بالا برای شما مناسب نیست،  با کلیک بر روی این دکمه تاریخ مورد نظر خود را بیابید:</h6>
-            </div>
-            <div class="col-md-12 text-center justify-contnet-center">
-                <form asp-action="DocBooking" asp-area="" asp-controller="FocalPoint" method="post">
-                    <input type="hidden" asp-for="UserId" />
-
-                    <h5> @((Model.DoctorReservationDate != null) ? Model.DoctorReservationDate.ReservationDate.ToStringShamsiDate() : "")</h5>
-
-
-                    <div class="row text-center justify-content-center">
-                        <div class="col-md-4"></div>
-                        <div class="form-group col-md-4 text-center justify-content-center">
-                            <input type="text" class="form-control col-md-12 text-center justify-content-center" DatePicker="1" asp-for="LoggedDateTime" style="z-index:9999!important;">
-                            <input type="submit" class="btn btn-primary col-md-12 btn-Accept" value="جستجوی تاریخ" placeholder="ثبت نوبت" />
-
-                        </div>
-                        <div class="col-md-4"></div>
-
-                    </div>
-
-                </form>
-            </div>
-
-        </div>
-    </div>
-*@
-
-
-    @if (Model.DoctorReservationDateTimes != null && Model.DoctorReservationDateTimes.Any())
-    {
-       
-
-        <div class=" booking-schedule schedule-widget">
-            
-            <div class="schedule-cont">
-                <div class="row">
-                    <div class="col-md-12">
-                        @if (Model.DoctorReservationDate != null)
-                        {
-                            <div class="row">
-                                <div class="col-md-4 "></div>
-                                <div class="col-md-4   text-center justify-contnet-center">
-                                    <h4 class="  ">@Model.DoctorReservationDate.ReservationDate.ToStringShamsiDate()</h4>
-                                </div>
-                                <div class="col-md-4 "></div>
-                            </div>
-                            
-                        }
-                        <div class="time-slot">
-                            <ul class="clearfix">
-
-                                @foreach (var item in Model.DoctorReservationDateTimes)
-                                {
-                                    @if (item.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.NotReserved)
-                                    {
-                                        <li class="form-group col-md-2 col-sm-12" style="margin-top:10px;">
-                                            <button onclick="ChooseReservationType(@item.Id,@Model.UserId)" type="button" class="Notbtn33" data-toggle="modal" data-target="#exampleModal">                                               
-                                                ساعت <span> @string.Concat(item.StartTime.Reverse().Skip(3).Reverse()) </span>
-                                            </button>
-                                        </li>
-                                    }
-                                }
-
-                            </ul>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    }
+  
 </div>
 

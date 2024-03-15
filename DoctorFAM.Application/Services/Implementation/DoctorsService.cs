@@ -3777,7 +3777,7 @@ namespace DoctorFAM.Application.Services.Implementation
         }
 
         //Fill Doctor Reservation Detail For Show Site Side View Model
-        public async Task<ShowDoctorReservationDetailViewModel?> FillDoctorReservationDetailForShowSiteSide(ulong userId, string? loggedDateTime)
+        public async Task<ShowDoctorReservationDetailViewModel?> FillDoctorReservationDetailForShowSiteSide(ulong userId, string? loggedDateTime, ulong? WorkAddressId)
         {
             #region Get Doctor By User Id
 
@@ -3810,8 +3810,10 @@ namespace DoctorFAM.Application.Services.Implementation
                 LoggedDateTime = loggedDateTime,
                 DoctorReservationDate = ((!string.IsNullOrEmpty(loggedDateTime) ? await _reservationService.GetDoctorReservationDateByReservationDateAndUserId(loggedDateTime, userId) : null)),
                 DoctorReservationDateTimes = ((!string.IsNullOrEmpty(loggedDateTime) ? await _reservationService.GetDoctorReservationDateByReservationDateTimeAndUserId(loggedDateTime, userId) : null)),
-                ListOfReservationDateAndReservationDateTime = await _reservationService.GetListOfDoctorReservationDateAndDoctorReservationDateTimeForShowSiteSide(organization.OwnerId),
-                DoctorReservationAlert = await _reservationService.GetDoctorReservationAlertByDoctorUserId(organization.OwnerId)
+                ListOfReservationDateAndReservationDateTime = WorkAddressId.HasValue ?  await _reservationService.GetListOfDoctorReservationDateAndDoctorReservationDateTimeForShowSiteSide(organization.OwnerId , WorkAddressId.Value) :
+                await _reservationService.GetListOfDoctorReservationDateAndDoctorReservationDateTimeForShowSiteSide(organization.OwnerId),
+                DoctorReservationAlert = await _reservationService.GetDoctorReservationAlertByDoctorUserId(organization.OwnerId),
+                WorkAddressId = WorkAddressId
             };
 
             DoctorPageInReservationViewModel childModel = new DoctorPageInReservationViewModel()

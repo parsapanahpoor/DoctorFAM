@@ -90,9 +90,14 @@
 
                                                     <a class="view-pro-btn mt-3  text-center justify-content-center" asp-action="NewDocPage" asp-area="" asp-controller="FocalPoint" asp-route-userId="@doctor.DoctorUserInfo.DoctorUserId" asp-route-name="@doctor.DoctorUserInfo.DoctorUsername.FixTextForUrl()"> پروفایل</a>
 
-                                                    <a class="apt-btn  text-center justify-content-center" asp-action="DocBooking" asp-controller="FocalPoint" asp-area="" asp-route-userId="@doctor.DoctorUserInfo.DoctorUserId">رزرو نوبت</a>
+                                                    <a class="apt-btn  text-center justify-content-center"
+                                                       asp-action="DocBooking"
+                                                       asp-controller="FocalPoint"
+                                                       asp-area=""
+                                                       asp-route-userId="@doctor.DoctorUserInfo.DoctorUserId"
+                                                       asp-route-WorkAddressId="@Model.WorkAddressId">رزرو نوبت</a>
 
-                                                    @if (doctor.NewestReservationDTO != null )
+                                                    @if (doctor.NewestReservationDTO != null)
                                                     {
                                                         <button onclick="ChooseReservationType(@doctor.NewestReservationDTO.DoctorReservationDateTimeId,@doctor.DoctorUserInfo.DoctorUserId)" type="button" class="Notbtn2 mt-3" data-toggle="modal" data-target="#exampleModal">
                                                             نزدیک ترین زمان برای شما :

@@ -165,7 +165,7 @@ public class FocalPointController : SiteBaseController
 
     [Authorize]
     [HttpGet]
-    public async Task<IActionResult> DocBooking(ulong userId, string? loggedDateTime)
+    public async Task<IActionResult> DocBooking(ulong userId, string? loggedDateTime , ulong? WorkAddressId)
     {
         #region Check Is Exist Any Waiting For Payment Reservation For This User
 
@@ -179,7 +179,7 @@ public class FocalPointController : SiteBaseController
 
         #region Fill Model
 
-        var model = await _doctorService.FillDoctorReservationDetailForShowSiteSide(userId, loggedDateTime);
+        var model = await _doctorService.FillDoctorReservationDetailForShowSiteSide(userId, loggedDateTime , WorkAddressId);
         if (model == null)
         {
             TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
@@ -216,7 +216,7 @@ public class FocalPointController : SiteBaseController
 
         #region Fill Model
 
-        var model = await _doctorService.FillDoctorReservationDetailForShowSiteSide(reservationDetail.UserId, reservationDetail.LoggedDateTime);
+        var model = await _doctorService.FillDoctorReservationDetailForShowSiteSide(reservationDetail.UserId, reservationDetail.LoggedDateTime , reservationDetail.WorkAddressId);
         if (model == null)
         {
             TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";

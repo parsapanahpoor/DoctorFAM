@@ -3,6 +3,7 @@ using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.FamilyDoctor.ParsaSystem;
 using DoctorFAM.Domain.Entities.FamilyDoctor.VIPSystem;
 using DoctorFAM.Domain.Entities.Interest;
+using DoctorFAM.Domain.Entities.WorkAddress;
 using DoctorFAM.Domain.Enums.DoctorReservation;
 using DoctorFAM.Domain.ViewModels.Admin.Dashboard;
 using DoctorFAM.Domain.ViewModels.Admin.Doctors;
@@ -279,7 +280,7 @@ namespace DoctorFAM.Application.Services.Interfaces
         Task<DoctorPageInReservationViewModel?> FillDoctorPageDetailInReservationPage(ulong userId);
 
         //Fill Doctor Reservation Detail For Show Site Side View Model
-        Task<ShowDoctorReservationDetailViewModel?> FillDoctorReservationDetailForShowSiteSide(ulong userId, string? loggedDateTime);
+        Task<ShowDoctorReservationDetailViewModel?> FillDoctorReservationDetailForShowSiteSide(ulong userId, string? loggedDateTime ,ulong? WorkAddressId);
 
         //Get Doctro For Send Notification For Take Reservation Notification 
         Task<string?> GetDoctroForSendNotificationForTakeReservationNotification(ulong reservationDateTimeId);

@@ -203,6 +203,10 @@ public interface IReservationRepository
     //Get List Of Doctor Reservation Date And Doctor Reservation Date Time For Show Site Side 
     Task<List<ListOfReservationDateAndReservationDateTimeViewModel>?> GetListOfDoctorReservationDateAndDoctorReservationDateTimeForShowSiteSide(ulong doctorUserId);
 
+    //Get List Of Doctor Reservation Date And Doctor Reservation Date Time For Show Site Side 
+    Task<List<ListOfReservationDateAndReservationDateTimeViewModel>?> GetListOfDoctorReservationDateAndDoctorReservationDateTimeForShowSiteSide(ulong doctorUserId,
+                                                                                                                                                             ulong workAddressId);
+
     //List Of Future Days Of Doctor Reservation 
     Task<List<DoctorReservationDate>> ListOfFutureDaysOfDoctorReservation(ulong doctorUserId);
 

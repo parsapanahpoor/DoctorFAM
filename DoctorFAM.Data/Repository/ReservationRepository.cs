@@ -2090,6 +2090,31 @@ public class ReservationRepository : IReservationRepository
                                             }).Take(7).ToListAsync();
     }
 
+    //Get List Of Doctor Reservation Date And Doctor Reservation Date Time For Show Site Side 
+    public async Task<List<ListOfReservationDateAndReservationDateTimeViewModel>?> GetListOfDoctorReservationDateAndDoctorReservationDateTimeForShowSiteSide(ulong doctorUserId , 
+                                                                                                                                                             ulong workAddressId)
+    {
+        #region Current Date Time
+
+        var dateTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 0, 0);
+
+        #endregion
+
+        return await _context.DoctorReservationDates.AsNoTracking().Include(p=> p.DoctorReservationDateTimes)
+                                            .Where(p => !p.IsDelete && p.UserId == doctorUserId
+                                                    && DateTime.Compare(p.ReservationDate, dateTime) >= 0 && 
+                                                    p.DoctorReservationDateTimes.Any(p=> p.WorkAddressId == workAddressId))
+                                            .OrderBy(s => s.ReservationDate)
+                                            .Select(p => new ListOfReservationDateAndReservationDateTimeViewModel()
+                                            {
+                                                DoctorReservationDate = p,
+                                                DoctorReservationDateTimes = _context.DoctorReservationDateTimes.AsNoTracking()
+                                                                                        .Where(s => !s.IsDelete && s.DoctorReservationDateId == p.Id
+                                                                                                && s.DoctorReservationState == DoctorReservationState.NotReserved
+                                                                                                && !s.PatientId.HasValue).ToList()
+                                            }).Take(7).ToListAsync();
+    }
+
     //List Of Future Days Of Doctor Reservation 
     public async Task<List<DoctorReservationDate>> ListOfFutureDaysOfDoctorReservation(ulong doctorUserId)
     {

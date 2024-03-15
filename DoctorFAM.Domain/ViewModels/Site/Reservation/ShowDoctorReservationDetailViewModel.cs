@@ -17,6 +17,8 @@ public class ShowDoctorReservationDetailViewModel
 {
     #region proeprties
 
+    public ulong? WorkAddressId { get; set; }
+
     public ulong UserId { get; set; }
 
     [RegularExpression(@"^\d{4}\/(0?[1-9]|1[012])\/(0?[1-9]|[12][0-9]|3[01])$", ErrorMessage = "The entered date is not valid")]

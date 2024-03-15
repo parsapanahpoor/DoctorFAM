@@ -2291,6 +2291,12 @@ public class ReservationService : IReservationService
         return await _reservation.GetListOfDoctorReservationDateAndDoctorReservationDateTimeForShowSiteSide(doctorUserId);
     }
 
+    //Get List Of Doctor Reservation Date And Doctor Reservation Date Time For Show Site Side 
+    public async Task<List<ListOfReservationDateAndReservationDateTimeViewModel>?> GetListOfDoctorReservationDateAndDoctorReservationDateTimeForShowSiteSide(ulong doctorUserId , ulong workAddress)
+    {
+        return await _reservation.GetListOfDoctorReservationDateAndDoctorReservationDateTimeForShowSiteSide(doctorUserId , workAddress);
+    }
+
     //List Of Future Doctor Days For Reservation 
     public async Task<List<DoctorReservationDate>> ListOfFutureDaysOfDoctorReservation(ulong doctorUserId)
     {
