@@ -22,6 +22,8 @@ public class HealthCenterInformationSiteSideDTO
 {
     #region properties
 
+    public ulong HealthCenterId { get; set; }
+
     public string? GeneralPhone { get; set; }
 
     public string HealthCenterImage { get; set; }

@@ -1,6 +1,8 @@
 ﻿using DoctorFAM.Application.CQRS.SiteSide.HealthCenters.Query.FilterHealthCenters;
 using DoctorFAM.Application.CQRS.SiteSide.HealthCenters.Query.HealthCenterDetail;
+using DoctorFAM.Application.CQRS.SiteSide.HealthCenters.Query.HealthCenterDoctorsPage;
 using DoctorFAM.Domain.ViewModels.Site.HealthCenters;
+using DoctorFAM.Web.Areas.Tourist.ActionFilterAttributes;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DoctorFAM.Web.Controllers;
@@ -39,5 +41,24 @@ public class HealthCentersController : SiteBaseController
 		return View(model);
 	}
 
-	#endregion
+    #endregion
+
+    #region List Of Health Center Doctors With Speciali Speciality
+
+    [HttpGet("HealthCenterDoctorsPage/{specialityId}/{healthCenterId}/{specialityName}")]
+    public async Task<IActionResult> HealthCenterDoctorsPage(ulong specialityId , 
+														 	 ulong healthCenterId , 
+															 string specialityName,
+															 CancellationToken cancellation = default)
+	{
+		return View(await Mediator.Send(new HealthCenterDoctorsPageQuery
+		{
+			HealthCenterId = healthCenterId,
+			SpecialityId = specialityId,
+			SpecialityTitle = specialityName,
+		} , 
+		cancellation));
+	}
+
+    #endregion
 }

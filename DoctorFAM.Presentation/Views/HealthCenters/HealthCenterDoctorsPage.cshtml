@@ -1,0 +1,79 @@
+﻿@model DoctorFAM.Domain.ViewModels.Site.HealthCenters.HealthCenterDoctorsPageSiteSideDTO;
+
+@using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo
+@using DoctorFAM.Domain.Entities.Speciality
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Domain.ViewModels.Common
+@using DoctorFAM.Application.StaticTools
+
+@{
+    ViewBag.Title = "معرفی پزشکان";
+}
+
+@section Scripts
+    {
+}
+
+@section Styles
+    {
+}
+
+<div class="container">
+
+    <div class="content mt-3">
+        <div class="container-fluid">
+            <div class="row">
+                @if (Model != null)
+                {
+                    <div class="col-md-12 mb-4 ">
+
+                        @if (Model.Doctors != null && Model.Doctors.Any())
+                        {
+                            foreach (var doctor in Model.Doctors)
+                            {
+                                <div class="card">
+
+                                    <div class="card-body">
+                                        <div class="doctor-widget">
+                                            <div class="doc-info-left">
+                                                <div class="doctor-img">
+                                                    <a asp-action="NewDocPage" asp-area="" asp-controller="FocalPoint" asp-route-userId="@doctor.DoctorUserInfo.DoctorUserId" asp-route-name="@doctor.DoctorUserInfo.DoctorUsername.FixTextForUrl()">
+                                                        <img src="/content/images/user/@((string.IsNullOrEmpty(doctor.DoctorUserInfo.DoctorUserAvatar)) ? "DefaultAvatar.png" : $"thumb/{doctor.DoctorUserInfo.DoctorUserAvatar}")" class="img-fluid" alt="User Image">
+                                                    </a>
+                                                </div>
+                                                <div class="doc-info-cont">
+                                                    <h4 class="doc-name"><a asp-action="NewDocPage" asp-area="" asp-controller="FocalPoint" asp-route-userId="@doctor.DoctorUserInfo.DoctorUserId" asp-route-name="@doctor.DoctorUserInfo.DoctorUsername.FixTextForUrl()">@((doctor.DoctorInfo.DoctorTilteName == DoctorFAM.Domain.Enums.DoctorTitleName.DoctorTilteName.Anonymous) ? "" : doctor.DoctorInfo.DoctorTilteName.GetEnumName()) @doctor.DoctorUserInfo.DoctorUsername</a></h4>
+                                                    @*<p class="doc-speciality">@((!string.IsNullOrEmpty(doctor.DoctorUserInfo.doctorsInfo.Education)) ? doctor.DoctorUserInfo.doctorsInfo.Education : null)</p>*@
+
+                                                    <h5 class="doc-department">  @((!string.IsNullOrEmpty(doctor.DoctorInfo.DoctorSpecialityName)) ? doctor.DoctorInfo.DoctorSpecialityName : null)</h5>
+
+                                                    @if (doctor.DoctorInfo.ContractWithFamilyDoctor)
+                                                    {
+                                                        <h5 class="doc-department" style="color: #ff9b00;">طرف قرارداد با پزشک خانواده است.</h5>
+                                                    }
+
+                                                </div>
+                                            </div>
+                                            <div class="doc-info-right text-center justify-content-center">
+
+                                                <div class="clinic-booking mt-1  text-center justify-content-center">
+
+                                                    <a class="view-pro-btn mt-3  text-center justify-content-center" asp-action="NewDocPage" asp-area="" asp-controller="FocalPoint" asp-route-userId="@doctor.DoctorUserInfo.DoctorUserId" asp-route-name="@doctor.DoctorUserInfo.DoctorUsername.FixTextForUrl()"> پروفایل</a>
+                                                    <a class="apt-btn  text-center justify-content-center" asp-action="DocBooking" asp-controller="FocalPoint" asp-area="" asp-route-userId="@doctor.DoctorUserInfo.DoctorUserId">رزرو نوبت</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+                        }
+                     
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -540,6 +540,7 @@ public class HealthCentersRepository : IHealthCentersRepository
                              {
                                  HealthCenterInformation = new HealthCenterInformationSiteSideDTO()
                                  {
+                                     HealthCenterId = p.HealthCenterId,
                                      GeneralPhone = p.GeneralPhone,
                                      HealthCenterImage = p.HealthCenterImage,
                                      HealthCenterName = p.HealthCenterName,
@@ -564,6 +565,22 @@ public class HealthCentersRepository : IHealthCentersRepository
                                     p.DoctorSelectedHealthCenterState == Domain.Enums.HealthCenter.DoctorSelectedHealthCenterState.Accept)
                              .OrderByDescending(p=> p.CreateDate)
                              .Select(p=> p.ApplicantUserId)
+                             .ToListAsync();
+    }
+
+    public async Task<List<ulong>> GetList_OfHealthCenterAcceptedDoctorsId_ByHealthCenterInformations(ulong healthCenterId,
+                                                                                                      CancellationToken cancellation)
+    {
+        return await _context.DoctorSelectedHealthCenters
+                             .AsNoTracking()
+                             .Where(p => !p.IsDelete &&
+                                    p.HealthCenterId == healthCenterId &&
+                                    p.DoctorSelectedHealthCenterState == Domain.Enums.HealthCenter.DoctorSelectedHealthCenterState.Accept)
+                             .OrderByDescending(p => p.CreateDate)
+                             .Select(p => _context.Doctors.AsNoTracking().Where(d=> !d.IsDelete && 
+                                                                                d.UserId== p.ApplicantUserId)
+                                                                          .Select(p=> p.Id)
+                                                                          .FirstOrDefault())
                              .ToListAsync();
     }
 
@@ -601,6 +618,55 @@ public class HealthCentersRepository : IHealthCentersRepository
                              {
                                  SpecialityId = p.Id , 
                                  SpecialityName = p.UniqueName
+                             })
+                             .FirstOrDefaultAsync();
+    }
+
+    public async Task<bool> HasDoctor_SelectedCurrentSpeciality_ByDoctorIdAndSpecialityId(ulong doctorId , 
+                                                                                              ulong specialityId ,
+                                                                                              CancellationToken cancellation)
+    {
+        return await _context.DoctorSelectedSpeciality
+                             .AsNoTracking()
+                             .AnyAsync(p => p.DoctorId == doctorId &&
+                                      !p.IsDelete &&
+                                       p.SpecialityId == specialityId);
+    }
+
+    public async Task<HealthCenterDoctorDetailSiteSideDTO?> FillHealthCenterDoctorDetailSiteSideDTO_ByDoctorId(ulong doctorId , 
+                                                                                                               CancellationToken cancellation)
+    {
+        return await _context.Doctors
+                             .AsNoTracking()
+                             .Where(p => !p.IsDelete &&
+                                    p.Id == doctorId)
+                             .Select(p => new HealthCenterDoctorDetailSiteSideDTO()
+                             {
+                                 DoctorInfo = _context.DoctorsInfos
+                                                      .AsNoTracking()
+                                                      .Where(d => !d.IsDelete &&
+                                                             d.DoctorId == doctorId)
+                                                      .Select(d => new HealthCenterDoctorInfoDetailSiteSideDTO()
+                                                      {
+                                                          ContractWithFamilyDoctor = d.ContractWithFamilyDoctors,
+                                                          DoctorSpecialityName = d.Specialty,
+                                                          DoctorTilteName = d.DoctorTilteName,
+                                                          Education = d.Education,
+                                                          Gender = d.Gender,
+                                                          DoctorId = p.Id
+                                                      })
+                                                      .FirstOrDefault(),
+
+                                 DoctorUserInfo = _context.Users
+                                                          .Where(d => !d.IsDelete &&
+                                                                 d.Id == p.UserId)
+                                                          .Select(d => new HealthCenterDoctorUserDetailSiteSideDTO()
+                                                          {
+                                                              DoctorUserAvatar = d.Avatar,
+                                                              DoctorUserId = d.Id,
+                                                              DoctorUsername = d.Username
+                                                          })
+                                                          .FirstOrDefault()
                              })
                              .FirstOrDefaultAsync();
     }

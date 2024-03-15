@@ -114,11 +114,21 @@ public interface IHealthCentersRepository
     Task<List<ulong>> GetList_OfHealthCenterAcceptedDoctorsUserId_ByHealthCenterInformations(ulong healthCenterId,
                                                                                              CancellationToken cancellation);
 
+    Task<List<ulong>>  GetList_OfHealthCenterAcceptedDoctorsId_ByHealthCenterInformations(ulong healthCenterId,
+                                                                                          CancellationToken cancellation);
+
     Task<DoctorsMiniInfoDTO?> FillDoctorsMiniInfoDTO_ByHealthCenterDoctorsUserIds(ulong healthCenterId,
                                                                                   CancellationToken cancellationToken);
 
     Task<SpecialitiesInfo?> Fill_SpecialitiesInfo_BySpecialityId(ulong specialityId,
                                                                  CancellationToken cancellation);
+
+    Task<bool> HasDoctor_SelectedCurrentSpeciality_ByDoctorIdAndSpecialityId(ulong doctorId,
+                                                                             ulong specialityId,
+                                                                             CancellationToken cancellation);
+
+    Task<HealthCenterDoctorDetailSiteSideDTO?> FillHealthCenterDoctorDetailSiteSideDTO_ByDoctorId(ulong doctorId,
+                                                                                                  CancellationToken cancellation);
 
     #endregion
 }

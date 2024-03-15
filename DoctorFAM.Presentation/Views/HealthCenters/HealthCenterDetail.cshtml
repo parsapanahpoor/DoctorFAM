@@ -1,4 +1,5 @@
 ﻿@model DoctorFAM.Domain.ViewModels.Site.HealthCenters.HealthCenterDetailSiteSideDTO
+@using DoctorFAM.Application.Convertors
 @using DoctorFAM.Application.Extensions
 @using DoctorFAM.Application.StaticTools;
 
@@ -24,7 +25,7 @@
 
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6 d-flex align-items-center">
-                                    <span class=" animated1" style="color:#fd5b03 !important ; font-size:22px; font-weight:700"> 
+                                    <span class=" animated1" style="color:#fd5b03 !important ; font-size:22px; font-weight:700">
                                         @Model.HealthCenterInformation.HealthCenterName
                                     </span>
 
@@ -117,8 +118,15 @@
 
                                     @if (Model.Specialities.Any(p => p.SpecialityId == 5))
                                     {
+                                        string specialityName = "قلب";
+
                                         <li>
-                                            <a href="investment-planning.html">
+                                            <a asp-action="HealthCenterDoctorsPage"
+                                               asp-area=""
+                                               asp-controller="HealthCenters"
+                                               asp-route-specialityId="5"
+                                               asp-route-healthCenterId="@Model.HealthCenterInformation.HealthCenterId"
+                                               asp-route-specialityName="@specialityName.FixTextForUrl()">
                                                 <span class="link-icon link-arrow"></span>
                                                 <p class="link-text ">
                                                     قلب
@@ -140,8 +148,15 @@
 
                                     @if (Model.Specialities.Any(p => p.SpecialityId == 10029))
                                     {
+                                        string specialityName = "چشم";
+
                                         <li>
-                                            <a href="investment-planning.html">
+                                            <a asp-action="HealthCenterDoctorsPage"
+                                               asp-area=""
+                                               asp-controller="HealthCenters"
+                                               asp-route-specialityId="10029"
+                                               asp-route-healthCenterId="@Model.HealthCenterInformation.HealthCenterId"
+                                               asp-route-specialityName="@specialityName.FixTextForUrl()">
                                                 <span class="link-icon link-arrow"></span>
                                                 <p class="link-text ">
                                                     چشم
@@ -163,8 +178,15 @@
 
                                     @if (Model.Specialities.Any(p => p.SpecialityId == 10020))
                                     {
+                                        string specialityName = "ارتوپدی";
+
                                         <li>
-                                            <a href="investment-planning.html">
+                                            <a asp-action="HealthCenterDoctorsPage"
+                                               asp-area=""
+                                               asp-controller="HealthCenters"
+                                               asp-route-specialityId="10020"
+                                               asp-route-healthCenterId="@Model.HealthCenterInformation.HealthCenterId"
+                                               asp-route-specialityName="@specialityName.FixTextForUrl()">
                                                 <span class="link-icon link-arrow"></span>
                                                 <p class="link-text ">
                                                     ارتوپدی
@@ -186,8 +208,15 @@
 
                                     @if (Model.Specialities.Any(p => p.SpecialityId == 10025))
                                     {
+                                        string specialityName = "جراحی";
+
                                         <li>
-                                            <a href="investment-planning.html">
+                                            <a asp-action="HealthCenterDoctorsPage"
+                                               asp-area=""
+                                               asp-controller="HealthCenters"
+                                               asp-route-specialityId="10025"
+                                               asp-route-healthCenterId="@Model.HealthCenterInformation.HealthCenterId"
+                                               asp-route-specialityName="@specialityName.FixTextForUrl()">
                                                 <span class="link-icon link-arrow"></span>
                                                 <p class="link-text ">
                                                     جراحی
@@ -209,8 +238,15 @@
 
                                     @if (Model.Specialities.Any(p => p.SpecialityId == 2))
                                     {
+                                        string specialityName = "داخلی";
+
                                         <li>
-                                            <a href="investment-planning.html">
+                                            <a asp-action="HealthCenterDoctorsPage"
+                                               asp-area=""
+                                               asp-controller="HealthCenters"
+                                               asp-route-specialityId="2"
+                                               asp-route-healthCenterId="@Model.HealthCenterInformation.HealthCenterId"
+                                               asp-route-specialityName="@specialityName.FixTextForUrl()">
                                                 <span class="link-icon link-arrow"></span>
                                                 <p class="link-text ">
                                                     داخلی
@@ -295,8 +331,10 @@
 
                                 <div class="mb-3">
                                     <h6 class="font-w-5"> @Model.HealthCenterInformation.HealthCenterName </h6>
-                                    <span class="text-black">@Model.HealthCenterInformation.WorkAddress.State -
-                                        @Model.HealthCenterInformation.WorkAddress.City </span>
+                                    <span class="text-black">
+                                        @Model.HealthCenterInformation.WorkAddress.State -
+                                        @Model.HealthCenterInformation.WorkAddress.City
+                                    </span>
 
                                     <span class="text-black">@Model.HealthCenterInformation.WorkAddress.Address </span>
                                 </div>
