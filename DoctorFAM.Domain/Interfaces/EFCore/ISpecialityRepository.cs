@@ -4,97 +4,103 @@ using DoctorFAM.Domain.ViewModels.Common;
 using DoctorFAM.Domain.ViewModels.Site.Specialists;
 using DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor;
 
-namespace DoctorFAM.Domain.Interfaces.EFCore
+namespace DoctorFAM.Domain.Interfaces.EFCore;
+
+public interface ISpecialityRepository
 {
-    public interface ISpecialityRepository
-    {
-        #region Admin Side 
+    #region General 
 
-        //List Of Specilaity Admin Side 
-        Task<FilterSpecialityViewModel> ListOfSpecilaityAdminSide(FilterSpecialityViewModel filter);
+    Task<List<ulong>> GetListOfSpecialitiesChildrenIds_BySpecialityParentId(ulong specialityParentId,
+                                                                            CancellationToken cancellation);
 
-        //Get Speciality By Id 
-        Task<Speciality?> GetSpecialityById(ulong specialityId);
+    #endregion
 
-        //Check That Is Exist Any Speciality With This Unique Name 
-        Task<bool> CheckThatExistAnySpecialityWithThisUniqueName(string uniqueName);
+    #region Admin Side 
 
-        //Check That Is Exist Any Speciality With This Unique Id 
-        Task<bool> CheckThatExistAnySpecialityWithThisUniqueId(ulong uniqueId);
+    //List Of Specilaity Admin Side 
+    Task<FilterSpecialityViewModel> ListOfSpecilaityAdminSide(FilterSpecialityViewModel filter);
 
-        //Is Exist Speciality By Speciality Id
-        Task<bool> IsExistSpecialityBySpecialityId(ulong speciality);
+    //Get Speciality By Id 
+    Task<Speciality?> GetSpecialityById(ulong specialityId);
 
-        //Add Speciality To The Data Base 
-        Task<ulong> AddSpecialityToTheDataBase(Speciality speciality);
+    //Check That Is Exist Any Speciality With This Unique Name 
+    Task<bool> CheckThatExistAnySpecialityWithThisUniqueName(string uniqueName);
 
-        //Add Speciality Info To The Data Base
-        Task AddSpecialityInfoToTheDataBase(List<SpecialtiyInfo> SpecialtiyInfo);
+    //Check That Is Exist Any Speciality With This Unique Id 
+    Task<bool> CheckThatExistAnySpecialityWithThisUniqueId(ulong uniqueId);
 
-        //Fill Edit Speciality View Model 
-        Task<EditSpecialityViewModel?> FillEditSpecialityViewModel(ulong specialityId);
+    //Is Exist Speciality By Speciality Id
+    Task<bool> IsExistSpecialityBySpecialityId(ulong speciality);
 
-        //Update Spaciality Admin Side 
-        void UpdateSpacialityAdminSide(Speciality speciality);
+    //Add Speciality To The Data Base 
+    Task<ulong> AddSpecialityToTheDataBase(Speciality speciality);
 
-        //Update Speciality Info Admin Side 
-        void UpdateSpecialityInfo(SpecialtiyInfo specialtiyInfo);
+    //Add Speciality Info To The Data Base
+    Task AddSpecialityInfoToTheDataBase(List<SpecialtiyInfo> SpecialtiyInfo);
 
-        //Save Changes
-        Task Savechanges();
+    //Fill Edit Speciality View Model 
+    Task<EditSpecialityViewModel?> FillEditSpecialityViewModel(ulong specialityId);
 
-        Task DeleteSpecialityInfo(ulong specialityId);
+    //Update Spaciality Admin Side 
+    void UpdateSpacialityAdminSide(Speciality speciality);
 
-        Task<List<Speciality>> GetChildSpecialityByParentId(ulong parentId);
+    //Update Speciality Info Admin Side 
+    void UpdateSpecialityInfo(SpecialtiyInfo specialtiyInfo);
 
-        Task DeleteSpeciality(Speciality speciality);
+    //Save Changes
+    Task Savechanges();
 
-        //Get List Of Specialities 
-        Task<List<SpecialtiyInfo>> GetListOfSpecialities();
+    Task DeleteSpecialityInfo(ulong specialityId);
 
-        //Get List Of Doctor's Specialities
-        Task<List<ulong>?> GetListOfDoctorSpecialities(ulong userId);
+    Task<List<Speciality>> GetChildSpecialityByParentId(ulong parentId);
 
-        #endregion
+    Task DeleteSpeciality(Speciality speciality);
 
-        #region Doctor Panel 
+    //Get List Of Specialities 
+    Task<List<SpecialtiyInfo>> GetListOfSpecialities();
 
-        //Remove List Of User Seleted Specialities
-        Task RemoveListOfUserSeletedSpecialities(List<DoctorSelectedSpeciality> doctorSelecteds);
+    //Get List Of Doctor's Specialities
+    Task<List<ulong>?> GetListOfDoctorSpecialities(ulong userId);
 
-        //Get Docto Selected Specialities By User Id
-        Task<List<DoctorSelectedSpeciality>?> GetDoctoSelectedSpecialitiesByUserId(ulong userid);
+    #endregion
 
-        //Add Doctor Selected Speciality
-        Task AddDoctorSelectedSpeciality(DoctorSelectedSpeciality speciality);
+    #region Doctor Panel 
 
-        #endregion
+    //Remove List Of User Seleted Specialities
+    Task RemoveListOfUserSeletedSpecialities(List<DoctorSelectedSpeciality> doctorSelecteds);
 
-        #region Site Side 
+    //Get Docto Selected Specialities By User Id
+    Task<List<DoctorSelectedSpeciality>?> GetDoctoSelectedSpecialitiesByUserId(ulong userid);
 
-        Task<FilterSpecialistDoctorsSiteSideViewModel> FilterSpecialistDoctorsSiteSide(FilterSpecialistDoctorsSiteSideViewModel model, CancellationToken token);
+    //Add Doctor Selected Speciality
+    Task AddDoctorSelectedSpeciality(DoctorSelectedSpeciality speciality);
 
-        //List Of Specialists Site Side 
-        Task<List<ListOfSpecialistsSiteSideViewModel>> ListOfSpecialistsSiteSide(FilterFamilyDoctorUserPanelSideViewModel filter);
+    #endregion
 
-        //List Of Super Specialists 
-        Task<List<ListOfSpecialistsSiteSideViewModel>> ListOfSuperSpecialists(FilterFamilyDoctorUserPanelSideViewModel filter);
+    #region Site Side 
 
-        //Get List Of General Title Specialities
-        Task<List<Speciality>> GetListOfGeneralTitleSpecialities();
+    Task<FilterSpecialistDoctorsSiteSideViewModel> FilterSpecialistDoctorsSiteSide(FilterSpecialistDoctorsSiteSideViewModel model, CancellationToken token);
 
-        //تخصص ها 
-        Task<List<Speciality>> GetChildJustSpecialityByParentId(ulong parentId);
+    //List Of Specialists Site Side 
+    Task<List<ListOfSpecialistsSiteSideViewModel>> ListOfSpecialistsSiteSide(FilterFamilyDoctorUserPanelSideViewModel filter);
 
-        //تخصص ها 
-        Task<List<SelectListViewModel>> GetChildJustSpecialityByParentIdSelectListViewModel(ulong parentId);
+    //List Of Super Specialists 
+    Task<List<ListOfSpecialistsSiteSideViewModel>> ListOfSuperSpecialists(FilterFamilyDoctorUserPanelSideViewModel filter);
 
-        //فوق تخصص ها
-        Task<List<Speciality>> GetChildJustSuperSpecialityByParentId(ulong parentId);
+    //Get List Of General Title Specialities
+    Task<List<Speciality>> GetListOfGeneralTitleSpecialities();
 
-        //فوق تخصص ها
-        Task<List<SelectListViewModel>> GetChildJustSuperSpecialityByParentIdSelectListViewModel(ulong parentId);
+    //تخصص ها 
+    Task<List<Speciality>> GetChildJustSpecialityByParentId(ulong parentId);
 
-        #endregion
-    }
+    //تخصص ها 
+    Task<List<SelectListViewModel>> GetChildJustSpecialityByParentIdSelectListViewModel(ulong parentId);
+
+    //فوق تخصص ها
+    Task<List<Speciality>> GetChildJustSuperSpecialityByParentId(ulong parentId);
+
+    //فوق تخصص ها
+    Task<List<SelectListViewModel>> GetChildJustSuperSpecialityByParentIdSelectListViewModel(ulong parentId);
+
+    #endregion
 }

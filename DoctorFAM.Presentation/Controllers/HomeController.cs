@@ -191,14 +191,6 @@ public class HomeController : SiteBaseController
 
     #endregion
 
-    #region CentersIntrud
-
-    public IActionResult CentersIntrud()
-    {
-        return View();
-    }
-    #endregion
-
     #region DrugStores
 
     public IActionResult DrugStores()

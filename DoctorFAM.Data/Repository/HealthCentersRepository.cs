@@ -1,4 +1,5 @@
 ﻿using DoctorFAM.Data.DbContext;
+using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.HealthCenters;
 using DoctorFAM.Domain.Entities.Organization;
@@ -6,7 +7,9 @@ using DoctorFAM.Domain.Interfaces.EFCore;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.HealthCenters;
 using DoctorFAM.Domain.ViewModels.HealthCenters.HealthCenterMembers;
 using DoctorFAM.Domain.ViewModels.HealthCenters.SideBar;
+using DoctorFAM.Domain.ViewModels.Site.HealthCenters;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 namespace DoctorFAM.Data.Repository;
@@ -25,6 +28,27 @@ public class HealthCentersRepository : IHealthCentersRepository
     #endregion
 
     #region General
+
+    public async Task<bool> IsHealthCenter_AcceptedAndExist(ulong healthCenterId , 
+                                                            CancellationToken cancellationToken)
+    {
+        //Get Health Center OwnerId 
+        var ownerId = await _context.HealthCenters
+                                    .AsNoTracking()
+                                    .Where(p => !p.IsDelete && 
+                                           p.Id == healthCenterId)
+                                    .Select(p=> p.UserId)
+                                    .FirstOrDefaultAsync();
+
+        if (ownerId == null || ownerId == 0) return false;
+
+        return await _context.Organizations
+                             .AsNoTracking()
+                             .AnyAsync(p=> !p.IsDelete && 
+                                       p.OwnerId == ownerId && 
+                                       p.OrganizationInfoState == OrganizationInfoState.Accepted &&
+                                       p.OrganizationType == Domain.Enums.Organization.OrganizationType.HealthCenter);
+    }
 
     public async Task<ulong> GetHealthCenterOwnerUserIdByHealthCenterId(ulong healthCenterId)
     {
@@ -468,6 +492,117 @@ public class HealthCentersRepository : IHealthCentersRepository
         await model.Paging(query);
 
         return model;
+    }
+
+    #endregion
+
+    #region Site Side 
+
+    public async Task<FilterHealthCentersSiteSideDTO> FilterHealthCentersSiteSide(FilterHealthCentersSiteSideDTO model,
+                                                                                  CancellationToken cancellationToken)
+    {
+        var organizations = _context.Organizations
+                                    .AsNoTracking()
+                                    .Where(p => !p.IsDelete &&
+                                           p.OrganizationType == Domain.Enums.Organization.OrganizationType.HealthCenter &&
+                                           p.OrganizationInfoState == OrganizationInfoState.Accepted)
+                                    .OrderByDescending(p => p.CreateDate)
+                                    .AsQueryable();
+
+
+        var healthCentersInfo = _context.HealthCentersInfos
+                                  .AsNoTracking()
+                                  .Where(p => !p.IsDelete)
+                                  .AsQueryable();
+
+        var returnModel = from o in organizations
+                          join h in healthCentersInfo
+                          on o.OwnerId equals h.UserId
+                          select new HealthCentersInfoDTO
+                          {
+                             HealthCenterTitle = h.HealthCenterName,
+                             HealthCenterCoverImage = h.HealthCenterImage,
+                             HealthCenterId = h.HealthCenterId
+                          };
+
+        await model.Paging(returnModel);
+        return model;
+    }
+
+    public async Task<HealthCenterDetailSiteSideDTO?> Fill_HealthCenterDetailSiteSideDTO_ByHealthCenterId(ulong healthCenterId,
+                                                                                                          CancellationToken cancellation)
+    {
+        return await _context.HealthCentersInfos
+                             .AsNoTracking()
+                             .Where(p=> !p.IsDelete && 
+                                    p.HealthCenterId == healthCenterId)
+                             .Select(p=> new HealthCenterDetailSiteSideDTO()
+                             {
+                                 HealthCenterInformation = new HealthCenterInformationSiteSideDTO()
+                                 {
+                                     GeneralPhone = p.GeneralPhone,
+                                     HealthCenterImage = p.HealthCenterImage,
+                                     HealthCenterName = p.HealthCenterName,
+                                     WorkAddress = _context.WorkAddresses
+                                                           .AsNoTracking()
+                                                           .Where(l=> l.UserId == p.UserId)
+                                                           .FirstOrDefault()
+                                 },
+                                 DoctorsInfo = null,
+                                 Specialities = null,
+                             })
+                             .FirstOrDefaultAsync();
+    }
+
+    public async Task<List<ulong>> GetList_OfHealthCenterAcceptedDoctorsUserId_ByHealthCenterInformations(ulong healthCenterId,
+                                                                                                          CancellationToken cancellation)
+    {
+        return await _context.DoctorSelectedHealthCenters
+                             .AsNoTracking()
+                             .Where(p=> !p.IsDelete && 
+                                    p.HealthCenterId == healthCenterId &&
+                                    p.DoctorSelectedHealthCenterState == Domain.Enums.HealthCenter.DoctorSelectedHealthCenterState.Accept)
+                             .OrderByDescending(p=> p.CreateDate)
+                             .Select(p=> p.ApplicantUserId)
+                             .ToListAsync();
+    }
+
+    public async Task<DoctorsMiniInfoDTO?> FillDoctorsMiniInfoDTO_ByHealthCenterDoctorsUserIds(ulong healthCenterId , 
+                                                                                              CancellationToken cancellationToken)
+    {
+        return await _context.Users
+                             .AsNoTracking()
+                             .Include(p => p.Doctors)
+                             .Where(p => !p.IsDelete &&
+                                    p.Id == healthCenterId)
+                             .Select(p => new DoctorsMiniInfoDTO()
+                             {
+                                 DoctorUserAvatar = p.Avatar,
+                                 DoctorUserId = p.Id,
+                                 DoctorUsername = p.Username,
+                                 SpecialitiesIds = _context.DoctorSelectedSpeciality
+                                                           .AsNoTracking()
+                                                           .Where(s=> !s.IsDelete && 
+                                                                  s.DoctorId == p.Doctors.Id)
+                                                           .Select(s=> s.SpecialityId)
+                                                           .ToList()
+                             })
+                             .FirstOrDefaultAsync();
+    }
+
+    public async Task<SpecialitiesInfo?> Fill_SpecialitiesInfo_BySpecialityId(ulong specialityId , 
+                                                                              CancellationToken cancellation)
+    {
+        return await _context.Specialities
+                             .AsNoTracking()
+                             .Where(p => p.IsDelete &&
+                                    p.Id == specialityId)
+                             .Select(p => new SpecialitiesInfo()
+                             {
+                                 SpecialityId = p.Id , 
+                                 SpecialityName = p.UniqueName
+                             })
+                             .FirstOrDefaultAsync();
     }
 
     #endregion

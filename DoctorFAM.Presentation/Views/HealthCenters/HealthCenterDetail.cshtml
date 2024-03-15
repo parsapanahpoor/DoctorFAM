@@ -1,0 +1,332 @@
+﻿@model DoctorFAM.Domain.ViewModels.Site.HealthCenters.HealthCenterDetailSiteSideDTO
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.StaticTools;
+
+@{
+    ViewBag.Title = $"نمایش اطلاعات مرکز درمانی {Model.HealthCenterInformation.HealthCenterName}";
+}
+
+
+<section class="banner p-0 pos-r fullscreen-banner ">
+    <div class="banner-slider owl-carousel no-pb" data-dots="false" data-nav="true">
+        <div class="item p-1" data-bg-img="@PathTools.HealthCenterFilePath/@Model.HealthCenterInformation.HealthCenterImage">
+
+            <div class="container ">
+                <div class="row  " style="margin-top:5px; background:rgba(3,97,9,.8); border-radius:8px;  ">
+                    <div class="col-lg-12 col-md-12  text-center justify-content-center ">
+
+                        <div class=" Top-BannerImage222">
+                            <div class=" row  ">
+                                <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6 d-flex align-items-center text-center  justify-content-center">
+                                    <a class="navbar-brand logo" href="/Home">
+                                        <img id="logo-img" style="width:95px; height:95px;" src="~/Content/images/Logo/clinilSalamatLogo.jpg" alt="">
+                                    </a>
+
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6 d-flex align-items-center">
+                                    <span class=" animated1" style="color:#fd5b03 !important ; font-size:22px; font-weight:700"> 
+                                        @Model.HealthCenterInformation.HealthCenterName
+                                    </span>
+
+                                </div>
+
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12  d-flex text-center  justify-content-center">
+                                    <ul class="navbar-nav mt-4" style="display:inline-block;  ">
+
+                                        <li class="nav-item ClinicMenu">
+                                            معرفی درمانگاه
+                                        </li>
+                                        <li class="nav-item ClinicMenu">
+                                            رزرو نوبت
+                                        </li>
+                                        <li class="nav-item ClinicMenu">
+                                            آزمایشگاه
+                                        </li>
+                                        <li class="nav-item ClinicMenu">
+                                            آندوسکوپی
+                                        </li>
+
+                                    </ul>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+
+<div class="page-content">
+
+    <!--section start-->
+
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-12">
+                    <h2 class="title "> @Model.HealthCenterInformation.HealthCenterName </h2>
+                    <p class="mb-0 text-justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود</p>
+                    <img class="img-fluid w-100 rounded box-shadow my-4" src="/Content/images/Clinics/slider-1.jpg" alt="">
+                    @* <p class="text-justify">
+                    لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود
+                    ابزارهای کاربردی می باشد.
+                    </p>
+                    <p class="mb-0 text-justify">
+                    لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود
+                    ابزارهای کاربردی می باشد.
+                    </p> *@
+                    <div class="row mr-2 ml-2">
+                        <div class="col-md-12 rounded box-shadow Cliniculcer text-center justify-content-center "
+                             style="  border:1px #ffddee solid; border-radius:8px !important;">
+                            <h3 class="p-5 white">درمان زخم دیابتی</h3>
+                        </div>
+                        <div class="col-md-12 rounded box-shadow Clinidiet text-center justify-content-center mt-2 " style="background-color:rgba(58,57,184,.8); border:1px #ffddee solid; border-radius:8px !important;">
+                            <h3 class="p-5 white">لاغری و فعالیت بدنی</h3>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="col-lg-4 col-md-12 sidebar md-mt-5">
+                    <div class="widget ">
+                        <div class="sidebar-links mt-4">
+
+                            @if (Model.Specialities != null && Model.Specialities.Any())
+                            {
+                                <ul class="list-unstyled">
+                                    @*    <li>
+                                <a href="investment-planning.html">
+                                <span class="link-icon link-arrow"></span>
+                                <p class="link-text "> دیابت   (<span> 3پزشک </span>) </p>
+                                <span class="post-author-img pr-5">
+
+                                <img class="img-fluid" src="/Content/images/thumbnail/01.png" style="margin-left:-18px !important;" alt="">
+                                <img class="img-fluid" src="/Content/images/thumbnail/02.png" style="margin-left:-18px !important;" alt="">
+                                <img class="img-fluid" src="/Content/images/thumbnail/03.png" style="margin-left:-18px !important;" alt="">
+
+
+                                </span>
+                                </a>
+                                </li> *@
+
+                                    @if (Model.Specialities.Any(p => p.SpecialityId == 5))
+                                    {
+                                        <li>
+                                            <a href="investment-planning.html">
+                                                <span class="link-icon link-arrow"></span>
+                                                <p class="link-text ">
+                                                    قلب
+                                                    (<span>
+                                                        @Model.Specialities.Where(p => p.SpecialityId == 5).Count()
+                                                    </span>)
+                                                </p>
+                                                <span class="post-author-img pr-5">
+
+                                                    @foreach (var doctor in Model.Specialities.Where(p => p.SpecialityId == 5))
+                                                    {
+                                                        <img class="img-fluid" src="@doctor.Doctor.DoctorUserAvatar.GetUserAvatar()" style="margin-left:-18px !important;" alt="">
+                                                    }
+
+                                                </span>
+                                            </a>
+                                        </li>
+                                    }
+
+                                    @if (Model.Specialities.Any(p => p.SpecialityId == 10029))
+                                    {
+                                        <li>
+                                            <a href="investment-planning.html">
+                                                <span class="link-icon link-arrow"></span>
+                                                <p class="link-text ">
+                                                    چشم
+                                                    (<span>
+                                                        @Model.Specialities.Where(p => p.SpecialityId == 10029).Count()
+                                                    </span>)
+                                                </p>
+                                                <span class="post-author-img pr-5">
+
+                                                    @foreach (var doctor in Model.Specialities.Where(p => p.SpecialityId == 10029))
+                                                    {
+                                                        <img class="img-fluid" src="@doctor.Doctor.DoctorUserAvatar.GetUserAvatar()" style="margin-left:-18px !important;" alt="">
+                                                    }
+
+                                                </span>
+                                            </a>
+                                        </li>
+                                    }
+
+                                    @if (Model.Specialities.Any(p => p.SpecialityId == 10020))
+                                    {
+                                        <li>
+                                            <a href="investment-planning.html">
+                                                <span class="link-icon link-arrow"></span>
+                                                <p class="link-text ">
+                                                    ارتوپدی
+                                                    (<span>
+                                                        @Model.Specialities.Where(p => p.SpecialityId == 10020).Count()
+                                                    </span>)
+                                                </p>
+                                                <span class="post-author-img pr-5">
+
+                                                    @foreach (var doctor in Model.Specialities.Where(p => p.SpecialityId == 10020))
+                                                    {
+                                                        <img class="img-fluid" src="@doctor.Doctor.DoctorUserAvatar.GetUserAvatar()" style="margin-left:-18px !important;" alt="">
+                                                    }
+
+                                                </span>
+                                            </a>
+                                        </li>
+                                    }
+
+                                    @if (Model.Specialities.Any(p => p.SpecialityId == 10025))
+                                    {
+                                        <li>
+                                            <a href="investment-planning.html">
+                                                <span class="link-icon link-arrow"></span>
+                                                <p class="link-text ">
+                                                    جراحی
+                                                    (<span>
+                                                        @Model.Specialities.Where(p => p.SpecialityId == 10025).Count()
+                                                    </span>)
+                                                </p>
+                                                <span class="post-author-img pr-5">
+
+                                                    @foreach (var doctor in Model.Specialities.Where(p => p.SpecialityId == 10025))
+                                                    {
+                                                        <img class="img-fluid" src="@doctor.Doctor.DoctorUserAvatar.GetUserAvatar()" style="margin-left:-18px !important;" alt="">
+                                                    }
+
+                                                </span>
+                                            </a>
+                                        </li>
+                                    }
+
+                                    @if (Model.Specialities.Any(p => p.SpecialityId == 2))
+                                    {
+                                        <li>
+                                            <a href="investment-planning.html">
+                                                <span class="link-icon link-arrow"></span>
+                                                <p class="link-text ">
+                                                    داخلی
+                                                    (<span>
+                                                        @Model.Specialities.Where(p => p.SpecialityId == 2).Count()
+                                                    </span>)
+                                                </p>
+                                                <span class="post-author-img pr-5">
+
+                                                    @foreach (var doctor in Model.Specialities.Where(p => p.SpecialityId == 2))
+                                                    {
+                                                        <img class="img-fluid" src="@doctor.Doctor.DoctorUserAvatar.GetUserAvatar()" style="margin-left:-18px !important;" alt="">
+                                                    }
+
+                                                </span>
+                                            </a>
+                                        </li>
+                                    }
+
+                                </ul>
+                            }
+
+                        </div>
+                    </div>
+
+                    <div class="widget">
+                        <div class="widget-contact px-5 py-5 xs-px-2 xs-py-2 text-white text-center justify-content-center" data-bg-img="/Content/images/Clinics/slider-7.jpg" data-overlay="4">
+                            @* <h4 class="text-white text-capitalize">  با ما تماس بگیرید </h4> *@
+                            <p> برای مشاوره و اخذ نوبت با کلینیک تماس بگیرید. </p>
+                            <a class="btn" href="tel:+981133000034"><span> تماس با ما </span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--section end-->
+</div>
+
+
+
+
+<div class="footer ">
+    <div class="row  " style="margin-top:5px; background:rgba(3,97,9,.5); border-radius:8px;  ">
+        <div class="col-lg-12 col-md-12  text-center justify-content-center ">
+
+            <div class=" Top-BannerImage222">
+                <div class=" row  ">
+                    <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6 d-flex align-items-center text-center  justify-content-center">
+                        <a class="navbar-brand logo" href="/Home">
+                            <img id="logo-img" style="width:55px; height:55px;" src="~/Content/images/Logo/clinilSalamatLogo.jpg" alt="">
+                        </a>
+
+                    </div>
+
+
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12  d-flex text-center  justify-content-center" style="border-right:1px solid #fd5b03;">
+                        <ul class="list-unstyled  mt-4">
+
+                            <li class="">
+                                درباره ما
+                            </li>
+                            <li class="">
+                                رزرو نوبت
+                            </li>
+                            <li class=" ">
+                                تماس با ما
+                            </li>
+
+
+                        </ul>
+
+                    </div>
+
+                    @if (Model.HealthCenterInformation.WorkAddress != null)
+                    {
+                        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                            <div class="contact-media mt-2">
+                                <i class="flaticon-paper-plane"></i>
+                                <h5 class="text-theme"> آدرس </h5>
+
+                                <div class="mb-3">
+                                    <h6 class="font-w-5"> @Model.HealthCenterInformation.HealthCenterName </h6>
+                                    <span class="text-black">@Model.HealthCenterInformation.WorkAddress.State -
+                                        @Model.HealthCenterInformation.WorkAddress.City </span>
+
+                                    <span class="text-black">@Model.HealthCenterInformation.WorkAddress.Address </span>
+                                </div>
+
+                            </div>
+                        </div>
+                    }
+
+
+
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                        <div class="contact-media mt-2">
+                            <i class="flaticon-phone"></i>
+                            <h5 class="text-theme"> با ما تماس بگیرید </h5>
+                            <p class="mb-3">برای مشاوره رایگان و اخذ نوبت تماس بگیرید</p> <a dir="ltr" href="tel:01133000034">@Model.HealthCenterInformation.GeneralPhone</a>
+
+
+                        </div>
+                    </div>
+
+
+                    @* <div class="map iframe-h-2">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.840108181602!2d144.95373631539215!3d-37.8172139797516!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad65d4c2b349649%3A0xb6899234e561db11!2sEnvato!5e0!3m2!1sen!2sin!4v1497005461921"
+                    allowfullscreen=""></iframe>
+                    </div> *@
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+

@@ -32,6 +32,21 @@ public class SpecialityRepository : ISpecialityRepository
 
     #endregion
 
+    #region General 
+
+    public async Task<List<ulong>> GetListOfSpecialitiesChildrenIds_BySpecialityParentId(ulong specialityParentId , 
+                                                                                   CancellationToken cancellation)
+    {
+        return await _context.Specialities
+                             .AsNoTracking()
+                             .Where(p => !p.IsDelete &&
+                                    p.ParentId == specialityParentId)
+                             .Select(p => p.Id)
+                             .ToListAsync();
+    }
+
+    #endregion
+
     #region Admin Side
 
     //Is Exist Speciality By Speciality Id

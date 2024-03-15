@@ -1,0 +1,46 @@
+﻿@model DoctorFAM.Domain.ViewModels.Site.HealthCenters.FilterHealthCentersSiteSideDTO;
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Application.StaticTools;
+
+@{
+    ViewBag.Title = "معرفی مراکز تشخیصی و درمانی";
+}
+
+<section class="section section-featurebox">
+    <div class="container">
+        <div class="section-header text-center">
+            <h2>
+                معرفی مراکز تشخیصی و درمانی
+            </h2>
+            <p class="sub-title">
+
+
+            </p>
+        </div>
+        <div class="row justify-content-center">
+            <div class="feature-col-list">
+
+                @if (Model.Entities != null && Model.Entities.Any())
+                {
+                    foreach (var centers in Model.Entities)
+                    {
+                        <a class=" hover-icon "
+                           asp-action="HealthCenterDetail"
+                           asp-area=""
+                           asp-controller="HealthCenters"
+                           asp-route-centerId="@centers.HealthCenterId"
+                           asp-route-name="@centers.HealthCenterTitle.FixTextForUrl()">
+                            <div class="feature-col">
+                                <div class="feature-subox d-flex flex-wrap justify-content-center">
+                                    <img src="@PathTools.HealthCenterFilePathThumb/@centers.HealthCenterCoverImage" class="img-fluid" alt="Features">
+                                    <h4>@centers.HealthCenterTitle</h4>
+                                </div>
+                            </div>
+                        </a>
+                    }
+                }
+
+            </div>
+        </div>
+    </div>
+</section>

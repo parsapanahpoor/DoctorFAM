@@ -1,14 +1,20 @@
-﻿using DoctorFAM.Domain.Entities.HealthCenters;
+﻿using DoctorFAM.Domain.Entities.Doctors;
+using DoctorFAM.Domain.Entities.HealthCenters;
 using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.HealthCenters;
 using DoctorFAM.Domain.ViewModels.HealthCenters.HealthCenterMembers;
 using DoctorFAM.Domain.ViewModels.HealthCenters.SideBar;
+using DoctorFAM.Domain.ViewModels.Site.HealthCenters;
+using Microsoft.EntityFrameworkCore;
 
 namespace DoctorFAM.Domain.Interfaces.EFCore;
 
 public interface IHealthCentersRepository
 {
     #region General
+
+    Task<bool> IsHealthCenter_AcceptedAndExist(ulong healthCenterId,
+                                               CancellationToken cancellationToken);
 
     Task<ulong> GetHealthCenterOwnerUserIdByHealthCenterId(ulong healthCenterId);
 
@@ -94,6 +100,25 @@ public interface IHealthCentersRepository
     Task<FilterHealthCentersInDoctorPanelDTO> ListOfHealthCenters(FilterHealthCentersInDoctorPanelDTO model);
 
     Task<FilterOfDoctorSelectedHealthCentersDoctorSide> FilterOfDoctorSelectedHealthCentersDoctorSide(FilterOfDoctorSelectedHealthCentersDoctorSide filter);
+
+    #endregion
+
+    #region Site Side 
+
+    Task<FilterHealthCentersSiteSideDTO> FilterHealthCentersSiteSide(FilterHealthCentersSiteSideDTO model,
+                                                                     CancellationToken cancellationToken);
+
+    Task<HealthCenterDetailSiteSideDTO?> Fill_HealthCenterDetailSiteSideDTO_ByHealthCenterId(ulong healthCenterId,
+                                                                                             CancellationToken cancellation);
+
+    Task<List<ulong>> GetList_OfHealthCenterAcceptedDoctorsUserId_ByHealthCenterInformations(ulong healthCenterId,
+                                                                                             CancellationToken cancellation);
+
+    Task<DoctorsMiniInfoDTO?> FillDoctorsMiniInfoDTO_ByHealthCenterDoctorsUserIds(ulong healthCenterId,
+                                                                                  CancellationToken cancellationToken);
+
+    Task<SpecialitiesInfo?> Fill_SpecialitiesInfo_BySpecialityId(ulong specialityId,
+                                                                 CancellationToken cancellation);
 
     #endregion
 }
