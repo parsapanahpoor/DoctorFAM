@@ -257,6 +257,16 @@ public class FocalPointController : SiteBaseController
     [Authorize]
     public async Task<IActionResult> ChooseTypeOfReservation(ChooseTypeOfReservationViewModel model)
     {
+        #region Check Is Exist Any Waiting For Payment Reservation For This User
+
+        var existInvoiceId = await _reservationService.IsExistAnyWaitingForPaymentReservationRequestByUserId(User.GetUserId());
+        if (existInvoiceId != null && existInvoiceId.HasValue && existInvoiceId.Value != 0)
+        {
+            return RedirectToAction(nameof(ShowInvoiceBeforeRedirectToBankProtable), new { reservationDateTimeId = existInvoiceId, Reminder = true });
+        }
+
+        #endregion
+
         #region Get Reservation Date Time 
 
         var reservationDateTime = await _reservationService.GetDoctorReservationDateTimeById(model.ReservationDateTimeId);
