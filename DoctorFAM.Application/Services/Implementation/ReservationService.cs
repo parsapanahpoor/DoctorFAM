@@ -2509,8 +2509,7 @@ public class ReservationService : IReservationService
 
         var workAddress = await _workAddress.GetUserWorkAddressById(model.DoctorId);
 
-        if (workAddress == null && model.DoctorReservationType == Domain.Enums.DoctorReservation.DoctorReservationType.Reserved) return false;
-        if (workAddress != null && model.DoctorReservationType == Domain.Enums.DoctorReservation.DoctorReservationType.Reserved)
+        if (workAddress == null && model.DoctorReservationType == Domain.Enums.DoctorReservation.DoctorReservationType.Reserved)
         {
             reservationDateTime.WorkAddressId = workAddress.Id;
         }
