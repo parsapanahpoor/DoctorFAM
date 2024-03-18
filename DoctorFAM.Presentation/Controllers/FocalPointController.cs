@@ -484,8 +484,6 @@ public class FocalPointController : SiteBaseController
 
         #endregion
 
-
-
         #region Get Reservation Tariff 
 
         var reservationTariff = await _doctorService.ProcessReservationTariffForPayFromUserAndIsUserInDoctorPopulationCoveredOrNot(reservationDate.UserId, reservationDateTime.PatientId.Value, reservationDateTime.DoctorReservationType.Value);
@@ -557,22 +555,24 @@ public class FocalPointController : SiteBaseController
                         await _reservationService.PayReservationTariff(reservationDateTime.PatientId.Value, reservationTariff.Item1, reservationDateTime.Id);
 
                         //Pay Doctor Percentage
-                        if (reservationDateTime.WorkAddressId.HasValue)
-                        {
-                            var location = await _workAddressService.GetWorkAddressById(reservationDateTime.WorkAddressId.Value);
-                            if (location != null && location.UserId != reservationDate.UserId)
-                            {
-                                await _reservationService.PayDoctorReservationPayedSharePercentage(location.UserId, reservationTariff.Item1, reservationDateTime.Id, reservationTariff.Item2, reservationDateTime.DoctorReservationType.Value);
-                            }
-                            else
-                            {
-                                await _reservationService.PayDoctorReservationPayedSharePercentage(reservationDate.UserId, reservationTariff.Item1, reservationDateTime.Id, reservationTariff.Item2, reservationDateTime.DoctorReservationType.Value);
-                            }
-                        }
-                        else
-                        {
-                            await _reservationService.PayDoctorReservationPayedSharePercentage(reservationDate.UserId, reservationTariff.Item1, reservationDateTime.Id, reservationTariff.Item2, reservationDateTime.DoctorReservationType.Value);
-                        }
+                        //if (reservationDateTime.WorkAddressId.HasValue)
+                        //{
+                        //    var location = await _workAddressService.GetWorkAddressById(reservationDateTime.WorkAddressId.Value);
+                        //    if (location != null && location.UserId != reservationDate.UserId)
+                        //    {
+                        //        await _reservationService.PayDoctorReservationPayedSharePercentage(location.UserId, reservationTariff.Item1, reservationDateTime.Id, reservationTariff.Item2, reservationDateTime.DoctorReservationType.Value);
+                        //    }
+                        //    else
+                        //    {
+                        //        await _reservationService.PayDoctorReservationPayedSharePercentage(reservationDate.UserId, reservationTariff.Item1, reservationDateTime.Id, reservationTariff.Item2, reservationDateTime.DoctorReservationType.Value);
+                        //    }
+                        //}
+                        //else
+                        //{
+                        //    await _reservationService.PayDoctorReservationPayedSharePercentage(reservationDate.UserId, reservationTariff.Item1, reservationDateTime.Id, reservationTariff.Item2, reservationDateTime.DoctorReservationType.Value);
+                        //}
+
+                        await _reservationService.PayDoctorReservationPayedSharePercentage(reservationDate.UserId, reservationTariff.Item1, reservationDateTime.Id, reservationTariff.Item2, reservationDateTime.DoctorReservationType.Value);
 
                         #region Send Notification In SignalR
 

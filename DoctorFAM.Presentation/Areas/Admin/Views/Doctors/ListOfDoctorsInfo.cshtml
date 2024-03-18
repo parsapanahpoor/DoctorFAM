@@ -291,16 +291,8 @@
                                     </div>
                                 </td>
                                 <td class="tc vm">
-                                    <p>
-                                        @Localizer["Email"] :
-                                        @if (info.User.Email == null)
-                                        {
-                                            <span class="mr-8px label label-orange">@Localizer["Empty"] </span>
-                                        }
-                                        else
-                                        {
-                                            @info.User.Email
-                                        }
+                                    <p> موجودی کیف پول :
+                                        @info.User.WalletBalance.ToString("#,000") ریال
                                     </p>
 
                                     <hr class="margin-7" />
