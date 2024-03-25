@@ -174,6 +174,10 @@ public interface IReservationRepository
 
     #region Site Side
 
+    //Get Doctor UserId By Reservation Date Time Id 
+    Task<ulong> GetDoctorUserId_ByReservationDateTimeId(ulong reservationDateId,
+                                                                     CancellationToken cancellationToken);
+
     Task AddReservationAlertBackgroundServiceLogger(BackgroundServicesLogger logger);
 
     //Is Exist Any Waiting For Payment Reservation Request By User Id

@@ -388,7 +388,8 @@ public class FocalPointController : SiteBaseController
     #region Redirect To Bank Portable
 
     [Authorize]
-    public async Task<IActionResult> RedirectToBankPortableForPayReservationTariff(ulong reservatioonDateTimeId)
+    public async Task<IActionResult> RedirectToBankPortableForPayReservationTariff(ulong reservatioonDateTimeId,
+                                                                                   CancellationToken cancellationToken = default)
     {
         #region Get Reservation Date Time 
 
@@ -411,6 +412,26 @@ public class FocalPointController : SiteBaseController
         {
             TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
             return RedirectToAction("Index", "Home");
+        }
+
+        //Health Centers
+        if (reservationDateTime.WorkAddressId.HasValue &&
+            reservationDateTime.DoctorReservationType == Domain.Enums.DoctorReservation.DoctorReservationType.Reserved)
+        {
+            var location = await _workAddressService.GetWorkAddressById(reservationDateTime.WorkAddressId.Value);
+
+            if (location != null && location.UserId != await _reservationService.GetDoctorUserId_ByReservationDateId(reservationDateTime.DoctorReservationDateId,
+                                                                                                                     cancellationToken))
+            {
+                return RedirectToAction("PaymentMethod", "Payment", new
+                {
+                    gatewayType = GatewayType.Zarinpal,
+                    amount = 100000,
+                    description = "شارژ حساب کاربری برای پرداخت هزینه ی دریافت نوبت",
+                    returURL = $"{PathTools.SiteAddress}/DoctorReservationPayment/" + reservatioonDateTimeId,
+                    requestId = reservatioonDateTimeId,
+                });
+            }
         }
 
         var reservationTariff = await _doctorService.ProcessReservationTariffForPayFromUser(reservationDateTime.DoctorReservationDate.UserId, User.GetUserId(), reservationDateTime.DoctorReservationType.Value);
@@ -493,6 +514,16 @@ public class FocalPointController : SiteBaseController
             return RedirectToAction("Index", "Home");
         }
 
+        var location = await _workAddressService.GetWorkAddressById(reservationDateTime.WorkAddressId.Value);
+
+        if (location != null && reservationDateTime.WorkAddressId.HasValue)
+        {
+            if (location != null && location.UserId != reservationDate.UserId)
+            {
+                reservationTariff = new(100000, true, true);
+            }
+        }
+
         #endregion
 
         try
@@ -555,24 +586,17 @@ public class FocalPointController : SiteBaseController
                         await _reservationService.PayReservationTariff(reservationDateTime.PatientId.Value, reservationTariff.Item1, reservationDateTime.Id);
 
                         //Pay Doctor Percentage
-                        //if (reservationDateTime.WorkAddressId.HasValue)
-                        //{
-                        //    var location = await _workAddressService.GetWorkAddressById(reservationDateTime.WorkAddressId.Value);
-                        //    if (location != null && location.UserId != reservationDate.UserId)
-                        //    {
-                        //        await _reservationService.PayDoctorReservationPayedSharePercentage(location.UserId, reservationTariff.Item1, reservationDateTime.Id, reservationTariff.Item2, reservationDateTime.DoctorReservationType.Value);
-                        //    }
-                        //    else
-                        //    {
-                        //        await _reservationService.PayDoctorReservationPayedSharePercentage(reservationDate.UserId, reservationTariff.Item1, reservationDateTime.Id, reservationTariff.Item2, reservationDateTime.DoctorReservationType.Value);
-                        //    }
-                        //}
-                        //else
-                        //{
-                        //    await _reservationService.PayDoctorReservationPayedSharePercentage(reservationDate.UserId, reservationTariff.Item1, reservationDateTime.Id, reservationTariff.Item2, reservationDateTime.DoctorReservationType.Value);
-                        //}
-
-                        await _reservationService.PayDoctorReservationPayedSharePercentage(reservationDate.UserId, reservationTariff.Item1, reservationDateTime.Id, reservationTariff.Item2, reservationDateTime.DoctorReservationType.Value);
+                        if (location != null)
+                        {
+                            if (location.UserId == reservationDate.UserId)
+                            {
+                                await _reservationService.PayDoctorReservationPayedSharePercentage(location.UserId, reservationTariff.Item1, reservationDateTime.Id, reservationTariff.Item2, reservationDateTime.DoctorReservationType.Value);
+                            }
+                        }
+                        else
+                        {
+                            await _reservationService.PayDoctorReservationPayedSharePercentage(reservationDate.UserId, reservationTariff.Item1, reservationDateTime.Id, reservationTariff.Item2, reservationDateTime.DoctorReservationType.Value);
+                        }
 
                         #region Send Notification In SignalR
 
@@ -659,6 +683,7 @@ public class FocalPointController : SiteBaseController
         invoice.RefId = trackingCode;
 
         #endregion
+
         ViewBag.ReservationPrice = invoice.ReservationPrice - 100000;
         return View(invoice);
     }

@@ -50,6 +50,8 @@ namespace DoctorFAM.Domain.ViewModels.Site.Reservation
 
         public LogForAnotherPatient? AnotherPatientSiteSide { get; set; }
 
+        public bool HealthCenterLocation { get; set; }
+
         #endregion
     }
 }
