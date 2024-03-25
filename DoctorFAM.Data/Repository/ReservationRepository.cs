@@ -1949,6 +1949,18 @@ public class ReservationRepository : IReservationRepository
 
     #region Site Side 
 
+    //Get Doctor UserId By Reservation Date Time Id 
+    public async Task<ulong> GetDoctorUserId_ByReservationDateTimeId(ulong reservationDateId,
+                                                                     CancellationToken cancellationToken)
+    {
+        return await _context.DoctorReservationDates
+                             .AsNoTracking()
+                             .Where(p => !p.IsDelete &&
+                                    p.Id == reservationDateId)
+                             .Select(p => p.UserId)
+                             .FirstOrDefaultAsync();
+    }
+
     public async Task AddReservationAlertBackgroundServiceLogger(BackgroundServicesLogger logger)
     {
         await _context.BackgroundServicesLoggers.AddAsync(logger);

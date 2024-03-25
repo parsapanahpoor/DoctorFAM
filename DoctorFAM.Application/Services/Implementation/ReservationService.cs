@@ -2009,6 +2009,13 @@ public class ReservationService : IReservationService
 
     #region Site Side
 
+    //Get Doctor UserId By Reservation Date Time Id 
+    public async Task<ulong> GetDoctorUserId_ByReservationDateId(ulong reservationDateId , 
+                                                                     CancellationToken cancellationToken)
+    {
+        return await _reservation.GetDoctorUserId_ByReservationDateTimeId(reservationDateId, cancellationToken);
+    }
+
     //Is Exist Any Waiting For Payment Reservation Request By User Id
     public async Task<ulong?> IsExistAnyWaitingForPaymentReservationRequestByUserId(ulong userId)
     {
@@ -2066,6 +2073,21 @@ public class ReservationService : IReservationService
         if (doctorOffice.OrganizationInfoState != OrganizationInfoState.Accepted) return null;
 
         #endregion
+
+        if (reservationDateTime.WorkAddressId.HasValue &&
+            reservationDateTime.DoctorReservationType == DoctorReservationType.Reserved)
+        {
+            //Get Location By Id 
+            var location = await _workAddress.GetWorkAddressById(reservationDateTime.WorkAddressId.Value);
+
+            if (location != null && location.UserId != doctorOffice.OwnerId)
+            {
+                model.ReservationPrice = 100000;
+                model.HealthCenterLocation = true;
+
+                return await FillReservationFactorSiteSideViewModel(model, reservationDateTime.WorkAddressId.Value, userId);
+            }
+        }
 
         #region Get Doctor Reservation Tariff
 
@@ -2167,6 +2189,21 @@ public class ReservationService : IReservationService
 
         var reservationTariff = await _doctorsRepository.GetDoctorReservationTariffByDoctorUserId(doctorOffice.OwnerId);
         if (reservationTariff == null) return null;
+
+        if (reservationDateTime.WorkAddressId.HasValue &&
+            reservationDateTime.DoctorReservationType == DoctorReservationType.Reserved)
+        {
+            //Get Location By Id 
+            var location = await _workAddress.GetWorkAddressById(reservationDateTime.WorkAddressId.Value);
+
+            if (location != null && location.UserId != doctorOffice.OwnerId)
+            {
+                model.ReservationPrice = 100000;
+                model.HealthCenterLocation = true;
+
+                return await FillReservationFactorSiteSideViewModel(model, reservationDateTime.WorkAddressId.Value, user.Id);
+            }
+        }
 
         #endregion
 
@@ -2292,9 +2329,9 @@ public class ReservationService : IReservationService
     }
 
     //Get List Of Doctor Reservation Date And Doctor Reservation Date Time For Show Site Side 
-    public async Task<List<ListOfReservationDateAndReservationDateTimeViewModel>?> GetListOfDoctorReservationDateAndDoctorReservationDateTimeForShowSiteSide(ulong doctorUserId , ulong workAddress)
+    public async Task<List<ListOfReservationDateAndReservationDateTimeViewModel>?> GetListOfDoctorReservationDateAndDoctorReservationDateTimeForShowSiteSide(ulong doctorUserId, ulong workAddress)
     {
-        return await _reservation.GetListOfDoctorReservationDateAndDoctorReservationDateTimeForShowSiteSide(doctorUserId , workAddress);
+        return await _reservation.GetListOfDoctorReservationDateAndDoctorReservationDateTimeForShowSiteSide(doctorUserId, workAddress);
     }
 
     //List Of Future Doctor Days For Reservation 

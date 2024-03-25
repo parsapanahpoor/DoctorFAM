@@ -220,6 +220,9 @@ public interface IReservationService
 
     #region Site Side 
 
+    Task<ulong> GetDoctorUserId_ByReservationDateId(ulong reservationDateId,
+                                                    CancellationToken cancellationToken);
+
     //Show Invoice After Payment For Reservation
     Task<ReservationFactorSiteSideViewModel?> ShowInvoiceAfterPaymentForReservation(ulong reservationDateTimeId);
 

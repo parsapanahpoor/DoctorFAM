@@ -8,7 +8,7 @@
 }
 
 @section Styles
-    {
+{
     <!--Basic Styles-->
     <link href="/admin/css/bootstrap.min.css" rel="stylesheet">
     <link id="bootstrap-rtl-link" href="/admin/css/bootstrap-rtl.min.css" rel="stylesheet">
@@ -27,7 +27,7 @@
 }
 
 @section Scripts
-    {
+{
     <partial name="_JqueryValidation" />
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
@@ -48,7 +48,7 @@
             });
         });
     </script>
-    }
+}
 
 <div class="row mt-5" id="container_content">
     <div class="col-lg-3 col-sm-12 col-xs-12">
@@ -75,7 +75,7 @@
                 <div class="col-lg-12 col-sm-12 col-xs-12">
                     <div class="panel panel-default">
                         <div class="panel-heading text-center justify-content-center">
-                            <h4 style="color:red" >صورتحساب پرداخت و ثبت نهایی نوبت  </h4>
+                            <h4 style="color:red">صورتحساب پرداخت و ثبت نهایی نوبت  </h4>
                         </div>
                         <div class="panel-body">
                             <ul>
@@ -83,7 +83,7 @@
                                 <li>موبایل : @Model.PatientMobile</li>
 
 
-                                
+
                             </ul>
                         </div>
                     </div>
@@ -150,7 +150,6 @@
                             </td>
                         </tr>
                     }
-                   
 
                     <tr>
                         <td>تاریخ نوبت</td>
@@ -161,30 +160,38 @@
                         <td>ساعت مراجعه</td>
                         <td>@string.Concat(Model.ReservationDateTime.Reverse().Skip(3).Reverse())</td>
                     </tr>
+                   
+                    @if (Model.HealthCenterLocation)
+                    {
+                        <tr>
+                            <td>مبلغ پرداختی</td>
+                            <td>@Model.ReservationPrice.ToString("#,000") ریال</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr>
+                            <td>اخذ نوبت</td>
+                            <td>100،000 ریال</td>
+                        </tr>
 
-                    <tr>
-                        <td>اخذ نوبت</td>
-                        <td>100،000 ریال</td>
-                    </tr>
+                        <tr>
+                            <td>بیعانه ویزیت پزشک</td>
+                            <td>@ViewBag.ReservationPrice.ToString("#,000") ریال</td>
+                        </tr>
 
-                    <tr>
-                        <td>بیعانه ویزیت پزشک</td>
-                        <td>@ViewBag.ReservationPrice.ToString("#,000") ریال</td>
-                    </tr>
-
-
-
-                    <tr>
-                        <td>مبلغ پرداختی</td>
-                        <td>@Model.ReservationPrice.ToString("#,000") ریال</td>
-                    </tr>
-
+                        <tr>
+                            <td>مبلغ پرداختی</td>
+                            <td>@Model.ReservationPrice.ToString("#,000") ریال</td>
+                        </tr>
+                    }
+                   
                     <tr>
                         <td>آدرس مطب پزشک</td>
                         <td>
                             @if (Model.DoctorAddress != null)
                             {
-                                 @Model.DoctorAddress.Address
+                                @Model.DoctorAddress.Address
                             }
                         </td>
                     </tr>
