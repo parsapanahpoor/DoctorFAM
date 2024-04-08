@@ -392,6 +392,14 @@ public class HealthCentersRepository : IHealthCentersRepository
 
     public async Task<FilterHealthCentersInDoctorPanelDTO> ListOfHealthCenters(FilterHealthCentersInDoctorPanelDTO model)
     {
+        var organizations = _context.Organizations
+                                    .AsNoTracking()
+                                    .Where(p => !p.IsDelete &&
+                                           p.OrganizationType == Domain.Enums.Organization.OrganizationType.HealthCenter &&
+                                           p.OrganizationInfoState == OrganizationInfoState.Accepted)
+                                    .AsQueryable();
+
+
         var query = _context.HealthCenters
                             .AsNoTracking()
                             .Include(p => p.HealthCentersInfo)
@@ -399,6 +407,20 @@ public class HealthCentersRepository : IHealthCentersRepository
                             .Where(p => !p.IsDelete)
                             .OrderByDescending(p => p.CreateDate)
                             .AsQueryable();
+
+        query = from q in query
+                join o in organizations
+                on q.UserId equals o.OwnerId
+                select new HealthCenter()
+                {
+                    CreateDate = q.CreateDate,
+                    HealthCentersInfo = q.HealthCentersInfo,
+                    Id = q.Id,
+                    IsDelete = q.IsDelete,
+                    User = q.User,
+                    UserId = q.UserId
+                };
+
 
         //Health Center Name
         if (!string.IsNullOrEmpty(model.HealthCenterName))
@@ -678,7 +700,7 @@ public class HealthCentersRepository : IHealthCentersRepository
 
                                  NewestReservationDTO = _context.DoctorReservationDateTimes
                                                                 .AsNoTracking()
-                                                                .Include(r=> r.DoctorReservationDate)
+                                                                .Include(r => r.DoctorReservationDate)
                                                                 .Where(r => !r.IsDelete &&
                                                                        r.DoctorReservationDate.UserId == p.UserId &&
                                                                        DateTime.Compare(r.DoctorReservationDate.ReservationDate, dateTime) >= 0 &&
@@ -688,7 +710,7 @@ public class HealthCentersRepository : IHealthCentersRepository
                                                                 .OrderBy(r => r.DoctorReservationDate.ReservationDate)
                                                                 .Select(r => new NewestReservationDTO()
                                                                 {
-                                                                    DoctorReservationDateTimeId = r.Id, 
+                                                                    DoctorReservationDateTimeId = r.Id,
                                                                     ReservationDate = r.DoctorReservationDate.ReservationDate,
                                                                     ReservationDateId = r.DoctorReservationDateId,
                                                                     StartTime = r.StartTime
