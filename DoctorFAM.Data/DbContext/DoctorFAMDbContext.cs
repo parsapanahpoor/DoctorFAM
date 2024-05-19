@@ -61,6 +61,8 @@ using DoctorFAM.Domain.Entities.UsersBankAccount;
 using DoctorFAM.Domain.Entities.HealthCenters;
 using DoctorFAM.Domain.Entities.Log.LogForBackgroundServices;
 using DoctorFAM.Domain.Entities.Story;
+using DoctorFAM.Data.ValidationsAndMappings.Rating;
+using DoctorFAM.Domain.Entities.RatingAgg;
 
 
 #endregion
@@ -602,6 +604,12 @@ public class DoctorFAMDbContext : Microsoft.EntityFrameworkCore.DbContext
 
     #endregion
 
+    #region Rating
+
+    public DbSet<OrganizationStart> OrganizationStarts { get; set; }
+
+    #endregion
+
     #endregion
 
     #region On Model Creating
@@ -610,6 +618,9 @@ public class DoctorFAMDbContext : Microsoft.EntityFrameworkCore.DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        var assembly = typeof(RatingMapper).Assembly;
+        modelBuilder.ApplyConfigurationsFromAssembly(assembly);
+
         foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
         {
             relationship.DeleteBehavior = DeleteBehavior.Restrict;

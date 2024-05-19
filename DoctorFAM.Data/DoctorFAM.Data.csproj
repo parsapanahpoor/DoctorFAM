@@ -19,4 +19,8 @@
 		<ProjectReference Include="..\DoctorFAM.Domain\DoctorFAM.Domain.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="ValidationsAndMappings\DoctorAgg\" />
+	</ItemGroup>
+
 </Project>

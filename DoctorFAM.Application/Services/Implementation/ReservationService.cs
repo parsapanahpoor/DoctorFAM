@@ -1916,10 +1916,18 @@ public class ReservationService : IReservationService
         #region Get Reservation Tariff
 
         var wallet = await _walletService.GetWalletTransactionByReservationDateTimeId(reservationTimeId);
-        if (wallet == null)
-        {
-            return false;
-        }
+        if (wallet == null) return false;
+
+        #endregion
+
+        #region Get Doctor By doctor Id 
+
+        var reservation = await GetReservationDateById(reservationTime.DoctorReservationDateId);
+        if (reservation == null) return false;
+
+        var doctorUser = await _userService.GetUserById(reservation.UserId);
+        if (doctorUser == null) return false;
+        if (doctorUser.WalletBalance < wallet.Price) return false;
 
         #endregion
 
@@ -1934,26 +1942,37 @@ public class ReservationService : IReservationService
 
             #endregion
 
-            #region Add Transaction
+            #region Add Transaction For User And Doctor
 
-            if (reservationTime.DoctorReservationState == Domain.Enums.DoctorReservation.DoctorReservationState.Reserved)
+            if (reservationTime.DoctorReservationState == DoctorReservationState.Reserved)
             {
-                //Fill Model
+                //Fill Model For User
                 AdminCreateWalletViewModel model = new AdminCreateWalletViewModel
                 {
                     Description = "بازگشت هزینه ی نوبت دریافت شده به علت لغو نوبت .",
-                    GatewayType = Domain.Entities.Wallet.GatewayType.System,
-                    PaymentType = Domain.Entities.Wallet.PaymentType.ChargeWallet,
+                    GatewayType = GatewayType.System,
+                    PaymentType = PaymentType.ChargeWallet,
                     Price = wallet.Price,
-                    TransactionType = Domain.Entities.Wallet.TransactionType.Deposit,
+                    TransactionType = TransactionType.Deposit,
                     UserId = patient.Id
                 };
 
                 var res = await _walletService.CreateWalletAsync(model);
-
                 if (res == AdminCreateWalletResponse.UserNotFound) return false;
-            }
 
+                //Fill Model For User
+                AdminCreateWalletViewModel doctorWithdrawMoney = new AdminCreateWalletViewModel
+                {
+                    Description = "برداشت هزینه ی لغو نوبت پزشک.",
+                    GatewayType = GatewayType.System,
+                    PaymentType = PaymentType.Reservation,
+                    Price = wallet.Price,
+                    TransactionType = TransactionType.Withdraw,
+                    UserId = doctorUser.Id
+                };
+
+                var res1 = await _walletService.CreateWalletAsync(doctorWithdrawMoney);
+            }
 
             #endregion
 
@@ -1974,7 +1993,7 @@ public class ReservationService : IReservationService
 
         #region Change Reservation State 
 
-        reservationTime.DoctorReservationState = Domain.Enums.DoctorReservation.DoctorReservationState.Canceled;
+        reservationTime.DoctorReservationState = DoctorReservationState.Canceled;
         reservationTime.DoctorReservationType = null;
         reservationTime.PatientId = null;
 
@@ -2010,7 +2029,7 @@ public class ReservationService : IReservationService
     #region Site Side
 
     //Get Doctor UserId By Reservation Date Time Id 
-    public async Task<ulong> GetDoctorUserId_ByReservationDateId(ulong reservationDateId , 
+    public async Task<ulong> GetDoctorUserId_ByReservationDateId(ulong reservationDateId,
                                                                      CancellationToken cancellationToken)
     {
         return await _reservation.GetDoctorUserId_ByReservationDateTimeId(reservationDateId, cancellationToken);
