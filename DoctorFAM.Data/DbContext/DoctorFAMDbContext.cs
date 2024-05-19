@@ -608,6 +608,8 @@ public class DoctorFAMDbContext : Microsoft.EntityFrameworkCore.DbContext
 
     public DbSet<OrganizationStart> OrganizationStarts { get; set; }
 
+    public DbSet<OrganizationStarPoint> OrganizationStarPoints { get; set; }
+
     #endregion
 
     #endregion
@@ -618,9 +620,6 @@ public class DoctorFAMDbContext : Microsoft.EntityFrameworkCore.DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        var assembly = typeof(RatingMapper).Assembly;
-        modelBuilder.ApplyConfigurationsFromAssembly(assembly);
-
         foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
         {
             relationship.DeleteBehavior = DeleteBehavior.Restrict;

@@ -1,0 +1,97 @@
+﻿@model DoctorFAM.Domain.ViewModels.Site.Rating.ShowRatingFormForPatientDTO
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+
+@{
+    ViewBag.Title = "امتیازدهی به پزشک";
+}
+
+@section Scripts
+    {
+    <partial name="_JqueryValidation" />
+    <script src="~/Site/js/Reservation/Reservation.js"></script>
+}
+
+
+<div class="">
+
+    <div class="row Doc_Banner_Div ">
+        <div class="container">
+            <div class="col-md-4 text-center justify-content-center mt-2">
+
+                <div class="row Doc_name_Div">
+                    <div class="col-md-4">
+                        <img src="/content/images/user/@((string.IsNullOrEmpty(Model.DoctorInfo.DoctorAvatar)) ? "DefaultAvatar.png" : $"thumb/{Model.DoctorInfo.DoctorAvatar}")" style="border-radius:50%; width:90px; height:90px; border:1px solid #fccf9a;" alt="Doctor Image">
+                    </div>
+                    <div class="col-md-8">
+                        <h4 class="text-center justify-content-center doc-name">دکتر: @Model.DoctorInfo.DoctorUsername</h4>
+                    </div>
+                </div>
+                <div class="row ">
+                    <div class="col-md-5"></div>
+                    <div class="col-md-7" style="border-right:1px solid #cccccc;">
+                        <p class="text-center justify-content-center clinic-services2 ">اطلاعات نوبت : روز : @Model.ReservationInfo.ReservationDate.ToShamsi() - ساعت : @Model.ReservationInfo.ReservationDateStartTime</p>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-8 text-center justify-content-center "></div>
+        </div>
+    </div>
+
+    <div class="col-md-12 text-center justify-content-center p-5">
+        <h5>  لطفا میزان رضایت خود را از ارائه ی خدمات پزشک محترم مورد نظر با انتخاب یکی از گزینه های زیر انتخاب کنید </h5>
+
+        <div class=" booking-schedule schedule-widget">
+            <div class="schedule-cont">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-10">
+
+                            <div class="time-slot">
+                                <ul class="clearfix">
+
+                                        <li class="form-group col-md-2 col-sm-12 NotbtnDay22" style="margin-top:10px;">
+                                            <a asp-action="DocBooking" asp-area="" asp-controller="FocalPoint" >
+                                                <span class=" ">  بسیار عالی بود 😍</span>
+                                            </a>
+                                        </li>
+
+                                    <li class="form-group col-md-2 col-sm-12 NotbtnDay22" style="margin-top:10px;">
+                                        <a asp-action="DocBooking" asp-area="" asp-controller="FocalPoint">
+                                            <span class=" ">   خوب بود 😊</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="form-group col-md-2 col-sm-12 NotbtnDay22" style="margin-top:10px;">
+                                        <a asp-action="DocBooking" asp-area="" asp-controller="FocalPoint">
+                                            <span class=" ">  نظر خاصی ندارم 😐</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="form-group col-md-2 col-sm-12 NotbtnDay22" style="margin-top:10px;">
+                                        <a asp-action="DocBooking" asp-area="" asp-controller="FocalPoint">
+                                            <span class=" ">  خوب نبود 😒</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="form-group col-md-2 col-sm-12 NotbtnDay22" style="margin-top:10px;">
+                                        <a asp-action="DocBooking" asp-area="" asp-controller="FocalPoint">
+                                            <span class=" ">    خیلی بد بود😖 </span>
+                                        </a>
+                                    </li>
+
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+  
+</div>
+

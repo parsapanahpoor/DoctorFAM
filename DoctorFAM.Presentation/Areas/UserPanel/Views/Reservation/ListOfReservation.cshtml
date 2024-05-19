@@ -16,7 +16,7 @@
 
 @section Scripts
 {
-<partial name="_JqueryValidation" />
+    <partial name="_JqueryValidation" />
 }
 
 @section Breadcrumb
@@ -168,6 +168,15 @@
                                     }
                                 </td>
                                 <td class="tc vm">
+
+                                    <a asp-action="DoctorReservationRating" 
+                                       asp-controller="OrganizationRating" 
+                                       asp-area=""
+                                       asp-route-reservationId="@date.Id"
+                                       class="btn btn-warning btn-circle btn-xs">
+                                        <i class="fa fa-star"></i>
+                                    </a>
+
                                     @if (date.DoctorReservationState == DoctorFAM.Domain.Enums.DoctorReservation.DoctorReservationState.Reserved)
                                     {
                                         <a asp-action="ReservationDetail" asp-controller="Reservation" asp-area="UserPanel" asp-route-ReservationId="@date.Id" class="btn btn-azure btn-circle btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
