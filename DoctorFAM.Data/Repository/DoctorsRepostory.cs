@@ -1108,6 +1108,7 @@ namespace DoctorFAM.Data.Repository
                     .ThenInclude(p => p.DoctorsInfos)
                     .Include(p => p.Doctor)
                     .ThenInclude(p => p.User)
+                    .ThenInclude(p => p.OrganizationStarPoint)
                     .Where(s => !s.IsDelete && s.InterestId == 3)
                     .OrderBy(s => s.CreateDate)
                     .Select(p => p.Doctor)

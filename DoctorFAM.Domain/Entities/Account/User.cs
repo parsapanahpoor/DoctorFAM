@@ -12,6 +12,7 @@ using DoctorFAM.Domain.Entities.Notification;
 using DoctorFAM.Domain.Entities.Nurse;
 using DoctorFAM.Domain.Entities.Organization;
 using DoctorFAM.Domain.Entities.Pharmacy;
+using DoctorFAM.Domain.Entities.RatingAgg;
 using DoctorFAM.Domain.Entities.Requests;
 using DoctorFAM.Domain.Entities.Resume;
 using DoctorFAM.Domain.Entities.WorkAddress;
@@ -173,6 +174,8 @@ namespace DoctorFAM.Domain.Entities.Account
         public ICollection<UserInsertedFromParsaSystem> UserInsertedFromParsaSystems { get; set; }
 
         public ICollection<HealthInformation.HealthInformation> HealthInformation { get; set; }
+
+        public OrganizationStarPoint OrganizationStarPoint { get; set; }
 
         public Resume.Resume Resume { get; set; }
 

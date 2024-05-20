@@ -227,13 +227,24 @@
                                                 {
                                                     <h5 class="doc-department"> @((!string.IsNullOrEmpty(doctor.DoctorsInfos.Specialty)) ? doctor.DoctorsInfos.Specialty : null)</h5>
                                                 }
+
                                                 <div class="rating">
-                                                    <i class="fas fa-star filled"></i>
-                                                    <i class="fas fa-star filled"></i>
-                                                    <i class="fas fa-star filled"></i>
-                                                    <i class="fas fa-star filled"></i>
-                                                    <i class="fas fa-star"></i>
-                                                    <span class="d-inline-block average-rating">()</span>
+                                                    @if (doctor.User.OrganizationStarPoint != null)
+                                                    {
+                                                        for (int i = 1; i <= doctor.User.OrganizationStarPoint.PointValue; i++)
+                                                        {
+                                                            <i class="fas fa-star filled"></i>
+                                                        }
+                                                        for (int i = 1; i <= 5 - doctor.User.OrganizationStarPoint.PointValue; i++)
+                                                        {
+                                                            <i class="fas fa-star"></i>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <i class="fas fa-star"></i>
+                                                    }
+                                                    <span class="d-inline-block average-rating">(@(doctor.User.OrganizationStarPoint != null ? doctor.User.OrganizationStarPoint.PointValue  : 0 )/5)</span>
                                                 </div>
 
                                                 <div class="clinic-services">
