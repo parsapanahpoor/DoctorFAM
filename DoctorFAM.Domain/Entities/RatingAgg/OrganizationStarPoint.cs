@@ -8,7 +8,7 @@ public class OrganizationStarPoint :BaseEntity
 
     public ulong OperatorUserId { get; set; }
 
-    public ulong PointValue { get; set; }
+    public int PointValue { get; set; }
 
     #endregion
 }

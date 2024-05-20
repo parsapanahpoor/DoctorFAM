@@ -1,7 +1,7 @@
 ﻿using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.ViewModels.Site.Rating;
 
-namespace DoctorFAM.Application.CQRS.SiteSide.OrganizationRating.DoctorReservationRating;
+namespace DoctorFAM.Application.CQRS.SiteSide.OrganizationRating.Query.DoctorReservationRating;
 
 public record DoctorReservationRatingQueryHandler : IRequestHandler<DoctorReservationRatingQuery, ShowRatingFormForPatientDTO>
 {

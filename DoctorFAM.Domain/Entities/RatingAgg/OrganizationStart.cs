@@ -13,6 +13,8 @@ public sealed class OrganizationStart : BaseEntity
 
     public OrganizationStartEnum OrganizationStartEnum { get; set; }
 
+    public ulong ServiceRequestedId { get; set; }
+
     public int Star { get; set; }
 
     #endregion
