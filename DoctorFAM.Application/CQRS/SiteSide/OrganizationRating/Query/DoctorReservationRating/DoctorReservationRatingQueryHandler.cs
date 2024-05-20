@@ -40,7 +40,9 @@ public record DoctorReservationRatingQueryHandler : IRequestHandler<DoctorReserv
         ShowRatingFormForPatientDTO_ReservationInfo reservationInfo = new()
         {
             ReservationDate = reservation.ReservationDate,
-            ReservationDateStartTime = reservationTime.StartTime
+            ReservationDateStartTime = reservationTime.StartTime,
+            ReservationId = reservation.Id,
+            ReservationDateTimeId = reservationTime.Id
         };
 
         model.ReservationInfo = reservationInfo;
@@ -53,11 +55,15 @@ public record DoctorReservationRatingQueryHandler : IRequestHandler<DoctorReserv
         {
             var patientUserInfo = await _userRepository.GetUserById(request.UserId.Value, cancellationToken);
             if (patientUserInfo == null || reservationTime.PatientId.Value != request.UserId.Value) return null;
+
+            model.PatientMobile = patientUserInfo.Mobile;
         }
         if (!string.IsNullOrEmpty(request.MobileNumber))
         {
             var patientUserInfo = await _userRepository.GetUserByMobile(request.MobileNumber);
             if (patientUserInfo == null || reservationTime.PatientId.Value != patientUserInfo.Id) return null;
+
+            model.PatientMobile = patientUserInfo.Mobile;
         }
 
         #endregion

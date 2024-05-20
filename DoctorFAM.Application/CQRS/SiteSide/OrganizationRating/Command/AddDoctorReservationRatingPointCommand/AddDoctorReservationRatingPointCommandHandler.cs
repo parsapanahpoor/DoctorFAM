@@ -38,11 +38,11 @@ public record AddDoctorReservationRatingPointCommandHandler : IRequestHandler<Ad
     {
         #region Get Reservation By Id 
 
-        var reservationTime = await _reservationRepository.GetDoctorReservationDateTimeById(request.ReservationId);
-        if (reservationTime == null || !reservationTime.PatientId.HasValue) return false;
-
-        var reservation = await _reservationRepository.GetReservationDateById(reservationTime.DoctorReservationDateId);
+        var reservation = await _reservationRepository.GetReservationDateById(request.ReservationId);
         if (reservation == null) return false;
+
+        var reservationTime = await _reservationRepository.GetDoctorReservationDateTimeById(request.ReservationDateTimeId);
+        if (reservationTime == null || !reservationTime.PatientId.HasValue) return false;
 
         #endregion
 
@@ -106,6 +106,6 @@ public record AddDoctorReservationRatingPointCommandHandler : IRequestHandler<Ad
 
         #endregion
 
-        return false;
+        return true;
     }
 }

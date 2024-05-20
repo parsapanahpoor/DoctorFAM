@@ -8,6 +8,8 @@ public record ShowRatingFormForPatientDTO
 
     public ShowRatingFormForPatientDTO_ReservationInfo ReservationInfo { get; set; }
 
+    public string PatientMobile { get; set; }
+
     #endregion
 }
 
@@ -27,6 +29,10 @@ public record ShowRatingFormForPatientDTO_DoctorProfile
 public record ShowRatingFormForPatientDTO_ReservationInfo
 {
     #region properties
+
+    public ulong ReservationId { get; set; }
+
+    public ulong ReservationDateTimeId { get; set; }
 
     public DateTime ReservationDate { get; set; }
 

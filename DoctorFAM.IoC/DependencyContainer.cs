@@ -10,10 +10,12 @@ using DoctorFAM.Application.Services.Implementation;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Data.Dapper.Repository;
 using DoctorFAM.Data.Repository;
+using DoctorFAM.Data.Repository.OrganizationRating;
 using DoctorFAM.Data.Repository.Story;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.Interfaces.Dapper;
 using DoctorFAM.Domain.Interfaces.EFCore;
+using DoctorFAM.Domain.Interfaces.EFCore.OrganizationRating;
 using DoctorFAM.Domain.Interfaces.EFCore.Story;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -150,6 +152,9 @@ public static class DependencyContainer
 
         services.AddScoped<IStoryCommandRepository, StoryCommandRepository>();
         services.AddScoped<IStoryQueryRepository, StoryQueryRepository>();
+
+        services.AddScoped<IOrganizationRatingCommandRepostiory, OrganizationRatingCommandRepository>();
+        services.AddScoped<IOrganizationRatingQueryRepository, OrganizationRatingQueryRepository>();
 
         #endregion
 

@@ -1,4 +1,5 @@
-﻿using DoctorFAM.Application.CQRS.SiteSide.OrganizationRating.Query.DoctorReservationRating;
+﻿using DoctorFAM.Application.CQRS.SiteSide.OrganizationRating.Command.AddDoctorReservationRatingPointCommand;
+using DoctorFAM.Application.CQRS.SiteSide.OrganizationRating.Query.DoctorReservationRating;
 using DoctorFAM.Application.Extensions;
 using DoctorFAM.Domain.ViewModels.Site.Rating;
 using Microsoft.AspNetCore.Mvc;
@@ -27,20 +28,19 @@ public class OrganizationRatingController : SiteBaseController
 	}
 
     [HttpGet]
-    public async Task<IActionResult> AddDoctorReservationRatingPoint(ulong reservationId,
-                                                          string? mobile,
-                                                          CancellationToken cancellationToken = default)
+    public async Task<IActionResult> AddDoctorReservationRatingPoint(AddDoctorReservationRatingPointCommand command,
+                                                                     CancellationToken cancellationToken = default)
     {
-        var model = await Mediator.Send(new DoctorReservationRatingQuery()
-        {
-            MobileNumber = mobile,
-            ReservationId = reservationId,
-            UserId = User.Identity.IsAuthenticated ? User.GetUserId() : null
-        });
+        var res = await Mediator.Send(command);
 
-        if (model == null) return NotFound();
+		if (res)
+		{
+			TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
+			return RedirectToAction("Index" , "Home");
+		}
 
-        return View(model);
+        TempData[ErrorMessage] = "امکان ثبت نظر برای شما وجود ندارد.";
+        return RedirectToAction("Index", "Home");
     }
 
     #endregion
