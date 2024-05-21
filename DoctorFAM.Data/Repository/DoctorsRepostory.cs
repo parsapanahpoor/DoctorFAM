@@ -1118,7 +1118,10 @@ namespace DoctorFAM.Data.Repository
 
             foreach (var item in query)
             {
-                if (await _context.Organizations.FirstOrDefaultAsync(p => !p.IsDelete && p.OwnerId == item.UserId && p.OrganizationInfoState == OrganizationInfoState.Accepted) != null)
+                if (await _context.Organizations
+                                  .FirstOrDefaultAsync(p => !p.IsDelete && 
+                                                       p.OwnerId == item.UserId && 
+                                                       p.OrganizationInfoState == OrganizationInfoState.Accepted) != null)
                 {
                     model.Add(item);
                 }
@@ -1130,17 +1133,22 @@ namespace DoctorFAM.Data.Repository
             {
                 if (filter.Gender.Value == 0)
                 {
-                    model = model.Where(p => !p.IsDelete && p.DoctorsInfos.Gender == Domain.Enums.Gender.Gender.Male).ToList();
+                    model = model.Where(p => !p.IsDelete &&
+                                        p.DoctorsInfos.Gender == Domain.Enums.Gender.Gender.Male)
+                                 .ToList();
                 }
                 if (filter.Gender.Value == 1)
                 {
-                    model = model.Where(p => !p.IsDelete && p.DoctorsInfos.Gender == Domain.Enums.Gender.Gender.Female).ToList();
+                    model = model.Where(p => !p.IsDelete && 
+                                        p.DoctorsInfos.Gender == Domain.Enums.Gender.Gender.Female)
+                                 .ToList();
                 }
             }
 
             if (!string.IsNullOrEmpty(filter.Username))
             {
-                model = model.Where(s => s.User.Username.Contains(filter.Username)).ToList();
+                model = model.Where(s => s.User.Username.Contains(filter.Username))
+                             .ToList();
             }
 
             if (filter.CountryId.HasValue)
@@ -1149,13 +1157,24 @@ namespace DoctorFAM.Data.Repository
 
                 foreach (var item in model.Select(p => p.UserId))
                 {
-                    var address = await _context.WorkAddresses.FirstOrDefaultAsync(p => !p.IsDelete && p.UserId == item && p.CountryId == filter.CountryId.Value);
+                    var address = await _context.WorkAddresses
+                                                .FirstOrDefaultAsync(p => !p.IsDelete && 
+                                                                     p.UserId == item && 
+                                                                     p.CountryId == filter.CountryId.Value);
 
                     if (address != null)
                     {
                         CountryModel.Add(await _context.DoctorsSelectedInterests
-                                             .Include(p => p.Doctor).ThenInclude(p => p.User)
-                                                .Where(s => !s.IsDelete && s.Doctor.UserId == address.UserId).Select(p => p.Doctor).FirstOrDefaultAsync());
+                                                    .Include(p => p.Doctor)
+                                                    .ThenInclude(p => p.DoctorsInfos)
+                                                    .Include(p => p.Doctor)
+                                                    .ThenInclude(p => p.User)
+                                                    .ThenInclude(p => p.OrganizationStarPoint)
+                                                       .AsNoTracking()
+                                                       .Where(s => !s.IsDelete && 
+                                                              s.Doctor.UserId == address.UserId)
+                                                       .Select(p => p.Doctor)
+                                                       .FirstOrDefaultAsync());
                     }
                 }
 
@@ -1168,13 +1187,24 @@ namespace DoctorFAM.Data.Repository
 
                 foreach (var item in query.Select(p => p.UserId))
                 {
-                    var address = await _context.WorkAddresses.FirstOrDefaultAsync(p => !p.IsDelete && p.UserId == item && p.StateId == filter.StateId.Value);
+                    var address = await _context.WorkAddresses
+                                                .FirstOrDefaultAsync(p => !p.IsDelete && 
+                                                                     p.UserId == item && 
+                                                                     p.StateId == filter.StateId.Value);
 
                     if (address != null)
                     {
                         StateModel.Add(await _context.DoctorsSelectedInterests
-                                             .Include(p => p.Doctor).ThenInclude(p => p.User)
-                                                .Where(s => !s.IsDelete && s.Doctor.UserId == address.UserId).Select(p => p.Doctor).FirstOrDefaultAsync());
+                                                     .Include(p => p.Doctor)
+                                                     .ThenInclude(p => p.DoctorsInfos)
+                                                     .Include(p => p.Doctor)
+                                                     .ThenInclude(p => p.User)
+                                                     .ThenInclude(p => p.OrganizationStarPoint)
+                                                     .AsNoTracking()
+                                                     .Where(s => !s.IsDelete && 
+                                                            s.Doctor.UserId == address.UserId)
+                                                     .Select(p => p.Doctor)
+                                                     .FirstOrDefaultAsync());
                     }
                 }
 
@@ -1187,13 +1217,24 @@ namespace DoctorFAM.Data.Repository
 
                 foreach (var item in query.Select(p => p.UserId))
                 {
-                    var address = await _context.WorkAddresses.FirstOrDefaultAsync(p => !p.IsDelete && p.UserId == item && p.CityId == filter.CityId.Value);
+                    var address = await _context.WorkAddresses
+                                                .FirstOrDefaultAsync(p => !p.IsDelete && 
+                                                                     p.UserId == item && 
+                                                                     p.CityId == filter.CityId.Value);
 
                     if (address != null)
                     {
                         CityModel.Add(await _context.DoctorsSelectedInterests
-                                             .Include(p => p.Doctor).ThenInclude(p => p.User)
-                                                .Where(s => !s.IsDelete && s.Doctor.UserId == address.UserId).Select(p => p.Doctor).FirstOrDefaultAsync());
+                                                    .Include(p => p.Doctor)
+                                                    .ThenInclude(p => p.DoctorsInfos)
+                                                    .Include(p => p.Doctor)
+                                                    .ThenInclude(p => p.User)
+                                                    .ThenInclude(p => p.OrganizationStarPoint)
+                                                    .AsNoTracking()
+                                                    .Where(s => !s.IsDelete && 
+                                                           s.Doctor.UserId == address.UserId)
+                                                    .Select(p => p.Doctor)
+                                                    .FirstOrDefaultAsync());
                     }
                 }
 

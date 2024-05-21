@@ -19,6 +19,7 @@ using System.Globalization;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
 using DoctorFAM.Application;
+using DoctorFAM.BackgroundTask.SendSMS;
 
 #endregion
 
@@ -32,6 +33,7 @@ builder.Services.AddHostedService<DeletePastHistoryRequests>();
 builder.Services.AddHostedService<RemoveWaitingReservationsRequestsAfterADay>();
 
 builder.Services.AddHostedService<SendSMSForReminderToReservation>();
+builder.Services.AddHostedService<SendSMSForDoctorReservationRating>();
 builder.Services.AddHostedService<SendSMSForWeeklyDrugAlerts>();
 builder.Services.AddHostedService<SendSMSForMonthlyDrugAlerts>();
 builder.Services.AddHostedService<SendSMSForYearlyDrugAlerts>();

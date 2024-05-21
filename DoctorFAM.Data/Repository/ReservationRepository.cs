@@ -49,6 +49,32 @@ public class ReservationRepository : IReservationRepository
 
     #region Doctor
 
+    public async Task<List<SendSMSForReminderToReservationDTO>> SendSMSForDoctorReservationRating()
+    {
+        return await _context.DoctorReservationDateTimes
+                             .AsNoTracking()
+                             .Include(p => p.DoctorReservationDate)
+                             .ThenInclude(p => p.User)
+                             .Where(p => !p.IsDelete &&
+                                    !p.DoctorBooking &&
+                                    p.PatientId.HasValue &&
+                                    p.DoctorReservationState == DoctorReservationState.Reserved &&
+                                   (p.DoctorReservationDate.ReservationDate.Year == DateTime.Now.Year &&
+                                    p.DoctorReservationDate.ReservationDate.AddDays(1).DayOfYear == DateTime.Now.DayOfYear)
+                                    )
+                             .Select(p => new SendSMSForReminderToReservationDTO()
+                             {
+                                 DoctorReservationDateTimeId = p.DoctorReservationDateId,
+                                 DoctorUsername = p.DoctorReservationDate.User.Username,
+                                 UserMobile = _context.Users
+                                                      .AsNoTracking()
+                                                      .Where(s => !s.IsDelete && s.Id == p.PatientId.Value)
+                                                      .Select(s => s.Mobile)
+                                                      .FirstOrDefault()
+                             })
+                             .ToListAsync();
+    }
+
     public async Task<List<SendSMSForReminderToReservationDTO>> SendSMSForReminderToReservation()
     {
         return await _context.DoctorReservationDateTimes

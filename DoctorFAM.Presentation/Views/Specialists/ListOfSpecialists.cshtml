@@ -25,7 +25,7 @@
 }
 
 @section Scripts
-    {
+{
     <script>
 
         $("#MainBrandId").change(function () {
@@ -62,7 +62,7 @@
 }
 
 @section Styles
-    {
+{
     <style>
 
         #StateId {
@@ -340,12 +340,22 @@
                                                     <h5 class="doc-department" style="color: #ff9b00;">طرف قرارداد با پزشک خانواده است.</h5>
                                                 }
                                                 <div class="rating">
-                                                    <i class="fas fa-star filled"></i>
-                                                    <i class="fas fa-star filled"></i>
-                                                    <i class="fas fa-star filled"></i>
-                                                    <i class="fas fa-star filled"></i>
-                                                    <i class="fas fa-star"></i>
-                                                    <span class="d-inline-block average-rating">()</span>
+                                                    @if (doctor.DoctorUserInfo.DoctorStars != 0)
+                                                    {
+                                                        for (int i = 1; i <= doctor.DoctorUserInfo.DoctorStars; i++)
+                                                        {
+                                                            <i class="fas fa-star filled"></i>
+                                                        }
+                                                        for (int i = 1; i <= 5 - doctor.DoctorUserInfo.DoctorStars; i++)
+                                                        {
+                                                            <i class="fas fa-star"></i>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <i class="fas fa-star"></i>
+                                                    }
+                                                    <span class="d-inline-block average-rating">(@(doctor.DoctorUserInfo.DoctorStars != 0 ? doctor.DoctorUserInfo.DoctorStars : 0)/5)</span>
                                                 </div>
 
                                                 <div class="clinic-services">
@@ -353,10 +363,6 @@
                                                     @*<span>آنلاین</span>
                                             <span>حضوری</span>*@
                                                 </div>
-
-
-
-
 
                                             </div>
                                         </div>

@@ -22,6 +22,9 @@ namespace DoctorFAM.Application.Services.Interfaces;
 public interface IReservationService
 {
     #region Doctor Panel
+
+    Task SendSMSForDoctorReservationRating();
+
     Task SendSMSForReminderToReservation();
 
     //List Of Appointments Received

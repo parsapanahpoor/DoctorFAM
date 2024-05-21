@@ -312,6 +312,15 @@ public static string SendSMSForLinkOfHomeVisitRequestFromDoctor(string link)
             $"{PathTools.SiteFarsiName}";
     }
 
+    //Send SMS For Doctor Reservation Rating
+    public static string SendSMSForReminderToReservation(string doctorName , string link)
+    {
+        return
+            $"کاربر گرامی دکترفم . {Environment.NewLine} " +
+            $"   لطفا با صرف چند لحظه از زمان باارزشتان نظر خود را در رابطه با نوبتتان نزد دکتر {doctorName} ثبت کنید . {Environment.NewLine}" +
+            $"{PathTools.SiteFarsiName}";
+    }
+
     //Seting Free A Reservation Date Time 
     public static string SetingFreeAReservationDateTime(string DoctorName , string DateTime)
     {

@@ -6,6 +6,8 @@ public record SendSMSForReminderToReservationDTO
 
     public string DoctorUsername { get; set; }
 
+    public ulong DoctorReservationDateTimeId { get; set; }
+
     public string UserMobile { get; set; }
 
     #endregion

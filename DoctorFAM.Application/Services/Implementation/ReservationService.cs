@@ -75,6 +75,23 @@ public class ReservationService : IReservationService
 
     #region Doctor Panel
 
+    public async Task SendSMSForDoctorReservationRating()
+    {
+        var userMobiles = await _reservation.SendSMSForDoctorReservationRating();
+
+        if (userMobiles != null && userMobiles.Any())
+        {
+            foreach (var userMobile in userMobiles)
+            {
+                string link = $"{PathTools.SiteAddress}/OrganizationRating/DoctorReservationRating?reservationId={userMobile.DoctorReservationDateTimeId}&mobile={userMobile}";
+
+                var message = Messages.SendSMSForReminderToReservation(userMobile.DoctorUsername , link);
+
+                await _smsService.SendSimpleSMS(userMobile.UserMobile, message);
+            }
+        }
+    }
+
     public async Task SendSMSForReminderToReservation()
     {
         #region AddLog 

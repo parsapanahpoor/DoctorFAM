@@ -531,7 +531,12 @@ public class SpecialityRepository : ISpecialityRepository
                                                                                                                                                    .Where(p => !p.IsDelete && p.DoctorId == doctorId.DoctorId)
                                                                                                                                                    .Select(p => p.DoctorTilteName)
                                                                                                                                                    .FirstOrDefault(),
-                                                                                                                         doctorsInfo = p.Doctors.DoctorsInfos
+                                                                                                                         doctorsInfo = p.Doctors.DoctorsInfos,
+                                                                                                                         DoctorStars = _context.OrganizationStarPoints
+                                                                                                                                               .Where(s => !s.IsDelete &&
+                                                                                                                                                      s.OperatorUserId == p.Id)
+                                                                                                                                               .Select(s => s.PointValue)
+                                                                                                                                               .FirstOrDefault()
                                                                                                                      })
                                                                                                                      .FirstOrDefaultAsync()
                                 };
@@ -556,7 +561,12 @@ public class SpecialityRepository : ISpecialityRepository
                                                                                                                                                    .Where(p => !p.IsDelete && p.DoctorId == doctorId.DoctorId)
                                                                                                                                                    .Select(p => p.DoctorTilteName)
                                                                                                                                                    .FirstOrDefault(),
-                                                                                          doctorsInfo = p.Doctors.DoctorsInfos
+                                                                                          doctorsInfo = p.Doctors.DoctorsInfos,
+                                                                                          DoctorStars = _context.OrganizationStarPoints
+                                                                                                                                               .Where(s => !s.IsDelete &&
+                                                                                                                                                      s.OperatorUserId == p.Id)
+                                                                                                                                               .Select(s => s.PointValue)
+                                                                                                                                               .FirstOrDefault()
                                                                                       })
                                                                                       .FirstOrDefaultAsync()
                             };
@@ -620,7 +630,12 @@ public class SpecialityRepository : ISpecialityRepository
                                                                                                                           UserId = p.Id,
                                                                                                                           Username = p.Username,
                                                                                                                           DoctorTilteName = p.Doctors.DoctorsInfos.DoctorTilteName,
-                                                                                                                          doctorsInfo = p.Doctors.DoctorsInfos
+                                                                                                                          doctorsInfo = p.Doctors.DoctorsInfos,
+                                                                                                                          DoctorStars = _context.OrganizationStarPoints
+                                                                                                                                               .Where(s => !s.IsDelete &&
+                                                                                                                                                      s.OperatorUserId == p.Id)
+                                                                                                                                               .Select(s => s.PointValue)
+                                                                                                                                               .FirstOrDefault()
                                                                                                                       })
                                                                                                                       .FirstOrDefaultAsync()
                     };
@@ -653,7 +668,12 @@ public class SpecialityRepository : ISpecialityRepository
                                                                                                                          UserId = p.Id,
                                                                                                                          Username = p.Username,
                                                                                                                          DoctorTilteName = p.Doctors.DoctorsInfos.DoctorTilteName,
-                                                                                                                         doctorsInfo = p.Doctors.DoctorsInfos
+                                                                                                                         doctorsInfo = p.Doctors.DoctorsInfos,
+                                                                                                                         DoctorStars = _context.OrganizationStarPoints
+                                                                                                                                               .Where(s => !s.IsDelete &&
+                                                                                                                                                      s.OperatorUserId == p.Id)
+                                                                                                                                               .Select(s => s.PointValue)
+                                                                                                                                               .FirstOrDefault()
                                                                                                                      })
                                                                                                                      .FirstOrDefaultAsync()
                     };
@@ -686,7 +706,12 @@ public class SpecialityRepository : ISpecialityRepository
                                                                                                                         UserId = p.Id,
                                                                                                                         Username = p.Username,
                                                                                                                         DoctorTilteName = p.Doctors.DoctorsInfos.DoctorTilteName,
-                                                                                                                        doctorsInfo = p.Doctors.DoctorsInfos
+                                                                                                                        doctorsInfo = p.Doctors.DoctorsInfos,
+                                                                                                                        DoctorStars = _context.OrganizationStarPoints
+                                                                                                                                               .Where(s => !s.IsDelete &&
+                                                                                                                                                      s.OperatorUserId == p.Id)
+                                                                                                                                               .Select(s => s.PointValue)
+                                                                                                                                               .FirstOrDefault()
                                                                                                                     })
                                                                                                                     .FirstOrDefaultAsync()
                     };
@@ -779,7 +804,12 @@ public class SpecialityRepository : ISpecialityRepository
                                                                                                                                                    .Where(p => !p.IsDelete && p.DoctorId == doctorId.DoctorId)
                                                                                                                                                    .Select(p => p.DoctorTilteName)
                                                                                                                                                    .FirstOrDefault(),
-                                                                                                                         doctorsInfo = p.Doctors.DoctorsInfos
+                                                                                                                         doctorsInfo = p.Doctors.DoctorsInfos,
+                                                                                                                         DoctorStars = _context.OrganizationStarPoints
+                                                                                                                                               .Where(s => !s.IsDelete &&
+                                                                                                                                                      s.OperatorUserId == p.Id)
+                                                                                                                                               .Select(s => s.PointValue)
+                                                                                                                                               .FirstOrDefault()
                                                                                                                      })
                                                                                                                      .FirstOrDefaultAsync()
                                 };
@@ -804,7 +834,12 @@ public class SpecialityRepository : ISpecialityRepository
                                                                                                                                                    .Where(p => !p.IsDelete && p.DoctorId == doctorId.DoctorId)
                                                                                                                                                    .Select(p => p.DoctorTilteName)
                                                                                                                                                    .FirstOrDefault(),
-                                                                                          doctorsInfo = p.Doctors.DoctorsInfos
+                                                                                          doctorsInfo = p.Doctors.DoctorsInfos,
+                                                                                          DoctorStars = _context.OrganizationStarPoints
+                                                                                                                                               .Where(s => !s.IsDelete &&
+                                                                                                                                                      s.OperatorUserId == p.Id)
+                                                                                                                                               .Select(s => s.PointValue)
+                                                                                                                                               .FirstOrDefault()
                                                                                       })
                                                                                       .FirstOrDefaultAsync()
                             };
@@ -868,7 +903,12 @@ public class SpecialityRepository : ISpecialityRepository
                                                                                                                           UserId = p.Id,
                                                                                                                           Username = p.Username,
                                                                                                                           DoctorTilteName = p.Doctors.DoctorsInfos.DoctorTilteName,
-                                                                                                                          doctorsInfo = p.Doctors.DoctorsInfos
+                                                                                                                          doctorsInfo = p.Doctors.DoctorsInfos,
+                                                                                                                          DoctorStars = _context.OrganizationStarPoints
+                                                                                                                                               .Where(s => !s.IsDelete &&
+                                                                                                                                                      s.OperatorUserId == p.Id)
+                                                                                                                                               .Select(s => s.PointValue)
+                                                                                                                                               .FirstOrDefault()
                                                                                                                       })
                                                                                                                       .FirstOrDefaultAsync()
                     };
@@ -901,7 +941,12 @@ public class SpecialityRepository : ISpecialityRepository
                                                                                                                          UserId = p.Id,
                                                                                                                          Username = p.Username,
                                                                                                                          DoctorTilteName = p.Doctors.DoctorsInfos.DoctorTilteName,
-                                                                                                                         doctorsInfo = p.Doctors.DoctorsInfos
+                                                                                                                         doctorsInfo = p.Doctors.DoctorsInfos,
+                                                                                                                         DoctorStars = _context.OrganizationStarPoints
+                                                                                                                                               .Where(s => !s.IsDelete &&
+                                                                                                                                                      s.OperatorUserId == p.Id)
+                                                                                                                                               .Select(s => s.PointValue)
+                                                                                                                                               .FirstOrDefault()
                                                                                                                      })
                                                                                                                      .FirstOrDefaultAsync()
                     };
@@ -934,7 +979,12 @@ public class SpecialityRepository : ISpecialityRepository
                                                                                                                         UserId = p.Id,
                                                                                                                         Username = p.Username,
                                                                                                                         DoctorTilteName = p.Doctors.DoctorsInfos.DoctorTilteName,
-                                                                                                                        doctorsInfo = p.Doctors.DoctorsInfos
+                                                                                                                        doctorsInfo = p.Doctors.DoctorsInfos,
+                                                                                                                        DoctorStars = _context.OrganizationStarPoints
+                                                                                                                                               .Where(s => !s.IsDelete &&
+                                                                                                                                                      s.OperatorUserId == p.Id)
+                                                                                                                                               .Select(s => s.PointValue)
+                                                                                                                                               .FirstOrDefault()
                                                                                                                     })
                                                                                                                     .FirstOrDefaultAsync()
                     };

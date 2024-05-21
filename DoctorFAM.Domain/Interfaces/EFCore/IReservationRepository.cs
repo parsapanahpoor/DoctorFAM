@@ -19,6 +19,8 @@ public interface IReservationRepository
 {
     #region Doctor Panel 
 
+    Task<List<SendSMSForReminderToReservationDTO>> SendSMSForDoctorReservationRating();
+
     Task<List<SendSMSForReminderToReservationDTO>> SendSMSForReminderToReservation();
 
     Task<ListOfAppointmentsReceivedJoinDoctorSideDTO?> ListOfAppointmentsReceived(ListOfAppointmentsReceivedJoinDoctorSideDTO filter);

@@ -32,6 +32,8 @@ public class DoctorSpecialistUserInfoViewModel
 
     public DoctorsInfo doctorsInfo { get; set; }
 
+    public int DoctorStars { get; set; }
+
     #endregion
 }
 
