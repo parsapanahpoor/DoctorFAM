@@ -14,5 +14,4 @@ public class DiabetCommandRepository : CommandGenericRepository<DoctorFAM.Domain
     }
 
     #endregion
-
 }

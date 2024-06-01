@@ -11,7 +11,7 @@ public sealed class DiabetPopulation : BaseEntity
     public Gender Gender { get; set; }
     public int Age { get; set; }
 
-    public static void Create(ulong userId , 
+    public static DiabetPopulation Create(ulong userId , 
                               Gender gender , 
                               int age)
     {
@@ -21,5 +21,7 @@ public sealed class DiabetPopulation : BaseEntity
             Gender = gender,
             Age = age
         };
+
+        return diabet;
     }
 }

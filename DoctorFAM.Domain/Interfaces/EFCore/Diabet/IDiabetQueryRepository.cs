@@ -2,4 +2,5 @@
 
 public interface IDiabetQueryRepository
 {
+    Task<bool> IsExist_AnyUser_InDiabetPopulation_ByUserId(ulong userId);
 }

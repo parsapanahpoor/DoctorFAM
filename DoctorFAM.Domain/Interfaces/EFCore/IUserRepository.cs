@@ -37,6 +37,8 @@ namespace DoctorFAM.Domain.Interfaces
 
         Task<bool> IsExistUserById(ulong userId);
 
+        Task<bool> IsExist_User_ByMobile(string mobile);
+
         Task<User?> GetUserByMobile(string Mobile);
 
         Task SaveChangesAsync();

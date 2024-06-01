@@ -16,17 +16,20 @@ namespace DoctorFAM.Application.CQRS.SiteSide.Diabet.Commands.AddDiabetPopulatio
 public record AddDiabetPopulationCommandHandler : IRequestHandler<AddDiabetPopulationCommand, bool>
 {
     private readonly IDiabetCommandRepository _diabetCommandRepository;
+    private readonly IDiabetQueryRepository _diabetQueryRepository;
     private readonly IUserRepository _userService;
     private readonly IUnitOfWork _unitOfWork;
     private static readonly HttpClient client = new HttpClient();
     private readonly ISMSService _smsService;
 
     public AddDiabetPopulationCommandHandler(IDiabetCommandRepository diabetCommandRepository,
+                                             IDiabetQueryRepository diabetQueryRepository
                                              IUserRepository userService,
-                                             IUnitOfWork unitOfWork ,
+                                             IUnitOfWork unitOfWork,
                                              ISMSService smsService)
     {
         _diabetCommandRepository = diabetCommandRepository;
+        _diabetQueryRepository = diabetQueryRepository;
         _userService = userService;
         _unitOfWork = unitOfWork;
         _smsService = smsService;
@@ -50,40 +53,51 @@ public record AddDiabetPopulationCommandHandler : IRequestHandler<AddDiabetPopul
         //If User is not exist with incomming data
         else
         {
-            if (await _userService.GetUserByMobile(request.command.PhoneNumber.Trim()
-                                                                              .ToLower()
-                                                                              .SanitizeText()) != null) return false;
-
-            var user = new User()
+            if (!await _userService.IsExist_User_ByMobile(request.command.PhoneNumber.Trim()
+                                                                                      .ToLower()
+                                                                                      .SanitizeText()))
             {
-                Password = PasswordHasher.EncodePasswordMd5(request.command.PhoneNumber.SanitizeText()),
-                FirstName = request.command.FirstName,
-                LastName = request.command.LastName,
-                NationalId = request.command.NationalId,
-                Username = request.command.PhoneNumber,
-                Mobile = request.command.PhoneNumber,
-                EmailActivationCode = CodeGenerator.GenerateUniqCode(),
-                MobileActivationCode = new Random().Next(10000, 999999).ToString(),
-                ExpireMobileSMSDateTime = DateTime.Now
-            };
+                var user = new User()
+                {
+                    Password = PasswordHasher.EncodePasswordMd5(request.command.PhoneNumber.SanitizeText()),
+                    FirstName = request.command.FirstName,
+                    LastName = request.command.LastName,
+                    NationalId = request.command.NationalId,
+                    Username = request.command.PhoneNumber,
+                    Mobile = request.command.PhoneNumber,
+                    EmailActivationCode = CodeGenerator.GenerateUniqCode(),
+                    MobileActivationCode = new Random().Next(10000, 999999).ToString(),
+                    ExpireMobileSMSDateTime = DateTime.Now,
+                    IsMobileConfirm = true,
+                };
 
-            await _userService.AddUser(user);
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
+                await _userService.AddUser(user);
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-            request.command.UserId = user.Id;
+                request.command.UserId = user.Id;
 
-            // Send Registeration SMS 
+                // Send Registeration SMS 
 
-            var message = Messages.SendSMSForUserRegistrationAlert(request.command.PhoneNumber);
+                var message = Messages.SendSMSForUserRegistrationAlert(request.command.PhoneNumber);
+                await _smsService.SendSimpleSMS(request.command.PhoneNumber, message);
+            }
+            else
+            {
+                var user = await _userService.GetUserByMobile(request.command.PhoneNumber.Trim().ToLower().SanitizeText());
+                if (user != null) request.command.UserId = user.Id;
+            }
 
-            await _smsService.SendSimpleSMS(request.command.PhoneNumber, message);
         }
 
-        //Add User to the diabet population 
-        DiabetPopulation.Create(request.command.UserId.Value ,
-                                request.command.Gender ,
-                                request.command.Age);
+        if (await _diabetQueryRepository.IsExist_AnyUser_InDiabetPopulation_ByUserId(request.command.UserId.Value)) 
+                                        return false;
 
+        //Add User to the diabet population 
+        var res = DiabetPopulation.Create(request.command.UserId.Value,
+                                          request.command.Gender,
+                                          request.command.Age);
+
+        await _diabetCommandRepository.AddAsync(res, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return true;
