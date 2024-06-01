@@ -21,6 +21,28 @@ function ShowASCVDModal() {
 
 //#endregion
 
+//#region Load Diabet Population Modal
+
+function ShowDiabetPopulationModal() {
+    $.ajax({
+        url: "/Show-DiabetPopulation-Modal",
+        type: "get",
+        data: {
+
+        },
+        success: function (response) {
+            $("#modal-body").html(response);
+
+            $('#DiabetPopulationForm').data('validator', null);
+            $.validator.unobtrusive.parse('#DiabetPopulationForm');
+
+            $("#exampleModal").modal("show");
+        }
+    });
+}
+
+//#endregion
+
 //#region Load BMI View Model
 
 function ShowBMIModal() {
