@@ -64,6 +64,7 @@ using DoctorFAM.Domain.Entities.Story;
 using DoctorFAM.Data.ValidationsAndMappings.Rating;
 using DoctorFAM.Domain.Entities.RatingAgg;
 using DoctorFAM.Domain.Entities.Diabet;
+using DoctorFAM.Domain.Entities.BloodPressure;
 
 
 #endregion
@@ -617,13 +618,19 @@ public class DoctorFAMDbContext : Microsoft.EntityFrameworkCore.DbContext
 
 	public DbSet<DiabetPopulation> DiabetPopulation { get; set; }
 
-	#endregion
+    #endregion
 
-	#endregion
+    #region Blood Pressure 
 
-	#region On Model Creating
+    public DbSet<BloodPressurePopulation> BloodPressurePopulation { get; set; }
 
-	public string culture = CultureInfo.CurrentCulture.Name;
+    #endregion
+
+    #endregion
+
+    #region On Model Creating
+
+    public string culture = CultureInfo.CurrentCulture.Name;
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{

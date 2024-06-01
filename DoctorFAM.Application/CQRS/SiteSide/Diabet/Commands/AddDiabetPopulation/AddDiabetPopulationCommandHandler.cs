@@ -23,7 +23,7 @@ public record AddDiabetPopulationCommandHandler : IRequestHandler<AddDiabetPopul
     private readonly ISMSService _smsService;
 
     public AddDiabetPopulationCommandHandler(IDiabetCommandRepository diabetCommandRepository,
-                                             IDiabetQueryRepository diabetQueryRepository
+                                             IDiabetQueryRepository diabetQueryRepository , 
                                              IUserRepository userService,
                                              IUnitOfWork unitOfWork,
                                              ISMSService smsService)
