@@ -1,5 +1,9 @@
 ﻿#region Usings
 
+using DoctorFAM.Application.CQRS.SiteSide.BloodPressure.Commands.AddBloodPressurePopulation;
+using DoctorFAM.Application.CQRS.SiteSide.BloodPressure.Query;
+using DoctorFAM.Application.CQRS.SiteSide.Diabet.Commands.AddDiabetPopulation;
+using DoctorFAM.Application.CQRS.SiteSide.Diabet.Queries;
 using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Interfaces;
 using DoctorFAM.Application.Services.Interfaces;
@@ -29,9 +33,14 @@ public class BloodPressureController : SiteBaseController
     private readonly IBMIService _bmiService;
     private readonly IASCVDService _ascvdService;
 
-    public BloodPressureController(IDrugAlertService drugAlertService, IPeriodicTestService periodicTestService
-                                    , IMedicalExaminationService medicalExaminationService , ILocationService locationService
-                                        , IDoctorsService doctorsService, ISelfAssessmentService selfAssessmentService, IBMIService bmiService, IASCVDService ascvdService)
+    public BloodPressureController(IDrugAlertService drugAlertService,
+                                   IPeriodicTestService periodicTestService,
+                                   IMedicalExaminationService medicalExaminationService , 
+                                   ILocationService locationService,
+                                   IDoctorsService doctorsService,
+                                   ISelfAssessmentService selfAssessmentService, 
+                                   IBMIService bmiService, 
+                                   IASCVDService ascvdService)
     {
         _drugAlertService = drugAlertService;
         _periodicTestService = periodicTestService;
@@ -114,6 +123,48 @@ public class BloodPressureController : SiteBaseController
             return RedirectToAction(nameof(Index), new { bmiResult = res.BMIResult });
         }
 
+        return RedirectToAction(nameof(Index));
+    }
+
+    #endregion
+
+    #endregion
+
+    #region BloodPressure Population
+
+    #region Show BloodPressure Population Modal
+
+    [HttpGet("/Show-BloodPressurePopulation-Modal")]
+    public async Task<IActionResult> ShowBloodPressurePopulationModal(CancellationToken cancellationToken = default)
+    {
+        var res = await Mediator.Send(new ShowBloodPressurePopulationModalQuery()
+        {
+            UserId = (User.Identity.IsAuthenticated) ? User.GetUserId() : null
+        }, cancellationToken);
+
+        return PartialView("_BloodPressurePopulationModal", res);
+    }
+
+    #endregion
+
+    #region Add BloodPressure Result
+
+    [HttpPost, ValidateAntiForgeryToken]
+    public async Task<IActionResult> AddToBloodPressurePopulation(BloodPressurePopulationDTO command,
+                                                                  CancellationToken cancellationToken = default)
+    {
+        var res = await Mediator.Send(new AddBloodPressurePopulationCommand()
+        {
+            command = command
+        }, cancellationToken);
+
+        if (res)
+        {
+            TempData[SuccessMessage] = "اطلاعات شما در جمعیت دیابت ثبت گردید.";
+            return RedirectToAction("Index", "Home");
+        }
+
+        TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
         return RedirectToAction(nameof(Index));
     }
 

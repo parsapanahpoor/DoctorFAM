@@ -84,6 +84,13 @@ namespace DoctorFAM.Data.Repository
             return await _context.Users.AnyAsync(p => !p.IsDelete && p.Id == userId);
         }
 
+        public async Task<bool> IsExist_User_ByMobile(string mobile)
+        {
+            return await _context.Users
+                                 .AnyAsync(p => !p.IsDelete && 
+                                           p.Mobile == mobile);
+        }
+
         public async Task SaveChangesAsync()
         {
             await _context.SaveChangesAsync();

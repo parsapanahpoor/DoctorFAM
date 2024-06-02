@@ -10,11 +10,15 @@ using DoctorFAM.Application.Services.Implementation;
 using DoctorFAM.Application.Services.Interfaces;
 using DoctorFAM.Data.Dapper.Repository;
 using DoctorFAM.Data.Repository;
+using DoctorFAM.Data.Repository.BloodPressure;
+using DoctorFAM.Data.Repository.Diabet;
 using DoctorFAM.Data.Repository.OrganizationRating;
 using DoctorFAM.Data.Repository.Story;
 using DoctorFAM.Domain.Interfaces;
 using DoctorFAM.Domain.Interfaces.Dapper;
 using DoctorFAM.Domain.Interfaces.EFCore;
+using DoctorFAM.Domain.Interfaces.EFCore.BloodPressure;
+using DoctorFAM.Domain.Interfaces.EFCore.Diabet;
 using DoctorFAM.Domain.Interfaces.EFCore.OrganizationRating;
 using DoctorFAM.Domain.Interfaces.EFCore.Story;
 using Microsoft.Extensions.DependencyInjection;
@@ -155,6 +159,12 @@ public static class DependencyContainer
 
         services.AddScoped<IOrganizationRatingCommandRepostiory, OrganizationRatingCommandRepository>();
         services.AddScoped<IOrganizationRatingQueryRepository, OrganizationRatingQueryRepository>();
+
+        services.AddScoped<IDiabetCommandRepository, DiabetCommandRepository>();
+        services.AddScoped<IDiabetQueryRepository, DiabetQueryRepository>();
+
+        services.AddScoped<IBloodPressureCommandRepository, BloodPressureCommandRepository>();
+        services.AddScoped<IBloodPressureQueryRepository, BloodPressureQueryRepository>();
 
         #endregion
 

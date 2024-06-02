@@ -1,4 +1,5 @@
 ﻿using DoctorFAM.Application.Convertors;
+using DoctorFAM.Domain.Entities.Account;
 using DoctorFAM.Domain.Entities.Laboratory;
 using DoctorFAM.Domain.Entities.Patient;
 using DoctorFAM.Domain.Entities.Tourism.Token;
@@ -110,8 +111,8 @@ public static class Messages
     }
 
     //Send SMS For Between Patient In Reservation Site Side  
-    public static string SendSMSForBetweenPatientInReservationSiteSide(string time , string date , string doctorNam)
-   
+    public static string SendSMSForBetweenPatientInReservationSiteSide(string time, string date, string doctorNam)
+
     {
         return
             $" سلام . {Environment.NewLine}" +
@@ -120,11 +121,25 @@ public static class Messages
             $" برای تاریخ {date} {Environment.NewLine}" +
             $" و ساعت {string.Concat(time.Reverse().Skip(3).Reverse())} {Environment.NewLine}" +
             $" ثبت گردید. {Environment.NewLine}" +
-            $"دکترفم {Environment.NewLine}"+
+            $"دکترفم {Environment.NewLine}" +
             $"{PathTools.SiteAddress}";
     }
-//Send Activation Register Code 
-public static string SendSMSForLinkOfHomeVisitRequestFromDoctor(string link)
+
+    //Send SMS For User Registration Alert
+    public static string SendSMSForUserRegistrationAlert(string phoneNumber)
+    {
+        return
+            $" سلام . {Environment.NewLine}" +
+            $" اطلاعات کاربری شما در سامانه ی دکترفم ثبت گردید :  {Environment.NewLine}" +
+            $" نام کاربری : {phoneNumber} {Environment.NewLine}" +
+            $" رمز عبور : {phoneNumber} {Environment.NewLine}" +
+            $" شما از این پس می توانید با استفاده از این اطلاعات به پنل کاربری خود در دکترفم دسترسی داشته باشید.  {Environment.NewLine}" +
+            $"دکترفم {Environment.NewLine}" +
+            $"{PathTools.SiteAddress}";
+    }
+
+    //Send Activation Register Code 
+    public static string SendSMSForLinkOfHomeVisitRequestFromDoctor(string link)
     {
         return
             $"لطفا از طریق لینک زیر درخواست ویزیت در منزل خود را تایید کنید :{Environment.NewLine} {link} . {Environment.NewLine} {PathTools.SiteFarsiName}";
@@ -176,7 +191,7 @@ public static string SendSMSForLinkOfHomeVisitRequestFromDoctor(string link)
     public static string SendSMSToTheMasterOfPopulationCover(string nationalId, string mobile)
     {
         return
-                 $"فردی از جمعیت تحت پوشش شما با شماره موبایل : {mobile} و کدملی : {nationalId} عضو سایت شده است.{ Environment.NewLine} این کاربر از جمعیت تحت پوشش شما خارج می گردد . {Environment.NewLine} {PathTools.SiteFarsiName}" ;
+                 $"فردی از جمعیت تحت پوشش شما با شماره موبایل : {mobile} و کدملی : {nationalId} عضو سایت شده است.{Environment.NewLine} این کاربر از جمعیت تحت پوشش شما خارج می گردد . {Environment.NewLine} {PathTools.SiteFarsiName}";
     }
 
     //Send SMS For Weekly Usage Of Drug 
@@ -292,7 +307,7 @@ public static string SendSMSForLinkOfHomeVisitRequestFromDoctor(string link)
     }
 
     //Paied Token For Passengers  
-    public static string PaiedTokenForPassengers(TouristToken token , TouristPassengers passengers )
+    public static string PaiedTokenForPassengers(TouristToken token, TouristPassengers passengers)
     {
         return
             $" سلام . {Environment.NewLine}" +
@@ -313,7 +328,7 @@ public static string SendSMSForLinkOfHomeVisitRequestFromDoctor(string link)
     }
 
     //Send SMS For Doctor Reservation Rating
-    public static string SendSMSForReminderToReservation(string doctorName , string link)
+    public static string SendSMSForReminderToReservation(string doctorName, string link)
     {
         return
             $"کاربر گرامی دکترفم . {Environment.NewLine} " +
@@ -322,7 +337,7 @@ public static string SendSMSForLinkOfHomeVisitRequestFromDoctor(string link)
     }
 
     //Seting Free A Reservation Date Time 
-    public static string SetingFreeAReservationDateTime(string DoctorName , string DateTime)
+    public static string SetingFreeAReservationDateTime(string DoctorName, string DateTime)
     {
         return
             $"کاربر گرامی دکترفم . {Environment.NewLine} " +
@@ -332,7 +347,7 @@ public static string SendSMSForLinkOfHomeVisitRequestFromDoctor(string link)
     }
 
     //Registering Patient As WebSite's User From Doctor Booking 
-    public static string RegisteringPatientAsWebSiteUserFromDoctorBooking(string DoctorName, string DateTime , string Username , string Password)
+    public static string RegisteringPatientAsWebSiteUserFromDoctorBooking(string DoctorName, string DateTime, string Username, string Password)
     {
         return
             $"مراجعه کننده ی محترم . {Environment.NewLine} " +
@@ -343,7 +358,7 @@ public static string SendSMSForLinkOfHomeVisitRequestFromDoctor(string link)
     }
 
     //Finalize Home Laboratory Request Result
-    public static string CooperationRequestForHealthCenters(string DoctorName , string healthCenterName)
+    public static string CooperationRequestForHealthCenters(string DoctorName, string healthCenterName)
     {
         return
             $"سلام . {Environment.NewLine} " +

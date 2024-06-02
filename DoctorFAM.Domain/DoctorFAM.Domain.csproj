@@ -20,6 +20,10 @@
 
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Entities\BloodPressure\" />
+	</ItemGroup>
+
 
 
 </Project>

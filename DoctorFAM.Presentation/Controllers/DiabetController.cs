@@ -1,6 +1,8 @@
 ﻿#region Usings
 
 using DoctorFAM.Application.Convertors;
+using DoctorFAM.Application.CQRS.SiteSide.Diabet.Commands.AddDiabetPopulation;
+using DoctorFAM.Application.CQRS.SiteSide.Diabet.Queries;
 using DoctorFAM.Application.Extensions;
 using DoctorFAM.Application.Interfaces;
 using DoctorFAM.Application.Services.Interfaces;
@@ -33,11 +35,17 @@ public class DiabetController : SiteBaseController
     private readonly ISMBGNoteBookService _smbgService;
     private readonly ISiteSettingService _siteSettingService;
 
-    public DiabetController(IBMIService bmiService, ILocationService locationService, IDoctorsService doctorsService
-                                , IMedicalExaminationService medicalExamination, IDrugAlertService drugAlertService
-                                    , IPeriodicTestService periodicTestService, IPeriodicSelftEvaluationService periodicSelftEvaluationService
-                                        , ISelfAssessmentService selfAssessmentService, IASCVDService ascvdService , ISMBGNoteBookService smbg
-                                            , ISiteSettingService siteSettingService)
+    public DiabetController(IBMIService bmiService,
+                            ILocationService locationService,
+                            IDoctorsService doctorsService,
+                            IMedicalExaminationService medicalExamination,
+                            IDrugAlertService drugAlertService,
+                            IPeriodicTestService periodicTestService,
+                            IPeriodicSelftEvaluationService periodicSelftEvaluationService,
+                            ISelfAssessmentService selfAssessmentService,
+                            IASCVDService ascvdService,
+                            ISMBGNoteBookService smbg,
+                            ISiteSettingService siteSettingService)
     {
         _bmiService = bmiService;
         _locationService = locationService;
@@ -141,6 +149,48 @@ public class DiabetController : SiteBaseController
             return RedirectToAction(nameof(Index), new { bmiResult = res.BMIResult });
         }
 
+        return RedirectToAction(nameof(Index));
+    }
+
+    #endregion
+
+    #endregion
+
+    #region Diabet Population
+
+    #region Show Diabet Population Modal
+
+    [HttpGet("/Show-DiabetPopulation-Modal")]
+    public async Task<IActionResult> ShowDiabetPopulationModal(CancellationToken cancellationToken = default)
+    {
+        var res = await Mediator.Send(new ShowDiabetPopulationModalQuery()
+        {
+            UserId = (User.Identity.IsAuthenticated) ? User.GetUserId() : null
+        }, cancellationToken);
+
+        return PartialView("_DiabetPopulationModal", res);
+    }
+
+    #endregion
+
+    #region Add Process BMI Result
+
+    [HttpPost, ValidateAntiForgeryToken]
+    public async Task<IActionResult> AddToDiabetPopulation(DiabetPopulationDTO command,
+                                                           CancellationToken cancellationToken = default)
+    {
+        var res = await Mediator.Send(new AddDiabetPopulationCommand()
+        {
+            command = command
+        } , cancellationToken);
+
+        if (res)
+        {
+            TempData[SuccessMessage] = "اطلاعات شما در جمعیت دیابت ثبت گردید.";
+            return RedirectToAction("Index" , "Home");
+        }
+
+        TempData[ErrorMessage] = "اطلاعات وارد شده صحیح نمی باشد.";
         return RedirectToAction(nameof(Index));
     }
 
@@ -920,7 +970,7 @@ public class DiabetController : SiteBaseController
 
         #region Calculate A1C
 
-        var res = await _smbgService.CalculateLogUsersA1C(a1C, User.GetUserId()) ;
+        var res = await _smbgService.CalculateLogUsersA1C(a1C, User.GetUserId());
         if (res)
         {
             TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
@@ -948,7 +998,7 @@ public class DiabetController : SiteBaseController
 
     [Authorize]
     [HttpPost]
-    public async Task<IActionResult> CalculateLogForLongEffectInsulinUsage(ulong InsulinId , int countOfUsage)
+    public async Task<IActionResult> CalculateLogForLongEffectInsulinUsage(ulong InsulinId, int countOfUsage)
     {
         #region Model State Validation 
 
@@ -962,7 +1012,7 @@ public class DiabetController : SiteBaseController
 
         #region Add To The Data Base 
 
-        var res = await _smbgService.CalculateLogForLongEffectInsulinUsage(InsulinId , countOfUsage , User.GetUserId());
+        var res = await _smbgService.CalculateLogForLongEffectInsulinUsage(InsulinId, countOfUsage, User.GetUserId());
         if (res)
         {
             TempData[SuccessMessage] = "عملیات باموفقیت انجام شده است.";
@@ -992,7 +1042,7 @@ public class DiabetController : SiteBaseController
         #region View Datas 
 
         ViewBag.Insulin = await _siteSettingService.ListOfShortEffectInsulins();
-        ViewBag.IsMidnight = ((int)timeOfUsageInsulinState == 3) ? true : false ;
+        ViewBag.IsMidnight = ((int)timeOfUsageInsulinState == 3) ? true : false;
 
         #endregion
 

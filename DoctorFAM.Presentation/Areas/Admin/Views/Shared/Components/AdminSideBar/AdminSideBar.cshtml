@@ -465,6 +465,30 @@
 
         <li>
             <a href="#" class="menu-dropdown">
+                <i class="menu-icon glyphicon glyphicon-heart"></i>
+                <span class="menu-text"> جمعیت بیماران دکترفم </span>
+                <i class="menu-expand"></i>
+            </a>
+
+            <ul class="submenu">
+                <li>
+                    <a asp-action="DiabetPopulation" asp-controller="Diabet" asp-area="Admin">
+                        <span class="menu-text"> جمعیت دیابت</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a asp-action="BloodPressurePopulation" asp-controller="BloodPressure" asp-area="Admin">
+                        <span class="menu-text"> جمعیت فشارخون</span>
+                    </a>
+                </li>
+             
+            </ul>
+        </li>
+
+
+        <li>
+            <a href="#" class="menu-dropdown">
                 <i class="menu-icon glyphicon glyphicon-map-marker"></i>
                 <span class="menu-text">@SharedLocalizer["Manage Locations"]</span>
                 <i class="menu-expand"></i>
