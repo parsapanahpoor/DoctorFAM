@@ -1,6 +1,6 @@
 ﻿using DoctorFAM.Data.DbContext;
 using DoctorFAM.Domain.Interfaces.EFCore.BloodPressure;
-using DoctorFAM.Domain.Interfaces.EFCore.OrganizationRating;
+using DoctorFAM.Domain.ViewModels.Admin.BloodPressure;
 using Microsoft.EntityFrameworkCore;
 
 namespace DoctorFAM.Data.Repository.BloodPressure;
@@ -24,5 +24,30 @@ public class BloodPressureQueryRepository : QueryGenericRepository<Domain.Entiti
                              .AsNoTracking()
                              .AnyAsync(p=> !p.IsDelete && 
                                        p.UserId == userId);
+    }
+
+    public async Task<List<ListOfBloodPressurePopulationDTO>> ListOfBloodPressurePopulation(CancellationToken cancellationToken)
+    {
+        return await _context.BloodPressurePopulation
+                             .AsNoTracking()
+                             .Where(p => !p.IsDelete)
+                             .Select(p => new ListOfBloodPressurePopulationDTO()
+                             {
+                                 Age = p.Age,
+                                 Gender = p.Gender,
+                                 Person = _context.Users
+                                                        .AsNoTracking()
+                                                        .Where(u => !u.IsDelete &&
+                                                               u.Id == p.UserId)
+                                                        .Select(u => new BloodPressureianPersonDTO()
+                                                        {
+                                                            Mobile = u.Mobile,
+                                                            NationalId = u.NationalId,
+                                                            UserId = p.UserId,
+                                                            Username = u.Username
+                                                        })
+                                                        .FirstOrDefault()
+                             })
+                             .ToListAsync();
     }
 }
