@@ -21,6 +21,28 @@ function ShowBMIModal() {
 
 //#endregion
 
+//#region Load BloodPressure Population Modal
+
+function ShowBloodPressurePopulationModal() {
+    $.ajax({
+        url: "/Show-BloodPressurePopulation-Modal",
+        type: "get",
+        data: {
+
+        },
+        success: function (response) {
+            $("#modal-body").html(response);
+
+            $('#BloodPressurePopulationForm').data('validator', null);
+            $.validator.unobtrusive.parse('#BloodPressurePopulationForm');
+
+            $("#exampleModal").modal("show");
+        }
+    });
+}
+
+//#endregion
+
 //#region Load GFR View Model
 
 function ShowGFRModal() {

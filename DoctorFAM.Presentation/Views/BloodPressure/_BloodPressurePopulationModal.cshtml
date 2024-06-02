@@ -1,0 +1,61 @@
+﻿@model DoctorFAM.Domain.ViewModels.Site.BloodPressure.BloodPressurePopulationDTO
+
+<form id="BloodPressurePopulationForm" asp-action="AddToBloodPressurePopulation" asp-controller="BloodPressure" asp-area="">
+    <h5 class="modal-title" id="exampleModalLabel">جمعیت فشارخون دکترفم </h5>
+
+    <div class="modal-body">
+        <div class="row">
+
+            <input type="hidden" asp-for="UserId" />
+
+                <div class="form-group col-md-12 col-sm-12">
+                    <label asp-for="FirstName">نام </label>
+                    <input type="text" min="0" class="form-control" asp-for="FirstName">
+                    <span class="text-danger" asp-validation-for="FirstName"></span>
+                </div>
+
+                <div class="form-group col-md-12 col-sm-12">
+                    <label asp-for="LastName">نام خانوادگی </label>
+                    <input type="text" min="0" class="form-control" asp-for="LastName">
+                    <span class="text-danger" asp-validation-for="LastName"></span>
+                </div>
+
+                <div class="form-group col-md-12 col-sm-12">
+                    <label asp-for="PhoneNumber">موبایل </label>
+                    <input type="text" min="0" class="form-control" asp-for="PhoneNumber">
+                    <span class="text-danger" asp-validation-for="PhoneNumber"></span>
+                </div>
+
+                <div class="form-group col-md-12 col-sm-12">
+                    <label asp-for="NationalId">کدملی </label>
+                    <input type="text" min="0" class="form-control" asp-for="NationalId">
+                    <span class="text-danger" asp-validation-for="NationalId"></span>
+                </div>
+
+                <div class="form-group col-md-12 col-sm-12">
+                    <label asp-for="Gender">جنسیت</label>
+                    <select asp-for="Gender" class="form-control" asp-items="Html.GetEnumSelectList(typeof(DoctorFAM.Domain.Enums.Gender.Gender))"></select>
+                </div>
+
+                <div class="form-group col-md-12 col-sm-12">
+                    <label asp-for="Age">سن</label>
+                    <input type="number" min="0" class="form-control" asp-for="Age">
+                    <span class="text-danger" asp-validation-for="Age"></span>
+                </div>
+
+                <hr />
+
+                <div class="footer">
+                    <button type="submit" style="padding-top: 10px;padding-bottom: 10px;padding-right: 20px;padding-left: 20px;" class="btn-SelfTest">ثبت</button>
+                </div>
+
+            <hr />
+
+            <div class="footer d-none" id="footer-Div">
+                <button type="submit" style="padding-top: 10px;padding-bottom: 10px;padding-right: 20px;padding-left: 20px;" class="btn-SelfTest">ثبت</button>
+            </div>
+
+        </div>
+    </div>
+
+</form>

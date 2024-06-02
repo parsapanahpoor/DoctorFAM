@@ -76,7 +76,7 @@ public record AddBloodPressurePopulationCommandHandler :
 
                 // Send Registeration SMS 
                 var message = Messages.SendSMSForUserRegistrationAlert(request.command.PhoneNumber);
-                await _smsService.SendSimpleSMS(request.command.PhoneNumber, message);
+                //await _smsService.SendSimpleSMS(request.command.PhoneNumber, message);
             }
             else
             {

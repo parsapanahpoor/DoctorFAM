@@ -1,5 +1,6 @@
 ﻿#region Usings
 
+using DoctorFAM.Application.CQRS.SiteSide.BloodPressure.Commands.AddBloodPressurePopulation;
 using DoctorFAM.Application.CQRS.SiteSide.BloodPressure.Query;
 using DoctorFAM.Application.CQRS.SiteSide.Diabet.Commands.AddDiabetPopulation;
 using DoctorFAM.Application.CQRS.SiteSide.Diabet.Queries;
@@ -146,13 +147,13 @@ public class BloodPressureController : SiteBaseController
 
     #endregion
 
-    #region Add Process BMI Result
+    #region Add BloodPressure Result
 
     [HttpPost, ValidateAntiForgeryToken]
-    public async Task<IActionResult> AddToBloodPressurePopulation(DiabetPopulationDTO command,
-                                                           CancellationToken cancellationToken = default)
+    public async Task<IActionResult> AddToBloodPressurePopulation(BloodPressurePopulationDTO command,
+                                                                  CancellationToken cancellationToken = default)
     {
-        var res = await Mediator.Send(new AddDiabetPopulationCommand()
+        var res = await Mediator.Send(new AddBloodPressurePopulationCommand()
         {
             command = command
         }, cancellationToken);
