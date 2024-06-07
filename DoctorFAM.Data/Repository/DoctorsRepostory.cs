@@ -1,46 +1,25 @@
 ﻿using DoctorFAM.Data.DbContext;
-using DoctorFAM.DataLayer.Entities;
 using DoctorFAM.Domain.Entities.Account;
-using DoctorFAM.Domain.Entities.Chat;
-using DoctorFAM.Domain.Entities.Consultant;
 using DoctorFAM.Domain.Entities.DoctorReservation;
 using DoctorFAM.Domain.Entities.Doctors;
 using DoctorFAM.Domain.Entities.FamilyDoctor.ParsaSystem;
 using DoctorFAM.Domain.Entities.FamilyDoctor.VIPSystem;
 using DoctorFAM.Domain.Entities.Interest;
-using DoctorFAM.Domain.Entities.Organization;
-using DoctorFAM.Domain.Entities.Patient;
-using DoctorFAM.Domain.Entities.Resume;
 using DoctorFAM.Domain.Entities.SendSMS.FromDoctrors;
-using DoctorFAM.Domain.Entities.WorkAddress;
-using DoctorFAM.Domain.Enums.SendSMS.FromDoctors;
+using DoctorFAM.Domain.Entities.Speciality;
 using DoctorFAM.Domain.Interfaces;
-using DoctorFAM.Domain.ViewModels.Admin;
 using DoctorFAM.Domain.ViewModels.Admin.Dashboard;
 using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo;
-using DoctorFAM.Domain.ViewModels.Admin.SendSMS;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.DosctorSideBarInfo;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.Employees;
 using DoctorFAM.Domain.ViewModels.DoctorPanel.SendSMS;
-using DoctorFAM.Domain.ViewModels.DoctorPanel.Wallet;
 using DoctorFAM.Domain.ViewModels.Site.BloodPressure;
 using DoctorFAM.Domain.ViewModels.Site.Diabet;
 using DoctorFAM.Domain.ViewModels.Site.Doctor;
-using DoctorFAM.Domain.ViewModels.Site.DurgAlert;
+using DoctorFAM.Domain.ViewModels.Site.Specialists;
 using DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.VisualBasic;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using System.Text.Json;
 
 namespace DoctorFAM.Data.Repository
 {
@@ -697,8 +676,8 @@ namespace DoctorFAM.Data.Repository
         {
             return await _context.Doctors
                                  .AsNoTracking()
-                                 .Where(p=> !p.IsDelete && p.UserId == userId)
-                                 .Select(p=> p.Id)
+                                 .Where(p => !p.IsDelete && p.UserId == userId)
+                                 .Select(p => p.Id)
                                  .FirstOrDefaultAsync();
         }
 
@@ -902,8 +881,8 @@ namespace DoctorFAM.Data.Repository
             var query = _context.Organizations
                 .Where(s => !s.IsDelete && s.OrganizationType == Domain.Enums.Organization.OrganizationType.DoctorOffice)
                 .Include(p => p.User)
-                .ThenInclude(p=> p.Doctors)
-                .ThenInclude(p=> p.DoctorsInfos)
+                .ThenInclude(p => p.Doctors)
+                .ThenInclude(p => p.DoctorsInfos)
                 .OrderByDescending(s => s.CreateDate)
                 .AsQueryable();
 
@@ -1096,6 +1075,84 @@ namespace DoctorFAM.Data.Repository
                 .ToListAsync();
         }
 
+        public async Task<List<DoctorInfo>?> FilterDoctorsSiteSide(FilterDoctorsDTO filter,
+                                                                   CancellationToken cancellationToken = default)
+        {
+            //Initial main model 
+            List<ulong> doctorsUserIds = new List<ulong>();
+
+            //Get Doctors By Their Username and their specialities
+            if (!string.IsNullOrEmpty(filter.InputText))
+            {
+                //step1 : get them by their username
+                var userIds = from user in _context.Users
+                                                  .Where(u => !u.IsDelete &&
+                                                         u.Username.Contains(filter.InputText))
+                              join doctors in _context.Organizations
+                                                      .Where(allDoctors => !allDoctors.IsDelete &&
+                                                            (allDoctors.OrganizationType == Domain.Enums.Organization.OrganizationType.DoctorOffice ||
+                                                             allDoctors.OrganizationType == Domain.Enums.Organization.OrganizationType.DentistOffice) &&
+                                                             allDoctors.OrganizationInfoState == OrganizationInfoState.Accepted)
+                              on user.Id equals doctors.OwnerId
+                              select user.Id;
+
+                //step1 : get them by their username
+                var doctorsWithSpecialityUserIds = from doctor in (from doctors in _context.Doctors
+                                                                                               .Where(doctor => !doctor.IsDelete)
+                                                                   join organizations in _context.Organizations
+                                                                                                 .Where(organization => !organization.IsDelete &&
+                                                                                                       (organization.OrganizationType == Domain.Enums.Organization.OrganizationType.DoctorOffice ||
+                                                                                                        organization.OrganizationType == Domain.Enums.Organization.OrganizationType.DentistOffice) &&
+                                                                                                        organization.OrganizationInfoState == OrganizationInfoState.Accepted)
+                                                                   on doctors.UserId equals organizations.OwnerId
+                                                                   select doctors)
+                                                   join specialitiesDoctors in (from speciality in _context.Specialities
+                                                                                                        .Where(speciality => !speciality.IsDelete &&
+                                                                                                               speciality.UniqueName.Contains(filter.InputText))
+                                                                                join doctorSelectedSpeciality in _context.DoctorSelectedSpeciality
+                                                                                                                         .Include(p => p.Doctor)
+                                                                                                                         .Where(p => !p.IsDelete)
+                                                                                on speciality.Id equals doctorSelectedSpeciality.SpecialityId
+                                                                                select doctorSelectedSpeciality.Doctor)
+                                                    on doctor.Id equals specialitiesDoctors.Id
+                                                   select doctor.UserId;
+
+                if (userIds != null && userIds.Any()) doctorsUserIds.AddRange(userIds.ToList());
+
+                if (doctorsWithSpecialityUserIds != null && doctorsWithSpecialityUserIds.Any())
+                {
+                    foreach (var doctorUserId in doctorsWithSpecialityUserIds.ToList())
+                    {
+                        if (!doctorsUserIds.Any(p => p == doctorUserId))
+                        {
+                            doctorsUserIds.Add(doctorUserId);
+                        }
+                    }
+                }
+            }
+
+            return doctorsUserIds != null ?
+                doctorsUserIds.Select(p => new DoctorInfo()
+                {
+                    DoctorUserInfo = _context.Users
+                                         .Where(u => !u.IsDelete &&
+                                                u.Id == p)
+                                         .Select(u => new DoctorUserInfo()
+                                         {
+                                             DoctorUserAvatar = u.Avatar,
+                                             DoctorUserId = u.Id,
+                                             DoctorUsername = u.Username
+                                         })
+                                         .FirstOrDefault(),
+                    DoctorRank = _context.OrganizationStarPoints
+                                     .Where(r => !r.IsDelete &&
+                                            r.OperatorUserId == p)
+                                     .Select(r => r.PointValue)
+                                     .FirstOrDefault()
+                }).ToList() :
+                null;
+        }
+
         #endregion
 
         #region User Panel Side 
@@ -1109,6 +1166,11 @@ namespace DoctorFAM.Data.Repository
                     .Include(p => p.Doctor)
                     .ThenInclude(p => p.User)
                     .ThenInclude(p => p.OrganizationStarPoint)
+                    .Include(p => p.Doctor)
+                    .ThenInclude(p => p.User)
+                    .ThenInclude(p => p.WorkAddresses)
+                    .ThenInclude(p => p.City)
+                    .ThenInclude(p => p.LocationsInfo)
                     .Where(s => !s.IsDelete && s.InterestId == 3)
                     .OrderBy(s => s.CreateDate)
                     .Select(p => p.Doctor)
@@ -1119,8 +1181,8 @@ namespace DoctorFAM.Data.Repository
             foreach (var item in query)
             {
                 if (await _context.Organizations
-                                  .FirstOrDefaultAsync(p => !p.IsDelete && 
-                                                       p.OwnerId == item.UserId && 
+                                  .FirstOrDefaultAsync(p => !p.IsDelete &&
+                                                       p.OwnerId == item.UserId &&
                                                        p.OrganizationInfoState == OrganizationInfoState.Accepted) != null)
                 {
                     model.Add(item);
@@ -1139,7 +1201,7 @@ namespace DoctorFAM.Data.Repository
                 }
                 if (filter.Gender.Value == 1)
                 {
-                    model = model.Where(p => !p.IsDelete && 
+                    model = model.Where(p => !p.IsDelete &&
                                         p.DoctorsInfos.Gender == Domain.Enums.Gender.Gender.Female)
                                  .ToList();
                 }
@@ -1158,8 +1220,8 @@ namespace DoctorFAM.Data.Repository
                 foreach (var item in model.Select(p => p.UserId))
                 {
                     var address = await _context.WorkAddresses
-                                                .FirstOrDefaultAsync(p => !p.IsDelete && 
-                                                                     p.UserId == item && 
+                                                .FirstOrDefaultAsync(p => !p.IsDelete &&
+                                                                     p.UserId == item &&
                                                                      p.CountryId == filter.CountryId.Value);
 
                     if (address != null)
@@ -1171,7 +1233,7 @@ namespace DoctorFAM.Data.Repository
                                                     .ThenInclude(p => p.User)
                                                     .ThenInclude(p => p.OrganizationStarPoint)
                                                        .AsNoTracking()
-                                                       .Where(s => !s.IsDelete && 
+                                                       .Where(s => !s.IsDelete &&
                                                               s.Doctor.UserId == address.UserId)
                                                        .Select(p => p.Doctor)
                                                        .FirstOrDefaultAsync());
@@ -1188,8 +1250,8 @@ namespace DoctorFAM.Data.Repository
                 foreach (var item in query.Select(p => p.UserId))
                 {
                     var address = await _context.WorkAddresses
-                                                .FirstOrDefaultAsync(p => !p.IsDelete && 
-                                                                     p.UserId == item && 
+                                                .FirstOrDefaultAsync(p => !p.IsDelete &&
+                                                                     p.UserId == item &&
                                                                      p.StateId == filter.StateId.Value);
 
                     if (address != null)
@@ -1201,7 +1263,7 @@ namespace DoctorFAM.Data.Repository
                                                      .ThenInclude(p => p.User)
                                                      .ThenInclude(p => p.OrganizationStarPoint)
                                                      .AsNoTracking()
-                                                     .Where(s => !s.IsDelete && 
+                                                     .Where(s => !s.IsDelete &&
                                                             s.Doctor.UserId == address.UserId)
                                                      .Select(p => p.Doctor)
                                                      .FirstOrDefaultAsync());
@@ -1218,8 +1280,8 @@ namespace DoctorFAM.Data.Repository
                 foreach (var item in query.Select(p => p.UserId))
                 {
                     var address = await _context.WorkAddresses
-                                                .FirstOrDefaultAsync(p => !p.IsDelete && 
-                                                                     p.UserId == item && 
+                                                .FirstOrDefaultAsync(p => !p.IsDelete &&
+                                                                     p.UserId == item &&
                                                                      p.CityId == filter.CityId.Value);
 
                     if (address != null)
@@ -1231,7 +1293,7 @@ namespace DoctorFAM.Data.Repository
                                                     .ThenInclude(p => p.User)
                                                     .ThenInclude(p => p.OrganizationStarPoint)
                                                     .AsNoTracking()
-                                                    .Where(s => !s.IsDelete && 
+                                                    .Where(s => !s.IsDelete &&
                                                            s.Doctor.UserId == address.UserId)
                                                     .Select(p => p.Doctor)
                                                     .FirstOrDefaultAsync());

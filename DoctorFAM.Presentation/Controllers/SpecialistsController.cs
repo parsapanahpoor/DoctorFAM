@@ -1,7 +1,9 @@
 ﻿#region Usings
 
+using DoctorFAM.Application.CQRS.SiteSide.Specialists.Queriesl;
 using DoctorFAM.Application.Interfaces;
 using DoctorFAM.Application.Services.Interfaces;
+using DoctorFAM.Domain.ViewModels.Site.Specialists;
 using DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,18 +18,32 @@ public class SpecialistsController : SiteBaseController
 	private readonly ISpecialityService _specialityService;
     private readonly ILocationService _locationServcie;
 
-    public SpecialistsController(ISpecialityService specialityService , ILocationService locationServcie)
+    public SpecialistsController(ISpecialityService specialityService , 
+                                 ILocationService locationServcie)
 	{
 		_specialityService= specialityService;
 		_locationServcie = locationServcie;
 	}
 
-	#endregion
+    #endregion
 
-	#region ListOfSpecialists
+    #region Filter Doctors
 
-	//List Of Specialists For Show Site Side 
-	public async  Task<IActionResult> ListOfSpecialists(FilterFamilyDoctorUserPanelSideViewModel filter)
+    public async Task<IActionResult> FilterDoctors(FilterDoctorsDTO? filter , 
+                                                   CancellationToken cancellationToken = default)
+    {
+        return View(await Mediator.Send(new FiltreDoctorsQuery()
+        {
+            FilterDoctorsDTO = filter ,
+        } , cancellationToken));
+    }
+
+    #endregion
+
+    #region ListOfSpecialists
+
+    //List Of Specialists For Show Site Side 
+    public async  Task<IActionResult> ListOfSpecialists(FilterFamilyDoctorUserPanelSideViewModel filter)
 	{
         if (filter.GeneralSpecialityId.HasValue && !filter.specificId.HasValue)
         {

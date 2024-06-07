@@ -34,7 +34,7 @@ public class SpecialityRepository : ISpecialityRepository
 
     #region General 
 
-    public async Task<List<ulong>> GetListOfSpecialitiesChildrenIds_BySpecialityParentId(ulong specialityParentId , 
+    public async Task<List<ulong>> GetListOfSpecialitiesChildrenIds_BySpecialityParentId(ulong specialityParentId,
                                                                                    CancellationToken cancellation)
     {
         return await _context.Specialities
@@ -518,27 +518,33 @@ public class SpecialityRepository : ISpecialityRepository
                             {
                                 ListOfSpecialistsSiteSideViewModel modelChild = new ListOfSpecialistsSiteSideViewModel()
                                 {
-                                    DoctorUserInfo = await _context.Users.Include(p => p.Doctors).ThenInclude(p => p.DoctorsInfos)
-                                                                                                                     .AsNoTracking()
-                                                                                                                     .Where(p => !p.IsDelete && p.Id == doctorId.DoctorUserId)
-                                                                                                                     .Select(p => new DoctorSpecialistUserInfoViewModel()
-                                                                                                                     {
-                                                                                                                         UserAvatar = p.Avatar,
-                                                                                                                         UserId = p.Id,
-                                                                                                                         Username = p.Username,
-                                                                                                                         DoctorTilteName = _context.DoctorsInfos
-                                                                                                                                                   .AsNoTracking()
-                                                                                                                                                   .Where(p => !p.IsDelete && p.DoctorId == doctorId.DoctorId)
-                                                                                                                                                   .Select(p => p.DoctorTilteName)
-                                                                                                                                                   .FirstOrDefault(),
-                                                                                                                         doctorsInfo = p.Doctors.DoctorsInfos,
-                                                                                                                         DoctorStars = _context.OrganizationStarPoints
-                                                                                                                                               .Where(s => !s.IsDelete &&
-                                                                                                                                                      s.OperatorUserId == p.Id)
-                                                                                                                                               .Select(s => s.PointValue)
-                                                                                                                                               .FirstOrDefault()
-                                                                                                                     })
-                                                                                                                     .FirstOrDefaultAsync()
+                                    DoctorUserInfo = await _context.Users
+                                                                   .Include(p => p.Doctors)
+                                                                   .ThenInclude(p => p.DoctorsInfos)
+                                                                   .Include(p => p.WorkAddresses)
+                                                                   .ThenInclude(p => p.City)
+                                                                   .ThenInclude(p => p.LocationsInfo)
+                                                                   .AsNoTracking()
+                                                                   .Where(p => !p.IsDelete && p.Id == doctorId.DoctorUserId)
+                                                                   .Select(p => new DoctorSpecialistUserInfoViewModel()
+                                                                   {
+                                                                       UserAvatar = p.Avatar,
+                                                                       UserId = p.Id,
+                                                                       Username = p.Username,
+                                                                       CityName = p.WorkAddresses.Select(c => c.City.LocationsInfo.Select(t => t.Title).FirstOrDefault()).FirstOrDefault(),
+                                                                       DoctorTilteName = _context.DoctorsInfos
+                                                                    .AsNoTracking()
+                                                                    .Where(p => !p.IsDelete && p.DoctorId == doctorId.DoctorId)
+                                                                    .Select(p => p.DoctorTilteName)
+                                                                    .FirstOrDefault(),
+                                                                       doctorsInfo = p.Doctors.DoctorsInfos,
+                                                                       DoctorStars = _context.OrganizationStarPoints
+                                                                    .Where(s => !s.IsDelete &&
+                                                                    s.OperatorUserId == p.Id)
+                                                                    .Select(s => s.PointValue)
+                                                                    .FirstOrDefault()
+                                                                   })
+                                                                    .FirstOrDefaultAsync()
                                 };
 
                                 model.Add(modelChild);
@@ -549,6 +555,9 @@ public class SpecialityRepository : ISpecialityRepository
                             ListOfSpecialistsSiteSideViewModel modelChild = new ListOfSpecialistsSiteSideViewModel()
                             {
                                 DoctorUserInfo = await _context.Users.Include(p => p.Doctors).ThenInclude(p => p.DoctorsInfos)
+                                       .Include(p => p.WorkAddresses)
+                                                                   .ThenInclude(p => p.City)
+                                                                   .ThenInclude(p => p.LocationsInfo)
                                                                                       .AsNoTracking()
                                                                                       .Where(p => !p.IsDelete && p.Id == doctorId.DoctorUserId)
                                                                                       .Select(p => new DoctorSpecialistUserInfoViewModel()
@@ -556,6 +565,7 @@ public class SpecialityRepository : ISpecialityRepository
                                                                                           UserAvatar = p.Avatar,
                                                                                           UserId = p.Id,
                                                                                           Username = p.Username,
+                                                                                          CityName = p.WorkAddresses.Select(c => c.City.LocationsInfo.Select(t => t.Title).FirstOrDefault()).FirstOrDefault(),
                                                                                           DoctorTilteName = _context.DoctorsInfos
                                                                                                                                                    .AsNoTracking()
                                                                                                                                                    .Where(p => !p.IsDelete && p.DoctorId == doctorId.DoctorId)
@@ -621,7 +631,9 @@ public class SpecialityRepository : ISpecialityRepository
                 {
                     ListOfSpecialistsSiteSideViewModel modelChild = new ListOfSpecialistsSiteSideViewModel()
                     {
-                        DoctorUserInfo = await _context.Users.Include(p => p.Doctors).ThenInclude(p => p.DoctorsInfos)
+                        DoctorUserInfo = await _context.Users.Include(p => p.Doctors).ThenInclude(p => p.DoctorsInfos).Include(p => p.WorkAddresses)
+                                                                   .ThenInclude(p => p.City)
+                                                                   .ThenInclude(p => p.LocationsInfo)
                                                                                                                       .AsNoTracking()
                                                                                                                       .Where(p => !p.IsDelete && p.Id == address.UserId)
                                                                                                                       .Select(p => new DoctorSpecialistUserInfoViewModel()
@@ -629,6 +641,7 @@ public class SpecialityRepository : ISpecialityRepository
                                                                                                                           UserAvatar = p.Avatar,
                                                                                                                           UserId = p.Id,
                                                                                                                           Username = p.Username,
+                                                                                                                          CityName = p.WorkAddresses.Select(c => c.City.LocationsInfo.Select(t => t.Title).FirstOrDefault()).FirstOrDefault(),
                                                                                                                           DoctorTilteName = p.Doctors.DoctorsInfos.DoctorTilteName,
                                                                                                                           doctorsInfo = p.Doctors.DoctorsInfos,
                                                                                                                           DoctorStars = _context.OrganizationStarPoints
@@ -660,6 +673,9 @@ public class SpecialityRepository : ISpecialityRepository
                     ListOfSpecialistsSiteSideViewModel modelChild = new ListOfSpecialistsSiteSideViewModel()
                     {
                         DoctorUserInfo = await _context.Users.Include(p => p.Doctors).ThenInclude(p => p.DoctorsInfos)
+                        .Include(p => p.WorkAddresses)
+                                                                   .ThenInclude(p => p.City)
+                                                                   .ThenInclude(p => p.LocationsInfo)
                                                                                                                      .AsNoTracking()
                                                                                                                      .Where(p => !p.IsDelete && p.Id == address.UserId)
                                                                                                                      .Select(p => new DoctorSpecialistUserInfoViewModel()
@@ -667,6 +683,7 @@ public class SpecialityRepository : ISpecialityRepository
                                                                                                                          UserAvatar = p.Avatar,
                                                                                                                          UserId = p.Id,
                                                                                                                          Username = p.Username,
+                                                                                                                         CityName = p.WorkAddresses.Select(c => c.City.LocationsInfo.Select(t => t.Title).FirstOrDefault()).FirstOrDefault(),
                                                                                                                          DoctorTilteName = p.Doctors.DoctorsInfos.DoctorTilteName,
                                                                                                                          doctorsInfo = p.Doctors.DoctorsInfos,
                                                                                                                          DoctorStars = _context.OrganizationStarPoints
@@ -697,7 +714,7 @@ public class SpecialityRepository : ISpecialityRepository
                 {
                     ListOfSpecialistsSiteSideViewModel modelChild = new ListOfSpecialistsSiteSideViewModel()
                     {
-                        DoctorUserInfo = await _context.Users.Include(p => p.Doctors).ThenInclude(p => p.DoctorsInfos)
+                        DoctorUserInfo = await _context.Users.Include(p => p.Doctors).ThenInclude(p => p.DoctorsInfos).Include(p => p.WorkAddresses).ThenInclude(p => p.City).ThenInclude(p => p.LocationsInfo)
                                                                                                                     .AsNoTracking()
                                                                                                                     .Where(p => !p.IsDelete && p.Id == address.UserId)
                                                                                                                     .Select(p => new DoctorSpecialistUserInfoViewModel()
@@ -705,6 +722,7 @@ public class SpecialityRepository : ISpecialityRepository
                                                                                                                         UserAvatar = p.Avatar,
                                                                                                                         UserId = p.Id,
                                                                                                                         Username = p.Username,
+                                                                                                                        CityName = p.WorkAddresses.Select(c => c.City.LocationsInfo.Select(t => t.Title).FirstOrDefault()).FirstOrDefault(),
                                                                                                                         DoctorTilteName = p.Doctors.DoctorsInfos.DoctorTilteName,
                                                                                                                         doctorsInfo = p.Doctors.DoctorsInfos,
                                                                                                                         DoctorStars = _context.OrganizationStarPoints

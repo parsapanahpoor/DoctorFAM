@@ -44,6 +44,7 @@
 	  <Folder Include="CQRS\AdminSide\BloodPressure\Commands\" />
 	  <Folder Include="CQRS\AdminSide\Diabet\Commands\" />
 	  <Folder Include="CQRS\SiteSide\HealthCenters\Command\" />
+	  <Folder Include="CQRS\SiteSide\Specialists\Commands\" />
 	  <Folder Include="CQRS\SiteSide\Test\Command\" />
 	</ItemGroup>
 

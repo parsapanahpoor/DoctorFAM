@@ -28,6 +28,8 @@ public class DoctorSpecialistUserInfoViewModel
 
 	public string UserAvatar { get; set; }
 
+    public string? CityName { get; set; }
+
     public DoctorTilteName DoctorTilteName { get; set; }
 
     public DoctorsInfo doctorsInfo { get; set; }

@@ -13,6 +13,7 @@ using DoctorFAM.Domain.ViewModels.DoctorPanel.SendSMS;
 using DoctorFAM.Domain.ViewModels.Site.BloodPressure;
 using DoctorFAM.Domain.ViewModels.Site.Diabet;
 using DoctorFAM.Domain.ViewModels.Site.Doctor;
+using DoctorFAM.Domain.ViewModels.Site.Specialists;
 using DoctorFAM.Domain.ViewModels.UserPanel.FamilyDoctor;
 
 namespace DoctorFAM.Domain.Interfaces
@@ -311,6 +312,9 @@ namespace DoctorFAM.Domain.Interfaces
 
         //Get List Of Doctors With Blood Pressure Speciality
         Task<List<Doctor>?> FilterDoctorsWithBloodPressureSpecialitySiteSide(FilterDoctorsWithBloodPressureSpecialitySiteSideViewModel filter);
+
+        Task<List<DoctorInfo>?> FilterDoctorsSiteSide(FilterDoctorsDTO? filter,
+                                                      CancellationToken cancellationToken = default);
 
         #endregion
 

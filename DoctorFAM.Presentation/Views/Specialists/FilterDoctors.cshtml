@@ -1,0 +1,153 @@
+﻿@model List<DoctorFAM.Domain.ViewModels.Site.Specialists.DoctorInfo>
+
+
+@using DoctorFAM.Domain.ViewModels.Admin.Doctors.DoctorsInfo
+@using DoctorFAM.Domain.Entities.Speciality
+@using DoctorFAM.Application.Extensions
+@using DoctorFAM.Application.Convertors
+@using DoctorFAM.Domain.ViewModels.Common
+@using DoctorFAM.Application.StaticTools
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedLocalizer> SharedHtmlLocalizer
+
+@{
+    ViewBag.Title = " پزشکان ";
+}
+
+@section Scripts
+{
+
+}
+
+@section Styles
+{
+}
+
+<div class="container">
+
+    <div class="content mt-3">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-4  theiaStickySidebar">
+
+                    <form asp-action="FilterDoctors" asp-controller="Specialists" asp-area="" id="formFilter" method="get">
+
+                        <div class="card search-filter">
+                            <div class="card-header">
+                                <h4 class="card-title mb-0">فیلتر جستجو</h4>
+                            </div>
+                            <div class="card-body">
+
+                                <div class="filter-widget">
+
+                                    <div class="form-group">
+                                        <h6>نام پزشک یا تخصص</h6>
+                                        <input type="text" class="form-control" name="InputText" placeholder="لطفا نام  پزشک یا تخصص را وارد کنید">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <h6>شهر موردنظر</h6>
+                                        <input type="text" class="form-control" name="CityName" placeholder="لطفا نام شهر را وارد کنید">
+                                    </div>
+
+                                </div>
+
+                                <div class="btn-search ">
+                                    <button type="submit" class=" btn-Accept w-100">جستجو</button>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </form>
+
+                </div>
+
+                @if (Model != null && Model.Any())
+                {
+                    <div class="col-md-8 mb-4 ">
+
+                        @foreach (var doctor in Model)
+                        {
+                            if (doctor.DoctorUserInfo != null)
+                            {
+                                <div class="card">
+
+                                    <div class="card-body">
+                                        <div class="doctor-widget">
+                                            <div class="doc-info-left">
+
+                                                <div class="doctor-img">
+                                                    <a asp-action="NewDocPage"
+                                                       asp-area=""
+                                                       asp-controller="FocalPoint"
+                                                       asp-route-userId="@doctor.DoctorUserInfo.DoctorUserId"
+                                                       asp-route-name="@doctor.DoctorUserInfo.DoctorUsername.FixTextForUrl()">
+                                                        <img src="/content/images/user/@((string.IsNullOrEmpty(doctor.DoctorUserInfo.DoctorUserAvatar)) ? "DefaultAvatar.png" : $"thumb/{doctor.DoctorUserInfo.DoctorUserAvatar}")" class="img-fluid" alt="User Image">
+                                                    </a>
+                                                </div>
+
+                                                <div class="doc-info-cont">
+
+                                                    <h4 class="doc-name">
+                                                        <a asp-action="NewDocPage" 
+                                                           asp-area="" 
+                                                           asp-controller="FocalPoint"
+                                                           asp-route-userId="@doctor.DoctorUserInfo.DoctorUserId"
+                                                           asp-route-name="@doctor.DoctorUserInfo.DoctorUsername.FixTextForUrl()">
+                                                           @doctor.DoctorUserInfo.DoctorUsername
+                                                           </a>
+                                                    </h4>
+
+                                                    <div class="rating">
+                                                        @if (doctor.DoctorRank != 0)
+                                                        {
+                                                            for (int i = 1; i <= doctor.DoctorRank; i++)
+                                                            {
+                                                                <i class="fas fa-star filled"></i>
+                                                            }
+                                                            for (int i = 1; i <= 5 - doctor.DoctorRank; i++)
+                                                            {
+                                                                <i class="fas fa-star"></i>
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            <i class="fas fa-star"></i>
+                                                        }
+                                                        <span class="d-inline-block average-rating">(@(doctor.DoctorRank != 0 ? doctor.DoctorRank : 0)/5)</span>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="doc-info-right text-center justify-content-center">
+
+                                                <div class="clinic-booking mt-1  text-center justify-content-center">
+
+                                                    <a class="view-pro-btn mt-3  text-center justify-content-center" 
+                                                        asp-action="NewDocPage" 
+                                                        asp-area="" 
+                                                        asp-controller="FocalPoint" 
+                                                        asp-route-userId="@doctor.DoctorUserInfo.DoctorUserId" 
+                                                        asp-route-name="@doctor.DoctorUserInfo.DoctorUsername.FixTextForUrl()"> پروفایل</a>
+
+                                                    <a class="apt-btn  text-center justify-content-center" 
+                                                       asp-action="DocBooking" 
+                                                       asp-controller="FocalPoint" 
+                                                       asp-area="" 
+                                                       asp-route-userId="@doctor.DoctorUserInfo.DoctorUserId">رزرو نوبت</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            }
+                        }
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
