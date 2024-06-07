@@ -1131,6 +1131,45 @@ namespace DoctorFAM.Data.Repository
                 }
             }
 
+            //Get Doctors by their city
+            if (!string.IsNullOrEmpty(filter.CityName))
+            {
+                var doctors = from userId in (from location in _context.LocationInfoes
+                                                                       .Where(location => !location.IsDelete &&
+                                                                              location.Title.Contains(filter.CityName))
+                                              join address in _context.WorkAddresses
+                                                                      .Where(p => !p.IsDelete)
+                                              on location.LocationId equals address.CityId
+                                              select address.UserId)
+                              join doctor in _context.Organizations
+                                                      .Where(allDoctors => !allDoctors.IsDelete &&
+                                                            (allDoctors.OrganizationType == Domain.Enums.Organization.OrganizationType.DoctorOffice ||
+                                                             allDoctors.OrganizationType == Domain.Enums.Organization.OrganizationType.DentistOffice) &&
+                                                             allDoctors.OrganizationInfoState == OrganizationInfoState.Accepted)
+                              on userId equals doctor.OwnerId
+                              select userId;
+
+                if (doctors != null && doctors.Any())
+                {
+                    if (doctorsUserIds != null && doctorsUserIds.Any())
+                    {
+                        var filterUsers = from userId in doctorsUserIds
+                                          join docUserId in doctors.ToList()
+                                          on userId equals docUserId
+                                          select docUserId;
+
+                        doctorsUserIds = filterUsers.ToList();
+                    }
+                    else 
+                    {
+                        foreach (var doctorUserId in doctors.Distinct().ToList())
+                        {
+                            doctorsUserIds.Add(doctorUserId);
+                        }
+                    }
+                }
+            }
+
             return doctorsUserIds != null ?
                 doctorsUserIds.Select(p => new DoctorInfo()
                 {
